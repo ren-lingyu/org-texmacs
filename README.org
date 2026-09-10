@@ -1,2 +1,2 @@
-#+TITLE: Org Texmacs
+#+TITLE: Org TeXmacs
 #+AUTHOR: aRenCoco
