@@ -1,2 +1,179 @@
 #+TITLE: Org TeXmacs
 #+AUTHOR: aRenCoco
+
+Org TeXmacs provides a small AST integration layer for mathematical content
+written in TeXmacs STM/Scheme serialization inside Org documents.  The Org
+buffer is the source of truth; no external =.tm= file is required.
+
+The current implementation supports block-level parsing and lazy caching.
+It does not provide preview, export, inline formulas, fontification, or an
+editing minor mode.
+
+* Requirements
+
+- Emacs 31.1 or later and Org 9.8 or later, as declared by the package.
+- TeXmacs with headless mode (=-H=) and its embedded Scheme runtime.
+- Unix-domain socket support in both Emacs and TeXmacs.
+
+The implementation has been tested on =x86_64-linux= with Emacs 31.1,
+Org 9.8-pre and TeXmacs 2.1.5.  Other platforms have not been validated.
+
+* Loading the package
+
+** From a source checkout
+
+Keep all =org-texmacs*.el= files and =org-texmacs-worker.scm= together in the
+checkout directory.  Add that directory to Emacs's =load-path=, replacing
+the example path below:
+
+#+begin_src emacs-lisp
+(add-to-list 'load-path "/path/to/org-texmacs/")
+(require 'org-texmacs)
+#+end_src
+
+By default, Emacs locates =texmacs= through =exec-path=.  To select a specific
+executable, set =org-texmacs-program= before the first parse:
+
+#+begin_src emacs-lisp
+(setq org-texmacs-program "/path/to/bin/texmacs")
+#+end_src
+
+Run =M-x org-texmacs-check-setup= to inspect the required capabilities.
+The Lisp function returns =(BOOL . REPORT)=.  It checks API and executable
+existence; it does not start TeXmacs or test socket connectivity.
+
+** With Nix
+
+From the repository root, launch the development environment's Emacs:
+
+#+begin_src sh
+nix develop --no-write-lock-file --command emacs
+#+end_src
+
+This Emacs includes the package and its Lisp dependencies.  The development
+environment also includes TeXmacs.  Evaluate =(require 'org-texmacs)= before
+using the API.
+
+The flake's =packages.default= builds the Lisp package, installs its Scheme
+server file, and sets the default =org-texmacs-program= to TeXmacs's absolute
+Nix store path.  TeXmacs is therefore part of the package's runtime closure;
+the installed package does not depend on finding it in =exec-path=.
+Building this output alone does not configure an existing Emacs installation.
+
+* Writing and reading a formula
+
+Write official STM/Scheme data in an Org special block:
+
+#+begin_src org
+#+begin_texmacs
+(with "mode" "math"
+  (concat "x+" (frac "1" "2")))
+#+end_texmacs
+#+end_src
+
+Place point on the =#+begin_texmacs= line and evaluate:
+
+#+begin_src emacs-lisp
+(org-texmacs-tree (org-element-at-point))
+#+end_src
+
+The result is an Org-compatible pseudo tree, with TeXmacs tags such as =with=,
+=concat= and =frac=.  Access it with Org functions such as =org-element-type=,
+=org-element-contents= and =org-element-map=.  Its children have =:parent=
+links; the root is detached from the source block.  An atomic STM string
+returns a string without text properties.
+
+This self-contained example demonstrates traversal and a cache hit:
+
+#+name: example-tree
+#+begin_src emacs-lisp
+(progn
+  (require 'org-texmacs)
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+begin_texmacs\n"
+            "(with \"mode\" \"math\" (concat \"x+\" (frac \"1\" \"2\")))\n"
+            "#+end_texmacs\n")
+    (goto-char (point-min))
+    (let* ((block (org-element-at-point))
+           (tree (org-texmacs-tree block)))
+      (list (org-element-map tree '(with concat frac) #'org-element-type)
+            (eq tree (org-texmacs-tree block))))))
+;; => ((with concat frac) t)
+#+end_src
+
+* Source and cache contract
+
+=org-texmacs-tree= expects a current TeXmacs special-block element from the
+current buffer.  Its body must be accessible under the current narrowing.
+After editing, obtain the element again; do not retain a block from an old
+parse or pass an element from another buffer.
+
+The function reads the raw body using Org's contents bounds.  It preserves
+source whitespace and leaves the buffer text and native special-block
+representation intact.  Derived trees are stored with Org's custom cache
+API, using its default invalidation rules.
+
+Treat returned trees as read-only: a cache hit returns the same object.
+Body edits invalidate the derived value.  Unrelated edits, including changes
+before a block, may also invalidate it; the cache is best-effort and does not
+provide a persistent block identity.  No real-time Org edit hooks are used.
+
+If text changes while waiting for the worker, the call reports an error and
+does not cache the old result.  Obtain a fresh block and call again.
+
+* Worker behavior and errors
+
+The first cache miss starts one shared headless TeXmacs process.  All buffers
+use it sequentially, with one Unix socket connection per synchronous request.
+STM source is read as data, never evaluated as Scheme code.  The worker first
+requires exactly one complete datum of the supported stree shape, then uses
+TeXmacs's parser.  Empty or malformed input is rejected rather than accepted
+through TeXmacs parser recovery.
+
+Normal use inherits the user's TeXmacs environment and configuration, so the
+first start may perform TeXmacs initialization.  Only the socket directory is
+temporary.  Tests use separate temporary user and TeXmacs configuration
+directories.
+
+| Option                               | Default   | Purpose                         |
+|--------------------------------------+-----------+---------------------------------|
+| =org-texmacs-program=                 | =texmacs= | Executable; absolute under Nix   |
+| =org-texmacs-worker-start-timeout=     | 60        | Startup wait in seconds         |
+| =org-texmacs-worker-request-timeout=   | 10        | Response wait in seconds        |
+
+Timeout values must be positive.  Changing =org-texmacs-program= takes effect
+after the current worker stops.  Worker exit and Emacs shutdown clean up its
+socket directory.  For development, =(org-texmacs--worker-stop)= stops it
+explicitly; this is an internal function, not a stable public command.
+
+| Condition                    | Meaning                                      |
+|------------------------------+----------------------------------------------|
+| =org-texmacs-error=           | Base error; invalid block or changed source  |
+| =org-texmacs-parse-error=     | Invalid STM source                           |
+| =org-texmacs-worker-error=    | Startup, communication or response failure   |
+
+Parse and worker errors inherit from =org-texmacs-error=.  Parse errors leave
+the worker available for the next request.  Transport failures and request
+cancellation stop it; a later call starts a new worker.  Failed parses are
+never cached.  Reentrant requests are rejected; there is no asynchronous queue.
+
+* Development checks
+
+Run from the repository root:
+
+#+begin_src sh
+nix flake check --no-write-lock-file
+nix build --no-link --no-write-lock-file .#default
+#+end_src
+
+Checks include byte compilation, package-lint and ERT, including real headless
+TeXmacs parsing, worker lifecycle and Org cache integration.  A missing
+TeXmacs executable fails the integration tests instead of skipping them.
+Nix checks the current system by default.  These commands may download
+dependencies and write Nix store/cache data; they do not update the lockfile,
+and the build command does not create a =result= link.
+
+Git flake inputs omit untracked files.  When checking new files before staging,
+use an explicit =path:.= flake input, such as
+=nix flake check --no-write-lock-file path:.=.
