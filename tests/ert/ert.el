@@ -353,4 +353,146 @@
   (let ((org-texmacs-program "/org-texmacs-test/nonexistent"))
     (should-not (car (org-texmacs-check-setup)))))
 
+(defun org-texmacs-test--first-block ()
+  "Return a fresh Org element at the first TeXmacs block opening."
+  (save-excursion
+    (goto-char (point-min))
+    (search-forward "#+begin_texmacs")
+    (beginning-of-line)
+    (org-element-at-point)))
+
+(ert-deftest org-texmacs-test-tree-real-parser-and-cache ()
+  (org-texmacs-test--with-worker
+    (let ((org-element-use-cache t))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+begin_texmacs\n"
+                "(with \"mode\" \"math\" (concat \"x+\" (frac \"1\" \"2\")))\n"
+                "#+end_texmacs\n")
+        (let* ((block (org-texmacs-test--first-block))
+               (text (buffer-string))
+               (position (point))
+               (tick (buffer-chars-modified-tick))
+               (tree (org-texmacs-tree block))
+               (request-id org-texmacs--worker-request-id)
+               (concat-node (nth 2 (org-element-contents tree)))
+               (frac-node (nth 1 (org-element-contents concat-node))))
+          (should (= request-id 1))
+          (should (equal (org-texmacs--org-to-stree tree)
+                         '(with "mode" "math" (concat "x+" (frac "1" "2")))))
+          (should (eq (org-element-property :parent concat-node) tree))
+          (should (eq (org-element-property :parent frac-node) concat-node))
+          (dolist (leaf (org-element-contents frac-node))
+            (should (eq (org-element-property :parent leaf) frac-node)))
+          (should-not (org-element-property :parent tree))
+          (should (equal (org-element-map tree '(with concat frac)
+                          #'org-element-type)
+                         '(with concat frac)))
+          (should (eq (org-element-type block) 'special-block))
+          (should (equal (buffer-string) text))
+          (should (= (point) position))
+          (should (= (buffer-chars-modified-tick) tick))
+          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                     (lambda (_source) (ert-fail "Cache hit must not parse again"))))
+            (should (eq tree (org-texmacs-tree (org-texmacs-test--first-block)))))
+          (should (= request-id org-texmacs--worker-request-id)))))))
+
+(ert-deftest org-texmacs-test-tree-edit-and-error-recovery ()
+  (org-texmacs-test--with-worker
+    (let ((org-element-use-cache t))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+begin_texmacs\n(frac \"1\" \"2\")\n#+end_texmacs\n")
+        (org-texmacs-tree (org-texmacs-test--first-block))
+        (let ((process org-texmacs--worker-process))
+          (goto-char (point-min))
+          (search-forward "\"2\"")
+          (replace-match "\"3\"" t t)
+          (let ((block (org-texmacs-test--first-block)))
+            (should (eq (org-element-cache-get-key block 'org-texmacs-tree
+                                                  org-texmacs--cache-miss)
+                        org-texmacs--cache-miss))
+            (should (equal (org-texmacs--org-to-stree (org-texmacs-tree block))
+                           '(frac "1" "3")))
+            (should (= org-texmacs--worker-request-id 2)))
+          ;; Remove the closing parenthesis.  Org still has a special block,
+          ;; but the strict reader must reject its STM body.
+          (goto-char (point-min))
+          (search-forward ")")
+          (delete-char -1)
+          (let ((block (org-texmacs-test--first-block)))
+            (dotimes (_ 2)
+              (should-error (org-texmacs-tree block) :type 'org-texmacs-parse-error)
+              (should (eq (org-element-cache-get-key block 'org-texmacs-tree
+                                                    org-texmacs--cache-miss)
+                          org-texmacs--cache-miss)))
+            (should (= org-texmacs--worker-request-id 4)))
+          (insert ")")
+          (should (equal (org-texmacs--org-to-stree
+                          (org-texmacs-tree (org-texmacs-test--first-block)))
+                         '(frac "1" "3")))
+          (should (= org-texmacs--worker-request-id 5))
+          (should (eq process org-texmacs--worker-process)))))))
+
+(ert-deftest org-texmacs-test-tree-blocks-share-worker ()
+  (org-texmacs-test--with-worker
+    (let ((org-element-use-cache t))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+begin_texmacs\n(frac \"1\" \"2\")\n#+end_texmacs\n\n"
+                "#+begin_texmacs\n(sqrt \"x\")\n#+end_texmacs\n")
+        (let* ((first (org-texmacs-tree (org-texmacs-test--first-block)))
+               (process org-texmacs--worker-process))
+          (goto-char (point-max))
+          (search-backward "#+begin_texmacs")
+          (should (equal (org-texmacs--org-to-stree (org-texmacs-tree (org-element-at-point)))
+                         '(sqrt "x")))
+          (should (eq first (org-texmacs-tree (org-texmacs-test--first-block))))
+          (should (= org-texmacs--worker-request-id 2))
+          (should (eq process org-texmacs--worker-process)))))))
+
+(ert-deftest org-texmacs-test-tree-prefix-edit-remains-correct ()
+  (let ((org-element-use-cache t)
+        (calls 0))
+    (with-temp-buffer
+      (org-mode)
+      (insert "Before\n\n#+begin_texmacs\n(sqrt \"x\")\n#+end_texmacs\n")
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (source)
+                   (should (equal source "(sqrt \"x\")\n"))
+                   (cl-incf calls)
+                   '(sqrt "x"))))
+        (org-texmacs-tree (org-texmacs-test--first-block))
+        (goto-char (point-min))
+        (insert "New prefix\n")
+        (let ((block (org-texmacs-test--first-block)))
+          (should (equal (org-texmacs--org-to-stree (org-texmacs-tree block))
+                         '(sqrt "x")))
+          ;; Correctness does not depend on retaining the entry across a shift.
+          (should (<= 1 calls 2)))))))
+
+(ert-deftest org-texmacs-test-tree-rejects-wrong-block ()
+  (cl-letf (((symbol-function 'org-texmacs--worker-request)
+             (lambda (_source) (ert-fail "Invalid block must not start parsing"))))
+    (dolist (node (list nil (org-element-create 'special-block '(:type "example"))))
+      (should-error (org-texmacs-tree node) :type 'org-texmacs-error))))
+
+(ert-deftest org-texmacs-test-tree-rejects-text-changed-during-parse ()
+  (let ((org-element-use-cache t))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+begin_texmacs\n(sqrt \"x\")\n#+end_texmacs\n")
+      (let ((block (org-texmacs-test--first-block)))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (_source)
+                     ;; Simulate an edit from a timer during process waiting.
+                     (goto-char (point-min))
+                     (search-forward "\"x\"")
+                     (replace-match "\"y\"" t t)
+                     '(sqrt "x"))))
+          (should-error (org-texmacs-tree block) :type 'org-texmacs-error))
+        (should (eq (org-element-cache-get-key (org-texmacs-test--first-block)
+                                              'org-texmacs-tree org-texmacs--cache-miss)
+                    org-texmacs--cache-miss))))))
+
 ;;; ert.el ends here

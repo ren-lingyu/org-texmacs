@@ -27,7 +27,9 @@
 
 ;;; Commentary:
 
-;; Provide TeXmacs tree integration for Org.  Use
+;; Use `org-texmacs-tree' to derive an Org-compatible TeXmacs tree from a
+;; native TeXmacs special block, with lazy parsing and Org-managed caching.
+;; Use
 ;; `org-texmacs-check-setup' to inspect the runtime capabilities required by
 ;; the package.
 
@@ -37,6 +39,51 @@
 (require 'org-texmacs-ast)
 (require 'org-texmacs-source)
 (require 'org-texmacs-worker)
+
+(defconst org-texmacs--cache-miss (make-symbol "org-texmacs-cache-miss")
+  "Sentinel distinguishing an absent cached tree from a stored value.")
+
+;;;###autoload
+(defun org-texmacs-tree (block)
+  "Return the Org-compatible TeXmacs tree derived from special BLOCK.
+
+BLOCK must be an up-to-date TeXmacs special block in the current Org buffer,
+with its contents accessible under the current narrowing.  Obtain it again
+after editing, for example with `org-element-at-point' at the block opening.
+The caller is responsible for supplying an element from the correct buffer.
+
+On a cache miss, synchronously parse the raw STM source with the shared
+TeXmacs worker and convert the stree to an Org pseudo tree.  Cache the result
+through Org's custom element cache with default invalidation.  Unrelated
+edits may also invalidate this best-effort cache.  No edit hooks are installed.
+
+Treat the returned tree as read-only: cache hits return the same object.
+Its root is detached from BLOCK; its children have Org parent links.  An
+atomic TeXmacs string yields an unpropertized string.  BLOCK remains a native
+Org special block, and the source text is not modified.
+
+Signal `org-texmacs-error' for invalid input or text changed during parsing,
+`org-texmacs-parse-error' for invalid STM, and `org-texmacs-worker-error' for
+worker failures.  Failed parses are never cached."
+  (unless (org-texmacs--block-p block)
+    (signal 'org-texmacs-error '("Expected a TeXmacs special block")))
+  (let ((cached (org-element-cache-get-key
+                 block 'org-texmacs-tree org-texmacs--cache-miss)))
+    (if (not (eq cached org-texmacs--cache-miss))
+        cached
+      (let* ((buffer (current-buffer))
+             (tick (buffer-chars-modified-tick))
+             (source (org-texmacs--block-source block))
+             (stree (org-texmacs--worker-request source)))
+        ;; Waiting for process output may run timers that edit or kill buffer.
+        ;; This guards one synchronous call, without tracking block identities.
+        (unless (and (buffer-live-p buffer)
+                     (eq (current-buffer) buffer)
+                     (= tick (buffer-chars-modified-tick)))
+          (signal 'org-texmacs-error '("Org source changed during TeXmacs parsing")))
+        (let ((tree (org-texmacs--stree-to-org stree)))
+          (org-element-cache-store-key block 'org-texmacs-tree tree)
+          tree)))))
 
 ;;;###autoload
 (defun org-texmacs-check-setup ()
