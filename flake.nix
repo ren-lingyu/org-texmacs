@@ -60,6 +60,7 @@
         default = pkgs.mkShell {
           packages = [
             emacs
+            pkgs.texmacs
           ];
         };
       };

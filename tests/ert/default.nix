@@ -4,6 +4,7 @@
     nativeBuildInputs = [
       emacs
       pkgs.guile
+      pkgs.texmacs
     ];
   } (pkgs.replaceVarsWith {
     src = ./run.scm;

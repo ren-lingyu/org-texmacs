@@ -179,4 +179,51 @@
         (should-error (org-texmacs--block-source block)
                       :type 'org-texmacs-error)))))
 
+(ert-deftest org-texmacs-test-texmacs-headless-parse ()
+  "Check the actual TeXmacs executable supplied by the test environment."
+  (let ((executable (executable-find "texmacs")))
+    ;; A missing executable must fail the check instead of skipping coverage.
+    (should executable)
+    (let ((directory (make-temp-file "org-texmacs-test-" t))
+          (process-environment (copy-sequence process-environment))
+          (process nil))
+      (unwind-protect
+          (with-temp-buffer
+            ;; Isolate initialization even when this test runs outside Nix.
+            (setenv "HOME" directory)
+            (setenv "TEXMACS_HOME_PATH"
+                    (expand-file-name "texmacs" directory))
+            (let ((default-directory (file-name-as-directory directory))
+                  (deadline (+ (float-time) 60)))
+              (setq process
+                    (make-process
+                     :name "org-texmacs-test-headless"
+                     :buffer (current-buffer)
+                     :command
+                     (list executable "-H" "-s" "-x"
+                           (concat
+                            "(begin "
+                            "(display \"ORG-TEXMACS-SMOKE:\") "
+                            "(write (tree->stree "
+                            "(stm-snippet->texmacs \"(frac \\\"1\\\" \\\"2\\\")\"))) "
+                            "(newline) (force-output) (quit-TeXmacs))"))
+                     :connection-type 'pipe
+                     :coding 'utf-8-unix
+                     :noquery t
+                     :sentinel #'ignore))
+              (while (and (process-live-p process)
+                          (< (float-time) deadline))
+                (accept-process-output process 0.1))
+              (ert-info ((buffer-string))
+                (should-not (process-live-p process))
+                (should (eq (process-status process) 'exit))
+                (should (= (process-exit-status process) 0))
+                (goto-char (point-min))
+                (should (search-forward "ORG-TEXMACS-SMOKE:" nil t))
+                (should (equal (read (current-buffer))
+                               '(frac "1" "2"))))))
+        (when (and process (process-live-p process))
+          (delete-process process))
+        (delete-directory directory t)))))
+
 ;;; ert.el ends here
