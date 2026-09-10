@@ -34,6 +34,7 @@
 ;;; Code:
 
 (require 'org-texmacs-core)
+(require 'org-texmacs-ast)
 
 (defgroup org-texmacs
   nil

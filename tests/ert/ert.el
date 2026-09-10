@@ -60,4 +60,60 @@
     (should-error (org-texmacs--ensure-setup)
                   :type 'org-texmacs-error)))
 
+(ert-deftest org-texmacs-test-stree-org-round-trip ()
+  (let* ((mode (copy-sequence "mode"))
+         (math (copy-sequence "math"))
+         (sum (copy-sequence "x+"))
+         (numerator (copy-sequence "1"))
+         (denominator (copy-sequence "2"))
+         (stree
+          (list 'with
+                mode
+                math
+                (list 'concat
+                      sum
+                      (list 'frac numerator denominator))))
+         (tree (org-texmacs--stree-to-org stree))
+         (round-trip (org-texmacs--org-to-stree tree)))
+    (should (equal round-trip stree))
+    (dolist (string (list mode math sum numerator denominator))
+      (should-not (text-properties-at 0 string)))
+    (dolist (string
+             (list (nth 1 round-trip)
+                   (nth 2 round-trip)
+                   (nth 1 (nth 3 round-trip))
+                   (nth 1 (nth 2 (nth 3 round-trip)))
+                   (nth 2 (nth 2 (nth 3 round-trip)))))
+      (should-not (text-properties-at 0 string)))))
+
+(ert-deftest org-texmacs-test-stree-to-org-copies-strings ()
+  (let* ((source (copy-sequence "1"))
+         (tree (org-texmacs--stree-to-org (list 'frac source "2")))
+         (converted (car (org-element-contents tree))))
+    (should (equal converted source))
+    (should-not (eq converted source))
+    (should-not (text-properties-at 0 source))))
+
+(ert-deftest org-texmacs-test-stree-to-org-builds-parent-links ()
+  (let* ((tree
+          (org-texmacs--stree-to-org
+           '(with "mode" "math"
+                  (concat "x+" (frac "1" "2")))))
+         (root-contents (org-element-contents tree))
+         (mode (nth 0 root-contents))
+         (math (nth 1 root-contents))
+         (concat-node (nth 2 root-contents))
+         (concat-contents (org-element-contents concat-node))
+         (sum (nth 0 concat-contents))
+         (frac-node (nth 1 concat-contents))
+         (frac-contents (org-element-contents frac-node)))
+    (should (eq (org-element-property :parent mode) tree))
+    (should (eq (org-element-property :parent math) tree))
+    (should (eq (org-element-property :parent concat-node) tree))
+    (should (eq (org-element-property :parent sum) concat-node))
+    (should (eq (org-element-property :parent frac-node) concat-node))
+    (dolist (string frac-contents)
+      (should (eq (org-element-property :parent string)
+                  frac-node)))))
+
 ;;; ert.el ends here
