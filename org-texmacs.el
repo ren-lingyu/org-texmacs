@@ -35,6 +35,7 @@
 
 (require 'org-texmacs-core)
 (require 'org-texmacs-ast)
+(require 'org-texmacs-source)
 
 (defgroup org-texmacs
   nil

@@ -23,6 +23,7 @@
           ./org-texmacs.el
           ./org-texmacs-core.el
           ./org-texmacs-ast.el
+          ./org-texmacs-source.el
           ./README.org
           ./LICENSE
         ];

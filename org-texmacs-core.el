@@ -20,7 +20,9 @@
   '((org-element-cache-store-key . function)
     (org-element-cache-get-key . function)
     (org-element-create . function)
-    (org-element-contents . function))
+    (org-element-contents . function)
+    (org-element-type . function)
+    (org-element-property . function))
   "Runtime capabilities required by Org TeXmacs.
 
 Each entry has the form (NAME . TYPE).  TYPE is one of `function',

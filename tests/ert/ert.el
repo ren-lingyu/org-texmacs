@@ -116,4 +116,67 @@
       (should (eq (org-element-property :parent string)
                   frac-node)))))
 
+(ert-deftest org-texmacs-test-block-p ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+begin_texmacs\n(frac \"1\" \"2\")\n#+end_texmacs\n")
+    (goto-char (point-min))
+    (should (org-texmacs--block-p (org-element-at-point))))
+  (dolist (node (list nil "text"
+                     (org-element-create 'paragraph nil)
+                     (org-element-create 'special-block '(:type "example"))
+                     (org-element-create 'src-block '(:language "texmacs"))))
+    (should-not (org-texmacs--block-p node))))
+
+(ert-deftest org-texmacs-test-block-source-exact ()
+  (dolist (body '("(frac \"1\" \"2\")\n"
+                  "\n\t(with \"mode\" \"math\"\n  (concat \"α *bold* [[link]]\" (sqrt \"x\")))\n\n"
+                  ""
+                  "\n\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+begin_texmacs\n" body "#+end_texmacs\n")
+      (goto-char (point-min))
+      (let* ((block (org-element-at-point))
+             (before (buffer-string))
+             (position (point))
+             (tick (buffer-modified-tick)))
+        (should (equal (org-texmacs--block-source block) body))
+        (should (equal (buffer-string) before))
+        (should (= (point) position))
+        (should (= (buffer-modified-tick) tick))))))
+
+(ert-deftest org-texmacs-test-block-source-strips-properties ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+begin_texmacs\n(sqrt \"x\")\n#+end_texmacs\n")
+    (goto-char (point-min))
+    (let* ((block (org-element-at-point))
+           (begin (org-element-property :contents-begin block))
+           (end (org-element-property :contents-end block)))
+      (put-text-property begin end 'org-texmacs-test-property t)
+      (let ((source (org-texmacs--block-source block)))
+        (should (equal source "(sqrt \"x\")\n"))
+        (dotimes (index (length source))
+          (should-not (text-properties-at index source)))))))
+
+(ert-deftest org-texmacs-test-block-source-rejects-other-nodes ()
+  (dolist (node (list nil
+                     (org-element-create 'paragraph nil)
+                     (org-element-create 'special-block '(:type "example"))))
+    (should-error (org-texmacs--block-source node)
+                  :type 'org-texmacs-error)))
+
+(ert-deftest org-texmacs-test-block-source-rejects-invalid-bounds ()
+  (with-temp-buffer
+    (insert "text")
+    (dolist (bounds '((nil 3) (2 nil) (3 2) (0 2) (1 100) ("1" 2)))
+      (let ((block (org-element-create
+                    'special-block
+                    (list :type "texmacs"
+                          :contents-begin (car bounds)
+                          :contents-end (cadr bounds)))))
+        (should-error (org-texmacs--block-source block)
+                      :type 'org-texmacs-error)))))
+
 ;;; ert.el ends here
