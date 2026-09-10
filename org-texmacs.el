@@ -5,7 +5,7 @@
 ;; Author: aRenCoco
 ;; Maintainer: aRenCoco
 ;; Version: 0.0.1
-;; Package-Requires: ((emacs "31.1") (org "9.5"))
+;; Package-Requires: ((emacs "31.1") (org "9.8"))
 ;; Keywords: outlines
 ;; URL: https://github.com/ren-lingyu/org-texmacs
 ;; SPDX-License-Identifier: GPL-3.0-or-later
@@ -27,11 +27,35 @@
 
 ;;; Commentary:
 
-;; Provide TeXmacs tree integration for Org.
+;; Provide TeXmacs tree integration for Org.  Use
+;; `org-texmacs-check-setup' to inspect the runtime capabilities required by
+;; the package.
 
 ;;; Code:
 
-(require 'org)
+(require 'org-texmacs-core)
+
+(defgroup org-texmacs
+  nil
+  "Use TeXmacs trees as structured data in Org."
+  :group 'org)
+
+;;;###autoload
+(defun org-texmacs-check-setup ()
+  "Check whether Org TeXmacs runtime capabilities are available.
+
+Return a cons cell whose car is the boolean result and whose cdr is a
+human-readable report.  When called interactively, also display that report."
+  (interactive)
+  (let ((result (org-texmacs--setup-check)))
+    (when (called-interactively-p 'interactive)
+      (message "%s"
+               (concat
+                (if (car result)
+                    "Org TeXmacs setup checks passed.\n"
+                  "Org TeXmacs setup checks failed.\n")
+                (cdr result))))
+    result))
 
 (provide 'org-texmacs)
 

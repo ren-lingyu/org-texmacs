@@ -21,6 +21,7 @@
         root = ./.;
         fileset = pkgs.lib.fileset.unions [
           ./org-texmacs.el
+          ./org-texmacs-core.el
           ./README.org
           ./LICENSE
         ];
