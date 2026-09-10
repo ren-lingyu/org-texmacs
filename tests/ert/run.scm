@@ -8,6 +8,7 @@
   (mkdir home))
 
 (setenv "HOME" home)
+(setenv "ORG_TEXMACS_TEST_PROGRAM" "@texmacs@")
 
 (let ((status (system* "@emacs@"
                        "-Q"

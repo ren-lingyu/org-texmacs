@@ -36,11 +36,7 @@
 (require 'org-texmacs-core)
 (require 'org-texmacs-ast)
 (require 'org-texmacs-source)
-
-(defgroup org-texmacs
-  nil
-  "Use TeXmacs trees as structured data in Org."
-  :group 'org)
+(require 'org-texmacs-worker)
 
 ;;;###autoload
 (defun org-texmacs-check-setup ()

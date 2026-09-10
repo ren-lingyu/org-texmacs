@@ -226,4 +226,131 @@
           (delete-process process))
         (delete-directory directory t)))))
 
+(defmacro org-texmacs-test--with-worker (&rest body)
+  "Run BODY with isolated worker state and TeXmacs configuration."
+  (declare (indent 0) (debug t))
+  `(let ((org-texmacs--worker-process nil)
+         (org-texmacs--worker-directory nil)
+         (org-texmacs--worker-socket nil)
+         (org-texmacs--worker-buffer nil)
+         (org-texmacs--worker-request-id 0)
+         (org-texmacs--worker-busy nil)
+         (kill-emacs-hook (copy-sequence kill-emacs-hook))
+         (process-environment (copy-sequence process-environment))
+         (test-directory (make-temp-file "org-texmacs-ert-" t)))
+     (unwind-protect
+         (let ((default-directory (file-name-as-directory test-directory)))
+           (setenv "HOME" test-directory)
+           (setenv "TEXMACS_HOME_PATH" (expand-file-name "config" test-directory))
+           ,@body)
+       (org-texmacs--worker-stop)
+       (delete-directory test-directory t))))
+
+(ert-deftest org-texmacs-test-worker-reuses-process ()
+  (org-texmacs-test--with-worker
+    (should-not (org-texmacs--worker-live-p))
+    (when-let* ((expected (getenv "ORG_TEXMACS_TEST_PROGRAM")))
+      ;; In a Nix build the installed package must work without TeXmacs on
+      ;; Emacs's executable search path, not only inside the devShell.
+      (should (equal org-texmacs-program expected))
+      (let ((exec-path nil))
+        (should (equal (org-texmacs--worker-request "(frac \"1\" \"2\")")
+                       '(frac "1" "2")))))
+    (let ((process (org-texmacs--worker-start))
+          (directory org-texmacs--worker-directory))
+      (dolist (tree '((frac "1" "2")
+                      (sqrt "α")
+                      (with "mode" "math" (concat "x+" (frac "1" "2")))
+                      (concat "quote: \"" "slash: \\")
+                      (concat "line\nnext" "tab\tend" "control\001end")))
+        (with-temp-buffer
+          (should (equal (org-texmacs--worker-request (prin1-to-string tree)) tree)))
+        (should (eq process org-texmacs--worker-process)))
+      (should (org-texmacs--worker-live-p))
+      (org-texmacs--worker-stop)
+      (org-texmacs--worker-stop)
+      (should-not (process-live-p process))
+      (should-not (file-exists-p directory))
+      (should-not org-texmacs--worker-socket)
+      (should-not org-texmacs--worker-buffer))))
+
+(ert-deftest org-texmacs-test-worker-recovers-from-source-errors ()
+  (org-texmacs-test--with-worker
+    (let ((process (org-texmacs--worker-start)))
+      (dolist (source '("" " ; comment only\n" "(frac \"1\" \"2\""
+                        "(frac \"1\" \"2)" "(sqrt \"x\") (sqrt \"y\")" "42"))
+        (should-error (org-texmacs--worker-request source)
+                      :type 'org-texmacs-parse-error)
+        (should (eq process org-texmacs--worker-process))
+        (should (equal (org-texmacs--worker-request "(sqrt \"x\") ; trailing comment\n")
+                       '(sqrt "x")))))))
+
+(ert-deftest org-texmacs-test-worker-restarts-after-exit ()
+  (org-texmacs-test--with-worker
+    (let ((process (org-texmacs--worker-start))
+          (directory org-texmacs--worker-directory))
+      (delete-process process)
+      (should (equal (org-texmacs--worker-request "(sqrt \"x\")") '(sqrt "x")))
+      (should-not (eq process org-texmacs--worker-process))
+      (should-not (file-exists-p directory)))))
+
+(ert-deftest org-texmacs-test-worker-request-timeout-cleans-up ()
+  (org-texmacs-test--with-worker
+    (let ((process (org-texmacs--worker-start))
+          (directory org-texmacs--worker-directory)
+          (org-texmacs-worker-request-timeout 0.1))
+      ;; Leave the real server waiting for input to exercise transport expiry.
+      (cl-letf (((symbol-function 'process-send-string) (lambda (&rest _) nil)))
+        (should-error (org-texmacs--worker-request "(sqrt \"x\")")
+                      :type 'org-texmacs-worker-error))
+      (should-not (process-live-p process))
+      (should-not (file-exists-p directory))
+      (should-not (org-texmacs--worker-live-p)))))
+
+(ert-deftest org-texmacs-test-worker-rejects-reentrant-request ()
+  (let ((org-texmacs--worker-busy t))
+    (cl-letf (((symbol-function 'org-texmacs--worker-start)
+               (lambda () (ert-fail "A nested request must not touch the worker"))))
+      (should-error (org-texmacs--worker-request "(sqrt \"x\")")
+                    :type 'org-texmacs-worker-error))))
+
+(ert-deftest org-texmacs-test-worker-start-timeout-cleans-up ()
+  (org-texmacs-test--with-worker
+    (let ((org-texmacs-worker-start-timeout 0.1)
+          (make-process-function (symbol-function 'make-process))
+          (make-directory-function (symbol-function 'make-temp-file))
+          (started-process nil)
+          (socket-directory nil))
+      (cl-letf (((symbol-function 'make-process)
+                 (lambda (&rest arguments)
+                   ;; A real headless process which never announces readiness.
+                   (setq started-process
+                         (apply make-process-function
+                                (plist-put arguments :command
+                                           (list (executable-find org-texmacs-program)
+                                                 "-H" "-s" "-x" "(sleep 30)"))))))
+                ((symbol-function 'make-temp-file)
+                 (lambda (&rest arguments)
+                   (setq socket-directory
+                         (apply make-directory-function arguments)))))
+        (should-error (org-texmacs--worker-start)
+                      :type 'org-texmacs-worker-error))
+      (should-not (process-live-p started-process))
+      (should-not (file-exists-p socket-directory))
+      (should-not org-texmacs--worker-process)
+      (should-not org-texmacs--worker-buffer))))
+
+(ert-deftest org-texmacs-test-worker-rejects-invalid-responses ()
+  (dolist (response '("(ok 2 (sqrt \"x\"))"
+                      "(ok 1 (sqrt \"x\")) extra"
+                      "(ok 1 (sqrt 42))"
+                      "(unknown 1 \"x\")"
+                      "(error 1 42)"))
+    (should-error (org-texmacs--worker-decode response 1)
+                  :type 'org-texmacs-worker-error)))
+
+(ert-deftest org-texmacs-test-setup-checks-configured-program ()
+  (let ((org-texmacs-program "/org-texmacs-test/nonexistent"))
+    (should-not (car (org-texmacs-check-setup)))))
+
 ;;; ert.el ends here

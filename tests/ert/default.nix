@@ -13,6 +13,7 @@
       guile = pkgs.lib.getExe pkgs.guile;
       emacs = pkgs.lib.getExe' emacs "emacs";
       testFile = "${./ert.el}";
+      texmacs = pkgs.lib.getExe' pkgs.texmacs "texmacs";
     };
   })
 

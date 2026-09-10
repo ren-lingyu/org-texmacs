@@ -10,6 +10,7 @@
 
 !org-texmacs.el
 !org-texmacs-*.el
+!org-texmacs-worker.scm
 
 !.github/
 !.github/**/

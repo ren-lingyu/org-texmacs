@@ -13,6 +13,16 @@
 (require 'cl-lib)
 (require 'org-element)
 
+(defgroup org-texmacs nil
+  "Use TeXmacs trees as structured data in Org."
+  :group 'org)
+
+(defcustom org-texmacs-program "texmacs"
+  "TeXmacs executable name or absolute path.
+Changing this option takes effect after the current worker is stopped."
+  :type 'string
+  :group 'org-texmacs)
+
 (define-error 'org-texmacs-error
               "Org TeXmacs error")
 
@@ -22,12 +32,18 @@
     (org-element-create . function)
     (org-element-contents . function)
     (org-element-type . function)
-    (org-element-property . function))
+    (org-element-property . function)
+    (make-process . function)
+    (make-network-process . function)
+    (process-live-p . function)
+    (process-send-string . function)
+    (accept-process-output . function)
+    (delete-process . function))
   "Runtime capabilities required by Org TeXmacs.
 
 Each entry has the form (NAME . TYPE).  TYPE is one of `function',
-`variable', or `executable'.  Executable names are symbols resolved through
-`executable-find'.
+`variable', or `executable'.  Executable names may be strings or symbols
+resolved through `executable-find'; other names must be symbols.
 
 Rationale: Checking the interfaces used by the implementation is more precise
 than inferring runtime compatibility from package version numbers alone.")
@@ -37,22 +53,22 @@ than inferring runtime compatibility from package version numbers alone.")
 
 TYPE may be `function', `variable', or `executable'.  Return nil for malformed
 or unsupported capability entries."
-  (and (symbolp name)
-       (pcase type
-         ('function
-          (fboundp name))
-         ('variable
-          (boundp name))
-         ('executable
-          (and (executable-find (symbol-name name))
-               t))
-         (_
-          nil))))
+  (pcase type
+    ('function
+     (and (symbolp name) (fboundp name)))
+    ('variable
+     (and (symbolp name) (boundp name)))
+    ('executable
+     (and (or (stringp name) (symbolp name))
+          (executable-find (if (symbolp name) (symbol-name name) name))
+          t))
+    (_
+     nil)))
 
 (defun org-texmacs--check-capabilities (alist)
   "Check Org TeXmacs runtime capabilities in ALIST.
 
-ALIST maps capability symbols to `function', `variable', or `executable'.
+ALIST maps capability names to `function', `variable', or `executable'.
 Return a cons cell whose car is non-nil when every capability exists and whose
 cdr is a human-readable report.  Malformed input yields a failed result.
 
@@ -88,7 +104,9 @@ the first failure."
 
 Return a cons cell whose car is the boolean result and whose cdr is a
 human-readable report."
-  (org-texmacs--check-capabilities org-texmacs--capability-alist))
+  (org-texmacs--check-capabilities
+   (append org-texmacs--capability-alist
+           (list (cons org-texmacs-program 'executable)))))
 
 (defun org-texmacs--ensure-setup ()
   "Signal `org-texmacs-error' unless runtime setup checks pass."

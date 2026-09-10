@@ -24,6 +24,8 @@
           ./org-texmacs-core.el
           ./org-texmacs-ast.el
           ./org-texmacs-source.el
+          ./org-texmacs-worker.el
+          ./org-texmacs-worker.scm
           ./README.org
           ./LICENSE
         ];
@@ -49,6 +51,14 @@
             emacsPackages.org
           ];
           turnCompilationWarningToError = true;
+          postPatch = ''
+            substituteInPlace org-texmacs-core.el \
+              --replace-fail '(defcustom org-texmacs-program "texmacs"' \
+              '(defcustom org-texmacs-program "${pkgs.lib.getExe' pkgs.texmacs "texmacs"}"'
+          '';
+          postInstall = ''
+            install -m644 org-texmacs-worker.scm "$out/share/emacs/site-lisp/"
+          '';
         };
       };
 
