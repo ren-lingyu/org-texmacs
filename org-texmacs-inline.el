@@ -87,8 +87,29 @@ This only discovers boundaries; the worker validates STM data."
   (unless (and (buffer-live-p buffer)
                (eq (current-buffer) buffer)
                (derived-mode-p 'org-mode)
+               (integerp tick)
                (= tick (buffer-chars-modified-tick)))
-    (signal 'org-texmacs-error '("Org source changed during inline scanning"))))
+    (signal 'org-texmacs-error '("Inline source buffer changed or is no longer current"))))
+
+(defun org-texmacs--inline-source (span)
+  "Return current raw source for inline SPAN, rejecting stale snapshots.
+
+SPAN must come from the current Org buffer and remain fully accessible.
+Reject character edits, even outside the span, and a modified source string.
+Text property changes alone do not invalidate a snapshot.  Do not widen,
+rescan Org context, or change point.  Signal `org-texmacs-error' on failure."
+  (unless (org-texmacs-inline-span-p span)
+    (signal 'org-texmacs-error '("Expected an inline TeXmacs source span")))
+  (org-texmacs--inline-check-source (org-texmacs-inline-span-buffer span)
+                                   (org-texmacs-inline-span-tick span))
+  (let ((begin (org-texmacs-inline-span-begin span))
+        (end (org-texmacs-inline-span-end span)))
+    (org-texmacs--inline-check-region begin end)
+    (let ((source (buffer-substring-no-properties begin end)))
+      (unless (and (< begin end)
+                   (equal source (org-texmacs-inline-span-source span)))
+        (signal 'org-texmacs-error '("Inline span source no longer matches the buffer")))
+      source)))
 
 (defun org-texmacs--inline-texmacs-ancestor-p (paragraph)
   "Return non-nil if PARAGRAPH is inside a TeXmacs special block."

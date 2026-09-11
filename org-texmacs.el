@@ -29,6 +29,8 @@
 
 ;; Use `org-texmacs-tree' to derive an Org-compatible TeXmacs tree from a
 ;; native TeXmacs special block, with lazy parsing and Org-managed caching.
+;; Use `org-texmacs-inline-tree' to parse an inline source span on demand,
+;; without caching or changing Org's native object parser.
 ;; Use
 ;; `org-texmacs-check-setup' to inspect the runtime capabilities required by
 ;; the package.
@@ -85,6 +87,36 @@ worker failures.  Failed parses are never cached."
         (let ((tree (org-texmacs--stree-to-org stree)))
           (org-element-cache-store-key block 'org-texmacs-tree tree)
           tree)))))
+
+;;;###autoload
+(defun org-texmacs-inline-tree (span)
+  "Return the Org-compatible TeXmacs math tree derived from inline SPAN.
+
+Obtain SPAN with `org-texmacs-inline-at-point' or `org-texmacs-inline-map'.
+It must belong to the current Org buffer and be fully accessible under the
+current narrowing.  Obtain another span after any character edit, including
+edits outside its range.  Text property changes alone do not invalidate it.
+
+Synchronously parse the current raw source using the same persistent worker
+as `org-texmacs-tree', then convert its stree with the shared AST adapter.
+Every call requests a new parse; no inline cache or edit hooks are used.
+Recheck the span after waiting, rejecting results for changed source.
+
+Return a fresh pseudo tree with a detached `math' root and Org parent links
+inside the tree.  Do not attach it to SPAN or an Org paragraph.  Strings are
+copied by the adapter; neither source nor native Org AST is modified.  Parser
+success does not imply valid tag arities, mathematical meaning or rendering.
+
+Signal `org-texmacs-error' for invalid or stale spans, inaccessible bounds or
+source changes during parsing, `org-texmacs-parse-error' for invalid STM or a
+non-math result, and `org-texmacs-worker-error' for worker failures."
+  (let* ((source (org-texmacs--inline-source span))
+         (stree (org-texmacs--worker-request source)))
+    ;; Waiting may run timers that edit/kill the buffer or change narrowing.
+    (org-texmacs--inline-source span)
+    (unless (eq (car-safe stree) 'math)
+      (signal 'org-texmacs-parse-error '("Expected a TeXmacs math root")))
+    (org-texmacs--stree-to-org stree)))
 
 ;;;###autoload
 (defun org-texmacs-check-setup ()
