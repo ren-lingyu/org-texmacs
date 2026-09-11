@@ -5,9 +5,10 @@ Org TeXmacs provides a small AST integration layer for mathematical content
 written in TeXmacs STM/Scheme serialization inside Org documents.  The Org
 buffer is the source of truth; no external =.tm= file is required.
 
-The current implementation supports block-level parsing and lazy caching.
-It does not provide preview, export, inline formulas, fontification, or an
-editing minor mode.
+The current implementation supports block-level parsing with lazy caching,
+and inline source discovery with on-demand tree parsing.  It does not provide
+preview, export, fontification, an editing minor mode, or a combined Org and
+TeXmacs document AST.
 
 * Requirements
 
@@ -60,7 +61,7 @@ Nix store path.  TeXmacs is therefore part of the package's runtime closure;
 the installed package does not depend on finding it in =exec-path=.
 Building this output alone does not configure an existing Emacs installation.
 
-* Writing and reading a formula
+* Block formulas
 
 Write official STM/Scheme data in an Org special block:
 
@@ -102,7 +103,7 @@ This self-contained example demonstrates traversal and a cache hit:
 ;; => ((with concat frac) t)
 #+end_src
 
-* Source and cache contract
+* Block source and cache contract
 
 =org-texmacs-tree= expects a current TeXmacs special-block element from the
 current buffer.  Its body must be accessible under the current narrowing.
@@ -122,14 +123,124 @@ provide a persistent block identity.  No real-time Org edit hooks are used.
 If text changes while waiting for the worker, the call reports an error and
 does not cache the old result.  Obtain a fresh block and call again.
 
+* Inline formulas
+
+Write inline math directly in paragraph text using the TeXmacs =math= root:
+
+#+begin_src org
+A (math (frac "1" "2")) B
+#+end_src
+
+Source discovery returns an =org-texmacs-inline-span=, not an Org node or a
+parsed TeXmacs tree.  Parsing that span returns a fresh pseudo tree with a
+=math= root.  Its children have Org parent links, but the root is not attached
+to the span or paragraph.
+
+| API                                           | Result                                             |
+|-----------------------------------------------+----------------------------------------------------|
+| =(org-texmacs-inline-at-point &optional POS)=   | Span covering POS (default: point), or nil          |
+| =(org-texmacs-inline-map BEGIN END FUNCTION)=   | Callback results for complete spans, in source order |
+| =(org-texmacs-inline-tree SPAN)=                | Independently parsed, Org-compatible math tree      |
+
+This self-contained example inspects a span and traverses its tree.  Unlike
+block cache hits, repeated inline tree calls parse again and return different
+tree objects:
+
+#+name: example-inline-tree
+#+begin_src emacs-lisp
+(progn
+  (require 'org-texmacs)
+  (with-temp-buffer
+    (org-mode)
+    (insert "A (math (frac \"1\" \"2\")) B\n")
+    (goto-char (point-min))
+    (search-forward "(math")
+    (let* ((span (org-texmacs-inline-at-point))
+           (tree (org-texmacs-inline-tree span)))
+      (list (org-texmacs-inline-span-source span)
+            (org-element-map tree '(math frac) #'org-element-type)
+            (eq tree (org-texmacs-inline-tree span))))))
+;; => ("(math (frac \"1\" \"2\"))" (math frac) nil)
+#+end_src
+
+Scanning alone does not start TeXmacs:
+
+#+name: example-inline-map
+#+begin_src emacs-lisp
+(progn
+  (require 'org-texmacs)
+  (with-temp-buffer
+    (org-mode)
+    (insert "A (math \"x\") B (math (sqrt \"y\")) C\n")
+    (org-texmacs-inline-map (point-min) (point-max)
+                            #'org-texmacs-inline-span-source)))
+;; => ("(math \"x\")" "(math (sqrt \"y\"))")
+#+end_src
+
+Passing =#'org-texmacs-inline-tree= as the callback instead parses each span.
+Callbacks run in the source buffer, with point and narrowing restored after
+each call.  They must not edit source, kill or switch the current buffer, or
+change its major mode.  Detected source changes stop traversal with an error;
+already completed callback effects are not rolled back.
+
+** Span lifetime and positions
+
+Treat spans and their source strings as read-only.  Accessors such as
+=org-texmacs-inline-span-begin= and =org-texmacs-inline-span-end= expose the
+half-open range =[begin, end)=: begin is included, end is not.  Position and
+region arguments must be accessible integer positions in an Org buffer.
+Region filtering includes only complete spans; it never truncates a formula.
+
+Pass a span to =org-texmacs-inline-tree= in its original buffer.  Any character
+edit, even elsewhere in the buffer or subsequently undone, invalidates it.
+Obtain a fresh span after editing.  Text property changes alone do not
+invalidate spans.  Bounds and raw source are checked before parsing and again
+after waiting for the worker, so stale results are not returned.
+
+Scanning treats the current narrowing as the document boundary and never
+widens implicitly.  If narrowing cuts into an Org container, context outside
+that boundary is not available; widen first when full-document context is
+needed.  A previously obtained span must remain fully accessible when parsed.
+
+** Recognition limits
+
+Only lowercase =(math ...)= in paragraph text is recognized, including
+paragraphs in list items and quote blocks.  Headline text, table cells,
+native objects such as emphasis, link descriptions and code/verbatim, source
+blocks, and TeXmacs special-block bodies are excluded.
+
+Nested lists, strings, escaped quotes/backslashes and newlines within one
+paragraph are supported.  The scanner is not a full Scheme reader: outside
+strings, comments and reader punctuation such as =;=, =#=, single quote,
+backtick, comma, vertical bar and backslash are unsupported.  An unsupported
+or unclosed candidate is not returned, and scanning stops for the remainder
+of that paragraph; the next paragraph is scanned normally.  Balanced source
+can still be rejected by the worker, for example =(math 1)=.
+
+Inline spans and trees are derived data only.  Org's native parser is not
+extended: it can still interpret =*bold*= or links inside a formula string.
+Other Org consumers do not automatically gain TeXmacs boundary semantics.
+Source text remains canonical; generic Org parse/interpret is not guaranteed
+to reconstruct it character for character.
+
+Each discovery call scans a private copy of the accessible buffer before
+region filtering.  There is no inline cache or incremental synchronization,
+and large-document performance has not been validated.
+
 * Worker behavior and errors
 
-The first cache miss starts one shared headless TeXmacs process.  All buffers
-use it sequentially, with one Unix socket connection per synchronous request.
+The first parse request, from a block cache miss or an inline tree call,
+starts one shared headless TeXmacs process.  All buffers use it sequentially,
+with one Unix socket connection per synchronous request.
 STM source is read as data, never evaluated as Scheme code.  The worker first
 requires exactly one complete datum of the supported stree shape, then uses
 TeXmacs's parser.  Empty or malformed input is rejected rather than accepted
 through TeXmacs parser recovery.
+
+These checks do not validate all tag names or argument counts.  TeXmacs can
+accept unknown tags and unusual arities; parser success does not guarantee
+mathematical meaning or correct rendering.  Inline tree calls additionally
+require a =math= root.
 
 Normal use inherits the user's TeXmacs environment and configuration, so the
 first start may perform TeXmacs initialization.  Only the socket directory is
@@ -147,11 +258,11 @@ after the current worker stops.  Worker exit and Emacs shutdown clean up its
 socket directory.  For development, =(org-texmacs--worker-stop)= stops it
 explicitly; this is an internal function, not a stable public command.
 
-| Condition                    | Meaning                                      |
-|------------------------------+----------------------------------------------|
-| =org-texmacs-error=           | Base error; invalid block or changed source  |
-| =org-texmacs-parse-error=     | Invalid STM source                           |
-| =org-texmacs-worker-error=    | Startup, communication or response failure   |
+| Condition                    | Meaning                                                   |
+|------------------------------+-----------------------------------------------------------|
+| =org-texmacs-error=           | Base error; invalid input, stale span or inaccessible source |
+| =org-texmacs-parse-error=     | Invalid STM source or a non-math inline result             |
+| =org-texmacs-worker-error=    | Startup, communication or response failure                 |
 
 Parse and worker errors inherit from =org-texmacs-error=.  Parse errors leave
 the worker available for the next request.  Transport failures and request
@@ -168,7 +279,8 @@ nix build --no-link --no-write-lock-file .#default
 #+end_src
 
 Checks include byte compilation, package-lint and ERT, including real headless
-TeXmacs parsing, worker lifecycle and Org cache integration.  A missing
+TeXmacs parsing, worker lifecycle, Org block cache integration, inline source
+boundaries and span validity checks.  A missing
 TeXmacs executable fails the integration tests instead of skipping them.
 Nix checks the current system by default.  These commands may download
 dependencies and write Nix store/cache data; they do not update the lockfile,
