@@ -132,8 +132,8 @@ The former =org-texmacs-inline-*= functions and span accessors now use
 and the module feature is =org-texmacs-fragment= instead of
 =org-texmacs-inline=.  No compatibility aliases are provided.  Update callers
 and obtain fresh spans after reloading; restarting Emacs avoids retaining
-old definitions.  Recognition is unchanged here: only =(math ...)= is
-accepted, with the same paragraph boundaries.
+old definitions.  The paragraph boundaries remain unchanged; recognized
+root names are now controlled by =org-texmacs-fragment-tags=.
 
 ** Usage
 
@@ -144,15 +144,15 @@ A (math (frac "1" "2")) B
 #+end_src
 
 Source discovery returns an =org-texmacs-fragment-span=, not an Org node or a
-parsed TeXmacs tree.  Parsing that span returns a fresh pseudo tree with a
-=math= root.  Its children have Org parent links, but the root is not attached
-to the span or paragraph.
+parsed TeXmacs tree.  Parsing that span returns a fresh pseudo tree with the
+same root tag as the source.  Its children have Org parent links, but the
+root is not attached to the span or paragraph.
 
 | API                                           | Result                                             |
 |-----------------------------------------------+----------------------------------------------------|
 | =(org-texmacs-fragment-at-point &optional POS)=   | Span covering POS (default: point), or nil          |
 | =(org-texmacs-fragment-map BEGIN END FUNCTION)=   | Callback results for complete spans, in source order |
-| =(org-texmacs-fragment-tree SPAN)=                | Independently parsed, Org-compatible math tree      |
+| =(org-texmacs-fragment-tree SPAN)=                | Independently parsed, Org-compatible TeXmacs tree   |
 
 This self-contained example inspects a span and traverses its tree.  Unlike
 block cache hits, repeated fragment tree calls parse again and return different
@@ -192,8 +192,8 @@ Scanning alone does not start TeXmacs:
 Passing =#'org-texmacs-fragment-tree= as the callback instead parses each span.
 Callbacks run in the source buffer, with point and narrowing restored after
 each call.  They must not edit source, kill or switch the current buffer, or
-change its major mode.  Detected source changes stop traversal with an error;
-already completed callback effects are not rolled back.
+change its major mode or fragment tag configuration.  Detected changes stop
+traversal with an error; completed callback effects are not rolled back.
 
 ** Span lifetime and positions
 
@@ -209,6 +209,13 @@ Obtain a fresh span after editing.  Text property changes alone do not
 invalidate spans.  Bounds and raw source are checked before parsing and again
 after waiting for the worker, so stale results are not returned.
 
+=org-texmacs-fragment-span-tag= records the root name as a string, and
+=org-texmacs-fragment-span-tags= records a copied configuration snapshot.
+Treat both as read-only.  Obtain fresh spans after changing
+=org-texmacs-fragment-tags=: tree calls and map callbacks check the complete
+list by value, including order, before and after processing.  No change
+history is tracked, so restoring an equal value is accepted.
+
 Scanning treats the current narrowing as the document boundary and never
 widens implicitly.  If narrowing cuts into an Org container, context outside
 that boundary is not available; widen first when full-document context is
@@ -216,10 +223,32 @@ needed.  A previously obtained span must remain fully accessible when parsed.
 
 ** Recognition limits
 
-Only lowercase =(math ...)= in paragraph text is recognized, including
-paragraphs in list items and quote blocks.  Headline text, table cells,
-native objects such as emphasis, link descriptions and code/verbatim, source
-blocks, and TeXmacs special-block bodies are excluded.
+The default =org-texmacs-fragment-tags= is:
+
+#+begin_src emacs-lisp
+'("math" "equation" "equation*" "eqnarray" "eqnarray*" "align" "align*"
+  "gather" "gather*" "eqsplit" "eqsplit*")
+#+end_src
+
+This is a literal, case-sensitive entry list, not a list of all valid TeXmacs
+tags.  It accepts dynamic and explicitly buffer-local bindings.  An empty
+list disables fragment discovery; duplicates do not duplicate results and
+list order does not control matching.  Values must be proper lists of
+nonempty strings.  Names start with an ASCII letter and continue with ASCII
+letters, digits or ~- _ . * + ? ! : / < > =~.  Reader-escaped names are not
+supported; invalid configuration signals =org-texmacs-error= before parsing.
+
+Configured roots are recognized only in paragraph text, including
+paragraphs in list items and quote blocks.  They need not occupy a whole
+paragraph.  Headline text, table cells, native objects such as emphasis,
+link descriptions and code/verbatim, source blocks, and TeXmacs special-block
+bodies are excluded.
+
+The entry list does not restrict children inside a fragment, or roots and
+contents of a =#+begin_texmacs= block.  Block contents are never split into
+fragments, and block parsing and caching do not consult this option.  After
+accepting a fragment the scanner skips its interior; an unconfigured outer
+tag does not itself hide configured candidates inside it.
 
 Nested lists, strings, escaped quotes/backslashes and newlines within one
 paragraph are supported.  The scanner is not a full Scheme reader: outside
@@ -252,7 +281,9 @@ through TeXmacs parser recovery.
 These checks do not validate all tag names or argument counts.  TeXmacs can
 accept unknown tags and unusual arities; parser success does not guarantee
 mathematical meaning or correct rendering.  Fragment tree calls additionally
-require a =math= root.
+require the returned root to match the source span's tag.  Support for starred
+and unstarred formula environments means preserving their AST, not providing
+equation numbering or validating layout.
 
 Normal use inherits the user's TeXmacs environment and configuration, so the
 first start may perform TeXmacs initialization.  Only the socket directory is
@@ -272,8 +303,8 @@ explicitly; this is an internal function, not a stable public command.
 
 | Condition                    | Meaning                                                   |
 |------------------------------+-----------------------------------------------------------|
-| =org-texmacs-error=           | Base error; invalid input, stale span or inaccessible source |
-| =org-texmacs-parse-error=     | Invalid STM source or a non-math fragment result             |
+| =org-texmacs-error=           | Base error; invalid input/configuration, stale span or inaccessible source |
+| =org-texmacs-parse-error=     | Invalid STM source or a fragment root tag mismatch          |
 | =org-texmacs-worker-error=    | Startup, communication or response failure                 |
 
 Parse and worker errors inherit from =org-texmacs-error=.  Parse errors leave
