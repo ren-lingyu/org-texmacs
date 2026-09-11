@@ -51,14 +51,13 @@
             emacsPackages.org
           ];
           turnCompilationWarningToError = true;
-          postPatch = ''
-            substituteInPlace org-texmacs-core.el \
-              --replace-fail '(defcustom org-texmacs-program "texmacs"' \
-              '(defcustom org-texmacs-program "${pkgs.lib.getExe' pkgs.texmacs "texmacs"}"'
-          '';
-          postInstall = ''
-            install -m644 org-texmacs-worker.scm "$out/share/emacs/site-lisp/"
-          '';
+          postPatch = builtins.concatStringsSep " " [
+            "substituteInPlace org-texmacs-core.el"
+            "--replace-fail"
+            "'(defcustom org-texmacs-program \"texmacs\"'"
+            "'(defcustom org-texmacs-program \"${pkgs.lib.getExe' pkgs.texmacs "texmacs"}\"'"
+          ];
+          postInstall = "install -m644 org-texmacs-worker.scm \"$out/share/emacs/site-lisp/\"";
         };
       };
 
