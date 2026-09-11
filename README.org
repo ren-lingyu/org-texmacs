@@ -131,17 +131,39 @@ For straight setup and recipe details, consult its
 defers loading.  It does not start TeXmacs.  The first block cache miss or
 fragment tree request starts the worker; source discovery alone does not.
 
-The declarations above preserve all 11 default fragment entry tags.  To
-recognize only =math=, add this keyword to the chosen declaration:
+The package currently exposes four customizable variables.  This complete
+example assumes the package is already on =load-path= and explicitly sets
+the source/straight defaults.  For a different installation path, copy its
+=:custom= section into the corresponding declaration above rather than
+adding a second declaration.  The straight opt-out guidance above still applies.
 
+For a Nix installation, omit the =org-texmacs-program= entry to preserve
+the packaged absolute TeXmacs path.  Setting it to ="texmacs"= overrides
+that default and requires the executable to be found through =exec-path=.
+
+#+name: example-use-package-custom
 #+begin_src emacs-lisp
-:custom
-(org-texmacs-fragment-tags '("math"))
+(use-package org-texmacs
+  :ensure nil
+  :demand t
+  :custom
+  (org-texmacs-program "texmacs")
+  (org-texmacs-worker-start-timeout 60)
+  (org-texmacs-worker-request-timeout 10)
+  (org-texmacs-fragment-tags
+   '("math" "equation" "equation*" "eqnarray" "eqnarray*"
+     "align" "align*" "gather" "gather*" "eqsplit" "eqsplit*")))
 #+end_src
 
-An optional executable override can be another entry under the same
-=:custom= keyword: =(org-texmacs-program "/absolute/path/to/texmacs")=.
-Set it before the first parse; changing it does not replace an existing worker.
+Both timeouts are positive numbers in seconds: =org-texmacs-worker-start-timeout=
+limits the startup wait, and =org-texmacs-worker-request-timeout= limits the
+wait for a response to an individual request.
+
+Use an absolute executable path instead of ="texmacs"= when needed.  Set
+it before the first parse; changing it does not replace an existing worker.
+The tag list preserves all 11 default entries.  Replace it with ='("math")=
+for math-only discovery, or =nil= to disable fragment discovery without
+disabling block parsing.  Obtain fresh spans after changing the tag list.
 
 After loading, run =M-x org-texmacs-check-setup=.  Missing executables are
 reported there and checked again before a worker is started.  A passing
