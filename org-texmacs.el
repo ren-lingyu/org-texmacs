@@ -38,6 +38,7 @@
 (require 'org-texmacs-core)
 (require 'org-texmacs-ast)
 (require 'org-texmacs-source)
+(require 'org-texmacs-inline)
 (require 'org-texmacs-worker)
 
 (defconst org-texmacs--cache-miss (make-symbol "org-texmacs-cache-miss")

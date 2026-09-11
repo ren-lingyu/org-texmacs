@@ -495,4 +495,62 @@
                                               'org-texmacs-tree org-texmacs--cache-miss)
                     org-texmacs--cache-miss))))))
 
+(ert-deftest org-texmacs-test-inline-prefix ()
+  (with-temp-buffer
+    (insert "(mathjax \"x\") (foo bar) (math\"x\") (math \"y\") (math) (math(frac))")
+    (goto-char (point-min))
+    (dotimes (_ 3)
+      (let ((start (org-texmacs--inline-next)))
+        (should start)
+        (should (equal (buffer-substring start (point)) "(math"))))
+    (should-not (org-texmacs--inline-next))))
+
+(ert-deftest org-texmacs-test-inline-prefix-is-case-sensitive ()
+  (dolist (fold '(t nil))
+    (with-temp-buffer
+      (insert "(MATH \"x\") (Math \"y\") (math \"z\") (mAth \"w\")")
+      (goto-char (point-min))
+      (let* ((case-fold-search fold)
+             (start (org-texmacs--inline-next)))
+        (should start)
+        (should (equal (buffer-substring-no-properties start (point))
+                       "(math"))
+        (should-not (org-texmacs--inline-next))
+        (should (eq case-fold-search fold))))))
+
+(ert-deftest org-texmacs-test-inline-structural-boundaries ()
+  (dolist (source '("(math \"x\")" "(math)" "(math(frac \"1\" \"2\"))"
+                    "(math\n (frac \"1\" (sqrt \"x\")))"
+                    "(math (concat \"a)\\\"b\" \"c\\\\d\"))"
+                    "(math \"; #; #| |# ' ` , \\\\ \\\"\")"))
+    (ert-info (source)
+      (with-temp-buffer
+        (org-mode)
+        (insert source " tail")
+        ;; Source text properties must not override the dedicated table.
+        (put-text-property (point-min) (point-max) 'syntax-table '(1))
+        (let ((position (point)))
+          (should (= (org-texmacs--inline-end (point-min))
+                     (1+ (length source))))
+          (should (= (point) position)))))))
+
+(ert-deftest org-texmacs-test-inline-rejects-reader-extensions ()
+  (dolist (source '("(math ; ) comment\n \"x\")"
+                    "(math #; (sqrt \"x\") \"y\")"
+                    "(math #| ) comment |# \"x\")"
+                    "(math #\\))" "(math '(sqrt \"x\"))"
+                    "(math `(sqrt ,x))" "(math (|escaped tag| \"x\"))"
+                    "(math (escaped\\)tag \"x\"))"
+                    "(math \"unclosed)" "(math (frac \"1\" \"2\")"))
+    (ert-info (source)
+      (with-temp-buffer
+        (insert source)
+        (should-not (org-texmacs--inline-end (point-min)))))))
+
+(ert-deftest org-texmacs-test-inline-structural-scan-stays-in-paragraph ()
+  (with-temp-buffer
+    (insert "(math \"x\"\n\nNext )\n")
+    (narrow-to-region (point-min) 11)
+    (should-not (org-texmacs--inline-end (point-min)))))
+
 ;;; ert.el ends here

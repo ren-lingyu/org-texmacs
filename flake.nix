@@ -24,6 +24,7 @@
           ./org-texmacs-core.el
           ./org-texmacs-ast.el
           ./org-texmacs-source.el
+          ./org-texmacs-inline.el
           ./org-texmacs-worker.el
           ./org-texmacs-worker.scm
           ./README.org
