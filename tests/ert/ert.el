@@ -10,7 +10,11 @@
 (require 'org-texmacs)
 
 (ert-deftest org-texmacs-test-package-loads ()
-  (should (featurep 'org-texmacs)))
+  (should (featurep 'org-texmacs))
+  (should (featurep 'org-texmacs-fragment))
+  (dolist (function '(org-texmacs-fragment-at-point org-texmacs-fragment-map
+                      org-texmacs-fragment-tree org-texmacs-fragment-span-p))
+    (should (fboundp function))))
 
 (ert-deftest org-texmacs-test-setup-check-passes ()
   (let ((result (org-texmacs-check-setup)))
@@ -495,30 +499,30 @@
                                               'org-texmacs-tree org-texmacs--cache-miss)
                     org-texmacs--cache-miss))))))
 
-(ert-deftest org-texmacs-test-inline-prefix ()
+(ert-deftest org-texmacs-test-fragment-prefix ()
   (with-temp-buffer
     (insert "(mathjax \"x\") (foo bar) (math\"x\") (math \"y\") (math) (math(frac))")
     (goto-char (point-min))
     (dotimes (_ 3)
-      (let ((start (org-texmacs--inline-next)))
+      (let ((start (org-texmacs--fragment-next)))
         (should start)
         (should (equal (buffer-substring start (point)) "(math"))))
-    (should-not (org-texmacs--inline-next))))
+    (should-not (org-texmacs--fragment-next))))
 
-(ert-deftest org-texmacs-test-inline-prefix-is-case-sensitive ()
+(ert-deftest org-texmacs-test-fragment-prefix-is-case-sensitive ()
   (dolist (fold '(t nil))
     (with-temp-buffer
       (insert "(MATH \"x\") (Math \"y\") (math \"z\") (mAth \"w\")")
       (goto-char (point-min))
       (let* ((case-fold-search fold)
-             (start (org-texmacs--inline-next)))
+             (start (org-texmacs--fragment-next)))
         (should start)
         (should (equal (buffer-substring-no-properties start (point))
                        "(math"))
-        (should-not (org-texmacs--inline-next))
+        (should-not (org-texmacs--fragment-next))
         (should (eq case-fold-search fold))))))
 
-(ert-deftest org-texmacs-test-inline-structural-boundaries ()
+(ert-deftest org-texmacs-test-fragment-structural-boundaries ()
   (dolist (source '("(math \"x\")" "(math)" "(math(frac \"1\" \"2\"))"
                     "(math\n (frac \"1\" (sqrt \"x\")))"
                     "(math (concat \"a)\\\"b\" \"c\\\\d\"))"
@@ -530,11 +534,11 @@
         ;; Source text properties must not override the dedicated table.
         (put-text-property (point-min) (point-max) 'syntax-table '(1))
         (let ((position (point)))
-          (should (= (org-texmacs--inline-end (point-min))
+          (should (= (org-texmacs--fragment-end (point-min))
                      (1+ (length source))))
           (should (= (point) position)))))))
 
-(ert-deftest org-texmacs-test-inline-rejects-reader-extensions ()
+(ert-deftest org-texmacs-test-fragment-rejects-reader-extensions ()
   (dolist (source '("(math ; ) comment\n \"x\")"
                     "(math #; (sqrt \"x\") \"y\")"
                     "(math #| ) comment |# \"x\")"
@@ -545,20 +549,20 @@
     (ert-info (source)
       (with-temp-buffer
         (insert source)
-        (should-not (org-texmacs--inline-end (point-min)))))))
+        (should-not (org-texmacs--fragment-end (point-min)))))))
 
-(ert-deftest org-texmacs-test-inline-structural-scan-stays-in-paragraph ()
+(ert-deftest org-texmacs-test-fragment-structural-scan-stays-in-paragraph ()
   (with-temp-buffer
     (insert "(math \"x\"\n\nNext )\n")
     (narrow-to-region (point-min) 11)
-    (should-not (org-texmacs--inline-end (point-min)))))
+    (should-not (org-texmacs--fragment-end (point-min)))))
 
-(defun org-texmacs-test--inline-sources (&optional begin end)
-  "Return inline sources in the accessible buffer or between BEGIN and END."
-  (org-texmacs-inline-map (or begin (point-min)) (or end (point-max))
-                         #'org-texmacs-inline-span-source))
+(defun org-texmacs-test--fragment-sources (&optional begin end)
+  "Return fragment sources in the accessible buffer or between BEGIN and END."
+  (org-texmacs-fragment-map (or begin (point-min)) (or end (point-max))
+                         #'org-texmacs-fragment-span-source))
 
-(ert-deftest org-texmacs-test-inline-source-cases ()
+(ert-deftest org-texmacs-test-fragment-source-cases ()
   (dolist (case
            '(("A (math \"x\") B\n" "(math \"x\")")
              ("A (math (frac \"1\" (sqrt \"x\"))) B\n" "(math (frac \"1\" (sqrt \"x\")))")
@@ -599,12 +603,12 @@
         (let ((text (buffer-string))
               (position (point))
               (tick (buffer-chars-modified-tick)))
-          (should (equal (org-texmacs-test--inline-sources) (cdr case)))
+          (should (equal (org-texmacs-test--fragment-sources) (cdr case)))
           (should (equal (buffer-string) text))
           (should (= (point) position))
           (should (= (buffer-chars-modified-tick) tick)))))))
 
-(ert-deftest org-texmacs-test-inline-scan-is-isolated ()
+(ert-deftest org-texmacs-test-fragment-scan-is-isolated ()
   (with-temp-buffer
     (org-mode)
     (insert "Text (math \"*bold* [[file:x]]\") end\n")
@@ -619,16 +623,16 @@
                  (lambda () (ert-fail "Scanning must not start a worker")))
                 ((symbol-function 'org-texmacs--worker-request)
                  (lambda (_) (ert-fail "Scanning must not request a tree"))))
-        (let* ((spans (org-texmacs-inline-map (point-min) (point-max) #'identity))
+        (let* ((spans (org-texmacs-fragment-map (point-min) (point-max) #'identity))
                (span (car spans))
-               (source (org-texmacs-inline-span-source span)))
+               (source (org-texmacs-fragment-span-source span)))
           (should (= (length spans) 1))
-          (should (org-texmacs-inline-span-p span))
-          (should (eq (org-texmacs-inline-span-buffer span) buffer))
-          (should (= (org-texmacs-inline-span-tick span) (buffer-chars-modified-tick)))
+          (should (org-texmacs-fragment-span-p span))
+          (should (eq (org-texmacs-fragment-span-buffer span) buffer))
+          (should (= (org-texmacs-fragment-span-tick span) (buffer-chars-modified-tick)))
           (should (equal source (buffer-substring-no-properties
-                                (org-texmacs-inline-span-begin span)
-                                (org-texmacs-inline-span-end span))))
+                                (org-texmacs-fragment-span-begin span)
+                                (org-texmacs-fragment-span-end span))))
           (dotimes (index (length source))
             (should-not (text-properties-at index source)))))
       (should (equal-including-properties (buffer-string) text))
@@ -637,47 +641,47 @@
       (should (equal (org-element-map (org-element-parse-buffer) '(bold link)
                       #'org-element-type) '(bold link))))))
 
-(ert-deftest org-texmacs-test-inline-at-point-boundaries ()
+(ert-deftest org-texmacs-test-fragment-at-point-boundaries ()
   (with-temp-buffer
     (org-mode)
     (insert "前文 (math \"α\") 后文\n")
-    (let* ((span (car (org-texmacs-inline-map (point-min) (point-max) #'identity)))
-           (begin (org-texmacs-inline-span-begin span))
-           (end (org-texmacs-inline-span-end span)))
+    (let* ((span (car (org-texmacs-fragment-map (point-min) (point-max) #'identity)))
+           (begin (org-texmacs-fragment-span-begin span))
+           (end (org-texmacs-fragment-span-end span)))
       (dotimes (offset (- end begin))
         (goto-char (+ begin offset))
-        (should (equal (org-texmacs-inline-at-point) span)))
-      (should (equal (org-texmacs-inline-at-point begin) span))
-      (should-not (org-texmacs-inline-at-point (1- begin)))
-      (should-not (org-texmacs-inline-at-point end))
-      (should-not (org-texmacs-inline-at-point (point-max))))))
+        (should (equal (org-texmacs-fragment-at-point) span)))
+      (should (equal (org-texmacs-fragment-at-point begin) span))
+      (should-not (org-texmacs-fragment-at-point (1- begin)))
+      (should-not (org-texmacs-fragment-at-point end))
+      (should-not (org-texmacs-fragment-at-point (point-max))))))
 
-(ert-deftest org-texmacs-test-inline-region-filtering-preserves-precedence ()
+(ert-deftest org-texmacs-test-fragment-region-filtering-preserves-precedence ()
   (with-temp-buffer
     (org-mode)
     (insert "A (math (concat \"~foo\" \"bar\")) after (math \"y\") end~ Z\n")
-    (let* ((spans (org-texmacs-inline-map (point-min) (point-max) #'identity))
+    (let* ((spans (org-texmacs-fragment-map (point-min) (point-max) #'identity))
            (first (car spans))
            (second (cadr spans))
-           (begin (org-texmacs-inline-span-begin first))
-           (end (org-texmacs-inline-span-end first)))
-      (should (equal (mapcar #'org-texmacs-inline-span-source spans)
+           (begin (org-texmacs-fragment-span-begin first))
+           (end (org-texmacs-fragment-span-end first)))
+      (should (equal (mapcar #'org-texmacs-fragment-span-source spans)
                      '("(math (concat \"~foo\" \"bar\"))" "(math \"y\")")))
-      (should (equal (org-texmacs-test--inline-sources begin end)
-                     (list (org-texmacs-inline-span-source first))))
-      (should-not (org-texmacs-test--inline-sources (1+ begin) end))
-      (should-not (org-texmacs-test--inline-sources begin (1- end)))
-      (should-not (org-texmacs-test--inline-sources begin begin))
+      (should (equal (org-texmacs-test--fragment-sources begin end)
+                     (list (org-texmacs-fragment-span-source first))))
+      (should-not (org-texmacs-test--fragment-sources (1+ begin) end))
+      (should-not (org-texmacs-test--fragment-sources begin (1- end)))
+      (should-not (org-texmacs-test--fragment-sources begin begin))
       ;; Even with the first formula outside the region, mask it before
       ;; checking the second one's native Org context.
-      (should (equal (org-texmacs-test--inline-sources (1+ begin) (point-max))
-                     (list (org-texmacs-inline-span-source second)))))))
+      (should (equal (org-texmacs-test--fragment-sources (1+ begin) (point-max))
+                     (list (org-texmacs-fragment-span-source second)))))))
 
-(ert-deftest org-texmacs-test-inline-mask-preserves-shape ()
+(ert-deftest org-texmacs-test-fragment-mask-preserves-shape ()
   (dolist (source '("(math)" "(math \"*bold* [[file:x]] ~code~\")"
                     "(math\n (concat \"α\"\r\n\t\"β\"))"))
     (let ((copy (copy-sequence source))
-          (mask (org-texmacs--inline-mask source)))
+          (mask (org-texmacs--fragment-mask source)))
       (should (equal source copy))
       (should (= (length source) (length mask)))
       (should (= (aref mask 0) ?\())
@@ -688,7 +692,7 @@
                              (if (memq character '(?\s ?\t ?\r ?\n))
                                  character ?x)))))))
 
-(ert-deftest org-texmacs-test-inline-masking-preserves-adjacent-markup ()
+(ert-deftest org-texmacs-test-fragment-masking-preserves-adjacent-markup ()
   (dolist (delimiter '("*" "~" "=" "/" "+"))
     (ert-info (delimiter)
       (with-temp-buffer
@@ -698,18 +702,18 @@
         ;; Masking must not replace it with an enabling space.
         (should-not (org-element-map (org-element-parse-buffer)
                         '(bold code verbatim italic strike-through) #'identity))
-        (let* ((spans (org-texmacs-inline-map (point-min) (point-max) #'identity))
+        (let* ((spans (org-texmacs-fragment-map (point-min) (point-max) #'identity))
                (second (cadr spans)))
-          (should (equal (mapcar #'org-texmacs-inline-span-source spans)
+          (should (equal (mapcar #'org-texmacs-fragment-span-source spans)
                          '("(math \"x\")" "(math \"y\")")))
-          (should (equal (org-texmacs-inline-at-point
-                          (org-texmacs-inline-span-begin second)) second))
-          (should (equal (org-texmacs-test--inline-sources
-                          (org-texmacs-inline-span-begin second)
-                          (org-texmacs-inline-span-end second))
+          (should (equal (org-texmacs-fragment-at-point
+                          (org-texmacs-fragment-span-begin second)) second))
+          (should (equal (org-texmacs-test--fragment-sources
+                          (org-texmacs-fragment-span-begin second)
+                          (org-texmacs-fragment-span-end second))
                          '("(math \"y\")"))))))))
 
-(ert-deftest org-texmacs-test-inline-masking-keeps-native-object-exclusions ()
+(ert-deftest org-texmacs-test-fragment-masking-keeps-native-object-exclusions ()
   (dolist (delimiter '("*" "~" "=" "/" "+"))
     (ert-info (delimiter)
       (with-temp-buffer
@@ -718,22 +722,22 @@
         (insert "A (math \"x\") " delimiter "(math \"y\")" delimiter " B\n")
         (should (= (length (org-element-map (org-element-parse-buffer)
                               '(bold code verbatim italic strike-through) #'identity)) 1))
-        (should (equal (org-texmacs-test--inline-sources) '("(math \"x\")")))
+        (should (equal (org-texmacs-test--fragment-sources) '("(math \"x\")")))
         (goto-char (point-min))
         (search-forward "(math \"y\")")
-        (should-not (org-texmacs-inline-at-point (1- (point))))))))
+        (should-not (org-texmacs-fragment-at-point (1- (point))))))))
 
-(ert-deftest org-texmacs-test-inline-scan-resumes-next-paragraph ()
+(ert-deftest org-texmacs-test-fragment-scan-resumes-next-paragraph ()
   (dolist (bad '("(math \"unclosed) (math \"hidden\")"
                  "(math ; ) comment (math \"hidden\")"
                  "(math #\\)) (math \"hidden\")"))
     (with-temp-buffer
       (org-mode)
       (insert "A (math \"before\") B " bad "\n\nNext (math \"after\")\n")
-      (should (equal (org-texmacs-test--inline-sources)
+      (should (equal (org-texmacs-test--fragment-sources)
                      '("(math \"before\")" "(math \"after\")"))))))
 
-(ert-deftest org-texmacs-test-inline-narrowing ()
+(ert-deftest org-texmacs-test-fragment-narrowing ()
   (with-temp-buffer
     (org-mode)
     (insert "Outside (math \"outside\")\n\n正文 (math \"α\") 尾部\n\nEnd\n")
@@ -743,30 +747,30 @@
           (end (line-beginning-position 2)))
       (narrow-to-region begin end)
       (let ((position (point)))
-        (let ((span (car (org-texmacs-inline-map begin end #'identity))))
-          (should (equal (org-texmacs-inline-span-source span) "(math \"α\")"))
+        (let ((span (car (org-texmacs-fragment-map begin end #'identity))))
+          (should (equal (org-texmacs-fragment-span-source span) "(math \"α\")"))
           (should (equal (buffer-substring-no-properties
-                          (org-texmacs-inline-span-begin span)
-                          (org-texmacs-inline-span-end span)) "(math \"α\")")))
+                          (org-texmacs-fragment-span-begin span)
+                          (org-texmacs-fragment-span-end span)) "(math \"α\")")))
         (should (= (point) position)))
       (should (= (point-min) begin))
       (should (= (point-max) end)))))
 
-(ert-deftest org-texmacs-test-inline-rejects-invalid-arguments ()
+(ert-deftest org-texmacs-test-fragment-rejects-invalid-arguments ()
   (with-temp-buffer
     (insert "(math \"x\")")
-    (should-error (org-texmacs-inline-at-point) :type 'org-texmacs-error)
-    (should-error (org-texmacs-test--inline-sources) :type 'org-texmacs-error)
+    (should-error (org-texmacs-fragment-at-point) :type 'org-texmacs-error)
+    (should-error (org-texmacs-test--fragment-sources) :type 'org-texmacs-error)
     (org-mode)
     (dolist (position (list 0 (1+ (point-max)) "1" 1.5))
-      (should-error (org-texmacs-inline-at-point position) :type 'org-texmacs-error))
+      (should-error (org-texmacs-fragment-at-point position) :type 'org-texmacs-error))
     (dolist (bounds (list '(0 2) '(3 2) '("1" 2) (list 1 (1+ (point-max)))))
-      (should-error (org-texmacs-inline-map (car bounds) (cadr bounds) #'identity)
+      (should-error (org-texmacs-fragment-map (car bounds) (cadr bounds) #'identity)
                     :type 'org-texmacs-error))
-    (should-error (org-texmacs-inline-map (point-min) (point-max) 'not-a-function)
+    (should-error (org-texmacs-fragment-map (point-min) (point-max) 'not-a-function)
                   :type 'org-texmacs-error)))
 
-(ert-deftest org-texmacs-test-inline-map-callback-context ()
+(ert-deftest org-texmacs-test-fragment-map-callback-context ()
   (with-temp-buffer
     (org-mode)
     (insert "A (math \"x\") B (math \"y\") C\n")
@@ -774,7 +778,7 @@
           (position (point))
           (begin (point-min))
           (end (point-max)))
-      (should (equal (org-texmacs-inline-map
+      (should (equal (org-texmacs-fragment-map
                       begin end
                       (lambda (_span)
                         (should (eq (current-buffer) buffer))
@@ -789,7 +793,7 @@
       (should (= (point-min) begin))
       (should (= (point-max) end)))))
 
-(ert-deftest org-texmacs-test-inline-map-rejects-callback-source-changes ()
+(ert-deftest org-texmacs-test-fragment-map-rejects-callback-source-changes ()
   (dolist (action '(edit kill change-buffer change-mode))
     (with-temp-buffer
       (org-mode)
@@ -799,7 +803,7 @@
         (unwind-protect
             (progn
               (should-error
-               (org-texmacs-inline-map
+               (org-texmacs-fragment-map
                 (point-min) (point-max)
                 (lambda (_span)
                   (cl-incf calls)
@@ -812,22 +816,22 @@
               (should (= calls 1)))
           (kill-buffer other))))))
 
-(defun org-texmacs-test--first-inline ()
-  "Return the first inline span in the accessible Org buffer."
-  (car (org-texmacs-inline-map (point-min) (point-max) #'identity)))
+(defun org-texmacs-test--first-fragment ()
+  "Return the first fragment span in the accessible Org buffer."
+  (car (org-texmacs-fragment-map (point-min) (point-max) #'identity)))
 
-(ert-deftest org-texmacs-test-inline-tree-real-parser ()
+(ert-deftest org-texmacs-test-fragment-tree-real-parser ()
   (org-texmacs-test--with-worker
     (dolist (stree '((math (concat "α+" (frac "1" (sqrt "x")) "a\"b\\c"))
                      (math) (math (frac "1"))))
       (with-temp-buffer
         (org-mode)
         (insert "Before " (prin1-to-string stree) " after\n")
-        (let* ((span (org-texmacs-test--first-inline))
+        (let* ((span (org-texmacs-test--first-fragment))
                (text (buffer-string))
                (position (point))
                (tick (buffer-modified-tick))
-               (tree (org-texmacs-inline-tree span)))
+               (tree (org-texmacs-fragment-tree span)))
           (should (eq (org-element-type tree) 'math))
           (should-not (org-element-property :parent tree))
           (should (equal (org-texmacs--org-to-stree tree) stree))
@@ -842,18 +846,18 @@
           (should (= (point) position))
           (should (= (buffer-modified-tick) tick)))))))
 
-(ert-deftest org-texmacs-test-inline-tree-shares-worker-with-blocks ()
+(ert-deftest org-texmacs-test-fragment-tree-shares-worker-with-blocks ()
   (org-texmacs-test--with-worker
     (let ((org-element-use-cache t)
           (process nil))
       (with-temp-buffer
         (org-mode)
-        (insert "Inline (math \"x\")\n\n#+begin_texmacs\n(sqrt \"y\")\n#+end_texmacs\n")
-        (let* ((span (org-texmacs-test--first-inline))
-               (first (org-texmacs-inline-tree span)))
+        (insert "Fragment (math \"x\")\n\n#+begin_texmacs\n(sqrt \"y\")\n#+end_texmacs\n")
+        (let* ((span (org-texmacs-test--first-fragment))
+               (first (org-texmacs-fragment-tree span)))
           (setq process org-texmacs--worker-process)
           (should (= org-texmacs--worker-request-id 1))
-          (let ((second (org-texmacs-inline-tree span)))
+          (let ((second (org-texmacs-fragment-tree span)))
             (should-not (eq first second))
             (should (equal (org-texmacs--org-to-stree first)
                            (org-texmacs--org-to-stree second))))
@@ -868,64 +872,64 @@
         (org-mode)
         (insert "Other buffer (math (frac \"1\" \"2\"))\n")
         (should (equal (mapcar #'org-texmacs--org-to-stree
-                              (org-texmacs-inline-map (point-min) (point-max)
-                                                      #'org-texmacs-inline-tree))
+                              (org-texmacs-fragment-map (point-min) (point-max)
+                                                      #'org-texmacs-fragment-tree))
                        '((math (frac "1" "2")))))
         (should (= org-texmacs--worker-request-id 4))
         (should (eq process org-texmacs--worker-process))))))
 
-(ert-deftest org-texmacs-test-inline-tree-real-error-and-repair ()
+(ert-deftest org-texmacs-test-fragment-tree-real-error-and-repair ()
   (org-texmacs-test--with-worker
     (with-temp-buffer
       (org-mode)
       ;; Balanced source reaches the worker, whose stree-shape check rejects
       ;; the numeric child.  This is not a tag-arity validation test.
       (insert "A (math 1) B\n")
-      (let ((span (org-texmacs-test--first-inline)))
+      (let ((span (org-texmacs-test--first-fragment)))
         (dotimes (_ 2)
-          (should-error (org-texmacs-inline-tree span) :type 'org-texmacs-parse-error)
+          (should-error (org-texmacs-fragment-tree span) :type 'org-texmacs-parse-error)
           (should (org-texmacs--worker-live-p)))
         (let ((process org-texmacs--worker-process))
           (should (= org-texmacs--worker-request-id 2))
           (goto-char (point-min))
           (search-forward "1")
           (replace-match "\"1\"" t t)
-          (should-error (org-texmacs-inline-tree span) :type 'org-texmacs-error)
+          (should-error (org-texmacs-fragment-tree span) :type 'org-texmacs-error)
           (should (= org-texmacs--worker-request-id 2))
           (should (equal (org-texmacs--org-to-stree
-                          (org-texmacs-inline-tree (org-texmacs-test--first-inline)))
+                          (org-texmacs-fragment-tree (org-texmacs-test--first-fragment)))
                          '(math "1")))
           (should (= org-texmacs--worker-request-id 3))
           (should (eq process org-texmacs--worker-process)))))))
 
-(ert-deftest org-texmacs-test-inline-tree-rejects-invalid-spans ()
+(ert-deftest org-texmacs-test-fragment-tree-rejects-invalid-spans ()
   (cl-letf (((symbol-function 'org-texmacs--worker-request)
              (lambda (_) (ert-fail "Invalid spans must not request parsing"))))
     (with-temp-buffer
       (org-mode)
       (insert "(math \"x\")")
       (dolist (span (list nil "(math \"x\")" '(math nil "x")
-                          (org-texmacs--inline-span-create)
-                          (org-texmacs--inline-span-create :buffer (current-buffer))))
-        (should-error (org-texmacs-inline-tree span) :type 'org-texmacs-error))
+                          (org-texmacs--fragment-span-create)
+                          (org-texmacs--fragment-span-create :buffer (current-buffer))))
+        (should-error (org-texmacs-fragment-tree span) :type 'org-texmacs-error))
       (dolist (bounds (list '(0 2) '(1 nil) '(nil 2) '(3 2) '(1 1) '("1" 2)
                             (list 1 (1+ (point-max)))))
-        (let ((span (org-texmacs--inline-span-create
+        (let ((span (org-texmacs--fragment-span-create
                      :buffer (current-buffer) :tick (buffer-chars-modified-tick)
                      :begin (car bounds) :end (cadr bounds) :source "(math \"x\")")))
-          (should-error (org-texmacs-inline-tree span) :type 'org-texmacs-error)))
-      (let ((span (org-texmacs-test--first-inline)))
-        (aset (org-texmacs-inline-span-source span) 7 ?y)
-        (should-error (org-texmacs-inline-tree span) :type 'org-texmacs-error)))))
+          (should-error (org-texmacs-fragment-tree span) :type 'org-texmacs-error)))
+      (let ((span (org-texmacs-test--first-fragment)))
+        (aset (org-texmacs-fragment-span-source span) 7 ?y)
+        (should-error (org-texmacs-fragment-tree span) :type 'org-texmacs-error)))))
 
-(ert-deftest org-texmacs-test-inline-tree-rejects-stale-source ()
+(ert-deftest org-texmacs-test-fragment-tree-rejects-stale-source ()
   (cl-letf (((symbol-function 'org-texmacs--worker-request)
              (lambda (_) (ert-fail "Stale spans must not request parsing"))))
     (dolist (action '(body prefix restored-text major-mode))
       (with-temp-buffer
         (org-mode)
         (insert "A (math \"x\") B\n")
-        (let ((span (org-texmacs-test--first-inline)))
+        (let ((span (org-texmacs-test--first-fragment)))
           (pcase action
             ('body
              (goto-char (point-min))
@@ -934,30 +938,30 @@
             ('prefix (goto-char (point-min)) (insert "Prefix "))
             ('restored-text (insert " ") (delete-char -1))
             ('major-mode (fundamental-mode)))
-          (should-error (org-texmacs-inline-tree span) :type 'org-texmacs-error))))))
+          (should-error (org-texmacs-fragment-tree span) :type 'org-texmacs-error))))))
 
-(ert-deftest org-texmacs-test-inline-tree-rejects-other-or-dead-buffer ()
+(ert-deftest org-texmacs-test-fragment-tree-rejects-other-or-dead-buffer ()
   (cl-letf (((symbol-function 'org-texmacs--worker-request)
              (lambda (_) (ert-fail "Wrong-buffer spans must not request parsing"))))
     (let ((span nil))
       (with-temp-buffer
         (org-mode)
         (insert "A (math \"x\") B\n")
-        (setq span (org-texmacs-test--first-inline))
+        (setq span (org-texmacs-test--first-fragment))
         (with-temp-buffer
           (org-mode)
           (insert "A (math \"x\") B\n")
-          (should-error (org-texmacs-inline-tree span) :type 'org-texmacs-error)))
-      (should-not (buffer-live-p (org-texmacs-inline-span-buffer span)))
-      (should-error (org-texmacs-inline-tree span) :type 'org-texmacs-error))))
+          (should-error (org-texmacs-fragment-tree span) :type 'org-texmacs-error)))
+      (should-not (buffer-live-p (org-texmacs-fragment-span-buffer span)))
+      (should-error (org-texmacs-fragment-tree span) :type 'org-texmacs-error))))
 
-(ert-deftest org-texmacs-test-inline-tree-narrowing-and-text-properties ()
+(ert-deftest org-texmacs-test-fragment-tree-narrowing-and-text-properties ()
   (with-temp-buffer
     (org-mode)
     (insert "A (math \"x\") B\n")
-    (let* ((span (org-texmacs-test--first-inline))
-           (begin (org-texmacs-inline-span-begin span))
-           (end (org-texmacs-inline-span-end span))
+    (let* ((span (org-texmacs-test--first-fragment))
+           (begin (org-texmacs-fragment-span-begin span))
+           (end (org-texmacs-fragment-span-end span))
            (calls 0))
       (put-text-property begin end 'org-texmacs-test t)
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
@@ -968,22 +972,22 @@
                    '(math "x"))))
         (save-restriction
           (narrow-to-region begin end)
-          (should (equal (org-texmacs--org-to-stree (org-texmacs-inline-tree span))
+          (should (equal (org-texmacs--org-to-stree (org-texmacs-fragment-tree span))
                          '(math "x")))
           (should (= (point-min) begin))
           (should (= (point-max) end)))
         (dolist (bounds (list (list (1+ begin) end) (list begin (1- end))))
           (save-restriction
             (narrow-to-region (car bounds) (cadr bounds))
-            (should-error (org-texmacs-inline-tree span) :type 'org-texmacs-error)))
+            (should-error (org-texmacs-fragment-tree span) :type 'org-texmacs-error)))
         (should (= calls 1))))))
 
-(ert-deftest org-texmacs-test-inline-tree-rechecks-after-worker-wait ()
+(ert-deftest org-texmacs-test-fragment-tree-rechecks-after-worker-wait ()
   (dolist (action '(edit kill change-buffer narrow span-string))
     (with-temp-buffer
       (org-mode)
       (insert "A (math \"x\") B\n")
-      (let ((span (org-texmacs-test--first-inline))
+      (let ((span (org-texmacs-test--first-fragment))
             (other (generate-new-buffer " *org-texmacs-test-other*")))
         (unwind-protect
             (cl-letf (((symbol-function 'org-texmacs--worker-request)
@@ -995,42 +999,42 @@
                            ('kill (kill-buffer (current-buffer)))
                            ('change-buffer (set-buffer other))
                            ('narrow (narrow-to-region (point-min) (1+ (point-min))))
-                           ('span-string (aset (org-texmacs-inline-span-source span) 9 ?x)))
+                           ('span-string (aset (org-texmacs-fragment-span-source span) 9 ?x)))
                          '(math "x")))
                       ((symbol-function 'org-texmacs--stree-to-org)
                        (lambda (_) (ert-fail "Stale results must not reach the adapter"))))
-              (should-error (org-texmacs-inline-tree span) :type 'org-texmacs-error))
+              (should-error (org-texmacs-fragment-tree span) :type 'org-texmacs-error))
           (kill-buffer other))))))
 
-(ert-deftest org-texmacs-test-inline-tree-root-and-error-contract ()
+(ert-deftest org-texmacs-test-fragment-tree-root-and-error-contract ()
   (with-temp-buffer
     (org-mode)
     (insert "A (math \"x\") B\n")
-    (let ((span (org-texmacs-test--first-inline)))
+    (let ((span (org-texmacs-test--first-fragment)))
       (dolist (stree '("x" (frac "1" "2") (MATH "x")))
         (cl-letf (((symbol-function 'org-texmacs--worker-request) (lambda (_) stree)))
-          (should-error (org-texmacs-inline-tree span) :type 'org-texmacs-parse-error)))
+          (should-error (org-texmacs-fragment-tree span) :type 'org-texmacs-parse-error)))
       (dolist (condition '(org-texmacs-parse-error org-texmacs-worker-error))
         (cl-letf (((symbol-function 'org-texmacs--worker-request)
                    (lambda (_) (signal condition '("test error")))))
-          (should (equal (should-error (org-texmacs-inline-tree span) :type condition)
+          (should (equal (should-error (org-texmacs-fragment-tree span) :type condition)
                          (list condition "test error"))))))))
 
-(ert-deftest org-texmacs-test-inline-tree-copies-stree-strings ()
+(ert-deftest org-texmacs-test-fragment-tree-copies-stree-strings ()
   (with-temp-buffer
     (org-mode)
     (insert "A (math \"x\") B\n")
-    (let* ((span (org-texmacs-test--first-inline))
+    (let* ((span (org-texmacs-test--first-fragment))
            (string (copy-sequence "x"))
            (stree (list 'math string)))
       (cl-letf (((symbol-function 'org-texmacs--worker-request) (lambda (_) stree)))
-        (let* ((tree (org-texmacs-inline-tree span))
+        (let* ((tree (org-texmacs-fragment-tree span))
                (child (car (org-element-contents tree))))
           (should (equal child string))
           (should-not (eq child string))
           (should (eq (org-element-property :parent child) tree))
           (should-not (text-properties-at 0 string))
-          (should-not (text-properties-at 0 (org-texmacs-inline-span-source span)))
+          (should-not (text-properties-at 0 (org-texmacs-fragment-span-source span)))
           (should (equal (org-texmacs--org-to-stree tree) stree)))))))
 
 ;;; ert.el ends here
