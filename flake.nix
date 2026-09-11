@@ -1,6 +1,6 @@
 {
 
-  description = "Emacs package: org-texmacs";
+  description = "TeXmacs AST integration for Org";
 
   inputs = {
     nixpkgs = {
@@ -46,7 +46,7 @@
       packages = {
         default = emacsPackages.trivialBuild {
           pname = "org-texmacs";
-          version = "0.0.1";
+          version = "0.1.0";
           src = source;
           packageRequires = [
             emacsPackages.org

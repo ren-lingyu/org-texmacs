@@ -1,12 +1,12 @@
-;;; org-texmacs.el --- TeXmacs trees in Org -*- lexical-binding: t; -*-
+;;; org-texmacs.el --- TeXmacs AST integration for Org -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2026 aRenCoco
 
 ;; Author: aRenCoco
 ;; Maintainer: aRenCoco
-;; Version: 0.0.1
+;; Version: 0.1.0
 ;; Package-Requires: ((emacs "31.1") (org "9.8"))
-;; Keywords: outlines
+;; Keywords: outlines, tex
 ;; URL: https://github.com/ren-lingyu/org-texmacs
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -29,11 +29,14 @@
 
 ;; Use `org-texmacs-tree' to derive an Org-compatible TeXmacs tree from a
 ;; native TeXmacs special block, with lazy parsing and Org-managed caching.
+;; Discover paragraph source spans with `org-texmacs-fragment-at-point' or
+;; `org-texmacs-fragment-map', using `org-texmacs-fragment-tags' as entry names.
 ;; Use `org-texmacs-fragment-tree' to parse a fragment source span on demand,
 ;; without caching or changing Org's native object parser.
-;; Use
-;; `org-texmacs-check-setup' to inspect the runtime capabilities required by
-;; the package.
+;; Source stays in Org; no external .tm file is required.  This package does
+;; not provide preview, export, numbering or a combined Org/TeXmacs document AST.
+;; Use `org-texmacs-check-setup' to inspect the capabilities required by the
+;; package without starting TeXmacs.
 
 ;;; Code:
 
@@ -122,7 +125,7 @@ root tag mismatch, and `org-texmacs-worker-error' for worker failures."
 
 ;;;###autoload
 (defun org-texmacs-check-setup ()
-  "Check whether Org TeXmacs runtime capabilities are available.
+  "Check whether Org TeXmacs capabilities are available.
 
 Return a cons cell whose car is the boolean result and whose cdr is a
 human-readable report.  When called interactively, also display that report."

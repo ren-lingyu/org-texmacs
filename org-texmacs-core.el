@@ -6,7 +6,7 @@
 
 ;;; Commentary:
 
-;; Define shared errors and runtime capability checks for Org TeXmacs.
+;; Define shared errors and capability checks for Org TeXmacs.
 
 ;;; Code:
 
@@ -57,14 +57,14 @@ Changing this option takes effect after the current worker is stopped."
     (process-send-string . function)
     (accept-process-output . function)
     (delete-process . function))
-  "Runtime capabilities required by Org TeXmacs.
+  "Capabilities required by Org TeXmacs.
 
 Each entry has the form (NAME . TYPE).  TYPE is one of `function',
 `variable', or `executable'.  Executable names may be strings or symbols
 resolved through `executable-find'; other names must be symbols.
 
 Rationale: Checking the interfaces used by the implementation is more precise
-than inferring runtime compatibility from package version numbers alone.")
+than inferring compatibility from package version numbers alone.")
 
 (defun org-texmacs--capability-present-p (name type)
   "Return non-nil when capability NAME exists with TYPE.
@@ -84,7 +84,7 @@ or unsupported capability entries."
      nil)))
 
 (defun org-texmacs--check-capabilities (alist)
-  "Check Org TeXmacs runtime capabilities in ALIST.
+  "Check Org TeXmacs capabilities in ALIST.
 
 ALIST maps capability names to `function', `variable', or `executable'.
 Return a cons cell whose car is non-nil when every capability exists and whose
@@ -111,14 +111,14 @@ the first failure."
                   lines)))
         (cons result
               (concat
-               "Org TeXmacs runtime capabilities:\n"
+               "Org TeXmacs capabilities:\n"
                (mapconcat #'identity (nreverse lines) "\n")
                "\n")))
     (cons nil
           "Org TeXmacs capability specification is malformed.\n")))
 
 (defun org-texmacs--setup-check ()
-  "Check whether Org TeXmacs runtime capabilities are available.
+  "Check whether Org TeXmacs capabilities are available.
 
 Return a cons cell whose car is the boolean result and whose cdr is a
 human-readable report."
@@ -127,7 +127,7 @@ human-readable report."
            (list (cons org-texmacs-program 'executable)))))
 
 (defun org-texmacs--ensure-setup ()
-  "Signal `org-texmacs-error' unless runtime setup checks pass."
+  "Signal `org-texmacs-error' unless setup checks pass."
   (let ((result (org-texmacs--setup-check)))
     (unless (car result)
       (signal 'org-texmacs-error

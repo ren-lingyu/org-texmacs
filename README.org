@@ -1,14 +1,14 @@
 #+TITLE: Org TeXmacs
 #+AUTHOR: aRenCoco
 
-Org TeXmacs provides a small AST integration layer for mathematical content
-written in TeXmacs STM/Scheme serialization inside Org documents.  The Org
-buffer is the source of truth; no external =.tm= file is required.
+Org TeXmacs provides TeXmacs AST integration for Org documents.  Write
+structured content in official STM/Scheme serialization directly in Org;
+the Org buffer is the source of truth, with no external =.tm= file required.
 
-The current implementation supports block-level parsing with lazy caching,
-and fragment source discovery with on-demand tree parsing.  It does not provide
-preview, export, fontification, an editing minor mode, or a combined Org and
-TeXmacs document AST.
+Version 0.1.0 supports block-level parsing with lazy caching and configurable
+fragment source discovery with on-demand tree parsing.  It does not provide
+preview, export, equation numbering, fontification, an editing minor mode,
+or a combined Org and TeXmacs document AST.
 
 * Requirements
 
