@@ -32,15 +32,15 @@ checkout directory.  Add that directory to Emacs's =load-path=, replacing
 the example path below:
 
 #+begin_src emacs-lisp
-(add-to-list 'load-path "/path/to/org-texmacs/")
-(require 'org-texmacs)
+  (add-to-list 'load-path "/path/to/org-texmacs/")
+  (require 'org-texmacs)
 #+end_src
 
 By default, Emacs locates =texmacs= through =exec-path=.  To select a specific
 executable, set =org-texmacs-program= before the first parse:
 
 #+begin_src emacs-lisp
-(setq org-texmacs-program "/path/to/bin/texmacs")
+  (setq org-texmacs-program "/path/to/bin/texmacs")
 #+end_src
 
 Run =M-x org-texmacs-check-setup= to inspect the required capabilities.
@@ -52,7 +52,7 @@ existence; it does not start TeXmacs or test socket connectivity.
 From the repository root, launch the development environment's Emacs:
 
 #+begin_src sh
-nix develop --no-write-lock-file --command emacs
+  nix develop --no-write-lock-file --command emacs
 #+end_src
 
 This Emacs includes the package and its Lisp dependencies.  The development
@@ -75,10 +75,10 @@ For a source checkout, replace the directory below with its absolute path:
 
 #+name: example-use-package-local
 #+begin_src emacs-lisp
-(use-package org-texmacs
-  :load-path "/path/to/org-texmacs/"
-  :ensure nil
-  :demand t)
+  (use-package org-texmacs
+    :load-path "/path/to/org-texmacs/"
+    :ensure nil
+    :demand t)
 #+end_src
 
 For a package already made available on =load-path=, including a configured
@@ -86,9 +86,9 @@ Nix installation, omit =:load-path=:
 
 #+name: example-use-package-installed
 #+begin_src emacs-lisp
-(use-package org-texmacs
-  :ensure nil
-  :demand t)
+  (use-package org-texmacs
+    :ensure nil
+    :demand t)
 #+end_src
 
 =:ensure nil= prevents =use-package= from asking =package.el= to install the
@@ -104,14 +104,14 @@ explicit recipe instead of the local or already-installed declaration:
 
 #+name: example-use-package-straight
 #+begin_src emacs-lisp
-(use-package org-texmacs
-  :straight
-  (org-texmacs :type git :host github
-              :repo "ren-lingyu/org-texmacs"
-              :files ("org-texmacs*.el"
-                      "org-texmacs-worker.scm"))
-  :ensure nil
-  :demand t)
+  (use-package org-texmacs
+    :straight
+    (org-texmacs :type git :host github
+                 :repo "ren-lingyu/org-texmacs"
+                :files ("org-texmacs*.el"
+                        "org-texmacs-worker.scm"))
+    :ensure nil
+    :demand t)
 #+end_src
 
 The =:files= entry is essential: the Scheme service must be installed next
@@ -143,16 +143,16 @@ that default and requires the executable to be found through =exec-path=.
 
 #+name: example-use-package-custom
 #+begin_src emacs-lisp
-(use-package org-texmacs
-  :ensure nil
-  :demand t
-  :custom
-  (org-texmacs-program "texmacs")
-  (org-texmacs-worker-start-timeout 60)
-  (org-texmacs-worker-request-timeout 10)
-  (org-texmacs-fragment-tags
-   '("math" "equation" "equation*" "eqnarray" "eqnarray*"
-     "align" "align*" "gather" "gather*" "eqsplit" "eqsplit*")))
+  (use-package org-texmacs
+    :ensure nil
+    :demand t
+    :custom
+    (org-texmacs-program "texmacs")
+    (org-texmacs-worker-start-timeout 60)
+    (org-texmacs-worker-request-timeout 10)
+    (org-texmacs-fragment-tags
+     '("math" "equation" "equation*" "eqnarray" "eqnarray*"
+       "align" "align*" "gather" "gather*" "eqsplit" "eqsplit*")))
 #+end_src
 
 Both timeouts are positive numbers in seconds: =org-texmacs-worker-start-timeout=
@@ -175,16 +175,16 @@ or socket communication; an actual parse checks those paths.
 Write official STM/Scheme data in an Org special block:
 
 #+begin_src org
-#+begin_texmacs
-(with "mode" "math"
-  (concat "x+" (frac "1" "2")))
-#+end_texmacs
+  ,#+begin_texmacs
+  (with "mode" "math"
+    (concat "x+" (frac "1" "2")))
+  ,#+end_texmacs
 #+end_src
 
 Place point on the =#+begin_texmacs= line and evaluate:
 
 #+begin_src emacs-lisp
-(org-texmacs-tree (org-element-at-point))
+  (org-texmacs-tree (org-element-at-point))
 #+end_src
 
 The result is an Org-compatible pseudo tree, with TeXmacs tags such as =with=,
@@ -197,19 +197,19 @@ This self-contained example demonstrates traversal and a cache hit:
 
 #+name: example-tree
 #+begin_src emacs-lisp
-(progn
-  (require 'org-texmacs)
-  (with-temp-buffer
-    (org-mode)
-    (insert "#+begin_texmacs\n"
-            "(with \"mode\" \"math\" (concat \"x+\" (frac \"1\" \"2\")))\n"
-            "#+end_texmacs\n")
-    (goto-char (point-min))
-    (let* ((block (org-element-at-point))
-           (tree (org-texmacs-tree block)))
-      (list (org-element-map tree '(with concat frac) #'org-element-type)
-            (eq tree (org-texmacs-tree block))))))
-;; => ((with concat frac) t)
+  (progn
+    (require 'org-texmacs)
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+begin_texmacs\n"
+              "(with \"mode\" \"math\" (concat \"x+\" (frac \"1\" \"2\")))\n"
+              "#+end_texmacs\n")
+      (goto-char (point-min))
+      (let* ((block (org-element-at-point))
+             (tree (org-texmacs-tree block)))
+        (list (org-element-map tree '(with concat frac) #'org-element-type)
+              (eq tree (org-texmacs-tree block))))))
+  ;; => ((with concat frac) t)
 #+end_src
 
 * Block source and cache contract
@@ -249,13 +249,13 @@ root names are now controlled by =org-texmacs-fragment-tags=.
 Write fragments directly in paragraph text using a configured TeXmacs root:
 
 #+begin_src org
-A (math (frac "1" "2")) B
+  A (math (frac "1" "2")) B
 
-An equation (equation* (frac "a" "b")) can share its paragraph with text.
+  An equation (equation* (frac "a" "b")) can share its paragraph with text.
 
-A formula group (align*
-  (tformat (table (row (cell "x") (cell "=1"))
-                  (row (cell "y") (cell "=2"))))) continues here.
+  A formula group (align*
+    (tformat (table (row (cell "x") (cell "=1"))
+                    (row (cell "y") (cell "=2"))))) continues here.
 #+end_src
 
 Line breaks inside the group are supported, but a blank line would cross
@@ -267,11 +267,11 @@ parsed TeXmacs tree.  Parsing that span returns a fresh pseudo tree with the
 same root tag as the source.  Its children have Org parent links, but the
 root is not attached to the span or paragraph.
 
-| API                                           | Result                                             |
-|-----------------------------------------------+----------------------------------------------------|
-| =(org-texmacs-fragment-at-point &optional POS)=   | Span covering POS (default: point), or nil          |
-| =(org-texmacs-fragment-map BEGIN END FUNCTION)=   | Callback results for complete spans, in source order |
-| =(org-texmacs-fragment-tree SPAN)=                | Independently parsed, Org-compatible TeXmacs tree   |
+| API                                             | Result                                               |
+|-------------------------------------------------+------------------------------------------------------|
+| =(org-texmacs-fragment-at-point &optional POS)= | Span covering POS (default: point), or nil           |
+| =(org-texmacs-fragment-map BEGIN END FUNCTION)= | Callback results for complete spans, in source order |
+| =(org-texmacs-fragment-tree SPAN)=              | Independently parsed, Org-compatible TeXmacs tree    |
 
 This self-contained example inspects a span and traverses its tree.  Unlike
 block cache hits, repeated fragment tree calls parse again and return different
@@ -279,33 +279,33 @@ tree objects:
 
 #+name: example-fragment-tree
 #+begin_src emacs-lisp
-(progn
-  (require 'org-texmacs)
-  (with-temp-buffer
-    (org-mode)
-    (insert "A (math (frac \"1\" \"2\")) B\n")
-    (goto-char (point-min))
-    (search-forward "(math")
-    (let* ((span (org-texmacs-fragment-at-point))
-           (tree (org-texmacs-fragment-tree span)))
-      (list (org-texmacs-fragment-span-source span)
-            (org-element-map tree '(math frac) #'org-element-type)
-            (eq tree (org-texmacs-fragment-tree span))))))
-;; => ("(math (frac \"1\" \"2\"))" (math frac) nil)
+  (progn
+    (require 'org-texmacs)
+    (with-temp-buffer
+      (org-mode)
+      (insert "A (math (frac \"1\" \"2\")) B\n")
+      (goto-char (point-min))
+      (search-forward "(math")
+      (let* ((span (org-texmacs-fragment-at-point))
+             (tree (org-texmacs-fragment-tree span)))
+        (list (org-texmacs-fragment-span-source span)
+              (org-element-map tree '(math frac) #'org-element-type)
+              (eq tree (org-texmacs-fragment-tree span))))))
+  ;; => ("(math (frac \"1\" \"2\"))" (math frac) nil)
 #+end_src
 
 Scanning alone does not start TeXmacs:
 
 #+name: example-fragment-map
 #+begin_src emacs-lisp
-(progn
-  (require 'org-texmacs)
-  (with-temp-buffer
-    (org-mode)
-    (insert "A (math \"x\") B (math (sqrt \"y\")) C\n")
-    (org-texmacs-fragment-map (point-min) (point-max)
-                            #'org-texmacs-fragment-span-source)))
-;; => ("(math \"x\")" "(math (sqrt \"y\"))")
+  (progn
+    (require 'org-texmacs)
+    (with-temp-buffer
+      (org-mode)
+      (insert "A (math \"x\") B (math (sqrt \"y\")) C\n")
+      (org-texmacs-fragment-map (point-min) (point-max)
+                              #'org-texmacs-fragment-span-source)))
+  ;; => ("(math \"x\")" "(math (sqrt \"y\"))")
 #+end_src
 
 Passing =#'org-texmacs-fragment-tree= as the callback instead parses each span.
@@ -345,8 +345,8 @@ needed.  A previously obtained span must remain fully accessible when parsed.
 The default =org-texmacs-fragment-tags= is:
 
 #+begin_src emacs-lisp
-'("math" "equation" "equation*" "eqnarray" "eqnarray*" "align" "align*"
-  "gather" "gather*" "eqsplit" "eqsplit*")
+  '("math" "equation" "equation*" "eqnarray" "eqnarray*" "align" "align*"
+    "gather" "gather*" "eqsplit" "eqsplit*")
 #+end_src
 
 This is a literal, case-sensitive entry list, not a list of all valid TeXmacs
@@ -360,7 +360,7 @@ supported; invalid configuration signals =org-texmacs-error= before parsing.
 To keep the former math-only discovery behavior in the current Org buffer:
 
 #+begin_src emacs-lisp
-(setq-local org-texmacs-fragment-tags '("math"))
+  (setq-local org-texmacs-fragment-tags '("math"))
 #+end_src
 
 Use =setq= for the default in buffers without a local value, or a =let=
@@ -373,22 +373,22 @@ disabled scanning.  Discovery does not parse or start TeXmacs:
 
 #+name: example-fragment-config
 #+begin_src emacs-lisp
-(progn
-  (require 'org-texmacs)
-  (with-temp-buffer
-    (org-mode)
-    (insert "A (math (sqrt \"x\")) B (equation* \"y\") C\n")
-    (setq-local org-texmacs-fragment-tags '("equation*"))
-    (list
-     (org-texmacs-fragment-map (point-min) (point-max)
-                              #'org-texmacs-fragment-span-tag)
-     (let ((org-texmacs-fragment-tags '("math")))
+  (progn
+    (require 'org-texmacs)
+    (with-temp-buffer
+      (org-mode)
+      (insert "A (math (sqrt \"x\")) B (equation* \"y\") C\n")
+      (setq-local org-texmacs-fragment-tags '("equation*"))
+      (list
        (org-texmacs-fragment-map (point-min) (point-max)
-                                #'org-texmacs-fragment-span-tag))
-     (let ((org-texmacs-fragment-tags nil))
-       (org-texmacs-fragment-map (point-min) (point-max) #'identity))
-     org-texmacs-fragment-tags)))
-;; => (("equation*") ("math") nil ("equation*"))
+                                #'org-texmacs-fragment-span-tag)
+       (let ((org-texmacs-fragment-tags '("math")))
+         (org-texmacs-fragment-map (point-min) (point-max)
+                                  #'org-texmacs-fragment-span-tag))
+       (let ((org-texmacs-fragment-tags nil))
+         (org-texmacs-fragment-map (point-min) (point-max) #'identity))
+       org-texmacs-fragment-tags)))
+  ;; => (("equation*") ("math") nil ("equation*"))
 #+end_src
 
 Adding a custom entry name only enables discovery.  It does not register a
@@ -417,27 +417,27 @@ same worker without discovering fragments inside the block:
 
 #+name: example-fragment-block
 #+begin_src emacs-lisp
-(progn
-  (require 'org-texmacs)
-  (with-temp-buffer
-    (org-mode)
-    (insert "A (math \"x\") B (equation* \"y\")\n\n"
-            "A group (align*\n"
-            " (tformat (table (row (cell \"x\") (cell \"=1\"))\n"
-            "                 (row (cell \"y\") (cell \"=2\"))))) ends here.\n\n"
-            "#+begin_texmacs\n(with \"mode\" \"math\" (math \"z\"))\n"
-            "#+end_texmacs\n")
-    (let ((roots
-           (org-texmacs-fragment-map
-            (point-min) (point-max)
-            (lambda (span)
-              (org-element-type (org-texmacs-fragment-tree span))))))
-      (goto-char (point-min))
-      (search-forward "#+begin_texmacs")
-      (list roots
-            (let ((org-texmacs-fragment-tags nil))
-              (org-element-type (org-texmacs-tree (org-element-at-point))))))))
-;; => ((math equation* align*) with)
+  (progn
+    (require 'org-texmacs)
+    (with-temp-buffer
+      (org-mode)
+      (insert "A (math \"x\") B (equation* \"y\")\n\n"
+              "A group (align*\n"
+              " (tformat (table (row (cell \"x\") (cell \"=1\"))\n"
+              "                 (row (cell \"y\") (cell \"=2\"))))) ends here.\n\n"
+              "#+begin_texmacs\n(with \"mode\" \"math\" (math \"z\"))\n"
+              "#+end_texmacs\n")
+      (let ((roots
+             (org-texmacs-fragment-map
+              (point-min) (point-max)
+              (lambda (span)
+                (org-element-type (org-texmacs-fragment-tree span))))))
+        (goto-char (point-min))
+        (search-forward "#+begin_texmacs")
+        (list roots
+              (let ((org-texmacs-fragment-tags nil))
+                (org-element-type (org-texmacs-tree (org-element-at-point))))))))
+  ;; => ((math equation* align*) with)
 #+end_src
 
 Nested lists, strings, escaped quotes/backslashes and newlines within one
@@ -480,22 +480,22 @@ first start may perform TeXmacs initialization.  Only the socket directory is
 temporary.  Tests use separate temporary user and TeXmacs configuration
 directories.
 
-| Option                               | Default   | Purpose                         |
-|--------------------------------------+-----------+---------------------------------|
-| =org-texmacs-program=                 | =texmacs= | Executable; absolute under Nix   |
-| =org-texmacs-worker-start-timeout=     | 60        | Startup wait in seconds         |
-| =org-texmacs-worker-request-timeout=   | 10        | Response wait in seconds        |
+| Option                               |   Default | Purpose                        |
+|--------------------------------------+-----------+--------------------------------|
+| =org-texmacs-program=                | =texmacs= | Executable; absolute under Nix |
+| =org-texmacs-worker-start-timeout=   |        60 | Startup wait in seconds        |
+| =org-texmacs-worker-request-timeout= |        10 | Response wait in seconds       |
 
 Timeout values must be positive.  Changing =org-texmacs-program= takes effect
 after the current worker stops.  Worker exit and Emacs shutdown clean up its
 socket directory.  For development, =(org-texmacs--worker-stop)= stops it
 explicitly; this is an internal function, not a stable public command.
 
-| Condition                    | Meaning                                                   |
-|------------------------------+-----------------------------------------------------------|
-| =org-texmacs-error=           | Base error; invalid input/configuration, stale span or inaccessible source |
-| =org-texmacs-parse-error=     | Invalid STM source or a fragment root tag mismatch          |
-| =org-texmacs-worker-error=    | Startup, communication or response failure                 |
+| Condition                  | Meaning                                                                    |
+|----------------------------+----------------------------------------------------------------------------|
+| =org-texmacs-error=        | Base error; invalid input/configuration, stale span or inaccessible source |
+| =org-texmacs-parse-error=  | Invalid STM source or a fragment root tag mismatch                         |
+| =org-texmacs-worker-error= | Startup, communication or response failure                                 |
 
 Parse and worker errors inherit from =org-texmacs-error=.  Parse errors leave
 the worker available for the next request.  Transport failures and request
@@ -507,8 +507,8 @@ never cached.  Reentrant requests are rejected; there is no asynchronous queue.
 Run from the repository root:
 
 #+begin_src sh
-nix flake check --no-write-lock-file
-nix build --no-link --no-write-lock-file .#default
+  nix flake check --no-write-lock-file
+  nix build --no-link --no-write-lock-file .#default
 #+end_src
 
 Checks include byte compilation, package-lint and ERT, including real headless
