@@ -19,6 +19,10 @@ TeXmacs document AST.
 The implementation has been tested on =x86_64-linux= with Emacs 31.1,
 Org 9.8-pre and TeXmacs 2.1.5.  Other platforms have not been validated.
 
+The Scheme service runs inside TeXmacs; a separate =guile= executable is
+not required to use the package.  The standalone Guile dependency in the
+Nix checks is for their test driver scripts.
+
 * Loading the package
 
 ** From a source checkout
@@ -60,6 +64,89 @@ server file, and sets the default =org-texmacs-program= to TeXmacs's absolute
 Nix store path.  TeXmacs is therefore part of the package's runtime closure;
 the installed package does not depend on finding it in =exec-path=.
 Building this output alone does not configure an existing Emacs installation.
+
+** With use-package
+
+Choose one of the following installation paths.  Configure the required Org
+version before loading Org TeXmacs; these examples do not select or replace
+your Org installation.  They assume =use-package= is already available.
+
+For a source checkout, replace the directory below with its absolute path:
+
+#+name: example-use-package-local
+#+begin_src emacs-lisp
+(use-package org-texmacs
+  :load-path "/path/to/org-texmacs/"
+  :ensure nil
+  :demand t)
+#+end_src
+
+For a package already made available on =load-path=, including a configured
+Nix installation, omit =:load-path=:
+
+#+name: example-use-package-installed
+#+begin_src emacs-lisp
+(use-package org-texmacs
+  :ensure nil
+  :demand t)
+#+end_src
+
+=:ensure nil= prevents =use-package= from asking =package.el= to install the
+package, even when =use-package-always-ensure= is enabled.  If your initialized
+straight integration uses =straight-use-package-by-default=, also add
+=:straight nil= to either declaration above to keep that installation path.
+Do not add that keyword when straight integration is unavailable.
+
+*** Installing with straight.el
+
+After initializing straight.el and its use-package integration, use this
+explicit recipe instead of the local or already-installed declaration:
+
+#+name: example-use-package-straight
+#+begin_src emacs-lisp
+(use-package org-texmacs
+  :straight
+  (org-texmacs :type git :host github
+              :repo "ren-lingyu/org-texmacs"
+              :files ("org-texmacs*.el"
+                      "org-texmacs-worker.scm"))
+  :ensure nil
+  :demand t)
+#+end_src
+
+The =:files= entry is essential: the Scheme service must be installed next
+to the Lisp libraries, not left only in the source repository.  Installing
+with straight may clone repositories and write build files.  It does not
+install the TeXmacs executable; install TeXmacs separately and make it
+available through =exec-path= or =org-texmacs-program=.
+
+This recipe does not by itself pin a release.  Use straight's
+[[https://github.com/radian-software/straight.el#version-lockfiles][version lockfiles]] to record the selected revision for reproducibility.
+For straight setup and recipe details, consult its
+[[https://github.com/radian-software/straight.el#integration-with-use-package][use-package integration documentation]].
+
+*** Loading and optional configuration
+
+=:demand t= loads the Lisp package immediately, even if use-package normally
+defers loading.  It does not start TeXmacs.  The first block cache miss or
+fragment tree request starts the worker; source discovery alone does not.
+
+The declarations above preserve all 11 default fragment entry tags.  To
+recognize only =math=, add this keyword to the chosen declaration:
+
+#+begin_src emacs-lisp
+:custom
+(org-texmacs-fragment-tags '("math"))
+#+end_src
+
+An optional executable override can be another entry under the same
+=:custom= keyword: =(org-texmacs-program "/absolute/path/to/texmacs")=.
+Set it before the first parse; changing it does not replace an existing worker.
+
+After loading, run =M-x org-texmacs-check-setup=.  Missing executables are
+reported there and checked again before a worker is started.  A passing
+setup check confirms basic capabilities, not successful headless startup
+or socket communication; an actual parse checks those paths.
 
 * Block formulas
 
