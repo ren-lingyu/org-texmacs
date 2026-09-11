@@ -12,6 +12,7 @@
 ;;; Code:
 
 (require 'org-texmacs-core)
+(require 'org)
 
 (cl-defstruct (org-texmacs-inline-span
                (:constructor org-texmacs--inline-span-create)
@@ -72,6 +73,156 @@ This only discovers boundaries; the worker validates STM data."
                     (nth 3 (parse-partial-sexp start (match-beginning 0))))
             (setq unsupported t)))
         (and (not unsupported) end)))))
+
+(defun org-texmacs--inline-check-region (begin end)
+  "Check that BEGIN and END delimit an accessible region in an Org buffer."
+  (unless (and (derived-mode-p 'org-mode)
+               (integerp begin) (integerp end)
+               (<= (point-min) begin end (point-max)))
+    (signal 'org-texmacs-error
+            '("Expected an accessible integer range in an Org buffer"))))
+
+(defun org-texmacs--inline-check-source (buffer tick)
+  "Signal an error unless BUFFER is current and its source still has TICK."
+  (unless (and (buffer-live-p buffer)
+               (eq (current-buffer) buffer)
+               (derived-mode-p 'org-mode)
+               (= tick (buffer-chars-modified-tick)))
+    (signal 'org-texmacs-error '("Org source changed during inline scanning"))))
+
+(defun org-texmacs--inline-texmacs-ancestor-p (paragraph)
+  "Return non-nil if PARAGRAPH is inside a TeXmacs special block."
+  (cl-some (lambda (ancestor)
+             (and (eq (org-element-type ancestor) 'special-block)
+                  (equal (org-element-property :type ancestor) "texmacs")))
+           (org-element-lineage paragraph)))
+
+(defun org-texmacs--inline-mask (source)
+  "Return an inert, equal-length replacement for complete inline SOURCE.
+
+Keep the outer parentheses and internal whitespace.  Replace other interior
+characters with ordinary letters, removing foreign markup without changing
+adjacent Org delimiter boundaries or creating blank lines."
+  (concat "("
+          (replace-regexp-in-string "[^ \t\r\n]" "x" (substring source 1 -1))
+          ")"))
+
+(defun org-texmacs--inline-scan-paragraph (paragraph buffer tick offset)
+  "Collect spans in shadow PARAGRAPH for source BUFFER at TICK.
+
+OFFSET translates shadow positions to source positions.  Mask accepted spans
+in the shadow buffer so their Org markup cannot hide later candidates."
+  (unless (org-texmacs--inline-texmacs-ancestor-p paragraph)
+    (save-restriction
+      (narrow-to-region (org-element-property :contents-begin paragraph)
+                        (org-element-property :contents-end paragraph))
+      (goto-char (point-min))
+      (let ((spans nil)
+            (start nil)
+            (stop nil))
+        (while (and (not stop) (setq start (org-texmacs--inline-next)))
+          (when (save-excursion
+                  (goto-char start)
+                  (eq (org-element-type (org-element-context)) 'paragraph))
+            (let ((end (org-texmacs--inline-end start)))
+              (if (not end)
+                  (setq stop t)
+                (let ((source (buffer-substring-no-properties start end)))
+                  (push (org-texmacs--inline-span-create
+                         :buffer buffer :tick tick
+                         :begin (+ offset start) :end (+ offset end)
+                         :source source)
+                        spans)
+                  (goto-char start)
+                  (delete-region start end)
+                  (insert (org-texmacs--inline-mask source)))
+                (goto-char end)))))
+        (nreverse spans)))))
+
+(defun org-texmacs--inline-collect ()
+  "Collect inline spans in a private copy of the accessible Org source.
+
+Do not widen the source buffer, run its mode hooks, or start a worker.
+Scan the entire copy before region filtering to preserve left-to-right
+precedence.  An unsupported or unclosed candidate stops its paragraph."
+  (let ((buffer (current-buffer))
+        (tick (buffer-chars-modified-tick))
+        (offset (1- (point-min)))
+        (source (buffer-substring-no-properties (point-min) (point-max)))
+        (spans nil))
+    (save-match-data
+      (with-temp-buffer
+        (let ((org-element-use-cache nil)
+              (org-inhibit-startup t))
+          (delay-mode-hooks (org-mode))
+          (insert source)
+          (let ((paragraphs (org-element-map (org-element-parse-buffer 'element)
+                               'paragraph #'identity)))
+            (dolist (paragraph paragraphs)
+              (setq spans
+                    (nconc spans (org-texmacs--inline-scan-paragraph
+                                  paragraph buffer tick offset))))))))
+    (org-texmacs--inline-check-source buffer tick)
+    spans))
+
+;;;###autoload
+(defun org-texmacs-inline-at-point (&optional position)
+  "Return the inline source span covering POSITION, or nil.
+
+POSITION defaults to point and must be an accessible integer position in an
+Org buffer.  Span bounds are half-open: BEGIN is included and END is not.
+See `org-texmacs-inline-map' for the source recognition and lifetime contract.
+Leave source text, point and narrowing unchanged; do not start TeXmacs."
+  (let ((position (or position (point))))
+    (org-texmacs--inline-check-region position position)
+    (cl-find-if (lambda (span)
+                  (<= (org-texmacs-inline-span-begin span) position
+                      (1- (org-texmacs-inline-span-end span))))
+                (org-texmacs--inline-collect))))
+
+;;;###autoload
+(defun org-texmacs-inline-map (begin end function)
+  "Call FUNCTION on inline spans wholly within BEGIN and END.
+
+BEGIN and END must be ordered accessible integer positions in an Org buffer.
+Return callback results in source order, including nil results.  Scan the
+accessible buffer before filtering; region edges never truncate a formula.
+Current narrowing acts as the document boundary; do not implicitly widen.
+
+Recognize lowercase `(math ...)' only in paragraph text, including list item
+paragraphs.  Exclude native objects such as emphasis, links and code, as well
+as headlines, table cells, source blocks and TeXmacs special-block bodies.
+Support nested lists, strings, escapes and newlines within a paragraph.
+Unsupported reader punctuation outside strings, including Scheme comments,
+or an unclosed candidate stops recognition for the rest of that paragraph.
+Balanced input is not necessarily valid STM; this API does not parse it.
+
+Spans are read-only snapshots, not Org nodes.  Obtain fresh spans after any
+source edit.  No worker or cache is used, and native Org parsing is unchanged:
+Org can still see markup inside formulas.  A private copy is used for Org
+context checks without running mode hooks or copying source text properties.
+
+Call FUNCTION in the source buffer, restoring point and narrowing after each
+call.  FUNCTION must not edit the text, kill the buffer or change the current
+buffer or major mode.  Signal `org-texmacs-error' on invalid bounds or source
+changes; completed callback effects are not rolled back."
+  (org-texmacs--inline-check-region begin end)
+  (unless (functionp function)
+    (signal 'org-texmacs-error '("Expected an inline span callback")))
+  (let ((buffer (current-buffer))
+        (tick (buffer-chars-modified-tick))
+        (spans (org-texmacs--inline-collect)))
+    (mapcar (lambda (span)
+              (org-texmacs--inline-check-source buffer tick)
+              (save-excursion
+                (save-restriction
+                  (prog1 (funcall function span)
+                    (org-texmacs--inline-check-source buffer tick)))))
+            (cl-remove-if-not
+             (lambda (span)
+               (<= begin (org-texmacs-inline-span-begin span)
+                   (org-texmacs-inline-span-end span) end))
+             spans))))
 
 (provide 'org-texmacs-inline)
 
