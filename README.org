@@ -137,11 +137,21 @@ root names are now controlled by =org-texmacs-fragment-tags=.
 
 ** Usage
 
-Write math fragments directly in paragraph text using the TeXmacs =math= root:
+Write fragments directly in paragraph text using a configured TeXmacs root:
 
 #+begin_src org
 A (math (frac "1" "2")) B
+
+An equation (equation* (frac "a" "b")) can share its paragraph with text.
+
+A formula group (align*
+  (tformat (table (row (cell "x") (cell "=1"))
+                  (row (cell "y") (cell "=2"))))) continues here.
 #+end_src
+
+Line breaks inside the group are supported, but a blank line would cross
+the paragraph boundary and prevent recognition of that fragment.  These
+examples describe source and AST structure, not display placement or numbering.
 
 Source discovery returns an =org-texmacs-fragment-span=, not an Org node or a
 parsed TeXmacs tree.  Parsing that span returns a fresh pseudo tree with the
@@ -221,7 +231,7 @@ widens implicitly.  If narrowing cuts into an Org container, context outside
 that boundary is not available; widen first when full-document context is
 needed.  A previously obtained span must remain fully accessible when parsed.
 
-** Recognition limits
+** Configuring entry tags
 
 The default =org-texmacs-fragment-tags= is:
 
@@ -238,6 +248,47 @@ nonempty strings.  Names start with an ASCII letter and continue with ASCII
 letters, digits or ~- _ . * + ? ! : / < > =~.  Reader-escaped names are not
 supported; invalid configuration signals =org-texmacs-error= before parsing.
 
+To keep the former math-only discovery behavior in the current Org buffer:
+
+#+begin_src emacs-lisp
+(setq-local org-texmacs-fragment-tags '("math"))
+#+end_src
+
+Use =setq= for the default in buffers without a local value, or a =let=
+binding for a scoped operation.  The package does not automatically mark
+this option safe for file-local variables.  Obtain and parse spans under
+the same configuration; an old span is not a way to bypass a changed entry list.
+
+This example demonstrates a buffer-local list, a temporary override and
+disabled scanning.  Discovery does not parse or start TeXmacs:
+
+#+name: example-fragment-config
+#+begin_src emacs-lisp
+(progn
+  (require 'org-texmacs)
+  (with-temp-buffer
+    (org-mode)
+    (insert "A (math (sqrt \"x\")) B (equation* \"y\") C\n")
+    (setq-local org-texmacs-fragment-tags '("equation*"))
+    (list
+     (org-texmacs-fragment-map (point-min) (point-max)
+                              #'org-texmacs-fragment-span-tag)
+     (let ((org-texmacs-fragment-tags '("math")))
+       (org-texmacs-fragment-map (point-min) (point-max)
+                                #'org-texmacs-fragment-span-tag))
+     (let ((org-texmacs-fragment-tags nil))
+       (org-texmacs-fragment-map (point-min) (point-max) #'identity))
+     org-texmacs-fragment-tags)))
+;; => (("equation*") ("math") nil ("equation*"))
+#+end_src
+
+Adding a custom entry name only enables discovery.  It does not register a
+TeXmacs environment or establish its argument, layout or rendering semantics.
+The entry list is not recursive: =sqrt= above remains a child of =math=
+without needing its own entry.
+
+** Recognition limits
+
 Configured roots are recognized only in paragraph text, including
 paragraphs in list items and quote blocks.  They need not occupy a whole
 paragraph.  Headline text, table cells, native objects such as emphasis,
@@ -249,6 +300,36 @@ contents of a =#+begin_texmacs= block.  Block contents are never split into
 fragments, and block parsing and caching do not consult this option.  After
 accepting a fragment the scanner skips its interior; an unconfigured outer
 tag does not itself hide configured candidates inside it.
+
+Use TeXmacs special blocks for standalone complex content such as tables,
+images or code, which are not additional default fragment entry points.
+The following example parses paragraph fragments and a block through the
+same worker without discovering fragments inside the block:
+
+#+name: example-fragment-block
+#+begin_src emacs-lisp
+(progn
+  (require 'org-texmacs)
+  (with-temp-buffer
+    (org-mode)
+    (insert "A (math \"x\") B (equation* \"y\")\n\n"
+            "A group (align*\n"
+            " (tformat (table (row (cell \"x\") (cell \"=1\"))\n"
+            "                 (row (cell \"y\") (cell \"=2\"))))) ends here.\n\n"
+            "#+begin_texmacs\n(with \"mode\" \"math\" (math \"z\"))\n"
+            "#+end_texmacs\n")
+    (let ((roots
+           (org-texmacs-fragment-map
+            (point-min) (point-max)
+            (lambda (span)
+              (org-element-type (org-texmacs-fragment-tree span))))))
+      (goto-char (point-min))
+      (search-forward "#+begin_texmacs")
+      (list roots
+            (let ((org-texmacs-fragment-tags nil))
+              (org-element-type (org-texmacs-tree (org-element-at-point))))))))
+;; => ((math equation* align*) with)
+#+end_src
 
 Nested lists, strings, escaped quotes/backslashes and newlines within one
 paragraph are supported.  The scanner is not a full Scheme reader: outside
@@ -323,7 +404,9 @@ nix build --no-link --no-write-lock-file .#default
 
 Checks include byte compilation, package-lint and ERT, including real headless
 TeXmacs parsing, worker lifecycle, Org block cache integration, fragment source
-boundaries and span validity checks.  A missing
+boundaries, configuration snapshots and span validity checks.  All 11 default
+entry tags have real parser tests, including multi-row formula groups; these
+check AST preservation and parent links, not numbering or rendered output.  A missing
 TeXmacs executable fails the integration tests instead of skipping them.
 Nix checks the current system by default.  These commands may download
 dependencies and write Nix store/cache data; they do not update the lockfile,
