@@ -509,7 +509,7 @@ The supported Org subset is deliberately small:
 | Document / section container | =document= / transparent contents |
 | Paragraph / plain text | One =concat= per paragraph / copied text |
 | Bold | =strong= |
-| Nonempty headings at absolute levels 1, 2, 3 | =section=, =subsection=, =subsubsection= |
+| Nonempty headings at Org's parsed levels 1, 2, 3 | =section=, =subsection=, =subsubsection= |
 | Recognized paragraph fragment | One parsed STM subtree |
 | =texmacs= special block | One parsed STM subtree, even for a string or =document= root |
 
@@ -520,10 +520,16 @@ COMMENT/archive headings, empty headings and deeper headings are also
 rejected rather than silently discarded.  Fragment discovery can support
 contexts that this whole-document conversion does not support.
 
-The current parser boundary conservatively rejects differing effective
-=org-todo-regexp=, =org-done-keywords= or =org-odd-levels-only= settings between
-the source and private parser.  Arbitrary Org parser customization is not
-supported.  There is no INCLUDE expansion, Babel execution or export hook.
+The private parser receives copies of the source's effective
+=org-todo-regexp=, =org-done-keywords=, =org-odd-levels-only= and
+=org-priority-regexp=.  Changes to these settings during conversion are
+rejected.  Settings are not rebuilt from TODO declarations or file keywords.
+With =org-odd-levels-only= enabled, for example, a three-star heading has
+parsed level 2 and becomes =subsection=.  Correctly recognized TODO and
+priority metadata still raise an unsupported-metadata error; copying parser
+settings does not yet add their display or omission policy.
+Arbitrary Org parser customization is not supported.  There is no INCLUDE
+expansion, Babel execution or export hook.
 This is structural conversion, not a byte-for-byte Org round trip.
 
 ** Native encoding and lifetime

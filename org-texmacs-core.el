@@ -46,6 +46,7 @@ Changing this option takes effect after the current worker is stopped."
     (org-todo-regexp . variable)
     (org-done-keywords . variable)
     (org-odd-levels-only . variable)
+    (org-priority-regexp . variable)
     (scan-sexps . function)
     (parse-partial-sexp . function)
     (make-syntax-table . function)

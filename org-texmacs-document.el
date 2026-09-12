@@ -197,16 +197,34 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
         result))))
 
 (defun org-texmacs--document-heading-settings ()
-  "Copy effective Org TODO and headline-level settings for comparison.
-Copy strings as well as lists so in-place edits invalidate the snapshot."
+  "Copy effective Org heading parser settings for transfer and comparison.
+Keep TODO regexp, DONE keywords, odd-level policy and priority regexp.
+Copy strings as well as lists so in-place edits invalidate the snapshot.
+Do not rebuild effective values from TODO declarations or file keywords."
+  (unless (and (or (null org-todo-regexp) (stringp org-todo-regexp))
+               (proper-list-p org-done-keywords)
+               (cl-every #'stringp org-done-keywords)
+               (stringp org-priority-regexp))
+    (signal 'org-texmacs-document-error '("Invalid Org heading settings")))
   (list (and org-todo-regexp (substring-no-properties org-todo-regexp))
         (mapcar #'substring-no-properties org-done-keywords)
-        org-odd-levels-only))
+        (and org-odd-levels-only t)
+        (substring-no-properties org-priority-regexp)))
+
+(defun org-texmacs--document-use-heading-settings (settings)
+  "Install copied heading SETTINGS in the private Org parser buffer.
+Call after `org-mode' initialization and before parsing any source.  Keep
+buffer-local copies separate from the caller's snapshot and source buffer."
+  (setq-local org-todo-regexp
+              (and (nth 0 settings) (substring-no-properties (nth 0 settings))))
+  (setq-local org-done-keywords (mapcar #'substring-no-properties (nth 1 settings)))
+  (setq-local org-odd-levels-only (nth 2 settings))
+  (setq-local org-priority-regexp (substring-no-properties (nth 3 settings))))
 
 (defun org-texmacs--document-prepare (source spans heading-settings)
   "Prepare SOURCE and discovered SPANS without starting a worker.
 HEADING-SETTINGS is the source's effective heading configuration snapshot.
-Reject it if the isolated Org parser would interpret headings differently.
+Install it locally after private mode initialization, before parsing source.
 Return (AST ISLANDS REQUESTS POST-BLANKS).  Each request is
 (ISLAND-ENTRY SOURCE TAG); TAG is nil for an unrestricted special block.
 Island entries initially contain placeholder strees for structural validation.
@@ -217,9 +235,7 @@ All positions refer to the complete, unnarrowed source snapshot."
           (remaining spans)
           (islands nil) (requests nil) (blanks nil))
       (delay-mode-hooks (org-mode))
-      (unless (equal heading-settings (org-texmacs--document-heading-settings))
-        (signal 'org-texmacs-document-error
-                '("Source and private Org heading settings differ")))
+      (org-texmacs--document-use-heading-settings heading-settings)
       (insert source)
       (dolist (span spans)
         (goto-char (org-texmacs-fragment-span-begin span))

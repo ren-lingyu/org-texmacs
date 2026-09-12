@@ -1675,33 +1675,116 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
         (should (eq process org-texmacs--worker-process))))))
 
 (ert-deftest org-texmacs-document-source-custom-todo-settings ()
-  (with-temp-buffer
-    (let ((org-todo-keywords '((sequence "WAIT" "|" "DONE"))))
-      (org-mode))
-    (insert "* WAIT Task\n")
-    ;; Establish that the fixture really has non-default TODO semantics.
-    (should (equal (org-element-map (org-element-parse-buffer) 'headline
-                     (lambda (node) (org-element-property :todo-keyword node)))
-                   '("WAIT")))
-    (let ((source (buffer-string)))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _) (ert-fail "Incompatible settings started parsing"))))
-        (let ((failure (should-error (org-texmacs-document)
-                                     :type 'org-texmacs-document-error)))
-          (should (equal (cadr failure) "Source and private Org heading settings differ"))))
-      (should (equal source (buffer-string))))))
+  (dolist (keyword '("WAIT" "FINISHED"))
+    (with-temp-buffer
+      (let ((org-todo-keywords '((sequence "WAIT" "|" "FINISHED"))))
+        (org-mode))
+      (insert "* " keyword " Task\n")
+      ;; Establish that the fixture really has non-default TODO semantics.
+      (should (equal (org-element-map (org-element-parse-buffer) 'headline
+                       (lambda (node) (org-element-property :todo-keyword node)))
+                     (list keyword)))
+      (let ((source (buffer-string)))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Unsupported metadata started parsing"))))
+          (let ((failure (should-error (org-texmacs-document)
+                                       :type 'org-texmacs-document-error)))
+            (should (equal (cadr failure) "Unsupported headline metadata"))))
+        (should (equal source (buffer-string)))))))
 
 (ert-deftest org-texmacs-document-source-custom-level-settings ()
   (with-temp-buffer
     (org-mode)
-    (setq-local org-odd-levels-only (not (default-value 'org-odd-levels-only)))
+    (setq-local org-odd-levels-only t)
     (insert "*** Heading\n")
+    (should (equal (org-texmacs-document-body (org-texmacs-document))
+                   '(document (subsection "Heading"))))
+    (erase-buffer)
+    (insert "******* Deep\n")
     (should-error (org-texmacs-document) :type 'org-texmacs-document-error)))
 
-(ert-deftest org-texmacs-document-source-rechecks-heading-settings ()
-  (dolist (change '(regexp done level))
+(ert-deftest org-texmacs-document-source-custom-todo-plain-title ()
+  (with-temp-buffer
+    (let ((org-todo-keywords '((sequence "WAIT" "|" "FINISHED"))))
+      (org-mode))
+    (insert "* TODO A *bold* title\n")
+    (should (equal (org-texmacs-document-body (org-texmacs-document))
+                   '(document (section (concat "TODO A " (strong "bold") " " "title")))))))
+
+(ert-deftest org-texmacs-document-source-custom-priority-settings ()
+  (with-temp-buffer
+    (org-mode)
+    ;; A numeric-only effective regexp leaves [#A] in the title itself.
+    (setq-local org-priority-regexp "\\(\\[#\\([0-9]+\\)\\] ?\\)")
+    (insert "* [#A] Task\n")
+    (should (equal (org-texmacs-document-body (org-texmacs-document))
+                   '(document (section "[#A] Task"))))
+    (erase-buffer)
+    (insert "* [#12] Task\n")
+    (let ((failure (should-error (org-texmacs-document)
+                                 :type 'org-texmacs-document-error)))
+      (should (equal (cadr failure) "Unsupported headline metadata")))))
+
+(ert-deftest org-texmacs-document-heading-settings-parser-parity ()
+  (with-temp-buffer
+    (let ((org-todo-keywords '((sequence "WAIT" "|" "FINISHED"))))
+      (org-mode))
+    (setq-local org-odd-levels-only t)
+    (insert "* WAIT [#A] A *bold* title :tag:\n*** FINISHED Done\n")
+    (cl-labels ((properties ()
+                 (org-element-map (org-element-parse-buffer) 'headline
+                   (lambda (node)
+                     (mapcar (lambda (key) (org-element-property key node))
+                             '(:level :todo-keyword :todo-type :priority :raw-value :tags))))))
+      (let ((expected (properties))
+            (settings (org-texmacs--document-heading-settings))
+            (source (buffer-string)))
+        (should (equal expected
+                       '((1 "WAIT" todo 65 "A *bold* title" ("tag"))
+                         (2 "FINISHED" done nil "Done" nil))))
+        (with-temp-buffer
+          (org-mode)
+          (org-texmacs--document-use-heading-settings settings)
+          (insert source)
+          (should (equal (properties) expected)))))))
+
+(ert-deftest org-texmacs-document-heading-settings-copy-isolation ()
+  (with-temp-buffer
+    (org-mode)
+    (setq-local org-todo-regexp (copy-sequence "\\(WAIT\\)"))
+    (setq-local org-done-keywords (list (copy-sequence "FINISHED")))
+    (setq-local org-priority-regexp (copy-sequence org-priority-regexp))
+    (let* ((settings (org-texmacs--document-heading-settings))
+           (expected (org-texmacs--document-heading-settings)))
+      (aset org-todo-regexp 0 ?x)
+      (aset (car org-done-keywords) 0 ?x)
+      (aset org-priority-regexp 0 ?x)
+      (should (equal settings expected))
+      (with-temp-buffer
+        (org-mode)
+        (org-texmacs--document-use-heading-settings settings)
+        (aset org-todo-regexp 0 ?y)
+        (aset (car org-done-keywords) 0 ?y)
+        (aset org-priority-regexp 0 ?y)
+        (should (equal settings expected))))))
+
+(ert-deftest org-texmacs-document-heading-settings-reject-malformed-values ()
+  (dolist (setting '((org-todo-regexp . 1)
+                     (org-done-keywords . "DONE")
+                     (org-done-keywords . (1))
+                     (org-done-keywords . ("DONE" . "rest"))
+                     (org-priority-regexp . nil)))
     (with-temp-buffer
       (org-mode)
+      (set (make-local-variable (car setting)) (cdr setting))
+      (insert "Text\n")
+      (should-error (org-texmacs-document) :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-document-source-rechecks-heading-settings ()
+  (dolist (change '(regexp done done-in-place level priority))
+    (with-temp-buffer
+      (org-mode)
+      (setq-local org-done-keywords (list (copy-sequence "DONE")))
       (insert "(math \"x\") (math \"y\")\n")
       (let ((calls 0))
         (cl-letf (((symbol-function 'org-texmacs--worker-request)
@@ -1712,6 +1795,11 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                         (setq-local org-todo-regexp (copy-sequence org-todo-regexp))
                         (aset org-todo-regexp 0 ?x))
                        ('done (setq-local org-done-keywords '("FINISHED")))
+                       ('done-in-place
+                        (aset (car org-done-keywords) 0 ?x))
+                       ('priority
+                        (setq-local org-priority-regexp (copy-sequence org-priority-regexp))
+                        (aset org-priority-regexp 0 ?x))
                        ('level (setq-local org-odd-levels-only (not org-odd-levels-only))))
                      '(math "x"))))
           (let ((failure (should-error (org-texmacs-document)
@@ -2062,5 +2150,30 @@ Only tests with explicit example names use this helper; do not run Babel."
       (unwind-protect
           (should (equal (org-texmacs--session-read session) '(document "")))
         (org-texmacs-session-close session)))))
+
+(ert-deftest org-texmacs-document-real-custom-heading-settings ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (let ((org-todo-keywords '((sequence "WAIT" "|" "FINISHED"))))
+        (org-mode))
+      (setq-local org-odd-levels-only t)
+      (insert "*** TODO Task\n(math \"α\")\n")
+      (let* ((settings (org-texmacs--document-heading-settings))
+             (source (buffer-string))
+             (document (org-texmacs-document))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (should (equal (org-texmacs-document-body document)
+                             '(document (subsection "TODO Task") (concat (math "α") "\n"))))
+              (should (equal (org-texmacs-document-stm-paths document) '((1 0))))
+              (org-texmacs-session-set-document session document)
+              (should (equal (org-texmacs--session-read session)
+                             (org-texmacs-test--native-hex
+                              '(document (subsection "TODO Task")
+                                         (concat (math "<alpha>") "\n")))))
+              (should (equal source (buffer-string)))
+              (should (equal settings (org-texmacs--document-heading-settings))))
+          (org-texmacs-session-close session))))))
 
 ;;; ert.el ends here

@@ -142,13 +142,16 @@ TeXmacs special blocks and discovered paragraph fragments.  Use the current
 `org-texmacs-fragment-tags'.  Other Org nodes and semantic metadata signal
 `org-texmacs-document-error'.  Reject narrowing; do not widen implicitly,
 expand INCLUDE, execute Babel, run export hooks or read external files.
-Reject effective TODO or headline-level settings that differ from the
-private Org parser; do not silently reinterpret customized headings.
+Copy effective TODO, DONE, priority regexp and headline-level settings into
+the private Org parser; do not silently reinterpret customized headings.
+Levels are Org's parsed levels, including its odd-level policy.  Other
+parser customization is not supported; metadata remains explicitly rejected.
 
 Prepare a private snapshot without mode hooks, validate supported structure,
 then synchronously parse each island with the shared worker.  Do not cache
 the result or modify source/live Org nodes.  Reject source, mode, narrowing
-or tag changes while waiting.  Parser and worker errors propagate unchanged.
+or tag/heading-setting changes while waiting.  Parser and worker errors
+propagate unchanged.
 The result preserves source-dependent text semantics for later encoding;
 it does not provide export, native buffer updates or rendering."
   (unless (and (derived-mode-p 'org-mode) (not (buffer-narrowed-p)))
