@@ -1,10 +1,10 @@
-;;; org-texmacs.el --- TeXmacs AST integration for Org -*- lexical-binding: t; -*-
+;;; org-texmacs.el --- TeXmacs trees and body sessions for Org -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2026 aRenCoco
 
 ;; Author: aRenCoco
 ;; Maintainer: aRenCoco
-;; Version: 0.1.0
+;; Version: 0.2.0
 ;; Package-Requires: ((emacs "31.1") (org "9.8"))
 ;; Keywords: outlines, tex
 ;; URL: https://github.com/ren-lingyu/org-texmacs

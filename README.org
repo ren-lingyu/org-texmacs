@@ -5,15 +5,17 @@ Org TeXmacs provides TeXmacs AST integration for Org documents.  Write
 structured content in official STM/Scheme serialization directly in Org;
 the Org buffer is the source of truth, with no external =.tm= file required.
 
-Version 0.1.0 supports block-level parsing with lazy caching and configurable
-fragment source discovery with on-demand tree parsing.  It does not provide
-preview, export, equation numbering, fontification, an editing minor mode,
-or a combined Org and TeXmacs document AST.
+Version 0.2.0 retains block-level parsing with lazy caching and configurable
+fragment source discovery with on-demand tree parsing.  It adds conversion
+of a limited Org body subset to a TeXmacs body AST, provenance-aware native
+encoding, and explicit native body sessions.
 
-The current checkout additionally provides limited whole-buffer conversion
-to a TeXmacs body and explicit native buffer sessions, described below.
-These additions are not part of the 0.1.0 release.  They do not add preview
-or a complete document exporter, and do not replace Org's live AST.
+Document conversion supports basic inline markup, self-contained URI links,
+anonymous inline footnotes, level 1--3 headings and TeXmacs islands, as
+specified below.  It does not provide a complete TeXmacs file document,
+preview, export, document-wide numbering or references, fontification,
+an editing minor mode, or a combined Org and TeXmacs document AST.
+Org's source buffer and live AST remain unchanged.
 
 * Requirements
 
@@ -468,7 +470,7 @@ and large-document performance has not been validated.
 
 * Document conversion and native sessions
 
-These APIs are available in the current checkout, after the 0.1.0 release.
+These APIs are available starting with version 0.2.0.
 They form an additional downstream path; the block and fragment APIs above
 continue to return Org-compatible pseudo subtrees.
 
