@@ -145,7 +145,12 @@ expand INCLUDE, execute Babel, run export hooks or read external files.
 Copy effective TODO, DONE, priority regexp and headline-level settings into
 the private Org parser; do not silently reinterpret customized headings.
 Levels are Org's parsed levels, including its odd-level policy.  Other
-parser customization is not supported; metadata remains explicitly rejected.
+parser customization is not supported.  TODO, priority and explicit tags use
+standard `org-export-with-todo-keywords', `org-export-with-priority' and
+`org-export-with-tags' settings with `org-texmacs-format-headline-function'.
+Snapshot output settings once; later changes affect only the next conversion.
+COMMENT/archive headings and other unsupported metadata remain rejected.
+Do not collect file-local export options such as #+OPTIONS.
 
 Prepare a private snapshot without mode hooks, validate supported structure,
 then synchronously parse each island with the shared worker.  Do not cache
@@ -160,9 +165,10 @@ it does not provide export, native buffer updates or rendering."
          (tick (buffer-chars-modified-tick))
          (tags (org-texmacs--fragment-tags))
          (heading-settings (org-texmacs--document-heading-settings))
+         (info (org-texmacs--document-options))
          (source (buffer-substring-no-properties (point-min) (point-max)))
          (spans (org-texmacs--fragment-collect tags))
-         (prepared (org-texmacs--document-prepare source spans heading-settings)))
+         (prepared (org-texmacs--document-prepare source spans heading-settings info)))
     (cl-labels ((check ()
                  (org-texmacs--fragment-check-source buffer tick)
                  (org-texmacs--fragment-check-tags tags)
@@ -182,7 +188,7 @@ it does not provide export, native buffer updates or rendering."
             (signal 'org-texmacs-parse-error '("TeXmacs root differs from fragment tag")))
           (setcdr (car request) stree)))
       (org-texmacs--document-lower (nth 0 prepared) (nth 1 prepared)
-                                 (nth 3 prepared)))))
+                                 (nth 3 prepared) info))))
 
 ;;;###autoload
 (defun org-texmacs-check-setup ()

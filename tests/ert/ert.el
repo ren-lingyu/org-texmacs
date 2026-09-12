@@ -1516,7 +1516,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 (ert-deftest org-texmacs-document-rejects-unsupported-source ()
   (dolist (source '("- item\n" "[[https://example.org][link]]\n"
                     "/italic/\n" "| table |\n" "# comment\n"
-                    "#+title: Title\n" "* TODO Task\n" "* Tagged :tag:\n"
+                    "#+title: Title\n" "* COMMENT Task\n" "* Tagged :ARCHIVE:\n"
                     "**** Deep\n" "* \n" "#+name: named\nParagraph\n"
                     "#+attr_html: :class test\nParagraph\n"
                     "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n"))
@@ -1686,10 +1686,11 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                      (list keyword)))
       (let ((source (buffer-string)))
         (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   (lambda (&rest _) (ert-fail "Unsupported metadata started parsing"))))
-          (let ((failure (should-error (org-texmacs-document)
-                                       :type 'org-texmacs-document-error)))
-            (should (equal (cadr failure) "Unsupported headline metadata"))))
+                 (lambda (&rest _) (ert-fail "Plain headline started parsing"))))
+          (let ((org-export-with-todo-keywords t))
+            (should (equal (org-texmacs-document-body (org-texmacs-document))
+                           (list 'document (list 'section
+                                                (list 'concat (list 'strong keyword) " " "Task")))))))
         (should (equal source (buffer-string)))))))
 
 (ert-deftest org-texmacs-document-source-custom-level-settings ()
@@ -1721,9 +1722,9 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                    '(document (section "[#A] Task"))))
     (erase-buffer)
     (insert "* [#12] Task\n")
-    (let ((failure (should-error (org-texmacs-document)
-                                 :type 'org-texmacs-document-error)))
-      (should (equal (cadr failure) "Unsupported headline metadata")))))
+    (let ((org-export-with-priority t))
+      (should (equal (org-texmacs-document-body (org-texmacs-document))
+                     '(document (section (concat "[#12]" " " "Task"))))))))
 
 (ert-deftest org-texmacs-document-heading-settings-parser-parity ()
   (with-temp-buffer
@@ -2079,7 +2080,7 @@ Only serialize expected bytes; do not call the production encoder."
             (insert "Original\n")
             (org-texmacs-session-set-document session (org-texmacs-document))
             (let ((old (org-texmacs--session-read session)))
-              (dolist (case '(("* TODO Task\n" . org-texmacs-document-error)
+              (dolist (case '(("* COMMENT Task\n" . org-texmacs-document-error)
                               ("(math 1)\n" . org-texmacs-parse-error)))
                 (erase-buffer)
                 (insert (car case))
@@ -2174,6 +2175,141 @@ Only tests with explicit example names use this helper; do not run Babel."
                                          (concat (math "<alpha>") "\n")))))
               (should (equal source (buffer-string)))
               (should (equal settings (org-texmacs--document-heading-settings))))
+          (org-texmacs-session-close session))))))
+
+(ert-deftest org-texmacs-headline-policy-combinations ()
+  (dolist (todo '(nil t))
+    (dolist (priority '(nil t))
+      (dolist (tags '(nil t not-in-toc))
+        (with-temp-buffer
+          (org-mode)
+          (insert "* TODO [#A] A *bold* title :one:two:\nBody\n")
+          (let* ((org-export-with-todo-keywords todo)
+                 (org-export-with-priority priority)
+                 (org-export-with-tags tags)
+                 (source (buffer-string))
+                 (result (org-texmacs-document))
+                 (parts (append (and todo '((strong "TODO") " "))
+                                (and priority '("[#A]" " "))
+                                '("A " (strong "bold") " " "title")
+                                (and tags '(" " ":one:two:")))))
+            (should (equal (org-texmacs-document-body result)
+                           (list 'document (list 'section (cons 'concat parts))
+                                 '(concat "Body\n"))))
+            (should-not (org-texmacs-document-stm-paths result))
+            (should (equal source (buffer-string)))))))))
+
+(ert-deftest org-texmacs-headline-formatter-copies-and-preserves-parts ()
+  (let* ((todo (copy-sequence "WAIT"))
+         (plain (copy-sequence "Title"))
+         (parts (list plain '(strong "bold") "\t " "end"))
+         (tags (list (copy-sequence "one")))
+         (result (org-texmacs-format-headline-default-function todo 'todo 12 parts tags nil)))
+    (should (equal result '(concat (strong "WAIT") " " "[#12]" " "
+                                   "Title" (strong "bold") "\t " "end" " " ":one:")))
+    (should (equal result
+                   (org-texmacs-format-headline-default-function todo 'done 12 parts tags nil)))
+    (should (equal parts '("Title" (strong "bold") "\t " "end")))
+    (aset todo 0 ?X)
+    (aset plain 0 ?X)
+    (aset (car tags) 0 ?X)
+    (should (equal (cadr (cadr result)) "WAIT"))
+    (should (equal (nth 5 result) "Title")))
+  (let* ((text (copy-sequence "Title"))
+         (result (org-texmacs-format-headline-default-function nil nil nil (list text) nil nil)))
+    (should (equal result text))
+    (should-not (eq result text))))
+
+(ert-deftest org-texmacs-headline-custom-formatter-policy-and-result ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "*** TODO [#A] Title :tag:\n")
+    (let* ((output (list 'strong (copy-sequence "custom")))
+           (calls 0)
+           (org-export-with-todo-keywords nil)
+           (org-export-with-priority nil)
+           (org-export-with-tags nil)
+           (org-texmacs-format-headline-function
+            (lambda (todo type priority parts tags info)
+              (cl-incf calls)
+              (should-not todo) (should-not type) (should-not priority) (should-not tags)
+              (should (equal parts '("Title")))
+              (should-not (plist-get info :with-tags))
+              output))
+           (result (org-texmacs-document)))
+      (should (> calls 0))
+      (should (equal (org-texmacs-document-body result)
+                     '(document (subsubsection (strong "custom")))))
+      (aset (cadr output) 0 ?X)
+      (should (equal (org-texmacs-document-body result)
+                     '(document (subsubsection (strong "custom"))))))))
+
+(ert-deftest org-texmacs-headline-invalid-formatter-result ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* Title\n")
+    (dolist (value '(42 (strong 42) (nil "x") (strong . "x")))
+      (let ((org-texmacs-format-headline-function (lambda (&rest _) value)))
+        (should-error (org-texmacs-document) :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-headline-output-settings-snapshot ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* TODO [#A] Title :tag:\n(math \"x\")\n")
+    (let ((org-export-with-todo-keywords t)
+          (org-export-with-priority t)
+          (org-export-with-tags t)
+          (org-texmacs-format-headline-function #'org-texmacs-format-headline-default-function))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (_)
+                   (setq org-export-with-todo-keywords nil
+                         org-export-with-priority nil org-export-with-tags nil
+                         org-texmacs-format-headline-function (lambda (&rest _) "changed"))
+                   '(math "x"))))
+        (should (equal (org-texmacs-document-body (org-texmacs-document))
+                       '(document (section (concat (strong "TODO") " " "[#A]" " "
+                                                    "Title" " " ":tag:"))
+                                  (concat (math "x") "\n"))))
+        (should (equal (cadr (org-texmacs-document-body (org-texmacs-document)))
+                       '(section "changed")))))))
+
+(ert-deftest org-texmacs-headline-explicit-tags-only ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* Parent :parent:\n** Child :child:\n")
+    (let ((org-export-with-tags t))
+      (should (equal (org-texmacs-document-body (org-texmacs-document))
+                     '(document (section (concat "Parent" " " ":parent:"))
+                                (subsection (concat "Child" " " ":child:"))))))))
+
+(ert-deftest org-texmacs-headline-no-file-export-options ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: todo:nil\n* TODO Title\n")
+    (cl-letf (((symbol-function 'org-export-get-environment)
+               (lambda (&rest _) (ert-fail "Collected export environment"))))
+      (should-error (org-texmacs-document) :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-headline-native-metadata-literal ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (let ((org-todo-keywords '((sequence "<alpha>" "|" "FINISHED"))))
+        (org-mode))
+      (insert "* <alpha> [#12] 中 :tag:\n(math \"<alpha>\")\n")
+      (let* ((org-export-with-todo-keywords t)
+             (org-export-with-priority t)
+             (org-export-with-tags t)
+             (document (org-texmacs-document))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (should (equal (org-texmacs-document-stm-paths document) '((1 0))))
+              (org-texmacs-session-set-document session document)
+              (should (equal (org-texmacs--session-read session)
+                             (org-texmacs-test--native-hex
+                              '(document (section (concat (strong "<less>alpha<gtr>") " "
+                                                           "[#12]" " " "<#4E2D>" " " ":tag:"))
+                                         (concat (math "<alpha>") "\n"))))))
           (org-texmacs-session-close session))))))
 
 ;;; ert.el ends here

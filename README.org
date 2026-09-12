@@ -137,7 +137,7 @@ defers loading.  It does not start TeXmacs.  The first block cache miss or
 fragment tree request starts the worker, as does document island parsing
 or opening a native session; source discovery alone does not.
 
-The package currently exposes four customizable variables.  This complete
+The package currently exposes five customizable variables.  This complete
 example assumes the package is already on =load-path= and explicitly sets
 the source/straight defaults.  For a different installation path, copy its
 =:custom= section into the corresponding declaration above rather than
@@ -156,6 +156,8 @@ that default and requires the executable to be found through =exec-path=.
     (org-texmacs-program "texmacs")
     (org-texmacs-worker-start-timeout 60)
     (org-texmacs-worker-request-timeout 10)
+    (org-texmacs-format-headline-function
+     #'org-texmacs-format-headline-default-function)
     (org-texmacs-fragment-tags
      '("math" "equation" "equation*" "eqnarray" "eqnarray*"
        "align" "align*" "gather" "gather*" "eqsplit" "eqsplit*")))
@@ -515,8 +517,8 @@ The supported Org subset is deliberately small:
 
 Heading text may contain supported bold markup.  This is not a general Org
 exporter: links, other emphasis, lists, tables, other blocks, keywords,
-drawers and affiliated metadata are rejected.  TODO, priority, tags,
-COMMENT/archive headings, empty headings and deeper headings are also
+drawers and affiliated metadata are rejected.  COMMENT/archive headings,
+empty headings and deeper headings are also
 rejected rather than silently discarded.  Fragment discovery can support
 contexts that this whole-document conversion does not support.
 
@@ -525,12 +527,56 @@ The private parser receives copies of the source's effective
 =org-priority-regexp=.  Changes to these settings during conversion are
 rejected.  Settings are not rebuilt from TODO declarations or file keywords.
 With =org-odd-levels-only= enabled, for example, a three-star heading has
-parsed level 2 and becomes =subsection=.  Correctly recognized TODO and
-priority metadata still raise an unsupported-metadata error; copying parser
-settings does not yet add their display or omission policy.
+parsed level 2 and becomes =subsection=.
 Arbitrary Org parser customization is not supported.  There is no INCLUDE
 expansion, Babel execution or export hook.
 This is structural conversion, not a byte-for-byte Org round trip.
+
+** Headline metadata and presentation
+
+Document conversion snapshots these standard Org options from the source
+buffer; it does not introduce parallel TeXmacs display switches:
+
+| Org option | Default | Meaning |
+|------------+---------+---------|
+| =org-export-with-todo-keywords= | t | Show TODO/DONE keyword |
+| =org-export-with-priority= | nil | Show priority cookie |
+| =org-export-with-tags= | t | Show explicit headline tags |
+
+=not-in-toc= also shows tags in the body heading; no TOC is generated.
+Disabling a field only omits its presentation, never the heading or body.
+Tags retain their explicit order without inheritance.  This currently reads
+variable values only: =#+OPTIONS=, BIND, SETUPFILE and complete export
+environment collection are not supported.  Loading =ox= supplies standard
+options but does not run an export pipeline.  Keyword nodes remain rejected.
+
+The default =org-texmacs-format-headline-function= is
+=org-texmacs-format-headline-default-function=.  It joins a strong TODO/DONE
+keyword, literal priority cookie, lowered title parts and a literal tag
+string, separated by spaces.  One part is returned directly; multiple parts
+get one =concat= wrapper without merging adjacent strings.  TODO and DONE
+use the same presentation.  All new leaves use Org literal encoding semantics.
+
+Custom formatters receive six arguments:
+
+#+begin_src emacs-lisp
+  (todo todo-type priority title-parts tags info)
+#+end_src
+
+Disabled metadata arrives as nil, including =todo-type= when TODO is disabled.
+=title-parts= contains lowered text strees, not an Org AST or serialized text.
+=info= is an options plist with =:with-todo-keywords=, =:with-priority=,
+=:with-tags= and =:texmacs-format-headline-function=.  Return one text stree;
+it is validated and copied into the sectioning node's sole title child.
+The formatter cannot choose the enclosing sectioning level through its return
+value.  Treat inputs as read-only and prefer a side-effect-free function.
+The package's default formatter is side-effect-free; custom function side
+effects are the caller's responsibility.  Preflight and final lowering may
+both invoke it, with no guaranteed invocation count.
+
+Output options and the selected formatter are fixed for one conversion;
+changes affect the next conversion.  Source text and effective parser
+settings still undergo the consistency checks described above.
 
 ** Native encoding and lifetime
 

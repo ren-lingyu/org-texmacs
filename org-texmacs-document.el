@@ -15,9 +15,52 @@
 (require 'org-texmacs-core)
 (require 'org-texmacs-source)
 (require 'org-texmacs-fragment)
+(require 'ox)
 
 (define-error 'org-texmacs-document-error
               "Org TeXmacs document conversion failed" 'org-texmacs-error)
+
+(defcustom org-texmacs-format-headline-function
+  #'org-texmacs-format-headline-default-function
+  "Function presenting headline metadata and lowered title parts.
+Called with TODO, TODO-TYPE, PRIORITY, TITLE-PARTS, TAGS and INFO.  Metadata
+disabled by INFO is nil; TITLE-PARTS is a list of text strees, not Org nodes.
+Return one text stree for the fixed sectioning node's sole title child.
+All output leaves have Org literal semantics, not STM source semantics.
+INFO is a conversion-local options plist.  Treat inputs as read-only and
+prefer a side-effect-free formatter.  Calls may occur during preflight and
+final lowering; no invocation count is guaranteed.  Custom function side
+effects are the caller's responsibility."
+  :type 'function
+  :group 'org-texmacs)
+
+(defun org-texmacs-format-headline-default-function
+    (todo _todo-type priority title-parts tags _info)
+  "Return a fresh text title stree without side effects.
+TODO becomes strong text, PRIORITY a literal cookie, and TAGS an explicit
+tag string.  Preserve TITLE-PARTS without merging adjacent text."
+  (let ((parts (append (and todo (list (list 'strong todo) " "))
+                       (and priority
+                            (list (concat "[#" (org-priority-to-string priority) "]") " "))
+                       title-parts
+                       (and tags (list " " (org-make-tag-string tags))))))
+    (org-texmacs--document-copy-stree
+     (if (= (length parts) 1) (car parts) (cons 'concat parts)))))
+
+(defun org-texmacs--document-options ()
+  "Snapshot standard Org headline policies and the selected formatter.
+Do not collect file keywords, run export preprocessing or read setup files.
+Resolve a formatter symbol now so later redefinition affects only new calls."
+  (let ((formatter (indirect-function org-texmacs-format-headline-function)))
+    (unless (and (memq org-export-with-todo-keywords '(nil t))
+                 (memq org-export-with-priority '(nil t))
+                 (memq org-export-with-tags '(nil t not-in-toc))
+                 (functionp formatter))
+      (signal 'org-texmacs-document-error '("Invalid headline presentation options")))
+    (list :with-todo-keywords org-export-with-todo-keywords
+          :with-priority org-export-with-priority
+          :with-tags org-export-with-tags
+          :texmacs-format-headline-function formatter)))
 
 (cl-defstruct (org-texmacs-document
                (:constructor org-texmacs--document-create)
@@ -60,7 +103,7 @@ ANCESTORS detects cycles; repeated, non-cyclic subtrees are copied separately."
     (org-texmacs--document-create
      :body (cons tag (nreverse children)) :stm-paths (nreverse paths))))
 
-(defun org-texmacs--document-lower (ast &optional islands post-blanks)
+(defun org-texmacs--document-lower (ast &optional islands post-blanks info)
   "Lower prepared Org AST and ISLANDS to a structural document result.
 
 AST must be an `org-data' snapshot.  ISLANDS is an identity-keyed alist
@@ -69,6 +112,9 @@ plain-text child of a paragraph.  A preparation layer must split text at
 fragment boundaries and mask foreign markup before constructing this input.
 This function never discovers or parses fragments.  Every mapping must be
 consumed exactly once; each mapped root contributes one output child.
+INFO fixes headline output policies and formatter for this conversion.
+When omitted, use fixed default policies and the default formatter, without
+reading dynamic export settings.  Custom formatters should be side-effect-free.
 
 POST-BLANKS optionally maps inline Org object identities to their exact
 trailing spaces/tabs.  Without an entry, a nonnegative `:post-blank' count
@@ -94,7 +140,10 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
                      (not (memq (car entry) keys)))
           (signal 'org-texmacs-document-error '("Invalid or duplicate mapping key")))
         (push (car entry) keys))))
-  (let ((used-islands nil) (used-blanks nil))
+  (let ((used-islands nil) (used-blanks nil)
+        (info (or info '(:with-todo-keywords t :with-priority nil :with-tags t
+                        :texmacs-format-headline-function
+                        org-texmacs-format-headline-default-function))))
     (cl-labels
         ((text (string)
            (org-texmacs--document-create :body (substring-no-properties string)))
@@ -176,17 +225,30 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
                    (org-texmacs--document-fail node "Unsupported headline level"))
                  (unless (and (stringp raw) (string-match-p "[^ \t\r\n]" raw))
                    (org-texmacs--document-fail node "Empty headline title"))
-                 (dolist (property '(:todo-keyword :priority :tags :commentedp :archivedp))
+                 (dolist (property '(:commentedp :archivedp))
                    (when (org-element-property property node)
                      (org-texmacs--document-fail node "Unsupported headline metadata")))
                  (let* ((parts (inlines (org-element-property :title node) 'title ancestors))
-                        (title (if (= (length parts) 1) (car parts)
-                                 (org-texmacs--document-pack 'concat parts))))
+                        (todo (and (plist-get info :with-todo-keywords)
+                                   (org-element-property :todo-keyword node))))
                    (unless parts
                      (org-texmacs--document-fail node "Empty headline title"))
                    (cons (org-texmacs--document-pack
                           (nth (1- level) '(section subsection subsubsection))
-                          (list title))
+                          (list
+                           (org-texmacs--document-create
+                            :body
+                            (org-texmacs--document-copy-stree
+                             (funcall (plist-get info :texmacs-format-headline-function)
+                                      (and todo (substring-no-properties todo))
+                                      (and todo (org-element-property :todo-type node))
+                                      (and (plist-get info :with-priority)
+                                           (org-element-property :priority node))
+                                      (mapcar #'org-texmacs-document-body parts)
+                                      (and (plist-get info :with-tags)
+                                           (mapcar #'substring-no-properties
+                                                   (org-element-property :tags node)))
+                                      info)))))
                          (blocks (org-element-contents node) 'headline ancestors)))))
               (t (org-texmacs--document-fail node "Unsupported or unprepared block"))))))
       (let ((result (org-texmacs--document-pack
@@ -221,10 +283,11 @@ buffer-local copies separate from the caller's snapshot and source buffer."
   (setq-local org-odd-levels-only (nth 2 settings))
   (setq-local org-priority-regexp (substring-no-properties (nth 3 settings))))
 
-(defun org-texmacs--document-prepare (source spans heading-settings)
+(defun org-texmacs--document-prepare (source spans heading-settings &optional info)
   "Prepare SOURCE and discovered SPANS without starting a worker.
 HEADING-SETTINGS is the source's effective heading configuration snapshot.
 Install it locally after private mode initialization, before parsing source.
+INFO supplies fixed headline policies and formatter to preflight lowering.
 Return (AST ISLANDS REQUESTS POST-BLANKS).  Each request is
 (ISLAND-ENTRY SOURCE TAG); TAG is nil for an unrestricted special block.
 Island entries initially contain placeholder strees for structural validation.
@@ -301,7 +364,7 @@ All positions refer to the complete, unnarrowed source snapshot."
             (signal 'org-texmacs-document-error '("Unconsumed fragment spans")))
           (setq islands (nreverse islands) requests (nreverse requests))
           ;; Reject unsupported input before any parsing request is sent.
-          (org-texmacs--document-lower ast islands blanks)
+          (org-texmacs--document-lower ast islands blanks info)
           (list ast islands requests blanks))))))
 
 (provide 'org-texmacs-document)
