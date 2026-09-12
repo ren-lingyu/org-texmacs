@@ -11,9 +11,11 @@
 ;;; Code:
 
 (require 'org-texmacs-core)
+(require 'org-texmacs-document)
 
 (define-error 'org-texmacs-worker-error "TeXmacs worker failure" 'org-texmacs-error)
 (define-error 'org-texmacs-parse-error "Invalid STM source" 'org-texmacs-error)
+(define-error 'org-texmacs-encoding-error "Invalid document encoding" 'org-texmacs-error)
 
 (defcustom org-texmacs-worker-start-timeout 60
   "Maximum seconds to wait for the TeXmacs worker to start."
@@ -146,8 +148,18 @@ Use the user's normal environment.  Only the socket directory is temporary."
            (proper-list-p node)
            (cl-every #'org-texmacs--stree-p (cdr node)))))
 
-(defun org-texmacs--worker-decode (response id)
+(defun org-texmacs--hex-stree-p (node)
+  "Return non-nil for a stree whose leaves are lowercase hexadecimal bytes."
+  (if (stringp node)
+      (and (zerop (% (length node) 2))
+           (let ((case-fold-search nil))
+             (string-match-p "\\`[0-9a-f]*\\'" node)))
+    (and (consp node) (car node) (symbolp (car node))
+         (proper-list-p node) (cl-every #'org-texmacs--hex-stree-p (cdr node)))))
+
+(defun org-texmacs--worker-decode (response id &optional operation)
   "Read RESPONSE for request ID and return its stree.
+OPERATION is nil for parse or `encode' for a native-body hex response.
 Reject malformed envelopes and trailing data.  Source errors have their own
 condition so callers can preserve a healthy worker."
   ;; Restrict the response reader, not subsequent validation or lazy loading.
@@ -162,7 +174,20 @@ condition so callers can preserve a healthy worker."
       ('ok
        (unless (org-texmacs--stree-p (nth 2 datum))
          (signal 'org-texmacs-worker-error '("Invalid response stree")))
-       (nth 2 datum))
+       (let ((payload (nth 2 datum)))
+         (if (eq operation 'encode)
+             (progn
+               (unless (and (consp payload) (eq (car payload) 'native-body)
+                            (= (length payload) 2)
+                            (consp (cadr payload)) (eq (caadr payload) 'document)
+                            (org-texmacs--hex-stree-p (cadr payload)))
+                 (signal 'org-texmacs-worker-error '("Invalid encoded body response")))
+               (cadr payload))
+           payload)))
+      ('encoding-error
+       (unless (and (eq operation 'encode) (stringp (nth 2 datum)))
+         (signal 'org-texmacs-worker-error '("Unexpected encoding error response")))
+       (signal 'org-texmacs-encoding-error (list (nth 2 datum))))
       ('error
        (unless (stringp (nth 2 datum))
          (signal 'org-texmacs-worker-error '("Invalid error response")))
@@ -176,6 +201,12 @@ a time.  Parse errors preserve the worker; transport failures or cancellation
 stop it so a later call can start a fresh process."
   (unless (stringp source)
     (signal 'wrong-type-argument (list 'stringp source)))
+  (org-texmacs--worker-call
+   (lambda (id) (format "(parse %d %s)\n" id (org-texmacs--scheme-string source)))))
+
+(defun org-texmacs--worker-call (make-request &optional operation)
+  "Send the fixed request produced by MAKE-REQUEST with its assigned ID.
+OPERATION selects the response contract; nil preserves the parse protocol."
   (when org-texmacs--worker-busy
     (signal 'org-texmacs-worker-error '("Worker request already in progress")))
   (let ((org-texmacs--worker-busy t)
@@ -194,21 +225,68 @@ stop it so a later call can start a fresh process."
                          :buffer (current-buffer) :coding 'utf-8-unix
                          :noquery t :sentinel #'ignore))
                   (process-send-string
-                   client (format "(parse %d %s)\n" id (org-texmacs--scheme-string source)))
+                   client (funcall make-request id))
                   ;; EOF from the server frames the entire response, including
                   ;; partial reads.  The server stays alive after closing client.
                   (org-texmacs--worker-wait
                    (lambda () (not (process-live-p client)))
                    org-texmacs--worker-process org-texmacs-worker-request-timeout)
-                  (prog1 (org-texmacs--worker-decode (buffer-string) id)
+                  (prog1 (org-texmacs--worker-decode (buffer-string) id operation)
                     (setq healthy t)))))
-          (org-texmacs-parse-error
+          ((org-texmacs-parse-error org-texmacs-encoding-error)
            (setq healthy t)
            (signal (car err) (cdr err)))
           (error (signal 'org-texmacs-worker-error
                          (list (error-message-string err)))))
       (when (and client (process-live-p client)) (delete-process client))
       (unless healthy (org-texmacs--worker-stop)))))
+
+(defun org-texmacs--worker-encode-document (document)
+  "Encode text DOCUMENT in the worker and return a hex-leaf body stree.
+This internal diagnostic result contains native bytes represented as ASCII
+hex, not text leaves and not an Org document result.  Never feed it back to
+this encoder.  Encoding and native tree construction occur only in TeXmacs;
+no intermediate document files or persistent native buffers are created."
+  (unless (org-texmacs-document-p document)
+    (signal 'org-texmacs-encoding-error '("Expected a document result")))
+  (let ((body (org-texmacs--document-copy-stree (org-texmacs-document-body document)))
+        (paths (org-texmacs-document-stm-paths document)))
+    (unless (and (consp body) (eq (car body) 'document) (proper-list-p paths))
+      (signal 'org-texmacs-encoding-error '("Expected document body and proper STM paths")))
+    (dolist (path paths)
+      (unless (proper-list-p path)
+        (signal 'org-texmacs-encoding-error '("Invalid STM path")))
+      (let ((node body))
+        (dolist (index path)
+          (unless (and (integerp index) (>= index 0) (consp node)
+                       (< index (length (cdr node))))
+            (signal 'org-texmacs-encoding-error '("STM path is out of bounds")))
+          (setq node (nth (1+ index) node)))))
+    (let ((rest paths))
+      (while rest
+        (dolist (other (cdr rest))
+          (let ((a (car rest)) (b other))
+            (while (and a b (= (car a) (car b)))
+              (setq a (cdr a) b (cdr b)))
+            (when (or (null a) (null b))
+              (signal 'org-texmacs-encoding-error '("Overlapping STM paths")))))
+        (setq rest (cdr rest))))
+    (cl-labels ((wire (node)
+                 (if (stringp node) (org-texmacs--scheme-string node)
+                   (when (eq (car node) 'raw-data)
+                     (signal 'org-texmacs-encoding-error '("raw-data is not supported")))
+                   (concat "(" (org-texmacs--scheme-string (symbol-name (car node)))
+                           (mapconcat (lambda (child) (concat " " (wire child))) (cdr node) "")
+                           ")"))))
+      ;; Serialize before starting the worker: invalid input has no process effects.
+      (let ((tree-wire (wire body))
+            (paths-wire (concat "(" (mapconcat
+                                     (lambda (path)
+                                       (concat "(" (mapconcat #'number-to-string path " ") ")"))
+                                     paths " ") ")")))
+        (org-texmacs--worker-call
+         (lambda (id) (format "(encode %d %s %s)\n" id tree-wire paths-wire))
+         'encode)))))
 
 (provide 'org-texmacs-worker)
 

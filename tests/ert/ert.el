@@ -1701,4 +1701,92 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
             (should (equal (cadr failure) "Org heading settings changed during conversion")))
           (should (= calls 1)))))))
 
+(ert-deftest org-texmacs-encoding-rejects-invalid-input-before-worker ()
+  (cl-letf (((symbol-function 'org-texmacs--worker-start)
+             (lambda () (ert-fail "Invalid input started worker"))))
+    (should-error (org-texmacs--worker-encode-document nil)
+                  :type 'org-texmacs-encoding-error)
+    (dolist (paths '(((2)) ((-1)) ((0 0)) (("0")) ((0) (0)) (() (0))
+                     ((0) (0 1)) ((0 . 1))))
+      (should-error (org-texmacs--worker-encode-document
+                     (org-texmacs--document-create :body '(document "x") :stm-paths paths))
+                    :type 'org-texmacs-encoding-error))
+    (should-error (org-texmacs--worker-encode-document
+                   (org-texmacs--document-create :body '(document (raw-data "x"))))
+                  :type 'org-texmacs-encoding-error)))
+
+(ert-deftest org-texmacs-encoding-wire-is-data ()
+  (cl-letf (((symbol-function 'org-texmacs--worker-call)
+             (lambda (make-request operation)
+               (should (eq operation 'encode))
+               (should (equal (funcall make-request 7)
+                              "(encode 7 (\"document\" (\"custom.tag*\" \"<alpha>\")) ((0)))\n"))
+               'encoded)))
+    (should (eq (org-texmacs--worker-encode-document
+                 (org-texmacs--document-create
+                  :body '(document (custom.tag* "<alpha>")) :stm-paths '((0))))
+                'encoded))))
+
+(ert-deftest org-texmacs-encoding-decode-contract ()
+  (should (equal (org-texmacs--worker-decode
+                  "(ok 1 (native-body (document \"e9\")))" 1 'encode)
+                 '(document "e9")))
+  (dolist (response '("(ok 2 (native-body (document \"00\")))"
+                      "(ok 1 (document \"00\"))"
+                      "(ok 1 (native-body (document \"f\")))"
+                      "(ok 1 (native-body (document \"gg\")))"
+                      "(ok 1 (native-body (document \"é\")))"
+                      "(ok 1 (native-body (document \"00\"))) extra"))
+    (should-error (org-texmacs--worker-decode response 1 'encode)
+                  :type 'org-texmacs-worker-error))
+  (should-error (org-texmacs--worker-decode "(encoding-error 1 \"invalid\")" 1 'encode)
+                :type 'org-texmacs-encoding-error)
+  (should-error (org-texmacs--worker-decode "(encoding-error 1 \"invalid\")" 1)
+                :type 'org-texmacs-worker-error))
+
+(defun org-texmacs-test--ascii-hex (text)
+  "Represent expected ASCII native TEXT as lowercase hexadecimal bytes."
+  (mapconcat (lambda (character) (format "%02x" character)) text ""))
+
+(ert-deftest org-texmacs-encoding-real-source-semantics ()
+  (org-texmacs-test--with-worker
+    (dolist (case '(("<alpha>" "<less>alpha<gtr>" "<alpha>")
+                    ("α" "<alpha>" "<alpha>")
+                    ("<less>alpha<gtr>" "<less>less<gtr>alpha<less>gtr<gtr>"
+                     "<less>alpha<gtr>")
+                    ("中" "<#4E2D>" "<#4E2D>")
+                    ("α <alpha>" "<alpha> <less>alpha<gtr>" "<alpha> <alpha>")
+                    ("\"\\\n\t" "\"\\\n\t" "\"\\\n\t")))
+      (let* ((source (car case))
+             (input (org-texmacs--document-create
+                     :body (list 'document source (list 'math source))
+                     :stm-paths '((1))))
+             (result (org-texmacs--worker-encode-document input)))
+        (should (equal result
+                       (list 'document (org-texmacs-test--ascii-hex (nth 1 case))
+                             (list 'math (org-texmacs-test--ascii-hex (nth 2 case))))))
+        (should (equal (org-texmacs-document-body input)
+                       (list 'document source (list 'math source))))))
+    ;; This character has a single Cork byte: do not return its UTF-8 bytes.
+    (let ((result (org-texmacs--worker-encode-document
+                   (org-texmacs--document-create :body '(document "é")))))
+      (should (equal result '(document "e9"))))
+    (should (org-texmacs--worker-live-p))))
+
+(ert-deftest org-texmacs-encoding-real-errors-preserve-parser ()
+  (org-texmacs-test--with-worker
+    (org-texmacs--worker-request "(math \"α\")")
+    (let ((process org-texmacs--worker-process))
+      ;; Bypass local preflight to exercise the Scheme validation boundary.
+      (dolist (payload '("(\"document\" \"x\") ((2))"
+                         "(\"document\" (\"math\" \"x\")) ((0) (0 0))"
+                         "(\"document\" (\"raw-data\" \"x\")) ()"))
+        (should-error
+         (org-texmacs--worker-call
+          (lambda (id) (format "(encode %d %s)\n" id payload)) 'encode)
+         :type 'org-texmacs-encoding-error))
+      (should (equal (org-texmacs--worker-request "(math \"α <alpha>\")")
+                     '(math "α <alpha>")))
+      (should (eq process org-texmacs--worker-process)))))
+
 ;;; ert.el ends here

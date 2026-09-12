@@ -24,7 +24,93 @@
           (error "Parser returned an invalid stree"))
       tree)))
 
+(define (org-texmacs-wire-tree node)
+  ;; Tags travel as strings, avoiding cross-reader symbol syntax differences.
+  (cond ((string? node) node)
+        ((and (list? node) (pair? node) (string? (car node))
+              (not (string=? (car node) "raw-data")))
+         (cons (string->symbol (car node))
+               (map org-texmacs-wire-tree (cdr node))))
+        (else (error "Invalid text tree"))))
+
+(define (org-texmacs-check-paths body paths)
+  (if (not (list? paths)) (error "Invalid STM paths"))
+  (for-each
+   (lambda (path)
+     (if (not (list? path)) (error "Invalid STM path"))
+     (let loop ((node body) (steps path))
+       (if (pair? steps)
+           (let ((index (car steps)))
+             (if (not (and (integer? index) (>= index 0) (pair? node)
+                           (< index (length (cdr node)))))
+                 (error "STM path is out of bounds"))
+             (loop (list-ref (cdr node) index) (cdr steps))))))
+   paths)
+  (let outer ((rest paths))
+    (if (pair? rest)
+        (begin
+          (for-each
+           (lambda (other)
+             (let prefix ((a (car rest)) (b other))
+               (cond ((or (null? a) (null? b)) (error "Overlapping STM paths"))
+                     ((= (car a) (car b)) (prefix (cdr a) (cdr b))))))
+           (cdr rest))
+          (outer (cdr rest))))))
+
+(define (org-texmacs-encode-body body paths)
+  ;; Only this operation requires encoding/native tree capabilities.
+  (for-each
+   (lambda (name)
+     (if (not (defined? name)) (error "Missing encoding capability" name)))
+   '(utf8->cork string-replace stree->tree tree->stree))
+  (org-texmacs-check-paths body paths)
+  (let walk ((node body) (path '()) (stm? #f))
+    (let ((native-source? (or stm? (member path paths))))
+      (if (string? node)
+          (let ((encoded (utf8->cork node)))
+            (if native-source?
+                ;; Preserve STM source notation, including explicit <less>/<gtr>.
+                (string-replace (string-replace encoded "<less>" "<") "<gtr>" ">")
+                encoded))
+          (cons (car node)
+                (let children ((rest (cdr node)) (index 0))
+                  (if (null? rest) '()
+                      (cons (walk (car rest) (append path (list index)) native-source?)
+                            (children (cdr rest) (+ index 1))))))))))
+
+(define (org-texmacs-hex-tree node)
+  ;; Encode native bytes as ASCII hex, not as UTF-8 text on the socket.
+  (if (string? node)
+      (apply string-append
+             (map (lambda (character)
+                    (let* ((byte (char->integer character))
+                           (hex (number->string byte 16)))
+                      (if (> byte 255) (error "Expected native bytes"))
+                      (if (< byte 16) (string-append "0" hex) hex)))
+                  (string->list node)))
+      (cons (car node) (map org-texmacs-hex-tree (cdr node)))))
+
+(define (org-texmacs-encode-reply request)
+  (let ((id (cadr request)))
+    (catch #t
+      (lambda ()
+        (let ((body (org-texmacs-wire-tree (caddr request))))
+          (if (not (and (pair? body) (eq? (car body) 'document)))
+              (error "Expected document body"))
+          (let* ((encoded (org-texmacs-encode-body body (cadddr request)))
+                 (native (tree->stree (stree->tree encoded))))
+            (if (not (equal? encoded native)) (error "Native tree changed structure"))
+            (list 'ok id (list 'native-body (org-texmacs-hex-tree native))))))
+      (lambda args (list 'encoding-error id "Invalid document encoding request")))))
+
 (define (org-texmacs-reply request)
+  (if (and (list? request) (= (length request) 4)
+           (eq? (car request) 'encode)
+           (integer? (cadr request)) (> (cadr request) 0))
+      (org-texmacs-encode-reply request)
+      (org-texmacs-parse-reply request)))
+
+(define (org-texmacs-parse-reply request)
   (if (and (list? request) (= (length request) 3)
            (eq? (car request) 'parse)
            (integer? (cadr request)) (> (cadr request) 0)
