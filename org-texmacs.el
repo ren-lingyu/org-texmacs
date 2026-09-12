@@ -137,10 +137,13 @@ Return an `org-texmacs-document' structure with BODY and STM-PATHS accessors.
 This is a new derived result, not an Org live AST replacement or a native
 encoded tree.  Treat it and its nested contents as read-only.
 
-Support paragraphs, plain text, bold and level 1--3 headings, plus complete
-TeXmacs special blocks and discovered paragraph fragments.  Use the current
-`org-texmacs-fragment-tags'.  Other Org nodes and semantic metadata signal
-`org-texmacs-document-error'.  Reject narrowing; do not widen implicitly,
+Support paragraphs, plain text, bold/italic/underline/strike-through,
+inline code/verbatim, explicit paragraph line breaks and level 1--3 headings,
+plus complete TeXmacs special blocks and discovered paragraph fragments.
+Normalize ordinary spaces, tabs and soft newlines in Org inline text,
+including literal inline code; do not normalize STM subtree contents.
+Use the current `org-texmacs-fragment-tags'.  Other Org nodes and metadata
+signal `org-texmacs-document-error'.  Reject narrowing; do not widen implicitly,
 expand INCLUDE, execute Babel, run export hooks or read external files.
 Copy effective TODO, DONE, priority regexp and headline-level settings into
 the private Org parser; do not silently reinterpret customized headings.

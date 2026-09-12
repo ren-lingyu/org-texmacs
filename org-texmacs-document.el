@@ -20,6 +20,11 @@
 (define-error 'org-texmacs-document-error
               "Org TeXmacs document conversion failed" 'org-texmacs-error)
 
+(defconst org-texmacs--document-markup-tags
+  '((bold . strong) (italic . em) (underline . underline)
+    (strike-through . strike-through))
+  "TeXmacs tags for recursively lowered Org inline markup.")
+
 (defcustom org-texmacs-format-headline-function
   #'org-texmacs-format-headline-default-function
   "Function presenting headline metadata and lowered title parts.
@@ -116,15 +121,17 @@ INFO fixes headline output policies and formatter for this conversion.
 When omitted, use fixed default policies and the default formatter, without
 reading dynamic export settings.  Custom formatters should be side-effect-free.
 
-POST-BLANKS optionally maps inline Org object identities to their exact
-trailing spaces/tabs.  Without an entry, a nonnegative `:post-blank' count
-becomes that many spaces.  This is not byte-exact source reconstruction:
-callers needing tab preservation must supply the original whitespace.
+POST-BLANKS optionally maps inline Org object identities to their original
+trailing spaces/tabs.  Without an entry, use the nonnegative `:post-blank'
+count.  Both inputs have prose whitespace semantics, not source fidelity.
 
-Support paragraphs, plain text, bold, transparent Org sections and level
-1--3 headlines with nonempty titles.  Reject other nodes and unsupported
-headline semantics rather than discarding them.  Preserve paragraph text
-and newlines; do not merge adjacent strings or flatten island strees.
+Support paragraphs, plain text, basic emphasis, inline code/verbatim,
+explicit line breaks, transparent Org sections and level 1--3 headlines.
+Collapse ordinary spaces, tabs and soft newlines across Org inline text
+boundaries.  Suppress leading whitespace at paragraph/title starts and after
+explicit breaks; a final whitespace run remains one space.  Inline code is
+literal, not preformatted.  Never normalize STM islands, merge adjacent
+strings or flatten island strees.  Reject unsupported nodes and semantics.
 
 Return a fresh result with STM root paths, retaining no Org properties or
 source objects.  Do not read or modify buffers, encode text, start a worker,
@@ -145,8 +152,14 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
                         :texmacs-format-headline-function
                         org-texmacs-format-headline-default-function))))
     (cl-labels
-        ((text (string)
-           (org-texmacs--document-create :body (substring-no-properties string)))
+        ((text (string space)
+           (let ((value (replace-regexp-in-string
+                         "[ \t\r\n]+" " " (substring-no-properties string))))
+             (when (and (car space) (> (length value) 0) (= (aref value 0) ?\s))
+               (setq value (substring value 1)))
+             (when (> (length value) 0)
+               (setcar space (= (aref value (1- (length value))) ?\s)))
+             (org-texmacs--document-create :body value)))
          (island (node entry)
            (when (memq entry used-islands)
              (org-texmacs--document-fail node "Island occurs more than once"))
@@ -154,7 +167,7 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
            (org-texmacs--document-create
             :body (org-texmacs--document-copy-stree (cdr entry))
             :stm-paths (list nil)))
-         (blank (node)
+         (blank (node space)
            (let ((entry (assq node post-blanks))
                  (count (or (org-element-property :post-blank node) 0)))
              (unless (and (integerp count) (>= count 0))
@@ -166,27 +179,54 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
                  (when (memq entry used-blanks)
                    (org-texmacs--document-fail node "Whitespace mapping reused"))
                  (push entry used-blanks))
-               (unless (equal value "") (list (text value))))))
-         (inline (node context ancestors)
+               (unless (equal value "") (list (text value space))))))
+         (inline (node context ancestors space)
            (let ((entry (assq node islands)))
              (cond
               (entry
                (unless (and (stringp node) (eq context 'paragraph))
                  (org-texmacs--document-fail node "Island outside paragraph text"))
+               ;; An island is opaque, even if its root is an atomic string.
+               (setcar space nil)
                (list (island node entry)))
-              ((stringp node) (list (text node)))
-              ((and (consp node) (eq (org-element-type node) 'bold))
+              ((stringp node) (list (text node space)))
+              ((and (consp node)
+                    (assq (org-element-type node) org-texmacs--document-markup-tags))
                (when (memq node ancestors)
                  (org-texmacs--document-fail node "Cyclic Org AST"))
-               (let ((ancestors (cons node ancestors)))
+               (let* ((ancestors (cons node ancestors))
+                      (type (org-element-type node))
+                      (parts (inlines (org-element-contents node) type ancestors space))
+                      ;; Native markup macros take exactly one body argument.
+                      (body (cond ((null parts)
+                                   (org-texmacs--document-create :body ""))
+                                  ((null (cdr parts)) (car parts))
+                                  (t (org-texmacs--document-pack 'concat parts)))))
                  (cons (org-texmacs--document-pack
-                        'strong (inlines (org-element-contents node) 'bold ancestors))
-                       (blank node))))
+                        (cdr (assq type org-texmacs--document-markup-tags))
+                        (list body))
+                       (blank node space))))
+              ((and (consp node) (memq (org-element-type node) '(code verbatim)))
+               (let ((value (org-element-property :value node)))
+                 (unless (and (stringp value) (null (org-element-contents node)))
+                   (org-texmacs--document-fail node "Invalid literal inline node"))
+                 (cons (org-texmacs--document-pack 'verbatim (list (text value space)))
+                       (blank node space))))
+              ((and (consp node) (eq (org-element-type node) 'line-break))
+               (when (or (cadr space)
+                         (org-element-contents node))
+                 (org-texmacs--document-fail node "Unsupported line break context"))
+               (setcar space t)
+               (cons (org-texmacs--document-pack 'next-line nil) (blank node space)))
               (t (org-texmacs--document-fail node "Unsupported inline node")))))
-         (inlines (nodes context ancestors)
+         (inlines (nodes context ancestors &optional space)
            (unless (proper-list-p nodes)
              (signal 'org-texmacs-document-error '("Invalid inline contents")))
-           (apply #'append (mapcar (lambda (node) (inline node context ancestors)) nodes)))
+           ;; Share whitespace state through formatting, but not across blocks.
+           ;; The second slot distinguishes a title from a headline's body.
+           (let ((space (or space (list t (eq context 'title)))))
+             (apply #'append
+                    (mapcar (lambda (node) (inline node context ancestors space)) nodes))))
          (blocks (nodes context ancestors)
            (unless (proper-list-p nodes)
              (signal 'org-texmacs-document-error '("Invalid block contents")))
@@ -311,7 +351,8 @@ All positions refer to the complete, unnarrowed source snapshot."
                (push entry islands)
                (push (list entry raw tag) requests)))
            (whitespace (node)
-             (when (eq (org-element-type node) 'bold)
+             (when (or (assq (org-element-type node) org-texmacs--document-markup-tags)
+                       (memq (org-element-type node) '(code verbatim line-break)))
                (let* ((end (org-element-property :end node))
                       (count (or (org-element-property :post-blank node) 0)))
                  (push (cons node (buffer-substring-no-properties (- end count) end))

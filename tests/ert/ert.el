@@ -1447,13 +1447,163 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                 (org-element-create 'paragraph nil "Next.\n"))))
          (result (org-texmacs--document-lower ast)))
     (should (equal (org-texmacs-document-body result)
-                   '(document (concat "Before " (strong "bold") "  " "after.\n")
-                              (concat "Next.\n"))))
+                   '(document (concat "Before " (strong "bold") " " "after. ")
+                              (concat "Next. "))))
     (should-not (org-texmacs-document-stm-paths result))
     (should (equal (org-texmacs-document-body
                     (org-texmacs--document-lower ast nil (list (cons bold "\t "))))
-                   '(document (concat "Before " (strong "bold") "\t " "after.\n")
-                              (concat "Next.\n"))))))
+                   '(document (concat "Before " (strong "bold") " " "after. ")
+                              (concat "Next. "))))))
+
+(ert-deftest org-texmacs-document-inline-whitespace-stream ()
+  (let* ((value (copy-sequence " \nb\t"))
+         (bold (org-element-create 'bold '(:post-blank 2) value))
+         (ast (org-element-create
+               'org-data nil
+               (org-element-create 'paragraph nil " \ta  " bold "\n c\r\n")
+               (org-element-create 'paragraph nil "\tsecond\n")))
+         (before (substring-no-properties value))
+         (result (org-texmacs--document-lower ast)))
+    ;; State crosses Org object boundaries, but not paragraph boundaries.
+    ;; Empty text slots remain rather than shifting island child indices.
+    (should (equal (org-texmacs-document-body result)
+                   '(document (concat "a " (strong "b ") "" "c ")
+                              (concat "second "))))
+    (should (equal before (substring-no-properties value)))
+    (should (equal (org-element-property :post-blank bold) 2))))
+
+(ert-deftest org-texmacs-document-basic-inline-source ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* /Title/\nA /i/ _u_ +s+ ~code~ =literal=.\n")
+    (let ((source (buffer-string)))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Ordinary inline started a worker"))))
+        (should (equal (org-texmacs-document-body (org-texmacs-document))
+                       '(document (section (em "Title"))
+                                  (concat "A " (em "i") " " (underline "u") " "
+                                          (strike-through "s") " "
+                                          (verbatim "code") " " (verbatim "literal") ". ")))))
+      (should (equal source (buffer-string))))))
+
+(ert-deftest org-texmacs-document-nested-inline-and-cycles ()
+  (let* ((italic (org-element-create 'italic nil "i"))
+         (bold (org-element-create 'bold nil "b " italic))
+         (ast (org-element-create 'org-data nil
+                                  (org-element-create 'paragraph nil bold))))
+    (should (equal (org-texmacs-document-body (org-texmacs--document-lower ast))
+                   '(document (concat (strong (concat "b " (em "i")))))))
+    (org-element-set-contents italic bold)
+    (should-error (org-texmacs--document-lower ast) :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-document-markup-single-body ()
+  (dolist (mapping '((bold . strong) (italic . em) (underline . underline)
+                     (strike-through . strike-through)))
+    (dolist (parts '(nil ("one") ("one" " two")))
+      (let* ((node (apply #'org-element-create (car mapping) nil parts))
+             (ast (org-element-create 'org-data nil
+                                      (org-element-create 'paragraph nil node)))
+             (body (org-texmacs-document-body (org-texmacs--document-lower ast)))
+             (markup (cadr (cadr body))))
+        (should (= (length markup) 2))
+        (should (equal markup
+                       (list (cdr mapping)
+                             (cond ((null parts) "")
+                                   ((null (cdr parts)) "one")
+                                   (t '(concat "one" " two"))))))))))
+
+(ert-deftest org-texmacs-document-nested-markup-source-and-native ()
+  (org-texmacs-test--with-worker
+    (let ((session (org-texmacs-session-open)))
+      (unwind-protect
+          (dolist (case '(("*a /i/ z*\n" strong em "i")
+                          ("/a *b* z/\n" em strong "b")
+                          ("_a *b* z_\n" underline strong "b")
+                          ("+a *b* z+\n" strike-through strong "b")))
+            (with-temp-buffer
+              (org-mode)
+              (insert (car case))
+              (let* ((source (buffer-string))
+                     (expected
+                      (list 'document
+                            (list 'concat
+                                  (list (nth 1 case)
+                                        (list 'concat "a "
+                                              (list (nth 2 case) (nth 3 case)) " " "z"))
+                                  " ")))
+                     (document (org-texmacs-document)))
+                (should (equal (org-texmacs-document-body document) expected))
+                (org-texmacs-session-set-document session document)
+                (should (equal (org-texmacs--session-read session)
+                               (org-texmacs-test--native-hex expected)))
+                (should (equal source (buffer-string))))))
+        (org-texmacs-session-close session)))))
+
+(ert-deftest org-texmacs-document-literal-inline-semantics ()
+  (dolist (type '(code verbatim))
+    (let* ((value (copy-sequence "*not bold*\t (math \"x\")\n<alpha> ¯˙"))
+           (node (org-element-create type (list :value value)))
+           (ast (org-element-create 'org-data nil
+                                    (org-element-create 'paragraph nil node)))
+           (result (org-texmacs--document-lower ast)))
+      (should (equal (org-texmacs-document-body result)
+                     '(document (concat (verbatim "*not bold* (math \"x\") <alpha> ¯˙")))))
+      (should-not (org-texmacs-document-stm-paths result))
+      (should (equal value "*not bold*\t (math \"x\")\n<alpha> ¯˙"))
+      (org-element-set-contents node "unexpected")
+      (should-error (org-texmacs--document-lower ast) :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-document-line-break-contexts ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* Title\nA\\\\\nB\n")
+    (should (equal (org-texmacs-document-body (org-texmacs-document))
+                   '(document (section "Title") (concat "A" (next-line) "B ")))))
+  (let* ((break (org-element-create 'line-break nil))
+         (italic (org-element-create 'italic nil "title" break))
+         (headline (org-element-create 'headline
+                                       (list :level 1 :raw-value "title" :title (list italic))))
+         (ast (org-element-create 'org-data nil headline)))
+    (should-error (org-texmacs--document-lower ast) :type 'org-texmacs-document-error))
+  (let* ((break (org-element-create 'line-break nil))
+         (ast (org-element-create 'org-data nil
+                                  (org-element-create 'paragraph nil "a " break " \tb"))))
+    (should (equal (org-texmacs-document-body (org-texmacs--document-lower ast))
+                   '(document (concat "a " (next-line) "b"))))))
+
+(ert-deftest org-texmacs-document-whitespace-island-boundary ()
+  (let* ((foreign (copy-sequence "island"))
+         (native '(concat " \tSTM\n" (em "  untouched  ")))
+         (ast (org-element-create 'org-data nil
+                                  (org-element-create 'paragraph nil
+                                                      "A\t " foreign "\n B C\n")))
+         (result (org-texmacs--document-lower ast (list (cons foreign native)))))
+    ;; NBSP is not ordinary prose whitespace; STM content is never inspected.
+    (should (equal (org-texmacs-document-body result)
+                   '(document (concat "A " (concat " \tSTM\n" (em "  untouched  ")) " B C "))))
+    (should (equal (org-texmacs-document-stm-paths result) '((0 1))))
+    (should (equal native '(concat " \tSTM\n" (em "  untouched  "))))))
+
+(ert-deftest org-texmacs-document-inline-native-whitespace ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "A\t¯˙\n/i/ _u_ +s+ ~x\t y~\n")
+      (let* ((source (buffer-string))
+             (document (org-texmacs-document))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (should (equal (org-texmacs-document-body document)
+                             '(document (concat "A ¯˙ " (em "i") " " (underline "u") " "
+                                                (strike-through "s") " " (verbatim "x y") " "))))
+              (org-texmacs-session-set-document session document)
+              ;; Native 09/0a here represent actual glyphs, not source whitespace.
+              (should (equal (org-texmacs--session-read session)
+                             '(document (concat "4120090a20" (em "69") "20" (underline "75") "20"
+                                                (strike-through "73") "20" (verbatim "782079") "20"))))
+              (should (equal source (buffer-string))))
+          (org-texmacs-session-close session))))))
 
 (ert-deftest org-texmacs-document-headline-levels ()
   (with-temp-buffer
@@ -1461,7 +1611,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (insert "* First\nBody.\n*** Third\n")
     (should (equal (org-texmacs-document-body
                     (org-texmacs--document-lower (org-element-parse-buffer)))
-                   '(document (section "First") (concat "Body.\n")
+                   '(document (section "First") (concat "Body. ")
                               (subsubsection "Third"))))))
 
 (ert-deftest org-texmacs-document-island-paths-and-copies ()
@@ -1475,7 +1625,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
          (result (org-texmacs--document-lower
                   ast (list (cons foreign '(math "<alpha>")) (cons block stree))))
          (body (org-texmacs-document-body result)))
-    (should (equal body '(document (concat "<alpha>" (math "<alpha>") "\n")
+    (should (equal body '(document (concat "<alpha>" (math "<alpha>") " ")
                                   (document "中"))))
     (should (equal (org-texmacs-document-stm-paths result) '((0 1) (1))))
     (should-not (eq ordinary (nth 1 (nth 1 body))))
@@ -1515,7 +1665,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 
 (ert-deftest org-texmacs-document-rejects-unsupported-source ()
   (dolist (source '("- item\n" "[[https://example.org][link]]\n"
-                    "/italic/\n" "| table |\n" "# comment\n"
+                    "[fn::note]\n" "| table |\n" "# comment\n"
                     "#+title: Title\n" "* COMMENT Task\n" "* Tagged :ARCHIVE:\n"
                     "**** Deep\n" "* \n" "#+name: named\nParagraph\n"
                     "#+attr_html: :class test\nParagraph\n"
@@ -1562,8 +1712,8 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                  (lambda (&rest _) (ert-fail "Unexpected worker request"))))
         (should (equal (org-texmacs-document-body (org-texmacs-document))
                        '(document
-                         (section (concat "A " (strong "bold") "\t " "title"))
-                         (concat "Text " (strong "strong") "\t  " "tail.\n")))))
+                         (section (concat "A " (strong "bold") " " "title"))
+                         (concat "Text " (strong "strong") " " "tail. ")))))
       (should (= position (point)))
       (should (= tick (buffer-chars-modified-tick)))
       (should (equal source (buffer-string))))))
@@ -1580,7 +1730,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
         (let ((result (org-texmacs-document)))
           (should (equal (org-texmacs-document-body result)
                          '(document (concat "Before " (math "*fake* [[link]]")
-                                            (math "α") " after.\n"))))
+                                            (math "α") " after. "))))
           (should (equal (org-texmacs-document-stm-paths result) '((0 1) (0 2))))
           (should (equal (nreverse requests)
                          '("(math \"*fake* [[link]]\")" "(math \"α\")"))))))))
@@ -1640,7 +1790,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                (lambda (&rest _) (ert-fail "Disabled fragment parsed"))))
       (let ((result (org-texmacs-document)))
         (should (equal (org-texmacs-document-body result)
-                       '(document (concat "(math \"x\")\n"))))
+                       '(document (concat "(math \"x\") "))))
         (should-not (org-texmacs-document-stm-paths result))))))
 
 (ert-deftest org-texmacs-document-source-real-islands ()
@@ -1653,7 +1803,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
             (result (org-texmacs-document)))
         (should (equal (org-texmacs-document-body result)
                        '(document (section "Title")
-                                  (concat "Text " (math (frac "α" "2")) " end.\n")
+                                  (concat "Text " (math (frac "α" "2")) " end. ")
                                   (document (math "中")))))
         (should (equal (org-texmacs-document-stm-paths result) '((1 1) (2))))
         (should (= org-texmacs--worker-request-id 2))
@@ -2049,9 +2199,9 @@ Only serialize expected bytes; do not call the production encoder."
               (should (equal (org-texmacs-document-body document)
                              '(document (section "中文标题")
                                         (concat "普通的中文 " (strong "加粗") " "
-                                                (math (frac "一" "2")) ".\n")
+                                                (math (frac "一" "2")) ". ")
                                         (equation* (frac "3" "4"))
-                                        (subsection "Second") (concat "Final paragraph.\n"))))
+                                        (subsection "Second") (concat "Final paragraph. "))))
               (should (equal (org-texmacs-document-stm-paths document) '((1 3) (2))))
               (org-texmacs-session-set-document session document)
               (should (equal
@@ -2060,9 +2210,9 @@ Only serialize expected bytes; do not call the production encoder."
                         '(document (section "<#4E2D><#6587><#6807><#9898>")
                                    (concat "<#666E><#901A><#7684><#4E2D><#6587> "
                                            (strong "<#52A0><#7C97>") " "
-                                           (math (frac "<#4E00>" "2")) ".\n")
+                                           (math (frac "<#4E00>" "2")) ". ")
                                    (equation* (frac "3" "4"))
-                                   (subsection "Second") (concat "Final paragraph.\n")))))
+                                   (subsection "Second") (concat "Final paragraph. ")))))
               (should (equal source (buffer-string)))
               (should (= tick (buffer-chars-modified-tick)))
               (should (= position (point)))
@@ -2097,7 +2247,7 @@ Only serialize expected bytes; do not call the production encoder."
                 (org-texmacs-session-set-document session document)
                 (should (equal (org-texmacs--session-read session)
                                (org-texmacs-test--native-hex
-                                '(document (concat (math "<less>alpha<gtr> <alpha>") "\n")))))))
+                                '(document (concat (math "<less>alpha<gtr> <alpha>") " ")))))))
             (should (eq process org-texmacs--worker-process)))
         (org-texmacs-session-close session))
       (should (equal (org-texmacs--worker-request "(frac \"1\" \"2\")") '(frac "1" "2"))))))
@@ -2130,7 +2280,7 @@ Only tests with explicit example names use this helper; do not run Babel."
             (should (equal (org-texmacs-document-body document)
                            '(document (section "中")
                                       (concat "Text " (strong "bold") " " "<alpha> "
-                                              (math "α <alpha>") " end.\n")
+                                              (math "α <alpha>") " end. ")
                                       (with "mode" "math" (frac "中" "2")))))
             (should (equal (org-texmacs-document-stm-paths document) '((1 4) (2))))
             (org-texmacs-session-set-document session document)
@@ -2138,7 +2288,7 @@ Only tests with explicit example names use this helper; do not run Babel."
                            (org-texmacs-test--native-hex
                             '(document (section "<#4E2D>")
                                        (concat "Text " (strong "bold") " " "<less>alpha<gtr> "
-                                               (math "<alpha> <alpha>") " end.\n")
+                                               (math "<alpha> <alpha>") " end. ")
                                        (with "mode" "math" (frac "<#4E2D>" "2")))))))
         (org-texmacs-session-close session)))))
 
@@ -2166,13 +2316,13 @@ Only tests with explicit example names use this helper; do not run Babel."
         (unwind-protect
             (progn
               (should (equal (org-texmacs-document-body document)
-                             '(document (subsection "TODO Task") (concat (math "α") "\n"))))
+                             '(document (subsection "TODO Task") (concat (math "α") " "))))
               (should (equal (org-texmacs-document-stm-paths document) '((1 0))))
               (org-texmacs-session-set-document session document)
               (should (equal (org-texmacs--session-read session)
                              (org-texmacs-test--native-hex
                               '(document (subsection "TODO Task")
-                                         (concat (math "<alpha>") "\n")))))
+                                         (concat (math "<alpha>") " ")))))
               (should (equal source (buffer-string)))
               (should (equal settings (org-texmacs--document-heading-settings))))
           (org-texmacs-session-close session))))))
@@ -2195,7 +2345,7 @@ Only tests with explicit example names use this helper; do not run Babel."
                                 (and tags '(" " ":one:two:")))))
             (should (equal (org-texmacs-document-body result)
                            (list 'document (list 'section (cons 'concat parts))
-                                 '(concat "Body\n"))))
+                                 '(concat "Body "))))
             (should-not (org-texmacs-document-stm-paths result))
             (should (equal source (buffer-string)))))))))
 
@@ -2269,7 +2419,7 @@ Only tests with explicit example names use this helper; do not run Babel."
         (should (equal (org-texmacs-document-body (org-texmacs-document))
                        '(document (section (concat (strong "TODO") " " "[#A]" " "
                                                     "Title" " " ":tag:"))
-                                  (concat (math "x") "\n"))))
+                                  (concat (math "x") " "))))
         (should (equal (cadr (org-texmacs-document-body (org-texmacs-document)))
                        '(section "changed")))))))
 
@@ -2309,7 +2459,7 @@ Only tests with explicit example names use this helper; do not run Babel."
                              (org-texmacs-test--native-hex
                               '(document (section (concat (strong "<less>alpha<gtr>") " "
                                                            "[#12]" " " "<#4E2D>" " " ":tag:"))
-                                         (concat (math "<alpha>") "\n"))))))
+                                         (concat (math "<alpha>") " "))))))
           (org-texmacs-session-close session))))))
 
 ;;; ert.el ends here

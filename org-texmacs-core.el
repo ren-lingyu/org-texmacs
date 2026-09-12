@@ -61,6 +61,7 @@ Changing this option takes effect after the current worker is stopped."
     (regexp-opt . function)
     (regexp-quote . function)
     (string-match-p . function)
+    (replace-regexp-in-string . function)
     (proper-list-p . function)
     (cl-every . function)
     (make-process . function)

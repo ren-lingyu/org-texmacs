@@ -509,18 +509,35 @@ The supported Org subset is deliberately small:
 | Org input | TeXmacs body structure |
 |-----------+------------------------|
 | Document / section container | =document= / transparent contents |
-| Paragraph / plain text | One =concat= per paragraph / copied text |
+| Paragraph / plain text | One =concat= per paragraph / prose whitespace normalization |
 | Bold | =strong= |
+| Italic / underline / strike-through | =em= / =underline= / =strike-through= |
+| Inline code / verbatim | =verbatim= with literal inline text |
+| Explicit line break in paragraph contents | =next-line= |
 | Nonempty headings at Org's parsed levels 1, 2, 3 | =section=, =subsection=, =subsubsection= |
 | Recognized paragraph fragment | One parsed STM subtree |
 | =texmacs= special block | One parsed STM subtree, even for a string or =document= root |
 
-Heading text may contain supported bold markup.  This is not a general Org
-exporter: links, other emphasis, lists, tables, other blocks, keywords,
+Heading text may contain supported emphasis and literal inline code, but not
+explicit line breaks.  This is not a general Org
+exporter: links, footnotes, lists, tables, other blocks, keywords,
 drawers and affiliated metadata are rejected.  COMMENT/archive headings,
 empty headings and deeper headings are also
 rejected rather than silently discarded.  Fragment discovery can support
 contexts that this whole-document conversion does not support.
+
+Ordinary spaces, tabs and soft newlines collapse to one space across Org
+inline text boundaries.  Leading whitespace at paragraph/title starts and
+after explicit line breaks is suppressed; a final whitespace run remains
+one space.  Paragraphs and explicit line breaks remain structural nodes.
+Inline code/verbatim does not parse nested markup, but uses the same prose
+whitespace rule: it is not a preformatted code block.  Nonbreaking spaces
+are not collapsed.  Conversion does not merge adjacent text slots; a slot
+may become empty when its whitespace duplicates a preceding slot.
+
+These rules apply while lowering Org nodes, not as a rewrite of the final
+TeXmacs tree.  STM islands remain opaque and unchanged, including their
+whitespace.  The source buffer and raw STM extraction are unchanged.
 
 The private parser receives copies of the source's effective
 =org-todo-regexp=, =org-done-keywords=, =org-odd-levels-only= and
