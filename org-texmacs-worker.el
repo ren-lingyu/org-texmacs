@@ -150,8 +150,9 @@ Use the user's normal environment.  Only the socket directory is temporary."
   "Read RESPONSE for request ID and return its stree.
 Reject malformed envelopes and trailing data.  Source errors have their own
 condition so callers can preserve a healthy worker."
-  (let* ((read-circle nil)
-         (parsed (read-from-string response))
+  ;; Restrict the response reader, not subsequent validation or lazy loading.
+  (let* ((parsed (let ((read-circle nil))
+                   (read-from-string response)))
          (datum (car parsed)))
     (unless (and (string-match-p "\\`[ \t\r\n]*\\'" (substring response (cdr parsed)))
                  (proper-list-p datum) (= (length datum) 3)
