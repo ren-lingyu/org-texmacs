@@ -90,25 +90,114 @@
                   (string->list node)))
       (cons (car node) (map org-texmacs-hex-tree (cdr node)))))
 
+(define (org-texmacs-native-body wire paths)
+  (let ((body (org-texmacs-wire-tree wire)))
+    (if (not (and (pair? body) (eq? (car body) 'document)))
+        (error "Expected document body"))
+    (let* ((encoded (org-texmacs-encode-body body paths))
+           (native (stree->tree encoded)))
+      (if (not (equal? encoded (tree->stree native)))
+          (error "Native tree changed structure"))
+      native)))
+
 (define (org-texmacs-encode-reply request)
   (let ((id (cadr request)))
     (catch #t
       (lambda ()
-        (let ((body (org-texmacs-wire-tree (caddr request))))
-          (if (not (and (pair? body) (eq? (car body) 'document)))
-              (error "Expected document body"))
-          (let* ((encoded (org-texmacs-encode-body body (cadddr request)))
-                 (native (tree->stree (stree->tree encoded))))
-            (if (not (equal? encoded native)) (error "Native tree changed structure"))
-            (list 'ok id (list 'native-body (org-texmacs-hex-tree native))))))
+        (let ((native (org-texmacs-native-body (caddr request) (cadddr request))))
+          (list 'ok id (list 'native-body
+                             (org-texmacs-hex-tree (tree->stree native))))))
       (lambda args (list 'encoding-error id "Invalid document encoding request")))))
 
+(define org-texmacs-session-buffer #f)
+(define org-texmacs-session-key #f)
+(define org-texmacs-session-counter 0)
+
+(define (org-texmacs-drop-session)
+  (let ((buffer org-texmacs-session-buffer))
+    (set! org-texmacs-session-buffer #f)
+    (set! org-texmacs-session-key #f)
+    (if buffer
+        (catch #t (lambda () (buffer-close buffer))
+          (lambda args (throw 'org-texmacs-session-fatal))))))
+
+(define (org-texmacs-session-reply request)
+  (let ((operation (car request)) (id (cadr request)))
+    (catch 'org-texmacs-session-fatal
+      (lambda ()
+        (catch #t
+          (lambda ()
+            (for-each
+             (lambda (name)
+               (if (not (defined? name)) (error "Missing session capability" name)))
+             '(buffer-new buffer-set-body buffer-get-body buffer-close
+               stree->tree tree->stree))
+            (cond
+             ((eq? operation 'session-open)
+              (if org-texmacs-session-buffer (error "Session already open"))
+              (set! org-texmacs-session-buffer (buffer-new))
+              (catch #t
+                (lambda ()
+                  (buffer-set-body org-texmacs-session-buffer (stree->tree '(document "")))
+                  (set! org-texmacs-session-counter (+ org-texmacs-session-counter 1))
+                  (set! org-texmacs-session-key (number->string org-texmacs-session-counter))
+                  (list 'ok id (list 'session org-texmacs-session-key)))
+                (lambda args (org-texmacs-drop-session) (error "Session initialization failed"))))
+             (else
+              (if (not (and org-texmacs-session-buffer
+                            (equal? (caddr request) org-texmacs-session-key)))
+                  (error "Unknown session"))
+              (cond
+               ((eq? operation 'session-close)
+                (let ((key org-texmacs-session-key))
+                  (org-texmacs-drop-session)
+                  (list 'ok id (list 'closed key))))
+               ((eq? operation 'session-read)
+                (catch #t
+                  (lambda ()
+                    (let ((body (tree->stree (buffer-get-body org-texmacs-session-buffer))))
+                      (list 'ok id (list 'native-body (org-texmacs-hex-tree body)))))
+                  (lambda args (org-texmacs-drop-session) (error "Body read failed"))))
+               ((eq? operation 'session-set)
+                ;; Encoding errors precede mutation and preserve the old body.
+                (let ((native (catch #t
+                                (lambda () (org-texmacs-native-body
+                                            (list-ref request 3) (list-ref request 4)))
+                                (lambda args #f))))
+                  (if (not native)
+                      (list 'encoding-error id "Invalid document encoding request")
+                      (catch #t
+                        (lambda ()
+                          (let ((expected (tree->stree native)))
+                            (buffer-set-body org-texmacs-session-buffer native)
+                            (if (not (equal? expected (tree->stree
+                                                      (buffer-get-body org-texmacs-session-buffer))))
+                                (error "Body readback mismatch"))
+                            (list 'ok id (list 'updated org-texmacs-session-key))))
+                        (lambda args
+                          (org-texmacs-drop-session)
+                          (error "Body update failed; session discarded"))))))))))
+          (lambda (key . args)
+            (if (eq? key 'org-texmacs-session-fatal) (throw key))
+            (list 'session-error id "Invalid session operation"))))
+      ;; Elisp treats this unknown status as transport failure and stops worker.
+      (lambda args (list 'session-fatal id "Session cleanup failed")))))
+
 (define (org-texmacs-reply request)
-  (if (and (list? request) (= (length request) 4)
+  (cond
+   ((and (list? request) (>= (length request) 2)
+         (integer? (cadr request)) (> (cadr request) 0)
+         (or (and (eq? (car request) 'session-open) (= (length request) 2))
+             (and (memq (car request) '(session-close session-read))
+                  (= (length request) 3) (string? (caddr request)))
+             (and (eq? (car request) 'session-set) (= (length request) 5)
+                  (string? (caddr request)))))
+    (org-texmacs-session-reply request))
+   ((and (list? request) (= (length request) 4)
            (eq? (car request) 'encode)
            (integer? (cadr request)) (> (cadr request) 0))
-      (org-texmacs-encode-reply request)
-      (org-texmacs-parse-reply request)))
+    (org-texmacs-encode-reply request))
+   (else (org-texmacs-parse-reply request))))
 
 (define (org-texmacs-parse-reply request)
   (if (and (list? request) (= (length request) 3)

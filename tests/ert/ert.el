@@ -1789,4 +1789,130 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                      '(math "α <alpha>")))
       (should (eq process org-texmacs--worker-process)))))
 
+(ert-deftest org-texmacs-session-invalid-and-stale-handles ()
+  (let ((org-texmacs--worker-process nil)
+        (stale (org-texmacs--session-create :key "1" :process 'old)))
+    (cl-letf (((symbol-function 'org-texmacs--worker-start)
+               (lambda () (ert-fail "Stale handle started worker"))))
+      (should-error (org-texmacs-session-set-document stale nil)
+                    :type 'org-texmacs-session-error)
+      (should-error (org-texmacs-session-close nil) :type 'org-texmacs-session-error)
+      (should-not (org-texmacs-session-close stale))
+      (should-not (org-texmacs-session-close stale))
+      (should (org-texmacs-session-closed stale)))))
+
+(ert-deftest org-texmacs-session-response-contract ()
+  (should (equal (org-texmacs--worker-decode "(ok 1 (session \"2\"))" 1 'session-open) "2"))
+  (dolist (response '("(ok 1 (session \"0\"))" "(ok 1 (closed \"1\"))"
+                      "(ok 1 (session 1))" "(ok 1 (session \"1\" \"2\"))"))
+    (should-error (org-texmacs--worker-decode response 1 'session-open)
+                  :type 'org-texmacs-worker-error))
+  (should-error (org-texmacs--worker-decode "(session-error 1 \"invalid\")" 1 'session-set)
+                :type 'org-texmacs-session-error)
+  (should-error (org-texmacs--worker-decode "(session-fatal 1 \"cleanup\")" 1 'session-close)
+                :type 'org-texmacs-worker-error))
+
+(ert-deftest org-texmacs-session-real-lifecycle ()
+  (org-texmacs-test--with-worker
+    (let ((session (org-texmacs-session-open)))
+      (unwind-protect
+          (progn
+            (should (equal (org-texmacs--session-read session) '(document "")))
+            (should-error (org-texmacs-session-open) :type 'org-texmacs-session-error)
+            (should (org-texmacs--session-live-p session))
+            (with-temp-buffer
+              (org-mode)
+              (insert "Text (math \"α <alpha>\")\n")
+              (let* ((document (org-texmacs-document))
+                     (expected (org-texmacs--worker-encode-document document)))
+                (should (eq (org-texmacs-session-set-document session document) session))
+                (should (equal (org-texmacs--session-read session) expected))))
+            (org-texmacs-session-set-document
+             session (org-texmacs--document-create :body '(document "second")))
+            (should (equal (org-texmacs--session-read session)
+                           (list 'document (org-texmacs-test--ascii-hex "second")))))
+        (org-texmacs-session-close session))
+      (let ((requests org-texmacs--worker-request-id))
+        (should-not (org-texmacs-session-close session))
+        (should (= requests org-texmacs--worker-request-id)))
+      (should-error (org-texmacs--session-read session) :type 'org-texmacs-session-error)
+      (should (equal (org-texmacs--worker-request "(math \"x\")") '(math "x")))
+      (let ((next (org-texmacs-session-open)))
+        (should-not (equal (org-texmacs-session-key session) (org-texmacs-session-key next)))
+        (org-texmacs-session-close next)))))
+
+(ert-deftest org-texmacs-session-real-encoding-error-preserves-body ()
+  (org-texmacs-test--with-worker
+    (let ((session (org-texmacs-session-open)))
+      (unwind-protect
+          (progn
+            (org-texmacs-session-set-document
+             session (org-texmacs--document-create :body '(document "original")))
+            (let ((old (org-texmacs--session-read session)))
+              (should-error (org-texmacs-session-set-document
+                             session (org-texmacs--document-create :body '(document (raw-data "x"))))
+                            :type 'org-texmacs-encoding-error)
+              ;; Bypass Elisp validation to cover the worker's pre-mutation path.
+              (should-error (org-texmacs--session-command
+                             session 'session-set "(\"document\" \"x\") ((9))")
+                            :type 'org-texmacs-encoding-error)
+              (should (org-texmacs--session-live-p session))
+              (should (equal old (org-texmacs--session-read session)))))
+        (org-texmacs-session-close session)))))
+
+(ert-deftest org-texmacs-session-real-restart-invalidates-handle ()
+  (org-texmacs-test--with-worker
+    (let ((old (org-texmacs-session-open)))
+      (org-texmacs--worker-stop)
+      (let ((new (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              ;; The server counter restarts; process identity must disambiguate.
+              (should (equal (org-texmacs-session-key old) (org-texmacs-session-key new)))
+              (should-error (org-texmacs-session-set-document
+                             old (org-texmacs--document-create :body '(document "stale")))
+                            :type 'org-texmacs-session-error)
+              (org-texmacs-session-close old)
+              (should (equal (org-texmacs--session-read new) '(document ""))))
+          (org-texmacs-session-close new))))))
+
+(ert-deftest org-texmacs-session-real-update-failure-discards-buffer ()
+  (org-texmacs-test--with-worker
+    (let ((script (expand-file-name "session-failure.scm" test-directory)))
+      (with-temp-file script
+        (insert (format "(load %s)\n" (org-texmacs--scheme-string org-texmacs--worker-scheme-file))
+                "(define original-set-body buffer-set-body)\n"
+                "(define set-count 0)\n"
+                "(set! buffer-set-body (lambda (buf body)\n"
+                "  (set! set-count (+ set-count 1))\n"
+                "  (if (= set-count 2) (error \"Injected update failure\")\n"
+                "      (original-set-body buf body))))\n"))
+      (let* ((org-texmacs--worker-scheme-file script)
+             (session (org-texmacs-session-open)))
+        (should-error (org-texmacs-session-set-document
+                       session (org-texmacs--document-create :body '(document "changed")))
+                      :type 'org-texmacs-session-error)
+        (should (org-texmacs-session-closed session))
+        (should (org-texmacs--worker-live-p))
+        (let ((next (org-texmacs-session-open)))
+          (unwind-protect
+              (progn
+                (org-texmacs-session-set-document
+                 next (org-texmacs--document-create :body '(document "recovered")))
+                (should (equal (org-texmacs--session-read next)
+                               (list 'document (org-texmacs-test--ascii-hex "recovered")))))
+            (org-texmacs-session-close next)))))))
+
+(ert-deftest org-texmacs-session-real-close-failure-stops-worker ()
+  (org-texmacs-test--with-worker
+    (let ((script (expand-file-name "session-close-failure.scm" test-directory)))
+      (with-temp-file script
+        (insert (format "(load %s)\n" (org-texmacs--scheme-string org-texmacs--worker-scheme-file))
+                "(set! buffer-close (lambda (buf) (error \"Injected close failure\")))\n"))
+      (let* ((org-texmacs--worker-scheme-file script)
+             (session (org-texmacs-session-open)))
+        (should-error (org-texmacs-session-close session) :type 'org-texmacs-worker-error)
+        (should-not (org-texmacs--worker-live-p))
+        (should-not (org-texmacs-session-close session))))))
+
 ;;; ert.el ends here

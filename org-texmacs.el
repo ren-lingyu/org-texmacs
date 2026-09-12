@@ -48,6 +48,7 @@
 (require 'org-texmacs-fragment)
 (require 'org-texmacs-worker)
 (require 'org-texmacs-document)
+(require 'org-texmacs-session)
 
 (defconst org-texmacs--cache-miss (make-symbol "org-texmacs-cache-miss")
   "Sentinel distinguishing an absent cached tree from a stored value.")

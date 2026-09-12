@@ -16,6 +16,7 @@
 (define-error 'org-texmacs-worker-error "TeXmacs worker failure" 'org-texmacs-error)
 (define-error 'org-texmacs-parse-error "Invalid STM source" 'org-texmacs-error)
 (define-error 'org-texmacs-encoding-error "Invalid document encoding" 'org-texmacs-error)
+(define-error 'org-texmacs-session-error "Invalid TeXmacs session" 'org-texmacs-error)
 
 (defcustom org-texmacs-worker-start-timeout 60
   "Maximum seconds to wait for the TeXmacs worker to start."
@@ -175,17 +176,33 @@ condition so callers can preserve a healthy worker."
        (unless (org-texmacs--stree-p (nth 2 datum))
          (signal 'org-texmacs-worker-error '("Invalid response stree")))
        (let ((payload (nth 2 datum)))
-         (if (eq operation 'encode)
+         (cond
+          ((memq operation '(session-open session-set session-close))
+           (unless (and (consp payload) (= (length payload) 2)
+                        (eq (car payload) (pcase operation
+                                            ('session-open 'session)
+                                            ('session-set 'updated)
+                                            ('session-close 'closed)))
+                        (stringp (cadr payload))
+                        (string-match-p "\\`[1-9][0-9]*\\'" (cadr payload)))
+             (signal 'org-texmacs-worker-error '("Invalid session response")))
+           (cadr payload))
+          ((memq operation '(encode session-read))
              (progn
                (unless (and (consp payload) (eq (car payload) 'native-body)
                             (= (length payload) 2)
                             (consp (cadr payload)) (eq (caadr payload) 'document)
                             (org-texmacs--hex-stree-p (cadr payload)))
                  (signal 'org-texmacs-worker-error '("Invalid encoded body response")))
-               (cadr payload))
-           payload)))
+               (cadr payload)))
+          (t payload))))
+      ('session-error
+       (unless (and (memq operation '(session-open session-set session-close session-read))
+                    (stringp (nth 2 datum)))
+         (signal 'org-texmacs-worker-error '("Unexpected session error response")))
+       (signal 'org-texmacs-session-error (list (nth 2 datum))))
       ('encoding-error
-       (unless (and (eq operation 'encode) (stringp (nth 2 datum)))
+       (unless (and (memq operation '(encode session-set)) (stringp (nth 2 datum)))
          (signal 'org-texmacs-worker-error '("Unexpected encoding error response")))
        (signal 'org-texmacs-encoding-error (list (nth 2 datum))))
       ('error
@@ -233,7 +250,7 @@ OPERATION selects the response contract; nil preserves the parse protocol."
                    org-texmacs--worker-process org-texmacs-worker-request-timeout)
                   (prog1 (org-texmacs--worker-decode (buffer-string) id operation)
                     (setq healthy t)))))
-          ((org-texmacs-parse-error org-texmacs-encoding-error)
+          ((org-texmacs-parse-error org-texmacs-encoding-error org-texmacs-session-error)
            (setq healthy t)
            (signal (car err) (cdr err)))
           (error (signal 'org-texmacs-worker-error
@@ -241,12 +258,9 @@ OPERATION selects the response contract; nil preserves the parse protocol."
       (when (and client (process-live-p client)) (delete-process client))
       (unless healthy (org-texmacs--worker-stop)))))
 
-(defun org-texmacs--worker-encode-document (document)
-  "Encode text DOCUMENT in the worker and return a hex-leaf body stree.
-This internal diagnostic result contains native bytes represented as ASCII
-hex, not text leaves and not an Org document result.  Never feed it back to
-this encoder.  Encoding and native tree construction occur only in TeXmacs;
-no intermediate document files or persistent native buffers are created."
+(defun org-texmacs--worker-document-wire (document)
+  "Validate DOCUMENT and serialize its text body and STM paths as data.
+Return the two Scheme arguments, without starting a process."
   (unless (org-texmacs-document-p document)
     (signal 'org-texmacs-encoding-error '("Expected a document result")))
   (let ((body (org-texmacs--document-copy-stree (org-texmacs-document-body document)))
@@ -284,9 +298,16 @@ no intermediate document files or persistent native buffers are created."
                                      (lambda (path)
                                        (concat "(" (mapconcat #'number-to-string path " ") ")"))
                                      paths " ") ")")))
-        (org-texmacs--worker-call
-         (lambda (id) (format "(encode %d %s %s)\n" id tree-wire paths-wire))
-         'encode)))))
+        (concat tree-wire " " paths-wire)))))
+
+(defun org-texmacs--worker-encode-document (document)
+  "Encode text DOCUMENT in the worker and return a hex-leaf body stree.
+This diagnostic result contains native bytes represented as ASCII hex, not
+text leaves.  Never feed it back to this encoder.  No files or persistent
+native buffers are created."
+  (let ((wire (org-texmacs--worker-document-wire document)))
+    (org-texmacs--worker-call
+     (lambda (id) (format "(encode %d %s)\n" id wire)) 'encode)))
 
 (provide 'org-texmacs-worker)
 
