@@ -2389,6 +2389,44 @@ Only serialize expected bytes; do not call the production encoder."
       (org-texmacs-test--ascii-hex tree)
     (cons (car tree) (mapcar #'org-texmacs-test--native-hex (cdr tree)))))
 
+(ert-deftest org-texmacs-document-mixed-inline-session ()
+  (org-texmacs-test--with-worker
+    (should-not (org-texmacs--worker-live-p))
+    (with-temp-buffer
+      (org-mode)
+      (insert "中 /i/ [fn::*n*] [[https://example.org][L]] (math \"<alpha>\")(math \"x\")\n\n"
+              "#+begin_texmacs\n(equation* \"y\")\n#+end_texmacs\n")
+      (let* ((source (buffer-string))
+             (tick (buffer-chars-modified-tick))
+             (position (point))
+             (document (org-texmacs-document))
+             (process org-texmacs--worker-process)
+             (session (org-texmacs-session-open))
+             (expected
+              '(document
+                (concat "<#4E2D> " (em "i") " " (footnote (document (concat (strong "n")))) " "
+                        (hlink "L" "https://example.org") " " (math "<alpha>") (math "x") " ")
+                (equation* "y"))))
+        (unwind-protect
+            (progn
+              (should (equal (org-texmacs-document-stm-paths document) '((0 7) (0 8) (1))))
+              (dotimes (_ 2)
+                (org-texmacs-session-set-document session document)
+                (should (equal (org-texmacs--session-read session)
+                               (org-texmacs-test--native-hex expected))))
+              (org-texmacs-session-close session)
+              (should-error (org-texmacs-session-set-document session document)
+                            :type 'org-texmacs-session-error)
+              (setq session (org-texmacs-session-open))
+              (org-texmacs-session-set-document session document)
+              (should (equal (org-texmacs--session-read session)
+                             (org-texmacs-test--native-hex expected)))
+              (should (eq process org-texmacs--worker-process))
+              (should (equal source (buffer-string)))
+              (should (= tick (buffer-chars-modified-tick)))
+              (should (= position (point))))
+          (org-texmacs-session-close session))))))
+
 (ert-deftest org-texmacs-document-real-chinese-end-to-end ()
   (org-texmacs-test--with-worker
     (with-temp-buffer
