@@ -480,10 +480,10 @@ continue to return Org-compatible pseudo subtrees.
 narrowing instead of widening implicitly.  It prepares a private snapshot,
 parses STM islands with the shared worker, and returns a document result:
 
-| Accessor | Result |
-|----------+--------|
-| =org-texmacs-document-body= | Text stree rooted at =document=, before native encoding |
-| =org-texmacs-document-stm-paths= | Paths to complete STM island roots in that body |
+| Accessor                         | Result                                                  |
+|----------------------------------+---------------------------------------------------------|
+| =org-texmacs-document-body=      | Text stree rooted at =document=, before native encoding |
+| =org-texmacs-document-stm-paths= | Paths to complete STM island roots in that body         |
 
 Paths use zero-based child indices, excluding the tag.  Keep both fields
 together and treat the result and all nested data as read-only.  It is not
@@ -508,19 +508,19 @@ This example returns a document result; it starts TeXmacs to parse its islands:
 
 The supported Org subset is deliberately small:
 
-| Org input | TeXmacs body structure |
-|-----------+------------------------|
-| Document / section container | =document= / transparent contents |
-| Paragraph / plain text | One =concat= per paragraph / prose whitespace normalization |
-| Bold | =strong= |
-| Italic / underline / strike-through | =em= / =underline= / =strike-through= |
-| Inline code / verbatim | =verbatim= with literal inline text |
-| Explicit line break in paragraph contents | =next-line= |
-| Supported self-contained URI link | =hlink= with separate display body and target |
-| Anonymous inline footnote directly in a paragraph | =footnote= containing a body =document= |
-| Nonempty headings at Org's parsed levels 1, 2, 3 | =section=, =subsection=, =subsubsection= |
-| Recognized paragraph fragment | One parsed STM subtree |
-| =texmacs= special block | One parsed STM subtree, even for a string or =document= root |
+| Org input                                         | TeXmacs body structure                                       |
+|---------------------------------------------------+--------------------------------------------------------------|
+| Document / section container                      | =document= / transparent contents                            |
+| Paragraph / plain text                            | One =concat= per paragraph / prose whitespace normalization  |
+| Bold                                              | =strong=                                                     |
+| Italic / underline / strike-through               | =em= / =underline= / =strike-through=                        |
+| Inline code / verbatim                            | =verbatim= with literal inline text                          |
+| Explicit line break in paragraph contents         | =next-line=                                                  |
+| Supported self-contained URI link                 | =hlink= with separate display body and target                |
+| Anonymous inline footnote directly in a paragraph | =footnote= containing a body =document=                      |
+| Nonempty headings at Org's parsed levels 1, 2, 3  | =section=, =subsection=, =subsubsection=                     |
+| Recognized paragraph fragment                     | One parsed STM subtree                                       |
+| =texmacs= special block                           | One parsed STM subtree, even for a string or =document= root |
 
 Heading text may contain supported emphasis and literal inline code, but not
 explicit line breaks.  This is not a general Org
@@ -585,11 +585,11 @@ This is structural conversion, not a byte-for-byte Org round trip.
 Document conversion snapshots these standard Org options from the source
 buffer; it does not introduce parallel TeXmacs display switches:
 
-| Org option | Default | Meaning |
-|------------+---------+---------|
-| =org-export-with-todo-keywords= | t | Show TODO/DONE keyword |
-| =org-export-with-priority= | nil | Show priority cookie |
-| =org-export-with-tags= | t | Show explicit headline tags |
+| Org option                      | Default | Meaning                     |
+|---------------------------------+---------+-----------------------------|
+| =org-export-with-todo-keywords= | t       | Show TODO/DONE keyword      |
+| =org-export-with-priority=      | nil     | Show priority cookie        |
+| =org-export-with-tags=          | t       | Show explicit headline tags |
 
 =not-in-toc= also shows tags in the body heading; no TOC is generated.
 Disabling a field only omits its presentation, never the heading or body.
@@ -712,14 +712,14 @@ after the current worker stops.  Worker exit and Emacs shutdown clean up its
 socket directory.  For development, =(org-texmacs--worker-stop)= stops it
 explicitly; this is an internal function, not a stable public command.
 
-| Condition                  | Meaning                                                                    |
-|----------------------------+----------------------------------------------------------------------------|
-| =org-texmacs-error=        | Base error; invalid input/configuration, stale span or inaccessible source |
-| =org-texmacs-parse-error=  | Invalid STM source or a fragment root tag mismatch                         |
-| =org-texmacs-worker-error= | Startup, communication or response failure                                 |
-| =org-texmacs-document-error= | Unsupported document input or changed source/configuration              |
-| =org-texmacs-encoding-error= | Invalid native encoding input                                            |
-| =org-texmacs-session-error= | Invalid/stale session or native body operation failure                    |
+| Condition                    | Meaning                                                                    |
+|------------------------------+----------------------------------------------------------------------------|
+| =org-texmacs-error=          | Base error; invalid input/configuration, stale span or inaccessible source |
+| =org-texmacs-parse-error=    | Invalid STM source or a fragment root tag mismatch                         |
+| =org-texmacs-worker-error=   | Startup, communication or response failure                                 |
+| =org-texmacs-document-error= | Unsupported document input or changed source/configuration                 |
+| =org-texmacs-encoding-error= | Invalid native encoding input                                              |
+| =org-texmacs-session-error=  | Invalid/stale session or native body operation failure                     |
 
 All these conditions inherit from =org-texmacs-error=.  Parse errors leave
 the worker available for the next request.  Transport failures and request
