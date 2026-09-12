@@ -140,6 +140,7 @@ encoded tree.  Treat it and its nested contents as read-only.
 Support paragraphs, plain text, bold/italic/underline/strike-through,
 inline code/verbatim, explicit paragraph line breaks and level 1--3 headings,
 plus http/https/mailto/ftp/ftps URI links with optional inline descriptions,
+anonymous inline footnotes directly in paragraphs,
 plus complete TeXmacs special blocks and discovered paragraph fragments.
 Normalize ordinary spaces, tabs and soft newlines in Org inline text,
 including literal inline code; do not normalize STM subtree contents.

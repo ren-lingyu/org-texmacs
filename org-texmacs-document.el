@@ -132,6 +132,7 @@ count.  Both inputs have prose whitespace semantics, not source fidelity.
 Support paragraphs, plain text, basic emphasis, inline code/verbatim,
 explicit line breaks, self-contained URI links, transparent Org sections
 and level 1--3 headlines.  Link admission uses Org type, not raw source.
+Accept anonymous inline footnotes only as direct paragraph children.
 Collapse ordinary spaces, tabs and soft newlines across Org inline text
 boundaries.  Suppress leading whitespace at paragraph/title starts and after
 explicit breaks; a final whitespace run remains one space.  Inline code is
@@ -210,6 +211,22 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
                  (cons (org-texmacs--document-pack
                         (cdr (assq type org-texmacs--document-markup-tags))
                         (list body))
+                       (blank node space))))
+              ((and (consp node) (eq (org-element-type node) 'footnote-reference))
+               (unless (and (eq context 'paragraph)
+                            (eq (org-element-property :type node) 'inline)
+                            (null (org-element-property :label node))
+                            (not (memq node ancestors)))
+                 (org-texmacs--document-fail node "Unsupported footnote context or type"))
+               (let* ((parts (inlines (org-element-contents node) 'footnote
+                                      (cons node ancestors)))
+                      (paragraph (org-texmacs--document-pack
+                                  'concat (or parts
+                                              (list (org-texmacs--document-create :body ""))))))
+                 ;; The reference is visible; its body has separate whitespace state.
+                 (setcar space nil)
+                 (cons (org-texmacs--document-pack
+                        'footnote (list (org-texmacs--document-pack 'document (list paragraph))))
                        (blank node space))))
               ((and (consp node) (eq (org-element-type node) 'link))
                (when (memq node ancestors)
@@ -421,7 +438,8 @@ All positions refer to the complete, unnarrowed source snapshot."
                (push (list entry raw tag) requests)))
            (whitespace (node)
              (when (or (assq (org-element-type node) org-texmacs--document-markup-tags)
-                       (memq (org-element-type node) '(code verbatim line-break link)))
+                       (memq (org-element-type node)
+                             '(code verbatim line-break link footnote-reference)))
                (let* ((end (org-element-property :end node))
                       (count (or (org-element-property :post-blank node) 0)))
                  (push (cons node (buffer-substring-no-properties (- end count) end))

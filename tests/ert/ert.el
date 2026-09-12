@@ -1720,6 +1720,98 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                                   " " (math "<alpha>") " "))))))
           (org-texmacs-session-close session))))))
 
+(ert-deftest org-texmacs-document-footnote-source ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "A[fn::one][fn::two] end\n")
+    (let ((source (buffer-string)))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Ordinary footnote started worker"))))
+        (should (equal (org-texmacs-document-body (org-texmacs-document))
+                       '(document (concat "A" (footnote (document (concat "one")))
+                                          (footnote (document (concat "two"))) " " "end ")))))
+      (should (equal source (buffer-string))))))
+
+(ert-deftest org-texmacs-document-footnote-whitespace-and-empty ()
+  (let* ((note (org-element-create 'footnote-reference '(:type inline :post-blank 2)
+                                   " \tnote\n " (org-element-create 'line-break nil) " \tend "))
+         (empty (org-element-create 'footnote-reference '(:type inline)))
+         (ast (org-element-create 'org-data nil
+                                  (org-element-create 'paragraph nil "a " note " b " empty)))
+         (before (substring-no-properties (car (org-element-contents note))))
+         (result (org-texmacs--document-lower ast)))
+    (should (equal (org-texmacs-document-body result)
+                   '(document (concat "a " (footnote (document (concat "note " (next-line) "end ")))
+                                      " " "b " (footnote (document (concat "")))))))
+    (should-not (org-texmacs-document-stm-paths result))
+    (should (equal before (substring-no-properties (car (org-element-contents note)))))))
+
+(ert-deftest org-texmacs-document-footnote-rejects-contexts ()
+  (dolist (context '(title bold link footnote))
+    (let* ((note (org-element-create 'footnote-reference '(:type inline) "note"))
+           (container
+            (pcase context
+              ('title (org-element-create 'headline
+                                          (list :level 1 :raw-value "title" :title (list note))))
+              ('bold (org-element-create 'paragraph nil (org-element-create 'bold nil note)))
+              ('link (org-element-create
+                      'paragraph nil (org-element-create 'link
+                                                        '(:type "https" :path "//example.org") note)))
+              ('footnote (org-element-create
+                          'paragraph nil (org-element-create 'footnote-reference '(:type inline) note)))))
+           (ast (org-element-create 'org-data nil container)))
+      (should-error (org-texmacs--document-lower ast) :type 'org-texmacs-document-error)))
+  (dolist (source '("[fn:name]\n" "[fn:name:note]\n" "[fn:name] definition\n"
+                    "* Title[fn::note]\n" "[fn::outer [fn::inner]]\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source)
+      (should-error (org-texmacs-document) :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-document-footnote-stm-exclusion ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "A[fn::(math \"hidden\")] (math \"visible\")\n")
+    (let (requests)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (source) (push source requests) '(math "visible"))))
+        (let ((result (org-texmacs-document)))
+          (should (equal requests '("(math \"visible\")")))
+          (should (equal (org-texmacs-document-body result)
+                         '(document (concat "A" (footnote (document (concat "(math \"hidden\")")))
+                                            " " (math "visible") " "))))
+          (should (equal (org-texmacs-document-stm-paths result) '((0 3)))))))))
+
+(ert-deftest org-texmacs-document-footnote-rich-native ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "A[fn::中 *bold* ~code~ [[https://example.org][Link]] <alpha>]\n")
+      (let* ((source (buffer-string))
+             (document (org-texmacs-document))
+             (session (org-texmacs-session-open))
+             (expected '(document
+                         (concat "A" (footnote
+                                      (document
+                                       (concat "中 " (strong "bold") " " (verbatim "code") " "
+                                               (hlink "Link" "https://example.org") " " "<alpha>")))
+                                 " "))))
+        (unwind-protect
+            (progn
+              (should (equal (org-texmacs-document-body document) expected))
+              (org-texmacs-session-set-document session document)
+              (should (equal
+                       (org-texmacs--session-read session)
+                       (org-texmacs-test--native-hex
+                        '(document
+                          (concat "A" (footnote
+                                       (document
+                                        (concat "<#4E2D> " (strong "bold") " " (verbatim "code") " "
+                                                (hlink "Link" "https://example.org") " "
+                                                "<less>alpha<gtr>"))) " ")))))
+              (should (equal source (buffer-string))))
+          (org-texmacs-session-close session))))))
+
 (ert-deftest org-texmacs-document-headline-levels ()
   (with-temp-buffer
     (org-mode)
@@ -1783,7 +1875,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                     "[[./notes.org]]\n" "[[/tmp/notes.org]]\n"
                     "[[file:notes.org::heading]]\n" "[[file+emacs:notes.org]]\n"
                     "[[#target]]\n" "[[id:missing]]\n"
-                    "[fn::note]\n" "| table |\n" "# comment\n"
+                    "[fn:named]\n" "| table |\n" "# comment\n"
                     "#+title: Title\n" "* COMMENT Task\n" "* Tagged :ARCHIVE:\n"
                     "**** Deep\n" "* \n" "#+name: named\nParagraph\n"
                     "#+attr_html: :class test\nParagraph\n"

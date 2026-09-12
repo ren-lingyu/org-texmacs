@@ -515,13 +515,14 @@ The supported Org subset is deliberately small:
 | Inline code / verbatim | =verbatim= with literal inline text |
 | Explicit line break in paragraph contents | =next-line= |
 | Supported self-contained URI link | =hlink= with separate display body and target |
+| Anonymous inline footnote directly in a paragraph | =footnote= containing a body =document= |
 | Nonempty headings at Org's parsed levels 1, 2, 3 | =section=, =subsection=, =subsubsection= |
 | Recognized paragraph fragment | One parsed STM subtree |
 | =texmacs= special block | One parsed STM subtree, even for a string or =document= root |
 
 Heading text may contain supported emphasis and literal inline code, but not
 explicit line breaks.  This is not a general Org
-exporter: unsupported links, footnotes, lists, tables, other blocks, keywords,
+exporter: unsupported links and footnotes, lists, tables, other blocks, keywords,
 drawers and affiliated metadata are rejected.  COMMENT/archive headings,
 empty headings and deeper headings are also
 rejected rather than silently discarded.  Fragment discovery can support
@@ -549,6 +550,17 @@ escaping or prose whitespace normalization.  Conversion does not open or
 download targets, invoke export handlers, or embed linked images.
 File links (including implicit file links), internal references and other
 protocols are rejected.
+
+Anonymous inline footnotes such as =[fn::A note]= are supported only as
+direct paragraph children.  Their bodies support ordinary inline markup,
+URI links and explicit line breaks, with independent prose whitespace
+normalization.  Empty bodies are represented by an empty text slot.
+Named references, separate definitions, nested footnotes and footnotes in
+headings, emphasis or link descriptions are rejected as AST nodes.
+STM syntax inside footnotes is not discovered as a TeXmacs island.
+Adjacent footnotes remain adjacent nodes without added separators or
+package-generated numbering.  Native body round trips do not establish
+rendering or numbering correctness.
 
 Document preparation uses private Org-generated link regexps, including
 =ftps=, without globally registering protocols.  It copies link registration
