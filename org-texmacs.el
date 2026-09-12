@@ -139,6 +139,7 @@ encoded tree.  Treat it and its nested contents as read-only.
 
 Support paragraphs, plain text, bold/italic/underline/strike-through,
 inline code/verbatim, explicit paragraph line breaks and level 1--3 headings,
+plus http/https/mailto/ftp/ftps URI links with optional inline descriptions,
 plus complete TeXmacs special blocks and discovered paragraph fragments.
 Normalize ordinary spaces, tabs and soft newlines in Org inline text,
 including literal inline code; do not normalize STM subtree contents.
@@ -158,7 +159,7 @@ Do not collect file-local export options such as #+OPTIONS.
 Prepare a private snapshot without mode hooks, validate supported structure,
 then synchronously parse each island with the shared worker.  Do not cache
 the result or modify source/live Org nodes.  Reject source, mode, narrowing
-or tag/heading-setting changes while waiting.  Parser and worker errors
+or tag/heading/link-setting changes while waiting.  Parser and worker errors
 propagate unchanged.
 The result preserves source-dependent text semantics for later encoding;
 it does not provide export, native buffer updates or rendering."
@@ -168,16 +169,20 @@ it does not provide export, native buffer updates or rendering."
          (tick (buffer-chars-modified-tick))
          (tags (org-texmacs--fragment-tags))
          (heading-settings (org-texmacs--document-heading-settings))
+         (link-settings (org-texmacs--document-link-settings))
          (info (org-texmacs--document-options))
          (source (buffer-substring-no-properties (point-min) (point-max)))
-         (spans (org-texmacs--fragment-collect tags))
-         (prepared (org-texmacs--document-prepare source spans heading-settings info)))
+         (prepared (org-texmacs--document-prepare-source
+                    source tags heading-settings info link-settings)))
     (cl-labels ((check ()
                  (org-texmacs--fragment-check-source buffer tick)
                  (org-texmacs--fragment-check-tags tags)
                  (unless (equal heading-settings (org-texmacs--document-heading-settings))
                    (signal 'org-texmacs-document-error
                            '("Org heading settings changed during conversion")))
+                 (unless (equal link-settings (org-texmacs--document-link-settings))
+                   (signal 'org-texmacs-document-error
+                           '("Org link settings changed during conversion")))
                  (when (buffer-narrowed-p)
                    (signal 'org-texmacs-document-error '("Source became narrowed")))))
       (check)

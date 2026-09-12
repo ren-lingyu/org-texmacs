@@ -1605,6 +1605,121 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
               (should (equal source (buffer-string))))
           (org-texmacs-session-close session))))))
 
+(ert-deftest org-texmacs-document-uri-source-forms ()
+  (dolist (type '("http" "https" "mailto" "ftp" "ftps"))
+    (let ((uri (concat type ":" (if (equal type "mailto")
+                                    "user@example.org" "//example.org/a%20b?q=x%26y&n=2"))))
+      (dolist (source (list (concat "[[" uri "]]\n")
+                            (concat "<" uri ">\n") (concat uri "\n")
+                            (concat "[[" uri "][Label]]\n")))
+        (with-temp-buffer
+          (org-mode)
+          (insert source)
+          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                     (lambda (&rest _) (ert-fail "URI parsing started worker"))))
+            (should (equal (org-texmacs-document-body (org-texmacs-document))
+                           (list 'document
+                                 (list 'concat
+                                       (list 'hlink
+                                             (if (equal source (concat "[[" uri "][Label]]\n"))
+                                                 "Label" uri)
+                                             uri)
+                                       " ")))))
+          (should (equal source (buffer-string))))))))
+
+(ert-deftest org-texmacs-document-uri-rich-description ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* [[https://example.org][Title]]\n"
+            "A [[ftps://example.org/中%20文?q=x%26y&z=2][*bold* /em/]]\t end\n")
+    (should
+     (equal (org-texmacs-document-body (org-texmacs-document))
+            '(document (section (hlink "Title" "https://example.org"))
+                       (concat "A " (hlink (concat (strong "bold") " " (em "em"))
+                                          "ftps://example.org/中%20文?q=x%26y&z=2")
+                               " " "end "))))))
+
+(ert-deftest org-texmacs-document-uri-type-and-target-contract ()
+  (let* ((path (copy-sequence "//example.org/<alpha>\t%20"))
+         (link (org-element-create 'link
+                                   (list :type "HTTPS" :path path :raw-link "file:wrong")))
+         (ast (org-element-create 'org-data nil
+                                  (org-element-create 'paragraph nil link)))
+         (body (org-texmacs-document-body (org-texmacs--document-lower ast))))
+    (should (equal body '(document (concat (hlink "HTTPS://example.org/<alpha>\t%20"
+                                                "HTTPS://example.org/<alpha>\t%20")))))
+    (should-not (eq path (nth 2 (nth 1 (nth 1 body)))))
+    (should (equal path "//example.org/<alpha>\t%20")))
+  (dolist (type '("file" "fuzzy" "id" "custom-id" "news" nil))
+    (let ((ast (org-element-create
+                'org-data nil
+                (org-element-create 'paragraph nil
+                                    (org-element-create 'link
+                                                        (list :type type :path "x"
+                                                              :raw-link "https://example.org"))))))
+      (should-error (org-texmacs--document-lower ast) :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-document-uri-private-syntax-restoration ()
+  (dolist (suffix '("" "\n- unsupported\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "[[ftps://example.org][(math \"hidden\")]]" suffix)
+      (let* ((variables '(org-link-parameters org-link-types-re org-link-angle-re
+                         org-link-plain-re org-link-bracket-re org-link-any-re
+                         org-element--object-regexp org-element-paragraph-separate))
+             (before (mapcar (lambda (var)
+                               (org-texmacs--document-copy-link-setting (symbol-value var)))
+                             variables))
+             (source (buffer-string))
+             (reset (symbol-function 'org-element-cache-reset)))
+        (cl-letf (((symbol-function 'org-element-cache-reset)
+                   (lambda (&rest args)
+                     (when (eq (car args) 'all) (ert-fail "Global cache reset"))
+                     (apply reset args)))
+                  ((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Link description scanned as STM"))))
+          (if (equal suffix "")
+              (should (equal (org-texmacs-document-body (org-texmacs-document))
+                             '(document (concat (hlink "(math \"hidden\")"
+                                                      "ftps://example.org")))))
+            (should-error (org-texmacs-document) :type 'org-texmacs-document-error)))
+        (should (equal before (mapcar #'symbol-value variables)))
+        (should (equal source (buffer-string)))))))
+
+(ert-deftest org-texmacs-document-uri-abbreviation-and-stale-settings ()
+  (with-temp-buffer
+    (org-mode)
+    (setq-local org-link-abbrev-alist-local '(("short" . "https://example.org/%s")))
+    (insert "[[short:page][Page]]\n")
+    (should (equal (org-texmacs-document-body (org-texmacs-document))
+                   '(document (concat (hlink "Page" "https://example.org/page") " "))))
+    (insert "(math \"x\")\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _)
+                 (setq-local org-link-abbrev-alist-local nil)
+                 '(math "x"))))
+      (should-error (org-texmacs-document) :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-document-uri-native-islands ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "[[https://example.org/中%20文?q=a&b=%26][中文 <alpha>]] (math \"<alpha>\")\n")
+      (let* ((document (org-texmacs-document))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (should (equal (org-texmacs-document-stm-paths document) '((0 2))))
+              (org-texmacs-session-set-document session document)
+              (should (equal
+                       (org-texmacs--session-read session)
+                       (org-texmacs-test--native-hex
+                        '(document
+                          (concat (hlink "<#4E2D><#6587> <less>alpha<gtr>"
+                                         "https://example.org/<#4E2D>%20<#6587>?q=a&b=%26")
+                                  " " (math "<alpha>") " "))))))
+          (org-texmacs-session-close session))))))
+
 (ert-deftest org-texmacs-document-headline-levels ()
   (with-temp-buffer
     (org-mode)
@@ -1664,7 +1779,10 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (should (equal (org-texmacs-document-stm-paths result) '((0))))))
 
 (ert-deftest org-texmacs-document-rejects-unsupported-source ()
-  (dolist (source '("- item\n" "[[https://example.org][link]]\n"
+  (dolist (source '("- item\n" "[[file:notes.org][link]]\n"
+                    "[[./notes.org]]\n" "[[/tmp/notes.org]]\n"
+                    "[[file:notes.org::heading]]\n" "[[file+emacs:notes.org]]\n"
+                    "[[#target]]\n" "[[id:missing]]\n"
                     "[fn::note]\n" "| table |\n" "# comment\n"
                     "#+title: Title\n" "* COMMENT Task\n" "* Tagged :ARCHIVE:\n"
                     "**** Deep\n" "* \n" "#+name: named\nParagraph\n"

@@ -25,6 +25,10 @@
     (strike-through . strike-through))
   "TeXmacs tags for recursively lowered Org inline markup.")
 
+(defconst org-texmacs--supported-link-types
+  '("http" "https" "mailto" "ftp" "ftps")
+  "Org link types accepted as self-contained URI targets.")
+
 (defcustom org-texmacs-format-headline-function
   #'org-texmacs-format-headline-default-function
   "Function presenting headline metadata and lowered title parts.
@@ -126,7 +130,8 @@ trailing spaces/tabs.  Without an entry, use the nonnegative `:post-blank'
 count.  Both inputs have prose whitespace semantics, not source fidelity.
 
 Support paragraphs, plain text, basic emphasis, inline code/verbatim,
-explicit line breaks, transparent Org sections and level 1--3 headlines.
+explicit line breaks, self-contained URI links, transparent Org sections
+and level 1--3 headlines.  Link admission uses Org type, not raw source.
 Collapse ordinary spaces, tabs and soft newlines across Org inline text
 boundaries.  Suppress leading whitespace at paragraph/title starts and after
 explicit breaks; a final whitespace run remains one space.  Inline code is
@@ -206,6 +211,27 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
                         (cdr (assq type org-texmacs--document-markup-tags))
                         (list body))
                        (blank node space))))
+              ((and (consp node) (eq (org-element-type node) 'link))
+               (when (memq node ancestors)
+                 (org-texmacs--document-fail node "Cyclic Org AST"))
+               (let ((type (org-element-property :type node))
+                     (path (org-element-property :path node)))
+                 (unless (and (stringp type) (stringp path)
+                              (member (downcase type) org-texmacs--supported-link-types))
+                   (org-texmacs--document-fail node "Unsupported link type or path"))
+                 (let* ((uri (concat (substring-no-properties type) ":"
+                                     (substring-no-properties path)))
+                        (parts (and (org-element-contents node)
+                                    (inlines (org-element-contents node) 'link
+                                             (cons node ancestors) space)))
+                        (body (cond ((null parts)
+                                     (setcar space nil)
+                                     (org-texmacs--document-create :body (copy-sequence uri)))
+                                    ((null (cdr parts)) (car parts))
+                                    (t (org-texmacs--document-pack 'concat parts)))))
+                   (cons (org-texmacs--document-pack
+                          'hlink (list body (org-texmacs--document-create :body uri)))
+                         (blank node space)))))
               ((and (consp node) (memq (org-element-type node) '(code verbatim)))
                (let ((value (org-element-property :value node)))
                  (unless (and (stringp value) (null (org-element-contents node)))
@@ -323,11 +349,52 @@ buffer-local copies separate from the caller's snapshot and source buffer."
   (setq-local org-odd-levels-only (nth 2 settings))
   (setq-local org-priority-regexp (substring-no-properties (nth 3 settings))))
 
-(defun org-texmacs--document-prepare (source spans heading-settings &optional info)
+(defun org-texmacs--document-copy-link-setting (value)
+  "Copy parser setting VALUE, including mutable strings."
+  (cond ((stringp value) (substring-no-properties value))
+        ((consp value)
+         (cons (org-texmacs--document-copy-link-setting (car value))
+               (org-texmacs--document-copy-link-setting (cdr value))))
+        (t value)))
+
+(defun org-texmacs--document-link-settings ()
+  "Snapshot effective link registration and abbreviation settings."
+  (mapcar #'org-texmacs--document-copy-link-setting
+          (list org-link-parameters org-link-abbrev-alist org-link-abbrev-alist-local)))
+
+(defun org-texmacs--document-prepare-source (source tags headings info links)
+  "Prepare SOURCE under private Org link syntax using fixed LINKS settings.
+TAGS, HEADINGS and INFO are the conversion's other fixed inputs.
+Never register protocols globally or reset source element caches.  Keep
+Org's internal regexp regeneration confined to this preparation boundary."
+  (let ((org-link-parameters (org-texmacs--document-copy-link-setting (nth 0 links)))
+        (org-link-abbrev-alist (org-texmacs--document-copy-link-setting (nth 1 links)))
+        (org-link-types-re org-link-types-re)
+        (org-link-angle-re org-link-angle-re)
+        (org-link-plain-re org-link-plain-re)
+        (org-link-bracket-re org-link-bracket-re)
+        (org-link-any-re org-link-any-re)
+        (org-element--object-regexp org-element--object-regexp)
+        (org-element-paragraph-separate org-element-paragraph-separate))
+    (dolist (type org-texmacs--supported-link-types)
+      (unless (assoc type org-link-parameters)
+        (push (list type) org-link-parameters)))
+    (org-link-make-regexps)
+    (org-element--set-regexps)
+    (with-temp-buffer
+      (let ((org-element-use-cache nil) (org-inhibit-startup t))
+        (delay-mode-hooks (org-mode))
+        (setq-local org-texmacs-fragment-tags tags)
+        (insert source)
+        (org-texmacs--document-prepare
+         source (org-texmacs--fragment-collect tags) headings info (nth 2 links))))))
+
+(defun org-texmacs--document-prepare (source spans heading-settings &optional info abbrevs)
   "Prepare SOURCE and discovered SPANS without starting a worker.
 HEADING-SETTINGS is the source's effective heading configuration snapshot.
 Install it locally after private mode initialization, before parsing source.
 INFO supplies fixed headline policies and formatter to preflight lowering.
+ABBREVS supplies source-local Org link abbreviations for the private parser.
 Return (AST ISLANDS REQUESTS POST-BLANKS).  Each request is
 (ISLAND-ENTRY SOURCE TAG); TAG is nil for an unrestricted special block.
 Island entries initially contain placeholder strees for structural validation.
@@ -339,6 +406,8 @@ All positions refer to the complete, unnarrowed source snapshot."
           (islands nil) (requests nil) (blanks nil))
       (delay-mode-hooks (org-mode))
       (org-texmacs--document-use-heading-settings heading-settings)
+      (setq-local org-link-abbrev-alist-local
+                  (org-texmacs--document-copy-link-setting abbrevs))
       (insert source)
       (dolist (span spans)
         (goto-char (org-texmacs-fragment-span-begin span))
@@ -352,7 +421,7 @@ All positions refer to the complete, unnarrowed source snapshot."
                (push (list entry raw tag) requests)))
            (whitespace (node)
              (when (or (assq (org-element-type node) org-texmacs--document-markup-tags)
-                       (memq (org-element-type node) '(code verbatim line-break)))
+                       (memq (org-element-type node) '(code verbatim line-break link)))
                (let* ((end (org-element-property :end node))
                       (count (or (org-element-property :post-blank node) 0)))
                  (push (cons node (buffer-substring-no-properties (- end count) end))

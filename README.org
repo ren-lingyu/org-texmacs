@@ -514,13 +514,14 @@ The supported Org subset is deliberately small:
 | Italic / underline / strike-through | =em= / =underline= / =strike-through= |
 | Inline code / verbatim | =verbatim= with literal inline text |
 | Explicit line break in paragraph contents | =next-line= |
+| Supported self-contained URI link | =hlink= with separate display body and target |
 | Nonempty headings at Org's parsed levels 1, 2, 3 | =section=, =subsection=, =subsubsection= |
 | Recognized paragraph fragment | One parsed STM subtree |
 | =texmacs= special block | One parsed STM subtree, even for a string or =document= root |
 
 Heading text may contain supported emphasis and literal inline code, but not
 explicit line breaks.  This is not a general Org
-exporter: links, footnotes, lists, tables, other blocks, keywords,
+exporter: unsupported links, footnotes, lists, tables, other blocks, keywords,
 drawers and affiliated metadata are rejected.  COMMENT/archive headings,
 empty headings and deeper headings are also
 rejected rather than silently discarded.  Fragment discovery can support
@@ -538,6 +539,22 @@ may become empty when its whitespace duplicates a preceding slot.
 These rules apply while lowering Org nodes, not as a rewrite of the final
 TeXmacs tree.  STM islands remain opaque and unchanged, including their
 whitespace.  The source buffer and raw STM extraction are unchanged.
+
+URI links support =http=, =https=, =mailto=, =ftp= and =ftps=, including
+bracket, angle and plain Org links.  Admission uses Org's parsed link type
+case-insensitively, preserving its spelling in the target.  Descriptions
+may contain supported inline markup; without a description the URI is
+displayed.  Targets are assembled from Org's type/path without additional
+escaping or prose whitespace normalization.  Conversion does not open or
+download targets, invoke export handlers, or embed linked images.
+File links (including implicit file links), internal references and other
+protocols are rejected.
+
+Document preparation uses private Org-generated link regexps, including
+=ftps=, without globally registering protocols.  It copies link registration
+and global/local abbreviation settings; changes while waiting for the
+worker invalidate the conversion.  This does not change standalone fragment
+discovery or extend STM discovery into link descriptions.
 
 The private parser receives copies of the source's effective
 =org-todo-regexp=, =org-done-keywords=, =org-odd-levels-only= and
