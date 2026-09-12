@@ -1412,4 +1412,125 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
             (should (eq process org-texmacs--worker-process))
             (should (= org-texmacs--worker-request-id 2))))))))
 
+(ert-deftest org-texmacs-document-empty ()
+  (let ((result (org-texmacs--document-lower
+                 (org-element-create 'org-data nil))))
+    (should (org-texmacs-document-p result))
+    (should (equal (org-texmacs-document-body result) '(document)))
+    (should-not (org-texmacs-document-stm-paths result))))
+
+(ert-deftest org-texmacs-document-paragraphs-and-bold ()
+  (let* ((bold (org-element-create 'bold '(:post-blank 2) "bold"))
+         (ast (org-element-create
+               'org-data nil
+               (org-element-create
+                'section nil
+                (org-element-create 'paragraph nil "Before " bold "after.\n")
+                (org-element-create 'paragraph nil "Next.\n"))))
+         (result (org-texmacs--document-lower ast)))
+    (should (equal (org-texmacs-document-body result)
+                   '(document (concat "Before " (strong "bold") "  " "after.\n")
+                              (concat "Next.\n"))))
+    (should-not (org-texmacs-document-stm-paths result))
+    (should (equal (org-texmacs-document-body
+                    (org-texmacs--document-lower ast nil (list (cons bold "\t "))))
+                   '(document (concat "Before " (strong "bold") "\t " "after.\n")
+                              (concat "Next.\n"))))))
+
+(ert-deftest org-texmacs-document-headline-levels ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* First\nBody.\n*** Third\n")
+    (should (equal (org-texmacs-document-body
+                    (org-texmacs--document-lower (org-element-parse-buffer)))
+                   '(document (section "First") (concat "Body.\n")
+                              (subsubsection "Third"))))))
+
+(ert-deftest org-texmacs-document-island-paths-and-copies ()
+  (let* ((ordinary (copy-sequence "<alpha>"))
+         (foreign (copy-sequence "<alpha>"))
+         (paragraph (org-element-create 'paragraph nil ordinary foreign "\n"))
+         (block (org-element-create 'special-block '(:type "texmacs")))
+         (ast (org-element-create 'org-data nil
+                                  (org-element-create 'section nil paragraph block)))
+         (stree (list 'document (copy-sequence "中")))
+         (result (org-texmacs--document-lower
+                  ast (list (cons foreign '(math "<alpha>")) (cons block stree))))
+         (body (org-texmacs-document-body result)))
+    (should (equal body '(document (concat "<alpha>" (math "<alpha>") "\n")
+                                  (document "中"))))
+    (should (equal (org-texmacs-document-stm-paths result) '((0 1) (1))))
+    (should-not (eq ordinary (nth 1 (nth 1 body))))
+    (should-not (text-properties-at 0 (nth 1 (nth 1 body))))
+    (should-not (eq stree (nth 2 body)))
+    (should-not (eq (cadr stree) (cadr (nth 2 body))))))
+
+(ert-deftest org-texmacs-document-rich-title-without-worker ()
+  (cl-letf (((symbol-function 'org-texmacs--worker-start)
+             (lambda (&rest _) (ert-fail "Pure lowering started a worker")))
+            ((symbol-function 'org-texmacs--worker-request)
+             (lambda (&rest _) (ert-fail "Pure lowering requested parsing"))))
+    (with-temp-buffer
+      (org-mode)
+      (insert "** A *bold* title\n")
+      (let ((source (buffer-string)))
+        (should (equal (org-texmacs-document-body
+                        (org-texmacs--document-lower (org-element-parse-buffer)))
+                       '(document (subsection
+                                   (concat "A " (strong "bold") " " "title")))))
+        (should (equal source (buffer-string)))))))
+
+(ert-deftest org-texmacs-document-rejects-invalid-whitespace ()
+  (let* ((bold (org-element-create 'bold nil "bold"))
+         (ast (org-element-create 'org-data nil
+                                  (org-element-create 'paragraph nil bold))))
+    (dolist (value '("\n" "text" 1))
+      (should-error (org-texmacs--document-lower ast nil (list (cons bold value)))
+                    :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-document-atomic-island ()
+  (let* ((block (org-element-create 'special-block '(:type "texmacs")))
+         (ast (org-element-create 'org-data nil block))
+         (result (org-texmacs--document-lower ast (list (cons block "literal")))))
+    (should (equal (org-texmacs-document-body result) '(document "literal")))
+    (should (equal (org-texmacs-document-stm-paths result) '((0))))))
+
+(ert-deftest org-texmacs-document-rejects-unsupported-source ()
+  (dolist (source '("- item\n" "[[https://example.org][link]]\n"
+                    "/italic/\n" "| table |\n" "# comment\n"
+                    "#+title: Title\n" "* TODO Task\n" "* Tagged :tag:\n"
+                    "**** Deep\n" "* \n" "#+name: named\nParagraph\n"
+                    "#+attr_html: :class test\nParagraph\n"
+                    "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source)
+      (should-error (org-texmacs--document-lower (org-element-parse-buffer))
+                    :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-document-rejects-invalid-mappings ()
+  (let* ((leaf (copy-sequence "x"))
+         (ast (org-element-create
+               'org-data nil (org-element-create 'paragraph nil leaf))))
+    (dolist (mapping (list (list (cons leaf '(math "x")) (cons leaf "x"))
+                          (list (cons (copy-sequence "missing") "x"))
+                          (list (cons leaf '(math 1)))
+                          (list (cons leaf '(nil "x")))))
+      (should-error (org-texmacs--document-lower ast mapping)
+                    :type 'org-texmacs-document-error))
+    (should-error (org-texmacs--document-lower ast nil (list (cons leaf " ")))
+                  :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-document-rejects-cycles ()
+  (let* ((bold (org-element-create 'bold nil))
+         (ast (org-element-create 'org-data nil
+                                  (org-element-create 'paragraph nil bold))))
+    (org-element-set-contents bold (list bold))
+    (should-error (org-texmacs--document-lower ast)
+                  :type 'org-texmacs-document-error))
+  (let ((stree (list 'math "x")))
+    (setcar (cdr stree) stree)
+    (should-error (org-texmacs--document-copy-stree stree)
+                  :type 'org-texmacs-document-error)))
+
 ;;; ert.el ends here
