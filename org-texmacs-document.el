@@ -14,6 +14,7 @@
 
 (require 'org-texmacs-core)
 (require 'org-texmacs-source)
+(require 'org-texmacs-fragment)
 
 (define-error 'org-texmacs-document-error
               "Org TeXmacs document conversion failed" 'org-texmacs-error)
@@ -194,6 +195,98 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
                      (= (length used-blanks) (length post-blanks)))
           (signal 'org-texmacs-document-error '("Unused preparation mappings")))
         result))))
+
+(defun org-texmacs--document-heading-settings ()
+  "Copy effective Org TODO and headline-level settings for comparison.
+Copy strings as well as lists so in-place edits invalidate the snapshot."
+  (list (and org-todo-regexp (substring-no-properties org-todo-regexp))
+        (mapcar #'substring-no-properties org-done-keywords)
+        org-odd-levels-only))
+
+(defun org-texmacs--document-prepare (source spans heading-settings)
+  "Prepare SOURCE and discovered SPANS without starting a worker.
+HEADING-SETTINGS is the source's effective heading configuration snapshot.
+Reject it if the isolated Org parser would interpret headings differently.
+Return (AST ISLANDS REQUESTS POST-BLANKS).  Each request is
+(ISLAND-ENTRY SOURCE TAG); TAG is nil for an unrestricted special block.
+Island entries initially contain placeholder strees for structural validation.
+All positions refer to the complete, unnarrowed source snapshot."
+  (with-temp-buffer
+    (let ((org-element-use-cache nil)
+          (org-inhibit-startup t)
+          (remaining spans)
+          (islands nil) (requests nil) (blanks nil))
+      (delay-mode-hooks (org-mode))
+      (unless (equal heading-settings (org-texmacs--document-heading-settings))
+        (signal 'org-texmacs-document-error
+                '("Source and private Org heading settings differ")))
+      (insert source)
+      (dolist (span spans)
+        (goto-char (org-texmacs-fragment-span-begin span))
+        (delete-region (point) (org-texmacs-fragment-span-end span))
+        (insert (org-texmacs--fragment-mask
+                 (org-texmacs-fragment-span-source span))))
+      (cl-labels
+          ((register (node raw tag)
+             (let ((entry (cons node '(concat ""))))
+               (push entry islands)
+               (push (list entry raw tag) requests)))
+           (whitespace (node)
+             (when (eq (org-element-type node) 'bold)
+               (let* ((end (org-element-property :end node))
+                      (count (or (org-element-property :post-blank node) 0)))
+                 (push (cons node (buffer-substring-no-properties (- end count) end))
+                       blanks))
+               (mapc #'whitespace (org-element-contents node))))
+           (paragraph (node)
+             (let ((position (org-element-property :contents-begin node))
+                   (children nil))
+               (dolist (child (org-element-contents node))
+                 (if (not (stringp child))
+                     (progn
+                       (whitespace child)
+                       (push child children)
+                       (setq position (org-element-property :end child)))
+                   (let ((end (+ position (length child))))
+                     ;; Fail closed if Org normalized a leaf or a mask became markup.
+                     (unless (equal (substring-no-properties child)
+                                    (buffer-substring-no-properties position end))
+                       (org-texmacs--document-fail node "Org text differs from snapshot"))
+                     (while (and remaining
+                                 (< (org-texmacs-fragment-span-begin (car remaining)) end))
+                       (let* ((span (pop remaining))
+                              (begin (org-texmacs-fragment-span-begin span))
+                              (stop (org-texmacs-fragment-span-end span)))
+                         (unless (<= position begin stop end)
+                           (org-texmacs--document-fail node "Fragment crosses an Org object"))
+                         (when (< position begin)
+                           (push (buffer-substring-no-properties position begin) children))
+                         (let ((leaf (copy-sequence
+                                      (org-texmacs-fragment-span-source span))))
+                           (push leaf children)
+                           (register leaf leaf (org-texmacs-fragment-span-tag span)))
+                         (setq position stop)))
+                     (when (< position end)
+                       (push (buffer-substring-no-properties position end) children))
+                     (setq position end))))
+               (apply #'org-element-set-contents node (nreverse children))))
+           (walk (node)
+             (cond
+              ((org-texmacs--block-p node)
+               (register node (org-texmacs--block-source node) nil))
+              ((eq (org-element-type node) 'paragraph) (paragraph node))
+              ((memq (org-element-type node) '(org-data section headline))
+               (when (eq (org-element-type node) 'headline)
+                 (mapc #'whitespace (org-element-property :title node)))
+               (mapc #'walk (org-element-contents node))))))
+        (let ((ast (org-element-parse-buffer)))
+          (walk ast)
+          (when remaining
+            (signal 'org-texmacs-document-error '("Unconsumed fragment spans")))
+          (setq islands (nreverse islands) requests (nreverse requests))
+          ;; Reject unsupported input before any parsing request is sent.
+          (org-texmacs--document-lower ast islands blanks)
+          (list ast islands requests blanks))))))
 
 (provide 'org-texmacs-document)
 

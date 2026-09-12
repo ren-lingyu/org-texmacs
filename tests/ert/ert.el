@@ -1525,12 +1525,180 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
   (let* ((bold (org-element-create 'bold nil))
          (ast (org-element-create 'org-data nil
                                   (org-element-create 'paragraph nil bold))))
-    (org-element-set-contents bold (list bold))
+    (org-element-set-contents bold bold)
     (should-error (org-texmacs--document-lower ast)
                   :type 'org-texmacs-document-error))
   (let ((stree (list 'math "x")))
     (setcar (cdr stree) stree)
     (should-error (org-texmacs--document-copy-stree stree)
                   :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-document-source-without-islands ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* A *bold*\t title\nText *strong*\t  tail.\n")
+    (goto-char 4)
+    (let ((source (buffer-string)) (position (point))
+          (tick (buffer-chars-modified-tick)))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Unexpected worker request"))))
+        (should (equal (org-texmacs-document-body (org-texmacs-document))
+                       '(document
+                         (section (concat "A " (strong "bold") "\t " "title"))
+                         (concat "Text " (strong "strong") "\t  " "tail.\n")))))
+      (should (= position (point)))
+      (should (= tick (buffer-chars-modified-tick)))
+      (should (equal source (buffer-string))))))
+
+(ert-deftest org-texmacs-document-source-adjacent-islands ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "Before (math \"*fake* [[link]]\")(math \"α\") after.\n")
+    (let ((requests nil))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (source)
+                   (push (substring-no-properties source) requests)
+                   (list 'math (if (= (length requests) 1) "*fake* [[link]]" "α")))))
+        (let ((result (org-texmacs-document)))
+          (should (equal (org-texmacs-document-body result)
+                         '(document (concat "Before " (math "*fake* [[link]]")
+                                            (math "α") " after.\n"))))
+          (should (equal (org-texmacs-document-stm-paths result) '((0 1) (0 2))))
+          (should (equal (nreverse requests)
+                         '("(math \"*fake* [[link]]\")" "(math \"α\")"))))))))
+
+(ert-deftest org-texmacs-document-source-preflight ()
+  (dolist (source '("(math \"x\")\n\n- unsupported\n"
+                    "#+include: missing.org\n"
+                    "#+begin_src emacs-lisp\n(error \"never execute\")\n#+end_src\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Preflight started parsing"))))
+        (should-error (org-texmacs-document) :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-document-source-rejects-context ()
+  (with-temp-buffer
+    (should-error (org-texmacs-document) :type 'org-texmacs-document-error)
+    (org-mode)
+    (insert "First\nSecond\n")
+    (narrow-to-region 2 (point-max))
+    (should-error (org-texmacs-document) :type 'org-texmacs-document-error)
+    (should (= (point-min) 2))))
+
+(ert-deftest org-texmacs-document-source-rechecks-snapshot ()
+  (dolist (change '(text tags narrowing mode))
+    (with-temp-buffer
+      (org-mode)
+      (insert "(math \"x\") (math \"y\")\n")
+      (let ((calls 0))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (_source)
+                     (setq calls (1+ calls))
+                     (pcase change
+                       ('text (insert "changed"))
+                       ('tags (setq-local org-texmacs-fragment-tags nil))
+                       ('narrowing (narrow-to-region 2 (point-max)))
+                       ('mode (fundamental-mode)))
+                     '(math "x"))))
+          (should-error (org-texmacs-document) :type 'org-texmacs-error)
+          (should (= calls 1)))))))
+
+(ert-deftest org-texmacs-document-source-root-mismatch ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "(math \"x\")\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (_source) '(concat "x"))))
+      (should-error (org-texmacs-document) :type 'org-texmacs-parse-error))))
+
+(ert-deftest org-texmacs-document-source-disabled-fragments ()
+  (with-temp-buffer
+    (org-mode)
+    (setq-local org-texmacs-fragment-tags nil)
+    (insert "(math \"x\")\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _) (ert-fail "Disabled fragment parsed"))))
+      (let ((result (org-texmacs-document)))
+        (should (equal (org-texmacs-document-body result)
+                       '(document (concat "(math \"x\")\n"))))
+        (should-not (org-texmacs-document-stm-paths result))))))
+
+(ert-deftest org-texmacs-document-source-real-islands ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "* Title\nText (math (frac \"α\" \"2\")) end.\n\n"
+              "#+begin_texmacs\n(document (math \"中\"))\n#+end_texmacs\n")
+      (let ((source (buffer-string))
+            (result (org-texmacs-document)))
+        (should (equal (org-texmacs-document-body result)
+                       '(document (section "Title")
+                                  (concat "Text " (math (frac "α" "2")) " end.\n")
+                                  (document (math "中")))))
+        (should (equal (org-texmacs-document-stm-paths result) '((1 1) (2))))
+        (should (= org-texmacs--worker-request-id 2))
+        (should (equal source (buffer-string)))
+        (should (org-texmacs--worker-live-p))))))
+
+(ert-deftest org-texmacs-document-source-real-error-and-repair ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "(math 1)\n")
+      (should-error (org-texmacs-document) :type 'org-texmacs-parse-error)
+      (let ((process org-texmacs--worker-process))
+        (erase-buffer)
+        (insert "#+begin_texmacs\n\"atomic\"\n#+end_texmacs\n")
+        (let ((result (org-texmacs-document)))
+          (should (equal (org-texmacs-document-body result) '(document "atomic")))
+          (should (equal (org-texmacs-document-stm-paths result) '((0)))))
+        (should (eq process org-texmacs--worker-process))))))
+
+(ert-deftest org-texmacs-document-source-custom-todo-settings ()
+  (with-temp-buffer
+    (let ((org-todo-keywords '((sequence "WAIT" "|" "DONE"))))
+      (org-mode))
+    (insert "* WAIT Task\n")
+    ;; Establish that the fixture really has non-default TODO semantics.
+    (should (equal (org-element-map (org-element-parse-buffer) 'headline
+                     (lambda (node) (org-element-property :todo-keyword node)))
+                   '("WAIT")))
+    (let ((source (buffer-string)))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Incompatible settings started parsing"))))
+        (let ((failure (should-error (org-texmacs-document)
+                                     :type 'org-texmacs-document-error)))
+          (should (equal (cadr failure) "Source and private Org heading settings differ"))))
+      (should (equal source (buffer-string))))))
+
+(ert-deftest org-texmacs-document-source-custom-level-settings ()
+  (with-temp-buffer
+    (org-mode)
+    (setq-local org-odd-levels-only (not (default-value 'org-odd-levels-only)))
+    (insert "*** Heading\n")
+    (should-error (org-texmacs-document) :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-document-source-rechecks-heading-settings ()
+  (dolist (change '(regexp done level))
+    (with-temp-buffer
+      (org-mode)
+      (insert "(math \"x\") (math \"y\")\n")
+      (let ((calls 0))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (_source)
+                     (setq calls (1+ calls))
+                     (pcase change
+                       ('regexp
+                        (setq-local org-todo-regexp (copy-sequence org-todo-regexp))
+                        (aset org-todo-regexp 0 ?x))
+                       ('done (setq-local org-done-keywords '("FINISHED")))
+                       ('level (setq-local org-odd-levels-only (not org-odd-levels-only))))
+                     '(math "x"))))
+          (let ((failure (should-error (org-texmacs-document)
+                                       :type 'org-texmacs-document-error)))
+            (should (equal (cadr failure) "Org heading settings changed during conversion")))
+          (should (= calls 1)))))))
 
 ;;; ert.el ends here

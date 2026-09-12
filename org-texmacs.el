@@ -33,6 +33,8 @@
 ;; `org-texmacs-fragment-map', using `org-texmacs-fragment-tags' as entry names.
 ;; Use `org-texmacs-fragment-tree' to parse a fragment source span on demand,
 ;; without caching or changing Org's native object parser.
+;; Use `org-texmacs-document' for a limited whole-buffer structural conversion
+;; to a text TeXmacs body with STM provenance, before native encoding.
 ;; Source stays in Org; no external .tm file is required.  This package does
 ;; not provide preview, export, numbering or a combined Org/TeXmacs document AST.
 ;; Use `org-texmacs-check-setup' to inspect the capabilities required by the
@@ -123,6 +125,58 @@ root tag mismatch, and `org-texmacs-worker-error' for worker failures."
                  (equal (symbol-name (car stree)) (org-texmacs-fragment-span-tag span)))
       (signal 'org-texmacs-parse-error '("TeXmacs root differs from fragment tag")))
     (org-texmacs--stree-to-org stree)))
+
+;;;###autoload
+(defun org-texmacs-document ()
+  "Convert the complete current Org buffer to a text document result.
+
+Return an `org-texmacs-document' structure with BODY and STM-PATHS accessors.
+This is a new derived result, not an Org live AST replacement or a native
+encoded tree.  Treat it and its nested contents as read-only.
+
+Support paragraphs, plain text, bold and level 1--3 headings, plus complete
+TeXmacs special blocks and discovered paragraph fragments.  Use the current
+`org-texmacs-fragment-tags'.  Other Org nodes and semantic metadata signal
+`org-texmacs-document-error'.  Reject narrowing; do not widen implicitly,
+expand INCLUDE, execute Babel, run export hooks or read external files.
+Reject effective TODO or headline-level settings that differ from the
+private Org parser; do not silently reinterpret customized headings.
+
+Prepare a private snapshot without mode hooks, validate supported structure,
+then synchronously parse each island with the shared worker.  Do not cache
+the result or modify source/live Org nodes.  Reject source, mode, narrowing
+or tag changes while waiting.  Parser and worker errors propagate unchanged.
+The result preserves source-dependent text semantics for later encoding;
+it does not provide export, native buffer updates or rendering."
+  (unless (and (derived-mode-p 'org-mode) (not (buffer-narrowed-p)))
+    (signal 'org-texmacs-document-error '("Expected an unnarrowed Org buffer")))
+  (let* ((buffer (current-buffer))
+         (tick (buffer-chars-modified-tick))
+         (tags (org-texmacs--fragment-tags))
+         (heading-settings (org-texmacs--document-heading-settings))
+         (source (buffer-substring-no-properties (point-min) (point-max)))
+         (spans (org-texmacs--fragment-collect tags))
+         (prepared (org-texmacs--document-prepare source spans heading-settings)))
+    (cl-labels ((check ()
+                 (org-texmacs--fragment-check-source buffer tick)
+                 (org-texmacs--fragment-check-tags tags)
+                 (unless (equal heading-settings (org-texmacs--document-heading-settings))
+                   (signal 'org-texmacs-document-error
+                           '("Org heading settings changed during conversion")))
+                 (when (buffer-narrowed-p)
+                   (signal 'org-texmacs-document-error '("Source became narrowed")))))
+      (check)
+      (dolist (request (nth 2 prepared))
+        (check)
+        (let ((stree (org-texmacs--worker-request (nth 1 request)))
+              (tag (nth 2 request)))
+          (check)
+          (when (and tag (not (and (consp stree) (symbolp (car stree))
+                                  (equal tag (symbol-name (car stree))))))
+            (signal 'org-texmacs-parse-error '("TeXmacs root differs from fragment tag")))
+          (setcdr (car request) stree)))
+      (org-texmacs--document-lower (nth 0 prepared) (nth 1 prepared)
+                                 (nth 3 prepared)))))
 
 ;;;###autoload
 (defun org-texmacs-check-setup ()
