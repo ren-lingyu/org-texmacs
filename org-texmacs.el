@@ -35,6 +35,8 @@
 ;; without caching or changing Org's native object parser.
 ;; Use `org-texmacs-document' for a limited whole-buffer structural conversion
 ;; to a text TeXmacs body with STM provenance, before native encoding.
+;; Use `org-texmacs-session-open', `org-texmacs-session-set-document' and
+;; `org-texmacs-session-close' to manage an explicit native body buffer.
 ;; Source stays in Org; no external .tm file is required.  This package does
 ;; not provide preview, export, numbering or a combined Org/TeXmacs document AST.
 ;; Use `org-texmacs-check-setup' to inspect the capabilities required by the

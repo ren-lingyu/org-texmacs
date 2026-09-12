@@ -9,11 +9,29 @@
 (require 'ert)
 (require 'org-texmacs)
 
+(defconst org-texmacs-test--readme
+  (or (getenv "ORG_TEXMACS_TEST_README")
+      (expand-file-name "../../README.org"
+                        (file-name-directory (or load-file-name buffer-file-name))))
+  "README under test, explicitly supplied by the Nix test driver.")
+
 (ert-deftest org-texmacs-test-package-loads ()
-  (should (featurep 'org-texmacs))
-  (should (featurep 'org-texmacs-fragment))
+  (let ((directory (file-name-directory (locate-library "org-texmacs"))))
+    (dolist (feature '(org-texmacs org-texmacs-core org-texmacs-ast
+                       org-texmacs-source org-texmacs-fragment
+                       org-texmacs-document org-texmacs-worker org-texmacs-session))
+      (should (featurep feature))
+      (let ((library (locate-library (symbol-name feature))))
+        (should library)
+        (should (equal directory (file-name-directory library)))))
+    (should (equal org-texmacs--worker-scheme-file
+                   (expand-file-name "org-texmacs-worker.scm" directory)))
+    (should (file-readable-p org-texmacs--worker-scheme-file)))
   (dolist (function '(org-texmacs-fragment-at-point org-texmacs-fragment-map
-                      org-texmacs-fragment-tree org-texmacs-fragment-span-p))
+                      org-texmacs-fragment-tree org-texmacs-fragment-span-p
+                      org-texmacs-document org-texmacs-document-body
+                      org-texmacs-document-stm-paths org-texmacs-session-open
+                      org-texmacs-session-set-document org-texmacs-session-close))
     (should (fboundp function))))
 
 (ert-deftest org-texmacs-test-setup-check-passes ()
@@ -1914,5 +1932,135 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
         (should-error (org-texmacs-session-close session) :type 'org-texmacs-worker-error)
         (should-not (org-texmacs--worker-live-p))
         (should-not (org-texmacs-session-close session))))))
+
+(defun org-texmacs-test--native-hex (tree)
+  "Represent independently specified native TREE with hex leaves.
+Only serialize expected bytes; do not call the production encoder."
+  (if (stringp tree)
+      (org-texmacs-test--ascii-hex tree)
+    (cons (car tree) (mapcar #'org-texmacs-test--native-hex (cdr tree)))))
+
+(ert-deftest org-texmacs-document-real-chinese-end-to-end ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "* 中文标题\n\n普通的中文 *加粗* (math (frac \"一\" \"2\")).\n\n"
+              "#+begin_texmacs\n(equation* (frac \"3\" \"4\"))\n#+end_texmacs\n\n"
+              "** Second\n\nFinal paragraph.\n")
+      (goto-char (point-min))
+      (search-forward "#+begin_texmacs")
+      (let* ((block (org-element-at-point))
+             (source (buffer-string))
+             (tick (buffer-chars-modified-tick))
+             (position (point))
+             (document (org-texmacs-document))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (should (equal (org-texmacs-document-body document)
+                             '(document (section "中文标题")
+                                        (concat "普通的中文 " (strong "加粗") " "
+                                                (math (frac "一" "2")) ".\n")
+                                        (equation* (frac "3" "4"))
+                                        (subsection "Second") (concat "Final paragraph.\n"))))
+              (should (equal (org-texmacs-document-stm-paths document) '((1 3) (2))))
+              (org-texmacs-session-set-document session document)
+              (should (equal
+                       (org-texmacs--session-read session)
+                       (org-texmacs-test--native-hex
+                        '(document (section "<#4E2D><#6587><#6807><#9898>")
+                                   (concat "<#666E><#901A><#7684><#4E2D><#6587> "
+                                           (strong "<#52A0><#7C97>") " "
+                                           (math (frac "<#4E00>" "2")) ".\n")
+                                   (equation* (frac "3" "4"))
+                                   (subsection "Second") (concat "Final paragraph.\n")))))
+              (should (equal source (buffer-string)))
+              (should (= tick (buffer-chars-modified-tick)))
+              (should (= position (point)))
+              (should (eq (org-element-type block) 'special-block))
+              (should (eq (org-element-type (org-element-at-point)) 'special-block)))
+          (org-texmacs-session-close session))))))
+
+(ert-deftest org-texmacs-document-real-failure-repair-and-update ()
+  (org-texmacs-test--with-worker
+    (let ((session (org-texmacs-session-open))
+          (process org-texmacs--worker-process))
+      (unwind-protect
+          (with-temp-buffer
+            (org-mode)
+            (insert "Original\n")
+            (org-texmacs-session-set-document session (org-texmacs-document))
+            (let ((old (org-texmacs--session-read session)))
+              (dolist (case '(("* TODO Task\n" . org-texmacs-document-error)
+                              ("(math 1)\n" . org-texmacs-parse-error)))
+                (erase-buffer)
+                (insert (car case))
+                (should-error
+                 (org-texmacs-session-set-document session (org-texmacs-document))
+                 :type (cdr case))
+                (should (equal old (org-texmacs--session-read session)))
+                (should (eq process org-texmacs--worker-process))))
+            (erase-buffer)
+            (insert "(math \"<less>alpha<gtr> α\")\n")
+            (let ((document (org-texmacs-document)))
+              ;; Reusing the text result must not double-encode its leaves.
+              (dotimes (_ 2)
+                (org-texmacs-session-set-document session document)
+                (should (equal (org-texmacs--session-read session)
+                               (org-texmacs-test--native-hex
+                                '(document (concat (math "<less>alpha<gtr> <alpha>") "\n")))))))
+            (should (eq process org-texmacs--worker-process)))
+        (org-texmacs-session-close session))
+      (should (equal (org-texmacs--worker-request "(frac \"1\" \"2\")") '(frac "1" "2"))))))
+
+(defun org-texmacs-test--readme-example (name)
+  "Evaluate the single named Emacs Lisp example NAME from the local README.
+Only tests with explicit example names use this helper; do not run Babel."
+  (let ((forms nil))
+    (with-temp-buffer
+      (insert-file-contents org-texmacs-test--readme)
+      (org-mode)
+      (org-element-map (org-element-parse-buffer) 'src-block
+        (lambda (block)
+          (when (equal (org-element-property :name block) name)
+            (should (equal (org-element-property :language block) "emacs-lisp"))
+            (let* ((source (org-element-property :value block))
+                   (read-circle nil)
+                   (form (read-from-string source)))
+              (should (string-match-p "\\`[ \t\n]*\\'" (substring source (cdr form))))
+              (push (car form) forms))))))
+    (should (= (length forms) 1))
+    (eval (car forms) t)))
+
+(ert-deftest org-texmacs-document-readme-native-example ()
+  (org-texmacs-test--with-worker
+    (let* ((document (org-texmacs-test--readme-example "example-document"))
+           (session (org-texmacs-session-open)))
+      (unwind-protect
+          (progn
+            (should (equal (org-texmacs-document-body document)
+                           '(document (section "中")
+                                      (concat "Text " (strong "bold") " " "<alpha> "
+                                              (math "α <alpha>") " end.\n")
+                                      (with "mode" "math" (frac "中" "2")))))
+            (should (equal (org-texmacs-document-stm-paths document) '((1 4) (2))))
+            (org-texmacs-session-set-document session document)
+            (should (equal (org-texmacs--session-read session)
+                           (org-texmacs-test--native-hex
+                            '(document (section "<#4E2D>")
+                                       (concat "Text " (strong "bold") " " "<less>alpha<gtr> "
+                                               (math "<alpha> <alpha>") " end.\n")
+                                       (with "mode" "math" (frac "<#4E2D>" "2")))))))
+        (org-texmacs-session-close session)))))
+
+(ert-deftest org-texmacs-session-readme-example ()
+  (org-texmacs-test--with-worker
+    (should (eq t (org-texmacs-test--readme-example "example-session")))
+    (should (org-texmacs--worker-live-p))
+    ;; The example must close its buffer, allowing another session to open.
+    (let ((session (org-texmacs-session-open)))
+      (unwind-protect
+          (should (equal (org-texmacs--session-read session) '(document "")))
+        (org-texmacs-session-close session)))))
 
 ;;; ert.el ends here

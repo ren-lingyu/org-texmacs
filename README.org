@@ -10,6 +10,11 @@ fragment source discovery with on-demand tree parsing.  It does not provide
 preview, export, equation numbering, fontification, an editing minor mode,
 or a combined Org and TeXmacs document AST.
 
+The current checkout additionally provides limited whole-buffer conversion
+to a TeXmacs body and explicit native buffer sessions, described below.
+These additions are not part of the 0.1.0 release.  They do not add preview
+or a complete document exporter, and do not replace Org's live AST.
+
 * Requirements
 
 - Emacs 31.1 or later and Org 9.8 or later, as declared by the package.
@@ -37,7 +42,7 @@ the example path below:
 #+end_src
 
 By default, Emacs locates =texmacs= through =exec-path=.  To select a specific
-executable, set =org-texmacs-program= before the first parse:
+executable, set =org-texmacs-program= before the first worker operation:
 
 #+begin_src emacs-lisp
   (setq org-texmacs-program "/path/to/bin/texmacs")
@@ -129,7 +134,8 @@ For straight setup and recipe details, consult its
 
 =:demand t= loads the Lisp package immediately, even if use-package normally
 defers loading.  It does not start TeXmacs.  The first block cache miss or
-fragment tree request starts the worker; source discovery alone does not.
+fragment tree request starts the worker, as does document island parsing
+or opening a native session; source discovery alone does not.
 
 The package currently exposes four customizable variables.  This complete
 example assumes the package is already on =load-path= and explicitly sets
@@ -458,10 +464,125 @@ Each discovery call scans a private copy of the accessible buffer before
 region filtering.  There is no fragment cache or incremental synchronization,
 and large-document performance has not been validated.
 
+* Document conversion and native sessions
+
+These APIs are available in the current checkout, after the 0.1.0 release.
+They form an additional downstream path; the block and fragment APIs above
+continue to return Org-compatible pseudo subtrees.
+
+** Preparing a text body
+
+=org-texmacs-document= reads the entire current Org buffer.  It rejects
+narrowing instead of widening implicitly.  It prepares a private snapshot,
+parses STM islands with the shared worker, and returns a document result:
+
+| Accessor | Result |
+|----------+--------|
+| =org-texmacs-document-body= | Text stree rooted at =document=, before native encoding |
+| =org-texmacs-document-stm-paths= | Paths to complete STM island roots in that body |
+
+Paths use zero-based child indices, excluding the tag.  Keep both fields
+together and treat the result and all nested data as read-only.  It is not
+a native TeXmacs tree, an Org AST, or a complete TeXmacs file document.
+The call does not mutate source text or Org's live AST, and does not cache
+the result.  It checks for source and relevant configuration changes while
+waiting for the worker; call it again after editing.
+
+This example returns a document result; it starts TeXmacs to parse its islands:
+
+#+name: example-document
+#+begin_src emacs-lisp
+  (with-temp-buffer
+    (org-mode)
+    (insert "* 中\n"
+            "Text *bold* <alpha> (math \"α <alpha>\") end.\n\n"
+            "#+begin_texmacs\n"
+            "(with \"mode\" \"math\" (frac \"中\" \"2\"))\n"
+            "#+end_texmacs\n")
+    (org-texmacs-document))
+#+end_src
+
+The supported Org subset is deliberately small:
+
+| Org input | TeXmacs body structure |
+|-----------+------------------------|
+| Document / section container | =document= / transparent contents |
+| Paragraph / plain text | One =concat= per paragraph / copied text |
+| Bold | =strong= |
+| Nonempty headings at absolute levels 1, 2, 3 | =section=, =subsection=, =subsubsection= |
+| Recognized paragraph fragment | One parsed STM subtree |
+| =texmacs= special block | One parsed STM subtree, even for a string or =document= root |
+
+Heading text may contain supported bold markup.  This is not a general Org
+exporter: links, other emphasis, lists, tables, other blocks, keywords,
+drawers and affiliated metadata are rejected.  TODO, priority, tags,
+COMMENT/archive headings, empty headings and deeper headings are also
+rejected rather than silently discarded.  Fragment discovery can support
+contexts that this whole-document conversion does not support.
+
+The current parser boundary conservatively rejects differing effective
+=org-todo-regexp=, =org-done-keywords= or =org-odd-levels-only= settings between
+the source and private parser.  Arbitrary Org parser customization is not
+supported.  There is no INCLUDE expansion, Babel execution or export hook.
+This is structural conversion, not a byte-for-byte Org round trip.
+
+** Native encoding and lifetime
+
+=org-texmacs-session-open= creates an empty native body buffer and returns
+an opaque handle.  Only one session may be active in the shared worker.
+=org-texmacs-session-set-document= takes that handle and a document result,
+encodes it in TeXmacs, replaces the entire body, verifies native readback,
+and returns the same handle.  No =.tm=, =.stm= or =.tmml= document intermediate
+is used.  Closing returns =nil= and leaves the worker available for parsing.
+
+This self-contained example returns =t= after a successful update and closes
+the buffer even if the update fails.  It requires that no session is active:
+
+#+name: example-session
+#+begin_src emacs-lisp
+  (let ((document (with-temp-buffer
+                    (org-mode)
+                    (insert "Text (math \"α\")\n")
+                    (org-texmacs-document))))
+    (let ((session (org-texmacs-session-open)))
+      (unwind-protect
+          (progn
+            (org-texmacs-session-set-document session document)
+            t)
+        (org-texmacs-session-close session))))
+#+end_src
+
+For repeated updates, keep the handle, prepare a new document from the Org
+buffer, and call =org-texmacs-session-set-document= again before closing.
+There are no automatic edit hooks or incremental updates.  Do not mutate
+handle slots.  A second open rejects without replacing the existing session;
+repeated close is harmless.  Worker termination invalidates old handles,
+which never refer to a new worker's buffer.  Open a new session explicitly.
+
+Encoding depends on provenance, not on guessing from leaf contents:
+
+- Ordinary Org leaves use literal/source-code semantics.  Unicode becomes
+  TeXmacs universal encoding; literal =<alpha>= remains literal text.
+- STM leaves use TeXmacs source semantics.  Unicode becomes universal
+  encoding, while =<alpha>= keeps its native symbol meaning.  Write
+  =<less>= and =<gtr>= in STM when literal angle brackets are intended.
+
+The worker retains STM paths until encoding is complete.  Pass the original
+text document to each update; never feed encoded diagnostic output back as
+text.  The native path rejects =raw-data=.  Preserving other STM tags does
+not validate their arity, character names, mathematical meaning or layout.
+
+Preflight and encoding errors leave the previous body intact.  Native
+update/readback failure discards the session; transport or fatal cleanup
+failure stops the worker.  These buffers have no view and are not previews.
+Successful body readback does not establish numbering, references, auxiliary
+data, pagination, style or initial-environment mapping.  Complete file
+metadata and export remain outside this API.
+
 * Worker behavior and errors
 
-The first parse request, from a block cache miss or a fragment tree call,
-starts one shared headless TeXmacs process.  All buffers use it sequentially,
+The first parse request or session open starts one shared headless TeXmacs
+process.  All buffers use it sequentially,
 with one Unix socket connection per synchronous request.
 STM source is read as data, never evaluated as Scheme code.  The worker first
 requires exactly one complete datum of the supported stree shape, then uses
@@ -496,10 +617,14 @@ explicitly; this is an internal function, not a stable public command.
 | =org-texmacs-error=        | Base error; invalid input/configuration, stale span or inaccessible source |
 | =org-texmacs-parse-error=  | Invalid STM source or a fragment root tag mismatch                         |
 | =org-texmacs-worker-error= | Startup, communication or response failure                                 |
+| =org-texmacs-document-error= | Unsupported document input or changed source/configuration              |
+| =org-texmacs-encoding-error= | Invalid native encoding input                                            |
+| =org-texmacs-session-error= | Invalid/stale session or native body operation failure                    |
 
-Parse and worker errors inherit from =org-texmacs-error=.  Parse errors leave
+All these conditions inherit from =org-texmacs-error=.  Parse errors leave
 the worker available for the next request.  Transport failures and request
-cancellation stop it; a later call starts a new worker.  Failed parses are
+cancellation stop it; a later parse or session open starts a new worker.
+Old session handles stay invalid.  Failed parses are
 never cached.  Reentrant requests are rejected; there is no asynchronous queue.
 
 * Development checks
@@ -517,6 +642,11 @@ boundaries, configuration snapshots and span validity checks.  All 11 default
 entry tags have real parser tests, including multi-row formula groups; these
 check AST preservation and parent links, not numbering or rendered output.  A missing
 TeXmacs executable fails the integration tests instead of skipping them.
+Document tests cover structural lowering, source-dependent native encoding,
+session updates and failure recovery, with independent native readback
+expectations.  The document/session README examples run under ERT, including
+against the installed package in Nix; loading checks require every module
+and the adjacent Scheme service file.
 Nix checks the current system by default.  These commands may download
 dependencies and write Nix store/cache data; they do not update the lockfile,
 and the build command does not create a =result= link.

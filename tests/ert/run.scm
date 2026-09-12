@@ -9,6 +9,7 @@
 
 (setenv "HOME" home)
 (setenv "ORG_TEXMACS_TEST_PROGRAM" "@texmacs@")
+(setenv "ORG_TEXMACS_TEST_README" "@readmeFile@")
 
 (let ((status (system* "@emacs@"
                        "-Q"
