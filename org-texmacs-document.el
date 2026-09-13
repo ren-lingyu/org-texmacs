@@ -379,9 +379,10 @@ buffer-local copies separate from the caller's snapshot and source buffer."
   (mapcar #'org-texmacs--document-copy-link-setting
           (list org-link-parameters org-link-abbrev-alist org-link-abbrev-alist-local)))
 
-(defun org-texmacs--document-prepare-source (source tags headings info links)
+(defun org-texmacs--document-prepare-source (source tags headings links)
   "Prepare SOURCE under private Org link syntax using fixed LINKS settings.
-TAGS, HEADINGS and INFO are the conversion's other fixed inputs.
+TAGS and HEADINGS are the conversion's other parser inputs.
+Return prepared structure without invoking headline formatters or lowering.
 Never register protocols globally or reset source element caches.  Keep
 Org's internal regexp regeneration confined to this preparation boundary."
   (let ((org-link-parameters (org-texmacs--document-copy-link-setting (nth 0 links)))
@@ -404,13 +405,12 @@ Org's internal regexp regeneration confined to this preparation boundary."
         (setq-local org-texmacs-fragment-tags tags)
         (insert source)
         (org-texmacs--document-prepare
-         source (org-texmacs--fragment-collect tags) headings info (nth 2 links))))))
+         source (org-texmacs--fragment-collect tags) headings (nth 2 links))))))
 
-(defun org-texmacs--document-prepare (source spans heading-settings &optional info abbrevs)
+(defun org-texmacs--document-prepare (source spans heading-settings &optional abbrevs)
   "Prepare SOURCE and discovered SPANS without starting a worker.
 HEADING-SETTINGS is the source's effective heading configuration snapshot.
 Install it locally after private mode initialization, before parsing source.
-INFO supplies fixed headline policies and formatter to preflight lowering.
 ABBREVS supplies source-local Org link abbreviations for the private parser.
 Return (AST ISLANDS REQUESTS POST-BLANKS).  Each request is
 (ISLAND-ENTRY SOURCE TAG); TAG is nil for an unrestricted special block.
@@ -491,8 +491,6 @@ All positions refer to the complete, unnarrowed source snapshot."
           (when remaining
             (signal 'org-texmacs-document-error '("Unconsumed fragment spans")))
           (setq islands (nreverse islands) requests (nreverse requests))
-          ;; Reject unsupported input before any parsing request is sent.
-          (org-texmacs--document-lower ast islands blanks info)
           (list ast islands requests blanks))))))
 
 (provide 'org-texmacs-document)

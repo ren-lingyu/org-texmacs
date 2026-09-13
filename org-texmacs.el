@@ -164,7 +164,9 @@ Do not collect file-local export options such as #+OPTIONS.
 
 Prepare a private snapshot without mode hooks, validate supported structure,
 then synchronously parse each island with the shared worker.  Do not cache
-the result or modify source/live Org nodes.  Reject source, mode, narrowing
+the result.  Invoke headline formatters outside private parser bindings,
+both during structural preflight and final lowering.  Do not modify
+source/live Org nodes.  Reject source, mode, narrowing
 or tag/heading/link-setting changes while waiting.  Parser and worker errors
 propagate unchanged.
 The result preserves source-dependent text semantics for later encoding;
@@ -183,7 +185,7 @@ it does not provide export, native buffer updates or rendering."
            (info (org-texmacs--document-options))
            (source (buffer-substring-no-properties (point-min) (point-max)))
            (prepared (org-texmacs--document-prepare-source
-                      source tags heading-settings info link-settings)))
+                      source tags heading-settings link-settings)))
       (cl-labels ((check ()
                    (unless (buffer-live-p buffer)
                      (signal 'org-texmacs-document-error '("Source buffer was killed")))
@@ -200,6 +202,11 @@ it does not provide export, native buffer updates or rendering."
                                '("Org link settings changed during conversion")))
                      (when (buffer-narrowed-p)
                        (signal 'org-texmacs-document-error '("Source became narrowed"))))))
+        (check)
+        ;; Run user formatters only after private parser bindings have unwound.
+        ;; Reject unsupported structure before starting any island request.
+        (org-texmacs--document-lower (nth 0 prepared) (nth 1 prepared)
+                                   (nth 3 prepared) info)
         (check)
         (dolist (request (nth 2 prepared))
           (check)

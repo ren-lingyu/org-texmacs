@@ -2032,6 +2032,177 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
         (should-error (org-texmacs-document source)
                       :type 'org-texmacs-document-error)))))
 
+(ert-deftest org-texmacs-document-formatter-parser-isolation ()
+  ;; Exclude FTPS even if another package has registered it in this Emacs.
+  (let ((org-link-parameters
+         (cl-remove "ftps" org-link-parameters :key #'car :test #'equal))
+        (org-link-types-re org-link-types-re)
+        (org-link-angle-re org-link-angle-re)
+        (org-link-plain-re org-link-plain-re)
+        (org-link-bracket-re org-link-bracket-re)
+        (org-link-any-re org-link-any-re)
+        (org-element--object-regexp org-element--object-regexp)
+        (org-element-paragraph-separate org-element-paragraph-separate))
+    (org-link-make-regexps)
+    (org-element--set-regexps)
+    (with-temp-buffer
+      (org-mode)
+      (insert "[[ftps://example.org][Other]]\n")
+      (let* ((other (current-buffer))
+             (types (lambda ()
+                      (with-current-buffer other
+                        (org-element-map (org-element-parse-buffer) 'link
+                          (lambda (link) (org-element-property :type link))))))
+             (baseline (funcall types))
+             (settings (org-texmacs--document-link-settings))
+             (calls 0))
+        (with-temp-buffer
+          (org-mode)
+          (insert "* Title\n[[ftps://example.org][Own]]\n")
+          (let ((org-texmacs-format-headline-function
+                 (lambda (&rest _)
+                   (setq calls (1+ calls))
+                   (should (equal settings (org-texmacs--document-link-settings)))
+                   (should (equal baseline (funcall types)))
+                   "Title")))
+            (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                       (lambda (&rest _) (ert-fail "Plain content started worker"))))
+              (should (equal (org-texmacs-document-body
+                              (org-texmacs-document (current-buffer)))
+                             '(document (section "Title")
+                                        (concat (hlink "Own" "ftps://example.org") " "))))))
+          ;; Both the structural preflight and the final lowering were observed.
+          (should (= calls 2)))
+        (should (equal baseline (funcall types)))))))
+
+(defun org-texmacs-test--document-buffer-state (buffer)
+  "Capture observable BUFFER state without moving point or touching caches."
+  (with-current-buffer buffer
+    (list (buffer-substring (point-min) (point-max))
+          (buffer-modified-p) (point) (mark t) mark-active
+          (point-min) (point-max) major-mode
+          (org-texmacs--fragment-tags)
+          (org-texmacs--document-heading-settings)
+          (org-texmacs--document-link-settings)
+          (org-texmacs--document-options))))
+
+(ert-deftest org-texmacs-document-preserves-buffer-state-on-exit ()
+  (dolist (outcome '(success unsupported parse-error worker-error))
+    (dolist (modified '(nil t))
+      (with-temp-buffer
+        (org-mode)
+        (insert "Text (math \"x\")\n")
+        (when (eq outcome 'unsupported) (insert "\n- unsupported\n"))
+        (put-text-property 1 3 'org-texmacs-test-property "retained")
+        (goto-char 3)
+        (set-mark 2)
+        (setq mark-active t)
+        (set-buffer-modified-p modified)
+        (let* ((source (current-buffer))
+               (before (org-texmacs-test--document-buffer-state source)))
+          (with-temp-buffer
+            (org-mode)
+            (insert "Unrelated buffer\n")
+            (narrow-to-region 2 (point-max))
+            (let* ((caller (current-buffer))
+                   (caller-before (org-texmacs-test--document-buffer-state caller)))
+              (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                         (lambda (&rest _)
+                           (set-buffer caller)
+                           (pcase outcome
+                             ('unsupported (ert-fail "Unsupported input started worker"))
+                             ('parse-error (signal 'org-texmacs-parse-error '("fixture")))
+                             ('worker-error (signal 'org-texmacs-worker-error '("fixture")))
+                             (_ '(math "x"))))))
+                (if (eq outcome 'success)
+                    (should (org-texmacs-document-p (org-texmacs-document source)))
+                  (should-error (org-texmacs-document source)
+                                :type (pcase outcome
+                                        ('unsupported 'org-texmacs-document-error)
+                                        ('parse-error 'org-texmacs-parse-error)
+                                        (_ 'org-texmacs-worker-error))))
+                (should (eq caller (current-buffer)))
+                (should (equal-including-properties
+                         caller-before (org-texmacs-test--document-buffer-state caller))))))
+          (should (equal-including-properties
+                   before (org-texmacs-test--document-buffer-state source))))))))
+
+(ert-deftest org-texmacs-document-rechecks-explicit-source-after-switch ()
+  (dolist (change '(text tags heading link narrowing mode killed))
+    (with-temp-buffer
+      (org-mode)
+      (insert "(math \"x\") (math \"y\")\n")
+      (let ((source (current-buffer)))
+        (with-temp-buffer
+          (let ((caller (current-buffer)) (calls 0))
+            (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                       (lambda (&rest _)
+                         (setq calls (1+ calls))
+                         (with-current-buffer source
+                           (pcase change
+                             ('text (insert "changed"))
+                             ('tags (setq-local org-texmacs-fragment-tags nil))
+                             ('heading (setq-local org-odd-levels-only
+                                                   (not org-odd-levels-only)))
+                             ('link (setq-local org-link-abbrev-alist-local
+                                                '(("changed" . "https://example.org/%s"))))
+                             ('narrowing (narrow-to-region 2 (point-max)))
+                             ('mode (fundamental-mode))
+                             ('killed (set-buffer-modified-p nil) (kill-buffer source))))
+                         (set-buffer caller)
+                         '(math "x"))))
+              (should-error (org-texmacs-document source) :type 'org-texmacs-error)
+              (should (eq caller (current-buffer)))
+              (should (= calls 1))
+              (when (eq change 'text)
+                (with-current-buffer source
+                  (should (string-suffix-p "changed" (buffer-string))))))))))))
+
+(ert-deftest org-texmacs-document-explicit-info-snapshot ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* Title\n(math \"x\")\n")
+    (setq-local org-texmacs-format-headline-function (lambda (&rest _) "Initial"))
+    (let ((source (current-buffer)))
+      (with-temp-buffer
+        (let ((caller (current-buffer)))
+          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                     (lambda (&rest _)
+                       (with-current-buffer source
+                         (setq-local org-texmacs-format-headline-function
+                                     (lambda (&rest _) "Next")))
+                       (set-buffer caller)
+                       '(math "x"))))
+            (should (equal (cadr (org-texmacs-document-body (org-texmacs-document source)))
+                           '(section "Initial")))
+            (should (equal (cadr (org-texmacs-document-body (org-texmacs-document source)))
+                           '(section "Next")))))))))
+
+(ert-deftest org-texmacs-document-lowering-needs-no-source ()
+  (let ((ast (org-element-create 'org-data nil
+                                 (org-element-create 'paragraph nil "Text"))))
+    (with-temp-buffer
+      (cl-letf (((symbol-function 'buffer-substring-no-properties)
+                 (lambda (&rest _) (ert-fail "Lowering read source")))
+                ((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Lowering requested worker")))
+                ((symbol-function 'org-texmacs--document-options)
+                 (lambda (&rest _) (ert-fail "Lowering captured editor options"))))
+        (should (equal (org-texmacs-document-body (org-texmacs--document-lower ast))
+                       '(document (concat "Text"))))))))
+
+(ert-deftest org-texmacs-document-source-cache-remains-observable ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "Text\n")
+    (goto-char 1)
+    (let ((node (org-element-at-point)))
+      (org-element-cache-store-key node 'org-texmacs-test-preserved 'present)
+      (should (eq (org-element-cache-get-key node 'org-texmacs-test-preserved) 'present))
+      (org-texmacs-document (current-buffer))
+      (should (eq (org-element-cache-get-key
+                   (org-element-at-point) 'org-texmacs-test-preserved) 'present)))))
+
 (ert-deftest org-texmacs-document-source-rechecks-snapshot ()
   (dolist (change '(text tags narrowing mode))
     (with-temp-buffer
