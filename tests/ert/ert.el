@@ -33,7 +33,9 @@
                       org-texmacs-document-body
                       org-texmacs-document-stm-paths org-texmacs-session-open
                       org-texmacs-session-set-document org-texmacs-session-close))
-    (should (fboundp function))))
+    (should (fboundp function))
+    (should (equal (file-name-directory (symbol-file function 'defun))
+                   (file-name-directory (locate-library "org-texmacs"))))))
 
 (ert-deftest org-texmacs-test-setup-check-passes ()
   (let ((result (org-texmacs-check-setup)))

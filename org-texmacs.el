@@ -4,7 +4,7 @@
 
 ;; Author: aRenCoco
 ;; Maintainer: aRenCoco
-;; Version: 0.2.0
+;; Version: 0.2.1
 ;; Package-Requires: ((emacs "31.1") (org "9.8"))
 ;; Keywords: outlines, tex
 ;; URL: https://github.com/ren-lingyu/org-texmacs

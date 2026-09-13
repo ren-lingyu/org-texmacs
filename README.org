@@ -5,10 +5,11 @@ Org TeXmacs provides TeXmacs AST integration for Org documents.  Write
 structured content in official STM/Scheme serialization directly in Org;
 the Org buffer is the source of truth, with no external =.tm= file required.
 
-Version 0.2.0 retains block-level parsing with lazy caching and configurable
-fragment source discovery with on-demand tree parsing.  It adds conversion
+Version 0.2.1 retains block-level parsing with lazy caching and configurable
+fragment source discovery with on-demand tree parsing.  It supports conversion
 of a limited Org body subset to a TeXmacs body AST, provenance-aware native
-encoding, and explicit native body sessions.
+encoding, and explicit native body sessions.  Document construction now takes
+an explicit source buffer, with a separate current-buffer convenience wrapper.
 
 Document conversion supports basic inline markup, self-contained URI links,
 anonymous inline footnotes, level 1--3 headings and TeXmacs islands, as
@@ -470,7 +471,10 @@ and large-document performance has not been validated.
 
 * Document conversion and native sessions
 
-These APIs are available starting with version 0.2.0.
+Document conversion and native sessions were introduced in version 0.2.0.
+Version 0.2.1 requires an explicit source buffer for document conversion and
+adds a separate current-buffer wrapper.  This is a breaking API change,
+despite the patch version increment; see the migration note below.
 They form an additional downstream path; the block and fragment APIs above
 continue to return Org-compatible pseudo subtrees.
 
@@ -502,6 +506,20 @@ is no longer supported; supply a buffer or use the wrapper.
 Both entry points capture supported settings from the source buffer and
 restore the caller's current-buffer context on return or error.  A mere
 current-buffer switch while waiting does not invalidate the source snapshot.
+
+Each call captures source text, fragment tags, supported heading/link parser
+settings and headline output options.  Detectable changes to source text,
+mode, narrowing or those parser settings reject the result without automatic
+retry.  Output options and the selected formatter instead remain fixed for
+that call; subsequent changes affect the next call.  This is not a snapshot
+of arbitrary Emacs state or of mutable state captured by a user closure.
+
+Preparation uses private copies, without changing source text properties,
+point, mark, modified state or narrowing, or resetting the source's Org cache.
+It does not undo edits made by the user while waiting.  The returned document
+does not retain its source buffer and remains usable after that buffer dies.
+Construction may start the shared worker to parse STM, but does not open a
+native session, render content or write an exported document file.
 
 This example returns a document result; it starts TeXmacs to parse its islands:
 
@@ -632,6 +650,8 @@ value.  Treat inputs as read-only and prefer a side-effect-free function.
 The package's default formatter is side-effect-free; custom function side
 effects are the caller's responsibility.  Preflight and final lowering may
 both invoke it, with no guaranteed invocation count.
+Both calls run outside the private link parser bindings, so normal Org parsing
+in a formatter does not inherit the conversion's temporary link syntax.
 
 Output options and the selected formatter are fixed for one conversion;
 changes affect the next conversion.  Source text and effective parser
