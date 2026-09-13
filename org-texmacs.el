@@ -130,8 +130,13 @@ root tag mismatch, and `org-texmacs-worker-error' for worker failures."
     (org-texmacs--stree-to-org stree)))
 
 ;;;###autoload
-(defun org-texmacs-document ()
-  "Convert the complete current Org buffer to a text document result.
+(defun org-texmacs-document (source-buffer)
+  "Convert the complete Org SOURCE-BUFFER to a text document result.
+
+SOURCE-BUFFER must be a live, unnarrowed Org buffer object, not a name
+or file path.  Capture source text and supported configuration from it,
+independently of the caller's current buffer.  For a convenience wrapper,
+use `org-texmacs-document-current-buffer'.
 
 Return an `org-texmacs-document' structure with BODY and STM-PATHS accessors.
 This is a new derived result, not an Org live AST replacement or a native
@@ -144,7 +149,7 @@ anonymous inline footnotes directly in paragraphs,
 plus complete TeXmacs special blocks and discovered paragraph fragments.
 Normalize ordinary spaces, tabs and soft newlines in Org inline text,
 including literal inline code; do not normalize STM subtree contents.
-Use the current `org-texmacs-fragment-tags'.  Other Org nodes and metadata
+Use SOURCE-BUFFER's `org-texmacs-fragment-tags'.  Other Org nodes and metadata
 signal `org-texmacs-document-error'.  Reject narrowing; do not widen implicitly,
 expand INCLUDE, execute Babel, run export hooks or read external files.
 Copy effective TODO, DONE, priority regexp and headline-level settings into
@@ -164,40 +169,56 @@ or tag/heading/link-setting changes while waiting.  Parser and worker errors
 propagate unchanged.
 The result preserves source-dependent text semantics for later encoding;
 it does not provide export, native buffer updates or rendering."
-  (unless (and (derived-mode-p 'org-mode) (not (buffer-narrowed-p)))
-    (signal 'org-texmacs-document-error '("Expected an unnarrowed Org buffer")))
-  (let* ((buffer (current-buffer))
-         (tick (buffer-chars-modified-tick))
-         (tags (org-texmacs--fragment-tags))
-         (heading-settings (org-texmacs--document-heading-settings))
-         (link-settings (org-texmacs--document-link-settings))
-         (info (org-texmacs--document-options))
-         (source (buffer-substring-no-properties (point-min) (point-max)))
-         (prepared (org-texmacs--document-prepare-source
-                    source tags heading-settings info link-settings)))
-    (cl-labels ((check ()
-                 (org-texmacs--fragment-check-source buffer tick)
-                 (org-texmacs--fragment-check-tags tags)
-                 (unless (equal heading-settings (org-texmacs--document-heading-settings))
-                   (signal 'org-texmacs-document-error
-                           '("Org heading settings changed during conversion")))
-                 (unless (equal link-settings (org-texmacs--document-link-settings))
-                   (signal 'org-texmacs-document-error
-                           '("Org link settings changed during conversion")))
-                 (when (buffer-narrowed-p)
-                   (signal 'org-texmacs-document-error '("Source became narrowed")))))
-      (check)
-      (dolist (request (nth 2 prepared))
+  (unless (and (bufferp source-buffer) (buffer-live-p source-buffer))
+    (signal 'org-texmacs-document-error '("Expected a live Org buffer object")))
+  (with-current-buffer source-buffer
+    (unless (and (derived-mode-p 'org-mode) (not (buffer-narrowed-p)))
+      (signal 'org-texmacs-document-error '("Expected an unnarrowed Org buffer")))
+    (let* ((buffer source-buffer)
+           (mode major-mode)
+           (tick (buffer-chars-modified-tick))
+           (tags (org-texmacs--fragment-tags))
+           (heading-settings (org-texmacs--document-heading-settings))
+           (link-settings (org-texmacs--document-link-settings))
+           (info (org-texmacs--document-options))
+           (source (buffer-substring-no-properties (point-min) (point-max)))
+           (prepared (org-texmacs--document-prepare-source
+                      source tags heading-settings info link-settings)))
+      (cl-labels ((check ()
+                   (unless (buffer-live-p buffer)
+                     (signal 'org-texmacs-document-error '("Source buffer was killed")))
+                   (with-current-buffer buffer
+                     (unless (and (eq major-mode mode) (derived-mode-p 'org-mode)
+                                  (= tick (buffer-chars-modified-tick)))
+                       (signal 'org-texmacs-document-error '("Source buffer changed")))
+                     (org-texmacs--fragment-check-tags tags)
+                     (unless (equal heading-settings (org-texmacs--document-heading-settings))
+                       (signal 'org-texmacs-document-error
+                               '("Org heading settings changed during conversion")))
+                     (unless (equal link-settings (org-texmacs--document-link-settings))
+                       (signal 'org-texmacs-document-error
+                               '("Org link settings changed during conversion")))
+                     (when (buffer-narrowed-p)
+                       (signal 'org-texmacs-document-error '("Source became narrowed"))))))
         (check)
-        (let ((stree (org-texmacs--worker-request (nth 1 request)))
-              (tag (nth 2 request)))
+        (dolist (request (nth 2 prepared))
           (check)
-          (when (and tag (not (and (consp stree) (symbolp (car stree))
-                                  (equal tag (symbol-name (car stree))))))
-            (signal 'org-texmacs-parse-error '("TeXmacs root differs from fragment tag")))
-          (setcdr (car request) stree)))
-      (org-texmacs--document-lower (nth 0 prepared) (nth 1 prepared)
-                                 (nth 3 prepared) info))))
+          (let ((stree (org-texmacs--worker-request (nth 1 request)))
+                (tag (nth 2 request)))
+            (check)
+            (when (and tag (not (and (consp stree) (symbolp (car stree))
+                                    (equal tag (symbol-name (car stree))))))
+              (signal 'org-texmacs-parse-error '("TeXmacs root differs from fragment tag")))
+            (setcdr (car request) stree)))
+        (let ((result (org-texmacs--document-lower
+                       (nth 0 prepared) (nth 1 prepared) (nth 3 prepared) info)))
+          (check)
+          result)))))
+
+;;;###autoload
+(defun org-texmacs-document-current-buffer ()
+  "Convert the current Org buffer using `org-texmacs-document'."
+  (org-texmacs-document (current-buffer)))
 
 ;;;###autoload
 (defun org-texmacs-check-setup ()

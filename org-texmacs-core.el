@@ -40,6 +40,8 @@ Changing this option takes effect after the current worker is stopped."
     (org-element-lineage . function)
     (org-mode . function)
     (derived-mode-p . function)
+    (bufferp . function)
+    (buffer-live-p . function)
     (delay-mode-hooks . function)
     (org-element-use-cache . variable)
     (org-inhibit-startup . variable)

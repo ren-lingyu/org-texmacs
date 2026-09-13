@@ -476,8 +476,11 @@ continue to return Org-compatible pseudo subtrees.
 
 ** Preparing a text body
 
-=org-texmacs-document= reads the entire current Org buffer.  It rejects
-narrowing instead of widening implicitly.  It prepares a private snapshot,
+=org-texmacs-document= takes a required =SOURCE-BUFFER= argument and reads
+that entire Org buffer, independently of the caller's current buffer.
+The argument must be a live buffer object, not a buffer name or file path.
+It rejects non-Org buffers and narrowing instead of widening implicitly.
+It prepares a private snapshot,
 parses STM islands with the shared worker, and returns a document result:
 
 | Accessor                         | Result                                                  |
@@ -492,6 +495,14 @@ The call does not mutate source text or Org's live AST, and does not cache
 the result.  It checks for source and relevant configuration changes while
 waiting for the worker; call it again after editing.
 
+For the current buffer, use =(org-texmacs-document-current-buffer)=.
+This is a thin wrapper around =(org-texmacs-document (current-buffer))=.
+Migration from v0.2.0: the old zero-argument =(org-texmacs-document)= call
+is no longer supported; supply a buffer or use the wrapper.
+Both entry points capture supported settings from the source buffer and
+restore the caller's current-buffer context on return or error.  A mere
+current-buffer switch while waiting does not invalidate the source snapshot.
+
 This example returns a document result; it starts TeXmacs to parse its islands:
 
 #+name: example-document
@@ -503,7 +514,7 @@ This example returns a document result; it starts TeXmacs to parse its islands:
             "#+begin_texmacs\n"
             "(with \"mode\" \"math\" (frac \"中\" \"2\"))\n"
             "#+end_texmacs\n")
-    (org-texmacs-document))
+    (org-texmacs-document (current-buffer)))
 #+end_src
 
 The supported Org subset is deliberately small:
@@ -643,7 +654,7 @@ the buffer even if the update fails.  It requires that no session is active:
   (let ((document (with-temp-buffer
                     (org-mode)
                     (insert "Text (math \"α\")\n")
-                    (org-texmacs-document))))
+                    (org-texmacs-document (current-buffer)))))
     (let ((session (org-texmacs-session-open)))
       (unwind-protect
           (progn
