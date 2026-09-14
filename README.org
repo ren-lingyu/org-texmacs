@@ -480,7 +480,31 @@ continue to return Org-compatible pseudo subtrees.
 
 ** Preparing a text body
 
-=org-texmacs-document= takes a required =SOURCE-BUFFER= argument and reads
+The development API separates prepared input from buffer preparation.
+=org-texmacs-document INPUT= lowers an =org-texmacs-input= without reading
+buffers, collecting configuration, parsing STM or starting a worker.
+Construct one with =org-texmacs-input-create AST INFO :islands ... :post-blanks ...=,
+or use =org-texmacs-prepare-buffer SOURCE-BUFFER= for the existing source adapter.
+The constructor requires an already parsed =org-data= snapshot.  Island mappings
+must use identities from that AST and contain parsed strees, not STM strings.
+It copies the AST and options, rebuilds parent links, and remaps mapping keys.
+Deferred properties, cyclic/multiply owned AST nodes, opaque data and detached
+or duplicate mappings are rejected.  A formatter remains an opaque function;
+its captured mutable state is not frozen.  Nil INFO selects fixed defaults,
+not current buffer settings.  Treat the input and all nested data as read-only.
+The constructor does not perform lowering or call a formatter.
+
+For example, this structural conversion requires no source buffer or worker:
+
+#+begin_src emacs-lisp
+  (org-texmacs-document
+   (org-texmacs-input-create
+    (org-element-create 'org-data nil
+                        (org-element-create 'paragraph nil "Hello"))
+    nil))
+#+end_src
+
+=org-texmacs-document-from-buffer= takes a required =SOURCE-BUFFER= argument and reads
 that entire Org buffer, independently of the caller's current buffer.
 The argument must be a live buffer object, not a buffer name or file path.
 It rejects non-Org buffers and narrowing instead of widening implicitly.
@@ -500,9 +524,11 @@ the result.  It checks for source and relevant configuration changes while
 waiting for the worker; call it again after editing.
 
 For the current buffer, use =(org-texmacs-document-current-buffer)=.
-This is a thin wrapper around =(org-texmacs-document (current-buffer))=.
-Migration from v0.2.0: the old zero-argument =(org-texmacs-document)= call
-is no longer supported; supply a buffer or use the wrapper.
+This is a thin wrapper around =(org-texmacs-document-from-buffer (current-buffer))=.
+Migration from v0.2.1: rename =(org-texmacs-document SOURCE-BUFFER)= calls to
+=(org-texmacs-document-from-buffer SOURCE-BUFFER)=.  The core name now requires
+a prepared input; it does not dispatch on a buffer argument for compatibility.
+The current-buffer wrapper remains available, including for v0.2.0 callers.
 Both entry points capture supported settings from the source buffer and
 restore the caller's current-buffer context on return or error.  A mere
 current-buffer switch while waiting does not invalidate the source snapshot.
@@ -532,7 +558,7 @@ This example returns a document result; it starts TeXmacs to parse its islands:
             "#+begin_texmacs\n"
             "(with \"mode\" \"math\" (frac \"中\" \"2\"))\n"
             "#+end_texmacs\n")
-    (org-texmacs-document (current-buffer)))
+    (org-texmacs-document-from-buffer (current-buffer)))
 #+end_src
 
 The supported Org subset is deliberately small:
@@ -674,7 +700,7 @@ the buffer even if the update fails.  It requires that no session is active:
   (let ((document (with-temp-buffer
                     (org-mode)
                     (insert "Text (math \"α\")\n")
-                    (org-texmacs-document (current-buffer)))))
+                    (org-texmacs-document-from-buffer (current-buffer)))))
     (let ((session (org-texmacs-session-open)))
       (unwind-protect
           (progn

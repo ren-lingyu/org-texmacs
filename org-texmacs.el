@@ -33,7 +33,8 @@
 ;; `org-texmacs-fragment-map', using `org-texmacs-fragment-tags' as entry names.
 ;; Use `org-texmacs-fragment-tree' to parse a fragment source span on demand,
 ;; without caching or changing Org's native object parser.
-;; Use `org-texmacs-document' for a limited whole-buffer structural conversion
+;; Use `org-texmacs-document' to lower an explicit prepared input, or
+;; `org-texmacs-document-from-buffer' for whole-buffer structural conversion
 ;; to a text TeXmacs body with STM provenance, before native encoding.
 ;; Use `org-texmacs-session-open', `org-texmacs-session-set-document' and
 ;; `org-texmacs-session-close' to manage an explicit native body buffer.
@@ -50,6 +51,7 @@
 (require 'org-texmacs-fragment)
 (require 'org-texmacs-worker)
 (require 'org-texmacs-document)
+(require 'org-texmacs-input)
 (require 'org-texmacs-session)
 
 (defconst org-texmacs--cache-miss (make-symbol "org-texmacs-cache-miss")
@@ -130,7 +132,30 @@ root tag mismatch, and `org-texmacs-worker-error' for worker failures."
     (org-texmacs--stree-to-org stree)))
 
 ;;;###autoload
-(defun org-texmacs-document (source-buffer)
+(defun org-texmacs-document (input)
+  "Lower prepared INPUT into a fresh text document with STM provenance.
+INPUT must be an `org-texmacs-input' made by `org-texmacs-input-create' or
+`org-texmacs-prepare-buffer'.  Consume only its fixed AST, INFO and mappings;
+do not read source buffers, collect configuration, parse STM or start a worker.
+Treat INPUT and the returned result, including nested data, as read-only.
+Unsupported structures signal `org-texmacs-document-error'.  For source
+preparation and conversion together, use `org-texmacs-document-from-buffer'."
+  (unless (org-texmacs-input-p input)
+    (signal 'org-texmacs-document-error '("Expected an org-texmacs-input")))
+  (org-texmacs--document-lower
+   (org-texmacs-input-ast input) (org-texmacs-input-islands input)
+   (org-texmacs-input-post-blanks input) (org-texmacs-input-info input)))
+
+;;;###autoload
+(defun org-texmacs-prepare-buffer (source-buffer)
+  "Prepare a buffer-independent structural input from SOURCE-BUFFER.
+Apply the source and supported-subset contract of
+`org-texmacs-document-from-buffer', including preflight and STM parsing.
+Return an `org-texmacs-input', without opening a native session."
+  (org-texmacs--prepare-buffer source-buffer #'identity))
+
+;;;###autoload
+(defun org-texmacs-document-from-buffer (source-buffer)
   "Convert the complete Org SOURCE-BUFFER to a text document result.
 
 SOURCE-BUFFER must be a live, unnarrowed Org buffer object, not a name
@@ -171,6 +196,10 @@ or tag/heading/link-setting changes while waiting.  Parser and worker errors
 propagate unchanged.
 The result preserves source-dependent text semantics for later encoding;
 it does not provide export, native buffer updates or rendering."
+  (org-texmacs--prepare-buffer source-buffer #'org-texmacs-document))
+
+(defun org-texmacs--prepare-buffer (source-buffer consumer)
+  "Prepare SOURCE-BUFFER and call CONSUMER before the final source check."
   (unless (and (bufferp source-buffer) (buffer-live-p source-buffer))
     (signal 'org-texmacs-document-error '("Expected a live Org buffer object")))
   (with-current-buffer source-buffer
@@ -217,15 +246,18 @@ it does not provide export, native buffer updates or rendering."
                                     (equal tag (symbol-name (car stree))))))
               (signal 'org-texmacs-parse-error '("TeXmacs root differs from fragment tag")))
             (setcdr (car request) stree)))
-        (let ((result (org-texmacs--document-lower
-                       (nth 0 prepared) (nth 1 prepared) (nth 3 prepared) info)))
+        (let ((result (funcall consumer
+                               (org-texmacs-input-create
+                                (nth 0 prepared) info
+                                :islands (nth 1 prepared)
+                                :post-blanks (nth 3 prepared)))))
           (check)
           result)))))
 
 ;;;###autoload
 (defun org-texmacs-document-current-buffer ()
-  "Convert the current Org buffer using `org-texmacs-document'."
-  (org-texmacs-document (current-buffer)))
+  "Convert the current Org buffer using `org-texmacs-document-from-buffer'."
+  (org-texmacs-document-from-buffer (current-buffer)))
 
 ;;;###autoload
 (defun org-texmacs-check-setup ()
