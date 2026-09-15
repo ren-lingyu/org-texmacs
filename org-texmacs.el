@@ -35,11 +35,13 @@
 ;; without caching or changing Org's native object parser.
 ;; Use `org-texmacs-document' to lower an explicit prepared input, or
 ;; `org-texmacs-document-from-buffer' for whole-buffer structural conversion
-;; to a text TeXmacs body with STM provenance, before native encoding.
+;; to a text TeXmacs document result with body, style, initial environment and
+;; STM provenance, before native encoding.
 ;; Use `org-texmacs-session-open', `org-texmacs-session-set-document' and
 ;; `org-texmacs-session-close' to manage an explicit native body buffer.
 ;; Source stays in Org; no external .tm file is required.  This package does
-;; not provide preview, export, numbering or a combined Org/TeXmacs document AST.
+;; not provide preview, export, rendered numbering or a combined Org/TeXmacs
+;; document AST.
 ;; Use `org-texmacs-check-setup' to inspect the capabilities required by the
 ;; package without starting TeXmacs.
 
@@ -134,9 +136,10 @@ root tag mismatch, and `org-texmacs-worker-error' for worker failures."
 
 ;;;###autoload
 (defun org-texmacs-document (input)
-  "Lower prepared INPUT into a fresh text document with STM provenance.
+  "Lower prepared INPUT into a fresh structural TeXmacs document result.
 INPUT must be an `org-texmacs-input' made by `org-texmacs-input-create' or
-`org-texmacs-prepare-buffer'.  Consume only its fixed AST, INFO and mappings;
+`org-texmacs-prepare-buffer'.  Consume only its fixed AST, INFO, mappings,
+STYLE and INITIAL;
 do not read source buffers, collect configuration, parse STM or start a worker.
 Treat INPUT and the returned result, including nested data, as read-only.
 Unsupported structures signal `org-texmacs-document-error'.  For source
@@ -145,7 +148,8 @@ preparation and conversion together, use `org-texmacs-document-from-buffer'."
     (signal 'org-texmacs-document-error '("Expected an org-texmacs-input")))
   (org-texmacs--document-lower
    (org-texmacs-input-ast input) (org-texmacs-input-islands input)
-   (org-texmacs-input-post-blanks input) (org-texmacs-input-info input)))
+   (org-texmacs-input-post-blanks input) (org-texmacs-input-info input)
+   (org-texmacs-input-style input) (org-texmacs-input-initial input)))
 
 ;;;###autoload
 (defun org-texmacs-prepare-buffer (source-buffer)
@@ -164,19 +168,23 @@ or file path.  Capture source text and supported configuration from it,
 independently of the caller's current buffer.  For a convenience wrapper,
 use `org-texmacs-document-current-buffer'.
 
-Return an `org-texmacs-document' structure with BODY and STM-PATHS accessors.
+Return an `org-texmacs-document' structure with BODY, STYLE, INITIAL and
+STM-PATHS accessors.
 This is a new derived result, not an Org live AST replacement or a native
 encoded tree.  Treat it and its nested contents as read-only.
 
 Support paragraphs, plain text, bold/italic/underline/strike-through,
-inline code/verbatim, explicit paragraph line breaks and level 1--3 headings,
+inline code/verbatim, explicit paragraph line breaks, five sectioning levels
+and lower-level headline lists, the three Org list types, and quote/center
+containers,
 plus http/https/mailto/ftp/ftps URI links with optional inline descriptions,
 anonymous inline footnotes directly in paragraphs,
 plus complete TeXmacs special blocks and discovered paragraph fragments.
 Normalize ordinary spaces, tabs and soft newlines in Org inline text,
 including literal inline code; do not normalize STM subtree contents.
 Use SOURCE-BUFFER's `org-texmacs-fragment-tags'.  Other Org nodes and metadata
-signal `org-texmacs-document-error'.  Reject narrowing; do not widen implicitly,
+outside the documented subset signal `org-texmacs-document-error'.  Reject
+narrowing; do not widen implicitly,
 expand INCLUDE, execute Babel, run export hooks or read external files.
 Copy effective TODO, DONE, priority regexp and headline-level settings into
 the private Org parser; do not silently reinterpret customized headings.
@@ -184,7 +192,10 @@ Levels are Org's parsed levels, including its odd-level policy.  Other
 parser customization is not supported.  TODO, priority and explicit tags use
 standard `org-export-with-todo-keywords', `org-export-with-priority' and
 `org-export-with-tags' settings with `org-texmacs-format-headline-function'.
-Snapshot the supported Org document context once; later changes affect only
+Lower supported rich title/author/date metadata into body `doc-data'.  Apply
+headline depth and numbering options, including UNNUMBERED; preserve ALT_TITLE
+for later document-wide consumers.  Snapshot the supported Org document
+context once; later changes affect only
 the next conversion.  Merge the documented #+OPTIONS and metadata keyword
 subset, then apply Org's task/archive/select/exclude/comment filtering before
 worker requests.  Reject unsupported options and preprocessing directives.
@@ -215,6 +226,8 @@ it does not provide export, native buffer updates or rendering."
            (heading-settings (org-texmacs--document-heading-settings))
            (link-settings (org-texmacs--document-link-settings))
            (base-info (org-texmacs--document-options))
+           (style (org-texmacs--document-copy-style org-texmacs-document-style))
+           (initial (org-texmacs--document-copy-initial org-texmacs-document-initial))
            (source (buffer-substring-no-properties (point-min) (point-max)))
            (prepared (org-texmacs--document-prepare-source
                       source tags heading-settings link-settings base-info))
@@ -239,7 +252,7 @@ it does not provide export, native buffer updates or rendering."
         ;; Run user formatters only after private parser bindings have unwound.
         ;; Reject unsupported structure before starting any island request.
         (org-texmacs--document-lower (nth 0 prepared) (nth 1 prepared)
-                                   (nth 3 prepared) info)
+                                     (nth 3 prepared) info style initial)
         (check)
         (dolist (request (nth 2 prepared))
           (check)
@@ -254,7 +267,8 @@ it does not provide export, native buffer updates or rendering."
                                (org-texmacs-input-create
                                 (nth 0 prepared) info
                                 :islands (nth 1 prepared)
-                                :post-blanks (nth 3 prepared)))))
+                                :post-blanks (nth 3 prepared)
+                                :style style :initial initial))))
           (check)
           result)))))
 

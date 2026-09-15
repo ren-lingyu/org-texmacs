@@ -139,6 +139,7 @@ substituting a collector that cannot read SETUPFILE or external files."
   "Validate the supported effective option subset in INFO."
   (unless
       (and (wholenump (plist-get info :headline-levels))
+           (<= (plist-get info :headline-levels) 5)
            (let ((value (plist-get info :section-numbers)))
              (or (memq value '(nil t)) (wholenump value)))
            (memq (plist-get info :with-archived-trees) '(nil t headline))
@@ -184,6 +185,25 @@ Treat every ISLAND key as opaque.  Return AST after in-place pruning."
                   ((eq type 'keyword)
                    (when (member (upcase (org-element-property :key node))
                                  org-texmacs--context-source-keywords)
+                     (org-element-extract node)))
+                  ((eq type 'property-drawer)
+                   (let ((parent (org-element-property :parent node)))
+                     (while (and parent (not (eq (org-element-type parent) 'headline)))
+                       (setq parent (org-element-property :parent parent)))
+                     (unless (and parent
+                                  (cl-every
+                                   (lambda (property)
+                                     (and (eq (org-element-type property) 'node-property)
+                                          (member (upcase
+                                                   (org-element-property :key property))
+                                                  '("UNNUMBERED" "ALT_TITLE"))))
+                                   (org-element-contents node)))
+                       (signal 'org-texmacs-document-error
+                               '("Unsupported Org property drawer")))
+                     ;; Resolve supported secondary values while the private
+                     ;; source buffer still exists, then discard source syntax.
+                     (org-element-property :UNNUMBERED parent)
+                     (org-element-property :ALT_TITLE parent)
                      (org-element-extract node)))
                   ((eq type 'headline)
                    (if (org-export--skip-p node info selected excluded)
@@ -251,9 +271,15 @@ Follow Org's select-tag genealogy and descendant policy under fixed INFO."
   "Apply restricted context to prepared AST and associated mappings.
 Return (AST ISLANDS REQUESTS POST-BLANKS INFO), retaining only mappings and
 worker requests whose identity keys remain reachable after filtering."
-  (let* ((info (plist-put
-                (org-texmacs--context-validate-info
-                 (org-texmacs--context-merge-options ast islands base-info))
+  (let* ((metadata
+          (mapcar #'car
+                  (org-texmacs--context-keywords
+                   ast islands '("TITLE" "AUTHOR" "DATE"))))
+         (info (plist-put
+                (plist-put
+                 (org-texmacs--context-validate-info
+                  (org-texmacs--context-merge-options ast islands base-info))
+                 :texmacs-metadata-present metadata)
                 :parse-tree ast))
          (_ (org-texmacs--context-prune ast islands info))
          (reachable (org-texmacs--context-reachable ast islands))

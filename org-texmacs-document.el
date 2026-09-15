@@ -31,6 +31,27 @@
   '((unordered . itemize) (ordered . enumerate) (descriptive . description))
   "TeXmacs environment tags for Org's three native plain-list types.")
 
+(defconst org-texmacs--document-section-tags
+  '((section . section*) (subsection . subsection*)
+    (subsubsection . subsubsection*) (paragraph . paragraph*)
+    (subparagraph . subparagraph*))
+  "Numbered and unnumbered TeXmacs tags for sectioning levels one through five.")
+
+(defcustom org-texmacs-document-style '("generic")
+  "TeXmacs style names captured by buffer document preparation.
+Each conversion copies this list into its prepared input and result.  These
+strings are TeXmacs identifiers, not ordinary Org text leaves."
+  :type '(repeat string)
+  :group 'org-texmacs)
+
+(defcustom org-texmacs-document-initial nil
+  "TeXmacs initial environment captured by buffer document preparation.
+The value is an alist of unique nonempty string keys to text strees.  Keys are
+TeXmacs identifiers.  Entire values have TeXmacs source semantics, including
+native notation such as <alpha>; use <less> and <gtr> for literal brackets."
+  :type '(alist :key-type string :value-type sexp)
+  :group 'org-texmacs)
+
 (defcustom org-texmacs-format-headline-function
   #'org-texmacs-format-headline-default-function
   "Function presenting headline metadata and lowered title parts.
@@ -76,11 +97,15 @@ Resolve a formatter symbol now so later redefinition affects only new calls."
                (:constructor org-texmacs--document-create)
                (:copier nil))
   "Read-only structural result, before native encoding.
-BODY is a text stree; STM-PATHS locate its STM island roots.  Each path
-contains zero-based child indices, excluding tags.  Callers must not mutate
-either slot or its nested lists and strings.  No source buffer is retained."
+BODY is a text stree; STYLE is a list of TeXmacs style identifiers; INITIAL
+is an alist of environment identifiers to source-semantic text strees.
+STM-PATHS locate STM island roots only within BODY.  Each path contains
+zero-based child indices, excluding tags.  Callers must not mutate any slot
+or nested list/string.  No source buffer is retained."
   (body nil :read-only t)
-  (stm-paths nil :read-only t))
+  (stm-paths nil :read-only t)
+  (style nil :read-only t)
+  (initial nil :read-only t))
 
 (defun org-texmacs--document-fail (node message)
   "Signal a conversion error for NODE with MESSAGE and source context."
@@ -102,6 +127,30 @@ ANCESTORS detects cycles; repeated, non-cyclic subtrees are copied separately."
                   (cdr node))))
    (t (signal 'org-texmacs-document-error '("Invalid island stree")))))
 
+(defun org-texmacs--document-copy-style (style)
+  "Validate and copy TeXmacs STYLE identifier strings."
+  (unless (and (proper-list-p style) style
+               (cl-every (lambda (name)
+                           (and (stringp name) (> (length name) 0)))
+                         style))
+    (signal 'org-texmacs-document-error '("Invalid TeXmacs document style")))
+  (mapcar #'substring-no-properties style))
+
+(defun org-texmacs--document-copy-initial (initial)
+  "Validate and copy TeXmacs INITIAL environment entries."
+  (unless (proper-list-p initial)
+    (signal 'org-texmacs-document-error '("Invalid TeXmacs initial environment")))
+  (let (keys)
+    (mapcar
+     (lambda (entry)
+       (unless (and (consp entry) (stringp (car entry)) (> (length (car entry)) 0)
+                    (not (member (car entry) keys)))
+         (signal 'org-texmacs-document-error '("Invalid TeXmacs initial environment")))
+       (push (car entry) keys)
+       (cons (substring-no-properties (car entry))
+             (org-texmacs--document-copy-stree (cdr entry))))
+     initial)))
+
 (defun org-texmacs--document-pack (tag parts)
   "Wrap lowered PARTS in TAG, prefixing their STM paths by child index."
   (let ((index 0) (children nil) (paths nil))
@@ -113,7 +162,8 @@ ANCESTORS detects cycles; repeated, non-cyclic subtrees are copied separately."
     (org-texmacs--document-create
      :body (cons tag (nreverse children)) :stm-paths (nreverse paths))))
 
-(defun org-texmacs--document-lower (ast &optional islands post-blanks info)
+(defun org-texmacs--document-lower
+    (ast &optional islands post-blanks info style initial)
   "Lower prepared Org AST and ISLANDS to a structural document result.
 
 AST must be an `org-data' snapshot.  ISLANDS is an identity-keyed alist
@@ -122,9 +172,13 @@ plain-text child of a paragraph.  A preparation layer must split text at
 fragment boundaries and mask foreign markup before constructing this input.
 This function never discovers or parses fragments.  Every mapping must be
 consumed exactly once; each mapped root contributes one output child.
-INFO fixes headline output policies and formatter for this conversion.
+INFO fixes metadata, headline output policies and formatter for this conversion.
 When omitted, use fixed default policies and the default formatter, without
 reading dynamic export settings.  Custom formatters should be side-effect-free.
+STYLE is a nonempty list of TeXmacs style identifiers, defaulting to
+`(\"generic\")'.  INITIAL is an alist of TeXmacs environment identifiers to
+source-semantic text strees.  They are copied into the returned result and do
+not affect BODY lowering or its STM paths.
 
 POST-BLANKS optionally maps inline Org object identities to their original
 trailing spaces/tabs.  Without an entry, use the nonnegative `:post-blank'
@@ -132,7 +186,9 @@ count.  Both inputs have prose whitespace semantics, not source fidelity.
 
 Support paragraphs, plain text, basic emphasis, inline code/verbatim,
 explicit line breaks, self-contained URI links, transparent Org sections,
-level 1--3 headlines, all three Org plain-list types, and quote/center blocks.
+relative headline levels one through five, lower-level headline lists, all
+three Org plain-list types, and quote/center blocks.  Emit supported title,
+author and date metadata as body `doc-data'.
 Link admission uses Org type, not raw source.  Accept anonymous inline
 footnotes only as direct paragraph children.  Reject list checkboxes and
 explicit counters; description terms use the existing inline subset.
@@ -157,9 +213,41 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
           (signal 'org-texmacs-document-error '("Invalid or duplicate mapping key")))
         (push (car entry) keys))))
   (let ((used-islands nil) (used-blanks nil)
+        (style (org-texmacs--document-copy-style (or style '("generic"))))
+        (initial (org-texmacs--document-copy-initial initial))
+        (headline-minimum nil)
+        (headline-limit nil)
+        (headline-formatter nil)
         (info (or info '(:with-todo-keywords t :with-priority nil :with-tags t
                         :texmacs-format-headline-function
                         org-texmacs-format-headline-default-function))))
+    (setq headline-limit
+          (if (memq :headline-levels info) (plist-get info :headline-levels) 3)
+          headline-formatter
+          (if (memq :texmacs-format-headline-function info)
+              (plist-get info :texmacs-format-headline-function)
+            #'org-texmacs-format-headline-default-function))
+    (unless (and (wholenump headline-limit) (<= headline-limit 5)
+                 (let ((value (if (memq :section-numbers info)
+                                  (plist-get info :section-numbers) t)))
+                   (or (memq value '(nil t)) (wholenump value)))
+                 (functionp headline-formatter))
+      (signal 'org-texmacs-document-error '("Invalid headline lowering options")))
+    (cl-labels ((minimum (node ancestors)
+                  (unless (assq node islands)
+                    (when (consp node)
+                      (when (memq node ancestors)
+                        (org-texmacs--document-fail node "Cyclic Org AST"))
+                      (when (eq (org-element-type node) 'headline)
+                        (let ((level (org-element-property :level node)))
+                          (when (and (integerp level) (> level 0)
+                                     (or (null headline-minimum)
+                                         (< level headline-minimum)))
+                            (setq headline-minimum level))))
+                      (let ((ancestors (cons node ancestors)))
+                        (mapc (lambda (child) (minimum child ancestors))
+                              (org-element-contents node)))))))
+      (minimum ast nil))
     (cl-labels
         ((text (string space)
            (let ((value (replace-regexp-in-string
@@ -228,8 +316,23 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
                                               (list (org-texmacs--document-create :body ""))))))
                  ;; The reference is visible; its body has separate whitespace state.
                  (setcar space nil)
-                 (cons (org-texmacs--document-pack
+                (cons (org-texmacs--document-pack
                         'footnote (list (org-texmacs--document-pack 'document (list paragraph))))
+                       (blank node space))))
+              ((and (consp node) (eq (org-element-type node) 'timestamp))
+               (let ((year (org-element-property :year-start node))
+                     (month (org-element-property :month-start node))
+                     (day (org-element-property :day-start node)))
+                 (unless (and (eq context 'date)
+                              (memq (org-element-property :type node) '(active inactive))
+                              (integerp year) (integerp month) (<= 1 month 12)
+                              (integerp day) (<= 1 day 31)
+                              (null (org-element-property :hour-start node))
+                              (null (org-element-property :repeater-type node))
+                              (null (org-element-property :warning-type node))
+                              (null (org-element-contents node)))
+                   (org-texmacs--document-fail node "Unsupported metadata timestamp"))
+                 (cons (text (format "%04d-%02d-%02d" year month day) space)
                        (blank node space))))
               ((and (consp node) (eq (org-element-type node) 'link))
                (when (memq node ancestors)
@@ -269,14 +372,124 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
            (unless (proper-list-p nodes)
              (signal 'org-texmacs-document-error '("Invalid inline contents")))
            ;; Share whitespace state through formatting, but not across blocks.
-           ;; The second slot distinguishes a title from a headline's body.
-           (let ((space (or space (list t (eq context 'title)))))
+           ;; The second slot rejects explicit breaks in heading/metadata text.
+           (let ((space (or space (list t (memq context '(title author date))))))
              (apply #'append
                     (mapcar (lambda (node) (inline node context ancestors space)) nodes))))
+         (one-body (parts)
+           (cond
+            ((null parts) (org-texmacs--document-create :body ""))
+            ((null (cdr parts)) (car parts))
+            (t (org-texmacs--document-pack 'concat parts))))
+         (metadata-field (tag nodes context ancestors)
+           (unless (proper-list-p nodes)
+             (signal 'org-texmacs-document-error '("Invalid parsed document metadata")))
+           (let ((parts (inlines nodes context ancestors)))
+             (unless parts
+               (signal 'org-texmacs-document-error '("Empty document metadata")))
+             (org-texmacs--document-pack tag (list (one-body parts)))))
+         (metadata (ancestors)
+           (let ((present
+                  (if (memq :texmacs-metadata-present info)
+                      (plist-get info :texmacs-metadata-present)
+                    (or (plist-get info :title) (plist-get info :author)
+                        (plist-get info :date))))
+                 parts)
+             (when present
+               (when (and (if (memq :with-title info) (plist-get info :with-title) t)
+                          (plist-get info :title))
+                 (push (metadata-field 'doc-title (plist-get info :title)
+                                       'title ancestors)
+                       parts))
+               (when (and (if (memq :with-author info) (plist-get info :with-author) t)
+                          (plist-get info :author))
+                 (push
+                  (org-texmacs--document-pack
+                   'doc-author
+                   (list
+                    (org-texmacs--document-pack
+                     'author-data
+                     (list
+                      (metadata-field 'author-name (plist-get info :author)
+                                      'author ancestors)))))
+                  parts))
+               (when (and (if (memq :with-date info) (plist-get info :with-date) t)
+                          (plist-get info :date))
+                 (push (metadata-field 'doc-date (plist-get info :date)
+                                       'date ancestors)
+                       parts)))
+             (and parts
+                  (list (org-texmacs--document-pack 'doc-data (nreverse parts))))))
+         (relative-level (node)
+           (let ((level (org-element-property :level node)))
+             (unless (and headline-minimum (integerp level) (> level 0))
+               (org-texmacs--document-fail node "Invalid headline level"))
+             (1+ (- level headline-minimum))))
+         (low-headline-p (node)
+           (and (consp node) (eq (org-element-type node) 'headline)
+                (> (relative-level node) headline-limit)))
+         (headline-title (node ancestors)
+           (let ((raw (org-element-property :raw-value node)))
+             (unless (and (stringp raw) (string-match-p "[^ \t\r\n]" raw))
+               (org-texmacs--document-fail node "Empty headline title"))
+             (when (org-element-property :commentedp node)
+               (org-texmacs--document-fail node "Unsupported headline metadata"))
+             (let* ((parts (inlines (org-element-property :title node) 'title ancestors))
+                    (todo (and (plist-get info :with-todo-keywords)
+                               (org-element-property :todo-keyword node))))
+               (unless parts
+                 (org-texmacs--document-fail node "Empty headline title"))
+               (org-texmacs--document-create
+                :body
+                (org-texmacs--document-copy-stree
+                 (funcall headline-formatter
+                          (and todo (substring-no-properties todo))
+                          (and todo (org-element-property :todo-type node))
+                          (and (plist-get info :with-priority)
+                               (org-element-property :priority node))
+                          (mapcar #'org-texmacs-document-body parts)
+                          (and (plist-get info :with-tags)
+                               (mapcar #'substring-no-properties
+                                       (org-element-property :tags node)))
+                          info))))))
+         (low-headline-item (node context ancestors)
+           (unless (and (consp node) (not (memq node ancestors))
+                        (memq context '(org-data headline)))
+             (org-texmacs--document-fail node "Unexpected low-level headline"))
+           (let ((ancestors (cons node ancestors)))
+             (check-affiliated node)
+             (cons
+              (org-texmacs--document-pack
+               'concat
+               (list (org-texmacs--document-pack 'item nil)
+                     (headline-title node ancestors)))
+              (blocks (org-element-contents node) 'headline ancestors))))
          (blocks (nodes context ancestors)
            (unless (proper-list-p nodes)
              (signal 'org-texmacs-document-error '("Invalid block contents")))
-           (apply #'append (mapcar (lambda (node) (block node context ancestors)) nodes)))
+           (let (result)
+             (while nodes
+               (if (low-headline-p (car nodes))
+                   (let (headlines)
+                     (while (and nodes (low-headline-p (car nodes)))
+                       (push (pop nodes) headlines))
+                     (setq headlines (nreverse headlines))
+                     (setq result
+                           (nconc
+                            result
+                            (list
+                             (org-texmacs--document-pack
+                              'itemize
+                              (list
+                               (org-texmacs--document-pack
+                                'document
+                                (apply #'append
+                                       (mapcar
+                                        (lambda (node)
+                                          (low-headline-item node context ancestors))
+                                        headlines)))))))))
+                 (setq result (nconc result (block (pop nodes) context ancestors)))))
+             result))
          (check-affiliated (node)
            (let ((begin (org-element-property :begin node))
                  (post (org-element-property :post-affiliated node)))
@@ -369,44 +582,33 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
               ((eq type 'headline)
                (unless (memq context '(org-data headline))
                  (org-texmacs--document-fail node "Unexpected headline"))
-               (let ((level (org-element-property :level node))
-                     (raw (org-element-property :raw-value node)))
-                 (unless (and (integerp level) (<= 1 level 3))
-                   (org-texmacs--document-fail node "Unsupported headline level"))
-                 (unless (and (stringp raw) (string-match-p "[^ \t\r\n]" raw))
-                   (org-texmacs--document-fail node "Empty headline title"))
-                 (dolist (property '(:commentedp))
-                   (when (org-element-property property node)
-                     (org-texmacs--document-fail node "Unsupported headline metadata")))
-                 (let* ((parts (inlines (org-element-property :title node) 'title ancestors))
-                        (todo (and (plist-get info :with-todo-keywords)
-                                   (org-element-property :todo-keyword node))))
-                   (unless parts
-                     (org-texmacs--document-fail node "Empty headline title"))
-                   (cons (org-texmacs--document-pack
-                          (nth (1- level) '(section subsection subsubsection))
-                          (list
-                           (org-texmacs--document-create
-                            :body
-                            (org-texmacs--document-copy-stree
-                             (funcall (plist-get info :texmacs-format-headline-function)
-                                      (and todo (substring-no-properties todo))
-                                      (and todo (org-element-property :todo-type node))
-                                      (and (plist-get info :with-priority)
-                                           (org-element-property :priority node))
-                                      (mapcar #'org-texmacs-document-body parts)
-                                      (and (plist-get info :with-tags)
-                                           (mapcar #'substring-no-properties
-                                                   (org-element-property :tags node)))
-                                      info)))))
-                         (blocks (org-element-contents node) 'headline ancestors)))))
+               (let* ((relative (relative-level node))
+                      (tags (nth (1- relative) org-texmacs--document-section-tags))
+                      (numbering (if (memq :section-numbers info)
+                                     (plist-get info :section-numbers) t))
+                      (numbered
+                       (and (not (org-element-property :UNNUMBERED node))
+                            (or (eq numbering t)
+                                (and (wholenump numbering)
+                                     (<= relative numbering))))))
+                 (unless (and (<= relative headline-limit) tags)
+                   (org-texmacs--document-fail node "Unsupported section headline"))
+                 (cons (org-texmacs--document-pack
+                        (if numbered (car tags) (cdr tags))
+                        (list (headline-title node ancestors)))
+                       (blocks (org-element-contents node) 'headline ancestors))))
               (t (org-texmacs--document-fail node "Unsupported or unprepared block"))))))
       (let ((result (org-texmacs--document-pack
-                     'document (blocks (org-element-contents ast) 'org-data (list ast)))))
+                     'document
+                     (append (metadata (list ast))
+                             (blocks (org-element-contents ast) 'org-data (list ast))))))
         (unless (and (= (length used-islands) (length islands))
                      (= (length used-blanks) (length post-blanks)))
           (signal 'org-texmacs-document-error '("Unused preparation mappings")))
-        result))))
+        (org-texmacs--document-create
+         :body (org-texmacs-document-body result)
+         :stm-paths (org-texmacs-document-stm-paths result)
+         :style style :initial initial)))))
 
 (defun org-texmacs--document-heading-settings ()
   "Copy effective Org heading parser settings for transfer and comparison.

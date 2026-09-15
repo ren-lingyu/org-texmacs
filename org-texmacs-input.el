@@ -17,21 +17,30 @@
                (:copier nil))
   "Prepared structural input.  Treat all slots and nested data as read-only.
 AST and its identity-keyed ISLANDS and POST-BLANKS belong to this snapshot.
-INFO contains fixed options, not a request to collect source configuration."
+INFO contains fixed options, not a request to collect source configuration.
+STYLE and INITIAL are copied TeXmacs document settings."
   (ast nil :read-only t)
   (info nil :read-only t)
   (islands nil :read-only t)
-  (post-blanks nil :read-only t))
+  (post-blanks nil :read-only t)
+  (style nil :read-only t)
+  (initial nil :read-only t))
 
 ;;;###autoload
-(cl-defun org-texmacs-input-create (ast info &key islands post-blanks)
-  "Copy prepared AST, INFO, ISLANDS and POST-BLANKS into an owned input.
+(cl-defun org-texmacs-input-create
+    (ast info &key islands post-blanks (style '("generic")) initial)
+  "Copy AST, INFO, mappings, STYLE and INITIAL into an owned input.
 AST must be a fully parsed `org-data' tree, not Org's live cache.  Do not
 resolve deferred properties, read buffers, discover STM or run a formatter.
 ISLANDS maps AST node identities to already parsed text strees; POST-BLANKS
 maps inline node identities to trailing spaces/tabs.  See the preparation
 contract of `org-texmacs--document-lower'.  Unsupported lowering is diagnosed
 by `org-texmacs-document', not by invoking it during this copy.
+
+STYLE is a nonempty list of TeXmacs style identifier strings and defaults to
+`(\"generic\")'.  INITIAL is an alist of unique nonempty environment identifier
+strings to source-semantic text strees and defaults to nil.  Neither setting
+is inferred from INFO or ambient Custom values.
 
 Copy strings, lists and vectors, rebuild parent links, and remap references
 to AST nodes in INFO and the mappings.  Copy parsed title, author and date
@@ -125,8 +134,6 @@ returned input, its accessors' values, or arguments from a formatter."
         (setq info (or info '(:with-todo-keywords t :with-priority nil :with-tags t
                              :texmacs-format-headline-function
                              org-texmacs-format-headline-default-function)))
-        (dolist (entry pending)
-          (org-element-put-property (nth 0 entry) (nth 1 entry) (data (nth 2 entry))))
         (while info
           (let ((key (pop info)) (value (pop info)))
             (unless (and (keywordp key) (not (memq key seen)))
@@ -142,9 +149,15 @@ returned input, its accessors' values, or arguments from a formatter."
                                  ((eq key :texmacs-format-headline-function) value)
                                  ((memq key '(:title :author :date)) (secondary value))
                                  (t (data value))))))))
+        ;; INFO secondary strings create their nodes after the AST copy.  Apply
+        ;; pending properties only after both ownership domains are complete.
+        (dolist (entry pending)
+          (org-element-put-property (nth 0 entry) (nth 1 entry) (data (nth 2 entry))))
         (org-texmacs--input-create
          :ast new-ast :info new-info
          :islands (mapping islands #'org-texmacs--document-copy-stree)
+         :style (org-texmacs--document-copy-style style)
+         :initial (org-texmacs--document-copy-initial initial)
          :post-blanks
          (mapping post-blanks
                   (lambda (value)

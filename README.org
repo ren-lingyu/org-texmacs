@@ -14,9 +14,10 @@ convenience wrapper.  The development API adds the prepared-input boundary
 described below and a restricted Org document context.
 
 Document conversion supports basic inline markup, self-contained URI links,
-anonymous inline footnotes, level 1--3 headings and TeXmacs islands, as
-specified below.  It does not provide a complete TeXmacs file document,
-preview, export, document-wide numbering or references, fontification,
+anonymous inline footnotes, list/container structures, rich metadata,
+relative headline sectioning and TeXmacs islands, as specified below.  It does
+not provide a complete TeXmacs file document, preview, export, TOC/reference
+resolution or rendered numbering, fontification,
 an editing minor mode, or a combined Org and TeXmacs document AST.
 Org's source buffer and live AST remain unchanged.
 
@@ -142,7 +143,7 @@ defers loading.  It does not start TeXmacs.  The first block cache miss or
 fragment tree request starts the worker, as does document island parsing
 or opening a native session; source discovery alone does not.
 
-The package currently exposes five customizable variables.  This complete
+The package currently exposes seven customizable variables.  This complete
 example assumes the package is already on =load-path= and explicitly sets
 the source/straight defaults.  For a different installation path, copy its
 =:custom= section into the corresponding declaration above rather than
@@ -163,6 +164,8 @@ that default and requires the executable to be found through =exec-path=.
     (org-texmacs-worker-request-timeout 10)
     (org-texmacs-format-headline-function
      #'org-texmacs-format-headline-default-function)
+    (org-texmacs-document-style '("generic"))
+    (org-texmacs-document-initial nil)
     (org-texmacs-fragment-tags
      '("math" "equation" "equation*" "eqnarray" "eqnarray*"
        "align" "align*" "gather" "gather*" "eqsplit" "eqsplit*")))
@@ -171,6 +174,13 @@ that default and requires the executable to be found through =exec-path=.
 Both timeouts are positive numbers in seconds: =org-texmacs-worker-start-timeout=
 limits the startup wait, and =org-texmacs-worker-request-timeout= limits the
 wait for a response to an individual request.
+
+=org-texmacs-document-style= is a nonempty list of TeXmacs style identifier
+strings.  =org-texmacs-document-initial= is an alist from unique nonempty
+environment identifier strings to STM/source-semantic text strees.  The
+default style is =("generic")= and the default initial environment is empty.
+These values are copied into each prepared input and document result; changing
+them affects only later buffer conversions.
 
 Use an absolute executable path instead of ="texmacs"= when needed.  Set
 it before the first parse; changing it does not replace an existing worker.
@@ -485,14 +495,16 @@ continue to return Org-compatible pseudo subtrees.
 The development API separates prepared input from buffer preparation.
 =org-texmacs-document INPUT= lowers an =org-texmacs-input= without reading
 buffers, collecting configuration, parsing STM or starting a worker.
-Construct one with =org-texmacs-input-create AST INFO :islands ... :post-blanks ...=,
+Construct one with =org-texmacs-input-create AST INFO :islands ... :post-blanks ...
+:style ... :initial ...=,
 or use =org-texmacs-prepare-buffer SOURCE-BUFFER= for the existing source adapter.
 The constructor requires an already parsed =org-data= snapshot.  Island mappings
 must use identities from that AST and contain parsed strees, not STM strings.
 It copies the AST and options, rebuilds parent links, and remaps mapping keys.
 Deferred properties, cyclic/multiply owned AST nodes, opaque data and detached
 or duplicate mappings are rejected.  A formatter remains an opaque function;
-its captured mutable state is not frozen.  Nil INFO selects fixed defaults,
+its captured mutable state is not frozen.  Omitted =:style= and =:initial=
+select =("generic")= and nil without reading ambient Custom values.  Nil INFO selects fixed defaults,
 not current buffer settings.  Treat the input and all nested data as read-only.
 The constructor does not perform lowering or call a formatter.
 
@@ -513,12 +525,14 @@ It rejects non-Org buffers and narrowing instead of widening implicitly.
 It prepares a private snapshot,
 parses STM islands with the shared worker, and returns a document result:
 
-| Accessor                         | Result                                                  |
-|----------------------------------+---------------------------------------------------------|
-| =org-texmacs-document-body=      | Text stree rooted at =document=, before native encoding |
-| =org-texmacs-document-stm-paths= | Paths to complete STM island roots in that body         |
+| Accessor                         | Result                                                           |
+|----------------------------------+------------------------------------------------------------------|
+| =org-texmacs-document-body=      | Text stree rooted at =document=, before native encoding          |
+| =org-texmacs-document-style=     | Copied list of TeXmacs style identifiers                         |
+| =org-texmacs-document-initial=   | Copied alist of environment identifiers to source-semantic stree |
+| =org-texmacs-document-stm-paths= | Paths to complete STM island roots in the body only               |
 
-Paths use zero-based child indices, excluding the tag.  Keep both fields
+Paths use zero-based child indices, excluding the tag.  Keep all four fields
 together and treat the result and all nested data as read-only.  It is not
 a native TeXmacs tree, an Org AST, or a complete TeXmacs file document.
 The call does not mutate source text or Org's live AST, and does not cache
@@ -577,7 +591,9 @@ The supported Org subset is deliberately small:
 | Explicit line break in paragraph contents         | =next-line=                                                  |
 | Supported self-contained URI link                 | =hlink= with separate display body and target                |
 | Anonymous inline footnote directly in a paragraph | =footnote= containing a body =document=                      |
-| Nonempty headings at Org's parsed levels 1, 2, 3  | =section=, =subsection=, =subsubsection=                     |
+| Relative headline levels 1 through 5              | Five numbered or starred TeXmacs sectioning tags              |
+| Headlines below the configured =H= depth          | Nested =itemize= structures without discarding body content   |
+| Title / author / date metadata                     | =doc-data= at the start of the body =document=                 |
 | Unordered / ordered / description list            | =itemize= / =enumerate= / =description= with body =document= |
 | Quote / center block                               | =quote= / =center= with body =document=                      |
 | Recognized paragraph fragment                     | One parsed STM subtree                                       |
@@ -650,7 +666,8 @@ The private parser receives copies of the source's effective
 =org-priority-regexp=.  Changes to these settings during conversion are
 rejected.  Settings are not rebuilt from TODO declarations or file keywords.
 With =org-odd-levels-only= enabled, for example, a three-star heading has
-parsed level 2 and becomes =subsection=.
+parsed level 2.  Sectioning is nevertheless relative to the shallowest
+retained headline, so a lone three-star heading becomes =section=.
 The source's tag-group definitions are also snapshotted for filtering.  Org's
 standard COMMENT and ARCHIVE markers retain their native parser semantics.
 Arbitrary Org parser customization is not supported.
@@ -672,10 +689,10 @@ parallel TeXmacs display switches:
 | =org-export-with-tags=              | =tags=      | Show explicit headline tags                         |
 | =org-export-with-tasks=             | =tasks=     | Keep the selected task states                       |
 | =org-export-with-archived-trees=    | =arch=      | Keep, remove or retain only an archived headline    |
-| =org-export-headline-levels=        | =H=         | Captured for later document-level headline lowering |
-| =org-export-with-section-numbers=   | =num=       | Captured for later numbering                        |
+| =org-export-headline-levels=        | =H=         | Set sectioning depth from 0 through 5               |
+| =org-export-with-section-numbers=   | =num=       | Select the deepest numbered section level           |
 | =org-export-with-toc=               | =toc=       | Captured for later TOC construction                 |
-| =org-export-with-title/author/date= | =TITLE/AUTHOR/DATE= | Captured with rich metadata for later lowering |
+| =org-export-with-title/author/date= | =title/author/date= | Control rich document metadata output          |
 
 =not-in-toc= also shows tags in the body heading; no TOC is generated yet.
 Disabling a field only omits its presentation, never the heading or body.
@@ -685,8 +702,16 @@ comments are always removed.  Filtering happens before worker requests, so
 discarded subtrees cannot trigger STM parse errors.  Supported configuration
 keywords are consumed instead of becoming body nodes.
 
-=#+TITLE=, =#+AUTHOR= and =#+DATE= are retained as parsed Org objects in the
-prepared input.  This node does not yet lower them into TeXmacs metadata.
+=#+TITLE=, =#+AUTHOR= and =#+DATE= remain parsed rich Org objects in the
+prepared input and lower into a leading =doc-data=.  Titles use =doc-title=;
+authors use =doc-author=, =author-data= and =author-name= without heuristic
+name splitting; dates use =doc-date=.  A single explicit date timestamp is
+formatted as =YYYY-MM-DD=, while a missing date is not replaced with today.
+Timestamp ranges, repeaters, warnings and timestamps with times are not yet
+part of this metadata subset and are rejected.
+Their =title=, =author= and =date= options independently suppress output.
+Metadata is not scanned for STM fragments.  In a source document without any
+of these three keywords, default author data alone does not create =doc-data=.
 Unsupported =#+OPTIONS= keys and preprocessing directives are errors instead
 of silently invoking a broader export pipeline.  Loading =ox= supplies Org's
 option conversion and filtering policies but does not run an exporter.
@@ -721,6 +746,15 @@ Output options and the selected formatter are fixed for one conversion;
 changes affect the next conversion.  Source text and effective parser
 settings still undergo the consistency checks described above.
 
+Headline levels are relative to the shallowest retained headline, following
+Org export structure rather than raw star count.  The first five visible
+levels map to =section= through =subparagraph=.  =num= selects the deepest
+numbered level, with starred section tags beyond it; =UNNUMBERED= also selects
+a starred tag.  Headlines below =H= become nested =itemize= bodies, preserving
+their own contents and descendants.  =ALT_TITLE= is retained in the prepared
+AST for the later TOC/reference node but does not replace the visible title
+here.  Property drawers containing other keys remain unsupported.
+
 ** Native encoding and lifetime
 
 =org-texmacs-session-open= creates an empty native body buffer and returns
@@ -729,6 +763,9 @@ an opaque handle.  Only one session may be active in the shared worker.
 encodes it in TeXmacs, replaces the entire body, verifies native readback,
 and returns the same handle.  No =.tm=, =.stm= or =.tmml= document intermediate
 is used.  Closing returns =nil= and leaves the worker available for parsing.
+At this implementation node the native session still consumes only =body=;
+the result's =style= and =initial= fields are applied by the later complete
+native document consumer, not encoded as ordinary body text.
 
 This self-contained example returns =t= after a successful update and closes
 the buffer even if the update fails.  It requires that no session is active:

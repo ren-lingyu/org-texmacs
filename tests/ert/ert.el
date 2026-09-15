@@ -35,8 +35,10 @@
                       org-texmacs-input-create org-texmacs-input-p
                       org-texmacs-input-ast org-texmacs-input-info
                       org-texmacs-input-islands org-texmacs-input-post-blanks
-                      org-texmacs-document-body
-                      org-texmacs-document-stm-paths org-texmacs-session-open
+                      org-texmacs-input-style org-texmacs-input-initial
+                      org-texmacs-document-body org-texmacs-document-style
+                      org-texmacs-document-initial org-texmacs-document-stm-paths
+                      org-texmacs-session-open
                       org-texmacs-session-set-document org-texmacs-session-close))
     (should (fboundp function))
     (should (equal (file-name-directory (symbol-file function 'defun))
@@ -114,6 +116,44 @@
     (org-element-set-contents bold '("Changed"))
     (should (equal (org-texmacs-document-body (org-texmacs-document input))
                    '(document (section (strong "Title")))))))
+
+(ert-deftest org-texmacs-test-input-document-settings-ownership ()
+  (let* ((style (list (copy-sequence "generic") (copy-sequence "number-europe")))
+         (key (copy-sequence "par-first"))
+         (value (list 'tuple (copy-sequence "中") (copy-sequence "<alpha>")))
+         (initial (list (cons key value)))
+         (input (org-texmacs-input-create
+                 (org-element-create 'org-data nil) nil
+                 :style style :initial initial))
+         (first (org-texmacs-document input)))
+    (should (equal (org-texmacs-input-style input) '("generic" "number-europe")))
+    (should (equal (org-texmacs-input-initial input)
+                   '(("par-first" tuple "中" "<alpha>"))))
+    (should (equal (org-texmacs-document-style first)
+                   '("generic" "number-europe")))
+    (should (equal (org-texmacs-document-initial first)
+                   '(("par-first" tuple "中" "<alpha>"))))
+    (aset (car style) 0 ?X)
+    (aset key 0 ?X)
+    (aset (caddr value) 0 ?X)
+    (aset (car (org-texmacs-document-style first)) 0 ?X)
+    (aset (cadddr (car (org-texmacs-document-initial first))) 0 ?X)
+    (let ((second (org-texmacs-document input)))
+      (should (equal (org-texmacs-document-style second)
+                     '("generic" "number-europe")))
+      (should (equal (org-texmacs-document-initial second)
+                     '(("par-first" tuple "中" "<alpha>")))))))
+
+(ert-deftest org-texmacs-test-input-rejects-invalid-document-settings ()
+  (let ((ast (org-element-create 'org-data nil)))
+    (dolist (style '(nil () ("generic" "") ("generic" 1) ("generic" . "x")))
+      (should-error (org-texmacs-input-create ast nil :style style)
+                    :type 'org-texmacs-document-error))
+    (dolist (initial '((1) (("" . "x")) (("key" . 1))
+                       (("key" . "x") ("key" . "y"))
+                       (("key" . "x") . "tail")))
+      (should-error (org-texmacs-input-create ast nil :initial initial)
+                    :type 'org-texmacs-document-error))))
 
 (ert-deftest org-texmacs-test-input-rejects-invalid-ownership ()
   (let* ((leaf (copy-sequence "x"))
@@ -233,14 +273,100 @@
     (let* ((info (org-texmacs-input-info input))
            (title (plist-get info :title))
            (author (plist-get info :author))
-           (date (plist-get info :date)))
+           (date (plist-get info :date))
+           (document (org-texmacs-document input)))
       (should (equal (mapcar #'org-element-type title) '(plain-text bold plain-text)))
       (should (equal (mapcar #'org-element-type author) '(italic)))
       (should (equal (mapcar #'org-element-type date) '(timestamp)))
       (dolist (value (list title author date))
         (dolist (node value)
           (should (eq (org-element-property :parent node) value))))
-      (should (eq (plist-get info :parse-tree) (org-texmacs-input-ast input))))))
+      (should (eq (plist-get info :parse-tree) (org-texmacs-input-ast input)))
+      (should
+       (equal (org-texmacs-document-body document)
+              '(document
+                (doc-data
+                 (doc-title (concat "A " (strong "Bold") " " "title"))
+                 (doc-author (author-data (author-name (em "Name"))))
+                 (doc-date "2026-09-14"))
+                (concat "Body ")))))))
+
+(ert-deftest org-texmacs-context-metadata-options-and-provenance ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+TITLE: 中 <alpha> (math \"hidden\")\n"
+            "#+AUTHOR: Author\n"
+            "#+DATE: 2026\n"
+            "#+OPTIONS: author:nil\n"
+            "Body (math \"x\")\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (source)
+                 (should (equal source "(math \"x\")"))
+                 '(math "x"))))
+      (let ((document (org-texmacs-document-from-buffer (current-buffer))))
+        (should
+         (equal (org-texmacs-document-body document)
+                '(document
+                  (doc-data (doc-title "中 <alpha> (math \"hidden\")")
+                            (doc-date "2026"))
+                  (concat "Body " (math "x") " "))))
+        (should (equal (org-texmacs-document-stm-paths document) '((1 1))))))))
+
+(ert-deftest org-texmacs-document-settings-buffer-snapshot ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "(math \"x\")\n")
+    (let ((org-texmacs-document-style '("article"))
+          (org-texmacs-document-initial '(("par-first" . "2fn"))))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (_source)
+                   (setq org-texmacs-document-style '("generic")
+                         org-texmacs-document-initial
+                         '(("par-first" tuple "中" "<alpha>")))
+                   '(math "x"))))
+        (let ((first (org-texmacs-document-from-buffer (current-buffer))))
+          (should (equal (org-texmacs-document-style first) '("article")))
+          (should (equal (org-texmacs-document-initial first)
+                         '(("par-first" . "2fn"))))))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (_source) '(math "x"))))
+        (let ((second (org-texmacs-document-from-buffer (current-buffer))))
+          (should (equal (org-texmacs-document-style second) '("generic")))
+          (should (equal (org-texmacs-document-initial second)
+                         '(("par-first" tuple "中" "<alpha>")))))))))
+
+(ert-deftest org-texmacs-document-metadata-native-encoding ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+TITLE: 中 <alpha>\n"
+              "#+AUTHOR: /Author/\n"
+              "#+DATE: <2026-09-15>\n"
+              "Body\n")
+      (let ((document (org-texmacs-document-from-buffer (current-buffer)))
+            (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (org-texmacs-session-set-document session document)
+              (should
+               (equal
+                (org-texmacs--session-read session)
+                (org-texmacs-test--native-hex
+                 '(document
+                   (doc-data
+                    (doc-title "<#4E2D> <less>alpha<gtr>")
+                    (doc-author (author-data (author-name (em "Author"))))
+                    (doc-date "2026-09-15"))
+                   (concat "Body "))))))
+          (org-texmacs-session-close session))))))
+
+(ert-deftest org-texmacs-document-rejects-complex-metadata-timestamps ()
+  (dolist (date '("<2026-09-15 12:00>" "<2026-09-15>--<2026-09-16>"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+DATE: " date "\nBody\n")
+      (should-error (org-texmacs-document-from-buffer (current-buffer))
+                    :type 'org-texmacs-document-error))))
 
 (ert-deftest org-texmacs-context-filters-tasks-before-worker ()
   (with-temp-buffer
@@ -1772,7 +1898,9 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                  (org-element-create 'org-data nil))))
     (should (org-texmacs-document-p result))
     (should (equal (org-texmacs-document-body result) '(document)))
-    (should-not (org-texmacs-document-stm-paths result))))
+    (should-not (org-texmacs-document-stm-paths result))
+    (should (equal (org-texmacs-document-style result) '("generic")))
+    (should-not (org-texmacs-document-initial result))))
 
 (ert-deftest org-texmacs-document-paragraphs-and-bold ()
   (let* ((bold (org-element-create 'bold '(:post-blank 2) "bold"))
@@ -2158,6 +2286,72 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                    '(document (section "First") (concat "Body. ")
                               (subsubsection "Third"))))))
 
+(ert-deftest org-texmacs-document-relative-headlines-and-low-level-lists ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: H:2 num:1\n"
+            "** Top\n"
+            "*** Child\n"
+            "**** Deep A\n"
+            "**** Deep B\n"
+            "***** Nested\n")
+    (should
+     (equal
+      (org-texmacs-document-body
+       (org-texmacs-document-from-buffer (current-buffer)))
+      '(document
+        (section "Top")
+        (subsection* "Child")
+        (itemize
+         (document
+          (concat (item) "Deep A")
+          (concat (item) "Deep B")
+          (itemize (document (concat (item) "Nested"))))))))
+    (erase-buffer)
+    (insert "#+OPTIONS: H:0\n* First\n* Second\n")
+    (should
+     (equal (org-texmacs-document-body
+             (org-texmacs-document-from-buffer (current-buffer)))
+            '(document
+              (itemize
+               (document (concat (item) "First")
+                         (concat (item) "Second"))))))))
+
+(ert-deftest org-texmacs-document-five-section-levels-and-unnumbered-property ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: H:5 num:nil\n"
+            "* One\n** Two\n*** Three\n**** Four\n***** Five\n")
+    (should
+     (equal (org-texmacs-document-body
+             (org-texmacs-document-from-buffer (current-buffer)))
+            '(document (section* "One") (subsection* "Two")
+                       (subsubsection* "Three") (paragraph* "Four")
+                       (subparagraph* "Five"))))
+    (erase-buffer)
+    (insert "* Visible title\n"
+            ":PROPERTIES:\n"
+            ":UNNUMBERED: notoc\n"
+            ":ALT_TITLE: Short *title*\n"
+            ":END:\n"
+            "Body\n")
+    (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
+           (headline (car (org-element-contents (org-texmacs-input-ast input)))))
+      (should (equal (org-texmacs-document-body (org-texmacs-document input))
+                     '(document (section* "Visible title") (concat "Body "))))
+      ;; Org exposes this property as an unresolved raw string, unlike the
+      ;; parsed secondary value in `:title'.  Node 7 may interpret it while
+      ;; constructing TOC entries.
+      (should (equal (org-element-property :ALT_TITLE headline)
+                     "Short *title*")))))
+
+(ert-deftest org-texmacs-document-rejects-headline-depth-over-five ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: H:6\n* Heading\n")
+    (should-error (org-texmacs-prepare-buffer (current-buffer))
+                  :type 'org-texmacs-document-error)))
+
 (ert-deftest org-texmacs-document-island-paths-and-copies ()
   (let* ((ordinary (copy-sequence "<alpha>"))
          (foreign (copy-sequence "<alpha>"))
@@ -2188,7 +2382,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (let ((source (buffer-string)))
         (should (equal (org-texmacs-document-body
                         (org-texmacs--document-lower (org-element-parse-buffer)))
-                       '(document (subsection
+                       '(document (section
                                    (concat "A " (strong "bold") " " "title")))))
         (should (equal source (buffer-string)))))))
 
@@ -2324,7 +2518,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                     "[[#target]]\n" "[[id:missing]]\n"
                     "[fn:named]\n" "| table |\n" "# comment\n"
                     "#+title: Title\n" "* COMMENT Task\n"
-                    "**** Deep\n" "* \n" "#+name: named\nParagraph\n"
+                    "* \n" "#+name: named\nParagraph\n"
                     "#+attr_html: :class test\nParagraph\n"
                     "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n"))
     (with-temp-buffer
@@ -2431,7 +2625,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
           (should (= position (point)))
           (should (= 2 (point-min)))))
       (should (equal (org-texmacs-document-body expected)
-                     '(document (subsection "Heading")))))))
+                     '(document (section "Heading")))))))
 
 (ert-deftest org-texmacs-document-explicit-source-rejects-invalid-input ()
   (with-temp-buffer
@@ -2744,10 +2938,12 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (setq-local org-odd-levels-only t)
     (insert "*** Heading\n")
     (should (equal (org-texmacs-document-body (org-texmacs-document-from-buffer (current-buffer)))
-                   '(document (subsection "Heading"))))
+                   '(document (section "Heading"))))
     (erase-buffer)
     (insert "******* Deep\n")
-    (should-error (org-texmacs-document-from-buffer (current-buffer)) :type 'org-texmacs-document-error)))
+    (should (equal (org-texmacs-document-body
+                    (org-texmacs-document-from-buffer (current-buffer)))
+                   '(document (section "Deep"))))))
 
 (ert-deftest org-texmacs-document-source-custom-todo-plain-title ()
   (with-temp-buffer
@@ -3250,12 +3446,12 @@ Only tests with explicit example names use this helper; do not run Babel."
         (unwind-protect
             (progn
               (should (equal (org-texmacs-document-body document)
-                             '(document (subsection "TODO Task") (concat (math "α") " "))))
+                             '(document (section "TODO Task") (concat (math "α") " "))))
               (should (equal (org-texmacs-document-stm-paths document) '((1 0))))
               (org-texmacs-session-set-document session document)
               (should (equal (org-texmacs--session-read session)
                              (org-texmacs-test--native-hex
-                              '(document (subsection "TODO Task")
+                              '(document (section "TODO Task")
                                          (concat (math "<alpha>") " ")))))
               (should (equal source (buffer-string)))
               (should (equal settings (org-texmacs--document-heading-settings))))
@@ -3323,10 +3519,10 @@ Only tests with explicit example names use this helper; do not run Babel."
            (result (org-texmacs-document-from-buffer (current-buffer))))
       (should (> calls 0))
       (should (equal (org-texmacs-document-body result)
-                     '(document (subsubsection (strong "custom")))))
+                     '(document (section (strong "custom")))))
       (aset (cadr output) 0 ?X)
       (should (equal (org-texmacs-document-body result)
-                     '(document (subsubsection (strong "custom"))))))))
+                     '(document (section (strong "custom"))))))))
 
 (ert-deftest org-texmacs-headline-invalid-formatter-result ()
   (with-temp-buffer
