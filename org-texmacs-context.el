@@ -1,0 +1,269 @@
+;;; org-texmacs-context.el --- Restricted Org context adapter -*- lexical-binding: t; package-lint-main-file: "org-texmacs.el"; -*-
+
+;; Copyright (C) 2026 aRenCoco
+
+;; SPDX-License-Identifier: GPL-3.0-or-later
+
+;;; Commentary:
+
+;; Capture a fixed, explicitly supported subset of Org export options and
+;; prune the prepared AST without invoking Org's export preprocessing pipeline.
+
+;;; Code:
+
+(require 'org-texmacs-core)
+(require 'ox)
+
+(defconst org-texmacs--context-option-alist
+  '((:title "TITLE" nil nil parse)
+    (:date "DATE" nil nil parse)
+    (:author "AUTHOR" nil user-full-name parse)
+    (:select-tags "SELECT_TAGS" nil org-export-select-tags split)
+    (:exclude-tags "EXCLUDE_TAGS" nil org-export-exclude-tags split)
+    (:headline-levels nil "H" org-export-headline-levels)
+    (:section-numbers nil "num" org-export-with-section-numbers)
+    (:with-archived-trees nil "arch" org-export-with-archived-trees)
+    (:with-author nil "author" org-export-with-author)
+    (:with-date nil "date" org-export-with-date)
+    (:with-priority nil "pri" org-export-with-priority)
+    (:with-toc nil "toc" org-export-with-toc)
+    (:with-tags nil "tags" org-export-with-tags)
+    (:with-tasks nil "tasks" org-export-with-tasks)
+    (:with-title nil "title" org-export-with-title)
+    (:with-todo-keywords nil "todo" org-export-with-todo-keywords))
+  "Org options deliberately accepted by document preparation.")
+
+(defconst org-texmacs--context-source-keywords
+  '("OPTIONS" "FILETAGS" "TITLE" "DATE" "AUTHOR" "SELECT_TAGS" "EXCLUDE_TAGS")
+  "Org keywords consumed by the restricted context adapter.")
+
+(defconst org-texmacs--context-rejected-keywords
+  '("SETUPFILE" "INCLUDE" "BIND" "MACRO")
+  "Source directives that require preprocessing outside this adapter.")
+
+(defun org-texmacs--context-copy (value)
+  "Copy configuration VALUE without retaining mutable strings or conses."
+  (cond
+   ((stringp value) (substring-no-properties value))
+   ((consp value)
+    (cons (org-texmacs--context-copy (car value))
+          (org-texmacs--context-copy (cdr value))))
+   ((vectorp value) (apply #'vector (mapcar #'org-texmacs--context-copy value)))
+   (t value)))
+
+(defun org-texmacs--context-base-options ()
+  "Snapshot supported global and source-buffer-local Org options.
+Do not inspect source keywords or run BIND, SETUPFILE, hooks or filters."
+  (let ((org-export-options-alist org-texmacs--context-option-alist))
+    (append
+     (org-export--get-global-options)
+     (list :texmacs-tag-groups-alist
+           (org-texmacs--context-copy org-tag-groups-alist)
+           :texmacs-tag-groups-alist-for-agenda
+           (org-texmacs--context-copy org-tag-groups-alist-for-agenda)))))
+
+(defun org-texmacs--context-validate-options (value)
+  "Reject unsupported or malformed option tokens in OPTIONS VALUE."
+  (let ((allowed (delq nil (mapcar (lambda (entry) (nth 2 entry))
+                                    org-texmacs--context-option-alist))))
+    (with-temp-buffer
+      (insert value)
+      (goto-char (point-min))
+      (while (re-search-forward "\\s-*\\(.+?\\):" nil t)
+        (when (looking-at-p "\\S-")
+          (unless (member-ignore-case (match-string 1) allowed)
+            (signal 'org-texmacs-document-error
+                    (list "Unsupported #+OPTIONS key" (match-string 1))))
+          (condition-case nil
+              (read (current-buffer))
+            (error
+             (signal 'org-texmacs-document-error
+                     '("Malformed #+OPTIONS value")))))))))
+
+(defun org-texmacs--context-keywords (ast islands keywords &optional unique directory)
+  "Collect KEYWORDS from AST without descending into ISLANDS.
+Match the part of `org-collect-keywords' used by Org's in-buffer option
+conversion, but never follow SETUPFILE.  UNIQUE and DIRECTORY retain the
+standard collector result shape for completeness."
+  (let ((wanted (mapcar #'upcase keywords)) alist order)
+    (cl-labels
+        ((add (key value)
+           (when (or (member key unique) (org-string-nw-p value))
+             (let ((entry (assoc-string key alist t))
+                   (value (if directory (cons value default-directory) value)))
+               (if entry
+                   (unless (member key unique) (setcdr entry (cons value (cdr entry))))
+                 (push key order)
+                 (push (cons key (if (member key unique) value (list value))) alist)))))
+         (walk (node)
+           (unless (assq node islands)
+             (when (consp node)
+               (if (eq (org-element-type node) 'keyword)
+                   (let ((key (upcase (org-element-property :key node)))
+                         (value (org-element-property :value node)))
+                     (when (member key org-texmacs--context-rejected-keywords)
+                       (signal 'org-texmacs-document-error
+                               (list "Unsupported preprocessing directive" key)))
+                     (when (and (string= key "OPTIONS") (stringp value))
+                       (org-texmacs--context-validate-options value))
+                     (when (and (member key wanted) (stringp value))
+                       (add key value)))
+                 (mapc #'walk (org-element-contents node)))))))
+      (walk ast))
+    (mapcar
+     (lambda (key)
+       (let ((entry (assoc-string key alist t)))
+         (if (member key unique) entry
+           (cons (car entry) (nreverse (cdr entry))))))
+     (nreverse order))))
+
+(defun org-texmacs--context-merge-options (ast islands base)
+  "Merge source-local supported options from AST over BASE.
+ISLANDS are traversal boundaries.  Use Org's own value conversion while
+substituting a collector that cannot read SETUPFILE or external files."
+  (let ((org-export-options-alist org-texmacs--context-option-alist))
+    (condition-case err
+        (org-combine-plists
+         base
+         (cl-letf (((symbol-function 'org-collect-keywords)
+                    (lambda (keywords &optional unique directory)
+                      (org-texmacs--context-keywords
+                       ast islands keywords unique directory))))
+           (org-export--get-inbuffer-options)))
+      (org-texmacs-document-error (signal (car err) (cdr err)))
+      (error
+       (signal 'org-texmacs-document-error
+               (list "Invalid Org document options" (error-message-string err)))))))
+
+(defun org-texmacs--context-validate-info (info)
+  "Validate the supported effective option subset in INFO."
+  (unless
+      (and (wholenump (plist-get info :headline-levels))
+           (let ((value (plist-get info :section-numbers)))
+             (or (memq value '(nil t)) (wholenump value)))
+           (memq (plist-get info :with-archived-trees) '(nil t headline))
+           (memq (plist-get info :with-author) '(nil t))
+           (memq (plist-get info :with-date) '(nil t))
+           (memq (plist-get info :with-priority) '(nil t))
+           (let ((value (plist-get info :with-toc)))
+             (or (memq value '(nil t)) (wholenump value)))
+           (memq (plist-get info :with-tags) '(nil t not-in-toc))
+           (let ((value (plist-get info :with-tasks)))
+             (or (memq value '(nil t todo done))
+                 (and (proper-list-p value) (cl-every #'stringp value))))
+           (memq (plist-get info :with-title) '(nil t))
+           (memq (plist-get info :with-todo-keywords) '(nil t))
+           (proper-list-p (plist-get info :select-tags))
+           (cl-every #'stringp (plist-get info :select-tags))
+           (proper-list-p (plist-get info :exclude-tags))
+           (cl-every #'stringp (plist-get info :exclude-tags)))
+    (signal 'org-texmacs-document-error '("Invalid supported Org document options")))
+  info)
+
+(defun org-texmacs--context-prune (ast islands info)
+  "Prune supported non-exported structures from AST under fixed INFO.
+Treat every ISLAND key as opaque.  Return AST after in-place pruning."
+  (let ((org-tag-groups-alist
+         (org-texmacs--context-copy (plist-get info :texmacs-tag-groups-alist)))
+        (org-tag-groups-alist-for-agenda
+         (org-texmacs--context-copy
+          (plist-get info :texmacs-tag-groups-alist-for-agenda))))
+    (let ((selected (org-texmacs--context-selected-trees ast islands info))
+          (excluded (cl-mapcan (lambda (tag) (org-tags-expand tag t))
+                               (plist-get info :exclude-tags))))
+      (when (and selected
+                 (org-element-type-p (car (org-element-contents ast)) 'section))
+        (org-element-extract (car (org-element-contents ast))))
+      (cl-labels
+          ((walk (node)
+             (unless (assq node islands)
+               (let ((type (org-element-type node)))
+                 (cond
+                  ((memq type '(comment comment-block))
+                   (org-element-extract node))
+                  ((eq type 'keyword)
+                   (when (member (upcase (org-element-property :key node))
+                                 org-texmacs--context-source-keywords)
+                     (org-element-extract node)))
+                  ((eq type 'headline)
+                   (if (org-export--skip-p node info selected excluded)
+                       (org-element-extract node)
+                     (if (and (eq (plist-get info :with-archived-trees) 'headline)
+                              (org-element-property :archivedp node))
+                         (org-element-set-contents node)
+                       (mapc #'walk (copy-sequence (org-element-contents node))))))
+                  (t (mapc #'walk (copy-sequence (org-element-contents node)))))))))
+        (mapc #'walk (copy-sequence (org-element-contents ast))))))
+  ast)
+
+(defun org-texmacs--context-selected-trees (ast islands info)
+  "Return selected headline identities in AST without entering ISLANDS.
+Follow Org's select-tag genealogy and descendant policy under fixed INFO."
+  (let ((select (cl-mapcan (lambda (tag) (org-tags-expand tag t))
+                           (plist-get info :select-tags))))
+    (cl-labels
+        ((headlines (node)
+           (let (result)
+             (cl-labels ((walk (child)
+                           (unless (assq child islands)
+                             (when (consp child)
+                               (when (eq (org-element-type child) 'headline)
+                                 (push child result))
+                               (mapc #'walk (org-element-contents child))))))
+               (walk node))
+             (nreverse result))))
+      (if (cl-some (lambda (tag) (member tag select)) (plist-get info :filetags))
+          (headlines ast)
+        (let (selected)
+          (cl-labels
+              ((walk (node genealogy)
+                 (unless (assq node islands)
+                   (when (consp node)
+                     (if (eq (org-element-type node) 'headline)
+                         (if (cl-some (lambda (tag) (member tag select))
+                                      (org-element-property :tags node))
+                             (setq selected
+                                   (append genealogy (headlines node) selected))
+                           (mapc (lambda (child)
+                                   (walk child (cons node genealogy)))
+                                 (org-element-contents node)))
+                       (mapc (lambda (child) (walk child genealogy))
+                             (org-element-contents node)))))))
+            (walk ast nil))
+          selected)))))
+
+(defun org-texmacs--context-reachable (ast islands)
+  "Return an eq table of nodes reachable from AST, treating ISLANDS as opaque."
+  (let ((table (make-hash-table :test #'eq)))
+    (cl-labels
+        ((walk (node)
+           (unless (gethash node table)
+             (puthash node t table)
+             (when (and (consp node) (not (assq node islands)))
+               (mapc #'walk (org-element-contents node))
+               (dolist (key (cdr (assq (org-element-type node)
+                                       org-element-secondary-value-alist)))
+                 (mapc #'walk (org-element-property key node)))))))
+      (walk ast))
+    table))
+
+(defun org-texmacs--context-prepare (ast islands requests post-blanks base-info)
+  "Apply restricted context to prepared AST and associated mappings.
+Return (AST ISLANDS REQUESTS POST-BLANKS INFO), retaining only mappings and
+worker requests whose identity keys remain reachable after filtering."
+  (let* ((info (plist-put
+                (org-texmacs--context-validate-info
+                 (org-texmacs--context-merge-options ast islands base-info))
+                :parse-tree ast))
+         (_ (org-texmacs--context-prune ast islands info))
+         (reachable (org-texmacs--context-reachable ast islands))
+         (islands (cl-remove-if-not (lambda (entry) (gethash (car entry) reachable))
+                                    islands))
+         (post-blanks
+          (cl-remove-if-not (lambda (entry) (gethash (car entry) reachable)) post-blanks))
+         (requests (cl-remove-if-not (lambda (request) (memq (car request) islands))
+                                     requests)))
+    (list ast islands requests post-blanks info)))
+
+(provide 'org-texmacs-context)
+;;; org-texmacs-context.el ends here

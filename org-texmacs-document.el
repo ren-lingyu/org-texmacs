@@ -15,10 +15,8 @@
 (require 'org-texmacs-core)
 (require 'org-texmacs-source)
 (require 'org-texmacs-fragment)
+(require 'org-texmacs-context)
 (require 'ox)
-
-(define-error 'org-texmacs-document-error
-              "Org TeXmacs document conversion failed" 'org-texmacs-error)
 
 (defconst org-texmacs--document-markup-tags
   '((bold . strong) (italic . em) (underline . underline)
@@ -57,19 +55,18 @@ tag string.  Preserve TITLE-PARTS without merging adjacent text."
      (if (= (length parts) 1) (car parts) (cons 'concat parts)))))
 
 (defun org-texmacs--document-options ()
-  "Snapshot standard Org headline policies and the selected formatter.
-Do not collect file keywords, run export preprocessing or read setup files.
+  "Snapshot supported Org document policies and the selected formatter.
+File keywords are merged later from the prepared AST without following setup
+files.  Do not run export preprocessing, BIND, hooks or filters here.
 Resolve a formatter symbol now so later redefinition affects only new calls."
-  (let ((formatter (indirect-function org-texmacs-format-headline-function)))
+  (let ((formatter (indirect-function org-texmacs-format-headline-function))
+        (info (org-texmacs--context-base-options)))
     (unless (and (memq org-export-with-todo-keywords '(nil t))
                  (memq org-export-with-priority '(nil t))
                  (memq org-export-with-tags '(nil t not-in-toc))
                  (functionp formatter))
       (signal 'org-texmacs-document-error '("Invalid headline presentation options")))
-    (list :with-todo-keywords org-export-with-todo-keywords
-          :with-priority org-export-with-priority
-          :with-tags org-export-with-tags
-          :texmacs-format-headline-function formatter)))
+    (plist-put info :texmacs-format-headline-function formatter)))
 
 (cl-defstruct (org-texmacs-document
                (:constructor org-texmacs--document-create)
@@ -308,7 +305,7 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
                    (org-texmacs--document-fail node "Unsupported headline level"))
                  (unless (and (stringp raw) (string-match-p "[^ \t\r\n]" raw))
                    (org-texmacs--document-fail node "Empty headline title"))
-                 (dolist (property '(:commentedp :archivedp))
+                 (dolist (property '(:commentedp))
                    (when (org-element-property property node)
                      (org-texmacs--document-fail node "Unsupported headline metadata")))
                  (let* ((parts (inlines (org-element-property :title node) 'title ancestors))
@@ -379,12 +376,13 @@ buffer-local copies separate from the caller's snapshot and source buffer."
   (mapcar #'org-texmacs--document-copy-link-setting
           (list org-link-parameters org-link-abbrev-alist org-link-abbrev-alist-local)))
 
-(defun org-texmacs--document-prepare-source (source tags headings links)
+(defun org-texmacs--document-prepare-source (source tags headings links info)
   "Prepare SOURCE under private Org link syntax using fixed LINKS settings.
 TAGS and HEADINGS are the conversion's other parser inputs.
 Return prepared structure without invoking headline formatters or lowering.
 Never register protocols globally or reset source element caches.  Keep
-Org's internal regexp regeneration confined to this preparation boundary."
+Org's internal regexp regeneration confined to this preparation boundary.
+INFO is the fixed supported global and buffer-local context snapshot."
   (let ((org-link-parameters (org-texmacs--document-copy-link-setting (nth 0 links)))
         (org-link-abbrev-alist (org-texmacs--document-copy-link-setting (nth 1 links)))
         (org-link-types-re org-link-types-re)
@@ -405,14 +403,16 @@ Org's internal regexp regeneration confined to this preparation boundary."
         (setq-local org-texmacs-fragment-tags tags)
         (insert source)
         (org-texmacs--document-prepare
-         source (org-texmacs--fragment-collect tags) headings (nth 2 links))))))
+         source (org-texmacs--fragment-collect tags) headings (nth 2 links) info)))))
 
-(defun org-texmacs--document-prepare (source spans heading-settings &optional abbrevs)
+(defun org-texmacs--document-prepare
+    (source spans heading-settings &optional abbrevs info)
   "Prepare SOURCE and discovered SPANS without starting a worker.
 HEADING-SETTINGS is the source's effective heading configuration snapshot.
 Install it locally after private mode initialization, before parsing source.
 ABBREVS supplies source-local Org link abbreviations for the private parser.
-Return (AST ISLANDS REQUESTS POST-BLANKS).  Each request is
+INFO is the fixed context base to merge with supported source keywords.
+Return (AST ISLANDS REQUESTS POST-BLANKS INFO).  Each request is
 (ISLAND-ENTRY SOURCE TAG); TAG is nil for an unrestricted special block.
 Island entries initially contain placeholder strees for structural validation.
 All positions refer to the complete, unnarrowed source snapshot."
@@ -491,7 +491,7 @@ All positions refer to the complete, unnarrowed source snapshot."
           (when remaining
             (signal 'org-texmacs-document-error '("Unconsumed fragment spans")))
           (setq islands (nreverse islands) requests (nreverse requests))
-          (list ast islands requests blanks))))))
+          (org-texmacs--context-prepare ast islands requests blanks info))))))
 
 (provide 'org-texmacs-document)
 

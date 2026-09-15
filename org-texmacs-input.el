@@ -34,8 +34,10 @@ contract of `org-texmacs--document-lower'.  Unsupported lowering is diagnosed
 by `org-texmacs-document', not by invoking it during this copy.
 
 Copy strings, lists and vectors, rebuild parent links, and remap references
-to AST nodes in INFO and the mappings.  Reject cyclic or multiply owned AST
-nodes, detached/duplicate mapping keys, deferred values and opaque objects.
+to AST nodes in INFO and the mappings.  Copy parsed title, author and date
+secondary strings as separately owned Org objects.  Reject cyclic or multiply
+owned AST nodes, detached/duplicate mapping keys, deferred values and opaque
+objects.
 Discard Org's source buffer and parent bookkeeping.  INFO must be a plist
 with unique keyword keys; nil selects fixed lowering defaults.  A supplied
 headline formatter is resolved now and retained as an opaque function;
@@ -111,7 +113,14 @@ returned input, its accessors' values, or arguments from a formatter."
                   (fail "Detached or duplicate mapping key"))
                 (push (car entry) seen)
                 (cons (gethash (car entry) nodes) (funcall copy-value (cdr entry))))
-              entries))))
+              entries)))
+         (secondary (value)
+           (unless (proper-list-p value)
+             (fail "Expected parsed metadata objects"))
+           (let ((copy (mapcar (lambda (child) (node child nil)) value)))
+             (dolist (child copy)
+               (org-element-put-property child :parent copy))
+             copy)))
       (let ((new-ast (node ast nil)) new-info seen)
         (setq info (or info '(:with-todo-keywords t :with-priority nil :with-tags t
                              :texmacs-format-headline-function
@@ -128,8 +137,11 @@ returned input, its accessors' values, or arguments from a formatter."
               (unless (functionp value) (fail "Invalid headline formatter")))
             (setq new-info
                   (append new-info
-                          (list key (if (eq key :texmacs-format-headline-function)
-                                        value (data value)))))))
+                          (list key
+                                (cond
+                                 ((eq key :texmacs-format-headline-function) value)
+                                 ((memq key '(:title :author :date)) (secondary value))
+                                 (t (data value))))))))
         (org-texmacs--input-create
          :ast new-ast :info new-info
          :islands (mapping islands #'org-texmacs--document-copy-stree)

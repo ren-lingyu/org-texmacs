@@ -19,7 +19,7 @@
   (let ((directory (file-name-directory (locate-library "org-texmacs"))))
     (dolist (feature '(org-texmacs org-texmacs-core org-texmacs-ast
                        org-texmacs-source org-texmacs-fragment
-                       org-texmacs-document org-texmacs-input
+                       org-texmacs-document org-texmacs-input org-texmacs-context
                        org-texmacs-worker org-texmacs-session))
       (should (featurep feature))
       (let ((library (locate-library (symbol-name feature))))
@@ -192,6 +192,184 @@
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
                (lambda (&rest _) (ert-fail "Prepared input must not parse again"))))
       (should (equal (org-texmacs-document input) expected)))))
+
+(ert-deftest org-texmacs-context-option-precedence ()
+  (let ((org-export-with-tags nil)
+        (org-export-with-priority nil))
+    (with-temp-buffer
+      (org-mode)
+      (setq-local org-export-with-tags t)
+      (insert "* Heading :tag:\n")
+      (let ((info (org-texmacs-input-info
+                   (org-texmacs-prepare-buffer (current-buffer)))))
+        (should (eq (plist-get info :with-tags) t))
+        (should-not (plist-get info :with-priority)))
+      (erase-buffer)
+      (insert "#+OPTIONS: tags:nil pri:t\n* Heading :tag:\n")
+      (let ((info (org-texmacs-input-info
+                   (org-texmacs-prepare-buffer (current-buffer)))))
+        (should-not (plist-get info :with-tags))
+        (should (eq (plist-get info :with-priority) t))))))
+
+(ert-deftest org-texmacs-context-options-affect-headline-presentation ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: todo:nil pri:t tags:nil\n"
+            "* TODO [#A] Title :tag:\n")
+    (should
+     (equal (org-texmacs-document-body
+             (org-texmacs-document-from-buffer (current-buffer)))
+            '(document (section (concat "[#A]" " " "Title")))))))
+
+(ert-deftest org-texmacs-context-copies-rich-metadata ()
+  (let (input)
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+TITLE: A *Bold* title\n"
+              "#+AUTHOR: /Name/\n"
+              "#+DATE: <2026-09-14>\n"
+              "Body\n")
+      (setq input (org-texmacs-prepare-buffer (current-buffer))))
+    (let* ((info (org-texmacs-input-info input))
+           (title (plist-get info :title))
+           (author (plist-get info :author))
+           (date (plist-get info :date)))
+      (should (equal (mapcar #'org-element-type title) '(plain-text bold plain-text)))
+      (should (equal (mapcar #'org-element-type author) '(italic)))
+      (should (equal (mapcar #'org-element-type date) '(timestamp)))
+      (dolist (value (list title author date))
+        (dolist (node value)
+          (should (eq (org-element-property :parent node) value))))
+      (should (eq (plist-get info :parse-tree) (org-texmacs-input-ast input))))))
+
+(ert-deftest org-texmacs-context-filters-tasks-before-worker ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: tasks:done\n"
+            "* TODO Hidden\n"
+            "- unsupported list\n"
+            "#+begin_texmacs\n(frac \"1\" \"2)\n#+end_texmacs\n"
+            "* DONE Kept\nVisible\n")
+    (let ((source (buffer-string)))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Filtered STM reached worker"))))
+        (should
+         (equal (org-texmacs-document-body
+                 (org-texmacs-document-from-buffer (current-buffer)))
+                '(document (section (concat (strong "DONE") " " "Kept"))
+                           (concat "Visible ")))))
+      (should (equal source (buffer-string))))))
+
+(ert-deftest org-texmacs-context-archive-headline-discards-contents ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: arch:headline tags:nil\n"
+            "* Archived :ARCHIVE:\n"
+            "#+begin_texmacs\n(frac \"1\" \"2)\n#+end_texmacs\n"
+            "** Hidden child\n"
+            "* Open\nVisible\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _) (ert-fail "Archived STM reached worker"))))
+      (should
+       (equal (org-texmacs-document-body
+               (org-texmacs-document-from-buffer (current-buffer)))
+              '(document (section "Archived") (section "Open")
+                         (concat "Visible ")))))))
+
+(ert-deftest org-texmacs-context-selects-and-excludes-headlines ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+SELECT_TAGS: keep\n#+EXCLUDE_TAGS: drop\nPreamble\n"
+            "* Parent\n"
+            "** Chosen :keep:\nKept\n"
+            "** Rejected :keep:drop:\n"
+            "#+begin_texmacs\n(frac \"1\" \"2)\n#+end_texmacs\n"
+            "** Sibling\nHidden\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _) (ert-fail "Excluded STM reached worker"))))
+      (should
+       (equal (org-texmacs-document-body
+               (org-texmacs-document-from-buffer (current-buffer)))
+              '(document (section "Parent")
+                         (subsection (concat "Chosen" " " ":keep:"))
+                         (concat "Kept ")))))))
+
+(ert-deftest org-texmacs-context-expands-snapshotted-tag-groups ()
+  (with-temp-buffer
+    (org-mode)
+    (setq-local org-tag-groups-alist '(("group" . ("member"))))
+    (insert "#+SELECT_TAGS: group\n"
+            "* Kept :member:\nVisible\n"
+            "* Hidden\nInvisible\n")
+    (should
+     (equal (org-texmacs-document-body
+             (org-texmacs-document-from-buffer (current-buffer)))
+            '(document (section (concat "Kept" " " ":member:"))
+                       (concat "Visible "))))))
+
+(ert-deftest org-texmacs-context-removes-comments ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "Before\n# hidden\n#+begin_comment\nHidden block\n#+end_comment\nAfter\n")
+    (should
+     (equal (org-texmacs-document-body
+             (org-texmacs-document-from-buffer (current-buffer)))
+            '(document (concat "Before ") (concat "After "))))))
+
+(ert-deftest org-texmacs-context-does-not-enter-islands ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+begin_texmacs\n"
+            "#+SETUPFILE: /must/not/be/read\n"
+            "#+begin_comment\nnative\n#+end_comment\n"
+            "#+end_texmacs\n")
+    (let (request)
+      (cl-letf (((symbol-function 'org-file-contents)
+                 (lambda (&rest _) (ert-fail "Read an external file")))
+                ((symbol-function 'org-texmacs--worker-request)
+                 (lambda (source) (setq request source) '(document "opaque"))))
+        (let ((result (org-texmacs-document-from-buffer (current-buffer))))
+          (should (string-match-p "SETUPFILE" request))
+          (should (equal (org-texmacs-document-body result)
+                         '(document (document "opaque"))))
+          (should (equal (org-texmacs-document-stm-paths result) '((0)))))))))
+
+(ert-deftest org-texmacs-context-rejects-preprocessing-without-reading ()
+  (dolist (source '("#+SETUPFILE: /must/not/be/read\nBody\n"
+                    "#+INCLUDE: /must/not/be/read\n"
+                    "#+BIND: org-export-with-tags nil\n"
+                    "#+MACRO: value expansion\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source)
+      (cl-letf (((symbol-function 'org-file-contents)
+                 (lambda (&rest _) (ert-fail "Read an external file")))
+                ((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Started worker"))))
+        (should-error (org-texmacs-prepare-buffer (current-buffer))
+                      :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-context-rejects-unsupported-options ()
+  (dolist (options '("f:nil" "foo:t"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: " options "\nBody\n")
+      (should-error (org-texmacs-prepare-buffer (current-buffer))
+                    :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-context-file-options-remain-snapshotted ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: todo:nil tags:nil\n* TODO Title :tag:\n(math \"x\")\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (_source)
+                 (setq-local org-export-with-todo-keywords t
+                             org-export-with-tags t)
+                 '(math "x"))))
+      (should
+       (equal (org-texmacs-document-body
+               (org-texmacs-document-from-buffer (current-buffer)))
+              '(document (section "Title") (concat (math "x") " ")))))))
 
 (ert-deftest org-texmacs-test-setup-check-passes ()
   (let ((result (org-texmacs-check-setup)))
@@ -2035,7 +2213,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                     "[[file:notes.org::heading]]\n" "[[file+emacs:notes.org]]\n"
                     "[[#target]]\n" "[[id:missing]]\n"
                     "[fn:named]\n" "| table |\n" "# comment\n"
-                    "#+title: Title\n" "* COMMENT Task\n" "* Tagged :ARCHIVE:\n"
+                    "#+title: Title\n" "* COMMENT Task\n"
                     "**** Deep\n" "* \n" "#+name: named\nParagraph\n"
                     "#+attr_html: :class test\nParagraph\n"
                     "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n"))
@@ -2874,7 +3052,7 @@ Only serialize expected bytes; do not call the production encoder."
             (insert "Original\n")
             (org-texmacs-session-set-document session (org-texmacs-document-from-buffer (current-buffer)))
             (let ((old (org-texmacs--session-read session)))
-              (dolist (case '(("* COMMENT Task\n" . org-texmacs-document-error)
+              (dolist (case '(("- unsupported item\n" . org-texmacs-document-error)
                               ("(math 1)\n" . org-texmacs-parse-error)))
                 (erase-buffer)
                 (insert (car case))
@@ -3076,13 +3254,15 @@ Only tests with explicit example names use this helper; do not run Babel."
                      '(document (section (concat "Parent" " " ":parent:"))
                                 (subsection (concat "Child" " " ":child:"))))))))
 
-(ert-deftest org-texmacs-headline-no-file-export-options ()
+(ert-deftest org-texmacs-headline-file-options-without-export-environment ()
   (with-temp-buffer
     (org-mode)
     (insert "#+OPTIONS: todo:nil\n* TODO Title\n")
     (cl-letf (((symbol-function 'org-export-get-environment)
                (lambda (&rest _) (ert-fail "Collected export environment"))))
-      (should-error (org-texmacs-document-from-buffer (current-buffer)) :type 'org-texmacs-document-error))))
+      (should (equal (org-texmacs-document-body
+                      (org-texmacs-document-from-buffer (current-buffer)))
+                     '(document (section "Title")))))))
 
 (ert-deftest org-texmacs-headline-native-metadata-literal ()
   (org-texmacs-test--with-worker

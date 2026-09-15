@@ -8,8 +8,10 @@ the Org buffer is the source of truth, with no external =.tm= file required.
 Version 0.2.1 retains block-level parsing with lazy caching and configurable
 fragment source discovery with on-demand tree parsing.  It supports conversion
 of a limited Org body subset to a TeXmacs body AST, provenance-aware native
-encoding, and explicit native body sessions.  Document construction now takes
-an explicit source buffer, with a separate current-buffer convenience wrapper.
+encoding, and explicit native body sessions.  Document construction in that
+release takes an explicit source buffer, with a separate current-buffer
+convenience wrapper.  The development API adds the prepared-input boundary
+described below and a restricted Org document context.
 
 Document conversion supports basic inline markup, self-contained URI links,
 anonymous inline footnotes, level 1--3 headings and TeXmacs islands, as
@@ -533,8 +535,10 @@ Both entry points capture supported settings from the source buffer and
 restore the caller's current-buffer context on return or error.  A mere
 current-buffer switch while waiting does not invalidate the source snapshot.
 
-Each call captures source text, fragment tags, supported heading/link parser
-settings and headline output options.  Detectable changes to source text,
+Each buffer-adapter call captures source text, fragment tags, supported
+heading/link parser settings and a restricted Org document context.  It merges
+supported file keywords over source-buffer-local and global option values.
+Detectable changes to source text,
 mode, narrowing or those parser settings reject the result without automatic
 retry.  Output options and the selected formatter instead remain fixed for
 that call; subsequent changes affect the next call.  This is not a snapshot
@@ -576,13 +580,15 @@ The supported Org subset is deliberately small:
 | Nonempty headings at Org's parsed levels 1, 2, 3  | =section=, =subsection=, =subsubsection=                     |
 | Recognized paragraph fragment                     | One parsed STM subtree                                       |
 | =texmacs= special block                           | One parsed STM subtree, even for a string or =document= root |
+| COMMENT / comment block                           | Removed before structural preflight                         |
+| Task, archive and select/exclude filtering        | Org policy applied before STM worker requests                |
 
 Heading text may contain supported emphasis and literal inline code, but not
 explicit line breaks.  This is not a general Org
-exporter: unsupported links and footnotes, lists, tables, other blocks, keywords,
-drawers and affiliated metadata are rejected.  COMMENT/archive headings,
-empty headings and deeper headings are also
-rejected rather than silently discarded.  Fragment discovery can support
+exporter: unsupported links and footnotes, lists, tables, other blocks,
+unrecognized keywords, drawers and affiliated metadata are rejected.
+Empty and deeper headings are also rejected rather than silently discarded.
+Fragment discovery can support
 contexts that this whole-document conversion does not support.
 
 Ordinary spaces, tabs and soft newlines collapse to one space across Org
@@ -631,27 +637,45 @@ The private parser receives copies of the source's effective
 rejected.  Settings are not rebuilt from TODO declarations or file keywords.
 With =org-odd-levels-only= enabled, for example, a three-star heading has
 parsed level 2 and becomes =subsection=.
-Arbitrary Org parser customization is not supported.  There is no INCLUDE
-expansion, Babel execution or export hook.
+The source's tag-group definitions are also snapshotted for filtering.  Org's
+standard COMMENT and ARCHIVE markers retain their native parser semantics.
+Arbitrary Org parser customization is not supported.
+There is no INCLUDE/SETUPFILE expansion, BIND or macro processing, Babel
+execution, export hook or filter.  The corresponding source directives are
+rejected before lowering and never cause an external file read.
 This is structural conversion, not a byte-for-byte Org round trip.
 
 ** Headline metadata and presentation
 
 Document conversion snapshots these standard Org options from the source
-buffer; it does not introduce parallel TeXmacs display switches:
+buffer and accepts their listed =#+OPTIONS= keys.  It does not introduce
+parallel TeXmacs display switches:
 
-| Org option                      | Default | Meaning                     |
-|---------------------------------+---------+-----------------------------|
-| =org-export-with-todo-keywords= | t       | Show TODO/DONE keyword      |
-| =org-export-with-priority=      | nil     | Show priority cookie        |
-| =org-export-with-tags=          | t       | Show explicit headline tags |
+| Org option                          | Source key  | Current effect                                      |
+|-------------------------------------+-------------+-----------------------------------------------------|
+| =org-export-with-todo-keywords=     | =todo=      | Show TODO/DONE keyword                              |
+| =org-export-with-priority=          | =pri=       | Show priority cookie                                |
+| =org-export-with-tags=              | =tags=      | Show explicit headline tags                         |
+| =org-export-with-tasks=             | =tasks=     | Keep the selected task states                       |
+| =org-export-with-archived-trees=    | =arch=      | Keep, remove or retain only an archived headline    |
+| =org-export-headline-levels=        | =H=         | Captured for later document-level headline lowering |
+| =org-export-with-section-numbers=   | =num=       | Captured for later numbering                        |
+| =org-export-with-toc=               | =toc=       | Captured for later TOC construction                 |
+| =org-export-with-title/author/date= | =TITLE/AUTHOR/DATE= | Captured with rich metadata for later lowering |
 
-=not-in-toc= also shows tags in the body heading; no TOC is generated.
+=not-in-toc= also shows tags in the body heading; no TOC is generated yet.
 Disabling a field only omits its presentation, never the heading or body.
-Tags retain their explicit order without inheritance.  This currently reads
-variable values only: =#+OPTIONS=, BIND, SETUPFILE and complete export
-environment collection are not supported.  Loading =ox= supplies standard
-options but does not run an export pipeline.  Keyword nodes remain rejected.
+Tags retain their explicit order without inheritance.  =#+SELECT_TAGS=,
+=#+EXCLUDE_TAGS= and =#+FILETAGS= participate in Org's headline selection;
+comments are always removed.  Filtering happens before worker requests, so
+discarded subtrees cannot trigger STM parse errors.  Supported configuration
+keywords are consumed instead of becoming body nodes.
+
+=#+TITLE=, =#+AUTHOR= and =#+DATE= are retained as parsed Org objects in the
+prepared input.  This node does not yet lower them into TeXmacs metadata.
+Unsupported =#+OPTIONS= keys and preprocessing directives are errors instead
+of silently invoking a broader export pipeline.  Loading =ox= supplies Org's
+option conversion and filtering policies but does not run an exporter.
 
 The default =org-texmacs-format-headline-function= is
 =org-texmacs-format-headline-default-function=.  It joins a strong TODO/DONE
@@ -668,8 +692,8 @@ Custom formatters receive six arguments:
 
 Disabled metadata arrives as nil, including =todo-type= when TODO is disabled.
 =title-parts= contains lowered text strees, not an Org AST or serialized text.
-=info= is an options plist with =:with-todo-keywords=, =:with-priority=,
-=:with-tags= and =:texmacs-format-headline-function=.  Return one text stree;
+=info= is the fixed restricted Org context, including the headline presentation
+keys and =:texmacs-format-headline-function=.  Return one text stree;
 it is validated and copied into the sectioning node's sole title child.
 The formatter cannot choose the enclosing sectioning level through its return
 value.  Treat inputs as read-only and prefer a side-effect-free function.

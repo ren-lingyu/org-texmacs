@@ -50,6 +50,7 @@
 (require 'org-texmacs-source)
 (require 'org-texmacs-fragment)
 (require 'org-texmacs-worker)
+(require 'org-texmacs-context)
 (require 'org-texmacs-document)
 (require 'org-texmacs-input)
 (require 'org-texmacs-session)
@@ -183,11 +184,13 @@ Levels are Org's parsed levels, including its odd-level policy.  Other
 parser customization is not supported.  TODO, priority and explicit tags use
 standard `org-export-with-todo-keywords', `org-export-with-priority' and
 `org-export-with-tags' settings with `org-texmacs-format-headline-function'.
-Snapshot output settings once; later changes affect only the next conversion.
-COMMENT/archive headings and other unsupported metadata remain rejected.
-Do not collect file-local export options such as #+OPTIONS.
+Snapshot the supported Org document context once; later changes affect only
+the next conversion.  Merge the documented #+OPTIONS and metadata keyword
+subset, then apply Org's task/archive/select/exclude/comment filtering before
+worker requests.  Reject unsupported options and preprocessing directives.
 
-Prepare a private snapshot without mode hooks, validate supported structure,
+Prepare a private snapshot without mode hooks or export preprocessing,
+validate supported structure,
 then synchronously parse each island with the shared worker.  Do not cache
 the result.  Invoke headline formatters outside private parser bindings,
 both during structural preflight and final lowering.  Do not modify
@@ -211,10 +214,11 @@ it does not provide export, native buffer updates or rendering."
            (tags (org-texmacs--fragment-tags))
            (heading-settings (org-texmacs--document-heading-settings))
            (link-settings (org-texmacs--document-link-settings))
-           (info (org-texmacs--document-options))
+           (base-info (org-texmacs--document-options))
            (source (buffer-substring-no-properties (point-min) (point-max)))
            (prepared (org-texmacs--document-prepare-source
-                      source tags heading-settings link-settings)))
+                      source tags heading-settings link-settings base-info))
+           (info (nth 4 prepared)))
       (cl-labels ((check ()
                    (unless (buffer-live-p buffer)
                      (signal 'org-texmacs-document-error '("Source buffer was killed")))

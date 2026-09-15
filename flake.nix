@@ -22,6 +22,7 @@
         fileset = pkgs.lib.fileset.unions [
           ./org-texmacs.el
           ./org-texmacs-core.el
+          ./org-texmacs-context.el
           ./org-texmacs-ast.el
           ./org-texmacs-document.el
           ./org-texmacs-input.el
