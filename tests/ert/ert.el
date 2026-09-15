@@ -1997,7 +1997,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (should-error (org-texmacs--document-lower ast) :type 'org-texmacs-document-error))))
 
 (ert-deftest org-texmacs-document-uri-private-syntax-restoration ()
-  (dolist (suffix '("" "\n- unsupported\n"))
+  (dolist (suffix '("" "\n[[file:unsupported.org][link]]\n"))
     (with-temp-buffer
       (org-mode)
       (insert "[[ftps://example.org][(math \"hidden\")]]" suffix)
@@ -2207,8 +2207,118 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (should (equal (org-texmacs-document-body result) '(document "literal")))
     (should (equal (org-texmacs-document-stm-paths result) '((0))))))
 
+(ert-deftest org-texmacs-document-list-source-forms ()
+  (dolist
+      (case
+       '(("- One\n- Two\n"
+          (document
+           (itemize
+            (document (concat (item) "One ") (concat (item) "Two ")))))
+         ("1. First\n2. Second\n"
+          (document
+           (enumerate
+            (document (concat (item) "First ") (concat (item) "Second ")))))
+         ("- (math \"term\") :: Definition\n- Untagged\n"
+          (document
+           (description
+            (document (concat (item* "(math \"term\")") "Definition ")
+                      (concat (item) "Untagged ")))))))
+    (with-temp-buffer
+      (org-mode)
+      (insert (car case))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Description term reached worker"))))
+        (should
+         (equal (org-texmacs-document-body
+                 (org-texmacs-document-from-buffer (current-buffer)))
+                (cadr case)))))))
+
+(ert-deftest org-texmacs-document-nested-list-island ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "- Outer\n  1. Inner (math \"x\")\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (source)
+                 (should (equal source "(math \"x\")"))
+                 '(math "x"))))
+      (let ((document (org-texmacs-document-from-buffer (current-buffer))))
+        (should
+         (equal (org-texmacs-document-body document)
+                '(document
+                  (itemize
+                   (document
+                    (concat (item) "Outer ")
+                    (enumerate
+                     (document
+                      (concat (item) "Inner " (math "x") " "))))))))
+        (should (equal (org-texmacs-document-stm-paths document)
+                       '((0 0 1 0 0 2))))))))
+
+(ert-deftest org-texmacs-document-quote-and-center-containers ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+begin_quote\nFirst (math \"q\").\n\nSecond.\n#+end_quote\n"
+            "#+begin_center\n- Centered item\n#+end_center\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (source)
+                 (should (equal source "(math \"q\")"))
+                 '(math "q"))))
+      (let ((document (org-texmacs-document-from-buffer (current-buffer))))
+        (should
+         (equal (org-texmacs-document-body document)
+                '(document
+                  (quote
+                   (document (concat "First " (math "q") ". ")
+                             (concat "Second. ")))
+                  (center
+                   (document
+                    (itemize
+                     (document (concat (item) "Centered item "))))))))
+        (should (equal (org-texmacs-document-stm-paths document)
+                       '((0 0 0 1))))))))
+
+(ert-deftest org-texmacs-document-rejects-list-checkbox-and-counter ()
+  (dolist (source '("- [ ] Task\n" "1. [@3] Counted\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Invalid list reached worker"))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer))
+                      :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-document-list-containers-native ()
+  (org-texmacs-test--with-worker
+    (let ((session (org-texmacs-session-open)))
+      (unwind-protect
+          (dolist
+              (case
+               '(("- Bullet\n"
+                  (document (itemize (document (concat (item) "Bullet ")))))
+                 ("1. Number\n"
+                  (document (enumerate (document (concat (item) "Number ")))))
+                 ("- Term :: Definition\n"
+                  (document
+                   (description
+                    (document (concat (item* "Term") "Definition ")))))
+                 ("#+begin_quote\nQuoted.\n#+end_quote\n"
+                  (document (quote (document (concat "Quoted. ")))))
+                 ("#+begin_center\nCentered.\n#+end_center\n"
+                  (document (center (document (concat "Centered. ")))))))
+            (with-temp-buffer
+              (org-mode)
+              (insert (car case))
+              (let ((document
+                     (org-texmacs-document-from-buffer (current-buffer))))
+                (should (equal (org-texmacs-document-body document) (cadr case)))
+                (org-texmacs-session-set-document session document)
+                (should
+                 (equal (org-texmacs--session-read session)
+                        (org-texmacs-test--native-hex (cadr case)))))))
+        (org-texmacs-session-close session)))))
+
 (ert-deftest org-texmacs-document-rejects-unsupported-source ()
-  (dolist (source '("- item\n" "[[file:notes.org][link]]\n"
+  (dolist (source '("[[file:notes.org][link]]\n"
                     "[[./notes.org]]\n" "[[/tmp/notes.org]]\n"
                     "[[file:notes.org::heading]]\n" "[[file+emacs:notes.org]]\n"
                     "[[#target]]\n" "[[id:missing]]\n"
@@ -2283,7 +2393,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                          '("(math \"*fake* [[link]]\")" "(math \"α\")"))))))))
 
 (ert-deftest org-texmacs-document-source-preflight ()
-  (dolist (source '("(math \"x\")\n\n- unsupported\n"
+  (dolist (source '("(math \"x\")\n\n[[file:unsupported.org][link]]\n"
                     "#+include: missing.org\n"
                     "#+begin_src emacs-lisp\n(error \"never execute\")\n#+end_src\n"))
     (with-temp-buffer
@@ -2428,7 +2538,8 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (with-temp-buffer
         (org-mode)
         (insert "Text (math \"x\")\n")
-        (when (eq outcome 'unsupported) (insert "\n- unsupported\n"))
+        (when (eq outcome 'unsupported)
+          (insert "\n[[file:unsupported.org][link]]\n"))
         (put-text-property 1 3 'org-texmacs-test-property "retained")
         (goto-char 3)
         (set-mark 2)
@@ -3052,7 +3163,8 @@ Only serialize expected bytes; do not call the production encoder."
             (insert "Original\n")
             (org-texmacs-session-set-document session (org-texmacs-document-from-buffer (current-buffer)))
             (let ((old (org-texmacs--session-read session)))
-              (dolist (case '(("- unsupported item\n" . org-texmacs-document-error)
+              (dolist (case '(("[[file:unsupported.org][link]]\n"
+                               . org-texmacs-document-error)
                               ("(math 1)\n" . org-texmacs-parse-error)))
                 (erase-buffer)
                 (insert (car case))

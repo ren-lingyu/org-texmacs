@@ -27,6 +27,10 @@
   '("http" "https" "mailto" "ftp" "ftps")
   "Org link types accepted as self-contained URI targets.")
 
+(defconst org-texmacs--document-list-tags
+  '((unordered . itemize) (ordered . enumerate) (descriptive . description))
+  "TeXmacs environment tags for Org's three native plain-list types.")
+
 (defcustom org-texmacs-format-headline-function
   #'org-texmacs-format-headline-default-function
   "Function presenting headline metadata and lowered title parts.
@@ -127,9 +131,11 @@ trailing spaces/tabs.  Without an entry, use the nonnegative `:post-blank'
 count.  Both inputs have prose whitespace semantics, not source fidelity.
 
 Support paragraphs, plain text, basic emphasis, inline code/verbatim,
-explicit line breaks, self-contained URI links, transparent Org sections
-and level 1--3 headlines.  Link admission uses Org type, not raw source.
-Accept anonymous inline footnotes only as direct paragraph children.
+explicit line breaks, self-contained URI links, transparent Org sections,
+level 1--3 headlines, all three Org plain-list types, and quote/center blocks.
+Link admission uses Org type, not raw source.  Accept anonymous inline
+footnotes only as direct paragraph children.  Reject list checkboxes and
+explicit counters; description terms use the existing inline subset.
 Collapse ordinary spaces, tabs and soft newlines across Org inline text
 boundaries.  Suppress leading whitespace at paragraph/title starts and after
 explicit breaks; a final whitespace run remains one space.  Inline code is
@@ -271,19 +277,51 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
            (unless (proper-list-p nodes)
              (signal 'org-texmacs-document-error '("Invalid block contents")))
            (apply #'append (mapcar (lambda (node) (block node context ancestors)) nodes)))
+         (check-affiliated (node)
+           (let ((begin (org-element-property :begin node))
+                 (post (org-element-property :post-affiliated node)))
+             (when (and (integerp begin) (integerp post) (> post begin))
+               (org-texmacs--document-fail node "Unsupported affiliated metadata")))
+           (dolist (property '(:name :caption :attr_texmacs))
+             (when (org-element-property property node)
+               (org-texmacs--document-fail node "Unsupported affiliated metadata"))))
+         (list-item (node kind ancestors)
+           (when (or (org-element-property :checkbox node)
+                     (org-element-property :counter node))
+             (org-texmacs--document-fail node "Unsupported list checkbox or counter"))
+           (let* ((tag (org-element-property :tag node))
+                  (marker
+                   (if (and (eq kind 'descriptive) tag)
+                       (progn
+                         (unless (proper-list-p tag)
+                           (org-texmacs--document-fail node "Invalid description term"))
+                         (let* ((parts (inlines tag 'description-tag ancestors))
+                                (body (cond
+                                       ((null parts)
+                                        (org-texmacs--document-create :body ""))
+                                       ((null (cdr parts)) (car parts))
+                                       (t (org-texmacs--document-pack 'concat parts)))))
+                           (org-texmacs--document-pack 'item* (list body))))
+                     (org-texmacs--document-pack 'item nil)))
+                  (contents (org-element-contents node))
+                  (first (car contents)))
+             (if (and first (org-element-type-p first 'paragraph))
+                 (progn
+                   (check-affiliated first)
+                   (cons (org-texmacs--document-pack
+                          'concat
+                          (cons marker
+                                (inlines (org-element-contents first)
+                                         'paragraph ancestors)))
+                         (blocks (cdr contents) 'item ancestors)))
+               (cons marker (blocks contents 'item ancestors)))))
          (block (node context ancestors)
            (unless (and (consp node) (not (memq node ancestors)))
              (org-texmacs--document-fail node "Invalid or cyclic block node"))
            (let ((ancestors (cons node ancestors))
                  (type (org-element-type node))
                  (entry (assq node islands)))
-             (let ((begin (org-element-property :begin node))
-                   (post (org-element-property :post-affiliated node)))
-               (when (and (integerp begin) (integerp post) (> post begin))
-                 (org-texmacs--document-fail node "Unsupported affiliated metadata")))
-             (dolist (property '(:name :caption :attr_texmacs))
-               (when (org-element-property property node)
-                 (org-texmacs--document-fail node "Unsupported affiliated metadata")))
+             (check-affiliated node)
              (cond
               (entry
                (unless (org-texmacs--block-p node)
@@ -296,6 +334,38 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
               ((eq type 'paragraph)
                (list (org-texmacs--document-pack
                       'concat (inlines (org-element-contents node) 'paragraph ancestors))))
+              ((eq type 'plain-list)
+               (unless (memq context
+                             '(org-data section headline item quote-block center-block))
+                 (org-texmacs--document-fail node "Unexpected Org plain list"))
+               (let* ((kind (org-element-property :type node))
+                      (tag (cdr (assq kind org-texmacs--document-list-tags)))
+                      (items (org-element-contents node)))
+                 (unless (and tag (proper-list-p items) items
+                              (cl-every (lambda (item)
+                                          (org-element-type-p item 'item))
+                                        items))
+                   (org-texmacs--document-fail node "Invalid Org plain list"))
+                 (list
+                  (org-texmacs--document-pack
+                   tag
+                   (list
+                    (org-texmacs--document-pack
+                     'document (blocks items kind ancestors)))))))
+              ((memq type '(quote-block center-block))
+               (unless (memq context
+                             '(org-data section headline item quote-block center-block))
+                 (org-texmacs--document-fail node "Unexpected Org container block"))
+               (list
+                (org-texmacs--document-pack
+                 (if (eq type 'quote-block) 'quote 'center)
+                 (list
+                  (org-texmacs--document-pack
+                   'document (blocks (org-element-contents node) type ancestors))))))
+              ((eq type 'item)
+               (unless (memq context '(unordered ordered descriptive))
+                 (org-texmacs--document-fail node "Unexpected Org list item"))
+               (list-item node context ancestors))
               ((eq type 'headline)
                (unless (memq context '(org-data headline))
                  (org-texmacs--document-fail node "Unexpected headline"))
@@ -482,9 +552,13 @@ All positions refer to the complete, unnarrowed source snapshot."
               ((org-texmacs--block-p node)
                (register node (org-texmacs--block-source node) nil))
               ((eq (org-element-type node) 'paragraph) (paragraph node))
-              ((memq (org-element-type node) '(org-data section headline))
+              ((memq (org-element-type node)
+                     '(org-data section headline plain-list item
+                       quote-block center-block))
                (when (eq (org-element-type node) 'headline)
                  (mapc #'whitespace (org-element-property :title node)))
+               (when (eq (org-element-type node) 'item)
+                 (mapc #'whitespace (org-element-property :tag node)))
                (mapc #'walk (org-element-contents node))))))
         (let ((ast (org-element-parse-buffer)))
           (walk ast)

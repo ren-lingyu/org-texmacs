@@ -578,6 +578,8 @@ The supported Org subset is deliberately small:
 | Supported self-contained URI link                 | =hlink= with separate display body and target                |
 | Anonymous inline footnote directly in a paragraph | =footnote= containing a body =document=                      |
 | Nonempty headings at Org's parsed levels 1, 2, 3  | =section=, =subsection=, =subsubsection=                     |
+| Unordered / ordered / description list            | =itemize= / =enumerate= / =description= with body =document= |
+| Quote / center block                               | =quote= / =center= with body =document=                      |
 | Recognized paragraph fragment                     | One parsed STM subtree                                       |
 | =texmacs= special block                           | One parsed STM subtree, even for a string or =document= root |
 | COMMENT / comment block                           | Removed before structural preflight                         |
@@ -585,7 +587,7 @@ The supported Org subset is deliberately small:
 
 Heading text may contain supported emphasis and literal inline code, but not
 explicit line breaks.  This is not a general Org
-exporter: unsupported links and footnotes, lists, tables, other blocks,
+exporter: unsupported links and footnotes, tables, other blocks,
 unrecognized keywords, drawers and affiliated metadata are rejected.
 Empty and deeper headings are also rejected rather than silently discarded.
 Fragment discovery can support
@@ -603,6 +605,18 @@ may become empty when its whitespace duplicates a preceding slot.
 These rules apply while lowering Org nodes, not as a rewrite of the final
 TeXmacs tree.  STM islands remain opaque and unchanged, including their
 whitespace.  The source buffer and raw STM extraction are unchanged.
+
+Org's parsed =unordered=, =ordered= and =descriptive= list types map to
+=itemize=, =enumerate= and =description=.  Each TeXmacs list contains one
+body =document=; =item= or =item*= starts the first paragraph of each item,
+while later paragraphs and nested lists remain separate body children.
+Description terms use =item*= and the supported inline subset; an untagged
+item in the same list uses =item=.  STM discovery remains limited to item
+body paragraphs and does not scan description terms.
+Checkboxes and explicit =[@N]= counters are rejected.
+
+=quote= and =center= each contain a body =document=, preserving multiple
+paragraphs, nested supported lists and TeXmacs islands as structural children.
 
 URI links support =http=, =https=, =mailto=, =ftp= and =ftps=, including
 bracket, angle and plain Org links.  Admission uses Org's parsed link type
