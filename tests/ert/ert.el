@@ -3378,7 +3378,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
              (lambda (make-request operation)
                (should (eq operation 'encode))
                (should (equal (funcall make-request 7)
-                              "(encode 7 (\"document\" (\"custom.tag*\" \"<alpha>\")) ((0)))\n"))
+                              "(encode 7 (\"generic\") () (\"document\" (\"custom.tag*\" \"<alpha>\")) ((0)))\n"))
                'encoded)))
     (should (eq (org-texmacs--worker-encode-document
                  (org-texmacs--document-create
@@ -3436,9 +3436,11 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (org-texmacs--worker-request "(math \"α\")")
     (let ((process org-texmacs--worker-process))
       ;; Bypass local preflight to exercise the Scheme validation boundary.
-      (dolist (payload '("(\"document\" \"x\") ((2))"
-                         "(\"document\" (\"math\" \"x\")) ((0) (0 0))"
-                         "(\"document\" (\"raw-data\" \"x\")) ()"))
+      (dolist (payload '("(\"generic\") () (\"document\" \"x\") ((2))"
+                         "(\"generic\") () (\"document\" (\"math\" \"x\")) ((0) (0 0))"
+                         "(\"generic\") () (\"document\" (\"raw-data\" \"x\")) ()"
+                         "() () (\"document\" \"x\") ()"
+                         "(\"generic\") ((\"x\" (\"raw-data\" \"x\"))) (\"document\" \"x\") ()"))
         (should-error
          (org-texmacs--worker-call
           (lambda (id) (format "(encode %d %s)\n" id payload)) 'encode)
@@ -3468,7 +3470,25 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
   (should-error (org-texmacs--worker-decode "(session-error 1 \"invalid\")" 1 'session-set)
                 :type 'org-texmacs-session-error)
   (should-error (org-texmacs--worker-decode "(session-fatal 1 \"cleanup\")" 1 'session-close)
-                :type 'org-texmacs-worker-error))
+                :type 'org-texmacs-worker-error)
+  (let ((response
+         '(native-document
+           (style "generic")
+           (initial (associate "par-first" "32666e"))
+           (body (document "00")))))
+    (should
+     (equal
+      (org-texmacs--worker-decode
+       "(ok 1 (native-document (style \"generic\") (initial (associate \"par-first\" \"32666e\")) (body (document \"00\"))))"
+       1 'session-read)
+      response)))
+  (dolist (response
+           '("(ok 1 (native-body (document \"00\")))"
+             "(ok 1 (native-document (style) (initial) (body (document \"00\"))))"
+             "(ok 1 (native-document (style \"generic\") (initial (associate \"x\" \"0g\")) (body (document \"00\"))))"
+             "(ok 1 (native-document (style \"generic\") (initial (associate \"x\" \"00\") (associate \"x\" \"00\")) (body (document \"00\"))))"))
+    (should-error (org-texmacs--worker-decode response 1 'session-read)
+                  :type 'org-texmacs-worker-error)))
 
 (ert-deftest org-texmacs-session-real-lifecycle ()
   (org-texmacs-test--with-worker
@@ -3499,6 +3519,59 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
         (should-not (equal (org-texmacs-session-key session) (org-texmacs-session-key next)))
         (org-texmacs-session-close next)))))
 
+(ert-deftest org-texmacs-session-real-complete-document-state ()
+  (org-texmacs-test--with-worker
+    (let ((session (org-texmacs-session-open)))
+      (unwind-protect
+          (progn
+            (org-texmacs-session-set-document
+             session
+             (org-texmacs--document-create
+              :style '("article" "number-europe" "number-europe")
+              :initial '(("par-first" . "2fn")
+                         ("custom" tuple "中" "<alpha>"))
+              :body '(document "中 <alpha>")))
+            (let* ((readback (org-texmacs--session-read-document session))
+                   (style (cdr (assq 'style (cdr readback))))
+                   (initial (cdr (assq 'initial (cdr readback)))))
+              ;; TeXmacs normalizes duplicate and included style packages.
+              (should (equal style '("article" "number-europe")))
+              (should (= (length initial) 2))
+              (should
+               (equal (caddr (cl-find "par-first" initial
+                                      :key #'cadr :test #'equal))
+                      (org-texmacs-test--ascii-hex "2fn")))
+              (should
+               (equal (caddr (cl-find "custom" initial
+                                      :key #'cadr :test #'equal))
+                      (org-texmacs-test--native-hex
+                       '(tuple "<#4E2D>" "<alpha>"))))
+              (should
+               (equal (org-texmacs--session-read session)
+                      (org-texmacs-test--native-hex
+                       '(document "<#4E2D> <less>alpha<gtr>")))))
+            (org-texmacs-session-set-document
+             session
+             (org-texmacs--document-create
+              :style '("generic") :initial '(("new" . "中"))
+              :body '(document "second")))
+            (let* ((readback (org-texmacs--session-read-document session))
+                   (style (cdr (assq 'style (cdr readback))))
+                   (initial (cdr (assq 'initial (cdr readback)))))
+              (should (equal style '("generic")))
+              (should (= (length initial) 1))
+              (should-not (cl-find "par-first" initial :key #'cadr :test #'equal))
+              (should-not (cl-find "custom" initial :key #'cadr :test #'equal))
+              (should
+               (equal (caddr (cl-find "new" initial :key #'cadr :test #'equal))
+                      (org-texmacs-test--ascii-hex "<#4E2D>"))))
+            (org-texmacs-session-set-document
+             session (org-texmacs--document-create :body '(document "empty")))
+            (let ((readback (org-texmacs--session-read-document session)))
+              (should (equal (cdr (assq 'style (cdr readback))) '("generic")))
+              (should-not (cdr (assq 'initial (cdr readback))))))
+        (org-texmacs-session-close session)))))
+
 (ert-deftest org-texmacs-session-real-encoding-error-preserves-body ()
   (org-texmacs-test--with-worker
     (let ((session (org-texmacs-session-open)))
@@ -3507,12 +3580,26 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
             (org-texmacs-session-set-document
              session (org-texmacs--document-create :body '(document "original")))
             (let ((old (org-texmacs--session-read session)))
+              (should-error
+               (org-texmacs-session-set-document
+                session
+                (org-texmacs--document-create
+                 :style nil :body '(document "invalid style")))
+               :type 'org-texmacs-encoding-error)
+              (should-error
+               (org-texmacs-session-set-document
+                session
+                (org-texmacs--document-create
+                 :initial '(("bad" raw-data "x"))
+                 :body '(document "invalid initial")))
+               :type 'org-texmacs-encoding-error)
               (should-error (org-texmacs-session-set-document
                              session (org-texmacs--document-create :body '(document (raw-data "x"))))
                             :type 'org-texmacs-encoding-error)
               ;; Bypass Elisp validation to cover the worker's pre-mutation path.
               (should-error (org-texmacs--session-command
-                             session 'session-set "(\"document\" \"x\") ((9))")
+                             session 'session-set
+                             "(\"generic\") () (\"document\" \"x\") ((9))")
                             :type 'org-texmacs-encoding-error)
               (should (org-texmacs--session-live-p session))
               (should (equal old (org-texmacs--session-read session)))))

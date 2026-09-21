@@ -158,9 +158,30 @@ Use the user's normal environment.  Only the socket directory is temporary."
     (and (consp node) (car node) (symbolp (car node))
          (proper-list-p node) (cl-every #'org-texmacs--hex-stree-p (cdr node)))))
 
+(defun org-texmacs--native-document-p (node)
+  "Return non-nil for a complete native session diagnostic NODE."
+  (and (consp node) (eq (car node) 'native-document) (= (length node) 4)
+       (let ((style (nth 1 node)) (initial (nth 2 node)) (body (nth 3 node)) keys)
+         (and (consp style) (eq (car style) 'style) (cdr style)
+              (cl-every (lambda (name) (and (stringp name) (> (length name) 0)))
+                        (cdr style))
+              (consp initial) (eq (car initial) 'initial)
+              (cl-every
+               (lambda (entry)
+                 (and (consp entry) (eq (car entry) 'associate)
+                      (= (length entry) 3)
+                      (stringp (cadr entry)) (> (length (cadr entry)) 0)
+                      (not (member (cadr entry) keys))
+                      (prog1 (org-texmacs--hex-stree-p (caddr entry))
+                        (push (cadr entry) keys))))
+               (cdr initial))
+              (consp body) (eq (car body) 'body) (= (length body) 2)
+              (consp (cadr body)) (eq (caadr body) 'document)
+              (org-texmacs--hex-stree-p (cadr body))))))
+
 (defun org-texmacs--worker-decode (response id &optional operation)
   "Read RESPONSE for request ID and return its stree.
-OPERATION is nil for parse or `encode' for a native-body hex response.
+OPERATION selects parse, encoding or native-session response validation.
 Reject malformed envelopes and trailing data.  Source errors have their own
 condition so callers can preserve a healthy worker."
   ;; Restrict the response reader, not subsequent validation or lazy loading.
@@ -187,14 +208,17 @@ condition so callers can preserve a healthy worker."
                         (string-match-p "\\`[1-9][0-9]*\\'" (cadr payload)))
              (signal 'org-texmacs-worker-error '("Invalid session response")))
            (cadr payload))
-          ((memq operation '(encode session-read))
-             (progn
-               (unless (and (consp payload) (eq (car payload) 'native-body)
-                            (= (length payload) 2)
-                            (consp (cadr payload)) (eq (caadr payload) 'document)
-                            (org-texmacs--hex-stree-p (cadr payload)))
-                 (signal 'org-texmacs-worker-error '("Invalid encoded body response")))
-               (cadr payload)))
+          ((eq operation 'encode)
+           (unless (and (consp payload) (eq (car payload) 'native-body)
+                        (= (length payload) 2)
+                        (consp (cadr payload)) (eq (caadr payload) 'document)
+                        (org-texmacs--hex-stree-p (cadr payload)))
+             (signal 'org-texmacs-worker-error '("Invalid encoded body response")))
+           (cadr payload))
+          ((eq operation 'session-read)
+           (unless (org-texmacs--native-document-p payload)
+             (signal 'org-texmacs-worker-error '("Invalid native document response")))
+           payload)
           (t payload))))
       ('session-error
        (unless (and (memq operation '(session-open session-set session-close session-read))
@@ -259,12 +283,21 @@ OPERATION selects the response contract; nil preserves the parse protocol."
       (unless healthy (org-texmacs--worker-stop)))))
 
 (defun org-texmacs--worker-document-wire (document)
-  "Validate DOCUMENT and serialize its text body and STM paths as data.
-Return the two Scheme arguments, without starting a process."
+  "Validate DOCUMENT and serialize all its fields as Scheme data.
+Return style, initial, body and STM-path arguments without starting a process."
   (unless (org-texmacs-document-p document)
     (signal 'org-texmacs-encoding-error '("Expected a document result")))
-  (let ((body (org-texmacs--document-copy-stree (org-texmacs-document-body document)))
+  (let ((body nil) (style nil) (initial nil)
         (paths (org-texmacs-document-stm-paths document)))
+    (condition-case err
+        (setq body (org-texmacs--document-copy-stree
+                    (org-texmacs-document-body document))
+              style (org-texmacs--document-copy-style
+                     (org-texmacs-document-style document))
+              initial (org-texmacs--document-copy-initial
+                       (org-texmacs-document-initial document)))
+      (org-texmacs-document-error
+       (signal 'org-texmacs-encoding-error (cdr err))))
     (unless (and (consp body) (eq (car body) 'document) (proper-list-p paths))
       (signal 'org-texmacs-encoding-error '("Expected document body and proper STM paths")))
     (dolist (path paths)
@@ -293,17 +326,30 @@ Return the two Scheme arguments, without starting a process."
                            (mapconcat (lambda (child) (concat " " (wire child))) (cdr node) "")
                            ")"))))
       ;; Serialize before starting the worker: invalid input has no process effects.
-      (let ((tree-wire (wire body))
+      (let ((style-wire
+             (concat "(" (mapconcat #'org-texmacs--scheme-string style " ") ")"))
+            (initial-wire
+             (concat
+              "("
+              (mapconcat
+               (lambda (entry)
+                 (concat "(" (org-texmacs--scheme-string (car entry)) " "
+                         (wire (cdr entry)) ")"))
+               initial " ")
+              ")"))
+            (tree-wire (wire body))
             (paths-wire (concat "(" (mapconcat
                                      (lambda (path)
                                        (concat "(" (mapconcat #'number-to-string path " ") ")"))
                                      paths " ") ")")))
-        (concat tree-wire " " paths-wire)))))
+        (mapconcat #'identity
+                   (list style-wire initial-wire tree-wire paths-wire) " ")))))
 
 (defun org-texmacs--worker-encode-document (document)
   "Encode text DOCUMENT in the worker and return a hex-leaf body stree.
-This diagnostic result contains native bytes represented as ASCII hex, not
-text leaves.  Never feed it back to this encoder.  No files or persistent
+This diagnostic result contains body bytes represented as ASCII hex, not text
+leaves.  All document fields are validated and encoded, though only the body
+is returned.  Never feed it back to this encoder.  No files or persistent
 native buffers are created."
   (let ((wire (org-texmacs--worker-document-wire document)))
     (org-texmacs--worker-call

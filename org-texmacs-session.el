@@ -7,7 +7,7 @@
 
 ;; One explicit native buffer session in the shared worker.  Handles belong
 ;; to one process incarnation; restarting the worker never revives a handle.
-;; No windows, document files, edit hooks or automatic updates are created.
+;; No GUI windows, document files, edit hooks or automatic updates are created.
 
 ;;; Code:
 
@@ -58,11 +58,12 @@ WIRE must already be validated by `org-texmacs--worker-document-wire'."
 
 ;;;###autoload
 (defun org-texmacs-session-open ()
-  "Create an empty native TeXmacs body buffer and return its opaque handle.
+  "Create an empty native TeXmacs document buffer and return its opaque handle.
 Start the shared worker lazily.  Only one session may be active; another
 open signals `org-texmacs-session-error' without replacing the existing one.
-Create no view or external document file.  The caller must explicitly close
-the session.  Worker termination releases it and makes its handle stale."
+Create an internal headless view required by TeXmacs document APIs, but no GUI
+window or external document file.  The caller must explicitly close the
+session.  Worker termination releases it and makes its handle stale."
   (let ((owner nil))
     (let ((key (org-texmacs--worker-call
                 (lambda (id)
@@ -75,13 +76,16 @@ the session.  Worker termination releases it and makes its handle stale."
 
 ;;;###autoload
 (defun org-texmacs-session-set-document (session document)
-  "Replace SESSION's complete body with text DOCUMENT and return SESSION.
+  "Replace SESSION's complete native state from text DOCUMENT and return SESSION.
 DOCUMENT is a result from `org-texmacs-document', not a hex diagnostic tree.
-Encode once in the worker, using STM provenance, then set and read back the
-native body.  Preflight or encoding errors leave the old body intact.
-Native update/readback failure discards the session; transport failure stops
-the worker and invalidates all its handles.  Do not update incrementally or
-promise numbering, references, rendering, style or initial metadata mapping."
+Validate and encode style, initial environment and body before mutation, using
+STM provenance for body islands and TeXmacs source semantics for initial
+values.  Then replace style, clear old explicit initial values, set the new
+initial environment and body, and read all fields back.  TeXmacs may normalize
+the style list; initial comparison is unordered.  Preflight or encoding errors
+leave the old document intact.  Native update/readback failure discards the
+session; transport failure stops the worker and invalidates all its handles.
+Do not update incrementally or promise rendering or pagination."
   (org-texmacs--session-check session)
   (let ((wire (org-texmacs--worker-document-wire document)))
     (org-texmacs--session-command session 'session-set wire))
@@ -101,6 +105,13 @@ restart a worker to close a stale handle or close a new worker's buffer."
 
 (defun org-texmacs--session-read (session)
   "Read SESSION's native body as a diagnostic hex-leaf stree, not text."
+  (let ((document (org-texmacs--session-read-document session)))
+    (cadr (assq 'body (cdr document)))))
+
+(defun org-texmacs--session-read-document (session)
+  "Read SESSION's style, initial and body as a diagnostic native stree.
+Style and initial keys remain identifier strings.  Initial values and body
+leaves are native bytes represented as lowercase hexadecimal strings."
   (org-texmacs--session-command session 'session-read))
 
 (provide 'org-texmacs-session)

@@ -8,7 +8,7 @@ the Org buffer is the source of truth, with no external =.tm= file required.
 Version 0.2.1 retains block-level parsing with lazy caching and configurable
 fragment source discovery with on-demand tree parsing.  It supports conversion
 of a limited Org body subset to a TeXmacs body AST, provenance-aware native
-encoding, and explicit native body sessions.  Document construction in that
+encoding, and explicit native document sessions.  Document construction in that
 release takes an explicit source buffer, with a separate current-buffer
 convenience wrapper.  The development API adds the prepared-input boundary
 described below and a restricted Org document context.
@@ -182,7 +182,8 @@ strings.  =org-texmacs-document-initial= is an alist from unique nonempty
 environment identifier strings to STM/source-semantic text strees.  The
 default style is =("generic")= and the default initial environment is empty.
 These values are copied into each prepared input and document result; changing
-them affects only later buffer conversions.
+them affects only later buffer conversions.  A native session applies the
+captured style and initial environment together with that result's body.
 
 Use an absolute executable path instead of ="texmacs"= when needed.  Set
 it before the first parse; changing it does not replace an existing worker.
@@ -811,15 +812,14 @@ the body constructor does not paginate the document or precompute page numbers.
 
 ** Native encoding and lifetime
 
-=org-texmacs-session-open= creates an empty native body buffer and returns
+=org-texmacs-session-open= creates an empty native document buffer and returns
 an opaque handle.  Only one session may be active in the shared worker.
 =org-texmacs-session-set-document= takes that handle and a document result,
-encodes it in TeXmacs, replaces the entire body, verifies native readback,
-and returns the same handle.  No =.tm=, =.stm= or =.tmml= document intermediate
-is used.  Closing returns =nil= and leaves the worker available for parsing.
-At this implementation node the native session still consumes only =body=;
-the result's =style= and =initial= fields are applied by the later complete
-native document consumer, not encoded as ordinary body text.
+validates and encodes all fields before mutation, then replaces style, explicit
+initial environment and body before verifying native readback.  TeXmacs may
+normalize the style package list; initial values are compared as an unordered
+key/value mapping.  No =.tm=, =.stm= or =.tmml= document intermediate is used.
+Closing returns =nil= and leaves the worker available for parsing.
 
 This self-contained example returns =t= after a successful update and closes
 the buffer even if the update fails.  It requires that no session is active:
@@ -852,19 +852,23 @@ Encoding depends on provenance, not on guessing from leaf contents:
 - STM leaves use TeXmacs source semantics.  Unicode becomes universal
   encoding, while =<alpha>= keeps its native symbol meaning.  Write
   =<less>= and =<gtr>= in STM when literal angle brackets are intended.
+- Initial environment values also use TeXmacs source semantics for their
+  complete strees.  Style names and initial keys are identifiers and are not
+  passed through ordinary-body text encoding.
 
 The worker retains STM paths until encoding is complete.  Pass the original
 text document to each update; never feed encoded diagnostic output back as
 text.  The native path rejects =raw-data=.  Preserving other STM tags does
 not validate their arity, character names, mathematical meaning or layout.
 
-Preflight and encoding errors leave the previous body intact.  Native
+Preflight and encoding errors leave the previous document state intact.  Native
 update/readback failure discards the session; transport or fatal cleanup
-failure stops the worker.  These buffers have no view and are not previews.
-Successful body readback establishes that the static TOC/reference tree is
-accepted, not that visual numbering, page references, auxiliary data or
-pagination have been resolved.  Style and initial-environment application,
-complete file metadata and export remain outside this API.
+failure stops the worker.  TeXmacs uses an internal headless view so its
+document APIs can focus the buffer; this opens no GUI window and is not a
+preview.  Successful native readback establishes accepted style, explicit
+initial mapping and body structure, not that visual numbering, page references,
+auxiliary data or pagination have been resolved.  Complete file metadata and
+export remain outside this API.
 
 * Worker behavior and errors
 

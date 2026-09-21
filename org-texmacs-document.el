@@ -113,7 +113,7 @@ zero-based child indices, excluding tags.  Callers must not mutate any slot
 or nested list/string.  No source buffer is retained."
   (body nil :read-only t)
   (stm-paths nil :read-only t)
-  (style nil :read-only t)
+  (style (list "generic") :read-only t)
   (initial nil :read-only t))
 
 (defun org-texmacs--document-fail (node message)

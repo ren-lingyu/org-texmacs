@@ -4,6 +4,10 @@
 
 ;; Loaded by TeXmacs, not standalone Guile.  Source is data, never evaluated.
 
+(use-modules (utils library cursor)
+             (generic document-style)
+             (generic document-edit))
+
 (define (org-texmacs-stree? node)
   (or (string? node)
       (and (list? node) (pair? node) (symbol? (car node))
@@ -100,13 +104,48 @@
           (error "Native tree changed structure"))
       native)))
 
+(define (org-texmacs-style? style)
+  (and (list? style) (pair? style)
+       (let loop ((rest style))
+         (or (null? rest)
+             (and (string? (car rest)) (> (string-length (car rest)) 0)
+                  (loop (cdr rest)))))))
+
+(define (org-texmacs-native-initial wire)
+  (if (not (list? wire)) (error "Invalid initial environment"))
+  (let loop ((rest wire) (keys '()) (result '()))
+    (if (null? rest) (reverse result)
+        (let ((entry (car rest)))
+          (if (not (and (list? entry) (= (length entry) 2)
+                        (string? (car entry)) (> (string-length (car entry)) 0)
+                        (not (member (car entry) keys))))
+              (error "Invalid initial environment"))
+          (let* ((key (car entry))
+                 (source (org-texmacs-wire-tree (cadr entry)))
+                 (encoded (org-texmacs-encode-body source '(())))
+                 (native (stree->tree encoded)))
+            (if (not (equal? encoded (tree->stree native)))
+                (error "Native initial tree changed structure"))
+            (loop (cdr rest) (cons key keys)
+                  (cons (cons key native) result)))))))
+
+(define (org-texmacs-native-document style initial body paths)
+  (if (not (org-texmacs-style? style)) (error "Invalid document style"))
+  ;; Construct every native value before any session mutation.
+  (list style
+        (org-texmacs-native-initial initial)
+        (org-texmacs-native-body body paths)))
+
 (define (org-texmacs-encode-reply request)
   (let ((id (cadr request)))
     (catch #t
       (lambda ()
-        (let ((native (org-texmacs-native-body (caddr request) (cadddr request))))
+        (let ((native (org-texmacs-native-document
+                       (list-ref request 2) (list-ref request 3)
+                       (list-ref request 4) (list-ref request 5))))
           (list 'ok id (list 'native-body
-                             (org-texmacs-hex-tree (tree->stree native))))))
+                             (org-texmacs-hex-tree
+                              (tree->stree (list-ref native 2)))))))
       (lambda args (list 'encoding-error id "Invalid document encoding request")))))
 
 (define org-texmacs-session-buffer #f)
@@ -121,6 +160,56 @@
         (catch #t (lambda () (buffer-close buffer))
           (lambda args (throw 'org-texmacs-session-fatal))))))
 
+(define (org-texmacs-current-initial)
+  (let ((all (tree->stree (get-all-inits))))
+    (if (not (and (list? all) (pair? all) (eq? (car all) 'collection)))
+        (error "Invalid initial environment readback"))
+    (map
+     (lambda (entry)
+       (if (not (and (list? entry) (= (length entry) 3)
+                     (eq? (car entry) 'associate) (string? (cadr entry))))
+           (error "Invalid initial environment readback"))
+       (cons (cadr entry) (caddr entry)))
+     (cdr all))))
+
+(define (org-texmacs-initial=? expected actual)
+  (and (= (length expected) (length actual))
+       (let loop ((rest expected))
+         (or (null? rest)
+             (let ((found (assoc (caar rest) actual)))
+               (and found (equal? (tree->stree (cdar rest)) (cdr found))
+                    (loop (cdr rest))))))))
+
+(define (org-texmacs-clear-initial)
+  (for-each (lambda (entry) (init-default-one (car entry)))
+            (org-texmacs-current-initial)))
+
+(define (org-texmacs-with-session-buffer thunk)
+  ;; TeXmacs's with-buffer macro does not restore focus when BODY throws.
+  ;; Capture errors inside it, restore focus normally, then rethrow.
+  (let ((failure #f))
+    (let ((result
+           (with-buffer
+            org-texmacs-session-buffer
+            (catch #t thunk (lambda args (set! failure args) #f)))))
+      (if failure (apply throw failure))
+      (if (not result) (error "Unable to focus session buffer"))
+      result)))
+
+(define (org-texmacs-native-readback)
+  (let ((style (get-style-list))
+        (initial (org-texmacs-current-initial))
+        (body (tree->stree (buffer-get-body org-texmacs-session-buffer))))
+    (if (not (org-texmacs-style? style)) (error "Invalid style readback"))
+    (list 'native-document
+          (cons 'style style)
+          (cons 'initial
+                (map (lambda (entry)
+                       (list 'associate (car entry)
+                             (org-texmacs-hex-tree (cdr entry))))
+                     initial))
+          (list 'body (org-texmacs-hex-tree body)))))
+
 (define (org-texmacs-session-reply request)
   (let ((operation (car request)) (id (cadr request)))
     (catch 'org-texmacs-session-fatal
@@ -131,6 +220,8 @@
              (lambda (name)
                (if (not (defined? name)) (error "Missing session capability" name)))
              '(buffer-new buffer-set-body buffer-get-body buffer-close
+               view-new get-style-list set-style-list get-all-inits
+               init-default-one init-env-tree get-init-tree
                stree->tree tree->stree))
             (cond
              ((eq? operation 'session-open)
@@ -138,6 +229,9 @@
               (set! org-texmacs-session-buffer (buffer-new))
               (catch #t
                 (lambda ()
+                  ;; TeXmacs document style and initial APIs require focusable
+                  ;; buffer state.  This internal headless view opens no GUI.
+                  (view-new org-texmacs-session-buffer)
                   (buffer-set-body org-texmacs-session-buffer (stree->tree '(document "")))
                   (set! org-texmacs-session-counter (+ org-texmacs-session-counter 1))
                   (set! org-texmacs-session-key (number->string org-texmacs-session-counter))
@@ -155,28 +249,49 @@
                ((eq? operation 'session-read)
                 (catch #t
                   (lambda ()
-                    (let ((body (tree->stree (buffer-get-body org-texmacs-session-buffer))))
-                      (list 'ok id (list 'native-body (org-texmacs-hex-tree body)))))
-                  (lambda args (org-texmacs-drop-session) (error "Body read failed"))))
+                    (list 'ok id
+                          (org-texmacs-with-session-buffer
+                           (lambda () (org-texmacs-native-readback)))))
+                  (lambda args (org-texmacs-drop-session) (error "Document read failed"))))
                ((eq? operation 'session-set)
-                ;; Encoding errors precede mutation and preserve the old body.
+                ;; Encoding errors precede mutation and preserve old state.
                 (let ((native (catch #t
-                                (lambda () (org-texmacs-native-body
-                                            (list-ref request 3) (list-ref request 4)))
+                                (lambda ()
+                                  (org-texmacs-native-document
+                                   (list-ref request 3) (list-ref request 4)
+                                   (list-ref request 5) (list-ref request 6)))
                                 (lambda args #f))))
                   (if (not native)
                       (list 'encoding-error id "Invalid document encoding request")
                       (catch #t
                         (lambda ()
-                          (let ((expected (tree->stree native)))
-                            (buffer-set-body org-texmacs-session-buffer native)
-                            (if (not (equal? expected (tree->stree
-                                                      (buffer-get-body org-texmacs-session-buffer))))
-                                (error "Body readback mismatch"))
+                          (let ((style (list-ref native 0))
+                                (initial (list-ref native 1))
+                                (body (list-ref native 2)))
+                            (org-texmacs-with-session-buffer
+                             (lambda ()
+                               (set-style-list style)
+                               (org-texmacs-clear-initial)
+                               (for-each
+                                (lambda (entry)
+                                  (init-env-tree (car entry) (cdr entry)))
+                                initial)
+                               (buffer-set-body org-texmacs-session-buffer body)
+                               (if (not (org-texmacs-style? (get-style-list)))
+                                   (error "Style readback mismatch"))
+                               (if (not (org-texmacs-initial=?
+                                         initial (org-texmacs-current-initial)))
+                                   (error "Initial readback mismatch"))
+                               (if (not (equal? (tree->stree body)
+                                                (tree->stree
+                                                 (buffer-get-body
+                                                  org-texmacs-session-buffer))))
+                                   (error "Body readback mismatch"))
+                               #t))
                             (list 'ok id (list 'updated org-texmacs-session-key))))
                         (lambda args
                           (org-texmacs-drop-session)
-                          (error "Body update failed; session discarded"))))))))))
+                          (error "Document update failed; session discarded"))))))))))
           (lambda (key . args)
             (if (eq? key 'org-texmacs-session-fatal) (throw key))
             (list 'session-error id "Invalid session operation"))))
@@ -190,10 +305,10 @@
          (or (and (eq? (car request) 'session-open) (= (length request) 2))
              (and (memq (car request) '(session-close session-read))
                   (= (length request) 3) (string? (caddr request)))
-             (and (eq? (car request) 'session-set) (= (length request) 5)
+             (and (eq? (car request) 'session-set) (= (length request) 7)
                   (string? (caddr request)))))
     (org-texmacs-session-reply request))
-   ((and (list? request) (= (length request) 4)
+   ((and (list? request) (= (length request) 6)
            (eq? (car request) 'encode)
            (integer? (cadr request)) (> (cadr request) 0))
     (org-texmacs-encode-reply request))

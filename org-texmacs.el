@@ -1,4 +1,4 @@
-;;; org-texmacs.el --- TeXmacs trees and body sessions for Org -*- lexical-binding: t; -*-
+;;; org-texmacs.el --- TeXmacs trees and document sessions for Org -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2026 aRenCoco
 
@@ -38,7 +38,7 @@
 ;; to a text TeXmacs document result with body, style, initial environment and
 ;; STM provenance, before native encoding.
 ;; Use `org-texmacs-session-open', `org-texmacs-session-set-document' and
-;; `org-texmacs-session-close' to manage an explicit native body buffer.
+;; `org-texmacs-session-close' to manage explicit native document state.
 ;; Source stays in Org; no external .tm file is required.  This package does
 ;; not provide preview, export, rendered numbering or a combined Org/TeXmacs
 ;; document AST.
