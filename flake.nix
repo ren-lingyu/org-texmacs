@@ -1,6 +1,6 @@
 {
 
-  description = "TeXmacs trees and body sessions for Org";
+  description = "TeXmacs trees and document sessions for Org";
 
   inputs = {
     nixpkgs = {
@@ -50,7 +50,7 @@
       packages = {
         default = emacsPackages.trivialBuild {
           pname = "org-texmacs";
-          version = "0.2.1";
+          version = "0.3.0";
           src = source;
           packageRequires = [
             emacsPackages.org

@@ -5,13 +5,12 @@ Org TeXmacs provides TeXmacs AST integration for Org documents.  Write
 structured content in official STM/Scheme serialization directly in Org;
 the Org buffer is the source of truth, with no external =.tm= file required.
 
-Version 0.2.1 retains block-level parsing with lazy caching and configurable
-fragment source discovery with on-demand tree parsing.  It supports conversion
-of a limited Org body subset to a TeXmacs body AST, provenance-aware native
-encoding, and explicit native document sessions.  Document construction in that
-release takes an explicit source buffer, with a separate current-buffer
-convenience wrapper.  The development API adds the prepared-input boundary
-described below and a restricted Org document context.
+Version 0.3.0 retains block-level parsing with lazy caching and configurable
+fragment source discovery with on-demand tree parsing.  It provides an explicit
+prepared-input core, a restricted Org document context, structural body
+lowering, provenance-aware native encoding, and native document sessions that
+apply style, initial environment and body together.  Buffer preparation takes
+an explicit source buffer, with a separate current-buffer convenience wrapper.
 
 Document conversion supports basic inline markup, self-contained URI links,
 anonymous inline footnotes, list/container structures, rich metadata,
@@ -490,12 +489,16 @@ Document conversion and native sessions were introduced in version 0.2.0.
 Version 0.2.1 requires an explicit source buffer for document conversion and
 adds a separate current-buffer wrapper.  This is a breaking API change,
 despite the patch version increment; see the migration note below.
+Version 0.3.0 separates the prepared-input core from its buffer adapter, adds
+the restricted document semantics and structures listed below, and extends the
+native session from body-only replacement to complete style, initial environment
+and body application.
 They form an additional downstream path; the block and fragment APIs above
 continue to return Org-compatible pseudo subtrees.
 
-** Preparing a text body
+** Preparing a document result
 
-The development API separates prepared input from buffer preparation.
+The document API separates prepared input from buffer preparation.
 =org-texmacs-document INPUT= lowers an =org-texmacs-input= without reading
 buffers, collecting configuration, parsing STM or starting a worker.
 Construct one with =org-texmacs-input-create AST INFO :islands ... :post-blanks ...
