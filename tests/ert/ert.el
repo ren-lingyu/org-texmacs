@@ -2511,6 +2511,105 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                         (org-texmacs-test--native-hex (cadr case)))))))
         (org-texmacs-session-close session)))))
 
+(ert-deftest org-texmacs-document-preformatted-source-forms ()
+  (with-temp-buffer
+    (org-mode)
+    (setq-local tab-width 4)
+    (insert "#+begin_example\n"
+            "    a\tb\n"
+            "      c  d\n"
+            "\n"
+            "    中¯˙ <alpha> (math \"hidden\")\n"
+            "#+end_example\n\n"
+            ": x\ty\n"
+            ":  z  q\n\n"
+            "#+begin_src emacs-lisp\n"
+            "  ,* protected\n"
+            "    (+ 1 2)\n"
+            "\n"
+            "  中文\t<alpha> (math \"hidden\")\n"
+            "#+end_src\n\n"
+            "#+begin_example\n#+end_example\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _) (ert-fail "Preformatted text reached worker")))
+              ((symbol-function 'org-export-unravel-code)
+               (lambda (&rest _) (ert-fail "Preformatted text invoked coderef processing")))
+              ((symbol-function 'org-babel-execute-src-block)
+               (lambda (&rest _) (ert-fail "Source block executed"))))
+      (let ((document (org-texmacs-document-from-buffer (current-buffer))))
+        (should
+         (equal
+          (org-texmacs-document-body document)
+          '(document
+            (code
+             (document "a   b" "  c  d" ""
+                       "中¯˙ <alpha> (math \"hidden\")"))
+            (code (document "x   y" " z  q"))
+            (code
+             (document "* protected" "  (+ 1 2)" ""
+                       "中文    <alpha> (math \"hidden\")"))
+            (code (document "")))))
+        (should-not (org-texmacs-document-stm-paths document))))))
+
+(ert-deftest org-texmacs-document-preformatted-tab-snapshot-and-preserve-indent ()
+  (with-temp-buffer
+    (org-mode)
+    (setq-local tab-width 4)
+    (insert "#+begin_example -i\n  a\tb\n#+end_example\n")
+    (let ((input (org-texmacs-prepare-buffer (current-buffer))))
+      (should (= (plist-get (org-texmacs-input-info input) :texmacs-tab-width) 4))
+      (setq-local tab-width 8)
+      (should
+       (equal (org-texmacs-document-body (org-texmacs-document input))
+              '(document (code (document "  a b")))))
+      (should
+       (equal
+        (org-texmacs-document-body
+         (org-texmacs-document-from-buffer (current-buffer)))
+        '(document (code (document "  a     b"))))))))
+
+(ert-deftest org-texmacs-document-rejects-dynamic-code-semantics ()
+  (dolist (source '("#+begin_src emacs-lisp -n\nx\n#+end_src\n"
+                    "#+begin_src emacs-lisp -r\nx (ref:line)\n#+end_src\n"
+                    "#+begin_src emacs-lisp :noweb yes\nx\n#+end_src\n"
+                    "#+begin_example -n\nx\n#+end_example\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Invalid code reached worker")))
+                ((symbol-function 'org-babel-execute-src-block)
+                 (lambda (&rest _) (ert-fail "Invalid source block executed"))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer))
+                      :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-document-preformatted-native-and-provenance ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (setq-local tab-width 4)
+      (insert "(math \"x\")\n\n"
+              "#+begin_src text\n"
+              "中¯˙\t<alpha>\n"
+              "#+end_src\n")
+      (let* ((document (org-texmacs-document-from-buffer (current-buffer)))
+             (expected
+              '(document (concat (math "x") " ")
+                         (code (document "中¯˙    <alpha>"))))
+             (expected-native
+              '(document (concat (math "x") " ")
+                         (code
+                          (document "<#4E2D>\t\n    <less>alpha<gtr>"))))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (should (equal (org-texmacs-document-body document) expected))
+              (should (equal (org-texmacs-document-stm-paths document) '((0 0))))
+              (org-texmacs-session-set-document session document)
+              (should (equal (org-texmacs--session-read session)
+                             (org-texmacs-test--native-hex expected-native))))
+          (org-texmacs-session-close session))))))
+
 (ert-deftest org-texmacs-document-rejects-unsupported-source ()
   (dolist (source '("[[file:notes.org][link]]\n"
                     "[[./notes.org]]\n" "[[/tmp/notes.org]]\n"
@@ -2589,7 +2688,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 (ert-deftest org-texmacs-document-source-preflight ()
   (dolist (source '("(math \"x\")\n\n[[file:unsupported.org][link]]\n"
                     "#+include: missing.org\n"
-                    "#+begin_src emacs-lisp\n(error \"never execute\")\n#+end_src\n"))
+                    "#+begin_src emacs-lisp -n\n(error \"never execute\")\n#+end_src\n"))
     (with-temp-buffer
       (org-mode)
       (insert source)

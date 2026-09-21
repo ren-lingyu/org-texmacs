@@ -83,9 +83,11 @@ tag string.  Preserve TITLE-PARTS without merging adjacent text."
   "Snapshot supported Org document policies and the selected formatter.
 File keywords are merged later from the prepared AST without following setup
 files.  Do not run export preprocessing, BIND, hooks or filters here.
-Resolve a formatter symbol now so later redefinition affects only new calls."
+Capture `tab-width' for preformatted content.  Resolve a formatter symbol now
+so later redefinition affects only new calls."
   (let ((formatter (indirect-function org-texmacs-format-headline-function))
-        (info (org-texmacs--context-base-options)))
+        (info (plist-put (org-texmacs--context-base-options)
+                         :texmacs-tab-width tab-width)))
     (unless (and (memq org-export-with-todo-keywords '(nil t))
                  (memq org-export-with-priority '(nil t))
                  (memq org-export-with-tags '(nil t not-in-toc))
@@ -151,6 +153,62 @@ ANCESTORS detects cycles; repeated, non-cyclic subtrees are copied separately."
              (org-texmacs--document-copy-stree (cdr entry))))
      initial)))
 
+(defun org-texmacs--document-expand-tabs (string width)
+  "Return a copy of STRING with tabs expanded at display columns of WIDTH."
+  (unless (and (stringp string) (integerp width) (> width 0))
+    (signal 'org-texmacs-document-error '("Invalid preformatted tab width")))
+  (let ((column 0) output)
+    (dotimes (index (length string))
+      (let ((character (aref string index)))
+        (cond
+         ((= character ?\t)
+          (let ((count (- width (% column width))))
+            (dotimes (_ count) (push ?\s output))
+            (setq column (+ column count))))
+         ((= character ?\n)
+          (push character output)
+          (setq column 0))
+         (t
+          (push character output)
+          (setq column (+ column (max 0 (char-width character))))))))
+    (concat (nreverse output))))
+
+(defun org-texmacs--document-preformatted (node width)
+  "Lower prepared preformatted NODE using the fixed tab WIDTH."
+  (let ((type (org-element-type node))
+        (value (org-element-property :value node)))
+    (unless (and (memq type '(example-block fixed-width src-block))
+                 (stringp value) (null (org-element-contents node)))
+      (org-texmacs--document-fail node "Invalid preformatted block"))
+    (when (memq type '(example-block src-block))
+      (let ((switches (org-element-property :switches node)))
+        (unless (or (null switches)
+                    (and (stringp switches)
+                         (string-match-p "\\`[ \t]*-i[ \t]*\\'" switches)))
+          (org-texmacs--document-fail node "Unsupported code block switches")))
+      (when (and (eq type 'src-block)
+                 (org-element-property :parameters node))
+        (org-texmacs--document-fail node "Unsupported source block parameters")))
+    (setq value
+          (substring-no-properties
+           (if (and (memq type '(example-block src-block))
+                    (org-element-property :preserve-indent node))
+               value
+             (let ((tab-width width))
+               (org-remove-indentation value)))))
+    ;; Org block values have one syntactic final newline; it is not a code line.
+    (when (and (> (length value) 0)
+               (= (aref value (1- (length value))) ?\n))
+      (setq value (substring value 0 -1)))
+    (setq value (org-texmacs--document-expand-tabs value width))
+    (org-texmacs--document-pack
+     'code
+     (list
+      (org-texmacs--document-pack
+       'document
+       (mapcar (lambda (line) (org-texmacs--document-create :body line))
+               (or (split-string value "\n" nil) '(""))))))))
+
 (defun org-texmacs--document-pack (tag parts)
   "Wrap lowered PARTS in TAG, prefixing their STM paths by child index."
   (let ((index 0) (children nil) (paths nil))
@@ -187,8 +245,9 @@ count.  Both inputs have prose whitespace semantics, not source fidelity.
 Support paragraphs, plain text, basic emphasis, inline code/verbatim,
 explicit line breaks, self-contained URI links, transparent Org sections,
 relative headline levels one through five, lower-level headline lists, all
-three Org plain-list types, and quote/center blocks.  Emit supported title,
-author and date metadata as body `doc-data'.
+three Org plain-list types, quote/center blocks, and static example,
+fixed-width and source blocks.  Emit supported title, author and date metadata
+as body `doc-data'.
 Link admission uses Org type, not raw source.  Accept anonymous inline
 footnotes only as direct paragraph children.  Reject list checkboxes and
 explicit counters; description terms use the existing inline subset.
@@ -199,8 +258,9 @@ literal, not preformatted.  Never normalize STM islands, merge adjacent
 strings or flatten island strees.  Reject unsupported nodes and semantics.
 
 Return a fresh result with STM root paths, retaining no Org properties or
-source objects.  Do not read or modify buffers, encode text, start a worker,
-or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
+source objects.  Do not read or modify source/caller buffers, encode text,
+start a worker, or change AST/ISLANDS.  The caller must prepare all inputs
+from one snapshot."
   (unless (and (consp ast) (eq (org-element-type ast) 'org-data))
     (signal 'org-texmacs-document-error '("Expected an Org document AST")))
   (dolist (mapping (list islands post-blanks))
@@ -217,17 +277,21 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
         (initial (org-texmacs--document-copy-initial initial))
         (headline-minimum nil)
         (headline-limit nil)
+        (preformatted-tab-width nil)
         (headline-formatter nil)
         (info (or info '(:with-todo-keywords t :with-priority nil :with-tags t
                         :texmacs-format-headline-function
                         org-texmacs-format-headline-default-function))))
     (setq headline-limit
           (if (memq :headline-levels info) (plist-get info :headline-levels) 3)
+          preformatted-tab-width
+          (if (memq :texmacs-tab-width info) (plist-get info :texmacs-tab-width) 8)
           headline-formatter
           (if (memq :texmacs-format-headline-function info)
               (plist-get info :texmacs-format-headline-function)
             #'org-texmacs-format-headline-default-function))
     (unless (and (wholenump headline-limit) (<= headline-limit 5)
+                 (integerp preformatted-tab-width) (> preformatted-tab-width 0)
                  (let ((value (if (memq :section-numbers info)
                                   (plist-get info :section-numbers) t)))
                    (or (memq value '(nil t)) (wholenump value)))
@@ -547,6 +611,12 @@ or change AST/ISLANDS.  The caller must prepare all inputs from one snapshot."
               ((eq type 'paragraph)
                (list (org-texmacs--document-pack
                       'concat (inlines (org-element-contents node) 'paragraph ancestors))))
+              ((memq type '(example-block fixed-width src-block))
+               (unless (memq context
+                             '(org-data section headline item quote-block center-block))
+                 (org-texmacs--document-fail node "Unexpected preformatted block"))
+               (list (org-texmacs--document-preformatted
+                      node preformatted-tab-width)))
               ((eq type 'plain-list)
                (unless (memq context
                              '(org-data section headline item quote-block center-block))

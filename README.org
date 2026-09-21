@@ -15,9 +15,9 @@ described below and a restricted Org document context.
 
 Document conversion supports basic inline markup, self-contained URI links,
 anonymous inline footnotes, list/container structures, rich metadata,
-relative headline sectioning and TeXmacs islands, as specified below.  It does
-not provide a complete TeXmacs file document, preview, export, TOC/reference
-resolution or rendered numbering, fontification,
+relative headline sectioning, static preformatted blocks and TeXmacs islands,
+as specified below.  It does not provide a complete TeXmacs file document,
+preview, export, TOC/reference resolution or rendered numbering, fontification,
 an editing minor mode, or a combined Org and TeXmacs document AST.
 Org's source buffer and live AST remain unchanged.
 
@@ -596,6 +596,7 @@ The supported Org subset is deliberately small:
 | Title / author / date metadata                     | =doc-data= at the start of the body =document=                 |
 | Unordered / ordered / description list            | =itemize= / =enumerate= / =description= with body =document= |
 | Quote / center block                               | =quote= / =center= with body =document=                      |
+| Example / fixed-width / source block               | Static =code= containing a line-wise =document=               |
 | Recognized paragraph fragment                     | One parsed STM subtree                                       |
 | =texmacs= special block                           | One parsed STM subtree, even for a string or =document= root |
 | COMMENT / comment block                           | Removed before structural preflight                         |
@@ -617,6 +618,20 @@ Inline code/verbatim does not parse nested markup, but uses the same prose
 whitespace rule: it is not a preformatted code block.  Nonbreaking spaces
 are not collapsed.  Conversion does not merge adjacent text slots; a slot
 may become empty when its whitespace duplicates a preceding slot.
+
+Example, fixed-width and source blocks are static preformatted structures.
+They lower to =(code (document LINE...))= without parsing inline Org markup or
+discovering STM fragments.  Common indentation follows Org's
+=org-remove-indentation= behavior; =-i= preserves indentation for example and
+source blocks.  The source buffer's =tab-width= is captured in the conversion
+snapshot, and tabs are expanded at display columns before native encoding.
+Internal blank lines, ordinary spaces, Unicode and literal angle brackets are
+preserved; the syntactic final block newline does not create an extra line.
+
+Source language names do not enable highlighting.  Source blocks are never
+executed, and noweb, coderef/line-number switches, header parameters and other
+dynamic code semantics are rejected instead of being ignored.  Org has already
+removed source-protection commas from the parsed =:value= before lowering.
 
 These rules apply while lowering Org nodes, not as a rewrite of the final
 TeXmacs tree.  STM islands remain opaque and unchanged, including their

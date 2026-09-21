@@ -140,6 +140,8 @@ substituting a collector that cannot read SETUPFILE or external files."
   (unless
       (and (wholenump (plist-get info :headline-levels))
            (<= (plist-get info :headline-levels) 5)
+           (integerp (plist-get info :texmacs-tab-width))
+           (> (plist-get info :texmacs-tab-width) 0)
            (let ((value (plist-get info :section-numbers)))
              (or (memq value '(nil t)) (wholenump value)))
            (memq (plist-get info :with-archived-trees) '(nil t headline))

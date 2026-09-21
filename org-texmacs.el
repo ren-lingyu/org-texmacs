@@ -176,7 +176,7 @@ encoded tree.  Treat it and its nested contents as read-only.
 Support paragraphs, plain text, bold/italic/underline/strike-through,
 inline code/verbatim, explicit paragraph line breaks, five sectioning levels
 and lower-level headline lists, the three Org list types, and quote/center
-containers,
+containers, plus static example/fixed-width/source blocks,
 plus http/https/mailto/ftp/ftps URI links with optional inline descriptions,
 anonymous inline footnotes directly in paragraphs,
 plus complete TeXmacs special blocks and discovered paragraph fragments.
@@ -199,6 +199,8 @@ context once; later changes affect only
 the next conversion.  Merge the documented #+OPTIONS and metadata keyword
 subset, then apply Org's task/archive/select/exclude/comment filtering before
 worker requests.  Reject unsupported options and preprocessing directives.
+Capture SOURCE-BUFFER's `tab-width' for preformatted text.  Do not execute
+source blocks, process coderefs/noweb, or apply syntax highlighting.
 
 Prepare a private snapshot without mode hooks or export preprocessing,
 validate supported structure,
