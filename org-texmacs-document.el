@@ -37,6 +37,13 @@
     (subparagraph . subparagraph*))
   "Numbered and unnumbered TeXmacs tags for sectioning levels one through five.")
 
+(defconst org-texmacs--document-toc-tags
+  '(toc-1 toc-2 toc-3 toc-4 toc-5)
+  "Static TeXmacs table-of-contents tags for headline levels one through five.")
+
+(defconst org-texmacs--document-toc-label-prefix "org-texmacs-toc-"
+  "Private prefix for deterministic table-of-contents target labels.")
+
 (defcustom org-texmacs-document-style '("generic")
   "TeXmacs style names captured by buffer document preparation.
 Each conversion copies this list into its prepared input and result.  These
@@ -128,6 +135,38 @@ ANCESTORS detects cycles; repeated, non-cyclic subtrees are copied separately."
                     (org-texmacs--document-copy-stree child (cons node ancestors)))
                   (cdr node))))
    (t (signal 'org-texmacs-document-error '("Invalid island stree")))))
+
+(defun org-texmacs--document-static-labels (islands)
+  "Return copied static TeXmacs label names visible in ISLANDS.
+Only a `(label STRING)' has a statically knowable name.  Validate traversed
+strees and reject cycles instead of guessing through dynamic label bodies."
+  (let (labels)
+    (cl-labels
+        ((walk (node ancestors)
+           (cond
+            ((stringp node))
+            ((and (consp node) (car node) (symbolp (car node))
+                  (proper-list-p node) (not (memq node ancestors)))
+             (when (and (eq (car node) 'label) (null (cddr node))
+                        (stringp (cadr node)))
+               (push (substring-no-properties (cadr node)) labels))
+             (mapc (lambda (child) (walk child (cons node ancestors))) (cdr node)))
+            (t (signal 'org-texmacs-document-error '("Invalid island stree"))))))
+      (dolist (entry islands) (walk (cdr entry) nil)))
+    (delete-dups (nreverse labels))))
+
+(defun org-texmacs--document-unnumbered-value (headline)
+  "Return HEADLINE's effective inherited Org UNNUMBERED value."
+  (org-export-get-node-property :UNNUMBERED headline t))
+
+(defun org-texmacs--document-numbered-headline-p (headline relative info)
+  "Return non-nil when HEADLINE at RELATIVE level is numbered under INFO."
+  (let ((numbering (if (memq :section-numbers info)
+                       (plist-get info :section-numbers)
+                     t)))
+    (and (not (org-not-nil (org-texmacs--document-unnumbered-value headline)))
+         (or (eq numbering t)
+             (and (wholenump numbering) (<= relative numbering))))))
 
 (defun org-texmacs--document-copy-style (style)
   "Validate and copy TeXmacs STYLE identifier strings."
@@ -230,7 +269,8 @@ plain-text child of a paragraph.  A preparation layer must split text at
 fragment boundaries and mask foreign markup before constructing this input.
 This function never discovers or parses fragments.  Every mapping must be
 consumed exactly once; each mapped root contributes one output child.
-INFO fixes metadata, headline output policies and formatter for this conversion.
+INFO fixes metadata, headline/TOC output policies and formatter for this
+conversion.
 When omitted, use fixed default policies and the default formatter, without
 reading dynamic export settings.  Custom formatters should be side-effect-free.
 STYLE is a nonempty list of TeXmacs style identifiers, defaulting to
@@ -247,7 +287,8 @@ explicit line breaks, self-contained URI links, transparent Org sections,
 relative headline levels one through five, lower-level headline lists, all
 three Org plain-list types, quote/center blocks, and static example,
 fixed-width and source blocks, plus basic rectangular Org tables.  Emit
-supported title, author and date metadata as body `doc-data'.
+supported title, author and date metadata as body `doc-data'.  When enabled,
+emit a static table of contents with generated internal targets.
 Link admission uses Org type, not raw source.  Accept anonymous inline
 footnotes only as direct paragraph children.  Reject list checkboxes and
 explicit counters; description terms use the existing inline subset.
@@ -277,8 +318,15 @@ from one snapshot."
         (initial (org-texmacs--document-copy-initial initial))
         (headline-minimum nil)
         (headline-limit nil)
+        (toc-setting nil)
+        (toc-depth nil)
+        (toc-labels nil)
+        (headline-numbering nil)
+        (headline-title-parts nil)
+        (headline-alt-parts nil)
         (preformatted-tab-width nil)
         (headline-formatter nil)
+        (static-labels (org-texmacs--document-static-labels islands))
         (info (or info '(:with-todo-keywords t :with-priority nil :with-tags t
                         :texmacs-format-headline-function
                         org-texmacs-format-headline-default-function))))
@@ -289,14 +337,20 @@ from one snapshot."
           headline-formatter
           (if (memq :texmacs-format-headline-function info)
               (plist-get info :texmacs-format-headline-function)
-            #'org-texmacs-format-headline-default-function))
+            #'org-texmacs-format-headline-default-function)
+          toc-setting
+          (and (memq :with-toc info) (plist-get info :with-toc)))
     (unless (and (wholenump headline-limit) (<= headline-limit 5)
                  (integerp preformatted-tab-width) (> preformatted-tab-width 0)
                  (let ((value (if (memq :section-numbers info)
                                   (plist-get info :section-numbers) t)))
                    (or (memq value '(nil t)) (wholenump value)))
+                 (or (memq toc-setting '(nil t)) (wholenump toc-setting))
                  (functionp headline-formatter))
       (signal 'org-texmacs-document-error '("Invalid headline lowering options")))
+    (setq toc-depth
+          (cond ((eq toc-setting t) headline-limit)
+                ((wholenump toc-setting) (min toc-setting headline-limit))))
     (cl-labels ((minimum (node ancestors)
                   (unless (assq node islands)
                     (when (consp node)
@@ -312,6 +366,57 @@ from one snapshot."
                         (mapc (lambda (child) (minimum child ancestors))
                               (org-element-contents node)))))))
       (minimum ast nil))
+    (when toc-depth
+      (let ((counters (make-vector 5 0))
+            (reserved static-labels)
+            (next-label 1))
+        (cl-labels
+            ((new-label ()
+               (let (candidate)
+                 (while
+                     (progn
+                       (setq candidate
+                             (concat org-texmacs--document-toc-label-prefix
+                                     (number-to-string next-label))
+                             next-label (1+ next-label))
+                       (member candidate reserved)))
+                 (push candidate reserved)
+                 candidate))
+             (walk (node ancestors)
+               (unless (assq node islands)
+                 (when (consp node)
+                   (when (memq node ancestors)
+                     (org-texmacs--document-fail node "Cyclic Org AST"))
+                   (when (eq (org-element-type node) 'headline)
+                     (let* ((level (org-element-property :level node))
+                            (relative
+                             (and (integerp level) headline-minimum
+                                  (1+ (- level headline-minimum))))
+                            (unnumbered
+                             (org-texmacs--document-unnumbered-value node)))
+                       (unless (and (integerp relative) (> relative 0))
+                         (org-texmacs--document-fail node "Invalid headline level"))
+                       (when (<= relative headline-limit)
+                         (when (org-texmacs--document-numbered-headline-p
+                                node relative info)
+                           (let ((index (1- relative)))
+                             (aset counters index (1+ (aref counters index)))
+                             (cl-loop for deeper from relative below 5
+                                      do (aset counters deeper 0))
+                             (push
+                              (cons node
+                                    (cl-loop for index below relative
+                                             collect (aref counters index)))
+                              headline-numbering)))
+                         (when (and (<= relative toc-depth)
+                                    (not (equal unnumbered "notoc")))
+                           (push (cons node (new-label)) toc-labels)))))
+                   (let ((ancestors (cons node ancestors)))
+                     (mapc (lambda (child) (walk child ancestors))
+                           (org-element-contents node)))))))
+          (walk ast nil))
+        (setq toc-labels (nreverse toc-labels)
+              headline-numbering (nreverse headline-numbering))))
     (cl-labels
         ((text (string space)
            (let ((value (replace-regexp-in-string
@@ -437,7 +542,7 @@ from one snapshot."
              (signal 'org-texmacs-document-error '("Invalid inline contents")))
            ;; Share whitespace state through formatting, but not across blocks.
            ;; The second slot rejects explicit breaks in heading/metadata text.
-           (let ((space (or space (list t (memq context '(title author date))))))
+           (let ((space (or space (list t (memq context '(title toc-title author date))))))
              (apply #'append
                     (mapcar (lambda (node) (inline node context ancestors space)) nodes))))
          (one-body (parts)
@@ -492,30 +597,94 @@ from one snapshot."
          (low-headline-p (node)
            (and (consp node) (eq (org-element-type node) 'headline)
                 (> (relative-level node) headline-limit)))
-         (headline-title (node ancestors)
+         (headline-parts (node toc ancestors)
            (let ((raw (org-element-property :raw-value node)))
              (unless (and (stringp raw) (string-match-p "[^ \t\r\n]" raw))
                (org-texmacs--document-fail node "Empty headline title"))
              (when (org-element-property :commentedp node)
                (org-texmacs--document-fail node "Unsupported headline metadata"))
-             (let* ((parts (inlines (org-element-property :title node) 'title ancestors))
-                    (todo (and (plist-get info :with-todo-keywords)
-                               (org-element-property :todo-keyword node))))
-               (unless parts
-                 (org-texmacs--document-fail node "Empty headline title"))
-               (org-texmacs--document-create
-                :body
-                (org-texmacs--document-copy-stree
-                 (funcall headline-formatter
-                          (and todo (substring-no-properties todo))
-                          (and todo (org-element-property :todo-type node))
-                          (and (plist-get info :with-priority)
-                               (org-element-property :priority node))
-                          (mapcar #'org-texmacs-document-body parts)
-                          (and (plist-get info :with-tags)
-                               (mapcar #'substring-no-properties
-                                       (org-element-property :tags node)))
-                          info))))))
+             (let* ((has-alt
+                     (and toc
+                          (or (memq :ALT_TITLE (org-element-property :secondary node))
+                              (org-element-property :ALT_TITLE node))))
+                    (cache (if has-alt headline-alt-parts headline-title-parts))
+                    (entry (assq node cache)))
+               (if entry (cdr entry)
+                 (let* ((nodes (if has-alt
+                                   (org-element-property :ALT_TITLE node)
+                                 (org-element-property :title node)))
+                        (parts
+                         (and (proper-list-p nodes)
+                              (inlines nodes (if has-alt 'toc-title 'title)
+                                       ancestors))))
+                   (unless parts
+                     (org-texmacs--document-fail
+                      node (if has-alt "Empty or invalid ALT_TITLE"
+                             "Empty headline title")))
+                   (if has-alt
+                       (push (cons node parts) headline-alt-parts)
+                     (push (cons node parts) headline-title-parts))
+                   parts)))))
+         (headline-title (node ancestors &optional toc)
+           (let* ((parts (headline-parts node toc ancestors))
+                  (todo (and (plist-get info :with-todo-keywords)
+                             (org-element-property :todo-keyword node))))
+             (org-texmacs--document-create
+              :body
+              (org-texmacs--document-copy-stree
+               (funcall headline-formatter
+                        (and todo (substring-no-properties todo))
+                        (and todo (org-element-property :todo-type node))
+                        (and (plist-get info :with-priority)
+                             (org-element-property :priority node))
+                        (mapcar #'org-texmacs-document-body parts)
+                        (and (if toc (eq (plist-get info :with-tags) t)
+                               (plist-get info :with-tags))
+                             (mapcar #'substring-no-properties
+                                     (org-element-property :tags node)))
+                        info)))))
+         (toc-entry (mapping ancestors)
+           (let* ((node (car mapping))
+                  (label (cdr mapping))
+                  (relative (relative-level node))
+                  (tag (nth (1- relative) org-texmacs--document-toc-tags))
+                  (number (cdr (assq node headline-numbering)))
+                  (title (headline-title node (cons node ancestors) t))
+                  (left
+                   (one-body
+                    (append
+                     (and number
+                          (list
+                           (org-texmacs--document-create
+                            :body
+                            (concat (mapconcat #'number-to-string number ".") " "))))
+                     (list title)))))
+             (unless tag
+               (org-texmacs--document-fail node "Unsupported TOC headline level"))
+             (org-texmacs--document-pack
+              tag
+              (list
+               (org-texmacs--document-pack
+                'hlink
+                (list left
+                      (org-texmacs--document-create :body (concat "#" label))))
+               (org-texmacs--document-pack
+                'pageref (list (org-texmacs--document-create :body label)))))))
+         (toc (ancestors)
+           (and toc-labels
+                (list
+                 (org-texmacs--document-pack
+                  'table-of-contents
+                  (list
+                   (org-texmacs--document-create :body "org-texmacs-toc")
+                   (org-texmacs--document-pack
+                    'document
+                    (mapcar (lambda (mapping) (toc-entry mapping ancestors))
+                            toc-labels)))))))
+         (target-label (node)
+           (when-let* ((name (cdr (assq node toc-labels))))
+             (org-texmacs--document-pack
+              'label (list (org-texmacs--document-create :body name)))))
          (low-headline-item (node context ancestors)
            (unless (and (consp node) (not (memq node ancestors))
                         (memq context '(org-data headline)))
@@ -748,23 +917,23 @@ from one snapshot."
                  (org-texmacs--document-fail node "Unexpected headline"))
                (let* ((relative (relative-level node))
                       (tags (nth (1- relative) org-texmacs--document-section-tags))
-                      (numbering (if (memq :section-numbers info)
-                                     (plist-get info :section-numbers) t))
                       (numbered
-                       (and (not (org-element-property :UNNUMBERED node))
-                            (or (eq numbering t)
-                                (and (wholenump numbering)
-                                     (<= relative numbering))))))
+                       (org-texmacs--document-numbered-headline-p
+                        node relative info))
+                      (target (target-label node)))
                  (unless (and (<= relative headline-limit) tags)
                    (org-texmacs--document-fail node "Unsupported section headline"))
                  (cons (org-texmacs--document-pack
                         (if numbered (car tags) (cdr tags))
                         (list (headline-title node ancestors)))
-                       (blocks (org-element-contents node) 'headline ancestors))))
+                       (append (and target (list target))
+                               (blocks (org-element-contents node)
+                                       'headline ancestors)))))
               (t (org-texmacs--document-fail node "Unsupported or unprepared block"))))))
       (let ((result (org-texmacs--document-pack
                      'document
                      (append (metadata (list ast))
+                             (toc (list ast))
                              (blocks (org-element-contents ast) 'org-data (list ast))))))
         (unless (and (= (length used-islands) (length islands))
                      (= (length used-blanks) (length post-blanks)))

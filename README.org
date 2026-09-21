@@ -15,11 +15,12 @@ described below and a restricted Org document context.
 
 Document conversion supports basic inline markup, self-contained URI links,
 anonymous inline footnotes, list/container structures, rich metadata,
-relative headline sectioning, static preformatted blocks, basic rectangular
-tables and TeXmacs islands, as specified below.  It does not provide a complete
-TeXmacs file document, preview, export, TOC/reference resolution or rendered
-numbering, fontification, an editing minor mode, or a combined Org and TeXmacs
-document AST.
+relative headline sectioning, a static filtered TOC, static preformatted
+blocks, basic rectangular tables and TeXmacs islands, as specified below.  It
+does not provide a complete
+TeXmacs file document, preview, export, general internal/cross-reference
+resolution, rendered numbering, fontification, an editing minor mode, or a
+combined Org and TeXmacs document AST.
 Org's source buffer and live AST remain unchanged.
 
 * Requirements
@@ -572,7 +573,8 @@ This example returns a document result; it starts TeXmacs to parse its islands:
 #+begin_src emacs-lisp
   (with-temp-buffer
     (org-mode)
-    (insert "* 中\n"
+    (insert "#+OPTIONS: toc:nil\n"
+            "* 中\n"
             "Text *bold* <alpha> (math \"α <alpha>\") end.\n\n"
             "#+begin_texmacs\n"
             "(with \"mode\" \"math\" (frac \"中\" \"2\"))\n"
@@ -594,6 +596,7 @@ The supported Org subset is deliberately small:
 | Anonymous inline footnote directly in a paragraph | =footnote= containing a body =document=                      |
 | Relative headline levels 1 through 5              | Five numbered or starred TeXmacs sectioning tags              |
 | Headlines below the configured =H= depth          | Nested =itemize= structures without discarding body content   |
+| Filtered headline table of contents               | Static =table-of-contents= with =toc-N=/links/page references |
 | Title / author / date metadata                     | =doc-data= at the start of the body =document=                 |
 | Unordered / ordered / description list            | =itemize= / =enumerate= / =description= with body =document= |
 | Quote / center block                               | =quote= / =center= with body =document=                      |
@@ -674,8 +677,9 @@ may contain supported inline markup; without a description the URI is
 displayed.  Targets are assembled from Org's type/path without additional
 escaping or prose whitespace normalization.  Conversion does not open or
 download targets, invoke export handlers, or embed linked images.
-File links (including implicit file links), internal references and other
-protocols are rejected.
+File links (including implicit file links), source-authored internal
+references and other protocols are rejected.  Generated TOC links are the
+only current internal-link structure.
 
 Anonymous inline footnotes such as =[fn::A note]= are supported only as
 direct paragraph children.  Their bodies support ordinary inline markup,
@@ -724,10 +728,11 @@ parallel TeXmacs display switches:
 | =org-export-with-archived-trees=    | =arch=      | Keep, remove or retain only an archived headline    |
 | =org-export-headline-levels=        | =H=         | Set sectioning depth from 0 through 5               |
 | =org-export-with-section-numbers=   | =num=       | Select the deepest numbered section level           |
-| =org-export-with-toc=               | =toc=       | Captured for later TOC construction                 |
+| =org-export-with-toc=               | =toc=       | Build a static TOC to the selected depth            |
 | =org-export-with-title/author/date= | =title/author/date= | Control rich document metadata output          |
 
-=not-in-toc= also shows tags in the body heading; no TOC is generated yet.
+=tags:not-in-toc= shows tags in the body heading but omits them from TOC
+entries.
 Disabling a field only omits its presentation, never the heading or body.
 Tags retain their explicit order without inheritance.  =#+SELECT_TAGS=,
 =#+EXCLUDE_TAGS= and =#+FILETAGS= participate in Org's headline selection;
@@ -784,9 +789,25 @@ Org export structure rather than raw star count.  The first five visible
 levels map to =section= through =subparagraph=.  =num= selects the deepest
 numbered level, with starred section tags beyond it; =UNNUMBERED= also selects
 a starred tag.  Headlines below =H= become nested =itemize= bodies, preserving
-their own contents and descendants.  =ALT_TITLE= is retained in the prepared
-AST for the later TOC/reference node but does not replace the visible title
-here.  Property drawers containing other keys remain unsupported.
+their own contents and descendants.  Property drawers containing other keys
+remain unsupported.
+
+A non-nil =toc= option emits a leading static
+=(table-of-contents "org-texmacs-toc" (document ...))= when at least one
+filtered headline is eligible.  Its entries use =toc-1= through =toc-5= with
+an internal =hlink= title and =pageref=.  =toc:N= limits the depth and cannot
+exceed =H=.  Numbered headings receive dot-separated numbers computed from the
+same filtered tree and =num= policy; other entries remain unnumbered.
+=UNNUMBERED: notoc= excludes an entry without removing its body heading, while
+other unnumbered headings remain in the TOC.  Parsed =ALT_TITLE= rich objects
+replace the TOC title only.  The headline formatter is also used for TOC
+titles, with tags omitted under =tags:not-in-toc=.
+
+Each entry targets a deterministic =org-texmacs-toc-N= label placed directly
+after its body heading.  Allocation skips statically named =label= nodes in
+visible STM islands.  This is a private generated namespace, not general Org
+internal-link or ID resolution.  =pageref= values remain structural references;
+the body constructor does not paginate the document or precompute page numbers.
 
 ** Native encoding and lifetime
 
@@ -840,9 +861,10 @@ not validate their arity, character names, mathematical meaning or layout.
 Preflight and encoding errors leave the previous body intact.  Native
 update/readback failure discards the session; transport or fatal cleanup
 failure stops the worker.  These buffers have no view and are not previews.
-Successful body readback does not establish numbering, references, auxiliary
-data, pagination, style or initial-environment mapping.  Complete file
-metadata and export remain outside this API.
+Successful body readback establishes that the static TOC/reference tree is
+accepted, not that visual numbering, page references, auxiliary data or
+pagination have been resolved.  Style and initial-environment application,
+complete file metadata and export remain outside this API.
 
 * Worker behavior and errors
 

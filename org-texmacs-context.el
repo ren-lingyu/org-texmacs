@@ -135,6 +135,27 @@ substituting a collector that cannot read SETUPFILE or external files."
        (signal 'org-texmacs-document-error
                (list "Invalid Org document options" (error-message-string err)))))))
 
+(defun org-texmacs--context-parse-alt-title (headline)
+  "Parse HEADLINE's ALT_TITLE with Org's headline object restrictions.
+Store the result as owned secondary AST data before the source buffer goes
+away.  Do not discover TeXmacs fragments in this document-wide metadata."
+  (let ((value (org-element-property :ALT_TITLE headline)))
+    (when value
+      (unless (stringp value)
+        (signal 'org-texmacs-document-error '("Invalid ALT_TITLE property")))
+      (condition-case err
+          (let ((parsed
+                 (org-element-parse-secondary-string
+                  value (org-element-restriction 'headline) headline)))
+            (org-element-put-property headline :ALT_TITLE parsed)
+            (org-element-put-property
+             headline :secondary
+             (cons :ALT_TITLE
+                   (delq :ALT_TITLE (org-element-property :secondary headline)))))
+        (error
+         (signal 'org-texmacs-document-error
+                 (list "Invalid ALT_TITLE property" (error-message-string err))))))))
+
 (defun org-texmacs--context-validate-info (info)
   "Validate the supported effective option subset in INFO."
   (unless
@@ -205,7 +226,7 @@ Treat every ISLAND key as opaque.  Return AST after in-place pruning."
                      ;; Resolve supported secondary values while the private
                      ;; source buffer still exists, then discard source syntax.
                      (org-element-property :UNNUMBERED parent)
-                     (org-element-property :ALT_TITLE parent)
+                     (org-texmacs--context-parse-alt-title parent)
                      (org-element-extract node)))
                   ((eq type 'headline)
                    (if (org-export--skip-p node info selected excluded)

@@ -254,7 +254,7 @@
 (ert-deftest org-texmacs-context-options-affect-headline-presentation ()
   (with-temp-buffer
     (org-mode)
-    (insert "#+OPTIONS: todo:nil pri:t tags:nil\n"
+    (insert "#+OPTIONS: todo:nil pri:t tags:nil toc:nil\n"
             "* TODO [#A] Title :tag:\n")
     (should
      (equal (org-texmacs-document-body
@@ -371,7 +371,7 @@
 (ert-deftest org-texmacs-context-filters-tasks-before-worker ()
   (with-temp-buffer
     (org-mode)
-    (insert "#+OPTIONS: tasks:done\n"
+    (insert "#+OPTIONS: tasks:done toc:nil\n"
             "* TODO Hidden\n"
             "- unsupported list\n"
             "#+begin_texmacs\n(frac \"1\" \"2)\n#+end_texmacs\n"
@@ -389,7 +389,7 @@
 (ert-deftest org-texmacs-context-archive-headline-discards-contents ()
   (with-temp-buffer
     (org-mode)
-    (insert "#+OPTIONS: arch:headline tags:nil\n"
+    (insert "#+OPTIONS: arch:headline tags:nil toc:nil\n"
             "* Archived :ARCHIVE:\n"
             "#+begin_texmacs\n(frac \"1\" \"2)\n#+end_texmacs\n"
             "** Hidden child\n"
@@ -405,7 +405,7 @@
 (ert-deftest org-texmacs-context-selects-and-excludes-headlines ()
   (with-temp-buffer
     (org-mode)
-    (insert "#+SELECT_TAGS: keep\n#+EXCLUDE_TAGS: drop\nPreamble\n"
+    (insert "#+OPTIONS: toc:nil\n#+SELECT_TAGS: keep\n#+EXCLUDE_TAGS: drop\nPreamble\n"
             "* Parent\n"
             "** Chosen :keep:\nKept\n"
             "** Rejected :keep:drop:\n"
@@ -424,7 +424,7 @@
   (with-temp-buffer
     (org-mode)
     (setq-local org-tag-groups-alist '(("group" . ("member"))))
-    (insert "#+SELECT_TAGS: group\n"
+    (insert "#+OPTIONS: toc:nil\n#+SELECT_TAGS: group\n"
             "* Kept :member:\nVisible\n"
             "* Hidden\nInvisible\n")
     (should
@@ -486,7 +486,7 @@
 (ert-deftest org-texmacs-context-file-options-remain-snapshotted ()
   (with-temp-buffer
     (org-mode)
-    (insert "#+OPTIONS: todo:nil tags:nil\n* TODO Title :tag:\n(math \"x\")\n")
+    (insert "#+OPTIONS: todo:nil tags:nil toc:nil\n* TODO Title :tag:\n(math \"x\")\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
                (lambda (_source)
                  (setq-local org-export-with-todo-keywords t
@@ -1940,7 +1940,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 (ert-deftest org-texmacs-document-basic-inline-source ()
   (with-temp-buffer
     (org-mode)
-    (insert "* /Title/\nA /i/ _u_ +s+ ~code~ =literal=.\n")
+    (insert "#+OPTIONS: toc:nil\n* /Title/\nA /i/ _u_ +s+ ~code~ =literal=.\n")
     (let ((source (buffer-string)))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _) (ert-fail "Ordinary inline started a worker"))))
@@ -2021,7 +2021,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 (ert-deftest org-texmacs-document-line-break-contexts ()
   (with-temp-buffer
     (org-mode)
-    (insert "* Title\nA\\\\\nB\n")
+    (insert "#+OPTIONS: toc:nil\n* Title\nA\\\\\nB\n")
     (should (equal (org-texmacs-document-body (org-texmacs-document-from-buffer (current-buffer)))
                    '(document (section "Title") (concat "A" (next-line) "B ")))))
   (let* ((break (org-element-create 'line-break nil))
@@ -2095,7 +2095,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 (ert-deftest org-texmacs-document-uri-rich-description ()
   (with-temp-buffer
     (org-mode)
-    (insert "* [[https://example.org][Title]]\n"
+    (insert "#+OPTIONS: toc:nil\n* [[https://example.org][Title]]\n"
             "A [[ftps://example.org/中%20文?q=x%26y&z=2][*bold* /em/]]\t end\n")
     (should
      (equal (org-texmacs-document-body (org-texmacs-document-from-buffer (current-buffer)))
@@ -2289,7 +2289,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 (ert-deftest org-texmacs-document-relative-headlines-and-low-level-lists ()
   (with-temp-buffer
     (org-mode)
-    (insert "#+OPTIONS: H:2 num:1\n"
+    (insert "#+OPTIONS: H:2 num:1 toc:nil\n"
             "** Top\n"
             "*** Child\n"
             "**** Deep A\n"
@@ -2308,7 +2308,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
           (concat (item) "Deep B")
           (itemize (document (concat (item) "Nested"))))))))
     (erase-buffer)
-    (insert "#+OPTIONS: H:0\n* First\n* Second\n")
+    (insert "#+OPTIONS: H:0 toc:nil\n* First\n* Second\n")
     (should
      (equal (org-texmacs-document-body
              (org-texmacs-document-from-buffer (current-buffer)))
@@ -2320,7 +2320,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 (ert-deftest org-texmacs-document-five-section-levels-and-unnumbered-property ()
   (with-temp-buffer
     (org-mode)
-    (insert "#+OPTIONS: H:5 num:nil\n"
+    (insert "#+OPTIONS: H:5 num:nil toc:nil\n"
             "* One\n** Two\n*** Three\n**** Four\n***** Five\n")
     (should
      (equal (org-texmacs-document-body
@@ -2339,11 +2339,115 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
            (headline (car (org-element-contents (org-texmacs-input-ast input)))))
       (should (equal (org-texmacs-document-body (org-texmacs-document input))
                      '(document (section* "Visible title") (concat "Body "))))
-      ;; Org exposes this property as an unresolved raw string, unlike the
-      ;; parsed secondary value in `:title'.  Node 7 may interpret it while
-      ;; constructing TOC entries.
-      (should (equal (org-element-property :ALT_TITLE headline)
-                     "Short *title*")))))
+      (let ((alt (org-element-property :ALT_TITLE headline)))
+        (should (equal (mapcar #'org-element-type alt) '(plain-text bold)))
+        (dolist (object alt)
+          (should (eq (org-element-property :parent object) headline)))))))
+
+(ert-deftest org-texmacs-document-toc-structure-and-headline-policies ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: H:3 toc:2 num:1 tags:not-in-toc todo:nil\n"
+            "* Visible :tag:\n"
+            ":PROPERTIES:\n:ALT_TITLE: Short *title*\n:END:\n"
+            "** Child\n"
+            "*** Deep\n"
+            "* Plain\n"
+            ":PROPERTIES:\n:UNNUMBERED: t\n:END:\n"
+            "* Hidden\n"
+            ":PROPERTIES:\n:UNNUMBERED: notoc\n:END:\n")
+    (should
+     (equal
+      (org-texmacs-document-body
+       (org-texmacs-document-from-buffer (current-buffer)))
+      '(document
+        (table-of-contents
+         "org-texmacs-toc"
+         (document
+          (toc-1
+           (hlink (concat "1 " (concat "Short " (strong "title")))
+                  "#org-texmacs-toc-1")
+           (pageref "org-texmacs-toc-1"))
+          (toc-2 (hlink "Child" "#org-texmacs-toc-2")
+                 (pageref "org-texmacs-toc-2"))
+          (toc-1 (hlink "Plain" "#org-texmacs-toc-3")
+                 (pageref "org-texmacs-toc-3"))))
+        (section (concat "Visible" " " ":tag:"))
+        (label "org-texmacs-toc-1")
+        (subsection* "Child")
+        (label "org-texmacs-toc-2")
+        (subsubsection* "Deep")
+        (section* "Plain")
+        (label "org-texmacs-toc-3")
+        (section* "Hidden"))))))
+
+(ert-deftest org-texmacs-document-toc-uses-filtered-context ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: tasks:done toc:2 todo:nil\n"
+            "* TODO Dropped\n"
+            "** Dropped child\n"
+            "* DONE Kept\n"
+            "** Child\n")
+    (should
+     (equal
+      (org-texmacs-document-body
+       (org-texmacs-document-from-buffer (current-buffer)))
+      '(document
+        (table-of-contents
+         "org-texmacs-toc"
+         (document
+          (toc-1 (hlink (concat "1 " "Kept") "#org-texmacs-toc-1")
+                 (pageref "org-texmacs-toc-1"))
+          (toc-2 (hlink (concat "1.1 " "Child") "#org-texmacs-toc-2")
+                 (pageref "org-texmacs-toc-2"))))
+        (section "Kept")
+        (label "org-texmacs-toc-1")
+        (subsection "Child")
+        (label "org-texmacs-toc-2"))))))
+
+(ert-deftest org-texmacs-document-toc-static-label-conflict-native ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:1 todo:nil\n"
+              "#+begin_texmacs\n"
+              "(label \"org-texmacs-toc-1\")\n"
+              "#+end_texmacs\n"
+              "* 中 <alpha>\n")
+      (let* ((document (org-texmacs-document-from-buffer (current-buffer)))
+             (expected
+              '(document
+                (table-of-contents
+                 "org-texmacs-toc"
+                 (document
+                  (toc-1
+                   (hlink (concat "1 " "中 <alpha>") "#org-texmacs-toc-2")
+                   (pageref "org-texmacs-toc-2"))))
+                (label "org-texmacs-toc-1")
+                (section "中 <alpha>")
+                (label "org-texmacs-toc-2")))
+             (expected-native
+              '(document
+                (table-of-contents
+                 "org-texmacs-toc"
+                 (document
+                  (toc-1
+                   (hlink (concat "1 " "<#4E2D> <less>alpha<gtr>")
+                          "#org-texmacs-toc-2")
+                   (pageref "org-texmacs-toc-2"))))
+                (label "org-texmacs-toc-1")
+                (section "<#4E2D> <less>alpha<gtr>")
+                (label "org-texmacs-toc-2")))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (should (equal (org-texmacs-document-body document) expected))
+              (should (equal (org-texmacs-document-stm-paths document) '((1))))
+              (org-texmacs-session-set-document session document)
+              (should (equal (org-texmacs--session-read session)
+                             (org-texmacs-test--native-hex expected-native))))
+          (org-texmacs-session-close session))))))
 
 (ert-deftest org-texmacs-document-rejects-headline-depth-over-five ()
   (with-temp-buffer
@@ -2761,7 +2865,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 (ert-deftest org-texmacs-document-source-without-islands ()
   (with-temp-buffer
     (org-mode)
-    (insert "* A *bold*\t title\nText *strong*\t  tail.\n")
+    (insert "#+OPTIONS: toc:nil\n* A *bold*\t title\nText *strong*\t  tail.\n")
     (goto-char 4)
     (let ((source (buffer-string)) (position (point))
           (tick (buffer-chars-modified-tick)))
@@ -2815,7 +2919,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 (ert-deftest org-texmacs-document-explicit-source-and-wrapper ()
   (with-temp-buffer
     (org-mode)
-    (insert "*** Heading\n")
+    (insert "#+OPTIONS: toc:nil\n*** Heading\n")
     (setq-local org-odd-levels-only t)
     (let* ((source (current-buffer))
            (expected (org-texmacs-document-from-buffer source)))
@@ -2904,7 +3008,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
              (calls 0))
         (with-temp-buffer
           (org-mode)
-          (insert "* Title\n[[ftps://example.org][Own]]\n")
+          (insert "#+OPTIONS: toc:nil\n* Title\n[[ftps://example.org][Own]]\n")
           (let ((org-texmacs-format-headline-function
                  (lambda (&rest _)
                    (setq calls (1+ calls))
@@ -3008,7 +3112,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 (ert-deftest org-texmacs-document-explicit-info-snapshot ()
   (with-temp-buffer
     (org-mode)
-    (insert "* Title\n(math \"x\")\n")
+    (insert "#+OPTIONS: toc:nil\n* Title\n(math \"x\")\n")
     (setq-local org-texmacs-format-headline-function (lambda (&rest _) "Initial"))
     (let ((source (current-buffer)))
       (with-temp-buffer
@@ -3092,7 +3196,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
   (org-texmacs-test--with-worker
     (with-temp-buffer
       (org-mode)
-      (insert "* Title\nText (math (frac \"α\" \"2\")) end.\n\n"
+      (insert "#+OPTIONS: toc:nil\n* Title\nText (math (frac \"α\" \"2\")) end.\n\n"
               "#+begin_texmacs\n(document (math \"中\"))\n#+end_texmacs\n")
       (let ((source (buffer-string))
             (result (org-texmacs-document-from-buffer (current-buffer))))
@@ -3124,7 +3228,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (with-temp-buffer
       (let ((org-todo-keywords '((sequence "WAIT" "|" "FINISHED"))))
         (org-mode))
-      (insert "* " keyword " Task\n")
+      (insert "#+OPTIONS: toc:nil\n* " keyword " Task\n")
       ;; Establish that the fixture really has non-default TODO semantics.
       (should (equal (org-element-map (org-element-parse-buffer) 'headline
                        (lambda (node) (org-element-property :todo-keyword node)))
@@ -3142,11 +3246,11 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
   (with-temp-buffer
     (org-mode)
     (setq-local org-odd-levels-only t)
-    (insert "*** Heading\n")
+    (insert "#+OPTIONS: toc:nil\n*** Heading\n")
     (should (equal (org-texmacs-document-body (org-texmacs-document-from-buffer (current-buffer)))
                    '(document (section "Heading"))))
     (erase-buffer)
-    (insert "******* Deep\n")
+    (insert "#+OPTIONS: toc:nil\n******* Deep\n")
     (should (equal (org-texmacs-document-body
                     (org-texmacs-document-from-buffer (current-buffer)))
                    '(document (section "Deep"))))))
@@ -3155,7 +3259,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
   (with-temp-buffer
     (let ((org-todo-keywords '((sequence "WAIT" "|" "FINISHED"))))
       (org-mode))
-    (insert "* TODO A *bold* title\n")
+    (insert "#+OPTIONS: toc:nil\n* TODO A *bold* title\n")
     (should (equal (org-texmacs-document-body (org-texmacs-document-from-buffer (current-buffer)))
                    '(document (section (concat "TODO A " (strong "bold") " " "title")))))))
 
@@ -3164,11 +3268,11 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (org-mode)
     ;; A numeric-only effective regexp leaves [#A] in the title itself.
     (setq-local org-priority-regexp "\\(\\[#\\([0-9]+\\)\\] ?\\)")
-    (insert "* [#A] Task\n")
+    (insert "#+OPTIONS: toc:nil\n* [#A] Task\n")
     (should (equal (org-texmacs-document-body (org-texmacs-document-from-buffer (current-buffer)))
                    '(document (section "[#A] Task"))))
     (erase-buffer)
-    (insert "* [#12] Task\n")
+    (insert "#+OPTIONS: toc:nil\n* [#12] Task\n")
     (let ((org-export-with-priority t))
       (should (equal (org-texmacs-document-body (org-texmacs-document-from-buffer (current-buffer)))
                      '(document (section (concat "[#12]" " " "Task"))))))))
@@ -3518,7 +3622,7 @@ Only serialize expected bytes; do not call the production encoder."
   (org-texmacs-test--with-worker
     (with-temp-buffer
       (org-mode)
-      (insert "* 中文标题\n\n普通的中文 *加粗* (math (frac \"一\" \"2\")).\n\n"
+      (insert "#+OPTIONS: toc:nil\n* 中文标题\n\n普通的中文 *加粗* (math (frac \"一\" \"2\")).\n\n"
               "#+begin_texmacs\n(equation* (frac \"3\" \"4\"))\n#+end_texmacs\n\n"
               "** Second\n\nFinal paragraph.\n")
       (goto-char (point-min))
@@ -3644,7 +3748,7 @@ Only tests with explicit example names use this helper; do not run Babel."
       (let ((org-todo-keywords '((sequence "WAIT" "|" "FINISHED"))))
         (org-mode))
       (setq-local org-odd-levels-only t)
-      (insert "*** TODO Task\n(math \"α\")\n")
+      (insert "#+OPTIONS: toc:nil\n*** TODO Task\n(math \"α\")\n")
       (let* ((settings (org-texmacs--document-heading-settings))
              (source (buffer-string))
              (document (org-texmacs-document-from-buffer (current-buffer)))
@@ -3669,7 +3773,7 @@ Only tests with explicit example names use this helper; do not run Babel."
       (dolist (tags '(nil t not-in-toc))
         (with-temp-buffer
           (org-mode)
-          (insert "* TODO [#A] A *bold* title :one:two:\nBody\n")
+          (insert "#+OPTIONS: toc:nil\n* TODO [#A] A *bold* title :one:two:\nBody\n")
           (let* ((org-export-with-todo-keywords todo)
                  (org-export-with-priority priority)
                  (org-export-with-tags tags)
@@ -3709,7 +3813,7 @@ Only tests with explicit example names use this helper; do not run Babel."
 (ert-deftest org-texmacs-headline-custom-formatter-policy-and-result ()
   (with-temp-buffer
     (org-mode)
-    (insert "*** TODO [#A] Title :tag:\n")
+    (insert "#+OPTIONS: toc:nil\n*** TODO [#A] Title :tag:\n")
     (let* ((output (list 'strong (copy-sequence "custom")))
            (calls 0)
            (org-export-with-todo-keywords nil)
@@ -3741,7 +3845,7 @@ Only tests with explicit example names use this helper; do not run Babel."
 (ert-deftest org-texmacs-headline-output-settings-snapshot ()
   (with-temp-buffer
     (org-mode)
-    (insert "* TODO [#A] Title :tag:\n(math \"x\")\n")
+    (insert "#+OPTIONS: toc:nil\n* TODO [#A] Title :tag:\n(math \"x\")\n")
     (let ((org-export-with-todo-keywords t)
           (org-export-with-priority t)
           (org-export-with-tags t)
@@ -3762,7 +3866,7 @@ Only tests with explicit example names use this helper; do not run Babel."
 (ert-deftest org-texmacs-headline-explicit-tags-only ()
   (with-temp-buffer
     (org-mode)
-    (insert "* Parent :parent:\n** Child :child:\n")
+    (insert "#+OPTIONS: toc:nil\n* Parent :parent:\n** Child :child:\n")
     (let ((org-export-with-tags t))
       (should (equal (org-texmacs-document-body (org-texmacs-document-from-buffer (current-buffer)))
                      '(document (section (concat "Parent" " " ":parent:"))
@@ -3771,7 +3875,7 @@ Only tests with explicit example names use this helper; do not run Babel."
 (ert-deftest org-texmacs-headline-file-options-without-export-environment ()
   (with-temp-buffer
     (org-mode)
-    (insert "#+OPTIONS: todo:nil\n* TODO Title\n")
+    (insert "#+OPTIONS: todo:nil toc:nil\n* TODO Title\n")
     (cl-letf (((symbol-function 'org-export-get-environment)
                (lambda (&rest _) (ert-fail "Collected export environment"))))
       (should (equal (org-texmacs-document-body
@@ -3783,7 +3887,7 @@ Only tests with explicit example names use this helper; do not run Babel."
     (with-temp-buffer
       (let ((org-todo-keywords '((sequence "<alpha>" "|" "FINISHED"))))
         (org-mode))
-      (insert "* <alpha> [#12] 中 :tag:\n(math \"<alpha>\")\n")
+      (insert "#+OPTIONS: toc:nil\n* <alpha> [#12] 中 :tag:\n(math \"<alpha>\")\n")
       (let* ((org-export-with-todo-keywords t)
              (org-export-with-priority t)
              (org-export-with-tags t)

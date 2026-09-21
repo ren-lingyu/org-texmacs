@@ -194,9 +194,12 @@ parser customization is not supported.  TODO, priority and explicit tags use
 standard `org-export-with-todo-keywords', `org-export-with-priority' and
 `org-export-with-tags' settings with `org-texmacs-format-headline-function'.
 Lower supported rich title/author/date metadata into body `doc-data'.  Apply
-headline depth and numbering options, including UNNUMBERED; preserve ALT_TITLE
-for later document-wide consumers.  Snapshot the supported Org document
-context once; later changes affect only
+headline depth and numbering options, including UNNUMBERED.  Build a static
+table of contents from the filtered headline set when `org-export-with-toc'
+is non-nil; use parsed ALT_TITLE for TOC text and generated labels with
+`hlink' and `pageref' for structural navigation.  This does not resolve page
+numbers or add general Org internal links.  Snapshot the supported Org
+document context once; later changes affect only
 the next conversion.  Merge the documented #+OPTIONS and metadata keyword
 subset, then apply Org's task/archive/select/exclude/comment filtering before
 worker requests.  Reject unsupported options and preprocessing directives.
