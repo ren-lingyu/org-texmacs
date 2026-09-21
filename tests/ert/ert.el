@@ -2610,12 +2610,119 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                              (org-texmacs-test--native-hex expected-native))))
           (org-texmacs-session-close session))))))
 
+(ert-deftest org-texmacs-document-table-source-and-inline-subset ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "| Name | Value |\n"
+            "| 中 <alpha> (math \"literal\") | *bold* [[https://example.org][site]] |\n"
+            "| empty | |\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _) (ert-fail "Table text reached worker"))))
+      (let ((document (org-texmacs-document-from-buffer (current-buffer))))
+        (should
+         (equal
+          (org-texmacs-document-body document)
+          '(document
+            (tabular
+             (tformat
+              (table
+               (row (cell "Name") (cell "Value"))
+               (row
+                (cell "中 <alpha> (math \"literal\")")
+                (cell
+                 (concat (strong "bold") " "
+                         (hlink "site" "https://example.org"))))
+               (row (cell "empty") (cell ""))))))))
+        (should-not (org-texmacs-document-stm-paths document))))))
+
+(ert-deftest org-texmacs-document-table-rule-positions ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "|----+----|\n"
+            "| h1 | h2 |\n"
+            "| h3 | h4 |\n"
+            "|----+----|\n"
+            "| a  | b  |\n"
+            "|----+----|\n")
+    (should
+     (equal
+      (org-texmacs-document-body
+       (org-texmacs-document-from-buffer (current-buffer)))
+      '(document
+        (tabular
+         (tformat
+          (cwith "1" "1" "1" "-1" "cell-tborder" "1ln")
+          (cwith "2" "2" "1" "-1" "cell-bborder" "1ln")
+          (cwith "3" "3" "1" "-1" "cell-bborder" "1ln")
+          (table
+           (row (cell "h1") (cell "h2"))
+           (row (cell "h3") (cell "h4"))
+           (row (cell "a") (cell "b"))))))))))
+
+(ert-deftest org-texmacs-document-rejects-advanced-table-semantics ()
+  (dolist
+      (source
+       '("| a | b | c |\n| d |\n"
+         "| <l> | <10> |\n| a | b |\n"
+         "| / | < | > |\n| # | a | b |\n|   | c | d |\n"
+         "| a | b |\n| 1 | 2 |\n#+TBLFM: $2=$1+1\n"
+         "|---+---|\n|---+---|\n| a | b |\n"
+         "| [fn::note] |\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Invalid table reached worker"))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer))
+                      :type 'org-texmacs-document-error))))
+  (let* ((cell (org-element-create 'table-cell nil "x"))
+         (row (org-element-create 'table-row '(:type standard) cell))
+         (table (org-element-create 'table '(:type table.el) row))
+         (ast (org-element-create 'org-data nil table)))
+    (should-error (org-texmacs--document-lower ast)
+                  :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-document-table-native-and-provenance ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "| 中 <alpha> | *B* |\n"
+              "|------------+-----|\n"
+              "| x          |     |\n")
+      (let* ((document (org-texmacs-document-from-buffer (current-buffer)))
+             (expected
+              '(document
+                (tabular
+                 (tformat
+                  (cwith "1" "1" "1" "-1" "cell-bborder" "1ln")
+                  (table
+                   (row (cell "中 <alpha>") (cell (strong "B")))
+                   (row (cell "x") (cell "")))))))
+             (expected-native
+              '(document
+                (tabular
+                 (tformat
+                  (cwith "1" "1" "1" "-1" "cell-bborder" "1ln")
+                  (table
+                   (row (cell "<#4E2D> <less>alpha<gtr>")
+                        (cell (strong "B")))
+                   (row (cell "x") (cell "")))))))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (should (equal (org-texmacs-document-body document) expected))
+              (should-not (org-texmacs-document-stm-paths document))
+              (org-texmacs-session-set-document session document)
+              (should (equal (org-texmacs--session-read session)
+                             (org-texmacs-test--native-hex expected-native))))
+          (org-texmacs-session-close session))))))
+
 (ert-deftest org-texmacs-document-rejects-unsupported-source ()
   (dolist (source '("[[file:notes.org][link]]\n"
                     "[[./notes.org]]\n" "[[/tmp/notes.org]]\n"
                     "[[file:notes.org::heading]]\n" "[[file+emacs:notes.org]]\n"
                     "[[#target]]\n" "[[id:missing]]\n"
-                    "[fn:named]\n" "| table |\n" "# comment\n"
+                    "[fn:named]\n" "# comment\n"
                     "#+title: Title\n" "* COMMENT Task\n"
                     "* \n" "#+name: named\nParagraph\n"
                     "#+attr_html: :class test\nParagraph\n"

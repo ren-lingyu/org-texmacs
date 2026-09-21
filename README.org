@@ -15,10 +15,11 @@ described below and a restricted Org document context.
 
 Document conversion supports basic inline markup, self-contained URI links,
 anonymous inline footnotes, list/container structures, rich metadata,
-relative headline sectioning, static preformatted blocks and TeXmacs islands,
-as specified below.  It does not provide a complete TeXmacs file document,
-preview, export, TOC/reference resolution or rendered numbering, fontification,
-an editing minor mode, or a combined Org and TeXmacs document AST.
+relative headline sectioning, static preformatted blocks, basic rectangular
+tables and TeXmacs islands, as specified below.  It does not provide a complete
+TeXmacs file document, preview, export, TOC/reference resolution or rendered
+numbering, fontification, an editing minor mode, or a combined Org and TeXmacs
+document AST.
 Org's source buffer and live AST remain unchanged.
 
 * Requirements
@@ -597,6 +598,7 @@ The supported Org subset is deliberately small:
 | Unordered / ordered / description list            | =itemize= / =enumerate= / =description= with body =document= |
 | Quote / center block                               | =quote= / =center= with body =document=                      |
 | Example / fixed-width / source block               | Static =code= containing a line-wise =document=               |
+| Basic rectangular Org table                       | =tabular= / =tformat= / =table= / =row= / =cell=             |
 | Recognized paragraph fragment                     | One parsed STM subtree                                       |
 | =texmacs= special block                           | One parsed STM subtree, even for a string or =document= root |
 | COMMENT / comment block                           | Removed before structural preflight                         |
@@ -604,8 +606,8 @@ The supported Org subset is deliberately small:
 
 Heading text may contain supported emphasis and literal inline code, but not
 explicit line breaks.  This is not a general Org
-exporter: unsupported links and footnotes, tables, other blocks,
-unrecognized keywords, drawers and affiliated metadata are rejected.
+exporter: unsupported links and footnotes, advanced table semantics, other
+blocks, unrecognized keywords, drawers and affiliated metadata are rejected.
 Empty and deeper headings are also rejected rather than silently discarded.
 Fragment discovery can support
 contexts that this whole-document conversion does not support.
@@ -632,6 +634,22 @@ Source language names do not enable highlighting.  Source blocks are never
 executed, and noweb, coderef/line-number switches, header parameters and other
 dynamic code semantics are rejected instead of being ignored.  Org has already
 removed source-protection commas from the parsed =:value= before lowering.
+
+Basic Org pipe tables lower structurally to
+=(tabular (tformat FORMATTING... (table (row (cell BODY) ...)...)))=.
+Cells use the same inline subset as other text contexts, including markup,
+literal inline code and self-contained URI links.  Empty cells remain empty
+=cell= bodies.  Fragment discovery does not enter table cells, so STM-looking
+text remains ordinary literal text.
+
+Tables must contain at least one rectangular data row with at least one cell.
+Org rule rows become =1ln= top or bottom borders on adjacent TeXmacs rows; a
+rule separating the first row group preserves the visible header boundary
+without implicitly making header contents bold.  Leading and trailing rules
+are supported, but consecutive rules are rejected because their multiplicity
+has no lossless mapping in this subset.  =#+TBLFM=, alignment/width cookie
+rows, special control rows or columns, merged/grouped cells, non-Org table
+types and ragged rows are rejected rather than approximated.
 
 These rules apply while lowering Org nodes, not as a rewrite of the final
 TeXmacs tree.  STM islands remain opaque and unchanged, including their

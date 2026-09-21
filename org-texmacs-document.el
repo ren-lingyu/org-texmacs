@@ -246,8 +246,8 @@ Support paragraphs, plain text, basic emphasis, inline code/verbatim,
 explicit line breaks, self-contained URI links, transparent Org sections,
 relative headline levels one through five, lower-level headline lists, all
 three Org plain-list types, quote/center blocks, and static example,
-fixed-width and source blocks.  Emit supported title, author and date metadata
-as body `doc-data'.
+fixed-width and source blocks, plus basic rectangular Org tables.  Emit
+supported title, author and date metadata as body `doc-data'.
 Link admission uses Org type, not raw source.  Accept anonymous inline
 footnotes only as direct paragraph children.  Reject list checkboxes and
 explicit counters; description terms use the existing inline subset.
@@ -562,6 +562,95 @@ from one snapshot."
            (dolist (property '(:name :caption :attr_texmacs))
              (when (org-element-property property node)
                (org-texmacs--document-fail node "Unsupported affiliated metadata"))))
+         (table-cell (node ancestors)
+           (unless (and (consp node) (eq (org-element-type node) 'table-cell)
+                        (not (memq node ancestors))
+                        (proper-list-p (org-element-contents node)))
+             (org-texmacs--document-fail node "Invalid or cyclic table cell"))
+           (org-texmacs--document-pack
+            'cell
+            (list
+             (one-body
+              (inlines (org-element-contents node) 'table-cell
+                       (cons node ancestors))))))
+         (table-rule (row property)
+           (org-texmacs--document-pack
+            'cwith
+            (mapcar
+             (lambda (value) (org-texmacs--document-create :body value))
+             (list (format "%d" row) (format "%d" row) "1" "-1"
+                   property "1ln"))))
+         (table-block (node ancestors)
+           (let ((contents (org-element-contents node)))
+             (unless (and (eq (org-element-property :type node) 'org)
+                          (null (org-element-property :tblfm node))
+                          (proper-list-p contents) contents)
+               (org-texmacs--document-fail node "Unsupported or invalid Org table"))
+             ;; Validate ownership and shape before calling Org table predicates.
+             (dolist (row contents)
+               (unless (and (consp row) (eq (org-element-type row) 'table-row)
+                            (eq (org-element-parent row) node)
+                            (not (memq row ancestors)))
+                 (org-texmacs--document-fail row "Invalid or cyclic table row"))
+               (let ((type (org-element-property :type row))
+                     (cells (org-element-contents row)))
+                 (cond
+                  ((eq type 'rule)
+                   (unless (null cells)
+                     (org-texmacs--document-fail row "Invalid table rule")))
+                  ((eq type 'standard)
+                   (unless (and (proper-list-p cells) cells
+                                (cl-every
+                                 (lambda (cell)
+                                   (and (consp cell)
+                                        (eq (org-element-type cell) 'table-cell)
+                                        (eq (org-element-parent cell) row)
+                                        (not (memq cell ancestors))))
+                                 cells))
+                     (org-texmacs--document-fail row "Invalid table row")))
+                  (t (org-texmacs--document-fail row "Unsupported table row")))))
+             (when (org-export-table-has-special-column-p node)
+               (org-texmacs--document-fail node "Unsupported special table column"))
+             (let ((columns nil) (row-number 0) (previous-rule nil)
+                   rows rules)
+               (dolist (row contents)
+                 (if (eq (org-element-property :type row) 'rule)
+                     (progn
+                       (when previous-rule
+                         (org-texmacs--document-fail row "Consecutive table rules"))
+                       (push (table-rule (max 1 row-number)
+                                         (if (zerop row-number)
+                                             "cell-tborder"
+                                           "cell-bborder"))
+                             rules)
+                       (setq previous-rule t))
+                   (let ((cells (org-element-contents row)))
+                     (when (org-export-table-row-is-special-p row nil)
+                       (org-texmacs--document-fail row "Unsupported table control row"))
+                     (if columns
+                         (unless (= (length cells) columns)
+                           (org-texmacs--document-fail row "Non-rectangular Org table"))
+                       (setq columns (length cells)))
+                     (push
+                      (org-texmacs--document-pack
+                       'row
+                       (mapcar (lambda (cell)
+                                 (table-cell cell (cons row ancestors)))
+                               cells))
+                      rows)
+                     (cl-incf row-number)
+                     (setq previous-rule nil))))
+               (unless (> row-number 0)
+                 (org-texmacs--document-fail node "Org table has no data rows"))
+               (org-texmacs--document-pack
+                'tabular
+                (list
+                 (org-texmacs--document-pack
+                  'tformat
+                  (append (nreverse rules)
+                          (list
+                           (org-texmacs--document-pack
+                            'table (nreverse rows))))))))))
          (list-item (node kind ancestors)
            (when (or (org-element-property :checkbox node)
                      (org-element-property :counter node))
@@ -617,6 +706,11 @@ from one snapshot."
                  (org-texmacs--document-fail node "Unexpected preformatted block"))
                (list (org-texmacs--document-preformatted
                       node preformatted-tab-width)))
+              ((eq type 'table)
+               (unless (memq context
+                             '(org-data section headline item quote-block center-block))
+                 (org-texmacs--document-fail node "Unexpected Org table"))
+               (list (table-block node ancestors)))
               ((eq type 'plain-list)
                (unless (memq context
                              '(org-data section headline item quote-block center-block))

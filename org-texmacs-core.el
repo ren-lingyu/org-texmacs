@@ -74,6 +74,8 @@ Changing this option takes effect after the current worker is stopped."
     (org-export--get-global-options . function)
     (org-export--get-inbuffer-options . function)
     (org-export--skip-p . function)
+    (org-export-table-has-special-column-p . function)
+    (org-export-table-row-is-special-p . function)
     (org-combine-plists . function)
     (org-collect-keywords . function)
     (org-string-nw-p . function)
