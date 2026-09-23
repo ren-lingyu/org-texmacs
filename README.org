@@ -23,7 +23,6 @@ combined Org and TeXmacs document AST.
 Org's source buffer and live AST remain unchanged.
 
 * Requirements
-
 - Emacs 31.1 or later and Org 9.8 or later, as declared by the package.
 - TeXmacs with headless mode (=-H=) and its embedded Scheme runtime.
 - Unix-domain socket support in both Emacs and TeXmacs.
@@ -36,9 +35,7 @@ not required to use the package.  The standalone Guile dependency in the
 Nix checks is for their test driver scripts.
 
 * Loading the package
-
 ** From a source checkout
-
 Keep all =org-texmacs*.el= files and =org-texmacs-worker.scm= together in the
 checkout directory.  Add that directory to Emacs's =load-path=, replacing
 the example path below:
@@ -60,7 +57,6 @@ The Lisp function returns =(BOOL . REPORT)=.  It checks API and executable
 existence; it does not start TeXmacs or test socket connectivity.
 
 ** With Nix
-
 From the repository root, launch the development environment's Emacs:
 
 #+begin_src sh
@@ -78,7 +74,6 @@ the installed package does not depend on finding it in =exec-path=.
 Building this output alone does not configure an existing Emacs installation.
 
 ** With use-package
-
 Choose one of the following installation paths.  Configure the required Org
 version before loading Org TeXmacs; these examples do not select or replace
 your Org installation.  They assume =use-package= is already available.
@@ -110,7 +105,6 @@ straight integration uses =straight-use-package-by-default=, also add
 Do not add that keyword when straight integration is unavailable.
 
 *** Installing with straight.el
-
 After initializing straight.el and its use-package integration, use this
 explicit recipe instead of the local or already-installed declaration:
 
@@ -138,7 +132,6 @@ For straight setup and recipe details, consult its
 [[https://github.com/radian-software/straight.el#integration-with-use-package][use-package integration documentation]].
 
 *** Loading and optional configuration
-
 =:demand t= loads the Lisp package immediately, even if use-package normally
 defers loading.  It does not start TeXmacs.  The first block cache miss or
 fragment tree request starts the worker, as does document island parsing
@@ -196,7 +189,6 @@ setup check confirms basic capabilities, not successful headless startup
 or socket communication; an actual parse checks those paths.
 
 * Block formulas
-
 Write official STM/Scheme data in an Org special block:
 
 #+begin_src org
@@ -238,7 +230,6 @@ This self-contained example demonstrates traversal and a cache hit:
 #+end_src
 
 * Block source and cache contract
-
 =org-texmacs-tree= expects a current TeXmacs special-block element from the
 current buffer.  Its body must be accessible under the current narrowing.
 After editing, obtain the element again; do not retain a block from an old
@@ -258,9 +249,7 @@ If text changes while waiting for the worker, the call reports an error and
 does not cache the old result.  Obtain a fresh block and call again.
 
 * Fragment formulas
-
 ** Migration from inline APIs
-
 The former =org-texmacs-inline-*= functions and span accessors now use
 =org-texmacs-fragment-*=.  The span type is =org-texmacs-fragment-span=,
 and the module feature is =org-texmacs-fragment= instead of
@@ -270,7 +259,6 @@ old definitions.  The paragraph boundaries remain unchanged; recognized
 root names are now controlled by =org-texmacs-fragment-tags=.
 
 ** Usage
-
 Write fragments directly in paragraph text using a configured TeXmacs root:
 
 #+begin_src org
@@ -340,7 +328,6 @@ change its major mode or fragment tag configuration.  Detected changes stop
 traversal with an error; completed callback effects are not rolled back.
 
 ** Span lifetime and positions
-
 Treat spans and their source strings as read-only.  Accessors such as
 =org-texmacs-fragment-span-begin= and =org-texmacs-fragment-span-end= expose the
 half-open range =[begin, end)=: begin is included, end is not.  Position and
@@ -366,7 +353,6 @@ that boundary is not available; widen first when full-document context is
 needed.  A previously obtained span must remain fully accessible when parsed.
 
 ** Configuring entry tags
-
 The default =org-texmacs-fragment-tags= is:
 
 #+begin_src emacs-lisp
@@ -422,7 +408,6 @@ The entry list is not recursive: =sqrt= above remains a child of =math=
 without needing its own entry.
 
 ** Recognition limits
-
 Configured roots are recognized only in paragraph text, including
 paragraphs in list items and quote blocks.  They need not occupy a whole
 paragraph.  Headline text, table cells, native objects such as emphasis,
@@ -484,7 +469,6 @@ region filtering.  There is no fragment cache or incremental synchronization,
 and large-document performance has not been validated.
 
 * Document conversion and native sessions
-
 Document conversion and native sessions were introduced in version 0.2.0.
 Version 0.2.1 requires an explicit source buffer for document conversion and
 adds a separate current-buffer wrapper.  This is a breaking API change,
@@ -497,7 +481,6 @@ They form an additional downstream path; the block and fragment APIs above
 continue to return Org-compatible pseudo subtrees.
 
 ** Preparing a document result
-
 The document API separates prepared input from buffer preparation.
 =org-texmacs-document INPUT= lowers an =org-texmacs-input= without reading
 buffers, collecting configuration, parsing STM or starting a worker.
@@ -718,7 +701,6 @@ rejected before lowering and never cause an external file read.
 This is structural conversion, not a byte-for-byte Org round trip.
 
 ** Headline metadata and presentation
-
 Document conversion snapshots these standard Org options from the source
 buffer and accepts their listed =#+OPTIONS= keys.  It does not introduce
 parallel TeXmacs display switches:
@@ -814,7 +796,6 @@ internal-link or ID resolution.  =pageref= values remain structural references;
 the body constructor does not paginate the document or precompute page numbers.
 
 ** Native encoding and lifetime
-
 =org-texmacs-session-open= creates an empty native document buffer and returns
 an opaque handle.  Only one session may be active in the shared worker.
 =org-texmacs-session-set-document= takes that handle and a document result,
@@ -874,7 +855,6 @@ auxiliary data or pagination have been resolved.  Complete file metadata and
 export remain outside this API.
 
 * Worker behavior and errors
-
 The first parse request or session open starts one shared headless TeXmacs
 process.  All buffers use it sequentially,
 with one Unix socket connection per synchronous request.
@@ -922,7 +902,6 @@ Old session handles stay invalid.  Failed parses are
 never cached.  Reentrant requests are rejected; there is no asynchronous queue.
 
 * Development checks
-
 Run from the repository root:
 
 #+begin_src sh
