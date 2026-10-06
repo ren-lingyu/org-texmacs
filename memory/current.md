@@ -2,86 +2,99 @@
 
 ## State represented
 
-This checkpoint reconstructs the v0.3.0 implementation state after node 4 and
-the associated architecture review. It is grounded in project commit
-`746a79820a3acc854499fed82d80b117dcfa61ec`.
+This checkpoint reconstructs the v0.3.0 release state on 2026-09-23. It is
+grounded in project commit
+`8c157d06b7a8793b0bd312e8f0c41612a3640388`, the commit selected by the local
+`v0.3.0` tag.
 
-## Implemented v0.3 nodes
+## Release outcome
 
-1. `b7cdefd`: prepared input, pure document core, and explicit buffer adapter.
-2. `1ed6e49`: restricted Org document context, supported options, and filtering.
-3. `4559482`: Org lists and quote/center container lowering.
-4. `746a798`: rich metadata, relative headline sectioning, and first-class
-   style/initial result fields.
-
-## Current document contract
-
-- The prepared-input constructor owns copied AST, INFO, islands, and post-blank
-  mappings; parent and identity mappings are rebuilt and invalid ownership is
-  rejected.
-- Pure document lowering does not read a source buffer or start a worker.
-- The buffer adapter captures supported Org source/configuration semantics and
-  preserves the v0.2.1 source-consistency checks.
-- Restricted context supports selected option merging and filtering while
-  refusing external reads, exporter hooks, code execution, ID lookup, and
-  buffer fallback outside the declared subset.
-- Lists and quote/center containers preserve recursive body structure and STM
-  provenance while rejecting checkboxes and explicit counters.
-- Metadata remains rich Org structure and lowers to TeXmacs doc-data tags.
-- Headline tags are selected from relative depth, numbering, H, and UNNUMBERED;
-  headings below H become nested lists instead of disappearing.
-- Document results now contain body, style, initial, and body-relative STM
-  paths, although the native session does not yet consume all fields.
-
-## Validation state
-
-The node-4 implementation recorded 190/190 ERT tests passing, seven Nix flake
-checks passing, and the package build passing on x86_64-linux. These results do
-not cover the still-unimplemented nodes 5 through 9.
-
-## Architecture observation
-
-The architecture review at this snapshot found a dependency inversion:
+v0.3.0 completes the planned structured-document expansion while preserving
+the v0.2.1 explicit-source, snapshot-consistency, and non-destructive behavior.
 
 ```text
-low-level worker/transport
-  -> high-level document module
+explicit Org source
+  -> prepared owned input
+  -> pure structured document lowering
+  -> body + style + initial + provenance
+  -> source-aware native encoding
+  -> one persistent native TeXmacs document session
 ```
 
-The worker requires document code in order to validate and encode the document
-wire representation. This couples transport/protocol concerns to Org document
-semantics and makes the worker depend on higher-level document/Org facilities.
+## Public construction boundary
 
-The observation is an architecture and ownership issue, not an observed
-runtime-correctness failure. The adopted response is:
+- `org-texmacs-input-create` constructs owned prepared input from already
+  parsed structures.
+- `org-texmacs-document` is the pure prepared-input lowering core.
+- `org-texmacs-prepare-buffer` is the explicit source-buffer adapter.
+- `org-texmacs-document-from-buffer` composes preparation and lowering.
+- `org-texmacs-document-current-buffer` remains a thin convenience wrapper.
+- Prepared input and results do not retain the source buffer or share mutable
+  AST/string ownership with callers.
 
-- do not block the v0.3.0 semantic implementation and release on this refactor;
-- preserve the public API, wire protocol, session lifecycle, and failure
-  behavior;
-- after the release, move document validation/wire construction and related
-  diagnostic encoding to the session/native-bridge side;
-- keep process startup, socket transport, framing, and protocol-envelope
-  validation in the worker layer.
+## Supported structured semantics
 
-The exact final module boundary remains subject to the completed node-8 wire
-shape and a post-release re-review.
+- Restricted Org options and filtering for tasks, archive, select/exclude,
+  comments, tags, H, num, and toc within the documented subset.
+- Rich title, author, and explicit date metadata.
+- Relative five-level sectioning, starred sections, low-level nested lists,
+  TODO/priority/tags formatting, UNNUMBERED, and ALT_TITLE.
+- Unordered, ordered, and description lists and nested quote/center containers.
+- Static example, fixed-width, and source blocks with snapshot tab expansion
+  and no Babel/noweb/coderef/highlighting execution.
+- Basic rectangular Org tables with structural rule borders and explicit
+  rejection of formulas, cookies, special columns, merges, and irregular rows.
+- Static TeXmacs TOC trees with deterministic generated labels, hlink, and
+  pageref, respecting the filtered context and known static STM labels.
+- Existing paragraphs, supported inline objects, external URI links, anonymous
+  inline footnotes, and block/fragment TeXmacs islands.
 
-## Remaining v0.3 nodes
+## Complete native document state
 
-5. Static example, fixed-width, and source blocks.
-6. Basic Org tables.
-7. Static TOC and generated labels.
-8. Complete style/initial/body/provenance native document consumption.
-9. Documentation, installation probes, version metadata, and release checks.
+- Results contain style, structured initial environment, body, and body-relative
+  STM provenance.
+- Native updates validate and encode every field before mutation, then apply
+  style, clear old explicit initial values, set new initial values and body,
+  and verify combined readback.
+- TeXmacs package normalization of style is accepted; initial is compared as an
+  unordered unique key/value mapping.
+- Preflight failures preserve the old session. Native update/readback failures
+  discard the damaged session; cleanup or transport failures stop the worker.
+- The public session remains single-active-session and headless. An internal
+  headless view is allowed; no GUI window or external file is opened.
 
-## Explicitly deferred beyond v0.3
+## Validation boundary
 
-Serialization, PDF, preview, visual pagination, multi-session, general internal
-references, citations, bibliography, file-link resolution, and complete Org
-export preprocessing remain outside the release.
+- 202/202 ERT tests passed with zero unexpected results.
+- Seven x86_64-linux Nix flake checks passed.
+- An independent default package build passed.
+- Local and straight installation probes passed, covering all ten Lisp
+  modules, the adjacent worker Scheme file, installed version metadata,
+  prepared/core/buffer equivalence, full native document replacement, source
+  preservation, parsing, and worker/cache reuse.
+- Other systems, GUI rendering, visual pagination, serialization, and PDF were
+  not verified.
 
-## Next action
+## Known deferred architecture issue
 
-Continue node 5 without broadening the review issue into an unrelated refactor.
-Keep the issue recorded so the completed v0.3 session/document wire can be
-reviewed and separated after release.
+The worker still depends on the high-level document module for parts of
+document wire validation/encoding. The issue was observed against the node-4
+snapshot and deliberately did not block v0.3.0 because no correctness failure
+was established. A post-release behavior-preserving refactor should move
+document representation concerns toward the session/native bridge while
+leaving transport and protocol-envelope validation in the worker.
+
+## Explicitly outside v0.3.0
+
+- Complete Org exporter preprocessing and arbitrary Org elements.
+- Internal/file/ID link resolution, named footnotes, citations, bibliography,
+  and general references.
+- Complete TeXmacs file document wrappers and serialization.
+- Save/export/PDF, preview, live synchronization, incremental mutation, and
+  multi-document or multi-session operation.
+
+## Next durable direction
+
+Re-review the deferred worker/document layering issue against the completed
+wire before expanding downstream consumers. Keep v0.3.0's public semantics and
+failure behavior stable during any refactor.
