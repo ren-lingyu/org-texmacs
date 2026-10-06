@@ -139,7 +139,7 @@ root tag mismatch, and `org-texmacs-worker-error' for worker failures."
   "Lower prepared INPUT into a fresh structural TeXmacs document result.
 INPUT must be an `org-texmacs-input' made by `org-texmacs-input-create' or
 `org-texmacs-prepare-buffer'.  Consume only its fixed AST, INFO, mappings,
-STYLE and INITIAL;
+STYLE, INITIAL and source location strings;
 do not read source buffers, collect configuration, parse STM or start a worker.
 Treat INPUT and the returned result, including nested data, as read-only.
 Unsupported structures signal `org-texmacs-document-error'.  For source
@@ -149,7 +149,8 @@ preparation and conversion together, use `org-texmacs-document-from-buffer'."
   (org-texmacs--document-lower
    (org-texmacs-input-ast input) (org-texmacs-input-islands input)
    (org-texmacs-input-post-blanks input) (org-texmacs-input-info input)
-   (org-texmacs-input-style input) (org-texmacs-input-initial input)))
+   (org-texmacs-input-style input) (org-texmacs-input-initial input)
+   (org-texmacs-input-source-file input) (org-texmacs-input-resource-base input)))
 
 ;;;###autoload
 (defun org-texmacs-prepare-buffer (source-buffer)
@@ -169,7 +170,7 @@ independently of the caller's current buffer.  For a convenience wrapper,
 use `org-texmacs-document-current-buffer'.
 
 Return an `org-texmacs-document' structure with BODY, STYLE, INITIAL and
-STM-PATHS accessors.
+STM-PATHS, SOURCE-FILE and RESOURCE-BASE accessors.
 This is a new derived result, not an Org live AST replacement or a native
 encoded tree.  Treat it and its nested contents as read-only.
 
@@ -201,6 +202,11 @@ is non-nil; use parsed ALT_TITLE for TOC text and generated labels with
 `hlink' and `pageref' for structural navigation.  Resolve same-document
 headline, CUSTOM_ID, ID and dedicated-target links from the owned AST, without
 cross-file or global ID lookup.  This does not resolve page numbers.
+Capture the base buffer's file name as source identity and SOURCE-BUFFER's
+effective `default-directory' as the resource base, keeping them distinct.
+Expand any home-directory abbreviation once during preparation.
+Do not expand resource paths or read linked files.  Reject either location
+changing during conversion, including changes that leave source text intact.
 Snapshot the supported Org document context once; later changes affect only
 the next conversion.  Merge the documented #+OPTIONS and metadata keyword
 subset, then apply Org's task/archive/select/exclude/comment filtering before
@@ -232,6 +238,13 @@ it does not provide export, native buffer updates or rendering."
     (let* ((buffer source-buffer)
            (mode major-mode)
            (tick (buffer-chars-modified-tick))
+           (source-file-value
+            (when-let* ((file (buffer-file-name (buffer-base-buffer))))
+              (substring-no-properties file)))
+           (source-directory-value
+            (and default-directory (substring-no-properties default-directory)))
+           (source-file (org-texmacs--source-capture-path source-file-value))
+           (resource-base (org-texmacs--source-capture-path source-directory-value))
            (tags (org-texmacs--fragment-tags))
            (heading-settings (org-texmacs--document-heading-settings))
            (link-settings (org-texmacs--document-link-settings))
@@ -250,6 +263,11 @@ it does not provide export, native buffer updates or rendering."
                                   (= tick (buffer-chars-modified-tick)))
                        (signal 'org-texmacs-document-error '("Source buffer changed")))
                      (org-texmacs--fragment-check-tags tags)
+                     (unless (and (equal source-file-value
+                                         (buffer-file-name (buffer-base-buffer)))
+                                  (equal source-directory-value default-directory))
+                       (signal 'org-texmacs-document-error
+                               '("Source location changed during conversion")))
                      (unless (equal heading-settings (org-texmacs--document-heading-settings))
                        (signal 'org-texmacs-document-error
                                '("Org heading settings changed during conversion")))
@@ -262,7 +280,8 @@ it does not provide export, native buffer updates or rendering."
         ;; Run user formatters only after private parser bindings have unwound.
         ;; Reject unsupported structure before starting any island request.
         (org-texmacs--document-lower (nth 0 prepared) (nth 1 prepared)
-                                     (nth 3 prepared) info style initial)
+                                     (nth 3 prepared) info style initial
+                                     source-file resource-base)
         (check)
         (dolist (request (nth 2 prepared))
           (check)
@@ -278,7 +297,9 @@ it does not provide export, native buffer updates or rendering."
                                 (nth 0 prepared) info
                                 :islands (nth 1 prepared)
                                 :post-blanks (nth 3 prepared)
-                                :style style :initial initial))))
+                                :style style :initial initial
+                                :source-file source-file
+                                :resource-base resource-base))))
           (check)
           result)))))
 

@@ -46,8 +46,10 @@
                       org-texmacs-input-ast org-texmacs-input-info
                       org-texmacs-input-islands org-texmacs-input-post-blanks
                       org-texmacs-input-style org-texmacs-input-initial
+                      org-texmacs-input-source-file org-texmacs-input-resource-base
                       org-texmacs-document-body org-texmacs-document-style
                       org-texmacs-document-initial org-texmacs-document-stm-paths
+                      org-texmacs-document-source-file org-texmacs-document-resource-base
                       org-texmacs-session-open
                       org-texmacs-session-set-document org-texmacs-session-close))
     (should (fboundp function))
@@ -163,6 +165,138 @@
                        (("key" . "x") ("key" . "y"))
                        (("key" . "x") . "tail")))
       (should-error (org-texmacs-input-create ast nil :initial initial)
+                    :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-source-location-owned-pure-input ()
+  (let* ((file (propertize (copy-sequence "/source/notes.org") 'face 'bold))
+         (directory (copy-sequence "/resources/link/../base/"))
+         (ast (org-element-create 'org-data nil
+                                  (org-element-create 'paragraph nil "Text")))
+         (input (org-texmacs-input-create ast nil :source-file file
+                                          :resource-base directory))
+         first)
+    (aset file 1 ?X)
+    (aset directory 1 ?X)
+    (let ((default-directory "/unrelated/"))
+      (cl-letf (((symbol-function 'buffer-substring-no-properties)
+                 (lambda (&rest _) (ert-fail "Unexpected buffer read"))))
+        ;; Install the sentinel after function rebinding: native compilation's
+        ;; trampoline setup may itself consult file handlers.
+        (let ((file-name-handler-alist
+               '(("." . (lambda (&rest _) (ert-fail "Unexpected file handler"))))))
+          (setq first (org-texmacs-document input)))))
+    (should (equal (org-texmacs-document-source-file first) "/source/notes.org"))
+    (should (equal (org-texmacs-document-resource-base first)
+                   "/resources/link/../base/"))
+    (should-not (text-properties-at 0 (org-texmacs-input-source-file input)))
+    (should-not (eq (org-texmacs-input-resource-base input)
+                    (org-texmacs-document-resource-base first)))
+    (should-not (eq (org-texmacs-input-source-file input)
+                    (org-texmacs-document-source-file first)))
+    (aset (org-texmacs-document-resource-base first) 1 ?X)
+    (aset (org-texmacs-document-source-file first) 1 ?X)
+    (should (equal (org-texmacs-document-source-file (org-texmacs-document input))
+                   "/source/notes.org"))
+    (should (equal (org-texmacs-document-resource-base (org-texmacs-document input))
+                   "/resources/link/../base/"))
+    (let ((unspecified (org-texmacs-document (org-texmacs-input-create ast nil))))
+      (should-not (org-texmacs-document-source-file unspecified))
+      (should-not (org-texmacs-document-resource-base unspecified)))))
+
+(ert-deftest org-texmacs-source-location-rejects-implicit-paths ()
+  (let ((ast (org-element-create 'org-data nil)))
+    (dolist (path '("" "relative/path" "~/notes.org" "/path\0suffix" t))
+      (should-error (org-texmacs-input-create ast nil :source-file path)
+                    :type 'org-texmacs-document-error)
+      (should-error (org-texmacs-input-create ast nil :resource-base path)
+                    :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-source-location-explicit-buffer-snapshot ()
+  (dolist (file '(nil "/source/notes.org"))
+    (let (input)
+      (with-temp-buffer
+        (org-mode)
+        (setq buffer-file-name file default-directory "/resources/override/")
+        (insert "Text\n")
+        (let ((source (current-buffer)))
+          (with-temp-buffer
+            (setq default-directory "/caller/")
+            (setq input (org-texmacs-prepare-buffer source)))))
+      (let ((result (org-texmacs-document input)))
+        (should (equal (org-texmacs-document-source-file result) file))
+        (should (equal (org-texmacs-document-resource-base result)
+                       "/resources/override/"))
+        (should (equal (org-texmacs-document-body result)
+                       '(document (concat "Text "))))))))
+
+(ert-deftest org-texmacs-source-location-indirect-buffer-context ()
+  (with-temp-buffer
+    (org-mode)
+    (setq buffer-file-name "/source/base.org" default-directory "/base/")
+    (insert "Text\n")
+    (let ((indirect (clone-indirect-buffer nil nil)))
+      (unwind-protect
+          (with-current-buffer indirect
+            (setq default-directory "/indirect/override/")
+            (let ((input (org-texmacs-prepare-buffer indirect)))
+              (should (equal (org-texmacs-input-source-file input) "/source/base.org"))
+              (should (equal (org-texmacs-input-resource-base input)
+                             "/indirect/override/"))))
+        (kill-buffer indirect)))))
+
+(ert-deftest org-texmacs-source-location-expands-home-during-preparation ()
+  (with-temp-buffer
+    (org-mode)
+    (setq default-directory "~/" buffer-file-name "~/notes.org")
+    (insert "Text\n")
+    (let* ((home (expand-file-name "~/"))
+           (input (org-texmacs-prepare-buffer (current-buffer))))
+      (should (equal (org-texmacs-input-source-file input)
+                     (concat home "notes.org")))
+      (should (equal (org-texmacs-input-resource-base input) home))
+      (should (equal default-directory "~/"))
+      (should (equal buffer-file-name "~/notes.org"))
+      (setq default-directory "/later/")
+      (should (equal (org-texmacs-document-resource-base (org-texmacs-document input))
+                     home)))))
+
+(ert-deftest org-texmacs-source-location-invalidates-worker-snapshot ()
+  (dolist (change '(file directory file-in-place directory-in-place))
+    (with-temp-buffer
+      (org-mode)
+      (setq buffer-file-name (copy-sequence "/source/notes.org")
+            default-directory (copy-sequence "/resources/base/"))
+      (insert "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
+      (let ((source (current-buffer))
+            (tick (buffer-chars-modified-tick))
+            (before (buffer-string)))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _)
+                     (with-current-buffer source
+                       (pcase change
+                         ('file (setq buffer-file-name "/new/notes.org"))
+                         ('directory (setq default-directory "/new/base/"))
+                         ('file-in-place (aset buffer-file-name 1 ?X))
+                         ('directory-in-place (aset default-directory 1 ?X))))
+                     '(math "x"))))
+          (let ((failure (should-error
+                          (org-texmacs-document-from-buffer source)
+                          :type 'org-texmacs-document-error)))
+            (should (equal (cadr failure) "Source location changed during conversion"))))
+        (should (= tick (buffer-chars-modified-tick)))
+        (should (equal before (buffer-string)))))))
+
+(ert-deftest org-texmacs-source-location-checks-after-preflight ()
+  (with-temp-buffer
+    (org-mode)
+    (setq default-directory "/resources/base/")
+    (insert "#+OPTIONS: toc:nil\n* Title\n")
+    (let* ((source (current-buffer))
+           (org-texmacs-format-headline-function
+            (lambda (&rest _)
+              (with-current-buffer source (setq default-directory "/new/base/"))
+              "Title")))
+      (should-error (org-texmacs-document-from-buffer source)
                     :type 'org-texmacs-document-error))))
 
 (ert-deftest org-texmacs-test-input-rejects-invalid-ownership ()

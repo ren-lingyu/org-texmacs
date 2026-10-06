@@ -112,12 +112,16 @@ so later redefinition affects only new calls."
 BODY is a text stree; STYLE is a list of TeXmacs style identifiers; INITIAL
 is an alist of environment identifiers to source-semantic text strees.
 STM-PATHS locate STM island roots only within BODY.  Each path contains
-zero-based child indices, excluding tags.  Callers must not mutate any slot
+zero-based child indices, excluding tags.  SOURCE-FILE and RESOURCE-BASE
+are copied source identity and resource-base strings, or nil.
+Callers must not mutate any slot
 or nested list/string.  No source buffer is retained."
   (body nil :read-only t)
   (stm-paths nil :read-only t)
   (style (list "generic") :read-only t)
-  (initial nil :read-only t))
+  (initial nil :read-only t)
+  (source-file nil :read-only t)
+  (resource-base nil :read-only t))
 
 (defun org-texmacs--document-fail (node message)
   "Signal a conversion error for NODE with MESSAGE and source context."
@@ -358,7 +362,7 @@ read a source buffer, query an ID database or invoke an export consumer."
      :body (cons tag (nreverse children)) :stm-paths (nreverse paths))))
 
 (defun org-texmacs--document-lower
-    (ast &optional islands post-blanks info style initial)
+    (ast &optional islands post-blanks info style initial source-file resource-base)
   "Lower prepared Org AST and ISLANDS to a structural document result.
 
 AST must be an `org-data' snapshot.  ISLANDS is an identity-keyed alist
@@ -375,6 +379,8 @@ STYLE is a nonempty list of TeXmacs style identifiers, defaulting to
 `(\"generic\")'.  INITIAL is an alist of TeXmacs environment identifiers to
 source-semantic text strees.  They are copied into the returned result and do
 not affect BODY lowering or its STM paths.
+SOURCE-FILE and RESOURCE-BASE are explicit source location strings, or nil.
+Copy them into the result without expanding paths or accessing the filesystem.
 
 POST-BLANKS optionally maps inline Org object identities to their original
 trailing spaces/tabs.  Without an entry, use the nonnegative `:post-blank'
@@ -415,6 +421,8 @@ from one snapshot."
   (let* ((used-islands nil) (used-blanks nil)
         (style (org-texmacs--document-copy-style (or style '("generic"))))
         (initial (org-texmacs--document-copy-initial initial))
+        (source-file (org-texmacs--source-copy-path source-file))
+        (resource-base (org-texmacs--source-copy-path resource-base))
         (headline-minimum nil)
         (headline-limit nil)
         (toc-setting nil)
@@ -1074,7 +1082,8 @@ from one snapshot."
         (org-texmacs--document-create
          :body (org-texmacs-document-body result)
          :stm-paths (org-texmacs-document-stm-paths result)
-         :style style :initial initial)))))
+         :style style :initial initial
+         :source-file source-file :resource-base resource-base)))))
 
 (defun org-texmacs--document-heading-settings ()
   "Copy effective Org heading parser settings for transfer and comparison.

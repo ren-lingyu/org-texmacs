@@ -18,18 +18,23 @@
   "Prepared structural input.  Treat all slots and nested data as read-only.
 AST and its identity-keyed ISLANDS and POST-BLANKS belong to this snapshot.
 INFO contains fixed options, not a request to collect source configuration.
-STYLE and INITIAL are copied TeXmacs document settings."
+STYLE and INITIAL are copied TeXmacs document settings.
+SOURCE-FILE is optional source identity; RESOURCE-BASE is the optional
+fixed base for source-relative resources.  Neither is inferred from the other."
   (ast nil :read-only t)
   (info nil :read-only t)
   (islands nil :read-only t)
   (post-blanks nil :read-only t)
   (style nil :read-only t)
-  (initial nil :read-only t))
+  (initial nil :read-only t)
+  (source-file nil :read-only t)
+  (resource-base nil :read-only t))
 
 ;;;###autoload
 (cl-defun org-texmacs-input-create
-    (ast info &key islands post-blanks (style '("generic")) initial)
-  "Copy AST, INFO, mappings, STYLE and INITIAL into an owned input.
+    (ast info &key islands post-blanks (style '("generic")) initial
+         source-file resource-base)
+  "Copy AST, INFO, mappings and explicit document context into an owned input.
 AST must be a fully parsed `org-data' tree, not Org's live cache.  Do not
 resolve deferred properties, read buffers, discover STM or run a formatter.
 ISLANDS maps AST node identities to already parsed text strees; POST-BLANKS
@@ -41,6 +46,11 @@ STYLE is a nonempty list of TeXmacs style identifier strings and defaults to
 `(\"generic\")'.  INITIAL is an alist of unique nonempty environment identifier
 strings to source-semantic text strees and defaults to nil.  Neither setting
 is inferred from INFO or ambient Custom values.
+
+SOURCE-FILE and RESOURCE-BASE are optional explicit absolute path strings,
+copied without filesystem access or path expansion.  RESOURCE-BASE fixes
+the source-relative resource base; SOURCE-FILE does not override it.  Omitted
+values remain nil and are never inferred from the current buffer.
 
 Copy strings, lists and vectors, rebuild parent links, and remap references
 to AST nodes in INFO and the mappings.  Copy parsed title, author and date
@@ -158,6 +168,8 @@ returned input, its accessors' values, or arguments from a formatter."
          :islands (mapping islands #'org-texmacs--document-copy-stree)
          :style (org-texmacs--document-copy-style style)
          :initial (org-texmacs--document-copy-initial initial)
+         :source-file (org-texmacs--source-copy-path source-file)
+         :resource-base (org-texmacs--source-copy-path resource-base)
          :post-blanks
          (mapping post-blanks
                   (lambda (value)

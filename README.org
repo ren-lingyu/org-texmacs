@@ -489,7 +489,7 @@ The document API separates prepared input from buffer preparation.
 =org-texmacs-document INPUT= lowers an =org-texmacs-input= without reading
 buffers, collecting configuration, parsing STM or starting a worker.
 Construct one with =org-texmacs-input-create AST INFO :islands ... :post-blanks ...
-:style ... :initial ...=,
+:style ... :initial ... :source-file ... :resource-base ...=,
 or use =org-texmacs-prepare-buffer SOURCE-BUFFER= for the existing source adapter.
 The constructor requires an already parsed =org-data= snapshot.  Island mappings
 must use identities from that AST and contain parsed strees, not STM strings.
@@ -524,8 +524,10 @@ parses STM islands with the shared worker, and returns a document result:
 | =org-texmacs-document-style=     | Copied list of TeXmacs style identifiers                         |
 | =org-texmacs-document-initial=   | Copied alist of environment identifiers to source-semantic stree |
 | =org-texmacs-document-stm-paths= | Paths to complete STM island roots in the body only               |
+| =org-texmacs-document-source-file= | Optional copied absolute source file name                      |
+| =org-texmacs-document-resource-base= | Optional copied base for source-relative resources         |
 
-Paths use zero-based child indices, excluding the tag.  Keep all four fields
+Paths use zero-based child indices, excluding the tag.  Keep all fields
 together and treat the result and all nested data as read-only.  It is not
 a native TeXmacs tree, an Org AST, or a complete TeXmacs file document.
 The call does not mutate source text or Org's live AST, and does not cache
@@ -541,6 +543,23 @@ The current-buffer wrapper remains available, including for v0.2.0 callers.
 Both entry points capture supported settings from the source buffer and
 restore the caller's current-buffer context on return or error.  A mere
 current-buffer switch while waiting does not invalidate the source snapshot.
+
+Buffer preparation captures the base buffer's file name as source identity and
+the explicit source buffer's effective =default-directory= as its resource
+base.  A visiting file does not override a customized directory.  Both strings
+are captured into the prepared input and document result, expanding home
+abbreviations once during preparation.  Changes to either original location
+string during conversion invalidate the snapshot even when the text has not
+changed.  Indirect buffers use their base buffer's file identity and their own
+effective directory.
+
+For a manually prepared input, =:source-file= and =:resource-base= accept
+explicit absolute path strings or =nil=.  Omitted values remain unspecified;
+pure construction never reads the current buffer to fill them.  Locations are
+copied without path expansion, symlink resolution or file access.  Tilde and
+relative location strings are rejected.  This captures source context for
+future resource consumers; file links still fail explicitly, and the native
+session does not yet interpret these location fields.
 
 Each buffer-adapter call captures source text, fragment tags, supported
 heading/link parser settings and a restricted Org document context.  It merges
