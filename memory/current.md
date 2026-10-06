@@ -81,11 +81,26 @@ validation no longer blocks project work.
 - A genuine fresh-context recovery drill cannot be completed inside the
   context that authored the migration. It remains a later validation step.
 
+## Current ARCH-01 worktree state
+
+- The ordinary worktree contains an uncommitted behavior-preserving layering
+  refactor in `org-texmacs-core.el`, `org-texmacs-worker.el`,
+  `org-texmacs-session.el`, and `tests/ert/ert.el`.
+- Shared condition types now live in core. The worker owns transport framing,
+  generic envelope reading, and STM parse response semantics. The session/native
+  bridge owns document preflight/wire serialization, native encoding, and
+  native/session response contracts.
+- `org-texmacs-worker.el` no longer requires `org-texmacs-document.el`; a test
+  records this load boundary before loading the complete package.
+- Public APIs and the Scheme request/response wire are intended to remain
+  unchanged. `git diff --check` passes, but ERT and Nix checks have not yet been
+  run against this worktree, so the node is not yet verified or commit-ready.
+
 ## Next actions
 
-1. In a fresh Codex context, verify skill discovery, trigger boundaries, and
-   recovery from active GAW memory without reading the historical archive.
-2. Re-audit the completed v0.3 worker/session/document boundary and plan the
-   behavior-preserving layering refactor.
-3. Implement `ARCH-01` in independently reviewable nodes while preserving all
-   public behavior and maintained coverage.
+1. Run the full ERT suite and Nix checks for the ARCH-01 worktree; repair any
+   regressions within the same layering scope.
+2. Review the complete diff and, if verified, prepare it as one independently
+   commit-ready architecture node and update project/backlog memory.
+3. In a future fresh Codex context, verify skill discovery and recovery from
+   active GAW memory without reading the historical archive.
