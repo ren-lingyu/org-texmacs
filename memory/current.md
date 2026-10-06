@@ -1,100 +1,86 @@
 # org-texmacs persistent memory
 
-## State represented
+## Current state
 
-This checkpoint reconstructs the v0.3.0 release state on 2026-09-23. It is
-grounded in project commit
-`8c157d06b7a8793b0bd312e8f0c41612a3640388`, the commit selected by the local
-`v0.3.0` tag.
+This state records the post-v0.3.0 project and the decision to migrate durable
+agent-facing project knowledge into the GAW branch. It is a current governance
+and planning state, not a claim that the migration has already been completed.
 
-## Release outcome
+## Project baseline
 
-v0.3.0 completes the planned structured-document expansion while preserving
-the v0.2.1 explicit-source, snapshot-consistency, and non-destructive behavior.
+- Local v0.3.0 tag target:
+  `8c157d06b7a8793b0bd312e8f0c41612a3640388`.
+- Current main HEAD observed on 2026-10-06:
+  `1a90b7bd2e0f60601cdf6003edf1ccbc79afce18`.
+- The two post-release commits adjust README heading style and allow the docs
+  directory; they do not introduce a new functional release milestone.
+- The ordinary project worktree was clean when this GAW reconstruction began.
 
-```text
-explicit Org source
-  -> prepared owned input
-  -> pure structured document lowering
-  -> body + style + initial + provenance
-  -> source-aware native encoding
-  -> one persistent native TeXmacs document session
-```
+## Current product contract
 
-## Public construction boundary
+v0.3.0 provides the explicit-source/prepared-input document pipeline, the
+documented finite Org semantic subset, body/style/initial/provenance results,
+and one persistent native TeXmacs document session. It does not provide general
+serialization, PDF/export, preview, multi-session, or complete Org semantics.
 
-- `org-texmacs-input-create` constructs owned prepared input from already
-  parsed structures.
-- `org-texmacs-document` is the pure prepared-input lowering core.
-- `org-texmacs-prepare-buffer` is the explicit source-buffer adapter.
-- `org-texmacs-document-from-buffer` composes preparation and lowering.
-- `org-texmacs-document-current-buffer` remains a thin convenience wrapper.
-- Prepared input and results do not retain the source buffer or share mutable
-  AST/string ownership with callers.
+## Adopted post-release review decision
 
-## Supported structured semantics
+The worker-to-document dependency remains an architecture smell, not a known
+correctness defect. A behavior-preserving post-release refactor is appropriate:
 
-- Restricted Org options and filtering for tasks, archive, select/exclude,
-  comments, tags, H, num, and toc within the documented subset.
-- Rich title, author, and explicit date metadata.
-- Relative five-level sectioning, starred sections, low-level nested lists,
-  TODO/priority/tags formatting, UNNUMBERED, and ALT_TITLE.
-- Unordered, ordered, and description lists and nested quote/center containers.
-- Static example, fixed-width, and source blocks with snapshot tab expansion
-  and no Babel/noweb/coderef/highlighting execution.
-- Basic rectangular Org tables with structural rule borders and explicit
-  rejection of formulas, cookies, special columns, merges, and irregular rows.
-- Static TeXmacs TOC trees with deterministic generated labels, hlink, and
-  pageref, respecting the filtered context and known static STM labels.
-- Existing paragraphs, supported inline objects, external URI links, anonymous
-  inline footnotes, and block/fragment TeXmacs islands.
+- document representation validation, wire construction, provenance-aware
+  encoding orchestration, and document diagnostics belong on the
+  session/native-bridge side;
+- worker startup, socket transport, framing, process lifecycle, and protocol
+  envelope validation remain in the worker layer;
+- public APIs, wire semantics, session failure behavior, and the v0.3 test
+  contract must remain stable.
 
-## Complete native document state
+The refactor should precede substantial new consumer expansion, but no code
+change has yet been authorized or made for it.
 
-- Results contain style, structured initial environment, body, and body-relative
-  STM provenance.
-- Native updates validate and encode every field before mutation, then apply
-  style, clear old explicit initial values, set new initial values and body,
-  and verify combined readback.
-- TeXmacs package normalization of style is accepted; initial is compared as an
-  unordered unique key/value mapping.
-- Preflight failures preserve the old session. Native update/readback failures
-  discard the damaged session; cleanup or transport failures stop the worker.
-- The public session remains single-active-session and headless. An internal
-  headless view is allowed; no GUI window or external file is opened.
+## Adopted GAW migration decisions
 
-## Validation boundary
+- The valid `_agents` branch and its deployed worktree will become the durable
+  source for current memory and repository-scoped project skills.
+- GAW branch preservation and transfer are already solved and are not an open
+  risk for this plan.
+- Root `AGENTS.md` remains an untracked, unconditionally loaded bootstrap
+  artifact. Its important policy can be made reproducible from a project skill.
+- Detailed project goals, current architecture, evidence, progress, and next
+  actions belong in memory, not in a skill.
+- Skills contain stable reusable procedures, triggers, routing, templates, and
+  deterministic helpers. They must not become another append-only project
+  history or current-status store.
+- Repository skill names use the `org-texmacs-` namespace. More than one
+  focused skill may live under `.agents/skills/`.
+- Initial skill candidates are `org-texmacs-governance` and
+  `org-texmacs-development`. Validation and release skills should be split only
+  when repeated workflows justify independent discovery.
+- The existing large root AGENTS/GOALS documents remain source evidence until
+  migration and a recovery drill are complete; no root-file reduction has yet
+  occurred.
 
-- 202/202 ERT tests passed with zero unexpected results.
-- Seven x86_64-linux Nix flake checks passed.
-- An independent default package build passed.
-- Local and straight installation probes passed, covering all ten Lisp
-  modules, the adjacent worker Scheme file, installed version metadata,
-  prepared/core/buffer equivalence, full native document replacement, source
-  preservation, parsing, and worker/cache reuse.
-- Other systems, GUI rendering, visual pagination, serialization, and PDF were
-  not verified.
+## GAW reconstruction status
 
-## Known deferred architecture issue
+Retrospective memory now represents:
 
-The worker still depends on the high-level document module for parts of
-document wire validation/encoding. The issue was observed against the node-4
-snapshot and deliberately did not block v0.3.0 because no correctness failure
-was established. A post-release behavior-preserving refactor should move
-document representation concerns toward the session/native bridge while
-leaving transport and protocol-envelope validation in the worker.
+1. v0.1.0 parsing foundation;
+2. v0.2.0 structured body/native session;
+3. adoption of AST-first goals and strict interface constraints;
+4. v0.2.1 interface hardening;
+5. v0.3.0 plan convergence;
+6. the node-4 architecture review;
+7. the v0.3.0 release.
 
-## Explicitly outside v0.3.0
+Historical checkpoints intentionally introduce `goals.md` only after v0.2.0,
+when the project goals were actually adopted. Project skills have not been
+projected backward into historical states.
 
-- Complete Org exporter preprocessing and arbitrary Org elements.
-- Internal/file/ID link resolution, named footnotes, citations, bibliography,
-  and general references.
-- Complete TeXmacs file document wrappers and serialization.
-- Save/export/PDF, preview, live synchronization, incremental mutation, and
-  multi-document or multi-session operation.
+## Next action
 
-## Next durable direction
-
-Re-review the deferred worker/document layering issue against the completed
-wire before expanding downstream consumers. Keep v0.3.0's public semantics and
-failure behavior stable during any refactor.
+Normalize the current GAW workspace into focused goals, current project model,
+evidence, and handoff memory; then create scoped namespaced repository skills.
+After those sources are validated, prepare the reproducible root AGENTS
+bootstrap asset. Modifying the actual root AGENTS/GOALS files remains a separate
+project-worktree action requiring explicit authorization.
