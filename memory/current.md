@@ -32,8 +32,10 @@ behavior-preserving post-v0.3 change.
   version progress or historical facts.
 - Root `AGENTS.md` remains an untracked unconditional bootstrap artifact. Its
   important rules should be reproducible from the governance skill.
-- The existing root AGENTS/GOALS documents remain source evidence until the
-  new memory and skills pass a recovery drill.
+- The legacy root documents and their directly referenced plain-text probes
+  are preserved as non-authoritative evidence under
+  `archive/2026-10-06T08-59-24Z--1a90b7b/`. The live root documents remain
+  untouched until the new memory and skills pass a recovery drill.
 - The known worker-to-document dependency inversion should be repaired after
   governance migration without changing public APIs, document wire semantics,
   session failure behavior, or v0.3 coverage.
@@ -51,12 +53,18 @@ behavior-preserving post-v0.3 change.
 - The governance bootstrap helper passed shell syntax validation. Its read-only
   check reports the existing legacy root AGENTS differs from the concise asset,
   as expected; write mode was not run.
+- The root `archive` workspace and `org-texmacs-gaw-archive` skill now define a
+  reproducible plain-text archive workflow. Checkpoint `dbc0df9` preserves the
+  three root Markdown documents and 30 directly relevant probe/result files,
+  with project commit `1a90b7b` as its exact project parent.
 
 ## Blockers and uncertainties
 
 - No project-code blocker is known.
 - Root AGENTS/GOALS reduction is not authorized by GAW workspace maintenance
-  and must remain a separate project-worktree action.
+  and must remain a separate project-worktree action. The historical source
+  material is now preserved, so evidence retention no longer blocks that later
+  action.
 - Project skill discovery and bootstrap restoration still need an observable
   fresh-context recovery drill after the skill files are checkpointed.
 
