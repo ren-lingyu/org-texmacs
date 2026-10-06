@@ -18,6 +18,7 @@ explicit Org source buffer
   -> owned prepared input
        AST + INFO + islands + post-blank mappings + style + initial
        source-file + resource-base
+       bibliography: explicit source identities + parsed BibTeX trees
   -> pure document-wide analysis
        identity-keyed link resolutions + target labels + typed file targets
   -> pure local document lowering
@@ -111,7 +112,9 @@ The first resolution node is committed as
 Maintained tests establish structural and native readback behavior, not visual
 reference values or typesetting. See `memory/evidence.md` for validation gaps.
 
-## DOC-01 named-footnote worktree node
+## DOC-01 committed named-footnote node
+
+Committed as `a242eb233322a62b3f18dbf1a3ba1278e628e361`; the verified diff matches.
 
 - Pure document resolution maps named references to one owned separate or
   labeled inline definition. Definitions may follow the first reference.
@@ -132,7 +135,7 @@ reference values or typesetting. See `memory/evidence.md` for validation gaps.
   Its special headline is omitted after definitions have been collected.
 - Maintained native readback covers shared labels, mixed anonymous/named notes,
   Unicode and literal encoding. Rendered numbering and style expansion are
-  unverified. This uncommitted node is not a released capability.
+  unverified. This node is not a released capability.
 
 ## Committed source-location snapshot node
 
@@ -157,7 +160,7 @@ This node passed 217/217 local ERT and byte compilation, then Nix
 package/ERT/package-lint checks using the user's temporary, uncommitted remote
 mirror-source configuration. The overlay is not part of the project change.
 
-## Local file-link worktree node
+## Committed local file-link node
 
 - Document results add `file-paths`, body-relative paths to raw Org file-link
   target leaves in `hlink` nodes. Raw relative names remain unchanged until a
@@ -181,8 +184,39 @@ mirror-source configuration. The overlay is not part of the project change.
   these paths for other future consumers; this native consumer fails explicitly.
   Actual GUI navigation/rendering remains unverified.
 - The worker transport/protocol and Scheme service are unchanged. The node is
-  uncommitted and passed ERT 223/223 plus Nix package/package-lint/ERT checks with
+  committed as `77a2888` and passed ERT 223/223 plus Nix package/package-lint/ERT checks with
   the user's separate temporary mirror-source configuration.
+
+## DOC-01 explicit bibliography snapshot foundation
+
+This verified and staged foundation awaits the user's commit; it precedes
+citation/bibliography output support.
+
+- Buffer preparation and both conversion wrappers accept an optional alist of
+  path-to-BibTeX-text source snapshots. Paths are identities, expanded once
+  against the captured Org resource base. No bibliography file is opened.
+- Text is validated with local Emacs BibTeX entry/field helpers and fixed
+  standard entry types. Automatic commas and string expansion are disabled;
+  high-level `bibtex-validate` and global file/string databases are not called.
+  The initial grammar accepts line-start standard entries with contiguous
+  `@Type` headers, percent comments,
+  whitespace, and single braced/quoted or decimal field values. Reject
+  malformed entries, repeated keys/fields, strings, preambles, concatenation
+  and other top-level data explicitly.
+- A `parse-bibliography` worker operation parses validated text with TeXmacs's
+  native converter, removes non-entry comments, and normalizes empty output to
+  `(document)`. It uses the existing parse response/error and worker lifecycle.
+  Structured author names and native source notation remain in the field trees.
+- Prepared input adds `bibliography`, a path-to-parsed-document alist. Pure
+  construction copies/validates the trees and rejects duplicate paths or keys
+  across sources. Original text/path/list mutations, including path aliases,
+  invalidate preparation across
+  worker waits. Native type/key/field signatures must match local validation;
+  inconsistent payloads stop the worker as protocol failures.
+- Bibliography data is not yet emitted or retained in document results.
+  Citation and BIBLIOGRAPHY/PRINT_BIBLIOGRAPHY keyword lowering still fail
+  explicitly. The following semantic node will bind declarations and references
+  to these owned entries and use footnote-aware first-use ordering.
 
 ## Worker and session
 

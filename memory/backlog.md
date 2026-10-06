@@ -69,12 +69,17 @@ The user's overlay is excluded from project commits and pushes.
 The plain-local-file node, committed as `77a2888`, preserves raw hlink target leaves with
 typed `file-paths` and translates them on a body copy only in the native bridge.
 It passed 223/223 ERT and Nix/package-lint under the temporary mirror-source
-configuration. The named-footnote worktree node now resolves inline/separate
+configuration. The named-footnote node, committed as `a242eb2`, resolves inline/separate
 definitions and repeated references within one owned snapshot; see project
-and current memory for its bounded contract and validation state. After that
-node is committed, review the next DOC-01 citations/bibliography boundary before
-implementation: choose an explicit owned representation, resolver dependencies
-and native target behavior without ambient bibliographic/file queries.
+and current memory for its bounded contract and validation state. The next
+DOC-01 citations/bibliography boundary is under design review. Low-level native
+parsing/formatting from in-memory BibTeX was probed successfully, but recovers
+malformed source. The user selected explicit caller-supplied text snapshots. A foundation node
+now prepares and owns parsed dependency trees, with its grammar and API boundary
+recorded in project memory. Declaration binding and citation/bibliography
+lowering remain the next semantic node. Keep strict source
+validation, owned entries, footnote-aware first-use key ordering, missing and
+duplicate-key failure, native label isolation, and provenance in the design.
 
 Remaining **unresolved-design** boundaries include file search options,
 tilde/remote targets/context, broader native URL escaping and consumer output

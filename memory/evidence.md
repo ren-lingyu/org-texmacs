@@ -12,6 +12,69 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
+## Bibliography snapshot foundation evidence
+
+- The user selected explicit path-to-BibTeX-text snapshots for the first
+  citations/bibliography dependency node. No user bibliography data was read.
+  Authorized installed-source reads covered `oc.el`, `oc-basic.el`, relevant
+  TeXmacs citation/bibliography Scheme and .ts fragments, and local Emacs
+  `bibtex.el` parser/dialect/validation fragments.
+- Org `oc.el` combines document/global bibliography declarations; its citation
+  collection follows footnote bodies at first use. `oc-basic.el`'s high-level
+  parser uses file metadata, global caches and file reads. Emacs 31.1's
+  `bibtex-validate` can also initialize global file lists. The foundation uses
+  only local entry/field parsers with fixed types/settings; automatic commas,
+  string expansion and the imenu settings changed by dialect setup are bound.
+- TeXmacs 2.1.5's `std-automatic.ts` provides `with-bib`, grouped `cite`,
+  `cite-detail`, `bibitem-with-key` and `bib-list`. Its native in-memory parser
+  and plain formatter accepted synthetic text and emitted typed entry trees
+  plus labelled `bib-list` data. The malformed input `@book{broken, title={Missing`
+  was recovered silently, establishing the need for strict pre-validation.
+  Unicode/native markup emerged as source notation (`<#4E2D>`, `<less>...`).
+- The original synthetic probe first timed out in the command sandbox (124,
+  no result). An explicitly approved outside-sandbox run of the same command
+  passed (exit 0). This does not establish a bibliography parser defect from
+  the original timeout. The three exact pure-text probe files are preserved in
+  `archive/2026-10-06T17-35-50Z--a242eb2/`, archive-only checkpoint
+  `84be873e30943d2c37b4bfe612d1e81f0effd9b6`, with sole additional project parent
+  `a242eb233322a62b3f18dbf1a3ba1278e628e361`. Bytes/digests and unchanged HEAD
+  were verified. No active memory, overlay or binaries entered the archive.
+- Eight new maintained cases cover pure ownership/invalid data, local syntax
+  and global-state isolation, preflight, text/path/list/alias mutations across
+  STM and bibliography waits, invalid native payloads, native Unicode/comments/
+  empty data, worker reuse, source disposal and retained citation rejection.
+  Full local ERT passed 240/240 (exit 0, 114.57 seconds, Emacs 31.1 / Org
+  9.8-pre / TeXmacs 2.1.5) before the final dependency declaration and raw-path
+  consistency fixes. Final focused bibliography/package-load ERT passed 9/9.
+  A header-whitespace native regression produced a type/key/field signature
+  disagreement for `@ Book`. The current subset explicitly requires contiguous
+  `@Type` headers and rejects that form before worker requests; its cause is
+  not broadened into a claim about all native bibliography parsing.
+- The first Nix check failed compilation because compile-only BibTeX dependency
+  declaration did not assure runtime parser availability. The library became
+  an explicit `require`; its Nix check then passed. A further Nix check of raw
+  path alias checks passed, including 240/240 installed ERT in 87.62 seconds.
+  The exploratory header-whitespace Nix snapshot reached 239/240 with the same
+  signature mismatch; it is not the final source state. Final Nix checking
+  passed (exit 0), including compilation, package-lint and installed ERT
+  240/240 in 86.61 seconds, with contiguous-header preflight. The only subsequent
+  ordinary edit clarified the private worker docstring's `SOURCE` as text data
+  instead of STM-only data; it changed no executable behavior.
+- Final reviewed/staged seven-file diff on base
+  `a242eb233322a62b3f18dbf1a3ba1278e628e361` has SHA-256
+  `b73fbe99d75bc77291be7ab6b71b519db164e2b293ce64d686c7eb0d7d0e55fc` for
+  `git diff HEAD -- README.org org-texmacs-document.el org-texmacs-input.el org-texmacs-worker.el org-texmacs-worker.scm org-texmacs.el tests/ert/ert.el`.
+  Exact-path staging was approved; no implementation changes remain unstaged.
+  `git diff --check` passed. The unchanged remote USTC mirror overlay remains
+  local and excluded, with hash
+  `1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54`.
+  GNU ELPA availability is still unverified. Project commit remains pending.
+- Semantic references: https://orgmode.org/manual/Citations.html,
+  https://orgmode.org/manual/Bibliography-printing.html, and
+  https://www.texmacs.org/tmdoc/main/styles/std/std-automatic-bib.en.html.
+  In-memory parser/formatter probes are not maintained formatting regressions
+  or visual citation/bibliography evidence.
+
 ## Named-footnote semantic evidence
 
 - Org 9.8-pre `ox.el` collects named inline and separate definitions before
@@ -55,7 +118,8 @@
   `82c13615c352889dbedede08505518eacb09db78fa1b739c5105448db0da0cd5` for
   `git diff HEAD -- README.org org-texmacs-context.el org-texmacs-document.el tests/ert/ert.el`.
   The complete staged diff matches that hash exactly; `git diff --check` passed.
-  Project commit remains pending; `tmp/commit.md` is the reviewed message.
+  The later project commit `a242eb233322a62b3f18dbf1a3ba1278e628e361` was
+  compared with the baseline on 2026-10-07 and matches the verified hash exactly.
 
 ## Release provenance
 
@@ -66,7 +130,7 @@
 - Local v0.3.1 annotated tag target:
   `880d4e00667907ef66985387b4865ec8d795d48d`.
 - Current main HEAD observed on 2026-10-07:
-  `77a28881807d1bf8dba508b1f8a07f392083dfca`.
+  `a242eb233322a62b3f18dbf1a3ba1278e628e361`.
 
 These are local Git facts. They do not prove remote release state or tag
 signatures.
