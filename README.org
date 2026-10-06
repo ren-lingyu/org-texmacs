@@ -769,6 +769,41 @@ execution, export hook or filter.  The corresponding source directives are
 rejected before lowering and never cause an external file read.
 This is structural conversion, not a byte-for-byte Org round trip.
 
+** Explicit bibliography snapshots
+The preparation API accepts an optional alist of source paths to BibTeX text:
+
+#+begin_src emacs-lisp
+(org-texmacs-prepare-buffer
+ org-source-buffer
+ '(("references.bib" . "@book{example, title={A book}, year=2026}")))
+#+end_src
+
+The caller supplies the text explicitly.  Paths are identities, resolved once
+against the Org source's captured resource base; conversion does not open them
+or query global bibliography files/databases.  Text and path changes during
+worker waits invalidate preparation.  The input's
+=org-texmacs-input-bibliography= accessor returns an owned alist from absolute
+identities to parsed =(document (bib-entry ...))= trees.  Field values retain
+TeXmacs source notation, including Unicode escapes and structured author names.
+
+Validation uses local Emacs BibTeX parser helpers before any worker request,
+with automatic comma repairs and string expansion disabled.  This initial
+subset accepts standard BibTeX entry types at the start of a line with contiguous
+=@Type= headers, whitespace,
+percent comment lines, and single braced/quoted or decimal field values.
+Malformed entries, duplicate keys/fields, =@string=, =@preamble=, symbolic
+string constants, concatenation and other top-level text are rejected.
+Native parsing must preserve the validated type/key/field-name structure.
+
+Pure callers may supply already parsed trees with =:bibliography= to
+=org-texmacs-input-create=.  The constructor owns separate copies and rejects
+duplicate source identities or citation keys across the snapshot.  It does not
+parse text, read files or start a worker.  This node establishes the dependency
+snapshot; citations and =BIBLIOGRAPHY=/=PRINT_BIBLIOGRAPHY= keywords still fail
+explicitly, and the parsed bibliography is not emitted by current lowering.
+The two buffer conversion wrappers accept the same optional text-snapshot
+argument, using the preparation checks above.
+
 ** Headline metadata and presentation
 Document conversion snapshots these standard Org options from the source
 buffer and accepts their listed =#+OPTIONS= keys.  It does not introduce

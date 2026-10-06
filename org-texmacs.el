@@ -153,21 +153,29 @@ preparation and conversion together, use `org-texmacs-document-from-buffer'."
    (org-texmacs-input-source-file input) (org-texmacs-input-resource-base input)))
 
 ;;;###autoload
-(defun org-texmacs-prepare-buffer (source-buffer)
+(defun org-texmacs-prepare-buffer (source-buffer &optional bibliography-sources)
   "Prepare a buffer-independent structural input from SOURCE-BUFFER.
 Apply the source and supported-subset contract of
 `org-texmacs-document-from-buffer', including preflight and STM parsing.
-Return an `org-texmacs-input', without opening a native session."
-  (org-texmacs--prepare-buffer source-buffer #'identity))
+Return an `org-texmacs-input', without opening a native session.
+BIBLIOGRAPHY-SOURCES explicitly maps source paths to BibTeX text strings.
+Capture paths relative to the Org source resource base, validate text before
+worker requests, and own native parsed entries in the input's BIBLIOGRAPHY.
+Never open these paths or query a bibliography database.  This prepares data;
+it does not yet enable citation or bibliography keyword lowering."
+  (org-texmacs--prepare-buffer source-buffer #'identity bibliography-sources))
 
 ;;;###autoload
-(defun org-texmacs-document-from-buffer (source-buffer)
+(defun org-texmacs-document-from-buffer (source-buffer &optional bibliography-sources)
   "Convert the complete Org SOURCE-BUFFER to a text document result.
 
 SOURCE-BUFFER must be a live, unnarrowed Org buffer object, not a name
 or file path.  Capture source text and supported configuration from it,
 independently of the caller's current buffer.  For a convenience wrapper,
 use `org-texmacs-document-current-buffer'.
+BIBLIOGRAPHY-SOURCES is the explicit text snapshot alist accepted by
+`org-texmacs-prepare-buffer'.  Prepared bibliography data does not yet enable
+citation or bibliography keyword lowering.
 
 Return an `org-texmacs-document' structure with BODY, STYLE, INITIAL and
 STM-PATHS, SOURCE-FILE, RESOURCE-BASE and FILE-PATHS accessors.
@@ -227,9 +235,9 @@ or tag/heading/link-setting changes while waiting.  Parser and worker errors
 propagate unchanged.
 The result preserves source-dependent text semantics for later encoding;
 it does not provide export, native buffer updates or rendering."
-  (org-texmacs--prepare-buffer source-buffer #'org-texmacs-document))
+  (org-texmacs--prepare-buffer source-buffer #'org-texmacs-document bibliography-sources))
 
-(defun org-texmacs--prepare-buffer (source-buffer consumer)
+(defun org-texmacs--prepare-buffer (source-buffer consumer &optional bibliography-sources)
   "Prepare SOURCE-BUFFER and call CONSUMER before the final source check."
   (unless (and (bufferp source-buffer) (buffer-live-p source-buffer))
     (signal 'org-texmacs-document-error '("Expected a live Org buffer object")))
@@ -246,6 +254,18 @@ it does not provide export, native buffer updates or rendering."
             (and default-directory (substring-no-properties default-directory)))
            (source-file (org-texmacs--source-capture-path source-file-value))
            (resource-base (org-texmacs--source-capture-path source-directory-value))
+           (bibliography-source-snapshot
+            (org-texmacs--bibliography-source-snapshot bibliography-sources resource-base))
+           (bibliography-original-snapshot
+            (mapcar (lambda (entry)
+                      (cons (substring-no-properties (car entry))
+                            (substring-no-properties (cdr entry))))
+                    bibliography-sources))
+           (bibliography-signatures
+            (mapcar (lambda (entry)
+                      (org-texmacs--bibliography-validate-source (cdr entry)))
+                    bibliography-source-snapshot))
+           (bibliography nil)
            (tags (org-texmacs--fragment-tags))
            (heading-settings (org-texmacs--document-heading-settings))
            (link-settings (org-texmacs--document-link-settings))
@@ -264,6 +284,9 @@ it does not provide export, native buffer updates or rendering."
                                   (= tick (buffer-chars-modified-tick)))
                        (signal 'org-texmacs-document-error '("Source buffer changed")))
                      (org-texmacs--fragment-check-tags tags)
+                     (unless (equal bibliography-original-snapshot bibliography-sources)
+                       (signal 'org-texmacs-document-error
+                               '("Bibliography source texts changed during preparation")))
                      (unless (and (equal source-file-value
                                          (buffer-file-name (buffer-base-buffer)))
                                   (equal source-directory-value default-directory))
@@ -278,6 +301,12 @@ it does not provide export, native buffer updates or rendering."
                      (when (buffer-narrowed-p)
                        (signal 'org-texmacs-document-error '("Source became narrowed"))))))
         (check)
+        (let (keys)
+          (dolist (signatures bibliography-signatures)
+            (dolist (signature signatures)
+              (when (member (nth 1 signature) keys)
+                (signal 'org-texmacs-document-error '("Duplicate bibliography key")))
+              (push (nth 1 signature) keys))))
         ;; Run user formatters only after private parser bindings have unwound.
         ;; Reject unsupported structure before starting any island request.
         (org-texmacs--document-lower (nth 0 prepared) (nth 1 prepared)
@@ -293,6 +322,27 @@ it does not provide export, native buffer updates or rendering."
                                     (equal tag (symbol-name (car stree))))))
               (signal 'org-texmacs-parse-error '("TeXmacs root differs from fragment tag")))
             (setcdr (car request) stree)))
+        (cl-mapc
+         (lambda (entry expected)
+           (check)
+           (let ((tree (org-texmacs--worker-request (cdr entry) 'bibliography)))
+             (check)
+             (condition-case err
+                 (let* ((owned (org-texmacs--bibliography-copy (list (cons (car entry) tree))))
+                        (parsed (cdar owned))
+                        (actual
+                         (mapcar (lambda (item)
+                                   (list (nth 1 item) (nth 2 item)
+                                         (mapcar (lambda (field) (nth 1 field))
+                                                 (cdr (nth 3 item)))))
+                                 (cdr parsed))))
+                   (unless (equal expected actual)
+                     (signal 'org-texmacs-document-error '("Native bibliography changed entry structure")))
+                   (push (car owned) bibliography))
+               (org-texmacs-document-error
+                (org-texmacs--worker-stop)
+                (signal 'org-texmacs-worker-error (cdr err))))))
+         bibliography-source-snapshot bibliography-signatures)
         (let ((result (funcall consumer
                                (org-texmacs-input-create
                                 (nth 0 prepared) info
@@ -300,14 +350,17 @@ it does not provide export, native buffer updates or rendering."
                                 :post-blanks (nth 3 prepared)
                                 :style style :initial initial
                                 :source-file source-file
-                                :resource-base resource-base))))
+                                :resource-base resource-base
+                                :bibliography (nreverse bibliography)))))
+          ;; The constructor owns a separate copy of parsed dependency data.
           (check)
           result)))))
 
 ;;;###autoload
-(defun org-texmacs-document-current-buffer ()
-  "Convert the current Org buffer using `org-texmacs-document-from-buffer'."
-  (org-texmacs-document-from-buffer (current-buffer)))
+(defun org-texmacs-document-current-buffer (&optional bibliography-sources)
+  "Convert the current Org buffer using `org-texmacs-document-from-buffer'.
+Pass explicit BIBLIOGRAPHY-SOURCES text snapshots to its preparation adapter."
+  (org-texmacs-document-from-buffer (current-buffer) bibliography-sources))
 
 ;;;###autoload
 (defun org-texmacs-check-setup ()

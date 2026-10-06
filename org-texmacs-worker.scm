@@ -8,6 +8,8 @@
              (generic document-style)
              (generic document-edit))
 
+(lazy-define (convert bibtex bibtextm) parse-bibtex-snippet)
+
 (define (org-texmacs-stree? node)
   (or (string? node)
       (and (list? node) (pair? node) (symbol? (car node))
@@ -300,6 +302,22 @@
 
 (define (org-texmacs-reply request)
   (cond
+   ((and (list? request) (= (length request) 3)
+         (eq? (car request) 'parse-bibliography)
+         (integer? (cadr request)) (> (cadr request) 0)
+         (string? (caddr request)))
+    (let ((id (cadr request)))
+      (catch #t
+        (lambda ()
+          (let ((parsed (parse-bibtex-snippet (caddr request))))
+            (if (equal? parsed "") (set! parsed '(document)))
+            ;; Text was validated by preparation.  Comments are not entries.
+            (if (not (func? parsed 'document)) (error "Invalid bibliography tree"))
+            (list 'ok id
+                  (cons 'document
+                        (list-filter (cdr parsed)
+                                     (lambda (entry) (func? entry 'bib-entry)))))))
+        (lambda args (list 'error id "Invalid bibliography source")))))
    ((and (list? request) (>= (length request) 2)
          (integer? (cadr request)) (> (cadr request) 0)
          (or (and (eq? (car request) 'session-open) (= (length request) 2))

@@ -20,7 +20,9 @@ AST and its identity-keyed ISLANDS and POST-BLANKS belong to this snapshot.
 INFO contains fixed options, not a request to collect source configuration.
 STYLE and INITIAL are copied TeXmacs document settings.
 SOURCE-FILE is optional source identity; RESOURCE-BASE is the optional
-fixed base for source-relative resources.  Neither is inferred from the other."
+fixed base for source-relative resources.  Neither is inferred from the other.
+BIBLIOGRAPHY owns parsed BibTeX dependency trees keyed by source identity;
+these native source-semantic trees are separate from the Org AST and islands."
   (ast nil :read-only t)
   (info nil :read-only t)
   (islands nil :read-only t)
@@ -28,12 +30,49 @@ fixed base for source-relative resources.  Neither is inferred from the other."
   (style nil :read-only t)
   (initial nil :read-only t)
   (source-file nil :read-only t)
-  (resource-base nil :read-only t))
+  (resource-base nil :read-only t)
+  (bibliography nil :read-only t))
+
+(defun org-texmacs--bibliography-copy (bibliography)
+  "Validate and own prepared BIBLIOGRAPHY without parsing or file access.
+Each entry maps an explicit absolute source path to a parsed BibTeX document
+stree.  Reject duplicate paths and citation keys across the complete snapshot."
+  (unless (proper-list-p bibliography)
+    (signal 'org-texmacs-document-error '("Expected a bibliography alist")))
+  (let (paths keys result)
+    (dolist (source bibliography)
+      (unless (and (consp source) (stringp (car source)))
+        (signal 'org-texmacs-document-error '("Invalid bibliography source")))
+      (let ((path (org-texmacs--source-copy-path (car source)))
+            (tree (org-texmacs--document-copy-stree (cdr source))))
+        (when (member path paths)
+          (signal 'org-texmacs-document-error '("Duplicate bibliography path")))
+        (push path paths)
+        (unless (and (consp tree) (eq (car tree) 'document))
+          (signal 'org-texmacs-document-error '("Expected a parsed bibliography document")))
+        (dolist (entry (cdr tree))
+          (unless (and (consp entry) (eq (car entry) 'bib-entry) (= (length entry) 4)
+                       (stringp (nth 1 entry)) (> (length (nth 1 entry)) 0)
+                       (stringp (nth 2 entry)) (> (length (nth 2 entry)) 0)
+                       (consp (nth 3 entry)) (eq (car (nth 3 entry)) 'document))
+            (signal 'org-texmacs-document-error '("Invalid parsed bibliography entry")))
+          (when (member (nth 2 entry) keys)
+            (signal 'org-texmacs-document-error '("Duplicate bibliography key")))
+          (push (nth 2 entry) keys)
+          (let (fields)
+            (dolist (field (cdr (nth 3 entry)))
+              (unless (and (consp field) (eq (car field) 'bib-field) (= (length field) 3)
+                           (stringp (nth 1 field)) (> (length (nth 1 field)) 0)
+                           (not (member-ignore-case (nth 1 field) fields)))
+                (signal 'org-texmacs-document-error '("Invalid or duplicate bibliography field")))
+              (push (nth 1 field) fields))))
+        (push (cons path tree) result)))
+    (nreverse result)))
 
 ;;;###autoload
 (cl-defun org-texmacs-input-create
     (ast info &key islands post-blanks (style '("generic")) initial
-         source-file resource-base)
+         source-file resource-base bibliography)
   "Copy AST, INFO, mappings and explicit document context into an owned input.
 AST must be a fully parsed `org-data' tree, not Org's live cache.  Do not
 resolve deferred properties, read buffers, discover STM or run a formatter.
@@ -51,6 +90,12 @@ SOURCE-FILE and RESOURCE-BASE are optional explicit absolute path strings,
 copied without filesystem access or path expansion.  RESOURCE-BASE fixes
 the source-relative resource base; SOURCE-FILE does not override it.  Omitted
 values remain nil and are never inferred from the current buffer.
+
+BIBLIOGRAPHY is an alist from explicit absolute source paths to already parsed
+BibTeX document strees.  Copy its text trees and reject duplicate source paths,
+keys or fields.  Never read those paths or parse source text here.  This slot
+establishes prepared data ownership; citation/bibliography lowering remains
+unsupported until its document-wide resolution contract is implemented.
 
 Copy strings, lists and vectors, rebuild parent links, and remap references
 to AST nodes in INFO and the mappings.  Copy parsed title, author and date
@@ -170,6 +215,7 @@ returned input, its accessors' values, or arguments from a formatter."
          :initial (org-texmacs--document-copy-initial initial)
          :source-file (org-texmacs--source-copy-path source-file)
          :resource-base (org-texmacs--source-copy-path resource-base)
+         :bibliography (org-texmacs--bibliography-copy bibliography)
          :post-blanks
          (mapping post-blanks
                   (lambda (value)

@@ -176,17 +176,22 @@ This pure protocol helper does not change worker lifecycle state."
   (org-texmacs--worker-decode-datum
    (org-texmacs--worker-read-response response id)))
 
-(defun org-texmacs--worker-request (source)
+(defun org-texmacs--worker-request (source &optional syntax)
   "Parse SOURCE using the shared TeXmacs worker and return a stree.
-SOURCE is STM data, never Scheme code to execute.  Only one request may run at
+SOURCE is text data, never Scheme code to execute.  Only one request may run at
 a time.  Parse errors preserve the worker; transport failures or cancellation
-stop it so a later call can start a fresh process."
+stop it so a later call can start a fresh process.
+SYNTAX is nil for STM or `bibliography' for already validated BibTeX text.
+The latter parses source data only, without querying files or databases."
   (unless (stringp source)
     (signal 'wrong-type-argument (list 'stringp source)))
+  (unless (memq syntax '(nil bibliography))
+    (signal 'org-texmacs-worker-error '("Unknown source syntax")))
   (let ((datum
          (org-texmacs--worker-call
           (lambda (id)
-            (format "(parse %d %s)\n" id (org-texmacs--scheme-string source))))))
+            (format "(%s %d %s)\n" (if syntax "parse-bibliography" "parse")
+                    id (org-texmacs--scheme-string source))))))
     (condition-case err
         (org-texmacs--worker-decode-datum datum)
       (org-texmacs-parse-error (signal (car err) (cdr err)))

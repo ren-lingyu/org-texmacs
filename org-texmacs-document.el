@@ -12,6 +12,8 @@
 
 ;;; Code:
 
+(require 'bibtex)
+
 (require 'org-texmacs-core)
 (require 'org-texmacs-source)
 (require 'org-texmacs-fragment)
@@ -1261,6 +1263,87 @@ buffer-local copies separate from the caller's snapshot and source buffer."
   "Snapshot effective link registration and abbreviation settings."
   (mapcar #'org-texmacs--document-copy-link-setting
           (list org-link-parameters org-link-abbrev-alist org-link-abbrev-alist-local)))
+
+(defun org-texmacs--bibliography-source-snapshot (sources resource-base)
+  "Copy explicit path-to-text SOURCES using captured RESOURCE-BASE.
+Resolve source identities without opening files or running file handlers."
+  (unless (proper-list-p sources)
+    (signal 'org-texmacs-document-error '("Expected bibliography source text alist")))
+  (let ((file-name-handler-alist nil) paths result)
+    (dolist (entry sources)
+      (unless (and (consp entry) (stringp (car entry)) (> (length (car entry)) 0)
+                   (not (string-match-p "\0" (car entry))) (stringp (cdr entry)))
+        (signal 'org-texmacs-document-error '("Invalid bibliography source text")))
+      (unless (or (file-name-absolute-p (car entry)) resource-base)
+        (signal 'org-texmacs-document-error '("Relative bibliography identity needs resource base")))
+      (let ((path (org-texmacs--source-copy-path
+                   (expand-file-name (car entry) resource-base))))
+        (when (member path paths)
+          (signal 'org-texmacs-document-error '("Duplicate bibliography source identity")))
+        (push path paths)
+        (push (cons path (substring-no-properties (cdr entry))) result)))
+    (nreverse result)))
+
+(defun org-texmacs--bibliography-validate-source (source)
+  "Validate the bounded BibTeX SOURCE grammar before native parsing.
+Use Emacs's local parser helpers, never its global validation or file helpers.
+Return ordered type/key/field-name signatures for native consistency checks.
+Accept standard BibTeX entry types, line-start entries, whitespace and percent
+comment lines, and single braced/quoted or decimal field values.  Reject string
+constants, concatenation, preambles, repairs and duplicate keys or fields."
+  (with-temp-buffer
+    (let ((bibtex-autoadd-commas nil)
+          (bibtex-expand-strings nil)
+          (imenu-generic-expression nil)
+          (imenu-case-fold-search nil)
+          (bibtex-BibTeX-entry-alist
+           (mapcar #'list '("Article" "Book" "Booklet" "InBook" "InCollection"
+                            "InProceedings" "Manual" "MastersThesis" "Misc"
+                            "PhdThesis" "Proceedings" "TechReport" "Unpublished")))
+          (case-fold-search t) keys signatures)
+      (bibtex-set-dialect 'BibTeX t)
+      (insert source)
+      (goto-char (point-min))
+      (condition-case err
+          (while (progn (skip-chars-forward " \t\n\r") (not (eobp)))
+            (if (eq (char-after) ?%)
+                (forward-line 1)
+              (unless (save-excursion (skip-chars-backward " \t") (bolp))
+                (signal 'org-texmacs-document-error '("BibTeX entries must start on a line")))
+              (beginning-of-line)
+              (let ((bounds (bibtex-valid-entry)) type key fields)
+                (unless bounds
+                  (signal 'org-texmacs-document-error '("Malformed or unsupported BibTeX entry")))
+                (unless (string-match-p "\\`@[A-Za-z]+\\'" (match-string-no-properties 1))
+                  (signal 'org-texmacs-document-error '("Whitespace after BibTeX @ is unsupported")))
+                (setq type (downcase (substring (match-string-no-properties 1) 1))
+                      key (match-string-no-properties 2))
+                (when (member key keys)
+                  (signal 'org-texmacs-document-error '("Duplicate bibliography key")))
+                (push key keys)
+                (goto-char (match-end 0))
+                (let (field)
+                  (while (setq field (bibtex-parse-field))
+                    (let ((name (downcase (buffer-substring-no-properties
+                                          (nth 1 (car field)) (nth 2 (car field))))))
+                      (when (member name fields)
+                        (signal 'org-texmacs-document-error '("Duplicate bibliography field")))
+                      (push name fields))
+                    (goto-char (nth 1 field))
+                    (let ((literal (bibtex-parse-field-string)))
+                      (cond (literal (goto-char (cdr literal)))
+                            ((looking-at "[0-9]+") (goto-char (match-end 0)))
+                            (t (signal 'org-texmacs-document-error
+                                       '("BibTeX string constants are unsupported")))))
+                    (unless (= (point) (nth 2 field))
+                      (signal 'org-texmacs-document-error '("BibTeX concatenation is unsupported")))
+                    (goto-char (nth 3 field))))
+                (push (list type key (nreverse fields)) signatures)
+                (goto-char (cdr bounds)))))
+        (org-texmacs-document-error (signal (car err) (cdr err)))
+        (error (signal 'org-texmacs-document-error
+                       (list "Malformed bibliography text" (error-message-string err)))))
+      (nreverse signatures))))
 
 (defun org-texmacs--document-prepare-source (source tags headings links info)
   "Prepare SOURCE under private Org link syntax using fixed LINKS settings.

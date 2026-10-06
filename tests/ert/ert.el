@@ -47,6 +47,7 @@
                       org-texmacs-input-islands org-texmacs-input-post-blanks
                       org-texmacs-input-style org-texmacs-input-initial
                       org-texmacs-input-source-file org-texmacs-input-resource-base
+                      org-texmacs-input-bibliography
                       org-texmacs-document-body org-texmacs-document-style
                       org-texmacs-document-initial org-texmacs-document-stm-paths
                       org-texmacs-document-source-file org-texmacs-document-resource-base
@@ -73,6 +74,168 @@
                      '(document (concat "Hello")))))
     (dolist (value (list nil t ast (current-buffer)))
       (should-error (org-texmacs-document value) :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-bibliography-input-ownership ()
+  (let* ((path (copy-sequence "/source/references.bib"))
+         (title (copy-sequence "Book"))
+         (tree (list 'document (list 'bib-entry "book" "key"
+                                    (list 'document (list 'bib-field "title" title)))))
+         (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil "Text")))
+         (input (org-texmacs-input-create ast nil :bibliography (list (cons path tree))))
+         (owned (org-texmacs-input-bibliography input)))
+    (should (equal owned (list (cons path tree))))
+    (should-not (eq (caar owned) path))
+    (should-not (eq (cdar owned) tree))
+    (aset path 1 ?X)
+    (aset title 0 ?X)
+    (should (equal (caar owned) "/source/references.bib"))
+    (should (equal (nth 2 (cadr (nth 3 (cadr (cdar owned))))) "Book"))
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _) (ert-fail "Pure input started worker")))
+              ((symbol-function 'insert-file-contents)
+               (lambda (&rest _) (ert-fail "Pure input read files"))))
+      (should (equal (org-texmacs-document-body (org-texmacs-document input))
+                     '(document (concat "Text")))))))
+
+(ert-deftest org-texmacs-bibliography-input-rejects-invalid-data ()
+  (let* ((ast (org-element-create 'org-data nil))
+         (entry '(bib-entry "book" "key" (document (bib-field "title" "Book"))))
+         (tree (list 'document entry)))
+    (dolist (data (list 'invalid '(("relative.bib" document))
+                       (list (cons "/a.bib" '(concat "wrong")))
+                       (list (cons "/a.bib" '(document "opaque entry")))
+                       (list (cons "/a.bib" tree) (cons "/a.bib" '(document)))
+                       (list (cons "/a.bib" tree) (cons "/b.bib" tree))
+                       '(("/a.bib" document (bib-entry "book" "key"
+                                                      (document (bib-field "title" "A")
+                                                                (bib-field "TITLE" "B")))))))
+      (should-error (org-texmacs-input-create ast nil :bibliography data)
+                    :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-bibliography-source-validation ()
+  (require 'bibtex)
+  (let ((imenu-generic-expression 'unchanged)
+        (imenu-case-fold-search 'unchanged)
+        (bibtex-dialect 'biblatex)
+        (bibtex-autoadd-commas t)
+        (bibtex-expand-strings t))
+    (cl-letf (((symbol-function 'bibtex-validate)
+               (lambda (&rest _) (ert-fail "Global bibliography validator called")))
+              ((symbol-function 'bibtex-strings)
+               (lambda (&rest _) (ert-fail "String database queried")))
+              ((symbol-function 'find-file-noselect)
+               (lambda (&rest _) (ert-fail "Bibliography file opened"))))
+      (should (equal (org-texmacs--bibliography-validate-source
+                      "% Comment\n  @Book{key, title={A {nested} book}, year=2026}\n\n@misc{second, note=\"Text\"}\n")
+                     '(("book" "key" ("title" "year")) ("misc" "second" ("note")))))
+      (dolist (source '("@book{key, title={Missing" "@book{key, title={A} year=2026}"
+                        "@book{key, title={A})" "@unknown{key, title={A}}" "@ Book{key}"
+                        "@string{name={Value}}" "@preamble{\"Text\"}"
+                        "@book{key, title=name}" "@book{key, title={A} # {B}}"
+                        "@book{key, title={A}, TITLE={B}}"
+                        "@book{key}\n@misc{key}" "unparsed trailing text"))
+        (should-error (org-texmacs--bibliography-validate-source source)
+                      :type 'org-texmacs-document-error)))
+    (should (eq imenu-generic-expression 'unchanged))
+    (should (eq imenu-case-fold-search 'unchanged))
+    (should (eq bibtex-dialect 'biblatex))
+    (should bibtex-autoadd-commas)
+    (should bibtex-expand-strings)))
+
+(ert-deftest org-texmacs-bibliography-source-snapshot-and-preflight ()
+  (with-temp-buffer
+    (org-mode)
+    (setq-local default-directory "/source/base/")
+    (insert "Text\n")
+    (let* ((name (copy-sequence "refs.bib"))
+           (text (copy-sequence "@book{key, title={Book}}"))
+           (sources (list (cons name text))) calls)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (value &optional syntax)
+                   (push (list value syntax) calls)
+                   '(document (bib-entry "book" "key" (document (bib-field "title" "Book")))))))
+        (let ((input (org-texmacs-prepare-buffer (current-buffer) sources)))
+          (should (equal calls (list (list text 'bibliography))))
+          (should (equal (caar (org-texmacs-input-bibliography input)) "/source/base/refs.bib"))
+          (aset text 0 ?X)
+          (aset name 0 ?X)
+          (should (equal (caar (org-texmacs-input-bibliography input)) "/source/base/refs.bib"))))
+      (setq calls nil)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Invalid bibliography started worker"))))
+        (dolist (bad '((("a.bib" . "@book{broken, title={Missing"))
+                       (("a.bib" . "@book{key}") ("b.bib" . "@misc{key}"))
+                       (("a.bib" . "") ("./a.bib" . ""))))
+          (should-error (org-texmacs-prepare-buffer (current-buffer) bad)
+                        :type 'org-texmacs-document-error)))
+      (should (equal (buffer-string) "Text\n")))))
+
+(ert-deftest org-texmacs-bibliography-source-rechecks-worker-waits ()
+  (dolist (stage '(stm bibliography))
+    (dolist (change '(text path alias list))
+      (with-temp-buffer
+        (org-mode)
+        (insert (if (eq stage 'stm) "(math \"x\")\n" "Text\n"))
+        (let* ((text (copy-sequence "@book{key}"))
+               (path (copy-sequence "refs.bib"))
+               (sources (list (cons path text))))
+          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                     (lambda (_source &optional syntax)
+                       (pcase change
+                         ('text (aset text 0 ?X))
+                         ('path (aset path 0 ?X))
+                         ('alias (setcar (car sources) "./refs.bib"))
+                         ('list (setcdr sources (list (cons "other.bib" "@book{other}")))))
+                       (if syntax '(document (bib-entry "book" "key" (document))) '(math "x")))))
+            (should-error (org-texmacs-prepare-buffer (current-buffer) sources)
+                          :type 'org-texmacs-document-error)))))))
+
+(ert-deftest org-texmacs-bibliography-preparation-retains-lowering-boundary ()
+  (dolist (source '("[cite:@key]\n" "#+bibliography: refs.bib\n"
+                    "#+print_bibliography:\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Unsupported citation started worker"))))
+        (should-error (org-texmacs-prepare-buffer (current-buffer)
+                                                 '(("refs.bib" . "@book{key}")))
+                      :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-bibliography-invalid-native-payload-stops-worker ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "Text\n")
+    (dolist (response '((concat "wrong")
+                        (document (bib-entry "book" "wrong-key" (document)))
+                        (document (bib-entry "book" "key" (document (bib-field "extra" "lost"))))))
+      (let (stopped)
+        (cl-letf (((symbol-function 'org-texmacs--worker-request) (lambda (&rest _) response))
+                  ((symbol-function 'org-texmacs--worker-stop) (lambda () (setq stopped t))))
+          (should-error (org-texmacs-prepare-buffer (current-buffer) '(("refs.bib" . "@book{key}")))
+                        :type 'org-texmacs-worker-error)
+          (should stopped))))))
+
+(ert-deftest org-texmacs-bibliography-native-parsing-and-worker-reuse ()
+  (org-texmacs-test--with-worker
+    (let (input)
+      (with-temp-buffer
+        (org-mode)
+        (insert "Text\n")
+        (setq input (org-texmacs-prepare-buffer
+                     (current-buffer)
+                     '(("refs.bib" . "% Comment\n  @Book{key, Title={中 <alpha>}, year=2026}")
+                       ("empty.bib" . "")))))
+      (let* ((parsed (cdar (org-texmacs-input-bibliography input)))
+             (process org-texmacs--worker-process))
+        (should (equal parsed '(document (bib-entry "book" "key"
+                                                      (document (bib-field "title" "<#4E2D> <less>alpha<gtr>")
+                                                                (bib-field "year" "2026"))))))
+        (should (equal (org-texmacs--worker-request "(math \"x\")") '(math "x")))
+        (should (eq process org-texmacs--worker-process))
+        (should (equal (cdr (nth 1 (org-texmacs-input-bibliography input))) '(document)))
+        (should (equal (org-texmacs-document-body (org-texmacs-document input))
+                       '(document (concat "Text "))))))))
 
 (ert-deftest org-texmacs-test-input-ownership-and-mapping ()
   (let* ((leaf (copy-sequence "island"))
