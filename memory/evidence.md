@@ -89,7 +89,8 @@ Other systems were not established by the recorded validations.
   `880d4e00667907ef66985387b4865ec8d795d48d`. SHA-256 of
   `git diff HEAD -- README.org org-texmacs-context.el org-texmacs-document.el org-texmacs.el tests/ert/ert.el`
   was `07656ff6745c9c00d106faf48689e233fc183d13e5bb4f2036cafd16fc340555`.
-  No committed project snapshot for this implementation is yet established.
+  The later project commit `a3ba241d66dc1e1a89a9eb4c4fc678fef2f5bfb4` was
+  checked on 2026-10-06: its diff from that base matches this hash exactly.
 - Nix flake checking timed out twice at 120 seconds, inside and outside the
   host sandbox, while downloading Org 9.8.8 from ELPA with a TLS unexpected-EOF
   error. It did not reach package building or the declared project checks.
@@ -107,6 +108,79 @@ Other systems were not established by the recorded validations.
   https://orgmode.org/manual/Internal-Links.html and TeXmacs linking primitives
   at https://www.texmacs.org/tmdoc/devel/format/regular/prim-link.en.html.
   These documentation observations do not substitute for native/visual tests.
+
+## Source/resource context decisions and verification
+
+The user authorized reading five installed Org source files for this task.
+The inspected Org 9.8-pre source root was:
+
+`/nix/store/bdfdqx9nhkzz1crr5lnk10dyissdn59p-emacs-pgtk-31-1-org-9.8-pre/share/emacs/site-lisp/`
+
+- `ox.el`, `org-export--get-buffer-attributes` (1691), takes file identity from
+  the base buffer. It does not establish a resource-directory override.
+- `ol.el`, `org-link--normalize-filename` (2682), uses the effective directory;
+  `ox-html.el`, `org-html-link` (3432), and `ox-latex.el`, `org-latex-link`
+  (3339), retain relative file paths through applicable helpers.
+- `ox-publish.el`, `org-publish-file-relative-name` (1204), explicitly leaves
+  relative names unchanged and applies publishing policy to eligible absolute
+  paths. That policy belongs to consumers, not source-side local handlers.
+- A focused helper probe used file identity
+  `/tmp/org-resource-context/source/notes.org` and effective directory
+  `/tmp/org-resource-context/override/`. `org-export--get-buffer-attributes`
+  retained the former; `org-link--normalize-filename` with `noabbrev` resolved
+  `figures/a.pdf` to the latter directory. `org-export-file-uri` and
+  `org-publish-file-relative-name` (with a different publishing base) both
+  retained `figures/a.pdf`. No export pipeline or resource files were read.
+- Snapshot locations may legitimately use `~/...`; preparation expands this
+  once, while pure constructors require explicit absolute strings. The first
+  full run exposed rejection of the host's normal abbreviated directory, which
+  was corrected and transferred into maintained ERT.
+- A prototype field named `source-directory` produced input/result aliasing;
+  `special-variable-p` confirmed it is an Emacs dynamic variable. The field
+  was renamed `resource-base`, and ownership/in-place-mutation regressions pass.
+- Source inspection also showed LaTeX's undescribed unnumbered-headline link
+  title fallback. Native reference presentation remains a separate review
+  boundary; native readback does not verify equivalent displayed text.
+
+SHA-256 of the inspected files, respectively:
+
+| Source | SHA-256 |
+| --- | --- |
+| ox.el | 76bb6cab98fe51c14313055b364af707f1b6fd98165a00074e055609841b73c5 |
+| ox-html.el | 09a7ef0ba6bf40a1fa0b5bdf1db2647fdcc4f2ee264aaa951c3e28f742b1dc9a |
+| ox-latex.el | 4cd4f7beb6da9ce4965cb94db522f5455c98b5f89b3e82946e1bceb41d56960d |
+| ox-publish.el | e7d91ad3f5527aea7f54f621610ae96def9d4e362a1a0990552da7ec51ae2951 |
+| ol.el | aad28b1fe9eea70943d26d46f95a4129b614d04d539b0e7fb22954b89a6ee18f |
+
+On 2026-10-06 the final local full ERT passed 217/217 (exit 0, 106.36 seconds)
+under `emacs-twist`, and all ten modules byte-compiled without warnings (exit
+0). Seven new maintained cases cover pure ownership, explicit/omitted paths,
+source-vs-caller directories, visiting/non-file/indirect buffers, preparation
+home expansion, location changes/in-place mutation across worker waits, and
+post-preflight checks.
+
+The verified six-file diff on baseline `a3ba241d66dc1e1a89a9eb4c4fc678fef2f5bfb4`
+had SHA-256 `3661d1b73013c08f1353f2cf29336486021210211eaa70cbbf5fcd87d2e0c768`
+using `git diff HEAD -- README.org org-texmacs-document.el org-texmacs-input.el org-texmacs-source.el org-texmacs.el tests/ert/ert.el`.
+It remains uncommitted; the baseline is not a tested commit for the new fields.
+
+After local implementation/validation finished, `timeout 120s nix flake check
+-L --no-write-lock-file` passed (exit 0), including package building,
+package-lint, and installed-package ERT 217/217 (82.34 seconds). This used the
+user's temporary overlay rewriting `https://elpa.gnu.org/packages/` to the
+remote `https://mirrors.ustc.edu.cn/elpa/gnu/` mirror while retaining fetchurl
+hash verification. The configuration is only retained locally and must not be
+committed or pushed. Its diff hash was
+`1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54`; it is
+excluded from the six-file implementation diff. This does not establish
+availability of GNU ELPA. The installed package was
+`/nix/store/fxri3nk51fwihvr995h50widajllizgn-emacs-org-texmacs-0.3.1/`.
+
+Archive selection found no necessary independent temporary artifact: bytecode
+directories are regenerable cache, the probe inputs/results/provenance are
+fully distilled here, and maintained ERT covers adopted snapshot semantics.
+`tmp/commit.md` duplicates the committed first-node message. No raw overlay
+snapshot is committed. No new archive checkpoint is warranted.
 
 ## Durable TeXmacs facts
 

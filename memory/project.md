@@ -17,7 +17,8 @@ explicit Org source buffer
   -> private parsing and restricted Org context
   -> owned prepared input
        AST + INFO + islands + post-blank mappings + style + initial
-  -> pure document-wide analysis (DOC-01 current worktree)
+       source-file + resource-base (source-context worktree node)
+  -> pure document-wide analysis
        identity-keyed link resolutions + target labels
   -> pure local document lowering
        body + style + initial + STM provenance
@@ -84,10 +85,10 @@ internal/file/ID links, named footnotes, citations, bibliography, arbitrary
 references, dynamic source execution, advanced table semantics, unrestricted
 export preprocessing, and arbitrary Org element coverage.
 
-## DOC-01 current worktree extension
+## DOC-01 committed local-link extension
 
-The first resolution node is implemented in the ordinary worktree based on
-`880d4e00667907ef66985387b4865ec8d795d48d`; it is not a released capability.
+The first resolution node is committed as
+`a3ba241d66dc1e1a89a9eb4c4fc678fef2f5bfb4`; it is not a released capability.
 
 - A pure analysis phase in the document layer scans the prepared AST, treating
   STM islands as opaque, and returns conversion-local identity-keyed links and
@@ -109,6 +110,26 @@ The first resolution node is implemented in the ordinary worktree based on
 
 Maintained tests establish structural and native readback behavior, not visual
 reference values or typesetting. See `memory/evidence.md` for validation gaps.
+
+## Source-location snapshot node in the worktree
+
+- Owned input and document results retain optional `source-file` and
+  `resource-base` strings. Source file identity never overrides the resource
+  base. Pure callers provide explicit absolute strings or leave them nil.
+- The buffer adapter captures the base buffer's file identity and the explicit
+  source buffer's effective `default-directory`, including indirect-buffer
+  overrides. It expands home abbreviations once during preparation, without
+  canonicalizing symlinks or reading linked files.
+- Copied original location strings join snapshot consistency checks, detecting
+  changes and in-place mutation even when source text is unchanged. Pure input
+  and document results own independent copies and do not expand paths or run
+  file handlers.
+- Native sessions do not yet interpret these fields. File-link lowering and
+  the structured resource/native path conversion contract remain future work.
+
+This uncommitted node passed 217/217 local ERT and byte compilation, then Nix
+package/ERT/package-lint checks using the user's temporary, uncommitted remote
+mirror-source configuration. The overlay is not part of the project change.
 
 ## Worker and session
 

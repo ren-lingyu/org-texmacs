@@ -36,13 +36,14 @@ references, citations/bibliography, and the effective configuration they need.
 Unsupported constructs such as checkboxes, advanced tables, Babel, and arbitrary
 Org elements are not thereby adopted.
 
-The first implementation node is present in the ordinary worktree: pure
+The first implementation node is committed as `a3ba241`: pure
 document-wide analysis creates identity-keyed local link/label mappings consumed
 by lowering. Its supported contract is in `memory/project.md`; full ERT and
-byte compilation passed, while Nix/package-lint validation is still unavailable
-because of dependency/tool availability. The bounded node is ready for review;
-retain a reviewable boundary when extending its semantics. Local handlers must
-not query buffers or guess global state. Cross-file ID lookup and any global ID database remain separate
+byte compilation passed. The expanded source-context worktree now also passed
+Nix/package-lint checks using a temporary, uncommitted remote mirror-source
+configuration. Retain a reviewable boundary when extending semantics. Local
+handlers must not query buffers or guess global state. Cross-file ID lookup
+and any global ID database remain separate
 boundaries; do not silently introduce ambient queries.
 
 After that boundary is stable, extend file/resources, named footnotes, and
@@ -50,16 +51,27 @@ citations/bibliography in bounded nodes. For file/resources, retain source-side
 relative path meaning across consumers. A proposed representation is the raw
 relative path plus a source/resource base captured by the buffer adapter in the
 owned snapshot; a consumer may translate it for an output destination while
-preserving the target. The exact base for visiting-file and non-file buffers,
-and Org exporter/helper behavior, remain **unresolved-design** until checked
-against the supported Org version. Do not rewrite paths to absolute form early
+preserving the target. Source inspection and an Org 9.8-pre probe selected the
+source buffer's effective `default-directory` as the base for both visiting-file
+and non-file buffers; source file identity is separate and does not override an
+explicit directory. Do not rewrite raw resource paths to absolute form early
 or choose a base inside a local link handler.
 
-The note's candidate is a visiting file's source directory/effective
-`default-directory`, or the effective `default-directory` for a non-file buffer.
-Preparation would freeze that context and include it in snapshot consistency
-checks. Compare Org's `:input-file` and buffer conventions before adopting the
-rule; an output destination must not redefine the source-side link target.
+The current source-location worktree node freezes `source-file` and
+`resource-base` in owned input/results. Preparation expands context home
+abbreviations once; pure construction never resolves ambient locations.
+Original strings join snapshot consistency checks. An output destination must
+not redefine the source-side link target.
+This node is implemented and verified (217/217 ERT, compilation, and conditional
+Nix/package-lint with the temporary mirror-source configuration), ready for
+review. The user's overlay is excluded from ordinary project commits and pushes.
+
+The next **unresolved-design** boundary is the structured resource target and
+native consumer interface: preserve raw file paths with their captured base,
+decide handling of file search options and tilde/remote targets, and translate
+paths only where consumer semantics are known. Org LaTeX source also shows
+that undescribed unnumbered-headline links use title text; review the native
+reference presentation policy before claiming equivalent visual behavior.
 
 Study relevant `ox-latex`, `ox-html`, and `ox-publish` conventions and suitable
 helpers. External Org preprocessing, setup files, includes, macros, hooks, and

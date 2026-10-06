@@ -2,31 +2,41 @@
 
 ## Objective
 
-Advance DOC-01 after the locally tagged v0.3.1 ARCH-01 release. Its first
-resolution/internal-link node is implemented and verified in the ordinary
-worktree, ready for review; Nix/package-lint gates remain unverified because of
-dependency/tool availability. Unaided bootstrap discovery remains nonblocking.
+The DOC-01 source-location snapshot node is implemented and verified in the
+ordinary worktree, ready for review. Next is the structured file/resource target
+and native consumer path contract. The temporary mirror-source configuration
+must remain uncommitted and unpushed. Bootstrap discovery remains nonblocking.
 
 ## Current baseline
 
 - Main HEAD observed on 2026-10-06:
-  `880d4e00667907ef66985387b4865ec8d795d48d`.
+  `a3ba241d66dc1e1a89a9eb4c4fc678fef2f5bfb4`.
 - Local v0.3.0 tag target:
   `8c157d06b7a8793b0bd312e8f0c41612a3640388`.
-- Local v0.3.1 annotated tag resolves to main HEAD
+- Local v0.3.1 annotated tag resolves to
   `880d4e00667907ef66985387b4865ec8d795d48d`.
-- The ordinary worktree contains DOC-01 changes in document/context lowering,
-  the public API documentation, README, and ERT. `INBOX.md` remains an ignored
-  reference note and was not modified by the agent.
+- The first local-link node is committed; the ordinary worktree now contains
+  the verified, uncommitted source-location snapshot node and the user's
+  temporary overlay. `INBOX.md` remains an ignored reference note and was not
+  modified by the agent.
 - Root `GOALS.md` and `REVIEW.md` have been retired from the active project
   root. The generated root `AGENTS.md` remains the only active root agent
   document.
 - GAW `_agents` is valid and deployed at the repository `.agents` directory.
 - GAW branch preservation and transfer are already solved and are not an open
   issue.
+- The user added a temporary fetchurl overlay in `flake.nix` replacing GNU ELPA
+  URLs with the remote USTC ELPA mirror. Only this configuration is retained
+  locally: do not commit or push it, and exclude `flake.nix` from the project
+  commit scope. This is not a locally hosted mirror. The node was completed
+  before overlay validation; identify resulting validation as using this
+  temporary, uncommitted mirror-source configuration.
 
 ## Current decisions
 
+- The user's current GAW content policy permits only pure-text files in memory,
+  skills, and archive. Do not stage/checkpoint bytecode, binaries, images, or
+  binary containers. Keep regenerable compilation artifacts outside GAW.
 - `memory/goals.md` is the current authoritative project-goal source.
 - `memory/project.md` records the current architecture and supported contract.
 - `memory/evidence.md` records durable evidence and validation boundaries.
@@ -87,12 +97,13 @@ dependency/tool availability. Unaided bootstrap discovery remains nonblocking.
 ## Blockers and uncertainties
 
 - No project-code blocker is known.
-- ELPA availability blocks Nix validation: on 2026-10-06 the user reported that
+- GNU ELPA availability failed Nix validation: on 2026-10-06 the user reported that
   `elpa.gnu.org` was inaccessible on multiple devices and through multiple
   network environments. Together with the agent's TLS failures inside and
   outside the sandbox, this indicates an external availability problem beyond
-  this single execution environment; its precise cause is unverified. Retry
-  the pending Nix/package-lint gates when access is restored.
+  this single execution environment; its precise cause is unverified. The
+  current Nix checks passed using the user's temporary remote USTC mirror-source
+  configuration. This does not establish restoration of the original endpoint.
 - In the 2026-10-06 fresh session, `git gaw status` found the deployed worktree,
   `git gaw check` passed, and the agent recovered current state through the
   declared memory and project skill without reading the historical archive.
@@ -142,7 +153,7 @@ dependency/tool availability. Unaided bootstrap discovery remains nonblocking.
   first implementation node. `memory/backlog.md` holds the adopted scope and
   unresolved design questions; the note adds no unique raw evidence requiring
   a separate archive copy.
-- The first node is implemented: a pure analysis phase resolves local
+- The first node is committed as `a3ba241`: a pure analysis phase resolves local
   headline/CUSTOM_ID/ID and paragraph dedicated-target links against the owned
   AST, returning identity-keyed label/link mappings consumed by local lowering.
   Missing/ambiguous targets fail in preflight; no external ID lookup is used.
@@ -151,19 +162,40 @@ dependency/tool availability. Unaided bootstrap discovery remains nonblocking.
   label/reference readback, prepared input after source-buffer disposal,
   filtering, ambiguity, STM label collisions, low headlines, target priority,
   and broken-link preflight are covered. `memory/evidence.md` records the
-  worktree diff provenance and the unavailable Nix/package-lint checks.
-- The proposed relative-resource base and Org exporter/helper reuse need
-  version-specific verification before implementation. Cross-file/global ID
-  lookup must not enter the first node through ambient state.
+  original worktree diff provenance and original Nix/package-lint gaps; the
+  newer expanded-worktree checks below passed with the temporary configuration.
+- The committed five-file diff matches the previously verified SHA-256 exactly.
+- With explicit authorization to read five installed Org source files, source
+  inspection and a focused Org 9.8-pre helper probe established that input-file
+  identity and effective `default-directory` are distinct. Visiting a file does
+  not override an explicitly changed effective directory. Relative paths remain
+  relative in `org-export-file-uri` and the publishing relative-name helper.
+- The source-location node retains explicit `source-file` and `resource-base` strings
+  through owned input and pure lowering. Preparation expands home abbreviations
+  once and checks copied original source-location strings across worker waits
+  and lowering. Pure construction accepts absolute explicit strings or nil,
+  preserves spelling/symlinks, and does not run file handlers or expand paths.
+- The name `source-directory` was abandoned because it is an Emacs special
+  variable and interfered with constructor/copy bindings. A full regression run
+  also exposed legitimate `~/...` source directories; preparation now expands
+  them once rather than rejecting ordinary buffers. Final full ERT passed
+  217/217 and all modules compiled without warnings. Then Nix flake checking
+  passed, including package-lint, package building and 217/217 installed-package
+  ERT, using the user's temporary mirror-source configuration. File-link
+  lowering/native path translation remain later work.
+- Archive selection followed `org-texmacs-gaw-archive`: this node's temporary
+  artifacts are regenerable bytecode caches; upstream probe conclusions and
+  provenance are fully in evidence, and snapshot behavior is maintained in ERT.
+  No separate archive snapshot is needed. The temporary overlay itself must
+  not be committed or pushed; only its validation conditions are recorded.
 
 ## Next actions
 
-1. Review the uncommitted first-node diff. Revisit Nix/package-lint when the
-   required dependencies/tools are available; do not report those gates as
-   passed. Ordinary project staging/commit remains with the user.
-2. Continue DOC-01 with a bounded file/resource-context design node, verifying
-   Org's base-path conventions before capturing new snapshot fields. Named
-   footnotes and citations/bibliography remain later DOC-01 nodes.
+1. Review the six-file source-location node diff; exclude the user's temporary
+   `flake.nix` overlay from staging/commit. The project changes remain uncommitted.
+2. Design resource targets/native path translation, including the boundary
+   for file searches, tilde/remote paths, and consumer output destinations.
+   Named footnotes and citations/bibliography remain later DOC-01 nodes.
 3. When a later fresh Codex session starts without user-supplied `AGENTS.md`,
    check whether it discovers the root bootstrap and project skill, then
    recovers active GAW memory without the historical archive. Mark this
