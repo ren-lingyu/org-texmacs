@@ -47,6 +47,9 @@
 (defconst org-texmacs--document-reference-label-prefix "org-texmacs-ref-"
   "Private prefix for resolved Org reference target labels.")
 
+(defconst org-texmacs--document-footnote-label-prefix "org-texmacs-fn-"
+  "Private prefix for named footnote reference targets.")
+
 (defcustom org-texmacs-document-style '("generic")
   "TeXmacs style names captured by buffer document preparation.
 Each conversion copies this list into its prepared input and result.  These
@@ -171,7 +174,8 @@ strees and reject cycles instead of guessing through dynamic label bodies."
   "Conversion-local links and target labels keyed by owned AST node identity."
   (links nil :read-only t)
   (labels nil :read-only t)
-  (files nil :read-only t))
+  (files nil :read-only t)
+  (footnotes nil :read-only t))
 
 (defun org-texmacs--document-local-file-path-p (path)
   "Return non-nil for a plain local file PATH with explicit source semantics.
@@ -188,10 +192,14 @@ Home abbreviations and remote/file-search semantics require additional context."
 ISLANDS are opaque.  STATIC-LABELS reserves user-authored STM labels.
 Return node-identity mappings only; never
 read a source buffer, query an ID database or invoke an export consumer."
-  (let (custom-ids ids targets headlines links order resolved selected labels files)
+  (let ((definitions (org-texmacs--context-footnote-definitions ast islands))
+        custom-ids ids targets headlines links order resolved selected labels files
+        footnote-references notes footnotes)
     (cl-labels
         ((scan (node ancestors)
-           (unless (assq node islands)
+           (unless (or (assq node islands)
+                       (and (consp node)
+                            (eq (org-element-type node) 'footnote-definition)))
              (when (consp node)
                (when (memq node ancestors)
                  (org-texmacs--document-fail node "Cyclic Org AST"))
@@ -213,13 +221,24 @@ read a source buffer, query an ID database or invoke an export consumer."
                      (unless (and (stringp value) (> (length value) 0))
                        (org-texmacs--document-fail node "Invalid dedicated target"))
                      (push (cons value node) targets)))
-                  ((eq type 'link) (push node links)))
+                  ((eq type 'link) (push node links))
+                  ((eq type 'footnote-reference)
+                   (when (cl-some
+                          (lambda (ancestor)
+                            (and (consp ancestor)
+                                 (memq (org-element-type ancestor)
+                                       '(footnote-definition footnote-reference))))
+                          ancestors)
+                     (org-texmacs--document-fail node "Nested footnotes are unsupported"))
+                   (push node footnote-references)))
                  (let ((ancestors (cons node ancestors)))
                    (when (eq type 'headline)
                      (mapc (lambda (part) (scan part ancestors))
                            (org-element-property :title node)))
-                   (mapc (lambda (child) (scan child ancestors))
-                         (org-element-contents node)))))))
+                   (unless (and (eq type 'footnote-reference)
+                                (org-element-property :label node))
+                     (mapc (lambda (child) (scan child ancestors))
+                           (org-element-contents node))))))))
          (choose (node candidates)
            (let ((matches (delete-dups (mapcar #'cdr candidates))))
              (cond
@@ -231,6 +250,36 @@ read a source buffer, query an ID database or invoke an export consumer."
          (lookup (key mapping)
            (cl-remove-if-not (lambda (entry) (equal key (car entry))) mapping)))
       (scan ast nil)
+      (let ((reserved (copy-sequence static-labels)) (next 1))
+        (dolist (reference (nreverse footnote-references))
+          (when-let* ((name (org-element-property :label reference)))
+            (unless (and (stringp name) (> (length name) 0))
+              (org-texmacs--document-fail reference "Invalid named footnote label"))
+            (let ((note (cdr (assoc name notes))))
+              (unless note
+                (let ((matching
+                       (cl-remove-if-not
+                        (lambda (definition)
+                          (equal name (org-element-property :label definition)))
+                        definitions))
+                      anchor)
+                  (unless (= (length matching) 1)
+                    (org-texmacs--document-fail
+                     reference (if matching "Ambiguous footnote definition"
+                                 "Unresolved named footnote")))
+                  (while
+                      (progn
+                        (setq anchor (concat org-texmacs--document-footnote-label-prefix
+                                             (number-to-string next))
+                              next (1+ next))
+                        (member anchor reserved)))
+                  (push anchor reserved)
+                  ;; Shared immutable data: first occurrence, definition, anchor.
+                  (setq note (list reference (car matching) anchor))
+                  (push (cons name note) notes)
+                  (mapc (lambda (child) (scan child (list (car matching))))
+                        (org-element-contents (car matching)))))
+              (push (cons reference note) footnotes)))))
       (setq links (nreverse links) order (nreverse order))
       (dolist (link links)
         (let* ((type (org-element-property :type link))
@@ -280,7 +329,7 @@ read a source buffer, query an ID database or invoke an export consumer."
        :links (mapcar (lambda (entry)
                         (cons (car entry) (cdr (assq (cdr entry) labels))))
                       (nreverse resolved))
-       :labels labels :files (nreverse files)))))
+       :labels labels :files (nreverse files) :footnotes (nreverse footnotes)))))
 
 (defun org-texmacs--document-unnumbered-value (headline)
   "Return HEADLINE's effective inherited Org UNNUMBERED value."
@@ -423,8 +472,10 @@ three Org plain-list types, quote/center blocks, and static example,
 fixed-width and source blocks, plus basic rectangular Org tables.  Emit
 supported title, author and date metadata as body `doc-data'.  When enabled,
 emit a static table of contents with generated internal targets.
-Link admission uses Org type, not raw source.  Accept anonymous inline
-footnotes only as direct paragraph children.  Reject list checkboxes and
+Link admission uses Org type, not raw source.  Accept paragraph footnote
+references with anonymous inline or named inline/separate definitions.
+Emit named bodies once at first use and share labels for repeated references.
+Reject nested footnotes, list checkboxes and
 explicit counters; description terms use the existing inline subset.
 Collapse ordinary spaces, tabs and soft newlines across Org inline text
 boundaries.  Suppress leading whitespace at paragraph/title starts and after
@@ -612,19 +663,57 @@ from one snapshot."
                        (blank node space))))
               ((and (consp node) (eq (org-element-type node) 'footnote-reference))
                (unless (and (eq context 'paragraph)
-                            (eq (org-element-property :type node) 'inline)
-                            (null (org-element-property :label node))
+                            (memq (org-element-property :type node) '(inline standard))
+                            (not (cl-some
+                                  (lambda (ancestor)
+                                    (and (consp ancestor)
+                                         (memq (org-element-type ancestor)
+                                               '(footnote-definition footnote-reference))))
+                                  ancestors))
                             (not (memq node ancestors)))
                  (org-texmacs--document-fail node "Unsupported footnote context or type"))
-               (let* ((parts (inlines (org-element-contents node) 'footnote
-                                      (cons node ancestors)))
-                      (paragraph (org-texmacs--document-pack
-                                  'concat (or parts
-                                              (list (org-texmacs--document-create :body ""))))))
-                 ;; The reference is visible; its body has separate whitespace state.
+               (let* ((note (cdr (assq node (org-texmacs-resolution-footnotes resolution))))
+                      (definition (if note (nth 1 note) node))
+                      (anchor (and note (nth 2 note)))
+                      (first (or (null note) (eq node (car note)))))
+                 (when (and (null note)
+                            (or (org-element-property :label node)
+                                (not (eq (org-element-property :type node) 'inline))))
+                   (org-texmacs--document-fail node "Unresolved footnote reference"))
                  (setcar space nil)
-                (cons (org-texmacs--document-pack
-                        'footnote (list (org-texmacs--document-pack 'document (list paragraph))))
+                 (cons
+                  (if (not first)
+                      (org-texmacs--document-pack
+                       'rsup
+                       (list (org-texmacs--document-pack
+                              'with
+                              (list (org-texmacs--document-create :body "font-shape")
+                                    (org-texmacs--document-create :body "right")
+                                    (org-texmacs--document-pack
+                                     'reference
+                                     (list (org-texmacs--document-create :body anchor)))))))
+                    (let* ((body
+                            (if (eq (org-element-type definition) 'footnote-definition)
+                                (org-texmacs--document-pack
+                                 'document
+                                 (blocks (org-element-contents definition)
+                                         'footnote-definition (cons definition ancestors)))
+                              (let ((parts (inlines (org-element-contents definition) 'footnote
+                                                    (cons definition ancestors))))
+                                (org-texmacs--document-pack
+                                 'document
+                                 (list (org-texmacs--document-pack
+                                        'concat (or parts
+                                                    (list (org-texmacs--document-create :body "")))))))))
+                           (labelled
+                            (if anchor
+                                (org-texmacs--document-pack
+                                 'surround
+                                 (list (org-texmacs--document-pack
+                                        'label (list (org-texmacs--document-create :body anchor)))
+                                       (org-texmacs--document-create :body "") body))
+                              body)))
+                      (org-texmacs--document-pack 'footnote (list labelled))))
                        (blank node space))))
               ((and (consp node) (eq (org-element-type node) 'timestamp))
                (let ((year (org-element-property :year-start node))
@@ -1050,23 +1139,24 @@ from one snapshot."
                (unless (memq context '(org-data headline))
                  (org-texmacs--document-fail node "Unexpected Org section"))
                (blocks (org-element-contents node) 'section ancestors))
+              ((eq type 'footnote-definition) nil)
               ((eq type 'paragraph)
                (list (org-texmacs--document-pack
                       'concat (inlines (org-element-contents node) 'paragraph ancestors))))
               ((memq type '(example-block fixed-width src-block))
                (unless (memq context
-                             '(org-data section headline item quote-block center-block))
+                             '(org-data section headline item quote-block center-block footnote-definition))
                  (org-texmacs--document-fail node "Unexpected preformatted block"))
                (list (org-texmacs--document-preformatted
                       node preformatted-tab-width)))
               ((eq type 'table)
                (unless (memq context
-                             '(org-data section headline item quote-block center-block))
+                             '(org-data section headline item quote-block center-block footnote-definition))
                  (org-texmacs--document-fail node "Unexpected Org table"))
                (list (table-block node ancestors)))
               ((eq type 'plain-list)
                (unless (memq context
-                             '(org-data section headline item quote-block center-block))
+                             '(org-data section headline item quote-block center-block footnote-definition))
                  (org-texmacs--document-fail node "Unexpected Org plain list"))
                (let* ((kind (org-element-property :type node))
                       (tag (cdr (assq kind org-texmacs--document-list-tags)))
@@ -1084,7 +1174,7 @@ from one snapshot."
                      'document (blocks items kind ancestors)))))))
               ((memq type '(quote-block center-block))
                (unless (memq context
-                             '(org-data section headline item quote-block center-block))
+                             '(org-data section headline item quote-block center-block footnote-definition))
                  (org-texmacs--document-fail node "Unexpected Org container block"))
                (list
                 (org-texmacs--document-pack
@@ -1133,16 +1223,19 @@ from one snapshot."
   "Copy effective Org heading parser settings for transfer and comparison.
 Keep TODO regexp, DONE keywords, odd-level policy and priority regexp.
 Copy strings as well as lists so in-place edits invalidate the snapshot.
+Capture `org-footnote-section' so special footnote headings use source policy.
 Do not rebuild effective values from TODO declarations or file keywords."
   (unless (and (or (null org-todo-regexp) (stringp org-todo-regexp))
                (proper-list-p org-done-keywords)
                (cl-every #'stringp org-done-keywords)
-               (stringp org-priority-regexp))
+               (stringp org-priority-regexp)
+               (or (null org-footnote-section) (stringp org-footnote-section)))
     (signal 'org-texmacs-document-error '("Invalid Org heading settings")))
   (list (and org-todo-regexp (substring-no-properties org-todo-regexp))
         (mapcar #'substring-no-properties org-done-keywords)
         (and org-odd-levels-only t)
-        (substring-no-properties org-priority-regexp)))
+        (substring-no-properties org-priority-regexp)
+        (and org-footnote-section (substring-no-properties org-footnote-section))))
 
 (defun org-texmacs--document-use-heading-settings (settings)
   "Install copied heading SETTINGS in the private Org parser buffer.
@@ -1152,7 +1245,9 @@ buffer-local copies separate from the caller's snapshot and source buffer."
               (and (nth 0 settings) (substring-no-properties (nth 0 settings))))
   (setq-local org-done-keywords (mapcar #'substring-no-properties (nth 1 settings)))
   (setq-local org-odd-levels-only (nth 2 settings))
-  (setq-local org-priority-regexp (substring-no-properties (nth 3 settings))))
+  (setq-local org-priority-regexp (substring-no-properties (nth 3 settings)))
+  (setq-local org-footnote-section
+              (and (nth 4 settings) (substring-no-properties (nth 4 settings)))))
 
 (defun org-texmacs--document-copy-link-setting (value)
   "Copy parser setting VALUE, including mutable strings."
@@ -1274,7 +1369,7 @@ All positions refer to the complete, unnarrowed source snapshot."
                (register node (org-texmacs--block-source node) nil))
               ((eq (org-element-type node) 'paragraph) (paragraph node))
               ((memq (org-element-type node)
-                     '(org-data section headline plain-list item
+                     '(org-data section headline plain-list item footnote-definition
                        quote-block center-block))
                (when (eq (org-element-type node) 'headline)
                  (mapc #'whitespace (org-element-property :title node)))

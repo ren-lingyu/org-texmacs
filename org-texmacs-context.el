@@ -184,9 +184,11 @@ away.  Do not discover TeXmacs fragments in this document-wide metadata."
     (signal 'org-texmacs-document-error '("Invalid supported Org document options")))
   info)
 
-(defun org-texmacs--context-prune (ast islands info)
+(defun org-texmacs--context-prune (ast islands info &optional defer-footnotes)
   "Prune supported non-exported structures from AST under fixed INFO.
-Treat every ISLAND key as opaque.  Return AST after in-place pruning."
+Treat every ISLAND key as opaque.  When DEFER-FOOTNOTES is non-nil, leave
+definition contents untouched until referenced definitions have been selected.
+Return AST after in-place pruning."
   (let ((org-tag-groups-alist
          (org-texmacs--context-copy (plist-get info :texmacs-tag-groups-alist)))
         (org-tag-groups-alist-for-agenda
@@ -205,6 +207,9 @@ Treat every ISLAND key as opaque.  Return AST after in-place pruning."
                  (cond
                   ((memq type '(comment comment-block))
                    (org-element-extract node))
+                  ((eq type 'footnote-definition)
+                   (unless defer-footnotes
+                     (mapc #'walk (copy-sequence (org-element-contents node)))))
                   ((eq type 'keyword)
                    (when (member (upcase (org-element-property :key node))
                                  org-texmacs--context-source-keywords)
@@ -232,7 +237,8 @@ Treat every ISLAND key as opaque.  Return AST after in-place pruning."
                      (org-element-property :ID parent)
                      (org-element-extract node)))
                   ((eq type 'headline)
-                   (if (org-export--skip-p node info selected excluded)
+                   (if (or (org-element-property :footnote-section-p node)
+                           (org-export--skip-p node info selected excluded))
                        (org-element-extract node)
                      (if (and (eq (plist-get info :with-archived-trees) 'headline)
                               (org-element-property :archivedp node))
@@ -278,6 +284,66 @@ Follow Org's select-tag genealogy and descendant policy under fixed INFO."
             (walk ast nil))
           selected)))))
 
+(defun org-texmacs--context-footnote-definitions (ast islands)
+  "Collect named definition nodes from AST without entering ISLANDS.
+Keep parsed nodes, including inline definitions, rather than source spans."
+  (let (definitions)
+    (cl-labels ((walk (node ancestors)
+                  (when (and (consp node) (not (assq node islands)))
+                    (when (memq node ancestors)
+                      (signal 'org-texmacs-document-error '("Cyclic footnote definition tree")))
+                    (when (and (or (eq (org-element-type node) 'footnote-definition)
+                                   (and (eq (org-element-type node) 'footnote-reference)
+                                        (eq (org-element-property :type node) 'inline)))
+                               (org-element-property :label node))
+                      (push node definitions))
+                    (let ((ancestors (cons node ancestors)))
+                      (when (eq (org-element-type node) 'headline)
+                        (mapc (lambda (child) (walk child ancestors))
+                              (org-element-property :title node)))
+                      (mapc (lambda (child) (walk child ancestors))
+                            (org-element-contents node))))))
+      (walk ast nil))
+    (nreverse definitions)))
+
+(defun org-texmacs--context-preserve-footnotes (ast islands definitions info)
+  "Keep definitions required by visible references in AST under fixed INFO.
+DEFINITIONS was captured before pruning.  Restore only missing definitions
+from this parsed snapshot; never fall back to a buffer or external data."
+  (let ((reachable (org-texmacs--context-reachable ast islands)) labels)
+    (cl-labels ((walk (node)
+                  (when (and (consp node) (not (assq node islands))
+                             (not (eq (org-element-type node) 'footnote-definition)))
+                    (when (eq (org-element-type node) 'footnote-reference)
+                      (when-let* ((label (org-element-property :label node)))
+                        (cl-pushnew label labels :test #'equal)))
+                    (mapc #'walk (org-element-contents node)))))
+      (walk ast))
+    ;; Definitions are document data, not standalone body paragraphs.
+    (dolist (definition definitions)
+      (when (and (eq (org-element-type definition) 'footnote-definition)
+                 (gethash definition reachable)
+                 (not (member (org-element-property :label definition) labels)))
+        (org-element-extract definition)))
+    (dolist (label labels)
+      (let ((matching (cl-remove-if-not
+                       (lambda (definition)
+                         (equal label (org-element-property :label definition)))
+                       definitions)))
+        (unless (cl-some (lambda (definition) (gethash definition reachable)) matching)
+          (dolist (definition matching)
+            (let ((restored
+                   (if (eq (org-element-type definition) 'footnote-definition)
+                       (progn (org-element-extract definition) definition)
+                     (org-element-create
+                      'footnote-definition (list :label label)
+                      (apply #'org-element-create 'paragraph nil
+                             (org-element-contents definition))))))
+              (apply #'org-element-set-contents ast
+                     (append (org-element-contents ast) (list restored))))))))
+    ;; Apply the same restricted policy to recovered definition contents.
+    (org-texmacs--context-prune ast islands info)))
+
 (defun org-texmacs--context-reachable (ast islands)
   "Return an eq table of nodes reachable from AST, treating ISLANDS as opaque."
   (let ((table (make-hash-table :test #'eq)))
@@ -307,7 +373,9 @@ worker requests whose identity keys remain reachable after filtering."
                   (org-texmacs--context-merge-options ast islands base-info))
                  :texmacs-metadata-present metadata)
                 :parse-tree ast))
-         (_ (org-texmacs--context-prune ast islands info))
+         (definitions (org-texmacs--context-footnote-definitions ast islands))
+         (_ (org-texmacs--context-prune ast islands info t))
+         (_ (org-texmacs--context-preserve-footnotes ast islands definitions info))
          (reachable (org-texmacs--context-reachable ast islands))
          (islands (cl-remove-if-not (lambda (entry) (gethash (car entry) reachable))
                                     islands))

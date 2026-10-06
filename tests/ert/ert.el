@@ -2627,12 +2627,186 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                           'paragraph nil (org-element-create 'footnote-reference '(:type inline) note)))))
            (ast (org-element-create 'org-data nil container)))
       (should-error (org-texmacs--document-lower ast) :type 'org-texmacs-document-error)))
-  (dolist (source '("[fn:name]\n" "[fn:name:note]\n" "[fn:name] definition\n"
+  (dolist (source '("A[fn:name]\n" "A[fn:name:outer [fn::inner]]\n"
                     "* Title[fn::note]\n" "[fn::outer [fn::inner]]\n"))
     (with-temp-buffer
       (org-mode)
       (insert source)
       (should-error (org-texmacs-document-from-buffer (current-buffer)) :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-document-named-footnote-first-and-repeated ()
+  (dolist (source '("A[fn:n] again[fn:n].\n\n[fn:n] *Body*.\n"
+                    "A[fn:n:*Body*.] again[fn:n].\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Ordinary named footnote started worker"))))
+        (let ((body (org-texmacs-document-body
+                     (org-texmacs-document-from-buffer (current-buffer)))))
+          (should (equal (nth 2 (cadr body))
+                         `(footnote (surround (label "org-texmacs-fn-1") ""
+                                              (document (concat (strong "Body")
+                                                                ,(if (string-prefix-p "A[fn:n]" source)
+                                                                     ". " ".")))))))
+          (should (equal (nth 5 (cadr body))
+                         '(rsup (with "font-shape" "right" (reference "org-texmacs-fn-1")))))))
+      (should (equal source (buffer-string))))))
+
+(ert-deftest org-texmacs-document-named-footnote-forward-inline-definition ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "A[fn:n] then[fn:n:Body].\n")
+    (should (equal (org-texmacs-document-body
+                    (org-texmacs-document-from-buffer (current-buffer)))
+                   '(document
+                     (concat "A" (footnote (surround (label "org-texmacs-fn-1") ""
+                                                     (document (concat "Body"))))
+                             " " "then"
+                             (rsup (with "font-shape" "right" (reference "org-texmacs-fn-1")))
+                             ". "))))))
+
+(ert-deftest org-texmacs-document-named-footnote-pruned-definitions ()
+  (dolist (definition '("[fn:n] Preserved body.\n"
+                        "Hidden[fn:n:Preserved body. ]\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil tags:nil\n#+SELECT_TAGS: keep\n* Hidden\n"
+              definition "* Visible :keep:\nA[fn:n].\n")
+      (cl-letf (((symbol-function 'org-footnote-get-definition)
+                 (lambda (&rest _) (ert-fail "Footnote read source buffer")))
+                ((symbol-function 'org-export--missing-definitions)
+                 (lambda (&rest _) (ert-fail "Footnote used buffer fallback"))))
+        (should (equal (org-texmacs-document-body
+                        (org-texmacs-document-from-buffer (current-buffer)))
+                       '(document (section "Visible")
+                                  (concat "A" (footnote
+                                               (surround (label "org-texmacs-fn-1") ""
+                                                         (document (concat "Preserved body. "))))
+                                          ". "))))))))
+
+(ert-deftest org-texmacs-document-named-footnote-section-setting ()
+  (with-temp-buffer
+    (org-mode)
+    (setq-local org-footnote-section "Notes")
+    (insert "A[fn:n].\n* Notes\n[fn:n] Note.\n")
+    (should (equal (org-texmacs-document-body
+                    (org-texmacs-document-from-buffer (current-buffer)))
+                   '(document (concat "A" (footnote
+                                          (surround (label "org-texmacs-fn-1") ""
+                                                    (document (concat "Note. ")))) ". "))))
+    (erase-buffer)
+    (insert "A[fn:n].\n\n[fn:n] (math \"x\")\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _)
+                 (setq-local org-footnote-section "Changed") '(math "x"))))
+      (should-error (org-texmacs-document-from-buffer (current-buffer))
+                    :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-document-named-footnote-unused-and-invalid ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "Visible.\n\n[fn:unused] (math \"unused\") [[unknown:bad]]\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _) (ert-fail "Unused definition started worker"))))
+      (should (equal (org-texmacs-document-body
+                      (org-texmacs-document-from-buffer (current-buffer)))
+                     '(document (concat "Visible. "))))))
+  (dolist (source '("A[fn:missing]. (math \"x\")\n"
+                    "A[fn:n].\n\n[fn:n] One.\n\n[fn:n] Two.\n"
+                    "A[fn:n].\n\n[fn:n] Nested[fn:m].\n\n[fn:m] Body.\n"
+                    "A[fn:n:One] B[fn:n:Two]\n"
+                    "A[fn:n].\n\n[fn:n] Recursive[fn:n].\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Invalid footnote started worker"))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer))
+                      :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-document-named-footnote-owned-body-and-provenance ()
+  (let (input requests)
+    (with-temp-buffer
+      (org-mode)
+      (insert "A[fn:n] repeat[fn:n].\n\n[fn:n] [[file:note.txt][File]] (math \"x\")\n\nSecond.\n")
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (source) (push source requests) '(math "x"))))
+        (setq input (org-texmacs-prepare-buffer (current-buffer)))))
+    (should (equal requests '("(math \"x\")")))
+    (cl-letf (((symbol-function 'org-footnote-get-definition)
+               (lambda (&rest _) (ert-fail "Owned input read buffer")))
+              ((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _) (ert-fail "Owned input started worker"))))
+      (let* ((result (org-texmacs-document input))
+             (body (org-texmacs-document-body result)))
+        (should (equal (org-texmacs-document-stm-paths result) '((0 1 0 2 0 2))))
+        (should (equal (org-texmacs-document-file-paths result) '((0 1 0 2 0 0 1))))
+        (should (equal (nth 2 (cadr body))
+                       '(footnote (surround (label "org-texmacs-fn-1") ""
+                                            (document (concat (hlink "File" "note.txt") " "
+                                                              (math "x") " ")
+                                                      (concat "Second. "))))))))))
+
+(ert-deftest org-texmacs-document-named-footnote-native ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "A[fn:n] again[fn:n] anonymous[fn::Literal <alpha>].\n\n[fn:n] 中 *Body*.\n")
+      (let* ((document (org-texmacs-document-from-buffer (current-buffer)))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (org-texmacs-session-set-document session document)
+              (should (equal
+                       (org-texmacs--session-read session)
+                       (org-texmacs-test--native-hex
+                        '(document
+                          (concat "A" (footnote
+                                       (surround (label "org-texmacs-fn-1") ""
+                                                 (document (concat "<#4E2D> " (strong "Body") ". "))))
+                                  " " "again"
+                                  (rsup (with "font-shape" "right" (reference "org-texmacs-fn-1")))
+                                  " " "anonymous"
+                                  (footnote (document (concat "Literal <less>alpha<gtr>")))
+                                  ". "))))))
+          (org-texmacs-session-close session))))))
+
+(ert-deftest org-texmacs-document-named-footnote-blocks-and-local-targets ()
+  (dolist (entry '(("#+begin_quote\nQuote.\n#+end_quote\n" . quote)
+                   ("#+begin_center\nCenter.\n#+end_center\n" . center)
+                   ("- Item.\n" . itemize)
+                   ("#+begin_example\nCode.\n#+end_example\n" . code)
+                   ("| A | B |\n" . tabular)))
+    (with-temp-buffer
+      (org-mode)
+      (insert "A[fn:n].\n\n[fn:n] Body.\n\n" (car entry))
+      (let* ((body (org-texmacs-document-body
+                    (org-texmacs-document-from-buffer (current-buffer))))
+             (definition (nth 3 (cadr (nth 2 (cadr body))))))
+        (should (eq (car (nth 2 definition)) (cdr entry))))))
+  (with-temp-buffer
+    (org-mode)
+    (insert "A[fn:n] [[inside][Link]].\n\n[fn:n] <<inside>> Body.\n")
+    (let ((body (org-texmacs-document-body
+                 (org-texmacs-document-from-buffer (current-buffer)))))
+      (should (equal (nth 4 (cadr body)) '(hlink "Link" "#org-texmacs-ref-1")))
+      (should (equal (cadr (cadr (nth 3 (cadr (nth 2 (cadr body))))))
+                     '(label "org-texmacs-ref-1"))))))
+
+(ert-deftest org-texmacs-document-named-footnote-label-collision-and-empty ()
+  (let* ((island (copy-sequence "island"))
+         (reference (org-element-create 'footnote-reference '(:type standard :label "n")))
+         (definition (org-element-create 'footnote-definition '(:label "n")))
+         (ast (org-element-create 'org-data nil
+                                  (org-element-create 'paragraph nil reference island)
+                                  definition))
+         (input (org-texmacs-input-create ast nil
+                                         :islands (list (cons island '(label "org-texmacs-fn-1"))))))
+    (should (equal (org-texmacs-document-body (org-texmacs-document input))
+                   '(document (concat (footnote
+                                       (surround (label "org-texmacs-fn-2") "" (document)))
+                                      (label "org-texmacs-fn-1")))))))
 
 (ert-deftest org-texmacs-document-footnote-stm-exclusion ()
   (with-temp-buffer
@@ -3227,7 +3401,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                     "[[./notes.org]]\n" "[[file:/ssh:host:/tmp/notes.org]]\n"
                     "[[file:notes.org::heading]]\n" "[[file+emacs:notes.org]]\n"
                     "[[#target]]\n" "[[id:missing]]\n"
-                    "[fn:named]\n" "# comment\n"
+                    "A[fn:named]\n" "# comment\n"
                     "#+title: Title\n" "* COMMENT Task\n"
                     "* \n" "#+name: named\nParagraph\n"
                     "#+attr_html: :class test\nParagraph\n"

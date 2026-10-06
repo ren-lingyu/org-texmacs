@@ -14,7 +14,7 @@ an explicit source buffer, with a separate current-buffer convenience wrapper.
 
 Document conversion supports basic inline markup, self-contained URI links,
 plain local file links with captured resource context,
-same-document headline/ID and dedicated-target links, anonymous inline
+same-document headline/ID and dedicated-target links, anonymous and named
 footnotes, list/container structures, rich metadata,
 relative headline sectioning, a static filtered TOC, static preformatted
 blocks, basic rectangular tables and TeXmacs islands, as specified below.  It
@@ -609,6 +609,7 @@ The supported Org subset is deliberately small:
 | Plain local file link in body text                | =hlink= plus typed file-target provenance                    |
 | Same-document headline/ID or dedicated-target link | =hlink= or =reference= with generated =label= target         |
 | Anonymous inline footnote directly in a paragraph | =footnote= containing a body =document=                      |
+| Named footnote with inline or separate definition | First-use =footnote=; repeated superscript =reference=       |
 | Relative headline levels 1 through 5              | Five numbered or starred TeXmacs sectioning tags              |
 | Headlines below the configured =H= depth          | Nested =itemize= structures without discarding body content   |
 | Filtered headline table of contents               | Static =table-of-contents= with =toc-N=/links/page references |
@@ -728,11 +729,23 @@ Anonymous inline footnotes such as =[fn::A note]= are supported only as
 direct paragraph children.  Their bodies support ordinary inline markup,
 URI/internal/file links and explicit line breaks, with independent prose whitespace
 normalization.  Empty bodies are represented by an empty text slot.
-Named references, separate definitions, nested footnotes and footnotes in
-headings, emphasis or link descriptions are rejected as AST nodes.
-STM syntax inside footnotes is not discovered as a TeXmacs island.
+Named references such as =[fn:note]= accept either =[fn:note:Inline body]=
+or a separate =[fn:note] Body= definition.  A definition can follow its first
+reference.  The first reference emits the body with a generated label;
+later references emit a superscript reference to the same label.  Separate
+definitions support the documented paragraph, list, container, static block
+and table subset.  Unreferenced separate definitions are omitted, including
+their worker requests.  Definitions needed after headline filtering are
+recovered from the same parsed snapshot; no source-buffer fallback is used.
+The source's =org-footnote-section= is captured, and its special heading is
+omitted while needed definitions are retained.  Missing or ambiguous named
+definitions, nested footnotes and footnotes in headings, emphasis, table
+cells or link descriptions are rejected.
+STM syntax inside inline footnote bodies is not discovered as a TeXmacs
+island.  Paragraphs in separate definitions use normal fragment discovery;
+their STM roots and local file targets retain provenance when emitted.
 Adjacent footnotes remain adjacent nodes without added separators or
-package-generated numbering.  Native body round trips do not establish
+package-assigned footnote numbers.  Native body round trips do not establish
 rendering or numbering correctness.
 
 Document preparation uses private Org-generated link regexps, including
