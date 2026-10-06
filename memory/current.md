@@ -2,69 +2,103 @@
 
 ## State represented
 
-This checkpoint reconstructs the durable project state at the v0.2.1 release
-on 2026-09-14. It is grounded in project commit
-`9988476b7ae98f33375d9c62ef4234890ce8b39c`.
+This checkpoint reconstructs the planning state on 2026-09-15 after the
+v0.3.0 scope, interfaces, and prerequisite Org/TeXmacs probes had converged,
+but before implementation nodes began. It has no additional project parent;
+v0.2.1 is the release baseline, not asserted provenance for every probe.
 
-## Objective achieved
+## Baseline and objective
 
-Harden the existing v0.2 whole-document pipeline around an explicit canonical
-Org source, one coherent snapshot, and non-destructive/composable behavior,
-without expanding the supported document semantics.
+- Released baseline: v0.2.1 at
+  `9988476b7ae98f33375d9c62ef4234890ce8b39c`.
+- Preserve explicit source ownership, snapshot consistency, pure structural
+  lowering, provenance-aware encoding, and the single native session.
+- Expand the finite body model into a structured document representation with
+  selected Org document-wide semantics and a complete native document state.
 
-## Public source contract
+## Fixed interface design
 
-- `(org-texmacs-document SOURCE-BUFFER)` requires a live, non-narrowed Org
-  buffer and is the main whole-document entry.
-- `(org-texmacs-document-current-buffer)` is the separate convenience wrapper.
-- The old zero-argument main entry is intentionally not retained as a
-  compatibility branch; callers must migrate explicitly.
-- Source text, mode, narrowing, parser settings, consistency checks, and output
-  context are all anchored to the same source buffer.
+```text
+Org AST + parsed TeXmacs islands + fixed INFO
+  -> prepared org-texmacs input
+  -> pure org-texmacs document lowering
+  -> body + style + initial + provenance
+  -> one native document session
+```
 
-## Snapshot and consistency contract
+- A prepared-input constructor owns already parsed AST, INFO, islands, and
+  post-blank mappings. It does not read a buffer, parse deferred source, invoke
+  formatters, or start workers.
+- The pure document core accepts prepared input only.
+- A buffer adapter captures supported Org semantics, parses islands, preserves
+  consistency checks, and returns prepared input.
+- Owned input copies mutable AST/string structure, rebuilds parent links, and
+  remaps identity-keyed mappings. It rejects cyclic, multiply owned, duplicate,
+  detached, or opaque input.
+- The document result carries body, style, initial, and STM provenance as
+  separate fields. Body paths remain relative to the body tree.
+- The body `(document ...)` is the TeXmacs buffer body, not a serialized full
+  file wrapper.
 
-- Source text and the supported parser settings are captured at conversion
-  start and checked again across worker waits and after lowering.
-- Detectable changes to source text, mode, narrowing, fragment tags, heading
-  settings, or link settings reject the in-flight result instead of mixing
-  states or retrying indefinitely.
-- Output INFO and formatter selection are frozen for the current conversion;
-  later rebinding affects the next call.
-- The result does not retain the source buffer, marker state, or an implicit
-  dependency on the caller's current buffer.
+## Restricted Org semantic context
 
-## Isolation and side effects
+- Reuse selected native Org option merging, metadata parsing, filtering,
+  headline policy, and numbering semantics without invoking a string exporter.
+- Support only explicitly listed options and reject unsupported directives or
+  structures before worker requests.
+- Do not automatically read SETUPFILE/INCLUDE, execute BIND/Babel/macros/export
+  hooks, perform ID lookup, or fall back to the source buffer for missing
+  footnotes.
+- Discover and mask TeXmacs islands before Org pruning, isolate foreign
+  subtrees, remove mappings for filtered content, and parse only retained STM.
 
-- Preparation returns structure and performs parsing in a private buffer.
-- Preflight checks occur outside temporary dynamic parser scopes.
-- Pure lowering consumes prepared structures and does not read a source buffer
-  or start a worker.
-- Source text, modified state, point, mark, narrowing, text properties, and
-  relevant local settings are preserved on success and error paths.
-- Formatter callbacks do not leak package-controlled Org parser state into
-  other buffers. The package does not attempt to sandbox arbitrary user
-  functions.
+## Required v0.3 semantic scope
 
-## Validation boundary
+- Restricted `#+OPTIONS` and task/archive/select/exclude/comment filtering.
+- Rich title, author, date, relative headline levels, numbering, UNNUMBERED,
+  and ALT_TITLE behavior.
+- Unordered, ordered, and description lists; quote and center containers.
+- Static example, fixed-width, and source blocks without execution.
+- Basic rectangular Org tables with explicit rejection of advanced semantics.
+- A static TOC using TeXmacs toc, label, hlink, and pageref structures.
+- First-class style and structured initial environment fields.
+- Native updates that validate and encode all fields before mutation, replace
+  style/initial/body, verify readback, and invalidate a damaged session.
 
-The final v0.2.1 verification recorded 156/156 ERT tests passing, Nix flake
-checks and an independent build passing, and local and straight installation
-probes passing. The installed-package probes covered both public entries,
-cold-start document/session behavior, repeated native updates, and
-fragment/block worker/cache reuse. Validation was on x86_64-linux; remote
-release state and tag signatures were not established.
+## Explicitly deferred
 
-## Unchanged semantic boundary
+- Complete Org feature coverage and unrestricted exporter preprocessing.
+- Internal/file/ID links, named footnotes, citations, bibliography, and general
+  reference resolution.
+- Complete TeXmacs file wrappers and serialization.
+- PDF, preview, GUI validation, visual pagination, and multi-session support.
 
-The release deliberately retains the v0.2 body subset and single active
-session. It does not add complete Org effective configuration, document
-metadata, common container structures, tables, TOC, style/initial state,
-serialization, PDF, preview, or multi-session support.
+## Probe evidence and caution
 
-## Next durable direction
+Prerequisite probes confirmed the selected Org filtering, metadata, list,
+preformatted, table, and TOC inputs and the needed TeXmacs document-style,
+initial, buffer, and readback facilities on Emacs 31.1, Org 9.8-pre, and
+TeXmacs 2.1.5. Probe scripts and failures are evidence for the plan, not the
+formal regression suite. Each implementation node must turn the relevant
+behavior into maintained tests.
 
-Use the explicit-source and snapshot-safe interface as the baseline for a
-structured document expansion. Before implementation, define a prepared-input
-boundary, a finite restricted Org semantic context, a complete document result
-shape, and independently verifiable v0.3 nodes.
+## Implementation sequence
+
+1. Prepared input and pure core.
+2. Restricted Org context and filtering.
+3. Lists and quote/center containers.
+4. style/initial result fields, metadata, and headline policy.
+5. Static preformatted blocks.
+6. Basic tables.
+7. Static TOC.
+8. Complete native document consumption.
+9. Documentation, installation, and release validation.
+
+Each node must remain independently checkable and reviewable before the next.
+The version number changes only after the functional and validation loop is
+complete.
+
+## Next action
+
+Implement node 1, preserving all v0.2.1 source/snapshot invariants and adding
+ownership, parent-link, mapping, pure-core, and buffer-adapter regressions.
