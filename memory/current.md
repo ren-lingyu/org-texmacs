@@ -2,68 +2,69 @@
 
 ## State represented
 
-This checkpoint reconstructs the project state on 2026-09-14 after the
-AST-first direction and updated project goals were adopted, but before v0.2.1
-implementation. It is a planning and architecture state without an additional
-project-commit parent.
+This checkpoint reconstructs the durable project state at the v0.2.1 release
+on 2026-09-14. It is grounded in project commit
+`9988476b7ae98f33375d9c62ef4234890ce8b39c`.
 
-## Current baseline
+## Objective achieved
 
-- Released baseline: v0.2.0 at
-  `c115285639f6d40e40de378b6e2da4a79f3c1cd0`.
-- Existing capability: finite structured body lowering, STM provenance,
-  source-aware native encoding, and a persistent single native body session.
-- Existing public whole-document construction still selects the current Org
-  buffer implicitly.
+Harden the existing v0.2 whole-document pipeline around an explicit canonical
+Org source, one coherent snapshot, and non-destructive/composable behavior,
+without expanding the supported document semantics.
 
-## Adopted architecture direction
+## Public source contract
 
-- The long-term path is Org source and semantics to a structured document
-  representation, then to TeXmacs document trees and independent consumers.
-- TeXmacs islands remain directly parsed structured input; they are not the
-  whole-document architecture by themselves.
-- A lowering operation conceptually consumes an Org AST, associated TeXmacs
-  islands, provenance, and a fixed configuration snapshot.
-- UTF-8 structural lowering remains separate from native TeXmacs encoding.
-- INFO, style, initial state, metadata, and resolution context may be separate
-  structured inputs or result fields; AST-first does not require putting every
-  concern into one physical tree.
-- File serialization and rendering remain downstream consumers, not an
-  intermediate truth source.
+- `(org-texmacs-document SOURCE-BUFFER)` requires a live, non-narrowed Org
+  buffer and is the main whole-document entry.
+- `(org-texmacs-document-current-buffer)` is the separate convenience wrapper.
+- The old zero-argument main entry is intentionally not retained as a
+  compatibility branch; callers must migrate explicitly.
+- Source text, mode, narrowing, parser settings, consistency checks, and output
+  context are all anchored to the same source buffer.
 
-## Identified interface gap
+## Snapshot and consistency contract
 
-v0.2.0 internally prepares a private source snapshot, but its public document
-entry chooses `current-buffer`. That does not satisfy the newly adopted strict
-requirement for an explicit canonical source. Existing tests also do not yet
-fully cover a different caller/source buffer, callback-time isolation, source
-death, or all success and failure paths.
+- Source text and the supported parser settings are captured at conversion
+  start and checked again across worker waits and after lowering.
+- Detectable changes to source text, mode, narrowing, fragment tags, heading
+  settings, or link settings reject the in-flight result instead of mixing
+  states or retrying indefinitely.
+- Output INFO and formatter selection are frozen for the current conversion;
+  later rebinding affects the next call.
+- The result does not retain the source buffer, marker state, or an implicit
+  dependency on the caller's current buffer.
 
-## Decided next release scope
+## Isolation and side effects
 
-v0.2.1 will harden the existing v0.2 pipeline without expanding document
-semantics:
+- Preparation returns structure and performs parsing in a private buffer.
+- Preflight checks occur outside temporary dynamic parser scopes.
+- Pure lowering consumes prepared structures and does not read a source buffer
+  or start a worker.
+- Source text, modified state, point, mark, narrowing, text properties, and
+  relevant local settings are preserved on success and error paths.
+- Formatter callbacks do not leak package-controlled Org parser state into
+  other buffers. The package does not attempt to sandbox arbitrary user
+  functions.
 
-- require a live Org source buffer in the main document entry;
-- provide a separate current-buffer convenience wrapper;
-- bind source text, parser settings, output INFO, and consistency checks to one
-  source snapshot;
-- preserve the source and unrelated Org callers across success, error, and
-  worker-wait paths;
-- add regression tests for ownership, snapshot consistency, and composability.
+## Validation boundary
 
-The release deliberately does not add full `#+OPTIONS`, metadata, lists,
-tables, TOC, style/initial, serialization, preview, or multi-session support.
+The final v0.2.1 verification recorded 156/156 ERT tests passing, Nix flake
+checks and an independent build passing, and local and straight installation
+probes passing. The installed-package probes covered both public entries,
+cold-start document/session behavior, repeated native updates, and
+fragment/block worker/cache reuse. Validation was on x86_64-linux; remote
+release state and tag signatures were not established.
 
-## Open implementation risk
+## Unchanged semantic boundary
 
-Existing helpers may still read dynamic `current-buffer` or buffer-local state,
-especially around source checks and private link parsing. The implementation
-must remove hidden source selection rather than merely wrapping the old entry
-in one broad `with-current-buffer` form.
+The release deliberately retains the v0.2 body subset and single active
+session. It does not add complete Org effective configuration, document
+metadata, common container structures, tables, TOC, style/initial state,
+serialization, PDF, preview, or multi-session support.
 
-## Next action
+## Next durable direction
 
-Implement and verify the v0.2.1 explicit-source and snapshot-hardening plan in
-small independently checkable nodes, then establish it as the new release
-baseline before expanding document semantics.
+Use the explicit-source and snapshot-safe interface as the baseline for a
+structured document expansion. Before implementation, define a prepared-input
+boundary, a finite restricted Org semantic context, a complete document result
+shape, and independently verifiable v0.3 nodes.
