@@ -36,6 +36,12 @@ must remain uncommitted and unpushed. Bootstrap discovery remains nonblocking.
 
 ## Current decisions
 
+- For the next DOC-01 node (named footnotes), the user asks the agent to request
+  path-specific `git add` approval directly after completing implementation,
+  validation and review, then draft `tmp/commit.md` from the approved staged
+  diff. Exclude the temporary overlay and unrelated changes. This instruction
+  requests an approval workflow, not blanket staging authorization; ordinary
+  project commits remain the user's action.
 - The user's current GAW content policy permits only pure-text files in memory,
   skills, and archive. Do not stage/checkpoint bytecode, binaries, images, or
   binary containers. Keep regenerable compilation artifacts outside GAW.
@@ -215,11 +221,14 @@ must remain uncommitted and unpushed. Bootstrap discovery remains nonblocking.
 
 ## Next actions
 
-1. Review the uncommitted five-file local-file-link node, excluding the user's
-   temporary `flake.nix` configuration from staging/commit.
+1. The user has staged the five-file local-file-link node; its staged diff
+   matches the verified hash, and `tmp/commit.md` contains the prepared message.
+   The temporary `flake.nix` configuration remains unstaged and excluded.
 2. Continue DOC-01 with a bounded named-footnote definition/reference node.
    File search options, tilde/remote resources, broader native URL escaping,
    cross-file IDs and citations/bibliography remain later or unresolved scope.
+   After completing that node, request explicit-path staging approval and draft
+   the commit message as requested in Current decisions.
 3. When a later fresh Codex session starts without user-supplied `AGENTS.md`,
    check whether it discovers the root bootstrap and project skill, then
    recovers active GAW memory without the historical archive. Mark this
