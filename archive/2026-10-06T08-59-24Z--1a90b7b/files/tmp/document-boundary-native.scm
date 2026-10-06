@@ -1,0 +1,47 @@
+;; Fixed, local experiment. Loaded by TeXmacs; no request/eval interface.
+(define (probe-log key value)
+  (display "BOUNDARY ") (write key) (display " ") (write value)
+  (newline) (force-output))
+(define (probe-map f x)
+  (if (string? x) (f x) (cons (car x) (map (lambda (y) (probe-map f y)) (cdr x)))))
+(define (probe-main)
+  (for-each
+   (lambda (s) (if (not (defined? s)) (error "Missing capability" s)))
+   '(utf8->cork cork->utf8 stree->tree tree->stree buffer-new
+     buffer-set-body buffer-get-body buffer-close))
+  (for-each
+   (lambda (s)
+     (let* ((enc (utf8->cork s)) (dec (cork->utf8 enc)))
+       (probe-log 'encoding (list s enc dec (equal? s dec)))
+       (probe-log 'native-interpretation (list s (cork->utf8 s)))))
+   '("ASCII" "中文" "α" "<alpha>" "<#4E2D>" "<less>" "<gtr>"
+     "<" ">" "中文 α <alpha>" "quote\"slash\\"))
+  (let* ((input '(document (section "中文标题")
+                  (concat "正文 " (strong "加粗") (math (frac "一" "2")))
+                  (with "mode" "math" "α")))
+         (encoded (probe-map utf8->cork input))
+         (native (stree->tree encoded))
+         (buf (buffer-new)))
+    (dynamic-wind
+      (lambda () #t)
+      (lambda ()
+        (probe-log 'encoded encoded)
+        (buffer-set-body buf native)
+        (let ((back (tree->stree (buffer-get-body buf))))
+          (probe-log 'buffer-readback back)
+          (probe-log 'encoded-equal (equal? back encoded))
+          (probe-log 'decoded-equal (equal? (probe-map cork->utf8 back) input))
+          (if (not (equal? back encoded)) (error "Body changed")))
+        ;; Deliberate Scheme-layer type error, not a C++ crash probe.
+        (probe-log 'caught-error
+          (catch #t (lambda () (utf8->cork '(invalid)) #f)
+                    (lambda args #t)))
+        (buffer-set-body buf (stree->tree '(document "second")))
+        (probe-log 'second-body (tree->stree (buffer-get-body buf)))
+        (if (not (equal? (tree->stree (buffer-get-body buf)) '(document "second")))
+            (error "Second body mismatch")))
+      (lambda () (buffer-close buf) (probe-log 'closed #t))))
+  (probe-log 'complete #t))
+(catch #t (lambda () (probe-main))
+  (lambda args (probe-log 'failure args)))
+(quit-TeXmacs)

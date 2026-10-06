@@ -1,0 +1,58 @@
+environment ("31.1" "9.8-pre" "/nix/store/5sbsczj8jzgqlwl7j1rn14xs3gkvm6pp-emacs-pgtk-31-1-org-9.8-pre/share/emacs/site-lisp/org.elc" "/nix/store/52iz92ini64qhnrsfwyxaid74rwcsb5r-texmacs-2.1.5/bin/texmacs")
+parse ((with "mode" "math" (math (frac "ASCII" "2"))) (with "mode" "math" (math (frac "ASCII" "2"))) t)
+parse ((with "mode" "math" (math (frac "中文" "2"))) (with "mode" "math" (math (frac "中文" "2"))) t)
+parse ((with "mode" "math" (math (frac "α" "2"))) (with "mode" "math" (math (frac "α" "2"))) t)
+parse ((with "mode" "math" (math (frac "<alpha>" "2"))) (with "mode" "math" (math (frac "<alpha>" "2"))) t)
+parse ((with "mode" "math" (math (frac "<#4E2D>" "2"))) (with "mode" "math" (math (frac "<#4E2D>" "2"))) t)
+parse ((with "mode" "math" (math (frac "<less>" "2"))) (with "mode" "math" (math (frac "<less>" "2"))) t)
+parse ((with "mode" "math" (math (frac "<gtr>" "2"))) (with "mode" "math" (math (frac "<gtr>" "2"))) t)
+parse ((with "mode" "math" (math (frac "中文 α <alpha>" "2"))) (with "mode" "math" (math (frac "中文 α <alpha>" "2"))) t)
+parse ((with "mode" "math" (math (frac "quote\"slash\\" "2"))) (with "mode" "math" (math (frac "quote\"slash\\" "2"))) t)
+block "atomic"
+block (document (math "x"))
+native-output "warning: guile hooks are not available
+Welcome to TeXmacs 2.1.5
+------------------------------------------------------------------------------
+kpsepath works with your TeX distribution
+kpsewhich works with your TeX distribution
+mktextfm works with your TeX distribution
+mktexpk works with your TeX distribution
+texhash works with your TeX distribution
+------------------------------------------------------------------------------
+Installation completed successfully !
+I will now start up the editor
+------------------------------------------------------------------------------
+BOUNDARY encoding (\"ASCII\" \"ASCII\" \"ASCII\" #t)
+BOUNDARY native-interpretation (\"ASCII\" \"ASCII\")
+BOUNDARY encoding (\"中\346\226\\x87\" \"<#4E2D><#6587>\" \"中\346\226\\x87\" #t)
+BOUNDARY native-interpretation (\"中\346\226\\x87\" \"äÿ\305\\x8bæŰĞ\")
+BOUNDARY encoding (\"α\" \"<alpha>\" \"α\" #t)
+BOUNDARY native-interpretation (\"α\" \"\303\\x8eś\")
+BOUNDARY encoding (\"<alpha>\" \"<less>alpha<gtr>\" \"<alpha>\" #t)
+BOUNDARY native-interpretation (\"<alpha>\" \"α\")
+BOUNDARY encoding (\"<#4E2D>\" \"<less>#4E2D<gtr>\" \"<#4E2D>\" #t)
+BOUNDARY native-interpretation (\"<#4E2D>\" \"中\")
+BOUNDARY encoding (\"<less>\" \"<less>less<gtr>\" \"<less>\" #t)
+BOUNDARY native-interpretation (\"<less>\" \"<\")
+BOUNDARY encoding (\"<gtr>\" \"<less>gtr<gtr>\" \"<gtr>\" #t)
+BOUNDARY native-interpretation (\"<gtr>\" \">\")
+BOUNDARY encoding (\"<\" \"<less>\" \"<\" #t)
+BOUNDARY native-interpretation (\"<\" \"<\")
+BOUNDARY encoding (\">\" \"<gtr>\" \">\" #t)
+BOUNDARY native-interpretation (\">\" \">\")
+BOUNDARY encoding (\"中\346\226\\x87 α <alpha>\" \"<#4E2D><#6587> <alpha> <less>alpha<gtr>\" \"中\346\226\\x87 α <alpha>\" #t)
+BOUNDARY native-interpretation (\"中\346\226\\x87 α <alpha>\" \"äÿ\305\\x8bæŰĞ \303\\x8eś α\")
+BOUNDARY encoding (\"quote\\\"slash\\\\\" \"quote\\\"slash\\\\\" \"quote\\\"slash\\\\\" #t)
+BOUNDARY native-interpretation (\"quote\\\"slash\\\\\" \"quote\\\"slash\\\\\")
+BOUNDARY encoded (document (section \"<#4E2D><#6587><#6807><#9898>\") (concat \"<#6B63><#6587> \" (strong \"<#52A0><#7C97>\") (math (frac \"<#4E00>\" \"2\"))) (with \"mode\" \"math\" \"<alpha>\"))
+BOUNDARY buffer-readback (document (section \"<#4E2D><#6587><#6807><#9898>\") (concat \"<#6B63><#6587> \" (strong \"<#52A0><#7C97>\") (math (frac \"<#4E00>\" \"2\"))) (with \"mode\" \"math\" \"<alpha>\"))
+BOUNDARY encoded-equal #t
+BOUNDARY decoded-equal #t
+BOUNDARY caught-error #t
+BOUNDARY second-body (document \"second\")
+BOUNDARY closed #t
+BOUNDARY complete #t
+
+Process document-boundary finished
+"
+native-exit (exit 0)
