@@ -2,20 +2,21 @@
 
 ## Objective
 
-Prepare v0.3.1 for the verified, behavior-preserving `ARCH-01` worker/document
-layering refactor, then select the next implementation scope from adopted
-downstream work. The reproducible untracked bootstrap migration is complete.
-A fresh session has recovered active GAW memory without the historical archive;
-unaided bootstrap discovery remains a nonblocking check for a later session.
+Advance DOC-01 document-wide semantic resolution after the locally tagged
+v0.3.1 ARCH-01 release. The first node is a resolution/context boundary tested
+with internal links and IDs. The reproducible untracked bootstrap migration is
+complete. Unaided bootstrap discovery remains a nonblocking later check.
 
 ## Current baseline
 
 - Main HEAD observed on 2026-10-06:
-  `ec72c89b71ffd1df27d9cdb22c4f6c8e1a4f6491`.
+  `880d4e00667907ef66985387b4865ec8d795d48d`.
 - Local v0.3.0 tag target:
   `8c157d06b7a8793b0bd312e8f0c41612a3640388`.
-- The ordinary project worktree has unstaged v0.3.1 preparation changes in
-  `org-texmacs.el`, `flake.nix`, and `README.org`.
+- Local v0.3.1 annotated tag resolves to main HEAD
+  `880d4e00667907ef66985387b4865ec8d795d48d`.
+- The ordinary project worktree is clean; `INBOX.md` is an ignored reference
+  note and was not modified by the agent.
 - Root `GOALS.md` and `REVIEW.md` have been retired from the active project
   root. The generated root `AGENTS.md` remains the only active root agent
   document.
@@ -117,22 +118,37 @@ unaided bootstrap discovery remains a nonblocking check for a later session.
 - The committed tree matches the verified diff; the ordinary worktree was clean
   immediately after the ARCH-01 commit.
 
-## v0.3.1 preparation
+## v0.3.1 local release state
 
-- The user selected v0.3.1 as the release version for ARCH-01. The current
-  ordinary worktree changes the package header and Nix package version to
-  0.3.1, updates the README current-version summary, adds an ARCH-01 release
-  note, and attributes STM paths to the document result rather than the worker.
-- `git diff --check` passed for these edits. No build or test was run for the
-  version preparation. No ordinary project commit or release tag was created.
+- Project commit `880d4e00667907ef66985387b4865ec8d795d48d`
+  (`build(release): prepare version 0.3.1 metadata`) changes the package header,
+  Nix version, and README release wording. The local annotated v0.3.1 tag
+  resolves to this commit. Remote publication and tag signature were not checked.
+- `git diff --check` passed before the metadata commit. No build or test was
+  run specifically for the version preparation; ARCH-01's preceding 203/203 ERT
+  and Nix checks are recorded above.
+
+## DOC-01 selection and assessment
+
+- The user's 2026-10-06 `INBOX.md` note selects DOC-01 before CONSUMER-01 and
+  identifies a document-wide resolution phase with internal links/IDs as the
+  first implementation node. `memory/backlog.md` holds the adopted scope and
+  unresolved design questions; the note adds no unique raw evidence requiring
+  a separate archive copy.
+- Current prepared input owns copied AST nodes and identity-keyed mappings, but
+  lowering accepts only a finite self-contained URI-link set and has no general
+  document-wide resolver. The proposed node therefore belongs between owned
+  preparation and local lowering, without buffer reads in pure lowering.
+- The proposed relative-resource base and Org exporter/helper reuse need
+  version-specific verification before implementation. Cross-file/global ID
+  lookup must not enter the first node through ambient state.
 
 ## Next actions
 
-1. Review and validate the v0.3.1 preparation as authorized, then complete the
-   release through the ordinary project workflow.
-2. Select the next implementation scope from adopted work rather than treating
-   unsupported cases or deferred candidates as automatic commitments.
-3. When a later fresh Codex session starts without user-supplied `AGENTS.md`,
+1. Plan the DOC-01 resolution boundary using focused Org semantics and current
+   ownership/snapshot evidence, then implement the first internal-link/ID node
+   when authorized. Keep file/resource path bases and global ID lookup explicit.
+2. When a later fresh Codex session starts without user-supplied `AGENTS.md`,
    check whether it discovers the root bootstrap and project skill, then
    recovers active GAW memory without the historical archive. Mark this
    nonblocking check complete when observed; continue project work meanwhile.

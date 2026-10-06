@@ -18,11 +18,18 @@
 - v0.2.0 target: `c115285639f6d40e40de378b6e2da4a79f3c1cd0`.
 - v0.2.1 target: `9988476b7ae98f33375d9c62ef4234890ce8b39c`.
 - v0.3.0 target: `8c157d06b7a8793b0bd312e8f0c41612a3640388`.
+- Local v0.3.1 annotated tag target:
+  `880d4e00667907ef66985387b4865ec8d795d48d`.
 - Current main HEAD observed on 2026-10-06:
-  `1a90b7bd2e0f60601cdf6003edf1ccbc79afce18`.
+  `880d4e00667907ef66985387b4865ec8d795d48d`.
 
 These are local Git facts. They do not prove remote release state or tag
 signatures.
+
+The v0.3.1 metadata commit changes the package and Nix versions and README
+release wording. `git diff --check` passed before that commit. No build or test
+was run specifically for the metadata change; the ARCH-01 code refactor had
+already passed 203/203 ERT and the Nix checks recorded in `memory/current.md`.
 
 ## Environment represented by formal release evidence
 
@@ -57,6 +64,14 @@ Other systems were not established by the recorded validations.
   islands are masked and mapped externally during context construction.
 - Full exporter environment collection may read SETUPFILE, query IDs, or fall
   back to buffers for footnotes, so the package uses a restricted adapter.
+- The Org manual describes `file:` links with relative paths and shows that
+  HTML export/publishing can transform file-link paths. This supports keeping
+  source-relative meaning distinct from consumer output paths, but does not
+  establish the exact base-directory rule for this package's buffer adapter.
+  Verify that rule and suitable `ox-*` helpers against the supported Org version
+  before implementing DOC-01 file/resource references. Sources:
+  https://orgmode.org/manual/External-Links.html and
+  https://orgmode.org/manual/Publishing-links.html.
 - Org table ASTs can represent irregular and advanced structures; explicit
   validation is required for the supported rectangular subset.
 

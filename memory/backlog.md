@@ -23,30 +23,51 @@ decision.
 
 ## Active next
 
-No item is currently selected. `ARCH-01` was completed by project commit
-`ec72c89b71ffd1df27d9cdb22c4f6c8e1a4f6491`; its prior active plan remains in
-GAW first-parent history rather than as a completed item in this active file.
-
-## Adopted downstream work
-
 ### DOC-01: Complete document-wide semantic resolution
 
-Status: **adopted-later**.
+Status: **active-next**, selected by the user's 2026-10-06 `INBOX.md` note after
+the locally tagged v0.3.1 release. Prioritize this architecture before
+`CONSUMER-01`; do not require all Org syntax before consumer work begins.
 
 Grow the current prepared-input and document model only where semantics require
-whole-document knowledge. The durable direction includes internal/ID/file
-links, references, citations and bibliography, named footnotes, and additional
-effective configuration. Preserve the existing separation between local node
-lowering and document-wide resolution.
+whole-document knowledge. The adopted direction includes internal/fuzzy,
+custom-ID and ID links, file/resource references, named footnotes, general
+references, citations/bibliography, and the effective configuration they need.
+Unsupported constructs such as checkboxes, advanced tables, Babel, and arbitrary
+Org elements are not thereby adopted.
 
-Before file/resource support, resolve this **unresolved-design** question:
-relative resources may need a base derived from the source location, prepared
-document state, or consumer/export destination. Do not let a local link handler
-choose that policy implicitly.
+First implementation node: establish a document-wide analysis/resolution phase
+between owned prepared input and local structural lowering, then use internal
+links and IDs as its first concrete semantics. Decide what preparation collects,
+what the owned input retains, how resolved results remain associated with copied
+AST nodes, how local lowering consumes them, how source/configuration changes
+invalidate the snapshot, how broken references fail, and where consumer policy
+begins. Local handlers must not query buffers or guess global state. Cross-file
+ID lookup and any global ID database are separate boundaries; do not silently
+introduce ambient queries.
 
-External Org preprocessing such as setup files, includes, macros, or hooks must
-remain explicit and bounded. It must not weaken the owned snapshot or pure
-lowering contract.
+After that boundary is stable, extend file/resources, named footnotes, and
+citations/bibliography in bounded nodes. For file/resources, retain source-side
+relative path meaning across consumers. A proposed representation is the raw
+relative path plus a source/resource base captured by the buffer adapter in the
+owned snapshot; a consumer may translate it for an output destination while
+preserving the target. The exact base for visiting-file and non-file buffers,
+and Org exporter/helper behavior, remain **unresolved-design** until checked
+against the supported Org version. Do not rewrite paths to absolute form early
+or choose a base inside a local link handler.
+
+The note's candidate is a visiting file's source directory/effective
+`default-directory`, or the effective `default-directory` for a non-file buffer.
+Preparation would freeze that context and include it in snapshot consistency
+checks. Compare Org's `:input-file` and buffer conventions before adopting the
+rule; an output destination must not redefine the source-side link target.
+
+Study relevant `ox-latex`, `ox-html`, and `ox-publish` conventions and suitable
+helpers. External Org preprocessing, setup files, includes, macros, hooks, and
+global ID lookup must remain explicit and bounded; do not adopt the full export
+pipeline when it reads files or dynamic state outside the owned snapshot.
+
+## Adopted downstream work
 
 ### CONSUMER-01: Add stable complete-document consumers
 
@@ -54,6 +75,9 @@ Status: **adopted-later**.
 
 Build complete TeXmacs file-document construction and independent consumers for
 native serialization/save, Org export integration, rendering/PDF, and preview.
+Begin after a stable DOC-01 resolution architecture covers the critical
+cross-node semantics of ordinary complete documents; full Org syntax coverage
+is not a prerequisite.
 Keep the AST-first rule: construct known target structure directly and use
 TeXmacs-native serialization or rendering interfaces rather than generating an
 intermediate text format that must be reparsed to recover structure.
