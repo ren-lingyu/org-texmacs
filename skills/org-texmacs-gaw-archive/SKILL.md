@@ -1,12 +1,12 @@
 ---
 name: org-texmacs-gaw-archive
-description: Create and verify immutable plain-text snapshots of org-texmacs agent documents in the GAW archive workspace, then checkpoint them with exact project-parent provenance. Do not use for active memory, release artifacts, or ordinary project history.
+description: Create and verify immutable snapshots of necessary org-texmacs historical documents and temporary artifacts in the GAW archive workspace, then checkpoint them with exact project-parent provenance. Do not use for active memory, release artifacts, or ordinary project history.
 ---
 
 # org-texmacs GAW archive
 
-Preserve retired or migration-sensitive agent material without treating it as
-current memory or reusable instructions.
+Preserve retired or migration-sensitive agent material and necessary temporary
+evidence without treating either as current memory or reusable instructions.
 
 ## Establish the boundary
 
@@ -22,17 +22,25 @@ the active authorization and sensitive-content rules.
 
 ## Select historical evidence
 
-Root agent documents named by the user are primary candidates. Include a
-temporary probe or check script only when all of these conditions hold:
+Root agent documents named by the user are primary candidates. A temporary
+file is eligible when all of these conditions hold:
 
-- a selected document materially refers to it;
-- the script is needed to interpret or reproduce preserved evidence;
-- it is a reasonably sized plain-text file;
+- losing it would materially impair interpretation, reproduction, audit, or
+  handoff of a verified result, adopted decision, diagnosed failure, or
+  migration;
+- its evidence role and reason for retention can be stated in the manifest;
 - its repository-relative source path can be preserved under `files/`.
 
-Use targeted searches in the selected documents and `tmp/`; do not archive the
-whole temporary directory by default. Do not use tar, compression, or another
-binary container. Copy selected text byte for byte instead.
+A material reference from a selected document is strong evidence for
+inclusion, but is not required when the temporary artifact independently meets
+the criteria above. Use targeted searches and explicit paths; do not archive a
+whole temporary directory by default.
+
+Prefer reasonably sized plain-text artifacts and copy each one byte for byte.
+Do not use tar, compression, or another binary container merely to bundle text.
+If a necessary artifact is not plain text, report its format, size, evidence
+role, and Git cost before archiving it directly, and obtain an explicit user
+decision for that artifact.
 
 ## Name and lay out the snapshot
 
@@ -57,6 +65,7 @@ evidence and record:
 - the seven-character project commit abbreviation;
 - that the project state is `HEAD` at capture time;
 - the repository-relative selection rule and actual file list;
+- the evidence role or archive rationale for selected temporary artifacts;
 - for every archived file, source path, archive path, tracked status, byte
   count, and SHA-256 digest;
 - that the GAW checkpoint is the commit containing the manifest.

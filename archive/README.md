@@ -17,4 +17,6 @@ YYYY-MM-DDTHH-MM-SSZ--CCCCCCC/
 The timestamp is UTC and `CCCCCCC` is the seven-character abbreviation of the
 project `HEAD` captured for that snapshot.  `files/` preserves source paths
 relative to the ordinary project worktree.  The manifest records the exact
-selection, byte counts, digests, and provenance.
+selection, archive rationale, byte counts, digests, and provenance.  Preserve
+plain-text artifacts as individual files; do not bundle them in tar or another
+binary container merely for convenience.

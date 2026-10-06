@@ -76,9 +76,8 @@ they did not yet exist.
 ## Archive retired source material
 
 Use the `org-texmacs-gaw-archive` skill when historical agent documents or
-their necessary plain-text probe evidence must be preserved outside active
-memory. Do not copy archive contents into memory or treat them as current
-instructions.
+necessary temporary evidence must be preserved outside active memory. Do not
+copy archive contents into memory or treat them as current instructions.
 
 ## Authorization boundary
 
