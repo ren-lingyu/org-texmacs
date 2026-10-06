@@ -5,7 +5,7 @@ Org TeXmacs provides TeXmacs AST integration for Org documents.  Write
 structured content in official STM/Scheme serialization directly in Org;
 the Org buffer is the source of truth, with no external =.tm= file required.
 
-Version 0.3.0 retains block-level parsing with lazy caching and configurable
+Version 0.3.1 retains block-level parsing with lazy caching and configurable
 fragment source discovery with on-demand tree parsing.  It provides an explicit
 prepared-input core, a restricted Org document context, structural body
 lowering, provenance-aware native encoding, and native document sessions that
@@ -479,6 +479,9 @@ native session from body-only replacement to complete style, initial environment
 and body application.
 They form an additional downstream path; the block and fragment APIs above
 continue to return Org-compatible pseudo subtrees.
+Version 0.3.1 separates worker transport from the native session protocol.
+It preserves the public APIs and Scheme request/response format, including the
+existing document and native-session behavior.
 
 ** Preparing a document result
 The document API separates prepared input from buffer preparation.
@@ -840,10 +843,10 @@ Encoding depends on provenance, not on guessing from leaf contents:
   complete strees.  Style names and initial keys are identifiers and are not
   passed through ordinary-body text encoding.
 
-The worker retains STM paths until encoding is complete.  Pass the original
-text document to each update; never feed encoded diagnostic output back as
-text.  The native path rejects =raw-data=.  Preserving other STM tags does
-not validate their arity, character names, mathematical meaning or layout.
+The document result retains STM paths until native encoding is complete.  Pass
+the original text document to each update; never feed encoded diagnostic output
+back as text.  The native path rejects =raw-data=.  Preserving other STM tags
+does not validate their arity, character names, mathematical meaning or layout.
 
 Preflight and encoding errors leave the previous document state intact.  Native
 update/readback failure discards the session; transport or fatal cleanup
