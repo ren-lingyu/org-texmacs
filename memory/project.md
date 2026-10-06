@@ -105,4 +105,6 @@ in the worker. This is a post-v0.3 refactor, not an established correctness bug.
 Complete file document modeling, serialization/save/export, PDF, preview,
 visual pagination, multi-document or multi-session operation, live or
 incremental synchronization, and broader Org document-wide resolution remain
-future consumer/document work.
+future consumer/document work. `memory/backlog.md` distinguishes adopted work,
+deferred candidates, and unresolved design boundaries; unsupported entries in
+this support matrix are not automatically implementation commitments.

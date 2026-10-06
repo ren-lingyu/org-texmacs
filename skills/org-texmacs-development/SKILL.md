@@ -20,6 +20,11 @@ files completely:
 - `../../memory/project.md` for the current interfaces and support boundary;
 - `../../memory/current.md` for the active objective and next action.
 
+Read `../../memory/backlog.md` when planning future scope, selecting the next
+implementation node, or deciding whether an unsupported case is adopted,
+deferred, unresolved, or requires re-adoption. Do not treat an unsupported
+entry or historical idea as implementation authorization.
+
 Read `../../memory/evidence.md` when a decision depends on earlier Org/TeXmacs
 behavior, environment support, release validation, or a claimed failure. Treat
 memory as a useful current record, not proof that stale runtime behavior still
