@@ -2,11 +2,11 @@
 
 ## Objective
 
-Select the next implementation scope from the adopted downstream work. The
-verified, behavior-preserving `ARCH-01` worker/document layering refactor is
-committed, and the reproducible untracked bootstrap migration is complete. A
-fresh session has recovered active GAW memory without the historical archive.
-Unaided bootstrap discovery remains a nonblocking check for a later session.
+Prepare v0.3.1 for the verified, behavior-preserving `ARCH-01` worker/document
+layering refactor, then select the next implementation scope from adopted
+downstream work. The reproducible untracked bootstrap migration is complete.
+A fresh session has recovered active GAW memory without the historical archive;
+unaided bootstrap discovery remains a nonblocking check for a later session.
 
 ## Current baseline
 
@@ -14,7 +14,8 @@ Unaided bootstrap discovery remains a nonblocking check for a later session.
   `ec72c89b71ffd1df27d9cdb22c4f6c8e1a4f6491`.
 - Local v0.3.0 tag target:
   `8c157d06b7a8793b0bd312e8f0c41612a3640388`.
-- The ordinary project worktree is clean after the ARCH-01 commit.
+- The ordinary project worktree has unstaged v0.3.1 preparation changes in
+  `org-texmacs.el`, `flake.nix`, and `README.org`.
 - Root `GOALS.md` and `REVIEW.md` have been retired from the active project
   root. The generated root `AGENTS.md` remains the only active root agent
   document.
@@ -113,14 +114,25 @@ Unaided bootstrap discovery remains a nonblocking check for a later session.
   covering the declared package, ERT, package-lint, and development-shell
   outputs. Nix fetched one source path from `cache.nixos.org`; the lockfile and
   ordinary tracked files outside this refactor were not changed.
-- The committed tree matches the verified diff, and the ordinary worktree is
-  clean.
+- The committed tree matches the verified diff; the ordinary worktree was clean
+  immediately after the ARCH-01 commit.
+
+## v0.3.1 preparation
+
+- The user selected v0.3.1 as the release version for ARCH-01. The current
+  ordinary worktree changes the package header and Nix package version to
+  0.3.1, updates the README current-version summary, adds an ARCH-01 release
+  note, and attributes STM paths to the document result rather than the worker.
+- `git diff --check` passed for these edits. No build or test was run for the
+  version preparation. No ordinary project commit or release tag was created.
 
 ## Next actions
 
-1. Select the next implementation scope from adopted work rather than treating
+1. Review and validate the v0.3.1 preparation as authorized, then complete the
+   release through the ordinary project workflow.
+2. Select the next implementation scope from adopted work rather than treating
    unsupported cases or deferred candidates as automatic commitments.
-2. When a later fresh Codex session starts without user-supplied `AGENTS.md`,
+3. When a later fresh Codex session starts without user-supplied `AGENTS.md`,
    check whether it discovers the root bootstrap and project skill, then
    recovers active GAW memory without the historical archive. Mark this
    nonblocking check complete when observed; continue project work meanwhile.
