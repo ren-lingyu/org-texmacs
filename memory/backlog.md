@@ -57,19 +57,24 @@ and non-file buffers; source file identity is separate and does not override an
 explicit directory. Do not rewrite raw resource paths to absolute form early
 or choose a base inside a local link handler.
 
-The current source-location worktree node freezes `source-file` and
+The committed source-location node (`b09b451`) freezes `source-file` and
 `resource-base` in owned input/results. Preparation expands context home
 abbreviations once; pure construction never resolves ambient locations.
 Original strings join snapshot consistency checks. An output destination must
 not redefine the source-side link target.
-This node is implemented and verified (217/217 ERT, compilation, and conditional
-Nix/package-lint with the temporary mirror-source configuration), ready for
-review. The user's overlay is excluded from ordinary project commits and pushes.
+This node was verified (217/217 ERT, compilation, and conditional Nix/package-lint
+with the temporary mirror-source configuration), then reviewed and committed.
+The user's overlay is excluded from project commits and pushes.
 
-The next **unresolved-design** boundary is the structured resource target and
-native consumer interface: preserve raw file paths with their captured base,
-decide handling of file search options and tilde/remote targets, and translate
-paths only where consumer semantics are known. Org LaTeX source also shows
+The plain-local-file worktree node now preserves raw hlink target leaves with
+typed `file-paths` and translates them on a body copy only in the native bridge.
+It passed 223/223 ERT and Nix/package-lint under the temporary mirror-source
+configuration, and is ready for review. The next bounded DOC-01 node is named
+footnote definition/reference resolution.
+
+Remaining **unresolved-design** boundaries include file search options,
+tilde/remote targets/context, broader native URL escaping and consumer output
+destinations. Org LaTeX source also shows
 that undescribed unnumbered-headline links use title text; review the native
 reference presentation policy before claiming equivalent visual behavior.
 

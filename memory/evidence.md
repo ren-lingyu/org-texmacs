@@ -162,7 +162,8 @@ post-preflight checks.
 The verified six-file diff on baseline `a3ba241d66dc1e1a89a9eb4c4fc678fef2f5bfb4`
 had SHA-256 `3661d1b73013c08f1353f2cf29336486021210211eaa70cbbf5fcd87d2e0c768`
 using `git diff HEAD -- README.org org-texmacs-document.el org-texmacs-input.el org-texmacs-source.el org-texmacs.el tests/ert/ert.el`.
-It remains uncommitted; the baseline is not a tested commit for the new fields.
+The later project commit `b09b4515ad0445666d666506969e441d8f5e6b89` was checked:
+its six-file diff from that baseline matches this hash exactly.
 
 After local implementation/validation finished, `timeout 120s nix flake check
 -L --no-write-lock-file` passed (exit 0), including package building,
@@ -176,11 +177,56 @@ excluded from the six-file implementation diff. This does not establish
 availability of GNU ELPA. The installed package was
 `/nix/store/fxri3nk51fwihvr995h50widajllizgn-emacs-org-texmacs-0.3.1/`.
 
-Archive selection found no necessary independent temporary artifact: bytecode
+Source-location archive selection found no necessary independent temporary artifact: bytecode
 directories are regenerable cache, the probe inputs/results/provenance are
 fully distilled here, and maintained ERT covers adopted snapshot semantics.
 `tmp/commit.md` duplicates the committed first-node message. No raw overlay
-snapshot is committed. No new archive checkpoint is warranted.
+snapshot is committed. No archive checkpoint was needed for that source-location node.
+
+## Plain local file-link worktree verification
+
+- With explicit read permission, the installed TeXmacs 2.1.5 Scheme source
+  `progs/link/link-navigate.scm` showed `go-to-vertex` (576) calling
+  `cork->utf8` before URL handling, `go-to-url` (525) using `system->url`, and
+  `process-url` (423) separating `#`/`?` post-navigation syntax. Its SHA-256 was
+  `9b075c37048032592779f9ae623e8b2f74e89c30ad4512c3fd843a64fef28563`, under
+  `/nix/store/fbmq6la2pwcapsgmqp3zy6d4dbrn270a-texmacs-2.1.5/share/TeXmacs/`.
+- A native probe established that system URL/string conversion retains raw
+  absolute paths, including spaces, Unicode and literal angle brackets.
+  Restoring UTF-8 after ordinary native Cork encoding recovered the exact path.
+  `#`/`?` remain unescaped by that conversion and are therefore outside the
+  first native file-target subset. Other URL expression characters are also
+  explicitly restricted rather than silently interpreted.
+- The initial sandbox run failed on Unix socket bind with Operation not
+  permitted. The same isolated probe outside that sandbox passed. No target
+  files were opened and no hyperlinks were followed.
+- The three exact plain-text probe artifacts were copied byte for byte and
+  digest/size verified in `archive/2026-10-06T14-50-30Z--b09b451/`. Independent
+  archive-only checkpoint `9d8d351e63bad079087301aaf3b410d29307a824` has sole
+  additional project parent `b09b4515ad0445666d666506969e441d8f5e6b89`. Its
+  manifest records each role, source path, byte count and digest. Active memory,
+  binary artifacts and the temporary overlay were excluded from that checkpoint.
+- The implementation adds raw file-target path provenance; it rewrites only
+  marked hlink target leaves in the native bridge, on a body copy with an
+  explicit captured base. The native Scheme wire and service are unchanged.
+- On 2026-10-06 final local full ERT passed 223/223, exit 0, in 102.71 seconds.
+  Six new maintained tests cover source/caller directory independence, raw
+  path/result ownership, container/STM provenance, explicit context and rejected
+  resource semantics, marker validation, reserved native syntax, Unicode/literal
+  native readback, and preflight preserving a healthy worker/session.
+- Nix flake checks then passed (exit 0), covering the installed package,
+  native compilation, package-lint and ERT 223/223 (84.71 seconds). This used
+  the user's temporary, uncommitted/unpushed USTC mirror-source configuration;
+  the unchanged overlay diff hash is recorded in the preceding section.
+  The installed package was
+  `/nix/store/0dmslh2v6d0yklwg900apn1g0cjcsd48-emacs-org-texmacs-0.3.1/`.
+- The verified five-file worktree diff on baseline
+  `b09b4515ad0445666d666506969e441d8f5e6b89` has SHA-256
+  `9a4808d6615612c728ba1b249929c2ff1db2e5c3cbf9aa5dccc844733ab0f913` using
+  `git diff HEAD -- README.org org-texmacs-document.el org-texmacs-session.el org-texmacs.el tests/ert/ert.el`.
+  It remains uncommitted; the baseline commit does not contain the file-link
+  implementation. GUI navigation, file search/remote/tilde targets and broader
+  filename escaping remain unverified or explicitly unsupported.
 
 ## Durable TeXmacs facts
 

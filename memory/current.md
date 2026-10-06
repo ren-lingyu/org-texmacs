@@ -2,23 +2,25 @@
 
 ## Objective
 
-The DOC-01 source-location snapshot node is implemented and verified in the
-ordinary worktree, ready for review. Next is the structured file/resource target
-and native consumer path contract. The temporary mirror-source configuration
+The DOC-01 plain local file-link node is implemented and verified in the
+ordinary worktree, ready for review. It preserves raw paths with typed
+provenance and consumes the captured base only at the native bridge. The temporary mirror-source configuration
 must remain uncommitted and unpushed. Bootstrap discovery remains nonblocking.
 
 ## Current baseline
 
 - Main HEAD observed on 2026-10-06:
-  `a3ba241d66dc1e1a89a9eb4c4fc678fef2f5bfb4`.
+  `b09b4515ad0445666d666506969e441d8f5e6b89`.
 - Local v0.3.0 tag target:
   `8c157d06b7a8793b0bd312e8f0c41612a3640388`.
 - Local v0.3.1 annotated tag resolves to
   `880d4e00667907ef66985387b4865ec8d795d48d`.
-- The first local-link node is committed; the ordinary worktree now contains
-  the verified, uncommitted source-location snapshot node and the user's
-  temporary overlay. `INBOX.md` remains an ignored reference note and was not
-  modified by the agent.
+- Both local-link and source-location nodes are committed. At the start of
+  resource-target work the only ordinary worktree change was the user's
+  temporary overlay. `INBOX.md` remains ignored and was not modified by the agent.
+- The new resource node changes README, document lowering, the session/native
+  bridge, API documentation, and ERT. It remains uncommitted; the temporary
+  `flake.nix` overlay is separate and excluded from staging/commit.
 - Root `GOALS.md` and `REVIEW.md` have been retired from the active project
   root. The generated root `AGENTS.md` remains the only active root agent
   document.
@@ -181,21 +183,43 @@ must remain uncommitted and unpushed. Bootstrap discovery remains nonblocking.
   them once rather than rejecting ordinary buffers. Final full ERT passed
   217/217 and all modules compiled without warnings. Then Nix flake checking
   passed, including package-lint, package building and 217/217 installed-package
-  ERT, using the user's temporary mirror-source configuration. File-link
-  lowering/native path translation remain later work.
-- Archive selection followed `org-texmacs-gaw-archive`: this node's temporary
+  ERT, using the user's temporary mirror-source configuration. The file-link
+  node below now consumes this context for its bounded local-file subset.
+- Source-location archive selection followed `org-texmacs-gaw-archive`: that node's temporary
   artifacts are regenerable bytecode caches; upstream probe conclusions and
   provenance are fully in evidence, and snapshot behavior is maintained in ERT.
   No separate archive snapshot is needed. The temporary overlay itself must
   not be committed or pushed; only its validation conditions are recorded.
 
+## Plain local file-link node
+
+- Source-location commit `b09b451` matches the earlier verified six-file diff.
+- Pure document analysis accepts plain local body file links without search
+  options, application hints, tilde targets or remote context. Raw paths remain
+  in body `hlink` nodes; new `file-paths` locate typed target leaves and compose
+  with containers independently of STM provenance. Relative paths require an
+  explicit captured base; no resource files are opened or read.
+- The native bridge validates target roles, duplicates/bounds and STM
+  separation, then rewrites only marked leaves on a copied body using the
+  captured base. Ordinary native encoding remains in the existing worker;
+  the Scheme protocol is unchanged. Reserved navigation/URL expression
+  characters fail native preflight and preserve the healthy session/worker.
+- Six new maintained cases passed in full ERT 223/223 (exit 0). Nix package,
+  package-lint and installed-package ERT 223/223 also passed using the unchanged
+  temporary, uncommitted remote mirror-source configuration. GUI following of
+  links remains unverified. Evidence records the exact worktree diff hash.
+- Three native URL probe artifacts are archived under
+  `archive/2026-10-06T14-50-30Z--b09b451/`, in archive-only checkpoint `9d8d351`
+  with exact project parent `b09b451`. Every artifact and manifest is plain text;
+  no active memory, overlay or binary was included in that archive checkpoint.
+
 ## Next actions
 
-1. Review the six-file source-location node diff; exclude the user's temporary
-   `flake.nix` overlay from staging/commit. The project changes remain uncommitted.
-2. Design resource targets/native path translation, including the boundary
-   for file searches, tilde/remote paths, and consumer output destinations.
-   Named footnotes and citations/bibliography remain later DOC-01 nodes.
+1. Review the uncommitted five-file local-file-link node, excluding the user's
+   temporary `flake.nix` configuration from staging/commit.
+2. Continue DOC-01 with a bounded named-footnote definition/reference node.
+   File search options, tilde/remote resources, broader native URL escaping,
+   cross-file IDs and citations/bibliography remain later or unresolved scope.
 3. When a later fresh Codex session starts without user-supplied `AGENTS.md`,
    check whether it discovers the root bootstrap and project skill, then
    recovers active GAW memory without the historical archive. Mark this

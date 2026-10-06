@@ -17,11 +17,11 @@ explicit Org source buffer
   -> private parsing and restricted Org context
   -> owned prepared input
        AST + INFO + islands + post-blank mappings + style + initial
-       source-file + resource-base (source-context worktree node)
+       source-file + resource-base
   -> pure document-wide analysis
-       identity-keyed link resolutions + target labels
+       identity-keyed link resolutions + target labels + typed file targets
   -> pure local document lowering
-       body + style + initial + STM provenance
+       body + style + initial + STM/file-target provenance
   -> source-aware native encoding
   -> TeXmacs native tree/state
   -> one persistent headless native document session
@@ -111,7 +111,10 @@ The first resolution node is committed as
 Maintained tests establish structural and native readback behavior, not visual
 reference values or typesetting. See `memory/evidence.md` for validation gaps.
 
-## Source-location snapshot node in the worktree
+## Committed source-location snapshot node
+
+This node is committed as `b09b4515ad0445666d666506969e441d8f5e6b89` and its diff
+matches the recorded verified worktree hash.
 
 - Owned input and document results retain optional `source-file` and
   `resource-base` strings. Source file identity never overrides the resource
@@ -124,12 +127,39 @@ reference values or typesetting. See `memory/evidence.md` for validation gaps.
   changes and in-place mutation even when source text is unchanged. Pure input
   and document results own independent copies and do not expand paths or run
   file handlers.
-- Native sessions do not yet interpret these fields. File-link lowering and
-  the structured resource/native path conversion contract remain future work.
+- The following local-file node uses the captured resource base only at its
+  native consumer boundary; source identity never overrides it.
 
-This uncommitted node passed 217/217 local ERT and byte compilation, then Nix
+This node passed 217/217 local ERT and byte compilation, then Nix
 package/ERT/package-lint checks using the user's temporary, uncommitted remote
 mirror-source configuration. The overlay is not part of the project change.
+
+## Local file-link worktree node
+
+- Document results add `file-paths`, body-relative paths to raw Org file-link
+  target leaves in `hlink` nodes. Raw relative names remain unchanged until a
+  consumer translates them. No `file:` URI is fabricated to recover structure.
+- File targets are resolved from the owned AST and captured resource context.
+  Plain local body links, including implicit relative and absolute links, are
+  supported. No-description links display the raw path; images are not embedded.
+  File searches, application hints, tilde/remote targets/context and title or
+  metadata file links fail structural preflight explicitly.
+- Pack/lowering operations propagate independent file-target and STM paths.
+  Native preflight rejects duplicate/invalid/out-of-bounds markers, markers
+  outside hlink target roles, and overlap with STM; native source hlinks are
+  not reinterpreted as Org file resources.
+- The native bridge rewrites marked target leaves on a fresh body copy to
+  absolute system paths using only the captured base. The existing TeXmacs
+  literal encoder and native URL handler preserve spaces, Unicode, literal
+  angle brackets and percent characters. It does not read linked files or
+  query the caller's current directory. The original result remains unchanged.
+- Native string navigation initially rejects `#`, `?`, `*`, `$`, `|`, backslash
+  and square brackets in expanded targets. Structural results may preserve
+  these paths for other future consumers; this native consumer fails explicitly.
+  Actual GUI navigation/rendering remains unverified.
+- The worker transport/protocol and Scheme service are unchanged. The node is
+  uncommitted and passed ERT 223/223 plus Nix package/package-lint/ERT checks with
+  the user's separate temporary mirror-source configuration.
 
 ## Worker and session
 
