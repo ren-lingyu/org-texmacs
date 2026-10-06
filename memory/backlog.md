@@ -66,11 +66,15 @@ This node was verified (217/217 ERT, compilation, and conditional Nix/package-li
 with the temporary mirror-source configuration), then reviewed and committed.
 The user's overlay is excluded from project commits and pushes.
 
-The plain-local-file worktree node now preserves raw hlink target leaves with
+The plain-local-file node, committed as `77a2888`, preserves raw hlink target leaves with
 typed `file-paths` and translates them on a body copy only in the native bridge.
 It passed 223/223 ERT and Nix/package-lint under the temporary mirror-source
-configuration, and is ready for review. The next bounded DOC-01 node is named
-footnote definition/reference resolution.
+configuration. The named-footnote worktree node now resolves inline/separate
+definitions and repeated references within one owned snapshot; see project
+and current memory for its bounded contract and validation state. After that
+node is committed, review the next DOC-01 citations/bibliography boundary before
+implementation: choose an explicit owned representation, resolver dependencies
+and native target behavior without ambient bibliographic/file queries.
 
 Remaining **unresolved-design** boundaries include file search options,
 tilde/remote targets/context, broader native URL escaping and consumer output
@@ -149,7 +153,7 @@ architecture commitments. Re-adopt and scope them before implementation.
 ## Current unsupported cases are not automatic commitments
 
 Examples include checkbox and explicit list-counter semantics, advanced table
-features, arbitrary Org elements, dynamic source execution, named footnotes,
+features, arbitrary Org elements, dynamic source execution, nested footnotes,
 citations, bibliography, and general internal/file/ID links. Some are covered
 by adopted document work above; others remain unsupported until separately
 adopted. Continue to fail explicitly rather than silently flattening them.

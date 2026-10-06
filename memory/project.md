@@ -111,6 +111,29 @@ The first resolution node is committed as
 Maintained tests establish structural and native readback behavior, not visual
 reference values or typesetting. See `memory/evidence.md` for validation gaps.
 
+## DOC-01 named-footnote worktree node
+
+- Pure document resolution maps named references to one owned separate or
+  labeled inline definition. Definitions may follow the first reference.
+  Missing/ambiguous definitions and nested footnotes fail during preflight.
+- Preparation collects definitions before headline pruning, restores only
+  definitions needed by visible references into the AST, and discards unused
+  separate definitions and their island requests. It never reads a fallback
+  source buffer. No detached definition forest or new public input slot is used.
+- First use emits `footnote` with a `surround` prefix label; later uses emit
+  `rsup` with a right-shaped native `reference`. Private `org-texmacs-fn-N`
+  anchors avoid static STM labels and do not assume native counter numbers.
+- References remain direct paragraph children. Separate bodies support the
+  existing paragraph/list/container/static-block/table subset; normal fragment
+  discovery applies to their paragraphs. Inline bodies retain the inline
+  subset without STM discovery. STM/file provenance composes through the body
+  wrappers and is emitted once.
+- The source's `org-footnote-section` joins the copied/rechecked parser settings.
+  Its special headline is omitted after definitions have been collected.
+- Maintained native readback covers shared labels, mixed anonymous/named notes,
+  Unicode and literal encoding. Rendered numbering and style expansion are
+  unverified. This uncommitted node is not a released capability.
+
 ## Committed source-location snapshot node
 
 This node is committed as `b09b4515ad0445666d666506969e441d8f5e6b89` and its diff

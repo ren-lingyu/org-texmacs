@@ -2,15 +2,15 @@
 
 ## Objective
 
-The DOC-01 plain local file-link node is implemented and verified in the
-ordinary worktree, ready for review. It preserves raw paths with typed
-provenance and consumes the captured base only at the native bridge. The temporary mirror-source configuration
-must remain uncommitted and unpushed. Bootstrap discovery remains nonblocking.
+The named-footnote node is implemented, verified and explicitly staged after
+user approval. `tmp/commit.md` contains the reviewed message; ordinary project
+commit awaits the user. The temporary mirror-source configuration remains
+unstaged, uncommitted and unpushed. Bootstrap discovery remains nonblocking.
 
 ## Current baseline
 
-- Main HEAD observed on 2026-10-06:
-  `b09b4515ad0445666d666506969e441d8f5e6b89`.
+- Main HEAD observed on 2026-10-07:
+  `77a28881807d1bf8dba508b1f8a07f392083dfca`.
 - Local v0.3.0 tag target:
   `8c157d06b7a8793b0bd312e8f0c41612a3640388`.
 - Local v0.3.1 annotated tag resolves to
@@ -18,9 +18,8 @@ must remain uncommitted and unpushed. Bootstrap discovery remains nonblocking.
 - Both local-link and source-location nodes are committed. At the start of
   resource-target work the only ordinary worktree change was the user's
   temporary overlay. `INBOX.md` remains ignored and was not modified by the agent.
-- The new resource node changes README, document lowering, the session/native
-  bridge, API documentation, and ERT. It remains uncommitted; the temporary
-  `flake.nix` overlay is separate and excluded from staging/commit.
+- The local-file node is committed; the ordinary worktree initially contains
+  only the temporary `flake.nix` overlay, which remains excluded from commits.
 - Root `GOALS.md` and `REVIEW.md` have been retired from the active project
   root. The generated root `AGENTS.md` remains the only active root agent
   document.
@@ -36,12 +35,28 @@ must remain uncommitted and unpushed. Bootstrap discovery remains nonblocking.
 
 ## Current decisions
 
-- For the next DOC-01 node (named footnotes), the user asks the agent to request
+- Named footnotes now resolve within the owned AST snapshot. Separate and
+  labeled inline definitions are collected before filtering; required removed
+  definitions are reattached to the prepared AST without buffer fallback.
+  First use emits a labelled native footnote body; later uses emit a superscript
+  reference to its private anchor. Unused separate definitions and their worker
+  requests are discarded. Missing/ambiguous definitions and nested references
+  fail during preflight. The source's footnote-section setting is copied and
+  rechecked; its special headline is omitted. Focused ERT currently passes
+  14/14, including native tree round trips, block bodies and typed provenance.
+  Full local ERT passes 232/232 (108.25 seconds). Nix checks pass with the
+  unchanged temporary mirror-source configuration, including package-lint,
+  compilation and installed ERT 232/232 (84.47 seconds). GUI numbering remains
+  unverified. Four explicit paths were staged with user approval; their complete
+  diff matches the verified hash in evidence. `tmp/commit.md` was reviewed and
+  replaced with this node's message using `git-maintenance`.
+- For this DOC-01 node (named footnotes), the user asked the agent to request
   path-specific `git add` approval directly after completing implementation,
   validation and review, then draft `tmp/commit.md` from the approved staged
   diff. Exclude the temporary overlay and unrelated changes. This instruction
   requests an approval workflow, not blanket staging authorization; ordinary
-  project commits remain the user's action.
+  project commits remain the user's action. The requested staging/message
+  workflow is now complete.
 - The user's current GAW content policy permits only pure-text files in memory,
   skills, and archive. Do not stage/checkpoint bytecode, binaries, images, or
   binary containers. Keep regenerable compilation artifacts outside GAW.
@@ -221,14 +236,15 @@ must remain uncommitted and unpushed. Bootstrap discovery remains nonblocking.
 
 ## Next actions
 
-1. The user has staged the five-file local-file-link node; its staged diff
-   matches the verified hash, and `tmp/commit.md` contains the prepared message.
-   The temporary `flake.nix` configuration remains unstaged and excluded.
-2. Continue DOC-01 with a bounded named-footnote definition/reference node.
-   File search options, tilde/remote resources, broader native URL escaping,
-   cross-file IDs and citations/bibliography remain later or unresolved scope.
-   After completing that node, request explicit-path staging approval and draft
-   the commit message as requested in Current decisions.
+1. Await the user's ordinary project commit. The approved staged scope is
+   `README.org`, `org-texmacs-context.el`, `org-texmacs-document.el`, and
+   `tests/ert/ert.el`; reviewed message: `tmp/commit.md`. Verify the later commit
+   against evidence's four-file SHA-256 before marking it committed. Do not
+   include or push `flake.nix`'s temporary mirror-source configuration.
+2. After that commit, review the next bounded DOC-01 citations/bibliography
+   node: explicit owned representation, dependencies and native mapping need
+   evidence before implementation. File searches, tilde/remote resources,
+   broader URL escaping and cross-file IDs remain later/unresolved boundaries.
 3. When a later fresh Codex session starts without user-supplied `AGENTS.md`,
    check whether it discovers the root bootstrap and project skill, then
    recovers active GAW memory without the historical archive. Mark this

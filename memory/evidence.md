@@ -12,6 +12,51 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
+## Named-footnote semantic evidence
+
+- Org 9.8-pre `ox.el` collects named inline and separate definitions before
+  pruning. Its missing-definition recovery can fall back to a widened source
+  buffer; this package instead restores parsed snapshot nodes into its owned AST.
+  Org's footnote forms and special-section convention are documented at
+  https://orgmode.org/manual/Creating-Footnotes.html and
+  https://orgmode.org/worg/org-syntax.html.
+- With user-authorized reads of TeXmacs 2.1.5 `packages/standard/*.ts`, the
+  `std-latex-base.ts` `footnotemark*` macro establishes the repeated-mark shape
+  `rsup` / right-shaped `reference`. The package uses private anchor labels
+  rather than assuming physical footnote counter values.
+- A fresh headless native session's environment query returned `(uninit)` for
+  `footnote`, `footnote-text`, `footnotemark*`, `footnote-ref` and `next-footnote`.
+  This does not establish absence of the macros or rendered numbering behavior.
+  Exact runner, Scheme query and output are preserved as three UTF-8 plain-text
+  files in `archive/2026-10-06T16-59-25Z--77a2888/`, archive-only checkpoint
+  `548e6c3a8a6caa688b93de01d547bca204c279bb`, with sole additional project parent
+  `77a28881807d1bf8dba508b1f8a07f392083dfca`. Byte copies, sizes and hashes match;
+  no active memory, temporary mirror overlay or binaries entered that checkpoint.
+- Nine new maintained ERT cases cover first/repeated references, forward inline
+  definitions, definitions recovered from filtered trees, custom footnote
+  section settings and stale settings, unused/invalid definitions, owned input
+  after source disposal, STM/file provenance, native encoding, block bodies,
+  local targets, private label collisions and empty definitions. Fourteen
+  footnote tests passed, including the retained anonymous-note regressions.
+- Initial full local and Nix suites both reached 231/232. The only failure was
+  an obsolete unsupported-source fixture: line-initial `[fn:named]` is now an
+  unused separate definition. The fixture was changed to `A[fn:named]`, a true
+  unresolved reference, and its focused rerun passed. On 2026-10-07 the final
+  full local ERT passed 232/232, exit 0, in 108.25 seconds (`emacs-twist`, Emacs
+  31.1 / Org 9.8-pre / TeXmacs 2.1.5). Final Nix flake checking passed, exit 0,
+  including installed-package ERT 232/232 in 84.47 seconds. Package build,
+  compilation and package-lint passed in the first check and were reused by
+  the final check because only the obsolete test fixture changed.
+- Validation used the user's unchanged local-only remote USTC mirror overlay;
+  it does not establish original GNU ELPA availability. The overlay diff hash
+  remains `1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54`.
+- Verified and approved staged diff on base
+  `77a28881807d1bf8dba508b1f8a07f392083dfca`: SHA-256
+  `82c13615c352889dbedede08505518eacb09db78fa1b739c5105448db0da0cd5` for
+  `git diff HEAD -- README.org org-texmacs-context.el org-texmacs-document.el tests/ert/ert.el`.
+  The complete staged diff matches that hash exactly; `git diff --check` passed.
+  Project commit remains pending; `tmp/commit.md` is the reviewed message.
+
 ## Release provenance
 
 - v0.1.0 target: `6fd48944c238e0b627e3bc2d47e224ebf8e2892b`.
@@ -20,8 +65,8 @@
 - v0.3.0 target: `8c157d06b7a8793b0bd312e8f0c41612a3640388`.
 - Local v0.3.1 annotated tag target:
   `880d4e00667907ef66985387b4865ec8d795d48d`.
-- Current main HEAD observed on 2026-10-06:
-  `880d4e00667907ef66985387b4865ec8d795d48d`.
+- Current main HEAD observed on 2026-10-07:
+  `77a28881807d1bf8dba508b1f8a07f392083dfca`.
 
 These are local Git facts. They do not prove remote release state or tag
 signatures.
@@ -224,8 +269,9 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   `b09b4515ad0445666d666506969e441d8f5e6b89` has SHA-256
   `9a4808d6615612c728ba1b249929c2ff1db2e5c3cbf9aa5dccc844733ab0f913` using
   `git diff HEAD -- README.org org-texmacs-document.el org-texmacs-session.el org-texmacs.el tests/ert/ert.el`.
-  It remains uncommitted; the baseline commit does not contain the file-link
-  implementation. GUI navigation, file search/remote/tilde targets and broader
+  The later commit `77a28881807d1bf8dba508b1f8a07f392083dfca` was compared with
+  that baseline and its five-file diff matches this hash exactly.
+  GUI navigation, file search/remote/tilde targets and broader
   filename escaping remain unverified or explicitly unsupported.
 
 ## Durable TeXmacs facts
