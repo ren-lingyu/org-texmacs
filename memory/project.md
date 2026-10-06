@@ -92,13 +92,21 @@ export preprocessing, and arbitrary Org element coverage.
   it; cleanup or transport failure stops the worker.
 - No `.tm`, `.stm`, or `.tmml` intermediate is required in the conversion path.
 
-## Known architecture issue
+## Worker and native-bridge layering
 
-The worker layer still depends on the high-level document module for parts of
-document wire validation/encoding. The intended behavior-preserving direction
-is to move document representation responsibilities to the session/native
-bridge while retaining process, socket, framing, and protocol-envelope duties
-in the worker. This is a post-v0.3 refactor, not an established correctness bug.
+- Shared package condition types live in core.
+- The worker layer does not load the document layer. It owns process and socket
+  lifecycle, request framing, generic response-envelope reading, and STM parse
+  response semantics.
+- The session/native bridge owns document preflight and wire serialization,
+  native encoding, and native/session payload contracts. It depends on both
+  the worker transport and the structural document representation.
+- Application-level parse, encoding, and session failures preserve a healthy
+  worker. Transport, framing, or invalid operation payloads stop it. A local
+  request-construction failure before transmission also preserves it.
+
+This boundary is implemented and verified in the current ordinary worktree;
+the corresponding project commit has not yet been created.
 
 ## Downstream work not yet implemented
 

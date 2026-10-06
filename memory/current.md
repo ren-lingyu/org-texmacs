@@ -2,10 +2,10 @@
 
 ## Objective
 
-Begin `ARCH-01`, the behavior-preserving worker/document layering refactor.
-The reproducible untracked bootstrap migration is complete. A future fresh
-context should independently confirm discovery and recovery routing, but that
-validation no longer blocks project work.
+Hand off the verified, behavior-preserving `ARCH-01` worker/document layering
+refactor for project commit. The reproducible untracked bootstrap migration is
+complete. A future fresh context should independently confirm discovery and
+recovery routing, but that validation does not block project work.
 
 ## Current baseline
 
@@ -92,15 +92,24 @@ validation no longer blocks project work.
   native/session response contracts.
 - `org-texmacs-worker.el` no longer requires `org-texmacs-document.el`; a test
   records this load boundary before loading the complete package.
-- Public APIs and the Scheme request/response wire are intended to remain
-  unchanged. `git diff --check` passes, but ERT and Nix checks have not yet been
-  run against this worktree, so the node is not yet verified or commit-ready.
+- Public APIs and the Scheme request/response wire remain unchanged. A static
+  review additionally fixed the pre-transmission failure boundary so a local
+  request-builder error preserves the healthy worker.
+- On 2026-10-06, full ERT passed 203/203 with exit status 0 using
+  `emacs-twist`. `nix flake check -L --no-write-lock-file` also exited 0,
+  covering the declared package, ERT, package-lint, and development-shell
+  outputs. Nix fetched one source path from `cache.nixos.org`; the lockfile and
+  ordinary tracked files outside this refactor were not changed.
+- `git diff --check` passes. The four-file worktree diff is verified and ready
+  for commit review, but remains unstaged and uncommitted.
 
 ## Next actions
 
-1. Run the full ERT suite and Nix checks for the ARCH-01 worktree; repair any
-   regressions within the same layering scope.
-2. Review the complete diff and, if verified, prepare it as one independently
-   commit-ready architecture node and update project/backlog memory.
-3. In a future fresh Codex context, verify skill discovery and recovery from
+1. Review and commit the four-file ARCH-01 project diff without folding in
+   unrelated work.
+2. After the project commit exists, ground the verified GAW state in that exact
+   project parent and retire ARCH-01 from the active backlog.
+3. Select the next implementation scope from adopted work rather than treating
+   unsupported cases or deferred candidates as automatic commitments.
+4. In a future fresh Codex context, verify skill discovery and recovery from
    active GAW memory without reading the historical archive.
