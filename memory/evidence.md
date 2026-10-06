@@ -95,6 +95,11 @@ Other systems were not established by the recorded validations.
   error. It did not reach package building or the declared project checks.
   A local package-lint attempt could not load the absent `package-lint`
   library (exit 255). These are validation gaps, not established code defects.
+- On 2026-10-06 the user independently reported being unable to access
+  `elpa.gnu.org` from multiple devices and network environments. This is
+  user-reported evidence corroborating an availability problem beyond the
+  agent sandbox; it does not establish a global outage or its root cause.
+  Keep the failed dependency download marked separately from project checks.
 - One earlier 30-second focused native run timed out; its cause is unknown.
   Its 120-second rerun and the final full suite passed. GUI rendering and actual
   displayed reference numbers remain unverified.

@@ -87,6 +87,12 @@ dependency/tool availability. Unaided bootstrap discovery remains nonblocking.
 ## Blockers and uncertainties
 
 - No project-code blocker is known.
+- ELPA availability blocks Nix validation: on 2026-10-06 the user reported that
+  `elpa.gnu.org` was inaccessible on multiple devices and through multiple
+  network environments. Together with the agent's TLS failures inside and
+  outside the sandbox, this indicates an external availability problem beyond
+  this single execution environment; its precise cause is unverified. Retry
+  the pending Nix/package-lint gates when access is restored.
 - In the 2026-10-06 fresh session, `git gaw status` found the deployed worktree,
   `git gaw check` passed, and the agent recovered current state through the
   declared memory and project skill without reading the historical archive.
