@@ -36,15 +36,14 @@ references, citations/bibliography, and the effective configuration they need.
 Unsupported constructs such as checkboxes, advanced tables, Babel, and arbitrary
 Org elements are not thereby adopted.
 
-First implementation node: establish a document-wide analysis/resolution phase
-between owned prepared input and local structural lowering, then use internal
-links and IDs as its first concrete semantics. Decide what preparation collects,
-what the owned input retains, how resolved results remain associated with copied
-AST nodes, how local lowering consumes them, how source/configuration changes
-invalidate the snapshot, how broken references fail, and where consumer policy
-begins. Local handlers must not query buffers or guess global state. Cross-file
-ID lookup and any global ID database are separate boundaries; do not silently
-introduce ambient queries.
+The first implementation node is present in the ordinary worktree: pure
+document-wide analysis creates identity-keyed local link/label mappings consumed
+by lowering. Its supported contract is in `memory/project.md`; full ERT and
+byte compilation passed, while Nix/package-lint validation is still unavailable
+because of dependency/tool availability. The bounded node is ready for review;
+retain a reviewable boundary when extending its semantics. Local handlers must
+not query buffers or guess global state. Cross-file ID lookup and any global ID database remain separate
+boundaries; do not silently introduce ambient queries.
 
 After that boundary is stable, extend file/resources, named footnotes, and
 citations/bibliography in bounded nodes. For file/resources, retain source-side

@@ -17,7 +17,9 @@ explicit Org source buffer
   -> private parsing and restricted Org context
   -> owned prepared input
        AST + INFO + islands + post-blank mappings + style + initial
-  -> pure document lowering
+  -> pure document-wide analysis (DOC-01 current worktree)
+       identity-keyed link resolutions + target labels
+  -> pure local document lowering
        body + style + initial + STM provenance
   -> source-aware native encoding
   -> TeXmacs native tree/state
@@ -61,7 +63,7 @@ buffer or start a worker.
 - style names and initial keys use identifier semantics. Structured initial
   values use TeXmacs source semantics.
 
-## Supported Org subset in v0.3.0
+## Released Org subset in v0.3.0 and v0.3.1
 
 - Paragraphs, supported inline emphasis/literal objects, line breaks, external
   links from the finite URI protocol set, and anonymous inline footnotes.
@@ -77,10 +79,36 @@ buffer or start a worker.
 - Document style, structured initial environment, body, and provenance applied
   to one native session with combined readback.
 
-Unsupported content fails explicitly. Current non-support includes general
+Unsupported content fails explicitly. Released non-support includes general
 internal/file/ID links, named footnotes, citations, bibliography, arbitrary
 references, dynamic source execution, advanced table semantics, unrestricted
 export preprocessing, and arbitrary Org element coverage.
+
+## DOC-01 current worktree extension
+
+The first resolution node is implemented in the ordinary worktree based on
+`880d4e00667907ef66985387b4865ec8d795d48d`; it is not a released capability.
+
+- A pure analysis phase in the document layer scans the prepared AST, treating
+  STM islands as opaque, and returns conversion-local identity-keyed links and
+  labels. It retains no source buffer and performs no global ID lookup.
+- Body/headline-title links resolve same-document `CUSTOM_ID`, `ID`, explicit
+  `*Headline`, or fuzzy targets. Matching uses exact raw headline titles;
+  dedicated paragraph targets take precedence over same-named headings.
+- Only referenced targets receive deterministic `org-texmacs-ref-N` labels,
+  skipping static labels in visible STM islands. TOC labels have a separate
+  namespace. Low-level headlines also receive their reference labels.
+- Described links become `hlink` nodes; undescribed links become native
+  `reference` nodes. Direct paragraph targets become invisible label nodes.
+- The buffer adapter resolves `ID`/`CUSTOM_ID` properties before removing their
+  source drawers. The existing input constructor copies these properties;
+  analysis uses that owned copy and introduces no new ambient parser settings.
+- Missing or ambiguous links fail during structural preflight, before STM
+  worker requests. Cross-file IDs, named-element targets, text-search fallback,
+  file/resources, and internal links in metadata/ALT_TITLE remain unsupported.
+
+Maintained tests establish structural and native readback behavior, not visual
+reference values or typesetting. See `memory/evidence.md` for validation gaps.
 
 ## Worker and session
 

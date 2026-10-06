@@ -75,6 +75,34 @@ Other systems were not established by the recorded validations.
 - Org table ASTs can represent irregular and advanced structures; explicit
   validation is required for the supported rectangular subset.
 
+## DOC-01 first-node worktree verification
+
+- On 2026-10-06, full ERT passed 210/210, exit 0, in 105.71 seconds using
+  `emacs-twist`. All ten package modules also byte-compiled without warnings,
+  exit 0, under Emacs 31.1 and Org 9.8-pre. Compilation output is disposable
+  local `tmp/doc-01-byte-compile-lRJoQd/` and is not a recovery dependency.
+- Seven new maintained cases cover local headline/ID resolution after disposal
+  of the source buffer, dedicated targets, missing/ambiguous/filtered targets,
+  static STM label conflicts, low-level headline labels and target precedence,
+  preflight before island requests, and native label/reference readback.
+- Verification used the uncommitted five-file worktree diff on base
+  `880d4e00667907ef66985387b4865ec8d795d48d`. SHA-256 of
+  `git diff HEAD -- README.org org-texmacs-context.el org-texmacs-document.el org-texmacs.el tests/ert/ert.el`
+  was `07656ff6745c9c00d106faf48689e233fc183d13e5bb4f2036cafd16fc340555`.
+  No committed project snapshot for this implementation is yet established.
+- Nix flake checking timed out twice at 120 seconds, inside and outside the
+  host sandbox, while downloading Org 9.8.8 from ELPA with a TLS unexpected-EOF
+  error. It did not reach package building or the declared project checks.
+  A local package-lint attempt could not load the absent `package-lint`
+  library (exit 255). These are validation gaps, not established code defects.
+- One earlier 30-second focused native run timed out; its cause is unknown.
+  Its 120-second rerun and the final full suite passed. GUI rendering and actual
+  displayed reference numbers remain unverified.
+- Semantic references consulted: Org's internal-link conventions at
+  https://orgmode.org/manual/Internal-Links.html and TeXmacs linking primitives
+  at https://www.texmacs.org/tmdoc/devel/format/regular/prim-link.en.html.
+  These documentation observations do not substitute for native/visual tests.
+
 ## Durable TeXmacs facts
 
 - `stm-snippet->texmacs` is a recovery parser and cannot alone prove strict STM
