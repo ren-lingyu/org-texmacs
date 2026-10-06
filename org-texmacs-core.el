@@ -29,6 +29,18 @@ Changing this option takes effect after the current worker is stopped."
 (define-error 'org-texmacs-document-error
               "Org TeXmacs document conversion failed" 'org-texmacs-error)
 
+(define-error 'org-texmacs-worker-error
+              "TeXmacs worker failure" 'org-texmacs-error)
+
+(define-error 'org-texmacs-parse-error
+              "Invalid STM source" 'org-texmacs-error)
+
+(define-error 'org-texmacs-encoding-error
+              "Invalid document encoding" 'org-texmacs-error)
+
+(define-error 'org-texmacs-session-error
+              "Invalid TeXmacs session" 'org-texmacs-error)
+
 (defconst org-texmacs--capability-alist
   '((org-element-cache-store-key . function)
     (org-element-cache-get-key . function)

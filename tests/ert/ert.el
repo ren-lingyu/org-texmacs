@@ -7,6 +7,12 @@
 ;;; Code:
 
 (require 'ert)
+(require 'org-texmacs-worker)
+
+(defconst org-texmacs-test--worker-loaded-document
+  (featurep 'org-texmacs-document)
+  "Whether loading the worker pulled in the document layer.")
+
 (require 'org-texmacs)
 
 (defconst org-texmacs-test--readme
@@ -16,6 +22,10 @@
   "README under test, explicitly supplied by the Nix test driver.")
 
 (ert-deftest org-texmacs-test-package-loads ()
+  (should-not org-texmacs-test--worker-loaded-document)
+  (should (equal (file-name-base
+                  (symbol-file 'org-texmacs--native-document-wire 'defun))
+                 "org-texmacs-session"))
   (let ((directory (file-name-directory (locate-library "org-texmacs"))))
     (dolist (feature '(org-texmacs org-texmacs-core org-texmacs-ast
                        org-texmacs-source org-texmacs-fragment
@@ -798,6 +808,17 @@
                (lambda () (ert-fail "A nested request must not touch the worker"))))
       (should-error (org-texmacs--worker-request "(sqrt \"x\")")
                     :type 'org-texmacs-worker-error))))
+
+(ert-deftest org-texmacs-test-worker-request-builder-error-preserves-process ()
+  (org-texmacs-test--with-worker
+    (let ((process (org-texmacs--worker-start)))
+      (should-error
+       (org-texmacs--worker-call
+        (lambda (_id)
+          (signal 'org-texmacs-session-error '("Stale session"))))
+       :type 'org-texmacs-session-error)
+      (should (eq process org-texmacs--worker-process))
+      (should (org-texmacs--worker-live-p)))))
 
 (ert-deftest org-texmacs-test-worker-start-timeout-cleans-up ()
   (org-texmacs-test--with-worker
@@ -3362,31 +3383,31 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 (ert-deftest org-texmacs-encoding-rejects-invalid-input-before-worker ()
   (cl-letf (((symbol-function 'org-texmacs--worker-start)
              (lambda () (ert-fail "Invalid input started worker"))))
-    (should-error (org-texmacs--worker-encode-document nil)
+    (should-error (org-texmacs--native-encode-document nil)
                   :type 'org-texmacs-encoding-error)
     (dolist (paths '(((2)) ((-1)) ((0 0)) (("0")) ((0) (0)) (() (0))
                      ((0) (0 1)) ((0 . 1))))
-      (should-error (org-texmacs--worker-encode-document
+      (should-error (org-texmacs--native-encode-document
                      (org-texmacs--document-create :body '(document "x") :stm-paths paths))
                     :type 'org-texmacs-encoding-error))
-    (should-error (org-texmacs--worker-encode-document
+    (should-error (org-texmacs--native-encode-document
                    (org-texmacs--document-create :body '(document (raw-data "x"))))
                   :type 'org-texmacs-encoding-error)))
 
 (ert-deftest org-texmacs-encoding-wire-is-data ()
-  (cl-letf (((symbol-function 'org-texmacs--worker-call)
+  (cl-letf (((symbol-function 'org-texmacs--native-call)
              (lambda (make-request operation)
                (should (eq operation 'encode))
                (should (equal (funcall make-request 7)
                               "(encode 7 (\"generic\") () (\"document\" (\"custom.tag*\" \"<alpha>\")) ((0)))\n"))
                'encoded)))
-    (should (eq (org-texmacs--worker-encode-document
+    (should (eq (org-texmacs--native-encode-document
                  (org-texmacs--document-create
                   :body '(document (custom.tag* "<alpha>")) :stm-paths '((0))))
                 'encoded))))
 
 (ert-deftest org-texmacs-encoding-decode-contract ()
-  (should (equal (org-texmacs--worker-decode
+  (should (equal (org-texmacs--native-decode
                   "(ok 1 (native-body (document \"e9\")))" 1 'encode)
                  '(document "e9")))
   (dolist (response '("(ok 2 (native-body (document \"00\")))"
@@ -3395,9 +3416,9 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                       "(ok 1 (native-body (document \"gg\")))"
                       "(ok 1 (native-body (document \"é\")))"
                       "(ok 1 (native-body (document \"00\"))) extra"))
-    (should-error (org-texmacs--worker-decode response 1 'encode)
+    (should-error (org-texmacs--native-decode response 1 'encode)
                   :type 'org-texmacs-worker-error))
-  (should-error (org-texmacs--worker-decode "(encoding-error 1 \"invalid\")" 1 'encode)
+  (should-error (org-texmacs--native-decode "(encoding-error 1 \"invalid\")" 1 'encode)
                 :type 'org-texmacs-encoding-error)
   (should-error (org-texmacs--worker-decode "(encoding-error 1 \"invalid\")" 1)
                 :type 'org-texmacs-worker-error))
@@ -3419,14 +3440,14 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
              (input (org-texmacs--document-create
                      :body (list 'document source (list 'math source))
                      :stm-paths '((1))))
-             (result (org-texmacs--worker-encode-document input)))
+             (result (org-texmacs--native-encode-document input)))
         (should (equal result
                        (list 'document (org-texmacs-test--ascii-hex (nth 1 case))
                              (list 'math (org-texmacs-test--ascii-hex (nth 2 case))))))
         (should (equal (org-texmacs-document-body input)
                        (list 'document source (list 'math source))))))
     ;; This character has a single Cork byte: do not return its UTF-8 bytes.
-    (let ((result (org-texmacs--worker-encode-document
+    (let ((result (org-texmacs--native-encode-document
                    (org-texmacs--document-create :body '(document "é")))))
       (should (equal result '(document "e9"))))
     (should (org-texmacs--worker-live-p))))
@@ -3442,7 +3463,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                          "() () (\"document\" \"x\") ()"
                          "(\"generic\") ((\"x\" (\"raw-data\" \"x\"))) (\"document\" \"x\") ()"))
         (should-error
-         (org-texmacs--worker-call
+         (org-texmacs--native-call
           (lambda (id) (format "(encode %d %s)\n" id payload)) 'encode)
          :type 'org-texmacs-encoding-error))
       (should (equal (org-texmacs--worker-request "(math \"α <alpha>\")")
@@ -3462,14 +3483,18 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (should (org-texmacs-session-closed stale)))))
 
 (ert-deftest org-texmacs-session-response-contract ()
-  (should (equal (org-texmacs--worker-decode "(ok 1 (session \"2\"))" 1 'session-open) "2"))
+  (should (equal (org-texmacs--native-decode
+                  "(ok 1 (session \"2\"))" 1 'session-open)
+                 "2"))
   (dolist (response '("(ok 1 (session \"0\"))" "(ok 1 (closed \"1\"))"
                       "(ok 1 (session 1))" "(ok 1 (session \"1\" \"2\"))"))
-    (should-error (org-texmacs--worker-decode response 1 'session-open)
+    (should-error (org-texmacs--native-decode response 1 'session-open)
                   :type 'org-texmacs-worker-error))
-  (should-error (org-texmacs--worker-decode "(session-error 1 \"invalid\")" 1 'session-set)
+  (should-error (org-texmacs--native-decode
+                 "(session-error 1 \"invalid\")" 1 'session-set)
                 :type 'org-texmacs-session-error)
-  (should-error (org-texmacs--worker-decode "(session-fatal 1 \"cleanup\")" 1 'session-close)
+  (should-error (org-texmacs--native-decode
+                 "(session-fatal 1 \"cleanup\")" 1 'session-close)
                 :type 'org-texmacs-worker-error)
   (let ((response
          '(native-document
@@ -3478,7 +3503,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
            (body (document "00")))))
     (should
      (equal
-      (org-texmacs--worker-decode
+      (org-texmacs--native-decode
        "(ok 1 (native-document (style \"generic\") (initial (associate \"par-first\" \"32666e\")) (body (document \"00\"))))"
        1 'session-read)
       response)))
@@ -3487,7 +3512,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
              "(ok 1 (native-document (style) (initial) (body (document \"00\"))))"
              "(ok 1 (native-document (style \"generic\") (initial (associate \"x\" \"0g\")) (body (document \"00\"))))"
              "(ok 1 (native-document (style \"generic\") (initial (associate \"x\" \"00\") (associate \"x\" \"00\")) (body (document \"00\"))))"))
-    (should-error (org-texmacs--worker-decode response 1 'session-read)
+    (should-error (org-texmacs--native-decode response 1 'session-read)
                   :type 'org-texmacs-worker-error)))
 
 (ert-deftest org-texmacs-session-real-lifecycle ()
@@ -3502,7 +3527,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
               (org-mode)
               (insert "Text (math \"α <alpha>\")\n")
               (let* ((document (org-texmacs-document-from-buffer (current-buffer)))
-                     (expected (org-texmacs--worker-encode-document document)))
+                     (expected (org-texmacs--native-encode-document document)))
                 (should (eq (org-texmacs-session-set-document session document) session))
                 (should (equal (org-texmacs--session-read session) expected))))
             (org-texmacs-session-set-document
