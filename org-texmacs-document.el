@@ -44,6 +44,9 @@
 (defconst org-texmacs--document-toc-label-prefix "org-texmacs-toc-"
   "Private prefix for deterministic table-of-contents target labels.")
 
+(defconst org-texmacs--document-reference-label-prefix "org-texmacs-ref-"
+  "Private prefix for resolved Org reference target labels.")
+
 (defcustom org-texmacs-document-style '("generic")
   "TeXmacs style names captured by buffer document preparation.
 Each conversion copies this list into its prepared input and result.  These
@@ -154,6 +157,101 @@ strees and reject cycles instead of guessing through dynamic label bodies."
             (t (signal 'org-texmacs-document-error '("Invalid island stree"))))))
       (dolist (entry islands) (walk (cdr entry) nil)))
     (delete-dups (nreverse labels))))
+
+(cl-defstruct (org-texmacs-resolution
+               (:constructor org-texmacs--resolution-create)
+               (:copier nil))
+  "Conversion-local links and target labels keyed by owned AST node identity."
+  (links nil :read-only t)
+  (labels nil :read-only t))
+
+(defun org-texmacs--document-resolve (ast islands static-labels)
+  "Resolve local Org links in AST before structural lowering.
+ISLANDS are opaque.  STATIC-LABELS reserves user-authored STM labels.
+Return node-identity mappings only; never
+read a source buffer, query an ID database or invoke an export consumer."
+  (let (custom-ids ids targets headlines links order resolved selected labels)
+    (cl-labels
+        ((scan (node ancestors)
+           (unless (assq node islands)
+             (when (consp node)
+               (when (memq node ancestors)
+                 (org-texmacs--document-fail node "Cyclic Org AST"))
+               (push node order)
+               (let ((type (org-element-type node)))
+                 (cond
+                  ((eq type 'headline)
+                   (let ((custom (org-element-property :CUSTOM_ID node))
+                         (id (org-element-property :ID node))
+                         (raw (org-element-property :raw-value node)))
+                     (when (and (stringp custom) (> (length custom) 0))
+                       (push (cons custom node) custom-ids))
+                     (when (and (stringp id) (> (length id) 0))
+                       (push (cons id node) ids))
+                     (when (and (stringp raw) (> (length raw) 0))
+                       (push (cons raw node) headlines))))
+                  ((eq type 'target)
+                   (let ((value (org-element-property :value node)))
+                     (unless (and (stringp value) (> (length value) 0))
+                       (org-texmacs--document-fail node "Invalid dedicated target"))
+                     (push (cons value node) targets)))
+                  ((eq type 'link) (push node links)))
+                 (let ((ancestors (cons node ancestors)))
+                   (when (eq type 'headline)
+                     (mapc (lambda (part) (scan part ancestors))
+                           (org-element-property :title node)))
+                   (mapc (lambda (child) (scan child ancestors))
+                         (org-element-contents node)))))))
+         (choose (node candidates)
+           (let ((matches (delete-dups (mapcar #'cdr candidates))))
+             (cond
+              ((null matches)
+               (org-texmacs--document-fail node "Unresolved internal link"))
+              ((cdr matches)
+               (org-texmacs--document-fail node "Ambiguous internal link"))
+              (t (car matches)))))
+         (lookup (key mapping)
+           (cl-remove-if-not (lambda (entry) (equal key (car entry))) mapping)))
+      (scan ast nil)
+      (setq links (nreverse links) order (nreverse order))
+      (dolist (link links)
+        (let* ((type (org-element-property :type link))
+               (path (org-element-property :path link))
+               (kind (and (stringp type) (downcase type)))
+               (target
+                (when (member kind '("custom-id" "id" "fuzzy"))
+                  (unless (and (stringp path) (> (length path) 0))
+                    (org-texmacs--document-fail link "Invalid internal link path"))
+                  (pcase kind
+                    ("custom-id" (choose link (lookup path custom-ids)))
+                    ("id" (choose link (lookup path ids)))
+                    ("fuzzy"
+                     (if (string-prefix-p "*" path)
+                         (choose link (lookup (substring path 1) headlines))
+                       (choose link (or (lookup path targets)
+                                        (lookup path headlines)))))))))
+          (when target
+            (push (cons link target) resolved)
+            (cl-pushnew target selected :test #'eq))))
+      (let ((reserved (copy-sequence static-labels)) (next 1))
+        (dolist (node order)
+          (when (memq node selected)
+            (let (candidate)
+              (while
+                  (progn
+                    (setq candidate
+                          (concat org-texmacs--document-reference-label-prefix
+                                  (number-to-string next))
+                          next (1+ next))
+                    (member candidate reserved)))
+              (push candidate reserved)
+              (push (cons node candidate) labels)))))
+      (setq labels (nreverse labels))
+      (org-texmacs--resolution-create
+       :links (mapcar (lambda (entry)
+                        (cons (car entry) (cdr (assq (cdr entry) labels))))
+                      (nreverse resolved))
+       :labels labels))))
 
 (defun org-texmacs--document-unnumbered-value (headline)
   "Return HEADLINE's effective inherited Org UNNUMBERED value."
@@ -284,6 +382,7 @@ count.  Both inputs have prose whitespace semantics, not source fidelity.
 
 Support paragraphs, plain text, basic emphasis, inline code/verbatim,
 explicit line breaks, self-contained URI links, transparent Org sections,
+same-document headline/ID and dedicated-target links resolved from AST,
 relative headline levels one through five, lower-level headline lists, all
 three Org plain-list types, quote/center blocks, and static example,
 fixed-width and source blocks, plus basic rectangular Org tables.  Emit
@@ -313,7 +412,7 @@ from one snapshot."
                      (not (memq (car entry) keys)))
           (signal 'org-texmacs-document-error '("Invalid or duplicate mapping key")))
         (push (car entry) keys))))
-  (let ((used-islands nil) (used-blanks nil)
+  (let* ((used-islands nil) (used-blanks nil)
         (style (org-texmacs--document-copy-style (or style '("generic"))))
         (initial (org-texmacs--document-copy-initial initial))
         (headline-minimum nil)
@@ -329,7 +428,9 @@ from one snapshot."
         (static-labels (org-texmacs--document-static-labels islands))
         (info (or info '(:with-todo-keywords t :with-priority nil :with-tags t
                         :texmacs-format-headline-function
-                        org-texmacs-format-headline-default-function))))
+                        org-texmacs-format-headline-default-function)))
+        (resolution (org-texmacs--document-resolve
+                     ast islands static-labels)))
     (setq headline-limit
           (if (memq :headline-levels info) (plist-get info :headline-levels) 3)
           preformatted-tab-width
@@ -507,23 +608,47 @@ from one snapshot."
                (when (memq node ancestors)
                  (org-texmacs--document-fail node "Cyclic Org AST"))
                (let ((type (org-element-property :type node))
-                     (path (org-element-property :path node)))
+                     (path (org-element-property :path node))
+                     (reference (cdr (assq node
+                                           (org-texmacs-resolution-links resolution)))))
                  (unless (and (stringp type) (stringp path)
-                              (member (downcase type) org-texmacs--supported-link-types))
+                              (or reference
+                                  (member (downcase type)
+                                          org-texmacs--supported-link-types)))
                    (org-texmacs--document-fail node "Unsupported link type or path"))
-                 (let* ((uri (concat (substring-no-properties type) ":"
-                                     (substring-no-properties path)))
+                 (let* ((uri (and (not reference)
+                                  (concat (substring-no-properties type) ":"
+                                          (substring-no-properties path))))
                         (parts (and (org-element-contents node)
                                     (inlines (org-element-contents node) 'link
                                              (cons node ancestors) space)))
                         (body (cond ((null parts)
                                      (setcar space nil)
-                                     (org-texmacs--document-create :body (copy-sequence uri)))
+                                     (and uri
+                                          (org-texmacs--document-create
+                                           :body (copy-sequence uri))))
                                     ((null (cdr parts)) (car parts))
                                     (t (org-texmacs--document-pack 'concat parts)))))
-                   (cons (org-texmacs--document-pack
-                          'hlink (list body (org-texmacs--document-create :body uri)))
+                   (cons (if (and reference (null parts))
+                             (org-texmacs--document-pack
+                              'reference
+                              (list (org-texmacs--document-create :body reference)))
+                           (org-texmacs--document-pack
+                            'hlink
+                            (list body
+                                  (org-texmacs--document-create
+                                   :body (if reference (concat "#" reference) uri)))))
                          (blank node space)))))
+              ((and (consp node) (eq (org-element-type node) 'target))
+               (unless (eq context 'paragraph)
+                 (org-texmacs--document-fail node "Unsupported target context"))
+               (let ((label (cdr (assq node
+                                       (org-texmacs-resolution-labels resolution)))))
+                 (cons (if label
+                           (org-texmacs--document-pack
+                            'label (list (org-texmacs--document-create :body label)))
+                         (org-texmacs--document-create :body ""))
+                       (blank node space))))
               ((and (consp node) (memq (org-element-type node) '(code verbatim)))
                (let ((value (org-element-property :value node)))
                  (unless (and (stringp value) (null (org-element-contents node)))
@@ -681,21 +806,29 @@ from one snapshot."
                     'document
                     (mapcar (lambda (mapping) (toc-entry mapping ancestors))
                             toc-labels)))))))
-         (target-label (node)
-           (when-let* ((name (cdr (assq node toc-labels))))
-             (org-texmacs--document-pack
-              'label (list (org-texmacs--document-create :body name)))))
+         (target-labels (node)
+           (delq nil
+                 (mapcar
+                  (lambda (name)
+                    (and name
+                         (org-texmacs--document-pack
+                          'label (list (org-texmacs--document-create :body name)))))
+                  (list (cdr (assq node toc-labels))
+                        (cdr (assq node
+                                   (org-texmacs-resolution-labels resolution)))))))
          (low-headline-item (node context ancestors)
            (unless (and (consp node) (not (memq node ancestors))
                         (memq context '(org-data headline)))
              (org-texmacs--document-fail node "Unexpected low-level headline"))
            (let ((ancestors (cons node ancestors)))
              (check-affiliated node)
-             (cons
-              (org-texmacs--document-pack
-               'concat
-               (list (org-texmacs--document-pack 'item nil)
-                     (headline-title node ancestors)))
+             (append
+              (list
+               (org-texmacs--document-pack
+                'concat
+                (list (org-texmacs--document-pack 'item nil)
+                      (headline-title node ancestors))))
+              (target-labels node)
               (blocks (org-element-contents node) 'headline ancestors))))
          (blocks (nodes context ancestors)
            (unless (proper-list-p nodes)
@@ -920,13 +1053,13 @@ from one snapshot."
                       (numbered
                        (org-texmacs--document-numbered-headline-p
                         node relative info))
-                      (target (target-label node)))
+                      (targets (target-labels node)))
                  (unless (and (<= relative headline-limit) tags)
                    (org-texmacs--document-fail node "Unsupported section headline"))
                  (cons (org-texmacs--document-pack
                         (if numbered (car tags) (cdr tags))
                         (list (headline-title node ancestors)))
-                       (append (and target (list target))
+                       (append targets
                                (blocks (org-element-contents node)
                                        'headline ancestors)))))
               (t (org-texmacs--document-fail node "Unsupported or unprepared block"))))))

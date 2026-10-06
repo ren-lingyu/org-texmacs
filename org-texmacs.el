@@ -179,6 +179,7 @@ and lower-level headline lists, the three Org list types, and quote/center
 containers, static example/fixed-width/source blocks, and basic rectangular
 Org tables with rule rows,
 plus http/https/mailto/ftp/ftps URI links with optional inline descriptions,
+same-document headline/ID and dedicated-target links,
 anonymous inline footnotes directly in paragraphs,
 plus complete TeXmacs special blocks and discovered paragraph fragments.
 Normalize ordinary spaces, tabs and soft newlines in Org inline text,
@@ -197,9 +198,10 @@ Lower supported rich title/author/date metadata into body `doc-data'.  Apply
 headline depth and numbering options, including UNNUMBERED.  Build a static
 table of contents from the filtered headline set when `org-export-with-toc'
 is non-nil; use parsed ALT_TITLE for TOC text and generated labels with
-`hlink' and `pageref' for structural navigation.  This does not resolve page
-numbers or add general Org internal links.  Snapshot the supported Org
-document context once; later changes affect only
+`hlink' and `pageref' for structural navigation.  Resolve same-document
+headline, CUSTOM_ID, ID and dedicated-target links from the owned AST, without
+cross-file or global ID lookup.  This does not resolve page numbers.
+Snapshot the supported Org document context once; later changes affect only
 the next conversion.  Merge the documented #+OPTIONS and metadata keyword
 subset, then apply Org's task/archive/select/exclude/comment filtering before
 worker requests.  Reject unsupported options and preprocessing directives.

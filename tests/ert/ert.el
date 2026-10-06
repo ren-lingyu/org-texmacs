@@ -2125,6 +2125,121 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                                           "ftps://example.org/中%20文?q=x%26y&z=2")
                                " " "end "))))))
 
+(ert-deftest org-texmacs-document-resolves-local-headline-links ()
+  (let (prepared)
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil\n* Alpha\n:PROPERTIES:\n:CUSTOM_ID: local\n:ID: local-id\n:END:\n"
+              "See [[#local][custom]], [[id:local-id][id]], [[*Alpha][heading]], "
+              "[[Alpha][fuzzy]], and [[#local]].\n")
+      (let ((source (buffer-string)))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Local links started a worker"))))
+          (setq prepared (org-texmacs-prepare-buffer (current-buffer))))
+        (should (equal source (buffer-string)))))
+    (should
+     (equal (org-texmacs-document-body (org-texmacs-document prepared))
+            '(document
+              (section "Alpha")
+              (label "org-texmacs-ref-1")
+              (concat "See " (hlink "custom" "#org-texmacs-ref-1") ", "
+                      (hlink "id" "#org-texmacs-ref-1") ", "
+                      (hlink "heading" "#org-texmacs-ref-1") ", "
+                      (hlink "fuzzy" "#org-texmacs-ref-1") ", and "
+                      (reference "org-texmacs-ref-1") ". "))))))
+
+(ert-deftest org-texmacs-document-resolves-dedicated-target ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: toc:nil\nSee [[spot][there]].\nHere <<spot>> later.\n")
+    (let* ((body (org-texmacs-document-body
+                  (org-texmacs-document-from-buffer (current-buffer))))
+           (paragraph (cadr body))
+           (link '(hlink "there" "#org-texmacs-ref-1"))
+           (target '(label "org-texmacs-ref-1")))
+      (should (= (length body) 2))
+      (should (eq (car paragraph) 'concat))
+      (should (member link paragraph))
+      (should (member target paragraph))
+      (should (< (cl-position link paragraph :test #'equal)
+                 (cl-position target paragraph :test #'equal))))))
+
+(ert-deftest org-texmacs-document-rejects-ambiguous-and-external-id-links ()
+  (dolist (source '("#+OPTIONS: toc:nil\n* Alpha\n* Alpha\n[[*Alpha]]\n"
+                    "#+OPTIONS: toc:nil\n[[id:external-id]]\n"
+                    "#+OPTIONS: toc:nil\n#+EXCLUDE_TAGS: hidden\n* Hidden :hidden:\n:PROPERTIES:\n:CUSTOM_ID: gone\n:END:\n* Visible\n[[#gone]]\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source)
+      (let ((before (buffer-string)))
+        (should-error (org-texmacs-document-from-buffer (current-buffer))
+                      :type 'org-texmacs-document-error)
+        (should (equal before (buffer-string)))))))
+
+(ert-deftest org-texmacs-document-reference-label-skips-stm-label ()
+  (let* ((island (org-element-create 'special-block '(:type "texmacs")))
+         (link (org-element-create 'link '(:type "custom-id" :path "local")))
+         (headline (org-element-create
+                    'headline
+                    '(:level 1 :raw-value "Alpha" :title ("Alpha")
+                             :CUSTOM_ID "local")
+                    (org-element-create 'section nil
+                                        (org-element-create 'paragraph nil link))))
+         (ast (org-element-create 'org-data nil island headline))
+         (body (org-texmacs-document-body
+                (org-texmacs--document-lower
+                 ast (list (cons island '(label "org-texmacs-ref-1")))))))
+    (should (equal (nth 2 body) '(section "Alpha")))
+    (should (equal (nth 3 body) '(label "org-texmacs-ref-2")))
+    (should (equal (nth 4 body)
+                   '(concat (reference "org-texmacs-ref-2"))))))
+
+(ert-deftest org-texmacs-document-reference-native-readback ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil\n* Alpha\n:PROPERTIES:\n:ID: local-id\n:END:\n"
+              "[[id:local-id]]\n")
+      (let ((document (org-texmacs-document-from-buffer (current-buffer)))
+            (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (org-texmacs-session-set-document session document)
+              (should (equal (org-texmacs--session-read session)
+                             (org-texmacs-test--native-hex
+                              '(document
+                                (section "Alpha")
+                                (label "org-texmacs-ref-1")
+                                (concat (reference "org-texmacs-ref-1") " "))))))
+          (org-texmacs-session-close session))))))
+
+(ert-deftest org-texmacs-document-reference-preflight-before-island-request ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "[[id:external-id][missing]]\n"
+            "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _) (ert-fail "Broken link requested an island"))))
+      (let ((failure (should-error
+                      (org-texmacs-document-from-buffer (current-buffer))
+                      :type 'org-texmacs-document-error)))
+        (should (equal (cadr failure) "Unresolved internal link"))))))
+
+(ert-deftest org-texmacs-document-reference-low-headline-and-target-priority ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: H:1 toc:nil\n* Top\n** spot\n"
+            "[[spot][there]] <<spot>>\n[[*spot][heading]]\n")
+    (let* ((body (org-texmacs-document-body
+                  (org-texmacs-document-from-buffer (current-buffer))))
+           (items (cadr (nth 2 body)))
+           (paragraph (nth 3 items)))
+      (should (equal (nth 1 items) '(concat (item) "spot")))
+      (should (equal (nth 2 items) '(label "org-texmacs-ref-1")))
+      (should (member '(hlink "there" "#org-texmacs-ref-2") paragraph))
+      (should (member '(label "org-texmacs-ref-2") paragraph))
+      (should (member '(hlink "heading" "#org-texmacs-ref-1") paragraph)))))
+
 (ert-deftest org-texmacs-document-uri-type-and-target-contract ()
   (let* ((path (copy-sequence "//example.org/<alpha>\t%20"))
          (link (org-element-create 'link

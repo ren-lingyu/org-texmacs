@@ -13,12 +13,13 @@ apply style, initial environment and body together.  Buffer preparation takes
 an explicit source buffer, with a separate current-buffer convenience wrapper.
 
 Document conversion supports basic inline markup, self-contained URI links,
-anonymous inline footnotes, list/container structures, rich metadata,
+same-document headline/ID and dedicated-target links, anonymous inline
+footnotes, list/container structures, rich metadata,
 relative headline sectioning, a static filtered TOC, static preformatted
 blocks, basic rectangular tables and TeXmacs islands, as specified below.  It
 does not provide a complete
-TeXmacs file document, preview, export, general internal/cross-reference
-resolution, rendered numbering, fontification, an editing minor mode, or a
+TeXmacs file document, preview, export, cross-file reference resolution,
+rendered numbering, fontification, an editing minor mode, or a
 combined Org and TeXmacs document AST.
 Org's source buffer and live AST remain unchanged.
 
@@ -583,6 +584,7 @@ The supported Org subset is deliberately small:
 | Inline code / verbatim                            | =verbatim= with literal inline text                          |
 | Explicit line break in paragraph contents         | =next-line=                                                  |
 | Supported self-contained URI link                 | =hlink= with separate display body and target                |
+| Same-document headline/ID or dedicated-target link | =hlink= or =reference= with generated =label= target         |
 | Anonymous inline footnote directly in a paragraph | =footnote= containing a body =document=                      |
 | Relative headline levels 1 through 5              | Five numbered or starred TeXmacs sectioning tags              |
 | Headlines below the configured =H= depth          | Nested =itemize= structures without discarding body content   |
@@ -667,13 +669,23 @@ may contain supported inline markup; without a description the URI is
 displayed.  Targets are assembled from Org's type/path without additional
 escaping or prose whitespace normalization.  Conversion does not open or
 download targets, invoke export handlers, or embed linked images.
-File links (including implicit file links), source-authored internal
-references and other protocols are rejected.  Generated TOC links are the
-only current internal-link structure.
+Same-document =[[#CUSTOM_ID]]=, =[[id:ID]]=, =[[*Headline]]= and fuzzy
+=[[Headline]]= links in body text and headline titles resolve against visible
+headings in the prepared AST.  Fuzzy links also resolve =<<dedicated targets>>=
+directly in paragraphs, which take precedence over same-named headings.
+Explicit descriptions become internal =hlink= bodies;
+links without descriptions become TeXmacs =reference= nodes.  Referenced
+headings and dedicated targets receive deterministic =org-texmacs-ref-N=
+labels.  Resolution uses the owned document snapshot and does not query the
+source buffer or Org's global ID database.  Missing or ambiguous targets fail
+explicitly.  File links, cross-file IDs, named elements, plain-text search
+fallback and other protocols remain unsupported.  Headline matching uses the
+exact raw title from the prepared AST.
+Internal links in document metadata and =ALT_TITLE= remain outside this node.
 
 Anonymous inline footnotes such as =[fn::A note]= are supported only as
 direct paragraph children.  Their bodies support ordinary inline markup,
-URI links and explicit line breaks, with independent prose whitespace
+URI/internal links and explicit line breaks, with independent prose whitespace
 normalization.  Empty bodies are represented by an empty text slot.
 Named references, separate definitions, nested footnotes and footnotes in
 headings, emphasis or link descriptions are rejected as AST nodes.
@@ -778,8 +790,8 @@ Org export structure rather than raw star count.  The first five visible
 levels map to =section= through =subparagraph=.  =num= selects the deepest
 numbered level, with starred section tags beyond it; =UNNUMBERED= also selects
 a starred tag.  Headlines below =H= become nested =itemize= bodies, preserving
-their own contents and descendants.  Property drawers containing other keys
-remain unsupported.
+their own contents and descendants.  Headline property drawers may contain
+=UNNUMBERED=, =ALT_TITLE=, =CUSTOM_ID= and =ID=; other keys remain unsupported.
 
 A non-nil =toc= option emits a leading static
 =(table-of-contents "org-texmacs-toc" (document ...))= when at least one
@@ -794,8 +806,8 @@ titles, with tags omitted under =tags:not-in-toc=.
 
 Each entry targets a deterministic =org-texmacs-toc-N= label placed directly
 after its body heading.  Allocation skips statically named =label= nodes in
-visible STM islands.  This is a private generated namespace, not general Org
-internal-link or ID resolution.  =pageref= values remain structural references;
+visible STM islands.  TOC and resolved source links use distinct private label
+namespaces.  =pageref= values remain structural references;
 the body constructor does not paginate the document or precompute page numbers.
 
 ** Native encoding and lifetime

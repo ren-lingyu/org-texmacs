@@ -219,7 +219,8 @@ Treat every ISLAND key as opaque.  Return AST after in-place pruning."
                                      (and (eq (org-element-type property) 'node-property)
                                           (member (upcase
                                                    (org-element-property :key property))
-                                                  '("UNNUMBERED" "ALT_TITLE"))))
+                                                  '("UNNUMBERED" "ALT_TITLE"
+                                                    "CUSTOM_ID" "ID"))))
                                    (org-element-contents node)))
                        (signal 'org-texmacs-document-error
                                '("Unsupported Org property drawer")))
@@ -227,6 +228,8 @@ Treat every ISLAND key as opaque.  Return AST after in-place pruning."
                      ;; source buffer still exists, then discard source syntax.
                      (org-element-property :UNNUMBERED parent)
                      (org-texmacs--context-parse-alt-title parent)
+                     (org-element-property :CUSTOM_ID parent)
+                     (org-element-property :ID parent)
                      (org-element-extract node)))
                   ((eq type 'headline)
                    (if (org-export--skip-p node info selected excluded)
