@@ -2,80 +2,68 @@
 
 ## State represented
 
-This checkpoint reconstructs the durable project state at the v0.2.0 release
-on 2026-09-13. It is grounded in project commit
-`c115285639f6d40e40de378b6e2da4a79f3c1cd0`.
+This checkpoint reconstructs the project state on 2026-09-14 after the
+AST-first direction and updated project goals were adopted, but before v0.2.1
+implementation. It is a planning and architecture state without an additional
+project-commit parent.
 
-## Objective
+## Current baseline
 
-Turn a private Org AST containing parsed TeXmacs islands into a structured
-TeXmacs body tree, encode that tree with source-aware semantics, and install it
-in a persistent native TeXmacs body session. Preserve the v0.1 parsing
-foundation rather than replacing it with an intermediate file format.
+- Released baseline: v0.2.0 at
+  `c115285639f6d40e40de378b6e2da4a79f3c1cd0`.
+- Existing capability: finite structured body lowering, STM provenance,
+  source-aware native encoding, and a persistent single native body session.
+- Existing public whole-document construction still selects the current Org
+  buffer implicitly.
 
-## Established pipeline
+## Adopted architecture direction
 
-```text
-Org buffer
-  -> private Org AST + parsed TeXmacs islands + fixed context
-  -> UTF-8 TeXmacs body stree + STM provenance paths
-  -> source-aware TeXmacs native encoding
-  -> native TeXmacs tree
-  -> one persistent native body session
-```
+- The long-term path is Org source and semantics to a structured document
+  representation, then to TeXmacs document trees and independent consumers.
+- TeXmacs islands remain directly parsed structured input; they are not the
+  whole-document architecture by themselves.
+- A lowering operation conceptually consumes an Org AST, associated TeXmacs
+  islands, provenance, and a fixed configuration snapshot.
+- UTF-8 structural lowering remains separate from native TeXmacs encoding.
+- INFO, style, initial state, metadata, and resolution context may be separate
+  structured inputs or result fields; AST-first does not require putting every
+  concern into one physical tree.
+- File serialization and rendering remain downstream consumers, not an
+  intermediate truth source.
 
-- Structural handlers construct TeXmacs strees directly from Org nodes.
-- Ordinary Org leaves use literal/source-code semantics: text such as
-  `<alpha>` remains literal text.
-- STM leaves use TeXmacs source semantics: native notations such as `<alpha>`
-  retain their TeXmacs meaning. Literal angle brackets in STM are expressed by
-  the STM source itself.
-- `stm-paths` preserve source provenance until native encoding is complete.
-- Unsupported Org structures fail explicitly instead of being silently
-  dropped or flattened.
-- The session consumes a completed representation and does not reinterpret the
-  Org source. It remains a single-active-session API.
+## Identified interface gap
 
-## Implemented body subset
+v0.2.0 internally prepares a private source snapshot, but its public document
+entry chooses `current-buffer`. That does not satisfy the newly adopted strict
+requirement for an explicit canonical source. Existing tests also do not yet
+fully cover a different caller/source buffer, callback-time isolation, source
+death, or all success and failure paths.
 
-- Paragraphs and relative headline content with fixed formatter context.
-- Basic inline emphasis and literal objects, line breaks, and ordinary text.
-- TeXmacs inline fragments and blocks mixed with ordinary Org content.
-- External URI links for the deliberately finite supported protocol set.
-- Anonymous inline footnotes.
-- Headline TODO, priority, and tags through a fixed INFO snapshot.
-- Persistent session open, repeated body replacement, readback, close, and
-  invalidation after worker/native failures.
+## Decided next release scope
 
-## Ownership and side effects
+v0.2.1 will harden the existing v0.2 pipeline without expanding document
+semantics:
 
-- Source preparation uses a private Org buffer and does not modify source text.
-- Conversion produces a body result containing the stree and provenance; it
-  does not create a serialized `.tm`, `.stm`, or `.tmml` intermediate.
-- Worker and native session state are derived runtime state, not a second
-  canonical document source.
+- require a live Org source buffer in the main document entry;
+- provide a separate current-buffer convenience wrapper;
+- bind source text, parser settings, output INFO, and consistency checks to one
+  source snapshot;
+- preserve the source and unrelated Org callers across success, error, and
+  worker-wait paths;
+- add regression tests for ownership, snapshot consistency, and composability.
 
-## Validation boundary
+The release deliberately does not add full `#+OPTIONS`, metadata, lists,
+tables, TOC, style/initial, serialization, preview, or multi-session support.
 
-The final v0.2.0 suite recorded 146/146 ERT tests passing together with local
-and straight installation probes and Nix checks/build on x86_64-linux. Coverage
-included ordinary versus STM encoding, mixed islands, repeated native updates,
-session cleanup and failure invalidation, and source non-modification. It did
-not establish GUI rendering, visual pagination, serialization, or other
-systems.
+## Open implementation risk
 
-## Explicitly outside this state
+Existing helpers may still read dynamic `current-buffer` or buffer-local state,
+especially around source checks and private link parsing. The implementation
+must remove hidden source selection rather than merely wrapping the old entry
+in one broad `with-current-buffer` form.
 
-- A public explicit-source core; the whole-document entry still selects the
-  current Org buffer implicitly.
-- Complete effective Org configuration and `#+OPTIONS` semantics.
-- Rich document metadata, lists, static code blocks, tables, and TOC.
-- style and initial environment as first-class document result fields.
-- Internal/file link resolution, citations, bibliography, and references.
-- Multi-session, preview, serialization, PDF, and export integration.
+## Next action
 
-## Next durable direction
-
-Clarify the long-term AST-first document model and tighten source ownership,
-snapshot consistency, and non-destructive/composable behavior before expanding
-the supported document semantics.
+Implement and verify the v0.2.1 explicit-source and snapshot-hardening plan in
+small independently checkable nodes, then establish it as the new release
+baseline before expanding document semantics.
