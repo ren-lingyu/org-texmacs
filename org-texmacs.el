@@ -170,7 +170,7 @@ independently of the caller's current buffer.  For a convenience wrapper,
 use `org-texmacs-document-current-buffer'.
 
 Return an `org-texmacs-document' structure with BODY, STYLE, INITIAL and
-STM-PATHS, SOURCE-FILE and RESOURCE-BASE accessors.
+STM-PATHS, SOURCE-FILE, RESOURCE-BASE and FILE-PATHS accessors.
 This is a new derived result, not an Org live AST replacement or a native
 encoded tree.  Treat it and its nested contents as read-only.
 
@@ -181,6 +181,7 @@ containers, static example/fixed-width/source blocks, and basic rectangular
 Org tables with rule rows,
 plus http/https/mailto/ftp/ftps URI links with optional inline descriptions,
 same-document headline/ID and dedicated-target links,
+plain local body file links with raw paths and target provenance,
 anonymous inline footnotes directly in paragraphs,
 plus complete TeXmacs special blocks and discovered paragraph fragments.
 Normalize ordinary spaces, tabs and soft newlines in Org inline text,

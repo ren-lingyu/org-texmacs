@@ -50,6 +50,7 @@
                       org-texmacs-document-body org-texmacs-document-style
                       org-texmacs-document-initial org-texmacs-document-stm-paths
                       org-texmacs-document-source-file org-texmacs-document-resource-base
+                      org-texmacs-document-file-paths
                       org-texmacs-session-open
                       org-texmacs-session-set-document org-texmacs-session-close))
     (should (fboundp function))
@@ -2259,6 +2260,136 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                                           "ftps://example.org/中%20文?q=x%26y&z=2")
                                " " "end "))))))
 
+(ert-deftest org-texmacs-file-links-preserve-raw-targets-and-frozen-base ()
+  (let (input)
+    (with-temp-buffer
+      (org-mode)
+      (setq default-directory "/source/resources/")
+      (insert "[[file:figures/a.pdf][Figure]]\n\n[[./notes.org]]\n")
+      (cl-letf (((symbol-function 'find-file-noselect)
+                 (lambda (&rest _) (ert-fail "Linked resource was read")))
+                ((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Plain file link started a worker"))))
+        (setq input (org-texmacs-prepare-buffer (current-buffer)))))
+    (let* ((document (org-texmacs-document input))
+           (before (copy-tree (org-texmacs-document-body document))))
+      (should (equal before
+                     '(document
+                       (concat (hlink "Figure" "figures/a.pdf") " ")
+                       (concat (hlink "./notes.org" "./notes.org") " "))))
+      (should (equal (org-texmacs-document-file-paths document)
+                     '((0 0 1) (1 0 1))))
+      (let ((second (org-texmacs-document input)))
+        (should-not
+         (eq (last (car (org-texmacs-document-file-paths document)))
+             (last (car (org-texmacs-document-file-paths second))))))
+      (let ((default-directory "/unrelated/"))
+        (should
+         (equal (org-texmacs--native-document-wire document)
+                "(\"generic\") () (\"document\" (\"concat\" (\"hlink\" \"Figure\" \"/source/resources/figures/a.pdf\") \" \") (\"concat\" (\"hlink\" \"./notes.org\" \"/source/resources/notes.org\") \" \")) ()")))
+      (should (equal before (org-texmacs-document-body document))))))
+
+(ert-deftest org-texmacs-file-links-compose-with-inline-and-stm-provenance ()
+  (let* ((file (org-element-create 'link '(:type "file" :path "asset.pdf")))
+         (bold (org-element-create 'bold nil file))
+         (island (copy-sequence "STM"))
+         (ast (org-element-create 'org-data nil
+                                  (org-element-create 'paragraph nil bold " " island)))
+         (input (org-texmacs-input-create ast nil :resource-base "/base/"
+                                          :islands (list (cons island '(math "x")))))
+         (document (org-texmacs-document input)))
+    (should (equal (org-texmacs-document-body document)
+                   '(document (concat (strong (hlink "asset.pdf" "asset.pdf"))
+                                      " " (math "x")))))
+    (should (equal (org-texmacs-document-file-paths document) '((0 0 0 1))))
+    (should (equal (org-texmacs-document-stm-paths document) '((0 2))))
+    (should (string-match-p (regexp-quote "/base/asset.pdf")
+                            (org-texmacs--native-document-wire document)))))
+
+(ert-deftest org-texmacs-file-links-explicit-context-and-unsupported-semantics ()
+  (let* ((link (org-element-create 'link '(:type "file" :path "relative.pdf")))
+         (ast (org-element-create 'org-data nil
+                                  (org-element-create 'paragraph nil link))))
+    (should-error (org-texmacs-document (org-texmacs-input-create ast nil))
+                  :type 'org-texmacs-document-error)
+    (org-element-put-property link :path "/absolute.pdf")
+    (should (equal (org-texmacs-document-file-paths
+                    (org-texmacs-document (org-texmacs-input-create ast nil)))
+                   '((0 0 1)))))
+  (dolist (source '("[[file:~/notes.pdf]]\n"
+                    "[[file:/ssh:host:/notes.pdf]]\n"
+                    "[[file:notes.org::#target]]\n"
+                    "[[file+emacs:notes.org]]\n"
+                    "#+OPTIONS: toc:nil\n* [[file:notes.pdf][Title]]\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Unsupported resource started parsing"))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer))
+                      :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-file-links-native-preflight-validates-provenance ()
+  (cl-letf (((symbol-function 'org-texmacs--worker-start)
+             (lambda (&rest _) (ert-fail "Invalid file provenance started a worker"))))
+    (dolist (paths '(t (nil) ((9)) ((0 0 0)) ((0 0 1) (0 0 1))))
+      (should-error
+       (org-texmacs--native-encode-document
+        (org-texmacs--document-create
+         :body '(document (concat (hlink "asset" "asset.pdf")))
+         :file-paths paths :resource-base "/base/"))
+       :type 'org-texmacs-encoding-error))
+    (should-error
+     (org-texmacs--native-encode-document
+      (org-texmacs--document-create
+       :body '(document (concat (hlink "asset" "asset.pdf")))
+       :file-paths '((0 0 1)) :stm-paths '((0 0)) :resource-base "/base/"))
+     :type 'org-texmacs-encoding-error)))
+
+(ert-deftest org-texmacs-file-links-native-rejects-reserved-syntax ()
+  (dolist (path '("name#anchor.pdf" "name?query.pdf" "name*.pdf"
+                  "$name.pdf" "a|b.pdf" "a\\b.pdf" "a[b].pdf"))
+    (let ((document (org-texmacs--document-create
+                     :body (list 'document (list 'hlink "asset" path))
+                     :file-paths '((0 1)) :resource-base "/base/")))
+      (should-error (org-texmacs--native-document-wire document)
+                    :type 'org-texmacs-encoding-error)
+      (should (equal (nth 2 (cadr (org-texmacs-document-body document))) path)))))
+
+(ert-deftest org-texmacs-file-links-native-readback-and-preflight-preservation ()
+  (org-texmacs-test--with-worker
+    ;; Launch under the existing fixture directory, then exercise a source
+    ;; resource base that need not exist or be read by conversion.
+    (org-texmacs--worker-start)
+    (with-temp-buffer
+      (org-mode)
+      (setq default-directory "/tmp/org-resource/root/")
+      (insert "[[file:子/é <alpha>%20.pdf][Resource]]\n")
+      (let* ((document (org-texmacs-document-from-buffer (current-buffer)))
+             (session (org-texmacs-session-open))
+             (process org-texmacs--worker-process))
+        (unwind-protect
+            (progn
+              (org-texmacs-session-set-document session document)
+              (let ((native (org-texmacs--session-read session)))
+                (should
+                 (equal native
+                        (org-texmacs-test--native-hex
+                         '(document
+                           (concat
+                            (hlink "Resource"
+                                   "/tmp/org-resource/root/<#5B50>/é <less>alpha<gtr>%20.pdf")
+                            " ")))))
+                (erase-buffer)
+                (insert "[[file:name#fragment.pdf][Rejected]]\n")
+                (should-error
+                 (org-texmacs-session-set-document
+                  session (org-texmacs-document-from-buffer (current-buffer)))
+                 :type 'org-texmacs-encoding-error)
+                (should (eq process org-texmacs--worker-process))
+                (should (equal native (org-texmacs--session-read session)))))
+          (org-texmacs-session-close session))))))
+
 (ert-deftest org-texmacs-document-resolves-local-headline-links ()
   (let (prepared)
     (with-temp-buffer
@@ -2395,7 +2526,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (should-error (org-texmacs--document-lower ast) :type 'org-texmacs-document-error))))
 
 (ert-deftest org-texmacs-document-uri-private-syntax-restoration ()
-  (dolist (suffix '("" "\n[[file:unsupported.org][link]]\n"))
+  (dolist (suffix '("" "\n[[file:unsupported.org::#target][link]]\n"))
     (with-temp-buffer
       (org-mode)
       (insert "[[ftps://example.org][(math \"hidden\")]]" suffix)
@@ -3093,7 +3224,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 
 (ert-deftest org-texmacs-document-rejects-unsupported-source ()
   (dolist (source '("[[file:notes.org][link]]\n"
-                    "[[./notes.org]]\n" "[[/tmp/notes.org]]\n"
+                    "[[./notes.org]]\n" "[[file:/ssh:host:/tmp/notes.org]]\n"
                     "[[file:notes.org::heading]]\n" "[[file+emacs:notes.org]]\n"
                     "[[#target]]\n" "[[id:missing]]\n"
                     "[fn:named]\n" "# comment\n"
@@ -3167,7 +3298,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                          '("(math \"*fake* [[link]]\")" "(math \"α\")"))))))))
 
 (ert-deftest org-texmacs-document-source-preflight ()
-  (dolist (source '("(math \"x\")\n\n[[file:unsupported.org][link]]\n"
+  (dolist (source '("(math \"x\")\n\n[[file:unsupported.org::#target][link]]\n"
                     "#+include: missing.org\n"
                     "#+begin_src emacs-lisp -n\n(error \"never execute\")\n#+end_src\n"))
     (with-temp-buffer
@@ -3313,7 +3444,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
         (org-mode)
         (insert "Text (math \"x\")\n")
         (when (eq outcome 'unsupported)
-          (insert "\n[[file:unsupported.org][link]]\n"))
+          (insert "\n[[file:unsupported.org::#target][link]]\n"))
         (put-text-property 1 3 'org-texmacs-test-property "retained")
         (goto-char 3)
         (set-mark 2)
@@ -4030,7 +4161,7 @@ Only serialize expected bytes; do not call the production encoder."
             (insert "Original\n")
             (org-texmacs-session-set-document session (org-texmacs-document-from-buffer (current-buffer)))
             (let ((old (org-texmacs--session-read session)))
-              (dolist (case '(("[[file:unsupported.org][link]]\n"
+              (dolist (case '(("[[file:unsupported.org::#target][link]]\n"
                                . org-texmacs-document-error)
                               ("(math 1)\n" . org-texmacs-parse-error)))
                 (erase-buffer)

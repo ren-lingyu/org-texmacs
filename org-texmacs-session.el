@@ -108,9 +108,65 @@ stop it so a later call cannot reuse a semantically inconsistent peer."
        (org-texmacs--worker-stop)
        (signal (car err) (cdr err))))))
 
+(defun org-texmacs--native-file-target (path base)
+  "Translate a raw local file PATH using explicit resource BASE.
+Return an absolute system path for TeXmacs's native URL handler.  Never read
+files, expand a home abbreviation or infer a base from the current buffer."
+  (unless (and (org-texmacs--document-local-file-path-p path)
+               (or (null base) (org-texmacs--document-local-file-path-p base)))
+    (signal 'org-texmacs-encoding-error '("Unsupported native file target")))
+  (let ((file-name-handler-alist nil))
+    (when base
+      (condition-case err
+          (setq base (org-texmacs--source-copy-path base))
+        (org-texmacs-document-error
+         (signal 'org-texmacs-encoding-error (cdr err)))))
+    (unless (or (file-name-absolute-p path) base)
+      (signal 'org-texmacs-encoding-error '("Relative native file target requires a resource base")))
+    (let ((absolute (expand-file-name path (or base "/"))))
+      ;; TeXmacs navigation interprets query/anchor and URL expression syntax.
+      ;; Preserve these filenames structurally, but reject this native subset.
+      (when (cl-some (lambda (character)
+                       (string-match-p (regexp-quote character) absolute))
+                     '("#" "?" "*" "$" "|" "\\" "[" "]"))
+        (signal 'org-texmacs-encoding-error '("Unsupported character in native file target")))
+      absolute)))
+
+(defun org-texmacs--native-resolve-file-paths (body files stm-paths base)
+  "Replace file target leaves in copied BODY using FILES and BASE.
+Validate target roles and separation from STM-PATHS before serializing."
+  (unless (proper-list-p files)
+    (signal 'org-texmacs-encoding-error '("Expected proper file target paths")))
+  (let (seen)
+    (dolist (path files)
+      (unless (and (proper-list-p path) path
+                   (not (member path seen))
+                   (cl-every (lambda (index) (and (integerp index) (>= index 0))) path))
+        (signal 'org-texmacs-encoding-error '("Invalid or duplicate file target path")))
+      (push path seen)
+      (dolist (stm stm-paths)
+        (let ((a path) (b stm))
+          (while (and a b (= (car a) (car b)))
+            (setq a (cdr a) b (cdr b)))
+          (when (or (null a) (null b))
+            (signal 'org-texmacs-encoding-error '("File target overlaps STM provenance")))))
+      (let ((parent body) (steps path))
+        (while (cdr steps)
+          (let ((index (pop steps)))
+            (unless (and (consp parent) (< index (length (cdr parent))))
+              (signal 'org-texmacs-encoding-error '("File target path is out of bounds")))
+            (setq parent (nth (1+ index) parent))))
+        (unless (and (= (car steps) 1) (consp parent)
+                     (eq (car parent) 'hlink) (= (length parent) 3)
+                     (stringp (nth 2 parent)))
+          (signal 'org-texmacs-encoding-error '("File target path does not name an hlink target")))
+        (setcar (cddr parent)
+                (org-texmacs--native-file-target (nth 2 parent) base))))))
+
 (defun org-texmacs--native-document-wire (document)
-  "Validate DOCUMENT and serialize all its fields as Scheme data.
-Return style, initial, body and STM-path arguments without starting a process."
+  "Validate DOCUMENT and serialize its native fields as Scheme data.
+Translate marked local file targets on a body copy using the captured resource
+base.  Return style, initial, body and STM-path arguments without a process."
   (unless (org-texmacs-document-p document)
     (signal 'org-texmacs-encoding-error '("Expected a document result")))
   (let ((body nil) (style nil) (initial nil)
@@ -145,6 +201,9 @@ Return style, initial, body and STM-path arguments without starting a process."
             (when (or (null a) (null b))
               (signal 'org-texmacs-encoding-error '("Overlapping STM paths")))))
         (setq rest (cdr rest))))
+    (org-texmacs--native-resolve-file-paths
+     body (org-texmacs-document-file-paths document) paths
+     (org-texmacs-document-resource-base document))
     (cl-labels
         ((wire
           (node)
@@ -253,7 +312,8 @@ session.  Worker termination releases it and makes its handle stale."
   "Replace SESSION's complete native state from text DOCUMENT and return SESSION.
 DOCUMENT is a result from `org-texmacs-document', not a hex diagnostic tree.
 Validate and encode style, initial environment and body before mutation, using
-STM provenance for body islands and TeXmacs source semantics for initial
+STM provenance for body islands, captured context for file targets, and source
+semantics for initial
 values.  Then replace style, clear old explicit initial values, set the new
 initial environment and body, and read all fields back.  TeXmacs may normalize
 the style list; initial comparison is unordered.  Preflight or encoding errors

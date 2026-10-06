@@ -114,6 +114,8 @@ is an alist of environment identifiers to source-semantic text strees.
 STM-PATHS locate STM island roots only within BODY.  Each path contains
 zero-based child indices, excluding tags.  SOURCE-FILE and RESOURCE-BASE
 are copied source identity and resource-base strings, or nil.
+FILE-PATHS locate Org file-link target string leaves in BODY, separate from
+STM roots.  Consumers use RESOURCE-BASE without changing these raw leaves.
 Callers must not mutate any slot
 or nested list/string.  No source buffer is retained."
   (body nil :read-only t)
@@ -121,7 +123,8 @@ or nested list/string.  No source buffer is retained."
   (style (list "generic") :read-only t)
   (initial nil :read-only t)
   (source-file nil :read-only t)
-  (resource-base nil :read-only t))
+  (resource-base nil :read-only t)
+  (file-paths nil :read-only t))
 
 (defun org-texmacs--document-fail (node message)
   "Signal a conversion error for NODE with MESSAGE and source context."
@@ -167,14 +170,25 @@ strees and reject cycles instead of guessing through dynamic label bodies."
                (:copier nil))
   "Conversion-local links and target labels keyed by owned AST node identity."
   (links nil :read-only t)
-  (labels nil :read-only t))
+  (labels nil :read-only t)
+  (files nil :read-only t))
 
-(defun org-texmacs--document-resolve (ast islands static-labels)
+(defun org-texmacs--document-local-file-path-p (path)
+  "Return non-nil for a plain local file PATH with explicit source semantics.
+Home abbreviations and remote/file-search semantics require additional context."
+  (and (stringp path) (> (length path) 0)
+       (cl-every (lambda (character) (and (>= character 32) (/= character 127)))
+                 (string-to-list path))
+       (not (string-prefix-p "~" path))
+       (not (string-prefix-p "//" path))
+       (not (string-match-p "\\`/[^/]*:" path))))
+
+(defun org-texmacs--document-resolve (ast islands static-labels resource-base)
   "Resolve local Org links in AST before structural lowering.
 ISLANDS are opaque.  STATIC-LABELS reserves user-authored STM labels.
 Return node-identity mappings only; never
 read a source buffer, query an ID database or invoke an export consumer."
-  (let (custom-ids ids targets headlines links order resolved selected labels)
+  (let (custom-ids ids targets headlines links order resolved selected labels files)
     (cl-labels
         ((scan (node ancestors)
            (unless (assq node islands)
@@ -236,7 +250,18 @@ read a source buffer, query an ID database or invoke an export consumer."
                                         (lookup path headlines)))))))))
           (when target
             (push (cons link target) resolved)
-            (cl-pushnew target selected :test #'eq))))
+            (cl-pushnew target selected :test #'eq))
+          (when (equal kind "file")
+            (unless (and (org-texmacs--document-local-file-path-p path)
+                         (null (org-element-property :search-option link))
+                         (null (org-element-property :application link))
+                         (or (null resource-base)
+                             (org-texmacs--document-local-file-path-p resource-base)))
+              (org-texmacs--document-fail link "Unsupported file link or resource context"))
+            (let ((file-name-handler-alist nil))
+              (unless (or (file-name-absolute-p path) resource-base)
+                (org-texmacs--document-fail link "Relative file link requires a resource base")))
+            (push (cons link (substring-no-properties path)) files))))
       (let ((reserved (copy-sequence static-labels)) (next 1))
         (dolist (node order)
           (when (memq node selected)
@@ -255,7 +280,7 @@ read a source buffer, query an ID database or invoke an export consumer."
        :links (mapcar (lambda (entry)
                         (cons (car entry) (cdr (assq (cdr entry) labels))))
                       (nreverse resolved))
-       :labels labels))))
+       :labels labels :files (nreverse files)))))
 
 (defun org-texmacs--document-unnumbered-value (headline)
   "Return HEADLINE's effective inherited Org UNNUMBERED value."
@@ -351,15 +376,18 @@ read a source buffer, query an ID database or invoke an export consumer."
                (or (split-string value "\n" nil) '(""))))))))
 
 (defun org-texmacs--document-pack (tag parts)
-  "Wrap lowered PARTS in TAG, prefixing their STM paths by child index."
-  (let ((index 0) (children nil) (paths nil))
+  "Wrap lowered PARTS in TAG, prefixing provenance paths by child index."
+  (let ((index 0) (children nil) (paths nil) (file-paths nil))
     (dolist (part parts)
       (push (org-texmacs-document-body part) children)
       (dolist (path (org-texmacs-document-stm-paths part))
         (push (cons index path) paths))
+      (dolist (path (org-texmacs-document-file-paths part))
+        (push (cons index path) file-paths))
       (setq index (1+ index)))
     (org-texmacs--document-create
-     :body (cons tag (nreverse children)) :stm-paths (nreverse paths))))
+     :body (cons tag (nreverse children)) :stm-paths (nreverse paths)
+     :file-paths (nreverse file-paths))))
 
 (defun org-texmacs--document-lower
     (ast &optional islands post-blanks info style initial source-file resource-base)
@@ -389,6 +417,7 @@ count.  Both inputs have prose whitespace semantics, not source fidelity.
 Support paragraphs, plain text, basic emphasis, inline code/verbatim,
 explicit line breaks, self-contained URI links, transparent Org sections,
 same-document headline/ID and dedicated-target links resolved from AST,
+plain local body file links with raw target paths and file provenance,
 relative headline levels one through five, lower-level headline lists, all
 three Org plain-list types, quote/center blocks, and static example,
 fixed-width and source blocks, plus basic rectangular Org tables.  Emit
@@ -438,7 +467,7 @@ from one snapshot."
                         :texmacs-format-headline-function
                         org-texmacs-format-headline-default-function)))
         (resolution (org-texmacs--document-resolve
-                     ast islands static-labels)))
+                     ast islands static-labels resource-base)))
     (setq headline-limit
           (if (memq :headline-levels info) (plist-get info :headline-levels) 3)
           preformatted-tab-width
@@ -617,16 +646,20 @@ from one snapshot."
                  (org-texmacs--document-fail node "Cyclic Org AST"))
                (let ((type (org-element-property :type node))
                      (path (org-element-property :path node))
+                     (file (cdr (assq node (org-texmacs-resolution-files resolution))))
                      (reference (cdr (assq node
                                            (org-texmacs-resolution-links resolution)))))
                  (unless (and (stringp type) (stringp path)
-                              (or reference
+                              (or reference file
                                   (member (downcase type)
                                           org-texmacs--supported-link-types)))
                    (org-texmacs--document-fail node "Unsupported link type or path"))
+                 (when (and file (cadr space))
+                   (org-texmacs--document-fail node "Unsupported file link in title or metadata"))
                  (let* ((uri (and (not reference)
-                                  (concat (substring-no-properties type) ":"
-                                          (substring-no-properties path))))
+                                  (or file
+                                      (concat (substring-no-properties type) ":"
+                                              (substring-no-properties path)))))
                         (parts (and (org-element-contents node)
                                     (inlines (org-element-contents node) 'link
                                              (cons node ancestors) space)))
@@ -637,7 +670,17 @@ from one snapshot."
                                            :body (copy-sequence uri))))
                                     ((null (cdr parts)) (car parts))
                                     (t (org-texmacs--document-pack 'concat parts)))))
-                   (cons (if (and reference (null parts))
+                   (cons (if file
+                             (let ((result (org-texmacs--document-pack
+                                            'hlink
+                                            (list body
+                                                  (org-texmacs--document-create :body file)))))
+                               (org-texmacs--document-create
+                                :body (org-texmacs-document-body result)
+                                :stm-paths (org-texmacs-document-stm-paths result)
+                                :file-paths (append (org-texmacs-document-file-paths result)
+                                                    (list (list 1)))))
+                           (if (and reference (null parts))
                              (org-texmacs--document-pack
                               'reference
                               (list (org-texmacs--document-create :body reference)))
@@ -645,7 +688,7 @@ from one snapshot."
                             'hlink
                             (list body
                                   (org-texmacs--document-create
-                                   :body (if reference (concat "#" reference) uri)))))
+                                   :body (if reference (concat "#" reference) uri))))))
                          (blank node space)))))
               ((and (consp node) (eq (org-element-type node) 'target))
                (unless (eq context 'paragraph)
@@ -1082,6 +1125,7 @@ from one snapshot."
         (org-texmacs--document-create
          :body (org-texmacs-document-body result)
          :stm-paths (org-texmacs-document-stm-paths result)
+         :file-paths (org-texmacs-document-file-paths result)
          :style style :initial initial
          :source-file source-file :resource-base resource-base)))))
 

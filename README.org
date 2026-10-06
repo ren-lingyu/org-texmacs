@@ -13,6 +13,7 @@ apply style, initial environment and body together.  Buffer preparation takes
 an explicit source buffer, with a separate current-buffer convenience wrapper.
 
 Document conversion supports basic inline markup, self-contained URI links,
+plain local file links with captured resource context,
 same-document headline/ID and dedicated-target links, anonymous inline
 footnotes, list/container structures, rich metadata,
 relative headline sectioning, a static filtered TOC, static preformatted
@@ -526,6 +527,7 @@ parses STM islands with the shared worker, and returns a document result:
 | =org-texmacs-document-stm-paths= | Paths to complete STM island roots in the body only               |
 | =org-texmacs-document-source-file= | Optional copied absolute source file name                      |
 | =org-texmacs-document-resource-base= | Optional copied base for source-relative resources         |
+| =org-texmacs-document-file-paths= | Paths to Org file-link target leaves in the body                |
 
 Paths use zero-based child indices, excluding the tag.  Keep all fields
 together and treat the result and all nested data as read-only.  It is not
@@ -557,9 +559,10 @@ For a manually prepared input, =:source-file= and =:resource-base= accept
 explicit absolute path strings or =nil=.  Omitted values remain unspecified;
 pure construction never reads the current buffer to fill them.  Locations are
 copied without path expansion, symlink resolution or file access.  Tilde and
-relative location strings are rejected.  This captures source context for
-future resource consumers; file links still fail explicitly, and the native
-session does not yet interpret these location fields.
+relative location strings are rejected.  File-link lowering preserves raw paths
+and marks their target leaves in =file-paths=.  The native bridge uses the
+captured resource base to translate these leaves in a separate body copy;
+source file identity never chooses or overrides that base.
 
 Each buffer-adapter call captures source text, fragment tags, supported
 heading/link parser settings and a restricted Org document context.  It merges
@@ -603,6 +606,7 @@ The supported Org subset is deliberately small:
 | Inline code / verbatim                            | =verbatim= with literal inline text                          |
 | Explicit line break in paragraph contents         | =next-line=                                                  |
 | Supported self-contained URI link                 | =hlink= with separate display body and target                |
+| Plain local file link in body text                | =hlink= plus typed file-target provenance                    |
 | Same-document headline/ID or dedicated-target link | =hlink= or =reference= with generated =label= target         |
 | Anonymous inline footnote directly in a paragraph | =footnote= containing a body =document=                      |
 | Relative headline levels 1 through 5              | Five numbered or starred TeXmacs sectioning tags              |
@@ -697,14 +701,32 @@ links without descriptions become TeXmacs =reference= nodes.  Referenced
 headings and dedicated targets receive deterministic =org-texmacs-ref-N=
 labels.  Resolution uses the owned document snapshot and does not query the
 source buffer or Org's global ID database.  Missing or ambiguous targets fail
-explicitly.  File links, cross-file IDs, named elements, plain-text search
+explicitly.  Cross-file IDs, named elements, plain-text search
 fallback and other protocols remain unsupported.  Headline matching uses the
 exact raw title from the prepared AST.
 Internal links in document metadata and =ALT_TITLE= remain outside this node.
 
+Plain local file links, including implicit =[[./notes.org]]= and absolute
+file links, are supported in body text.  A description becomes the =hlink=
+display body; otherwise the raw path is displayed.  The document body retains
+the raw path, while =file-paths= identifies its target leaf with zero-based
+child indices.  These paths remain separate from STM provenance and propagate
+through supported inline and block containers.  Relative paths require an
+explicit captured =resource-base=; absolute paths need no implicit base.
+
+The native bridge translates only marked file targets into absolute system
+paths using the captured base, then applies ordinary literal native encoding.
+It does not open or inspect resources, inline images, or consult the caller's
+current directory.  The original document remains unchanged.  File searches
+such as =file:notes.org::#target=, application hints, tilde targets, remote
+resources, and file links in titles/metadata are unsupported.  Native string
+navigation also rejects targets containing =#=, =?=, =*=, =$=, =|=, backslash,
+or square brackets, because these may be interpreted as navigation or URL
+syntax.  Such paths can remain in a structural result but fail native preflight.
+
 Anonymous inline footnotes such as =[fn::A note]= are supported only as
 direct paragraph children.  Their bodies support ordinary inline markup,
-URI/internal links and explicit line breaks, with independent prose whitespace
+URI/internal/file links and explicit line breaks, with independent prose whitespace
 normalization.  Empty bodies are represented by an empty text slot.
 Named references, separate definitions, nested footnotes and footnotes in
 headings, emphasis or link descriptions are rejected as AST nodes.
