@@ -8,8 +8,7 @@ authorization, or an append-only copy of historical plans.
 
 Use these status labels:
 
-- **active-next**: the next adopted project change after the current governance
-  migration is complete;
+- **active-next**: the next adopted project change selected for implementation;
 - **adopted-later**: required by the current goals, but not the next change;
 - **deferred-candidate**: plausible work whose need, scope, or ordering still
   requires evidence or a later decision;
@@ -24,24 +23,9 @@ decision.
 
 ## Active next
 
-### ARCH-01: Repair the worker/document layering inversion
-
-Status: **active-next**.
-
-The worker currently depends on the high-level document module for part of the
-native document wire validation and encoding. Refactor this without changing
-observable behavior:
-
-- keep process lifecycle, socket transport, framing, and protocol envelopes in
-  the worker layer;
-- move document representation, field validation, and native encoding to the
-  session/native bridge or another lower-level owner;
-- move genuinely generic stree copying to the AST/core layer;
-- keep public construction and session APIs, native wire semantics, failure
-  invalidation, and the v0.3 support contract unchanged;
-- retain or improve the existing tests before removing the old dependency.
-
-This is an architecture cleanup, not an established correctness defect.
+No item is currently selected. `ARCH-01` was completed by project commit
+`ec72c89b71ffd1df27d9cdb22c4f6c8e1a4f6491`; its prior active plan remains in
+GAW first-parent history rather than as a completed item in this active file.
 
 ## Adopted downstream work
 

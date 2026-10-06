@@ -2,19 +2,19 @@
 
 ## Objective
 
-Hand off the verified, behavior-preserving `ARCH-01` worker/document layering
-refactor for project commit. The reproducible untracked bootstrap migration is
-complete. A future fresh context should independently confirm discovery and
-recovery routing, but that validation does not block project work.
+Select the next implementation scope from the adopted downstream work. The
+verified, behavior-preserving `ARCH-01` worker/document layering refactor is
+committed, and the reproducible untracked bootstrap migration is complete. A
+future fresh context should independently confirm discovery and recovery
+routing, but that validation does not block project work.
 
 ## Current baseline
 
 - Main HEAD observed on 2026-10-06:
-  `1a90b7bd2e0f60601cdf6003edf1ccbc79afce18`.
+  `ec72c89b71ffd1df27d9cdb22c4f6c8e1a4f6491`.
 - Local v0.3.0 tag target:
   `8c157d06b7a8793b0bd312e8f0c41612a3640388`.
-- The ordinary project worktree was clean when retrospective reconstruction
-  began.
+- The ordinary project worktree is clean after the ARCH-01 commit.
 - GAW `_agents` is valid and deployed at the repository `.agents` directory.
 - GAW branch preservation and transfer are already solved and are not an open
   issue.
@@ -44,9 +44,6 @@ recovery routing, but that validation does not block project work.
   losing them would materially impair interpretation, reproduction, audit, or
   handoff of durable work. Select them explicitly, preserve project-relative
   paths, and prefer individual plain-text files over tar or other containers.
-- The known worker-to-document dependency inversion should be repaired after
-  governance migration without changing public APIs, document wire semantics,
-  session failure behavior, or v0.3 coverage.
 
 ## Completed GAW migration work
 
@@ -81,17 +78,20 @@ recovery routing, but that validation does not block project work.
 - A genuine fresh-context recovery drill cannot be completed inside the
   context that authored the migration. It remains a later validation step.
 
-## Current ARCH-01 worktree state
+## Completed ARCH-01 refactor
 
-- The ordinary worktree contains an uncommitted behavior-preserving layering
-  refactor in `org-texmacs-core.el`, `org-texmacs-worker.el`,
-  `org-texmacs-session.el`, and `tests/ert/ert.el`.
+- Project commit `ec72c89b71ffd1df27d9cdb22c4f6c8e1a4f6491`
+  (`refactor(worker): decouple transport from native session protocol`) records
+  the verified four-file layering refactor.
 - Shared condition types now live in core. The worker owns transport framing,
   generic envelope reading, and STM parse response semantics. The session/native
   bridge owns document preflight/wire serialization, native encoding, and
   native/session response contracts.
 - `org-texmacs-worker.el` no longer requires `org-texmacs-document.el`; a test
   records this load boundary before loading the complete package.
+- The remaining `org-texmacs--document-copy-stree` helper retains document
+  validation/error semantics and is no longer used by worker transport. No
+  genuinely generic worker-owned stree copy remained to move into core/AST.
 - Public APIs and the Scheme request/response wire remain unchanged. A static
   review additionally fixed the pre-transmission failure boundary so a local
   request-builder error preserves the healthy worker.
@@ -100,16 +100,12 @@ recovery routing, but that validation does not block project work.
   covering the declared package, ERT, package-lint, and development-shell
   outputs. Nix fetched one source path from `cache.nixos.org`; the lockfile and
   ordinary tracked files outside this refactor were not changed.
-- `git diff --check` passes. The four-file worktree diff is verified and ready
-  for commit review, but remains unstaged and uncommitted.
+- The committed tree matches the verified diff, and the ordinary worktree is
+  clean.
 
 ## Next actions
 
-1. Review and commit the four-file ARCH-01 project diff without folding in
-   unrelated work.
-2. After the project commit exists, ground the verified GAW state in that exact
-   project parent and retire ARCH-01 from the active backlog.
-3. Select the next implementation scope from adopted work rather than treating
+1. Select the next implementation scope from adopted work rather than treating
    unsupported cases or deferred candidates as automatic commitments.
-4. In a future fresh Codex context, verify skill discovery and recovery from
+2. In a future fresh Codex context, verify skill discovery and recovery from
    active GAW memory without reading the historical archive.

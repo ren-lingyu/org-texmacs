@@ -105,8 +105,9 @@ export preprocessing, and arbitrary Org element coverage.
   worker. Transport, framing, or invalid operation payloads stop it. A local
   request-construction failure before transmission also preserves it.
 
-This boundary is implemented and verified in the current ordinary worktree;
-the corresponding project commit has not yet been created.
+This boundary is implemented by project commit
+`ec72c89b71ffd1df27d9cdb22c4f6c8e1a4f6491` and covered by the maintained
+worker, encoding, and native-session tests.
 
 ## Downstream work not yet implemented
 
