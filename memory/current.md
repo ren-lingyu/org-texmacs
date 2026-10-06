@@ -2,11 +2,10 @@
 
 ## Objective
 
-Complete the reproducible untracked bootstrap migration: preserve a curated
-active backlog, checkpoint the recovery surface, deploy the concise root
-`AGENTS.md`, and prove deterministic reconstruction. After that migration is
-verified, perform the worker/document layering refactor as a
-behavior-preserving post-v0.3 change.
+Begin `ARCH-01`, the behavior-preserving worker/document layering refactor.
+The reproducible untracked bootstrap migration is complete. A future fresh
+context should independently confirm discovery and recovery routing, but that
+validation no longer blocks project work.
 
 ## Current baseline
 
@@ -68,6 +67,13 @@ behavior-preserving post-v0.3 change.
   with project commit `1a90b7b` as its exact project parent.
 - The still-valid unimplemented work has been curated into
   `memory/backlog.md`; obsolete early-version TODOs were not copied forward.
+- Checkpoint `ab46bc0` records the active backlog and complete bootstrap
+  recovery surface.
+- The concise root `AGENTS.md` was deployed from the governance skill and its
+  helper passed a real remove/rebuild comparison. The original generated copy
+  and reconstructed copy both had SHA-256
+  `9252649558075d08f6f990d30dd365a12bc28a1fe2e3a3554d5d0aeac1ab68df`.
+  The project worktree remained clean and the root artifact remained ignored.
 
 ## Blockers and uncertainties
 
@@ -77,10 +83,9 @@ behavior-preserving post-v0.3 change.
 
 ## Next actions
 
-1. Checkpoint the backlog and recovery-routing changes, deploy the concise root
-   AGENTS bootstrap under the current user authorization, and verify a
-   remove/rebuild cycle byte-for-byte.
-2. In a fresh Codex context, verify skill discovery, trigger boundaries, and
+1. In a fresh Codex context, verify skill discovery, trigger boundaries, and
    recovery from active GAW memory without reading the historical archive.
-3. Re-audit the completed v0.3 worker/session/document boundary and plan the
+2. Re-audit the completed v0.3 worker/session/document boundary and plan the
    behavior-preserving layering refactor.
+3. Implement `ARCH-01` in independently reviewable nodes while preserving all
+   public behavior and maintained coverage.
