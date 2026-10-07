@@ -12,6 +12,42 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
+## Explicit-source export adapter evidence
+
+- Saving commit `0ee17c4acc88664e2024af26d8ebcf08084e85a7` matches the earlier
+  verified three-file diff, checked on 2026-10-07. Adapter work began with only
+  the unchanged user overlay dirty.
+- Existing private preparation already calls its consumer before its final
+  check. Composing document lowering and native serialization there extends
+  the owned source/dependency guard through the last worker wait. File writing
+  is performed only after that call returns successfully, using shared native
+  target/byte helpers rather than serializing the document a second time.
+- Four new maintained cases pass in twelve combined serialization/save/export
+  cases (14.36s). Native byte and file outputs match with literal/native notation,
+  Unicode/accents, title metadata and typed file links under a distinct destination.
+  Each export serializes once, preserves source buffer state and bypasses generic
+  Org export hooks/processing.
+- Late source text/location/heading/link/narrowing/mode/kill changes and original
+  bibliography string mutation are rejected before file writing. Target identity
+  is copied before preparation; existing outputs and unsupported INCLUDE/SETUPFILE
+  fail preflight. Prior writer regressions remain in the focused selector.
+  Full local ERT passes disjoint 250/250 + 11/11 (110.81s and 12.27s), both exit
+  0. Final Nix passes all seven checks including compilation/package-lint and
+  installed ERT 261/261 (97.33s), using the unchanged temporary local-only remote
+  USTC mirror overlay. Original ELPA availability is not established.
+  Generic backend/dispatcher behavior,
+  replacement/backup and GUI rendering remain separate unverified boundaries.
+- Exact approved/staged four-file diff on baseline
+  `0ee17c4acc88664e2024af26d8ebcf08084e85a7` has SHA-256
+  `48f06c5326ad5140f291110c7a05cabffba941c1c2c1e87cbac2aa6c0101f163`
+  for `git diff --cached -- README.org org-texmacs-session.el org-texmacs.el tests/ert/ert.el`.
+  Full staged review and git diff --cached --check pass. No implementation
+  remains unstaged; tmp/commit.md is the reviewed message. Ordinary commit
+  awaits the user; the overlay remains unchanged at its previously recorded hash.
+- No independent necessary temporary evidence artifact was created. All generated
+  output is regenerable in maintained tests and confined to isolated directories.
+  Archive selection requires no new snapshot; only pure text enters GAW.
+
 ## Explicit new-file saving evidence
 
 - Serialization commit `e7377e5767ca38411a497a635d5053f1729a2d5a` matches its
@@ -42,8 +78,9 @@
   `866da9c3b5a8a874950bf0b27a762f3f34e7b09339e1f9b9c02e13080cf2cce4`
   for `git diff --cached -- README.org org-texmacs-session.el tests/ert/ert.el`.
   Full staged review and git diff --cached --check pass. No implementation is
-  unstaged; tmp/commit.md is the reviewed message. Ordinary commit awaits the
-  user. The overlay remains unchanged at its previously recorded hash.
+  unstaged at that review. Commit `0ee17c4acc88664e2024af26d8ebcf08084e85a7`
+  was checked on 2026-10-07 and matches this exact diff hash. The overlay remains
+  unchanged at its previously recorded hash.
 - Test outputs are regenerable temporary fixtures with maintained inputs/assertions.
   No independent necessary raw artifact requires a new archive; only pure text
   enters GAW. The temporary mirror overlay stays excluded from commits/pushes.
@@ -295,7 +332,7 @@
 - Local v0.3.1 annotated tag target:
   `880d4e00667907ef66985387b4865ec8d795d48d`.
 - Current main HEAD observed on 2026-10-07:
-  `e7377e5767ca38411a497a635d5053f1729a2d5a`.
+  `0ee17c4acc88664e2024af26d8ebcf08084e85a7`.
 
 These are local Git facts. They do not prove remote release state or tag
 signatures.

@@ -2,14 +2,14 @@
 
 ## Objective
 
-CONSUMER-01's explicit-destination new-file saving node is implemented, verified
-and staged with approval. `tmp/commit.md` contains its reviewed message; await
-the user's ordinary project commit. The temporary mirror overlay stays excluded.
+CONSUMER-01's explicit-source export adapter node is implemented, verified and
+staged with approval. `tmp/commit.md` contains the reviewed message; await the
+user's ordinary project commit. The temporary mirror overlay remains excluded.
 
 ## Current baseline
 
 - Main HEAD observed on 2026-10-07:
-  `e7377e5767ca38411a497a635d5053f1729a2d5a`.
+  `0ee17c4acc88664e2024af26d8ebcf08084e85a7`.
 - Local v0.3.0 tag target:
   `8c157d06b7a8793b0bd312e8f0c41612a3640388`.
 - Local v0.3.1 annotated tag resolves to
@@ -34,6 +34,24 @@ the user's ordinary project commit. The temporary mirror overlay stays excluded.
 
 ## Current decisions
 
+- Commit `0ee17c4` matches the reviewed saving hash exactly; node start has only
+  the unchanged user overlay dirty. The next bounded frontend composes the
+  existing restricted source preparation with native serialization inside its
+  final consistency check. It returns native bytes or creates an explicit new
+  local file only after that check, reusing the writer without serializing twice.
+  Generic org-export-as/backend registration and dispatcher preprocessing remain
+  unresolved separately; do not silently enable full Org preprocessing.
+  The user authorized repeated source-export focused/full ERT and Nix checks,
+  each with timeout 120s. Twelve combined serialization/save/export focused
+  cases pass. Two explicit source adapters now serialize inside preparation's
+  final source/dependency check; file export validates/copies its destination
+  first and writes afterward. Writer helpers are shared with document-save.
+  Full local coverage passes 250/250 + 11/11 (110.81s and 12.27s); Nix's seven
+  checks pass including compilation/package-lint and installed ERT 261/261
+  (97.33s). Four explicit project files are approved/staged, with no implementation
+  left unstaged; evidence records the reviewed hash. No necessary new raw
+  artifact qualifies for archive. No generic backend/dispatcher is registered.
+
 - Commit `e7377e5` matches the verified serialization diff hash; only the user's
   unchanged overlay is dirty at saving-node start. The next bounded consumer
   saves to an explicit absolute native local path, preserving serialized bytes
@@ -49,8 +67,8 @@ the user's ordinary project commit. The temporary mirror overlay stays excluded.
   replacement/backup policy are not implemented. Full local coverage passes
   246/246 + 11/11 (106.47s and 11.91s); Nix's seven checks pass including
   compilation, package-lint and installed ERT 257/257 (94.49s). Three explicit
-  project files are approved/staged, with no implementation left unstaged;
-  evidence records the reviewed hash. No independent temporary artifact needs
+  saving-node project files were approved/staged and committed as `0ee17c4`,
+  matching evidence's reviewed hash. No independent temporary artifact needs
   archiving. Only the unchanged temporary overlay remains unstaged.
 
 - Commit `544e246` matches the named-table diff hash exactly; node start has
@@ -334,11 +352,12 @@ the user's ordinary project commit. The temporary mirror overlay stays excluded.
 
 ## Next actions
 
-1. Await the user's ordinary project commit of the three-file new-file saving
-   node. Compare its diff with evidence's hash before marking it committed.
+1. Await the user's ordinary project commit of the four-file source export
+   adapter node. Compare its diff with evidence's hash before marking committed.
    Keep the temporary overlay out of commits and pushes.
-2. Review replacement/backup/atomic-publication policy and the Org export
-   frontend boundary as later CONSUMER-01 nodes. Remaining DOC-01
+2. Review interactive/dispatcher frontend policy and replacement/backup/atomic
+   publication as later CONSUMER-01 nodes. Explicit source adapters are now
+   implemented; generic Org preprocessing is not thereby adopted. Remaining DOC-01
    general-reference/resource variants remain separately scoped; fuller Org
    coverage is not a prerequisite for consumer work.
    Citation styles/affixes, crossref dependencies, global bibliography/export

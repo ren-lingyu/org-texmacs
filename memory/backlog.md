@@ -113,12 +113,22 @@ explicit absolute local destination and creates new files without replacement.
 Replacement/backup policy and Org export frontend policy remain separate. Reference tables,
 attachments/auxiliary state and visual rendering retain separate boundaries.
 
-The new-file saving node is verified and staged: owned explicit destination,
+The new-file saving node is committed as `0ee17c4`: owned explicit destination,
 native serialization before creation, exclusive open, exact byte writing and
 caller-state isolation. Four new cases pass in the eight-case focused selector;
-full local/Nix checks pass (installed ERT 257/257). Await the user's commit.
+full local/Nix checks pass (installed ERT 257/257). The source-buffer frontend
+implemented below extends preparation's consistency check through native
+serialization and writes only after it passes, reusing the new-file writer. Full Org backend/
+dispatcher preprocessing remains separately unresolved.
 Write errors can leave partial new files; this documented boundary is covered
 by regression. Atomic publication/replacement is not implied by exclusive open.
+
+The explicit-source export adapter node is verified/staged: source preparation's
+final check now encloses native serialization; bytes are returned or written to
+an owned new-file destination afterward. Four new cases pass in twelve combined
+focused cases, full local ERT passes 250/250 + 11/11, and Nix installed ERT
+261/261 passes with compilation/package-lint. Await the user's commit. Review
+interactive/dispatcher frontend policy and replacement/publication separately.
 
 Build complete TeXmacs file-document construction and independent consumers for
 native serialization/save, Org export integration, rendering/PDF, and preview.

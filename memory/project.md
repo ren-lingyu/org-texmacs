@@ -41,7 +41,9 @@ consumer constructs a complete file wrapper only after native encoding.
 - `org-texmacs-document-serialize`: independent native .tm byte-string consumer
   of a completed document result.
 - `org-texmacs-document-save`: explicit absolute local new-file saving consumer
-  (verified staged node below).
+  of a completed document result.
+- `org-texmacs-export-from-buffer` / `org-texmacs-export-to-file`: explicit source
+  byte/file export adapters (verified staged node below).
 
 The result does not retain the source buffer. Pure lowering does not read a
 buffer or start a worker.
@@ -305,7 +307,9 @@ Commit `e7377e5767ca38411a497a635d5053f1729a2d5a` matches the verified five-file
   the temporary overlay remains unchanged and excluded. GUI/layout remains
   unverified; new-file saving is covered by the bounded consumer below.
 
-## CONSUMER-01 explicit new-file saving (worktree node)
+## CONSUMER-01 committed explicit new-file saving
+
+Commit `0ee17c4acc88664e2024af26d8ebcf08084e85a7` matches the verified three-file diff.
 
 - Public org-texmacs-document-save consumes a completed document and an explicit
   absolute local destination. It copies that path before waits, rejects existing
@@ -324,8 +328,30 @@ Commit `e7377e5767ca38411a497a635d5053f1729a2d5a` matches the verified five-file
 - Four new maintained cases pass in the combined eight-case serialization/save
   selector. Full local 246/246 + 11/11 and Nix compilation/package-lint/installed
   ERT 257/257 pass with the unchanged temporary mirror overlay. Three explicit
-  files are approved/staged and await commit. The Scheme service and
+  files were approved/staged and then committed. The Scheme service and
   serializer protocol are unchanged; only the explicit saving API writes files.
+
+## CONSUMER-01 explicit-source export adapters (worktree node)
+
+- Public org-texmacs-export-from-buffer takes an explicit source buffer and
+  optional BibTeX text snapshots, returning native .tm bytes. It composes pure
+  lowering/native serialization inside preparation's final consistency check.
+- Public org-texmacs-export-to-file validates/owns an absolute local destination
+  before preparation, obtains checked bytes with that adapter and writes them
+  once afterward. No second source parse/lower/native encoding is introduced.
+- Destination validation and byte writing are shared private native helpers,
+  also consumed by document-save. Exclusive creation, byte/annotation/handler
+  isolation and the partial-new-file error boundary are preserved.
+- Source text/location/parser/narrowing/mode/lifetime and bibliography changes
+  across native waits reject exports before any file output. Source snapshots
+  and destination identities have distinct ownership and lifetimes.
+- Four new maintained cases pass in twelve combined focused cases: native byte/
+  file equality, caller/source base separation, single serialization per export,
+  source and dependency waits, target mutation, preflight and generic hook/pipeline
+  isolation. Full local 250/250 + 11/11 and Nix compilation/package-lint/installed
+  ERT 261/261 pass with the unchanged temporary mirror overlay. Four approved
+  files are staged and await commit. No Org backend/dispatcher, output
+  buffer preview, overwrite or unrestricted preprocessing is added.
 
 ## Worker and session
 
