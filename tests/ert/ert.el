@@ -5019,6 +5019,49 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
   (should (commandp 'org-texmacs-export-to-file))
   (should-not (commandp 'org-texmacs-export-from-buffer)))
 
+(defun org-texmacs-test--pdf-text (file)
+  "Extract FILE's PDF text and normalize whitespace, without layout assertions."
+  (let ((program (executable-find "pdftotext")))
+    (when (getenv "ORG_TEXMACS_TEST_README") (should program))
+    (unless program (ert-skip "PDF semantic inspection requires Poppler pdftotext"))
+    (with-temp-buffer
+      (let ((coding-system-for-read 'utf-8-unix))
+        (should (= 0 (call-process program nil t nil "-enc" "UTF-8" file "-"))))
+      (replace-regexp-in-string "[[:space:]\f]+" " " (buffer-string)))))
+
+(ert-deftest org-texmacs-pdf-footnote-text-and-repeated-markers ()
+  (org-texmacs-test--with-worker
+    (let ((file (expand-file-name "footnotes.pdf" test-directory)))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+OPTIONS: toc:nil\nFirst[fn:n] Repeat[fn:n] Anonymous[fn::AnonymousBodySentinel].\n\n"
+                "[fn:n] NamedBodySentinel.\n")
+        (org-texmacs-export-to-pdf (current-buffer) file))
+      (let ((text (org-texmacs-test--pdf-text file)))
+        (dolist (marker '("First *1\\b" "Repeat *1\\b" "Anonymous *2\\b"))
+          (should (string-match-p marker text)))
+        (dolist (body '("NamedBodySentinel" "AnonymousBodySentinel"))
+          (should (= 1 (cl-count body (split-string text "[^[:alnum:]]+" t)
+                                :test #'equal))))))))
+
+(ert-deftest org-texmacs-pdf-citation-text-and-owned-bibliography ()
+  (org-texmacs-test--with-worker
+    (let ((file (expand-file-name "citations.pdf" test-directory)))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+OPTIONS: toc:nil\n#+bibliography: refs.bib\n"
+                "Group [cite:@a; @b]. Repeat [cite:@a].\n\n#+print_bibliography:\n")
+        (org-texmacs-export-to-pdf
+         (current-buffer) file
+         '(("refs.bib" . "@book{a, author={Ada Alpha}, title={FirstTitleSentinel}, year=2024, publisher={Example}}\n@book{b, author={Bob Beta}, title={SecondTitleSentinel}, year=2025, publisher={Example}}\n@book{unused, title={UnusedTitleSentinel}}"))))
+      (let ((text (org-texmacs-test--pdf-text file)))
+        (should (string-match-p "Group *\\[1, *2\\]" text))
+        (should (string-match-p "Repeat *\\[1\\]" text))
+        (dolist (title '("FirstTitleSentinel" "SecondTitleSentinel"))
+          (should (= 1 (cl-count title (split-string text "[^[:alnum:]]+" t)
+                                :test #'equal))))
+        (should-not (string-match-p "UnusedTitleSentinel" text))))))
+
 (ert-deftest org-texmacs-pdf-native-basic ()
   (org-texmacs-test--with-worker
     (let ((script (expand-file-name "pdf-diagnostics.scm" test-directory)))
@@ -5107,30 +5150,32 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
         (should-not (file-exists-p file))))))
 
 (ert-deftest org-texmacs-pdf-render-error-recovery ()
-  (org-texmacs-test--with-worker
-    (let ((script (expand-file-name "pdf-failure.scm" test-directory)))
-      (with-temp-file script
-        (insert (format "(load %s)\n" (org-texmacs--scheme-string org-texmacs--worker-scheme-file))
-                "(define original-printer print-to-file)\n"
-                "(define first-print #t)\n"
-                "(set! print-to-file (lambda (file)\n"
-                "  (if first-print (begin (set! first-print #f) (error \"Injected printer failure\"))\n"
-                "      (original-printer file))))\n"))
-      (let* ((org-texmacs--worker-scheme-file script)
-             (document (org-texmacs--document-create :body '(document "Text")))
-             (session (org-texmacs-session-open)))
-        (unwind-protect
-            (progn
-              (org-texmacs-session-set-document session document)
-              (let ((state (org-texmacs--session-read-document session))
-                    (process org-texmacs--worker-process))
-                (should-error (org-texmacs-document-pdf document) :type 'org-texmacs-rendering-error)
-                (should (org-texmacs--worker-live-p))
-                (should-not (directory-files org-texmacs--worker-directory nil "\\`render-.*\\.pdf\\'"))
-                (should (equal state (org-texmacs--session-read-document session)))
-                (should (string-prefix-p "%PDF-" (org-texmacs-document-pdf document)))
-                (should (eq process org-texmacs--worker-process))))
-          (org-texmacs-session-close session))))))
+  (dolist (failed-print '(1 2))
+    (org-texmacs-test--with-worker
+      (let ((script (expand-file-name "pdf-failure.scm" test-directory)))
+        (with-temp-file script
+          (insert (format "(load %s)\n" (org-texmacs--scheme-string org-texmacs--worker-scheme-file))
+                  "(define original-printer print-to-file)\n"
+                  "(define print-count 0)\n"
+                  "(set! print-to-file (lambda (file)\n"
+                  "  (set! print-count (+ print-count 1))\n"
+                  (format "  (if (= print-count %d) (error \"Injected printer failure\")\n" failed-print)
+                  "      (original-printer file))))\n"))
+        (let* ((org-texmacs--worker-scheme-file script)
+               (document (org-texmacs--document-create :body '(document "Text")))
+               (session (org-texmacs-session-open)))
+          (unwind-protect
+              (progn
+                (org-texmacs-session-set-document session document)
+                (let ((state (org-texmacs--session-read-document session))
+                      (process org-texmacs--worker-process))
+                  (should-error (org-texmacs-document-pdf document) :type 'org-texmacs-rendering-error)
+                  (should (org-texmacs--worker-live-p))
+                  (should-not (directory-files org-texmacs--worker-directory nil "\\`render-.*\\.pdf\\'"))
+                  (should (equal state (org-texmacs--session-read-document session)))
+                  (should (string-prefix-p "%PDF-" (org-texmacs-document-pdf document)))
+                  (should (eq process org-texmacs--worker-process))))
+            (org-texmacs-session-close session)))))))
 
 (ert-deftest org-texmacs-pdf-cleanup-failure-stops-worker ()
   (org-texmacs-test--with-worker

@@ -1080,8 +1080,10 @@ or =export.pdf=.  Interactive calls supply no bibliography snapshots.
 #+end_src
 
 The headless worker installs the structured document directly in a temporary
-native buffer, performs three synchronous native buffer updates and uses the
-native PDF printer.  It does not serialize and reparse a =.tm= intermediary.
+native buffer and performs three synchronous native buffer updates.  A first
+native PDF print establishes typeset reference bindings; three further updates
+resolve their uses before the final print to the same temporary file.
+It does not serialize and reparse a =.tm= intermediary.
 An existing public session remains unchanged.  The temporary buffer and PDF
 are cleaned up; transport failure removes the worker's private directory.
 Font caches follow TeXmacs's normal lifetime.  Rendering errors signal
@@ -1093,8 +1095,13 @@ This first rendering subset rejects explicit =image=, =include=, =extern=,
 use installed TeXmacs resources; custom styles are not sandboxed.  The renderer
 does not run bibliography generation or read caller bibliography files.
 Maintained installed tests inspect the PDF with Poppler, including heading and
-table reference values and literal Unicode text.  Three update passes do not
-guarantee convergence for every native layout.  GUI preview and visual layout
+table reference values and literal Unicode text.  PDF semantic regressions also
+check anonymous/named/repeated footnote markers and unique bodies, citation
+groups/repeated citations, and selected bibliography entries.  They normalize
+extracted whitespace and use short fixtures in isolated native configurations;
+they do not assert PDF bytes, pixel snapshots, coordinates or fixed pagination.
+The bounded update/print sequence does not guarantee convergence for every
+native layout.  GUI preview and visual layout
 coverage remain future work.
 
 ** Native encoding and lifetime

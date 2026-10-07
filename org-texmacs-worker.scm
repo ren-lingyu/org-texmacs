@@ -239,6 +239,11 @@
                   (buffer-set-body buffer (list-ref native 2))
                   ;; Low-level updates avoid deferred generate-all-aux/file APIs.
                   (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer))
+                  ;; Native printing establishes typeset bibliography bindings.
+                  ;; Update references after that pass before final printing.
+                  ;; Both prints use the same owned temporary file.
+                  (print-to-file file)
+                  (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer))
                   (print-to-file file)
                   (set! result (string-load file)))
                 (lambda args (set! failure args))))
