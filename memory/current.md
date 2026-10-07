@@ -2,18 +2,14 @@
 
 ## Objective
 
-The named-footnote node is committed and its diff matches the verified hash.
-The explicit bibliography text-snapshot foundation node is implemented,
-verified, reviewed and staged with user approval. `tmp/commit.md` contains the
-message; ordinary project commit awaits the user. Citation and bibliography
-output resolution is the following node.
-The temporary mirror-source configuration remains unstaged, uncommitted and
-unpushed. Bootstrap discovery remains nonblocking.
+The default citation/plain bibliography node is implemented, verified and staged
+with user approval. `tmp/commit.md` contains the reviewed message; ordinary
+project commit awaits the user. The temporary mirror overlay remains excluded.
 
 ## Current baseline
 
 - Main HEAD observed on 2026-10-07:
-  `a242eb233322a62b3f18dbf1a3ba1278e628e361`.
+  `8e1abf743d37792c43184c84f62dd2f1dceab348`.
 - Local v0.3.0 tag target:
   `8c157d06b7a8793b0bd312e8f0c41612a3640388`.
 - Local v0.3.1 annotated tag resolves to
@@ -38,14 +34,24 @@ unpushed. Bootstrap discovery remains nonblocking.
 
 ## Current decisions
 
-- The seven-file bibliography foundation is staged after exact-path approval,
-  including final reviewed updates. Full local ERT passed 240/240 before the
-  final dependency and admission fixes; final focused ERT passed 9/9, and the
-  final Nix check passed compilation, package-lint and installed ERT 240/240
-  (86.61 seconds). `memory/evidence.md` records the staged hash and the minor
-  final docstring clarification. The temporary overlay remains untouched and
-  unstaged. `git-maintenance` reviewed the complete staged diff and wrote
-  `tmp/commit.md`; the staged change is one coherent foundation node.
+- Active citation node now binds explicit document bibliography declarations,
+  resolves default bare ASCII-key groups in a pure footnote-aware plan, and
+  prepares native plain output before public input construction. INFO owns a
+  checked `(prefix keys selected-entries body)` view; pure lowering verifies
+  the view and label set. Generated output retains source-semantic provenance.
+  Native formatting preserves worker prefix/style/default-style state and
+  returns domain errors without stopping healthy transport; invalid payloads
+  stop it. Native Cork text is converted to source-compatible UTF-8 while ASCII
+  notation remains intact. Global bibliography/export processors are not used.
+  Styles, affixes, dependency fields, multiple prints and non-paragraph/inline
+  footnote citation contexts remain explicit errors. Twelve focused tests pass.
+  Full local testing passed 233/233 + 11/11 in disjoint selectors (117.17 and
+  13.21 seconds) after the earlier 120-second timeout. Final Nix passed
+  compilation, package-lint and installed ERT 244/244 (101.89 seconds). Eight
+  explicit files were staged with approval, reviewed and hashed; the temporary
+  overlay remains untouched. `tmp/commit.md` is the reviewed message.
+- Foundation commit `8e1abf7` matches its verified seven-file diff exactly.
+  Its recorded verification and constraints remain in evidence/project memory.
 - Citations/bibliography design review established a usable low-level native
   path from explicit BibTeX text to `bib-entry` trees to `bib-list`, without
   bibliography files/database APIs. Native parsing recovers malformed input,
@@ -257,22 +263,15 @@ unpushed. Bootstrap discovery remains nonblocking.
 
 ## Next actions
 
-1. Await the user's ordinary project commit of the seven-file foundation;
-   reviewed message is `tmp/commit.md`. Verify its diff against evidence's hash
-   before marking it committed. Named-footnote commit `a242eb2` already matches
-   the previously verified four-file hash exactly. Keep the temporary overlay
-   out of project commits and pushes.
-2. Then implement the next bounded DOC-01 semantic node using these owned
-   bibliography entries. Bind source declarations to explicit identities,
-   resolve citation keys with footnote-aware first-use ordering, and prepare
-   default native citation groups / plain bibliography output without global
-   bibliography queries. Formatting should happen in preparation and preserve
-   native source notation; pure lowering must not call the worker. Isolate
-   native style/prefix state and labels, and explicitly decide/reject crossref,
-   styles, affixes and print options outside the initial subset. User authorized
-   related installed Org/TeXmacs source reads, not user bibliography data.
-   File searches, tilde/remote resources, broader URL escaping and cross-file
-   IDs remain later/unresolved boundaries.
+1. Await the user's ordinary project commit of the eight-file citation/plain
+   bibliography node. Verify its diff against evidence's hash before marking
+   it committed. Keep the temporary overlay out of commits and pushes.
+2. Review the next adopted DOC-01 general-reference boundary, including named
+   element targets/captions and their native reference semantics. Do not invent
+   numbering or auto-adopt advanced citation variants. DOC-01 remains active;
+   fuller Org coverage is not a prerequisite for later CONSUMER-01 work.
+   Citation styles/affixes, crossref dependencies, global bibliography/export
+   configuration, broader resources and cross-file IDs retain explicit bounds.
 3. When a later fresh Codex session starts without user-supplied `AGENTS.md`,
    check whether it discovers the root bootstrap and project skill, then
    recovers active GAW memory without the historical archive. Mark this

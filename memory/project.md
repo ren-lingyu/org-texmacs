@@ -61,7 +61,8 @@ buffer or start a worker.
   such as `<alpha>` remains literal.
 - STM leaves use TeXmacs source semantics. Native notation retains native
   meaning; literal angle brackets must be represented by STM source notation.
-- Body-relative STM paths retain provenance until native encoding is complete.
+- Body-relative source-semantic paths retain authored STM and generated native
+  bibliography provenance until encoding is complete.
 - style names and initial keys use identifier semantics. Structured initial
   values use TeXmacs source semantics.
 
@@ -189,8 +190,8 @@ mirror-source configuration. The overlay is not part of the project change.
 
 ## DOC-01 explicit bibliography snapshot foundation
 
-This verified and staged foundation awaits the user's commit; it precedes
-citation/bibliography output support.
+Foundation commit `8e1abf743d37792c43184c84f62dd2f1dceab348` matches the verified diff.
+Citation/bibliography output is the active extension.
 
 - Buffer preparation and both conversion wrappers accept an optional alist of
   path-to-BibTeX-text source snapshots. Paths are identities, expanded once
@@ -213,10 +214,35 @@ citation/bibliography output support.
   invalidate preparation across
   worker waits. Native type/key/field signatures must match local validation;
   inconsistent payloads stop the worker as protocol failures.
-- Bibliography data is not yet emitted or retained in document results.
-  Citation and BIBLIOGRAPHY/PRINT_BIBLIOGRAPHY keyword lowering still fail
-  explicitly. The following semantic node will bind declarations and references
-  to these owned entries and use footnote-aware first-use ordering.
+- Original dependency trees remain in prepared input; document results hold
+  the native formatted output rather than the original entry forest.
+  The following implemented node consumes it for citations and bibliography output.
+
+## DOC-01 default citations and native plain bibliography node
+
+This verified/staged node awaits the user's commit and is not a release claim.
+
+- Preparation captures explicit document BIBLIOGRAPHY identities before pruning,
+  using the fixed source resource base and provided text snapshots. No global
+  bibliography/export processor or file/database lookup is invoked.
+- Pure planning resolves bare default ASCII-key groups; missing/unavailable
+  dependencies and unsupported semantics fail before worker calls. Footnote
+  bodies are visited at first reference; repeated notes do not duplicate entries.
+- One option-free PRINT_BIBLIOGRAPHY is required for citations. Native plain
+  formatting occurs during preparation. The owned INFO view contains prefix,
+  key order, selected entry trees and the source-semantic bib-list body. Pure
+  lowering validates that view and its label set, emitting with-bib/cite groups
+  and the prepared list without workers. Private prefixes avoid static STM labels.
+- Generated bibliography roots join source-semantic provenance in stm-paths.
+  Native Cork text is converted to UTF-8 while ASCII source notation is retained.
+  Native prefix/style/default-style values are restored on success/error.
+  Formatting domain errors preserve the worker; invalid payloads stop it.
+- Styles, nonempty affixes, entry dependency fields (crossref/xdata/related/
+  entryset), print options/multiple locations, and non-paragraph/inline-footnote
+  citation contexts remain unsupported. No automatic heading or source-order
+  numbering is assigned. Native readback is not GUI/typesetting verification.
+- Source identity/text copying now resides in the source layer, so context
+  preparation does not depend on document lowering for declaration capture.
 
 ## Worker and session
 

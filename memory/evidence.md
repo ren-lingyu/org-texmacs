@@ -12,6 +12,38 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
+## Default citation/plain bibliography node evidence
+
+- Foundation commit `8e1abf743d37792c43184c84f62dd2f1dceab348` exactly matches
+  the recorded seven-file SHA-256, checked on 2026-10-07.
+- Four new maintained cases cover preflight rejection; footnote-aware ordering;
+  stale prefix/key/entry views; formatting waits, bad payloads and domain-error
+  worker preservation; multiple keys/static STM label conflicts; prepared input
+  after source disposal; and Cafe-with-accent, Chinese and literal-angle native
+  output/readback. Twelve citation/bibliography focused tests passed.
+- The first complete local ERT hit timeout 120s around test 230/244, with no
+  observed failed tests. Disjoint selectors `(not "^org-texmacs-test-worker-")`
+  and `"^org-texmacs-test-worker-"` passed 233/233 (117.17s) and 11/11 (13.21s),
+  both exit 0, covering all 244 local cases without longer command timeouts.
+- Final Nix checking passed, exit 0, including compilation, package-lint and
+  installed ERT 244/244 in 101.89s. Environment: local emacs-twist Emacs 31.1 /
+  Org 9.8-pre and TeXmacs 2.1.5; Nix package verification uses the declared inputs.
+  The temporary, local-only remote USTC mirror overlay remains unchanged at
+  `1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54`.
+  Original GNU ELPA availability is not established.
+- Native integration initially rejected a use-modules form inside a function:
+  TeXmacs requires it at top level. Bib utility import is now top-level; the
+  plain style is provided lazily and its dynamic prefix/style/default state is
+  restored. The temporary debug worker copy was regenerable and its diagnosis
+  is fully represented here and in maintained coverage; no new necessary raw
+  artifact qualified for archiving. Only that task-created copy was removed.
+- Exact approved staged eight-file diff on the foundation baseline has SHA-256
+  `8dd996137ed791117e83d683d404950f3dc475218381df0441291b388e768bee` for
+  `git diff HEAD -- README.org org-texmacs-context.el org-texmacs-document.el org-texmacs-input.el org-texmacs-source.el org-texmacs-worker.scm org-texmacs.el tests/ert/ert.el`.
+  Complete staged review and git diff --check passed. No implementation changes
+  remain unstaged; tmp/commit.md contains the reviewed message. Project commit
+  remains pending. GUI bibliography/citation values and typesetting are unverified.
+
 ## Bibliography snapshot foundation evidence
 
 - The user selected explicit path-to-BibTeX-text snapshots for the first
@@ -68,7 +100,7 @@
   `git diff --check` passed. The unchanged remote USTC mirror overlay remains
   local and excluded, with hash
   `1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54`.
-  GNU ELPA availability is still unverified. Project commit remains pending.
+  GNU ELPA availability is still unverified. Commit `8e1abf743d37792c43184c84f62dd2f1dceab348` was compared with its baseline and matches the seven-file hash exactly.
 - Semantic references: https://orgmode.org/manual/Citations.html,
   https://orgmode.org/manual/Bibliography-printing.html, and
   https://www.texmacs.org/tmdoc/main/styles/std/std-automatic-bib.en.html.
