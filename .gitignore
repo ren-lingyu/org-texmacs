@@ -9,6 +9,7 @@
 !flake.lock
 
 !org-texmacs.el
+!ox-texmacs.el
 !org-texmacs-*.el
 !org-texmacs-worker.scm
 

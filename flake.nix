@@ -21,6 +21,7 @@
         root = ./.;
         fileset = pkgs.lib.fileset.unions [
           ./org-texmacs.el
+          ./ox-texmacs.el
           ./org-texmacs-core.el
           ./org-texmacs-context.el
           ./org-texmacs-ast.el

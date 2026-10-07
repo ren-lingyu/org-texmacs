@@ -5,7 +5,7 @@ Org TeXmacs provides TeXmacs AST integration for Org documents.  Write
 structured content in official STM/Scheme serialization directly in Org;
 the Org buffer is the source of truth, with no external =.tm= file required.
 
-Version 0.3.1 retains block-level parsing with lazy caching and configurable
+The core provides block-level parsing with lazy caching and configurable
 fragment source discovery with on-demand tree parsing.  It provides an explicit
 prepared-input core, a restricted Org document context, structural body
 lowering, provenance-aware native encoding, and native document sessions that
@@ -17,11 +17,12 @@ plain local file links with captured resource context,
 same-document headline/ID and dedicated-target links, anonymous and named
 footnotes, list/container structures, rich metadata,
 relative headline sectioning, a static filtered TOC, static preformatted
-blocks, basic rectangular tables and TeXmacs islands, as specified below.  It
-does not provide a complete
-TeXmacs file document, preview, export, cross-file reference resolution,
-rendered numbering, fontification, an editing minor mode, or a
-combined Org and TeXmacs document AST.
+blocks, basic rectangular tables and TeXmacs islands, as specified below.
+Independent consumers provide native =.tm= serialization, new-file saving and
+PDF rendering.  The optional =ox-texmacs= frontend connects these consumers to
+Org's export dispatcher.  GUI preview, cross-file reference resolution,
+fontification, an editing minor mode and a combined live Org/TeXmacs AST are
+outside the current support boundary.
 Org's source buffer and live AST remain unchanged.
 
 * Requirements
@@ -38,7 +39,8 @@ Nix checks is for their test driver scripts.
 
 * Loading the package
 ** From a source checkout
-Keep all =org-texmacs*.el= files and =org-texmacs-worker.scm= together in the
+Keep all =org-texmacs*.el= files, =ox-texmacs.el= and
+=org-texmacs-worker.scm= together in the
 checkout directory.  Add that directory to Emacs's =load-path=, replacing
 the example path below:
 
@@ -117,6 +119,7 @@ explicit recipe instead of the local or already-installed declaration:
     (org-texmacs :type git :host github
                  :repo "ren-lingyu/org-texmacs"
                 :files ("org-texmacs*.el"
+                        "ox-texmacs.el"
                         "org-texmacs-worker.scm"))
     :ensure nil
     :demand t)
@@ -1103,6 +1106,47 @@ they do not assert PDF bytes, pixel snapshots, coordinates or fixed pagination.
 The bounded update/print sequence does not guarantee convergence for every
 native layout.  GUI preview and visual layout
 coverage remain future work.
+
+** Org export dispatcher
+Load the optional frontend to register the =texmacs= dispatcher backend:
+
+#+begin_src emacs-lisp
+  (require 'ox-texmacs)
+#+end_src
+
+In Org's =C-c C-e= menu, select =T= for TeXmacs:
+
+| Keys  | Action                                            |
+|-------+---------------------------------------------------|
+| =T T= | Export to a fresh readonly native =.tm= byte buffer |
+| =T t= | Prompt for a new local =.tm= file                   |
+| =T p= | Prompt for a new local PDF file                    |
+
+The corresponding commands are =org-texmacs-export-as-texmacs=,
+=org-texmacs-export-to-texmacs= and =org-texmacs-export-to-texmacs-pdf=.
+They accept Org's standard optional arguments =async subtreep visible-only
+body-only ext-plist=; this first frontend rejects every non-nil argument before
+conversion or file prompts.  It exports a complete, unnarrowed Org buffer
+synchronously and rejects an active region.  File actions capture the source
+before prompting, then reuse the existing source checks and exclusive new-file
+writer.  Existing outputs are never replaced; choose a new path for another export.
+The buffer action displays its result when
+=org-export-show-temporary-export-buffer= is non-nil.
+
+Dispatcher actions use the structured owned-input pipeline directly.  They do
+not run Org's generic string-transcoder pipeline, INCLUDE/macros/Babel or
+generic export hooks.  Loading this module installs a conditional early
+=org-export-before-processing-functions= guard: generic =org-export-as=,
+=org-export-to-buffer= or =org-export-to-file= calls for =texmacs= or its
+derivatives fail explicitly before Org's preprocessing.  The guard is inert
+for unrelated backends.  This is a bounded dispatcher frontend; generic export
+and publishing APIs are not implemented by this backend.
+
+These commands pass no bibliography snapshots and never read =.bib= files.
+Documents needing explicit snapshots can use the existing Lisp source adapters
+with =BIBLIOGRAPHY-SOURCES=.  Output overrides, subtree/region/visible/body-only
+and async semantics remain future design work.  Loading =org-texmacs= alone
+does not register this menu or guard, and no PDF viewer opens.
 
 ** Native encoding and lifetime
 =org-texmacs-session-open= creates an empty native document buffer and returns

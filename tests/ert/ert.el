@@ -14,6 +14,7 @@
   "Whether loading the worker pulled in the document layer.")
 
 (require 'org-texmacs)
+(require 'ox-texmacs)
 
 (defconst org-texmacs-test--readme
   (or (getenv "ORG_TEXMACS_TEST_README")
@@ -5018,6 +5019,159 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
   (should (commandp 'org-texmacs-export-to-buffer))
   (should (commandp 'org-texmacs-export-to-file))
   (should-not (commandp 'org-texmacs-export-from-buffer)))
+
+(ert-deftest org-texmacs-export-backend-registration-and-installation ()
+  (let ((backend (org-export-get-backend 'texmacs)))
+    (should backend)
+    (should (equal (org-export-backend-menu backend)
+                   '(?T "Export to TeXmacs"
+                        ((?T "As TeXmacs buffer" org-texmacs-export-as-texmacs)
+                         (?t "As new .tm file" org-texmacs-export-to-texmacs)
+                         (?p "As new PDF file" org-texmacs-export-to-texmacs-pdf)))))
+    (should (equal (file-name-directory (locate-library "ox-texmacs"))
+                   (file-name-directory (locate-library "org-texmacs")))))
+  (dolist (function '(org-texmacs-export-as-texmacs org-texmacs-export-to-texmacs
+                      org-texmacs-export-to-texmacs-pdf))
+    (should (commandp function))))
+
+(ert-deftest org-texmacs-export-backend-rejects-unsupported-options ()
+  (cl-letf (((symbol-function 'read-file-name)
+             (lambda (&rest _) (ert-fail "Unsupported export prompted")))
+            ((symbol-function 'org-texmacs-export-to-buffer)
+             (lambda (&rest _) (ert-fail "Unsupported export converted")))
+            ((symbol-function 'org-texmacs-export-to-file)
+             (lambda (&rest _) (ert-fail "Unsupported export wrote")))
+            ((symbol-function 'org-texmacs-export-to-pdf)
+             (lambda (&rest _) (ert-fail "Unsupported export rendered"))))
+    (with-temp-buffer
+      (org-mode)
+      (insert "Whole buffer.\n")
+      (dolist (function '(org-texmacs-export-as-texmacs org-texmacs-export-to-texmacs
+                          org-texmacs-export-to-texmacs-pdf))
+        (dotimes (index 5)
+          (let ((arguments (make-list 5 nil)))
+            (setcar (nthcdr index arguments) t)
+            (should-error (apply function arguments) :type 'user-error)))
+        (save-restriction
+          (narrow-to-region 2 (point-max))
+          (should-error (funcall function) :type 'user-error))
+        (let ((transient-mark-mode t))
+          (goto-char (point-min))
+          (push-mark (point-max) nil t)
+          (should-error (funcall function) :type 'user-error)
+          (deactivate-mark))))
+    (with-temp-buffer
+      (should-error (org-texmacs-export-as-texmacs) :type 'user-error))))
+
+(ert-deftest org-texmacs-export-backend-dispatch-and-native-consumers ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "WholeBufferSentinel.\n")
+      (setq buffer-file-name (expand-file-name "source.org" test-directory))
+      (let ((source (current-buffer))
+            (original (buffer-string))
+            (prompt-buffer (generate-new-buffer " *texmacs-prompt-context*"))
+            (org-export-dispatch-last-action nil)
+            (org-export-dispatch-last-position (make-marker))
+            (org-export-show-temporary-export-buffer nil))
+        (unwind-protect
+            (progn
+              (cl-letf (((symbol-function 'display-buffer)
+                         (lambda (&rest _) (ert-fail "Hidden export buffer was displayed"))))
+                (let ((output (org-texmacs-export-as-texmacs)))
+                  (unwind-protect
+                      (with-current-buffer output
+                        (should buffer-read-only)
+                        (should-not (multibyte-string-p (buffer-string)))
+                        (should (string-match-p "WholeBufferSentinel" (buffer-string))))
+                    (kill-buffer output))))
+              (dolist (consumer '((org-texmacs-export-to-texmacs . "tm")
+                                  (org-texmacs-export-to-texmacs-pdf . "pdf")))
+                (let ((file (expand-file-name (concat "new." (cdr consumer)) test-directory)))
+                  (cl-letf (((symbol-function 'org-export--dispatch-ui)
+                             (lambda (&rest _) (list (car consumer))))
+                            ((symbol-function 'read-file-name)
+                             (lambda (_prompt directory _default _mustmatch name &rest _)
+                               (should (eq source (current-buffer)))
+                               (should (equal directory (file-name-as-directory test-directory)))
+                               (should (equal name (concat "source." (cdr consumer))))
+                               (set-buffer prompt-buffer)
+                               file)))
+                    (should (equal file (org-export-dispatch))))
+                  (with-temp-buffer
+                    (set-buffer-multibyte nil)
+                    (insert-file-contents-literally file)
+                    (if (equal (cdr consumer) "pdf")
+                        (should (string-prefix-p "%PDF-" (buffer-string)))
+                      (should (string-prefix-p "<TeXmacs|" (buffer-string)))
+                      (should (string-match-p "WholeBufferSentinel" (buffer-string)))))
+                  (with-current-buffer source
+                    (cl-letf (((symbol-function 'read-file-name) (lambda (&rest _) file)))
+                      (should-error (funcall (car consumer)) :type 'file-already-exists)))))
+              (should (equal original (with-current-buffer source (buffer-string)))))
+          (kill-buffer prompt-buffer))))))
+
+(ert-deftest org-texmacs-export-backend-dispatch-option-rejection ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "Source.\n")
+    (let ((org-export-dispatch-last-action nil)
+          (org-export-dispatch-last-position (make-marker)))
+      (cl-letf (((symbol-function 'read-file-name)
+                 (lambda (&rest _) (ert-fail "Unsupported dispatcher option prompted"))))
+        (dolist (option '(async subtree visible body))
+          (cl-letf (((symbol-function 'org-export--dispatch-ui)
+                     (lambda (&rest _) (list #'org-texmacs-export-to-texmacs option))))
+            (should-error (org-export-dispatch) :type 'user-error)))))))
+
+(ert-deftest org-texmacs-export-backend-buffer-display-error-cleanup ()
+  (with-temp-buffer
+    (org-mode)
+    (let ((output (generate-new-buffer " *texmacs-frontend-failure*"))
+          (existing (generate-new-buffer " *texmacs-frontend-existing*"))
+          (org-export-show-temporary-export-buffer t))
+      (unwind-protect
+          (cl-letf (((symbol-function 'org-texmacs-export-to-buffer) (lambda (&rest _) output))
+                    ((symbol-function 'display-buffer) (lambda (&rest _) (error "Display failure"))))
+            (should-error (org-texmacs-export-as-texmacs))
+            (should-not (buffer-live-p output))
+            (should (buffer-live-p existing)))
+        (when (buffer-live-p output) (kill-buffer output))
+        (kill-buffer existing)))))
+
+(ert-deftest org-texmacs-export-backend-generic-preprocessing-guard ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+INCLUDE: never-read.org\nSource.\n")
+    (let ((original (buffer-string)))
+      (cl-letf (((symbol-function 'org-export-expand-include-keyword)
+                 (lambda (&rest _) (ert-fail "TeXmacs generic export expanded INCLUDE")))
+                ((symbol-function 'org-babel-exp-process-buffer)
+                 (lambda (&rest _) (ert-fail "TeXmacs generic export invoked Babel"))))
+        (should-error (org-export-as 'texmacs) :type 'user-error))
+      (should (equal original (buffer-string)))))
+  (require 'ox-ascii)
+  (with-temp-buffer
+    (org-mode)
+    (insert "UnrelatedBackendSentinel.\n")
+    (should (string-match-p "UnrelatedBackendSentinel" (org-export-as 'ascii nil nil t)))))
+
+(ert-deftest org-texmacs-export-backend-source-wait-before-output ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "Source.\n")
+      (let ((source (current-buffer)) (file (expand-file-name "stale.tm" test-directory)))
+        (cl-letf (((symbol-function 'read-file-name) (lambda (&rest _) file))
+                  ((symbol-function 'org-texmacs-document-serialize)
+                   (lambda (_document)
+                     (with-current-buffer source (insert "Changed"))
+                     (encode-coding-string "<TeXmacs|2.1.5>" 'us-ascii)))
+                  ((symbol-function 'org-texmacs--native-save-bytes)
+                   (lambda (&rest _) (ert-fail "Stale frontend export was written"))))
+          (should-error (org-texmacs-export-to-texmacs) :type 'org-texmacs-document-error))
+        (should-not (file-exists-p file))))))
 
 (defun org-texmacs-test--pdf-text (file)
   "Extract FILE's PDF text and normalize whitespace, without layout assertions."

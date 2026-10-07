@@ -39,9 +39,9 @@
 ;; STM provenance, before native encoding.
 ;; Use `org-texmacs-session-open', `org-texmacs-session-set-document' and
 ;; `org-texmacs-session-close' to manage explicit native document state.
-;; Source stays in Org; no external .tm file is required.  This package does
-;; not provide preview, export, rendered numbering or a combined Org/TeXmacs
-;; document AST.
+;; Source stays in Org; completed documents can be serialized, saved or rendered
+;; as native PDF.  Load optional `ox-texmacs' for bounded Org dispatcher actions.
+;; No GUI preview or combined live Org/TeXmacs document AST is provided.
 ;; Use `org-texmacs-check-setup' to inspect the capabilities required by the
 ;; package without starting TeXmacs.
 
