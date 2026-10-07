@@ -12,6 +12,51 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
+## Named-table/caption semantic evidence
+
+- User-authorized TeXmacs 2.1.5 source reads establish env-float's new-figure
+  table definition, env-base's big-table native counter and caption binding,
+  and caption-detailed/caption-summarized long/short argument semantics.
+  The reference label is placed in the caption argument, after that binding.
+- Installed source SHA-256: env-base.ts
+  `9607eb103d3cf2aaa3ecc43ad2d028c29eb5da4fbb49b3a7591d0a3fa4882223`,
+  env-float.ts
+  `3fe7c48b9a07281860069110204a7a66d0dd1fd9f862ba2c6cb517ae095ed8ce`,
+  std-counter.ts
+  `401d98ab3e1c2f8b4ebd2c9935f2963ec27b9b359d354398a3d18eca717412cf`,
+  under the installed TeXmacs root recorded in earlier evidence.
+- Org 9.8-pre ox.el org-export-get-caption joins long/short caption lines;
+  org-export-resolve-fuzzy-link places names/targets ahead of headline titles.
+  The package retains exact matching and explicit ambiguity instead of an
+  ambient exporter cache. A synthetic parser observation confirms captions
+  are pairs of secondary strings, outside secondary-value-alist. Footnote-like
+  text is literal under Org caption restrictions; citation objects are parsed
+  and are explicitly rejected by this node.
+- Five new maintained ERT cases pass, including ownership after source disposal,
+  long/short captions and local links, uncaptioned described-only anchors,
+  target ambiguity/filtering, metadata preflight, native Unicode/literal/file
+  provenance readback and static STM label avoidance. Initial full local/Nix
+  runs each found eight existing footnote/citation failures caused by treating
+  intrinsic footnote :label as affiliated metadata. The guard was restricted
+  to table keys; all eighteen combined citation/footnote/table focused cases
+  then passed. Final local complete coverage passes disjoint 238/238 + 11/11
+  selectors (98.61s and 12.20s, both exit 0); final Nix checks pass all seven
+  checks, including compilation, package-lint and installed ERT 249/249
+  (87.27s). Environment remains Emacs 31.1 / Org 9.8-pre / TeXmacs 2.1.5.
+- Exact reviewed and approved staged five-file diff on baseline
+  `fe6c435bda7948989f758cea6c9d4146c0d0a5cb` has SHA-256
+  `52de57a9928f1afc4001bb9d902ed56eef40ac8206a33006a0b7fd0893e68c45`
+  for `git diff --cached -- README.org org-texmacs-context.el org-texmacs-document.el org-texmacs-input.el tests/ert/ert.el`.
+  `git diff --cached --check` passes; no implementation remains unstaged.
+  The overlay stays unstaged and unchanged at the hash recorded below.
+  `tmp/commit.md` contains the reviewed node message. Ordinary commit is pending;
+  displayed numbers, caption layout and pagination are unverified.
+- No necessary new raw temporary artifact was created. Source observations are
+  recorded here, and adopted semantics have maintained ERT. The previous commit
+  draft duplicated the now-committed citation message; its replacement is a
+  regenerable draft from the reviewed staged diff. Archive selection requires no new
+  snapshot. No binary, overlay or installed-source copy is added to GAW.
+
 ## Default citation/plain bibliography node evidence
 
 - Foundation commit `8e1abf743d37792c43184c84f62dd2f1dceab348` exactly matches
@@ -41,8 +86,11 @@
   `8dd996137ed791117e83d683d404950f3dc475218381df0441291b388e768bee` for
   `git diff HEAD -- README.org org-texmacs-context.el org-texmacs-document.el org-texmacs-input.el org-texmacs-source.el org-texmacs-worker.scm org-texmacs.el tests/ert/ert.el`.
   Complete staged review and git diff --check passed. No implementation changes
-  remain unstaged; tmp/commit.md contains the reviewed message. Project commit
-  remains pending. GUI bibliography/citation values and typesetting are unverified.
+  remained unstaged at citation review; its former tmp/commit.md was the reviewed
+  message. Project commit
+  `fe6c435bda7948989f758cea6c9d4146c0d0a5cb` was checked on 2026-10-07 and
+  matches this exact diff hash. GUI bibliography/citation values and typesetting
+  are unverified.
 
 ## Bibliography snapshot foundation evidence
 
@@ -162,7 +210,7 @@
 - Local v0.3.1 annotated tag target:
   `880d4e00667907ef66985387b4865ec8d795d48d`.
 - Current main HEAD observed on 2026-10-07:
-  `a242eb233322a62b3f18dbf1a3ba1278e628e361`.
+  `fe6c435bda7948989f758cea6c9d4146c0d0a5cb`.
 
 These are local Git facts. They do not prove remote release state or tag
 signatures.

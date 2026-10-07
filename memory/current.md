@@ -2,14 +2,14 @@
 
 ## Objective
 
-The default citation/plain bibliography node is implemented, verified and staged
-with user approval. `tmp/commit.md` contains the reviewed message; ordinary
-project commit awaits the user. The temporary mirror overlay remains excluded.
+The bounded DOC-01 named-table/caption node is implemented, verified and staged
+with approval. `tmp/commit.md` contains the reviewed message; await the user's
+ordinary project commit. The temporary mirror overlay remains excluded.
 
 ## Current baseline
 
 - Main HEAD observed on 2026-10-07:
-  `8e1abf743d37792c43184c84f62dd2f1dceab348`.
+  `fe6c435bda7948989f758cea6c9d4146c0d0a5cb`.
 - Local v0.3.0 tag target:
   `8c157d06b7a8793b0bd312e8f0c41612a3640388`.
 - Local v0.3.1 annotated tag resolves to
@@ -34,7 +34,32 @@ project commit awaits the user. The temporary mirror overlay remains excluded.
 
 ## Current decisions
 
-- Active citation node now binds explicit document bibliography declarations,
+- Commit `fe6c435` matches the previously verified eight-file citation diff
+  exactly. Only the user's temporary overlay is dirty at node start. With
+  explicitly authorized installed TeXmacs reads, env-base/env-float confirm
+  native big-table counters and caption-detailed long/short captions. This
+  bounded node targets named/captioned tables; uncaptioned named tables require
+  described links rather than an invented numeric reference. Other named
+  elements, figures/resources and advanced table semantics remain separate.
+- Named/captioned tables are implemented in the worktree. Five focused ERT
+  cases pass, including caption ownership after source disposal, long/short
+  multiline captions, described-only uncaptioned anchors, ambiguity/filtering,
+  unsupported metadata preflight, static label collisions and native literal/
+  file-path provenance readback. Caption nodes are now reachable for mapping
+  retention. Full disjoint ERT passes 238/238 + 11/11 (98.61s and 12.20s), and
+  Nix's seven checks pass including installed ERT 249/249 (87.27s), compilation
+  and package-lint under the unchanged local-only mirror overlay. All five
+  node files are approved/staged, with no implementation edits left unstaged;
+  reviewed diff hash is recorded in evidence. `tmp/commit.md` is the new message.
+  No new temporary probe file was needed; installed-source observations and maintained regressions
+  hold the semantic evidence.
+- First full local/Nix runs caught eight existing footnote/citation regressions:
+  the widened affiliated-keyword guard accidentally rejected intrinsic footnote
+  `:label`. That guard now checks table-only affiliated keys only on tables.
+  All 18 focused citation/named-footnote/named-table cases pass after the fix;
+  final complete local and Nix runs pass as recorded above.
+
+- The committed citation node binds explicit document bibliography declarations,
   resolves default bare ASCII-key groups in a pure footnote-aware plan, and
   prepares native plain output before public input construction. INFO owns a
   checked `(prefix keys selected-entries body)` view; pure lowering verifies
@@ -48,8 +73,8 @@ project commit awaits the user. The temporary mirror overlay remains excluded.
   Full local testing passed 233/233 + 11/11 in disjoint selectors (117.17 and
   13.21 seconds) after the earlier 120-second timeout. Final Nix passed
   compilation, package-lint and installed ERT 244/244 (101.89 seconds). Eight
-  explicit files were staged with approval, reviewed and hashed; the temporary
-  overlay remains untouched. `tmp/commit.md` is the reviewed message.
+  explicit files were staged with approval, reviewed and hashed, then committed
+  as `fe6c435`, matching that hash; the temporary overlay remains untouched.
 - Foundation commit `8e1abf7` matches its verified seven-file diff exactly.
   Its recorded verification and constraints remain in evidence/project memory.
 - Citations/bibliography design review established a usable low-level native
@@ -58,12 +83,10 @@ project commit awaits the user. The temporary mirror overlay remains excluded.
   so strict validation is required before claiming acceptance. Citation key
   ordering must traverse definition bodies at first footnote use, not physical
   definition order. The user selected explicit path-to-BibTeX-text snapshots.
-  Implement the dependency foundation first: optional source alist on buffer
-  preparation/conversion adapters, parsed path-to-document trees owned in input,
-  fixed local validation before worker calls, signature checks on native results,
-  and dependency mutation checks across waits. Keep citation/keyword lowering
-  explicitly unsupported until the next semantic node. Only related installed
-  source reads are authorized, not user bibliography data access.
+  The committed foundation owns explicit source trees, validates local syntax
+  before worker calls, checks native signatures and rechecks dependencies across
+  waits. Default citation/keyword lowering is now implemented in `fe6c435`.
+  Only related installed source reads are authorized, not user bibliography data access.
 - Named footnotes now resolve within the owned AST snapshot. Separate and
   labeled inline definitions are collected before filtering; required removed
   definitions are reattached to the prepared AST without buffer fallback.
@@ -263,12 +286,12 @@ project commit awaits the user. The temporary mirror overlay remains excluded.
 
 ## Next actions
 
-1. Await the user's ordinary project commit of the eight-file citation/plain
-   bibliography node. Verify its diff against evidence's hash before marking
-   it committed. Keep the temporary overlay out of commits and pushes.
-2. Review the next adopted DOC-01 general-reference boundary, including named
-   element targets/captions and their native reference semantics. Do not invent
-   numbering or auto-adopt advanced citation variants. DOC-01 remains active;
+1. Await the user's ordinary project commit of the five-file named/captioned
+   table node. Verify its diff against evidence's hash before marking committed.
+   Keep the temporary overlay out of commits and pushes.
+2. Review remaining DOC-01 general-reference/resource boundaries and readiness
+   for CONSUMER-01; tables now cover one native numbered-element reference path.
+   Do not invent numbering or auto-adopt advanced citation variants. DOC-01 remains active;
    fuller Org coverage is not a prerequisite for later CONSUMER-01 work.
    Citation styles/affixes, crossref dependencies, global bibliography/export
    configuration, broader resources and cross-file IDs retain explicit bounds.

@@ -73,10 +73,13 @@ configuration. The named-footnote node, committed as `a242eb2`, resolves inline/
 definitions and repeated references within one owned snapshot; see project
 and current memory for its bounded contract and validation state. The next
 DOC-01 bibliography foundation is committed as `8e1abf7`. Default bare citation
-resolution and native plain bibliography output are now verified and staged;
-see project/current memory for the bounded contract. Review general-reference
-and named-element/caption semantics as the next adopted boundary, using native
-semantic evidence before selecting a mapping. Keep broader citation variants,
+resolution and native plain bibliography output are committed as `fe6c435`;
+see project/current memory for the bounded contract. The named/captioned basic
+table node is verified and staged: owned long/short captions, native big-table
+reference labels, described-only uncaptioned anchors and metadata preflight.
+Review remaining general-reference/resource scope and CONSUMER-01 readiness
+after the user's commit, using native evidence before mapping other named
+elements. Keep broader citation variants,
 entry dependencies, global processors and resource behavior separately scoped.
 
 Remaining **unresolved-design** boundaries include file search options,

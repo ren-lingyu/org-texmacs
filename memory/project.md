@@ -191,7 +191,7 @@ mirror-source configuration. The overlay is not part of the project change.
 ## DOC-01 explicit bibliography snapshot foundation
 
 Foundation commit `8e1abf743d37792c43184c84f62dd2f1dceab348` matches the verified diff.
-Citation/bibliography output is the active extension.
+Its default citation/bibliography consumer is committed below.
 
 - Buffer preparation and both conversion wrappers accept an optional alist of
   path-to-BibTeX-text source snapshots. Paths are identities, expanded once
@@ -220,7 +220,8 @@ Citation/bibliography output is the active extension.
 
 ## DOC-01 default citations and native plain bibliography node
 
-This verified/staged node awaits the user's commit and is not a release claim.
+Committed as `fe6c435bda7948989f758cea6c9d4146c0d0a5cb`, matching the verified
+eight-file diff. This is not a release claim.
 
 - Preparation captures explicit document BIBLIOGRAPHY identities before pruning,
   using the fixed source resource base and provided text snapshots. No global
@@ -243,6 +244,32 @@ This verified/staged node awaits the user's commit and is not a release claim.
   numbering is assigned. Native readback is not GUI/typesetting verification.
 - Source identity/text copying now resides in the source layer, so context
   preparation does not depend on document lowering for declaration capture.
+
+## DOC-01 named/captioned basic tables (worktree node)
+
+- Fuzzy resolution includes visible basic table NAME targets before headline
+  titles. Referenced name/target collisions remain explicit ambiguities.
+- Preparation records affiliated keyword names from the private source snapshot;
+  only table NAME/CAPTION are admitted. Repeated names, empty captions and
+  other affiliated keywords fail before island requests.
+- Caption long/short pairs are copied as owned secondary Org nodes, with parent
+  links rebuilt and mappings retained through filtering. Pure lowering reads
+  neither source buffers nor installed styles.
+- Captioned tables use native big-table and optional caption-detailed. Private
+  reference labels sit inside the caption after native counter binding.
+  Uncaptioned named tables permit described hlinks only, with an invisible
+  surround anchor; unused names do not change the table tree.
+- Rich captions support the existing inline text/markup and links, without STM
+  discovery. Citations and parsed footnote objects are unsupported there; Org's
+  caption grammar leaves footnote-looking text as literal text. Generated
+  caption leaves retain ordinary encoding and compose typed file paths.
+- Five focused tests plus the eighteen-case citation/footnote/table regression
+  selector pass. Full local ERT passes 238/238 + 11/11; Nix compilation,
+  package-lint and installed ERT 249/249 pass with the unchanged temporary
+  mirror configuration. Five approved files are staged and await commit.
+  Displayed numbers, caption layout and pagination remain unverified;
+  figures, other named elements and
+  advanced table semantics are outside this node.
 
 ## Worker and session
 
