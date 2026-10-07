@@ -524,7 +524,7 @@ parses STM islands with the shared worker, and returns a document result:
 | =org-texmacs-document-body=      | Text stree rooted at =document=, before native encoding          |
 | =org-texmacs-document-style=     | Copied list of TeXmacs style identifiers                         |
 | =org-texmacs-document-initial=   | Copied alist of environment identifiers to source-semantic stree |
-| =org-texmacs-document-stm-paths= | Paths to complete STM island roots in the body only               |
+| =org-texmacs-document-stm-paths= | Paths to source-semantic roots (STM and prepared bibliography)    |
 | =org-texmacs-document-source-file= | Optional copied absolute source file name                      |
 | =org-texmacs-document-resource-base= | Optional copied base for source-relative resources         |
 | =org-texmacs-document-file-paths= | Paths to Org file-link target leaves in the body                |
@@ -798,11 +798,38 @@ Native parsing must preserve the validated type/key/field-name structure.
 Pure callers may supply already parsed trees with =:bibliography= to
 =org-texmacs-input-create=.  The constructor owns separate copies and rejects
 duplicate source identities or citation keys across the snapshot.  It does not
-parse text, read files or start a worker.  This node establishes the dependency
-snapshot; citations and =BIBLIOGRAPHY=/=PRINT_BIBLIOGRAPHY= keywords still fail
-explicitly, and the parsed bibliography is not emitted by current lowering.
+parse text, read files or start a worker.  The parsed bibliography supplies
+document-wide citation resolution.  Preparation captures each =BIBLIOGRAPHY=
+declaration's identity, requiring matching explicit source data; it opens no
+bibliography files and does not consult global bibliography databases.
 The two buffer conversion wrappers accept the same optional text-snapshot
 argument, using the preparation checks above.
+
+Bare default citations such as =[cite:@one; @two]= are supported directly in
+paragraphs and inline footnote bodies.  Citation keys use ASCII letters, digits,
+hyphen, underscore, period, colon or plus.  Each group becomes =with-bib= around
+=cite= with a private prefix.  Named-footnote bodies participate at first use;
+repeated footnote references do not duplicate bibliography entries.
+Missing keys or unavailable declared sources fail before worker requests.
+
+Exactly one option-free =#+print_bibliography:= is required for citations.
+Preparation formats the selected entry trees with TeXmacs's native =plain=
+style; lowering places the resulting =bib-list= at that keyword.  Plain style
+controls sorting and displayed labels; the package does not assign citation
+numbers by source order or add a bibliography heading.  Generated labels avoid
+static STM labels.  The source-semantic output root retains encoding provenance.
+Styles, nonempty citation affixes, dependency fields (=crossref=, =xdata=,
+=related=, =entryset=), print options, multiple print locations and citations in
+headings, emphasis, table cells or link descriptions are unsupported.  Org's
+=CITE_EXPORT= processors and global bibliography configuration are not invoked;
+this constructor uses explicit document declarations and native plain policy.
+
+Pure manual inputs need fixed INFO =:texmacs-bibliography-declarations= mapping
+raw keyword values to absolute identities, and =:texmacs-bibliography-output=
+containing =(PREFIX KEYS SELECTED-ENTRIES BODY)=.  These are owned prepared
+context, normally produced by =org-texmacs-prepare-buffer=.  Lowering checks the
+prefix, key order and entry snapshot rather than formatting or reading data.
+Native tree readback does not establish GUI citation display or typesetting.
 
 ** Headline metadata and presentation
 Document conversion snapshots these standard Org options from the source

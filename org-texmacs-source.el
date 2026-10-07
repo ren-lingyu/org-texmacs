@@ -42,6 +42,26 @@ abbreviation once now; do not defer it to pure lowering or a consumer."
       (org-texmacs--source-copy-path
        (if (string-prefix-p "~" path) (expand-file-name path) path)))))
 
+(defun org-texmacs--bibliography-source-snapshot (sources resource-base)
+  "Copy explicit path-to-text SOURCES using captured RESOURCE-BASE.
+Resolve source identities without opening files or running file handlers."
+  (unless (proper-list-p sources)
+    (signal 'org-texmacs-document-error '("Expected bibliography source text alist")))
+  (let ((file-name-handler-alist nil) paths result)
+    (dolist (entry sources)
+      (unless (and (consp entry) (stringp (car entry)) (> (length (car entry)) 0)
+                   (not (string-match-p "\0" (car entry))) (stringp (cdr entry)))
+        (signal 'org-texmacs-document-error '("Invalid bibliography source text")))
+      (unless (or (file-name-absolute-p (car entry)) resource-base)
+        (signal 'org-texmacs-document-error '("Relative bibliography identity needs resource base")))
+      (let ((path (org-texmacs--source-copy-path
+                   (expand-file-name (car entry) resource-base))))
+        (when (member path paths)
+          (signal 'org-texmacs-document-error '("Duplicate bibliography source identity")))
+        (push path paths)
+        (push (cons path (substring-no-properties (cdr entry))) result)))
+    (nreverse result)))
+
 (defun org-texmacs--block-p (node)
   "Return non-nil when Org NODE is a TeXmacs special block."
   (and (consp node)

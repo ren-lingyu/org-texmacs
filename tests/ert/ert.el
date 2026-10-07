@@ -191,8 +191,8 @@
                           :type 'org-texmacs-document-error)))))))
 
 (ert-deftest org-texmacs-bibliography-preparation-retains-lowering-boundary ()
-  (dolist (source '("[cite:@key]\n" "#+bibliography: refs.bib\n"
-                    "#+print_bibliography:\n"))
+  (dolist (source '("[cite:@key]\n" "#+bibliography: missing.bib\n"
+                    "#+print_bibliography: :unsupported t\n"))
     (with-temp-buffer
       (org-mode)
       (insert source)
@@ -236,6 +236,123 @@
         (should (equal (cdr (nth 1 (org-texmacs-input-bibliography input))) '(document)))
         (should (equal (org-texmacs-document-body (org-texmacs-document input))
                        '(document (concat "Text "))))))))
+
+(ert-deftest org-texmacs-citations-preflight-boundaries ()
+  (dolist (source '("#+bibliography: refs.bib\n[cite:@missing]\n#+print_bibliography:\n"
+                    "#+bibliography: refs.bib\n[cite/author:@key]\n#+print_bibliography:\n"
+                    "#+bibliography: refs.bib\n[cite:see @key]\n#+print_bibliography:\n"
+                    "#+bibliography: refs.bib\n[cite:@key]\n"
+                    "#+bibliography: refs.bib\n[cite:@key]\n#+print_bibliography:\n#+print_bibliography:\n"
+                    "#+bibliography: refs.bib\n* Title[cite:@key]\n#+print_bibliography:\n"))
+    (with-temp-buffer
+      (org-mode) (insert source)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Invalid citation started worker"))))
+        (should-error (org-texmacs-prepare-buffer (current-buffer)
+                                                 '(("refs.bib" . "@book{key}")))
+                      :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-citations-footnote-order-and-stale-output ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+bibliography: refs.bib\nA[fn:n] [cite:@second] [fn:n].\n"
+            "#+print_bibliography:\n\n[fn:n] [cite:@first]\n")
+    (let (seen input)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _)
+                   '(document (bib-entry "book" "first" (document))
+                              (bib-entry "book" "second" (document)))))
+                ((symbol-function 'org-texmacs--bibliography-format)
+                 (lambda (plan)
+                   (setq seen (plist-get plan :keys))
+                   (list (plist-get plan :prefix) seen (plist-get plan :entries)
+                         '(bib-list "2" (document
+                                         (concat (label "org-texmacs-bib-1-first") "Prepared")
+                                         (concat (label "org-texmacs-bib-1-second") "Prepared")))))))
+        (setq input (org-texmacs-prepare-buffer
+                     (current-buffer) '(("refs.bib" . "@book{first}\n@book{second}")))))
+      (should (equal seen '("first" "second")))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Pure lowering started worker"))))
+        (let ((doc (org-texmacs-document input)))
+          (should (equal (org-texmacs-document-stm-paths doc) '((1))))))
+      (let* ((bad-info (copy-tree (org-texmacs-input-info input)))
+             (bad-input nil))
+        (setcar (cadr (plist-get bad-info :texmacs-bibliography-output)) "stale")
+        (setq bad-input (org-texmacs-input-create (org-texmacs-input-ast input) bad-info
+                                                :bibliography (org-texmacs-input-bibliography input)))
+        (should-error (org-texmacs-document bad-input) :type 'org-texmacs-document-error))
+      (let ((changed (copy-tree (org-texmacs-input-bibliography input))))
+        (setcar (cdr (cadr (cdar changed))) "misc")
+        (should-error (org-texmacs-document
+                       (org-texmacs-input-create (org-texmacs-input-ast input)
+                                                (org-texmacs-input-info input) :bibliography changed))
+                      :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-citations-formatting-wait-and-payload-errors ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+bibliography: refs.bib\n[cite:@key]\n#+print_bibliography:\n")
+    (let* ((text (copy-sequence "@book{key}")) (sources (list (cons "refs.bib" text))))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) '(document (bib-entry "book" "key" (document)))))
+                ((symbol-function 'org-texmacs--bibliography-format)
+                 (lambda (_plan) (aset text 0 ?X) nil)))
+        (should-error (org-texmacs-prepare-buffer (current-buffer) sources)
+                      :type 'org-texmacs-document-error)))
+    (let (stopped)
+      (cl-letf (((symbol-function 'org-texmacs--worker-call)
+                 (lambda (_request) '(ok 1 (bib-list "1" (document (label "wrong"))))))
+                ((symbol-function 'org-texmacs--worker-stop) (lambda () (setq stopped t))))
+        (should-error (org-texmacs--bibliography-format
+                       '(:prefix "p" :keys ("key") :entries (document)))
+                      :type 'org-texmacs-worker-error)
+        (should stopped)))
+    (let (stopped)
+      (cl-letf (((symbol-function 'org-texmacs--worker-call)
+                 (lambda (_request) '(error 1 "Unsupported formatter data")))
+                ((symbol-function 'org-texmacs--worker-stop) (lambda () (setq stopped t))))
+        (should-error (org-texmacs--bibliography-format '(:prefix "p" :keys nil :entries (document)))
+                      :type 'org-texmacs-document-error)
+        (should-not stopped)))))
+
+(ert-deftest org-texmacs-citations-native-output-and-ownership ()
+  (org-texmacs-test--with-worker
+    (let (input)
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+bibliography: refs.bib\nA[cite:@key].\n#+print_bibliography:\n")
+        (setq input (org-texmacs-prepare-buffer
+                     (current-buffer)
+                     '(("refs.bib" . "@book{key, title={Café 中 <alpha>}, author={Ada Example}, year=2026, publisher={Example}}")))))
+      (let* ((doc (org-texmacs-document input))
+             (expected '(document
+                         (concat "A" (with-bib "org-texmacs-bib-1" (cite "key")) ". ")
+                         (bib-list "1" (document
+                                        (concat (bibitem* "1") (label "org-texmacs-bib-1-key")
+                                                "Ada Example. " (newblock)
+                                                (with "font-shape" "italic" "Café <#4E2D> <less>alpha<gtr>")
+                                                ". " (newblock) "Example, 2026." (newblock))))))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (should (equal (org-texmacs-document-body doc) expected))
+              (should (equal (org-texmacs-document-stm-paths doc) '((1))))
+              (org-texmacs-session-set-document session doc)
+              (should (equal (org-texmacs--session-read session)
+                             (org-texmacs-test--native-hex expected)))
+              (should (equal (org-texmacs--worker-request "(math \"x\")") '(math "x"))))
+          (org-texmacs-session-close session)))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+bibliography: refs.bib\nA[cite:@a; @b]\n"
+                "#+begin_texmacs\n(label \"org-texmacs-bib-1-a\")\n#+end_texmacs\n"
+                "#+print_bibliography:\n")
+        (let* ((doc (org-texmacs-document-from-buffer
+                     (current-buffer) '(("refs.bib" . "@book{a, title={A}}\n@book{b, title={B}}"))))
+               (body (org-texmacs-document-body doc)))
+          (should (equal (nth 2 (cadr body)) '(with-bib "org-texmacs-bib-2" (cite "a" "b"))))
+          (should (equal (org-texmacs-document-stm-paths doc) '((1) (2)))))))))
 
 (ert-deftest org-texmacs-test-input-ownership-and-mapping ()
   (let* ((leaf (copy-sequence "island"))

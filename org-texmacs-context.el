@@ -12,6 +12,7 @@
 ;;; Code:
 
 (require 'org-texmacs-core)
+(require 'org-texmacs-source)
 (require 'ox)
 
 (defconst org-texmacs--context-option-alist
@@ -373,6 +374,14 @@ worker requests whose identity keys remain reachable after filtering."
                   (org-texmacs--context-merge-options ast islands base-info))
                  :texmacs-metadata-present metadata)
                 :parse-tree ast))
+         (bibliography-declarations
+          (mapcar (lambda (raw)
+                    (cons raw (caar (org-texmacs--bibliography-source-snapshot
+                                     (list (cons (org-strip-quotes (string-trim raw)) ""))
+                                     (plist-get base-info :texmacs-resource-base)))))
+                  (cdr (assoc "BIBLIOGRAPHY"
+                              (org-texmacs--context-keywords ast islands '("BIBLIOGRAPHY"))))))
+         (_ (setq info (plist-put info :texmacs-bibliography-declarations bibliography-declarations)))
          (definitions (org-texmacs--context-footnote-definitions ast islands))
          (_ (org-texmacs--context-prune ast islands info t))
          (_ (org-texmacs--context-preserve-footnotes ast islands definitions info))

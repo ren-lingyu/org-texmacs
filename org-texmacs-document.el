@@ -116,7 +116,8 @@ so later redefinition affects only new calls."
   "Read-only structural result, before native encoding.
 BODY is a text stree; STYLE is a list of TeXmacs style identifiers; INITIAL
 is an alist of environment identifiers to source-semantic text strees.
-STM-PATHS locate STM island roots only within BODY.  Each path contains
+STM-PATHS locate source-semantic roots within BODY, including native bibliography
+output and authored STM islands.  Each path contains
 zero-based child indices, excluding tags.  SOURCE-FILE and RESOURCE-BASE
 are copied source identity and resource-base strings, or nil.
 FILE-PATHS locate Org file-link target string leaves in BODY, separate from
@@ -333,6 +334,82 @@ read a source buffer, query an ID database or invoke an export consumer."
                       (nreverse resolved))
        :labels labels :files (nreverse files) :footnotes (nreverse footnotes)))))
 
+(defun org-texmacs--bibliography-plan (ast islands info bibliography resolution static-labels)
+  "Resolve bare citations and one bibliography print from owned structures.
+Visit named footnote bodies at first use.  Never query buffers or files."
+  (let ((declarations (plist-get info :texmacs-bibliography-declarations))
+        entries citations keys prints visited)
+    (dolist (source bibliography)
+      (when (member (car source) (mapcar #'cdr declarations))
+        (dolist (entry (cdr (cdr source)))
+          (when (assoc (nth 2 entry) entries)
+            (signal 'org-texmacs-document-error '("Ambiguous bibliography key")))
+          (push (cons (nth 2 entry) entry) entries))))
+    (dolist (declaration declarations)
+      (unless (assoc (cdr declaration) bibliography)
+        (signal 'org-texmacs-document-error '("Bibliography declaration needs explicit source data"))))
+    (cl-labels
+        ((affix-empty (value)
+           (and (proper-list-p value)
+                (cl-every (lambda (part) (and (stringp part) (string-blank-p part))) value)))
+         (walk (node)
+           (when (and (consp node) (not (assq node islands)))
+             (pcase (org-element-type node)
+               ('footnote-definition nil)
+               ('footnote-reference
+                (let ((note (cdr (assq node (org-texmacs-resolution-footnotes resolution)))))
+                  (if note
+                      (unless (memq note visited)
+                        (push note visited)
+                        (mapc #'walk (org-element-contents (nth 1 note))))
+                    (mapc #'walk (org-element-contents node)))))
+               ('citation
+                (unless (and (null (org-element-property :style node))
+                             (affix-empty (org-element-property :prefix node))
+                             (affix-empty (org-element-property :suffix node))
+                             (org-element-contents node))
+                  (org-texmacs--document-fail node "Unsupported citation style or affixes"))
+                (let (group)
+                  (dolist (reference (org-element-contents node))
+                    (let ((key (org-element-property :key reference)))
+                      (unless (and (eq (org-element-type reference) 'citation-reference)
+                                   (stringp key) (string-match-p "\\`[-A-Za-z0-9_:.+]+\\'" key)
+                                   (affix-empty (org-element-property :prefix reference))
+                                   (affix-empty (org-element-property :suffix reference)))
+                        (org-texmacs--document-fail node "Unsupported citation reference"))
+                      (unless (assoc key entries)
+                        (org-texmacs--document-fail node "Unresolved citation key"))
+                      (unless (member key keys) (setq keys (append keys (list key))))
+                      (push key group)))
+                  (push (cons node (nreverse group)) citations)))
+               ('keyword
+                (pcase (upcase (org-element-property :key node))
+                  ("BIBLIOGRAPHY"
+                   (unless (assoc (org-element-property :value node) declarations)
+                     (org-texmacs--document-fail node "Unprepared bibliography declaration")))
+                  ("PRINT_BIBLIOGRAPHY"
+                   (unless (string-blank-p (or (org-element-property :value node) ""))
+                     (org-texmacs--document-fail node "Bibliography print options are unsupported"))
+                   (push node prints))))
+               (_
+                (when (eq (org-element-type node) 'headline)
+                  (mapc #'walk (org-element-property :title node)))
+                (mapc #'walk (org-element-contents node)))))))
+      (walk ast))
+    (unless (or (and (null keys) (null prints)) (= (length prints) 1))
+      (signal 'org-texmacs-document-error '("Citations require exactly one bibliography print")))
+    (dolist (key keys)
+      (when (cl-some (lambda (field)
+                       (member (nth 1 field) '("crossref" "xdata" "related" "entryset")))
+                     (cdr (nth 3 (cdr (assoc key entries)))))
+        (signal 'org-texmacs-document-error '("Bibliography entry dependencies are unsupported"))))
+    (let ((number 1) prefix)
+      (while (progn
+               (setq prefix (format "org-texmacs-bib-%d" number) number (1+ number))
+               (cl-some (lambda (key) (member (concat prefix "-" key) static-labels)) keys)))
+      (list :keys keys :prefix prefix :citations (nreverse citations) :prints prints
+            :entries (cons 'document (mapcar (lambda (key) (cdr (assoc key entries))) keys))))))
+
 (defun org-texmacs--document-unnumbered-value (headline)
   "Return HEADLINE's effective inherited Org UNNUMBERED value."
   (org-export-get-node-property :UNNUMBERED headline t))
@@ -441,7 +518,7 @@ read a source buffer, query an ID database or invoke an export consumer."
      :file-paths (nreverse file-paths))))
 
 (defun org-texmacs--document-lower
-    (ast &optional islands post-blanks info style initial source-file resource-base)
+    (ast &optional islands post-blanks info style initial source-file resource-base bibliography)
   "Lower prepared Org AST and ISLANDS to a structural document result.
 
 AST must be an `org-data' snapshot.  ISLANDS is an identity-keyed alist
@@ -520,7 +597,10 @@ from one snapshot."
                         :texmacs-format-headline-function
                         org-texmacs-format-headline-default-function)))
         (resolution (org-texmacs--document-resolve
-                     ast islands static-labels resource-base)))
+                     ast islands static-labels resource-base))
+        (citation-plan nil))
+    (setq citation-plan (org-texmacs--bibliography-plan
+                         ast islands info bibliography resolution static-labels))
     (setq headline-limit
           (if (memq :headline-levels info) (plist-get info :headline-levels) 3)
           preformatted-tab-width
@@ -717,6 +797,17 @@ from one snapshot."
                               body)))
                       (org-texmacs--document-pack 'footnote (list labelled))))
                        (blank node space))))
+              ((and (consp node) (eq (org-element-type node) 'citation))
+               (unless (memq context '(paragraph footnote))
+                 (org-texmacs--document-fail node "Unsupported citation context"))
+               (setcar space nil)
+               (cons (org-texmacs--document-pack
+                      'with-bib
+                      (list (org-texmacs--document-create :body (plist-get citation-plan :prefix))
+                            (org-texmacs--document-pack
+                             'cite (mapcar (lambda (key) (org-texmacs--document-create :body key))
+                                           (cdr (assq node (plist-get citation-plan :citations)))))))
+                     (blank node space)))
               ((and (consp node) (eq (org-element-type node) 'timestamp))
                (let ((year (org-element-property :year-start node))
                      (month (org-element-property :month-start node))
@@ -1142,6 +1233,27 @@ from one snapshot."
                  (org-texmacs--document-fail node "Unexpected Org section"))
                (blocks (org-element-contents node) 'section ancestors))
               ((eq type 'footnote-definition) nil)
+              ((and (eq type 'keyword)
+                    (equal (upcase (org-element-property :key node)) "BIBLIOGRAPHY")) nil)
+              ((and (eq type 'keyword)
+                    (equal (upcase (org-element-property :key node)) "PRINT_BIBLIOGRAPHY"))
+               (unless (memq context '(org-data section headline))
+                 (org-texmacs--document-fail node "Unsupported bibliography print context"))
+               (let ((output (plist-get info :texmacs-bibliography-output)))
+                 (unless (and output
+                              (equal (nth 0 output) (plist-get citation-plan :prefix))
+                              (equal (nth 1 output) (plist-get citation-plan :keys))
+                              (equal (nth 2 output) (plist-get citation-plan :entries)))
+                   (org-texmacs--document-fail node "Missing or stale prepared bibliography output"))
+                 (let ((body (org-texmacs--document-copy-stree (nth 3 output))))
+                   (unless (and (consp body) (eq (car body) 'bib-list) (= (length body) 3)
+                                (equal (sort (org-texmacs--document-static-labels (list (cons 'body body)))
+                                             #'string-lessp)
+                                       (sort (mapcar (lambda (key)
+                                                       (concat (plist-get citation-plan :prefix) "-" key))
+                                                     (plist-get citation-plan :keys)) #'string-lessp)))
+                     (org-texmacs--document-fail node "Invalid prepared bibliography labels"))
+                   (list (org-texmacs--document-create :body body :stm-paths '(()))))))
               ((eq type 'paragraph)
                (list (org-texmacs--document-pack
                       'concat (inlines (org-element-contents node) 'paragraph ancestors))))
@@ -1263,26 +1375,6 @@ buffer-local copies separate from the caller's snapshot and source buffer."
   "Snapshot effective link registration and abbreviation settings."
   (mapcar #'org-texmacs--document-copy-link-setting
           (list org-link-parameters org-link-abbrev-alist org-link-abbrev-alist-local)))
-
-(defun org-texmacs--bibliography-source-snapshot (sources resource-base)
-  "Copy explicit path-to-text SOURCES using captured RESOURCE-BASE.
-Resolve source identities without opening files or running file handlers."
-  (unless (proper-list-p sources)
-    (signal 'org-texmacs-document-error '("Expected bibliography source text alist")))
-  (let ((file-name-handler-alist nil) paths result)
-    (dolist (entry sources)
-      (unless (and (consp entry) (stringp (car entry)) (> (length (car entry)) 0)
-                   (not (string-match-p "\0" (car entry))) (stringp (cdr entry)))
-        (signal 'org-texmacs-document-error '("Invalid bibliography source text")))
-      (unless (or (file-name-absolute-p (car entry)) resource-base)
-        (signal 'org-texmacs-document-error '("Relative bibliography identity needs resource base")))
-      (let ((path (org-texmacs--source-copy-path
-                   (expand-file-name (car entry) resource-base))))
-        (when (member path paths)
-          (signal 'org-texmacs-document-error '("Duplicate bibliography source identity")))
-        (push path paths)
-        (push (cons path (substring-no-properties (cdr entry))) result)))
-    (nreverse result)))
 
 (defun org-texmacs--bibliography-validate-source (source)
   "Validate the bounded BibTeX SOURCE grammar before native parsing.

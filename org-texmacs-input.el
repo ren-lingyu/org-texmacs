@@ -17,7 +17,7 @@
                (:copier nil))
   "Prepared structural input.  Treat all slots and nested data as read-only.
 AST and its identity-keyed ISLANDS and POST-BLANKS belong to this snapshot.
-INFO contains fixed options, not a request to collect source configuration.
+INFO contains fixed context and prepared views, not a request to collect source configuration.
 STYLE and INITIAL are copied TeXmacs document settings.
 SOURCE-FILE is optional source identity; RESOURCE-BASE is the optional
 fixed base for source-relative resources.  Neither is inferred from the other.
@@ -94,8 +94,10 @@ values remain nil and are never inferred from the current buffer.
 BIBLIOGRAPHY is an alist from explicit absolute source paths to already parsed
 BibTeX document strees.  Copy its text trees and reject duplicate source paths,
 keys or fields.  Never read those paths or parse source text here.  This slot
-establishes prepared data ownership; citation/bibliography lowering remains
-unsupported until its document-wide resolution contract is implemented.
+establishes prepared data ownership.  Citation lowering also requires fixed
+INFO declaration identities and a prepared output view for bibliography print.
+The view binds prefix, key order, selected entry trees and source-semantic body;
+pure lowering verifies that it matches the current resolution plan.
 
 Copy strings, lists and vectors, rebuild parent links, and remap references
 to AST nodes in INFO and the mappings.  Copy parsed title, author and date

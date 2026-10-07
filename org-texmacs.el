@@ -150,7 +150,38 @@ preparation and conversion together, use `org-texmacs-document-from-buffer'."
    (org-texmacs-input-ast input) (org-texmacs-input-islands input)
    (org-texmacs-input-post-blanks input) (org-texmacs-input-info input)
    (org-texmacs-input-style input) (org-texmacs-input-initial input)
-   (org-texmacs-input-source-file input) (org-texmacs-input-resource-base input)))
+   (org-texmacs-input-source-file input) (org-texmacs-input-resource-base input)
+   (org-texmacs-input-bibliography input)))
+
+(defun org-texmacs--bibliography-format (plan)
+  "Prepare native plain bibliography output for fixed PLAN using the worker."
+  (let* ((prefix (plist-get plan :prefix)) (keys (plist-get plan :keys))
+         (entries (plist-get plan :entries)) body)
+    (cl-labels ((wire (node)
+                  (if (stringp node) (org-texmacs--scheme-string node)
+                    (concat "(" (org-texmacs--scheme-string (symbol-name (car node)))
+                            (mapconcat (lambda (child) (concat " " (wire child))) (cdr node) "") ")"))))
+      (let ((response (org-texmacs--worker-call
+                       (lambda (id)
+                         (format "(format-bibliography %d %s %s)\n" id
+                                 (org-texmacs--scheme-string prefix) (wire entries))))))
+        (when (and (eq (car response) 'error) (stringp (nth 2 response)))
+          (signal 'org-texmacs-document-error (list (nth 2 response))))
+        (condition-case err
+            (progn
+              (unless (eq (car response) 'ok)
+                (signal 'org-texmacs-worker-error '("Invalid bibliography response status")))
+              (setq body (org-texmacs--document-copy-stree (nth 2 response)))
+              (unless (and (consp body) (eq (car body) 'bib-list) (= (length body) 3)
+                           (equal (sort (org-texmacs--document-static-labels (list (cons 'body body)))
+                                        #'string-lessp)
+                                  (sort (mapcar (lambda (key) (concat prefix "-" key)) keys)
+                                        #'string-lessp)))
+                (signal 'org-texmacs-worker-error '("Invalid formatted bibliography payload"))))
+          (org-texmacs-error
+           (org-texmacs--worker-stop)
+           (signal 'org-texmacs-worker-error (cdr err))))))
+    (list prefix keys entries body)))
 
 ;;;###autoload
 (defun org-texmacs-prepare-buffer (source-buffer &optional bibliography-sources)
@@ -161,8 +192,9 @@ Return an `org-texmacs-input', without opening a native session.
 BIBLIOGRAPHY-SOURCES explicitly maps source paths to BibTeX text strings.
 Capture paths relative to the Org source resource base, validate text before
 worker requests, and own native parsed entries in the input's BIBLIOGRAPHY.
-Never open these paths or query a bibliography database.  This prepares data;
-it does not yet enable citation or bibliography keyword lowering."
+Never open these paths or query a bibliography database.  Resolve document
+bibliography declarations, bare default citations and one bibliography print,
+then prepare native plain output in the fixed INFO context."
   (org-texmacs--prepare-buffer source-buffer #'identity bibliography-sources))
 
 ;;;###autoload
@@ -174,8 +206,8 @@ or file path.  Capture source text and supported configuration from it,
 independently of the caller's current buffer.  For a convenience wrapper,
 use `org-texmacs-document-current-buffer'.
 BIBLIOGRAPHY-SOURCES is the explicit text snapshot alist accepted by
-`org-texmacs-prepare-buffer'.  Prepared bibliography data does not yet enable
-citation or bibliography keyword lowering.
+`org-texmacs-prepare-buffer'.  Bibliography declarations must match those source
+identities.  Bare default citations require exactly one bibliography print.
 
 Return an `org-texmacs-document' structure with BODY, STYLE, INITIAL and
 STM-PATHS, SOURCE-FILE, RESOURCE-BASE and FILE-PATHS accessors.
@@ -269,7 +301,7 @@ it does not provide export, native buffer updates or rendering."
            (tags (org-texmacs--fragment-tags))
            (heading-settings (org-texmacs--document-heading-settings))
            (link-settings (org-texmacs--document-link-settings))
-           (base-info (org-texmacs--document-options))
+           (base-info (plist-put (org-texmacs--document-options) :texmacs-resource-base resource-base))
            (style (org-texmacs--document-copy-style org-texmacs-document-style))
            (initial (org-texmacs--document-copy-initial org-texmacs-document-initial))
            (source (buffer-substring-no-properties (point-min) (point-max)))
@@ -309,9 +341,34 @@ it does not provide export, native buffer updates or rendering."
               (push (nth 1 signature) keys))))
         ;; Run user formatters only after private parser bindings have unwound.
         ;; Reject unsupported structure before starting any island request.
+        (let* ((placeholder
+                (cl-mapcar
+                 (lambda (entry signatures)
+                   (cons (car entry)
+                         (cons 'document
+                               (mapcar (lambda (signature)
+                                         (list 'bib-entry (nth 0 signature) (nth 1 signature)
+                                               (cons 'document
+                                                     (mapcar (lambda (field) (list 'bib-field field ""))
+                                                             (nth 2 signature))))) signatures))))
+                 bibliography-source-snapshot bibliography-signatures))
+               (plan (org-texmacs--bibliography-plan
+                      (nth 0 prepared) (nth 1 prepared) info placeholder
+                      (org-texmacs--document-resolve (nth 0 prepared) (nth 1 prepared) nil resource-base) nil)))
+          (setq bibliography placeholder)
+          (setq info (plist-put info :texmacs-bibliography-output
+                                (list (plist-get plan :prefix) (plist-get plan :keys)
+                                      (plist-get plan :entries)
+                                      (list 'bib-list (number-to-string (length (plist-get plan :keys)))
+                                            (cons 'document
+                                                  (mapcar (lambda (key)
+                                                            (list 'concat '(bibitem* "0")
+                                                                  (list 'label (concat (plist-get plan :prefix) "-" key))))
+                                                          (plist-get plan :keys))))))))
         (org-texmacs--document-lower (nth 0 prepared) (nth 1 prepared)
                                      (nth 3 prepared) info style initial
-                                     source-file resource-base)
+                                     source-file resource-base
+                                     bibliography)
         (check)
         (dolist (request (nth 2 prepared))
           (check)
@@ -322,6 +379,7 @@ it does not provide export, native buffer updates or rendering."
                                     (equal tag (symbol-name (car stree))))))
               (signal 'org-texmacs-parse-error '("TeXmacs root differs from fragment tag")))
             (setcdr (car request) stree)))
+        (setq bibliography nil)
         (cl-mapc
          (lambda (entry expected)
            (check)
@@ -343,6 +401,16 @@ it does not provide export, native buffer updates or rendering."
                 (org-texmacs--worker-stop)
                 (signal 'org-texmacs-worker-error (cdr err))))))
          bibliography-source-snapshot bibliography-signatures)
+        (setq bibliography (nreverse bibliography))
+        (let* ((static (org-texmacs--document-static-labels (nth 1 prepared)))
+               (resolution (org-texmacs--document-resolve (nth 0 prepared) (nth 1 prepared) static resource-base))
+               (plan (org-texmacs--bibliography-plan
+                      (nth 0 prepared) (nth 1 prepared) info bibliography resolution static)))
+          (when (plist-get plan :prints)
+            (check)
+            (setq info (plist-put info :texmacs-bibliography-output
+                                  (org-texmacs--bibliography-format plan)))
+            (check)))
         (let ((result (funcall consumer
                                (org-texmacs-input-create
                                 (nth 0 prepared) info
@@ -351,7 +419,7 @@ it does not provide export, native buffer updates or rendering."
                                 :style style :initial initial
                                 :source-file source-file
                                 :resource-base resource-base
-                                :bibliography (nreverse bibliography)))))
+                                :bibliography bibliography))))
           ;; The constructor owns a separate copy of parsed dependency data.
           (check)
           result)))))

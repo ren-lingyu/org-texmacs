@@ -6,9 +6,19 @@
 
 (use-modules (utils library cursor)
              (generic document-style)
-             (generic document-edit))
+             (generic document-edit)
+             (bibtex bib-utils))
 
 (lazy-define (convert bibtex bibtextm) parse-bibtex-snippet)
+
+(define (org-texmacs-bibliography-source-tree tree)
+  ;; Keep ASCII source notation; decode native Cork bytes in text segments.
+  (if (string? tree)
+      (apply string-append
+             (map (lambda (c) (if (> (char->integer c) 127)
+                                 (cork->utf8 (string c)) (string c)))
+                  (string->list tree)))
+      (cons (car tree) (map org-texmacs-bibliography-source-tree (cdr tree)))))
 
 (define (org-texmacs-stree? node)
   (or (string? node)
@@ -302,6 +312,26 @@
 
 (define (org-texmacs-reply request)
   (cond
+   ((and (list? request) (= (length request) 4)
+         (eq? (car request) 'format-bibliography)
+         (integer? (cadr request)) (> (cadr request) 0) (string? (caddr request)))
+    (let ((id (cadr request)))
+      (catch #t
+        (lambda ()
+          (let ((old-prefix bib-current-prefix) (old-style bib-style)
+                (old-default bib-default-style))
+            (dynamic-wind
+              (lambda () #t)
+              (lambda ()
+                (module-provide '(bibtex plain))
+                (let ((body (bib-process
+                             (caddr request) "plain"
+                             (org-texmacs-encode-body
+                              (org-texmacs-wire-tree (list-ref request 3)) '(())))))
+                  (list 'ok id (org-texmacs-bibliography-source-tree body))))
+              (lambda () (set! bib-current-prefix old-prefix) (set! bib-style old-style)
+                (set! bib-default-style old-default)))))
+        (lambda args (list 'error id "Invalid bibliography formatting request")))))
    ((and (list? request) (= (length request) 3)
          (eq? (car request) 'parse-bibliography)
          (integer? (cadr request)) (> (cadr request) 0)
@@ -314,9 +344,10 @@
             ;; Text was validated by preparation.  Comments are not entries.
             (if (not (func? parsed 'document)) (error "Invalid bibliography tree"))
             (list 'ok id
-                  (cons 'document
-                        (list-filter (cdr parsed)
-                                     (lambda (entry) (func? entry 'bib-entry)))))))
+                  (org-texmacs-bibliography-source-tree
+                   (cons 'document
+                         (list-filter (cdr parsed)
+                                      (lambda (entry) (func? entry 'bib-entry))))))))
         (lambda args (list 'error id "Invalid bibliography source")))))
    ((and (list? request) (>= (length request) 2)
          (integer? (cadr request)) (> (cadr request) 0)
