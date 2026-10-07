@@ -41,6 +41,9 @@ Changing this option takes effect after the current worker is stopped."
 (define-error 'org-texmacs-session-error
               "Invalid TeXmacs session" 'org-texmacs-error)
 
+(define-error 'org-texmacs-serialization-error
+              "TeXmacs document serialization failed" 'org-texmacs-error)
+
 (defconst org-texmacs--capability-alist
   '((org-element-cache-store-key . function)
     (org-element-cache-get-key . function)

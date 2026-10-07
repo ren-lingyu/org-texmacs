@@ -8,6 +8,7 @@
 ;; One explicit native buffer session in the shared worker.  Handles belong
 ;; to one process incarnation; restarting the worker never revives a handle.
 ;; No GUI windows, document files, edit hooks or automatic updates are created.
+;; Independent serialization consumes the same explicit native document fields.
 
 ;;; Code:
 
@@ -76,6 +77,22 @@
          (unless (org-texmacs--native-document-p payload)
            (signal 'org-texmacs-worker-error '("Invalid native document response")))
          payload)
+        ((eq operation 'serialize)
+         (unless (and (consp payload) (eq (car payload) 'serialized-document)
+                      (= (length payload) 3)
+                      (stringp (cadr payload))
+                      (string-match-p "\\`[0-9][[:alnum:].+-]*\\'" (cadr payload))
+                      (stringp (caddr payload))
+                      (org-texmacs--native-hex-stree-p (caddr payload)))
+           (signal 'org-texmacs-worker-error '("Invalid serialized document response")))
+         (let* ((hex (caddr payload))
+                (bytes (make-string (/ (length hex) 2) 0))
+                (header (concat "<TeXmacs|" (cadr payload) ">")))
+           (dotimes (index (length bytes))
+             (aset bytes index (string-to-number (substring hex (* index 2) (+ (* index 2) 2)) 16)))
+           (unless (string-prefix-p header bytes)
+             (signal 'org-texmacs-worker-error '("Serialized document header mismatch")))
+           bytes))
         (t (signal 'org-texmacs-worker-error '("Unknown native operation"))))))
     ('session-error
      (unless (and (memq operation '(session-open session-set session-close session-read))
@@ -83,10 +100,14 @@
        (signal 'org-texmacs-worker-error '("Unexpected session error response")))
      (signal 'org-texmacs-session-error (list (nth 2 datum))))
     ('encoding-error
-     (unless (and (memq operation '(encode session-set))
+     (unless (and (memq operation '(encode session-set serialize))
                   (stringp (nth 2 datum)))
        (signal 'org-texmacs-worker-error '("Unexpected encoding error response")))
      (signal 'org-texmacs-encoding-error (list (nth 2 datum))))
+    ('serialization-error
+     (unless (and (eq operation 'serialize) (stringp (nth 2 datum)))
+       (signal 'org-texmacs-worker-error '("Unexpected serialization error response")))
+     (signal 'org-texmacs-serialization-error (list (nth 2 datum))))
     (_ (signal 'org-texmacs-worker-error '("Unknown response status")))))
 
 (defun org-texmacs--native-decode (response id operation)
@@ -102,7 +123,7 @@ stop it so a later call cannot reuse a semantically inconsistent peer."
   (let ((datum (org-texmacs--worker-call make-request)))
     (condition-case err
         (org-texmacs--native-decode-datum datum operation)
-      ((org-texmacs-encoding-error org-texmacs-session-error)
+      ((org-texmacs-encoding-error org-texmacs-session-error org-texmacs-serialization-error)
        (signal (car err) (cdr err)))
       (org-texmacs-worker-error
        (org-texmacs--worker-stop)
@@ -245,6 +266,22 @@ the result back to this encoder.  No files or persistent buffers are created."
   (let ((wire (org-texmacs--native-document-wire document)))
     (org-texmacs--native-call
      (lambda (id) (format "(encode %d %s)\n" id wire)) 'encode)))
+
+(defun org-texmacs-document-serialize (document)
+  "Return DOCUMENT as a complete native TeXmacs .tm byte string.
+Consume a completed `org-texmacs-document' result using its explicit style,
+initial environment, body and provenance.  Translate marked file links with
+the captured resource base, then encode once and construct the file wrapper
+with the running TeXmacs version.  Use TeXmacs's native serializer.
+The returned unibyte string preserves native output bytes; write it with
+`no-conversion' when a separate caller chooses to save it.  Never feed it back
+to the document encoder.  No output file or native session is created, and an
+existing live session is not read or updated.  The shared worker may start.
+Preflight, encoding and serialization errors preserve a healthy worker;
+invalid response payloads stop it.  No source buffer or resource file is read."
+  (let ((wire (org-texmacs--native-document-wire document)))
+    (org-texmacs--native-call
+     (lambda (id) (format "(serialize %d %s)\n" id wire)) 'serialize)))
 
 (cl-defstruct (org-texmacs-session
                (:constructor org-texmacs--session-create)

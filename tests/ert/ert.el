@@ -52,6 +52,7 @@
                       org-texmacs-document-initial org-texmacs-document-stm-paths
                       org-texmacs-document-source-file org-texmacs-document-resource-base
                       org-texmacs-document-file-paths
+                      org-texmacs-document-serialize
                       org-texmacs-session-open
                       org-texmacs-session-set-document org-texmacs-session-close))
     (should (fboundp function))
@@ -4507,6 +4508,144 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (let ((next (org-texmacs-session-open)))
         (should-not (equal (org-texmacs-session-key session) (org-texmacs-session-key next)))
         (org-texmacs-session-close next)))))
+
+(ert-deftest org-texmacs-serialization-preflight-and-protocol ()
+  (let ((valid (org-texmacs--document-create :body '(document "Text"))))
+    (cl-letf (((symbol-function 'org-texmacs--worker-call)
+               (lambda (&rest _) (ert-fail "Invalid serialization started worker"))))
+      (dolist (document
+               (list nil (org-texmacs--document-create :body '(concat "Text"))
+                     (org-texmacs--document-create :body '(document (raw-data "bytes")))
+                     (org-texmacs--document-create :body '(document "Text") :stm-paths '((9)))
+                     (org-texmacs--document-create :body '(document (hlink "File" "./file"))
+                                                  :file-paths '((0 1)))))
+        (should-error (org-texmacs-document-serialize document)
+                      :type 'org-texmacs-encoding-error)))
+    (let* ((bytes (concat (encode-coding-string "<TeXmacs|2.1.5>\n" 'us-ascii)
+                          (unibyte-string 233 0)))
+           (hex (org-texmacs-test--ascii-hex bytes)))
+      (should (equal bytes
+                     (org-texmacs--native-decode
+                      (prin1-to-string (list 'ok 1 (list 'serialized-document "2.1.5" hex)))
+                      1 'serialize)))
+      (should-not (multibyte-string-p
+                   (org-texmacs--native-decode-datum
+                    (list 'ok 1 (list 'serialized-document "2.1.5" hex)) 'serialize))))
+    (dolist (payload '((serialized-document "" "00")
+                       (serialized-document "2.1.5" "0")
+                       (serialized-document "2.1.5" "gg")
+                       (serialized-document "2.1.5" "00")
+                       (serialized-document "2.1.5" "")
+                       (other "2.1.5" "00")))
+      (let ((stops 0))
+        (cl-letf (((symbol-function 'org-texmacs--worker-call)
+                   (lambda (_request) (list 'ok 1 payload)))
+                  ((symbol-function 'org-texmacs--worker-stop)
+                   (lambda () (cl-incf stops))))
+          (should-error (org-texmacs-document-serialize valid) :type 'org-texmacs-worker-error)
+          (should (= stops 1)))))
+    (dolist (failure '((encoding-error . org-texmacs-encoding-error)
+                       (serialization-error . org-texmacs-serialization-error)))
+      (cl-letf (((symbol-function 'org-texmacs--worker-call)
+                 (lambda (_request) (list (car failure) 1 "Rejected")))
+                ((symbol-function 'org-texmacs--worker-stop)
+                 (lambda () (ert-fail "Domain error stopped worker"))))
+        (should-error (org-texmacs-document-serialize valid) :type (cdr failure))))))
+
+(ert-deftest org-texmacs-serialization-native-roundtrip-and-session-independence ()
+  (org-texmacs-test--with-worker
+    (let ((script (expand-file-name "serialization-roundtrip.scm" test-directory)))
+      (with-temp-file script
+        (insert (format "(load %s)\n" (org-texmacs--scheme-string org-texmacs--worker-scheme-file))
+                "(define org-texmacs-test-serializer serialize-texmacs)\n"
+                "(set! serialize-texmacs (lambda (file)\n"
+                "  (let* ((bytes (org-texmacs-test-serializer file))\n"
+                "         (readback (parse-texmacs bytes)))\n"
+                "    (if (not (equal? (tree->stree file) (tree->stree readback)))\n"
+                "        (error \"Native file roundtrip mismatch\")) bytes)))\n"))
+      (let* ((org-texmacs--worker-scheme-file script)
+             (document (org-texmacs--document-create
+                        :style '("article" "number-europe" "number-europe")
+                        :initial '(("par-first" . "2fn") ("custom" tuple "中" "<alpha>"))
+                        :resource-base "/tmp/org-serialization-source/"
+                        :body '(document "Café 中 <alpha>" (math "<alpha>")
+                                         (hlink "File" "./file.org"))
+                        :stm-paths '((1)) :file-paths '((2 1))))
+             (before (copy-tree (org-texmacs-document-body document)))
+             (bytes (org-texmacs-document-serialize document))
+             (process org-texmacs--worker-process)
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (should-not (multibyte-string-p bytes))
+              (should (string-prefix-p "<TeXmacs|" bytes))
+              (should (string-match-p (regexp-quote "/tmp/org-serialization-source/file.org") bytes))
+              (should (string-match-p (regexp-quote "<\\initial>") bytes))
+              (should (equal before (org-texmacs-document-body document)))
+              (org-texmacs-session-set-document
+               session (org-texmacs--document-create :body '(document "Session state")))
+              (let ((state (org-texmacs--session-read-document session)))
+                (with-temp-buffer
+                  (setq default-directory "/tmp/different-save-destination/")
+                  (should (equal bytes (org-texmacs-document-serialize document))))
+                (should (eq process org-texmacs--worker-process))
+                (should (equal state (org-texmacs--session-read-document session))))
+              (should (org-texmacs--session-live-p session)))
+          (org-texmacs-session-close session))))))
+
+(ert-deftest org-texmacs-serialization-owned-org-document ()
+  (org-texmacs-test--with-worker
+    (let ((document
+           (with-temp-buffer
+             (org-mode)
+             (setq default-directory "/tmp/")
+             (insert "#+OPTIONS: toc:nil\nSee [[t]] and [cite:@key]. Note[fn:n].\n\n"
+                     "#+NAME: t\n#+CAPTION: Caption 中\n| a | b |\n\n"
+                     "#+bibliography: refs.bib\n#+print_bibliography:\n\n"
+                     "[fn:n] *Body* [[./file.org][File]].\n")
+             (org-texmacs-document-from-buffer
+              (current-buffer)
+              '(("refs.bib" . "@book{key,title={Café},author={Ada Example},year=2026,publisher={Example}}"))))))
+      (let ((body (copy-tree (org-texmacs-document-body document)))
+            (stm (copy-tree (org-texmacs-document-stm-paths document)))
+            (files (copy-tree (org-texmacs-document-file-paths document)))
+            (bytes (org-texmacs-document-serialize document)))
+        (dolist (tag '("big-table" "footnote" "with-bib" "bib-list"))
+          (should (or (string-match-p (regexp-quote (concat "<" tag)) bytes)
+                      (string-match-p (regexp-quote (concat "<\\" tag)) bytes))))
+        (dolist (marker '("<reference|org-texmacs-ref-1>" "/tmp/file.org"))
+          (should (string-match-p (regexp-quote marker) bytes)))
+        (should (equal body (org-texmacs-document-body document)))
+        (should (equal stm (org-texmacs-document-stm-paths document)))
+        (should (equal files (org-texmacs-document-file-paths document)))))))
+
+(ert-deftest org-texmacs-serialization-native-errors-preserve-worker ()
+  (org-texmacs-test--with-worker
+    (let ((script (expand-file-name "serialization-failure.scm" test-directory)))
+      (with-temp-file script
+        (insert (format "(load %s)\n" (org-texmacs--scheme-string org-texmacs--worker-scheme-file))
+                "(define org-texmacs-test-serializer serialize-texmacs)\n"
+                "(define org-texmacs-test-first #t)\n"
+                "(set! serialize-texmacs (lambda (file)\n"
+                "  (if org-texmacs-test-first\n"
+                "      (begin (set! org-texmacs-test-first #f) (error \"Injected serializer error\"))\n"
+                "      (org-texmacs-test-serializer file))))\n"))
+      (let* ((org-texmacs--worker-scheme-file script)
+             (document (org-texmacs--document-create :body '(document "Text"))))
+        (should-error (org-texmacs-document-serialize document) :type 'org-texmacs-serialization-error)
+        (let ((process org-texmacs--worker-process))
+          (should (org-texmacs--worker-live-p))
+          (should-error
+           (org-texmacs--native-call
+            (lambda (id) (format "(serialize %d (\"generic\") () (\"document\" \"Text\") ((9)))\n" id))
+            'serialize)
+           :type 'org-texmacs-encoding-error)
+          (should (string-prefix-p "<TeXmacs|" (org-texmacs-document-serialize document)))
+          (let ((empty (org-texmacs-document-serialize
+                        (org-texmacs--document-create :body '(document)))))
+            (should (string-prefix-p "<TeXmacs|" empty))
+            (should-not (string-match-p (regexp-quote "<\\initial>") empty)))
+          (should (eq process org-texmacs--worker-process)))))))
 
 (ert-deftest org-texmacs-session-real-complete-document-state ()
   (org-texmacs-test--with-worker

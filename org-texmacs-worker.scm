@@ -160,6 +160,51 @@
                               (tree->stree (list-ref native 2)))))))
       (lambda args (list 'encoding-error id "Invalid document encoding request")))))
 
+(define (org-texmacs-file-document native)
+  ;; Construct known structure directly from encoded fields.  This does not
+  ;; consult a live buffer, expand styles, or collect derived reference tables.
+  (let ((version (texmacs-version))
+        (style (list-ref native 0))
+        (initial (list-ref native 1))
+        (body (tree->stree (list-ref native 2))))
+    (if (not (and (string? version) (> (string-length version) 0)))
+        (error "Missing TeXmacs version"))
+    (stree->tree
+     (append
+      (list 'document (list 'TeXmacs version)
+            (list 'style (cons 'tuple style)) (list 'body body))
+      (if (null? initial) '()
+          (list
+           (list 'initial
+                 (cons 'collection
+                       (map (lambda (entry)
+                              (list 'associate (car entry) (tree->stree (cdr entry))))
+                            initial)))))))))
+
+(define (org-texmacs-serialize-reply request)
+  (let ((id (cadr request)))
+    ;; Keep encoding errors distinct from serializer/capability errors.
+    (catch #t
+      (lambda ()
+        (let ((native (org-texmacs-native-document
+                       (list-ref request 2) (list-ref request 3)
+                       (list-ref request 4) (list-ref request 5))))
+          (catch #t
+            (lambda ()
+              (for-each
+               (lambda (name)
+                 (if (not (defined? name)) (error "Missing serialization capability" name)))
+               '(texmacs-version serialize-texmacs))
+              (let* ((file (org-texmacs-file-document native))
+                     (bytes (serialize-texmacs file)))
+                (if (not (and (string? bytes) (> (string-length bytes) 0)))
+                    (error "Empty serialized document"))
+                (list 'ok id
+                      (list 'serialized-document (texmacs-version)
+                            (org-texmacs-hex-tree bytes)))))
+            (lambda args (list 'serialization-error id "Native document serialization failed")))))
+      (lambda args (list 'encoding-error id "Invalid document encoding request")))))
+
 (define org-texmacs-session-buffer #f)
 (define org-texmacs-session-key #f)
 (define org-texmacs-session-counter 0)
@@ -357,6 +402,10 @@
              (and (eq? (car request) 'session-set) (= (length request) 7)
                   (string? (caddr request)))))
     (org-texmacs-session-reply request))
+   ((and (list? request) (= (length request) 6)
+           (eq? (car request) 'serialize)
+           (integer? (cadr request)) (> (cadr request) 0))
+    (org-texmacs-serialize-reply request))
    ((and (list? request) (= (length request) 6)
            (eq? (car request) 'encode)
            (integer? (cadr request)) (> (cadr request) 0))

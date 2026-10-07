@@ -946,6 +946,40 @@ visible STM islands.  TOC and resolved source links use distinct private label
 namespaces.  =pageref= values remain structural references;
 the body constructor does not paginate the document or precompute page numbers.
 
+** Complete native document serialization
+=org-texmacs-document-serialize DOCUMENT= consumes a completed document result
+and returns a complete =.tm= document as an unibyte string of native output
+bytes.  It constructs the =TeXmacs= version header from the running worker,
+the explicit style tuple and body, and an =initial= collection when nonempty.
+It uses TeXmacs's native =serialize-texmacs= directly on the structured tree.
+No output file or live session is created.  An existing
+session is neither read nor updated; the shared worker may start or be reused.
+
+#+name: example-serialization
+#+begin_src emacs-lisp
+  (let ((document (with-temp-buffer
+                    (org-mode)
+                    (insert "Hello *TeXmacs*.\n")
+                    (org-texmacs-document-from-buffer (current-buffer)))))
+    (org-texmacs-document-serialize document))
+#+end_src
+
+The consumer validates and encodes the explicit document fields once, using
+the same literal/STM provenance as native sessions.  Marked file links become
+absolute system paths against the captured source resource base; an eventual
+save directory does not change their targets.  Native STM links are untouched.
+Style names and initial keys remain identifiers, and initial values use native
+source semantics.  The original document result remains unchanged.
+
+Preserve the returned bytes with =no-conversion= if a separate caller chooses
+to write them.  Do not decode them as UTF-8, re-encode them as document text or
+replace the native header with the package version.  Preflight and encoding
+errors preserve a healthy worker; serialization failures signal
+=org-texmacs-serialization-error=.  Invalid response payloads stop the worker.
+This node does not collect live reference tables, attachments or auxiliary
+typesetter state.  It does not paginate, resolve displayed reference values,
+save files, integrate an Org exporter or render PDF/preview.
+
 ** Native encoding and lifetime
 =org-texmacs-session-open= creates an empty native document buffer and returns
 an opaque handle.  Only one session may be active in the shared worker.
@@ -1002,8 +1036,8 @@ failure stops the worker.  TeXmacs uses an internal headless view so its
 document APIs can focus the buffer; this opens no GUI window and is not a
 preview.  Successful native readback establishes accepted style, explicit
 initial mapping and body structure, not that visual numbering, page references,
-auxiliary data or pagination have been resolved.  Complete file metadata and
-export remain outside this API.
+auxiliary data or pagination have been resolved.  Serialization uses the
+independent consumer above; file saving and export remain separate work.
 
 * Worker behavior and errors
 The first parse request or session open starts one shared headless TeXmacs
