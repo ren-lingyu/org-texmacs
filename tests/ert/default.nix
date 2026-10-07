@@ -5,6 +5,7 @@
       emacs
       pkgs.guile
       pkgs.texmacs
+      pkgs.poppler-utils
     ];
   } (pkgs.replaceVarsWith {
     src = ./run.scm;

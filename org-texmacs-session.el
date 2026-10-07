@@ -48,6 +48,15 @@
               (consp (cadr body)) (eq (caadr body) 'document)
               (org-texmacs--native-hex-stree-p (cadr body))))))
 
+(defun org-texmacs--native-unhex (hex)
+  "Validate ASCII HEX and return its exact native bytes as a unibyte string."
+  (unless (and (stringp hex) (org-texmacs--native-hex-stree-p hex))
+    (signal 'org-texmacs-worker-error '("Invalid native byte payload")))
+  (let ((bytes (make-string (/ (length hex) 2) 0)))
+    (dotimes (index (length bytes))
+      (aset bytes index (string-to-number (substring hex (* index 2) (+ (* index 2) 2)) 16)))
+    bytes))
+
 (defun org-texmacs--native-decode-datum (datum operation)
   "Decode native response DATUM according to fixed OPERATION semantics."
   (pcase (car datum)
@@ -85,13 +94,19 @@
                       (stringp (caddr payload))
                       (org-texmacs--native-hex-stree-p (caddr payload)))
            (signal 'org-texmacs-worker-error '("Invalid serialized document response")))
-         (let* ((hex (caddr payload))
-                (bytes (make-string (/ (length hex) 2) 0))
+         (let* ((bytes (org-texmacs--native-unhex (caddr payload)))
                 (header (concat "<TeXmacs|" (cadr payload) ">")))
-           (dotimes (index (length bytes))
-             (aset bytes index (string-to-number (substring hex (* index 2) (+ (* index 2) 2)) 16)))
            (unless (string-prefix-p header bytes)
              (signal 'org-texmacs-worker-error '("Serialized document header mismatch")))
+           bytes))
+        ((eq operation 'render-pdf)
+         (unless (and (consp payload) (eq (car payload) 'rendered-pdf)
+                      (= (length payload) 2))
+           (signal 'org-texmacs-worker-error '("Invalid PDF response")))
+         (let ((bytes (org-texmacs--native-unhex (cadr payload))))
+           (unless (and (string-prefix-p "%PDF-" bytes)
+                        (string-match-p "%%EOF[ \t\r\n]*\\'" bytes))
+             (signal 'org-texmacs-worker-error '("Invalid PDF output envelope")))
            bytes))
         (t (signal 'org-texmacs-worker-error '("Unknown native operation"))))))
     ('session-error
@@ -100,7 +115,7 @@
        (signal 'org-texmacs-worker-error '("Unexpected session error response")))
      (signal 'org-texmacs-session-error (list (nth 2 datum))))
     ('encoding-error
-     (unless (and (memq operation '(encode session-set serialize))
+     (unless (and (memq operation '(encode session-set serialize render-pdf))
                   (stringp (nth 2 datum)))
        (signal 'org-texmacs-worker-error '("Unexpected encoding error response")))
      (signal 'org-texmacs-encoding-error (list (nth 2 datum))))
@@ -108,6 +123,14 @@
      (unless (and (eq operation 'serialize) (stringp (nth 2 datum)))
        (signal 'org-texmacs-worker-error '("Unexpected serialization error response")))
      (signal 'org-texmacs-serialization-error (list (nth 2 datum))))
+    ('rendering-error
+     (unless (and (eq operation 'render-pdf) (stringp (nth 2 datum)))
+       (signal 'org-texmacs-worker-error '("Unexpected rendering error response")))
+     (signal 'org-texmacs-rendering-error (list (nth 2 datum))))
+    ('rendering-fatal
+     (unless (and (eq operation 'render-pdf) (stringp (nth 2 datum)))
+       (signal 'org-texmacs-worker-error '("Unexpected rendering cleanup failure")))
+     (signal 'org-texmacs-worker-error (list (nth 2 datum))))
     (_ (signal 'org-texmacs-worker-error '("Unknown response status")))))
 
 (defun org-texmacs--native-decode (response id operation)
@@ -123,7 +146,8 @@ stop it so a later call cannot reuse a semantically inconsistent peer."
   (let ((datum (org-texmacs--worker-call make-request)))
     (condition-case err
         (org-texmacs--native-decode-datum datum operation)
-      ((org-texmacs-encoding-error org-texmacs-session-error org-texmacs-serialization-error)
+      ((org-texmacs-encoding-error org-texmacs-session-error
+        org-texmacs-serialization-error org-texmacs-rendering-error)
        (signal (car err) (cdr err)))
       (org-texmacs-worker-error
        (org-texmacs--worker-stop)
@@ -282,6 +306,34 @@ invalid response payloads stop it.  No source buffer or resource file is read."
   (let ((wire (org-texmacs--native-document-wire document)))
     (org-texmacs--native-call
      (lambda (id) (format "(serialize %d %s)\n" id wire)) 'serialize)))
+
+(defun org-texmacs-document-pdf (document)
+  "Render completed DOCUMENT to native PDF bytes with the shared worker.
+Encode explicit fields once and typeset in an owned temporary native buffer.
+Return an unibyte string; no .tm intermediary or public session is created.
+Existing sessions remain unchanged.  Encoding/rendering errors preserve healthy
+transport; invalid output or cleanup failure stops it.  Native printing writes
+an owned temporary PDF and may populate native font caches.  Remove the
+temporary PDF/buffer before returning; font caches follow TeXmacs's lifetime."
+  (let ((wire (org-texmacs--native-document-wire document)))
+    (cl-labels ((check (tree)
+                 (when (consp tree)
+                   (when (memq (car tree) '(image include extern script action eval raw-data))
+                     (signal 'org-texmacs-rendering-error
+                             '("Native resource/executable nodes are outside the PDF subset")))
+                   (mapc #'check (cdr tree)))))
+      (check (org-texmacs-document-body document))
+      (dolist (entry (org-texmacs-document-initial document)) (check (cdr entry))))
+    (org-texmacs--native-call
+     (lambda (id) (format "(render-pdf %d %s)\n" id wire)) 'render-pdf)))
+
+(defun org-texmacs-document-save-pdf (document file)
+  "Render completed DOCUMENT and save PDF bytes to explicit new local FILE.
+Use the same destination ownership and exclusive write policy as
+`org-texmacs-document-save'.  Rendering finishes before opening FILE.
+Existing targets are never overwritten; write errors can leave partial output."
+  (let ((target (org-texmacs--native-save-target file)))
+    (org-texmacs--native-save-bytes (org-texmacs-document-pdf document) target)))
 
 (defun org-texmacs--native-save-target (file)
   "Validate and own explicit local output FILE before conversion waits.

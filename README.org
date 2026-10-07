@@ -1062,6 +1062,41 @@ Lisp calls to =org-texmacs-export-to-buffer= return the fresh buffer without
 displaying it.  No Org dispatcher entry, generic preprocessing, automatic edit
 hooks or source synchronization is installed.
 
+** Native PDF rendering
+=org-texmacs-document-pdf DOCUMENT= returns unibyte PDF bytes from a completed
+document snapshot.  =org-texmacs-document-save-pdf DOCUMENT FILE= writes those
+bytes to a new absolute local file, with the same exclusive creation and
+partial-write rules as native document saving.
+
+=org-texmacs-export-pdf-from-buffer SOURCE-BUFFER &optional BIBLIOGRAPHY-SOURCES=
+returns PDF bytes from an explicit Org buffer.
+=org-texmacs-export-to-pdf SOURCE-BUFFER FILE &optional BIBLIOGRAPHY-SOURCES=
+writes them only after preparation's final consistency check.  Its interactive
+command captures the source before prompting and suggests =source-stem.pdf=
+or =export.pdf=.  Interactive calls supply no bibliography snapshots.
+
+#+begin_src emacs-lisp
+  (org-texmacs-export-to-pdf (current-buffer) "/absolute/output/new-document.pdf")
+#+end_src
+
+The headless worker installs the structured document directly in a temporary
+native buffer, performs three synchronous native buffer updates and uses the
+native PDF printer.  It does not serialize and reparse a =.tm= intermediary.
+An existing public session remains unchanged.  The temporary buffer and PDF
+are cleaned up; transport failure removes the worker's private directory.
+Font caches follow TeXmacs's normal lifetime.  Rendering errors signal
+=org-texmacs-rendering-error= and preserve a healthy worker; cleanup failure or
+invalid responses stop it.
+
+This first rendering subset rejects explicit =image=, =include=, =extern=,
+=script=, =action=, =eval= and =raw-data= trees.  Native styles and fonts still
+use installed TeXmacs resources; custom styles are not sandboxed.  The renderer
+does not run bibliography generation or read caller bibliography files.
+Maintained installed tests inspect the PDF with Poppler, including heading and
+table reference values and literal Unicode text.  Three update passes do not
+guarantee convergence for every native layout.  GUI preview and visual layout
+coverage remain future work.
+
 ** Native encoding and lifetime
 =org-texmacs-session-open= creates an empty native document buffer and returns
 an opaque handle.  Only one session may be active in the shared worker.

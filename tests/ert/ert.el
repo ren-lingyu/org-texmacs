@@ -56,6 +56,8 @@
                       org-texmacs-document-save
                       org-texmacs-export-from-buffer org-texmacs-export-to-file
                       org-texmacs-export-to-buffer
+                      org-texmacs-document-pdf org-texmacs-document-save-pdf
+                      org-texmacs-export-pdf-from-buffer org-texmacs-export-to-pdf
                       org-texmacs-session-open
                       org-texmacs-session-set-document org-texmacs-session-close))
     (should (fboundp function))
@@ -5016,6 +5018,150 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
   (should (commandp 'org-texmacs-export-to-buffer))
   (should (commandp 'org-texmacs-export-to-file))
   (should-not (commandp 'org-texmacs-export-from-buffer)))
+
+(ert-deftest org-texmacs-pdf-native-basic ()
+  (org-texmacs-test--with-worker
+    (let ((script (expand-file-name "pdf-diagnostics.scm" test-directory)))
+      (with-temp-file script
+        (insert (format "(load %s)\n" (org-texmacs--scheme-string org-texmacs--worker-scheme-file))
+                "(define test-render org-texmacs-render-native-pdf)\n"
+                "(set! org-texmacs-render-native-pdf (lambda (native)\n"
+                "  (catch #t (lambda () (test-render native))\n"
+                "    (lambda args (display \"PDF-DIAGNOSTIC: \") (write args)\n"
+                "      (newline) (force-output) (apply throw args)))))\n"))
+      (let ((org-texmacs--worker-scheme-file script))
+        (condition-case err
+            (let ((bytes (org-texmacs-document-pdf
+                          (org-texmacs--document-create :body '(document "Hello native PDF")))))
+              (should-not (multibyte-string-p bytes))
+              (should (string-prefix-p "%PDF-" bytes))
+              (should (> (length bytes) 1000)))
+          (error
+           (when (buffer-live-p org-texmacs--worker-buffer)
+             (princ (with-current-buffer org-texmacs--worker-buffer (buffer-string))))
+           (signal (car err) (cdr err))))))))
+
+(ert-deftest org-texmacs-pdf-native-session-and-inspection ()
+  (org-texmacs-test--with-worker
+    (let ((session (org-texmacs-session-open))
+          (file (expand-file-name "native.pdf" test-directory)))
+      (unwind-protect
+          (progn
+            (org-texmacs-session-set-document
+             session (org-texmacs--document-create :body '(document "Existing session")))
+            (let ((state (org-texmacs--session-read-document session))
+                  (process org-texmacs--worker-process)
+                  (document
+                   (with-temp-buffer
+                     (org-mode)
+                     (insert "#+OPTIONS: toc:nil\n* Heading\n"
+                             "Section [[*Heading]]. Literal <alpha>. Café.\n\n"
+                             "#+name: t\n#+caption: Table caption\n| a | b |\n\nTable [[t]].\n")
+                     (org-texmacs-document-from-buffer (current-buffer)))))
+              (should (equal file (org-texmacs-document-save-pdf document file)))
+              (should-not (directory-files org-texmacs--worker-directory nil "\\`render-.*\\.pdf\\'"))
+              (should (eq process org-texmacs--worker-process))
+              (should (equal state (org-texmacs--session-read-document session)))
+              (should-error (org-texmacs-document-save-pdf document file) :type 'file-already-exists)
+              (let ((info (executable-find "pdfinfo")) (text (executable-find "pdftotext")))
+                ;; Installed ERT supplies mandatory independent PDF inspectors.
+                (when (getenv "ORG_TEXMACS_TEST_README") (should info) (should text))
+                (when info
+                  (with-temp-buffer
+                    (should (= 0 (call-process info nil t nil file)))
+                    (should (re-search-backward "Pages: +[1-9][0-9]*" nil t))))
+                (when text
+                  (with-temp-buffer
+                    (let ((coding-system-for-read 'utf-8-unix))
+                      (should (= 0 (call-process text nil t nil file "-"))))
+                    (dolist (value '("Heading" "Literal <alpha>" "Café" "Table caption" "Section 1" "Table 1"))
+                      (should (string-match-p (regexp-quote value) (buffer-string)))))))))
+        (org-texmacs-session-close session)))))
+
+(ert-deftest org-texmacs-pdf-preflight-protocol-and-source-wait ()
+  (cl-letf (((symbol-function 'org-texmacs--worker-call)
+             (lambda (&rest _) (ert-fail "Invalid PDF reached worker"))))
+    (should-error (org-texmacs-document-pdf nil) :type 'org-texmacs-encoding-error)
+    (should-error (org-texmacs-document-pdf
+                   (org-texmacs--document-create :body '(document (image "unowned.png"))))
+                  :type 'org-texmacs-rendering-error))
+  (let ((stops 0))
+    (cl-letf (((symbol-function 'org-texmacs--worker-call)
+               (lambda (_request) '(ok 1 (rendered-pdf "00"))))
+              ((symbol-function 'org-texmacs--worker-stop) (lambda () (cl-incf stops))))
+      (should-error (org-texmacs-document-pdf (org-texmacs--document-create :body '(document "Text")))
+                    :type 'org-texmacs-worker-error)
+      (should (= stops 1))))
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "Text.\n")
+      (let ((source (current-buffer)) (file (expand-file-name "stale.pdf" test-directory)))
+        (cl-letf (((symbol-function 'org-texmacs-document-pdf)
+                   (lambda (_document)
+                     (with-current-buffer source (insert "Changed"))
+                     (encode-coding-string "%PDF-1.4\n%%EOF\n" 'us-ascii)))
+                  ((symbol-function 'org-texmacs--native-save-bytes)
+                   (lambda (&rest _) (ert-fail "Stale PDF was written"))))
+          (should-error (org-texmacs-export-to-pdf source file) :type 'org-texmacs-document-error))
+        (should-not (file-exists-p file))))))
+
+(ert-deftest org-texmacs-pdf-render-error-recovery ()
+  (org-texmacs-test--with-worker
+    (let ((script (expand-file-name "pdf-failure.scm" test-directory)))
+      (with-temp-file script
+        (insert (format "(load %s)\n" (org-texmacs--scheme-string org-texmacs--worker-scheme-file))
+                "(define original-printer print-to-file)\n"
+                "(define first-print #t)\n"
+                "(set! print-to-file (lambda (file)\n"
+                "  (if first-print (begin (set! first-print #f) (error \"Injected printer failure\"))\n"
+                "      (original-printer file))))\n"))
+      (let* ((org-texmacs--worker-scheme-file script)
+             (document (org-texmacs--document-create :body '(document "Text")))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (org-texmacs-session-set-document session document)
+              (let ((state (org-texmacs--session-read-document session))
+                    (process org-texmacs--worker-process))
+                (should-error (org-texmacs-document-pdf document) :type 'org-texmacs-rendering-error)
+                (should (org-texmacs--worker-live-p))
+                (should-not (directory-files org-texmacs--worker-directory nil "\\`render-.*\\.pdf\\'"))
+                (should (equal state (org-texmacs--session-read-document session)))
+                (should (string-prefix-p "%PDF-" (org-texmacs-document-pdf document)))
+                (should (eq process org-texmacs--worker-process))))
+          (org-texmacs-session-close session))))))
+
+(ert-deftest org-texmacs-pdf-cleanup-failure-stops-worker ()
+  (org-texmacs-test--with-worker
+    (let ((script (expand-file-name "pdf-cleanup-failure.scm" test-directory)))
+      (with-temp-file script
+        (insert (format "(load %s)\n" (org-texmacs--scheme-string org-texmacs--worker-scheme-file))
+                "(set! buffer-close (lambda args (error \"Injected cleanup failure\")))\n"))
+      (let ((org-texmacs--worker-scheme-file script))
+        (should-error (org-texmacs-document-pdf
+                       (org-texmacs--document-create :body '(document "Text")))
+                      :type 'org-texmacs-worker-error)
+        (should-not (org-texmacs--worker-live-p))
+        (should-not org-texmacs--worker-directory)))))
+
+(ert-deftest org-texmacs-pdf-interactive-source-export ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "PDF from explicit source.\n")
+      (let ((source (current-buffer))
+            (file (expand-file-name "interactive.pdf" test-directory)))
+        (cl-letf (((symbol-function 'read-file-name)
+                   (lambda (_prompt _directory _default _mustmatch name &rest _)
+                     (should (equal name "export.pdf"))
+                     file)))
+          (should (equal file (call-interactively #'org-texmacs-export-to-pdf))))
+        (should (eq source (current-buffer)))
+        (with-temp-buffer
+          (set-buffer-multibyte nil)
+          (insert-file-contents-literally file)
+          (should (string-prefix-p "%PDF-" (buffer-string))))))))
 
 (ert-deftest org-texmacs-session-real-complete-document-state ()
   (org-texmacs-test--with-worker

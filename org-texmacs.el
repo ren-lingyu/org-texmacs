@@ -439,6 +439,33 @@ Unsupported directives retain the existing explicit preparation errors."
    (lambda (input) (org-texmacs-document-serialize (org-texmacs-document input)))
    bibliography-sources))
 
+;;;###autoload
+(defun org-texmacs-export-pdf-from-buffer (source-buffer &optional bibliography-sources)
+  "Render explicit Org SOURCE-BUFFER to native PDF bytes.
+Use explicit BIBLIOGRAPHY-SOURCES snapshots and the restricted preparation.
+Keep lowering and native printing inside the final source/dependency check.
+Return unibyte PDF data; no final output file or GUI preview is created."
+  (org-texmacs--prepare-buffer
+   source-buffer
+   (lambda (input) (org-texmacs-document-pdf (org-texmacs-document input)))
+   bibliography-sources))
+
+;;;###autoload
+(defun org-texmacs-export-to-pdf (source-buffer file &optional bibliography-sources)
+  "Render explicit Org SOURCE-BUFFER to a new local PDF at absolute FILE.
+Capture the destination before preparation, then render with explicit
+BIBLIOGRAPHY-SOURCES and check source/dependencies before writing PDF bytes.
+Use the existing exclusive creation and partial-write file-error boundary.
+M-x captures the current Org source and prompts for a new .pdf destination;
+interactive calls pass no bibliography snapshots.  No GUI preview opens."
+  (interactive (org-texmacs--export-file-arguments "pdf"))
+  (let ((target (org-texmacs--native-save-target file)))
+    (org-texmacs--native-save-bytes
+     (org-texmacs-export-pdf-from-buffer source-buffer bibliography-sources) target)
+    (when (called-interactively-p 'interactive)
+      (message "Exported native PDF to %s" target))
+    target))
+
 (defun org-texmacs--export-interactive-source ()
   "Return the current Org source for an interactive export command."
   (unless (derived-mode-p 'org-mode)
@@ -447,17 +474,20 @@ Unsupported directives retain the existing explicit preparation errors."
     (user-error "Export requires an unnarrowed Org source buffer"))
   (current-buffer))
 
-(defun org-texmacs--export-file-arguments ()
-  "Capture an interactive source before prompting for a new local file."
+(defun org-texmacs--export-file-arguments (&optional extension)
+  "Capture an interactive source before prompting for a new local file.
+EXTENSION is a fixed consumer suffix, defaulting to tm."
   (let* ((source (org-texmacs--export-interactive-source))
          (directory (org-texmacs--source-capture-path default-directory))
          (source-file (buffer-file-name (buffer-base-buffer)))
-         (name (if source-file (concat (file-name-base source-file) ".tm") "export.tm")))
+         (extension (or extension "tm"))
+         (name (concat (if source-file (file-name-base source-file) "export")
+                       "." extension)))
     (unless (org-texmacs--document-local-file-path-p directory)
       (user-error "Interactive file export requires a local working directory"))
     (list source
           (expand-file-name
-           (read-file-name "Export to new TeXmacs file: " directory nil nil name)
+           (read-file-name (format "Export to new %s file: " extension) directory nil nil name)
            directory))))
 
 ;;;###autoload

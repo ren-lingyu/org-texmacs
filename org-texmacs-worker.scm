@@ -205,6 +205,74 @@
             (lambda args (list 'serialization-error id "Native document serialization failed")))))
       (lambda args (list 'encoding-error id "Invalid document encoding request")))))
 
+(define org-texmacs-render-directory #f)
+(define org-texmacs-render-counter 0)
+
+(define (org-texmacs-render-native-pdf native)
+  (for-each
+   (lambda (name)
+     (if (not (defined? name)) (error "Missing PDF capability" name)))
+   '(supports-native-pdf? print-to-file update-current-buffer string-load
+     url-append system-remove buffer-new view-new buffer-close))
+  (if (not (supports-native-pdf?)) (error "Native PDF unsupported"))
+  (if (not org-texmacs-render-directory) (error "Missing private PDF directory"))
+  (let ((buffer #f) (file #f) (failure #f) (result #f) (fatal #f))
+    (dynamic-wind
+      (lambda () #t)
+      (lambda ()
+        (catch #t
+          (lambda ()
+            (set! org-texmacs-render-counter (+ org-texmacs-render-counter 1))
+            (set! file (url-append org-texmacs-render-directory
+                                  (string-append "render-"
+                                                 (number->string org-texmacs-render-counter) ".pdf")))
+            (set! buffer (buffer-new))
+            (view-new buffer)
+            ;; Catch inside with-buffer so focus restoration runs normally.
+            (with-buffer buffer
+              (catch #t
+                (lambda ()
+                  (set-style-list (list-ref native 0))
+                  (org-texmacs-clear-initial)
+                  (for-each (lambda (entry) (init-env-tree (car entry) (cdr entry)))
+                            (list-ref native 1))
+                  (buffer-set-body buffer (list-ref native 2))
+                  ;; Low-level updates avoid deferred generate-all-aux/file APIs.
+                  (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer))
+                  (print-to-file file)
+                  (set! result (string-load file)))
+                (lambda args (set! failure args))))
+            (if failure (apply throw failure))
+            (if (not (and (string? result) (> (string-length result) 0)))
+                (error "Empty native PDF")))
+          (lambda args (set! failure args))))
+      (lambda ()
+        (for-each
+         (lambda (cleanup)
+           (catch #t cleanup (lambda args (set! fatal #t))))
+         (list (lambda () (if buffer (buffer-close buffer)))
+               (lambda () (if file (system-remove file)))))))
+    (if fatal (throw 'org-texmacs-render-fatal))
+    (if failure (apply throw failure))
+    result))
+
+(define (org-texmacs-pdf-reply request)
+  (let ((id (cadr request)))
+    (catch #t
+      (lambda ()
+        (let ((native (org-texmacs-native-document
+                       (list-ref request 2) (list-ref request 3)
+                       (list-ref request 4) (list-ref request 5))))
+          (catch #t
+            (lambda ()
+              (list 'ok id (list 'rendered-pdf
+                                (org-texmacs-hex-tree (org-texmacs-render-native-pdf native)))))
+            (lambda (key . args)
+              (if (eq? key 'org-texmacs-render-fatal)
+                  (list 'rendering-fatal id "Native PDF cleanup failed")
+                  (list 'rendering-error id "Native PDF rendering failed"))))))
+      (lambda args (list 'encoding-error id "Invalid document encoding request")))))
+
 (define org-texmacs-session-buffer #f)
 (define org-texmacs-session-key #f)
 (define org-texmacs-session-counter 0)
@@ -403,6 +471,10 @@
                   (string? (caddr request)))))
     (org-texmacs-session-reply request))
    ((and (list? request) (= (length request) 6)
+           (eq? (car request) 'render-pdf)
+           (integer? (cadr request)) (> (cadr request) 0))
+    (org-texmacs-pdf-reply request))
+   ((and (list? request) (= (length request) 6)
            (eq? (car request) 'serialize)
            (integer? (cadr request)) (> (cadr request) 0))
     (org-texmacs-serialize-reply request))
@@ -465,6 +537,7 @@
      (if (not (defined? name)) (error "Missing worker capability" name)))
    '(socket bind listen accept close-port force-output AF_UNIX SOCK_STREAM
      stm-snippet->texmacs tree->stree))
+  (set! org-texmacs-render-directory (url-head (system->url socket-path)))
   (let ((server (socket AF_UNIX SOCK_STREAM 0)))
     (bind server AF_UNIX socket-path)
     (listen server 1)
