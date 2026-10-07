@@ -45,7 +45,11 @@ consumer constructs a complete file wrapper only after native encoding.
 - `org-texmacs-export-from-buffer` / `org-texmacs-export-to-file`: explicit source
   byte/file export adapters.
 - `org-texmacs-export-to-buffer`: readonly native byte view; it and file export
-  also provide M-x commands (verified staged node below).
+  also provide M-x commands (committed node below).
+- `org-texmacs-document-pdf` / `org-texmacs-document-save-pdf`: native PDF bytes
+  and new-file consumers; `org-texmacs-export-pdf-from-buffer` /
+  `org-texmacs-export-to-pdf`: checked explicit-source adapters, with M-x file
+  export (PDF working-tree node below).
 
 The result does not retain the source buffer. Pure lowering does not read a
 buffer or start a worker.
@@ -357,7 +361,9 @@ Commit `ee225ad62ffedf529239f7a31fd4cc73e9743519` matches the verified four-file
   files were staged and then committed. No Org backend/dispatcher, output
   buffer preview, overwrite or unrestricted preprocessing is added.
 
-## CONSUMER-01 interactive exports and readonly byte views (worktree node)
+## CONSUMER-01 committed interactive exports and readonly byte views
+
+Commit `1ed04db7d5635d4851f78bf89c2bb72e9693312a` matches the verified three-file diff.
 
 - Public org-texmacs-export-to-buffer exports an explicit source, then creates
   a fresh unibyte readonly special-mode buffer with no-conversion coding, no
@@ -377,8 +383,31 @@ Commit `ee225ad62ffedf529239f7a31fd4cc73e9743519` matches the verified four-file
 - Four new cases pass in sixteen combined focused tests. Complete local ERT
   passes disjoint 105/105 + 149/149 + 11/11, after the old 254-case bucket timed
   out at 120s. Nix compilation/package-lint and installed ERT 265/265 pass.
-  Three files are approved/staged; the temporary mirror overlay stays excluded.
+  The verified node is committed; the temporary mirror overlay stays excluded.
   Display and prompts are simulated; actual GUI layout is unverified.
+
+## CONSUMER-01 native PDF consumer (working tree)
+
+- document-pdf returns unibyte native PDF bytes; document-save-pdf uses the
+  exclusive new-file writer. export-pdf-from-buffer and export-to-pdf keep
+  native rendering inside the source/dependency consistency check; the latter
+  also supports M-x with a captured source and a .pdf destination suggestion.
+- The native bridge encodes owned fields once; headless Scheme installs them
+  directly in a temporary native buffer, runs three synchronous low-level
+  updates and print-to-file. It does not reparse serialized .tm or run deferred
+  generate-all-aux/bibliography generation. Existing public sessions are isolated.
+- Temporary files are in the worker's private directory. Buffer/file cleanup
+  runs on success and rendering errors; cleanup failure or malformed PDF output
+  stops the worker. Font caches have normal TeXmacs lifetime.
+- Explicit resource/executable trees image/include/extern/script/action/eval/
+  raw-data are rejected. Native installed styles/fonts remain dependencies;
+  custom styles are not sandboxed. Fixed update passes have bounded reference
+  evidence, not a general convergence guarantee. GUI/visual preview is absent.
+- Installed ERT uses test-only Poppler inspectors for PDF structure/text and
+  heading/table reference values. PDF binaries are never GAW artifacts.
+- Six PDF cases, full local 271/271 and final Nix compilation/package-lint /
+  installed ERT 271/271 pass. Seven files are approved/staged, awaiting the user
+  commit; the temporary mirror overlay is excluded.
 
 ## Worker and session
 
@@ -410,7 +439,7 @@ worker, encoding, and native-session tests.
 ## Downstream work not yet implemented
 
 Broader file metadata (attachments/reference tables/auxiliary), replacement/backup
-policy, Org export, PDF, preview,
+policy, generic Org export backend/dispatcher, preview,
 visual pagination, multi-document or multi-session operation, live or
 incremental synchronization, and broader Org document-wide resolution remain
 future consumer/document work. `memory/backlog.md` distinguishes adopted work,

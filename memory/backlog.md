@@ -96,6 +96,15 @@ pipeline when it reads files or dynamic state outside the owned snapshot.
 
 ## Adopted downstream work
 
+The user selected native rendering/PDF on 2026-10-08 as the next CONSUMER-01
+node. The working-tree implementation owns a temporary native buffer and PDF
+inside the worker directory, uses three synchronous low-level updates and the
+native printer, and returns bytes or saves a new file after source checking.
+Six PDF cases and full local 271/271 pass. Final Nix passes all seven checks
+with installed ERT 271/271 and mandatory Poppler inspection. Seven files are
+approved/staged; the user must commit them. The temporary overlay stays excluded.
+No GUI preview or overwrite policy is included; PDF binaries remain outside GAW.
+
 ### CONSUMER-01: Add stable complete-document consumers
 
 Status: **active-next**. The stable bounded DOC-01 architecture now covers the
@@ -131,11 +140,11 @@ focused cases, full local ERT passes 250/250 + 11/11, and Nix installed ERT
 and readonly native export buffers without generic backend/dispatcher preprocessing.
 Dispatcher policy and replacement/publication remain separate boundaries.
 
-The interactive node is verified/staged: M-x buffer/file export, fresh readonly
+The interactive node is committed as `1ed04db`: M-x buffer/file export, fresh readonly
 native byte views, captured source identity before prompts and failed-view
 cleanup. Four new cases pass in sixteen combined focused tests; full local ERT
 passes 105/105 + 149/149 + 11/11 and Nix installed ERT 265/265 passes with
-compilation/package-lint. Await the user's commit. Interactive bibliography
+compilation/package-lint. Interactive bibliography
 snapshots default to nil; explicit Lisp arguments retain the chosen data model.
 
 Build complete TeXmacs file-document construction and independent consumers for
