@@ -617,7 +617,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   excluded. The inspected final ERT derivation is
   /nix/store/hdwfqgf62hhqxk5y7lkk396ydxxxgiy4-org-texmacs-ert.drv.
 
-## Verified/staged PDF semantic regression node (2026-10-08)
+## Committed PDF semantic regression node (2026-10-08)
 
 - User requires only stable reproducible checks in tests. New cases extract
   Poppler text and normalize whitespace; they do not assert PDF bytes, pixels,
@@ -653,8 +653,46 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   with approval; complete staged review and diff --check pass. Staged diff
   SHA-256 against db33c148dbbc4c26c6aae300c063883b06e893e6 is
   78e76d17e30ef0361e94c3b3de3717808afbb0a3bc7aced7498682f1563afbbc.
+  Commit b5100a90e1f3891bf6def7ec29d7ae9aa04cea12 was compared with baseline
+  db33c14 on 2026-10-08 and matches this exact three-file hash; the index is empty.
   tmp/commit.md is reviewed; only the unchanged flake.nix overlay is unstaged.
   Final ERT derivation: /nix/store/r639c3h0hx26cdkkwv9xgjg5bq8j34nj-org-texmacs-ert.drv.
+
+## Bounded ox-texmacs frontend (2026-10-08, verified/staged)
+
+- User adopted standard dispatcher integration after rejecting a standalone PDF
+  preview command. Implementation is on b5100a90e1f3891bf6def7ec29d7ae9aa04cea12.
+- Authorized Org 9.8-pre reads use the previously recorded immutable source root.
+  ox.el org-export-define-backend (1235) defines menu actions with four flags;
+  org-export-dispatch (7783) passes async/subtree/visible/body. annotate-info
+  runs before-processing hooks before INCLUDE/macros/Babel. ox-latex/html
+  entry points establish the five optional-argument convention.
+- Optional ox-texmacs registers menu actions that call the owned pipeline directly.
+  Non-nil standard flags/ext-plist and active regions/narrowing fail early.
+  Generic string export for texmacs/derivatives is rejected through a conditional
+  early hook; real ASCII export still passes. No new bibliography reader or
+  publisher is introduced. Display/prompt callbacks are simulated in ERT.
+- Initial focused load found a missing test parenthesis; after correction, all
+  seven focused cases pass (2.63s). Final Nix passes all seven checks, native
+  compilation/package-lint and installed ERT 280/280 (123.36s), including actual
+  native .tm/PDF outputs, prompt context switches, stale-source rejection,
+  unsupported dispatcher options and failed-view cleanup.
+- Six approved staged files: .gitignore, README.org, flake.nix, org-texmacs.el,
+  ox-texmacs.el, tests/ert/ert.el. Complete staged review/diff --check pass.
+  SHA-256 of git diff --cached on the baseline above:
+  d41f05a26d1718ec2e453019f1b3604c2bc7e8d01241a8205ef0d170694ee5ab.
+  tmp/commit.md is reviewed. Nix ERT derivation is
+  /nix/store/phx84ryfkmn39x16ml4n92rh7qk0vg1w-org-texmacs-ert.drv.
+- flake staging contains only ./ox-texmacs.el in fileset. Its staged bytes minus
+  that line equal HEAD exactly. Current raw unstaged mirror diff hash is
+  dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc. Restoring
+  the pre-fileset blob IDs and hunk positions reproduces original overlay hash
+  1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54 exactly;
+  the overlay content is unchanged and excluded. Checks used that temporary mirror.
+- No necessary unique raw probe exists. tmp/ox-texmacs-fileset.patch is a
+  regenerable staging aid; no archive snapshot is needed. Only pure text enters
+  GAW. Generic publishing/export preprocessing, scoped selection, overrides and
+  async behavior remain outside this node; actual GUI layout is unverified.
 
 ## Durable TeXmacs facts
 

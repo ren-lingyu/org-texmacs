@@ -396,7 +396,7 @@ Commit db33c148dbbc4c26c6aae300c063883b06e893e6 matches the verified seven-file 
   also supports M-x with a captured source and a .pdf destination suggestion.
 - The native bridge encodes owned fields once; headless Scheme installs them
   directly in a temporary native buffer, runs three synchronous low-level
-  updates and print-to-file. The working-tree semantic fix then updates three
+  updates and print-to-file. Semantic fix b5100a9 then updates three
   times and prints again to resolve typeset bibliography references.
   It does not reparse serialized .tm or run deferred
   generate-all-aux/bibliography generation. Existing public sessions are isolated.
@@ -410,15 +410,38 @@ Commit db33c148dbbc4c26c6aae300c063883b06e893e6 matches the verified seven-file 
 - Installed ERT uses test-only Poppler inspectors for PDF structure/text and
   heading/table reference values. PDF binaries are never GAW artifacts.
 - New semantic regression exposed unresolved citation markers [?, ?]/[?] despite
-  populated numbered bibliography. The authorized working-tree two-print fix
+  populated numbered bibliography. The committed two-print fix b5100a9
   resolves these markers; eight focused cases pass, including footnote bodies/
   markers and each print phase's failure/recovery. Final installed ERT 273/273
-  (122.88s) and all Nix checks pass. Three files are approved/staged, awaiting
-  the user's commit. Normalized text assertions have no byte/pixel/coordinate
+  (122.88s) and all Nix checks pass. Commit b5100a90e1f3891bf6def7ec29d7ae9aa04cea12
+  matches the verified three-file hash. Normalized text assertions have no byte/pixel/coordinate
   or fixed-pagination dependencies; inspectors are mandatory in installed ERT.
 - Six PDF cases, full local 271/271 and final Nix compilation/package-lint /
   installed ERT 271/271 pass. The verified node is committed;
   the temporary mirror overlay is excluded.
+
+## CONSUMER-01 bounded ox-texmacs frontend (working tree)
+
+- Optional ox-texmacs.el registers texmacs, menu key T with T/t/p actions for a
+  fresh readonly native byte buffer, prompted new .tm and prompted new PDF.
+  It requires org-texmacs; loading the core alone does not register this menu.
+- Frontend commands accept Org's five optional arguments but reject every
+  non-nil value, active regions and narrowing before prompts/conversion. Only
+  synchronous complete-buffer export is implemented; bibliography snapshots
+  are still supplied through the existing explicit-source Lisp adapters.
+- Menu actions call the owned-input/native consumers directly. A conditional
+  early Org before-processing hook rejects generic org-export-as/to-buffer/
+  to-file for texmacs and derived backends before INCLUDE/macros/Babel. It is
+  inert for unrelated backends. Generic string-transcoding/publishing is absent.
+- Buffer display follows org-export-show-temporary-export-buffer; a display
+  failure removes only the new view. File prompts capture source identity and
+  reuse exclusive new-file writing. Frontend tests exercise actual dispatcher
+  argument flow, .tm/PDF bytes, prompt context switches and source waits.
+- Module allowlist, Nix fileset and straight README recipe include the file.
+  Only the module fileset hunk may be staged in flake.nix; mirror changes stay
+  unstaged. Seven focused cases pass 7/7 (2.63s); final Nix passes all seven
+  checks, compilation/package-lint and installed ERT 280/280 (123.36s).
+  Six files are approved/staged, awaiting the user's project commit.
 
 ## Worker and session
 
@@ -450,7 +473,7 @@ worker, encoding, and native-session tests.
 ## Downstream work not yet implemented
 
 Broader file metadata (attachments/reference tables/auxiliary), replacement/backup
-policy, generic Org export backend/dispatcher, preview,
+policy, generic Org string export/publishing beyond the bounded dispatcher, preview,
 visual pagination, multi-document or multi-session operation, live or
 incremental synchronization, and broader Org document-wide resolution remain
 future consumer/document work. `memory/backlog.md` distinguishes adopted work,

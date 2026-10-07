@@ -2,35 +2,51 @@
 
 ## Active objective
 
-Stable reproducible PDF semantic regressions and the native citation-reference
-fix are complete, verified and staged with approval. tmp/commit.md is reviewed.
-Await the user's ordinary project commit, then compare its three-file diff.
-Only normalized text/marker relations are asserted; no PDF byte/pixel/coordinate
-or fixed pagination assertions are adopted. Preview remains later work.
+Bounded ox-texmacs dispatcher frontend is complete, verified and staged with
+approval. tmp/commit.md is reviewed. Await the user's ordinary commit and verify
+its six-file diff. Baseline b5100a9's PDF semantic commit is already verified.
+User rejected a standalone PDF preview command; no such command is adopted.
+The frontend only supports whole-buffer synchronous menu actions. Generic
+string export/publishing, preprocessing and broader selection remain unsupported.
 
 ## Baseline and staging
 
 - Main HEAD observed on 2026-10-08:
-  `db33c148dbbc4c26c6aae300c063883b06e893e6`.
-  Its PDF diff against 1ed04db matches the verified seven-file hash exactly.
-- Committed node: `README.org`, `org-texmacs.el`, `tests/ert/ert.el`.
-  Diff SHA-256: `3f3a1f61d1f0b24ad984c6723ada568ec12a5b8015a9de968200ac32e9878d51`.
-  Full staged review and diff --check passed before commit.
-- Committed PDF files: README.org, org-texmacs-core.el,
-  org-texmacs-session.el, org-texmacs-worker.scm, org-texmacs.el,
-  tests/ert/default.nix and tests/ert/ert.el. Full staged review and diff --check
-  passed. Current semantic-node files are approved/staged: README.org,
-  org-texmacs-worker.scm and tests/ert/ert.el. No implementation is unstaged.
-  Full staged review and diff --check passed; SHA-256 on baseline db33c14 is
-  78e76d17e30ef0361e94c3b3de3717808afbb0a3bc7aced7498682f1563afbbc.
-  The user's temporary
+  `b5100a90e1f3891bf6def7ec29d7ae9aa04cea12`.
+  Its semantic PDF diff against db33c14 matches the verified three-file hash exactly.
+- Approved/staged: .gitignore, README.org, flake.nix (only module fileset entry),
+  org-texmacs.el, ox-texmacs.el and tests/ert/ert.el. Full staged review and
+  diff --check pass. Diff SHA-256 on baseline b5100a9:
+  d41f05a26d1718ec2e453019f1b3604c2bc7e8d01241a8205ef0d170694ee5ab.
+  No implementation is unstaged. The user's temporary
   `flake.nix` overlay remains excluded. It rewrites
   GNU ELPA fetchurl URLs to the remote USTC mirror. The configuration is retained
-  locally only: never stage, commit or push it. It is not a locally hosted mirror.
+  locally only: never stage, commit or push that overlay. It is not a locally hosted mirror.
   Overlay SHA-256: `1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54`.
+  Restoring the pre-fileset baseline/diff metadata reproduces that exact hash.
+  Current raw unstaged flake diff SHA-256 is dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc.
 - Local v0.3.1 annotated tag resolves to `880d4e00667907ef66985387b4865ec8d795d48d`.
   Later DOC-01/CONSUMER-01 features are local development, not release claims.
   Remote publication/signature remain unverified; release evidence is in evidence.md.
+
+## Verified bounded dispatcher frontend
+
+- Optional require ox-texmacs registers texmacs and menu T T/T t/T p for readonly
+  byte buffer/new .tm/new PDF. Core loading alone does not install the frontend.
+- Standard optional arguments are accepted syntactically but all non-nil values,
+  active region/narrowing/non-Org sources fail before conversion or prompts.
+  No bibliography files are read; explicit snapshots remain on existing Lisp APIs.
+- Actions call owned source/native consumers directly. An early conditional
+  org-export-before-processing-functions hook rejects generic string export for
+  texmacs/derivatives before INCLUDE/macros/Babel. Other backends remain usable.
+- New-file prompts capture source identity; display follows Org's temporary
+  export buffer setting and failure removes only the new output view.
+- Seven focused cases pass 7/7 (2.63s). Final Nix passes all seven checks,
+  compilation/package-lint and installed ERT 280/280 (123.36s). Org source reads,
+  focused ERT 120s and full Nix 180s were authorized for this node. Prompt/display
+  behavior is simulated; real native .tm/PDF and unrelated ASCII export are covered.
+- No necessary unique raw artifact needs archiving. The tmp fileset staging patch
+  is regenerable from the project diff; only pure text enters GAW, never PDF/bytecode.
 
 ## PDF node and limits
 
@@ -68,7 +84,7 @@ or fixed pagination assertions are adopted. Preview remains later work.
   sources fail before prompts; remote working directories are outside this chooser.
 - Interactive commands pass nil bibliography snapshots. Explicit BibTeX text
   snapshots remain Lisp arguments; do not introduce automatic bibliography reads.
-- No generic Org backend/dispatcher, unrestricted preprocessing, overwrite,
+- No generic Org string-export pipeline, unrestricted preprocessing, overwrite,
   backup, atomic publication or native preview is implemented.
   File writes remain exclusive new-file creation; write errors can leave a
   partial new file. Source adapters guard through serialization before writing.
@@ -137,11 +153,13 @@ native printing and independent PDF inspection are real. GUI layout is unverifie
 
 1. PDF commit db33c14 is verified against the seven-file SHA-256 on baseline 1ed04db:
    00164bbb3491e4addd74c75a0c53ab86cd8397855e659c25a572a5ae84044464.
-   Semantic node is now verified/staged. Await the user's commit and compare
-   its three-file diff SHA-256 against the baseline db33c14 value above.
-   Keep flake.nix excluded.
-   Related installed citation definitions were authorized; focused ERT (120s)
-   and full Nix checks (180s) are authorized for this semantic node. Tests may
+   Semantic commit b5100a9 is now verified by its three-file diff SHA-256
+   against baseline db33c14. ox-texmacs is now verified/staged; await the user's
+   commit and compare its six-file diff against d41f05a2... above. tmp/commit.md
+   contains the reviewed message.
+   Keep the mirror overlay excluded; flake staging must contain only the fileset entry.
+   Related installed Org definitions, focused backend ERT (120s) and full Nix
+   checks (180s) are authorized for this frontend node. Tests may
    generate PDF only in isolated temporary directories; no binary enters GAW.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries
    separate from the selected PDF work. Do not silently
