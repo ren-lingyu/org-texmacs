@@ -96,13 +96,21 @@ pipeline when it reads files or dynamic state outside the owned snapshot.
 
 ## Adopted downstream work
 
+The next selected node is stable PDF semantic regression for footnotes and
+owned citation/bibliography output. No fixed pagination/pixel/byte assertions
+are adopted. First native citation rendering failed with unresolved [?] values;
+the authorized working-tree print/update/final-print sequence resolves them.
+Final focused 8/8 and installed ERT 273/273 plus all Nix checks pass; three
+files are approved/staged and await the user's commit. Preview
+and broader visual/multipage inspection remain later boundaries.
+
 The user selected native rendering/PDF on 2026-10-08 as the next CONSUMER-01
-node. The working-tree implementation owns a temporary native buffer and PDF
+node. Implementation committed as db33c14 owns a temporary native buffer and PDF
 inside the worker directory, uses three synchronous low-level updates and the
 native printer, and returns bytes or saves a new file after source checking.
 Six PDF cases and full local 271/271 pass. Final Nix passes all seven checks
 with installed ERT 271/271 and mandatory Poppler inspection. Seven files are
-approved/staged; the user must commit them. The temporary overlay stays excluded.
+committed and their diff matches the verified hash. The temporary overlay stays excluded.
 No GUI preview or overwrite policy is included; PDF binaries remain outside GAW.
 
 ### CONSUMER-01: Add stable complete-document consumers

@@ -581,10 +581,11 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   GUI navigation, file search/remote/tilde targets and broader
   filename escaping remain unverified or explicitly unsupported.
 
-## Native PDF node evidence (2026-10-08, working tree)
+## Native PDF node evidence (2026-10-08)
 
 - Baseline is interactive commit 1ed04db7d5635d4851f78bf89c2bb72e9693312a;
-  PDF code is not yet a project commit. Installed TeXmacs is 2.1.5 in
+  PDF commit db33c148dbbc4c26c6aae300c063883b06e893e6 was verified against the
+  seven-file diff hash below on 2026-10-08. Installed TeXmacs is 2.1.5 in
   /nix/store/fbmq6la2pwcapsgmqp3zy6d4dbrn270a-texmacs-2.1.5/share/TeXmacs.
 - User authorized targeted tm-print.scm, tm-files.scm and document-edit.scm
   reads. Native print-to-file supports direct PDF. update-document "all" uses
@@ -615,6 +616,45 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   explicit approval. tmp/commit.md is the reviewed message. Unchanged flake.nix overlay is
   excluded. The inspected final ERT derivation is
   /nix/store/hdwfqgf62hhqxk5y7lkk396ydxxxgiy4-org-texmacs-ert.drv.
+
+## Verified/staged PDF semantic regression node (2026-10-08)
+
+- User requires only stable reproducible checks in tests. New cases extract
+  Poppler text and normalize whitespace; they do not assert PDF bytes, pixels,
+  coordinates or fixed pagination. Inspectors are mandatory in installed Nix
+  ERT; local tests skip semantic inspection when Poppler is unavailable.
+- On baseline db33c148dbbc4c26c6aae300c063883b06e893e6, first focused run with
+  explicit cached Poppler exec-path passed 7/8 in 18.27s. Named/repeated and
+  anonymous footnote markers/bodies pass. Citation regression fails: actual
+  "Group [?, ?]. Repeat [?]." versus expected resolved [1, 2]/[1], while the
+  bibliography has [1]/[2] and both selected titles. This is a reproducible
+  native reference defect; retain the failing test, not question-mark expectations.
+- Focused ERT 120s and Nix 180s checks are authorized for this node.
+  Authorized std-automatic.ts/bib-utils.scm/plain.scm fragments confirm
+  cite-arg references prefix + "-" + key and bib-label generates the same key.
+  The prefix mapping was correct; no change to bibliography lowering is justified.
+- A diagnostic wrapper in the maintained citation test performs native printing,
+  three low-level updates, and a second print on the same owned file. Focused
+  8/8 passed in 18.00s; unmodified production failed without the wrapper. This establishes
+  a bounded print/update/final-print solution for this fixture, not arbitrary
+  pagination convergence. User authorized worker Scheme/README repair; the
+  wrapper is removed. Real production focused 8/8 passes (21.27s) after extending
+  failure/recovery injection to both print phases. After tightening marker word
+  boundaries, final focused 8/8 passes in 19.27s. Intermediate Nix passes all
+  seven checks with installed ERT 273/273 (121.42s). Final tightened-test Nix
+  passes all seven checks and installed ERT 273/273 (122.88s); all eight PDF
+  cases pass with mandatory Poppler inspection. Initial sandbox daemon denial
+  was resolved by approved
+  execution of the same 180s command outside sandbox.
+- The diagnostic wrapper was maintained inside ERT during investigation and
+  then removed; the final regression and native implementation reproduce the
+  finding. No independent raw artifact needs archiving; no binary enters GAW.
+- Three files (README.org, org-texmacs-worker.scm, tests/ert/ert.el) were staged
+  with approval; complete staged review and diff --check pass. Staged diff
+  SHA-256 against db33c148dbbc4c26c6aae300c063883b06e893e6 is
+  78e76d17e30ef0361e94c3b3de3717808afbb0a3bc7aced7498682f1563afbbc.
+  tmp/commit.md is reviewed; only the unchanged flake.nix overlay is unstaged.
+  Final ERT derivation: /nix/store/r639c3h0hx26cdkkwv9xgjg5bq8j34nj-org-texmacs-ert.drv.
 
 ## Durable TeXmacs facts
 

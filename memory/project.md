@@ -49,7 +49,7 @@ consumer constructs a complete file wrapper only after native encoding.
 - `org-texmacs-document-pdf` / `org-texmacs-document-save-pdf`: native PDF bytes
   and new-file consumers; `org-texmacs-export-pdf-from-buffer` /
   `org-texmacs-export-to-pdf`: checked explicit-source adapters, with M-x file
-  export (PDF working-tree node below).
+  export (committed PDF node below).
 
 The result does not retain the source buffer. Pure lowering does not read a
 buffer or start a worker.
@@ -386,7 +386,9 @@ Commit `1ed04db7d5635d4851f78bf89c2bb72e9693312a` matches the verified three-fil
   The verified node is committed; the temporary mirror overlay stays excluded.
   Display and prompts are simulated; actual GUI layout is unverified.
 
-## CONSUMER-01 native PDF consumer (working tree)
+## CONSUMER-01 committed native PDF consumer
+
+Commit db33c148dbbc4c26c6aae300c063883b06e893e6 matches the verified seven-file diff.
 
 - document-pdf returns unibyte native PDF bytes; document-save-pdf uses the
   exclusive new-file writer. export-pdf-from-buffer and export-to-pdf keep
@@ -394,7 +396,9 @@ Commit `1ed04db7d5635d4851f78bf89c2bb72e9693312a` matches the verified three-fil
   also supports M-x with a captured source and a .pdf destination suggestion.
 - The native bridge encodes owned fields once; headless Scheme installs them
   directly in a temporary native buffer, runs three synchronous low-level
-  updates and print-to-file. It does not reparse serialized .tm or run deferred
+  updates and print-to-file. The working-tree semantic fix then updates three
+  times and prints again to resolve typeset bibliography references.
+  It does not reparse serialized .tm or run deferred
   generate-all-aux/bibliography generation. Existing public sessions are isolated.
 - Temporary files are in the worker's private directory. Buffer/file cleanup
   runs on success and rendering errors; cleanup failure or malformed PDF output
@@ -405,9 +409,16 @@ Commit `1ed04db7d5635d4851f78bf89c2bb72e9693312a` matches the verified three-fil
   evidence, not a general convergence guarantee. GUI/visual preview is absent.
 - Installed ERT uses test-only Poppler inspectors for PDF structure/text and
   heading/table reference values. PDF binaries are never GAW artifacts.
+- New semantic regression exposed unresolved citation markers [?, ?]/[?] despite
+  populated numbered bibliography. The authorized working-tree two-print fix
+  resolves these markers; eight focused cases pass, including footnote bodies/
+  markers and each print phase's failure/recovery. Final installed ERT 273/273
+  (122.88s) and all Nix checks pass. Three files are approved/staged, awaiting
+  the user's commit. Normalized text assertions have no byte/pixel/coordinate
+  or fixed-pagination dependencies; inspectors are mandatory in installed ERT.
 - Six PDF cases, full local 271/271 and final Nix compilation/package-lint /
-  installed ERT 271/271 pass. Seven files are approved/staged, awaiting the user
-  commit; the temporary mirror overlay is excluded.
+  installed ERT 271/271 pass. The verified node is committed;
+  the temporary mirror overlay is excluded.
 
 ## Worker and session
 

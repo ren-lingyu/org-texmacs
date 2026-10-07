@@ -2,24 +2,28 @@
 
 ## Active objective
 
-The user-selected native rendering/PDF CONSUMER-01 node is complete within its
-documented subset, with explicit output ownership and failure handling.
-PDF implementation is verified and staged with approval. tmp/commit.md contains
-the reviewed message. Await the user's ordinary commit, then verify its diff.
-Interactive commit `1ed04db` is verified; the temporary mirror remains excluded.
+Stable reproducible PDF semantic regressions and the native citation-reference
+fix are complete, verified and staged with approval. tmp/commit.md is reviewed.
+Await the user's ordinary project commit, then compare its three-file diff.
+Only normalized text/marker relations are asserted; no PDF byte/pixel/coordinate
+or fixed pagination assertions are adopted. Preview remains later work.
 
 ## Baseline and staging
 
 - Main HEAD observed on 2026-10-08:
-  `1ed04db7d5635d4851f78bf89c2bb72e9693312a`.
-  Its three-file interactive diff matches the previously verified hash exactly.
+  `db33c148dbbc4c26c6aae300c063883b06e893e6`.
+  Its PDF diff against 1ed04db matches the verified seven-file hash exactly.
 - Committed node: `README.org`, `org-texmacs.el`, `tests/ert/ert.el`.
   Diff SHA-256: `3f3a1f61d1f0b24ad984c6723ada568ec12a5b8015a9de968200ac32e9878d51`.
   Full staged review and diff --check passed before commit.
-- Approved/staged PDF files: README.org, org-texmacs-core.el,
+- Committed PDF files: README.org, org-texmacs-core.el,
   org-texmacs-session.el, org-texmacs-worker.scm, org-texmacs.el,
   tests/ert/default.nix and tests/ert/ert.el. Full staged review and diff --check
-  passed. No implementation is unstaged. The user's temporary
+  passed. Current semantic-node files are approved/staged: README.org,
+  org-texmacs-worker.scm and tests/ert/ert.el. No implementation is unstaged.
+  Full staged review and diff --check passed; SHA-256 on baseline db33c14 is
+  78e76d17e30ef0361e94c3b3de3717808afbb0a3bc7aced7498682f1563afbbc.
+  The user's temporary
   `flake.nix` overlay remains excluded. It rewrites
   GNU ELPA fetchurl URLs to the remote USTC mirror. The configuration is retained
   locally only: never stage, commit or push it. It is not a locally hosted mirror.
@@ -34,7 +38,8 @@ Interactive commit `1ed04db` is verified; the temporary mirror remains excluded.
   adapters use the existing encoding and exclusive new-file writer. Source
   consistency is checked after native rendering, before writing final output.
 - Headless rendering installs structured fields directly in a temporary native
-  buffer, updates synchronously three times and calls native print-to-file.
+  buffer, updates synchronously three times and calls native print-to-file;
+  the verified working-tree fix then updates three times and prints the final PDF.
   No .tm intermediary is reparsed; existing public session state is unchanged.
 - Temporary PDFs live in the private worker directory; normal/error cleanup
   closes the buffer and removes the file. Cleanup failure stops the worker;
@@ -68,7 +73,21 @@ Interactive commit `1ed04db` is verified; the temporary mirror remains excluded.
   File writes remain exclusive new-file creation; write errors can leave a
   partial new file. Source adapters guard through serialization before writing.
 
-## Validation
+## Current semantic-node validation
+
+- Tests normalize Poppler UTF-8 extraction, use short synthetic text in isolated
+  native configurations and assert exact marker identities/unique bodies or
+  bibliography titles. No bytes, pixels, coordinates or fixed pagination.
+- Final focused checks use cached Poppler exec-path and pass 8/8 (19.27s),
+  including both print phases' failure/recovery. Final Nix passes all seven
+  checks with installed ERT 273/273 (122.88s), compilation and package-lint.
+  Nix timeout is 180s for this node; sandbox initially denied daemon access,
+  and the same authorized command was approved outside sandbox.
+- All diagnostic behavior is reproducible from maintained tests/native repair;
+  no necessary independent temporary artifact qualifies for archiving. Only
+  pure text may enter GAW; binary PDFs remain test temporaries.
+
+## Previous PDF consumer validation
 
 - This PDF node has explicit repeated focused/full ERT and Nix authorization,
   timeout 120s. All six PDF cases pass, including malformed output, source
@@ -116,12 +135,13 @@ native printing and independent PDF inspection are real. GUI layout is unverifie
   user reported failure across devices/networks; successful mirror checks do not
   prove endpoint restoration. Cause remains unverified; detailed evidence persists.
 
-1. Await the user's project commit; compare its seven-file diff against the
-   verified staged SHA-256 on baseline 1ed04db:
+1. PDF commit db33c14 is verified against the seven-file SHA-256 on baseline 1ed04db:
    00164bbb3491e4addd74c75a0c53ab86cd8397855e659c25a572a5ae84044464.
-   tmp/commit.md is the reviewed message. Keep flake.nix excluded.
-   Related installed print/file/document-update Scheme reads and focused/full
-   ERT plus Nix checks (timeout 120s) are authorized for this node. Tests may
+   Semantic node is now verified/staged. Await the user's commit and compare
+   its three-file diff SHA-256 against the baseline db33c14 value above.
+   Keep flake.nix excluded.
+   Related installed citation definitions were authorized; focused ERT (120s)
+   and full Nix checks (180s) are authorized for this semantic node. Tests may
    generate PDF only in isolated temporary directories; no binary enters GAW.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries
    separate from the selected PDF work. Do not silently
