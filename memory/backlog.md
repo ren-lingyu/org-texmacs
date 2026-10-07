@@ -123,12 +123,20 @@ dispatcher preprocessing remains separately unresolved.
 Write errors can leave partial new files; this documented boundary is covered
 by regression. Atomic publication/replacement is not implied by exclusive open.
 
-The explicit-source export adapter node is verified/staged: source preparation's
+The explicit-source export adapter node is committed as `ee225ad`: source preparation's
 final check now encloses native serialization; bytes are returned or written to
 an owned new-file destination afterward. Four new cases pass in twelve combined
 focused cases, full local ERT passes 250/250 + 11/11, and Nix installed ERT
-261/261 passes with compilation/package-lint. Await the user's commit. Review
-interactive/dispatcher frontend policy and replacement/publication separately.
+261/261 passes with compilation/package-lint. The next node adds M-x file export
+and readonly native export buffers without generic backend/dispatcher preprocessing.
+Dispatcher policy and replacement/publication remain separate boundaries.
+
+The interactive node is verified/staged: M-x buffer/file export, fresh readonly
+native byte views, captured source identity before prompts and failed-view
+cleanup. Four new cases pass in sixteen combined focused tests; full local ERT
+passes 105/105 + 149/149 + 11/11 and Nix installed ERT 265/265 passes with
+compilation/package-lint. Await the user's commit. Interactive bibliography
+snapshots default to nil; explicit Lisp arguments retain the chosen data model.
 
 Build complete TeXmacs file-document construction and independent consumers for
 native serialization/save, Org export integration, rendering/PDF, and preview.

@@ -43,7 +43,9 @@ consumer constructs a complete file wrapper only after native encoding.
 - `org-texmacs-document-save`: explicit absolute local new-file saving consumer
   of a completed document result.
 - `org-texmacs-export-from-buffer` / `org-texmacs-export-to-file`: explicit source
-  byte/file export adapters (verified staged node below).
+  byte/file export adapters.
+- `org-texmacs-export-to-buffer`: readonly native byte view; it and file export
+  also provide M-x commands (verified staged node below).
 
 The result does not retain the source buffer. Pure lowering does not read a
 buffer or start a worker.
@@ -331,7 +333,9 @@ Commit `0ee17c4acc88664e2024af26d8ebcf08084e85a7` matches the verified three-fil
   files were approved/staged and then committed. The Scheme service and
   serializer protocol are unchanged; only the explicit saving API writes files.
 
-## CONSUMER-01 explicit-source export adapters (worktree node)
+## CONSUMER-01 committed explicit-source export adapters
+
+Commit `ee225ad62ffedf529239f7a31fd4cc73e9743519` matches the verified four-file diff.
 
 - Public org-texmacs-export-from-buffer takes an explicit source buffer and
   optional BibTeX text snapshots, returning native .tm bytes. It composes pure
@@ -350,8 +354,31 @@ Commit `0ee17c4acc88664e2024af26d8ebcf08084e85a7` matches the verified three-fil
   source and dependency waits, target mutation, preflight and generic hook/pipeline
   isolation. Full local 250/250 + 11/11 and Nix compilation/package-lint/installed
   ERT 261/261 pass with the unchanged temporary mirror overlay. Four approved
-  files are staged and await commit. No Org backend/dispatcher, output
+  files were staged and then committed. No Org backend/dispatcher, output
   buffer preview, overwrite or unrestricted preprocessing is added.
+
+## CONSUMER-01 interactive exports and readonly byte views (worktree node)
+
+- Public org-texmacs-export-to-buffer exports an explicit source, then creates
+  a fresh unibyte readonly special-mode buffer with no-conversion coding, no
+  visiting file, no file format and no save offer. It is a derived native source
+  view, not rendered TeXmacs output; no source pointer/synchronization is retained.
+- Lisp calls return the buffer without display; M-x calls capture the current
+  unnarrowed Org source and display the result. Source failure creates no buffer;
+  initialization/display failure removes only the newly allocated buffer.
+  Mode hooks and mode-change callbacks are isolated while initializing the view.
+- Existing export-to-file is now interactive: capture source/directory before
+  the file prompt, suggest the source file stem or export.tm, then reuse the
+  explicit source/new-file adapter and report the copied output path.
+- Invalid/non-Org/narrowed sources fail before prompts; remote working directories
+  are outside this interactive file chooser's subset. Interactive calls pass nil
+  bibliography snapshots; Lisp callers still pass explicit texts. No bibliography
+  file reader, Org backend/dispatcher or overwrite policy is added.
+- Four new cases pass in sixteen combined focused tests. Complete local ERT
+  passes disjoint 105/105 + 149/149 + 11/11, after the old 254-case bucket timed
+  out at 120s. Nix compilation/package-lint and installed ERT 265/265 pass.
+  Three files are approved/staged; the temporary mirror overlay stays excluded.
+  Display and prompts are simulated; actual GUI layout is unverified.
 
 ## Worker and session
 
