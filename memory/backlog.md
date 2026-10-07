@@ -105,8 +105,19 @@ Async/subtree/visible/body-only/overrides, active regions and narrowing are
 explicitly rejected. Generic Org export/publishing remains unsupported; a
 conditional early hook rejects texmacs generic preprocessing. Seven focused
 cases pass 7/7; final Nix passes all seven checks and installed ERT 280/280.
-Six files are approved/staged, awaiting the user's project commit. Only the
-module fileset hunk is staged in flake; the mirror overlay stays outside index.
+Frontend commit be284dd matches the verified six-file hash. Only the module
+fileset entry was committed in flake; the mirror overlay stays outside history.
+
+### Proposed next: output-update contract
+
+Status: **unresolved-design**, awaiting user selection. File consumers currently
+require a new destination, so repeated exports to one path fail. Recommend
+deciding a separate output-update contract: explicit permission to replace an
+existing regular file, preservation of old output on rendering/writing failure,
+target changes during worker waits, publication and backup policy. Keep existing
+new-file-only API contracts intact. Design evidence must establish feasible
+filesystem guarantees before promising atomic or concurrent replacement.
+No implementation or check authorization is inferred from this proposal.
 
 The next selected node is stable PDF semantic regression for footnotes and
 owned citation/bibliography output. No fixed pagination/pixel/byte assertions

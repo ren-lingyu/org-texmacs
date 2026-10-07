@@ -420,7 +420,9 @@ Commit db33c148dbbc4c26c6aae300c063883b06e893e6 matches the verified seven-file 
   installed ERT 271/271 pass. The verified node is committed;
   the temporary mirror overlay is excluded.
 
-## CONSUMER-01 bounded ox-texmacs frontend (working tree)
+## CONSUMER-01 committed bounded ox-texmacs frontend
+
+Commit be284dd292cfb0a88ae51f0e6b692f94516f0bb1 matches the verified six-file diff.
 
 - Optional ox-texmacs.el registers texmacs, menu key T with T/t/p actions for a
   fresh readonly native byte buffer, prompted new .tm and prompted new PDF.
@@ -441,7 +443,8 @@ Commit db33c148dbbc4c26c6aae300c063883b06e893e6 matches the verified seven-file 
   Only the module fileset hunk may be staged in flake.nix; mirror changes stay
   unstaged. Seven focused cases pass 7/7 (2.63s); final Nix passes all seven
   checks, compilation/package-lint and installed ERT 280/280 (123.36s).
-  Six files are approved/staged, awaiting the user's project commit.
+  The frontend is committed. Existing targets remain rejected; no replacement
+  or atomic-publication policy is implemented.
 
 ## Worker and session
 
