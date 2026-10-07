@@ -39,7 +39,9 @@ consumer constructs a complete file wrapper only after native encoding.
 - `org-texmacs-document-from-buffer`: prepare and lower one explicit source.
 - `org-texmacs-document-current-buffer`: current-buffer convenience wrapper.
 - `org-texmacs-document-serialize`: independent native .tm byte-string consumer
-  of a completed document result (verified staged node below).
+  of a completed document result.
+- `org-texmacs-document-save`: explicit absolute local new-file saving consumer
+  (verified staged node below).
 
 The result does not retain the source buffer. Pure lowering does not read a
 buffer or start a worker.
@@ -275,7 +277,9 @@ Commit `544e2463878d5658119f6beb9b8a6a8275e1739c` matches the verified five-file
   figures, other named elements and
   advanced table semantics are outside this node.
 
-## CONSUMER-01 native file-document serialization (worktree node)
+## CONSUMER-01 committed native file-document serialization
+
+Commit `e7377e5767ca38411a497a635d5053f1729a2d5a` matches the verified five-file diff.
 
 - Public org-texmacs-document-serialize consumes a completed document result.
   The existing native bridge validates/owns its wire, resolves typed file
@@ -297,9 +301,31 @@ Commit `544e2463878d5658119f6beb9b8a6a8275e1739c` matches the verified five-file
   Nix first found an obsolete string-as-unibyte compile warning; the bridge now
   creates a zero-filled unibyte string directly. Full local 242/242 + 11/11
   passed before that adjustment; final focused 4/4 and Nix compilation,
-  package-lint and installed ERT 253/253 pass. Five files are approved/staged;
-  the temporary overlay remains unchanged and excluded. GUI/layout and actual
-  output file writes are unverified.
+  package-lint and installed ERT 253/253 pass. The verified node is committed;
+  the temporary overlay remains unchanged and excluded. GUI/layout remains
+  unverified; new-file saving is covered by the bounded consumer below.
+
+## CONSUMER-01 explicit new-file saving (worktree node)
+
+- Public org-texmacs-document-save consumes a completed document and an explicit
+  absolute local destination. It copies that path before waits, rejects existing
+  files/directories/symlinks and requires an existing parent directory.
+- Native serialization completes before file creation. A private unibyte buffer
+  writes exact bytes with no-conversion and write-region mustbenew=excl.
+  Exclusive open rejects files, directories and symlinks created during waits.
+  Native/source resource semantics do not depend on the save directory.
+- Destination filesystem operations suppress file-name handlers; byte writing
+  suppresses format conversion, annotations and modification hooks. Caller
+  text, point, mark, narrowing, modified state and file identity remain intact.
+- Encoding/serialization failures create no output; standard filesystem errors
+  propagate. A write failure can leave a partial new file, explicitly documented
+  and covered by maintained failure injection. No speculative cleanup, directory
+  creation, overwrite, backup or atomic publication is provided.
+- Four new maintained cases pass in the combined eight-case serialization/save
+  selector. Full local 246/246 + 11/11 and Nix compilation/package-lint/installed
+  ERT 257/257 pass with the unchanged temporary mirror overlay. Three explicit
+  files are approved/staged and await commit. The Scheme service and
+  serializer protocol are unchanged; only the explicit saving API writes files.
 
 ## Worker and session
 
@@ -330,7 +356,8 @@ worker, encoding, and native-session tests.
 
 ## Downstream work not yet implemented
 
-Broader file metadata (attachments/reference tables/auxiliary), saving/Org export, PDF, preview,
+Broader file metadata (attachments/reference tables/auxiliary), replacement/backup
+policy, Org export, PDF, preview,
 visual pagination, multi-document or multi-session operation, live or
 incremental synchronization, and broader Org document-wide resolution remain
 future consumer/document work. `memory/backlog.md` distinguishes adopted work,

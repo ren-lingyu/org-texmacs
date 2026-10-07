@@ -12,6 +12,42 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
+## Explicit new-file saving evidence
+
+- Serialization commit `e7377e5767ca38411a497a635d5053f1729a2d5a` matches its
+  verified five-file diff hash, checked on 2026-10-07. Saving work began with
+  only the unchanged temporary mirror overlay dirty.
+- GNU Emacs's Writing-to-Files reference documents write-region mustbenew=excl
+  as race-safe local exclusive creation that does not follow symlinks. Format
+  Conversion Overview documents annotation, format and coding stages; the save
+  consumer isolates those stages while retaining exact native output bytes.
+  References: https://www.gnu.org/software/emacs/manual/html_node/elisp/Writing-to-Files.html
+  and https://www.gnu.org/software/emacs/manual/html_node/elisp/Format-Conversion-Overview.html.
+- Four new maintained tests pass in eight combined serialization/save cases
+  (9.83s). Real saved bytes equal native serialization for Cafe with accent,
+  Chinese/literal notation and translated file links under a distinct save
+  directory. Hostile coding/format/annotation/handler settings do not change
+  output, caller buffer state remains intact, and the worker is reused.
+- Tests also cover local-path preflight, existing files/directories/dangling
+  symlinks, destination string mutation during a wait, actual exclusive-open
+  races with a new file/directory/symlink, no output on serialization/encoding
+  failure, and the documented partial-new-file boundary on injected write error.
+  Full local ERT passes disjoint 246/246 + 11/11 (106.47s and 11.91s), both
+  exit 0. Nix passes all seven checks including compilation/package-lint and
+  installed ERT 257/257 (94.49s), with the unchanged temporary local-only remote
+  USTC mirror overlay. Original ELPA availability is unverified. No arbitrary destination outside
+  isolated test directories was written by the agent.
+- Exact approved/staged three-file diff on baseline
+  `e7377e5767ca38411a497a635d5053f1729a2d5a` has SHA-256
+  `866da9c3b5a8a874950bf0b27a762f3f34e7b09339e1f9b9c02e13080cf2cce4`
+  for `git diff --cached -- README.org org-texmacs-session.el tests/ert/ert.el`.
+  Full staged review and git diff --cached --check pass. No implementation is
+  unstaged; tmp/commit.md is the reviewed message. Ordinary commit awaits the
+  user. The overlay remains unchanged at its previously recorded hash.
+- Test outputs are regenerable temporary fixtures with maintained inputs/assertions.
+  No independent necessary raw artifact requires a new archive; only pure text
+  enters GAW. The temporary mirror overlay stays excluded from commits/pushes.
+
 ## Complete native serialization evidence
 
 - Named-table commit `544e2463878d5658119f6beb9b8a6a8275e1739c` matches the
@@ -51,8 +87,9 @@
   `d7449b539a743bd447d9eefac0d3e92e5091c87b6809099619552d453c9195d7`
   for `git diff --cached -- README.org org-texmacs-core.el org-texmacs-session.el org-texmacs-worker.scm tests/ert/ert.el`.
   Full staged review and git diff --cached --check passed. No implementation
-  remains unstaged; tmp/commit.md is the reviewed message. Ordinary commit
-  awaits the user. The overlay hash remains
+  remained unstaged at that review. Commit
+  `e7377e5767ca38411a497a635d5053f1729a2d5a` was compared with its baseline on
+  2026-10-07 and matches that diff hash exactly. The overlay hash remains
   `1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54`.
 - No independent necessary temporary evidence file was created. The generated
   test scripts are fully maintained in ERT and disposable; native observations
@@ -258,7 +295,7 @@
 - Local v0.3.1 annotated tag target:
   `880d4e00667907ef66985387b4865ec8d795d48d`.
 - Current main HEAD observed on 2026-10-07:
-  `fe6c435bda7948989f758cea6c9d4146c0d0a5cb`.
+  `e7377e5767ca38411a497a635d5053f1729a2d5a`.
 
 These are local Git facts. They do not prove remote release state or tag
 signatures.

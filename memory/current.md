@@ -2,14 +2,14 @@
 
 ## Objective
 
-CONSUMER-01's first complete-document/native serialization node is implemented,
-verified and staged with approval. `tmp/commit.md` contains its reviewed message;
-await the user's ordinary project commit. The temporary mirror overlay stays excluded.
+CONSUMER-01's explicit-destination new-file saving node is implemented, verified
+and staged with approval. `tmp/commit.md` contains its reviewed message; await
+the user's ordinary project commit. The temporary mirror overlay stays excluded.
 
 ## Current baseline
 
 - Main HEAD observed on 2026-10-07:
-  `544e2463878d5658119f6beb9b8a6a8275e1739c`.
+  `e7377e5767ca38411a497a635d5053f1729a2d5a`.
 - Local v0.3.0 tag target:
   `8c157d06b7a8793b0bd312e8f0c41612a3640388`.
 - Local v0.3.1 annotated tag resolves to
@@ -34,6 +34,25 @@ await the user's ordinary project commit. The temporary mirror overlay stays exc
 
 ## Current decisions
 
+- Commit `e7377e5` matches the verified serialization diff hash; only the user's
+  unchanged overlay is dirty at saving-node start. The next bounded consumer
+  saves to an explicit absolute native local path, preserving serialized bytes
+  and source resource semantics. The first saving boundary creates new files
+  only, rejects existing targets (including symlinks), and does not auto-create
+  directories. Replacement/backup policy and Org export remain separate nodes.
+  The user authorized repeated saving-node focused/full ERT and Nix checks,
+  each with timeout 120s. Eight combined serialization/save focused tests pass.
+  The save API completes serialization before exclusive local creation, copies
+  the destination before waits, isolates coding/format/annotation/file-handler
+  effects and preserves caller state. Standard filesystem errors propagate;
+  partial new output can remain after a write error. Atomic publication and
+  replacement/backup policy are not implemented. Full local coverage passes
+  246/246 + 11/11 (106.47s and 11.91s); Nix's seven checks pass including
+  compilation, package-lint and installed ERT 257/257 (94.49s). Three explicit
+  project files are approved/staged, with no implementation left unstaged;
+  evidence records the reviewed hash. No independent temporary artifact needs
+  archiving. Only the unchanged temporary overlay remains unstaged.
+
 - Commit `544e246` matches the named-table diff hash exactly; node start has
   only the user's unchanged overlay dirty. The bounded DOC-01 architecture now
   covers local links/IDs, file targets, named notes, default citations/native
@@ -44,7 +63,7 @@ await the user's ordinary project commit. The temporary mirror overlay stays exc
   structure and returns native serialized text from explicit document fields,
   independently of a live session, without writing output files. Related
   installed conversion/version Scheme reads are explicitly authorized.
-- The independent serialization node is implemented, verified and staged: public
+- The independent serialization node is committed as `e7377e5`: public
   org-texmacs-document-serialize consumes explicit native fields, constructs
   version/style/body/optional initial structure in the native bridge, and uses
   serialize-texmacs. Exact native output travels as ASCII hex and is returned
@@ -58,8 +77,8 @@ await the user's ordinary project commit. The temporary mirror overlay stays exc
   pre-adjustment code passed 242/242 + 11/11 (109.71s and 11.88s); final focused
   tests cover the obsolete-helper removal. Final Nix passed all seven checks including
   compilation/package-lint and installed ERT 253/253 (96.29s). Five explicit
-  paths are staged, with no implementation changes left unstaged; evidence has
-  the reviewed diff hash. No output file or necessary raw temporary artifact
+  paths were staged and then committed, matching evidence's reviewed diff hash.
+  No output file or necessary raw temporary artifact
   was created. Only the unchanged user overlay remains unstaged.
 
 - Commit `fe6c435` matches the previously verified eight-file citation diff
@@ -315,11 +334,11 @@ await the user's ordinary project commit. The temporary mirror overlay stays exc
 
 ## Next actions
 
-1. Await the user's ordinary project commit of the five-file native serialization
+1. Await the user's ordinary project commit of the three-file new-file saving
    node. Compare its diff with evidence's hash before marking it committed.
    Keep the temporary overlay out of commits and pushes.
-2. After the first consumer node, review explicit-destination saving and the
-   Org export frontend boundary as later CONSUMER-01 nodes. Remaining DOC-01
+2. Review replacement/backup/atomic-publication policy and the Org export
+   frontend boundary as later CONSUMER-01 nodes. Remaining DOC-01
    general-reference/resource variants remain separately scoped; fuller Org
    coverage is not a prerequisite for consumer work.
    Citation styles/affixes, crossref dependencies, global bibliography/export
