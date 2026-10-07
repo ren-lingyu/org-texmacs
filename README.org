@@ -1033,6 +1033,35 @@ their existing preparation errors.  For a completed document snapshot, use the
 independent serialization/save consumers above; they retain its captured content
 even if the original source later changes.
 
+** Interactive export and a native byte buffer
+In an unnarrowed Org buffer, =M-x org-texmacs-export-to-buffer= creates and
+displays a fresh read-only =special-mode= buffer containing the native =.tm=
+bytes.  Each export gets its own buffer; previous exports remain intact.
+The buffer has no visiting file, uses =no-conversion= coding and is derived
+output for inspection/copying.  It is not rendered TeXmacs preview.  Mode hooks
+do not run while the view is initialized; failed exports leave no new view.
+
+=M-x org-texmacs-export-to-file= captures the original Org source before its
+file prompt and asks for a new file in the source's local working directory.
+The suggested name uses the visiting source's file stem, or =export.tm= for
+non-file buffers.  Existing targets still fail explicitly.  Non-Org or narrowed
+buffers fail before the prompt; remote working directories are outside this
+interactive file chooser's subset.  The explicit source/file Lisp API remains
+available when the caller chooses a native local destination separately.
+
+Interactive commands supply no bibliography snapshots and do not read =.bib=
+files.  Documents needing those snapshots should call the same functions from
+Lisp with the explicit third/second argument, respectively:
+
+#+begin_src emacs-lisp
+  (org-texmacs-export-to-buffer source-buffer bibliography-sources)
+  (org-texmacs-export-to-file source-buffer output-file bibliography-sources)
+#+end_src
+
+Lisp calls to =org-texmacs-export-to-buffer= return the fresh buffer without
+displaying it.  No Org dispatcher entry, generic preprocessing, automatic edit
+hooks or source synchronization is installed.
+
 ** Native encoding and lifetime
 =org-texmacs-session-open= creates an empty native document buffer and returns
 an opaque handle.  Only one session may be active in the shared worker.
