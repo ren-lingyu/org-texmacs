@@ -25,11 +25,11 @@ explicit Org source buffer
        body + style + initial + STM/file-target provenance
   -> source-aware native encoding
   -> TeXmacs native tree/state
-  -> one persistent headless native document session
+  -> independent complete-document serialization / native document session
 ```
 
-The body `(document ...)` is the native buffer body. It is not a complete
-serialized TeXmacs file wrapper.
+The result body `(document ...)` is the native buffer body. The independent
+consumer constructs a complete file wrapper only after native encoding.
 
 ## Public construction interfaces
 
@@ -38,6 +38,8 @@ serialized TeXmacs file wrapper.
 - `org-texmacs-prepare-buffer`: explicit source-buffer preparation adapter.
 - `org-texmacs-document-from-buffer`: prepare and lower one explicit source.
 - `org-texmacs-document-current-buffer`: current-buffer convenience wrapper.
+- `org-texmacs-document-serialize`: independent native .tm byte-string consumer
+  of a completed document result (verified staged node below).
 
 The result does not retain the source buffer. Pure lowering does not read a
 buffer or start a worker.
@@ -245,7 +247,9 @@ eight-file diff. This is not a release claim.
 - Source identity/text copying now resides in the source layer, so context
   preparation does not depend on document lowering for declaration capture.
 
-## DOC-01 named/captioned basic tables (worktree node)
+## DOC-01 committed named/captioned basic tables
+
+Commit `544e2463878d5658119f6beb9b8a6a8275e1739c` matches the verified five-file diff.
 
 - Fuzzy resolution includes visible basic table NAME targets before headline
   titles. Referenced name/target collisions remain explicit ambiguities.
@@ -266,10 +270,36 @@ eight-file diff. This is not a release claim.
 - Five focused tests plus the eighteen-case citation/footnote/table regression
   selector pass. Full local ERT passes 238/238 + 11/11; Nix compilation,
   package-lint and installed ERT 249/249 pass with the unchanged temporary
-  mirror configuration. Five approved files are staged and await commit.
+  mirror configuration. The verified node is committed as stated above.
   Displayed numbers, caption layout and pagination remain unverified;
   figures, other named elements and
   advanced table semantics are outside this node.
+
+## CONSUMER-01 native file-document serialization (worktree node)
+
+- Public org-texmacs-document-serialize consumes a completed document result.
+  The existing native bridge validates/owns its wire, resolves typed file
+  targets against the captured source base and encodes body/initial once.
+- A native worker helper directly builds document/TeXmacs/version, style tuple,
+  body and optional initial/collection/associate structure from encoded fields.
+  The version is the running TeXmacs's version, not the package version.
+  Native serialize-texmacs returns exact output bytes; ASCII hex transports them
+  and the bridge returns an unibyte string, without a UTF-8 decode step.
+- No session, output file, Org exporter, resource read, live reference table,
+  attachment, auxiliary state, typesetting or PDF/preview is introduced.
+  Source-side link meaning remains independent of an eventual save directory.
+- Preflight/encoding/serialization errors preserve healthy transport. The new
+  shared serialization-error condition is operation-specific; malformed hex,
+  version/header or operation payloads stop the worker.
+- Four focused cases pass, including native serialize/parse tree roundtrip,
+  Unicode/literal/STM/initial semantics, exact byte transport, disposed-source
+  document features, error recovery and unchanged live-session readback.
+  Nix first found an obsolete string-as-unibyte compile warning; the bridge now
+  creates a zero-filled unibyte string directly. Full local 242/242 + 11/11
+  passed before that adjustment; final focused 4/4 and Nix compilation,
+  package-lint and installed ERT 253/253 pass. Five files are approved/staged;
+  the temporary overlay remains unchanged and excluded. GUI/layout and actual
+  output file writes are unverified.
 
 ## Worker and session
 
@@ -300,7 +330,7 @@ worker, encoding, and native-session tests.
 
 ## Downstream work not yet implemented
 
-Complete file document modeling, serialization/save/export, PDF, preview,
+Broader file metadata (attachments/reference tables/auxiliary), saving/Org export, PDF, preview,
 visual pagination, multi-document or multi-session operation, live or
 incremental synchronization, and broader Org document-wide resolution remain
 future consumer/document work. `memory/backlog.md` distinguishes adopted work,

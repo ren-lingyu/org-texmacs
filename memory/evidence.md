@@ -12,6 +12,53 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
+## Complete native serialization evidence
+
+- Named-table commit `544e2463878d5658119f6beb9b8a6a8275e1739c` matches the
+  preceding verified five-file diff, checked on 2026-10-07. Consumer work began
+  with only the unchanged user overlay dirty.
+- Authorized TeXmacs 2.1.5 tm-file-system.scm (309 and 320) constructs document,
+  TeXmacs/runtime version, style tuple and body directly. Its SHA-256 is
+  `b5975e0c32e55afe3862290c418bdd74263e64be077e52d4ec8e1ca03cb6dd17`.
+  The official Scheme API documents serialize-texmacs/parse-texmacs as native
+  tree/string bindings; texmacs->stm is Scheme serialization, a distinct format.
+  References: https://www.texmacs.org/tmweb/documents/manuals/texmacs-scheme.en.pdf
+  and https://www.texmacs.org/tmweb/manual/webman-format.en.html.
+- Four focused maintained tests pass. A test-local serializer wrapper compares
+  the entire constructed native file tree with parse-texmacs of its output,
+  covering repeated explicit style names, structured initial values, Cafe with
+  accent, Chinese, literal/native alpha and translated file targets. Serialization
+  before/after establishing a different live session is byte-identical and
+  session readback is unchanged. Another test consumes completed named table,
+  footnote and citation/bibliography output after source disposal. Protocol tests
+  preserve high bytes/NUL without UTF-8 conversion and distinguish bad payloads
+  from domain failures; actual injected native serializer/encoding errors retain
+  a healthy worker. Empty document/no-initial behavior is in the final full run.
+- Initial test development caught a surplus test parenthesis, a bibliography
+  print unintentionally inside a footnote definition, and a nonexistent fixture
+  default-directory during worker startup; these fixtures were corrected.
+  The first Nix run rejected obsolete string-as-unibyte under warnings-as-errors.
+  The bridge now directly allocates its zero-filled unibyte result. Full local ERT
+  covered the pre-adjustment code in disjoint 242/242 + 11/11 (109.71s and 11.88s);
+  final focused 4/4 covers the obsolete-helper replacement (6.88s). Final Nix passed all
+  seven checks, including compilation, package-lint and installed ERT 253/253
+  (96.29s), covering the exact final code. No successful check is claimed for
+  the rejected build. Environment remains Emacs 31.1 / Org 9.8-pre / TeXmacs 2.1.5
+  with the unchanged temporary local-only remote USTC mirror overlay; original
+  ELPA availability is not established.
+- Exact approved/staged five-file diff on baseline
+  `544e2463878d5658119f6beb9b8a6a8275e1739c` has SHA-256
+  `d7449b539a743bd447d9eefac0d3e92e5091c87b6809099619552d453c9195d7`
+  for `git diff --cached -- README.org org-texmacs-core.el org-texmacs-session.el org-texmacs-worker.scm tests/ert/ert.el`.
+  Full staged review and git diff --cached --check passed. No implementation
+  remains unstaged; tmp/commit.md is the reviewed message. Ordinary commit
+  awaits the user. The overlay hash remains
+  `1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54`.
+- No independent necessary temporary evidence file was created. The generated
+  test scripts are fully maintained in ERT and disposable; native observations
+  are recorded here. Archive selection needs no new snapshot, and only pure text
+  enters GAW. Output file saving and GUI/layout verification are outside this node.
+
 ## Named-table/caption semantic evidence
 
 - User-authorized TeXmacs 2.1.5 source reads establish env-float's new-figure
@@ -49,7 +96,8 @@
   for `git diff --cached -- README.org org-texmacs-context.el org-texmacs-document.el org-texmacs-input.el tests/ert/ert.el`.
   `git diff --cached --check` passes; no implementation remains unstaged.
   The overlay stays unstaged and unchanged at the hash recorded below.
-  `tmp/commit.md` contains the reviewed node message. Ordinary commit is pending;
+  Project commit `544e2463878d5658119f6beb9b8a6a8275e1739c` was checked on
+  2026-10-07 and matches that diff hash exactly;
   displayed numbers, caption layout and pagination are unverified.
 - No necessary new raw temporary artifact was created. Source observations are
   recorded here, and adopted semantics have maintained ERT. The previous commit

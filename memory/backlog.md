@@ -25,7 +25,8 @@ decision.
 
 ### DOC-01: Complete document-wide semantic resolution
 
-Status: **active-next**, selected by the user's 2026-10-06 `INBOX.md` note after
+Status: **adopted-later** for remaining bounded variants; its critical resolution
+architecture is implemented. Selected by the user's 2026-10-06 `INBOX.md` note after
 the locally tagged v0.3.1 release. Prioritize this architecture before
 `CONSUMER-01`; do not require all Org syntax before consumer work begins.
 
@@ -75,11 +76,11 @@ and current memory for its bounded contract and validation state. The next
 DOC-01 bibliography foundation is committed as `8e1abf7`. Default bare citation
 resolution and native plain bibliography output are committed as `fe6c435`;
 see project/current memory for the bounded contract. The named/captioned basic
-table node is verified and staged: owned long/short captions, native big-table
+table node is committed as `544e246`: owned long/short captions, native big-table
 reference labels, described-only uncaptioned anchors and metadata preflight.
-Review remaining general-reference/resource scope and CONSUMER-01 readiness
-after the user's commit, using native evidence before mapping other named
-elements. Keep broader citation variants,
+Remaining general-reference/resource scope stays separately bounded while
+CONSUMER-01 is active. Use native evidence before mapping other named elements.
+Keep broader citation variants,
 entry dependencies, global processors and resource behavior separately scoped.
 
 Remaining **unresolved-design** boundaries include file search options,
@@ -97,7 +98,18 @@ pipeline when it reads files or dynamic state outside the owned snapshot.
 
 ### CONSUMER-01: Add stable complete-document consumers
 
-Status: **adopted-later**.
+Status: **active-next**. The stable bounded DOC-01 architecture now covers the
+critical ordinary-document cross-node semantics; fuller Org syntax is not a
+prerequisite. Start with complete native document construction and returning
+serialized text independently of a session. Output file writes, export frontend,
+rendering and preview remain later consumer nodes.
+
+The first node is verified and staged: org-texmacs-document-serialize builds
+complete native file-document structure from explicit encoded fields and returns
+exact native .tm bytes independently of a session. Full local coverage and final
+Nix checks (installed ERT 253/253) pass; await the user's commit. Then review
+explicit-destination saving and Org export frontend policy. Reference tables,
+attachments/auxiliary state and visual rendering retain separate boundaries.
 
 Build complete TeXmacs file-document construction and independent consumers for
 native serialization/save, Org export integration, rendering/PDF, and preview.
