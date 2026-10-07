@@ -283,6 +283,39 @@ invalid response payloads stop it.  No source buffer or resource file is read."
     (org-texmacs--native-call
      (lambda (id) (format "(serialize %d %s)\n" id wire)) 'serialize)))
 
+(defun org-texmacs--native-save-target (file)
+  "Validate and own explicit local output FILE before conversion waits.
+Require an existing parent and reject all existing targets without handlers."
+  (let ((file-name-handler-alist nil))
+    (unless (and (org-texmacs--document-local-file-path-p file)
+                 (file-name-absolute-p file)
+                 (not (string-match-p "\0" file))
+                 (> (length (file-name-nondirectory file)) 0))
+      (signal 'org-texmacs-error '("Expected an explicit absolute local output file")))
+    (let ((target (substring-no-properties file)))
+      (when (or (file-exists-p target) (file-symlink-p target))
+        (signal 'file-already-exists (list "Output already exists" target)))
+      (unless (file-directory-p (file-name-directory target))
+        (signal 'file-missing (list "Output directory does not exist" target)))
+      target)))
+
+(defun org-texmacs--native-save-bytes (bytes target)
+  "Write native unibyte BYTES to an already owned and validated TARGET.
+Exclusive open rejects collisions after preflight; file errors propagate."
+  (unless (and (stringp bytes) (not (multibyte-string-p bytes)))
+    (signal 'org-texmacs-error '("Expected native output bytes")))
+  (let ((file-name-handler-alist nil)
+        (coding-system-for-write 'no-conversion)
+        (inhibit-modification-hooks t)
+        (write-region-annotate-functions nil)
+        (write-region-post-annotation-function nil))
+    (with-temp-buffer
+      (set-buffer-multibyte nil)
+      (setq buffer-file-format nil)
+      (insert bytes)
+      (write-region (point-min) (point-max) target nil 'silent nil 'excl))
+    target))
+
 (defun org-texmacs-document-save (document file)
   "Save DOCUMENT as a new native TeXmacs file at explicit absolute FILE.
 FILE must name a local file in an existing directory.  Copy its identity before
@@ -295,30 +328,8 @@ Do not create directories, visit the output or change a live native session.
 Serialization errors create no output.  Filesystem errors propagate normally;
 a write failure can leave a newly created partial file for the caller to
 inspect.  This is exclusive creation, not atomic replacement or publication."
-  (let (target)
-    (let ((file-name-handler-alist nil))
-      (unless (and (org-texmacs--document-local-file-path-p file)
-                   (file-name-absolute-p file)
-                   (not (string-match-p "\0" file))
-                   (> (length (file-name-nondirectory file)) 0))
-        (signal 'org-texmacs-error '("Expected an explicit absolute local output file")))
-      (setq target (substring-no-properties file))
-      (when (or (file-exists-p target) (file-symlink-p target))
-        (signal 'file-already-exists (list "Output already exists" target)))
-      (unless (file-directory-p (file-name-directory target))
-        (signal 'file-missing (list "Output directory does not exist" target))))
-    (let ((bytes (org-texmacs-document-serialize document))
-          (file-name-handler-alist nil)
-          (coding-system-for-write 'no-conversion)
-          (inhibit-modification-hooks t)
-          (write-region-annotate-functions nil)
-          (write-region-post-annotation-function nil))
-      (with-temp-buffer
-        (set-buffer-multibyte nil)
-        (setq buffer-file-format nil)
-        (insert bytes)
-        (write-region (point-min) (point-max) target nil 'silent nil 'excl)))
-    target))
+  (let ((target (org-texmacs--native-save-target file)))
+    (org-texmacs--native-save-bytes (org-texmacs-document-serialize document) target)))
 
 (cl-defstruct (org-texmacs-session
                (:constructor org-texmacs--session-create)

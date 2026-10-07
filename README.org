@@ -1005,6 +1005,34 @@ file for the caller to inspect.  This first saving API creates new files; it
 does not provide atomic content publication, replacement, backups, an export
 frontend or rendering.
 
+** Exporting an explicit Org source buffer
+=org-texmacs-export-from-buffer SOURCE-BUFFER &optional BIBLIOGRAPHY-SOURCES=
+returns complete native =.tm= bytes directly from an explicit Org buffer.
+=org-texmacs-export-to-file SOURCE-BUFFER FILE &optional BIBLIOGRAPHY-SOURCES=
+exports to an explicit new local file and returns its copied path.  Both use
+the existing restricted preparation, captured settings and optional explicit
+BibTeX text snapshots.
+
+#+begin_src emacs-lisp
+  (org-texmacs-export-from-buffer (current-buffer))
+  (org-texmacs-export-to-file (current-buffer) "/absolute/output/new-document.tm")
+#+end_src
+
+Lowering and native serialization run inside preparation's final consistency
+check.  Source, parser/location or bibliography-snapshot changes during native
+waits reject the export.  File export validates/copies its target before
+preparation, then writes the already serialized bytes only after this check;
+it does not parse, lower or encode a second time.  Source-relative resources
+keep their captured base even when the destination is elsewhere.  The new-file
+and partial-write error rules above also apply to file export.
+
+These are explicit source adapters.  They do not register an Org export backend
+or dispatcher entry, run generic export hooks, expand INCLUDE/SETUPFILE, execute
+Babel or read bibliography/resource files.  Unsupported source directives keep
+their existing preparation errors.  For a completed document snapshot, use the
+independent serialization/save consumers above; they retain its captured content
+even if the original source later changes.
+
 ** Native encoding and lifetime
 =org-texmacs-session-open= creates an empty native document buffer and returns
 an opaque handle.  Only one session may be active in the shared worker.

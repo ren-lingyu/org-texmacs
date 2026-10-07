@@ -54,6 +54,7 @@
                       org-texmacs-document-file-paths
                       org-texmacs-document-serialize
                       org-texmacs-document-save
+                      org-texmacs-export-from-buffer org-texmacs-export-to-file
                       org-texmacs-session-open
                       org-texmacs-session-set-document org-texmacs-session-close))
     (should (fboundp function))
@@ -4763,6 +4764,126 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (with-temp-buffer
         (insert-file-contents-literally file)
         (should (equal (buffer-string) "Partial"))))))
+
+(ert-deftest org-texmacs-serialization-export-native-source-and-file ()
+  (org-texmacs-test--with-worker
+    (let ((destination (expand-file-name "destination" test-directory))
+          (serialize (symbol-function 'org-texmacs-document-serialize))
+          (calls 0))
+      (make-directory destination)
+      (with-temp-buffer
+        (org-mode)
+        (setq default-directory (file-name-as-directory test-directory))
+        (insert "#+OPTIONS: toc:nil\n#+TITLE: Export\nCafé 中 <alpha> [[./file.org][File]].\n"
+                "(math \"<alpha>\")\n")
+        (goto-char 4)
+        (set-mark 6)
+        (let ((state (list (buffer-string) (point) (mark) (buffer-modified-p)
+                           default-directory buffer-file-name))
+              (org-export-before-processing-hook
+               (list (lambda (&rest _) (ert-fail "Export ran generic processing hook"))))
+              (org-export-before-parsing-hook
+               (list (lambda (&rest _) (ert-fail "Export ran generic parsing hook")))))
+          (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                     (lambda (document) (cl-incf calls) (funcall serialize document)))
+                    ((symbol-function 'org-export-as)
+                     (lambda (&rest _) (ert-fail "Export entered generic backend pipeline"))))
+            (let* ((source (current-buffer))
+                   (bytes (org-texmacs-export-from-buffer source))
+                   (file (expand-file-name "export.tm" destination)))
+              (should-not (multibyte-string-p bytes))
+              (should (= calls 1))
+              (with-temp-buffer
+                ;; Caller location cannot replace the explicit source's base.
+                (setq default-directory (file-name-as-directory destination))
+                (should (equal file (org-texmacs-export-to-file source file))))
+              (should (= calls 2))
+              (with-temp-buffer
+                (set-buffer-multibyte nil)
+                (insert-file-contents-literally file)
+                (should (equal bytes (buffer-string)))
+                (should (string-match-p (regexp-quote (expand-file-name "file.org" test-directory))
+                                        (buffer-string))))
+              (should (equal state (list (buffer-string) (point) (mark) (buffer-modified-p)
+                                         default-directory buffer-file-name))))))))))
+
+(ert-deftest org-texmacs-serialization-export-source-waits-before-output ()
+  (org-texmacs-test--with-worker
+    (dolist (change '(text location heading links narrowing mode killed))
+      (with-temp-buffer
+        (org-mode)
+        (insert "Text.\n")
+        (let ((source (current-buffer))
+              (file (expand-file-name (format "%s.tm" change) test-directory)))
+          (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                     (lambda (_document)
+                       (with-current-buffer source
+                         (pcase change
+                           ('text (goto-char (point-max)) (insert "Changed"))
+                           ('location (setq default-directory "/different-source/"))
+                           ('heading (setq-local org-priority-regexp "Changed"))
+                           ('links (setq-local org-link-abbrev-alist-local '(("x" . "https://example.org"))))
+                           ('narrowing (narrow-to-region 1 3))
+                           ('mode (setq major-mode 'fundamental-mode))
+                           ('killed (kill-buffer source))))
+                       (encode-coding-string "<TeXmacs|2.1.5>\n" 'us-ascii)))
+                    ((symbol-function 'org-texmacs--native-save-bytes)
+                     (lambda (&rest _) (ert-fail "Export wrote before source check"))))
+            (should-error (org-texmacs-export-to-file source file) :type 'org-texmacs-document-error))
+          (should-not (file-exists-p file)))))))
+
+(ert-deftest org-texmacs-serialization-export-bibliography-wait ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "[cite:@key]\n#+bibliography: refs.bib\n#+print_bibliography:\n")
+      (let ((sources (list (cons "refs.bib"
+                                (copy-sequence "@book{key,title={Title},author={Ada Example},year=2026,publisher={Example}}"))))
+            (file (expand-file-name "bibliography.tm" test-directory)))
+        (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                   (lambda (_document)
+                     (aset (cdar sources) 0 ?X)
+                     (encode-coding-string "<TeXmacs|2.1.5>\n" 'us-ascii)))
+                  ((symbol-function 'org-texmacs--native-save-bytes)
+                   (lambda (&rest _) (ert-fail "Export wrote stale dependency output"))))
+          (should-error (org-texmacs-export-to-file (current-buffer) file sources)
+                        :type 'org-texmacs-document-error))
+        (should-not (file-exists-p file))
+        (should (org-texmacs--worker-live-p))))))
+
+(ert-deftest org-texmacs-serialization-export-destination-and-preflight ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "Text.\n")
+      (let* ((file (expand-file-name "copied-export.tm" test-directory))
+             (expected (copy-sequence file))
+             (calls 0))
+        (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                   (lambda (_document)
+                     (cl-incf calls)
+                     (aset file (1- (length file)) ?X)
+                     (encode-coding-string "<TeXmacs|2.1.5>\n" 'us-ascii))))
+          (should (equal expected (org-texmacs-export-to-file (current-buffer) file)))
+          (should (= calls 1)))
+        (should (file-exists-p expected))
+        (should-not (file-exists-p file))
+        (cl-letf (((symbol-function 'org-texmacs--document-prepare-source)
+                   (lambda (&rest _) (ert-fail "Existing output reached preparation"))))
+          (should-error (org-texmacs-export-to-file (current-buffer) expected)
+                        :type 'file-already-exists))))
+    (dolist (directive '("#+INCLUDE: missing.org\n" "#+SETUPFILE: missing.org\n"))
+      (with-temp-buffer
+        (org-mode)
+        (insert directive "(math \"x\")\n")
+        (let ((file (expand-file-name "unsupported.tm" test-directory)))
+          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                     (lambda (&rest _) (ert-fail "Unsupported export requested worker")))
+                    ((symbol-function 'org-texmacs--native-save-bytes)
+                     (lambda (&rest _) (ert-fail "Unsupported export wrote output"))))
+            (should-error (org-texmacs-export-to-file (current-buffer) file)
+                          :type 'org-texmacs-document-error))
+          (should-not (file-exists-p file)))))))
 
 (ert-deftest org-texmacs-session-real-complete-document-state ()
   (org-texmacs-test--with-worker

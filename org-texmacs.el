@@ -425,6 +425,36 @@ it does not provide export, native buffer updates or rendering."
           result)))))
 
 ;;;###autoload
+(defun org-texmacs-export-from-buffer (source-buffer &optional bibliography-sources)
+  "Export explicit Org SOURCE-BUFFER to a complete native .tm byte string.
+Use the same restricted preparation, configuration snapshot and explicit
+BIBLIOGRAPHY-SOURCES text snapshots as `org-texmacs-document-from-buffer'.
+Lower and serialize inside preparation's final source consistency check, so
+source, parser or dependency changes during native waits reject the export.
+Preserve SOURCE-BUFFER and return an unibyte string.  No output file, live
+session, export hook or generic Org export backend is created or invoked.
+Unsupported directives retain the existing explicit preparation errors."
+  (org-texmacs--prepare-buffer
+   source-buffer
+   (lambda (input) (org-texmacs-document-serialize (org-texmacs-document input)))
+   bibliography-sources))
+
+;;;###autoload
+(defun org-texmacs-export-to-file (source-buffer file &optional bibliography-sources)
+  "Export explicit Org SOURCE-BUFFER to a new local native file at FILE.
+Validate and copy the absolute destination before preparation.  Export with
+`org-texmacs-export-from-buffer' and BIBLIOGRAPHY-SOURCES, checking source and
+dependency consistency through native serialization before opening the file.
+Write the already serialized bytes once and return the copied path.
+The destination does not redefine source-relative links.  Existing files or
+symlinks are never overwritten; use the same exclusive creation and file-error
+boundary as `org-texmacs-document-save'.  No source/output buffer is visited or
+changed, and no generic Org export preprocessing or session update runs."
+  (let ((target (org-texmacs--native-save-target file)))
+    (org-texmacs--native-save-bytes
+     (org-texmacs-export-from-buffer source-buffer bibliography-sources) target)))
+
+;;;###autoload
 (defun org-texmacs-document-current-buffer (&optional bibliography-sources)
   "Convert the current Org buffer using `org-texmacs-document-from-buffer'.
 Pass explicit BIBLIOGRAPHY-SOURCES text snapshots to its preparation adapter."
