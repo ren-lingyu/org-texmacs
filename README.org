@@ -980,6 +980,31 @@ This node does not collect live reference tables, attachments or auxiliary
 typesetter state.  It does not paginate, resolve displayed reference values,
 save files, integrate an Org exporter or render PDF/preview.
 
+** Saving a new native document file
+=org-texmacs-document-save DOCUMENT FILE= serializes a completed document
+result and writes the exact native bytes to an explicit absolute local path.
+It returns a copied destination path.  The parent directory must already exist;
+relative/remote/tilde paths and directory-only names are rejected.  Existing
+files, directories and symlinks are rejected, including dangling symlinks.
+Exclusive creation checks collisions at the actual open, so a target created
+during serialization is also preserved.
+
+#+begin_src emacs-lisp
+  (org-texmacs-document-save document "/absolute/output/new-document.tm")
+#+end_src
+
+The destination does not choose the format or redefine source-relative links.
+Serialization finishes before the output is opened.  The writer uses
+=no-conversion= in a private unibyte buffer, without buffer file formats,
+write annotations or file-name handlers.  It does not visit the output, create
+directories or update a native session.  It copies FILE before worker waits.
+
+Serialization failures create no output.  Filesystem errors propagate as
+standard Emacs file errors; a write failure can leave a newly created partial
+file for the caller to inspect.  This first saving API creates new files; it
+does not provide atomic content publication, replacement, backups, an export
+frontend or rendering.
+
 ** Native encoding and lifetime
 =org-texmacs-session-open= creates an empty native document buffer and returns
 an opaque handle.  Only one session may be active in the shared worker.

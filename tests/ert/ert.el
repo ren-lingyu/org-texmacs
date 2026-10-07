@@ -53,6 +53,7 @@
                       org-texmacs-document-source-file org-texmacs-document-resource-base
                       org-texmacs-document-file-paths
                       org-texmacs-document-serialize
+                      org-texmacs-document-save
                       org-texmacs-session-open
                       org-texmacs-session-set-document org-texmacs-session-close))
     (should (fboundp function))
@@ -4646,6 +4647,122 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
             (should (string-prefix-p "<TeXmacs|" empty))
             (should-not (string-match-p (regexp-quote "<\\initial>") empty)))
           (should (eq process org-texmacs--worker-process)))))))
+
+(ert-deftest org-texmacs-serialization-save-preflight ()
+  (org-texmacs-test--with-worker
+    (let* ((existing (expand-file-name "existing.tm" test-directory))
+           (symlink (expand-file-name "dangling.tm" test-directory))
+           (document (org-texmacs--document-create :body '(document "Text"))))
+      (with-temp-file existing (insert "Original"))
+      (make-symbolic-link (expand-file-name "missing.tm" test-directory) symlink)
+      (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                 (lambda (&rest _) (ert-fail "Invalid destination reached serializer"))))
+        (dolist (path (list nil "relative.tm" "~/output.tm" "/ssh:host:/tmp/output.tm"
+                           (concat test-directory "/bad\0.tm")
+                           (file-name-as-directory test-directory)))
+          (should-error (org-texmacs-document-save document path) :type 'org-texmacs-error))
+        (dolist (path (list existing symlink test-directory))
+          (should-error (org-texmacs-document-save document path) :type 'file-already-exists))
+        (should-error
+         (org-texmacs-document-save document (expand-file-name "missing/output.tm" test-directory))
+         :type 'file-missing))
+      (with-temp-buffer
+        (insert-file-contents-literally existing)
+        (should (equal (buffer-string) "Original")))
+      (should (file-symlink-p symlink)))))
+
+(ert-deftest org-texmacs-serialization-save-native-bytes-and-caller-isolation ()
+  (org-texmacs-test--with-worker
+    (let* ((file (expand-file-name "中 file <alpha>.tm" test-directory))
+           (document (org-texmacs--document-create
+                      :body '(document "Café 中 <alpha>" (hlink "File" "./file.org"))
+                      :resource-base "/tmp/org-save-source/" :file-paths '((1 1))))
+           (bytes (org-texmacs-document-serialize document))
+           (process org-texmacs--worker-process))
+      (with-temp-buffer
+        (insert "Unrelated caller")
+        (goto-char 4)
+        (set-mark 6)
+        (narrow-to-region 2 9)
+        (setq buffer-file-name (expand-file-name "caller.org" test-directory))
+        (let ((state (list (buffer-string) (point) (mark) (point-min) (point-max)
+                           (buffer-modified-p) buffer-file-name))
+              (coding-system-for-write 'utf-16)
+              (buffer-file-format '(hostile-format))
+              (write-region-annotate-functions
+               (list (lambda (&rest _) (ert-fail "Save used caller annotations"))))
+              (write-region-post-annotation-function
+               (lambda (&rest _) (ert-fail "Save used annotation callback")))
+              (file-name-handler-alist
+               (list (cons (regexp-quote file)
+                           (lambda (&rest _) (ert-fail "Save used file handler"))))))
+          (should (equal file (org-texmacs-document-save document file)))
+          (should (equal state
+                         (list (buffer-string) (point) (mark) (point-min) (point-max)
+                               (buffer-modified-p) buffer-file-name)))))
+      (with-temp-buffer
+        (set-buffer-multibyte nil)
+        (insert-file-contents-literally file)
+        (should (equal bytes (buffer-string)))
+        (should (string-match-p (regexp-quote "/tmp/org-save-source/file.org") (buffer-string))))
+      (should-not (find-buffer-visiting file))
+      (should (eq process org-texmacs--worker-process)))))
+
+(ert-deftest org-texmacs-serialization-save-copied-path-and-races ()
+  (org-texmacs-test--with-worker
+    (let* ((path (expand-file-name "copied.tm" test-directory))
+           (expected (copy-sequence path))
+           (bytes (encode-coding-string "<TeXmacs|2.1.5>\n" 'us-ascii))
+           (document (org-texmacs--document-create :body '(document "Text"))))
+      (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                 (lambda (_document)
+                   (aset path (1- (length path)) ?X)
+                   bytes)))
+        (let ((saved (org-texmacs-document-save document path)))
+          (should (equal saved expected))
+          (should-not (eq saved path))
+          (should (file-exists-p saved))
+          (should-not (file-exists-p path))))
+      (dolist (kind '(file directory symlink))
+        (let ((raced (expand-file-name (format "race-%s.tm" kind) test-directory)))
+          (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                     (lambda (_document)
+                       (pcase kind
+                         ('file (with-temp-file raced (insert "Competitor")))
+                         ('directory (make-directory raced))
+                         ('symlink (make-symbolic-link expected raced)))
+                       bytes)))
+            (should-error (org-texmacs-document-save document raced) :type 'file-error))
+          (pcase kind
+            ('file (with-temp-buffer
+                     (insert-file-contents-literally raced)
+                     (should (equal (buffer-string) "Competitor"))))
+            ('directory (should-not (directory-files raced nil directory-files-no-dot-files-regexp)))
+            ('symlink (should (equal (file-symlink-p raced) expected)))))))))
+
+(ert-deftest org-texmacs-serialization-save-error-boundaries ()
+  (org-texmacs-test--with-worker
+    (let ((file (expand-file-name "failed.tm" test-directory))
+          (document (org-texmacs--document-create :body '(document "Text"))))
+      (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                 (lambda (_document) (signal 'org-texmacs-serialization-error '("Rejected")))))
+        (should-error (org-texmacs-document-save document file)
+                      :type 'org-texmacs-serialization-error))
+      (should-not (file-exists-p file))
+      (should-error (org-texmacs-document-save nil file) :type 'org-texmacs-encoding-error)
+      (should-not (file-exists-p file))
+      (let ((write (symbol-function 'write-region)))
+        (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                   (lambda (_document) (encode-coding-string "Complete bytes" 'us-ascii)))
+                  ((symbol-function 'write-region)
+                   (lambda (_start _end name append visit lockname mustbenew)
+                     (funcall write "Partial" nil name append visit lockname mustbenew)
+                     (signal 'file-error '("Injected write failure")))))
+          (should-error (org-texmacs-document-save document file) :type 'file-error)))
+      ;; Failed filesystem writes are not deleted speculatively by the caller.
+      (with-temp-buffer
+        (insert-file-contents-literally file)
+        (should (equal (buffer-string) "Partial"))))))
 
 (ert-deftest org-texmacs-session-real-complete-document-state ()
   (org-texmacs-test--with-worker

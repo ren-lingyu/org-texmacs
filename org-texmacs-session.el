@@ -7,8 +7,8 @@
 
 ;; One explicit native buffer session in the shared worker.  Handles belong
 ;; to one process incarnation; restarting the worker never revives a handle.
-;; No GUI windows, document files, edit hooks or automatic updates are created.
-;; Independent serialization consumes the same explicit native document fields.
+;; No GUI windows, edit hooks or automatic updates are created.
+;; Independent serialization and explicit new-file saving consume the same fields.
 
 ;;; Code:
 
@@ -282,6 +282,43 @@ invalid response payloads stop it.  No source buffer or resource file is read."
   (let ((wire (org-texmacs--native-document-wire document)))
     (org-texmacs--native-call
      (lambda (id) (format "(serialize %d %s)\n" id wire)) 'serialize)))
+
+(defun org-texmacs-document-save (document file)
+  "Save DOCUMENT as a new native TeXmacs file at explicit absolute FILE.
+FILE must name a local file in an existing directory.  Copy its identity before
+serializing so mutation during a worker wait cannot redirect the write.
+Return the copied path.  Never overwrite existing files, directories or
+symlinks: exclusive creation checks collisions again at the actual open.
+Complete `org-texmacs-document-serialize' before opening FILE.  Preserve its
+native bytes without coding/format conversion, annotations or file handlers.
+Do not create directories, visit the output or change a live native session.
+Serialization errors create no output.  Filesystem errors propagate normally;
+a write failure can leave a newly created partial file for the caller to
+inspect.  This is exclusive creation, not atomic replacement or publication."
+  (let (target)
+    (let ((file-name-handler-alist nil))
+      (unless (and (org-texmacs--document-local-file-path-p file)
+                   (file-name-absolute-p file)
+                   (not (string-match-p "\0" file))
+                   (> (length (file-name-nondirectory file)) 0))
+        (signal 'org-texmacs-error '("Expected an explicit absolute local output file")))
+      (setq target (substring-no-properties file))
+      (when (or (file-exists-p target) (file-symlink-p target))
+        (signal 'file-already-exists (list "Output already exists" target)))
+      (unless (file-directory-p (file-name-directory target))
+        (signal 'file-missing (list "Output directory does not exist" target))))
+    (let ((bytes (org-texmacs-document-serialize document))
+          (file-name-handler-alist nil)
+          (coding-system-for-write 'no-conversion)
+          (inhibit-modification-hooks t)
+          (write-region-annotate-functions nil)
+          (write-region-post-annotation-function nil))
+      (with-temp-buffer
+        (set-buffer-multibyte nil)
+        (setq buffer-file-format nil)
+        (insert bytes)
+        (write-region (point-min) (point-max) target nil 'silent nil 'excl)))
+    target))
 
 (cl-defstruct (org-texmacs-session
                (:constructor org-texmacs--session-create)
