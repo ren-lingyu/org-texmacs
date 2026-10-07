@@ -101,7 +101,8 @@ pure lowering verifies that it matches the current resolution plan.
 
 Copy strings, lists and vectors, rebuild parent links, and remap references
 to AST nodes in INFO and the mappings.  Copy parsed title, author and date
-secondary strings as separately owned Org objects.  Reject cyclic or multiply
+secondary strings as separately owned Org objects, and table captions as
+owned pairs of long/short secondary strings.  Reject cyclic or multiply
 owned AST nodes, detached/duplicate mapping keys, deferred values and opaque
 objects.
 Discard Org's source buffer and parent bookkeeping.  INFO must be a plist
@@ -157,6 +158,13 @@ returned input, its accessors' values, or arguments from a formatter."
                 (lambda (key value _owner)
                   (cond
                    ((memq key '(:parent :buffer :deferred :secondary)))
+                   ((eq key :caption)
+                    (org-element-put-property
+                     new key
+                     (mapcar (lambda (line)
+                               (cons (mapcar (lambda (child) (node child new)) (car line))
+                                     (mapcar (lambda (child) (node child new)) (cdr line))))
+                             (org-texmacs--document-caption-lines old))))
                    ((memq key keys)
                     (unless (proper-list-p value)
                       (fail "Expected parsed secondary objects"))

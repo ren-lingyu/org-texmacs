@@ -354,6 +354,11 @@ from this parsed snapshot; never fall back to a buffer or external data."
              (puthash node t table)
              (when (and (consp node) (not (assq node islands)))
                (mapc #'walk (org-element-contents node))
+               ;; Captions are affiliated pairs of secondary strings, rather
+               ;; than entries in `org-element-secondary-value-alist'.
+               (dolist (line (org-element-property :caption node))
+                 (mapc #'walk (car line))
+                 (mapc #'walk (cdr line)))
                (dolist (key (cdr (assq (org-element-type node)
                                        org-element-secondary-value-alist)))
                  (mapc #'walk (org-element-property key node)))))))

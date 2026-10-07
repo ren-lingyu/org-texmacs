@@ -3641,6 +3641,136 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (should-error (org-texmacs--document-lower ast)
                   :type 'org-texmacs-document-error)))
 
+(ert-deftest org-texmacs-document-named-table-captions-and-links ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "[[t]] [[t][Table]].\n\n"
+            "#+name: t\n#+caption[Short *S*]: Long [[t][self]]\n"
+            "#+caption: Second <alpha>\n| a | b |\n")
+    (let ((body (org-texmacs-document-body
+                 (org-texmacs-document-from-buffer (current-buffer)))))
+      (should
+       (equal body
+              '(document
+                (concat (reference "org-texmacs-ref-1") " "
+                        (hlink "Table" "#org-texmacs-ref-1") ". ")
+                (big-table
+                 (tabular (tformat (table (row (cell "a") (cell "b")))))
+                 (surround
+                  (label "org-texmacs-ref-1") ""
+                  (caption-detailed
+                   (concat (concat "Long " (hlink "self" "#org-texmacs-ref-1"))
+                           " " "Second <alpha>")
+                   (concat "Short " (strong "S")))))))))))
+
+(ert-deftest org-texmacs-document-named-table-uncaptioned-and-priority ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: toc:nil\n[[same][Table]]\n\n"
+            "#+name: same\n| x |\n\n* same\n")
+    (let ((body (org-texmacs-document-body
+                 (org-texmacs-document-from-buffer (current-buffer)))))
+      (should (equal (cadr body) '(concat (hlink "Table" "#org-texmacs-ref-1") " ")))
+      (should (equal (nth 2 body)
+                     '(surround (label "org-texmacs-ref-1") ""
+                                (tabular (tformat (table (row (cell "x"))))))))))
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+name: unused\n| x |\n")
+    (should (equal (org-texmacs-document-body
+                    (org-texmacs-document-from-buffer (current-buffer)))
+                   '(document (tabular (tformat (table (row (cell "x"))))))))))
+
+(ert-deftest org-texmacs-document-named-table-rejects-before-worker ()
+  (dolist (source
+           '("[[t]]\n\n#+name: t\n| x |\n"
+             "[[t][T]]\n\n#+name: t\n| x |\n\n#+name: t\n| y |\n"
+             "[[t][T]]\n\n<<t>>\n\n#+name: t\n| x |\n"
+             "#+EXCLUDE_TAGS: hidden\n[[t][T]]\n* Hidden :hidden:\n#+name: t\n| x |\n"
+             "#+name: t\n#+name: again\n| x |\n"
+             "#+name: t\n#+attr_html: :class hidden\n| x |\n"
+             "#+caption: C\n#+attr_texmacs: float\n| x |\n"
+             "#+caption: C\n#+results: data\n| x |\n"
+             "#+caption:\n| x |\n"
+             "#+caption: [[missing]]\n| x |\n"
+             "#+caption: [cite:@k]\n| x |\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source "\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
+      (let ((before (buffer-string)))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Invalid named table reached worker"))))
+          (ert-info ((format "Named-table source: %s" source))
+            (should-error (org-texmacs-document-from-buffer (current-buffer))
+                          :type 'org-texmacs-document-error)))
+        (should (equal before (buffer-string)))))))
+
+(ert-deftest org-texmacs-document-named-table-caption-ownership ()
+  (let (input expected)
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+caption[Short]: Long *B* [[https://example.org][URI]]\n| x |\n")
+      (let* ((prepared (org-texmacs--document-prepare-source
+                        (buffer-string) nil
+                        (org-texmacs--document-heading-settings)
+                        (org-texmacs--document-link-settings)
+                        (org-texmacs--document-options)))
+             (ast (car prepared))
+             (table (org-element-map ast 'table #'identity nil t))
+             (bold (cadr (caar (org-element-property :caption table)))))
+        (setq input (org-texmacs-input-create
+                     ast (nth 4 prepared) :post-blanks (nth 3 prepared))
+              expected (org-texmacs-document-body (org-texmacs-document input)))
+        (org-element-set-contents bold "Changed")
+        (org-element-put-property table :caption nil)
+        (should (equal expected (org-texmacs-document-body (org-texmacs-document input))))))
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _) (ert-fail "Owned caption requested a worker"))))
+      (should (equal expected (org-texmacs-document-body (org-texmacs-document input)))))
+    (let* ((table (org-element-map (org-texmacs-input-ast input) 'table #'identity nil t))
+           (bold (cadr (caar (org-element-property :caption table)))))
+      (should (eq (org-element-parent bold) table))
+      (should (assq bold (org-texmacs-input-post-blanks input)))))
+  (dolist (caption '(("unparsed") ((("Long") . "unparsed"))))
+    (let* ((table (org-element-create 'table (list :caption caption)))
+           (ast (org-element-create 'org-data nil table)))
+      (should-error (org-texmacs-input-create ast nil)
+                    :type 'org-texmacs-document-error)))
+  (let* ((bold (org-element-create 'bold nil "Shared"))
+         (table (org-element-create 'table (list :caption (list (cons (list bold) (list bold))))))
+         (ast (org-element-create 'org-data nil table)))
+    (should-error (org-texmacs-input-create ast nil) :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-document-named-table-native-and-provenance ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (setq default-directory "/tmp/")
+      (insert "[[t]]\n\n#+name: t\n#+caption[Short]: 中 <alpha> [[./caption.org][File]]\n| x |\n"
+              "\n#+begin_texmacs\n(label \"org-texmacs-ref-1\")\n#+end_texmacs\n")
+      (let* ((document (org-texmacs-document-from-buffer (current-buffer)))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (should (equal (org-texmacs-document-file-paths document) '((1 1 2 0 1 1))))
+              (should (equal (org-texmacs-document-stm-paths document) '((2))))
+              (org-texmacs-session-set-document session document)
+              (should
+               (equal (org-texmacs--session-read session)
+                      (org-texmacs-test--native-hex
+                       '(document
+                         (concat (reference "org-texmacs-ref-2") " ")
+                         (big-table
+                          (tabular (tformat (table (row (cell "x")))))
+                          (surround
+                           (label "org-texmacs-ref-2") ""
+                           (caption-detailed
+                            (concat "<#4E2D> <less>alpha<gtr> "
+                                    (hlink "File" "/tmp/caption.org"))
+                            "Short")))
+                         (label "org-texmacs-ref-1"))))))
+          (org-texmacs-session-close session))))))
+
 (ert-deftest org-texmacs-document-table-native-and-provenance ()
   (org-texmacs-test--with-worker
     (with-temp-buffer

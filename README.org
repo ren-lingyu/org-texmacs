@@ -618,6 +618,7 @@ The supported Org subset is deliberately small:
 | Quote / center block                               | =quote= / =center= with body =document=                      |
 | Example / fixed-width / source block               | Static =code= containing a line-wise =document=               |
 | Basic rectangular Org table                       | =tabular= / =tformat= / =table= / =row= / =cell=             |
+| Named/captioned basic table                       | Private anchors and native =big-table= / =caption-detailed= |
 | Recognized paragraph fragment                     | One parsed STM subtree                                       |
 | =texmacs= special block                           | One parsed STM subtree, even for a string or =document= root |
 | COMMENT / comment block                           | Removed before structural preflight                         |
@@ -626,7 +627,8 @@ The supported Org subset is deliberately small:
 Heading text may contain supported emphasis and literal inline code, but not
 explicit line breaks.  This is not a general Org
 exporter: unsupported links and footnotes, advanced table semantics, other
-blocks, unrecognized keywords, drawers and affiliated metadata are rejected.
+blocks, unrecognized keywords, drawers and affiliated metadata other than the
+table names/captions described below are rejected.
 Empty and deeper headings are also rejected rather than silently discarded.
 Fragment discovery can support
 contexts that this whole-document conversion does not support.
@@ -670,6 +672,23 @@ has no lossless mapping in this subset.  =#+TBLFM=, alignment/width cookie
 rows, special control rows or columns, merged/grouped cells, non-Org table
 types and ragged rows are rejected rather than approximated.
 
+Basic tables accept =#+NAME:= and =#+CAPTION:=.  A captioned table becomes
+=(big-table TABULAR CAPTION)=; TeXmacs supplies its table counter and caption
+layout.  Multiple caption lines are joined with spaces.  Optional short
+captions use =caption-detailed= with long and short bodies.  Captions retain
+the supported inline text/markup and URI/internal/file links; STM fragment
+discovery, citations and footnotes do not enter captions.  Their literal text
+uses ordinary Org encoding.  Other affiliated keywords, repeated names and
+empty captions are explicit errors.
+
+Fuzzy links resolve named tables before headline titles.  Referenced captioned
+tables place their private label inside the caption, after the native table
+counter binding; undescribed links use =reference= and described links use
+=hlink=.  An uncaptioned named table has an invisible anchor and requires a
+link description.  No table number is invented for it.  Ambiguous referenced
+names or collisions with dedicated targets fail explicitly.  Native tree readback does
+not verify displayed reference numbers, caption layout or pagination.
+
 These rules apply while lowering Org nodes, not as a rewrite of the final
 TeXmacs tree.  STM islands remain opaque and unchanged, including their
 whitespace.  The source buffer and raw STM extraction are unchanged.
@@ -702,7 +721,8 @@ links without descriptions become TeXmacs =reference= nodes.  Referenced
 headings and dedicated targets receive deterministic =org-texmacs-ref-N=
 labels.  Resolution uses the owned document snapshot and does not query the
 source buffer or Org's global ID database.  Missing or ambiguous targets fail
-explicitly.  Cross-file IDs, named elements, plain-text search
+explicitly.  Named basic tables follow the caption rules above; other named
+elements, cross-file IDs, plain-text search
 fallback and other protocols remain unsupported.  Headline matching uses the
 exact raw title from the prepared AST.
 Internal links in document metadata and =ALT_TITLE= remain outside this node.

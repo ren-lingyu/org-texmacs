@@ -190,13 +190,27 @@ Home abbreviations and remote/file-search semantics require additional context."
        (not (string-prefix-p "//" path))
        (not (string-match-p "\\`/[^/]*:" path))))
 
+(defun org-texmacs--document-caption-lines (node)
+  "Return NODE's parsed caption pairs, validating their secondary shape.
+Each pair contains a nonempty long secondary string and an optional short one.
+No source buffer is consulted."
+  (let ((caption (org-element-property :caption node)))
+    (unless (and (proper-list-p caption)
+                 (cl-every (lambda (line)
+                             (and (consp line) (car line)
+                                  (proper-list-p (car line))
+                                  (proper-list-p (cdr line))))
+                           caption))
+      (org-texmacs--document-fail node "Invalid parsed caption"))
+    caption))
+
 (defun org-texmacs--document-resolve (ast islands static-labels resource-base)
   "Resolve local Org links in AST before structural lowering.
 ISLANDS are opaque.  STATIC-LABELS reserves user-authored STM labels.
 Return node-identity mappings only; never
 read a source buffer, query an ID database or invoke an export consumer."
   (let ((definitions (org-texmacs--context-footnote-definitions ast islands))
-        custom-ids ids targets headlines links order resolved selected labels files
+        custom-ids ids targets names headlines links order resolved selected labels files
         footnote-references notes footnotes)
     (cl-labels
         ((scan (node ancestors)
@@ -224,6 +238,11 @@ read a source buffer, query an ID database or invoke an export consumer."
                      (unless (and (stringp value) (> (length value) 0))
                        (org-texmacs--document-fail node "Invalid dedicated target"))
                      (push (cons value node) targets)))
+                  ((eq type 'table)
+                   (when-let* ((name (org-element-property :name node)))
+                     (unless (and (stringp name) (> (length name) 0))
+                       (org-texmacs--document-fail node "Invalid table name"))
+                     (push (cons name node) names)))
                   ((eq type 'link) (push node links))
                   ((eq type 'footnote-reference)
                    (when (cl-some
@@ -238,6 +257,10 @@ read a source buffer, query an ID database or invoke an export consumer."
                    (when (eq type 'headline)
                      (mapc (lambda (part) (scan part ancestors))
                            (org-element-property :title node)))
+                   (when (eq type 'table)
+                     (dolist (line (org-texmacs--document-caption-lines node))
+                       (mapc (lambda (part) (scan part ancestors)) (car line))
+                       (mapc (lambda (part) (scan part ancestors)) (cdr line))))
                    (unless (and (eq type 'footnote-reference)
                                 (org-element-property :label node))
                      (mapc (lambda (child) (scan child ancestors))
@@ -298,9 +321,14 @@ read a source buffer, query an ID database or invoke an export consumer."
                     ("fuzzy"
                      (if (string-prefix-p "*" path)
                          (choose link (lookup (substring path 1) headlines))
-                       (choose link (or (lookup path targets)
+                       (choose link (or (append (lookup path targets) (lookup path names))
                                         (lookup path headlines)))))))))
           (when target
+            (when (and (eq (org-element-type target) 'table)
+                       (null (org-element-property :caption target))
+                       (null (org-element-contents link)))
+              (org-texmacs--document-fail
+               link "Uncaptioned table reference requires a description"))
             (push (cons link target) resolved)
             (cl-pushnew target selected :test #'eq))
           (when (equal kind "file")
@@ -1091,12 +1119,53 @@ from one snapshot."
              result))
          (check-affiliated (node)
            (let ((begin (org-element-property :begin node))
-                 (post (org-element-property :post-affiliated node)))
-             (when (and (integerp begin) (integerp post) (> post begin))
-               (org-texmacs--document-fail node "Unsupported affiliated metadata")))
-           (dolist (property '(:name :caption :attr_texmacs))
-             (when (org-element-property property node)
-               (org-texmacs--document-fail node "Unsupported affiliated metadata"))))
+                 (post (org-element-property :post-affiliated node))
+                 (keys (org-element-property :texmacs-affiliated-keywords node))
+                 (table (eq (org-element-type node) 'table)))
+             (when (and (integerp begin) (integerp post) (> post begin)
+                        (not (and table keys)))
+               (org-texmacs--document-fail node "Unsupported affiliated metadata"))
+             (when keys
+               (unless (and table (proper-list-p keys)
+                            (cl-every (lambda (key) (member key '("NAME" "CAPTION"))) keys)
+                            (<= (cl-count "NAME" keys :test #'equal) 1)
+                            (or (not (member "NAME" keys))
+                                (let ((name (org-element-property :name node)))
+                                  (and (stringp name) (> (length name) 0))))
+                            (or (not (member "CAPTION" keys))
+                                (org-element-property :caption node)))
+                 (org-texmacs--document-fail node "Unsupported affiliated metadata")))
+             (org-element-properties-mapc
+              (lambda (key value _owner)
+                (when (and value
+                           (or (string-prefix-p ":attr_" (symbol-name key))
+                               (and table
+                                    (memq key '(:header :headers :results :resname :plot :label :data)))
+                               (and (not table) (memq key '(:name :caption)))))
+                  (org-texmacs--document-fail node "Unsupported affiliated metadata")))
+              node)))
+         (table-caption (node ancestors)
+           (let (long short)
+             (dolist (line (org-texmacs--document-caption-lines node))
+               (when long (push (org-texmacs--document-create :body " ") long))
+               (push (one-body (inlines (car line) 'caption ancestors)) long)
+               (when (cdr line)
+                 (when short (push (org-texmacs--document-create :body " ") short))
+                 (push (one-body (inlines (cdr line) 'caption ancestors)) short)))
+             (let ((caption (if short
+                                (org-texmacs--document-pack
+                                 'caption-detailed
+                                 (list (one-body (nreverse long))
+                                       (one-body (nreverse short))))
+                              (one-body (nreverse long))))
+                   (label (cdr (assq node (org-texmacs-resolution-labels resolution)))))
+               (if label
+                   (org-texmacs--document-pack
+                    'surround
+                    (list (org-texmacs--document-pack
+                           'label (list (org-texmacs--document-create :body label)))
+                          (org-texmacs--document-create :body "") caption))
+                 caption))))
          (table-cell (node ancestors)
            (unless (and (consp node) (eq (org-element-type node) 'table-cell)
                         (not (memq node ancestors))
@@ -1267,7 +1336,19 @@ from one snapshot."
                (unless (memq context
                              '(org-data section headline item quote-block center-block footnote-definition))
                  (org-texmacs--document-fail node "Unexpected Org table"))
-               (list (table-block node ancestors)))
+               (let ((body (table-block node ancestors))
+                     (label (cdr (assq node (org-texmacs-resolution-labels resolution)))))
+                 (list
+                  (if (org-element-property :caption node)
+                      (org-texmacs--document-pack
+                       'big-table (list body (table-caption node ancestors)))
+                    (if label
+                        (org-texmacs--document-pack
+                         'surround
+                         (list (org-texmacs--document-pack
+                                'label (list (org-texmacs--document-create :body label)))
+                               (org-texmacs--document-create :body "") body))
+                      body)))))
               ((eq type 'plain-list)
                (unless (memq context
                              '(org-data section headline item quote-block center-block footnote-definition))
@@ -1543,6 +1624,23 @@ All positions refer to the complete, unnarrowed source snapshot."
               ((org-texmacs--block-p node)
                (register node (org-texmacs--block-source node) nil))
               ((eq (org-element-type node) 'paragraph) (paragraph node))
+              ((eq (org-element-type node) 'table)
+               ;; Capture every affiliated keyword from the private snapshot;
+               ;; lowering must not infer acceptance from overwritten properties.
+               (let ((begin (org-element-property :begin node))
+                     (post (org-element-property :post-affiliated node)) keys)
+                 (when (and (integerp begin) (integerp post))
+                   (save-excursion
+                     (goto-char begin)
+                     (while (< (point) post)
+                       (unless (looking-at "[ \t]*#\\+\\([[:alnum:]_]+\\)\\(?:\\[[^\n]*\\]\\)?:")
+                         (org-texmacs--document-fail node "Invalid affiliated metadata"))
+                       (push (upcase (match-string-no-properties 1)) keys)
+                       (forward-line 1)))
+                   (org-element-put-property node :texmacs-affiliated-keywords (nreverse keys))))
+               (dolist (line (org-texmacs--document-caption-lines node))
+                 (mapc #'whitespace (car line))
+                 (mapc #'whitespace (cdr line))))
               ((memq (org-element-type node)
                      '(org-data section headline plain-list item footnote-definition
                        quote-block center-block))
