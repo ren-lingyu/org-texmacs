@@ -89,7 +89,7 @@ Other systems were not established by the recorded validations.
   the v0.3.1 release revision. SHA-256 of
   `git diff HEAD -- README.org org-texmacs-context.el org-texmacs-document.el org-texmacs.el tests/ert/ert.el`
   was `07656ff6745c9c00d106faf48689e233fc183d13e5bb4f2036cafd16fc340555`.
-  The later project commit `a3ba241d66dc1e1a89a9eb4c4fc678fef2f5bfb4` (declared as a non-first parent of this checkpoint) was
+  The later local-link resolution revision was
   checked on 2026-10-06: its diff from that base matches this hash exactly.
 - Nix flake checking timed out twice at 120 seconds, inside and outside the
   host sandbox, while downloading Org 9.8.8 from ELPA with a TLS unexpected-EOF
@@ -159,7 +159,7 @@ source-vs-caller directories, visiting/non-file/indirect buffers, preparation
 home expansion, location changes/in-place mutation across worker waits, and
 post-preflight checks.
 
-The verified six-file diff on baseline `a3ba241d66dc1e1a89a9eb4c4fc678fef2f5bfb4` (declared as a non-first parent of this checkpoint)
+The verified six-file diff on the baseline local-link resolution revision
 had SHA-256 `3661d1b73013c08f1353f2cf29336486021210211eaa70cbbf5fcd87d2e0c768`
 using `git diff HEAD -- README.org org-texmacs-document.el org-texmacs-input.el org-texmacs-source.el org-texmacs.el tests/ert/ert.el`.
 It remains uncommitted; the baseline is not a tested commit for the new fields.

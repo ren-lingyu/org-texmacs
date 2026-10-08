@@ -10,7 +10,7 @@ must remain uncommitted and unpushed. Bootstrap discovery remains nonblocking.
 ## Current baseline
 
 - Main HEAD observed on 2026-10-06:
-  `a3ba241d66dc1e1a89a9eb4c4fc678fef2f5bfb4` (declared as a non-first parent of this checkpoint).
+  the local-link resolution revision.
 - Local v0.3.0 tag target:
   the v0.3.0 structured-document release revision.
 - Local v0.3.1 annotated tag resolves to
@@ -153,7 +153,7 @@ must remain uncommitted and unpushed. Bootstrap discovery remains nonblocking.
   first implementation node. `memory/backlog.md` holds the adopted scope and
   unresolved design questions; the note adds no unique raw evidence requiring
   a separate archive copy.
-- The first node is committed as `a3ba241` (declared as a non-first parent of this checkpoint): a pure analysis phase resolves local
+- The first node is committed as the local-link resolution revision: a pure analysis phase resolves local
   headline/CUSTOM_ID/ID and paragraph dedicated-target links against the owned
   AST, returning identity-keyed label/link mappings consumed by local lowering.
   Missing/ambiguous targets fail in preflight; no external ID lookup is used.

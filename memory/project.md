@@ -88,7 +88,7 @@ export preprocessing, and arbitrary Org element coverage.
 ## DOC-01 committed local-link extension
 
 The first resolution node is committed as
-`a3ba241d66dc1e1a89a9eb4c4fc678fef2f5bfb4` (declared as a non-first parent of this checkpoint); it is not a released capability.
+the local-link resolution revision; it is not a released capability.
 
 - A pure analysis phase in the document layer scans the prepared AST, treating
   STM islands as opaque, and returns conversion-local identity-keyed links and

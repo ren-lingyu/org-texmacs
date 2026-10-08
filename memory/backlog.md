@@ -36,7 +36,7 @@ references, citations/bibliography, and the effective configuration they need.
 Unsupported constructs such as checkboxes, advanced tables, Babel, and arbitrary
 Org elements are not thereby adopted.
 
-The first implementation node is committed as `a3ba241` (declared as a non-first parent of this checkpoint): pure
+The first implementation node is committed as the local-link resolution revision: pure
 document-wide analysis creates identity-keyed local link/label mappings consumed
 by lowering. Its supported contract is in `memory/project.md`; full ERT and
 byte compilation passed. The expanded source-context worktree now also passed
