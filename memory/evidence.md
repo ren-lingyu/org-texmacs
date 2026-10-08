@@ -162,7 +162,7 @@ post-preflight checks.
 The verified six-file diff on the baseline local-link resolution revision
 had SHA-256 `3661d1b73013c08f1353f2cf29336486021210211eaa70cbbf5fcd87d2e0c768`
 using `git diff HEAD -- README.org org-texmacs-document.el org-texmacs-input.el org-texmacs-source.el org-texmacs.el tests/ert/ert.el`.
-The later project commit `b09b4515ad0445666d666506969e441d8f5e6b89` (declared as a non-first parent of this checkpoint) was checked:
+The later source-location snapshot revision was checked:
 its six-file diff from that baseline matches this hash exactly.
 
 After local implementation/validation finished, `timeout 120s nix flake check
@@ -203,7 +203,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 - The three exact plain-text probe artifacts were copied byte for byte and
   digest/size verified in `archive/2026-10-06T14-50-30Z--b09b451/`. Independent
   archive-only archive-only checkpoint introducing archive/2026-10-06T14-50-30Z--b09b451/MANIFEST.md has sole
-  additional project parent `b09b4515ad0445666d666506969e441d8f5e6b89` (declared as a non-first parent of this checkpoint). Its
+  additional project parent the source-location snapshot revision. Its
   manifest records each role, source path, byte count and digest. Active memory,
   binary artifacts and the temporary overlay were excluded from that checkpoint.
 - The implementation adds raw file-target path provenance; it rewrites only
@@ -221,7 +221,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   The installed package was
   `/nix/store/0dmslh2v6d0yklwg900apn1g0cjcsd48-emacs-org-texmacs-0.3.1/`.
 - The verified five-file worktree diff on baseline
-  `b09b4515ad0445666d666506969e441d8f5e6b89` (declared as a non-first parent of this checkpoint) has SHA-256
+  the source-location snapshot revision has SHA-256
   `9a4808d6615612c728ba1b249929c2ff1db2e5c3cbf9aa5dccc844733ab0f913` using
   `git diff HEAD -- README.org org-texmacs-document.el org-texmacs-session.el org-texmacs.el tests/ert/ert.el`.
   It remains uncommitted; the baseline commit does not contain the file-link

@@ -57,7 +57,7 @@ and non-file buffers; source file identity is separate and does not override an
 explicit directory. Do not rewrite raw resource paths to absolute form early
 or choose a base inside a local link handler.
 
-The committed source-location node (`b09b451` (declared as a non-first parent of this checkpoint)) freezes `source-file` and
+The committed source-location node (the source-location snapshot revision) freezes `source-file` and
 `resource-base` in owned input/results. Preparation expands context home
 abbreviations once; pure construction never resolves ambient locations.
 Original strings join snapshot consistency checks. An output destination must

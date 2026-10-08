@@ -113,7 +113,7 @@ reference values or typesetting. See `memory/evidence.md` for validation gaps.
 
 ## Committed source-location snapshot node
 
-This node is committed as `b09b4515ad0445666d666506969e441d8f5e6b89` (declared as a non-first parent of this checkpoint) and its diff
+This node is committed as the source-location snapshot revision and its diff
 matches the recorded verified worktree hash.
 
 - Owned input and document results retain optional `source-file` and
