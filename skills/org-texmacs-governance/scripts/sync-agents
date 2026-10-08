@@ -1,0 +1,51 @@
+#!/bin/sh
+
+set -eu
+
+usage() {
+    echo "usage: sync-agents --check | --write" >&2
+    exit 2
+}
+
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+skill_dir=$(CDPATH= cd -- "$script_dir/.." && pwd -P)
+gaw_root=$(CDPATH= cd -- "$skill_dir/../.." && pwd -P)
+repo_root=$(CDPATH= cd -- "$gaw_root/.." && pwd -P)
+source_file="$skill_dir/assets/AGENTS.md"
+target_file="$repo_root/AGENTS.md"
+
+test -f "$source_file" || {
+    echo "missing bootstrap asset: $source_file" >&2
+    exit 2
+}
+
+test ! -L "$target_file" || {
+    echo "refusing symbolic-link target: $target_file" >&2
+    exit 2
+}
+
+case "${1-}" in
+    --check)
+        if test ! -f "$target_file"; then
+            echo "missing bootstrap target: $target_file" >&2
+            exit 1
+        fi
+        if cmp -s -- "$source_file" "$target_file"; then
+            echo "bootstrap matches: $target_file"
+            exit 0
+        fi
+        echo "bootstrap differs: $target_file" >&2
+        exit 1
+        ;;
+    --write)
+        cp -- "$source_file" "$target_file"
+        cmp -s -- "$source_file" "$target_file" || {
+            echo "bootstrap verification failed: $target_file" >&2
+            exit 1
+        }
+        echo "bootstrap written: $target_file"
+        ;;
+    *)
+        usage
+        ;;
+esac
