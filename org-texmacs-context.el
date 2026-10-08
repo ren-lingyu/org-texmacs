@@ -40,8 +40,19 @@
   "Org keywords consumed by the restricted context adapter.")
 
 (defconst org-texmacs--context-rejected-keywords
-  '("SETUPFILE" "INCLUDE" "BIND" "MACRO")
+  '("SETUPFILE" "INCLUDE" "BIND" "MACRO" "CITE_EXPORT")
   "Source directives that require preprocessing outside this adapter.")
+
+(defconst org-texmacs--context-export-properties
+  '("EXPORT_TITLE" "EXPORT_AUTHOR" "EXPORT_DATE" "EXPORT_OPTIONS"
+    "EXPORT_SELECT_TAGS" "EXPORT_EXCLUDE_TAGS" "EXPORT_FILE_NAME")
+  "Supported subtree export properties; inert during whole-buffer lowering.")
+
+(defun org-texmacs--context-subtree-settings ()
+  "Own the source's property lookup settings used by subtree export."
+  (org-texmacs--context-copy
+   (list org-use-property-inheritance org-property-separators
+         org-global-properties org-global-properties-fixed)))
 
 (defun org-texmacs--context-copy (value)
   "Copy configuration VALUE without retaining mutable strings or conses."
@@ -226,8 +237,9 @@ Return AST after in-place pruning."
                                      (and (eq (org-element-type property) 'node-property)
                                           (member (upcase
                                                    (org-element-property :key property))
-                                                  '("UNNUMBERED" "ALT_TITLE"
-                                                    "CUSTOM_ID" "ID"))))
+                                                  (append '("UNNUMBERED" "ALT_TITLE"
+                                                            "CUSTOM_ID" "ID")
+                                                          org-texmacs--context-export-properties))))
                                    (org-element-contents node)))
                        (signal 'org-texmacs-document-error
                                '("Unsupported Org property drawer")))
@@ -366,10 +378,60 @@ from this parsed snapshot; never fall back to a buffer or external data."
       (walk ast))
     table))
 
-(defun org-texmacs--context-prepare (ast islands requests post-blanks base-info)
+(defun org-texmacs--context-select-subtree (ast position info)
+  "Select the subtree at snapshot POSITION in owned AST under INFO.
+Apply restricted Org subtree overrides before dropping the root heading.
+Keep global declarations in INFO; body dependencies are restored separately."
+  (goto-char position)
+  (condition-case nil (org-back-to-heading t)
+    (error (signal 'org-texmacs-document-error '("No subtree at source position"))))
+  (let* ((begin (point))
+         (root (org-element-map ast 'headline
+                 (lambda (node) (and (= begin (org-element-property :begin node)) node))
+                 nil t))
+         (settings (plist-get info :texmacs-subtree-settings))
+         (org-use-property-inheritance (nth 0 settings))
+         (org-property-separators (nth 1 settings))
+         (org-global-properties (nth 2 settings))
+         (org-global-properties-fixed (nth 3 settings))
+         (org-entry-property-inherited-from (make-marker))
+         (org-export-options-alist org-texmacs--context-option-alist))
+    (unless root (signal 'org-texmacs-document-error '("Missing snapshot subtree")))
+    (when-let* ((options (org-entry-get begin "EXPORT_OPTIONS" 'selective)))
+      (org-texmacs--context-validate-options options))
+    (dolist (section (org-element-contents root))
+      (when (org-element-type-p section 'section)
+        (dolist (drawer (org-element-contents section))
+          (when (org-element-type-p drawer 'property-drawer)
+            (dolist (property (org-element-contents drawer))
+              (let ((key (upcase (org-element-property :key property))))
+                (when (and (string-prefix-p "EXPORT_" key)
+                           (not (member key org-texmacs--context-export-properties)))
+                  (signal 'org-texmacs-document-error
+                          (list "Unsupported subtree export property" key)))))))))
+    (let* ((overrides (org-export--get-subtree-options))
+           (metadata (copy-sequence (plist-get info :texmacs-metadata-present))))
+      (dolist (entry '((:title . "TITLE") (:author . "AUTHOR") (:date . "DATE")))
+        (when (plist-member overrides (car entry))
+          (cl-pushnew (cdr entry) metadata :test #'equal)))
+      (setq info (org-combine-plists info overrides
+                                    (list :texmacs-metadata-present metadata))))
+    ;; Root heading/title/properties are document configuration, not body.
+    (let ((children (copy-sequence (org-element-contents root))))
+      (when (org-element-type-p (car children) 'section)
+        (dolist (node (copy-sequence (org-element-contents (car children))))
+          (when (org-element-type-p node '(planning property-drawer))
+            (org-element-extract node))))
+      (dolist (child children) (org-element-put-property child :parent ast))
+      (apply #'org-element-set-contents ast children))
+    (org-texmacs--context-validate-info info)))
+
+(defun org-texmacs--context-prepare
+    (ast islands requests post-blanks base-info &optional subtree-position)
   "Apply restricted context to prepared AST and associated mappings.
 Return (AST ISLANDS REQUESTS POST-BLANKS INFO), retaining only mappings and
-worker requests whose identity keys remain reachable after filtering."
+worker requests whose identity keys remain reachable after filtering.
+Optional SUBTREE-POSITION clips the owned tree after configuration capture."
   (let* ((metadata
           (mapcar #'car
                   (org-texmacs--context-keywords
@@ -389,6 +451,8 @@ worker requests whose identity keys remain reachable after filtering."
                               (org-texmacs--context-keywords ast islands '("BIBLIOGRAPHY"))))))
          (_ (setq info (plist-put info :texmacs-bibliography-declarations bibliography-declarations)))
          (definitions (org-texmacs--context-footnote-definitions ast islands))
+         (_ (when subtree-position
+              (setq info (org-texmacs--context-select-subtree ast subtree-position info))))
          (_ (org-texmacs--context-prune ast islands info t))
          (_ (org-texmacs--context-preserve-footnotes ast islands definitions info))
          (reachable (org-texmacs--context-reachable ast islands))

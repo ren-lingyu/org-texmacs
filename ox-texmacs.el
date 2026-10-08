@@ -7,7 +7,7 @@
 
 ;; Register TeXmacs in Org's export dispatcher.  Menu actions consume the
 ;; original explicit source through org-texmacs's owned structured pipeline.
-;; This first frontend supports synchronous whole-buffer exports only.
+;; This frontend supports synchronous whole-buffer and subtree exports.
 ;; Org's generic string-transcoder/preprocessing APIs are explicitly rejected
 ;; for this backend before includes, macros or Babel processing.
 
@@ -18,25 +18,33 @@
 
 (defun org-texmacs--export-check-options (async subtreep visible-only body-only ext-plist)
   "Validate the bounded frontend's Org export arguments.
-Reject ASYNC, SUBTREEP, VISIBLE-ONLY, BODY-ONLY and EXT-PLIST before conversion."
-  (when (or async subtreep visible-only body-only ext-plist)
-    (user-error "TeXmacs export supports synchronous whole-buffer export without overrides"))
+Reject ASYNC, VISIBLE-ONLY, BODY-ONLY and EXT-PLIST before conversion.
+When SUBTREEP is non-nil, return the captured source heading position."
+  (when (or async visible-only body-only ext-plist)
+    (user-error "TeXmacs export supports synchronous buffer/subtree export without overrides"))
   (org-texmacs--export-interactive-source)
   (when (org-region-active-p)
-    (user-error "TeXmacs export does not support an active region")))
+    (user-error "TeXmacs export does not support an active region"))
+  (when subtreep
+    (save-excursion
+      (condition-case nil (org-back-to-heading t)
+        (error (user-error "No subtree at point")))
+      (point))))
 
 ;;;###autoload
 (defun org-texmacs-export-as-texmacs
     (&optional async subtreep visible-only body-only ext-plist)
   "Export the current Org buffer to a fresh readonly native .tm byte buffer.
-Reject non-nil ASYNC, SUBTREEP, VISIBLE-ONLY, BODY-ONLY or EXT-PLIST, narrowing
+Reject non-nil ASYNC, VISIBLE-ONLY, BODY-ONLY or EXT-PLIST, narrowing
 and an active region before preparation.  Reuse the owned source pipeline;
 do not run generic Org preprocessing or read bibliography files.
+Non-nil SUBTREEP exports the containing subtree with its captured configuration.
 Return the new buffer.  Display it when
 `org-export-show-temporary-export-buffer' is non-nil."
   (interactive)
-  (org-texmacs--export-check-options async subtreep visible-only body-only ext-plist)
-  (let ((output (org-texmacs-export-to-buffer (current-buffer))) complete)
+  (let* ((position (org-texmacs--export-check-options
+                    async subtreep visible-only body-only ext-plist))
+         (output (org-texmacs-export-to-buffer (current-buffer) nil position)) complete)
     (unwind-protect
         (progn
           (when org-export-show-temporary-export-buffer (display-buffer output))
@@ -50,25 +58,29 @@ Return the new buffer.  Display it when
 (defun org-texmacs-export-to-texmacs
     (&optional async subtreep visible-only body-only ext-plist)
   "Export the current Org buffer to Org's local .tm output path.
-Reject non-nil ASYNC, SUBTREEP, VISIBLE-ONLY, BODY-ONLY or EXT-PLIST, narrowing
+Reject non-nil ASYNC, VISIBLE-ONLY, BODY-ONLY or EXT-PLIST, narrowing
 and an active region before output naming.  Use `org-export-output-file-name'
 and overwrite an existing writable regular output after source checking.
+Non-nil SUBTREEP uses the containing subtree's configuration and output name.
 Return the absolute destination.  No bibliography files are read."
   (interactive)
-  (org-texmacs--export-check-options async subtreep visible-only body-only ext-plist)
-  (org-texmacs--export-named-file ".tm" #'org-texmacs-export-from-buffer))
+  (let ((position (org-texmacs--export-check-options
+                   async subtreep visible-only body-only ext-plist)))
+    (org-texmacs--export-named-file ".tm" #'org-texmacs-export-from-buffer position)))
 
 ;;;###autoload
 (defun org-texmacs-export-to-texmacs-pdf
     (&optional async subtreep visible-only body-only ext-plist)
   "Export the current Org buffer to Org's local PDF output path.
-Reject non-nil ASYNC, SUBTREEP, VISIBLE-ONLY, BODY-ONLY or EXT-PLIST, narrowing
+Reject non-nil ASYNC, VISIBLE-ONLY, BODY-ONLY or EXT-PLIST, narrowing
 and an active region before output naming.  Use `org-export-output-file-name'
 and overwrite an existing writable regular output after source checking.
+Non-nil SUBTREEP uses the containing subtree's configuration and output name.
 Return the absolute destination.  No PDF viewer or bibliography reader runs."
   (interactive)
-  (org-texmacs--export-check-options async subtreep visible-only body-only ext-plist)
-  (org-texmacs--export-named-file ".pdf" #'org-texmacs-export-pdf-from-buffer))
+  (let ((position (org-texmacs--export-check-options
+                   async subtreep visible-only body-only ext-plist)))
+    (org-texmacs--export-named-file ".pdf" #'org-texmacs-export-pdf-from-buffer position)))
 
 (defun org-texmacs--export-writable-target (file source-file)
   "Validate and own local output FILE without handlers.
@@ -91,11 +103,12 @@ Reject symlinks and an alias of SOURCE-FILE.  This is not a concurrency lock."
       (signal 'file-error (list "Output file not writable" file)))
     (substring-no-properties file)))
 
-(defun org-texmacs--export-named-file (extension consumer)
+(defun org-texmacs--export-named-file (extension consumer &optional subtree-position)
   "Export the current source with byte CONSUMER to Org's EXTENSION output.
 Capture source/directory/destination before conversion; permit replacement.
 Do not add a newline or re-encode bytes.  File errors propagate; partial
-output may remain after write failure.  No backup or atomic replacement is used."
+output may remain after write failure.  No backup or atomic replacement is used.
+Optional SUBTREE-POSITION freezes the selected source heading before prompts."
   (let* ((source (current-buffer))
          (directory (org-texmacs--source-capture-path default-directory))
          (source-file (buffer-file-name (buffer-base-buffer))))
@@ -104,15 +117,17 @@ output may remain after write failure.  No backup or atomic replacement is used.
                      (org-texmacs--document-local-file-path-p source-file)))
       (user-error "TeXmacs export requires a local source context"))
     (setq source-file (and source-file (substring-no-properties source-file)))
-    (let* ((name (save-current-buffer
-                   (let ((file-name-handler-alist nil))
-                     (org-export-output-file-name extension))))
+    (let* ((name (save-excursion
+                   (let ((file-name-handler-alist nil)
+                         (org-entry-property-inherited-from (make-marker)))
+                     (when subtree-position (goto-char subtree-position))
+                     (org-export-output-file-name extension (and subtree-position t)))))
            (target (expand-file-name name directory)))
       ;; Org's helper protects existing source files.  Also protect an unsaved
       ;; visiting source with an output suffix, where file-equal-p is nil.
       (when (equal target source-file) (setq target (concat target extension)))
       (setq target (org-texmacs--export-writable-target target source-file))
-      (let ((bytes (funcall consumer source)))
+      (let ((bytes (funcall consumer source nil subtree-position)))
         (org-texmacs--export-writable-target target source-file)
         (org-texmacs--native-save-bytes bytes target t)))))
 

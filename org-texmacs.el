@@ -184,8 +184,11 @@ preparation and conversion together, use `org-texmacs-document-from-buffer'."
     (list prefix keys entries body)))
 
 ;;;###autoload
-(defun org-texmacs-prepare-buffer (source-buffer &optional bibliography-sources)
+(defun org-texmacs-prepare-buffer
+    (source-buffer &optional bibliography-sources subtree-position)
   "Prepare a buffer-independent structural input from SOURCE-BUFFER.
+Optional SUBTREE-POSITION selects its containing subtree in the full snapshot;
+nil prepares the whole buffer.  It must be an integer source position.
 Apply the source and supported-subset contract of
 `org-texmacs-document-from-buffer', including preflight and STM parsing.
 Return an `org-texmacs-input', without opening a native session.
@@ -195,11 +198,14 @@ worker requests, and own native parsed entries in the input's BIBLIOGRAPHY.
 Never open these paths or query a bibliography database.  Resolve document
 bibliography declarations, bare default citations and one bibliography print,
 then prepare native plain output in the fixed INFO context."
-  (org-texmacs--prepare-buffer source-buffer #'identity bibliography-sources))
+  (org-texmacs--prepare-buffer source-buffer #'identity bibliography-sources subtree-position))
 
 ;;;###autoload
-(defun org-texmacs-document-from-buffer (source-buffer &optional bibliography-sources)
-  "Convert the complete Org SOURCE-BUFFER to a text document result.
+(defun org-texmacs-document-from-buffer
+    (source-buffer &optional bibliography-sources subtree-position)
+  "Convert explicit Org SOURCE-BUFFER to a text document result.
+Optional SUBTREE-POSITION selects its containing subtree instead of the full
+body.  Configuration and referenced footnotes come from the same full snapshot.
 
 SOURCE-BUFFER must be a live, unnarrowed Org buffer object, not a name
 or file path.  Capture source text and supported configuration from it,
@@ -267,15 +273,21 @@ or tag/heading/link-setting changes while waiting.  Parser and worker errors
 propagate unchanged.
 The result preserves source-dependent text semantics for later encoding;
 it does not provide export, native buffer updates or rendering."
-  (org-texmacs--prepare-buffer source-buffer #'org-texmacs-document bibliography-sources))
+  (org-texmacs--prepare-buffer source-buffer #'org-texmacs-document
+                               bibliography-sources subtree-position))
 
-(defun org-texmacs--prepare-buffer (source-buffer consumer &optional bibliography-sources)
+(defun org-texmacs--prepare-buffer
+    (source-buffer consumer &optional bibliography-sources subtree-position)
   "Prepare SOURCE-BUFFER and call CONSUMER before the final source check."
   (unless (and (bufferp source-buffer) (buffer-live-p source-buffer))
     (signal 'org-texmacs-document-error '("Expected a live Org buffer object")))
   (with-current-buffer source-buffer
     (unless (and (derived-mode-p 'org-mode) (not (buffer-narrowed-p)))
       (signal 'org-texmacs-document-error '("Expected an unnarrowed Org buffer")))
+    (when (and subtree-position
+               (not (and (integerp subtree-position)
+                         (<= (point-min) subtree-position (point-max)))))
+      (signal 'org-texmacs-document-error '("Invalid subtree source position")))
     (let* ((buffer source-buffer)
            (mode major-mode)
            (tick (buffer-chars-modified-tick))
@@ -302,11 +314,14 @@ it does not provide export, native buffer updates or rendering."
            (heading-settings (org-texmacs--document-heading-settings))
            (link-settings (org-texmacs--document-link-settings))
            (base-info (plist-put (org-texmacs--document-options) :texmacs-resource-base resource-base))
+           (subtree-settings (and subtree-position (org-texmacs--context-subtree-settings)))
+           (_ (when subtree-position
+                (setq base-info (plist-put base-info :texmacs-subtree-settings subtree-settings))))
            (style (org-texmacs--document-copy-style org-texmacs-document-style))
            (initial (org-texmacs--document-copy-initial org-texmacs-document-initial))
            (source (buffer-substring-no-properties (point-min) (point-max)))
            (prepared (org-texmacs--document-prepare-source
-                      source tags heading-settings link-settings base-info))
+                      source tags heading-settings link-settings base-info subtree-position))
            (info (nth 4 prepared)))
       (cl-labels ((check ()
                    (unless (buffer-live-p buffer)
@@ -330,6 +345,10 @@ it does not provide export, native buffer updates or rendering."
                      (unless (equal link-settings (org-texmacs--document-link-settings))
                        (signal 'org-texmacs-document-error
                                '("Org link settings changed during conversion")))
+                     (when (and subtree-position
+                                (not (equal subtree-settings (org-texmacs--context-subtree-settings))))
+                       (signal 'org-texmacs-document-error
+                               '("Org property settings changed during conversion")))
                      (when (buffer-narrowed-p)
                        (signal 'org-texmacs-document-error '("Source became narrowed"))))))
         (check)
@@ -425,8 +444,10 @@ it does not provide export, native buffer updates or rendering."
           result)))))
 
 ;;;###autoload
-(defun org-texmacs-export-from-buffer (source-buffer &optional bibliography-sources)
+(defun org-texmacs-export-from-buffer
+    (source-buffer &optional bibliography-sources subtree-position)
   "Export explicit Org SOURCE-BUFFER to a complete native .tm byte string.
+Optional SUBTREE-POSITION selects the containing subtree in owned preparation.
 Use the same restricted preparation, configuration snapshot and explicit
 BIBLIOGRAPHY-SOURCES text snapshots as `org-texmacs-document-from-buffer'.
 Lower and serialize inside preparation's final source consistency check, so
@@ -437,18 +458,20 @@ Unsupported directives retain the existing explicit preparation errors."
   (org-texmacs--prepare-buffer
    source-buffer
    (lambda (input) (org-texmacs-document-serialize (org-texmacs-document input)))
-   bibliography-sources))
+   bibliography-sources subtree-position))
 
 ;;;###autoload
-(defun org-texmacs-export-pdf-from-buffer (source-buffer &optional bibliography-sources)
+(defun org-texmacs-export-pdf-from-buffer
+    (source-buffer &optional bibliography-sources subtree-position)
   "Render explicit Org SOURCE-BUFFER to native PDF bytes.
+Optional SUBTREE-POSITION selects the containing subtree in owned preparation.
 Use explicit BIBLIOGRAPHY-SOURCES snapshots and the restricted preparation.
 Keep lowering and native printing inside the final source/dependency check.
 Return unibyte PDF data; no final output file or GUI preview is created."
   (org-texmacs--prepare-buffer
    source-buffer
    (lambda (input) (org-texmacs-document-pdf (org-texmacs-document input)))
-   bibliography-sources))
+   bibliography-sources subtree-position))
 
 ;;;###autoload
 (defun org-texmacs-export-to-pdf (source-buffer file &optional bibliography-sources)
@@ -491,8 +514,10 @@ EXTENSION is a fixed consumer suffix, defaulting to tm."
            directory))))
 
 ;;;###autoload
-(defun org-texmacs-export-to-buffer (source-buffer &optional bibliography-sources)
+(defun org-texmacs-export-to-buffer
+    (source-buffer &optional bibliography-sources subtree-position)
   "Export explicit Org SOURCE-BUFFER into a fresh readonly native byte buffer.
+Optional SUBTREE-POSITION selects the containing subtree in owned preparation.
 Pass explicit BIBLIOGRAPHY-SOURCES snapshots to
 `org-texmacs-export-from-buffer'.
 Create the derived buffer only after export/source checking succeeds.  Retain
@@ -503,7 +528,7 @@ Return the new buffer; display it only when called interactively from Org.
 Interactive calls pass no bibliography snapshots; use Lisp arguments when those
 are needed.  This is a native source view, not rendered TeXmacs output."
   (interactive (list (org-texmacs--export-interactive-source)))
-  (let* ((bytes (org-texmacs-export-from-buffer source-buffer bibliography-sources))
+  (let* ((bytes (org-texmacs-export-from-buffer source-buffer bibliography-sources subtree-position))
          (output (generate-new-buffer "*Org TeXmacs Export*"))
          complete)
     (unwind-protect

@@ -5048,7 +5048,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (insert "Whole buffer.\n")
       (dolist (function '(org-texmacs-export-as-texmacs org-texmacs-export-to-texmacs
                           org-texmacs-export-to-texmacs-pdf))
-        (dotimes (index 5)
+        (dolist (index '(0 2 3 4))
           (let ((arguments (make-list 5 nil)))
             (setcar (nthcdr index arguments) t)
             (should-error (apply function arguments) :type 'user-error)))
@@ -5111,7 +5111,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
           (org-export-dispatch-last-position (make-marker)))
       (cl-letf (((symbol-function 'read-file-name)
                  (lambda (&rest _) (ert-fail "Unsupported dispatcher option prompted"))))
-        (dolist (option '(async subtree visible body))
+        (dolist (option '(async visible body))
           (cl-letf (((symbol-function 'org-export--dispatch-ui)
                      (lambda (&rest _) (list #'org-texmacs-export-to-texmacs option))))
             (should-error (org-export-dispatch) :type 'user-error)))))))
@@ -5268,6 +5268,186 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
         (with-temp-buffer
           (insert-file-contents-literally file)
           (should (equal "Par" (buffer-string))))))))
+
+(ert-deftest org-texmacs-subtree-configuration-and-owned-selection ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+TITLE: File title\n#+AUTHOR: File author\n#+OPTIONS: toc:nil\n"
+            "* Parent\n:PROPERTIES:\n:EXPORT_AUTHOR: Inherited author\n:END:\n"
+            "** TODO Chosen\n:PROPERTIES:\n:EXPORT_TITLE: *Local* title\n"
+            ":EXPORT_OPTIONS: num:nil H:2 toc:nil date:nil\n:END:\nSelectedBodySentinel.\n"
+            "*** Child\nChildBodySentinel.\n* Outside\n- [X] UnsupportedOutsideSentinel\n")
+    (goto-char (point-min))
+    (search-forward "SelectedBodySentinel")
+    (let ((source (current-buffer)) (position (point))
+          (original (buffer-string)) (org-use-property-inheritance '("EXPORT_AUTHOR"))
+          (org-entry-property-inherited-from (copy-marker 3)))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Ordinary subtree started worker"))))
+        (let* ((input (org-texmacs-prepare-buffer source nil position))
+               (body (org-texmacs-document-body (org-texmacs-document input)))
+               (printed (prin1-to-string body)))
+          (should (string-match-p "Local" printed))
+          (should (string-match-p "Inherited author" printed))
+          (should-not (string-match-p "File title\\|File author\\|UnsupportedOutsideSentinel" printed))
+          (should (= 1 (cl-count 'section* (flatten-tree body))))
+          (should-not (memq 'section (flatten-tree body)))
+          (let ((org-use-property-inheritance nil))
+            (should (equal body (org-texmacs-document-body (org-texmacs-document input)))))
+          (should (= 3 (marker-position org-entry-property-inherited-from)))))
+      (should (= position (point)))
+      (should (equal original (buffer-string))))))
+
+(ert-deftest org-texmacs-subtree-external-footnotes-and-stm-order ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil\n[fn:before] Before (math \"x\").\n\n"
+              "* Chosen\nSelected (math \"y\") [fn:before] [fn:inline].\n"
+              "* Outside\nElse[fn:inline:Owned *inline* body.].\n"
+              "#+begin_texmacs\n(math\n#+end_texmacs\n")
+      (goto-char (point-min)) (search-forward "* Chosen")
+      (let ((request (symbol-function 'org-texmacs--worker-request)) seen)
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (text &rest arguments)
+                     (push text seen) (apply request text arguments))))
+          (let* ((document (org-texmacs-document-from-buffer (current-buffer) nil (point)))
+                 (body (org-texmacs-document-body document)))
+            (should (equal (nreverse seen) '("(math \"y\")" "(math \"x\")")))
+            (should (= 2 (cl-count 'footnote (flatten-tree body))))
+            (should (string-match-p "Owned" (prin1-to-string body)))
+            (should-not (string-match-p "Else" (prin1-to-string body)))
+            (should (string-prefix-p "<TeXmacs|" (org-texmacs-document-serialize document)))))))))
+
+(ert-deftest org-texmacs-subtree-date-and-filter-overrides ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+AUTHOR: File author\n#+DATE: File date\n#+OPTIONS: toc:nil\n"
+            "* Parent\n:PROPERTIES:\n:EXPORT_AUTHOR: Parent author\n:END:\n"
+            "** Chosen\n:PROPERTIES:\n:EXPORT_DATE: Subtree date\n"
+            ":EXPORT_EXCLUDE_TAGS: drop\n:END:\nRoot body.\n"
+            "*** Keep\nKeepBodySentinel.\n*** Drop :drop:\n- [X] ExcludedBodySentinel\n")
+    (goto-char (point-min)) (search-forward "** Chosen")
+    (let ((org-use-property-inheritance nil))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Filtered ordinary subtree started worker"))))
+        (let ((body (prin1-to-string
+                     (org-texmacs-document-body
+                      (org-texmacs-document-from-buffer (current-buffer) nil (point))))))
+          (should (string-match-p "Subtree date" body))
+          (should (string-match-p "File author" body))
+          (should (string-match-p "KeepBodySentinel" body))
+          (should-not (string-match-p "Parent author\\|File date\\|ExcludedBodySentinel" body)))))))
+
+(ert-deftest org-texmacs-subtree-links-and-invalid-scope-preflight ()
+  (cl-letf (((symbol-function 'org-texmacs--worker-request)
+             (lambda (&rest _) (ert-fail "Invalid scope started worker"))))
+    (with-temp-buffer
+      (org-mode)
+      (insert "Preamble.\n* Chosen\n[[*Inner]]\n** Inner\nBody.\n* Outside\nElse.\n")
+      (let ((source (current-buffer)))
+        (should-error (org-texmacs-prepare-buffer source nil 1) :type 'org-texmacs-document-error)
+        (should-error (org-texmacs-prepare-buffer source nil -1) :type 'org-texmacs-document-error)
+        (goto-char (point-min)) (search-forward "* Chosen")
+        (let ((position (point)))
+          (should (memq 'reference
+                        (flatten-tree (org-texmacs-document-body
+                                       (org-texmacs-document-from-buffer source nil position)))))
+          (search-forward "[[*Inner]]")
+          (replace-match "[[*Outside]]" t t)
+          (should-error (org-texmacs-prepare-buffer source nil position)
+                        :type 'org-texmacs-document-error))))
+    (with-temp-buffer
+      (org-mode)
+      (insert "* Chosen\n:PROPERTIES:\n:EXPORT_OPTIONS: d:nil\n:END:\nBody.\n")
+      (should-error (org-texmacs-prepare-buffer (current-buffer) nil 1)
+                    :type 'org-texmacs-document-error))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+CITE_EXPORT: basic\n* Chosen\nBody (math \"x\").\n")
+      (goto-char (point-min)) (search-forward "* Chosen")
+      (should-error (org-texmacs-prepare-buffer (current-buffer) nil (point))
+                    :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-subtree-owned-bibliography-and-resource-base ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil\n#+bibliography: refs.bib\n"
+              "[fn:r] Note [cite:@b].\n\n* Chosen\nBody [fn:r] [cite:@a] [[./asset.org]].\n"
+              "#+print_bibliography:\n* Outside\n[cite:@missing]\n")
+      (goto-char (point-min)) (search-forward "* Chosen")
+      (let* ((position (point))
+             (sources '(("refs.bib" . "@book{a, title={A}}\n@book{b, title={B}}\n@book{unused, title={Unused}}")))
+             (input (org-texmacs-prepare-buffer (current-buffer) sources position))
+             (document (org-texmacs-document input)))
+        (should (equal (nth 1 (plist-get (org-texmacs-input-info input) :texmacs-bibliography-output))
+                       '("b" "a")))
+        (should (equal (org-texmacs-document-resource-base document) default-directory))
+        (should (org-texmacs-document-file-paths document))
+        (should-not (string-match-p "missing\\|Unused" (prin1-to-string (org-texmacs-document-body document))))
+        (should (string-prefix-p "<TeXmacs|" (org-texmacs-document-serialize document)))))))
+
+(ert-deftest org-texmacs-subtree-dispatch-file-naming-and-source-state ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+TITLE: File title\n#+OPTIONS: toc:nil\n* Chosen\n"
+              ":PROPERTIES:\n:EXPORT_FILE_NAME: chosen.other\n:END:\nSubtreeBodySentinel.\n"
+              "* Outside\nOutsideBodySentinel.\n")
+      (setq buffer-file-name (expand-file-name "source.org" test-directory))
+      (goto-char (point-min)) (search-forward "SubtreeBodySentinel")
+      (let ((original (buffer-string)) (position (point))
+            (org-export-dispatch-last-action nil)
+            (org-export-dispatch-last-position (make-marker))
+            (org-export-show-temporary-export-buffer nil))
+        (let ((output (org-texmacs-export-as-texmacs nil t)))
+          (unwind-protect
+              (with-current-buffer output
+                (should buffer-read-only)
+                (should (string-match-p "SubtreeBodySentinel" (buffer-string)))
+                (should-not (string-match-p "OutsideBodySentinel" (buffer-string))))
+            (kill-buffer output)))
+        (dolist (consumer '((org-texmacs-export-to-texmacs . "tm")
+                            (org-texmacs-export-to-texmacs-pdf . "pdf")))
+          (cl-letf (((symbol-function 'org-export--dispatch-ui)
+                     (lambda (&rest _) (list (car consumer) 'subtree)))
+                    ((symbol-function 'read-file-name)
+                     (lambda (&rest _) (ert-fail "Named subtree prompted"))))
+            (let ((file (expand-file-name (concat "chosen." (cdr consumer)) test-directory)))
+              (should (equal file (org-export-dispatch)))
+              (with-temp-buffer
+                (set-buffer-multibyte nil) (insert-file-contents-literally file)
+                (if (equal (cdr consumer) "pdf")
+                    (should (string-prefix-p "%PDF-" (buffer-string)))
+                  (should (string-match-p "SubtreeBodySentinel" (buffer-string)))
+                  (should-not (string-match-p "OutsideBodySentinel\\|File title" (buffer-string))))))))
+        (should (= position (point)))
+        (should (equal original (buffer-string)))))))
+
+(ert-deftest org-texmacs-subtree-selection-and-property-waits ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil\n* First\nFirstBodySentinel.\n* Second\nSecondBodySentinel.\n")
+      (goto-char (point-min)) (search-forward "FirstBodySentinel")
+      (let ((source (current-buffer)) (position (point))
+            (serialize (symbol-function 'org-texmacs-document-serialize)))
+        (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                   (lambda (document)
+                     (with-current-buffer source (goto-char (point-max)))
+                     (funcall serialize document))))
+          (let ((bytes (org-texmacs-export-from-buffer source nil position)))
+            (should (string-match-p "FirstBodySentinel" bytes))
+            (should-not (string-match-p "SecondBodySentinel" bytes)))))
+      (goto-char (point-min)) (search-forward "FirstBodySentinel")
+      (let ((org-use-property-inheritance (list (copy-sequence "EXPORT_AUTHOR"))))
+        (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                   (lambda (_document)
+                     (aset (car org-use-property-inheritance) 0 ?X)
+                     (encode-coding-string "<TeXmacs|2.1.5>" 'us-ascii))))
+          (should-error (org-texmacs-export-from-buffer (current-buffer) nil (point))
+                        :type 'org-texmacs-document-error))))))
 
 (defun org-texmacs-test--pdf-text (file)
   "Extract FILE's PDF text and normalize whitespace, without layout assertions."

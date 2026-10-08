@@ -1125,9 +1125,10 @@ In Org's =C-c C-e= menu, select =T= for TeXmacs:
 The corresponding commands are =org-texmacs-export-as-texmacs=,
 =org-texmacs-export-to-texmacs= and =org-texmacs-export-to-texmacs-pdf=.
 They accept Org's standard optional arguments =async subtreep visible-only
-body-only ext-plist=; this first frontend rejects every non-nil argument before
-conversion or file prompts.  It exports a complete, unnarrowed Org buffer
-synchronously and rejects an active region.  File actions reuse
+body-only ext-plist=.  =subtreep= is supported; the other arguments must be nil
+and fail before conversion or file prompts when non-nil.  It exports a complete
+buffer or the containing subtree synchronously from an unnarrowed source,
+and rejects an active region.  File actions reuse
 =org-export-output-file-name=, like =ox-latex=: =#+EXPORT_FILE_NAME= takes
 precedence over the visiting source's file stem; a source with neither prompts
 for a name.  The helper enforces the =.tm= or =.pdf= suffix.  Relative paths
@@ -1160,9 +1161,68 @@ and publishing APIs are not implemented by this backend.
 
 These commands pass no bibliography snapshots and never read =.bib= files.
 Documents needing explicit snapshots can use the existing Lisp source adapters
-with =BIBLIOGRAPHY-SOURCES=.  Output overrides, subtree/region/visible/body-only
+with =BIBLIOGRAPHY-SOURCES=.  General output overrides, region/visible/body-only
 and async semantics remain future design work.  Loading =org-texmacs= alone
 does not register this menu or guard, and no PDF viewer opens.
+
+*** Subtree export, configuration and dependencies
+Toggle the scope to subtree with =C-s= in the export dispatcher, or call a
+frontend command with =subtreep= non-nil.  Point must be on a heading or inside
+its subtree.  The selected heading supplies the document title; its heading,
+planning line and property drawer are omitted from the body.  Child headings
+are lowered relative to the remaining minimum level.  No live-source narrowing
+or source-text reconstruction is used.
+
+#+begin_src emacs-lisp
+  (org-texmacs-export-to-texmacs nil t)
+  (org-texmacs-export-to-texmacs-pdf nil t)
+#+end_src
+
+Supported subtree properties override the captured file/global configuration:
+
+| Property               | Meaning                                      |
+|------------------------+----------------------------------------------|
+| =EXPORT_TITLE=         | Rich title; otherwise the selected heading   |
+| =EXPORT_AUTHOR=        | Rich author metadata                         |
+| =EXPORT_DATE=          | Date metadata                                |
+| =EXPORT_OPTIONS=       | The existing restricted =OPTIONS= subset     |
+| =EXPORT_SELECT_TAGS=   | Selection tags                               |
+| =EXPORT_EXCLUDE_TAGS=  | Exclusion tags                               |
+| =EXPORT_FILE_NAME=     | Output naming through Org's subtree helper   |
+
+Property lookup follows the captured =org-use-property-inheritance= policy.
+Unsupported =EXPORT_*= properties on the selected root and unsupported option
+keys fail explicitly.  Recognized properties on ordinary headings are output
+metadata and remain inert during whole-buffer export.
+
+The full private source snapshot supplies file configuration, bibliography
+declarations and referenced named footnote definitions.  Only the selected body
+and required footnotes are retained and their STM islands parsed.  Unused
+definitions and unrelated body trees are not converted.  Internal targets must
+exist in the emitted scope, including restored footnotes; links to excluded
+headings or the omitted root heading fail before worker requests.  Source file
+identity and resource base stay the original source's captured values.
+
+Subtree citations use the existing explicit BibTeX text snapshot contract and
+need a =PRINT_BIBLIOGRAPHY= inside the selected body.  No =.bib= or global ID
+database is opened.  =CITE_EXPORT= and unsupported preprocessing directives
+remain rejected.  The menu supplies no bibliography texts; Lisp callers can
+pass them to the source adapters.
+
+The explicit source APIs =org-texmacs-prepare-buffer=,
+=org-texmacs-document-from-buffer=, =org-texmacs-export-from-buffer=,
+=org-texmacs-export-pdf-from-buffer= and =org-texmacs-export-to-buffer= accept an
+optional third =SUBTREE-POSITION= after =BIBLIOGRAPHY-SOURCES=.  It is an integer
+in the unnarrowed source, and nil retains whole-buffer behavior:
+
+#+begin_src emacs-lisp
+  (org-texmacs-document-from-buffer source-buffer bibliography-sources position)
+#+end_src
+
+Selection is fixed before native waits; later point movement cannot redirect
+the export.  Source edits, parser/context changes and property-lookup setting
+changes during waits reject output before file writing.  Conversion and native
+consumers still use the same owned input and source consistency check.
 
 ** Native encoding and lifetime
 =org-texmacs-session-open= creates an empty native document buffer and returns

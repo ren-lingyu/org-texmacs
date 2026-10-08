@@ -1518,13 +1518,15 @@ constants, concatenation, preambles, repairs and duplicate keys or fields."
                        (list "Malformed bibliography text" (error-message-string err)))))
       (nreverse signatures))))
 
-(defun org-texmacs--document-prepare-source (source tags headings links info)
+(defun org-texmacs--document-prepare-source
+    (source tags headings links info &optional subtree-position)
   "Prepare SOURCE under private Org link syntax using fixed LINKS settings.
 TAGS and HEADINGS are the conversion's other parser inputs.
 Return prepared structure without invoking headline formatters or lowering.
 Never register protocols globally or reset source element caches.  Keep
 Org's internal regexp regeneration confined to this preparation boundary.
-INFO is the fixed supported global and buffer-local context snapshot."
+INFO is the fixed supported global and buffer-local context snapshot.
+Optional SUBTREE-POSITION selects a subtree in that complete source snapshot."
   (let ((org-link-parameters (org-texmacs--document-copy-link-setting (nth 0 links)))
         (org-link-abbrev-alist (org-texmacs--document-copy-link-setting (nth 1 links)))
         (org-link-types-re org-link-types-re)
@@ -1545,10 +1547,11 @@ INFO is the fixed supported global and buffer-local context snapshot."
         (setq-local org-texmacs-fragment-tags tags)
         (insert source)
         (org-texmacs--document-prepare
-         source (org-texmacs--fragment-collect tags) headings (nth 2 links) info)))))
+         source (org-texmacs--fragment-collect tags) headings (nth 2 links) info
+         subtree-position)))))
 
 (defun org-texmacs--document-prepare
-    (source spans heading-settings &optional abbrevs info)
+    (source spans heading-settings &optional abbrevs info subtree-position)
   "Prepare SOURCE and discovered SPANS without starting a worker.
 HEADING-SETTINGS is the source's effective heading configuration snapshot.
 Install it locally after private mode initialization, before parsing source.
@@ -1557,7 +1560,8 @@ INFO is the fixed context base to merge with supported source keywords.
 Return (AST ISLANDS REQUESTS POST-BLANKS INFO).  Each request is
 (ISLAND-ENTRY SOURCE TAG); TAG is nil for an unrestricted special block.
 Island entries initially contain placeholder strees for structural validation.
-All positions refer to the complete, unnarrowed source snapshot."
+All positions refer to the complete, unnarrowed source snapshot.
+Optional SUBTREE-POSITION selects a body plus owned dependencies before walking."
   (with-temp-buffer
     (let ((org-element-use-cache nil)
           (org-inhibit-startup t)
@@ -1590,6 +1594,10 @@ All positions refer to the complete, unnarrowed source snapshot."
            (paragraph (node)
              (let ((position (org-element-property :contents-begin node))
                    (children nil))
+               (if (null position)
+                   ;; Restored inline definitions have synthetic paragraphs.
+                   ;; They carry already parsed inline data, not fragment spans.
+                   (mapc #'whitespace (org-element-contents node))
                (dolist (child (org-element-contents node))
                  (if (not (stringp child))
                      (progn
@@ -1602,7 +1610,12 @@ All positions refer to the complete, unnarrowed source snapshot."
                                     (buffer-substring-no-properties position end))
                        (org-texmacs--document-fail node "Org text differs from snapshot"))
                      (while (and remaining
-                                 (< (org-texmacs-fragment-span-begin (car remaining)) end))
+                                 (< (org-texmacs-fragment-span-begin (car remaining)) end)
+                                 ;; Restored dependencies can have earlier
+                                 ;; source positions than this paragraph.
+                                 (or (not subtree-position)
+                                     (>= (org-texmacs-fragment-span-begin (car remaining))
+                                         (org-element-property :contents-begin node))))
                        (let* ((span (pop remaining))
                               (begin (org-texmacs-fragment-span-begin span))
                               (stop (org-texmacs-fragment-span-end span)))
@@ -1618,7 +1631,7 @@ All positions refer to the complete, unnarrowed source snapshot."
                      (when (< position end)
                        (push (buffer-substring-no-properties position end) children))
                      (setq position end))))
-               (apply #'org-element-set-contents node (nreverse children))))
+               (apply #'org-element-set-contents node (nreverse children)))))
            (walk (node)
              (cond
               ((org-texmacs--block-p node)
@@ -1650,11 +1663,43 @@ All positions refer to the complete, unnarrowed source snapshot."
                  (mapc #'whitespace (org-element-property :tag node)))
                (mapc #'walk (org-element-contents node))))))
         (let ((ast (org-element-parse-buffer)))
+          (when subtree-position
+            ;; Prune owned full-source structure before walking/validating body.
+            ;; Block placeholders make STM opaque while collecting dependencies.
+            (let* ((opaque (org-element-map ast 'special-block
+                             (lambda (node) (and (org-texmacs--block-p node)
+                                                 (cons node '(concat ""))))))
+                   (scoped (org-texmacs--context-prepare
+                            ast opaque nil nil info subtree-position))
+                   paragraphs)
+              (cl-labels ((collect (node)
+                            (unless (org-texmacs--block-p node)
+                              (when (org-element-type-p node 'paragraph)
+                                (push node paragraphs))
+                              (mapc #'collect (org-element-contents node)))))
+                (collect ast))
+              (setq paragraphs (nreverse paragraphs))
+              (setq info (nth 4 scoped)
+                    remaining
+                    ;; Dependencies may precede the selected subtree in source
+                    ;; but follow its body in AST order.  Match that traversal.
+                    (cl-mapcan
+                     (lambda (paragraph)
+                       (let ((begin (org-element-property :begin paragraph))
+                             (end (org-element-property :end paragraph)))
+                         (when (and (integerp begin) (integerp end))
+                           (cl-remove-if-not
+                            (lambda (span)
+                              (<= begin (org-texmacs-fragment-span-begin span)
+                                  (org-texmacs-fragment-span-end span) end)) remaining))))
+                     paragraphs))))
           (walk ast)
           (when remaining
             (signal 'org-texmacs-document-error '("Unconsumed fragment spans")))
           (setq islands (nreverse islands) requests (nreverse requests))
-          (org-texmacs--context-prepare ast islands requests blanks info))))))
+          (if subtree-position
+              (list ast islands requests blanks info)
+            (org-texmacs--context-prepare ast islands requests blanks info)))))))
 
 (provide 'org-texmacs-document)
 
