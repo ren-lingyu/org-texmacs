@@ -78,7 +78,7 @@ buffer or start a worker.
 - style names and initial keys use identifier semantics. Structured initial
   values use TeXmacs source semantics.
 
-## Released Org subset in v0.3.0 and v0.3.1
+## Original released subset in v0.3.0 and v0.3.1
 
 - Paragraphs, supported inline emphasis/literal objects, line breaks, external
   links from the finite URI protocol set, and anonymous inline footnotes.
@@ -102,7 +102,7 @@ export preprocessing, and arbitrary Org element coverage.
 ## DOC-01 committed local-link extension
 
 The first resolution node is committed as
-`a3ba241d66dc1e1a89a9eb4c4fc678fef2f5bfb4`; it is not a released capability.
+`a3ba241d66dc1e1a89a9eb4c4fc678fef2f5bfb4`; this extension is included in v0.4.0.
 
 - A pure analysis phase in the document layer scans the prepared AST, treating
   STM islands as opaque, and returns conversion-local identity-keyed links and
@@ -148,7 +148,8 @@ Committed as `a242eb233322a62b3f18dbf1a3ba1278e628e361`; the verified diff match
   Its special headline is omitted after definitions have been collected.
 - Maintained native readback covers shared labels, mixed anonymous/named notes,
   Unicode and literal encoding. Rendered numbering and style expansion are
-  unverified. This node is not a released capability.
+  unverified at that node; this capability is included in v0.4.0. Subsequent
+  PDF semantic evidence is recorded in the consumer section below.
 
 ## Committed source-location snapshot node
 
@@ -233,7 +234,7 @@ Its default citation/bibliography consumer is committed below.
 ## DOC-01 default citations and native plain bibliography node
 
 Committed as `fe6c435bda7948989f758cea6c9d4146c0d0a5cb`, matching the verified
-eight-file diff. This is not a release claim.
+eight-file diff. This bounded capability is included in v0.4.0.
 
 - Preparation captures explicit document BIBLIOGRAPHY identities before pruning,
   using the fixed source resource base and provided text snapshots. No global
@@ -580,25 +581,28 @@ Commit 82552db77d2b01fa832fc06948f57e1cc5e80d81 matches the verified six-file di
   space/concat); assertion corrected. Six files are committed on d71204d;
   index is empty at verification. No binary GAW evidence, GUI or layout goldens.
 
-## v0.4.0 release preparation (committed, awaiting user review)
+## Released v0.4.0 scope and provenance
 
-Commit c26985f8f24ce8c6b95ebf3dbb211fff8e276f45 matches the verified three-file diff.
-
-- User selected the current bounded DOC-01 semantics and complete native .tm/PDF
-  consumers/frontends as the v0.4.0 scope after narrowing commit 82552db.
-  Package/Nix versions are 0.4.0; three metadata/documentation paths are committed.
-- README summarizes citations/bibliography/tables and export scope/configuration,
-  compatibility and current rejection/verification boundaries. Existing source
-  APIs remain usable; no new feature code is included in this release node.
-- All seven Nix checks, compilation/package-lint and installed ERT 311/311
-  (155.04s) pass for the new version, using the user's temporary remote ELPA mirror.
-  Committed Nix equals baseline plus one version line; mirror remains unchanged
-  and excluded. Metadata commit is verified; index is empty. Local v0.4.0 tag is
-  absent. User explicitly deferred tag/publication for review; wait for feedback
-  or explicit release resumption. Remote publication remains unverified.
-- Draft release notes are tmp/release-v0.4.0.md; no new tracked changelog or
-  binary archive is introduced. Actual release status must be updated from
-  verified user-created commit/tag evidence, not from the package header alone.
+- Release target 46ccf6eb7120022c734115ec7876e7d150082f9b includes metadata
+  c26985f and the final controlled HTML regression; both verified by exact diff
+  hashes. Annotated tag object feaf8c4ef501d50aa595090a0fa312c855071527 is the
+  same locally and in GitHub and points to this commit.
+- GitHub release https://github.com/ren-lingyu/org-texmacs/releases/tag/v0.4.0
+  is published, draft=false/prerelease=false, at 2026-10-08T17:27:12Z.
+  User completed release operations; agent made read-only identity checks.
+- v0.4.0 adds current bounded local-link/file-context/named-footnote/citation/
+  bibliography/named-table semantics to the earlier document subset. Independent
+  native .tm serialization/save/PDF and readonly byte buffers, optional Org
+  dispatcher, naming/reexports, subtree/region/narrowing and restricted ext-plist
+  are released. Detailed support/error/ownership contracts above still apply.
+- Final focused backend 12/12 and no-overlay Nix installed ERT 312/312/all checks
+  passed before commit/tag, with cache reuse. Controlled HTML hook/advice/AST
+  filter coexistence is verified; actual external-package/database integration
+  is not. No general preprocessing/generic exporter, GUI preview or pagination
+  convergence claim is introduced. ELPA HEAD probes timed out in agent environment.
+- Local tag contains a PGP signature block; cryptographic verification was not
+  performed. Source archives/assets were not downloaded. Prior tmp release notes
+  are preparation drafts; published notes are the publication record.
 
 ## Worker and session
 
@@ -633,7 +637,7 @@ Current source preparation does not run Org export preprocessing/parse-tree
 filters or Org Cite bibliography discovery. Thus existing ecosystem interfaces
 can remain operational for their own backends without their extension semantics
 being consumed by TeXmacs. Backend guard admits unrelated backends; maintained
-isolation includes ASCII and the verified/staged controlled HTML composition
+isolation includes ASCII and the released controlled HTML composition
 case below; actual joint HTML/Org-roam package/database integration is unverified.
 Future information-flow design is tracked in issue #1:
 https://github.com/ren-lingyu/org-texmacs/issues/1. It preserves canonical source,
@@ -645,12 +649,12 @@ need not acquire implicit database/file dependencies. UUID syntax is accepted by
 the current key grammar; absent matching entry/remapping causes unresolved-key
 failure. Keep these distinctions in support claims.
 
-Pre-release HTML composition regression is verified/staged on c26985f: controlled
+HTML composition regression is committed as 46ccf6e and released in v0.4.0: controlled
 preprocessing hook, include advice and AST filter run through actual HTML export,
 with observable output transformations, original source state and advice cleanup.
 No production/README change or real external-package integration is introduced.
 Backend focused 12/12 and all no-overlay Nix checks pass; installed ERT 312/312
-(157.82s). Only tests/ert/ert.el is staged, awaiting user commit. Direct authorized
+(157.82s). Its one-file diff on c26985f matches the verified hash. Direct authorized
 HEAD probes timed out; source configuration now needs no overlay for this cached
 validation, but endpoint availability is not independently confirmed.
 

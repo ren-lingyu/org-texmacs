@@ -164,19 +164,21 @@ Phase closure selected v0.4.0 as described below. Other exporter flags/unsupport
 syntax are not automatically
 required completion work.
 
-### Committed, awaiting review: v0.4.0 release preparation
+### Completed: v0.4.0 release
 
-User selected v0.4.0 after reviewing phase closure scope. Nineteen commits since
-v0.3.1 implement current bounded DOC-01 resolution and native .tm/PDF consumers,
-synchronous dispatcher, output naming/reexports and selection/configuration.
-Package/header metadata and necessary README wording are prepared; final Nix
-compilation/package-lint/installed ERT 311/311 pass. Three paths are committed as
-c26985f, matching the verified diff; only the version hunk is committed in
-flake.nix. Release notes are a reviewed draft in tmp/release-v0.4.0.md. User
-explicitly holds tag/publication to review first. Wait for review findings or
-an explicit instruction to resume; do not automatically advance other work.
-No new syntax or exporter-flag parity was adopted. Original ELPA restoration,
-other platforms/GUI/general pagination remain unverified; mirror stays excluded.
+Metadata c26985f and final HTML regression 46ccf6e are committed and verified
+against their reviewed diff hashes. Annotated local/remote v0.4.0 tag object
+feaf8c4ef501d50aa595090a0fa312c855071527 points to
+46ccf6eb7120022c734115ec7876e7d150082f9b. GitHub release is published, non-draft
+and non-prerelease, at https://github.com/ren-lingyu/org-texmacs/releases/tag/v0.4.0
+on 2026-10-09 01:27:12 Asia/Shanghai. User performed commit/tag/publication;
+agent verified identities through read-only Git/API calls. Previous review hold
+is finished. Release scope is current bounded DOC-01 resolution and native
+consumers/export frontend/scopes/configuration, including controlled HTML
+coexistence regression. No new post-release implementation is automatically
+selected; issue #1 remains unresolved later design. Final no-overlay installed
+ERT 312/312/all Nix checks pass, with cache reuse and ELPA reachability still not
+independently established. Other platforms/GUI/general pagination remain unverified.
 
 ### Completed: Org output naming and repeat export
 
@@ -298,14 +300,14 @@ org-roam-include source composition, and org-roam-blog HTML publishing; these
 external source claims were not independently checked in this repository review.
 No such architecture refactor, recursive INCLUDE, broader citation semantics or
 blog publishing rewrite is adopted for v0.4.0. User authorized finite controlled
-HTML hook/advice/AST-filter regression; it is now verified/staged in tests/ert/ert.el.
+HTML hook/advice/AST-filter regression; it is committed as 46ccf6e and in v0.4.0.
 Backend focused 12/12 and no-overlay Nix installed ERT 312/312 pass. This tests
 actual HTML output/source isolation/cleanup with fake extensions, not the three
 real packages or databases. Existing README restrictions remain accurate; no
 new docs or production semantics were required. Issue remains later design.
 ELPA HEAD probes were authorized once each and both timed out; no endpoint
-recovery/global-outage claim follows. Await test commit and user review; release
-hold remains. Further network probes need separate authorization.
+recovery/global-outage claim follows. Release is complete; any implementation
+of this design topic or further network probes requires new scoped authorization.
 
 ### SESSION-01: Multi-document or multi-session operation
 

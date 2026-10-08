@@ -2,28 +2,30 @@
 
 ## Active objective
 
-v0.4.0 metadata is committed as c26985f8f24ce8c6b95ebf3dbb211fff8e276f45;
-its three-file diff matches prior verified hash 84b212a7... in evidence. User
-review/INBOX note led to an authorized finite HTML composition regression.
-That node is complete, verified and staged: only tests/ert/ert.el (61 lines).
-Await ordinary test commit; compare its one-file diff on c26985f with
+v0.4.0 is released. User committed final HTML regression as
+46ccf6eb7120022c734115ec7876e7d150082f9b, created tag and published GitHub release.
+One-file test diff on c26985f matches verified SHA-256
 4461f4ad5b984ebf83b714b3f5fd0241f09571fb7a4cf50723af1efb3cff42b5.
-tmp/commit.md is reviewed. Production code/README/version remain unchanged.
-Backend focused 12/12 and unmirrored installed ERT 312/312/all Nix checks pass.
-Test proves actual HTML preprocessing hook/include advice/AST filter coexistence,
-output effects, private source state and cleanup; it is not actual integration
-of three Org-roam packages or personal databases. UUID syntax remains valid;
-missing UUID-to-BibTeX-key mapping is a semantic interoperability boundary.
-Future information flow is tracked in issue #1:
-https://github.com/ren-lingyu/org-texmacs/issues/1. Issue was read via GitHub
-connector; design is nonblocking for v0.4.0 and chooses neither full generic
-export nor permanently isolated preparation. AST-first/owned inputs/provenance
-remain constraints; preprocessing reuse is later adapter design.
-User still holds tag/publication for review. No ordinary commits/tags/pushes
-were executed. After test commit verification, wait for user review/resumption;
-refresh release-note draft validation before actual publication if requested.
-ELPA observation is now recorded with actual checks below; no confirmed endpoint
-recovery claim. Earlier mirror-backed validations remain historical facts.
+Local annotated tag v0.4.0 object feaf8c4ef501d50aa595090a0fa312c855071527
+peels to that commit. GitHub tag ref matches the same object. Release API confirms
+https://github.com/ren-lingyu/org-texmacs/releases/tag/v0.4.0,
+draft=false, prerelease=false, published_at=2026-10-08T17:27:12Z
+(2026-10-09 01:27:12 Asia/Shanghai). Project and memory candidate are coherent;
+no new source edits or tests are needed for this identity/state verification.
+The user's review/publication hold has ended through their completed release.
+No new implementation or post-release checks are authorized by this notification.
+Current action is release handoff; await selection of subsequent work.
+Future information flow remains unresolved in issue #1:
+https://github.com/ren-lingyu/org-texmacs/issues/1. Do not automatically implement
+preprocessing reuse/generic export or broaden citation/resource semantics.
+Release scope includes bounded DOC-01 resolution, native .tm/PDF consumers and
+synchronous dispatcher/naming/scopes/configuration. HTML composition regression
+is controlled hook/advice/filter coexistence, not real three-package/database
+integration. Production code/README/version remained unchanged in final test node.
+Final no-overlay Nix gate passes 312/312 with cache reuse; original endpoint
+recovery is not independently established (two HEAD attempts timed out). Earlier
+mirror-backed checks remain historical facts. Ordinary release operations were
+performed by user; agent only read local Git and remote release/tag metadata.
 Scope guidance: ox-latex is a reference for shared Org export conventions,
 not a feature inventory to copy wholesale. Current ox-texmacs is a bounded
 dispatcher frontend, not a complete generic exporter: org-export-as and related
@@ -47,19 +49,19 @@ remain unsupported.
 ## Baseline and staging
 
 - Main HEAD observed on 2026-10-09:
-  `c26985f8f24ce8c6b95ebf3dbb211fff8e276f45`.
-  Its release-preparation diff against 82552db matches the verified three-file hash.
+  `46ccf6eb7120022c734115ec7876e7d150082f9b`.
+  Its one-file HTML regression diff against c26985f matches the verified hash.
 - Metadata paths README.org, org-texmacs.el and flake.nix version line are
-  committed. Only tests/ert/ert.el is approved/staged; no production changes are
-  unstaged. Complete staged review/diff --check pass. SHA-256 on c26985f:
+  committed. HTML regression is committed; ordinary worktree/index are clean.
+  Prior staged review/diff --check passed. SHA-256 on c26985f:
   4461f4ad5b984ebf83b714b3f5fd0241f09571fb7a4cf50723af1efb3cff42b5.
 - User temporarily removed the uncommitted USTC overlay on 2026-10-09. flake.nix
   matches HEAD; do not reintroduce or stage workaround automatically. Previous
   mirror-backed validation/exclusion proof stays in evidence as historical state.
 - Local v0.3.1 annotated tag resolves to `880d4e00667907ef66985387b4865ec8d795d48d`.
-  v0.4.0 includes current DOC-01/CONSUMER-01 subset but is only prepared,
-  not tagged or published. Earlier features are still local development until release.
-  Remote publication/signature remain unverified; release evidence is in evidence.md.
+  v0.4.0 is published at the verified tag/commit above. Tag includes a PGP
+  signature block; cryptographic signature verification was not performed.
+  Release/tag identity evidence and remaining limits are in evidence.md.
 
 ## Verified review supplement
 
@@ -80,7 +82,8 @@ remain unsupported.
 - Working INBOX/issue findings are now consolidated into this substantive
   validation checkpoint. INBOX was left untouched; no raw archive needed because
   relevant facts are distilled and maintained test retains full reproduction.
-  Only pure text enters GAW. Test/metadata commits and tag/publication are distinct.
+  Only pure text enters GAW. Test/metadata commit and release identities were
+  later verified; no new tests were run solely for publication verification.
 
 ## Existing consumer boundaries
 
@@ -137,14 +140,14 @@ remain unsupported.
    Override commit d71204d is verified against five-file diff 145a3237... above.
    Narrowing commit 82552db is verified against six-file diff fdeb09f1... in
    evidence. v0.4.0 preparation commit c26985f is verified against three-file
-   diff 84b212a7... in evidence. HTML regression is verified/staged; await test
-   commit and compare one-file diff to 4461f4ad... above. User review is pending;
-   hold tag/publication until explicit resumption. Body-only
+   diff 84b212a7... in evidence. HTML commit 46ccf6e matches 4461f4ad... above;
+   local/remote v0.4.0 tag and published release are verified. Release phase is
+   complete. Await user selection of subsequent work. Body-only
    fragment/generic API remain deferred by user choice.
    Mirror overlay is removed and final no-overlay check passes. Two HEAD attempts
    timed out without retry; further probes need new authorization. No lock changes.
-   Draft release notes still describe prior preparation validation; refresh them
-   to latest test/environment evidence before publication when user resumes.
+   Published release notes are now authoritative for publication scope. Old tmp
+   drafts are regenerable preparation artifacts, not remaining release tasks.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries
    separate from the selected PDF work. Do not silently
    enable full Org preprocessing or general bibliography/resource reads.

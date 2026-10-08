@@ -993,9 +993,11 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   only; the subsequent authorized HTML test/environment node now checkpoints
   this assessment together with its verified results.
 
-## HTML composition supplement and ELPA checks (2026-10-09, verified/staged)
+## HTML composition supplement and ELPA checks (2026-10-09, committed/released)
 
-- Baseline c26985f8f24ce8c6b95ebf3dbb211fff8e276f45 is unchanged. User
+- Baseline c26985f8f24ce8c6b95ebf3dbb211fff8e276f45 is unchanged. Commit
+  46ccf6eb7120022c734115ec7876e7d150082f9b has exactly the one reviewed test
+  file and matches 4461f4ad... below. It is the verified v0.4.0 release target. User
   authorized the finite HTML composition test, repeated exact backend focused
   timeout 120s and no-overlay Nix timeout 240s checks. Production code/README/
   version are unchanged; only one 61-line ERT case is added.
@@ -1027,11 +1029,42 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   diff --check pass. Entire one-file staged diff SHA-256 on c26985f:
   4461f4ad5b984ebf83b714b3f5fd0241f09571fb7a4cf50723af1efb3cff42b5.
   No ordinary project changes are unstaged. tmp/commit.md is reviewed; user makes
-  ordinary commit and continues review. Tag/publication hold was not lifted.
-- Existing release-note draft describes earlier preparation validation and can
-  be refreshed to final review/test/environment evidence when release resumes.
+  ordinary commit and initially continued review. Later user commit/tag/release
+  completion ended that hold, as verified below.
+- Earlier release-note draft was a preparation artifact; published release
+  notes now supersede it. Updating that old draft is not a remaining release task.
   No raw archive is needed: maintained test and these compact records retain
   complete reproduction/results. INBOX unchanged; only pure text enters GAW.
+
+## v0.4.0 publication verification (2026-10-09)
+
+- User reported final commit/tag/GitHub publication. Read-only Git shows HEAD
+  46ccf6eb7120022c734115ec7876e7d150082f9b, one 61-line tests/ert/ert.el addition;
+  full one-file diff on c26985f exactly matches previously verified SHA-256
+  4461f4ad5b984ebf83b714b3f5fd0241f09571fb7a4cf50723af1efb3cff42b5.
+  Ordinary worktree/index are clean. No new tests were run for identity checks.
+- Local v0.4.0 is annotated tag object
+  feaf8c4ef501d50aa595090a0fa312c855071527; peel resolves to HEAD above.
+  GitHub GET git/ref/tags/v0.4.0 returns the same object/type=tag, establishing
+  exact local/remote tag identity. Local tag message contains a PGP signature
+  block; cryptographic verification was not attempted and is not claimed.
+- GitHub connector GET releases/tags/v0.4.0 confirms release ID 407092424,
+  name/tag v0.4.0, draft=false, prerelease=false, immutable=false,
+  published_at/updated_at 2026-10-08T17:27:12Z (2026-10-09 01:27:12 +08).
+  URL https://github.com/ren-lingyu/org-texmacs/releases/tag/v0.4.0.
+  target_commitish=main was not used as sole commit proof; exact tag object was
+  separately matched. Public browser fetch failed; connector API reads succeeded.
+- Published notes describe current bounded document semantics, native .tm/PDF
+  consumers, Org frontend/scopes/configuration, controlled HTML coexistence and
+  312 ERT/seven Nix results with current support limits. No uploaded assets are
+  listed; automatic source archive links exist but were not downloaded. No binary
+  or release-note raw copy is placed in GAW archive; these facts are distilled.
+- User performed ordinary commit/tag/publication. Agent did not mutate remote
+  release, refs, comments or assets, and did not run fetch/push/tag commands.
+  Release/review hold is complete; subsequent work needs user selection. Issue
+  #1 remains unresolved nonblocking later architecture design. Earlier validation
+  limits (cache-backed checks, ELPA HEAD timeouts, no real package joint test,
+  unverified GUI/general pagination/other platforms) remain unchanged.
 
 ## Body-only assessment after region commit (2026-10-08)
 
