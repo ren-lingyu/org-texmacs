@@ -396,7 +396,7 @@ the native PDF consumer revision matches the verified seven-file diff.
   also supports M-x with a captured source and a .pdf destination suggestion.
 - The native bridge encodes owned fields once; headless Scheme installs them
   directly in a temporary native buffer, runs three synchronous low-level
-  updates and print-to-file. Semantic fix b5100a9 (declared as a non-first parent of this checkpoint) then updates three
+  updates and print-to-file. Semantic fix the PDF semantic regression and citation repair revision then updates three
   times and prints again to resolve typeset bibliography references.
   It does not reparse serialized .tm or run deferred
   generate-all-aux/bibliography generation. Existing public sessions are isolated.
@@ -410,17 +410,19 @@ the native PDF consumer revision matches the verified seven-file diff.
 - Installed ERT uses test-only Poppler inspectors for PDF structure/text and
   heading/table reference values. PDF binaries are never GAW artifacts.
 - New semantic regression exposed unresolved citation markers [?, ?]/[?] despite
-  populated numbered bibliography. The committed two-print fix b5100a9 (declared as a non-first parent of this checkpoint)
+  populated numbered bibliography. The committed two-print fix the PDF semantic regression and citation repair revision
   resolves these markers; eight focused cases pass, including footnote bodies/
   markers and each print phase's failure/recovery. Final installed ERT 273/273
-  (122.88s) and all Nix checks pass. Commit b5100a90e1f3891bf6def7ec29d7ae9aa04cea12 (declared as a non-first parent of this checkpoint)
+  (122.88s) and all Nix checks pass. The PDF semantic regression and citation repair revision
   matches the verified three-file hash. Normalized text assertions have no byte/pixel/coordinate
   or fixed-pagination dependencies; inspectors are mandatory in installed ERT.
 - Six PDF cases, full local 271/271 and final Nix compilation/package-lint /
   installed ERT 271/271 pass. The verified node is committed;
   the temporary mirror overlay is excluded.
 
-## CONSUMER-01 bounded ox-texmacs frontend (working tree)
+## CONSUMER-01 committed bounded ox-texmacs frontend
+
+Commit be284dd292cfb0a88ae51f0e6b692f94516f0bb1 (declared as a non-first parent of this checkpoint) matches the verified six-file diff.
 
 - Optional ox-texmacs.el registers texmacs, menu key T with T/t/p actions for a
   fresh readonly native byte buffer, prompted new .tm and prompted new PDF.
@@ -441,7 +443,8 @@ the native PDF consumer revision matches the verified seven-file diff.
   Only the module fileset hunk may be staged in flake.nix; mirror changes stay
   unstaged. Seven focused cases pass 7/7 (2.63s); final Nix passes all seven
   checks, compilation/package-lint and installed ERT 280/280 (123.36s).
-  Six files are approved/staged, awaiting the user's project commit.
+  The frontend is committed. Existing targets remain rejected; no replacement
+  or atomic-publication policy is implemented.
 
 ## Worker and session
 

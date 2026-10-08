@@ -2,9 +2,15 @@
 
 ## Active objective
 
-Bounded ox-texmacs dispatcher frontend is complete, verified and staged with
-approval. tmp/commit.md is reviewed. Await the user's ordinary commit and verify
-its six-file diff. Baseline b5100a9 (declared as a non-first parent of this checkpoint)'s PDF semantic commit is already verified.
+Bounded ox-texmacs dispatcher frontend is committed as
+be284dd292cfb0a88ae51f0e6b692f94516f0bb1 (declared as a non-first parent of this checkpoint). Its complete six-file diff matches
+the verified hash; the index is empty. No implementation is in progress.
+Recommend defining the next output-update contract: current file consumers
+reject existing targets, so repeated exports require another name. Decide
+explicit replacement permission, failure preservation, target changes during
+rendering, publication and backup policy before implementation. This is a
+proposal within the existing unresolved output boundary, not adopted behavior
+or implementation/check authorization. Keep new-file-only APIs intact.
 User rejected a standalone PDF preview command; no such command is adopted.
 The frontend only supports whole-buffer synchronous menu actions. Generic
 string export/publishing, preprocessing and broader selection remain unsupported.
@@ -12,11 +18,11 @@ string export/publishing, preprocessing and broader selection remain unsupported
 ## Baseline and staging
 
 - Main HEAD observed on 2026-10-08:
-  `b5100a90e1f3891bf6def7ec29d7ae9aa04cea12` (declared as a non-first parent of this checkpoint).
-  Its semantic PDF diff against the native PDF consumer revision matches the verified three-file hash exactly.
-- Approved/staged: .gitignore, README.org, flake.nix (only module fileset entry),
+  `be284dd292cfb0a88ae51f0e6b692f94516f0bb1` (declared as a non-first parent of this checkpoint).
+  Its frontend diff against the PDF semantic regression and citation repair revision matches the verified six-file hash exactly.
+- Committed: .gitignore, README.org, flake.nix (only module fileset entry),
   org-texmacs.el, ox-texmacs.el and tests/ert/ert.el. Full staged review and
-  diff --check pass. Diff SHA-256 on baseline b5100a9 (declared as a non-first parent of this checkpoint):
+  diff --check pass. Diff SHA-256 on the baseline PDF semantic regression and citation repair revision:
   d41f05a26d1718ec2e453019f1b3604c2bc7e8d01241a8205ef0d170694ee5ab.
   No implementation is unstaged. The user's temporary
   `flake.nix` overlay remains excluded. It rewrites
@@ -153,14 +159,11 @@ native printing and independent PDF inspection are real. GUI layout is unverifie
 
 1. The native PDF consumer revision is verified against the seven-file SHA-256 on the baseline interactive export revision:
    00164bbb3491e4addd74c75a0c53ab86cd8397855e659c25a572a5ae84044464.
-   Semantic commit b5100a9 (declared as a non-first parent of this checkpoint) is now verified by its three-file diff SHA-256
-   against the baseline native PDF consumer revision. ox-texmacs is now verified/staged; await the user's
-   commit and compare its six-file diff against d41f05a2... above. tmp/commit.md
-   contains the reviewed message.
-   Keep the mirror overlay excluded; flake staging must contain only the fileset entry.
-   Related installed Org definitions, focused backend ERT (120s) and full Nix
-   checks (180s) are authorized for this frontend node. Tests may
-   generate PDF only in isolated temporary directories; no binary enters GAW.
+   The PDF semantic regression and citation repair revision is now verified by its three-file diff SHA-256
+   against the baseline native PDF consumer revision. Frontend commit be284dd (declared as a non-first parent of this checkpoint) is now verified against
+   d41f05a2... above. Await selection of the proposed output-update contract node.
+   Keep the mirror overlay excluded. Previous frontend checks/read permissions
+   were scoped to that completed node; obtain applicable new-node authorization.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries
    separate from the selected PDF work. Do not silently
    enable full Org preprocessing or general bibliography/resource reads.

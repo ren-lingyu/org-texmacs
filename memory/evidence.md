@@ -653,15 +653,15 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   with approval; complete staged review and diff --check pass. Staged diff
   SHA-256 against the native PDF consumer revision is
   78e76d17e30ef0361e94c3b3de3717808afbb0a3bc7aced7498682f1563afbbc.
-  Commit b5100a90e1f3891bf6def7ec29d7ae9aa04cea12 (declared as a non-first parent of this checkpoint) was compared with baseline
+  the PDF semantic regression and citation repair revision was compared with baseline
   the native PDF consumer revision on 2026-10-08 and matches this exact three-file hash; the index is empty.
   tmp/commit.md is reviewed; only the unchanged flake.nix overlay is unstaged.
   Final ERT derivation: /nix/store/r639c3h0hx26cdkkwv9xgjg5bq8j34nj-org-texmacs-ert.drv.
 
-## Bounded ox-texmacs frontend (2026-10-08, verified/staged)
+## Committed bounded ox-texmacs frontend (2026-10-08)
 
 - User adopted standard dispatcher integration after rejecting a standalone PDF
-  preview command. Implementation is on b5100a90e1f3891bf6def7ec29d7ae9aa04cea12 (declared as a non-first parent of this checkpoint).
+  preview command. Implementation is on the PDF semantic regression and citation repair revision.
 - Authorized Org 9.8-pre reads use the previously recorded immutable source root.
   ox.el org-export-define-backend (1235) defines menu actions with four flags;
   org-export-dispatch (7783) passes async/subtree/visible/body. annotate-info
@@ -681,6 +681,9 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   ox-texmacs.el, tests/ert/ert.el. Complete staged review/diff --check pass.
   SHA-256 of git diff --cached on the baseline above:
   d41f05a26d1718ec2e453019f1b3604c2bc7e8d01241a8205ef0d170694ee5ab.
+  Commit be284dd292cfb0a88ae51f0e6b692f94516f0bb1 (declared as a non-first parent of this checkpoint) was compared with baseline
+  the PDF semantic regression and citation repair revision on 2026-10-08: complete six-file stat and diff hash match exactly.
+  Index is empty; only the unchanged raw mirror overlay remains unstaged.
   tmp/commit.md is reviewed. Nix ERT derivation is
   /nix/store/phx84ryfkmn39x16ml4n92rh7qk0vg1w-org-texmacs-ert.drv.
 - flake staging contains only ./ox-texmacs.el in fileset. Its staged bytes minus
