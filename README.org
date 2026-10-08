@@ -15,12 +15,14 @@ an explicit source buffer, with a separate current-buffer convenience wrapper.
 Document conversion supports basic inline markup, self-contained URI links,
 plain local file links with captured resource context,
 same-document headline/ID and dedicated-target links, anonymous and named
-footnotes, list/container structures, rich metadata,
+footnotes, bare default citations with explicit bibliography text snapshots,
+native plain bibliographies, list/container structures, rich metadata,
 relative headline sectioning, a static filtered TOC, static preformatted
-blocks, basic rectangular tables and TeXmacs islands, as specified below.
+blocks, named/captioned basic rectangular tables and TeXmacs islands, as specified below.
 Independent consumers provide native =.tm= serialization, new-file saving and
 PDF rendering.  The optional =ox-texmacs= frontend connects these consumers to
-Org's export dispatcher.  GUI preview, cross-file reference resolution,
+Org's export dispatcher, with local output naming/reexports, subtree/region/
+narrowing scopes and restricted external configuration.  GUI preview, cross-file reference resolution,
 fontification, an editing minor mode and a combined live Org/TeXmacs AST are
 outside the current support boundary.
 Org's source buffer and live AST remain unchanged.
@@ -487,6 +489,27 @@ continue to return Org-compatible pseudo subtrees.
 Version 0.3.1 separates worker transport from the native session protocol.
 It preserves the public APIs and Scheme request/response format, including the
 existing document and native-session behavior.
+Version 0.4.0 adds the bounded document-wide link, named-footnote,
+citation/bibliography and named-table semantics described below, plus independent
+native =.tm=/PDF consumers and the optional Org dispatcher frontend.  It supports
+subtree, region and existing narrowing with captured configuration/dependencies,
+and restricted =ext-plist= overrides.  Org remains the canonical source; pure
+lowering and native consumers use owned input instead of generic string export.
+
+Load =(require 'ox-texmacs)= to enable =C-c C-e T=; loading =org-texmacs= alone
+keeps the dispatcher optional.  The frontend uses Org output names and can
+overwrite writable regular outputs.  Explicit new-file saving APIs remain
+exclusive.  Source-buffer adapters retain their earlier calls and add optional
+subtree-position, region and external configuration arguments.  Narrowed sources
+now export their accessible body; restriction changes during prompts/native waits
+reject results.  Bibliography data still comes from explicit text snapshots,
+without opening declared =.bib= files.
+
+This version does not implement generic =org-export-as=/publishing, =visible-only=,
+=body-only= fragments, async export or unrestricted preprocessing.  Native PDF
+regression checks structure/text/reference semantics; it does not establish GUI
+layout or general pagination convergence.  Detailed supported and rejected
+cases remain part of the API contracts below.
 
 ** Preparing a document result
 The document API separates prepared input from buffer preparation.

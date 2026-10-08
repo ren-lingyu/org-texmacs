@@ -51,7 +51,7 @@
       packages = {
         default = emacsPackages.trivialBuild {
           pname = "org-texmacs";
-          version = "0.3.1";
+          version = "0.4.0";
           src = source;
           packageRequires = [
             emacsPackages.org

@@ -4,7 +4,7 @@
 
 ;; Author: aRenCoco
 ;; Maintainer: aRenCoco
-;; Version: 0.3.1
+;; Version: 0.4.0
 ;; Package-Requires: ((emacs "31.1") (org "9.8"))
 ;; Keywords: outlines, tex
 ;; URL: https://github.com/ren-lingyu/org-texmacs
@@ -34,7 +34,7 @@
 ;; Use `org-texmacs-fragment-tree' to parse a fragment source span on demand,
 ;; without caching or changing Org's native object parser.
 ;; Use `org-texmacs-document' to lower an explicit prepared input, or
-;; `org-texmacs-document-from-buffer' for whole-buffer structural conversion
+;; `org-texmacs-document-from-buffer' for source-buffer structural conversion
 ;; to a text TeXmacs document result with body, style, initial environment and
 ;; STM provenance, before native encoding.
 ;; Use `org-texmacs-session-open', `org-texmacs-session-set-document' and
