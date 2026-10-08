@@ -76,7 +76,7 @@ and current memory for its bounded contract and validation state. The next
 DOC-01 bibliography foundation is committed as the owned bibliography foundation revision. Default bare citation
 resolution and native plain bibliography output are committed as the citation and plain bibliography revision;
 see project/current memory for the bounded contract. The named/captioned basic
-table node is committed as `544e246` (declared as a non-first parent of this checkpoint): owned long/short captions, native big-table
+table node is committed as the named-table and caption revision: owned long/short captions, native big-table
 reference labels, described-only uncaptioned anchors and metadata preflight.
 Remaining general-reference/resource scope stays separately bounded while
 CONSUMER-01 is active. Use native evidence before mapping other named elements.
@@ -101,15 +101,24 @@ pipeline when it reads files or dynamic state outside the owned snapshot.
 Status: **active-next**. The stable bounded DOC-01 architecture now covers the
 critical ordinary-document cross-node semantics; fuller Org syntax is not a
 prerequisite. Start with complete native document construction and returning
-serialized text independently of a session. Output file writes, export frontend,
-rendering and preview remain later consumer nodes.
+serialized text independently of a session, followed by explicit new-file saving.
+Replacement/backup/atomic-publication policy, export frontend, rendering and
+preview remain later consumer boundaries.
 
-The first node is verified and staged: org-texmacs-document-serialize builds
+The first node is committed as `e7377e5` (declared as a non-first parent of this checkpoint): org-texmacs-document-serialize builds
 complete native file-document structure from explicit encoded fields and returns
 exact native .tm bytes independently of a session. Full local coverage and final
-Nix checks (installed ERT 253/253) pass; await the user's commit. Then review
-explicit-destination saving and Org export frontend policy. Reference tables,
+Nix checks (installed ERT 253/253) pass. The next bounded saving node uses an
+explicit absolute local destination and creates new files without replacement.
+Replacement/backup policy and Org export frontend policy remain separate. Reference tables,
 attachments/auxiliary state and visual rendering retain separate boundaries.
+
+The new-file saving node is verified and staged: owned explicit destination,
+native serialization before creation, exclusive open, exact byte writing and
+caller-state isolation. Four new cases pass in the eight-case focused selector;
+full local/Nix checks pass (installed ERT 257/257). Await the user's commit.
+Write errors can leave partial new files; this documented boundary is covered
+by regression. Atomic publication/replacement is not implied by exclusive open.
 
 Build complete TeXmacs file-document construction and independent consumers for
 native serialization/save, Org export integration, rendering/PDF, and preview.
