@@ -7,6 +7,13 @@ be284dd292cfb0a88ae51f0e6b692f94516f0bb1. Its complete six-file diff matches
 the verified hash. The Org/ox-latex output convention extension is committed
 as b4ee215224578577a3235f8954020baf74e585af; its complete five-file diff matches
 the verified hash exactly. Index is empty; next-node selection is pending.
+Recommend the next bounded frontend node be synchronous subtree export.
+First establish Org-compatible selection/title/EXPORT_* and dependency rules;
+capture subtree selection in owned preparation, not by casually narrowing the
+live source. Resolve used footnotes and links against explicit owned context,
+and define errors for dependencies outside the selected export scope. Keep
+region/visible/body-only/async as separate boundaries. This is a proposal,
+not adoption or implementation/check authorization.
 Frontend uses org-export-output-file-name and ordinary overwrite after checked
 native bytes are complete. Public new-file-only APIs stay exclusive. Atomic
 replacement, backups and target-version locking are not adopted prerequisites.
