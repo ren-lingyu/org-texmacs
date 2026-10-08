@@ -1,0 +1,1 @@
+(footnote-probe (definition "footnote" (uninit)) (definition "footnote-text" (uninit)) (definition "footnotemark*" (uninit)) (definition "footnote-ref" (uninit)) (definition "next-footnote" (uninit)))
