@@ -532,7 +532,7 @@ the region export revision matches the verified six-file diff.
 
 ## Committed restricted external configuration
 
-Commit d71204d204a03b30491d5cdb2bd05d59dacd71a3 (declared as a non-first parent of this checkpoint) matches the verified five-file diff.
+the external configuration override revision matches the verified five-file diff.
 
 - User deferred body-only fragment semantics and selected bounded ext-plist.
   Five source preparation/document/byte/buffer adapters add optional fifth
@@ -553,7 +553,9 @@ Commit d71204d204a03b30491d5cdb2bd05d59dacd71a3 (declared as a non-first parent 
   lists now allocate afresh. Five files are committed on the baseline region export revision;
   index is empty at verification. No visual/layout goldens or binary GAW artifacts.
 
-## Narrowed source selection (verified/staged)
+## Committed narrowed source selection
+
+Commit 82552db77d2b01fa832fc06948f57e1cc5e80d81 (declared as a non-first parent of this checkpoint) matches the verified six-file diff.
 
 - Existing narrowing is outer body scope. Region must fit and takes precedence;
   otherwise intersect subtree body with accessible range. Empty narrowing is
@@ -575,8 +577,24 @@ Commit d71204d204a03b30491d5cdb2bd05d59dacd71a3 (declared as a non-first parent 
   region 7/7 and overrides 6/6 pass. Final Nix passes all seven checks,
   compilation/package-lint and installed ERT 311/311 (176.95s). First full run
   310/311 exposed a wrong updated legacy expected body (normalized trailing
-  space/concat); assertion corrected. Six files are approved/staged on d71204d (declared as a non-first parent of this checkpoint),
-  awaiting ordinary commit. No binary GAW evidence, GUI or layout goldens.
+  space/concat); assertion corrected. Six files are committed on the external configuration override revision;
+  index is empty at verification. No binary GAW evidence, GUI or layout goldens.
+
+## v0.4.0 release preparation (verified/staged, not published)
+
+- User selected the current bounded DOC-01 semantics and complete native .tm/PDF
+  consumers/frontends as the v0.4.0 scope after narrowing commit 82552db (declared as a non-first parent of this checkpoint).
+  Package/Nix versions are 0.4.0; three metadata/documentation paths are staged.
+- README summarizes citations/bibliography/tables and export scope/configuration,
+  compatibility and current rejection/verification boundaries. Existing source
+  APIs remain usable; no new feature code is included in this release node.
+- All seven Nix checks, compilation/package-lint and installed ERT 311/311
+  (155.04s) pass for the new version, using the user's temporary remote ELPA mirror.
+  Staged Nix equals baseline plus one version line; mirror remains unchanged and
+  excluded. Ordinary metadata commit/tag/publication remain pending/user-owned.
+- Draft release notes are tmp/release-v0.4.0.md; no new tracked changelog or
+  binary archive is introduced. Actual release status must be updated from
+  verified user-created commit/tag evidence, not from the package header alone.
 
 ## Worker and session
 
