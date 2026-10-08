@@ -351,9 +351,11 @@ Require an existing parent and reject all existing targets without handlers."
         (signal 'file-missing (list "Output directory does not exist" target)))
       target)))
 
-(defun org-texmacs--native-save-bytes (bytes target)
+(defun org-texmacs--native-save-bytes (bytes target &optional overwrite)
   "Write native unibyte BYTES to an already owned and validated TARGET.
-Exclusive open rejects collisions after preflight; file errors propagate."
+Exclusive open rejects collisions after preflight; file errors propagate.
+Non-nil OVERWRITE permits ordinary replacement for the Org export frontend.
+Public new-file consumers omit it and retain exclusive creation."
   (unless (and (stringp bytes) (not (multibyte-string-p bytes)))
     (signal 'org-texmacs-error '("Expected native output bytes")))
   (let ((file-name-handler-alist nil)
@@ -365,7 +367,8 @@ Exclusive open rejects collisions after preflight; file errors propagate."
       (set-buffer-multibyte nil)
       (setq buffer-file-format nil)
       (insert bytes)
-      (write-region (point-min) (point-max) target nil 'silent nil 'excl))
+      (write-region (point-min) (point-max) target nil 'silent nil
+                    (unless overwrite 'excl)))
     target))
 
 (defun org-texmacs-document-save (document file)

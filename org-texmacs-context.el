@@ -35,7 +35,8 @@
   "Org options deliberately accepted by document preparation.")
 
 (defconst org-texmacs--context-source-keywords
-  '("OPTIONS" "FILETAGS" "TITLE" "DATE" "AUTHOR" "SELECT_TAGS" "EXCLUDE_TAGS")
+  '("OPTIONS" "FILETAGS" "TITLE" "DATE" "AUTHOR" "SELECT_TAGS" "EXCLUDE_TAGS"
+    "EXPORT_FILE_NAME")
   "Org keywords consumed by the restricted context adapter.")
 
 (defconst org-texmacs--context-rejected-keywords

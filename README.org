@@ -1119,17 +1119,33 @@ In Org's =C-c C-e= menu, select =T= for TeXmacs:
 | Keys  | Action                                            |
 |-------+---------------------------------------------------|
 | =T T= | Export to a fresh readonly native =.tm= byte buffer |
-| =T t= | Prompt for a new local =.tm= file                   |
-| =T p= | Prompt for a new local PDF file                    |
+| =T t= | Export to Org's local =.tm= output path             |
+| =T p= | Export to Org's local PDF output path               |
 
 The corresponding commands are =org-texmacs-export-as-texmacs=,
 =org-texmacs-export-to-texmacs= and =org-texmacs-export-to-texmacs-pdf=.
 They accept Org's standard optional arguments =async subtreep visible-only
 body-only ext-plist=; this first frontend rejects every non-nil argument before
 conversion or file prompts.  It exports a complete, unnarrowed Org buffer
-synchronously and rejects an active region.  File actions capture the source
-before prompting, then reuse the existing source checks and exclusive new-file
-writer.  Existing outputs are never replaced; choose a new path for another export.
+synchronously and rejects an active region.  File actions reuse
+=org-export-output-file-name=, like =ox-latex=: =#+EXPORT_FILE_NAME= takes
+precedence over the visiting source's file stem; a source with neither prompts
+for a name.  The helper enforces the =.tm= or =.pdf= suffix.  Relative paths
+use the captured source working directory.  =EXPORT_FILE_NAME= is output
+metadata and is consumed without appearing in the document body.
+
+The frontend can overwrite an existing writable regular output at the same
+path without a separate confirmation.  It checks local targets before native
+conversion and again before writing; directories, symlinks and source-file
+aliases are rejected.  It does not create directories.  Conversion and the
+source consistency check finish before the output is opened, so a preparation,
+rendering or stale-source error preserves an existing output.  Native bytes are
+written without encoding conversion or an added newline.  Standard filesystem
+errors propagate; write failure can leave partial output.  This ordinary write
+policy provides no backups, atomic replacement or target-version concurrency
+protection.  The explicit =org-texmacs-document-save= / =-save-pdf= and
+=org-texmacs-export-to-file= / =-to-pdf= APIs still require a new destination and
+never permit overwrite.
 The buffer action displays its result when
 =org-export-show-temporary-export-buffer= is non-nil.
 
