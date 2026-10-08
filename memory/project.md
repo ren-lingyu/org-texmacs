@@ -446,7 +446,9 @@ Commit be284dd292cfb0a88ae51f0e6b692f94516f0bb1 matches the verified six-file di
   That initial frontend used new-file prompts. Its naming/overwrite policy is
   superseded by the verified extension below; atomic publication remains absent.
 
-## Org output convention extension (working tree)
+## Committed Org output convention extension
+
+Commit b4ee215224578577a3235f8954020baf74e585af matches the verified five-file diff.
 
 - ox-texmacs file actions now use org-export-output-file-name for .tm/PDF.
   EXPORT_FILE_NAME takes precedence over visiting file stem; non-file unnamed
@@ -464,7 +466,7 @@ Commit be284dd292cfb0a88ae51f0e6b692f94516f0bb1 matches the verified six-file di
 - Eleven focused cases pass (5.32s), covering naming/reexports, exact raw bytes,
   non-file prompt context, stale sources, renderer failure and partial-write errors.
   Final Nix passes all seven checks, compilation/package-lint and installed
-  ERT 284/284 (125.71s). Five files are approved/staged, awaiting user commit;
+  ERT 284/284 (125.71s). The verified output-convention node is committed;
   the uncommitted mirror overlay stays unchanged/excluded.
 
 ## Worker and session

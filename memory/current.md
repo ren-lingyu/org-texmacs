@@ -4,9 +4,9 @@
 
 Bounded ox-texmacs dispatcher frontend is committed as
 be284dd292cfb0a88ae51f0e6b692f94516f0bb1. Its complete six-file diff matches
-the verified hash. The user-selected Org/ox-latex output convention extension
-is now complete, verified and staged with approval. tmp/commit.md is reviewed;
-await the user's ordinary commit and compare its five-file diff.
+the verified hash. The Org/ox-latex output convention extension is committed
+as b4ee215224578577a3235f8954020baf74e585af; its complete five-file diff matches
+the verified hash exactly. Index is empty; next-node selection is pending.
 Frontend uses org-export-output-file-name and ordinary overwrite after checked
 native bytes are complete. Public new-file-only APIs stay exclusive. Atomic
 replacement, backups and target-version locking are not adopted prerequisites.
@@ -17,10 +17,10 @@ string export/publishing, preprocessing and broader selection remain unsupported
 ## Baseline and staging
 
 - Main HEAD observed on 2026-10-08:
-  `be284dd292cfb0a88ae51f0e6b692f94516f0bb1`.
-  Its frontend diff against b5100a9 matches the verified six-file hash exactly.
+  `b4ee215224578577a3235f8954020baf74e585af`.
+  Its output-convention diff against be284dd matches the verified five-file hash.
 - Frontend commit be284dd is verified against baseline b5100a9 hash d41f05a2...
-  as recorded in evidence. Current approved/staged files: README.org,
+  as recorded in evidence. Committed output-convention files: README.org,
   org-texmacs-context.el, org-texmacs-session.el, ox-texmacs.el, tests/ert/ert.el.
   Full staged review and diff --check pass. SHA-256 on baseline be284dd:
   846a14267176678abb8ebda9c7097c12076e55563a8235ec0beb323d574de410.
@@ -35,7 +35,7 @@ string export/publishing, preprocessing and broader selection remain unsupported
   Later DOC-01/CONSUMER-01 features are local development, not release claims.
   Remote publication/signature remain unverified; release evidence is in evidence.md.
 
-## Verified Org output convention extension
+## Committed Org output convention extension
 
 - File actions use Org's naming helper for EXPORT_FILE_NAME/visiting stem/prompt
   and suffix enforcement, with captured source working directory. Preparation
@@ -179,8 +179,8 @@ native printing and independent PDF inspection are real. GUI layout is unverifie
    00164bbb3491e4addd74c75a0c53ab86cd8397855e659c25a572a5ae84044464.
    Semantic commit b5100a9 is now verified by its three-file diff SHA-256
    against baseline db33c14. Frontend commit be284dd is now verified against
-   d41f05a2... as recorded in evidence. Naming/reexport node is verified/staged;
-   await its commit and compare the five-file diff with 846a1426... above.
+   d41f05a2... as recorded in evidence. Naming/reexport commit b4ee215 is verified
+   against the five-file hash 846a1426... above. Await the next-node selection.
    Keep the mirror overlay excluded; no flake or lock changes belong to this node.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries
    separate from the selected PDF work. Do not silently

@@ -697,7 +697,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   GAW. Generic publishing/export preprocessing, scoped selection, overrides and
   async behavior remain outside this node; actual GUI layout is unverified.
 
-## Org output naming/reexport node (2026-10-08, verified/staged)
+## Committed Org output naming/reexport node (2026-10-08)
 
 - User adopted ox-latex's ordinary naming/overwrite convention and narrowed the
   earlier proposed atomic/backup/concurrency design scope. No new confirmation,
@@ -731,6 +731,9 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   org-texmacs-session.el, ox-texmacs.el and tests/ert/ert.el. Full staged review
   and diff --check pass. git diff --cached SHA-256 against the baseline above:
   846a14267176678abb8ebda9c7097c12076e55563a8235ec0beb323d574de410.
+  Commit b4ee215224578577a3235f8954020baf74e585af was compared with be284dd
+  on 2026-10-08: complete five-file stat and diff hash match exactly. The project
+  index is empty; only the temporary mirror overlay remains unstaged.
   tmp/commit.md is reviewed; only the unchanged mirror overlay remains unstaged.
 - No independent necessary raw temporary evidence qualifies for archive:
   fixtures/reproduction live in ERT, and no binary output enters GAW.

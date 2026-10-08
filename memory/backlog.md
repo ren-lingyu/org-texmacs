@@ -108,15 +108,15 @@ cases pass 7/7; final Nix passes all seven checks and installed ERT 280/280.
 Frontend commit be284dd matches the verified six-file hash. Only the module
 fileset entry was committed in flake; the mirror overlay stays outside history.
 
-### Active: Org output naming and repeat export
+### Completed: Org output naming and repeat export
 
 User selected the narrower ox-latex convention after reviewing the proposal:
 frontend uses org-export-output-file-name and ordinary overwrite of an existing
 writable regular output, after source checks and native bytes are complete.
 EXPORT_FILE_NAME is consumed as output metadata. Public new-file-only APIs keep
 exclusive creation. Eleven focused cases pass 11/11; final Nix passes all seven
-checks and installed ERT 284/284. Five files are approved/staged, awaiting the
-user's commit. Extra
+checks and installed ERT 284/284. Commit b4ee215 matches the verified five-file
+hash. Extra
 overwrite confirmation, backups, atomic replacement and target-version locking
 are not prerequisites or adopted behavior for this node. Any later work on
 those guarantees remains a separate unresolved-design boundary.
