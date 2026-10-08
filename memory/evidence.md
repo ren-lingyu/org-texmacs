@@ -12,9 +12,48 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
+## Interactive export / native byte-view evidence
+
+- Adapter commit `ee225ad62ffedf529239f7a31fd4cc73e9743519` (declared as a non-first parent of this checkpoint) matches its verified
+  four-file diff, checked on 2026-10-07. Interactive work began with only the
+  unchanged user overlay dirty.
+- Four new maintained cases pass in sixteen combined cases (17.02s). Native
+  buffer bytes match direct export for Cafe with accent, Chinese and literal
+  notation. Output buffers are readonly/unibyte, use no-conversion, own their
+  contents and never overwrite a preexisting view; source state is unchanged.
+- Tests suppress actual display/file UI, simulate interactive invocation, and
+  inject display failure to check ownership/cleanup. They verify the original
+  source survives a prompt callback switching current buffers, filename defaults,
+  and invalid/non-Org/narrowed/remote-directory preflight before prompts.
+- Initial tests used a nonexistent buffer-multibyte-p and assumed batch
+  funcall-interactively makes called-interactively-p with interactive flag true.
+  They now inspect enable-multibyte-characters and simulate noninteractive=nil
+  only around the mocked UI call. No real GUI invocation is claimed.
+- First Nix checking rejected newly added docstrings wider than 80 characters.
+  Their text was rewrapped without changing behavior. Final Nix passes all seven
+  checks including compilation/package-lint and installed ERT 265/265 (104.35s).
+  No successful installed check is claimed for the rejected build.
+- Initial local non-worker bucket timed out at 120s around 251/254, with no
+  observed failure. Complete local coverage then passed disjoint selectors
+  document 105/105 (43.83s), non-document/non-worker 149/149 (71.53s) and worker
+  11/11 (11.88s), all exit 0. Keep these smaller groups instead of extending
+  timeouts or rerunning the overlong bucket. Validation uses the unchanged
+  temporary local-only remote USTC mirror overlay; original ELPA is unverified.
+- Exact approved/staged three-file diff on baseline
+  `ee225ad62ffedf529239f7a31fd4cc73e9743519` (declared as a non-first parent of this checkpoint) has SHA-256
+  `3f3a1f61d1f0b24ad984c6723ada568ec12a5b8015a9de968200ac32e9878d51`
+  for `git diff --cached -- README.org org-texmacs.el tests/ert/ert.el`.
+  Full staged review and git diff --cached --check pass. No implementation is
+  unstaged; tmp/commit.md is the reviewed message. Ordinary commit awaits the user.
+  Current memory has been condensed to active state, boundaries and next actions;
+  superseded completion records remain in project/evidence and GAW history.
+- Test byte files/buffers are regenerable maintained fixtures, not unique raw
+  evidence. No necessary new archive snapshot is selected; only pure text enters
+  GAW. Interactive bibliography reads and generic backend/dispatcher are not adopted.
+
 ## Explicit-source export adapter evidence
 
-- Saving commit `0ee17c4acc88664e2024af26d8ebcf08084e85a7` (declared as a non-first parent of this checkpoint) matches the earlier
+- The explicit new-file saving revision matches the earlier
   verified three-file diff, checked on 2026-10-07. Adapter work began with only
   the unchanged user overlay dirty.
 - Existing private preparation already calls its consumer before its final
@@ -38,12 +77,13 @@
   Generic backend/dispatcher behavior,
   replacement/backup and GUI rendering remain separate unverified boundaries.
 - Exact approved/staged four-file diff on baseline
-  `0ee17c4acc88664e2024af26d8ebcf08084e85a7` (declared as a non-first parent of this checkpoint) has SHA-256
+  the explicit new-file saving revision has SHA-256
   `48f06c5326ad5140f291110c7a05cabffba941c1c2c1e87cbac2aa6c0101f163`
   for `git diff --cached -- README.org org-texmacs-session.el org-texmacs.el tests/ert/ert.el`.
   Full staged review and git diff --cached --check pass. No implementation
-  remains unstaged; tmp/commit.md is the reviewed message. Ordinary commit
-  awaits the user; the overlay remains unchanged at its previously recorded hash.
+  remained unstaged at that review. Commit `ee225ad62ffedf529239f7a31fd4cc73e9743519` (declared as a non-first parent of this checkpoint)
+  was checked on 2026-10-07 and matches this exact diff hash; the overlay remains
+  unchanged at its previously recorded hash.
 - No independent necessary temporary evidence artifact was created. All generated
   output is regenerable in maintained tests and confined to isolated directories.
   Archive selection requires no new snapshot; only pure text enters GAW.
@@ -78,7 +118,7 @@
   `866da9c3b5a8a874950bf0b27a762f3f34e7b09339e1f9b9c02e13080cf2cce4`
   for `git diff --cached -- README.org org-texmacs-session.el tests/ert/ert.el`.
   Full staged review and git diff --cached --check pass. No implementation is
-  unstaged at that review. Commit `0ee17c4acc88664e2024af26d8ebcf08084e85a7` (declared as a non-first parent of this checkpoint)
+  unstaged at that review. The explicit new-file saving revision
   was checked on 2026-10-07 and matches this exact diff hash. The overlay remains
   unchanged at its previously recorded hash.
 - Test outputs are regenerable temporary fixtures with maintained inputs/assertions.
@@ -332,7 +372,7 @@
 - Local v0.3.1 annotated tag target:
   the v0.3.1 release revision.
 - Current main HEAD observed on 2026-10-07:
-  `0ee17c4acc88664e2024af26d8ebcf08084e85a7` (declared as a non-first parent of this checkpoint).
+  `ee225ad62ffedf529239f7a31fd4cc73e9743519` (declared as a non-first parent of this checkpoint).
 
 These are local Git facts. They do not prove remote release state or tag
 signatures.
