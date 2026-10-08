@@ -150,12 +150,13 @@ No GUI preview or overwrite policy is included; PDF binaries remain outside GAW.
 
 ### CONSUMER-01: Add stable complete-document consumers
 
-Status: **active-next**. The stable bounded DOC-01 architecture now covers the
-critical ordinary-document cross-node semantics; fuller Org syntax is not a
-prerequisite. Start with complete native document construction and returning
-serialized text independently of a session, followed by explicit new-file saving.
-Replacement/backup/atomic-publication policy, export frontend, rendering and
-preview remain later consumer boundaries.
+Status: **adopted-later** for remaining frontend/consumer semantics. Native
+document construction, serialization, saving, checked whole-buffer exports,
+PDF and bounded dispatcher/naming/reexports are implemented. Subtree selection
+is the proposed next unresolved-design node. Generic Org export API integration,
+other selection/configuration contracts and publishing are still bounded design
+questions; no full syntax parity prerequisite is introduced. Backup/atomic
+publication and a standalone preview command are not completion requirements.
 
 The first node is committed as `e7377e5`: org-texmacs-document-serialize builds
 complete native file-document structure from explicit encoded fields and returns

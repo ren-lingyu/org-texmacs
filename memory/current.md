@@ -14,6 +14,14 @@ live source. Resolve used footnotes and links against explicit owned context,
 and define errors for dependencies outside the selected export scope. Keep
 region/visible/body-only/async as separate boundaries. This is a proposal,
 not adoption or implementation/check authorization.
+Scope guidance: ox-latex is a reference for shared Org export conventions,
+not a feature inventory to copy wholesale. Current ox-texmacs is a bounded
+dispatcher frontend, not a complete generic exporter: org-export-as and related
+generic entry points still reject texmacs. Common selection/configuration/API
+compatibility needs staged design under AST-first/owned-input constraints;
+LaTeX-only compilation, templates and package controls are not project duties.
+Unsupported syntax and deferred multi-session/incremental/editor conveniences
+must not be presented as mandatory remaining work.
 Frontend uses org-export-output-file-name and ordinary overwrite after checked
 native bytes are complete. Public new-file-only APIs stay exclusive. Atomic
 replacement, backups and target-version locking are not adopted prerequisites.

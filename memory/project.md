@@ -498,8 +498,8 @@ worker, encoding, and native-session tests.
 
 ## Downstream work not yet implemented
 
-Broader file metadata (attachments/reference tables/auxiliary), replacement/backup
-policy, generic Org string export/publishing beyond the bounded dispatcher, preview,
+Broader file metadata (attachments/reference tables/auxiliary), backup/atomic
+publication, generic Org export/publishing beyond the bounded dispatcher, preview,
 visual pagination, multi-document or multi-session operation, live or
 incremental synchronization, and broader Org document-wide resolution remain
 future consumer/document work. `memory/backlog.md` distinguishes adopted work,
