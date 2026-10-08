@@ -5,8 +5,8 @@
 Select the next implementation scope from the adopted downstream work. The
 verified, behavior-preserving `ARCH-01` worker/document layering refactor is
 committed, and the reproducible untracked bootstrap migration is complete. A
-future fresh context should independently confirm discovery and recovery
-routing, but that validation does not block project work.
+fresh session has recovered active GAW memory without the historical archive.
+Unaided bootstrap discovery remains a nonblocking check for a later session.
 
 ## Current baseline
 
@@ -84,8 +84,12 @@ routing, but that validation does not block project work.
 ## Blockers and uncertainties
 
 - No project-code blocker is known.
-- A genuine fresh-context recovery drill cannot be completed inside the
-  context that authored the migration. It remains a later validation step.
+- In the 2026-10-06 fresh session, `git gaw status` found the deployed worktree,
+  `git gaw check` passed, and the agent recovered current state through the
+  declared memory and project skill without reading the historical archive.
+  The user supplied root `AGENTS.md` in the session prompt, so this does not
+  establish unaided discovery of the root bootstrap. That remaining check does
+  not block project work.
 
 ## Completed ARCH-01 refactor
 
@@ -116,5 +120,7 @@ routing, but that validation does not block project work.
 
 1. Select the next implementation scope from adopted work rather than treating
    unsupported cases or deferred candidates as automatic commitments.
-2. In a future fresh Codex context, verify skill discovery and recovery from
-   active GAW memory without reading the historical archive.
+2. When a later fresh Codex session starts without user-supplied `AGENTS.md`,
+   check whether it discovers the root bootstrap and project skill, then
+   recovers active GAW memory without the historical archive. Mark this
+   nonblocking check complete when observed; continue project work meanwhile.
