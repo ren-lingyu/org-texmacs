@@ -5444,6 +5444,150 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
           (should-error (org-texmacs-export-from-buffer (current-buffer) nil (point))
                         :type 'org-texmacs-document-error))))))
 
+(ert-deftest org-texmacs-overrides-global-file-subtree-priority ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+TITLE: FileTitleSentinel\n#+OPTIONS: toc:nil num:t H:2\n"
+            "* Root\n:PROPERTIES:\n:EXPORT_TITLE: SubtreeTitleSentinel\n"
+            ":EXPORT_OPTIONS: num:nil H:3\n:END:\nBody.\n** Child\nChildBody.\n")
+    (let ((org-export-with-section-numbers nil) (org-export-headline-levels 5)
+          (options '(:title "ExternalTitleSentinel" :author "ExternalAuthorSentinel"
+                           :section-numbers nil :headline-levels 1 :with-toc nil)))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Ordinary overrides started worker"))))
+        (let* ((input (org-texmacs-prepare-buffer (current-buffer) nil nil nil options))
+               (info (org-texmacs-input-info input))
+               (body (prin1-to-string (org-texmacs-document-body (org-texmacs-document input)))))
+          (should (plist-get info :section-numbers))
+          (should (= 2 (plist-get info :headline-levels)))
+          (should (string-match-p "FileTitleSentinel" body))
+          (should (string-match-p "ExternalAuthorSentinel" body))
+          (should-not (string-match-p "ExternalTitleSentinel" body)))
+        (goto-char (point-min)) (search-forward "* Root")
+        (let* ((input (org-texmacs-prepare-buffer (current-buffer) nil (point) nil options))
+               (info (org-texmacs-input-info input))
+               (body (prin1-to-string (org-texmacs-document-body (org-texmacs-document input)))))
+          (should-not (plist-get info :section-numbers))
+          (should (= 3 (plist-get info :headline-levels)))
+          (should (string-match-p "SubtreeTitleSentinel" body))
+          (should-not (string-match-p "FileTitleSentinel\\|ExternalTitleSentinel" body)))))))
+
+(ert-deftest org-texmacs-overrides-rich-metadata-and-explicit-nil ()
+  (with-temp-buffer
+    (org-mode) (insert "BodySentinel.\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _) (ert-fail "Metadata started worker"))))
+      (let* ((document (org-texmacs-document-from-buffer
+                        (current-buffer) nil nil nil
+                        '(:title "*RichTitleSentinel* 中文 <alpha>"
+                          :author "ExternalAuthorSentinel" :date "ExternalDateSentinel"
+                          :with-toc nil)))
+             (body (org-texmacs-document-body document)))
+        (should (memq 'strong (flatten-tree body)))
+        (should (string-match-p "中文 <alpha>" (prin1-to-string body)))
+        (should (string-match-p "ExternalAuthorSentinel" (prin1-to-string body)))
+        (should (string-match-p "ExternalDateSentinel" (prin1-to-string body))))
+      (let ((body (org-texmacs-document-body
+                   (org-texmacs-document-from-buffer
+                    (current-buffer) nil nil nil
+                    '(:title nil :author nil :date nil :with-toc nil)))))
+        (should-not (memq 'doc-data (flatten-tree body)))
+        (should (string-match-p "BodySentinel" (prin1-to-string body)))))))
+
+(ert-deftest org-texmacs-overrides-invalid-plists-before-prompts-and-workers ()
+  (with-temp-buffer
+    (org-mode) (insert "#+OPTIONS: H:2\nBody.\n")
+    (let ((cycle (list :with-title t)))
+      (setcdr (cdr cycle) cycle)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Invalid overrides started worker")))
+                ((symbol-function 'read-file-name)
+                 (lambda (&rest _) (ert-fail "Invalid overrides prompted"))))
+        (dolist (options (list t '(:title) '(:title . "bad") cycle
+                              '(:title 42) '(:title ("already parsed"))
+                              '(:with-title t :with-title nil) '(title "bad")
+                              '(:headline-levels 6) '(:section-numbers -1)
+                              '(:with-author "yes") '(:with-tasks (1))
+                              '(:select-tags "tag") '(:exclude-tags (t))
+                              '(:with-tags invalid) '(:options "toc:nil")
+                              '(:export-file-name "other") '(:texmacs-resource-base "/")
+                              '(:filter-final-output ignore) '(:bibliography "refs.bib")))
+          (should-error (org-texmacs-prepare-buffer (current-buffer) nil nil nil options)
+                        :type 'org-texmacs-document-error)
+          (dolist (command '(org-texmacs-export-as-texmacs org-texmacs-export-to-texmacs
+                             org-texmacs-export-to-texmacs-pdf))
+            (should-error (funcall command nil nil nil nil options) :type 'user-error)))))))
+
+(ert-deftest org-texmacs-overrides-filtering-and-owned-dependencies ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "[fn:n] Note (math \"x\").\n\n* Keep\nBody[fn:n].\n"
+              "* Skip :skip:\n#+begin_texmacs\n(math\n#+end_texmacs\n")
+      (let* ((options (list :exclude-tags (list "skip") :with-toc nil :with-title nil))
+             (input (org-texmacs-prepare-buffer (current-buffer) nil nil nil options))
+             (body (org-texmacs-document-body (org-texmacs-document input))))
+        (should (= 1 (cl-count 'footnote (flatten-tree body))))
+        (should (memq 'math (flatten-tree body)))
+        (should-not (string-match-p "Skip" (prin1-to-string body)))
+        (setcar (plist-get options :exclude-tags) "Keep")
+        (should (equal body (org-texmacs-document-body (org-texmacs-document input))))))))
+
+(ert-deftest org-texmacs-overrides-native-menu-consumers-and-region ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "Prefix RegionBodySentinel suffix.\n")
+      (setq buffer-file-name (expand-file-name "source.org" test-directory))
+      (search-backward "RegionBodySentinel")
+      (let ((begin (point)) (end (+ (point) (length "RegionBodySentinel")))
+            (transient-mark-mode t) (org-export-show-temporary-export-buffer nil)
+            (options '(:title "*ExternalTitleSentinel*" :author nil :with-toc nil)))
+        (push-mark end nil t)
+        (let ((output (org-texmacs-export-as-texmacs nil nil nil nil options)))
+          (unwind-protect
+              (with-current-buffer output
+                (should (string-match-p "ExternalTitleSentinel" (buffer-string)))
+                (should (string-match-p "RegionBodySentinel" (buffer-string)))
+                (should-not (string-match-p "Prefix\\|suffix" (buffer-string))))
+            (kill-buffer output)))
+        (let ((file (org-texmacs-export-to-texmacs nil nil nil nil options)))
+          (should (equal file (expand-file-name "source.tm" test-directory)))
+          (with-temp-buffer
+            (set-buffer-multibyte nil) (insert-file-contents-literally file)
+            (should (string-match-p "ExternalTitleSentinel" (buffer-string)))
+            (should-not (string-match-p "Prefix\\|suffix" (buffer-string)))))
+        (let ((file (org-texmacs-export-to-texmacs-pdf nil nil nil nil options)))
+          (with-temp-buffer
+            (set-buffer-multibyte nil) (insert-file-contents-literally file)
+            (should (string-prefix-p "%PDF-" (buffer-string)))))
+        (should (= begin (point))) (should (= end (mark))) (should mark-active)))))
+
+(ert-deftest org-texmacs-overrides-owned-across-prompt-and-native-waits ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode) (insert "BodySentinel.\n")
+      (let* ((title (copy-sequence "ExternalTitleSentinel"))
+             (tags (list (copy-sequence "skip")))
+             (options (list :title title :exclude-tags tags :with-toc nil))
+             (serialize (symbol-function 'org-texmacs-document-serialize)))
+        (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                   (lambda (document)
+                     (aset title 0 ?X) (aset (car tags) 0 ?X)
+                     (plist-put options :with-title nil)
+                     (funcall serialize document))))
+          (let ((bytes (org-texmacs-export-from-buffer (current-buffer) nil nil nil options)))
+            (should (string-match-p "ExternalTitleSentinel" bytes))))
+        (setq options (list :title (copy-sequence "PromptTitleSentinel") :with-toc nil))
+        (cl-letf (((symbol-function 'read-file-name)
+                   (lambda (&rest _)
+                     (aset (plist-get options :title) 0 ?X)
+                     (expand-file-name "prompt.tm" test-directory))))
+          (let ((file (org-texmacs-export-to-texmacs nil nil nil nil options)))
+            (with-temp-buffer
+              (set-buffer-multibyte nil) (insert-file-contents-literally file)
+              (should (string-match-p "PromptTitleSentinel" (buffer-string))))))))))
+
 (ert-deftest org-texmacs-region-partial-text-and-file-context ()
   (with-temp-buffer
     (org-mode)

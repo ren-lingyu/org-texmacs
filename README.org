@@ -1009,7 +1009,7 @@ does not provide atomic content publication, replacement, backups, an export
 frontend or rendering.
 
 ** Exporting an explicit Org source buffer
-=org-texmacs-export-from-buffer SOURCE-BUFFER &optional BIBLIOGRAPHY-SOURCES=
+=org-texmacs-export-from-buffer SOURCE-BUFFER &optional BIBLIOGRAPHY-SOURCES SUBTREE-POSITION REGION EXT-PLIST=
 returns complete native =.tm= bytes directly from an explicit Org buffer.
 =org-texmacs-export-to-file SOURCE-BUFFER FILE &optional BIBLIOGRAPHY-SOURCES=
 exports to an explicit new local file and returns its copied path.  Both use
@@ -1071,7 +1071,7 @@ document snapshot.  =org-texmacs-document-save-pdf DOCUMENT FILE= writes those
 bytes to a new absolute local file, with the same exclusive creation and
 partial-write rules as native document saving.
 
-=org-texmacs-export-pdf-from-buffer SOURCE-BUFFER &optional BIBLIOGRAPHY-SOURCES=
+=org-texmacs-export-pdf-from-buffer SOURCE-BUFFER &optional BIBLIOGRAPHY-SOURCES SUBTREE-POSITION REGION EXT-PLIST=
 returns PDF bytes from an explicit Org buffer.
 =org-texmacs-export-to-pdf SOURCE-BUFFER FILE &optional BIBLIOGRAPHY-SOURCES=
 writes them only after preparation's final consistency check.  Its interactive
@@ -1125,8 +1125,9 @@ In Org's =C-c C-e= menu, select =T= for TeXmacs:
 The corresponding commands are =org-texmacs-export-as-texmacs=,
 =org-texmacs-export-to-texmacs= and =org-texmacs-export-to-texmacs-pdf=.
 They accept Org's standard optional arguments =async subtreep visible-only
-body-only ext-plist=.  =subtreep= is supported; the other arguments must be nil
-and fail before conversion or file prompts when non-nil.  It exports a complete
+body-only ext-plist=.  =subtreep= and the restricted =ext-plist= below are supported;
+=async=, =visible-only= and =body-only= must be nil and fail before conversion or
+file prompts when non-nil.  It exports a complete
 buffer, containing subtree or active region synchronously from an unnarrowed
 source.  An active region takes precedence for body selection; =subtreep=
 still supplies subtree configuration and output naming.  File actions reuse
@@ -1162,9 +1163,58 @@ and publishing APIs are not implemented by this backend.
 
 These commands pass no bibliography snapshots and never read =.bib= files.
 Documents needing explicit snapshots can use the existing Lisp source adapters
-with =BIBLIOGRAPHY-SOURCES=.  General output overrides, visible/body-only
+with =BIBLIOGRAPHY-SOURCES=.  Unrestricted overrides, visible/body-only
 and async semantics remain future design work.  Loading =org-texmacs= alone
 does not register this menu or guard, and no PDF viewer opens.
+
+*** Restricted external configuration
+The frontend's =ext-plist= argument accepts these existing configuration fields:
+
+| Keys                                                       | Value type                                      |
+|------------------------------------------------------------+-------------------------------------------------|
+| =:title=, =:author=, =:date=                                 | Raw Org string or nil                           |
+| =:headline-levels=                                         | Integer from 0 through 5                         |
+| =:section-numbers=, =:with-toc=                             | nil, t or a nonnegative integer                  |
+| =:with-archived-trees=                                      | nil, t or =headline=                             |
+| =:with-author=, =:with-date=, =:with-priority=, =:with-title=, =:with-todo-keywords= | nil or t                       |
+| =:with-tags=                                               | nil, t or =not-in-toc=                            |
+| =:with-tasks=                                              | nil, t, =todo=, =done= or a list of TODO strings   |
+| =:select-tags=, =:exclude-tags=                             | List of strings                                 |
+
+Precedence follows Org: captured global/buffer-local defaults < =ext-plist= <
+supported file keywords/options < supported subtree =EXPORT_*= properties.
+Explicit nil values override lower defaults.  Metadata strings are parsed with
+Org's keyword object grammar in the private snapshot, without STM discovery.
+The resulting document still uses the existing supported metadata subset.
+
+The plist must have unique supported keys and valid values, even when a later
+file or subtree setting overrides them.  Unknown keys, duplicate keys, improper
+or cyclic lists and invalid value types fail before prompts or worker requests.
+Output paths, styles/initial values, hooks, filters, parser settings and
+bibliography sources are outside this plist.  It does not run Org preprocessing
+or introduce file reads.  File naming retains the existing source/subtree policy.
+
+#+begin_src emacs-lisp
+  (org-texmacs-export-as-texmacs
+   nil nil nil nil '(:title "*A title*" :with-toc nil :section-numbers nil))
+#+end_src
+
+The explicit preparation/document/.tm/PDF byte/readonly buffer adapters accept
+=EXT-PLIST= as an optional fifth argument, after =REGION=.  Values are copied
+before conversion (and before frontend file prompts); later mutations of the
+caller's plist, strings or tag lists affect only a subsequent conversion.
+Pure lowering consumes the completed owned INFO and never consults this caller.
+The explicit new-file saving adapters retain their existing signatures; callers
+can prepare a configured document and save it with the document consumers.
+
+#+begin_src emacs-lisp
+  (org-texmacs-document-from-buffer
+   source-buffer bibliography-sources nil nil '(:exclude-tags ("draft")))
+#+end_src
+
+=body-only= remains deferred: Org skips an outer template with that flag, whereas
+these consumers produce complete native =.tm=/PDF documents.  A future embeddable
+fragment needs an explicit format and consumer contract.
 
 *** Region export
 An active region selects its exact character range.  As in Org export, partial

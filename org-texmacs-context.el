@@ -54,6 +54,56 @@
    (list org-use-property-inheritance org-property-separators
          org-global-properties org-global-properties-fixed)))
 
+(defun org-texmacs--context-option-value-p (key value)
+  "Return non-nil when VALUE is valid for supported policy KEY."
+  (pcase key
+    (:headline-levels (and (wholenump value) (<= value 5)))
+    (:texmacs-tab-width (and (integerp value) (> value 0)))
+    ((or :section-numbers :with-toc) (or (memq value '(nil t)) (wholenump value)))
+    (:with-archived-trees (memq value '(nil t headline)))
+    (:with-tags (memq value '(nil t not-in-toc)))
+    (:with-tasks (or (memq value '(nil t todo done))
+                     (and (proper-list-p value) (cl-every #'stringp value))))
+    ((or :select-tags :exclude-tags)
+     (and (proper-list-p value) (cl-every #'stringp value)))
+    ((or :with-author :with-date :with-priority :with-title :with-todo-keywords)
+     (memq value '(nil t)))
+    (_ nil)))
+
+(defun org-texmacs--context-external-options (options)
+  "Validate and own restricted external OPTIONS before prompts or workers.
+Accept unique supported keys only.  Metadata values are raw Org strings or nil;
+policy values use the existing typed INFO contract, not OPTIONS token strings."
+  (unless (and (proper-list-p options) (zerop (% (length options) 2)))
+    (signal 'org-texmacs-document-error '("Expected an external options plist")))
+  (let (seen result)
+    (while options
+      (let ((key (pop options)) (value (pop options)))
+        (unless (and (assq key org-texmacs--context-option-alist)
+                     (not (memq key seen)))
+          (signal 'org-texmacs-document-error
+                  (list "Unsupported or duplicate external option" key)))
+        (unless (if (memq key '(:title :author :date))
+                    (or (null value) (stringp value))
+                  (org-texmacs--context-option-value-p key value))
+          (signal 'org-texmacs-document-error (list "Invalid external option" key)))
+        (push key seen)
+        (setq result (append result (list key (org-texmacs--context-copy value))))))
+    result))
+
+(defun org-texmacs--context-merge-external (info)
+  "Merge owned external options in INFO before file/subtree configuration.
+Parse raw metadata with private Org syntax; never discover STM in metadata."
+  (let ((options (plist-get info :texmacs-external-options)) parsed metadata)
+    (while options
+      (let ((key (pop options)) (value (pop options)))
+        (when (memq key '(:title :author :date))
+          (push (upcase (substring (symbol-name key) 1)) metadata)
+          (setq value (org-element-parse-secondary-string
+                       value (org-element-restriction 'keyword))))
+        (setq parsed (append parsed (list key value)))))
+    (org-combine-plists info parsed (list :texmacs-metadata-present metadata))))
+
 (defun org-texmacs--context-copy (value)
   "Copy configuration VALUE without retaining mutable strings or conses."
   (cond
@@ -171,29 +221,12 @@ away.  Do not discover TeXmacs fragments in this document-wide metadata."
 
 (defun org-texmacs--context-validate-info (info)
   "Validate the supported effective option subset in INFO."
-  (unless
-      (and (wholenump (plist-get info :headline-levels))
-           (<= (plist-get info :headline-levels) 5)
-           (integerp (plist-get info :texmacs-tab-width))
-           (> (plist-get info :texmacs-tab-width) 0)
-           (let ((value (plist-get info :section-numbers)))
-             (or (memq value '(nil t)) (wholenump value)))
-           (memq (plist-get info :with-archived-trees) '(nil t headline))
-           (memq (plist-get info :with-author) '(nil t))
-           (memq (plist-get info :with-date) '(nil t))
-           (memq (plist-get info :with-priority) '(nil t))
-           (let ((value (plist-get info :with-toc)))
-             (or (memq value '(nil t)) (wholenump value)))
-           (memq (plist-get info :with-tags) '(nil t not-in-toc))
-           (let ((value (plist-get info :with-tasks)))
-             (or (memq value '(nil t todo done))
-                 (and (proper-list-p value) (cl-every #'stringp value))))
-           (memq (plist-get info :with-title) '(nil t))
-           (memq (plist-get info :with-todo-keywords) '(nil t))
-           (proper-list-p (plist-get info :select-tags))
-           (cl-every #'stringp (plist-get info :select-tags))
-           (proper-list-p (plist-get info :exclude-tags))
-           (cl-every #'stringp (plist-get info :exclude-tags)))
+  (unless (cl-every
+           (lambda (key)
+             (org-texmacs--context-option-value-p key (plist-get info key)))
+           (cons :texmacs-tab-width
+                 (cl-remove-if (lambda (key) (memq key '(:title :author :date)))
+                               (mapcar #'car org-texmacs--context-option-alist))))
     (signal 'org-texmacs-document-error '("Invalid supported Org document options")))
   info)
 
@@ -434,10 +467,12 @@ worker requests whose identity keys remain reachable after filtering.
 Optional SUBTREE-POSITION clips the owned tree after configuration capture.
 REGION is a frozen (BEGIN . END) pair; it takes precedence for body selection,
 while retaining any subtree configuration.  Parse only the private snapshot."
-  (let* ((metadata
-          (mapcar #'car
-                  (org-texmacs--context-keywords
-                   ast islands '("TITLE" "AUTHOR" "DATE"))))
+  (let* ((base-info (org-texmacs--context-merge-external base-info))
+         (metadata
+          (append (plist-get base-info :texmacs-metadata-present)
+                  (mapcar #'car
+                          (org-texmacs--context-keywords
+                           ast islands '("TITLE" "AUTHOR" "DATE")))))
          (info (plist-put
                 (plist-put
                  (org-texmacs--context-validate-info

@@ -185,13 +185,17 @@ preparation and conversion together, use `org-texmacs-document-from-buffer'."
 
 ;;;###autoload
 (defun org-texmacs-prepare-buffer
-    (source-buffer &optional bibliography-sources subtree-position region)
+    (source-buffer &optional bibliography-sources subtree-position region ext-plist)
   "Prepare a buffer-independent structural input from SOURCE-BUFFER.
 Optional SUBTREE-POSITION selects its containing subtree in the full snapshot;
 nil prepares the whole buffer.  It must be an integer source position.
 REGION is an optional (BEGIN . END) integer pair selecting a nonempty body
 range; it takes precedence over subtree body selection, retaining its options.
 Capture both selections before waits; do not use the source point or mark later.
+EXT-PLIST supplies restricted overrides, copied before preparation.
+Metadata values are raw Org strings or nil, policies use documented INFO types.
+Priority is global < external < file < subtree.
+Reject unknown or duplicate keys.
 Apply the source and supported-subset contract of
 `org-texmacs-document-from-buffer', including preflight and STM parsing.
 Return an `org-texmacs-input', without opening a native session.
@@ -201,17 +205,18 @@ worker requests, and own native parsed entries in the input's BIBLIOGRAPHY.
 Never open these paths or query a bibliography database.  Resolve document
 bibliography declarations, bare default citations and one bibliography print,
 then prepare native plain output in the fixed INFO context."
-  (org-texmacs--prepare-buffer source-buffer #'identity bibliography-sources subtree-position region))
+  (org-texmacs--prepare-buffer source-buffer #'identity bibliography-sources subtree-position region ext-plist))
 
 ;;;###autoload
 (defun org-texmacs-document-from-buffer
-    (source-buffer &optional bibliography-sources subtree-position region)
+    (source-buffer &optional bibliography-sources subtree-position region ext-plist)
   "Convert explicit Org SOURCE-BUFFER to a text document result.
 Optional SUBTREE-POSITION selects its containing subtree instead of the full
 body.  REGION, a (BEGIN . END) integer pair, takes precedence for body
 selection while keeping subtree options.  Configuration and referenced
 footnotes come from the same full snapshot.  Partial ordinary text uses Org
 narrowed parsing semantics; truncated STM islands fail before worker calls.
+EXT-PLIST supplies the restricted overrides of `org-texmacs-prepare-buffer'.
 
 SOURCE-BUFFER must be a live, unnarrowed Org buffer object, not a name
 or file path.  Capture source text and supported configuration from it,
@@ -280,10 +285,11 @@ propagate unchanged.
 The result preserves source-dependent text semantics for later encoding;
 it does not provide export, native buffer updates or rendering."
   (org-texmacs--prepare-buffer source-buffer #'org-texmacs-document
-                               bibliography-sources subtree-position region))
+                               bibliography-sources subtree-position region ext-plist))
 
 (defun org-texmacs--prepare-buffer
-    (source-buffer consumer &optional bibliography-sources subtree-position region)
+    (source-buffer consumer &optional bibliography-sources subtree-position region
+                   ext-plist)
   "Prepare SOURCE-BUFFER and call CONSUMER before the final source check."
   (unless (and (bufferp source-buffer) (buffer-live-p source-buffer))
     (signal 'org-texmacs-document-error '("Expected a live Org buffer object")))
@@ -302,6 +308,7 @@ it does not provide export, native buffer updates or rendering."
       ;; Own the caller's pair: mutating it during a native wait cannot redirect
       ;; the body selection captured in this conversion.
       (setq region (cons (car region) (cdr region))))
+    (setq ext-plist (org-texmacs--context-external-options ext-plist))
     (let* ((buffer source-buffer)
            (mode major-mode)
            (tick (buffer-chars-modified-tick))
@@ -328,6 +335,7 @@ it does not provide export, native buffer updates or rendering."
            (heading-settings (org-texmacs--document-heading-settings))
            (link-settings (org-texmacs--document-link-settings))
            (base-info (plist-put (org-texmacs--document-options) :texmacs-resource-base resource-base))
+           (_ (setq base-info (plist-put base-info :texmacs-external-options ext-plist)))
            (subtree-settings (and subtree-position (org-texmacs--context-subtree-settings)))
            (_ (when subtree-position
                 (setq base-info (plist-put base-info :texmacs-subtree-settings subtree-settings))))
@@ -459,11 +467,12 @@ it does not provide export, native buffer updates or rendering."
 
 ;;;###autoload
 (defun org-texmacs-export-from-buffer
-    (source-buffer &optional bibliography-sources subtree-position region)
+    (source-buffer &optional bibliography-sources subtree-position region ext-plist)
   "Export explicit Org SOURCE-BUFFER to a complete native .tm byte string.
 Optional SUBTREE-POSITION selects the containing subtree in owned preparation.
 REGION is an optional (BEGIN . END) body range with priority over subtree body
-selection, retaining subtree configuration.  See `org-texmacs-prepare-buffer'.
+selection, retaining subtree configuration.  EXT-PLIST provides restricted
+configuration overrides.  See `org-texmacs-prepare-buffer'.
 Use the same restricted preparation, configuration snapshot and explicit
 BIBLIOGRAPHY-SOURCES text snapshots as `org-texmacs-document-from-buffer'.
 Lower and serialize inside preparation's final source consistency check, so
@@ -474,22 +483,23 @@ Unsupported directives retain the existing explicit preparation errors."
   (org-texmacs--prepare-buffer
    source-buffer
    (lambda (input) (org-texmacs-document-serialize (org-texmacs-document input)))
-   bibliography-sources subtree-position region))
+   bibliography-sources subtree-position region ext-plist))
 
 ;;;###autoload
 (defun org-texmacs-export-pdf-from-buffer
-    (source-buffer &optional bibliography-sources subtree-position region)
+    (source-buffer &optional bibliography-sources subtree-position region ext-plist)
   "Render explicit Org SOURCE-BUFFER to native PDF bytes.
 Optional SUBTREE-POSITION selects the containing subtree in owned preparation.
 REGION is an optional (BEGIN . END) body range with priority over subtree body
-selection, retaining subtree configuration.  See `org-texmacs-prepare-buffer'.
+selection, retaining subtree configuration.  EXT-PLIST provides restricted
+configuration overrides.  See `org-texmacs-prepare-buffer'.
 Use explicit BIBLIOGRAPHY-SOURCES snapshots and the restricted preparation.
 Keep lowering and native printing inside the final source/dependency check.
 Return unibyte PDF data; no final output file or GUI preview is created."
   (org-texmacs--prepare-buffer
    source-buffer
    (lambda (input) (org-texmacs-document-pdf (org-texmacs-document input)))
-   bibliography-sources subtree-position region))
+   bibliography-sources subtree-position region ext-plist))
 
 ;;;###autoload
 (defun org-texmacs-export-to-pdf (source-buffer file &optional bibliography-sources)
@@ -533,11 +543,12 @@ EXTENSION is a fixed consumer suffix, defaulting to tm."
 
 ;;;###autoload
 (defun org-texmacs-export-to-buffer
-    (source-buffer &optional bibliography-sources subtree-position region)
+    (source-buffer &optional bibliography-sources subtree-position region ext-plist)
   "Export explicit Org SOURCE-BUFFER into a fresh readonly native byte buffer.
 Optional SUBTREE-POSITION selects the containing subtree in owned preparation.
 REGION is an optional (BEGIN . END) body range with priority over subtree body
-selection, retaining subtree configuration.  See `org-texmacs-prepare-buffer'.
+selection, retaining subtree configuration.  EXT-PLIST provides restricted
+configuration overrides.  See `org-texmacs-prepare-buffer'.
 Pass explicit BIBLIOGRAPHY-SOURCES snapshots to
 `org-texmacs-export-from-buffer'.
 Create the derived buffer only after export/source checking succeeds.  Retain
@@ -548,7 +559,7 @@ Return the new buffer; display it only when called interactively from Org.
 Interactive calls pass no bibliography snapshots; use Lisp arguments when those
 are needed.  This is a native source view, not rendered TeXmacs output."
   (interactive (list (org-texmacs--export-interactive-source)))
-  (let* ((bytes (org-texmacs-export-from-buffer source-buffer bibliography-sources subtree-position region))
+  (let* ((bytes (org-texmacs-export-from-buffer source-buffer bibliography-sources subtree-position region ext-plist))
          (output (generate-new-buffer "*Org TeXmacs Export*"))
          complete)
     (unwind-protect
