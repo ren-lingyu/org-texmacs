@@ -1117,3 +1117,38 @@ GUI behavior, visual typesetting, actual pagination/page-number correctness,
 file serialization, PDF/export, remote release publication, tag signatures,
 multi-session behavior, and systems other than the recorded x86_64-linux
 environment remain unverified unless later memory records new evidence.
+## Candidate GAW reconstruction verification
+
+The user authorized candidate reconstruction after choosing a separate branch.
+The original `_agents` branch remains unchanged; `_agents_rebuild` is selected
+at `.agents` pending review. The rebuilt suffix contains 53 corresponding original
+states plus two explicitly named reference-cleanup states before archive-only
+boundaries. These cleanup states describe current curation, not invented past work.
+
+Each checkpoint passed public `git gaw check` and exact candidate-tree/parent
+comparison. Independent post-replay inspection matched all planned states,
+subjects, original project-parent associations and historical configuration.
+Original archive blobs/modes/manifests and SHA-256 records are unchanged at every
+matched state. The standalone v0.3 interim review directly declares all four
+summarized project nodes. The first bibliography-foundation record directly
+declares that foundation, and explicit migration/file-link/footnote/bibliography
+baselines are associated when recorded. No verification claim was expanded.
+
+Rewritten memory/skills contain no GAW OID locator. Retained literal project
+commit references have direct non-first parents and adjacent declarations; later
+states use descriptive feature/release names. This audit covers the rebuilt suffix,
+not the untouched earlier prefix. Annotated tag identity remains unchanged.
+Original project history, release tags and ordinary worktree/index are unchanged.
+No project tests or network calls were run. Created commits use reconstruction-time
+timestamps, while supported event dates remain in their source text.
+
+Necessary pure-text temporary evidence is preserved byte for byte under
+`archive/2026-10-08T18-49-17Z--46ccf6e/`: guarded replay procedure, diagnostic mapping
+journal and independent audit report. The manifest records source paths, roles,
+sizes, SHA-256 and captured project HEAD; its introducing archive-only checkpoint
+has that captured project state as its sole additional parent. Archived GAW OIDs
+are diagnostic mapping data, not semantic memory identities. Original archive
+whitespace was preserved; changed memory/skills passed whitespace checks.
+The duplicate planning-state copies are regenerable and were not archived.
+Keep the original branch until review determines a separate retention/lifecycle
+action; text OIDs alone do not guarantee Git object reachability.

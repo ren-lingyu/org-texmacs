@@ -82,6 +82,15 @@ over copying GAW checkpoint OIDs into durable memory. Keep ordinary project OIDs
 when they independently locate an implementation, validation baseline or release;
 do not remove project provenance or content digests merely because they are hashes.
 
+For a retained literal project commit OID in memory, associate the exact project
+commit directly and state beside the literal that it is a non-first parent of
+that checkpoint. Put a multi-commit summary in a dedicated checkpoint and declare
+every non-GAW commit it mentions as a non-first parent. Prefer later prose about
+capabilities, conclusions and limits over carrying old OIDs forward. Keep precise
+commit/validation relationships in their historical checkpoints. Treat unavoidable
+exceptions individually and justify them; do not make them routine. Preserve raw
+archive bytes and diagnostic OID data under the archive skill's separate contract.
+
 Keep a checkpoint's additional project parents homogeneous in provenance purpose.
 Do not assign start/result or other business roles by second/third parent position.
 When separate supported phases each have recovery value, checkpoint those states
@@ -91,6 +100,10 @@ just to rearrange parents. Express causes and phase relationships in memory pros
 Retrospective checkpoints must reflect the supported historical order. Do not
 project current file organization, goals, or skills into earlier states where
 they did not yet exist.
+
+During explicitly authorized candidate-history reconstruction, retain the source
+branch for review and object reachability. Do not use an old GAW checkpoint as an
+additional project parent. Diagnostic mapping text alone does not retain objects.
 
 ## Archive retired source material
 

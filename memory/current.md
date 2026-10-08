@@ -14,7 +14,25 @@ draft=false, prerelease=false, published_at=2026-10-08T17:27:12Z
 no new source edits or tests are needed for this identity/state verification.
 The user's review/publication hold has ended through their completed release.
 No new implementation or post-release checks are authorized by this notification.
-Current action is release handoff; await selection of subsequent work.
+Current action is review of the completed candidate GAW reconstruction on
+`_agents_rebuild`. The original `_agents` branch is retained unchanged as the
+comparison baseline and keeps the old history reachable. The candidate is
+selected/deployed at `.agents`; do not replace, rename, delete or push either
+branch without explicit direction. No further project implementation is selected.
+
+The reconstruction replayed 53 original checkpoints and added two reference
+cleanup checkpoints to preserve archive-only boundaries. Every original project
+parent was retained; the standalone early review summary and explicitly recorded
+project baselines gained supported direct parents. Rewritten memory/skills no
+longer carry GAW checkpoint OIDs as locators. Any retained literal project commit
+OID is directly declared as this checkpoint's non-first parent; later records
+use feature/release descriptions. The untouched prefix predates this curation.
+All original archive bytes/manifests, historical configuration and SHA-256 records
+were preserved. No project tests or network calls were made for reconstruction.
+The pure-text diagnostic procedure, mapping journal and independent audit are in
+`archive/2026-10-08T18-49-17Z--46ccf6e/`; use its manifest, not a GAW OID locator.
+Diagnostic OIDs inside archived artifacts are audit data, not active identities.
+Regenerable planning snapshots remain in ignored tmp and need no extra archive.
 Future information flow remains unresolved in issue #1:
 https://github.com/ren-lingyu/org-texmacs/issues/1. Do not automatically implement
 preprocessing reuse/generic export or broaden citation/resource semantics.
@@ -102,8 +120,9 @@ remain unsupported.
 
 ## Persistent workflow and knowledge
 
-- GAW `_agents` is valid/deployed at `.agents`; branch preservation/transfer is
-  solved. Use public GAW interfaces, never lifecycle mutation without direction.
+- GAW `_agents_rebuild` is valid/deployed at `.agents`; original `_agents` is
+  retained for candidate review and old-object reachability. Use public GAW
+  interfaces, never lifecycle mutation without direction.
 - `goals.md` is authoritative constraints; `project.md` is current architecture/
   support; `evidence.md` holds provenance and verification limits; `backlog.md`
   holds adopted/deferred/unresolved scope. Superseded progress stays in GAW history.
