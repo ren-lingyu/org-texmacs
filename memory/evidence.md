@@ -788,7 +788,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 
 - Baseline the subtree export revision is verified against the
   subtree six-file SHA-256 3be6de01... above. User requested continuing.
-  Commit 7e6b4e001603a223933277d2704018877b86bada (declared as a non-first parent of this checkpoint) has exactly the six reviewed
+  the region export revision has exactly the six reviewed
   files; its full diff matches 22765b0b... below. Index is empty at verification.
   Per-node targeted local ox.el/org.el reads and repeated region/subtree/backend
   focused 120s / Nix 180s checks were authorized.
@@ -824,11 +824,14 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   reproduction; draft is regenerable. PDFs/bytecode never enter GAW. Actual GUI
   and visual pagination remain unverified.
 
-## Restricted external configuration (2026-10-08, verified/staged)
+## Restricted external configuration (2026-10-08, committed)
 
-- Implementation baseline is 7e6b4e001603a223933277d2704018877b86bada (declared as a non-first parent of this checkpoint); its
+- Implementation baseline is the region export revision; its
   region diff was verified against 22765b0b... on the subtree export revision. User chose restricted
   ext-plist after reviewing body-only's distinct fragment/consumer boundary.
+  Commit d71204d204a03b30491d5cdb2bd05d59dacd71a3 (declared as a non-first parent of this checkpoint) has exactly the five reviewed
+  files; full diff matches 145a3237... below. Index is empty at verification;
+  only the user's temporary mirror overlay is unstaged. No new tests were run.
 - Authorized targeted Org option-helper reads confirm get-environment priority
   global < external < file < subtree. ox.el get-inbuffer-options (1591) parses
   metadata with keyword object grammar, as does get-global-options (1696).
@@ -855,7 +858,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   /nix/store/rbzwkg1d4ks7zx0rwm686mrbpiv10kiq-org-texmacs-ert.drv.
 - Five approved staged files: README.org, org-texmacs-context.el,
   org-texmacs.el, ox-texmacs.el and tests/ert/ert.el. Complete staged review split
-  by path and diff --check pass. Entire staged diff SHA-256 on baseline 7e6b4e0 (declared as a non-first parent of this checkpoint):
+  by path and diff --check pass. Entire staged diff SHA-256 on the baseline region export revision:
   145a3237df23501289289bbfe84554353dfc8d0147d7d2787ff090bb953b83a6.
   No implementation is unstaged. tmp/commit.md is reviewed; ordinary commit is
   user's action. Mirror overlay is unchanged/excluded at raw SHA-256

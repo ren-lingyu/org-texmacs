@@ -505,7 +505,7 @@ the subtree export revision matches the verified six-file diff.
 
 ## Committed region selection
 
-Commit 7e6b4e001603a223933277d2704018877b86bada (declared as a non-first parent of this checkpoint) matches the verified six-file diff.
+the region export revision matches the verified six-file diff.
 
 - Five source preparation/document/byte/buffer adapters accept optional fourth
   REGION after subtree-position. It is an owned nonempty integer (BEGIN . END)
@@ -530,7 +530,9 @@ Commit 7e6b4e001603a223933277d2704018877b86bada (declared as a non-first parent 
   after correcting one docstring-width failure. Six files are committed on
   the subtree export revision; index is empty at verification. Mirror overlay is excluded.
 
-## Restricted external configuration (verified/staged)
+## Committed restricted external configuration
+
+Commit d71204d204a03b30491d5cdb2bd05d59dacd71a3 (declared as a non-first parent of this checkpoint) matches the verified five-file diff.
 
 - User deferred body-only fragment semantics and selected bounded ext-plist.
   Five source preparation/document/byte/buffer adapters add optional fifth
@@ -548,8 +550,8 @@ Commit 7e6b4e001603a223933277d2704018877b86bada (declared as a non-first parent 
 - Final six override cases pass; backend 11/11, subtree 7/7 and region 7/7 pass.
   Compilation/package-lint and final installed ERT 304/304 (169.37s) pass, with
   all Nix checks successful. Two 81-column docstrings were wrapped; mutable test
-  lists now allocate afresh. Five files are approved/staged on baseline 7e6b4e0 (declared as a non-first parent of this checkpoint),
-  awaiting ordinary commit. No visual/layout goldens or binary GAW artifacts.
+  lists now allocate afresh. Five files are committed on the baseline region export revision;
+  index is empty at verification. No visual/layout goldens or binary GAW artifacts.
 
 ## Worker and session
 
