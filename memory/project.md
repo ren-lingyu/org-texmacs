@@ -553,6 +553,31 @@ Commit d71204d204a03b30491d5cdb2bd05d59dacd71a3 matches the verified five-file d
   lists now allocate afresh. Five files are committed on baseline 7e6b4e0;
   index is empty at verification. No visual/layout goldens or binary GAW artifacts.
 
+## Narrowed source selection (verified/staged)
+
+- Existing narrowing is outer body scope. Region must fit and takes precedence;
+  otherwise intersect subtree body with accessible range. Empty narrowing is
+  valid, while explicit region stays nonempty. Public signatures are unchanged.
+- Core captures initial integer bounds and checks them across waits/consumption.
+  Complete text is copied with a brief saved restriction, restored before any
+  parsing/callback/wait; actual Org parsing uses private full/scoped buffers.
+  Configuration and needed footnote/bibliography trees remain from one snapshot.
+- Private heading/naming copy can resolve hidden root EXPORT properties and
+  file naming keywords. A frontend subtree position captures accessible point,
+  not an inaccessible heading. Source filename metadata is bound only during
+  private lookup, without creating a visiting buffer. Deferred file prompts run
+  in original source restriction outside private property bindings.
+- Changed restriction at prompts/waits rejects output; external changes are not
+  rolled back. Existing text/settings checks and truncated-island/link preflight
+  remain. Stable tests cover complete source state, dependencies, intersection/
+  region priority, empty scopes, private naming and stale output preservation.
+- Final narrowing 7/7, backend 11/11, serialization 16/16, subtree 7/7,
+  region 7/7 and overrides 6/6 pass. Final Nix passes all seven checks,
+  compilation/package-lint and installed ERT 311/311 (176.95s). First full run
+  310/311 exposed a wrong updated legacy expected body (normalized trailing
+  space/concat); assertion corrected. Six files are approved/staged on d71204d,
+  awaiting ordinary commit. No binary GAW evidence, GUI or layout goldens.
+
 ## Worker and session
 
 - One persistent headless TeXmacs worker serves parsing, encoding, and native

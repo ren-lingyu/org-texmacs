@@ -867,6 +867,50 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   reproduction; draft is regenerable. Only pure text enters GAW, never PDFs or
   bytecode. GUI/visual pagination remain unverified; no fragment support is claimed.
 
+## Narrowed source export (2026-10-08, verified/staged)
+
+- Baseline d71204d204a03b30491d5cdb2bd05d59dacd71a3 matches prior verified
+  five-file hash 145a3237...; user explicitly selected narrowing. Targeted local
+  Org selection/config/naming/heading reads and repeated focused 120s groups /
+  Nix 240s checks were authorized for this node.
+- Org ox.el (3627) starts within save-restriction and applies region before subtree;
+  get-inbuffer-options ignores narrowing for configuration. Output naming helper
+  (7569) scans accessible keywords and subtree property. org-back-to-heading
+  (20591) respects current accessible context. Adapter uses full private copies
+  so hidden source configuration/headings remain available without live parsing.
+- Captured narrowing is outer body bound; region must fit and wins, otherwise
+  subtree body intersection applies. Brief synchronous full-text read restores
+  source restriction before parsing/waits. Core checks initial bounds after native
+  waits and consumer. Empty narrowing works; explicit region remains nonempty.
+- Private full heading/naming copy inherits captured heading/property/location
+  context. Filename is bound only during lookup, not retained as visiting identity
+  at disposal. Naming's read-file prompt is deferred to original source outside
+  private bindings. Prompt changes are rejected without undoing another caller.
+- Final focused narrowing 7/7 (10.092574s); backend 11/11 (5.509993s),
+  serialization 16/16 (17.769029s), subtree 7/7 (9.890787s), region 7/7
+  (12.379803s), overrides 6/6 (7.497417s) pass. Maintained cases cover source
+  properties/point/mark/restriction, full metadata and owned note/bibliography/STM
+  dependencies, scope intersections/priority, empty scope/preflight, hidden naming,
+  native output, original prompt context and changed bounds/hidden text before write.
+- First Nix full ERT was 310/311 (177.183238s): replacing old rejection with
+  a success assertion missed the existing normalized trailing newline space/concat.
+  Corrected expected body to (document (concat "irst Second ")). Final Nix on
+  final private filename binding passes all seven checks, compilation/package-lint
+  and installed ERT 311/311 (176.947172s). Final ERT derivation:
+  /nix/store/2wpkb8m4zz6g4zb4ph5qjk7mp9n45c3x-org-texmacs-ert.drv.
+- Six approved staged files: README.org, org-texmacs-context.el,
+  org-texmacs-document.el, org-texmacs.el, ox-texmacs.el and tests/ert/ert.el.
+  Complete staged review split by path and diff --check pass. Entire staged
+  diff SHA-256 on baseline d71204d:
+  fdeb09f1bd80199c367eb7c605c2d68ec5383dad1c0bdf616fe9b3ccbd05c39d.
+  tmp/commit.md is reviewed. No implementation is unstaged; remote mirror overlay
+  remains excluded/unchanged at raw SHA-256
+  dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc.
+- No unique temporary evidence needs archive; ERT retains complete reproduction
+  and draft is regenerable. Only pure text enters GAW; PDFs/bytecode do not.
+  Native visual layout/pagination and GUI remain unverified. Visible-only,
+  body-only/async/generic APIs remain separate or deferred.
+
 ## Body-only assessment after region commit (2026-10-08)
 
 - User authorized targeted installed ox.el/ox-latex.el/ox-html.el template reads.

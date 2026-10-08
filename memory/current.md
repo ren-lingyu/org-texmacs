@@ -2,35 +2,21 @@
 
 ## Active objective
 
-Bounded ox-texmacs dispatcher frontend is committed as
-be284dd292cfb0a88ae51f0e6b692f94516f0bb1. Its complete six-file diff matches
-the verified hash. The Org/ox-latex output convention extension is committed
-as b4ee215224578577a3235f8954020baf74e585af; its complete five-file diff matches
-the verified hash exactly. Subtree node is committed as
-ee3e028fb829d508333fda40c705d811f4b2583e;
-its six-file diff matches the reviewed hash on b4ee215. Region export is committed
-as 7e6b4e001603a223933277d2704018877b86bada; its complete six-file diff on
-baseline ee3e028 matches
-22765b0bf802059c2edb49fb3f8a549751b1240c17b43cd8bae419eb4827da58.
-Active region selects body; subtreep still supplies configuration/naming. Private
-full snapshot supplies global context and dependencies; private narrowed Org
-parsing supports exact ordinary text ranges. Truncated STM islands fail before
-workers. Visible/body-only/async and generic API adaptation remain deferred.
-Restricted ext-plist node is committed as
-d71204d204a03b30491d5cdb2bd05d59dacd71a3; its complete five-file diff on
-baseline 7e6b4e0 matches
-145a3237df23501289289bbfe84554353dfc8d0147d7d2787ff090bb953b83a6.
-External overrides are owned before prompts/workers; priority is global <
-external < file < subtree. Only existing context keys are accepted, with typed
-policies and raw Org string/nil metadata. Body-only is deferred by user choice:
-Org skips outer templates, but complete native consumers define no embeddable
-fragment format. Generic API adaptation stays deferred. User asked for next work
-and remaining scope. Recommend bounded narrowed-buffer export next: reuse the
-owned full snapshot/dependency machinery and preserve original restriction while
-selecting accessible body. This recommendation is not yet implementation adoption
-or check authorization. Visible-only and other Org flags remain separate design
-questions; stage closure/release scope can follow common selection support.
-Do not treat every unsupported feature as a mandatory completion requirement.
+Narrowing export node is complete, verified and staged with exact-path approval.
+Await user's ordinary commit, then compare its six-file diff on baseline
+d71204d204a03b30491d5cdb2bd05d59dacd71a3 with
+fdeb09f1bd80199c367eb7c605c2d68ec5383dad1c0bdf616fe9b3ccbd05c39d.
+tmp/commit.md is reviewed. Subtree/region/ext-plist nodes are already committed;
+ext-plist commit d71204d matches its verified five-file hash recorded in evidence.
+Narrowing is the outer body boundary; region wins within it, otherwise intersect
+subtree body. Full source copy restores restriction before parsing/callbacks;
+private snapshots supply global configuration and required dependencies. Hidden
+headings/naming metadata use private copies and prompts use original restriction.
+Captured bounds are checked after waits; external changes are rejected, not undone.
+Empty narrowing is allowed; explicit region remains nonempty. Public signatures
+are unchanged. Visible-only/async, body-only fragment and generic API stay separate
+or deferred. After commit verification, review phase closure/release scope rather
+than assuming every Org exporter flag must be implemented.
 Scope guidance: ox-latex is a reference for shared Org export conventions,
 not a feature inventory to copy wholesale. Current ox-texmacs is a bounded
 dispatcher frontend, not a complete generic exporter: org-export-as and related
@@ -47,21 +33,20 @@ Frontend uses org-export-output-file-name and ordinary overwrite after checked
 native bytes are complete. Public new-file-only APIs stay exclusive. Atomic
 replacement, backups and target-version locking are not adopted prerequisites.
 User rejected a standalone PDF preview command; no such command is adopted.
-The committed frontend supports synchronous whole-buffer/subtree/region actions.
-Generic string export/publishing, preprocessing and visible-only/narrowed-source
-selection remain unsupported.
+The staged frontend supports synchronous buffer/subtree/region/narrowing actions.
+Generic string export/publishing, preprocessing and visible-only selection
+remain unsupported.
 
 ## Baseline and staging
 
 - Main HEAD observed on 2026-10-08:
   `d71204d204a03b30491d5cdb2bd05d59dacd71a3`.
   Its override diff against 7e6b4e0 matches the verified five-file hash.
-- Frontend commit be284dd is verified against baseline b5100a9 hash d41f05a2...
-  as recorded in evidence. Region and five override files are committed:
-  README.org, org-texmacs-context.el, org-texmacs.el, ox-texmacs.el, tests/ert/ert.el.
-  Index is empty. Complete staged review and diff --check passed. SHA-256 on 7e6b4e0:
-  145a3237df23501289289bbfe84554353dfc8d0147d7d2787ff090bb953b83a6.
-  No implementation is unstaged. The user's temporary
+- Six narrowing files are approved/staged: README.org, org-texmacs-context.el,
+  org-texmacs-document.el, org-texmacs.el, ox-texmacs.el, tests/ert/ert.el.
+  Complete staged review and diff --check pass. SHA-256 on d71204d:
+  fdeb09f1bd80199c367eb7c605c2d68ec5383dad1c0bdf616fe9b3ccbd05c39d.
+  No implementation remains unstaged. The user's temporary
   `flake.nix` overlay remains excluded. It rewrites
   GNU ELPA fetchurl URLs to the remote USTC mirror. The configuration is retained
   locally only: never stage, commit or push that overlay. It is not a locally hosted mirror.
@@ -72,25 +57,30 @@ selection remain unsupported.
   Later DOC-01/CONSUMER-01 features are local development, not release claims.
   Remote publication/signature remain unverified; release evidence is in evidence.md.
 
-## Verified external configuration node
+## Verified narrowing node
 
-- Five source adapters add optional fifth EXT-PLIST; dispatcher uses its existing
-  fifth parameter. Validation/copy precedes preparation or frontend prompts.
-  Unknown/duplicate keys, improper/cyclic lists and invalid values reject before
-  workers, even if later settings would override them. Output/style/initial/
-  parser/hooks/filter/bibliography fields remain excluded.
-- Metadata is parsed in private keyword grammar and retains presence without file
-  metadata keywords. Pure lowering consumes owned INFO. Caller plist/string/tag
-  mutations during prompts/native waits affect only later calls.
-- Final override focused 6/6 (7.33s), backend 11/11 (5.34s), subtree 7/7 (10.07s),
-  region 7/7 (12.45s) and Nix all checks pass. Compilation/package-lint and final
-  installed ERT 304/304 (169.37s) pass. Final Nix reruns two changed checks, using
-  the other five already passing results. Assertions have no layout goldens.
-- Per-node Org template/option reads and focused 120s / Nix 240s checks were
-  authorized. Two 81-column docstrings were wrapped after compilation rejected
-  them. Mutable test data now allocates fresh lists; final full checks include it.
-- No unique necessary raw artifact needs archive; maintained ERT retains full
-  reproduction. Only pure text enters GAW; no PDFs, bytecode or generated caches.
+- Existing source adapters/M-x/dispatcher accept narrowed sources. Core copies
+  complete text with a brief saved restriction, then parses only private buffers.
+  Boundaries are frozen/rechecked, including prompt paths. No new public slot,
+  worker operation, external file read or general preprocessing is introduced.
+- Scope composition is narrowing outer bound, explicit region priority, otherwise
+  subtree intersection. Metadata/dependencies use full snapshot; empty body is
+  valid, while explicit region is nonempty. Out-of-scope targets/truncated STM
+  and unsupported preprocessing directives retain explicit preflight errors.
+- Private heading/naming copy resolves hidden metadata. Filename is dynamically
+  bound only for lookup; temporary copy is not a visiting buffer at disposal.
+  File prompts run in original source outside private property bindings.
+  Source narrowing/point/mark/properties/modified state retain isolation.
+- Final narrowing 7/7 (10.09s), backend 11/11 (5.51s), serialization 16/16
+  (17.77s), subtree 7/7 (9.89s), region 7/7 (12.38s), overrides 6/6 (7.50s)
+  pass. Final Nix passes all seven checks, compilation/package-lint and installed
+  ERT 311/311 (176.95s). Tests assert stable structure/text/bytes/contracts.
+- Targeted Org reads and repeated focused 120s / Nix 240s checks were authorized.
+  First full ERT was 310/311 because an updated legacy rejection test's expected
+  body missed existing normalized trailing space/concat. Corrected assertion;
+  final full check passes with final private filename binding.
+- No unique necessary temporary artifact needs archive. Maintained ERT retains
+  complete reproduction; no PDFs, bytecode or generated caches enter GAW.
 
 ## Existing consumer boundaries
 
@@ -104,7 +94,7 @@ selection remain unsupported.
   cleanup failure stops transport. Explicit resource/executable primitives are
   outside the PDF subset, and custom installed styles are not sandboxed.
 - Earlier validation/progress details belong in project.md, evidence.md and GAW
-  history. Current whole installed regression is 304/304; GUI layout/general
+  history. Current whole installed regression is 311/311; GUI layout/general
   pagination convergence are unverified. Use maintained structural/text checks.
 
 ## Persistent workflow and knowledge
@@ -143,7 +133,8 @@ selection remain unsupported.
    verified against the six-file diff hash 3be6de01... above. Region is
    committed as 7e6b4e0 and verified against six-file hash 22765b0b... above.
    Override commit d71204d is verified against five-file diff 145a3237... above.
-   Proposed next is narrowed-source scope; user adoption is pending. Body-only
+   Narrowing node is verified/staged; await commit and compare six-file diff to
+   fdeb09f1... above. Then review phase closure and release scope. Body-only
    fragment/generic API remain deferred by user choice.
    Keep the mirror overlay excluded; no flake or lock changes belong to this node.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries

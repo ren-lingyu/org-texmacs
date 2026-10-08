@@ -149,15 +149,20 @@ pure lowering preserve ownership. Focused overrides 6/6, backend 11/11, subtree
 are committed as d71204d, matching the verified diff. Body-only fragment format/consumer
 remains deferred and unresolved; generic API adaptation stays relatively late.
 
-### Proposed next: narrowed-source export
+### Verified/staged: narrowed-source export
 
-Recommendation after the user's status/plan request; not yet selected for
-implementation. Reuse region selection/full snapshot dependency preparation to
-export the source's accessible range while preserving its existing restriction.
-Design priority with region/subtree and snapshot invalidation explicitly before
-implementation. Visible-only needs a separate frozen visibility contract and
-must not be silently bundled. Common source-scope support may be followed by
-phase closure and release-scope review; no new release version is selected.
+User selected this node after reviewing the plan. Narrowing is outer body scope;
+region takes precedence within it, otherwise intersect subtree body. Full
+snapshot supplies configuration/dependencies, with source restriction restored
+before parsing/callbacks and preserved at prompts/waits. Private heading/naming
+copy handles hidden metadata; changed restrictions invalidate output before write.
+Empty narrowing is valid. Public signatures are unchanged. Seven focused cases,
+all five existing export groups and final Nix compilation/package-lint/installed
+ERT 311/311 pass. Six files are approved/staged, awaiting user commit.
+Visible-only needs a separate frozen visibility contract and is not bundled.
+After commit verification, review phase closure/release scope; no new release
+version is selected. Other exporter flags/unsupported syntax are not automatically
+required completion work.
 
 ### Completed: Org output naming and repeat export
 
