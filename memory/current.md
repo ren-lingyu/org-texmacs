@@ -11,10 +11,13 @@ routing, but that validation does not block project work.
 ## Current baseline
 
 - Main HEAD observed on 2026-10-06:
-  `ec72c89b71ffd1df27d9cdb22c4f6c8e1a4f6491` (declared as a non-first parent of this checkpoint).
+  the ARCH-01 layering refactor revision.
 - Local v0.3.0 tag target:
   the v0.3.0 structured-document release revision.
 - The ordinary project worktree is clean after the ARCH-01 commit.
+- Root `GOALS.md` and `REVIEW.md` have been retired from the active project
+  root. The generated root `AGENTS.md` remains the only active root agent
+  document.
 - GAW `_agents` is valid and deployed at the repository `.agents` directory.
 - GAW branch preservation and transfer are already solved and are not an open
   issue.
@@ -71,6 +74,12 @@ routing, but that validation does not block project work.
   and reconstructed copy both had SHA-256
   `9252649558075d08f6f990d30dd365a12bc28a1fe2e3a3554d5d0aeac1ab68df`.
   The project worktree remained clean and the root artifact remained ignored.
+- The two retired root documents and 30 archived legacy probe/result files
+  were verified byte-for-byte against
+  `archive/2026-10-06T08-59-24Z--1a90b7b/`, then moved out of their former
+  locations while preserving relative paths under local `tmp/old/`.
+  `tmp/old/` is ignored, local, and disposable; the GAW archive remains the
+  durable historical evidence.
 
 ## Blockers and uncertainties
 
@@ -80,7 +89,7 @@ routing, but that validation does not block project work.
 
 ## Completed ARCH-01 refactor
 
-- Project commit `ec72c89b71ffd1df27d9cdb22c4f6c8e1a4f6491` (declared as a non-first parent of this checkpoint)
+- The ARCH-01 layering refactor revision
   (`refactor(worker): decouple transport from native session protocol`) records
   the verified four-file layering refactor.
 - Shared condition types now live in core. The worker owns transport framing,

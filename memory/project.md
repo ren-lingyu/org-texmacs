@@ -106,7 +106,7 @@ export preprocessing, and arbitrary Org element coverage.
   request-construction failure before transmission also preserves it.
 
 This boundary is implemented by project commit
-`ec72c89b71ffd1df27d9cdb22c4f6c8e1a4f6491` (declared as a non-first parent of this checkpoint) and covered by the maintained
+the ARCH-01 layering refactor revision and covered by the maintained
 worker, encoding, and native-session tests.
 
 ## Downstream work not yet implemented

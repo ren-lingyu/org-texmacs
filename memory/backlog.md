@@ -24,7 +24,7 @@ decision.
 ## Active next
 
 No item is currently selected. `ARCH-01` was completed by project commit
-`ec72c89b71ffd1df27d9cdb22c4f6c8e1a4f6491` (declared as a non-first parent of this checkpoint); its prior active plan remains in
+the ARCH-01 layering refactor revision; its prior active plan remains in
 GAW first-parent history rather than as a completed item in this active file.
 
 ## Adopted downstream work
