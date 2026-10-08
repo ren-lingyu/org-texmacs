@@ -36,6 +36,10 @@ behavior-preserving post-v0.3 change.
   are preserved as non-authoritative evidence under
   `archive/2026-10-06T08-59-24Z--1a90b7b/`. The live root documents remain
   untouched until the new memory and skills pass a recovery drill.
+- Future temporary artifacts should use the same GAW archive convention when
+  losing them would materially impair interpretation, reproduction, audit, or
+  handoff of durable work. Select them explicitly, preserve project-relative
+  paths, and prefer individual plain-text files over tar or other containers.
 - The known worker-to-document dependency inversion should be repaired after
   governance migration without changing public APIs, document wire semantics,
   session failure behavior, or v0.3 coverage.
