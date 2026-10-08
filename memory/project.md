@@ -469,7 +469,9 @@ Commit b4ee215224578577a3235f8954020baf74e585af matches the verified five-file d
   ERT 284/284 (125.71s). The verified output-convention node is committed;
   the uncommitted mirror overlay stays unchanged/excluded.
 
-## Subtree selection/configuration/dependencies (verified working tree)
+## Committed subtree selection/configuration/dependencies
+
+Commit ee3e028fb829d508333fda40c705d811f4b2583e matches the verified six-file diff.
 
 - Existing prepare-buffer, document-from-buffer, .tm/PDF byte adapters and
   readonly byte-buffer export accept optional third subtree-position after
@@ -497,8 +499,34 @@ Commit b4ee215224578577a3235f8954020baf74e585af matches the verified five-file d
   body-only/async/extra external overrides remain unsupported. Generic API
   adaptation is still deliberately deferred, and no auto bibliography reader exists.
 - Final subtree 7/7, backend 11/11 and Nix compilation/package-lint/installed
-  ERT 291/291 (132.40s) pass. Six files are approved/staged, awaiting user commit.
+  ERT 291/291 (132.40s) pass. Six files are committed; index was empty at
+  subtree commit verification, before region work.
   Mirror overlay stays excluded; binary/generated artifacts do not enter GAW.
+
+## Region selection (verified/staged)
+
+- Five source preparation/document/byte/buffer adapters accept optional fourth
+  REGION after subtree-position. It is an owned nonempty integer (BEGIN . END)
+  pair. Existing nil/integer subtree calls keep their contract.
+- Org 9.8-pre region body selection takes precedence over subtree narrowing;
+  subtreep still feeds get-environment and output naming. Frontend captures both
+  before prompts. Region with subtree keeps root EXPORT configuration but does
+  not remove a heading included in region body.
+- Full snapshot AST supplies file/global metadata, declarations and footnotes.
+  A private narrowed Org parse of the same masked source supplies exact body,
+  including partial ordinary text; there is no selected-source reconstruction.
+  Matching selected footnote definitions replace their full-AST identities to
+  avoid duplicate imports. Only retained body/dependency native requests run.
+- Truncated discovered STM fragments/native blocks fail before worker calls;
+  block trailing blank lines need not be selected. Supported filtering and link
+  resolution operate on emitted AST, preserving source/resource provenance.
+- Region pair/point/mark changes across waits cannot redirect captured selection.
+  Source/configuration edits still reject results. Stable tests cover selection,
+  complete islands, dependencies, scoped targets, native outputs and source state.
+- Focused region 7/7, subtree 7/7 and backend 11/11 pass. Final Nix passes all
+  seven checks, compilation/package-lint and installed ERT 298/298 (162.69s),
+  after correcting one docstring-width failure. Six files are approved/staged on
+  ee3e028, awaiting ordinary commit. Mirror overlay is excluded.
 
 ## Worker and session
 

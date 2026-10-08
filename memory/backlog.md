@@ -108,17 +108,29 @@ cases pass 7/7; final Nix passes all seven checks and installed ERT 280/280.
 Frontend commit be284dd matches the verified six-file hash. Only the module
 fileset entry was committed in flake; the mirror overlay stays outside history.
 
-### Verified/staged: bounded subtree export
+### Completed: bounded subtree export
 
-Status: **active-next**, implemented/verified/staged after user selection.
+Committed as ee3e028, verified against the reviewed six-file diff.
 Preparation clips an owned full-source AST, applies restricted subtree EXPORT_*
 overrides, drops root heading/metadata from body and restores needed footnotes.
 Integer selection and captured property settings guard native waits. Bibliography
 declarations use explicit text snapshots, with a print in selected scope; links
 to targets outside emitted AST fail. Seven subtree and eleven backend cases
 pass; final Nix passes all checks and installed ERT 291/291. Six files are
-approved/staged, awaiting the user's commit. Other selection scopes, generic
+committed. Other selection scopes, generic
 API adaptation, extra overrides and async remain later/separate boundaries.
+
+### Verified/staged: region export
+
+Implemented and verified following subtree commit ee3e028. Active region selects
+body while subtreep still supplies configuration/naming. Optional fourth integer
+pair is owned before waits. Partial ordinary text uses a private narrowed parse
+of the full snapshot; needed notes and explicit bibliography stay owned.
+Truncated islands and out-of-scope targets fail. Region 7/7, subtree 7/7, backend
+11/11 and final Nix compilation/package-lint/installed ERT 298/298 pass. Six files
+are approved/staged, awaiting ordinary commit. Next scope to assess after commit:
+bounded body-only semantics. Visible-only, async, extra overrides and generic
+API adaptation remain separate/deferred; no general preprocessing/file readers.
 
 ### Completed: Org output naming and repeat export
 
@@ -155,7 +167,7 @@ No GUI preview or overwrite policy is included; PDF binaries remain outside GAW.
 Status: **adopted-later** for remaining frontend/consumer semantics. Native
 document construction, serialization, saving, checked whole-buffer exports,
 PDF and bounded dispatcher/naming/reexports are implemented. Subtree selection
-is the proposed next unresolved-design node. Generic Org export API integration,
+is committed; region selection is verified/staged. Generic Org export API integration,
 other selection/configuration contracts and publishing are still bounded design
 questions; no full syntax parity prerequisite is introduced. Backup/atomic
 publication and a standalone preview command are not completion requirements.

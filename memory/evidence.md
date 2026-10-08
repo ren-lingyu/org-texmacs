@@ -738,11 +738,14 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 - No independent necessary raw temporary evidence qualifies for archive:
   fixtures/reproduction live in ERT, and no binary output enters GAW.
 
-## Subtree export node (2026-10-08, verified/staged)
+## Subtree export node (2026-10-08, committed)
 
 - User selected synchronous subtree export/configuration/dependencies while
   postponing generic Org API adaptation. Implementation/verification baseline
-  is b4ee215224578577a3235f8954020baf74e585af; new code is not yet committed.
+  is b4ee215224578577a3235f8954020baf74e585af. Commit
+  ee3e028fb829d508333fda40c705d811f4b2583e has exactly the six reviewed files;
+  its complete diff matches the SHA-256 below. Index was empty at that
+  verification, before region implementation/staging.
 - Authorized local Org 9.8-pre reads: ox.el subtree-options/get-environment/
   footnote dependency logic and ox-latex entry points; org.el heading and property
   helpers including >1MiB-file targeted fragments. Subtree option priority is
@@ -780,6 +783,44 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   tmp/commit.md is reviewed; only the unchanged mirror overlay remains unstaged.
 - No independent necessary temporary evidence qualifies for archive. Tests
   retain complete reproduction; binary PDFs/bytecode remain outside GAW.
+
+## Region export node (2026-10-08, verified/staged)
+
+- Baseline ee3e028fb829d508333fda40c705d811f4b2583e is verified against the
+  subtree six-file SHA-256 3be6de01... above. User requested continuing.
+  Per-node targeted local ox.el/org.el reads and repeated region/subtree/backend
+  focused 120s / Nix 180s checks were authorized.
+- Org 9.8-pre ox.el org-export-as (3594) narrows to region before subtree;
+  annotate-info still receives subtreep and environment applies subtree options.
+  Frontend captures both before prompts and keeps subtree naming. Third integer
+  subtree argument stays compatible; optional fourth REGION is validated/copied.
+- Full snapshot AST supplies global options/declarations/definitions. Private
+  narrowed parse supplies exact body; selected definitions replace full-AST
+  identities to avoid duplicate imports. Only emitted body/dependency STM runs;
+  truncated intersecting islands fail before workers. Source edits still reject.
+- First six focused cases passed four; fixtures needed headings to terminate
+  separate footnotes before selected paragraphs. Final region 7/7 (14.17s),
+  subtree 7/7 (10.79s) and backend 11/11 (5.47s) pass. Cases cover partial text,
+  global context, selected/external notes, complete blocks/headings/scoped links,
+  explicit bibliography/resource base, invalid ranges/islands, native menu outputs
+  and frozen selection/source state. No pagination/pixel/coordinate goldens.
+- Nix first failed sandbox-daemon access; same command was escalated. Compilation
+  rejected a new 82-column docstring; after wrapping, final same 180s command
+  passes all seven checks, compilation/package-lint and installed ERT 298/298
+  (162.693114s). ERT derivation:
+  /nix/store/lv55dh5b2pkdv9nzcq8rad9kk676ad9y-org-texmacs-ert.drv.
+  Remote mirror overlay remains excluded/unchanged at raw diff SHA-256
+  dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc.
+- Six approved staged files: README.org, org-texmacs-context.el,
+  org-texmacs-document.el, org-texmacs.el, ox-texmacs.el and tests/ert/ert.el.
+  Complete staged review split by path and diff --check pass. Entire staged
+  diff SHA-256 on ee3e028:
+  22765b0bf802059c2edb49fb3f8a549751b1240c17b43cd8bae419eb4827da58.
+  No implementation remains unstaged; tmp/commit.md is reviewed. Ordinary commit
+  remains user's action. Generic API/visibility/async/extra overrides stay deferred.
+- No unique temporary evidence requires archive: maintained ERT retains complete
+  reproduction; draft is regenerable. PDFs/bytecode never enter GAW. Actual GUI
+  and visual pagination remain unverified.
 
 ## Durable TeXmacs facts
 

@@ -6,13 +6,17 @@ Bounded ox-texmacs dispatcher frontend is committed as
 be284dd292cfb0a88ae51f0e6b692f94516f0bb1. Its complete six-file diff matches
 the verified hash. The Org/ox-latex output convention extension is committed
 as b4ee215224578577a3235f8954020baf74e585af; its complete five-file diff matches
-the verified hash exactly. Subtree export/configuration/dependency node is now
-complete, verified and staged with approval. tmp/commit.md is reviewed; await
-the user's ordinary commit and verify its six-file diff on baseline b4ee215.
-Selection is a source integer in owned full-source preparation. Root heading
-provides title/EXPORT_* overrides and is omitted from the body. Used footnotes
-and explicit bibliography come from the same snapshot; scope-external targets
-fail. Region/visible/body-only/async and generic API adaptation remain deferred.
+the verified hash exactly. Subtree node is committed as
+ee3e028fb829d508333fda40c705d811f4b2583e;
+its six-file diff matches the reviewed hash on b4ee215. Region export is now
+complete, verified and staged with exact-path approval. tmp/commit.md is reviewed;
+await ordinary commit, then compare its six-file diff on baseline ee3e028 to
+22765b0bf802059c2edb49fb3f8a549751b1240c17b43cd8bae419eb4827da58.
+Active region selects body; subtreep still supplies configuration/naming. Private
+full snapshot supplies global context and dependencies; private narrowed Org
+parsing supports exact ordinary text ranges. Truncated STM islands fail before
+workers. Other frontend flags and generic API adaptation remain deferred.
+After commit verification, assess bounded body-only semantics as the next node.
 Scope guidance: ox-latex is a reference for shared Org export conventions,
 not a feature inventory to copy wholesale. Current ox-texmacs is a bounded
 dispatcher frontend, not a complete generic exporter: org-export-as and related
@@ -29,19 +33,20 @@ Frontend uses org-export-output-file-name and ordinary overwrite after checked
 native bytes are complete. Public new-file-only APIs stay exclusive. Atomic
 replacement, backups and target-version locking are not adopted prerequisites.
 User rejected a standalone PDF preview command; no such command is adopted.
-The staged frontend supports synchronous whole-buffer/subtree actions. Generic
-string export/publishing, preprocessing and broader selection remain unsupported.
+The staged frontend supports synchronous whole-buffer/subtree/region actions.
+Generic string export/publishing, preprocessing and visible-only/narrowed-source
+selection remain unsupported.
 
 ## Baseline and staging
 
 - Main HEAD observed on 2026-10-08:
-  `b4ee215224578577a3235f8954020baf74e585af`.
-  Its output-convention diff against be284dd matches the verified five-file hash.
+  `ee3e028fb829d508333fda40c705d811f4b2583e`.
+  Its subtree diff against b4ee215 matches the verified six-file hash.
 - Frontend commit be284dd is verified against baseline b5100a9 hash d41f05a2...
-  as recorded in evidence. Current approved/staged files: README.org,
-  org-texmacs-context.el, org-texmacs-document.el, org-texmacs.el, ox-texmacs.el,
-  tests/ert/ert.el. Full staged review and diff --check pass. SHA-256 on b4ee215:
-  3be6de01e224286021f2b3361f14098efae89208ad72db0660fad81a73e73090.
+  as recorded in evidence. Six region files are approved/staged;
+  subtree files are committed.
+  Full staged review and diff --check passed. Region SHA-256 on ee3e028:
+  22765b0bf802059c2edb49fb3f8a549751b1240c17b43cd8bae419eb4827da58.
   No implementation is unstaged. The user's temporary
   `flake.nix` overlay remains excluded. It rewrites
   GNU ELPA fetchurl URLs to the remote USTC mirror. The configuration is retained
@@ -53,29 +58,26 @@ string export/publishing, preprocessing and broader selection remain unsupported
   Later DOC-01/CONSUMER-01 features are local development, not release claims.
   Remote publication/signature remain unverified; release evidence is in evidence.md.
 
-## Verified subtree node
+## Verified region node
 
-- Source adapters accept optional third subtree-position after bibliography
-  texts; nil keeps whole-buffer behavior. No new public input slot or worker
-  reinterpretation of Org is added. Snapshot configuration/used footnotes are
-  captured before structural clipping and native requests.
-- Supported title/author/date/options/select/exclude/file-name EXPORT fields
-  use Org helpers and captured property lookup settings; root metadata is absent
-  from body. Unknown root EXPORT fields/options and CITE_EXPORT fail explicitly.
-- Out-of-scope body/unused definitions are not converted. Restored definitions
-  may precede the selected body in source; span matching follows clipped AST
-  traversal and bounds. Relative source/file resource identities stay intact.
-- Source point moves cannot redirect selection. Property settings mutations
-  across native waits reject output. A private marker and save-excursion keep
-  property/output-name helpers from disturbing live source state.
-- Final subtree focused 7/7 (9.53s), backend regression 11/11 (4.65s), and final
-  Nix all seven checks pass, with compilation/package-lint and installed ERT
-  291/291 (132.40s). Tests assert structure/bytes/contracts, not layout goldens.
-  Related local Org fragments and repeated focused 120s / Nix 180s checks were
-  authorized. Earlier dependency-span failure and a definition-like citation
-  fixture were corrected; maintained cases retain reproduction.
-- No necessary unique raw artifact needs archive. Tests regenerate fixtures;
-  only pure text enters GAW and binary PDF/bytecode never does.
+- Five source preparation/document/byte/buffer adapters add optional fourth
+  REGION, an owned nonempty integer pair after subtree-position. Region selects
+  body with priority; subtree options/naming still apply when requested.
+- Private narrowed parsing of the same full masked snapshot supports partial
+  ordinary text without selected-text reconstruction or live source narrowing.
+  Global configuration and explicit bibliography identities survive selection;
+  selected footnote identity reconciliation prevents duplicate imports.
+- Complete STM islands run only in emitted body/dependencies; truncated islands
+  fail before workers. Scoped filtering/links and source provenance stay fixed.
+  Point/mark/pair changes cannot redirect conversion; source edits reject output.
+- Region 7/7 (14.17s), subtree 7/7 (10.79s), backend 11/11 (5.47s), and Nix all
+  seven checks pass. Compilation/package-lint and installed ERT 298/298 (162.69s)
+  pass. Structural/text/byte/contract assertions have no layout goldens.
+- Per-node targeted Org reads and repeated focused 120s / Nix 180s checks were
+  authorized. Initial footnote fixtures needed heading delimiters; one new
+  82-column docstring failed compilation before wrapping. Final checks pass.
+- No unique necessary raw artifact needs archive; maintained ERT retains full
+  reproduction. Only pure text enters GAW; no PDFs, bytecode or generated caches.
 
 ## Existing consumer boundaries
 
@@ -89,7 +91,7 @@ string export/publishing, preprocessing and broader selection remain unsupported
   cleanup failure stops transport. Explicit resource/executable primitives are
   outside the PDF subset, and custom installed styles are not sandboxed.
 - Earlier validation/progress details belong in project.md, evidence.md and GAW
-  history. Current whole installed regression is 291/291; GUI layout/general
+  history. Current whole installed regression is 298/298; GUI layout/general
   pagination convergence are unverified. Use maintained structural/text checks.
 
 ## Persistent workflow and knowledge
@@ -124,8 +126,10 @@ string export/publishing, preprocessing and broader selection remain unsupported
    Semantic commit b5100a9 is now verified by its three-file diff SHA-256
    against baseline db33c14. Frontend commit be284dd is now verified against
    d41f05a2... as recorded in evidence. Naming/reexport commit b4ee215 is verified
-   against its five-file hash recorded in evidence. Subtree node is verified /
-   staged; await its commit and compare the six-file diff to 3be6de01... above.
+   against its five-file hash recorded in evidence. Subtree commit ee3e028 is
+   verified against the six-file diff hash 3be6de01... above. Region is
+   verified/staged; await commit and compare its six-file diff
+   to 22765b0b... above. Then assess bounded body-only semantics.
    Keep the mirror overlay excluded; no flake or lock changes belong to this node.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries
    separate from the selected PDF work. Do not silently
