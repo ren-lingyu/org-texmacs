@@ -14,11 +14,14 @@ draft=false, prerelease=false, published_at=2026-10-08T17:27:12Z
 no new source edits or tests are needed for this identity/state verification.
 The user's review/publication hold has ended through their completed release.
 No new implementation or post-release checks are authorized by this notification.
-Current action is review of the completed candidate GAW reconstruction on
-`_agents_rebuild`. The original `_agents` branch is retained unchanged as the
-comparison baseline and keeps the old history reachable. The candidate is
-selected/deployed at `.agents`; do not replace, rename, delete or push either
-branch without explicit direction. No further project implementation is selected.
+The user adopted the rebuilt GAW history and restored its branch name to
+`_agents`. Local status/check confirm that `_agents` is the sole local GAW branch,
+selected/deployed at `.agents`, with the verified reconstruction handoff at its
+tip before this adoption record. The user reports backing up the old GAW branch
+remotely; the remote ref name and backup contents were not independently checked.
+Do not assume the old history is still available through a local branch or mutate
+backup/branch/remote state without explicit direction. Current action is handoff;
+await selection of further project work.
 
 The reconstruction replayed 53 original checkpoints and added two reference
 cleanup checkpoints to preserve archive-only boundaries. Every original project
@@ -120,9 +123,9 @@ remain unsupported.
 
 ## Persistent workflow and knowledge
 
-- GAW `_agents_rebuild` is valid/deployed at `.agents`; original `_agents` is
-  retained for candidate review and old-object reachability. Use public GAW
-  interfaces, never lifecycle mutation without direction.
+- GAW `_agents` now contains the adopted rebuilt history and is valid/deployed at
+  `.agents`. Old-history remote backup is user-reported, not independently checked.
+  Use public GAW interfaces, never lifecycle mutation without direction.
 - `goals.md` is authoritative constraints; `project.md` is current architecture/
   support; `evidence.md` holds provenance and verification limits; `backlog.md`
   holds adopted/deferred/unresolved scope. Superseded progress stays in GAW history.

@@ -1120,8 +1120,8 @@ environment remain unverified unless later memory records new evidence.
 ## Candidate GAW reconstruction verification
 
 The user authorized candidate reconstruction after choosing a separate branch.
-The original `_agents` branch remains unchanged; `_agents_rebuild` is selected
-at `.agents` pending review. The rebuilt suffix contains 53 corresponding original
+During reconstruction, the original `_agents` branch remained unchanged and
+`_agents_rebuild` was selected at `.agents` pending review. The rebuilt suffix contains 53 corresponding original
 states plus two explicitly named reference-cleanup states before archive-only
 boundaries. These cleanup states describe current curation, not invented past work.
 
@@ -1150,5 +1150,16 @@ has that captured project state as its sole additional parent. Archived GAW OIDs
 are diagnostic mapping data, not semantic memory identities. Original archive
 whitespace was preserved; changed memory/skills passed whitespace checks.
 The duplicate planning-state copies are regenerable and were not archived.
-Keep the original branch until review determines a separate retention/lifecycle
-action; text OIDs alone do not guarantee Git object reachability.
+At candidate handoff, the original branch was retained pending a separate
+retention/lifecycle decision; text OIDs alone do not guarantee object reachability.
+
+### Adoption after user branch maintenance
+
+The user subsequently restored the rebuilt branch's name to `_agents` and reports
+backing up the old GAW branch remotely. Local public status/check confirm a single
+valid `_agents` branch selected/deployed at `.agents`; its tip before recording
+adoption was the verified reconstruction handoff. The worktree/index were clean.
+No local `_agents_rebuild` or separate old GAW branch remains. Remote backup ref
+name/content and remote reachability were not independently checked; no fetch,
+push, branch/ref mutation or network lookup was performed by the agent. The
+archived diagnostic names describe reconstruction-time state and remain unchanged.
