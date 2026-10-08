@@ -21,6 +21,8 @@ when the governance task needs it:
 - `../../memory/goals.md` for the authoritative project goals;
 - `../../memory/project.md` for the current project contract;
 - `../../memory/evidence.md` for provenance and validation boundaries.
+- `../../memory/backlog.md` for adopted future work, deferred candidates, and
+  unresolved design boundaries.
 
 ## Keep responsibilities separate
 
@@ -29,7 +31,9 @@ when the governance task needs it:
 - Skills own stable triggers, procedures, routing, templates, and deterministic
   helpers.
 - GAW first-parent history owns superseded durable states and phase evolution.
-- Root `AGENTS.md` is an untracked unconditional bootstrap artifact.
+- Root `AGENTS.md` is an untracked deployed artifact whose canonical template
+  is owned by this skill. It routes recovery but does not own durable project
+  state.
 - Ordinary project source and its Git history are outside routine GAW memory
   maintenance.
 
@@ -41,6 +45,10 @@ workflow or governance contract changes.
 
 `assets/AGENTS.md` is the normative concise bootstrap template. It is not
 automatically deployed by selecting this skill.
+
+The root copy may be removed and rebuilt. A successful reconstruction must not
+depend on loading the historical archive or on facts that exist only in the
+root artifact.
 
 Use the deterministic helper as follows:
 

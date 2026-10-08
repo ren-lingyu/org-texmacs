@@ -1,9 +1,11 @@
 # org-texmacs agent bootstrap
 
 This untracked file is the unconditional repository bootstrap for coding
-agents. Its normative template is maintained by the repository-scoped
-`org-texmacs-governance` skill in the deployed GAW worktree. Do not infer that
-this file is tracked by the ordinary project branch.
+agents. It is a generated deployed artifact, not durable project memory. Its
+normative template is maintained by the repository-scoped
+`org-texmacs-governance` skill in the deployed GAW worktree, and that skill can
+rebuild it deterministically. Do not infer that this file is tracked by the
+ordinary project branch.
 
 ## Command environment
 
@@ -94,11 +96,15 @@ The GAW workspace separates project knowledge from reusable procedures:
 - `memory/project.md`: current architecture, interfaces, support boundary, and
   known structural issues.
 - `memory/evidence.md`: durable evidence, provenance, and validation limits.
+- `memory/backlog.md`: adopted future work, deferred candidates, and unresolved
+  design boundaries.
 - `memory/current.md`: active objective, state, decisions, blockers, and next
   actions.
 - `org-texmacs-governance`: GAW/agent-document governance and bootstrap
   recovery.
 - `org-texmacs-development`: project implementation and architecture workflow.
+- `org-texmacs-gaw-archive`: selective preservation of retired documents and
+  necessary temporary evidence.
 
 Memory states what is true now. Skills state how to perform recurring work.
 GAW history preserves superseded durable states. Do not duplicate current
@@ -108,8 +114,9 @@ memory into skills or grow current memory into an append-only history.
 
 For architecture, implementation, or code review, use the
 `org-texmacs-development` skill and follow its routing to the current goals,
-project model, evidence, and active state. Unsupported features described as
-future goals are not current capabilities or implementation authorization.
+project model, backlog, evidence, and active state. Unsupported features are
+not automatically backlog commitments, current capabilities, or implementation
+authorization.
 
 For AGENTS, GOALS, GAW memory layout, or repository-skill maintenance, use
 `org-texmacs-governance`.
