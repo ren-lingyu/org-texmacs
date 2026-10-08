@@ -1,0 +1,47 @@
+Emacs=31.1 Org=9.8-pre TeXmacs=/nix/store/52iz92ini64qhnrsfwyxaid74rwcsb5r-texmacs-2.1.5/bin/texmacs
+warning: guile hooks are not available
+Welcome to TeXmacs 2.1.5
+------------------------------------------------------------------------------
+kpsepath works with your TeX distribution
+kpsewhich works with your TeX distribution
+mktextfm works with your TeX distribution
+mktexpk works with your TeX distribution
+texhash works with your TeX distribution
+------------------------------------------------------------------------------
+Installation completed successfully !
+I will now start up the editor
+------------------------------------------------------------------------------
+LEAF helper-available #f
+LEAF private-helper #t
+LEAF unicode ("ASCII" "ASCII" #t)
+LEAF unicode ("<#4E2D><#6587>" "<#4E2D><#6587>" #t)
+LEAF unicode ("<alpha>" "<alpha>" #t)
+LEAF unicode ("é" "é" #t)
+LEAF unicode ("x
+y	z" "x
+y	z" #t)
+LEAF unicode ("quote\"slash\\" "quote\"slash\\" #t)
+LEAF native-spelling ("<alpha>" "<alpha>" #t)
+LEAF native-spelling ("<#4E2D>" "<#4E2D>" #t)
+LEAF native-spelling ("<less>" "<less>" #t)
+LEAF native-spelling ("<gtr>" "<gtr>" #t)
+LEAF native-spelling ("<less>alpha<gtr>" "<less>alpha<gtr>" #t)
+LEAF native-spelling ("<unknown-symbol>" "<unknown-symbol>" #t)
+LEAF native-spelling ("<less><less>alpha<gtr><gtr>" "<less><less>alpha<gtr><gtr>" #t)
+LEAF mixed ("<#4E2D><#6587> <alpha> <alpha> é <less>alpha<gtr>" "<#4E2D><#6587> <alpha> <alpha> é <less>alpha<gtr>" #t)
+LEAF literal-decoded ("<alpha>" "<alpha>" #t)
+LEAF symbol-decoded ("Î±" "Î±" #t)
+LEAF org-literal ("<alpha>" "<alpha>" #t)
+LEAF ambiguous-input ("<" "<less>" "<")
+LEAF ambiguous-input (">" "<gtr>" ">")
+LEAF ambiguous-input ("a<b>c" "a<less>b<gtr>c" "a<b>c")
+LEAF ambiguous-input ("<unfinished" "<less>unfinished" "<unfinished")
+LEAF ambiguous-input ("ä¸­æ–‡ <unknown-symbol>" "<#4E2D><#6587> <less>unknown-symbol<gtr>" "<#4E2D><#6587> <unknown-symbol>")
+LEAF repeat-conversion ("é" "é" #t)
+LEAF body-readback ((\d\o\c\u\m\e\n\t (\c\o\n\c\a\t "Org <less>alpha<gtr> <#4E2D><#6587> " (\m\a\t\h "<alpha> <alpha> é <less>alpha<gtr>"))) (\d\o\c\u\m\e\n\t (\c\o\n\c\a\t "Org <less>alpha<gtr> <#4E2D><#6587> " (\m\a\t\h "<alpha> <alpha> é <less>alpha<gtr>"))) #t)
+LEAF failures 0
+LEAF complete #t
+
+Process stm-leaf finished
+
+Process=exit exit=0

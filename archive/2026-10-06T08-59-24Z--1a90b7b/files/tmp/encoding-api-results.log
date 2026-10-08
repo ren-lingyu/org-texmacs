@@ -1,0 +1,51 @@
+Emacs=31.1 Org=9.8-pre TeXmacs=/nix/store/52iz92ini64qhnrsfwyxaid74rwcsb5r-texmacs-2.1.5/bin/texmacs
+warning: guile hooks are not available
+Welcome to TeXmacs 2.1.5
+------------------------------------------------------------------------------
+kpsepath works with your TeX distribution
+kpsewhich works with your TeX distribution
+mktextfm works with your TeX distribution
+mktexpk works with your TeX distribution
+texhash works with your TeX distribution
+------------------------------------------------------------------------------
+Installation completed successfully !
+I will now start up the editor
+------------------------------------------------------------------------------
+ENCODING capability (\u\t\f\8\-\>\c\o\r\k #t)
+ENCODING capability (\c\o\r\k\-\>\u\t\f\8 #t)
+ENCODING capability (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s #f)
+ENCODING capability (\p\a\r\s\e\-\t\m\m\l #t)
+ENCODING capability (\t\m\m\l\-\>\t\e\x\m\a\c\s #t)
+ENCODING capability (\s\t\r\e\e\-\>\t\r\e\e #t)
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING case-error (\l\e\a\f (\u\n\b\o\u\n\d\-\v\a\r\i\a\b\l\e #f "Unbound variable: ~S" (\u\n\e\s\c\a\p\e\-\a\n\g\l\e\s) #f))
+ENCODING tmml-direct ("<alpha>" "<less>alpha<gtr>" "<less>alpha<gtr>" #t #t)
+ENCODING tmml-direct ((\t\m\-\s\y\m "alpha") "<alpha>" "<alpha>" #t #t)
+ENCODING tmml-direct ((\t\m\-\s\y\m "#4E2D") "<#4E2D>" "<#4E2D>" #t #t)
+ENCODING tmml-direct ((\t\m\-\s\y\m "unknown-symbol") "<unknown-symbol>" "<unknown-symbol>" #t #t)
+ENCODING tmml-direct ((\!\c\o\n\c\a\t "中文 α " (\t\m\-\s\y\m "alpha") " <alpha>") "<#4E2D><#6587> <alpha> <alpha> <less>alpha<gtr>" "<#4E2D><#6587> <alpha> <alpha> <less>alpha<gtr>" #t #t)
+ENCODING tmml-xml ("<math>α</math>" (\*\T\O\P\* (\m\a\t\h "α")) (\m\a\t\h "<alpha>") #t)
+ENCODING tmml-xml ("<math>&lt;alpha&gt;</math>" (\*\T\O\P\* (\m\a\t\h "<alpha>")) (\m\a\t\h "<less>alpha<gtr>") #t)
+ENCODING tmml-xml ("<math><tm-sym>alpha</tm-sym></math>" (\*\T\O\P\* (\m\a\t\h (\t\m\-\s\y\m "alpha"))) (\m\a\t\h "<alpha>") #t)
+ENCODING tmml-xml ("<math>中文 α <tm-sym>alpha</tm-sym> &lt;alpha&gt;</math>" (\*\T\O\P\* (\m\a\t\h (\!\c\o\n\c\a\t "中文 α " (\t\m\-\s\y\m "alpha") " <alpha>"))) (\m\a\t\h "<#4E2D><#6587> <alpha> <alpha> <less>alpha<gtr>") #t)
+ENCODING tmml-xml ("<math xml:space=\"preserve\"> x  <tm-sym>alpha</tm-sym> y </math>" (\*\T\O\P\* (\m\a\t\h (\!\c\o\n\c\a\t " x  " (\t\m\-\s\y\m "alpha") " y "))) (\m\a\t\h " x  <alpha> y ") #t)
+ENCODING tmml-xml ("<math> x  <tm-sym>alpha</tm-sym> y </math>" (\*\T\O\P\* (\m\a\t\h (\!\c\o\n\c\a\t "x " (\t\m\-\s\y\m "alpha") " y"))) (\m\a\t\h "x <alpha> y") #t)
+ENCODING complete #t
+
+Process encoding-api finished
+
+Process=exit exit=0

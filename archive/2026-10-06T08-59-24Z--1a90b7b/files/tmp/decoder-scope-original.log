@@ -1,0 +1,11 @@
+variant=original emacs=31.1 org=9.8-pre all-pass=t
+(normal :pass t :outcome (value (with "mode" "math" (math (frac "ASCII" "2")))))
+(escaped :pass t :outcome (value (math "中文")))
+(circle :pass t :outcome (error invalid-read-syntax ("#1=")))
+(sharing :pass t :outcome (error invalid-read-syntax ("#1=")))
+(trailing :pass t :outcome (error org-texmacs-worker-error ("Malformed or mismatched response")))
+(id :pass t :outcome (error org-texmacs-worker-error ("Malformed or mismatched response")))
+(stree :pass t :outcome (error org-texmacs-worker-error ("Invalid response stree")))
+(remote-error :pass t :outcome (error org-texmacs-parse-error ("Invalid STM source")))
+(unknown :pass t :outcome (error org-texmacs-worker-error ("Unknown response status")))
+(after-errors :pass t :outcome (value (sqrt "x")))

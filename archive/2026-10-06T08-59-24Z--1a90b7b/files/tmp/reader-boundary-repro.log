@@ -1,0 +1,7 @@
+source: "(with \"mode\" \"math\" (math (frac \"ASCII\" \"2\")))"
+raw-response: "(\\o\\k 1 (\\w\\i\\t\\h \"mode\" \"math\" (\\m\\a\\t\\h (\\f\\r\\a\\c \"ASCII\" \"2\"))))
+"
+result: (with "mode" "math" (math (frac "ASCII" "2")))
+reader-only: ((ok 1 (with "mode" "math" (math (frac "ASCII" "2")))) . 67)
+decode-replay: (with "mode" "math" (math (frac "ASCII" "2")))
+environment: ("31.1" "9.8-pre" "/nix/store/52iz92ini64qhnrsfwyxaid74rwcsb5r-texmacs-2.1.5/bin/texmacs" :reader-file nil :reader-subr t :read-circle t :load-in-progress nil)

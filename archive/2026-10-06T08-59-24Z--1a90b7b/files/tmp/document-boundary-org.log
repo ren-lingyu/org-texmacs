@@ -1,0 +1,44 @@
+environment ("31.1" "9.8-pre" "/nix/store/5sbsczj8jzgqlwl7j1rn14xs3gkvm6pp-emacs-pgtk-31-1-org-9.8-pre/share/emacs/site-lisp/org.elc" "/nix/store/52iz92ini64qhnrsfwyxaid74rwcsb5r-texmacs-2.1.5/bin/texmacs")
+source "First *bold*  after	end.
+Next line.
+"
+node (paragraph :begin 1 :end 37 :post-blank 0 :level nil :raw-title nil)
+node (bold :begin 7 :end 15 :post-blank 2 :level nil :raw-title nil)
+spans nil
+source "* A *bold* title
+
+** Second
+*** Third
+***** Jump
+"
+node (headline :begin 1 :end 50 :post-blank 0 :level 1 :raw-title "A *bold* title")
+node (bold :begin 5 :end 12 :post-blank 1 :level nil :raw-title nil)
+node (headline :begin 19 :end 50 :post-blank 0 :level 2 :raw-title "Second")
+node (headline :begin 29 :end 50 :post-blank 0 :level 3 :raw-title "Third")
+node (headline :begin 39 :end 50 :post-blank 0 :level 5 :raw-title "Jump")
+title-bold (1 ("bold"))
+spans nil
+source "* 
+"
+node (headline :begin 1 :end 4 :post-blank 0 :level 1 :raw-title "")
+spans nil
+source "Before (math (concat \"*not-org*\" \"[[file:x]]\"))  (math \"α\") after.
+"
+node (paragraph :begin 1 :end 68 :post-blank 0 :level nil :raw-title nil)
+node (bold :begin 23 :end 32 :post-blank 0 :level nil :raw-title nil)
+spans ("(math (concat \"*not-org*\" \"[[file:x]]\"))" "(math \"α\")")
+source "#+begin_texmacs
+(document (math \"x\"))
+#+end_texmacs
+"
+node (special-block :begin 1 :end 53 :post-blank 0 :level nil :raw-title nil)
+node (paragraph :begin 17 :end 39 :post-blank 0 :level nil :raw-title nil)
+spans nil
+source "#+begin_texmacs
+\"atomic\"
+#+end_texmacs
+"
+node (special-block :begin 1 :end 40 :post-blank 0 :level nil :raw-title nil)
+node (paragraph :begin 17 :end 26 :post-blank 0 :level nil :raw-title nil)
+spans nil
+org-complete t
