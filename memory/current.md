@@ -10,7 +10,7 @@ unstaged, uncommitted and unpushed. Bootstrap discovery remains nonblocking.
 ## Current baseline
 
 - Main HEAD observed on 2026-10-07:
-  `77a28881807d1bf8dba508b1f8a07f392083dfca` (declared as a non-first parent of this checkpoint).
+  the local file-link semantics revision.
 - Local v0.3.0 tag target:
   the v0.3.0 structured-document release revision.
 - Local v0.3.1 annotated tag resolves to

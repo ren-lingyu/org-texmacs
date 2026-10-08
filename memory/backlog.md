@@ -66,7 +66,7 @@ This node was verified (217/217 ERT, compilation, and conditional Nix/package-li
 with the temporary mirror-source configuration), then reviewed and committed.
 The user's overlay is excluded from project commits and pushes.
 
-The plain-local-file node, committed as `77a2888` (declared as a non-first parent of this checkpoint), preserves raw hlink target leaves with
+The plain-local-file node, committed as the local file-link semantics revision, preserves raw hlink target leaves with
 typed `file-paths` and translates them on a body copy only in the native bridge.
 It passed 223/223 ERT and Nix/package-lint under the temporary mirror-source
 configuration. The named-footnote worktree node now resolves inline/separate

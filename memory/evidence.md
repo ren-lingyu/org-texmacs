@@ -30,7 +30,7 @@
   Exact runner, Scheme query and output are preserved as three UTF-8 plain-text
   files in `archive/2026-10-06T16-59-25Z--77a2888/`, archive-only checkpoint
   the archive-only checkpoint introducing archive/2026-10-06T16-59-25Z--77a2888/MANIFEST.md, with sole additional project parent
-  `77a28881807d1bf8dba508b1f8a07f392083dfca` (declared as a non-first parent of this checkpoint). Byte copies, sizes and hashes match;
+  the local file-link semantics revision. Byte copies, sizes and hashes match;
   no active memory, temporary mirror overlay or binaries entered that checkpoint.
 - Nine new maintained ERT cases cover first/repeated references, forward inline
   definitions, definitions recovered from filtered trees, custom footnote
@@ -51,7 +51,7 @@
   it does not establish original GNU ELPA availability. The overlay diff hash
   remains `1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54`.
 - Verified and approved staged diff on base
-  `77a28881807d1bf8dba508b1f8a07f392083dfca` (declared as a non-first parent of this checkpoint): SHA-256
+  the local file-link semantics revision: SHA-256
   `82c13615c352889dbedede08505518eacb09db78fa1b739c5105448db0da0cd5` for
   `git diff HEAD -- README.org org-texmacs-context.el org-texmacs-document.el tests/ert/ert.el`.
   The complete staged diff matches that hash exactly; `git diff --check` passed.
@@ -66,7 +66,7 @@
 - Local v0.3.1 annotated tag target:
   the v0.3.1 release revision.
 - Current main HEAD observed on 2026-10-07:
-  `77a28881807d1bf8dba508b1f8a07f392083dfca` (declared as a non-first parent of this checkpoint).
+  the local file-link semantics revision.
 
 These are local Git facts. They do not prove remote release state or tag
 signatures.
@@ -269,7 +269,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   the source-location snapshot revision has SHA-256
   `9a4808d6615612c728ba1b249929c2ff1db2e5c3cbf9aa5dccc844733ab0f913` using
   `git diff HEAD -- README.org org-texmacs-document.el org-texmacs-session.el org-texmacs.el tests/ert/ert.el`.
-  The later commit `77a28881807d1bf8dba508b1f8a07f392083dfca` (declared as a non-first parent of this checkpoint) was compared with
+  The later local file-link semantics revision was compared with
   that baseline and its five-file diff matches this hash exactly.
   GUI navigation, file search/remote/tilde targets and broader
   filename escaping remain unverified or explicitly unsupported.
