@@ -20,6 +20,10 @@ dispatcher frontend, not a complete generic exporter: org-export-as and related
 generic entry points still reject texmacs. Common selection/configuration/API
 compatibility needs staged design under AST-first/owned-input constraints;
 LaTeX-only compilation, templates and package controls are not project duties.
+User places generic org-export-as API compatibility relatively late: treat it
+as nonblocking later adaptation, not a prerequisite for subtree/configuration
+work. Existing dispatcher and explicit source APIs provide the working path;
+retain explicit rejection of unsupported generic calls until adaptation exists.
 Unsupported syntax and deferred multi-session/incremental/editor conveniences
 must not be presented as mandatory remaining work.
 Frontend uses org-export-output-file-name and ordinary overwrite after checked
