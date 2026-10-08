@@ -2,24 +2,28 @@
 
 ## Active objective
 
-v0.4.0 preparation is committed as c26985f8f24ce8c6b95ebf3dbb211fff8e276f45.
-Its complete three-file diff on baseline 82552db matches
-84b212a7b1b9c74e1309067a10d0a932ed70b93b0f3b541fba40f83ff906ce33.
-README.org, org-texmacs.el and only flake.nix version line are committed. Header/Nix
-versions are 0.4.0. README summarizes current document semantics/native consumers,
-optional frontend, scopes/configuration, compatibility and deferred boundaries.
-tmp/commit.md and tmp/release-v0.4.0.md are reviewed. Release notes remain a draft;
-Metadata commit is verified; local v0.4.0 tag is absent. User explicitly requests
-holding tag/publication while they review. Current next action is wait for user
-review findings or an explicit instruction to resume release steps. Do not start
-new implementation, checks, tag or publication work meanwhile. No tests were
-rerun for this commit-state update. Ordinary tags/push/publication remain user-owned.
-Narrowing commit 82552db matches its reviewed six-file hash on d71204d. Nineteen
-feature/fix commits since v0.3.1 form the chosen scope: current bounded DOC-01
-resolution plus .tm/PDF and synchronous dispatcher/naming/scope/configuration.
-Visible-only/async, body-only fragments and generic API/publishing remain deferred
-or separate. No full Org syntax parity, GUI layout or general pagination claim.
-Do not interpret prepared package version or passing tests as a published release.
+v0.4.0 metadata is committed as c26985f8f24ce8c6b95ebf3dbb211fff8e276f45;
+its three-file diff matches prior verified hash 84b212a7... in evidence. User
+review/INBOX note led to an authorized finite HTML composition regression.
+That node is complete, verified and staged: only tests/ert/ert.el (61 lines).
+Await ordinary test commit; compare its one-file diff on c26985f with
+4461f4ad5b984ebf83b714b3f5fd0241f09571fb7a4cf50723af1efb3cff42b5.
+tmp/commit.md is reviewed. Production code/README/version remain unchanged.
+Backend focused 12/12 and unmirrored installed ERT 312/312/all Nix checks pass.
+Test proves actual HTML preprocessing hook/include advice/AST filter coexistence,
+output effects, private source state and cleanup; it is not actual integration
+of three Org-roam packages or personal databases. UUID syntax remains valid;
+missing UUID-to-BibTeX-key mapping is a semantic interoperability boundary.
+Future information flow is tracked in issue #1:
+https://github.com/ren-lingyu/org-texmacs/issues/1. Issue was read via GitHub
+connector; design is nonblocking for v0.4.0 and chooses neither full generic
+export nor permanently isolated preparation. AST-first/owned inputs/provenance
+remain constraints; preprocessing reuse is later adapter design.
+User still holds tag/publication for review. No ordinary commits/tags/pushes
+were executed. After test commit verification, wait for user review/resumption;
+refresh release-note draft validation before actual publication if requested.
+ELPA observation is now recorded with actual checks below; no confirmed endpoint
+recovery claim. Earlier mirror-backed validations remain historical facts.
 Scope guidance: ox-latex is a reference for shared Org export conventions,
 not a feature inventory to copy wholesale. Current ox-texmacs is a bounded
 dispatcher frontend, not a complete generic exporter: org-export-as and related
@@ -42,46 +46,41 @@ remain unsupported.
 
 ## Baseline and staging
 
-- Main HEAD observed on 2026-10-08:
+- Main HEAD observed on 2026-10-09:
   `c26985f8f24ce8c6b95ebf3dbb211fff8e276f45`.
   Its release-preparation diff against 82552db matches the verified three-file hash.
-- Three release paths are committed: README.org, org-texmacs.el and
-  flake.nix (version hunk only). Index is empty; staged review/diff --check passed.
-  SHA-256 on 82552db:
-  84b212a7b1b9c74e1309067a10d0a932ed70b93b0f3b541fba40f83ff906ce33.
-  No release changes remain unstaged. The user's temporary
-  `flake.nix` overlay remains excluded. It rewrites
-  GNU ELPA fetchurl URLs to the remote USTC mirror. The configuration is retained
-  locally only: never stage, commit or push that overlay. It is not a locally hosted mirror.
-  Overlay SHA-256: `1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54`.
-  Restoring pre-fileset/pre-release version and diff metadata reproduces that hash.
-  Current raw unstaged flake diff SHA-256 is
-  2af6574fe8302fa7a5e64d3e93e8955cf7c36f0a4c6c2f135a2edffe8b65032a.
-  Normalizing version context and blob IDs to pre-release values reproduces
-  dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc exactly,
-  proving the mirror content is unchanged. Committed flake equals baseline plus
-  its single version line; overlay is excluded.
+- Metadata paths README.org, org-texmacs.el and flake.nix version line are
+  committed. Only tests/ert/ert.el is approved/staged; no production changes are
+  unstaged. Complete staged review/diff --check pass. SHA-256 on c26985f:
+  4461f4ad5b984ebf83b714b3f5fd0241f09571fb7a4cf50723af1efb3cff42b5.
+- User temporarily removed the uncommitted USTC overlay on 2026-10-09. flake.nix
+  matches HEAD; do not reintroduce or stage workaround automatically. Previous
+  mirror-backed validation/exclusion proof stays in evidence as historical state.
 - Local v0.3.1 annotated tag resolves to `880d4e00667907ef66985387b4865ec8d795d48d`.
   v0.4.0 includes current DOC-01/CONSUMER-01 subset but is only prepared,
   not tagged or published. Earlier features are still local development until release.
   Remote publication/signature remain unverified; release evidence is in evidence.md.
 
-## Verified release preparation
+## Verified review supplement
 
-- User selected v0.4.0; no new source semantics are introduced in this node.
-  Package header and Nix trivialBuild version agree; native TeXmacs version header
-  remains tied to running TeXmacs and is not replaced with package version.
-- All seven Nix checks pass for emacs-org-texmacs-0.4.0, compilation/package-lint
-  and installed ERT 311/311 (155.04s). README loading examples are covered by
-  installed tests. Repeated exact Nix 240s checks were authorized for this node.
-- Validation uses local/uncommitted remote ELPA mirror config. Original endpoint
-  recovery is unverified; exclude overlay and lock changes from release commits.
-  Other platforms, GUI layout and general pagination remain unverified.
-- tmp/release-version.patch is a reviewed version-only staging aid. It was
-  applied to index with approval; no direct ordinary commits/tags/pushes occurred.
-- Release notes and patch are regenerable preparation artifacts, not GAW archive
-  evidence. No necessary unique temporary evidence needs archive. Only pure text
-  enters GAW; no binary packages/PDF/bytecode are included.
+- New ERT uses actual HTML exporter and controlled temporary preprocessing hook,
+  around-advice on include expansion, and parse-tree filter. Their output effects
+  are asserted. No user database/include dependency is loaded. Source state is
+  unchanged, no TeXmacs worker request is allowed, and advice is always removed;
+  after cleanup, baseline HTML output returns. No production/doc edits needed.
+- Focused backend 12/12 (5.353570s), including new case (0.005854s), pass.
+  Exact Nix 240s check without overlay passes, with installed ERT 312/312
+  (157.819934s) and all check results successful; two changed checks run and the
+  other results are cached. Per-node repeated focused/Nix checks were authorized.
+- User also authorized two one-shot HEAD probes for ELPA index/org-9.8.8.tar.
+  Both failed curl exit 28 after 20s connection timeout, no HTTP response; no
+  retry. No credentials/body downloads/files were used. This confirms neither
+  endpoint recovery nor a global outage and does not contradict user's own
+  observation. Cached Nix success alone is not fresh-download proof.
+- Working INBOX/issue findings are now consolidated into this substantive
+  validation checkpoint. INBOX was left untouched; no raw archive needed because
+  relevant facts are distilled and maintained test retains full reproduction.
+  Only pure text enters GAW. Test/metadata commits and tag/publication are distinct.
 
 ## Existing consumer boundaries
 
@@ -95,7 +94,7 @@ remain unsupported.
   cleanup failure stops transport. Explicit resource/executable primitives are
   outside the PDF subset, and custom installed styles are not sandboxed.
 - Earlier validation/progress details belong in project.md, evidence.md and GAW
-  history. Current whole installed regression is 311/311; GUI layout/general
+  history. Current whole installed regression is 312/312; GUI layout/general
   pagination convergence are unverified. Use maintained structural/text checks.
 
 ## Persistent workflow and knowledge
@@ -121,9 +120,11 @@ remain unsupported.
 
 ## Blockers and next actions
 
-- No project-code blocker. Original GNU ELPA availability is not established:
-  user reported failure across devices/networks; successful mirror checks do not
-  prove endpoint restoration. Cause remains unverified; detailed evidence persists.
+- No project-code blocker. User observed ELPA apparently usable after temporarily
+  removing overlay. Current unmirrored Nix gate passes, with cache reuse; both
+  authorized HEAD probes timeout from this agent environment. Keep availability
+  as not independently confirmed here; cause/global availability remain unknown.
+  Original mirror-backed evidence must not be rewritten as upstream-backed.
 
 1. PDF commit db33c14 is verified against the seven-file SHA-256 on baseline 1ed04db:
    00164bbb3491e4addd74c75a0c53ab86cd8397855e659c25a572a5ae84044464.
@@ -136,11 +137,14 @@ remain unsupported.
    Override commit d71204d is verified against five-file diff 145a3237... above.
    Narrowing commit 82552db is verified against six-file diff fdeb09f1... in
    evidence. v0.4.0 preparation commit c26985f is verified against three-file
-   diff 84b212a7... above. User review is pending; hold tag/publication and further
-   work until user feedback or an explicit resume instruction. Body-only
+   diff 84b212a7... in evidence. HTML regression is verified/staged; await test
+   commit and compare one-file diff to 4461f4ad... above. User review is pending;
+   hold tag/publication until explicit resumption. Body-only
    fragment/generic API remain deferred by user choice.
-   Keep the mirror overlay excluded; only the Nix version hunk belongs to
-   this node, with no lock changes.
+   Mirror overlay is removed and final no-overlay check passes. Two HEAD attempts
+   timed out without retry; further probes need new authorization. No lock changes.
+   Draft release notes still describe prior preparation validation; refresh them
+   to latest test/environment evidence before publication when user resumes.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries
    separate from the selected PDF work. Do not silently
    enable full Org preprocessing or general bibliography/resource reads.

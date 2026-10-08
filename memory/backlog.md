@@ -276,6 +276,37 @@ native or GUI evidence before they can be claimed as verified.
 
 ## Deferred candidates
 
+### Org ecosystem preparation interoperability
+
+Status: **unresolved-design**, following the user's 2026-10-09 v0.4.0 review note.
+Tracking discussion: https://github.com/ren-lingyu/org-texmacs/issues/1,
+"design: reconsider Org preprocessing and export integration boundaries".
+The issue is explicitly nonblocking for v0.4.0 and requires choosing the
+information flow/interface boundary before splitting implementation/joint tests.
+Current independent preparation is a bounded implementation policy, not a strict
+permanent ban on standard Org preprocessing. AST-first does not itself forbid
+preprocessing user Org source in a private working buffer or applying AST filters.
+Keep canonical source, coherent owned dependencies and STM/resource provenance.
+Explore reuse of preprocessing, export parse-tree filters and Org Cite bibliography
+discovery at the adapter boundary; choose neither a mandatory generic exporter
+nor permanently isolated preparation before design. Solve post-preprocessing STM
+spans/origins, subtree/region/narrowing mapping, external file/database snapshots
+and user-hook consistency/side effects explicitly. Pure lowering must not query
+Org-roam/global databases or implicitly read bibliography files.
+The note reports org-roam-organize discovery and managed UUID remapping,
+org-roam-include source composition, and org-roam-blog HTML publishing; these
+external source claims were not independently checked in this repository review.
+No such architecture refactor, recursive INCLUDE, broader citation semantics or
+blog publishing rewrite is adopted for v0.4.0. User authorized finite controlled
+HTML hook/advice/AST-filter regression; it is now verified/staged in tests/ert/ert.el.
+Backend focused 12/12 and no-overlay Nix installed ERT 312/312 pass. This tests
+actual HTML output/source isolation/cleanup with fake extensions, not the three
+real packages or databases. Existing README restrictions remain accurate; no
+new docs or production semantics were required. Issue remains later design.
+ELPA HEAD probes were authorized once each and both timed out; no endpoint
+recovery/global-outage claim follows. Await test commit and user review; release
+hold remains. Further network probes need separate authorization.
+
 ### SESSION-01: Multi-document or multi-session operation
 
 Status: **deferred-candidate**.

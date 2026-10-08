@@ -954,6 +954,85 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   it does not prove original GNU ELPA recovery or other platform/GUI/pagination
   support. Native TeXmacs file version remains independent of package version.
 
+## INBOX v0.4.0 ecosystem review assessment (2026-10-09, read-only)
+
+- User note distinguishes interface isolation from consumption of extensions,
+  retains explicit BibTeX text snapshots/native formatting, and defers broad
+  preprocessing architecture until after bounded release. The third-party
+  repositories named in the note were not read (outside project authorization),
+  and no tests/builds/joint run were requested or executed in this assessment.
+  Reviewed INBOX.md SHA-256:
+  be6bda83516009702d18722e2d680a48876e55ff22eac5e54518e6a893eb95ed.
+- User supplied https://github.com/ren-lingyu/org-texmacs/issues/1. GitHub
+  connector fetched the full issue after public browser/API fetches failed.
+  Title: design: reconsider Org preprocessing and export integration boundaries.
+  It was open, with zero comments, created/updated 2026-10-08T16:37:25Z.
+  Body targets main@c26985f and explicitly distinguishes static review from
+  joint integration testing, makes this nonblocking for v0.4.0, and selects no
+  mandatory full exporter/independent preparation approach. No remote writes
+  were performed. The issue is the design discussion reference, not test proof.
+- Local ox-texmacs.el guard (190) rejects only texmacs-derived generic calls.
+  Maintained ERT generic-preprocessing-guard case verifies rejection before
+  INCLUDE/Babel and an unrelated ASCII export; it does not prove HTML with all
+  three extensions loaded. Third-party API behavior remains attributed to user
+  note, not independently validated or a universal compatibility guarantee.
+- README's document/source and dispatcher sections already state no hooks/
+  filters, INCLUDE expansion or global bibliography lookup. Bibliography source
+  snapshot copies explicit texts; private preparation calls restricted Org parser.
+  context-merge-options temporarily rebinds org-collect-keywords only within that
+  call. No persistent override of standard export functions was found in scope.
+- Bibliography-plan accepts ASCII letters/digits/hyphen in keys and checks exact
+  entries, raising Unresolved citation key when missing. UUID is not inherently
+  invalid syntax; lack of UUID-to-BibTeX-key filter consumption is the stated gap.
+- AST-first permits investigation of private source preprocessing and AST filters
+  while preserving ownership/provenance. This is later unresolved design, not a
+  release refactor authorization. Optional stable HTML hook/advice smoke test is
+  a proposal only. Preserve release review hold and tentative ELPA observation.
+- Note content has been distilled into active memory; raw INBOX is untouched and
+  no extra archive copy is needed. Initially these were working-memory updates
+  only; the subsequent authorized HTML test/environment node now checkpoints
+  this assessment together with its verified results.
+
+## HTML composition supplement and ELPA checks (2026-10-09, verified/staged)
+
+- Baseline c26985f8f24ce8c6b95ebf3dbb211fff8e276f45 is unchanged. User
+  authorized the finite HTML composition test, repeated exact backend focused
+  timeout 120s and no-overlay Nix timeout 240s checks. Production code/README/
+  version are unchanged; only one 61-line ERT case is added.
+- Case uses real HTML exporter with controlled private-copy preprocessing hook,
+  around-advice on org-export-expand-include-keyword and parse-tree filter.
+  All three execution markers and hook/filter output effects are asserted,
+  with source-state preservation,
+  no native worker request, unconditional advice cleanup and restored baseline
+  output. It is not actual joint loading/testing of the named external packages.
+- Focused backend passes 12/12 (5.353570s); new test 0.005854s. Nix passes all
+  checks without overlay: two changed checks run, five prior results reused;
+  installed ERT 312/312 (157.819934s), package/compilation/package-lint successful.
+  ERT derivation:
+  /nix/store/xnn19v18hccxbhmwcmc15613i7i1n0bb-org-texmacs-ert.drv.
+  Current original-provider package derivation:
+  /nix/store/jjh5w4xyn3kgify03nzavlx2mv3ivrpy-emacs-org-texmacs-0.4.0.drv.
+  No fresh upstream dependency download is established by cache-backed success.
+- User reported temporary removal of local-only remote mirror overlay and apparent
+  ELPA recovery. flake.nix matches HEAD; workaround is absent. Earlier mirrored
+  validation remains historical evidence. User separately authorized exactly two
+  HEAD probes: timeout 30s curl -q --head --fail --location --max-time 20
+  --proto '=https' --proto-redir '=https', against
+  https://elpa.gnu.org/packages/ and https://elpa.gnu.org/packages/org-9.8.8.tar.
+  Both exited 28 with Connection timed out after 20000 milliseconds, no response
+  headers/status. Run outside host sandbox; no credentials, body download or file
+  writes. No retries. Endpoint recovery remains unconfirmed from agent environment;
+  this does not prove a global outage or disprove user's observation.
+- Exact-path staging of tests/ert/ert.el was approved. Complete staged review and
+  diff --check pass. Entire one-file staged diff SHA-256 on c26985f:
+  4461f4ad5b984ebf83b714b3f5fd0241f09571fb7a4cf50723af1efb3cff42b5.
+  No ordinary project changes are unstaged. tmp/commit.md is reviewed; user makes
+  ordinary commit and continues review. Tag/publication hold was not lifted.
+- Existing release-note draft describes earlier preparation validation and can
+  be refreshed to final review/test/environment evidence when release resumes.
+  No raw archive is needed: maintained test and these compact records retain
+  complete reproduction/results. INBOX unchanged; only pure text enters GAW.
+
 ## Body-only assessment after region commit (2026-10-08)
 
 - User authorized targeted installed ox.el/ox-latex.el/ox-html.el template reads.

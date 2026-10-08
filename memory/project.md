@@ -629,6 +629,31 @@ worker, encoding, and native-session tests.
 
 ## Downstream work not yet implemented
 
+Current source preparation does not run Org export preprocessing/parse-tree
+filters or Org Cite bibliography discovery. Thus existing ecosystem interfaces
+can remain operational for their own backends without their extension semantics
+being consumed by TeXmacs. Backend guard admits unrelated backends; maintained
+isolation includes ASCII and the verified/staged controlled HTML composition
+case below; actual joint HTML/Org-roam package/database integration is unverified.
+Future information-flow design is tracked in issue #1:
+https://github.com/ren-lingyu/org-texmacs/issues/1. It preserves canonical source,
+AST-first/ownership/provenance and is not a v0.4.0 release blocker.
+Temporary org-collect-keywords rebinding is scoped to private restricted option
+collection, not a permanent standard-interface replacement. Preprocessing reuse
+belongs to a later adapter/ownership design; pure lowering/native bibliography
+need not acquire implicit database/file dependencies. UUID syntax is accepted by
+the current key grammar; absent matching entry/remapping causes unresolved-key
+failure. Keep these distinctions in support claims.
+
+Pre-release HTML composition regression is verified/staged on c26985f: controlled
+preprocessing hook, include advice and AST filter run through actual HTML export,
+with observable output transformations, original source state and advice cleanup.
+No production/README change or real external-package integration is introduced.
+Backend focused 12/12 and all no-overlay Nix checks pass; installed ERT 312/312
+(157.82s). Only tests/ert/ert.el is staged, awaiting user commit. Direct authorized
+HEAD probes timed out; source configuration now needs no overlay for this cached
+validation, but endpoint availability is not independently confirmed.
+
 Broader file metadata (attachments/reference tables/auxiliary), backup/atomic
 publication, generic Org export/publishing beyond the bounded dispatcher, preview,
 visual pagination, multi-document or multi-session operation, live or
