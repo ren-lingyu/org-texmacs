@@ -697,6 +697,44 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   GAW. Generic publishing/export preprocessing, scoped selection, overrides and
   async behavior remain outside this node; actual GUI layout is unverified.
 
+## Org output naming/reexport node (2026-10-08, verified/staged)
+
+- User adopted ox-latex's ordinary naming/overwrite convention and narrowed the
+  earlier proposed atomic/backup/concurrency design scope. No new confirmation,
+  backup, atomicity or target-version locking is required by this node.
+- Baseline is be284dd292cfb0a88ae51f0e6b692f94516f0bb1. Authorized local Org
+  9.8-pre ox.el definitions (org-export-to-file at 7495, output-file-name at
+  7569) and ox-latex entry points confirm helper-based naming and ordinary
+  write-region replacement after conversion. The source root is the previously
+  recorded immutable bdfdqx9... site-lisp path. Generic writer adds a final text
+  newline; native .tm/PDF output deliberately uses the raw byte writer instead.
+- Frontend honors EXPORT_FILE_NAME/visiting stem/non-file prompt and fixed
+  suffixes. Source/directory/path identities are captured before conversion;
+  preparation removes output metadata from the body. Local writable regular or
+  absent targets are checked twice; symlinks/directories/source aliases fail.
+  A source with an unsaved visiting output suffix receives a distinct name.
+- Only frontend enables the private writer's optional overwrite flag. Existing
+  document-save/save-pdf and explicit-source new-file APIs still omit it; their
+  exclusive/collision tests pass in the full suite. No output encoding, newline
+  insertion, formatting annotations or file handlers are introduced.
+- Focused ERT passes 11/11 (5.32s). Final Nix passes all seven checks, native
+  compilation/package-lint and installed ERT 284/284 (125.71s), using unchanged
+  temporary mirror diff dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc.
+  ERT derivation: /nix/store/807vw3y07rkphazjlcpma0fayy4v623q-org-texmacs-ert.drv.
+- Four new focused cases plus updated original cases cover real .tm/PDF repeats,
+  keyword priority/body removal, exact unibyte output with coding/annotations
+  configured, prompt buffer switching, source/target preflight, old-output
+  preservation on renderer/stale-source errors and a deterministic partial-write
+  error. Filesystem failure can leave partial overwritten output; no stronger
+  guarantee is claimed. Tests use owned isolated temporary directories.
+- Five approved staged files: README.org, org-texmacs-context.el,
+  org-texmacs-session.el, ox-texmacs.el and tests/ert/ert.el. Full staged review
+  and diff --check pass. git diff --cached SHA-256 against the baseline above:
+  846a14267176678abb8ebda9c7097c12076e55563a8235ec0beb323d574de410.
+  tmp/commit.md is reviewed; only the unchanged mirror overlay remains unstaged.
+- No independent necessary raw temporary evidence qualifies for archive:
+  fixtures/reproduction live in ERT, and no binary output enters GAW.
+
 ## Durable TeXmacs facts
 
 - `stm-snippet->texmacs` is a recovery parser and cannot alone prove strict STM

@@ -108,16 +108,18 @@ cases pass 7/7; final Nix passes all seven checks and installed ERT 280/280.
 Frontend commit be284dd matches the verified six-file hash. Only the module
 fileset entry was committed in flake; the mirror overlay stays outside history.
 
-### Proposed next: output-update contract
+### Active: Org output naming and repeat export
 
-Status: **unresolved-design**, awaiting user selection. File consumers currently
-require a new destination, so repeated exports to one path fail. Recommend
-deciding a separate output-update contract: explicit permission to replace an
-existing regular file, preservation of old output on rendering/writing failure,
-target changes during worker waits, publication and backup policy. Keep existing
-new-file-only API contracts intact. Design evidence must establish feasible
-filesystem guarantees before promising atomic or concurrent replacement.
-No implementation or check authorization is inferred from this proposal.
+User selected the narrower ox-latex convention after reviewing the proposal:
+frontend uses org-export-output-file-name and ordinary overwrite of an existing
+writable regular output, after source checks and native bytes are complete.
+EXPORT_FILE_NAME is consumed as output metadata. Public new-file-only APIs keep
+exclusive creation. Eleven focused cases pass 11/11; final Nix passes all seven
+checks and installed ERT 284/284. Five files are approved/staged, awaiting the
+user's commit. Extra
+overwrite confirmation, backups, atomic replacement and target-version locking
+are not prerequisites or adopted behavior for this node. Any later work on
+those guarantees remains a separate unresolved-design boundary.
 
 The next selected node is stable PDF semantic regression for footnotes and
 owned citation/bibliography output. No fixed pagination/pixel/byte assertions

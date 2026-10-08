@@ -443,8 +443,29 @@ Commit be284dd292cfb0a88ae51f0e6b692f94516f0bb1 matches the verified six-file di
   Only the module fileset hunk may be staged in flake.nix; mirror changes stay
   unstaged. Seven focused cases pass 7/7 (2.63s); final Nix passes all seven
   checks, compilation/package-lint and installed ERT 280/280 (123.36s).
-  The frontend is committed. Existing targets remain rejected; no replacement
-  or atomic-publication policy is implemented.
+  That initial frontend used new-file prompts. Its naming/overwrite policy is
+  superseded by the verified extension below; atomic publication remains absent.
+
+## Org output convention extension (working tree)
+
+- ox-texmacs file actions now use org-export-output-file-name for .tm/PDF.
+  EXPORT_FILE_NAME takes precedence over visiting file stem; non-file unnamed
+  buffers prompt. Source/context/destination identities are captured before waits.
+- Preparation consumes EXPORT_FILE_NAME as inert output metadata; no native
+  text transcoder, generic preprocessing, bibliography reader or new input slot.
+- Frontend target preflight/recheck permits a local writable regular or absent
+  file in an existing parent. Known symlinks, directories and source aliases fail.
+  Unsaved visiting sources with an output suffix also receive a distinct name.
+- Native bytes finish under source consistency checks before ordinary write.
+  Shared private writer's optional overwrite flag is used only by this frontend;
+  all public new-file save/export APIs omit it and remain exclusive. No encoding
+  conversion, newline insertion or write annotations. Write failures can leave
+  partial output; no backup/atomic replacement/version-lock guarantee is adopted.
+- Eleven focused cases pass (5.32s), covering naming/reexports, exact raw bytes,
+  non-file prompt context, stale sources, renderer failure and partial-write errors.
+  Final Nix passes all seven checks, compilation/package-lint and installed
+  ERT 284/284 (125.71s). Five files are approved/staged, awaiting user commit;
+  the uncommitted mirror overlay stays unchanged/excluded.
 
 ## Worker and session
 

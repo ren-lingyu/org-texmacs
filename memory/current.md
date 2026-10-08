@@ -4,13 +4,12 @@
 
 Bounded ox-texmacs dispatcher frontend is committed as
 be284dd292cfb0a88ae51f0e6b692f94516f0bb1. Its complete six-file diff matches
-the verified hash; the index is empty. No implementation is in progress.
-Recommend defining the next output-update contract: current file consumers
-reject existing targets, so repeated exports require another name. Decide
-explicit replacement permission, failure preservation, target changes during
-rendering, publication and backup policy before implementation. This is a
-proposal within the existing unresolved output boundary, not adopted behavior
-or implementation/check authorization. Keep new-file-only APIs intact.
+the verified hash. The user-selected Org/ox-latex output convention extension
+is now complete, verified and staged with approval. tmp/commit.md is reviewed;
+await the user's ordinary commit and compare its five-file diff.
+Frontend uses org-export-output-file-name and ordinary overwrite after checked
+native bytes are complete. Public new-file-only APIs stay exclusive. Atomic
+replacement, backups and target-version locking are not adopted prerequisites.
 User rejected a standalone PDF preview command; no such command is adopted.
 The frontend only supports whole-buffer synchronous menu actions. Generic
 string export/publishing, preprocessing and broader selection remain unsupported.
@@ -20,10 +19,11 @@ string export/publishing, preprocessing and broader selection remain unsupported
 - Main HEAD observed on 2026-10-08:
   `be284dd292cfb0a88ae51f0e6b692f94516f0bb1`.
   Its frontend diff against b5100a9 matches the verified six-file hash exactly.
-- Committed: .gitignore, README.org, flake.nix (only module fileset entry),
-  org-texmacs.el, ox-texmacs.el and tests/ert/ert.el. Full staged review and
-  diff --check pass. Diff SHA-256 on baseline b5100a9:
-  d41f05a26d1718ec2e453019f1b3604c2bc7e8d01241a8205ef0d170694ee5ab.
+- Frontend commit be284dd is verified against baseline b5100a9 hash d41f05a2...
+  as recorded in evidence. Current approved/staged files: README.org,
+  org-texmacs-context.el, org-texmacs-session.el, ox-texmacs.el, tests/ert/ert.el.
+  Full staged review and diff --check pass. SHA-256 on baseline be284dd:
+  846a14267176678abb8ebda9c7097c12076e55563a8235ec0beb323d574de410.
   No implementation is unstaged. The user's temporary
   `flake.nix` overlay remains excluded. It rewrites
   GNU ELPA fetchurl URLs to the remote USTC mirror. The configuration is retained
@@ -35,7 +35,25 @@ string export/publishing, preprocessing and broader selection remain unsupported
   Later DOC-01/CONSUMER-01 features are local development, not release claims.
   Remote publication/signature remain unverified; release evidence is in evidence.md.
 
-## Verified bounded dispatcher frontend
+## Verified Org output convention extension
+
+- File actions use Org's naming helper for EXPORT_FILE_NAME/visiting stem/prompt
+  and suffix enforcement, with captured source working directory. Preparation
+  consumes output metadata without adding it to the native body.
+- Captured local writable regular-or-absent targets are checked before and
+  after conversion; known symlinks/directories/source aliases fail. Bytes finish
+  under source consistency checks before opening output. Only the frontend
+  enables private overwrite; public new-file APIs remain exclusive.
+- Ordinary writes use no-conversion and suppress annotations/format handlers.
+  Preparation/render/stale-source failure preserves old output. Write failure
+  may leave partial overwritten output; no backup, atomicity or locking guarantee.
+- Focused backend ERT passes 11/11 (5.32s); final Nix passes all seven checks,
+  compilation/package-lint and installed ERT 284/284 (125.71s). Local installed
+  Org naming/write-helper reads and repeated focused 120s / Nix 180s checks were
+  authorized for this node. All temporary fixtures are maintained/regenerable;
+  no unique raw artifact qualifies for archiving. Only pure text enters GAW.
+
+## Initial committed dispatcher frontend
 
 - Optional require ox-texmacs registers texmacs and menu T T/T t/T p for readonly
   byte buffer/new .tm/new PDF. Core loading alone does not install the frontend.
@@ -90,8 +108,8 @@ string export/publishing, preprocessing and broader selection remain unsupported
   sources fail before prompts; remote working directories are outside this chooser.
 - Interactive commands pass nil bibliography snapshots. Explicit BibTeX text
   snapshots remain Lisp arguments; do not introduce automatic bibliography reads.
-- No generic Org string-export pipeline, unrestricted preprocessing, overwrite,
-  backup, atomic publication or native preview is implemented.
+- These standalone APIs provide no generic string pipeline, preprocessing,
+  overwrite, backup, atomic publication or native preview.
   File writes remain exclusive new-file creation; write errors can leave a
   partial new file. Source adapters guard through serialization before writing.
 
@@ -161,9 +179,9 @@ native printing and independent PDF inspection are real. GUI layout is unverifie
    00164bbb3491e4addd74c75a0c53ab86cd8397855e659c25a572a5ae84044464.
    Semantic commit b5100a9 is now verified by its three-file diff SHA-256
    against baseline db33c14. Frontend commit be284dd is now verified against
-   d41f05a2... above. Await selection of the proposed output-update contract node.
-   Keep the mirror overlay excluded. Previous frontend checks/read permissions
-   were scoped to that completed node; obtain applicable new-node authorization.
+   d41f05a2... as recorded in evidence. Naming/reexport node is verified/staged;
+   await its commit and compare the five-file diff with 846a1426... above.
+   Keep the mirror overlay excluded; no flake or lock changes belong to this node.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries
    separate from the selected PDF work. Do not silently
    enable full Org preprocessing or general bibliography/resource reads.
