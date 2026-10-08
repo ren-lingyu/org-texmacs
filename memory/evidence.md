@@ -681,7 +681,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   ox-texmacs.el, tests/ert/ert.el. Complete staged review/diff --check pass.
   SHA-256 of git diff --cached on the baseline above:
   d41f05a26d1718ec2e453019f1b3604c2bc7e8d01241a8205ef0d170694ee5ab.
-  Commit be284dd292cfb0a88ae51f0e6b692f94516f0bb1 (declared as a non-first parent of this checkpoint) was compared with baseline
+  the bounded ox-texmacs frontend revision was compared with baseline
   the PDF semantic regression and citation repair revision on 2026-10-08: complete six-file stat and diff hash match exactly.
   Index is empty; only the unchanged raw mirror overlay remains unstaged.
   tmp/commit.md is reviewed. Nix ERT derivation is
@@ -697,12 +697,12 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   GAW. Generic publishing/export preprocessing, scoped selection, overrides and
   async behavior remain outside this node; actual GUI layout is unverified.
 
-## Org output naming/reexport node (2026-10-08, verified/staged)
+## Committed Org output naming/reexport node (2026-10-08)
 
 - User adopted ox-latex's ordinary naming/overwrite convention and narrowed the
   earlier proposed atomic/backup/concurrency design scope. No new confirmation,
   backup, atomicity or target-version locking is required by this node.
-- Baseline is be284dd292cfb0a88ae51f0e6b692f94516f0bb1 (declared as a non-first parent of this checkpoint). Authorized local Org
+- Baseline is the bounded ox-texmacs frontend revision. Authorized local Org
   9.8-pre ox.el definitions (org-export-to-file at 7495, output-file-name at
   7569) and ox-latex entry points confirm helper-based naming and ordinary
   write-region replacement after conversion. The source root is the previously
@@ -731,6 +731,9 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   org-texmacs-session.el, ox-texmacs.el and tests/ert/ert.el. Full staged review
   and diff --check pass. git diff --cached SHA-256 against the baseline above:
   846a14267176678abb8ebda9c7097c12076e55563a8235ec0beb323d574de410.
+  Commit b4ee215224578577a3235f8954020baf74e585af (declared as a non-first parent of this checkpoint) was compared with the bounded ox-texmacs frontend revision
+  on 2026-10-08: complete five-file stat and diff hash match exactly. The project
+  index is empty; only the temporary mirror overlay remains unstaged.
   tmp/commit.md is reviewed; only the unchanged mirror overlay remains unstaged.
 - No independent necessary raw temporary evidence qualifies for archive:
   fixtures/reproduction live in ERT, and no binary output enters GAW.

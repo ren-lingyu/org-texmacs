@@ -422,7 +422,7 @@ the native PDF consumer revision matches the verified seven-file diff.
 
 ## CONSUMER-01 committed bounded ox-texmacs frontend
 
-Commit be284dd292cfb0a88ae51f0e6b692f94516f0bb1 (declared as a non-first parent of this checkpoint) matches the verified six-file diff.
+the bounded ox-texmacs frontend revision matches the verified six-file diff.
 
 - Optional ox-texmacs.el registers texmacs, menu key T with T/t/p actions for a
   fresh readonly native byte buffer, prompted new .tm and prompted new PDF.
@@ -446,7 +446,9 @@ Commit be284dd292cfb0a88ae51f0e6b692f94516f0bb1 (declared as a non-first parent 
   That initial frontend used new-file prompts. Its naming/overwrite policy is
   superseded by the verified extension below; atomic publication remains absent.
 
-## Org output convention extension (working tree)
+## Committed Org output convention extension
+
+Commit b4ee215224578577a3235f8954020baf74e585af (declared as a non-first parent of this checkpoint) matches the verified five-file diff.
 
 - ox-texmacs file actions now use org-export-output-file-name for .tm/PDF.
   EXPORT_FILE_NAME takes precedence over visiting file stem; non-file unnamed
@@ -464,7 +466,7 @@ Commit be284dd292cfb0a88ae51f0e6b692f94516f0bb1 (declared as a non-first parent 
 - Eleven focused cases pass (5.32s), covering naming/reexports, exact raw bytes,
   non-file prompt context, stale sources, renderer failure and partial-write errors.
   Final Nix passes all seven checks, compilation/package-lint and installed
-  ERT 284/284 (125.71s). Five files are approved/staged, awaiting user commit;
+  ERT 284/284 (125.71s). The verified output-convention node is committed;
   the uncommitted mirror overlay stays unchanged/excluded.
 
 ## Worker and session
