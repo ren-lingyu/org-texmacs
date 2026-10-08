@@ -166,10 +166,10 @@ required completion work.
 
 ### Completed: v0.4.0 release
 
-The v0.4.0 release preparation revision and final HTML regression 46ccf6e (declared as a non-first parent of this checkpoint) are committed and verified
+The v0.4.0 release preparation revision and final HTML regression the final HTML coexistence regression revision are committed and verified
 against their reviewed diff hashes. Annotated local/remote v0.4.0 tag object
 feaf8c4ef501d50aa595090a0fa312c855071527 points to
-46ccf6eb7120022c734115ec7876e7d150082f9b (declared as a non-first parent of this checkpoint). GitHub release is published, non-draft
+the final HTML coexistence regression revision. GitHub release is published, non-draft
 and non-prerelease, at https://github.com/ren-lingyu/org-texmacs/releases/tag/v0.4.0
 on 2026-10-09 01:27:12 Asia/Shanghai. User performed commit/tag/publication;
 agent verified identities through read-only Git/API calls. Previous review hold
@@ -300,7 +300,7 @@ org-roam-include source composition, and org-roam-blog HTML publishing; these
 external source claims were not independently checked in this repository review.
 No such architecture refactor, recursive INCLUDE, broader citation semantics or
 blog publishing rewrite is adopted for v0.4.0. User authorized finite controlled
-HTML hook/advice/AST-filter regression; it is committed as 46ccf6e (declared as a non-first parent of this checkpoint) and in v0.4.0.
+HTML hook/advice/AST-filter regression; it is committed as the final HTML coexistence regression revision and in v0.4.0.
 Backend focused 12/12 and no-overlay Nix installed ERT 312/312 pass. This tests
 actual HTML output/source isolation/cleanup with fake extensions, not the three
 real packages or databases. Existing README restrictions remain accurate; no

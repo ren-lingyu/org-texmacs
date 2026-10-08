@@ -278,8 +278,9 @@
   no result). An explicitly approved outside-sandbox run of the same command
   passed (exit 0). This does not establish a bibliography parser defect from
   the original timeout. The three exact pure-text probe files are preserved in
-  `archive/2026-10-06T17-35-50Z--a242eb2/`, archive-only checkpoint
-  the archive-only checkpoint introducing archive/2026-10-06T17-35-50Z--a242eb2/MANIFEST.md, with sole additional project parent
+  `archive/2026-10-06T17-35-50Z--a242eb2/`. Its manifest path history locates the
+  archive-only GAW checkpoint introducing the snapshot, with sole additional
+  project parent
   the named-footnote revision. Bytes/digests and unchanged HEAD
   were verified. No active memory, overlay or binaries entered the archive.
 - Eight new maintained cases cover pure ownership/invalid data, local syntax
@@ -334,8 +335,9 @@
   `footnote`, `footnote-text`, `footnotemark*`, `footnote-ref` and `next-footnote`.
   This does not establish absence of the macros or rendered numbering behavior.
   Exact runner, Scheme query and output are preserved as three UTF-8 plain-text
-  files in `archive/2026-10-06T16-59-25Z--77a2888/`, archive-only checkpoint
-  the archive-only checkpoint introducing archive/2026-10-06T16-59-25Z--77a2888/MANIFEST.md, with sole additional project parent
+  files in `archive/2026-10-06T16-59-25Z--77a2888/`. The archive-only checkpoint
+  introducing its manifest records the captured state through its sole additional
+  project parent
   the local file-link semantics revision. Byte copies, sizes and hashes match;
   no active memory, temporary mirror overlay or binaries entered that checkpoint.
 - Nine new maintained ERT cases cover first/repeated references, forward inline
@@ -554,8 +556,9 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   files were opened and no hyperlinks were followed.
 - The three exact plain-text probe artifacts were copied byte for byte and
   digest/size verified in `archive/2026-10-06T14-50-30Z--b09b451/`. Independent
-  archive-only archive-only checkpoint introducing archive/2026-10-06T14-50-30Z--b09b451/MANIFEST.md has sole
-  additional project parent the source-location snapshot revision. Its
+  archive-only checkpoint introducing the snapshot is located through its manifest
+  path history. Its sole additional project parent is
+  the source-location snapshot revision. Its
   manifest records each role, source path, byte count and digest. Active memory,
   binary artifacts and the temporary overlay were excluded from that checkpoint.
 - The implementation adds raw file-target path provenance; it rewrites only
@@ -996,7 +999,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 ## HTML composition supplement and ELPA checks (2026-10-09, committed/released)
 
 - Baseline the v0.4.0 release preparation revision is unchanged. Commit
-  46ccf6eb7120022c734115ec7876e7d150082f9b (declared as a non-first parent of this checkpoint) has exactly the one reviewed test
+  the final HTML coexistence regression revision has exactly the one reviewed test
   file and matches 4461f4ad... below. It is the verified v0.4.0 release target. User
   authorized the finite HTML composition test, repeated exact backend focused
   timeout 120s and no-overlay Nix timeout 240s checks. Production code/README/
@@ -1039,7 +1042,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 ## v0.4.0 publication verification (2026-10-09)
 
 - User reported final commit/tag/GitHub publication. Read-only Git shows HEAD
-  46ccf6eb7120022c734115ec7876e7d150082f9b (declared as a non-first parent of this checkpoint), one 61-line tests/ert/ert.el addition;
+  the final HTML coexistence regression revision, one 61-line tests/ert/ert.el addition;
   full one-file diff on the v0.4.0 release preparation revision exactly matches previously verified SHA-256
   4461f4ad5b984ebf83b714b3f5fd0241f09571fb7a4cf50723af1efb3cff42b5.
   Ordinary worktree/index are clean. No new tests were run for identity checks.

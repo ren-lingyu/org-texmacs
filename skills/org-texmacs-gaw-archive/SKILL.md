@@ -73,6 +73,14 @@ evidence and record:
 Do not put the GAW checkpoint hash into its own tree. The commit graph records
 that identity after the checkpoint is created.
 
+When referring to a preserved snapshot from memory or evidence, use its archive
+path and manifest. Locate the introducing GAW checkpoint through that manifest's
+first-parent path history; do not copy its OID into durable prose as the primary
+locator. The additional project-parent edge records the captured project state.
+Necessary project OIDs and file SHA-256 digests may remain in the manifest.
+This reference convention does not authorize rewriting historical manifests,
+archived diagnostic OIDs, file bytes or existing GAW commits, or adding logical IDs.
+
 ## Verify exactness and provenance
 
 Compare every archived file byte for byte with its selected source and verify

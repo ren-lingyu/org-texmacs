@@ -3,7 +3,7 @@
 ## Active objective
 
 v0.4.0 is released. User committed final HTML regression as
-46ccf6eb7120022c734115ec7876e7d150082f9b (declared as a non-first parent of this checkpoint), created tag and published GitHub release.
+the final HTML coexistence regression revision, created tag and published GitHub release.
 One-file test diff on the v0.4.0 release preparation revision matches verified SHA-256
 4461f4ad5b984ebf83b714b3f5fd0241f09571fb7a4cf50723af1efb3cff42b5.
 Local annotated tag v0.4.0 object feaf8c4ef501d50aa595090a0fa312c855071527
@@ -49,7 +49,7 @@ remain unsupported.
 ## Baseline and staging
 
 - Main HEAD observed on 2026-10-09:
-  `46ccf6eb7120022c734115ec7876e7d150082f9b` (declared as a non-first parent of this checkpoint).
+  the final HTML coexistence regression revision.
   Its one-file HTML regression diff against the v0.4.0 release preparation revision matches the verified hash.
 - Metadata paths README.org, org-texmacs.el and flake.nix version line are
   committed. HTML regression is committed; ordinary worktree/index are clean.
@@ -140,7 +140,7 @@ remain unsupported.
    The external configuration override revision is verified against five-file diff 145a3237... above.
    The narrowed-source export revision is verified against six-file diff fdeb09f1... in
    evidence. The v0.4.0 release preparation revision is verified against three-file
-   diff 84b212a7... in evidence. HTML commit 46ccf6e (declared as a non-first parent of this checkpoint) matches 4461f4ad... above;
+   diff 84b212a7... in evidence. The final HTML coexistence regression revision matches 4461f4ad... above;
    local/remote v0.4.0 tag and published release are verified. Release phase is
    complete. Await user selection of subsequent work. Body-only
    fragment/generic API remain deferred by user choice.

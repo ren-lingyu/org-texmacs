@@ -583,7 +583,7 @@ the narrowed-source export revision matches the verified six-file diff.
 
 ## Released v0.4.0 scope and provenance
 
-- Release target 46ccf6eb7120022c734115ec7876e7d150082f9b (declared as a non-first parent of this checkpoint) includes metadata
+- Release target the final HTML coexistence regression revision includes metadata
   the v0.4.0 release preparation revision and the final controlled HTML regression; both verified by exact diff
   hashes. Annotated tag object feaf8c4ef501d50aa595090a0fa312c855071527 is the
   same locally and in GitHub and points to this commit.
@@ -649,7 +649,7 @@ need not acquire implicit database/file dependencies. UUID syntax is accepted by
 the current key grammar; absent matching entry/remapping causes unresolved-key
 failure. Keep these distinctions in support claims.
 
-HTML composition regression is committed as 46ccf6e (declared as a non-first parent of this checkpoint) and released in v0.4.0: controlled
+HTML composition regression is committed as the final HTML coexistence regression revision and released in v0.4.0: controlled
 preprocessing hook, include advice and AST filter run through actual HTML export,
 with observable output transformations, original source state and advice cleanup.
 No production/README change or real external-package integration is introduced.
