@@ -158,6 +158,12 @@ other selection/configuration contracts and publishing are still bounded design
 questions; no full syntax parity prerequisite is introduced. Backup/atomic
 publication and a standalone preview command are not completion requirements.
 
+Generic org-export-as/to-file compatibility is a nonblocking later adaptation
+per the user's priority guidance. It is not a prerequisite for subtree scope
+or configuration work through existing dispatcher/explicit-source APIs. Its
+AST-first/preprocessing contract remains unresolved; current explicit rejection
+must remain until a supported adapter is implemented.
+
 The first node is committed as `e7377e5`: org-texmacs-document-serialize builds
 complete native file-document structure from explicit encoded fields and returns
 exact native .tm bytes independently of a session. Full local coverage and final
