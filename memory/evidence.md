@@ -824,11 +824,14 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   reproduction; draft is regenerable. PDFs/bytecode never enter GAW. Actual GUI
   and visual pagination remain unverified.
 
-## Restricted external configuration (2026-10-08, verified/staged)
+## Restricted external configuration (2026-10-08, committed)
 
 - Implementation baseline is 7e6b4e001603a223933277d2704018877b86bada; its
   region diff was verified against 22765b0b... on ee3e028. User chose restricted
   ext-plist after reviewing body-only's distinct fragment/consumer boundary.
+  Commit d71204d204a03b30491d5cdb2bd05d59dacd71a3 has exactly the five reviewed
+  files; full diff matches 145a3237... below. Index is empty at verification;
+  only the user's temporary mirror overlay is unstaged. No new tests were run.
 - Authorized targeted Org option-helper reads confirm get-environment priority
   global < external < file < subtree. ox.el get-inbuffer-options (1591) parses
   metadata with keyword object grammar, as does get-global-options (1696).

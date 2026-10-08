@@ -16,17 +16,21 @@ Active region selects body; subtreep still supplies configuration/naming. Privat
 full snapshot supplies global context and dependencies; private narrowed Org
 parsing supports exact ordinary text ranges. Truncated STM islands fail before
 workers. Visible/body-only/async and generic API adaptation remain deferred.
-Restricted ext-plist node is complete, verified and staged with exact-path
-approval. tmp/commit.md is reviewed; await user commit, then verify its five-file
-diff on baseline 7e6b4e0 against
+Restricted ext-plist node is committed as
+d71204d204a03b30491d5cdb2bd05d59dacd71a3; its complete five-file diff on
+baseline 7e6b4e0 matches
 145a3237df23501289289bbfe84554353dfc8d0147d7d2787ff090bb953b83a6.
 External overrides are owned before prompts/workers; priority is global <
 external < file < subtree. Only existing context keys are accepted, with typed
 policies and raw Org string/nil metadata. Body-only is deferred by user choice:
 Org skips outer templates, but complete native consumers define no embeddable
-fragment format. Generic API adaptation stays deferred. After commit verification,
-assess remaining source scope requirements, without assuming every Org flag or
-unsupported feature must be implemented.
+fragment format. Generic API adaptation stays deferred. User asked for next work
+and remaining scope. Recommend bounded narrowed-buffer export next: reuse the
+owned full snapshot/dependency machinery and preserve original restriction while
+selecting accessible body. This recommendation is not yet implementation adoption
+or check authorization. Visible-only and other Org flags remain separate design
+questions; stage closure/release scope can follow common selection support.
+Do not treat every unsupported feature as a mandatory completion requirement.
 Scope guidance: ox-latex is a reference for shared Org export conventions,
 not a feature inventory to copy wholesale. Current ox-texmacs is a bounded
 dispatcher frontend, not a complete generic exporter: org-export-as and related
@@ -50,12 +54,12 @@ selection remain unsupported.
 ## Baseline and staging
 
 - Main HEAD observed on 2026-10-08:
-  `7e6b4e001603a223933277d2704018877b86bada`.
-  Its region diff against ee3e028 matches the verified six-file hash.
+  `d71204d204a03b30491d5cdb2bd05d59dacd71a3`.
+  Its override diff against 7e6b4e0 matches the verified five-file hash.
 - Frontend commit be284dd is verified against baseline b5100a9 hash d41f05a2...
-  as recorded in evidence. Region is committed. Five override files are staged:
+  as recorded in evidence. Region and five override files are committed:
   README.org, org-texmacs-context.el, org-texmacs.el, ox-texmacs.el, tests/ert/ert.el.
-  Complete staged review and diff --check pass. SHA-256 on 7e6b4e0:
+  Index is empty. Complete staged review and diff --check passed. SHA-256 on 7e6b4e0:
   145a3237df23501289289bbfe84554353dfc8d0147d7d2787ff090bb953b83a6.
   No implementation is unstaged. The user's temporary
   `flake.nix` overlay remains excluded. It rewrites
@@ -138,8 +142,9 @@ selection remain unsupported.
    against its five-file hash recorded in evidence. Subtree commit ee3e028 is
    verified against the six-file diff hash 3be6de01... above. Region is
    committed as 7e6b4e0 and verified against six-file hash 22765b0b... above.
-   Override node is verified/staged; await commit and compare five-file diff to
-   145a3237... above. Body-only fragment/generic API are deferred by user choice.
+   Override commit d71204d is verified against five-file diff 145a3237... above.
+   Proposed next is narrowed-source scope; user adoption is pending. Body-only
+   fragment/generic API remain deferred by user choice.
    Keep the mirror overlay excluded; no flake or lock changes belong to this node.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries
    separate from the selected PDF work. Do not silently

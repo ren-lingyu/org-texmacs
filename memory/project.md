@@ -530,7 +530,9 @@ Commit 7e6b4e001603a223933277d2704018877b86bada matches the verified six-file di
   after correcting one docstring-width failure. Six files are committed on
   ee3e028; index is empty at verification. Mirror overlay is excluded.
 
-## Restricted external configuration (verified/staged)
+## Committed restricted external configuration
+
+Commit d71204d204a03b30491d5cdb2bd05d59dacd71a3 matches the verified five-file diff.
 
 - User deferred body-only fragment semantics and selected bounded ext-plist.
   Five source preparation/document/byte/buffer adapters add optional fifth
@@ -548,8 +550,8 @@ Commit 7e6b4e001603a223933277d2704018877b86bada matches the verified six-file di
 - Final six override cases pass; backend 11/11, subtree 7/7 and region 7/7 pass.
   Compilation/package-lint and final installed ERT 304/304 (169.37s) pass, with
   all Nix checks successful. Two 81-column docstrings were wrapped; mutable test
-  lists now allocate afresh. Five files are approved/staged on baseline 7e6b4e0,
-  awaiting ordinary commit. No visual/layout goldens or binary GAW artifacts.
+  lists now allocate afresh. Five files are committed on baseline 7e6b4e0;
+  index is empty at verification. No visual/layout goldens or binary GAW artifacts.
 
 ## Worker and session
 

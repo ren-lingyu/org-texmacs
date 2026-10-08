@@ -98,7 +98,7 @@ pipeline when it reads files or dynamic state outside the owned snapshot.
 
 The user rejected a standalone org-texmacs-preview-pdf command on 2026-10-08
 as unnecessary. Do not implement it or interpret historical "preview" wording
-as commitment to that command. User selected bounded ox-texmacs implementation:
+as commitment to that command. The initial bounded ox-texmacs node provided:
 optional dispatcher backend with synchronous whole-buffer byte-buffer/.tm/PDF
 actions, existing prompted new-file policy and no generic string preprocessing.
 Async/subtree/visible/body-only/overrides, active regions and narrowing are
@@ -133,7 +133,7 @@ in the configuration node below. Visible-only, async, unrestricted overrides
 and generic API adaptation remain separate/deferred; no general preprocessing
 or file readers are adopted.
 
-### Verified/staged: restricted ext-plist
+### Completed: restricted ext-plist
 
 Body-only is an **unresolved-design** boundary: Org skips outer templates, with
 backend-specific inner content. Native complete .tm/PDF contracts do not define
@@ -146,8 +146,18 @@ existing fifth argument. Only current context keys/types are allowed, with uniqu
 keys and raw metadata strings/nil. Copy before prompts/waits; private merge and
 pure lowering preserve ownership. Focused overrides 6/6, backend 11/11, subtree
 7/7, region 7/7 and final Nix compilation/package-lint/ERT 304/304 pass. Five files
-are approved/staged, awaiting user commit. Body-only fragment format/consumer
+are committed as d71204d, matching the verified diff. Body-only fragment format/consumer
 remains deferred and unresolved; generic API adaptation stays relatively late.
+
+### Proposed next: narrowed-source export
+
+Recommendation after the user's status/plan request; not yet selected for
+implementation. Reuse region selection/full snapshot dependency preparation to
+export the source's accessible range while preserving its existing restriction.
+Design priority with region/subtree and snapshot invalidation explicitly before
+implementation. Visible-only needs a separate frozen visibility contract and
+must not be silently bundled. Common source-scope support may be followed by
+phase closure and release-scope review; no new release version is selected.
 
 ### Completed: Org output naming and repeat export
 
@@ -288,10 +298,11 @@ architecture commitments. Re-adopt and scope them before implementation.
 ## Current unsupported cases are not automatic commitments
 
 Examples include checkbox and explicit list-counter semantics, advanced table
-features, arbitrary Org elements, dynamic source execution, nested footnotes,
-citations, bibliography, and general internal/file/ID links. Some are covered
-by adopted document work above; others remain unsupported until separately
-adopted. Continue to fail explicitly rather than silently flattening them.
+features, arbitrary Org elements, dynamic source execution and nested footnotes.
+Broader citation/bibliography variants, file resources and cross-file ID lookup
+remain separately scoped; current local links, named notes and bare default
+citations/plain bibliography are already implemented. Continue to reject
+unsupported cases explicitly; unsupported syntax alone does not adopt work.
 
 ## Historical provenance
 
