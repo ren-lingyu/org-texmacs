@@ -149,7 +149,7 @@ pure lowering preserve ownership. Focused overrides 6/6, backend 11/11, subtree
 are committed as d71204d, matching the verified diff. Body-only fragment format/consumer
 remains deferred and unresolved; generic API adaptation stays relatively late.
 
-### Verified/staged: narrowed-source export
+### Completed: narrowed-source export
 
 User selected this node after reviewing the plan. Narrowing is outer body scope;
 region takes precedence within it, otherwise intersect subtree body. Full
@@ -158,11 +158,24 @@ before parsing/callbacks and preserved at prompts/waits. Private heading/naming
 copy handles hidden metadata; changed restrictions invalidate output before write.
 Empty narrowing is valid. Public signatures are unchanged. Seven focused cases,
 all five existing export groups and final Nix compilation/package-lint/installed
-ERT 311/311 pass. Six files are approved/staged, awaiting user commit.
+ERT 311/311 pass. Six files are committed as 82552db, matching the verified diff.
 Visible-only needs a separate frozen visibility contract and is not bundled.
-After commit verification, review phase closure/release scope; no new release
-version is selected. Other exporter flags/unsupported syntax are not automatically
+Phase closure selected v0.4.0 as described below. Other exporter flags/unsupported
+syntax are not automatically
 required completion work.
+
+### Verified/staged: v0.4.0 phase closure/release preparation
+
+User selected v0.4.0 after reviewing phase closure scope. Nineteen commits since
+v0.3.1 implement current bounded DOC-01 resolution and native .tm/PDF consumers,
+synchronous dispatcher, output naming/reexports and selection/configuration.
+Package/header metadata and necessary README wording are prepared; final Nix
+compilation/package-lint/installed ERT 311/311 pass. Three paths are approved/
+staged, with only the version hunk staged in flake.nix. Release notes are a
+reviewed draft in tmp/release-v0.4.0.md. Await user metadata commit, verify diff,
+then handle tag/publication only with user direction and manual Git boundaries.
+No new syntax or exporter-flag parity was adopted. Original ELPA restoration,
+other platforms/GUI/general pagination remain unverified; mirror stays excluded.
 
 ### Completed: Org output naming and repeat export
 

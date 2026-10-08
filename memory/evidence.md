@@ -867,12 +867,15 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   reproduction; draft is regenerable. Only pure text enters GAW, never PDFs or
   bytecode. GUI/visual pagination remain unverified; no fragment support is claimed.
 
-## Narrowed source export (2026-10-08, verified/staged)
+## Narrowed source export (2026-10-08, committed)
 
 - Baseline d71204d204a03b30491d5cdb2bd05d59dacd71a3 matches prior verified
   five-file hash 145a3237...; user explicitly selected narrowing. Targeted local
   Org selection/config/naming/heading reads and repeated focused 120s groups /
   Nix 240s checks were authorized for this node.
+  Commit 82552db77d2b01fa832fc06948f57e1cc5e80d81 has exactly the six reviewed
+  files and matches fdeb09f1... below. Index is empty at commit verification;
+  only the user's local/uncommitted remote mirror configuration remains dirty.
 - Org ox.el (3627) starts within save-restriction and applies region before subtree;
   get-inbuffer-options ignores narrowing for configuration. Output naming helper
   (7569) scans accessible keywords and subtree property. org-back-to-heading
@@ -910,6 +913,42 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   and draft is regenerable. Only pure text enters GAW; PDFs/bytecode do not.
   Native visual layout/pagination and GUI remain unverified. Visible-only,
   body-only/async/generic APIs remain separate or deferred.
+
+## v0.4.0 release preparation (2026-10-08, verified/staged)
+
+- Baseline 82552db77d2b01fa832fc06948f57e1cc5e80d81 is verified against the
+  narrowing six-file SHA-256 fdeb09f1... on d71204d. User explicitly selected
+  v0.4.0 release preparation with current bounded document/native export scope.
+  Nineteen feature/fix commits follow the local v0.3.1 tag. Ordinary commit/tag/
+  publication remain pending; this record is preparation evidence, not release.
+- Changed package header and Nix version 0.3.1 to 0.4.0, corrected source-buffer
+  Commentary and added necessary README overview/version/compatibility wording.
+  Runtime feature code, dependencies and lockfile are unchanged.
+- Authorized exact repeated timeout 240s nix flake check --no-write-lock-file
+  path:/home/lingyu/Projects/org-texmacs passes all seven checks, package build,
+  compilation/package-lint and installed ERT 311/311 (155.043573s), with README
+  loading/install examples. ERT derivation:
+  /nix/store/cwq33avp24xmac508mz7gkb8gmjhfw8y-org-texmacs-ert.drv.
+  Package derivation:
+  /nix/store/hjcwyjblf5r0jrfyqjpjalqhhzpz6g66-emacs-org-texmacs-0.4.0.drv.
+- Three approved staged files: README.org, org-texmacs.el, flake.nix (version-only
+  patch applied to index with approval). Staged flake equals baseline bytes with
+  just that line replaced. Complete staged review/diff --check pass. Entire
+  staged diff SHA-256 on 82552db:
+  84b212a7b1b9c74e1309067a10d0a932ed70b93b0f3b541fba40f83ff906ce33.
+  No release work remains unstaged. Current raw unstaged mirror diff SHA-256:
+  2af6574fe8302fa7a5e64d3e93e8955cf7c36f0a4c6c2f135a2edffe8b65032a.
+  Restoring pre-release version context and index blob IDs reconstructs old raw
+  dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc exactly.
+  Thus mirror content is unchanged and excluded despite the new raw diff hash.
+- tmp/commit.md, tmp/release-v0.4.0.md and tmp/release-version.patch are reviewed
+  regenerable preparation artifacts; no unique archive evidence is needed.
+  They are not ordinary staged release files or binary GAW data. Draft explicitly
+  records overwrite/new-file API policy, explicit bibliography snapshots and
+  deferred generic/visibility/fragment/async/preprocessing scope.
+- Validation is conditional on local remote-mirror config/cached dependencies;
+  it does not prove original GNU ELPA recovery or other platform/GUI/pagination
+  support. Native TeXmacs file version remains independent of package version.
 
 ## Body-only assessment after region commit (2026-10-08)
 

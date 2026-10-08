@@ -2,21 +2,22 @@
 
 ## Active objective
 
-Narrowing export node is complete, verified and staged with exact-path approval.
-Await user's ordinary commit, then compare its six-file diff on baseline
-d71204d204a03b30491d5cdb2bd05d59dacd71a3 with
-fdeb09f1bd80199c367eb7c605c2d68ec5383dad1c0bdf616fe9b3ccbd05c39d.
-tmp/commit.md is reviewed. Subtree/region/ext-plist nodes are already committed;
-ext-plist commit d71204d matches its verified five-file hash recorded in evidence.
-Narrowing is the outer body boundary; region wins within it, otherwise intersect
-subtree body. Full source copy restores restriction before parsing/callbacks;
-private snapshots supply global configuration and required dependencies. Hidden
-headings/naming metadata use private copies and prompts use original restriction.
-Captured bounds are checked after waits; external changes are rejected, not undone.
-Empty narrowing is allowed; explicit region remains nonempty. Public signatures
-are unchanged. Visible-only/async, body-only fragment and generic API stay separate
-or deferred. After commit verification, review phase closure/release scope rather
-than assuming every Org exporter flag must be implemented.
+v0.4.0 release preparation is complete, verified and staged with exact approval.
+User selected this version/scope after phase closure review. Await ordinary
+metadata commit, then compare its three-file diff on baseline
+82552db77d2b01fa832fc06948f57e1cc5e80d81 with
+84b212a7b1b9c74e1309067a10d0a932ed70b93b0f3b541fba40f83ff906ce33.
+README.org, org-texmacs.el and only flake.nix version line are staged. Header/Nix
+versions are 0.4.0. README summarizes current document semantics/native consumers,
+optional frontend, scopes/configuration, compatibility and deferred boundaries.
+tmp/commit.md and tmp/release-v0.4.0.md are reviewed. Release notes remain a draft;
+ordinary commit/tag/push/publication are pending and belong to the user.
+Narrowing commit 82552db matches its reviewed six-file hash on d71204d. Nineteen
+feature/fix commits since v0.3.1 form the chosen scope: current bounded DOC-01
+resolution plus .tm/PDF and synchronous dispatcher/naming/scope/configuration.
+Visible-only/async, body-only fragments and generic API/publishing remain deferred
+or separate. No full Org syntax parity, GUI layout or general pagination claim.
+Do not interpret prepared package version or passing tests as a published release.
 Scope guidance: ox-latex is a reference for shared Org export conventions,
 not a feature inventory to copy wholesale. Current ox-texmacs is a bounded
 dispatcher frontend, not a complete generic exporter: org-export-as and related
@@ -33,54 +34,52 @@ Frontend uses org-export-output-file-name and ordinary overwrite after checked
 native bytes are complete. Public new-file-only APIs stay exclusive. Atomic
 replacement, backups and target-version locking are not adopted prerequisites.
 User rejected a standalone PDF preview command; no such command is adopted.
-The staged frontend supports synchronous buffer/subtree/region/narrowing actions.
+The frontend supports synchronous buffer/subtree/region/narrowing actions.
 Generic string export/publishing, preprocessing and visible-only selection
 remain unsupported.
 
 ## Baseline and staging
 
 - Main HEAD observed on 2026-10-08:
-  `d71204d204a03b30491d5cdb2bd05d59dacd71a3`.
-  Its override diff against 7e6b4e0 matches the verified five-file hash.
-- Six narrowing files are approved/staged: README.org, org-texmacs-context.el,
-  org-texmacs-document.el, org-texmacs.el, ox-texmacs.el, tests/ert/ert.el.
-  Complete staged review and diff --check pass. SHA-256 on d71204d:
-  fdeb09f1bd80199c367eb7c605c2d68ec5383dad1c0bdf616fe9b3ccbd05c39d.
-  No implementation remains unstaged. The user's temporary
+  `82552db77d2b01fa832fc06948f57e1cc5e80d81`.
+  Its narrowing diff against d71204d matches the verified six-file hash.
+- Three release paths are approved/staged: README.org, org-texmacs.el and
+  flake.nix (version hunk only). Complete staged review/diff --check pass.
+  SHA-256 on 82552db:
+  84b212a7b1b9c74e1309067a10d0a932ed70b93b0f3b541fba40f83ff906ce33.
+  No release changes remain unstaged. The user's temporary
   `flake.nix` overlay remains excluded. It rewrites
   GNU ELPA fetchurl URLs to the remote USTC mirror. The configuration is retained
   locally only: never stage, commit or push that overlay. It is not a locally hosted mirror.
   Overlay SHA-256: `1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54`.
-  Restoring the pre-fileset baseline/diff metadata reproduces that exact hash.
-  Current raw unstaged flake diff SHA-256 is dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc.
+  Restoring pre-fileset/pre-release version and diff metadata reproduces that hash.
+  Current raw unstaged flake diff SHA-256 is
+  2af6574fe8302fa7a5e64d3e93e8955cf7c36f0a4c6c2f135a2edffe8b65032a.
+  Normalizing version context and blob IDs to pre-release values reproduces
+  dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc exactly,
+  proving the mirror content is unchanged. Staged flake equals baseline plus
+  its single version line; overlay is excluded.
 - Local v0.3.1 annotated tag resolves to `880d4e00667907ef66985387b4865ec8d795d48d`.
-  Later DOC-01/CONSUMER-01 features are local development, not release claims.
+  v0.4.0 includes current DOC-01/CONSUMER-01 subset but is only prepared,
+  not tagged or published. Earlier features are still local development until release.
   Remote publication/signature remain unverified; release evidence is in evidence.md.
 
-## Verified narrowing node
+## Verified release preparation
 
-- Existing source adapters/M-x/dispatcher accept narrowed sources. Core copies
-  complete text with a brief saved restriction, then parses only private buffers.
-  Boundaries are frozen/rechecked, including prompt paths. No new public slot,
-  worker operation, external file read or general preprocessing is introduced.
-- Scope composition is narrowing outer bound, explicit region priority, otherwise
-  subtree intersection. Metadata/dependencies use full snapshot; empty body is
-  valid, while explicit region is nonempty. Out-of-scope targets/truncated STM
-  and unsupported preprocessing directives retain explicit preflight errors.
-- Private heading/naming copy resolves hidden metadata. Filename is dynamically
-  bound only for lookup; temporary copy is not a visiting buffer at disposal.
-  File prompts run in original source outside private property bindings.
-  Source narrowing/point/mark/properties/modified state retain isolation.
-- Final narrowing 7/7 (10.09s), backend 11/11 (5.51s), serialization 16/16
-  (17.77s), subtree 7/7 (9.89s), region 7/7 (12.38s), overrides 6/6 (7.50s)
-  pass. Final Nix passes all seven checks, compilation/package-lint and installed
-  ERT 311/311 (176.95s). Tests assert stable structure/text/bytes/contracts.
-- Targeted Org reads and repeated focused 120s / Nix 240s checks were authorized.
-  First full ERT was 310/311 because an updated legacy rejection test's expected
-  body missed existing normalized trailing space/concat. Corrected assertion;
-  final full check passes with final private filename binding.
-- No unique necessary temporary artifact needs archive. Maintained ERT retains
-  complete reproduction; no PDFs, bytecode or generated caches enter GAW.
+- User selected v0.4.0; no new source semantics are introduced in this node.
+  Package header and Nix trivialBuild version agree; native TeXmacs version header
+  remains tied to running TeXmacs and is not replaced with package version.
+- All seven Nix checks pass for emacs-org-texmacs-0.4.0, compilation/package-lint
+  and installed ERT 311/311 (155.04s). README loading examples are covered by
+  installed tests. Repeated exact Nix 240s checks were authorized for this node.
+- Validation uses local/uncommitted remote ELPA mirror config. Original endpoint
+  recovery is unverified; exclude overlay and lock changes from release commits.
+  Other platforms, GUI layout and general pagination remain unverified.
+- tmp/release-version.patch is a reviewed version-only staging aid. It was
+  applied to index with approval; no direct ordinary commits/tags/pushes occurred.
+- Release notes and patch are regenerable preparation artifacts, not GAW archive
+  evidence. No necessary unique temporary evidence needs archive. Only pure text
+  enters GAW; no binary packages/PDF/bytecode are included.
 
 ## Existing consumer boundaries
 
@@ -133,10 +132,13 @@ remain unsupported.
    verified against the six-file diff hash 3be6de01... above. Region is
    committed as 7e6b4e0 and verified against six-file hash 22765b0b... above.
    Override commit d71204d is verified against five-file diff 145a3237... above.
-   Narrowing node is verified/staged; await commit and compare six-file diff to
-   fdeb09f1... above. Then review phase closure and release scope. Body-only
+   Narrowing commit 82552db is verified against six-file diff fdeb09f1... in
+   evidence. v0.4.0 preparation is verified/staged; await metadata commit and
+   compare three-file diff to 84b212a7... above. Then discuss/manual-verify tag and
+   publication only as user-directed actions. Body-only
    fragment/generic API remain deferred by user choice.
-   Keep the mirror overlay excluded; no flake or lock changes belong to this node.
+   Keep the mirror overlay excluded; only the Nix version hunk belongs to
+   this node, with no lock changes.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries
    separate from the selected PDF work. Do not silently
    enable full Org preprocessing or general bibliography/resource reads.
