@@ -32,17 +32,27 @@ An active region selects the body; SUBTREEP still selects its configuration."
   (let ((region (and (org-region-active-p)
                      (cons (region-beginning) (region-end)))))
     (list (when subtreep
-            (save-excursion
-              (condition-case nil (org-back-to-heading t)
-                (error (user-error "No subtree at point")))
-              (point)))
+            (if (buffer-narrowed-p)
+                (let ((position (point)))
+                  (org-texmacs--export-source-copy
+                   (current-buffer)
+                   (lambda ()
+                     (goto-char position)
+                     (condition-case nil (org-back-to-heading t)
+                       (error (user-error "No subtree at point")))))
+                  position)
+              (save-excursion
+                (condition-case nil (org-back-to-heading t)
+                  (error (user-error "No subtree at point")))
+                (point))))
           region ext-plist)))
 
 ;;;###autoload
 (defun org-texmacs-export-as-texmacs
     (&optional async subtreep visible-only body-only ext-plist)
   "Export the current Org buffer to a fresh readonly native .tm byte buffer.
-Reject non-nil ASYNC, VISIBLE-ONLY or BODY-ONLY and narrowing.
+Reject non-nil ASYNC, VISIBLE-ONLY or BODY-ONLY.
+Existing narrowing bounds the exported body.
 EXT-PLIST accepts only the documented restricted configuration keys
 and is captured before preparation.  An active region selects the body.
 Reuse the owned pipeline; do not run generic preprocessing or read bibliography.
@@ -68,7 +78,8 @@ Return the new buffer.  Display it when
 (defun org-texmacs-export-to-texmacs
     (&optional async subtreep visible-only body-only ext-plist)
   "Export the current Org buffer to Org's local .tm output path.
-Reject non-nil ASYNC, VISIBLE-ONLY or BODY-ONLY and narrowing.
+Reject non-nil ASYNC, VISIBLE-ONLY or BODY-ONLY.
+Existing narrowing bounds the exported body.
 EXT-PLIST accepts only the documented restricted configuration keys
 and is captured before output naming.  An active region selects the body.
 Use `org-export-output-file-name'
@@ -85,7 +96,8 @@ Return the absolute destination.  No bibliography files are read."
 (defun org-texmacs-export-to-texmacs-pdf
     (&optional async subtreep visible-only body-only ext-plist)
   "Export the current Org buffer to Org's local PDF output path.
-Reject non-nil ASYNC, VISIBLE-ONLY or BODY-ONLY and narrowing.
+Reject non-nil ASYNC, VISIBLE-ONLY or BODY-ONLY.
+Existing narrowing bounds the exported body.
 EXT-PLIST accepts only the documented restricted configuration keys
 and is captured before output naming.  An active region selects the body.
 Use `org-export-output-file-name'
@@ -128,6 +140,7 @@ Optional SUBTREE-POSITION freezes the selected source heading before prompts.
 REGION is the captured body range; naming still follows SUBTREE-POSITION.
 EXT-PLIST is owned by frontend validation; it cannot override output paths."
   (let* ((source (current-buffer))
+         (bounds (cons (point-min) (point-max)))
          (directory (org-texmacs--source-capture-path default-directory))
          (source-file (buffer-file-name (buffer-base-buffer))))
     (unless (and (org-texmacs--document-local-file-path-p directory)
@@ -136,11 +149,32 @@ EXT-PLIST is owned by frontend validation; it cannot override output paths."
       (user-error "TeXmacs export requires a local source context"))
     (setq source-file (and source-file (substring-no-properties source-file)))
     (let* ((name (save-excursion
-                   (let ((file-name-handler-alist nil)
-                         (org-entry-property-inherited-from (make-marker)))
-                     (when subtree-position (goto-char subtree-position))
-                     (org-export-output-file-name extension (and subtree-position t)))))
+                   (if (buffer-narrowed-p)
+                       (let ((choice
+                              (org-texmacs--export-source-copy
+                               source
+                               (lambda ()
+                                 (let ((file-name-handler-alist nil))
+                                   (when subtree-position (goto-char subtree-position))
+                                   (catch 'output-prompt
+                                     (cl-letf (((symbol-function 'read-file-name)
+                                                (lambda (&rest arguments)
+                                                  (throw 'output-prompt arguments))))
+                                       (org-export-output-file-name
+                                        extension (and subtree-position t)))))))))
+                         ;; Prompt in the original source context, outside the
+                         ;; private copy's property bindings and restriction.
+                         (if (stringp choice) choice
+                           (concat (file-name-sans-extension
+                                    (apply #'read-file-name choice)) extension)))
+                     (let ((file-name-handler-alist nil)
+                           (org-entry-property-inherited-from (make-marker)))
+                       (when subtree-position (goto-char subtree-position))
+                       (org-export-output-file-name extension (and subtree-position t))))))
            (target (expand-file-name name directory)))
+      (unless (with-current-buffer source
+                (equal bounds (cons (point-min) (point-max))))
+        (user-error "Source restriction changed during output naming"))
       ;; Org's helper protects existing source files.  Also protect an unsaved
       ;; visiting source with an output suffix, where file-equal-p is nil.
       (when (equal target source-file) (setq target (concat target extension)))

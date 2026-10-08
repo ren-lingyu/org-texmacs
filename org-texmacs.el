@@ -188,7 +188,9 @@ preparation and conversion together, use `org-texmacs-document-from-buffer'."
     (source-buffer &optional bibliography-sources subtree-position region ext-plist)
   "Prepare a buffer-independent structural input from SOURCE-BUFFER.
 Optional SUBTREE-POSITION selects its containing subtree in the full snapshot;
-nil prepares the whole buffer.  It must be an integer source position.
+nil prepares the accessible buffer.  It must be an integer source position.
+Existing narrowing bounds the body; capture full text/context privately for
+configuration and dependencies.  Reject changes to source restriction on waits.
 REGION is an optional (BEGIN . END) integer pair selecting a nonempty body
 range; it takes precedence over subtree body selection, retaining its options.
 Capture both selections before waits; do not use the source point or mark later.
@@ -218,7 +220,7 @@ footnotes come from the same full snapshot.  Partial ordinary text uses Org
 narrowed parsing semantics; truncated STM islands fail before worker calls.
 EXT-PLIST supplies the restricted overrides of `org-texmacs-prepare-buffer'.
 
-SOURCE-BUFFER must be a live, unnarrowed Org buffer object, not a name
+SOURCE-BUFFER must be a live Org buffer object, not a name
 or file path.  Capture source text and supported configuration from it,
 independently of the caller's current buffer.  For a convenience wrapper,
 use `org-texmacs-document-current-buffer'.
@@ -244,8 +246,11 @@ plus complete TeXmacs special blocks and discovered paragraph fragments.
 Normalize ordinary spaces, tabs and soft newlines in Org inline text,
 including literal inline code; do not normalize STM subtree contents.
 Use SOURCE-BUFFER's `org-texmacs-fragment-tags'.  Other Org nodes and metadata
-outside the documented subset signal `org-texmacs-document-error'.  Reject
-narrowing; do not widen implicitly,
+outside the documented subset signal `org-texmacs-document-error'.  Existing
+narrowing bounds the body; a region must be inside it and takes precedence,
+otherwise intersect subtree body with that boundary.  Copy full source text
+with a brief saved restriction for configuration/dependencies, restoring it
+before parsing or callbacks; parse only private buffers.  Do not
 expand INCLUDE, execute Babel, run export hooks or read external files.
 Copy effective TODO, DONE, priority regexp and headline-level settings into
 the private Org parser; do not silently reinterpret customized headings.
@@ -294,8 +299,8 @@ it does not provide export, native buffer updates or rendering."
   (unless (and (bufferp source-buffer) (buffer-live-p source-buffer))
     (signal 'org-texmacs-document-error '("Expected a live Org buffer object")))
   (with-current-buffer source-buffer
-    (unless (and (derived-mode-p 'org-mode) (not (buffer-narrowed-p)))
-      (signal 'org-texmacs-document-error '("Expected an unnarrowed Org buffer")))
+    (unless (derived-mode-p 'org-mode)
+      (signal 'org-texmacs-document-error '("Expected an Org buffer")))
     (when (and subtree-position
                (not (and (integerp subtree-position)
                          (<= (point-min) subtree-position (point-max)))))
@@ -310,6 +315,8 @@ it does not provide export, native buffer updates or rendering."
       (setq region (cons (car region) (cdr region))))
     (setq ext-plist (org-texmacs--context-external-options ext-plist))
     (let* ((buffer source-buffer)
+           (bounds (cons (point-min) (point-max)))
+           (restriction (and (buffer-narrowed-p) bounds))
            (mode major-mode)
            (tick (buffer-chars-modified-tick))
            (source-file-value
@@ -341,9 +348,10 @@ it does not provide export, native buffer updates or rendering."
                 (setq base-info (plist-put base-info :texmacs-subtree-settings subtree-settings))))
            (style (org-texmacs--document-copy-style org-texmacs-document-style))
            (initial (org-texmacs--document-copy-initial org-texmacs-document-initial))
-           (source (buffer-substring-no-properties (point-min) (point-max)))
+           (source (org-texmacs--source-buffer-text))
            (prepared (org-texmacs--document-prepare-source
-                      source tags heading-settings link-settings base-info subtree-position region))
+                      source tags heading-settings link-settings base-info
+                      subtree-position region restriction))
            (info (nth 4 prepared)))
       (cl-labels ((check ()
                    (unless (buffer-live-p buffer)
@@ -371,8 +379,9 @@ it does not provide export, native buffer updates or rendering."
                                 (not (equal subtree-settings (org-texmacs--context-subtree-settings))))
                        (signal 'org-texmacs-document-error
                                '("Org property settings changed during conversion")))
-                     (when (buffer-narrowed-p)
-                       (signal 'org-texmacs-document-error '("Source became narrowed"))))))
+                     (unless (equal bounds (cons (point-min) (point-max)))
+                       (signal 'org-texmacs-document-error
+                               '("Source restriction changed during conversion"))))))
         (check)
         (let (keys)
           (dolist (signatures bibliography-signatures)
@@ -521,14 +530,46 @@ interactive calls pass no bibliography snapshots.  No GUI preview opens."
   "Return the current Org source for an interactive export command."
   (unless (derived-mode-p 'org-mode)
     (user-error "Export requires an Org source buffer"))
-  (when (buffer-narrowed-p)
-    (user-error "Export requires an unnarrowed Org source buffer"))
   (current-buffer))
+
+(defun org-texmacs--source-buffer-text ()
+  "Copy the complete current source text, restoring its restriction immediately.
+Do not parse, invoke callbacks or wait while widened for this read."
+  (save-restriction
+    (widen)
+    (buffer-substring-no-properties (point-min) (point-max))))
+
+(defun org-texmacs--export-source-copy (source function)
+  "Call FUNCTION in a private full copy of SOURCE for heading/output metadata.
+Retain file/directory and heading/property context without live source widening
+during Org parsing or prompts.  Do not run mode hooks or export preprocessing."
+  (let (text file directory headings settings)
+    (with-current-buffer source
+      (setq text (org-texmacs--source-buffer-text)
+            file (buffer-file-name (buffer-base-buffer))
+            directory default-directory
+            headings (org-texmacs--document-heading-settings)
+            settings (org-texmacs--context-subtree-settings)))
+    (with-temp-buffer
+      (let ((org-element-use-cache nil) (org-inhibit-startup t)
+            (org-use-property-inheritance (nth 0 settings))
+            (org-property-separators (nth 1 settings))
+            (org-global-properties (nth 2 settings))
+            (org-global-properties-fixed (nth 3 settings))
+            (org-entry-property-inherited-from (make-marker)))
+        (delay-mode-hooks (org-mode))
+        (org-texmacs--document-use-heading-settings headings)
+        (setq-local default-directory directory)
+        (insert text)
+        ;; Provide filename metadata only during lookup, without making the
+        ;; private buffer a visiting source when it is disposed.
+        (let ((buffer-file-name file)) (funcall function))))))
 
 (defun org-texmacs--export-file-arguments (&optional extension)
   "Capture an interactive source before prompting for a new local file.
 EXTENSION is a fixed consumer suffix, defaulting to tm."
   (let* ((source (org-texmacs--export-interactive-source))
+         (bounds (cons (point-min) (point-max)))
          (directory (org-texmacs--source-capture-path default-directory))
          (source-file (buffer-file-name (buffer-base-buffer)))
          (extension (or extension "tm"))
@@ -536,10 +577,14 @@ EXTENSION is a fixed consumer suffix, defaulting to tm."
                        "." extension)))
     (unless (org-texmacs--document-local-file-path-p directory)
       (user-error "Interactive file export requires a local working directory"))
-    (list source
-          (expand-file-name
-           (read-file-name (format "Export to new %s file: " extension) directory nil nil name)
-           directory))))
+    (let ((target
+           (expand-file-name
+            (read-file-name (format "Export to new %s file: " extension) directory nil nil name)
+            directory)))
+      (unless (with-current-buffer source
+                (equal bounds (cons (point-min) (point-max))))
+        (user-error "Source restriction changed during file prompt"))
+      (list source target))))
 
 ;;;###autoload
 (defun org-texmacs-export-to-buffer

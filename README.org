@@ -516,10 +516,12 @@ For example, this structural conversion requires no source buffer or worker:
 #+end_src
 
 =org-texmacs-document-from-buffer= takes a required =SOURCE-BUFFER= argument and reads
-that entire Org buffer, independently of the caller's current buffer.
+its accessible Org body, independently of the caller's current buffer.
 The argument must be a live buffer object, not a buffer name or file path.
-It rejects non-Org buffers and narrowing instead of widening implicitly.
-It prepares a private snapshot,
+It rejects non-Org buffers.  Existing narrowing bounds the body; complete source
+text/configuration and required dependencies are captured into a private snapshot.
+The source restriction is restored immediately after the full-text read, before
+parsing, callbacks or worker waits.  The adapter
 parses STM islands with the shared worker, and returns a document result:
 
 | Accessor                         | Result                                                           |
@@ -1037,7 +1039,7 @@ independent serialization/save consumers above; they retain its captured content
 even if the original source later changes.
 
 ** Interactive export and a native byte buffer
-In an unnarrowed Org buffer, =M-x org-texmacs-export-to-buffer= creates and
+In an Org buffer, =M-x org-texmacs-export-to-buffer= creates and
 displays a fresh read-only =special-mode= buffer containing the native =.tm=
 bytes.  Each export gets its own buffer; previous exports remain intact.
 The buffer has no visiting file, uses =no-conversion= coding and is derived
@@ -1047,8 +1049,8 @@ do not run while the view is initialized; failed exports leave no new view.
 =M-x org-texmacs-export-to-file= captures the original Org source before its
 file prompt and asks for a new file in the source's local working directory.
 The suggested name uses the visiting source's file stem, or =export.tm= for
-non-file buffers.  Existing targets still fail explicitly.  Non-Org or narrowed
-buffers fail before the prompt; remote working directories are outside this
+non-file buffers.  Existing targets still fail explicitly.  Non-Org buffers
+fail before the prompt; remote working directories are outside this
 interactive file chooser's subset.  The explicit source/file Lisp API remains
 available when the caller chooses a native local destination separately.
 
@@ -1128,8 +1130,8 @@ They accept Org's standard optional arguments =async subtreep visible-only
 body-only ext-plist=.  =subtreep= and the restricted =ext-plist= below are supported;
 =async=, =visible-only= and =body-only= must be nil and fail before conversion or
 file prompts when non-nil.  It exports a complete
-buffer, containing subtree or active region synchronously from an unnarrowed
-source.  An active region takes precedence for body selection; =subtreep=
+buffer, containing subtree or active region synchronously, respecting existing
+narrowing.  An active region takes precedence for body selection; =subtreep=
 still supplies subtree configuration and output naming.  File actions reuse
 =org-export-output-file-name=, like =ox-latex=: =#+EXPORT_FILE_NAME= takes
 precedence over the visiting source's file stem; a source with neither prompts
@@ -1216,12 +1218,45 @@ can prepare a configured document and save it with the document consumers.
 these consumers produce complete native =.tm=/PDF documents.  A future embeddable
 fragment needs an explicit format and consumer contract.
 
+*** Narrowed source buffers
+Existing narrowing is the outer body boundary.  Without an explicit region or
+subtree selection, export the accessible range, including partial ordinary text.
+With =subtreep=, intersect the selected subtree body with that boundary; omitted
+root metadata still supplies configuration.  With an active/explicit region,
+the region selects the body instead, and must lie inside the accessible range.
+Subtree configuration/naming still applies when requested.  Empty narrowing is
+allowed; an explicit =REGION= argument still must be nonempty.
+
+File/global options, output naming and needed footnote/bibliography dependencies
+come from the complete source snapshot.  The containing subtree heading can
+supply =EXPORT_*= properties even when narrowing hides that heading.  Explicit
+subtree positions must be inside the source's accessible range.  Targets outside
+the emitted body/dependencies still fail; no external data reader is added.
+Unsupported preprocessing directives anywhere in the source remain rejected.
+
+The source is briefly widened only for a synchronous text copy inside a saved
+restriction.  Parsing and heading/output-name lookup run in private full copies;
+the source retains its restriction during file prompts, callbacks and native
+waits.  Changes to the captured bounds, including widening, reject the result
+before writing output.  Changes made by another caller are not undone.
+Point, mark, source properties and modified state retain the existing isolation
+contract.  Truncated TeXmacs islands retain the region preflight error boundary.
+
+#+begin_src emacs-lisp
+  (save-restriction
+    (narrow-to-region begin end)
+    (org-texmacs-export-to-texmacs))
+#+end_src
+
+=visible-only= remains unsupported: narrowing selects an accessible range,
+while folding/visibility needs a separate captured policy.
+
 *** Region export
 An active region selects its exact character range.  As in Org export, partial
 ordinary text is parsed with the region as the accessible body; it need not
 start on a heading or paragraph boundary.  Parsing runs in a private complete
-source snapshot.  The live source is never narrowed, and its point, mark and
-region state are preserved.  Regions that truncate a discovered TeXmacs inline
+source snapshot.  Existing source narrowing bounds the region; conversion keeps
+the source's restriction, point, mark and region state.  Regions that truncate a discovered TeXmacs inline
 fragment or a TeXmacs block fail before native worker requests.
 
 The source's supported file/global configuration and bibliography declarations
@@ -1295,7 +1330,7 @@ The explicit source APIs =org-texmacs-prepare-buffer=,
 =org-texmacs-document-from-buffer=, =org-texmacs-export-from-buffer=,
 =org-texmacs-export-pdf-from-buffer= and =org-texmacs-export-to-buffer= accept an
 optional third =SUBTREE-POSITION= after =BIBLIOGRAPHY-SOURCES=.  It is an integer
-in the unnarrowed source, and nil retains whole-buffer behavior:
+inside the source's accessible range, and nil retains accessible-buffer behavior:
 
 #+begin_src emacs-lisp
   (org-texmacs-document-from-buffer source-buffer bibliography-sources position)

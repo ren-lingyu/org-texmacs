@@ -1519,7 +1519,7 @@ constants, concatenation, preambles, repairs and duplicate keys or fields."
       (nreverse signatures))))
 
 (defun org-texmacs--document-prepare-source
-    (source tags headings links info &optional subtree-position region)
+    (source tags headings links info &optional subtree-position region restriction)
   "Prepare SOURCE under private Org link syntax using fixed LINKS settings.
 TAGS and HEADINGS are the conversion's other parser inputs.
 Return prepared structure without invoking headline formatters or lowering.
@@ -1527,7 +1527,8 @@ Never register protocols globally or reset source element caches.  Keep
 Org's internal regexp regeneration confined to this preparation boundary.
 INFO is the fixed supported global and buffer-local context snapshot.
 Optional SUBTREE-POSITION selects a subtree in that complete source snapshot.
-REGION selects its (BEGIN . END) body while retaining subtree configuration."
+REGION selects its (BEGIN . END) body while retaining subtree configuration.
+RESTRICTION is the source's captured outer body boundary, not a live narrowing."
   (let ((org-link-parameters (org-texmacs--document-copy-link-setting (nth 0 links)))
         (org-link-abbrev-alist (org-texmacs--document-copy-link-setting (nth 1 links)))
         (org-link-types-re org-link-types-re)
@@ -1549,10 +1550,10 @@ REGION selects its (BEGIN . END) body while retaining subtree configuration."
         (insert source)
         (org-texmacs--document-prepare
          source (org-texmacs--fragment-collect tags) headings (nth 2 links) info
-         subtree-position region)))))
+         subtree-position region restriction)))))
 
 (defun org-texmacs--document-prepare
-    (source spans heading-settings &optional abbrevs info subtree-position region)
+    (source spans heading-settings &optional abbrevs info subtree-position region restriction)
   "Prepare SOURCE and discovered SPANS without starting a worker.
 HEADING-SETTINGS is the source's effective heading configuration snapshot.
 Install it locally after private mode initialization, before parsing source.
@@ -1563,7 +1564,8 @@ Return (AST ISLANDS REQUESTS POST-BLANKS INFO).  Each request is
 Island entries initially contain placeholder strees for structural validation.
 All positions refer to the complete, unnarrowed source snapshot.
 Optional SUBTREE-POSITION selects a body plus owned dependencies before walking.
-REGION takes precedence for body selection; reject truncated STM islands."
+REGION takes precedence for body selection; reject truncated STM islands.
+RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
   (with-temp-buffer
     (let ((org-element-use-cache nil)
           (org-inhibit-startup t)
@@ -1665,7 +1667,9 @@ REGION takes precedence for body selection; reject truncated STM islands."
                  (mapc #'whitespace (org-element-property :tag node)))
                (mapc #'walk (org-element-contents node))))))
         (let ((ast (org-element-parse-buffer)))
-          (when region
+          (setq region (org-texmacs--context-body-region
+                        ast subtree-position region restriction))
+          (when (and region (< (car region) (cdr region)))
             (cl-labels ((complete (begin end)
                           (when (and (< begin (cdr region)) (< (car region) end)
                                      (not (<= (car region) begin end (cdr region))))

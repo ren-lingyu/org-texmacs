@@ -459,6 +459,27 @@ Keep global declarations in INFO; body dependencies are restored separately."
       (apply #'org-element-set-contents ast children))
     (org-texmacs--context-validate-info info)))
 
+(defun org-texmacs--context-body-region (ast position region restriction)
+  "Return body bounds under REGION, subtree POSITION and outer RESTRICTION.
+Run in the complete private snapshot owning AST.  REGION takes priority;
+otherwise intersect subtree body with RESTRICTION.  Empty bodies are allowed."
+  (or region
+      (when restriction
+        (if (null position) restriction
+          (goto-char position)
+          (condition-case nil (org-back-to-heading t)
+            (error (signal 'org-texmacs-document-error '("No subtree at source position"))))
+          (let ((root (org-element-map ast 'headline
+                        (lambda (node)
+                          (and (= (point) (org-element-property :begin node)) node))
+                        nil t)))
+            (unless root
+              (signal 'org-texmacs-document-error '("Missing snapshot subtree")))
+            (org-end-of-meta-data)
+            (let ((begin (min (cdr restriction) (max (car restriction) (point)))))
+              (cons begin (max begin (min (cdr restriction)
+                                         (org-element-property :end root))))))))))
+
 (defun org-texmacs--context-prepare
     (ast islands requests post-blanks base-info &optional subtree-position region)
   "Apply restricted context to prepared AST and associated mappings.

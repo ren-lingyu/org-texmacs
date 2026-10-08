@@ -3905,7 +3905,9 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (org-mode)
     (insert "First\nSecond\n")
     (narrow-to-region 2 (point-max))
-    (should-error (org-texmacs-document-from-buffer (current-buffer)) :type 'org-texmacs-document-error)
+    (should (equal (org-texmacs-document-body
+                    (org-texmacs-document-from-buffer (current-buffer)))
+                   '(document (concat "irst Second "))))
     (should (= (point-min) 2))))
 
 (ert-deftest org-texmacs-document-explicit-source-and-wrapper ()
@@ -5010,10 +5012,6 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (should-error (call-interactively #'org-texmacs-export-to-buffer) :type 'user-error)
       (org-mode)
       (insert "Text.\n")
-      (narrow-to-region 1 3)
-      (should-error (call-interactively #'org-texmacs-export-to-file) :type 'user-error)
-      (should-error (call-interactively #'org-texmacs-export-to-buffer) :type 'user-error)
-      (widen)
       (setq default-directory "/ssh:host:/tmp/")
       (should-error (call-interactively #'org-texmacs-export-to-file) :type 'user-error)))
   (should (commandp 'org-texmacs-export-to-buffer))
@@ -5051,10 +5049,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
         (dolist (index '(0 2 3 4))
           (let ((arguments (make-list 5 nil)))
             (setcar (nthcdr index arguments) t)
-            (should-error (apply function arguments) :type 'user-error)))
-        (save-restriction
-          (narrow-to-region 2 (point-max))
-          (should-error (funcall function) :type 'user-error))))
+            (should-error (apply function arguments) :type 'user-error)))))
     (with-temp-buffer
       (should-error (org-texmacs-export-as-texmacs) :type 'user-error))))
 
@@ -5443,6 +5438,195 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                      (encode-coding-string "<TeXmacs|2.1.5>" 'us-ascii))))
           (should-error (org-texmacs-export-from-buffer (current-buffer) nil (point))
                         :type 'org-texmacs-document-error))))))
+
+(ert-deftest org-texmacs-narrowing-config-and-source-state ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+TITLE: FileTitleSentinel\n#+OPTIONS: toc:nil\n"
+            "* Outside\n- [X] UnsupportedOutsideSentinel\n\n"
+            "Prefix SelectedBodySentinel suffix.\n")
+    (search-backward "SelectedBodySentinel")
+    (let ((begin (point)) (end (+ (point) (length "SelectedBodySentinel"))))
+      (put-text-property begin end 'org-texmacs-test-property "retained")
+      (narrow-to-region begin end) (goto-char begin) (set-mark end)
+      (setq mark-active t)
+      (let* ((source (current-buffer))
+             (state (org-texmacs-test--document-buffer-state source)))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Plain narrowing started worker"))))
+          (let* ((input (org-texmacs-prepare-buffer source nil nil nil
+                                                  '(:title "ExternalTitleSentinel")))
+                 (body (prin1-to-string (org-texmacs-document-body (org-texmacs-document input)))))
+            (should (string-match-p "FileTitleSentinel" body))
+            (should (string-match-p "SelectedBodySentinel" body))
+            (should-not (string-match-p "Prefix\\|suffix\\|Outside\\|ExternalTitleSentinel" body))
+            (should (equal state (org-texmacs-test--document-buffer-state source)))))))))
+
+(ert-deftest org-texmacs-narrowing-owned-notes-bibliography-and-islands ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil\n#+bibliography: refs.bib\n"
+              "[fn:n] Note (math \"x\") [cite:@b].\n\n* Main\n"
+              "Selected (math \"y\") [fn:n] [fn:inline] [cite:@a] [[./asset.org]].\n"
+              "#+print_bibliography:\n* Outside\nOutside[fn:inline:OwnedInlineNote].\n"
+              "#+begin_texmacs\n(math\n#+end_texmacs\n")
+      (goto-char (point-min)) (search-forward "Selected")
+      (let ((begin (match-beginning 0)))
+        (search-forward "* Outside")
+        (narrow-to-region begin (match-beginning 0))
+        (let* ((input (org-texmacs-prepare-buffer
+                       (current-buffer) '(("refs.bib" . "@book{a, title={A}}\n@book{b, title={B}}"))))
+               (document (org-texmacs-document input))
+               (body (org-texmacs-document-body document)))
+          (should (= 2 (cl-count 'footnote (flatten-tree body))))
+          (should (= 2 (cl-count 'math (flatten-tree body))))
+          (should (string-match-p "OwnedInlineNote" (prin1-to-string body)))
+          (should (equal (nth 1 (plist-get (org-texmacs-input-info input)
+                                         :texmacs-bibliography-output)) '("b" "a")))
+          (should (org-texmacs-document-file-paths document))
+          (should (equal default-directory (org-texmacs-document-resource-base document)))
+          (should (string-prefix-p "<TeXmacs|" (org-texmacs-document-serialize document))))))))
+
+(ert-deftest org-texmacs-narrowing-subtree-intersection-and-region-priority ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: toc:nil\n* Chosen\n:PROPERTIES:\n"
+            ":EXPORT_TITLE: SubtreeTitleSentinel\n:END:\nRootPrefix ExcludedPrefix.\n"
+            "SelectedBodySentinel.\n** Child\nChildBodySentinel.\n"
+            "* Outside\nOutsideBodySentinel.\n")
+    (goto-char (point-min)) (search-forward "SelectedBodySentinel")
+    (let ((begin (match-beginning 0)))
+      (narrow-to-region begin (point-max))
+      (let ((body (prin1-to-string
+                   (org-texmacs-document-body
+                    (org-texmacs-document-from-buffer (current-buffer) nil begin)))))
+        (should (string-match-p "SubtreeTitleSentinel" body))
+        (should (string-match-p "SelectedBodySentinel" body))
+        (should (string-match-p "ChildBodySentinel" body))
+        (should-not (string-match-p "ExcludedPrefix\\|OutsideBodySentinel" body)))
+      (goto-char begin) (search-forward "OutsideBodySentinel")
+      (let ((region (cons (match-beginning 0) (point))))
+        (let ((body (prin1-to-string
+                     (org-texmacs-document-body
+                      (org-texmacs-document-from-buffer (current-buffer) nil begin region)))))
+          (should (string-match-p "SubtreeTitleSentinel" body))
+          (should (string-match-p "OutsideBodySentinel" body))
+          (should-not (string-match-p "SelectedBodySentinel\\|ChildBodySentinel" body))))
+      (should-error (org-texmacs-prepare-buffer (current-buffer) nil 1)
+                    :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-narrowing-empty-and-preflight-boundaries ()
+  (cl-letf (((symbol-function 'org-texmacs--worker-request)
+             (lambda (&rest _) (ert-fail "Invalid/empty narrowing started worker"))))
+    (with-temp-buffer
+      (org-mode) (insert "* Heading\nBody.\n")
+      (narrow-to-region 5 5)
+      (should (equal '(document)
+                     (org-texmacs-document-body
+                      (org-texmacs-document-from-buffer (current-buffer)))))
+      (should-error (org-texmacs-prepare-buffer (current-buffer) nil nil '(5 . 5))
+                    :type 'org-texmacs-document-error))
+    (with-temp-buffer
+      (org-mode) (insert "Body (math \"x\").\n")
+      (narrow-to-region 8 12)
+      (let ((state (org-texmacs-test--document-buffer-state (current-buffer))))
+        (should-error (org-texmacs-prepare-buffer (current-buffer))
+                      :type 'org-texmacs-document-error)
+        (should (equal state (org-texmacs-test--document-buffer-state (current-buffer)))))
+      (should-error (org-texmacs-prepare-buffer (current-buffer) nil nil '(1 . 12))
+                    :type 'org-texmacs-document-error))
+    (with-temp-buffer
+      (org-mode) (insert "#+INCLUDE: outside.org\nBody.\n")
+      (search-backward "Body") (narrow-to-region (point) (point-max))
+      (should-error (org-texmacs-prepare-buffer (current-buffer))
+                    :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-narrowing-native-frontend-naming-and-state ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+EXPORT_FILE_NAME: file.other\n#+OPTIONS: toc:nil\n"
+              "* Chosen\n:PROPERTIES:\n:EXPORT_TITLE: SubtreeTitleSentinel\n"
+              ":EXPORT_FILE_NAME: subtree.other\n:END:\nPrefix SelectedBodySentinel suffix.\n")
+      (search-backward "SelectedBodySentinel")
+      (let ((begin (point)) (end (+ (point) (length "SelectedBodySentinel")))
+            (org-export-show-temporary-export-buffer nil))
+        (narrow-to-region begin end) (goto-char begin)
+        (set-mark end) (setq mark-active nil)
+        (let ((state (org-texmacs-test--document-buffer-state (current-buffer))))
+          (let ((output (org-texmacs-export-as-texmacs nil t)))
+            (unwind-protect
+                (with-current-buffer output
+                  (should (string-match-p "SubtreeTitleSentinel" (buffer-string)))
+                  (should (string-match-p "SelectedBodySentinel" (buffer-string)))
+                  (should-not (string-match-p "Prefix\\|suffix" (buffer-string))))
+              (kill-buffer output)))
+          (dolist (entry '((org-texmacs-export-to-texmacs . "tm")
+                           (org-texmacs-export-to-texmacs-pdf . "pdf")))
+            (should (equal (funcall (car entry) nil t)
+                           (expand-file-name (concat "subtree." (cdr entry)) test-directory))))
+          (should (equal (org-texmacs-export-to-texmacs)
+                         (expand-file-name "file.tm" test-directory)))
+          (should (equal state (org-texmacs-test--document-buffer-state (current-buffer)))))))))
+
+(ert-deftest org-texmacs-narrowing-prompts-and-restriction-changes ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode) (insert "Prefix SelectedBodySentinel suffix.\n")
+      (search-backward "SelectedBodySentinel")
+      (let* ((begin (point)) (end (+ (point) (length "SelectedBodySentinel")))
+             (source (current-buffer)))
+        (narrow-to-region begin end)
+        (cl-letf (((symbol-function 'read-file-name)
+                   (lambda (&rest _)
+                     (should (eq source (current-buffer)))
+                     (should (= begin (point-min))) (should (= end (point-max)))
+                     "prompt.other")))
+          (let ((file (org-texmacs-export-to-texmacs)))
+            (should (equal file (expand-file-name "prompt.tm" test-directory)))
+            (with-temp-buffer
+              (set-buffer-multibyte nil) (insert-file-contents-literally file)
+              (should (string-match-p "SelectedBodySentinel" (buffer-string)))
+              (should-not (string-match-p "Prefix\\|suffix" (buffer-string))))))
+        (cl-letf (((symbol-function 'read-file-name)
+                   (lambda (&rest _) (with-current-buffer source (widen)) "changed.other"))
+                  ((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Restriction change started worker"))))
+          (should-error (org-texmacs-export-to-texmacs) :type 'user-error)
+          (should-not (buffer-narrowed-p))
+          (should-not (file-exists-p (expand-file-name "changed.tm" test-directory))))
+        (narrow-to-region begin end)
+        (cl-letf (((symbol-function 'read-file-name)
+                   (lambda (&rest _) (widen) "interactive.tm")))
+          (should-error (org-texmacs--export-file-arguments) :type 'user-error)
+          (should-not (buffer-narrowed-p)))))))
+
+(ert-deftest org-texmacs-narrowing-native-waits-reject-changes-before-write ()
+  (org-texmacs-test--with-worker
+    (dolist (change '(widen shift hidden-text))
+      (with-temp-buffer
+        (org-mode) (insert "Prefix SelectedBodySentinel suffix.\n")
+        (setq buffer-file-name (expand-file-name "source.org" test-directory))
+        (search-backward "SelectedBodySentinel")
+        (let* ((begin (point)) (end (+ begin (length "SelectedBodySentinel")))
+               (source (current-buffer))
+               (file (expand-file-name "source.tm" test-directory))
+               (serialize (symbol-function 'org-texmacs-document-serialize)))
+          (write-region "PreviousOutput" nil file nil 'silent)
+          (narrow-to-region begin end)
+          (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                     (lambda (document)
+                       (with-current-buffer source
+                         (pcase change
+                           ('widen (widen))
+                           ('shift (narrow-to-region (1+ begin) end))
+                           ('hidden-text (save-restriction (widen) (goto-char 1) (insert "X")))))
+                       (funcall serialize document))))
+            (should-error (org-texmacs-export-to-texmacs) :type 'org-texmacs-document-error))
+          (with-temp-buffer
+            (insert-file-contents-literally file)
+            (should (equal "PreviousOutput" (buffer-string)))))))))
 
 (ert-deftest org-texmacs-overrides-global-file-subtree-priority ()
   (with-temp-buffer
