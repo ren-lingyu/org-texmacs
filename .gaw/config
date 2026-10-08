@@ -1,2 +1,3 @@
 (:workspace ((:directory "memory")
+             (:directory "archive")
              (:directory "skills")))
