@@ -1,0 +1,7 @@
+(load "/home/lingyu/Projects/org-texmacs/org-texmacs-worker.scm")
+(use-modules (convert bibtex bibtextm) (bibtex plain))
+(define (org-texmacs-parse-reply request)
+  (let* ((source (list-ref request 2))
+         (parsed (parse-bibtex-snippet source))
+         (formatted (bib-process "org-texmacs-bib-probe" "plain" parsed)))
+    (list 'ok (cadr request) (list 'bibliography-probe parsed formatted))))
