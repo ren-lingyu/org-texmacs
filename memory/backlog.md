@@ -96,16 +96,28 @@ pipeline when it reads files or dynamic state outside the owned snapshot.
 
 ## Adopted downstream work
 
+The user rejected a standalone org-texmacs-preview-pdf command on 2026-10-08
+as unnecessary. Do not implement it or interpret historical "preview" wording
+as commitment to that command. User selected bounded ox-texmacs implementation:
+optional dispatcher backend with synchronous whole-buffer byte-buffer/.tm/PDF
+actions, existing prompted new-file policy and no generic string preprocessing.
+Async/subtree/visible/body-only/overrides, active regions and narrowing are
+explicitly rejected. Generic Org export/publishing remains unsupported; a
+conditional early hook rejects texmacs generic preprocessing. Seven focused
+cases pass 7/7; final Nix passes all seven checks and installed ERT 280/280.
+Six files are approved/staged, awaiting the user's project commit. Only the
+module fileset hunk is staged in flake; the mirror overlay stays outside index.
+
 The next selected node is stable PDF semantic regression for footnotes and
 owned citation/bibliography output. No fixed pagination/pixel/byte assertions
 are adopted. First native citation rendering failed with unresolved [?] values;
-the authorized working-tree print/update/final-print sequence resolves them.
+the print/update/final-print sequence committed as b5100a9 (declared as a non-first parent of this checkpoint) resolves them.
 Final focused 8/8 and installed ERT 273/273 plus all Nix checks pass; three
-files are approved/staged and await the user's commit. Preview
+files are committed and the diff matches the verified hash. Preview
 and broader visual/multipage inspection remain later boundaries.
 
 The user selected native rendering/PDF on 2026-10-08 as the next CONSUMER-01
-node. Implementation committed as db33c14 (declared as a non-first parent of this checkpoint) owns a temporary native buffer and PDF
+node. Implementation committed as the native PDF consumer revision owns a temporary native buffer and PDF
 inside the worker directory, uses three synchronous low-level updates and the
 native printer, and returns bytes or saves a new file after source checking.
 Six PDF cases and full local 271/271 pass. Final Nix passes all seven checks
