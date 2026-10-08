@@ -427,11 +427,13 @@ Keep global declarations in INFO; body dependencies are restored separately."
     (org-texmacs--context-validate-info info)))
 
 (defun org-texmacs--context-prepare
-    (ast islands requests post-blanks base-info &optional subtree-position)
+    (ast islands requests post-blanks base-info &optional subtree-position region)
   "Apply restricted context to prepared AST and associated mappings.
 Return (AST ISLANDS REQUESTS POST-BLANKS INFO), retaining only mappings and
 worker requests whose identity keys remain reachable after filtering.
-Optional SUBTREE-POSITION clips the owned tree after configuration capture."
+Optional SUBTREE-POSITION clips the owned tree after configuration capture.
+REGION is a frozen (BEGIN . END) pair; it takes precedence for body selection,
+while retaining any subtree configuration.  Parse only the private snapshot."
   (let* ((metadata
           (mapcar #'car
                   (org-texmacs--context-keywords
@@ -453,6 +455,37 @@ Optional SUBTREE-POSITION clips the owned tree after configuration capture."
          (definitions (org-texmacs--context-footnote-definitions ast islands))
          (_ (when subtree-position
               (setq info (org-texmacs--context-select-subtree ast subtree-position info))))
+         (_ (when region
+              (let* ((selected (save-restriction
+                                 (narrow-to-region (car region) (cdr region))
+                                 (org-element-parse-buffer)))
+                     (local-definitions
+                      (org-texmacs--context-footnote-definitions selected nil)))
+                ;; A second Org parse gives partial ordinary text its normal
+                ;; narrowed-buffer semantics, without rebuilding source text.
+                ;; Replace matching definitions so retained ones have the same
+                ;; identities as the selected body, not duplicate full trees.
+                (setq definitions
+                      (mapcar
+                       (lambda (definition)
+                         (or (cl-find-if
+                              (lambda (local)
+                                (and (eq (org-element-type local)
+                                         (org-element-type definition))
+                                     (equal (org-element-property :begin local)
+                                            (org-element-property :begin definition))))
+                              local-definitions)
+                             definition))
+                       definitions))
+                (apply #'org-element-set-contents ast (org-element-contents selected))
+                (dolist (child (org-element-contents ast))
+                  (org-element-put-property child :parent ast))
+                (setq islands
+                      (append (org-element-map ast 'special-block
+                                (lambda (node)
+                                  (and (org-texmacs--block-p node)
+                                       (cons node '(concat "")))))
+                              islands)))))
          (_ (org-texmacs--context-prune ast islands info t))
          (_ (org-texmacs--context-preserve-footnotes ast islands definitions info))
          (reachable (org-texmacs--context-reachable ast islands))

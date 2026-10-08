@@ -1519,14 +1519,15 @@ constants, concatenation, preambles, repairs and duplicate keys or fields."
       (nreverse signatures))))
 
 (defun org-texmacs--document-prepare-source
-    (source tags headings links info &optional subtree-position)
+    (source tags headings links info &optional subtree-position region)
   "Prepare SOURCE under private Org link syntax using fixed LINKS settings.
 TAGS and HEADINGS are the conversion's other parser inputs.
 Return prepared structure without invoking headline formatters or lowering.
 Never register protocols globally or reset source element caches.  Keep
 Org's internal regexp regeneration confined to this preparation boundary.
 INFO is the fixed supported global and buffer-local context snapshot.
-Optional SUBTREE-POSITION selects a subtree in that complete source snapshot."
+Optional SUBTREE-POSITION selects a subtree in that complete source snapshot.
+REGION selects its (BEGIN . END) body while retaining subtree configuration."
   (let ((org-link-parameters (org-texmacs--document-copy-link-setting (nth 0 links)))
         (org-link-abbrev-alist (org-texmacs--document-copy-link-setting (nth 1 links)))
         (org-link-types-re org-link-types-re)
@@ -1548,10 +1549,10 @@ Optional SUBTREE-POSITION selects a subtree in that complete source snapshot."
         (insert source)
         (org-texmacs--document-prepare
          source (org-texmacs--fragment-collect tags) headings (nth 2 links) info
-         subtree-position)))))
+         subtree-position region)))))
 
 (defun org-texmacs--document-prepare
-    (source spans heading-settings &optional abbrevs info subtree-position)
+    (source spans heading-settings &optional abbrevs info subtree-position region)
   "Prepare SOURCE and discovered SPANS without starting a worker.
 HEADING-SETTINGS is the source's effective heading configuration snapshot.
 Install it locally after private mode initialization, before parsing source.
@@ -1561,7 +1562,8 @@ Return (AST ISLANDS REQUESTS POST-BLANKS INFO).  Each request is
 (ISLAND-ENTRY SOURCE TAG); TAG is nil for an unrestricted special block.
 Island entries initially contain placeholder strees for structural validation.
 All positions refer to the complete, unnarrowed source snapshot.
-Optional SUBTREE-POSITION selects a body plus owned dependencies before walking."
+Optional SUBTREE-POSITION selects a body plus owned dependencies before walking.
+REGION takes precedence for body selection; reject truncated STM islands."
   (with-temp-buffer
     (let ((org-element-use-cache nil)
           (org-inhibit-startup t)
@@ -1613,7 +1615,7 @@ Optional SUBTREE-POSITION selects a body plus owned dependencies before walking.
                                  (< (org-texmacs-fragment-span-begin (car remaining)) end)
                                  ;; Restored dependencies can have earlier
                                  ;; source positions than this paragraph.
-                                 (or (not subtree-position)
+                                 (or (not (or subtree-position region))
                                      (>= (org-texmacs-fragment-span-begin (car remaining))
                                          (org-element-property :contents-begin node))))
                        (let* ((span (pop remaining))
@@ -1663,14 +1665,32 @@ Optional SUBTREE-POSITION selects a body plus owned dependencies before walking.
                  (mapc #'whitespace (org-element-property :tag node)))
                (mapc #'walk (org-element-contents node))))))
         (let ((ast (org-element-parse-buffer)))
-          (when subtree-position
+          (when region
+            (cl-labels ((complete (begin end)
+                          (when (and (< begin (cdr region)) (< (car region) end)
+                                     (not (<= (car region) begin end (cdr region))))
+                            (signal 'org-texmacs-document-error
+                                    '("Region truncates a TeXmacs island")))))
+              (dolist (span spans)
+                (complete (org-texmacs-fragment-span-begin span)
+                          (org-texmacs-fragment-span-end span)))
+              (org-element-map ast 'special-block
+                (lambda (node)
+                  (when (org-texmacs--block-p node)
+                    (complete
+                     (org-element-property :begin node)
+                     (save-excursion
+                       (goto-char (org-element-property :end node))
+                       (forward-line (- (or (org-element-property :post-blank node) 0)))
+                       (point))))))))
+          (when (or subtree-position region)
             ;; Prune owned full-source structure before walking/validating body.
             ;; Block placeholders make STM opaque while collecting dependencies.
             (let* ((opaque (org-element-map ast 'special-block
                              (lambda (node) (and (org-texmacs--block-p node)
                                                  (cons node '(concat ""))))))
                    (scoped (org-texmacs--context-prepare
-                            ast opaque nil nil info subtree-position))
+                            ast opaque nil nil info subtree-position region))
                    paragraphs)
               (cl-labels ((collect (node)
                             (unless (org-texmacs--block-p node)
@@ -1697,7 +1717,7 @@ Optional SUBTREE-POSITION selects a body plus owned dependencies before walking.
           (when remaining
             (signal 'org-texmacs-document-error '("Unconsumed fragment spans")))
           (setq islands (nreverse islands) requests (nreverse requests))
-          (if subtree-position
+          (if (or subtree-position region)
               (list ast islands requests blanks info)
             (org-texmacs--context-prepare ast islands requests blanks info)))))))
 

@@ -1127,8 +1127,9 @@ The corresponding commands are =org-texmacs-export-as-texmacs=,
 They accept Org's standard optional arguments =async subtreep visible-only
 body-only ext-plist=.  =subtreep= is supported; the other arguments must be nil
 and fail before conversion or file prompts when non-nil.  It exports a complete
-buffer or the containing subtree synchronously from an unnarrowed source,
-and rejects an active region.  File actions reuse
+buffer, containing subtree or active region synchronously from an unnarrowed
+source.  An active region takes precedence for body selection; =subtreep=
+still supplies subtree configuration and output naming.  File actions reuse
 =org-export-output-file-name=, like =ox-latex=: =#+EXPORT_FILE_NAME= takes
 precedence over the visiting source's file stem; a source with neither prompts
 for a name.  The helper enforces the =.tm= or =.pdf= suffix.  Relative paths
@@ -1161,9 +1162,40 @@ and publishing APIs are not implemented by this backend.
 
 These commands pass no bibliography snapshots and never read =.bib= files.
 Documents needing explicit snapshots can use the existing Lisp source adapters
-with =BIBLIOGRAPHY-SOURCES=.  General output overrides, region/visible/body-only
+with =BIBLIOGRAPHY-SOURCES=.  General output overrides, visible/body-only
 and async semantics remain future design work.  Loading =org-texmacs= alone
 does not register this menu or guard, and no PDF viewer opens.
+
+*** Region export
+An active region selects its exact character range.  As in Org export, partial
+ordinary text is parsed with the region as the accessible body; it need not
+start on a heading or paragraph boundary.  Parsing runs in a private complete
+source snapshot.  The live source is never narrowed, and its point, mark and
+region state are preserved.  Regions that truncate a discovered TeXmacs inline
+fragment or a TeXmacs block fail before native worker requests.
+
+The source's supported file/global configuration and bibliography declarations
+remain available outside the selected body.  Used named footnotes are restored
+from the same snapshot; unused out-of-region body and islands are not converted.
+Internal links must resolve to targets in the emitted body/dependencies.
+Citations still require explicit BibTeX text snapshots and one bibliography print
+inside the selected region.  No dependency file is opened.
+
+If =subtreep= is also non-nil, its heading supplies the supported =EXPORT_*=
+configuration and output name, while the active region supplies the body.  A
+heading selected by the region remains an ordinary body heading; it is not
+automatically omitted.  Without =subtreep=, file/global settings apply.
+
+The explicit =org-texmacs-prepare-buffer=, =org-texmacs-document-from-buffer=,
+=.tm=/PDF byte adapters and readonly buffer adapter accept an optional fourth
+=REGION= argument after =SUBTREE-POSITION=: a nonempty =(BEGIN . END)= pair of
+integer source positions.  It is copied before conversion; changes to point,
+mark or the caller's pair during a worker wait cannot redirect the export.
+Source edits or changes to the captured configuration still invalidate it.
+
+#+begin_src emacs-lisp
+  (org-texmacs-export-from-buffer source-buffer nil nil (cons begin end))
+#+end_src
 
 *** Subtree export, configuration and dependencies
 Toggle the scope to subtree with =C-s= in the export dispatcher, or call a
