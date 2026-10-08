@@ -738,6 +738,49 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 - No independent necessary raw temporary evidence qualifies for archive:
   fixtures/reproduction live in ERT, and no binary output enters GAW.
 
+## Subtree export node (2026-10-08, verified/staged)
+
+- User selected synchronous subtree export/configuration/dependencies while
+  postponing generic Org API adaptation. Implementation/verification baseline
+  is b4ee215224578577a3235f8954020baf74e585af; new code is not yet committed.
+- Authorized local Org 9.8-pre reads: ox.el subtree-options/get-environment/
+  footnote dependency logic and ox-latex entry points; org.el heading and property
+  helpers including >1MiB-file targeted fragments. Subtree option priority is
+  global < file < EXPORT_*, with root title fallback and selective inheritance.
+  org-end-of-meta-data advances beyond root heading/planning/drawer, so the
+  structured implementation omits them while retaining child body/headlines.
+- Source/preparation APIs gain optional third integer subtree-position; original
+  source stays unnarrowed. The complete owned AST supplies configuration and
+  used footnote/bibliography data, then emits selected body plus required notes.
+  Plain target resolution is limited to emitted AST; no external ID database.
+- Masking/discovery remains source-based; clipping occurs before structural
+  validation/native parsing so unrelated body/islands do not trigger worker calls.
+  Earlier source-position dependencies must be reordered to AST traversal and
+  restricted to their paragraph bounds; that regression failed before the fix.
+  Synthetic paragraphs for restored inline definitions carry already parsed data.
+- Initial focused run passed 4/6; failures were span-order handling and a citation
+  fixture starting with [fn:r], which Org correctly interpreted as a definition.
+  After fixes/fixture correction and a date/filter case, final subtree 7/7 passes
+  (9.53s). Existing backend 11/11 passes (4.65s). CITE_EXPORT is explicitly rejected
+  as unsupported processor configuration, including outside selected body.
+- Final Nix passes all seven checks, native compilation/package-lint and installed
+  ERT 291/291 (132.40s), using the unchanged temporary mirror overlay:
+  dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc.
+  ERT derivation: /nix/store/7i3b2rvh0rz1ls6wqnjnfxp7hhpqv0i4-org-texmacs-ert.drv.
+- Maintained tests cover title/author/date/options/filter priority, selective
+  inheritance, immutable prepared input, point/marker preservation, external
+  notes/STM order, invalid scope/links, explicit bibliography/resource base,
+  menu .tm/PDF/byte buffer and selection/property-setting waits. Prompt/display
+  are simulated; native consumers are real. No pixel or pagination goldens.
+- Six approved staged files: README.org, org-texmacs-context.el,
+  org-texmacs-document.el, org-texmacs.el, ox-texmacs.el and tests/ert/ert.el.
+  Full staged review (split by path to avoid truncated output) and diff --check
+  pass. SHA-256 of git diff --cached against baseline above:
+  3be6de01e224286021f2b3361f14098efae89208ad72db0660fad81a73e73090.
+  tmp/commit.md is reviewed; only the unchanged mirror overlay remains unstaged.
+- No independent necessary temporary evidence qualifies for archive. Tests
+  retain complete reproduction; binary PDFs/bytecode remain outside GAW.
+
 ## Durable TeXmacs facts
 
 - `stm-snippet->texmacs` is a recovery parser and cannot alone prove strict STM

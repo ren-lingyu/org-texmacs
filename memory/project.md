@@ -469,6 +469,37 @@ Commit b4ee215224578577a3235f8954020baf74e585af matches the verified five-file d
   ERT 284/284 (125.71s). The verified output-convention node is committed;
   the uncommitted mirror overlay stays unchanged/excluded.
 
+## Subtree selection/configuration/dependencies (verified working tree)
+
+- Existing prepare-buffer, document-from-buffer, .tm/PDF byte adapters and
+  readonly byte-buffer export accept optional third subtree-position after
+  bibliography sources. Nil remains full-buffer; a validated source integer
+  selects its containing heading in a complete private snapshot.
+- Restricted Org subtree helper overrides file/global title/author/date/options/
+  select/exclude tags. Output file names use Org subtree property conventions.
+  Property inheritance/separators/global property tables are copied and rechecked
+  across waits, with private inheritance marker and live point restoration.
+- Root heading/planning/drawer become configuration and are absent from body;
+  child headlines use remaining relative minimum level. Known EXPORT properties
+  are inert in whole-buffer lowering; unsupported root fields/options and
+  CITE_EXPORT fail. No source narrowing or selected-text reconstruction occurs.
+- Used separate/inline footnote definitions are restored from the full parsed
+  snapshot. Only emitted body/dependency STM requests run. Paragraph span mapping
+  follows clipped AST traversal when restored definitions have earlier positions.
+  Unsupported out-of-scope body trees are ignored; global preprocessing directives
+  remain rejected. Internal targets must exist in emitted AST; omitted root and
+  excluded/outside targets fail before worker calls.
+- Full-source bibliography identities are retained with explicit text sources;
+  selected citations require a bibliography print inside selected body. Existing
+  source-file/resource-base and native provenance survive scope selection.
+- Dispatcher subtreep now supports readonly buffer/.tm/PDF consumers, using
+  captured selection and unchanged new-file/overwrite contracts. Region/visible/
+  body-only/async/extra external overrides remain unsupported. Generic API
+  adaptation is still deliberately deferred, and no auto bibliography reader exists.
+- Final subtree 7/7, backend 11/11 and Nix compilation/package-lint/installed
+  ERT 291/291 (132.40s) pass. Six files are approved/staged, awaiting user commit.
+  Mirror overlay stays excluded; binary/generated artifacts do not enter GAW.
+
 ## Worker and session
 
 - One persistent headless TeXmacs worker serves parsing, encoding, and native
