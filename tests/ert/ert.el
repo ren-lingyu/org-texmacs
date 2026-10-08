@@ -5138,6 +5138,67 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (insert "UnrelatedBackendSentinel.\n")
     (should (string-match-p "UnrelatedBackendSentinel" (org-export-as 'ascii nil nil t)))))
 
+(ert-deftest org-texmacs-export-backend-html-hook-advice-filter-isolation ()
+  ;; Exercise actual HTML export with controlled extension points.  This is
+  ;; not a joint Org-roam package/database integration test.
+  (require 'ox-html)
+  (with-temp-buffer
+    (org-mode)
+    (insert "FilterInputSentinel.\n")
+    (goto-char 3) (set-mark 8) (setq mark-active nil)
+    (set-buffer-modified-p nil)
+    (let* ((source (current-buffer))
+           (state (org-texmacs-test--document-buffer-state source))
+           (org-export-use-babel nil)
+           (options '(:with-toc nil :section-numbers nil))
+           (baseline (org-export-as 'html nil nil t options))
+           events
+           (preprocess
+            (lambda (backend)
+              (when (eq backend 'html)
+                (should-not (eq source (current-buffer)))
+                (push 'hook events)
+                (goto-char (point-max))
+                (insert "\nHookBodySentinel.\n"))))
+           (include-advice
+            (lambda (original &rest arguments)
+              (when (eq org-export-current-backend 'html)
+                (push 'advice events))
+              (apply original arguments)))
+           (filter
+            (lambda (tree backend _info)
+              (when (eq backend 'html)
+                (push 'filter events)
+                (org-element-map tree 'paragraph
+                  (lambda (paragraph)
+                    (when (cl-some
+                           (lambda (part)
+                             (and (stringp part)
+                                  (string-match-p "FilterInputSentinel" part)))
+                           (org-element-contents paragraph))
+                      (org-element-set-contents paragraph "FilterOutputSentinel.")))))
+              tree)))
+      (should (string-match-p "FilterInputSentinel" baseline))
+      (unwind-protect
+          (let ((org-export-before-processing-functions
+                 (append (copy-sequence org-export-before-processing-functions)
+                         (list preprocess)))
+                (org-export-filter-parse-tree-functions
+                 (append (copy-sequence org-export-filter-parse-tree-functions)
+                         (list filter))))
+            (advice-add 'org-export-expand-include-keyword :around include-advice)
+            (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                       (lambda (&rest _) (ert-fail "HTML export started TeXmacs worker"))))
+              (let ((output (org-export-as 'html nil nil t options)))
+                (dolist (phase '(hook advice filter)) (should (memq phase events)))
+                (should (string-match-p "HookBodySentinel" output))
+                (should (string-match-p "FilterOutputSentinel" output))
+                (should-not (string-match-p "FilterInputSentinel" output)))))
+        (advice-remove 'org-export-expand-include-keyword include-advice))
+      (should-not (advice-member-p include-advice 'org-export-expand-include-keyword))
+      (should (equal baseline (org-export-as 'html nil nil t options)))
+      (should (equal state (org-texmacs-test--document-buffer-state source))))))
+
 (ert-deftest org-texmacs-export-backend-source-wait-before-output ()
   (org-texmacs-test--with-worker
     (with-temp-buffer
