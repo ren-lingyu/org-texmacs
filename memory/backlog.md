@@ -164,16 +164,17 @@ Phase closure selected v0.4.0 as described below. Other exporter flags/unsupport
 syntax are not automatically
 required completion work.
 
-### Verified/staged: v0.4.0 phase closure/release preparation
+### Committed, awaiting review: v0.4.0 release preparation
 
 User selected v0.4.0 after reviewing phase closure scope. Nineteen commits since
 v0.3.1 implement current bounded DOC-01 resolution and native .tm/PDF consumers,
 synchronous dispatcher, output naming/reexports and selection/configuration.
 Package/header metadata and necessary README wording are prepared; final Nix
-compilation/package-lint/installed ERT 311/311 pass. Three paths are approved/
-staged, with only the version hunk staged in flake.nix. Release notes are a
-reviewed draft in tmp/release-v0.4.0.md. Await user metadata commit, verify diff,
-then handle tag/publication only with user direction and manual Git boundaries.
+compilation/package-lint/installed ERT 311/311 pass. Three paths are committed as
+c26985f, matching the verified diff; only the version hunk is committed in
+flake.nix. Release notes are a reviewed draft in tmp/release-v0.4.0.md. User
+explicitly holds tag/publication to review first. Wait for review findings or
+an explicit instruction to resume; do not automatically advance other work.
 No new syntax or exporter-flag parity was adopted. Original ELPA restoration,
 other platforms/GUI/general pagination remain unverified; mirror stays excluded.
 

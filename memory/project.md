@@ -580,18 +580,22 @@ Commit 82552db77d2b01fa832fc06948f57e1cc5e80d81 matches the verified six-file di
   space/concat); assertion corrected. Six files are committed on d71204d;
   index is empty at verification. No binary GAW evidence, GUI or layout goldens.
 
-## v0.4.0 release preparation (verified/staged, not published)
+## v0.4.0 release preparation (committed, awaiting user review)
+
+Commit c26985f8f24ce8c6b95ebf3dbb211fff8e276f45 matches the verified three-file diff.
 
 - User selected the current bounded DOC-01 semantics and complete native .tm/PDF
   consumers/frontends as the v0.4.0 scope after narrowing commit 82552db.
-  Package/Nix versions are 0.4.0; three metadata/documentation paths are staged.
+  Package/Nix versions are 0.4.0; three metadata/documentation paths are committed.
 - README summarizes citations/bibliography/tables and export scope/configuration,
   compatibility and current rejection/verification boundaries. Existing source
   APIs remain usable; no new feature code is included in this release node.
 - All seven Nix checks, compilation/package-lint and installed ERT 311/311
   (155.04s) pass for the new version, using the user's temporary remote ELPA mirror.
-  Staged Nix equals baseline plus one version line; mirror remains unchanged and
-  excluded. Ordinary metadata commit/tag/publication remain pending/user-owned.
+  Committed Nix equals baseline plus one version line; mirror remains unchanged
+  and excluded. Metadata commit is verified; index is empty. Local v0.4.0 tag is
+  absent. User explicitly deferred tag/publication for review; wait for feedback
+  or explicit release resumption. Remote publication remains unverified.
 - Draft release notes are tmp/release-v0.4.0.md; no new tracked changelog or
   binary archive is introduced. Actual release status must be updated from
   verified user-created commit/tag evidence, not from the package header alone.
