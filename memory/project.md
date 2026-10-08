@@ -503,7 +503,9 @@ Commit ee3e028fb829d508333fda40c705d811f4b2583e matches the verified six-file di
   subtree commit verification, before region work.
   Mirror overlay stays excluded; binary/generated artifacts do not enter GAW.
 
-## Region selection (verified/staged)
+## Committed region selection
+
+Commit 7e6b4e001603a223933277d2704018877b86bada matches the verified six-file diff.
 
 - Five source preparation/document/byte/buffer adapters accept optional fourth
   REGION after subtree-position. It is an owned nonempty integer (BEGIN . END)
@@ -525,8 +527,29 @@ Commit ee3e028fb829d508333fda40c705d811f4b2583e matches the verified six-file di
   complete islands, dependencies, scoped targets, native outputs and source state.
 - Focused region 7/7, subtree 7/7 and backend 11/11 pass. Final Nix passes all
   seven checks, compilation/package-lint and installed ERT 298/298 (162.69s),
-  after correcting one docstring-width failure. Six files are approved/staged on
-  ee3e028, awaiting ordinary commit. Mirror overlay is excluded.
+  after correcting one docstring-width failure. Six files are committed on
+  ee3e028; index is empty at verification. Mirror overlay is excluded.
+
+## Restricted external configuration (verified/staged)
+
+- User deferred body-only fragment semantics and selected bounded ext-plist.
+  Five source preparation/document/byte/buffer adapters add optional fifth
+  EXT-PLIST; dispatcher uses its existing fifth argument. No new owned-input
+  slot, worker operation, file reader or generic preprocessing is introduced.
+- Only context-option-alist keys are accepted. Metadata values are raw Org
+  strings/nil parsed in private keyword grammar; policy values use existing
+  typed constraints. Plist must be proper and unique; invalid keys/types reject
+  before frontend prompts/workers, even if higher-priority settings override them.
+- Owned copies of plist/strings/tag lists merge global < external < file <
+  subtree. Metadata presence is retained when no file keyword exists. Caller
+  mutation during prompts/native waits affects only later calls. Pure lowering
+  consumes prepared INFO. Output paths/hooks/style/initial/parser/bibliography
+  are excluded from external options.
+- Final six override cases pass; backend 11/11, subtree 7/7 and region 7/7 pass.
+  Compilation/package-lint and final installed ERT 304/304 (169.37s) pass, with
+  all Nix checks successful. Two 81-column docstrings were wrapped; mutable test
+  lists now allocate afresh. Five files are approved/staged on baseline 7e6b4e0,
+  awaiting ordinary commit. No visual/layout goldens or binary GAW artifacts.
 
 ## Worker and session
 

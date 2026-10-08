@@ -120,7 +120,7 @@ pass; final Nix passes all checks and installed ERT 291/291. Six files are
 committed. Other selection scopes, generic
 API adaptation, extra overrides and async remain later/separate boundaries.
 
-### Verified/staged: region export
+### Completed: region export
 
 Implemented and verified following subtree commit ee3e028. Active region selects
 body while subtreep still supplies configuration/naming. Optional fourth integer
@@ -128,9 +128,26 @@ pair is owned before waits. Partial ordinary text uses a private narrowed parse
 of the full snapshot; needed notes and explicit bibliography stay owned.
 Truncated islands and out-of-scope targets fail. Region 7/7, subtree 7/7, backend
 11/11 and final Nix compilation/package-lint/installed ERT 298/298 pass. Six files
-are approved/staged, awaiting ordinary commit. Next scope to assess after commit:
-bounded body-only semantics. Visible-only, async, extra overrides and generic
-API adaptation remain separate/deferred; no general preprocessing/file readers.
+are committed as 7e6b4e0, matching the verified diff. Body-only was assessed
+in the configuration node below. Visible-only, async, unrestricted overrides
+and generic API adaptation remain separate/deferred; no general preprocessing
+or file readers are adopted.
+
+### Verified/staged: restricted ext-plist
+
+Body-only is an **unresolved-design** boundary: Org skips outer templates, with
+backend-specific inner content. Native complete .tm/PDF contracts do not define
+an embeddable fragment format. Hiding title alone is not equivalent. Recommend
+deferring fragment work and implementing restricted ext-plist overrides for
+already supported configuration (global < external < file < subtree) through
+owned preparation. User selected this configuration node; it is implemented and
+verified. Five source adapters accept optional fifth EXT-PLIST; frontend uses its
+existing fifth argument. Only current context keys/types are allowed, with unique
+keys and raw metadata strings/nil. Copy before prompts/waits; private merge and
+pure lowering preserve ownership. Focused overrides 6/6, backend 11/11, subtree
+7/7, region 7/7 and final Nix compilation/package-lint/ERT 304/304 pass. Five files
+are approved/staged, awaiting user commit. Body-only fragment format/consumer
+remains deferred and unresolved; generic API adaptation stays relatively late.
 
 ### Completed: Org output naming and repeat export
 
@@ -167,7 +184,7 @@ No GUI preview or overwrite policy is included; PDF binaries remain outside GAW.
 Status: **adopted-later** for remaining frontend/consumer semantics. Native
 document construction, serialization, saving, checked whole-buffer exports,
 PDF and bounded dispatcher/naming/reexports are implemented. Subtree selection
-is committed; region selection is verified/staged. Generic Org export API integration,
+and region selection are committed. Generic Org export API integration,
 other selection/configuration contracts and publishing are still bounded design
 questions; no full syntax parity prerequisite is introduced. Backup/atomic
 publication and a standalone preview command are not completion requirements.

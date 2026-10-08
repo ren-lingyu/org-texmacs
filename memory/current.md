@@ -8,15 +8,25 @@ the verified hash. The Org/ox-latex output convention extension is committed
 as b4ee215224578577a3235f8954020baf74e585af; its complete five-file diff matches
 the verified hash exactly. Subtree node is committed as
 ee3e028fb829d508333fda40c705d811f4b2583e;
-its six-file diff matches the reviewed hash on b4ee215. Region export is now
-complete, verified and staged with exact-path approval. tmp/commit.md is reviewed;
-await ordinary commit, then compare its six-file diff on baseline ee3e028 to
+its six-file diff matches the reviewed hash on b4ee215. Region export is committed
+as 7e6b4e001603a223933277d2704018877b86bada; its complete six-file diff on
+baseline ee3e028 matches
 22765b0bf802059c2edb49fb3f8a549751b1240c17b43cd8bae419eb4827da58.
 Active region selects body; subtreep still supplies configuration/naming. Private
 full snapshot supplies global context and dependencies; private narrowed Org
 parsing supports exact ordinary text ranges. Truncated STM islands fail before
-workers. Other frontend flags and generic API adaptation remain deferred.
-After commit verification, assess bounded body-only semantics as the next node.
+workers. Visible/body-only/async and generic API adaptation remain deferred.
+Restricted ext-plist node is complete, verified and staged with exact-path
+approval. tmp/commit.md is reviewed; await user commit, then verify its five-file
+diff on baseline 7e6b4e0 against
+145a3237df23501289289bbfe84554353dfc8d0147d7d2787ff090bb953b83a6.
+External overrides are owned before prompts/workers; priority is global <
+external < file < subtree. Only existing context keys are accepted, with typed
+policies and raw Org string/nil metadata. Body-only is deferred by user choice:
+Org skips outer templates, but complete native consumers define no embeddable
+fragment format. Generic API adaptation stays deferred. After commit verification,
+assess remaining source scope requirements, without assuming every Org flag or
+unsupported feature must be implemented.
 Scope guidance: ox-latex is a reference for shared Org export conventions,
 not a feature inventory to copy wholesale. Current ox-texmacs is a bounded
 dispatcher frontend, not a complete generic exporter: org-export-as and related
@@ -33,20 +43,20 @@ Frontend uses org-export-output-file-name and ordinary overwrite after checked
 native bytes are complete. Public new-file-only APIs stay exclusive. Atomic
 replacement, backups and target-version locking are not adopted prerequisites.
 User rejected a standalone PDF preview command; no such command is adopted.
-The staged frontend supports synchronous whole-buffer/subtree/region actions.
+The committed frontend supports synchronous whole-buffer/subtree/region actions.
 Generic string export/publishing, preprocessing and visible-only/narrowed-source
 selection remain unsupported.
 
 ## Baseline and staging
 
 - Main HEAD observed on 2026-10-08:
-  `ee3e028fb829d508333fda40c705d811f4b2583e`.
-  Its subtree diff against b4ee215 matches the verified six-file hash.
+  `7e6b4e001603a223933277d2704018877b86bada`.
+  Its region diff against ee3e028 matches the verified six-file hash.
 - Frontend commit be284dd is verified against baseline b5100a9 hash d41f05a2...
-  as recorded in evidence. Six region files are approved/staged;
-  subtree files are committed.
-  Full staged review and diff --check passed. Region SHA-256 on ee3e028:
-  22765b0bf802059c2edb49fb3f8a549751b1240c17b43cd8bae419eb4827da58.
+  as recorded in evidence. Region is committed. Five override files are staged:
+  README.org, org-texmacs-context.el, org-texmacs.el, ox-texmacs.el, tests/ert/ert.el.
+  Complete staged review and diff --check pass. SHA-256 on 7e6b4e0:
+  145a3237df23501289289bbfe84554353dfc8d0147d7d2787ff090bb953b83a6.
   No implementation is unstaged. The user's temporary
   `flake.nix` overlay remains excluded. It rewrites
   GNU ELPA fetchurl URLs to the remote USTC mirror. The configuration is retained
@@ -58,24 +68,23 @@ selection remain unsupported.
   Later DOC-01/CONSUMER-01 features are local development, not release claims.
   Remote publication/signature remain unverified; release evidence is in evidence.md.
 
-## Verified region node
+## Verified external configuration node
 
-- Five source preparation/document/byte/buffer adapters add optional fourth
-  REGION, an owned nonempty integer pair after subtree-position. Region selects
-  body with priority; subtree options/naming still apply when requested.
-- Private narrowed parsing of the same full masked snapshot supports partial
-  ordinary text without selected-text reconstruction or live source narrowing.
-  Global configuration and explicit bibliography identities survive selection;
-  selected footnote identity reconciliation prevents duplicate imports.
-- Complete STM islands run only in emitted body/dependencies; truncated islands
-  fail before workers. Scoped filtering/links and source provenance stay fixed.
-  Point/mark/pair changes cannot redirect conversion; source edits reject output.
-- Region 7/7 (14.17s), subtree 7/7 (10.79s), backend 11/11 (5.47s), and Nix all
-  seven checks pass. Compilation/package-lint and installed ERT 298/298 (162.69s)
-  pass. Structural/text/byte/contract assertions have no layout goldens.
-- Per-node targeted Org reads and repeated focused 120s / Nix 180s checks were
-  authorized. Initial footnote fixtures needed heading delimiters; one new
-  82-column docstring failed compilation before wrapping. Final checks pass.
+- Five source adapters add optional fifth EXT-PLIST; dispatcher uses its existing
+  fifth parameter. Validation/copy precedes preparation or frontend prompts.
+  Unknown/duplicate keys, improper/cyclic lists and invalid values reject before
+  workers, even if later settings would override them. Output/style/initial/
+  parser/hooks/filter/bibliography fields remain excluded.
+- Metadata is parsed in private keyword grammar and retains presence without file
+  metadata keywords. Pure lowering consumes owned INFO. Caller plist/string/tag
+  mutations during prompts/native waits affect only later calls.
+- Final override focused 6/6 (7.33s), backend 11/11 (5.34s), subtree 7/7 (10.07s),
+  region 7/7 (12.45s) and Nix all checks pass. Compilation/package-lint and final
+  installed ERT 304/304 (169.37s) pass. Final Nix reruns two changed checks, using
+  the other five already passing results. Assertions have no layout goldens.
+- Per-node Org template/option reads and focused 120s / Nix 240s checks were
+  authorized. Two 81-column docstrings were wrapped after compilation rejected
+  them. Mutable test data now allocates fresh lists; final full checks include it.
 - No unique necessary raw artifact needs archive; maintained ERT retains full
   reproduction. Only pure text enters GAW; no PDFs, bytecode or generated caches.
 
@@ -91,7 +100,7 @@ selection remain unsupported.
   cleanup failure stops transport. Explicit resource/executable primitives are
   outside the PDF subset, and custom installed styles are not sandboxed.
 - Earlier validation/progress details belong in project.md, evidence.md and GAW
-  history. Current whole installed regression is 298/298; GUI layout/general
+  history. Current whole installed regression is 304/304; GUI layout/general
   pagination convergence are unverified. Use maintained structural/text checks.
 
 ## Persistent workflow and knowledge
@@ -128,8 +137,9 @@ selection remain unsupported.
    d41f05a2... as recorded in evidence. Naming/reexport commit b4ee215 is verified
    against its five-file hash recorded in evidence. Subtree commit ee3e028 is
    verified against the six-file diff hash 3be6de01... above. Region is
-   verified/staged; await commit and compare its six-file diff
-   to 22765b0b... above. Then assess bounded body-only semantics.
+   committed as 7e6b4e0 and verified against six-file hash 22765b0b... above.
+   Override node is verified/staged; await commit and compare five-file diff to
+   145a3237... above. Body-only fragment/generic API are deferred by user choice.
    Keep the mirror overlay excluded; no flake or lock changes belong to this node.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries
    separate from the selected PDF work. Do not silently

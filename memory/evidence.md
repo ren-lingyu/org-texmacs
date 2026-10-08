@@ -784,10 +784,12 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 - No independent necessary temporary evidence qualifies for archive. Tests
   retain complete reproduction; binary PDFs/bytecode remain outside GAW.
 
-## Region export node (2026-10-08, verified/staged)
+## Region export node (2026-10-08, committed)
 
 - Baseline ee3e028fb829d508333fda40c705d811f4b2583e is verified against the
   subtree six-file SHA-256 3be6de01... above. User requested continuing.
+  Commit 7e6b4e001603a223933277d2704018877b86bada has exactly the six reviewed
+  files; its full diff matches 22765b0b... below. Index is empty at verification.
   Per-node targeted local ox.el/org.el reads and repeated region/subtree/backend
   focused 120s / Nix 180s checks were authorized.
 - Org 9.8-pre ox.el org-export-as (3594) narrows to region before subtree;
@@ -821,6 +823,59 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 - No unique temporary evidence requires archive: maintained ERT retains complete
   reproduction; draft is regenerable. PDFs/bytecode never enter GAW. Actual GUI
   and visual pagination remain unverified.
+
+## Restricted external configuration (2026-10-08, verified/staged)
+
+- Implementation baseline is 7e6b4e001603a223933277d2704018877b86bada; its
+  region diff was verified against 22765b0b... on ee3e028. User chose restricted
+  ext-plist after reviewing body-only's distinct fragment/consumer boundary.
+- Authorized targeted Org option-helper reads confirm get-environment priority
+  global < external < file < subtree. ox.el get-inbuffer-options (1591) parses
+  metadata with keyword object grammar, as does get-global-options (1696).
+  This adapter accepts only raw string/nil metadata, typed existing context
+  policies and unique supported keys; prepared AST metadata is not an external
+  option value. No output paths/styles/hooks/parser/bibliography fields are added.
+- Five explicit source adapters add optional fifth EXT-PLIST. Frontend retains
+  its standard fifth argument and captures a copy before prompts. Private
+  context parses/merges owned values before source/subtree options; metadata
+  presence is retained without file keywords. Pure lowering reads only INFO.
+  Input mutation across prompts/native waits affects only later conversions.
+- Final overrides focused 6/6 (7.328611s), backend 11/11 (5.344581s), subtree
+  7/7 (10.066498s), region 7/7 (12.449187s) pass. Cases cover priority, rich/nil
+  metadata, invalid/duplicate/cyclic values before prompts/workers, dependency
+  filtering, real native menu consumers, region state and mutable caller data.
+  Only maintained reproducible structure/text/byte/contracts are asserted.
+- Focused 120s groups and repeated Nix 240s checks were authorized for this node.
+  Initial Nix compilation rejected two 81-column docstrings; wrapped them.
+  Nix then passed all seven checks and ERT 304/304 (169.005840s). One mutable
+  quoted test list was replaced with fresh allocation for safe same-process
+  reruns. Final focused 6/6 and final Nix pass: two changed checks rerun, five
+  previous passing checks reused; installed ERT 304/304 (169.374465s).
+  Final ERT derivation:
+  /nix/store/rbzwkg1d4ks7zx0rwm686mrbpiv10kiq-org-texmacs-ert.drv.
+- Five approved staged files: README.org, org-texmacs-context.el,
+  org-texmacs.el, ox-texmacs.el and tests/ert/ert.el. Complete staged review split
+  by path and diff --check pass. Entire staged diff SHA-256 on baseline 7e6b4e0:
+  145a3237df23501289289bbfe84554353dfc8d0147d7d2787ff090bb953b83a6.
+  No implementation is unstaged. tmp/commit.md is reviewed; ordinary commit is
+  user's action. Mirror overlay is unchanged/excluded at raw SHA-256
+  dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc.
+- No unique necessary temporary artifact needs archive. Tests retain complete
+  reproduction; draft is regenerable. Only pure text enters GAW, never PDFs or
+  bytecode. GUI/visual pagination remain unverified; no fragment support is claimed.
+
+## Body-only assessment after region commit (2026-10-08)
+
+- User authorized targeted installed ox.el/ox-latex.el/ox-html.el template reads.
+  ox.el (3658-3683) always applies inner-template and skips outer template when
+  body-only. ox-latex.el org-latex-template (2225) owns metadata/title/TOC and
+  document wrapper; ox-html.el inner-template (2284) owns TOC/footnotes, while
+  template (2297) owns HTML wrapper/title. Thus TOC retention is backend-specific.
+- Project document lowering (1404) prepends metadata and TOC to native body;
+  worker file-document (163) adds TeXmacs version/style/body/initial wrapper.
+  Current complete serializer/PDF contracts define no standalone fragment.
+  Body-only therefore needs explicit format/consumer semantics, not a blind
+  title-suppression flag. User selected restricted ext-plist as the next node.
 
 ## Durable TeXmacs facts
 
