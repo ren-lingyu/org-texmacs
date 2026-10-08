@@ -44,7 +44,7 @@
   `3f3a1f61d1f0b24ad984c6723ada568ec12a5b8015a9de968200ac32e9878d51`
   for `git diff --cached -- README.org org-texmacs.el tests/ert/ert.el`.
   Full staged review and git diff --cached --check pass. No implementation is
-  unstaged at that review. Commit `1ed04db7d5635d4851f78bf89c2bb72e9693312a` (declared as a non-first parent of this checkpoint)
+  unstaged at that review. The interactive export revision
   was compared with its baseline on 2026-10-07 and matches this exact diff hash.
   Current memory has been condensed to active state, boundaries and next actions;
   superseded completion records remain in project/evidence and GAW history.
@@ -373,7 +373,7 @@
 - Local v0.3.1 annotated tag target:
   the v0.3.1 release revision.
 - Current main HEAD observed on 2026-10-07:
-  `1ed04db7d5635d4851f78bf89c2bb72e9693312a` (declared as a non-first parent of this checkpoint).
+  the interactive export revision.
 
 These are local Git facts. They do not prove remote release state or tag
 signatures.
@@ -581,10 +581,11 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   GUI navigation, file search/remote/tilde targets and broader
   filename escaping remain unverified or explicitly unsupported.
 
-## Native PDF node evidence (2026-10-08, working tree)
+## Native PDF node evidence (2026-10-08)
 
-- Baseline is interactive commit 1ed04db7d5635d4851f78bf89c2bb72e9693312a (declared as a non-first parent of this checkpoint);
-  PDF code is not yet a project commit. Installed TeXmacs is 2.1.5 in
+- Baseline is the interactive export revision;
+  PDF commit db33c148dbbc4c26c6aae300c063883b06e893e6 (declared as a non-first parent of this checkpoint) was verified against the
+  seven-file diff hash below on 2026-10-08. Installed TeXmacs is 2.1.5 in
   /nix/store/fbmq6la2pwcapsgmqp3zy6d4dbrn270a-texmacs-2.1.5/share/TeXmacs.
 - User authorized targeted tm-print.scm, tm-files.scm and document-edit.scm
   reads. Native print-to-file supports direct PDF. update-document "all" uses
@@ -607,7 +608,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   font/style resources remain environmental dependencies; arbitrary custom
   styles are not sandboxed. Visual layout/general reference convergence is
   unverified, and fixed three-pass behavior is explicitly bounded.
-- Reviewed seven-file diff SHA-256 on baseline 1ed04db (declared as a non-first parent of this checkpoint):
+- Reviewed seven-file diff SHA-256 on the baseline interactive export revision:
   00164bbb3491e4addd74c75a0c53ab86cd8397855e659c25a572a5ae84044464, computed by
   git diff HEAD over README.org, org-texmacs-core.el, org-texmacs-session.el,
   org-texmacs-worker.scm, org-texmacs.el, tests/ert/default.nix and tests/ert/ert.el.
@@ -615,6 +616,45 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   explicit approval. tmp/commit.md is the reviewed message. Unchanged flake.nix overlay is
   excluded. The inspected final ERT derivation is
   /nix/store/hdwfqgf62hhqxk5y7lkk396ydxxxgiy4-org-texmacs-ert.drv.
+
+## Verified/staged PDF semantic regression node (2026-10-08)
+
+- User requires only stable reproducible checks in tests. New cases extract
+  Poppler text and normalize whitespace; they do not assert PDF bytes, pixels,
+  coordinates or fixed pagination. Inspectors are mandatory in installed Nix
+  ERT; local tests skip semantic inspection when Poppler is unavailable.
+- On baseline db33c148dbbc4c26c6aae300c063883b06e893e6 (declared as a non-first parent of this checkpoint), first focused run with
+  explicit cached Poppler exec-path passed 7/8 in 18.27s. Named/repeated and
+  anonymous footnote markers/bodies pass. Citation regression fails: actual
+  "Group [?, ?]. Repeat [?]." versus expected resolved [1, 2]/[1], while the
+  bibliography has [1]/[2] and both selected titles. This is a reproducible
+  native reference defect; retain the failing test, not question-mark expectations.
+- Focused ERT 120s and Nix 180s checks are authorized for this node.
+  Authorized std-automatic.ts/bib-utils.scm/plain.scm fragments confirm
+  cite-arg references prefix + "-" + key and bib-label generates the same key.
+  The prefix mapping was correct; no change to bibliography lowering is justified.
+- A diagnostic wrapper in the maintained citation test performs native printing,
+  three low-level updates, and a second print on the same owned file. Focused
+  8/8 passed in 18.00s; unmodified production failed without the wrapper. This establishes
+  a bounded print/update/final-print solution for this fixture, not arbitrary
+  pagination convergence. User authorized worker Scheme/README repair; the
+  wrapper is removed. Real production focused 8/8 passes (21.27s) after extending
+  failure/recovery injection to both print phases. After tightening marker word
+  boundaries, final focused 8/8 passes in 19.27s. Intermediate Nix passes all
+  seven checks with installed ERT 273/273 (121.42s). Final tightened-test Nix
+  passes all seven checks and installed ERT 273/273 (122.88s); all eight PDF
+  cases pass with mandatory Poppler inspection. Initial sandbox daemon denial
+  was resolved by approved
+  execution of the same 180s command outside sandbox.
+- The diagnostic wrapper was maintained inside ERT during investigation and
+  then removed; the final regression and native implementation reproduce the
+  finding. No independent raw artifact needs archiving; no binary enters GAW.
+- Three files (README.org, org-texmacs-worker.scm, tests/ert/ert.el) were staged
+  with approval; complete staged review and diff --check pass. Staged diff
+  SHA-256 against db33c148dbbc4c26c6aae300c063883b06e893e6 (declared as a non-first parent of this checkpoint) is
+  78e76d17e30ef0361e94c3b3de3717808afbb0a3bc7aced7498682f1563afbbc.
+  tmp/commit.md is reviewed; only the unchanged flake.nix overlay is unstaged.
+  Final ERT derivation: /nix/store/r639c3h0hx26cdkkwv9xgjg5bq8j34nj-org-texmacs-ert.drv.
 
 ## Durable TeXmacs facts
 

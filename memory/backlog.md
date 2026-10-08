@@ -96,13 +96,21 @@ pipeline when it reads files or dynamic state outside the owned snapshot.
 
 ## Adopted downstream work
 
+The next selected node is stable PDF semantic regression for footnotes and
+owned citation/bibliography output. No fixed pagination/pixel/byte assertions
+are adopted. First native citation rendering failed with unresolved [?] values;
+the authorized working-tree print/update/final-print sequence resolves them.
+Final focused 8/8 and installed ERT 273/273 plus all Nix checks pass; three
+files are approved/staged and await the user's commit. Preview
+and broader visual/multipage inspection remain later boundaries.
+
 The user selected native rendering/PDF on 2026-10-08 as the next CONSUMER-01
-node. The working-tree implementation owns a temporary native buffer and PDF
+node. Implementation committed as db33c14 (declared as a non-first parent of this checkpoint) owns a temporary native buffer and PDF
 inside the worker directory, uses three synchronous low-level updates and the
 native printer, and returns bytes or saves a new file after source checking.
 Six PDF cases and full local 271/271 pass. Final Nix passes all seven checks
 with installed ERT 271/271 and mandatory Poppler inspection. Seven files are
-approved/staged; the user must commit them. The temporary overlay stays excluded.
+committed and their diff matches the verified hash. The temporary overlay stays excluded.
 No GUI preview or overwrite policy is included; PDF binaries remain outside GAW.
 
 ### CONSUMER-01: Add stable complete-document consumers
@@ -140,7 +148,7 @@ focused cases, full local ERT passes 250/250 + 11/11, and Nix installed ERT
 and readonly native export buffers without generic backend/dispatcher preprocessing.
 Dispatcher policy and replacement/publication remain separate boundaries.
 
-The interactive node is committed as `1ed04db` (declared as a non-first parent of this checkpoint): M-x buffer/file export, fresh readonly
+The interactive node is committed as the interactive export revision: M-x buffer/file export, fresh readonly
 native byte views, captured source identity before prompts and failed-view
 cleanup. Four new cases pass in sixteen combined focused tests; full local ERT
 passes 105/105 + 149/149 + 11/11 and Nix installed ERT 265/265 passes with
