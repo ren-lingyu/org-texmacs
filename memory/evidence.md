@@ -873,7 +873,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   five-file hash 145a3237...; user explicitly selected narrowing. Targeted local
   Org selection/config/naming/heading reads and repeated focused 120s groups /
   Nix 240s checks were authorized for this node.
-  Commit 82552db77d2b01fa832fc06948f57e1cc5e80d81 (declared as a non-first parent of this checkpoint) has exactly the six reviewed
+  the narrowed-source export revision has exactly the six reviewed
   files and matches fdeb09f1... below. Index is empty at commit verification;
   only the user's local/uncommitted remote mirror configuration remains dirty.
 - Org ox.el (3627) starts within save-restriction and applies region before subtree;
@@ -914,13 +914,17 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   Native visual layout/pagination and GUI remain unverified. Visible-only,
   body-only/async/generic APIs remain separate or deferred.
 
-## v0.4.0 release preparation (2026-10-08, verified/staged)
+## v0.4.0 release preparation (2026-10-08, committed; user review pending)
 
-- Baseline 82552db77d2b01fa832fc06948f57e1cc5e80d81 (declared as a non-first parent of this checkpoint) is verified against the
+- Baseline the narrowed-source export revision is verified against the
   narrowing six-file SHA-256 fdeb09f1... on the external configuration override revision. User explicitly selected
   v0.4.0 release preparation with current bounded document/native export scope.
-  Nineteen feature/fix commits follow the local v0.3.1 tag. Ordinary commit/tag/
-  publication remain pending; this record is preparation evidence, not release.
+  Nineteen feature/fix commits follow the local v0.3.1 tag. Preparation commit
+  c26985f8f24ce8c6b95ebf3dbb211fff8e276f45 (declared as a non-first parent of this checkpoint) has exactly the three reviewed files
+  and matches 84b212a7... below. Index is empty; only the mirror overlay is dirty.
+  Exact local `git tag --list v0.4.0` returned no tag. User explicitly holds
+  tag/publication for their review. No new tests or external publication lookup
+  were run. This is preparation/commit evidence, not a released-version claim.
 - Changed package header and Nix version 0.3.1 to 0.4.0, corrected source-buffer
   Commentary and added necessary README overview/version/compatibility wording.
   Runtime feature code, dependencies and lockfile are unchanged.
@@ -934,7 +938,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 - Three approved staged files: README.org, org-texmacs.el, flake.nix (version-only
   patch applied to index with approval). Staged flake equals baseline bytes with
   just that line replaced. Complete staged review/diff --check pass. Entire
-  staged diff SHA-256 on 82552db (declared as a non-first parent of this checkpoint):
+  staged diff SHA-256 on the narrowed-source export revision:
   84b212a7b1b9c74e1309067a10d0a932ed70b93b0f3b541fba40f83ff906ce33.
   No release work remains unstaged. Current raw unstaged mirror diff SHA-256:
   2af6574fe8302fa7a5e64d3e93e8955cf7c36f0a4c6c2f135a2edffe8b65032a.

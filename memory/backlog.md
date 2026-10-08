@@ -158,22 +158,23 @@ before parsing/callbacks and preserved at prompts/waits. Private heading/naming
 copy handles hidden metadata; changed restrictions invalidate output before write.
 Empty narrowing is valid. Public signatures are unchanged. Seven focused cases,
 all five existing export groups and final Nix compilation/package-lint/installed
-ERT 311/311 pass. Six files are committed as 82552db (declared as a non-first parent of this checkpoint), matching the verified diff.
+ERT 311/311 pass. Six files are committed as the narrowed-source export revision, matching the verified diff.
 Visible-only needs a separate frozen visibility contract and is not bundled.
 Phase closure selected v0.4.0 as described below. Other exporter flags/unsupported
 syntax are not automatically
 required completion work.
 
-### Verified/staged: v0.4.0 phase closure/release preparation
+### Committed, awaiting review: v0.4.0 release preparation
 
 User selected v0.4.0 after reviewing phase closure scope. Nineteen commits since
 v0.3.1 implement current bounded DOC-01 resolution and native .tm/PDF consumers,
 synchronous dispatcher, output naming/reexports and selection/configuration.
 Package/header metadata and necessary README wording are prepared; final Nix
-compilation/package-lint/installed ERT 311/311 pass. Three paths are approved/
-staged, with only the version hunk staged in flake.nix. Release notes are a
-reviewed draft in tmp/release-v0.4.0.md. Await user metadata commit, verify diff,
-then handle tag/publication only with user direction and manual Git boundaries.
+compilation/package-lint/installed ERT 311/311 pass. Three paths are committed as
+c26985f (declared as a non-first parent of this checkpoint), matching the verified diff; only the version hunk is committed in
+flake.nix. Release notes are a reviewed draft in tmp/release-v0.4.0.md. User
+explicitly holds tag/publication to review first. Wait for review findings or
+an explicit instruction to resume; do not automatically advance other work.
 No new syntax or exporter-flag parity was adopted. Original ELPA restoration,
 other platforms/GUI/general pagination remain unverified; mirror stays excluded.
 
