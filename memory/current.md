@@ -2,21 +2,22 @@
 
 ## Objective
 
-Advance DOC-01 document-wide semantic resolution after the locally tagged
-v0.3.1 ARCH-01 release. The first node is a resolution/context boundary tested
-with internal links and IDs. The reproducible untracked bootstrap migration is
-complete. Unaided bootstrap discovery remains a nonblocking later check.
+Advance DOC-01 after the locally tagged v0.3.1 ARCH-01 release. Its first
+resolution/internal-link node is implemented and verified in the ordinary
+worktree, ready for review; Nix/package-lint gates remain unverified because of
+dependency/tool availability. Unaided bootstrap discovery remains nonblocking.
 
 ## Current baseline
 
 - Main HEAD observed on 2026-10-06:
-  `880d4e00667907ef66985387b4865ec8d795d48d` (declared as a non-first parent of this checkpoint).
+  the v0.3.1 release revision.
 - Local v0.3.0 tag target:
   the v0.3.0 structured-document release revision.
 - Local v0.3.1 annotated tag resolves to main HEAD
-  `880d4e00667907ef66985387b4865ec8d795d48d` (declared as a non-first parent of this checkpoint).
-- The ordinary project worktree is clean; `INBOX.md` is an ignored reference
-  note and was not modified by the agent.
+  the v0.3.1 release revision.
+- The ordinary worktree contains DOC-01 changes in document/context lowering,
+  the public API documentation, README, and ERT. `INBOX.md` remains an ignored
+  reference note and was not modified by the agent.
 - Root `GOALS.md` and `REVIEW.md` have been retired from the active project
   root. The generated root `AGENTS.md` remains the only active root agent
   document.
@@ -120,7 +121,7 @@ complete. Unaided bootstrap discovery remains a nonblocking later check.
 
 ## v0.3.1 local release state
 
-- Project commit `880d4e00667907ef66985387b4865ec8d795d48d` (declared as a non-first parent of this checkpoint)
+- The v0.3.1 release revision
   (`build(release): prepare version 0.3.1 metadata`) changes the package header,
   Nix version, and README release wording. The local annotated v0.3.1 tag
   resolves to this commit. Remote publication and tag signature were not checked.
@@ -135,20 +136,29 @@ complete. Unaided bootstrap discovery remains a nonblocking later check.
   first implementation node. `memory/backlog.md` holds the adopted scope and
   unresolved design questions; the note adds no unique raw evidence requiring
   a separate archive copy.
-- Current prepared input owns copied AST nodes and identity-keyed mappings, but
-  lowering accepts only a finite self-contained URI-link set and has no general
-  document-wide resolver. The proposed node therefore belongs between owned
-  preparation and local lowering, without buffer reads in pure lowering.
+- The first node is implemented: a pure analysis phase resolves local
+  headline/CUSTOM_ID/ID and paragraph dedicated-target links against the owned
+  AST, returning identity-keyed label/link mappings consumed by local lowering.
+  Missing/ambiguous targets fail in preflight; no external ID lookup is used.
+- Final full ERT passed 210/210 with exit status 0; all ten package modules
+  byte-compiled without warnings under Emacs 31.1 / Org 9.8-pre. Native
+  label/reference readback, prepared input after source-buffer disposal,
+  filtering, ambiguity, STM label collisions, low headlines, target priority,
+  and broken-link preflight are covered. `memory/evidence.md` records the
+  worktree diff provenance and the unavailable Nix/package-lint checks.
 - The proposed relative-resource base and Org exporter/helper reuse need
   version-specific verification before implementation. Cross-file/global ID
   lookup must not enter the first node through ambient state.
 
 ## Next actions
 
-1. Plan the DOC-01 resolution boundary using focused Org semantics and current
-   ownership/snapshot evidence, then implement the first internal-link/ID node
-   when authorized. Keep file/resource path bases and global ID lookup explicit.
-2. When a later fresh Codex session starts without user-supplied `AGENTS.md`,
+1. Review the uncommitted first-node diff. Revisit Nix/package-lint when the
+   required dependencies/tools are available; do not report those gates as
+   passed. Ordinary project staging/commit remains with the user.
+2. Continue DOC-01 with a bounded file/resource-context design node, verifying
+   Org's base-path conventions before capturing new snapshot fields. Named
+   footnotes and citations/bibliography remain later DOC-01 nodes.
+3. When a later fresh Codex session starts without user-supplied `AGENTS.md`,
    check whether it discovers the root bootstrap and project skill, then
    recovers active GAW memory without the historical archive. Mark this
    nonblocking check complete when observed; continue project work meanwhile.
