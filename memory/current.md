@@ -2,14 +2,14 @@
 
 ## Objective
 
-The bounded DOC-01 named-table/caption node is implemented, verified and staged
-with approval. `tmp/commit.md` contains the reviewed message; await the user's
-ordinary project commit. The temporary mirror overlay remains excluded.
+CONSUMER-01's first complete-document/native serialization node is implemented,
+verified and staged with approval. `tmp/commit.md` contains its reviewed message;
+await the user's ordinary project commit. The temporary mirror overlay stays excluded.
 
 ## Current baseline
 
 - Main HEAD observed on 2026-10-07:
-  `fe6c435bda7948989f758cea6c9d4146c0d0a5cb` (declared as a non-first parent of this checkpoint).
+  `544e2463878d5658119f6beb9b8a6a8275e1739c` (declared as a non-first parent of this checkpoint).
 - Local v0.3.0 tag target:
   the v0.3.0 structured-document release revision.
 - Local v0.3.1 annotated tag resolves to
@@ -34,7 +34,35 @@ ordinary project commit. The temporary mirror overlay remains excluded.
 
 ## Current decisions
 
-- Commit `fe6c435` (declared as a non-first parent of this checkpoint) matches the previously verified eight-file citation diff
+- Commit `544e246` (declared as a non-first parent of this checkpoint) matches the named-table diff hash exactly; node start has
+  only the user's unchanged overlay dirty. The bounded DOC-01 architecture now
+  covers local links/IDs, file targets, named notes, default citations/native
+  bibliography and table references. It is sufficient to start the adopted
+  CONSUMER-01 work without requiring broader Org coverage. Remaining DOC-01
+  variants retain explicit unsupported boundaries; do not claim all DOC-01
+  syntax complete. The first consumer constructs full native file-document
+  structure and returns native serialized text from explicit document fields,
+  independently of a live session, without writing output files. Related
+  installed conversion/version Scheme reads are explicitly authorized.
+- The independent serialization node is implemented, verified and staged: public
+  org-texmacs-document-serialize consumes explicit native fields, constructs
+  version/style/body/optional initial structure in the native bridge, and uses
+  serialize-texmacs. Exact native output travels as ASCII hex and is returned
+  as an unibyte string. It does not open output files or mutate a session.
+  Domain serialization errors preserve the worker; bad payloads stop it.
+  Four new maintained cases cover byte/protocol preflight, native file roundtrip,
+  session independence, completed Org features and native error recovery.
+  The user authorized repeated focused/full ERT and Nix checks for this node,
+  each with timeout 120s. Final four focused cases pass, including exact native
+  file tree roundtrip and session-state preservation. Full local coverage of the
+  pre-adjustment code passed 242/242 + 11/11 (109.71s and 11.88s); final focused
+  tests cover the obsolete-helper removal. Final Nix passed all seven checks including
+  compilation/package-lint and installed ERT 253/253 (96.29s). Five explicit
+  paths are staged, with no implementation changes left unstaged; evidence has
+  the reviewed diff hash. No output file or necessary raw temporary artifact
+  was created. Only the unchanged user overlay remains unstaged.
+
+- the citation and plain bibliography revision matches the previously verified eight-file citation diff
   exactly. Only the user's temporary overlay is dirty at node start. With
   explicitly authorized installed TeXmacs reads, env-base/env-float confirm
   native big-table counters and caption-detailed long/short captions. This
@@ -49,8 +77,9 @@ ordinary project commit. The temporary mirror overlay remains excluded.
   retention. Full disjoint ERT passes 238/238 + 11/11 (98.61s and 12.20s), and
   Nix's seven checks pass including installed ERT 249/249 (87.27s), compilation
   and package-lint under the unchanged local-only mirror overlay. All five
-  node files are approved/staged, with no implementation edits left unstaged;
-  reviewed diff hash is recorded in evidence. `tmp/commit.md` is the new message.
+  named-table files were approved/staged and then committed as `544e246` (declared as a non-first parent of this checkpoint);
+  the commit matches evidence's reviewed diff hash. Its former `tmp/commit.md`
+  has been replaced by the reviewed current consumer message.
   No new temporary probe file was needed; installed-source observations and maintained regressions
   hold the semantic evidence.
 - First full local/Nix runs caught eight existing footnote/citation regressions:
@@ -74,7 +103,7 @@ ordinary project commit. The temporary mirror overlay remains excluded.
   13.21 seconds) after the earlier 120-second timeout. Final Nix passed
   compilation, package-lint and installed ERT 244/244 (101.89 seconds). Eight
   explicit files were staged with approval, reviewed and hashed, then committed
-  as `fe6c435` (declared as a non-first parent of this checkpoint), matching that hash; the temporary overlay remains untouched.
+  as the citation and plain bibliography revision, matching that hash; the temporary overlay remains untouched.
 - The owned bibliography foundation revision matches its verified seven-file diff exactly.
   Its recorded verification and constraints remain in evidence/project memory.
 - Citations/bibliography design review established a usable low-level native
@@ -85,7 +114,7 @@ ordinary project commit. The temporary mirror overlay remains excluded.
   definition order. The user selected explicit path-to-BibTeX-text snapshots.
   The committed foundation owns explicit source trees, validates local syntax
   before worker calls, checks native signatures and rechecks dependencies across
-  waits. Default citation/keyword lowering is now implemented in `fe6c435` (declared as a non-first parent of this checkpoint).
+  waits. Default citation/keyword lowering is now implemented in the citation and plain bibliography revision.
   Only related installed source reads are authorized, not user bibliography data access.
 - Named footnotes now resolve within the owned AST snapshot. Separate and
   labeled inline definitions are collected before filtering; required removed
@@ -286,13 +315,13 @@ ordinary project commit. The temporary mirror overlay remains excluded.
 
 ## Next actions
 
-1. Await the user's ordinary project commit of the five-file named/captioned
-   table node. Verify its diff against evidence's hash before marking committed.
+1. Await the user's ordinary project commit of the five-file native serialization
+   node. Compare its diff with evidence's hash before marking it committed.
    Keep the temporary overlay out of commits and pushes.
-2. Review remaining DOC-01 general-reference/resource boundaries and readiness
-   for CONSUMER-01; tables now cover one native numbered-element reference path.
-   Do not invent numbering or auto-adopt advanced citation variants. DOC-01 remains active;
-   fuller Org coverage is not a prerequisite for later CONSUMER-01 work.
+2. After the first consumer node, review explicit-destination saving and the
+   Org export frontend boundary as later CONSUMER-01 nodes. Remaining DOC-01
+   general-reference/resource variants remain separately scoped; fuller Org
+   coverage is not a prerequisite for consumer work.
    Citation styles/affixes, crossref dependencies, global bibliography/export
    configuration, broader resources and cross-file IDs retain explicit bounds.
 3. When a later fresh Codex session starts without user-supplied `AGENTS.md`,
