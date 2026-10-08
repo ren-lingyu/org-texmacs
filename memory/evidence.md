@@ -278,8 +278,9 @@
   no result). An explicitly approved outside-sandbox run of the same command
   passed (exit 0). This does not establish a bibliography parser defect from
   the original timeout. The three exact pure-text probe files are preserved in
-  `archive/2026-10-06T17-35-50Z--a242eb2/`, archive-only checkpoint
-  `84be873e30943d2c37b4bfe612d1e81f0effd9b6`, with sole additional project parent
+  `archive/2026-10-06T17-35-50Z--a242eb2/`. Its manifest path history locates the
+  archive-only GAW checkpoint introducing the snapshot, with sole additional
+  project parent
   `a242eb233322a62b3f18dbf1a3ba1278e628e361`. Bytes/digests and unchanged HEAD
   were verified. No active memory, overlay or binaries entered the archive.
 - Eight new maintained cases cover pure ownership/invalid data, local syntax
@@ -334,8 +335,9 @@
   `footnote`, `footnote-text`, `footnotemark*`, `footnote-ref` and `next-footnote`.
   This does not establish absence of the macros or rendered numbering behavior.
   Exact runner, Scheme query and output are preserved as three UTF-8 plain-text
-  files in `archive/2026-10-06T16-59-25Z--77a2888/`, archive-only checkpoint
-  `548e6c3a8a6caa688b93de01d547bca204c279bb`, with sole additional project parent
+  files in `archive/2026-10-06T16-59-25Z--77a2888/`. The archive-only checkpoint
+  introducing its manifest records the captured state through its sole additional
+  project parent
   `77a28881807d1bf8dba508b1f8a07f392083dfca`. Byte copies, sizes and hashes match;
   no active memory, temporary mirror overlay or binaries entered that checkpoint.
 - Nine new maintained ERT cases cover first/repeated references, forward inline
@@ -554,8 +556,9 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   files were opened and no hyperlinks were followed.
 - The three exact plain-text probe artifacts were copied byte for byte and
   digest/size verified in `archive/2026-10-06T14-50-30Z--b09b451/`. Independent
-  archive-only checkpoint `9d8d351e63bad079087301aaf3b410d29307a824` has sole
-  additional project parent `b09b4515ad0445666d666506969e441d8f5e6b89`. Its
+  archive-only checkpoint introducing the snapshot is located through its manifest
+  path history. Its sole additional project parent is
+  `b09b4515ad0445666d666506969e441d8f5e6b89`. Its
   manifest records each role, source path, byte count and digest. Active memory,
   binary artifacts and the temporary overlay were excluded from that checkpoint.
 - The implementation adds raw file-target path provenance; it rewrites only

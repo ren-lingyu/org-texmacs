@@ -77,6 +77,17 @@ GAW index, stage explicit declared-workspace paths, inspect the staged diff,
 run `git gaw check`, and use only `git gaw commit` with justified project
 parents.
 
+For this project's archive references, prefer archive paths and manifest history
+over copying GAW checkpoint OIDs into durable memory. Keep ordinary project OIDs
+when they independently locate an implementation, validation baseline or release;
+do not remove project provenance or content digests merely because they are hashes.
+
+Keep a checkpoint's additional project parents homogeneous in provenance purpose.
+Do not assign start/result or other business roles by second/third parent position.
+When separate supported phases each have recovery value, checkpoint those states
+separately against their actual project snapshots. Do not manufacture checkpoints
+just to rearrange parents. Express causes and phase relationships in memory prose.
+
 Retrospective checkpoints must reflect the supported historical order. Do not
 project current file organization, goals, or skills into earlier states where
 they did not yet exist.
