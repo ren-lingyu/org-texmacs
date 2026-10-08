@@ -14,7 +14,7 @@
 
 ## Interactive export / native byte-view evidence
 
-- Adapter commit `ee225ad62ffedf529239f7a31fd4cc73e9743519` (declared as a non-first parent of this checkpoint) matches its verified
+- The explicit-source export adapter revision matches its verified
   four-file diff, checked on 2026-10-07. Interactive work began with only the
   unchanged user overlay dirty.
 - Four new maintained cases pass in sixteen combined cases (17.02s). Native
@@ -40,11 +40,12 @@
   timeouts or rerunning the overlong bucket. Validation uses the unchanged
   temporary local-only remote USTC mirror overlay; original ELPA is unverified.
 - Exact approved/staged three-file diff on baseline
-  `ee225ad62ffedf529239f7a31fd4cc73e9743519` (declared as a non-first parent of this checkpoint) has SHA-256
+  the explicit-source export adapter revision has SHA-256
   `3f3a1f61d1f0b24ad984c6723ada568ec12a5b8015a9de968200ac32e9878d51`
   for `git diff --cached -- README.org org-texmacs.el tests/ert/ert.el`.
   Full staged review and git diff --cached --check pass. No implementation is
-  unstaged; tmp/commit.md is the reviewed message. Ordinary commit awaits the user.
+  unstaged at that review. Commit `1ed04db7d5635d4851f78bf89c2bb72e9693312a` (declared as a non-first parent of this checkpoint)
+  was compared with its baseline on 2026-10-07 and matches this exact diff hash.
   Current memory has been condensed to active state, boundaries and next actions;
   superseded completion records remain in project/evidence and GAW history.
 - Test byte files/buffers are regenerable maintained fixtures, not unique raw
@@ -81,7 +82,7 @@
   `48f06c5326ad5140f291110c7a05cabffba941c1c2c1e87cbac2aa6c0101f163`
   for `git diff --cached -- README.org org-texmacs-session.el org-texmacs.el tests/ert/ert.el`.
   Full staged review and git diff --cached --check pass. No implementation
-  remained unstaged at that review. Commit `ee225ad62ffedf529239f7a31fd4cc73e9743519` (declared as a non-first parent of this checkpoint)
+  remained unstaged at that review. The explicit-source export adapter revision
   was checked on 2026-10-07 and matches this exact diff hash; the overlay remains
   unchanged at its previously recorded hash.
 - No independent necessary temporary evidence artifact was created. All generated
@@ -372,7 +373,7 @@
 - Local v0.3.1 annotated tag target:
   the v0.3.1 release revision.
 - Current main HEAD observed on 2026-10-07:
-  `ee225ad62ffedf529239f7a31fd4cc73e9743519` (declared as a non-first parent of this checkpoint).
+  `1ed04db7d5635d4851f78bf89c2bb72e9693312a` (declared as a non-first parent of this checkpoint).
 
 These are local Git facts. They do not prove remote release state or tag
 signatures.
@@ -579,6 +580,41 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   that baseline and its five-file diff matches this hash exactly.
   GUI navigation, file search/remote/tilde targets and broader
   filename escaping remain unverified or explicitly unsupported.
+
+## Native PDF node evidence (2026-10-08, working tree)
+
+- Baseline is interactive commit 1ed04db7d5635d4851f78bf89c2bb72e9693312a (declared as a non-first parent of this checkpoint);
+  PDF code is not yet a project commit. Installed TeXmacs is 2.1.5 in
+  /nix/store/fbmq6la2pwcapsgmqp3zy6d4dbrn270a-texmacs-2.1.5/share/TeXmacs.
+- User authorized targeted tm-print.scm, tm-files.scm and document-edit.scm
+  reads. Native print-to-file supports direct PDF. update-document "all" uses
+  delayed generation of auxiliary data; this node instead calls synchronous
+  update-current-buffer three times to avoid that broader file-reading path.
+- Maintained tests generate PDF from directly installed structured fields,
+  preserve a public session, reject stale source exports before file writes,
+  recover after injected printer errors and dispose the worker after injected
+  cleanup errors. Temporary rendering files are in the private worker directory.
+- Intermediate Nix checks passed with Poppler pdfinfo/pdftotext inspection:
+  positive page count, literal <alpha>/Café, Heading/Table caption and resolved
+  "Section 1"/"Table 1" text. Final revision passes local disjoint groups
+  105/105 (47.67s), 155/155 (88.28s), 11/11 (12.81s), including all six PDF cases.
+  Final Nix hit 120s at installed ERT 268/271 without observed failures; an
+  explicitly authorized retry passed all seven checks, including installed
+  ERT 271/271 (116.48s) and mandatory Poppler inspection. Initial cold build timed out
+  at 120s; it was not counted as passing. The temporary mirror remains excluded.
+- ERT runners and fixtures contain the complete reproduction, so no independent
+  necessary raw probe is archived. No PDF or other binary enters GAW. Native
+  font/style resources remain environmental dependencies; arbitrary custom
+  styles are not sandboxed. Visual layout/general reference convergence is
+  unverified, and fixed three-pass behavior is explicitly bounded.
+- Reviewed seven-file diff SHA-256 on baseline 1ed04db (declared as a non-first parent of this checkpoint):
+  00164bbb3491e4addd74c75a0c53ab86cd8397855e659c25a572a5ae84044464, computed by
+  git diff HEAD over README.org, org-texmacs-core.el, org-texmacs-session.el,
+  org-texmacs-worker.scm, org-texmacs.el, tests/ert/default.nix and tests/ert/ert.el.
+  Full staged diff review and diff --check pass; seven files were staged with
+  explicit approval. tmp/commit.md is the reviewed message. Unchanged flake.nix overlay is
+  excluded. The inspected final ERT derivation is
+  /nix/store/hdwfqgf62hhqxk5y7lkk396ydxxxgiy4-org-texmacs-ert.drv.
 
 ## Durable TeXmacs facts
 
