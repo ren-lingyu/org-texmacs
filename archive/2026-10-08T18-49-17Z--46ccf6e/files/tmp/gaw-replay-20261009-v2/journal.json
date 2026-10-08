@@ -1,0 +1,458 @@
+[
+  {
+    "index": 0,
+    "source": "d420da7f66cc2647a37817a10de36328ba44bd92",
+    "new": "cb8c8a61ed5ef59f60174c9fd17a1281697eeb7d",
+    "parents": [
+      "746a79820a3acc854499fed82d80b117dcfa61ec",
+      "1ed6e49f03a0caa52bfc9af4cb8ef3ddd787fe47",
+      "45594828781b2d34536727c203d282c58179a0ff",
+      "b7cdefdd623b808ab35914ebadfe8c9d6e1d53ed"
+    ],
+    "subject": "memory: record v0.3 interim architecture review"
+  },
+  {
+    "index": 1,
+    "source": "30b521c7c21c1931630e191e6f23705e9165c3a9",
+    "new": "7648d2903efaa27b4fa90d5ff4d18d05c2e3e3e9",
+    "parents": [
+      "8c157d06b7a8793b0bd312e8f0c41612a3640388"
+    ],
+    "subject": "memory: record v0.3.0 structured document release"
+  },
+  {
+    "index": 2,
+    "source": "e8a6eec1152ce4badffefb5c7032bc3b761a5a7e",
+    "new": "e8156777fe0e51453ff3820bc7bfb124159bf1ac",
+    "parents": [
+      "1a90b7bd2e0f60601cdf6003edf1ccbc79afce18"
+    ],
+    "subject": "memory: record post-v0.3 GAW migration decision"
+  },
+  {
+    "index": 3,
+    "source": "9b5555dc6a8e0fd63a8d20b832f54089862c23bb",
+    "new": "b47a365c22380ac0808cf1f4ffe3932d508aaff9",
+    "parents": [],
+    "subject": "memory: establish project governance and scoped skills"
+  },
+  {
+    "index": 4,
+    "source": "382e4fc91743dd1436ded5af80e50749a9ed6865",
+    "new": "2ef71272ad12af54d5cc8cadbe8f3d8d23b90302",
+    "parents": [],
+    "subject": "chore(gaw): declare archive workspace"
+  },
+  {
+    "index": 5,
+    "source": "c37844e6170ec2847ffbac4eda0941a806a7e38a",
+    "new": "1615ea23b256926fe660705e8cb0ba8a15e89f1a",
+    "parents": [],
+    "subject": "feat(governance): add historical archive workflow"
+  },
+  {
+    "index": 6,
+    "source": "dbc0df9234a4d6656902e95c68209c3384dfaf88",
+    "new": "ee568a0b25f399afa6a60abc92c4a9636311d3fd",
+    "parents": [
+      "1a90b7bd2e0f60601cdf6003edf1ccbc79afce18"
+    ],
+    "subject": "archive: preserve legacy agent documents"
+  },
+  {
+    "index": 7,
+    "source": "2fbc6fa737bcb36ee7a397109b53a5d570c27800",
+    "new": "f212a9d74476b4d5cb4f32df6352f0190efcbbbb",
+    "parents": [],
+    "subject": "memory: record legacy agent archive"
+  },
+  {
+    "index": 8,
+    "source": "3b3e66c4c0553106d5998fd179f8e9269a2da8c7",
+    "new": "714ed2746f3c0fa45b23c9efffd69eab95c735f7",
+    "parents": [],
+    "subject": "feat(governance): archive necessary temporary evidence"
+  },
+  {
+    "index": 9,
+    "source": "ab46bc050ea12389fadb46e810ea11ee52d123d0",
+    "new": "007dcd139de7da3359a697d5b327a0b27cf0fa76",
+    "parents": [],
+    "subject": "feat(governance): complete bootstrap recovery surface"
+  },
+  {
+    "index": 10,
+    "source": "8ec93dd04300781aefa5ab894dc93128214e7990",
+    "new": "6dc2ce05df60f94fe32f9a03ab470cccdad8dd2e",
+    "parents": [],
+    "subject": "memory: record bootstrap reconstruction"
+  },
+  {
+    "index": 11,
+    "source": "1e7e940c2601808a96f2804c6e5481394fd6d6f2",
+    "new": "be51b719f08c9a5f307eb999616ecaa5fc4b0346",
+    "parents": [],
+    "subject": "memory: record ARCH-01 worktree state"
+  },
+  {
+    "index": 12,
+    "source": "43cbbcb62a28f6415b6081fb0125ba1d9377e074",
+    "new": "b1a10a19bf19dbd024cb1b22a55f417f9910311e",
+    "parents": [],
+    "subject": "memory: verify ARCH-01 layering refactor"
+  },
+  {
+    "index": 13,
+    "source": "cf507bf7344e9ba2408aabe967a94b3197e75c73",
+    "new": "44a9b1aa398cf66aa95d7e2323df1acb8c909134",
+    "parents": [
+      "ec72c89b71ffd1df27d9cdb22c4f6c8e1a4f6491"
+    ],
+    "subject": "memory: complete ARCH-01 layering refactor"
+  },
+  {
+    "index": 14,
+    "source": "c05eada5e70f1597afc0b926661844b2922a8cc8",
+    "new": "762db15a8571d3179269109d8019eba0446f7ed1",
+    "parents": [],
+    "subject": "memory: record legacy workspace cleanup"
+  },
+  {
+    "index": 15,
+    "source": "c7f3b24385365c55dcf9ffc172d40a9585d47667",
+    "new": "a5b100ad34104603cfc704625a4355a35ce41fa4",
+    "parents": [],
+    "subject": "Record nonblocking fresh-context recovery check"
+  },
+  {
+    "index": 16,
+    "source": "6e15d2e002438a6608c1f7077c7cb5f5a3a0b3e8",
+    "new": "21b2a8db4d344e3f8de74e980ff727d88b9391f8",
+    "parents": [],
+    "subject": "Record v0.3.1 release preparation state"
+  },
+  {
+    "index": 17,
+    "source": "97caa13d98a075eb1a381ca7820d5499ed9457d6",
+    "new": "3ac3280101558ed94ab2b19b091f116a40565dea",
+    "parents": [
+      "880d4e00667907ef66985387b4865ec8d795d48d"
+    ],
+    "subject": "Select DOC-01 resolution boundary after v0.3.1"
+  },
+  {
+    "index": 18,
+    "source": "ee8e3d29e81110daf569f17d367fa159e63a36ff",
+    "new": "5de1eedf9b4f966f7a993a33a2c8b4c972226ab7",
+    "parents": [],
+    "subject": "Record DOC-01 local-link implementation and validation limits"
+  },
+  {
+    "index": 19,
+    "source": "2410a7867987ea1b7ed8fd9d23961ac56ac2ea67",
+    "new": "6e7bcbcc935057b9b3213b4aa4554cb18af52c8f",
+    "parents": [],
+    "subject": "Record cross-device ELPA availability blocker"
+  },
+  {
+    "index": 20,
+    "source": "2960606cf1f3317d7b876ab11dda80acb5a59b6a",
+    "new": "61655a2c4f01230aafb808bedb447b3757db25d0",
+    "parents": [
+      "a3ba241d66dc1e1a89a9eb4c4fc678fef2f5bfb4"
+    ],
+    "subject": "Record source-location snapshots and conditional Nix verification"
+  },
+  {
+    "index": 21,
+    "source": null,
+    "new": "81970f1f3a5a5b54b569cf2f25dee942536ede20",
+    "parents": [],
+    "subject": "memory: retire carried commit identifiers before archive checkpoint"
+  },
+  {
+    "index": 22,
+    "source": "9d8d351e63bad079087301aaf3b410d29307a824",
+    "new": "7ec69a1c74c989b95f9958ebda7f32b376a2d48c",
+    "parents": [
+      "b09b4515ad0445666d666506969e441d8f5e6b89"
+    ],
+    "subject": "Archive native file URL probe evidence"
+  },
+  {
+    "index": 23,
+    "source": "6ea12147f9333eb66092bec43df8dc746614550f",
+    "new": "8698ac6e657e35b246a72010b90a8ca5d6efdf70",
+    "parents": [
+      "b09b4515ad0445666d666506969e441d8f5e6b89"
+    ],
+    "subject": "Record local file-link semantics and native validation"
+  },
+  {
+    "index": 24,
+    "source": "cb818c46f27250fc99c145862ad0a1441111d566",
+    "new": "b65cff7c1b484a914d61a9368343afaab6ffbff3",
+    "parents": [],
+    "subject": "Record next-node staging approval and message workflow"
+  },
+  {
+    "index": 25,
+    "source": "548e6c3a8a6caa688b93de01d547bca204c279bb",
+    "new": "dab427e31d8a6f024f5a49f774767cf573d2c006",
+    "parents": [
+      "77a28881807d1bf8dba508b1f8a07f392083dfca"
+    ],
+    "subject": "archive: preserve native footnote environment probe"
+  },
+  {
+    "index": 26,
+    "source": "6f47663ed831a5422ae20c91e29ae52dec258b7e",
+    "new": "f87fe80c63316a5a3aad842b5e40ccf13edeb4a1",
+    "parents": [
+      "77a28881807d1bf8dba508b1f8a07f392083dfca"
+    ],
+    "subject": "memory: record verified and staged named footnote node"
+  },
+  {
+    "index": 27,
+    "source": null,
+    "new": "1b49517bb496c61900c2d3194adc135705950adf",
+    "parents": [],
+    "subject": "memory: retire carried commit identifiers before archive checkpoint"
+  },
+  {
+    "index": 28,
+    "source": "84be873e30943d2c37b4bfe612d1e81f0effd9b6",
+    "new": "27ef61100310e5fc1489f25bfe9dc46b5ec1b9ac",
+    "parents": [
+      "a242eb233322a62b3f18dbf1a3ba1278e628e361"
+    ],
+    "subject": "archive: preserve in-memory bibliography parser and formatter evidence"
+  },
+  {
+    "index": 29,
+    "source": "6dae0ea1817c55732a414c727309df97585bbbe7",
+    "new": "22075b58812b83f5ae411412a8440c5345bfa7e8",
+    "parents": [
+      "a242eb233322a62b3f18dbf1a3ba1278e628e361"
+    ],
+    "subject": "memory: record staged bibliography snapshot foundation and next resolution node"
+  },
+  {
+    "index": 30,
+    "source": "e299a0dd4beffbe049156b5339224c2f31e57646",
+    "new": "684c2cba2051c2da9860f05dd3ea226684626f8c",
+    "parents": [
+      "8e1abf743d37792c43184c84f62dd2f1dceab348"
+    ],
+    "subject": "memory: record verified staged citation and plain bibliography node"
+  },
+  {
+    "index": 31,
+    "source": "74c212a7485b96a22f10995e8d15566a799ca47f",
+    "new": "9c71de41cc3f71f9340953e4ea084182a56f7ed1",
+    "parents": [
+      "fe6c435bda7948989f758cea6c9d4146c0d0a5cb"
+    ],
+    "subject": "memory: record verified staged named-table and caption node"
+  },
+  {
+    "index": 32,
+    "source": "0b0aa8714f419b8ae8fb50d15ded9bf157a3548c",
+    "new": "4933809970a4b0b6c229263feda7e6226efa2063",
+    "parents": [
+      "544e2463878d5658119f6beb9b8a6a8275e1739c"
+    ],
+    "subject": "memory: record verified staged native serialization consumer"
+  },
+  {
+    "index": 33,
+    "source": "bb0fece7bbd500af730f4a8762c737b6716992a2",
+    "new": "737800385df3d39c628d270b59bb19cc221ad817",
+    "parents": [
+      "e7377e5767ca38411a497a635d5053f1729a2d5a"
+    ],
+    "subject": "memory: record verified staged explicit new-file saving consumer"
+  },
+  {
+    "index": 34,
+    "source": "0ebfea0ae35a925247d4ca6010ed4a5c498072ed",
+    "new": "6642a40c54d5e381f9030038225f1c746105d73d",
+    "parents": [
+      "0ee17c4acc88664e2024af26d8ebcf08084e85a7"
+    ],
+    "subject": "memory: record verified staged explicit-source native export adapters"
+  },
+  {
+    "index": 35,
+    "source": "9b0d50034831dca1fc7bf656fdfb632c9a9671b3",
+    "new": "87ba0b21243fa5db406bddfd663fc6910e161315",
+    "parents": [
+      "ee225ad62ffedf529239f7a31fd4cc73e9743519"
+    ],
+    "subject": "memory: record verified interactive export and concise active state"
+  },
+  {
+    "index": 36,
+    "source": "310d36210f364de3c6648666e39ed270c0893234",
+    "new": "7738c387cd1a5a48ce30a74c588b24439972b24b",
+    "parents": [
+      "1ed04db7d5635d4851f78bf89c2bb72e9693312a"
+    ],
+    "subject": "memory: record verified native PDF consumer and staging"
+  },
+  {
+    "index": 37,
+    "source": "5b2a96b2318c43c1b5b05c22408476d6702ecdd7",
+    "new": "0656498a35c65328df1bef2a5aea4a37bbc3c191",
+    "parents": [
+      "db33c148dbbc4c26c6aae300c063883b06e893e6"
+    ],
+    "subject": "memory: record stable PDF regressions and native citation repair"
+  },
+  {
+    "index": 38,
+    "source": "1562118e42a6ed1e1de9e2e98e51a3b0444b2f9c",
+    "new": "f87795312c92a30798b6b407bfb9769740659a2f",
+    "parents": [
+      "b5100a90e1f3891bf6def7ec29d7ae9aa04cea12"
+    ],
+    "subject": "memory: record verified bounded ox-texmacs frontend"
+  },
+  {
+    "index": 39,
+    "source": "0b06dcff935cb07d1e9f03734537600820edc9c7",
+    "new": "fa067cc6f77a250ed1b3b40d4af450f1d44e82c1",
+    "parents": [
+      "be284dd292cfb0a88ae51f0e6b692f94516f0bb1"
+    ],
+    "subject": "memory: verify committed frontend and propose output-update contract"
+  },
+  {
+    "index": 40,
+    "source": "04a8b4e54377a97297d9590a166fdc76ebe5386e",
+    "new": "1de99626926967df8890dbba8b5b727906c97835",
+    "parents": [
+      "be284dd292cfb0a88ae51f0e6b692f94516f0bb1"
+    ],
+    "subject": "memory: record verified Org output naming and repeat exports"
+  },
+  {
+    "index": 41,
+    "source": "88a921e714ac8684404bad80f32ef38d033bb21a",
+    "new": "01e3cf560c55b1c4131186a7772253a94f1da500",
+    "parents": [
+      "b4ee215224578577a3235f8954020baf74e585af"
+    ],
+    "subject": "memory: verify committed Org output naming and repeat exports"
+  },
+  {
+    "index": 42,
+    "source": "6a6d3679f35aea51425a0a17add4cc2eb4784ded",
+    "new": "04765478872beb6759e954e2b5038add1d2d7ae5",
+    "parents": [],
+    "subject": "memory: propose bounded subtree export as the next frontend node"
+  },
+  {
+    "index": 43,
+    "source": "0417cacd700c4bc3c1ba4356978836e804fb0549",
+    "new": "c01e2f87ff0a1f5835bd5299ce4f4e5449b12d3a",
+    "parents": [],
+    "subject": "memory: clarify remaining export scope and reference boundaries"
+  },
+  {
+    "index": 44,
+    "source": "2e698421ef345f5cefab37e0b6cc6623754c80f8",
+    "new": "7786d1a8d2447b705cd542fb7e67a3ceeceead62",
+    "parents": [],
+    "subject": "memory: defer generic Org export API adaptation"
+  },
+  {
+    "index": 45,
+    "source": "435ba0b10b6ec2cf31f3cf0d2b40df80b9a1c515",
+    "new": "ce43068b7343e5ef5e30dcd97367ceacdce9f063",
+    "parents": [
+      "b4ee215224578577a3235f8954020baf74e585af"
+    ],
+    "subject": "memory: record verified subtree export and owned dependencies"
+  },
+  {
+    "index": 46,
+    "source": "1863e5022bd7ebf6c5df22ec03991fcf3b53f0ee",
+    "new": "c4b9b18cc537677e3eeb4bf95f6905304f6cc0d8",
+    "parents": [
+      "ee3e028fb829d508333fda40c705d811f4b2583e"
+    ],
+    "subject": "memory: record verified region export and owned scope dependencies"
+  },
+  {
+    "index": 47,
+    "source": "83d851c70d27b24d430581b5ce3486e4c300aa6f",
+    "new": "0556886c34f164a1471dd4cbf4f981907a7c6c2f",
+    "parents": [
+      "7e6b4e001603a223933277d2704018877b86bada"
+    ],
+    "subject": "memory: record verified external export configuration"
+  },
+  {
+    "index": 48,
+    "source": "3c87e0790b103e5f22740144a0d11c2b6ebf5402",
+    "new": "9990cea8c62962f41301fa0d2dee73da623f1e40",
+    "parents": [
+      "d71204d204a03b30491d5cdb2bd05d59dacd71a3"
+    ],
+    "subject": "memory: verify committed overrides and assess remaining scope"
+  },
+  {
+    "index": 49,
+    "source": "3fcc666aa1445d8c9c83553390794bde7f6b466e",
+    "new": "0fc1dd33ee1a0bfef32bb4e3fed399a0492c490f",
+    "parents": [
+      "d71204d204a03b30491d5cdb2bd05d59dacd71a3"
+    ],
+    "subject": "memory: record verified narrowed source export"
+  },
+  {
+    "index": 50,
+    "source": "4c84dc229cfd1773f54682604b3aee0143c6353b",
+    "new": "a59d670fad23ceced5a39793662353d84b7ee0e3",
+    "parents": [
+      "82552db77d2b01fa832fc06948f57e1cc5e80d81"
+    ],
+    "subject": "memory: record verified v0.4.0 release preparation"
+  },
+  {
+    "index": 51,
+    "source": "cdaefa740ea5976d8218c8d653b035d082b06a13",
+    "new": "3067aeaf4c38901e9e772823e00941753f318c7d",
+    "parents": [
+      "c26985f8f24ce8c6b95ebf3dbb211fff8e276f45"
+    ],
+    "subject": "memory: verify release preparation commit and await user review"
+  },
+  {
+    "index": 52,
+    "source": "39c1ab6f3e4f2fe35ea1ed7902a95b0361e792cb",
+    "new": "5bb362910976891815041125a97670f204d61eb8",
+    "parents": [
+      "c26985f8f24ce8c6b95ebf3dbb211fff8e276f45"
+    ],
+    "subject": "memory: record HTML coexistence regression and ELPA validation limits"
+  },
+  {
+    "index": 53,
+    "source": "2c47d04ca97ae03e8d724e8b53b6d32e9c2a5bad",
+    "new": "9321c8f208232841b6161263fd152270fbe9cee1",
+    "parents": [
+      "46ccf6eb7120022c734115ec7876e7d150082f9b"
+    ],
+    "subject": "memory: verify v0.4.0 tag and GitHub publication"
+  },
+  {
+    "index": 54,
+    "source": "6c7a8b3dba88ab7b11a560f3ab2759c5932c95c0",
+    "new": "07dc199824ccfb506654e2f2d4ebf3055c47504d",
+    "parents": [],
+    "subject": "memory: use durable archive locators and clarify provenance conventions"
+  }
+]
