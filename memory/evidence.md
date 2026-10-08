@@ -12,6 +12,38 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
+## Default citation/plain bibliography node evidence
+
+- Foundation commit `8e1abf743d37792c43184c84f62dd2f1dceab348` (declared as a non-first parent of this checkpoint) exactly matches
+  the recorded seven-file SHA-256, checked on 2026-10-07.
+- Four new maintained cases cover preflight rejection; footnote-aware ordering;
+  stale prefix/key/entry views; formatting waits, bad payloads and domain-error
+  worker preservation; multiple keys/static STM label conflicts; prepared input
+  after source disposal; and Cafe-with-accent, Chinese and literal-angle native
+  output/readback. Twelve citation/bibliography focused tests passed.
+- The first complete local ERT hit timeout 120s around test 230/244, with no
+  observed failed tests. Disjoint selectors `(not "^org-texmacs-test-worker-")`
+  and `"^org-texmacs-test-worker-"` passed 233/233 (117.17s) and 11/11 (13.21s),
+  both exit 0, covering all 244 local cases without longer command timeouts.
+- Final Nix checking passed, exit 0, including compilation, package-lint and
+  installed ERT 244/244 in 101.89s. Environment: local emacs-twist Emacs 31.1 /
+  Org 9.8-pre and TeXmacs 2.1.5; Nix package verification uses the declared inputs.
+  The temporary, local-only remote USTC mirror overlay remains unchanged at
+  `1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54`.
+  Original GNU ELPA availability is not established.
+- Native integration initially rejected a use-modules form inside a function:
+  TeXmacs requires it at top level. Bib utility import is now top-level; the
+  plain style is provided lazily and its dynamic prefix/style/default state is
+  restored. The temporary debug worker copy was regenerable and its diagnosis
+  is fully represented here and in maintained coverage; no new necessary raw
+  artifact qualified for archiving. Only that task-created copy was removed.
+- Exact approved staged eight-file diff on the foundation baseline has SHA-256
+  `8dd996137ed791117e83d683d404950f3dc475218381df0441291b388e768bee` for
+  `git diff HEAD -- README.org org-texmacs-context.el org-texmacs-document.el org-texmacs-input.el org-texmacs-source.el org-texmacs-worker.scm org-texmacs.el tests/ert/ert.el`.
+  Complete staged review and git diff --check passed. No implementation changes
+  remain unstaged; tmp/commit.md contains the reviewed message. Project commit
+  remains pending. GUI bibliography/citation values and typesetting are unverified.
+
 ## Bibliography snapshot foundation evidence
 
 - The user selected explicit path-to-BibTeX-text snapshots for the first
@@ -37,7 +69,7 @@
   the original timeout. The three exact pure-text probe files are preserved in
   `archive/2026-10-06T17-35-50Z--a242eb2/`, archive-only checkpoint
   the archive-only checkpoint introducing archive/2026-10-06T17-35-50Z--a242eb2/MANIFEST.md, with sole additional project parent
-  `a242eb233322a62b3f18dbf1a3ba1278e628e361` (declared as a non-first parent of this checkpoint). Bytes/digests and unchanged HEAD
+  the named-footnote revision. Bytes/digests and unchanged HEAD
   were verified. No active memory, overlay or binaries entered the archive.
 - Eight new maintained cases cover pure ownership/invalid data, local syntax
   and global-state isolation, preflight, text/path/list/alias mutations across
@@ -61,14 +93,14 @@
   ordinary edit clarified the private worker docstring's `SOURCE` as text data
   instead of STM-only data; it changed no executable behavior.
 - Final reviewed/staged seven-file diff on base
-  `a242eb233322a62b3f18dbf1a3ba1278e628e361` (declared as a non-first parent of this checkpoint) has SHA-256
+  the named-footnote revision has SHA-256
   `b73fbe99d75bc77291be7ab6b71b519db164e2b293ce64d686c7eb0d7d0e55fc` for
   `git diff HEAD -- README.org org-texmacs-document.el org-texmacs-input.el org-texmacs-worker.el org-texmacs-worker.scm org-texmacs.el tests/ert/ert.el`.
   Exact-path staging was approved; no implementation changes remain unstaged.
   `git diff --check` passed. The unchanged remote USTC mirror overlay remains
   local and excluded, with hash
   `1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54`.
-  GNU ELPA availability is still unverified. Project commit remains pending.
+  GNU ELPA availability is still unverified. Commit `8e1abf743d37792c43184c84f62dd2f1dceab348` (declared as a non-first parent of this checkpoint) was compared with its baseline and matches the seven-file hash exactly.
 - Semantic references: https://orgmode.org/manual/Citations.html,
   https://orgmode.org/manual/Bibliography-printing.html, and
   https://www.texmacs.org/tmdoc/main/styles/std/std-automatic-bib.en.html.
@@ -118,7 +150,7 @@
   `82c13615c352889dbedede08505518eacb09db78fa1b739c5105448db0da0cd5` for
   `git diff HEAD -- README.org org-texmacs-context.el org-texmacs-document.el tests/ert/ert.el`.
   The complete staged diff matches that hash exactly; `git diff --check` passed.
-  The later project commit `a242eb233322a62b3f18dbf1a3ba1278e628e361` (declared as a non-first parent of this checkpoint) was
+  The later named-footnote revision was
   compared with the baseline on 2026-10-07 and matches the verified hash exactly.
 
 ## Release provenance
@@ -130,7 +162,7 @@
 - Local v0.3.1 annotated tag target:
   the v0.3.1 release revision.
 - Current main HEAD observed on 2026-10-07:
-  `a242eb233322a62b3f18dbf1a3ba1278e628e361` (declared as a non-first parent of this checkpoint).
+  the named-footnote revision.
 
 These are local Git facts. They do not prove remote release state or tag
 signatures.
