@@ -5,8 +5,15 @@
 Bounded ox-texmacs dispatcher frontend is committed as
 the bounded ox-texmacs frontend revision. Its complete six-file diff matches
 the verified hash. The Org/ox-latex output convention extension is committed
-as b4ee215224578577a3235f8954020baf74e585af (declared as a non-first parent of this checkpoint); its complete five-file diff matches
+as the Org output naming and repeat-export revision; its complete five-file diff matches
 the verified hash exactly. Index is empty; next-node selection is pending.
+Recommend the next bounded frontend node be synchronous subtree export.
+First establish Org-compatible selection/title/EXPORT_* and dependency rules;
+capture subtree selection in owned preparation, not by casually narrowing the
+live source. Resolve used footnotes and links against explicit owned context,
+and define errors for dependencies outside the selected export scope. Keep
+region/visible/body-only/async as separate boundaries. This is a proposal,
+not adoption or implementation/check authorization.
 Frontend uses org-export-output-file-name and ordinary overwrite after checked
 native bytes are complete. Public new-file-only APIs stay exclusive. Atomic
 replacement, backups and target-version locking are not adopted prerequisites.
@@ -17,7 +24,7 @@ string export/publishing, preprocessing and broader selection remain unsupported
 ## Baseline and staging
 
 - Main HEAD observed on 2026-10-08:
-  `b4ee215224578577a3235f8954020baf74e585af` (declared as a non-first parent of this checkpoint).
+  the Org output naming and repeat-export revision.
   Its output-convention diff against the bounded ox-texmacs frontend revision matches the verified five-file hash.
 - The bounded ox-texmacs frontend revision is verified against the baseline PDF semantic regression and citation repair revision hash d41f05a2...
   as recorded in evidence. Committed output-convention files: README.org,
@@ -179,7 +186,7 @@ native printing and independent PDF inspection are real. GUI layout is unverifie
    00164bbb3491e4addd74c75a0c53ab86cd8397855e659c25a572a5ae84044464.
    The PDF semantic regression and citation repair revision is now verified by its three-file diff SHA-256
    against the baseline native PDF consumer revision. The bounded ox-texmacs frontend revision is now verified against
-   d41f05a2... as recorded in evidence. Naming/reexport commit b4ee215 (declared as a non-first parent of this checkpoint) is verified
+   d41f05a2... as recorded in evidence. The Org output naming and repeat-export revision is verified
    against the five-file hash 846a1426... above. Await the next-node selection.
    Keep the mirror overlay excluded; no flake or lock changes belong to this node.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries

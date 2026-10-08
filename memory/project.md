@@ -448,7 +448,7 @@ the bounded ox-texmacs frontend revision matches the verified six-file diff.
 
 ## Committed Org output convention extension
 
-Commit b4ee215224578577a3235f8954020baf74e585af (declared as a non-first parent of this checkpoint) matches the verified five-file diff.
+the Org output naming and repeat-export revision matches the verified five-file diff.
 
 - ox-texmacs file actions now use org-export-output-file-name for .tm/PDF.
   EXPORT_FILE_NAME takes precedence over visiting file stem; non-file unnamed

@@ -108,6 +108,16 @@ cases pass 7/7; final Nix passes all seven checks and installed ERT 280/280.
 The bounded ox-texmacs frontend revision matches the verified six-file hash. Only the module
 fileset entry was committed in flake; the mirror overlay stays outside history.
 
+### Proposed next: bounded subtree export
+
+Status: **unresolved-design**, awaiting user selection. Recommend synchronous
+subtree export as the next frontend extension now that whole-buffer naming and
+reexports are complete. Establish Org selection/root-title/EXPORT_* conventions,
+owned scope capture, footnote dependency closure and out-of-scope link policy
+before coding. Maintain source resource base and source consistency across
+worker waits; test structure, naming and error contracts without layout goldens.
+Other scopes (region/visible/body-only) and async stay separately unresolved.
+
 ### Completed: Org output naming and repeat export
 
 User selected the narrower ox-latex convention after reviewing the proposal:
@@ -115,7 +125,7 @@ frontend uses org-export-output-file-name and ordinary overwrite of an existing
 writable regular output, after source checks and native bytes are complete.
 EXPORT_FILE_NAME is consumed as output metadata. Public new-file-only APIs keep
 exclusive creation. Eleven focused cases pass 11/11; final Nix passes all seven
-checks and installed ERT 284/284. Commit b4ee215 (declared as a non-first parent of this checkpoint) matches the verified five-file
+checks and installed ERT 284/284. The Org output naming and repeat-export revision matches the verified five-file
 hash. Extra
 overwrite confirmation, backups, atomic replacement and target-version locking
 are not prerequisites or adopted behavior for this node. Any later work on

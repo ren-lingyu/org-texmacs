@@ -731,7 +731,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   org-texmacs-session.el, ox-texmacs.el and tests/ert/ert.el. Full staged review
   and diff --check pass. git diff --cached SHA-256 against the baseline above:
   846a14267176678abb8ebda9c7097c12076e55563a8235ec0beb323d574de410.
-  Commit b4ee215224578577a3235f8954020baf74e585af (declared as a non-first parent of this checkpoint) was compared with the bounded ox-texmacs frontend revision
+  the Org output naming and repeat-export revision was compared with the bounded ox-texmacs frontend revision
   on 2026-10-08: complete five-file stat and diff hash match exactly. The project
   index is empty; only the temporary mirror overlay remains unstaged.
   tmp/commit.md is reviewed; only the unchanged mirror overlay remains unstaged.
