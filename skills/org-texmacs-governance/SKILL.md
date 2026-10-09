@@ -77,6 +77,11 @@ GAW index, stage explicit declared-workspace paths, inspect the staged diff,
 run `git gaw check`, and use only `git gaw commit` with justified project
 parents.
 
+When the user explicitly authorizes a `.gaw/config` update, create a dedicated
+checkpoint containing only `.gaw/config`. Keep related memory and skill changes
+in a separate subsequent checkpoint. Inspect the complete index before each
+commit so already-staged memory cannot enter the configuration checkpoint.
+
 For this project's archive references, prefer archive paths and manifest history
 over copying GAW checkpoint OIDs into durable memory. Keep ordinary project OIDs
 when they independently locate an implementation, validation baseline or release;

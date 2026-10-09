@@ -123,6 +123,10 @@ remain unsupported.
 
 ## Persistent workflow and knowledge
 
+- `.gaw/config` now explicitly declares version 1 with archive, skills and memory
+  role groups for the same three existing directories. Use a v1-compatible GAW CLI;
+  role metadata changes discovery, not the flattened workspace/protection boundary.
+  Historical config states remain unchanged.
 - GAW `_agents` now contains the adopted rebuilt history and is valid/deployed at
   `.agents`. Old-history remote backup is user-reported, not independently checked.
   Use public GAW interfaces, never lifecycle mutation without direction.
