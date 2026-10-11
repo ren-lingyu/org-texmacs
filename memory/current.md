@@ -34,8 +34,10 @@ not this maintenance. No external tracking change or project implementation is
 selected. Resource/name/data-root review and public GAW readiness checks pass;
 no project tests or network calls were needed. Machine-specific executable
 bindings are supplied by host/session instructions, not project bootstrap or
-current memory. The updated bootstrap template is prepared; deploying it to the ordinary
-project's ignored AGENTS.md requires separate authorization under governance.
+current memory. The bootstrap is synchronized from the reviewed template to the
+ordinary project's ignored, untracked AGENTS.md. The user permits this routine
+generated-file sync within authorized GAW governance maintenance without separate
+confirmation; preserve unrelated edits and verify exactness through the helper.
 
 Reconstruction results and validation limits remain in evidence.md and
 `archive/2026-10-08T18-49-17Z--46ccf6e/`. Its diagnostic journal records historical

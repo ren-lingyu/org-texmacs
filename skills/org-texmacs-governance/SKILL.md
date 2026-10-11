@@ -73,8 +73,10 @@ sh scripts/sync-agents --check
 ```
 
 This is a read-only comparison. If the root bootstrap is missing or differs,
-report the difference. Do not run the write mode unless the user explicitly
-authorizes modification of the root `AGENTS.md`:
+report the difference. During authorized GAW governance maintenance, the user
+permits synchronizing the generated, ignored root `AGENTS.md` from the reviewed
+template without separate confirmation. Confirm it is untracked/ignored, inspect
+the difference and preserve unrelated user edits; then use:
 
 ```text
 sh scripts/sync-agents --write

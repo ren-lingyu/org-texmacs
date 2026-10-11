@@ -7,6 +7,11 @@ normative template is maintained by the repository-scoped
 rebuild it deterministically. Do not infer that this file is tracked by the
 ordinary project branch.
 
+Authorized GAW governance maintenance includes synchronizing this generated,
+ignored file from its reviewed normative template without separate confirmation.
+Inspect the difference and preserve unrelated user edits. This permission applies
+to this bootstrap artifact only, not other ordinary project files.
+
 ## External workflow prerequisites
 
 Git, a GAW CLI compatible with the declared configuration, and the global
