@@ -466,9 +466,8 @@ Other systems were not established by the recorded validations.
 ## Source/resource context decisions and verification
 
 The user authorized reading five installed Org source files for this task.
-The inspected Org 9.8-pre source root was:
-
-`/nix/store/bdfdqx9nhkzz1crr5lnk10dyissdn59p-emacs-pgtk-31-1-org-9.8-pre/share/emacs/site-lisp/`
+The inspected installation supplied Emacs 31.1 and Org 9.8-pre. Source-relative
+filenames, definitions and content hashes below identify the observations.
 
 - `ox.el`, `org-export--get-buffer-attributes` (1691), takes file identity from
   the base buffer. It does not establish a resource-directory override.
@@ -528,8 +527,7 @@ hash verification. The configuration is only retained locally and must not be
 committed or pushed. Its diff hash was
 `1a5aa529470c6f02f3137da2a5213dc73855b9df1eada87c195563a689bb5d54`; it is
 excluded from the six-file implementation diff. This does not establish
-availability of GNU ELPA. The installed package was
-`/nix/store/fxri3nk51fwihvr995h50widajllizgn-emacs-org-texmacs-0.3.1/`.
+availability of GNU ELPA. The installed package version was org-texmacs 0.3.1.
 
 Source-location archive selection found no necessary independent temporary artifact: bytecode
 directories are regenerable cache, the probe inputs/results/provenance are
@@ -543,8 +541,8 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   `progs/link/link-navigate.scm` showed `go-to-vertex` (576) calling
   `cork->utf8` before URL handling, `go-to-url` (525) using `system->url`, and
   `process-url` (423) separating `#`/`?` post-navigation syntax. Its SHA-256 was
-  `9b075c37048032592779f9ae623e8b2f74e89c30ad4512c3fd843a64fef28563`, under
-  `/nix/store/fbmq6la2pwcapsgmqp3zy6d4dbrn270a-texmacs-2.1.5/share/TeXmacs/`.
+  `9b075c37048032592779f9ae623e8b2f74e89c30ad4512c3fd843a64fef28563`, from
+  that installed TeXmacs source tree.
 - A native probe established that system URL/string conversion retains raw
   absolute paths, including spaces, Unicode and literal angle brackets.
   Restoring UTF-8 after ordinary native Cork encoding recovered the exact path.
@@ -573,8 +571,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   native compilation, package-lint and ERT 223/223 (84.71 seconds). This used
   the user's temporary, uncommitted/unpushed USTC mirror-source configuration;
   the unchanged overlay diff hash is recorded in the preceding section.
-  The installed package was
-  `/nix/store/0dmslh2v6d0yklwg900apn1g0cjcsd48-emacs-org-texmacs-0.3.1/`.
+  The installed package version was org-texmacs 0.3.1.
 - The verified five-file worktree diff on baseline
   the source-location snapshot revision has SHA-256
   `9a4808d6615612c728ba1b249929c2ff1db2e5c3cbf9aa5dccc844733ab0f913` using
@@ -588,8 +585,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 
 - Baseline is the interactive export revision;
   The native PDF consumer revision was verified against the
-  seven-file diff hash below on 2026-10-08. Installed TeXmacs is 2.1.5 in
-  /nix/store/fbmq6la2pwcapsgmqp3zy6d4dbrn270a-texmacs-2.1.5/share/TeXmacs.
+  seven-file diff hash below on 2026-10-08. Installed TeXmacs was 2.1.5.
 - User authorized targeted tm-print.scm, tm-files.scm and document-edit.scm
   reads. Native print-to-file supports direct PDF. update-document "all" uses
   delayed generation of auxiliary data; this node instead calls synchronous
@@ -617,8 +613,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   org-texmacs-worker.scm, org-texmacs.el, tests/ert/default.nix and tests/ert/ert.el.
   Full staged diff review and diff --check pass; seven files were staged with
   explicit approval. tmp/commit.md is the reviewed message. Unchanged flake.nix overlay is
-  excluded. The inspected final ERT derivation is
-  /nix/store/hdwfqgf62hhqxk5y7lkk396ydxxxgiy4-org-texmacs-ert.drv.
+  excluded.
 
 ## Committed PDF semantic regression node (2026-10-08)
 
@@ -659,13 +654,13 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   the PDF semantic regression and citation repair revision was compared with baseline
   the native PDF consumer revision on 2026-10-08 and matches this exact three-file hash; the index is empty.
   tmp/commit.md is reviewed; only the unchanged flake.nix overlay is unstaged.
-  Final ERT derivation: /nix/store/r639c3h0hx26cdkkwv9xgjg5bq8j34nj-org-texmacs-ert.drv.
 
 ## Committed bounded ox-texmacs frontend (2026-10-08)
 
 - User adopted standard dispatcher integration after rejecting a standalone PDF
   preview command. Implementation is on the PDF semantic regression and citation repair revision.
-- Authorized Org 9.8-pre reads use the previously recorded immutable source root.
+- Authorized reads used the Org 9.8-pre installation described in the
+  source/resource context evidence above.
   ox.el org-export-define-backend (1235) defines menu actions with four flags;
   org-export-dispatch (7783) passes async/subtree/visible/body. annotate-info
   runs before-processing hooks before INCLUDE/macros/Babel. ox-latex/html
@@ -687,8 +682,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   the bounded ox-texmacs frontend revision was compared with baseline
   the PDF semantic regression and citation repair revision on 2026-10-08: complete six-file stat and diff hash match exactly.
   Index is empty; only the unchanged raw mirror overlay remains unstaged.
-  tmp/commit.md is reviewed. Nix ERT derivation is
-  /nix/store/phx84ryfkmn39x16ml4n92rh7qk0vg1w-org-texmacs-ert.drv.
+  tmp/commit.md is reviewed.
 - flake staging contains only ./ox-texmacs.el in fileset. Its staged bytes minus
   that line equal HEAD exactly. Current raw unstaged mirror diff hash is
   dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc. Restoring
@@ -708,8 +702,8 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 - Baseline is the bounded ox-texmacs frontend revision. Authorized local Org
   9.8-pre ox.el definitions (org-export-to-file at 7495, output-file-name at
   7569) and ox-latex entry points confirm helper-based naming and ordinary
-  write-region replacement after conversion. The source root is the previously
-  recorded immutable bdfdqx9... site-lisp path. Generic writer adds a final text
+  write-region replacement after conversion. These observations use that same
+  recorded Org installation. Generic writer adds a final text
   newline; native .tm/PDF output deliberately uses the raw byte writer instead.
 - Frontend honors EXPORT_FILE_NAME/visiting stem/non-file prompt and fixed
   suffixes. Source/directory/path identities are captured before conversion;
@@ -723,7 +717,6 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 - Focused ERT passes 11/11 (5.32s). Final Nix passes all seven checks, native
   compilation/package-lint and installed ERT 284/284 (125.71s), using unchanged
   temporary mirror diff dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc.
-  ERT derivation: /nix/store/807vw3y07rkphazjlcpma0fayy4v623q-org-texmacs-ert.drv.
 - Four new focused cases plus updated original cases cover real .tm/PDF repeats,
   keyword priority/body removal, exact unibyte output with coding/annotations
   configured, prompt buffer switching, source/target preflight, old-output
@@ -772,7 +765,6 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 - Final Nix passes all seven checks, native compilation/package-lint and installed
   ERT 291/291 (132.40s), using the unchanged temporary mirror overlay:
   dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc.
-  ERT derivation: /nix/store/7i3b2rvh0rz1ls6wqnjnfxp7hhpqv0i4-org-texmacs-ert.drv.
 - Maintained tests cover title/author/date/options/filter priority, selective
   inheritance, immutable prepared input, point/marker preservation, external
   notes/STM order, invalid scope/links, explicit bibliography/resource base,
@@ -812,8 +804,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 - Nix first failed sandbox-daemon access; same command was escalated. Compilation
   rejected a new 82-column docstring; after wrapping, final same 180s command
   passes all seven checks, compilation/package-lint and installed ERT 298/298
-  (162.693114s). ERT derivation:
-  /nix/store/lv55dh5b2pkdv9nzcq8rad9kk676ad9y-org-texmacs-ert.drv.
+  (162.693114s).
   Remote mirror overlay remains excluded/unchanged at raw diff SHA-256
   dc388c27960a4421ab4211f207ee3542e5e4642c9f4cdf85a4bbdace30f66bdc.
 - Six approved staged files: README.org, org-texmacs-context.el,
@@ -857,8 +848,6 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   quoted test list was replaced with fresh allocation for safe same-process
   reruns. Final focused 6/6 and final Nix pass: two changed checks rerun, five
   previous passing checks reused; installed ERT 304/304 (169.374465s).
-  Final ERT derivation:
-  /nix/store/rbzwkg1d4ks7zx0rwm686mrbpiv10kiq-org-texmacs-ert.drv.
 - Five approved staged files: README.org, org-texmacs-context.el,
   org-texmacs.el, ox-texmacs.el and tests/ert/ert.el. Complete staged review split
   by path and diff --check pass. Entire staged diff SHA-256 on the baseline region export revision:
@@ -902,8 +891,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
   a success assertion missed the existing normalized trailing newline space/concat.
   Corrected expected body to (document (concat "irst Second ")). Final Nix on
   final private filename binding passes all seven checks, compilation/package-lint
-  and installed ERT 311/311 (176.947172s). Final ERT derivation:
-  /nix/store/2wpkb8m4zz6g4zb4ph5qjk7mp9n45c3x-org-texmacs-ert.drv.
+  and installed ERT 311/311 (176.947172s).
 - Six approved staged files: README.org, org-texmacs-context.el,
   org-texmacs-document.el, org-texmacs.el, ox-texmacs.el and tests/ert/ert.el.
   Complete staged review split by path and diff --check pass. Entire staged
@@ -934,10 +922,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 - Authorized exact repeated timeout 240s nix flake check --no-write-lock-file
   path:/home/lingyu/Projects/org-texmacs passes all seven checks, package build,
   compilation/package-lint and installed ERT 311/311 (155.043573s), with README
-  loading/install examples. ERT derivation:
-  /nix/store/cwq33avp24xmac508mz7gkb8gmjhfw8y-org-texmacs-ert.drv.
-  Package derivation:
-  /nix/store/hjcwyjblf5r0jrfyqjpjalqhhzpz6g66-emacs-org-texmacs-0.4.0.drv.
+  loading/install examples. The checked package version was org-texmacs 0.4.0.
 - Three approved staged files: README.org, org-texmacs.el, flake.nix (version-only
   patch applied to index with approval). Staged flake equals baseline bytes with
   just that line replaced. Complete staged review/diff --check pass. Entire
@@ -1013,10 +998,7 @@ snapshot is committed. No archive checkpoint was needed for that source-location
 - Focused backend passes 12/12 (5.353570s); new test 0.005854s. Nix passes all
   checks without overlay: two changed checks run, five prior results reused;
   installed ERT 312/312 (157.819934s), package/compilation/package-lint successful.
-  ERT derivation:
-  /nix/store/xnn19v18hccxbhmwcmc15613i7i1n0bb-org-texmacs-ert.drv.
-  Current original-provider package derivation:
-  /nix/store/jjh5w4xyn3kgify03nzavlx2mv3ivrpy-emacs-org-texmacs-0.4.0.drv.
+  The checked package version was org-texmacs 0.4.0.
   No fresh upstream dependency download is established by cache-backed success.
 - User reported temporary removal of local-only remote mirror overlay and apparent
   ELPA recovery. flake.nix matches HEAD; workaround is absent. Earlier mirrored

@@ -13,6 +13,11 @@ ownership, encoding, and consumer boundaries.
 Use the global `git-agent-workflow` skill and recover the validated GAW
 workspace before substantive work.
 
+The data paths below are relative to this skill root under the project's declared
+GAW layout: `skills/<skill>/` and `memory/` share the GAW worktree root. They are
+workspace knowledge, not bundled skill resources. Discover roles from config and
+resolve the external global GAW skill and other project skills by identity.
+
 For architecture, planning, implementation, or behavior review, read these
 files completely:
 
@@ -68,6 +73,12 @@ native state.
 
 ## Plan and implement in recoverable nodes
 
+Identify why the work is needed and its intended outcome. Check known related
+issues, plans or work items and retain useful associations in memory, keeping
+implementation, verification and external tracking status distinct. At completion,
+record supported conclusions and any tracking action still needed; external edits
+require separate authorization. Work need not have an issue or a dedicated ID.
+
 For a non-trivial change:
 
 1. State the intended semantic mapping and its owning layer.
@@ -83,6 +94,10 @@ For a non-trivial change:
    exit status, coverage, and unverified boundaries.
 7. Update GAW memory when the verified project state, decision, blocker, or next
    action changes. Do not edit this skill merely because a feature was added.
+
+Before checkpointing, coordinate current goals, model, state, evidence and skill
+references across the complete workspace. Do not rely on later layouts or carry
+retired proposals as active work; preserve their evolution in first-parent history.
 
 Reference Org exporters such as `ox-latex` for semantic policy, selection, and
 configuration behavior when relevant, but do not copy their string-output

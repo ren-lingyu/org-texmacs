@@ -20,22 +20,26 @@ selected/deployed at `.agents`, with the verified reconstruction handoff at its
 tip before this adoption record. The user reports backing up the old GAW branch
 remotely; the remote ref name and backup contents were not independently checked.
 Do not assume the old history is still available through a local branch or mutate
-backup/branch/remote state without explicit direction. Current action is handoff;
-await selection of further project work.
+backup/branch/remote state without explicit direction.
 
-The reconstruction replayed 53 original checkpoints and added two reference
-cleanup checkpoints to preserve archive-only boundaries. Every original project
-parent was retained; the standalone early review summary and explicitly recorded
-project baselines gained supported direct parents. Rewritten memory/skills no
-longer carry GAW checkpoint OIDs as locators. Any retained literal project commit
-OID is directly declared as this checkpoint's non-first parent; later records
-use feature/release descriptions. The untouched prefix predates this curation.
-All original archive bytes/manifests, historical configuration and SHA-256 records
-were preserved. No project tests or network calls were made for reconstruction.
-The pure-text diagnostic procedure, mapping journal and independent audit are in
-`archive/2026-10-08T18-49-17Z--46ccf6e/`; use its manifest, not a GAW OID locator.
-Diagnostic OIDs inside archived artifacts are audit data, not active identities.
-Regenerable planning snapshots remain in ignored tmp and need no extra archive.
+Project procedures now reflect the available global GAW skill and compatible
+public CLI. The maintenance motivation is coherent recovery and faithful
+archive interpretation: checked capture HEAD is distinct from original provenance,
+and project parents require supported evidence. Archive/development/governance
+skills, management README and bootstrap template are coordinated; pure-text-only
+capture, archive-only snapshots, SHA-256 and config-only checkpoints remain local
+requirements. Historical snapshots/configs are unchanged. Existing OID/provenance
+work remains in evidence/history; issue #1 concerns later project architecture,
+not this maintenance. No external tracking change or project implementation is
+selected. Resource/name/data-root review and public GAW readiness checks pass;
+no project tests or network calls were needed. Machine-specific executable
+bindings are supplied by host/session instructions, not project bootstrap or
+current memory. The updated bootstrap template is prepared; deploying it to the ordinary
+project's ignored AGENTS.md requires separate authorization under governance.
+
+Reconstruction results and validation limits remain in evidence.md and
+`archive/2026-10-08T18-49-17Z--46ccf6e/`. Its diagnostic journal records historical
+branch names/OIDs, not active identities; archived files/manifests remain unchanged.
 Future information flow remains unresolved in issue #1:
 https://github.com/ren-lingyu/org-texmacs/issues/1. Do not automatically implement
 preprocessing reuse/generic export or broaden citation/resource semantics.
@@ -127,6 +131,12 @@ remain unsupported.
   role groups for the same three existing directories. Use a v1-compatible GAW CLI;
   role metadata changes discovery, not the flattened workspace/protection boundary.
   Historical config states remain unchanged.
+- This workflow review and public status/check were performed with GAW 0.6.0,
+  which accepts this v1 workspace. This is verification context, not a requirement
+  to find that same installed version. Interpret
+  historical snapshots under their own conventions; no historical migration is
+  needed to resume with updated skills. The global workflow is an external
+  available dependency, not included among this project's bundled resources.
 - GAW `_agents` now contains the adopted rebuilt history and is valid/deployed at
   `.agents`. Old-history remote backup is user-reported, not independently checked.
   Use public GAW interfaces, never lifecycle mutation without direction.

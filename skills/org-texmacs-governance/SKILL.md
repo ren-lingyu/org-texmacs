@@ -24,6 +24,22 @@ when the governance task needs it:
 - `../../memory/backlog.md` for adopted future work, deferred candidates, and
   unresolved design boundaries.
 
+These `../../memory/` references are GAW-worktree data under this project's
+declared layout: `skills/<skill>/` and `memory/` share the GAW worktree root.
+They are not bundled skill resources. Locate `assets/` and `scripts/` within
+this skill root; resolve other skills by identity through the available catalog.
+The global GAW skill and public CLI must be available externally. Read the
+global memory, archive or project-skill workflow detail when relevant; retain
+the complete project procedure and stricter local constraints here.
+
+Keep machine-specific executable bindings and installation paths in host/session
+configuration; do not record Nix store paths in project guidance or current
+knowledge. Tool versions may be recorded as verification context, explaining
+which workflow was exercised with that version. Such observations do not require
+future agents to locate the same installed version. Project guidance names tools
+and needed capabilities/config compatibility. Historical raw evidence keeps its
+original context and bytes.
+
 ## Keep responsibilities separate
 
 - Memory owns current facts, goals, architecture decisions, evidence, open
@@ -76,6 +92,18 @@ checkpoint for every wording edit. Before any checkpoint, inspect the entire
 GAW index, stage explicit declared-workspace paths, inspect the staged diff,
 run `git gaw check`, and use only `git gaw commit` with justified project
 parents.
+
+Review coordination across the whole current workspace before checkpointing:
+goals, state, skills, callers and archive guidance must agree using this snapshot's
+own terms and layout. Preserve earlier snapshots under their own conventions.
+Record the motivation, intended outcome, implementation/verification limits and
+useful related work in memory. Do not infer completion of an external issue from
+a project commit, or mutate external tracking without separate authorization.
+
+Separate all changed `.gaw/` paths from workspace changes when forming checkpoints,
+including additions, deletions, content, modes and cross-boundary moves. Compare
+with the first-parent tree; `git gaw check` validates candidate readiness but does
+not replace this transition review. Keep each intentional intermediate state valid.
 
 When the user explicitly authorizes a `.gaw/config` update, create a dedicated
 checkpoint containing only `.gaw/config`. Keep related memory and skill changes

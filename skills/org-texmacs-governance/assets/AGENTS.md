@@ -7,19 +7,12 @@ normative template is maintained by the repository-scoped
 rebuild it deterministically. Do not infer that this file is tracked by the
 ordinary project branch.
 
-## Command environment
+## External workflow prerequisites
 
-When the agent executes these logical commands, use the corresponding absolute
-executable paths:
-
-| Logical command | Executable |
-| --- | --- |
-| `git` | `/nix/store/awkhq40rk03w0igiv1xir0qrkl1yxvpg-git-with-svn-2.55.0/bin/git` |
-| `git-gaw`, `git gaw` | `/nix/store/x3347xlv6ys97myprar1xby7s94g36ph-git-agent-workflow-0.5.0/bin/git-gaw` |
-| `realpath` | `/nix/store/2gfxiwls9hbgwdwcy43mprchwsq36mg6-coreutils-9.11/bin/realpath` |
-
-This mapping does not require absolute paths in commands shown for the user to
-run manually unless the path itself matters.
+Git, a GAW CLI compatible with the declared configuration, and the global
+`git-agent-workflow` skill must be available. Command bindings and installation
+paths come from the active host/session instructions. This project bootstrap
+does not prescribe machine-specific executable paths or installed tool versions.
 
 ## Workspace and authority
 
@@ -86,6 +79,11 @@ project-skill files; explicitly stage intended declared-workspace paths; run
 This exception does not authorize ordinary project staging or commits, direct
 GAW ref manipulation, hook bypass, history rewrite, lifecycle mutation, or
 unrelated filesystem effects.
+
+Keep changed `.gaw/` protocol paths in separate checkpoints from changed workspace
+paths, reviewing the complete first-parent transition as well as candidate readiness.
+An explicitly authorized `.gaw/config` update must be a config-only checkpoint;
+record related memory or skill changes separately.
 
 ## Project knowledge and skills
 
