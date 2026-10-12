@@ -633,6 +633,18 @@ worker, encoding, and native-session tests.
 
 ## Downstream work not yet implemented
 
+Issue #1 Phase 0 provides investigation evidence, not new production support:
+14/14 isolated probes on the updated project lock's Emacs 31.1 / Org 9.8.10.
+Public filter tools work with texmacs backend and preserve citation AST when
+processors are disabled; full annotation also performs ambient ID lookup, and
+native buffer copy aliases mutable locals. Source-coordinate and AST identity
+mapping remain explicit integration boundaries. Locked Org has no after-includes
+hook; latest-upstream ordering cannot substitute for version-specific evidence.
+Current baseline includes the user's committed lock update and uncommitted mirror
+transport; production Lisp remains v0.4.0. See evidence/backlog and
+archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. This investigation does not
+extend support claims, allow pure lowering I/O, or remove the guard.
+
 Current source preparation does not run Org export preprocessing/parse-tree
 filters or Org Cite bibliography discovery. Thus existing ecosystem interfaces
 can remain operational for their own backends without their extension semantics

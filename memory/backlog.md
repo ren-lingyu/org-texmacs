@@ -280,6 +280,20 @@ native or GUI evidence before they can be claimed as verified.
 
 ### Org ecosystem preparation interoperability
 
+Phase 0 was selected and completed on 2026-10-13; production integration
+remains unresolved. Independent flake on the user's updated project lock passes
+14/14 controlled probes (Emacs 31.1 / Org 9.8.10). Stage table, candidate comparison
+and reproduction: archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. Prefer a small
+Phase 1 candidate using standard filter install/apply tools on existing private
+preparation, with explicit texmacs backend/INFO and identity checks. Citation-key
+remapping is the proposed first contract, not yet an adopted implementation.
+Full copy/annotate reuse adds ID lookup, mutable-local aliasing and source/STM
+mapping hazards; disabling Cite output also skips discovery. Locked Org has no
+after-includes hook. Retain the generic guard and pure-layer I/O boundary;
+preprocessing, bibliography acquisition and real integration need separate
+contracts. No issue writes were made; third-party source lookup failed and
+extension behavior remains attributed rather than independently verified.
+
 Status: **unresolved-design**, following the user's 2026-10-09 v0.4.0 review note.
 Tracking discussion: https://github.com/ren-lingyu/org-texmacs/issues/1,
 "design: reconsider Org preprocessing and export integration boundaries".

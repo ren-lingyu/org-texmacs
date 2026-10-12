@@ -1145,3 +1145,66 @@ No local `_agents_rebuild` or separate old GAW branch remains. Remote backup ref
 name/content and remote reachability were not independently checked; no fetch,
 push, branch/ref mutation or network lookup was performed by the agent. The
 archived diagnostic names describe reconstruction-time state and remain unchanged.
+
+## Issue #1 Phase 0 isolated investigation (2026-10-13)
+
+- User selected Phase 0, isolated testing/necessary archive; versions must follow
+  project flake rather than local Emacs. User then committed updated inputs and
+  reapplied an uncommitted USTC fetchurl overlay. Current code/lock snapshot is
+  b22945493102edc1823fe063f9d278ba628bdf5e; agent changed no production paths/index.
+- Independent lock equals committed project lock SHA-256
+  118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a;
+  actual environment Emacs 31.1 / Org 9.8.10. Eleven copied Lisp sources compare
+  byte-exactly with current worktree and that commit. USTC transport preserves
+  original Org fixed hash. Local Org 9.8-pre and old-lock 9.8.8 are superseded
+  environment observations, not final test provenance.
+- Final exact command: timeout 120s nix build --no-link --no-write-lock-file
+  path:/home/lingyu/Projects/org-texmacs/tmp/issue-1-phase-0#checks.x86_64-linux.probes.
+  Exit 0, ERT 14/14, 0 unexpected, 0.124683s. No worker/native output/full project
+  checks or real Org-roam integration ran. Macro/Babel phase and ID lookup were
+  observed with controlled substitutes; no Babel execution or real ID DB reads.
+- Confirmed stage order and INFO timing: no after-includes hook; native filters
+  see backend name and pre-collection INFO (:parse-tree nil in probe). Cite output
+  processing changes citation/print nodes into raw strings; disabling processors
+  preserves AST but skips native discovery. Public install/apply tools remap a
+  citation key using actual texmacs backend without generic exporter/lowering.
+- Full annotation still queries org-id-find. Copy aliases mutable local lists;
+  recursive AST copying/ownership cannot be assumed from default org-element-copy.
+  Prepending 7 chars shifts inline STM begin 6 to 13; replacement AST invalidates
+  existing inline/block island identity keys. These are adapter design hazards,
+  not defects fixed in production this turn.
+- Recursive INCLUDE advice runs three times; nested file links relocate to
+  parts/b.png and parts/deeper/c.png for a visiting root fixture. Observed text
+  properties do not supply a complete origin map. Bibliography paths stay relative;
+  a SETUPFILE causes actual configuration-file read and directory relocation,
+  while no bibliography text is read by the tested core discovery itself.
+- HTML hooks/filter effects, guard rejection of texmacs generic export, copied
+  source text/point/mark/restriction/modified state, error cleanup, and subtree
+  configuration with region-priority body selection pass controlled checks.
+- Recommended candidate A is constrained standard AST-filter reuse at preparation;
+  candidate B native copy/annotate is conditional and not safe for direct adoption.
+  Neither introduces textual target reparsing or implicit I/O in pure lowering.
+  Full origin, multi-source resources, selection, external-input and hook contracts
+  remain unresolved; no real-extension compatibility claim follows.
+- Necessary 17 text artifacts plus manifest are byte/digest verified under
+  archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. Archive-only checkpoint's project
+  association identifies the verified code/lock snapshot, not origin of temporary
+  artifacts or uncommitted overlay. Find introduction through manifest path history.
+  REPORT.md has complete stage table/two candidates; REPRODUCE.md explains external
+  Git-source dependency. No binaries/caches/redundant code copies are archived.
+- Capture audit: diff --check warns about original log EOF and patch context spaces;
+  original bytes were deliberately retained. A review helper initially counted
+  nested patch diff markers as an extra file; orchestration continued to commit
+  instead of stopping after the assertion failure. Corrected post-commit audit
+  verified all 18 additions and every stored byte/hash, with no unrelated/protocol
+  paths. Archive is immutable; no history rewrite was performed. Full archive
+  first-parent diff SHA-256 e84c33fa4473d3424e2efff4f50270cdc75af625f8d86645a224af72313b80eb.
+- Earlier offline attempt started fixed-output fetchers and was interrupted.
+  An automatic review rejected a derivation-show escalation based on preceding
+  unauthorized networking; it did not run. Subsequent explicit user network/mirror
+  authorization allowed scoped builds. Official Org 9.8.8 fetch timed out 120s
+  with TLS EOF; mirror success does not establish official endpoint availability.
+  Temporary probe assumption failures were corrected before the final 14/14 run.
+- Third-party public source lookups returned cache miss; package extension claims
+  stay attributed to INBOX. No remote issue write was made. Phase 1 contract and
+  scoped implementation remain the next decision, not completed work.

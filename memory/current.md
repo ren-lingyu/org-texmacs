@@ -2,6 +2,40 @@
 
 ## Active objective
 
+Issue #1 Phase 0 is complete on 2026-10-13: user authorized investigation,
+isolated tests and necessary GAW archive. Independent flake probes pass 14/14,
+0 unexpected (0.124683s), on Emacs 31.1 / Org 9.8.10 selected by the updated
+project lock. User committed lock update as b22945493102edc1823fe063f9d278ba628bdf5e;
+eleven copied Lisp sources and lock match this exact committed snapshot. User
+reapplied the uncommitted USTC flake.nix overlay; preserve it unstaged. Mirror
+transport was authorized and retains original source hashes. Local Org 9.8-pre
+and the old-lock 9.8.8 environment are not development baselines.
+Reproducible evidence, stage/API/side-effect table and two adapter candidates:
+archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md, with REPORT.md / REPRODUCE.md
+under files/tmp/issue-1-phase-0/. Archive-only checkpoint is byte-verified;
+locate it through manifest first-parent history. Full project checks, native/PDF
+output and real external-package integration have not run; no production edits
+or GitHub issue writes were made. Historical 312/312 is not current validation.
+
+Confirmed: no after-includes hook in locked Org; filters precede INFO :parse-tree
+collection and citation output replacement. Full annotate still calls org-id-find
+with Cite processors disabled. Org copy aliases mutable local configuration;
+preprocessing changes STM offsets and replacement AST invalidates island keys.
+Controlled native INCLUDE relocates nested local file links but does not provide
+a complete origin map in observed fixtures. Bibliography discovery retains
+relative paths and can read SETUPFILE. Pure lowering must not acquire that I/O.
+Standard filter tools with actual texmacs backend remap private citation keys
+without generic export. Prefer a constrained Phase 1 preparation adapter with
+explicit INFO/context and identity validation; it is a recommendation, not an
+implemented or fully adopted filter contract. Full copy/annotate reuse remains
+conditional and blocked for direct production adoption by the identified risks.
+Next action: review/select Phase 1 citation-key AST-filter contract and scoped
+implementation paths/tests. Preserve the generic guard, canonical source,
+coherent ownership and provenance. Later phases remain conditional: bounded
+source composition, bibliography discovery, real extension/frontend integration.
+The local report is ready for issue discussion; external posting needs separate
+authorization. Evidence.md records validation limits and capture audit details.
+
 v0.4.0 is released. User committed final HTML regression as
 the final HTML coexistence regression revision, created tag and published GitHub release.
 One-file test diff on the v0.4.0 release preparation revision matches verified SHA-256
@@ -75,6 +109,10 @@ remain unsupported.
 
 ## Baseline and staging
 
+- Current main is the user's flake-input update revision b229454; lock selects
+  Org 9.8.10. Ordinary index is empty and flake.nix has the user's unstaged mirror
+  overlay. Production Lisp remains v0.4.0; Phase 0 changed no package code.
+  Release-era observations below describe their historical baseline.
 - Main HEAD observed on 2026-10-09:
   the final HTML coexistence regression revision.
   Its one-file HTML regression diff against the v0.4.0 release preparation revision matches the verified hash.
@@ -180,10 +218,11 @@ remain unsupported.
    evidence. The v0.4.0 release preparation revision is verified against three-file
    diff 84b212a7... in evidence. The final HTML coexistence regression revision matches 4461f4ad... above;
    local/remote v0.4.0 tag and published release are verified. Release phase is
-   complete. Await user selection of subsequent work. Body-only
+   complete. User has selected issue #1 investigation as described above. Body-only
    fragment/generic API remain deferred by user choice.
-   Mirror overlay is removed and final no-overlay check passes. Two HEAD attempts
-   timed out without retry; further probes need new authorization. No lock changes.
+   At release closure the overlay was removed and the no-overlay check passed.
+   Two release-era HEAD attempts timed out. Current lock/mirror state and the
+   newly authorized Phase 0 checks are recorded above.
    Published release notes are now authoritative for publication scope. Old tmp
    drafts are regenerable preparation artifacts, not remaining release tasks.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries
