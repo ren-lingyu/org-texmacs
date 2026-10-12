@@ -1,0 +1,42 @@
+diff --git a/flake.nix b/flake.nix
+index 20b6801..bd19edf 100644
+--- a/flake.nix
++++ b/flake.nix
+@@ -15,7 +15,7 @@
+ 
+     systems = inputs.nixpkgs.lib.systems.flakeExposed;
+ 
+-    perSystem = { config, pkgs, ... } : let
++    perSystem = { config, pkgs, system, ... } : let
+ 
+       source = pkgs.lib.fileset.toSource {
+         root = ./.;
+@@ -48,6 +48,28 @@
+ 
+     in {
+ 
++      _module.args.pkgs = inputs.nixpkgs.legacyPackages.${system}.extend (final : prev : {
++        fetchurl = args : prev.fetchurl (let
++          rewrite = builtins.replaceStrings [
++            "https://elpa.gnu.org/packages/"
++          ] [
++            "https://mirrors.ustc.edu.cn/elpa/gnu/"
++          ];
++          urls = if args ? urls then
++            args.urls
++          else if args ? url then
++            [ args.url ]
++          else
++            null;
++        in if urls == null then
++          args
++        else
++          (builtins.removeAttrs args [ "url" "urls" ]) // {
++            urls = builtins.map rewrite urls;
++          }
++        );
++      });
++
+       packages = {
+         default = emacsPackages.trivialBuild {
+           pname = "org-texmacs";

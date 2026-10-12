@@ -1,0 +1,7 @@
+B-MARKER [[file:b.png][B image]]
+
+#+INCLUDE: "deeper/c.org"
+
+#+begin_texmacs
+(strong "same")
+#+end_texmacs

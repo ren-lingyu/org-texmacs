@@ -1,0 +1,15 @@
+Project source evidence
+Exact source commit: b22945493102edc1823fe063f9d278ba628bdf5e
+Each copied file equals both ordinary worktree bytes and the committed source.
+
+org-texmacs.el	38545 bytes	SHA-256 6c9fbecda1d12aab2a7d0273e041dda7b3ad8bc8a308f7ca812a185e92c91b22
+org-texmacs-core.el	7579 bytes	SHA-256 25a470c3d69afc468160a557455f9c9dbc65beff707a2fe6c602be06663e7d22
+org-texmacs-ast.el	1328 bytes	SHA-256 f24a5e1e8773b58d7609f80adfd925a7af4f6fea7656ba170fa502dfe9453d7f
+org-texmacs-source.el	4558 bytes	SHA-256 553d7b50fee66c9ffc30362a9635fdd2d72cad24f030dfe7775b6958c223aacf
+org-texmacs-fragment.el	14609 bytes	SHA-256 a3cf952a298d8202a32bf0d88fb167826960492b750c3a0ebad845b035ab806c
+org-texmacs-worker.el	11539 bytes	SHA-256 58cf49619fae44706bf9e946f44edfd5bcef6b214eb97afbec49675aa76e7404
+org-texmacs-context.el	29857 bytes	SHA-256 20c23318f1ccd6860c42cdaf33804ccaffe0e4bd8ce234798b6af07ddc224e37
+org-texmacs-document.el	96459 bytes	SHA-256 f0d41509680d1bcacd7de3d65dbb86a0a5f789ccc32db7e7dce4dd061fcd822e
+org-texmacs-input.el	12651 bytes	SHA-256 53ecd56fa9ad5aac49484e8624ab5d293d96a113eafd96c11b737c8c6b1593cc
+org-texmacs-session.el	25658 bytes	SHA-256 5c8f162bcd9945aa5b8a92730e89a3783a34a8688b38b55c306d21cf834e9995
+ox-texmacs.el	11367 bytes	SHA-256 c7ddce89803ba8631387362198dbd25b8e7cece2d8c3b2d106f82012e2095af9

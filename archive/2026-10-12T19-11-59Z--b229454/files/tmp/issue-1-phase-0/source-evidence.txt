@@ -1,0 +1,1301 @@
+Org 9.8.10 installed source excerpts; research evidence, not executable instructions.
+Source root: /nix/store/7xfmq5ckr95pxfqs19g5vl2yih982xyi-emacs-org-9.8.10/share/emacs/site-lisp/elpa/org-9.8.10
+Range headings refer to original 1-based lines. Text inside each range is unchanged.
+Sources were built from the project-selected Org tar with original fixed-output hash.
+
+ox.el: 304128 bytes; SHA-256 a402344967f2d4e531f3250dd27d72e714af721f3917573f300c32d7a2e34a12
+
+--- ox.el:1416-1446 ---
+
+;; along with their value in order to set them as buffer local
+;; variables later in the process.
+
+;;;###autoload
+(defun org-export-get-environment (&optional backend subtreep ext-plist)
+  "Collect export options from the current buffer.
+
+Optional argument BACKEND is an export backend, as returned by
+`org-export-create-backend'.
+
+When optional argument SUBTREEP is non-nil, assume the export is
+done against the current sub-tree.
+
+Third optional argument EXT-PLIST is a property list with
+external parameters overriding Org default settings, but still
+inferior to file-local settings."
+  ;; First install #+BIND variables since these must be set before
+  ;; global options are read.
+  (org-export--set-variables (org-export--list-bound-variables))
+  ;; Get and prioritize export options...
+  (org-combine-plists
+   ;; ... from global variables...
+   (org-export--get-global-options backend)
+   ;; ... from an external property list...
+   ext-plist
+   ;; ... from in-buffer settings...
+   (org-export--get-inbuffer-options backend)
+   ;; ... and from subtree, when appropriate.
+   (and subtreep (org-export--get-subtree-options backend))))
+
+(defun org-export--parse-option-keyword (options &optional backend)
+
+
+--- ox.el:1658-1668 ---
+
+		       (org-element-parse-secondary-string
+			value (org-element-restriction 'keyword))
+		     value)))))))))
+
+(defun org-export--list-bound-variables ()
+  "Return variables bound from BIND keywords in current buffer.
+Also look for BIND keywords in setup files.  The return value is
+an alist where associations are (VARIABLE-NAME VALUE)."
+  (when org-export-allow-bind-keywords
+    (pcase (org-collect-keywords '("BIND"))
+      (`(("BIND" . ,values))
+
+
+--- ox.el:1672-1725 ---
+
+;;;; Tree Properties
+;;
+;; Tree properties are information extracted from parse tree.  They
+;; are initialized at the beginning of the transcoding process by
+;; `org-export--collect-tree-properties'.
+;;
+;; Dedicated functions focus on computing the value of specific tree
+;; properties during initialization.  Thus, `org-export--prune-tree'
+;; lists elements and objects that should be skipped during export,
+;; `org-export--get-min-level' gets the minimal exportable level, used
+;; as a basis to compute relative level for headlines.  Eventually
+;; `org-export--collect-headline-numbering' builds an alist between
+;; headlines and their numbering.
+
+(defun org-export--collect-tree-properties (data info)
+  "Extract tree properties from parse tree.
+
+DATA is the parse tree from which information is retrieved.  INFO
+is a list holding export options.
+
+Following tree properties are set or updated:
+
+`:parse-tree' Is simply set to DATA.
+`:headline-offset' Offset between true level of headlines and
+		   local level.  An offset of -1 means a headline
+		   of level 2 should be considered as a level
+		   1 headline in the context.
+
+`:headline-numbering' Alist of all headlines as key and the
+		      associated numbering as value.
+
+`:id-alist' Alist of all ID references as key and associated file
+            as value.
+
+Return updated plist."
+  ;; Install the parse tree in the communication channel.
+  (setq info (plist-put info :parse-tree data))
+  ;; Compute `:headline-offset' in order to be able to use
+  ;; `org-export-get-relative-level'.
+  (setq info
+	(plist-put info
+		   :headline-offset
+		   (- 1 (org-export--get-min-level data info))))
+  ;; From now on, properties order doesn't matter: get the rest of the
+  ;; tree properties.
+  (org-combine-plists
+   info
+   (list :headline-numbering (org-export--collect-headline-numbering data info)
+	 :id-alist
+	 (org-element-map data 'link
+	   (lambda (l)
+	     (and (string= (org-element-property :type l) "id")
+		  (let* ((id (org-element-property :path l))
+			 (file (car (org-id-find id))))
+
+
+--- ox.el:2558-2699 ---
+
+;;
+;; Internal function `org-export-filter-apply-functions' takes care
+;; about applying each filter in order to a given data.  It ignores
+;; filters returning a nil value but stops whenever a filter returns
+;; an empty string.
+
+(defun org-export-filter-apply-functions (filters value info)
+  "Call every function in FILTERS.
+
+Functions are called with three arguments: a value, the export
+backend name and the communication channel.  First function in
+FILTERS is called with VALUE as its first argument.  Second
+function in FILTERS is called with the previous result as its
+value, etc.
+
+Functions returning nil are skipped.  Any function returning the
+empty string ends the process, which returns the empty string.
+
+Call is done in a LIFO fashion, to be sure that developer
+specified filters, if any, are called first."
+  (catch :exit
+    (let* ((backend (plist-get info :back-end))
+	   (backend-name (and backend (org-export-backend-name backend))))
+      (dolist (filter filters value)
+	(let ((result (funcall filter value backend-name info)))
+	  (cond ((not result))
+		((equal result "") (throw :exit ""))
+		(t (setq value result))))))))
+
+(defun org-export-install-filters (info)
+  "Install filters properties in communication channel.
+INFO is a plist containing the current communication channel.
+Return the updated communication channel."
+  (let (plist)
+    ;; Install user-defined filters with `org-export-filters-alist'
+    ;; and filters already in INFO (through ext-plist mechanism).
+    (dolist (p org-export-filters-alist)
+      (let* ((prop (car p))
+	     (info-value (plist-get info prop))
+	     (default-value (symbol-value (cdr p))))
+	(setq plist
+	      (plist-put plist prop
+			 ;; Filters in INFO will be called
+			 ;; before those user provided.
+			 (append (if (listp info-value) info-value
+				   (list info-value))
+				 default-value)))))
+    ;; Prepend backend specific filters to that list.
+    (dolist (p (org-export-get-all-filters (plist-get info :back-end)))
+      ;; Single values get consed, lists are appended.
+      (let ((key (car p)) (value (cdr p)))
+	(when value
+	  (setq plist
+		(plist-put
+		 plist key
+		 (if (atom value) (cons value (plist-get plist key))
+		   (append value (plist-get plist key))))))))
+    ;; Return new communication channel.
+    (org-combine-plists info plist)))
+
+
+
+;;; Core functions
+;;
+;; This is the room for the main function, `org-export-as', along with
+;; its derivative, `org-export-string-as'.
+;; `org-export--copy-to-kill-ring-p' determines if output of these
+;; function should be added to kill ring.
+;;
+;; Note that `org-export-as' doesn't really parse the current buffer,
+;; but a copy of it (with the same buffer-local variables and
+;; visibility), where macros and include keywords are expanded and
+;; Babel blocks are executed, if appropriate.
+;; `org-export-with-buffer-copy' macro prepares that copy.
+;;
+;; File inclusion is taken care of by
+;; `org-export-expand-include-keyword' and
+;; `org-export--prepare-file-contents'.  Structure wise, including
+;; a whole Org file in a buffer often makes little sense.  For
+;; example, if the file contains a headline and the include keyword
+;; was within an item, the item should contain the headline.  That's
+;; why file inclusion should be done before any structure can be
+;; associated to the file, that is before parsing.
+;;
+;; `org-export-insert-default-template' is a command to insert
+;; a default template (or a backend specific template) at point or in
+;; current subtree.
+
+(defun org-export--set-variables (variable-alist)
+  "Set buffer-local variables according to VARIABLE-ALIST in current buffer."
+  (pcase-dolist (`(,var . ,val) variable-alist)
+    (set (make-local-variable var) (car val))))
+
+(cl-defun org-export-copy-buffer (&key to-buffer drop-visibility
+                                       drop-narrowing drop-contents
+                                       drop-locals)
+  "Return a copy of the current buffer.
+This function calls `org-element-copy-buffer', passing the same
+arguments TO-BUFFER, DROP-VISIBILITY, DROP-NARROWING, DROP-CONTENTS,
+and DROP-LOCALS.
+
+In addition, buffer-local variables are set according to #+BIND:
+keywords."
+  (let ((new-buf (org-element-copy-buffer
+                  :to-buffer to-buffer
+                  :drop-visibility drop-visibility
+                  :drop-narrowing drop-narrowing
+                  :drop-contents drop-contents
+                  :drop-locals drop-locals)))
+    (let ((bind-variables (org-export--list-bound-variables)))
+      (with-current-buffer new-buf
+        (org-export--set-variables bind-variables)))
+    new-buf))
+
+(cl-defmacro org-export-with-buffer-copy ( &rest body
+                                           &key to-buffer drop-visibility
+                                           drop-narrowing drop-contents
+                                           drop-locals
+                                           &allow-other-keys)
+  "Apply BODY in a copy of the current buffer.
+This macro is like `org-element-with-buffer-copy', passing the same
+arguments BODY, TO-BUFFER, DROP-VISIBILITY, DROP-NARROWING,
+DROP-CONTENTS, and DROP-LOCALS.
+
+In addition, buffer-local variables are set according to #+BIND:
+keywords."
+  (declare (debug t))
+  ;; Drop keyword arguments from BODY.
+  (while (keywordp (car body)) (pop body) (pop body))
+  (org-with-gensyms (bind-variables)
+    `(let ((,bind-variables (org-export--list-bound-variables)))
+       (org-element-with-buffer-copy
+        :to-buffer ,to-buffer
+        :drop-visibility ,drop-visibility
+        :drop-narrowing ,drop-narrowing
+        :drop-contents ,drop-contents
+        :drop-locals ,drop-locals
+        (org-export--set-variables ,bind-variables)
+        ,@body))))
+
+(defun org-export--delete-comment-trees ()
+
+
+--- ox.el:2988-3201 ---
+
+          (org-element-put-property
+           link :path
+           (substitute-env-in-file-name
+            (org-element-property :path link)))))
+      info nil nil 'with-affiliated)))
+
+;;;###autoload
+(defun org-export-as
+    (backend &optional subtreep visible-only body-only ext-plist)
+  "Transcode current Org buffer into BACKEND code.
+
+See info node `(org)Advanced Export Configuration' for the details of
+the transcoding process.
+
+BACKEND is either an export backend, as returned by, e.g.,
+`org-export-create-backend', or a symbol referring to
+a registered backend.
+
+If narrowing is active in the current buffer, only transcode its
+narrowed part.
+
+If a region is active, transcode that region.
+
+When optional argument SUBTREEP is non-nil, transcode the
+sub-tree at point, extracting information from the headline
+properties first.
+
+When optional argument VISIBLE-ONLY is non-nil, don't export
+contents of hidden elements.
+
+When optional argument BODY-ONLY is non-nil, only return body
+code, without surrounding template.
+
+Optional argument EXT-PLIST, when provided, is a property list
+with external parameters overriding Org default settings, but
+still inferior to file-local settings.
+
+Return code as a string."
+  (when (symbolp backend) (setq backend (org-export-get-backend backend)))
+  (org-export-barf-if-invalid-backend backend)
+  (org-fold-core-ignore-modifications
+    (save-excursion
+      (save-restriction
+        ;; Narrow buffer to an appropriate region or subtree for
+        ;; parsing.  If parsing subtree, be sure to remove main
+        ;; headline, planning data and property drawer.
+        (cond ((org-region-active-p)
+	       (narrow-to-region (region-beginning) (region-end)))
+	      (subtreep
+	       (org-narrow-to-subtree)
+	       (goto-char (point-min))
+	       (org-end-of-meta-data)
+               ;; Make the region include top heading in the subtree.
+               ;; This way, we will be able to retrieve its export
+               ;; options when calling
+               ;; `org-export--get-subtree-options'.
+               (when (bolp) (backward-char))
+	       (narrow-to-region (point) (point-max))))
+        ;; Initialize communication channel with original buffer
+        ;; attributes, unavailable in its copy.
+        (let* ((org-export-current-backend (org-export-backend-name backend))
+	       (info (org-combine-plists
+		      (org-export--get-export-attributes
+		       backend subtreep visible-only body-only)
+		      (org-export--get-buffer-attributes))))
+	  ;; Update communication channel and get parse tree.  Buffer
+	  ;; isn't parsed directly.  Instead, all buffer modifications
+	  ;; and consequent parsing are undertaken in a temporary copy.
+	  (org-export-with-buffer-copy
+           (font-lock-mode -1)
+           (setq info (org-export--annotate-info
+                       backend info subtreep visible-only ext-plist))
+	   ;; Eventually transcode TREE.  Wrap the resulting string into
+	   ;; a template.
+	   (let* ((body (org-element-normalize-string
+		         (or (org-export-data (plist-get info :parse-tree) info)
+                             "")))
+		  (inner-template (cdr (assq 'inner-template
+					     (plist-get info :translate-alist))))
+		  (full-body (org-export-filter-apply-functions
+			      (plist-get info :filter-body)
+			      (if (not (functionp inner-template)) body
+			        (funcall inner-template body info))
+			      info))
+		  (template (cdr (assq 'template
+				       (plist-get info :translate-alist))))
+                  (output
+                   (if (or (not (functionp template)) body-only) full-body
+	             (funcall template full-body info))))
+             ;; Call citation export finalizer.
+             (when (plist-get info :with-cite-processors)
+               (setq output (org-cite-finalize-export output info)))
+	     ;; Remove all text properties since they cannot be
+	     ;; retrieved from an external process.  Finally call
+	     ;; final-output filter and return result.
+	     (org-no-properties
+	      (org-export-filter-apply-functions
+	       (plist-get info :filter-final-output)
+	       output info)))))))))
+
+(defun org-export--annotate-info (backend info &optional subtreep visible-only ext-plist)
+  "Annotate the INFO plist according to the BACKEND.
+
+This is run in the context of the current buffer.
+
+When optional argument SUBTREEP is non-nil, transcode the
+sub-tree at point, extracting information from the headline
+properties first.
+
+When optional argument VISIBLE-ONLY is non-nil, don't process the
+contents of hidden elements.
+
+Optional argument EXT-PLIST, when provided, is a property list
+with external parameters overriding Org default settings, but
+still inferior to file-local settings."
+  (let ((parsed-keywords
+         (delq nil
+               (mapcar (lambda (o) (and (eq (nth 4 o) 'parse) (nth 1 o)))
+                       (append (org-export-get-all-options backend)
+                               org-export-options-alist))))
+        tree modified-tick)
+    ;; Run first hook with current backend's name as argument.
+    (run-hook-with-args 'org-export-before-processing-functions
+                        (org-export-backend-name backend))
+    (org-export-expand-include-keyword nil nil nil nil (plist-get info :expand-links))
+    (org-export--delete-comment-trees)
+    (when org-export-replace-macros
+      (org-macro-initialize-templates org-export-global-macros)
+      (org-macro-replace-all org-macro-templates parsed-keywords))
+    ;; Refresh buffer properties and radio targets after previous
+    ;; potentially invasive changes.
+    (org-set-regexps-and-options)
+    (org-update-radio-target-regexp)
+    (setq modified-tick (buffer-chars-modified-tick))
+    ;;  Possibly execute Babel code.  Re-run a macro expansion
+    ;;  specifically for {{{results}}} since inline source blocks
+    ;;  may have generated some more.  Refresh buffer properties
+    ;;  and radio targets another time.
+    (when org-export-use-babel
+      (org-babel-exp-process-buffer)
+      (org-macro-replace-all '(("results" . "$1")) parsed-keywords)
+      (unless (eq modified-tick (buffer-chars-modified-tick))
+        (org-set-regexps-and-options)
+        (org-update-radio-target-regexp))
+      (setq modified-tick (buffer-chars-modified-tick)))
+    ;; Run last hook with current backend's name as argument.
+    ;; Update buffer properties and radio targets one last time
+    ;; before parsing.
+    (goto-char (point-min))
+    (save-excursion
+      (run-hook-with-args 'org-export-before-parsing-functions
+                          (org-export-backend-name backend)))
+    (unless (eq modified-tick (buffer-chars-modified-tick))
+      (org-set-regexps-and-options)
+      (org-update-radio-target-regexp))
+    (setq modified-tick (buffer-chars-modified-tick))
+    ;; Update communication channel with environment.
+    (setq info
+          (org-combine-plists
+           info (org-export-get-environment backend subtreep ext-plist)))
+    ;; Pre-process citations environment, i.e. install
+    ;; bibliography list, and citation processor in INFO.
+    (when (plist-get info :with-cite-processors)
+      (org-cite-store-bibliography info)
+      (org-cite-store-export-processor info))
+    ;; De-activate uninterpreted data from parsed keywords.
+    (dolist (entry (append (org-export-get-all-options backend)
+                           org-export-options-alist))
+      (pcase entry
+        (`(,p ,_ ,_ ,_ parse)
+         (let ((value (plist-get info p)))
+           (plist-put info
+                      p
+                      (org-export--remove-uninterpreted-data value info))))
+        (_ nil)))
+    ;; Install user's and developer's filters.
+    (setq info (org-export-install-filters info))
+    ;; Call options filters and update export options.  We do not
+    ;; use `org-export-filter-apply-functions' here since the
+    ;; arity of such filters is different.
+    (let ((backend-name (org-export-backend-name backend)))
+      (dolist (filter (plist-get info :filter-options))
+        (let ((result (funcall filter info backend-name)))
+          (when result (setq info result)))))
+    ;; Parse buffer.
+    (setq tree (org-element-parse-buffer nil visible-only 'defer))
+    ;; Force parsing ALT_TITLE property of headlines.
+    (org-element-map tree '(headline inlinetask)
+      (lambda (h)
+        (when-let* ((alt-title (org-element-property :ALT_TITLE h)))
+          (org-element-put-property
+           h :ALT_TITLE
+           (org-element-parse-secondary-string
+	    alt-title (org-element-restriction 'headline) h))
+          (org-element-put-property
+           h :secondary
+           (cons :ALT_TITLE (org-element-property :secondary h))))))
+    ;; Prune tree from non-exported elements and transform
+    ;; uninterpreted elements or objects in both parse tree and
+    ;; communication channel.
+    (org-export--prune-tree tree info)
+    (org-export--remove-uninterpreted-data tree info)
+    ;; Expand environment variables in link paths.
+    (org-export--expand-links tree info)
+    ;; Call parse tree filters.
+    (setq tree
+          (org-export-filter-apply-functions
+           (plist-get info :filter-parse-tree) tree info))
+    ;; Now tree is complete, compute its properties and add them
+    ;; to communication channel.  This is responsible for setting
+    ;; :parse-tree to TREE.
+    (setq info (org-export--collect-tree-properties tree info))
+    ;; Process citations and bibliography.  Replace each citation
+    ;; and "print_bibliography" keyword in the parse tree with
+
+
+--- ox.el:3318-3396 ---
+
+		       (t (cdr key)))))
+	(if subtreep (org-entry-put node (concat "EXPORT_" (car key)) val)
+	  (insert
+	   (format "#+%s:%s\n"
+		   (downcase (car key))
+		   (if (org-string-nw-p val) (format " %s" val) ""))))))))
+
+(defun org-export-expand-include-keyword (&optional included dir footnotes includer-file expand-env)
+  "Expand every include keyword in buffer.
+
+Optional argument INCLUDED is a list of included file names along
+with their line restriction, when appropriate.  It is used to
+avoid infinite recursion.
+
+Optional argument DIR is the current working directory.  It is used to
+properly resolve relative paths.
+
+Optional argument FOOTNOTES is a hash-table used for
+storing and resolving footnotes.  It is created automatically.
+
+Optional argument INCLUDER-FILE is the file path corresponding to the
+buffer contents being included.  It is used when current buffer does
+not have `buffer-file-name' assigned.
+
+When optional argument EXPAND-ENV is non-nil, expand environment
+variables in include file names."
+  (let ((includer-file (or includer-file
+                           (buffer-file-name (buffer-base-buffer))))
+	(case-fold-search t)
+	(file-prefix (make-hash-table :test #'equal))
+	(footnotes (or footnotes (make-hash-table :test #'equal)))
+	(include-re "^[ \t]*#\\+INCLUDE:"))
+    ;; If :minlevel is not set the text-property
+    ;; `:org-include-induced-level' will be used to determine the
+    ;; relative level when expanding INCLUDE.
+    ;; Only affects included Org documents.
+    (goto-char (point-min))
+    (while (re-search-forward include-re nil t)
+      (put-text-property (line-beginning-position) (line-end-position)
+			 :org-include-induced-level
+			 (1+ (org-reduced-level (or (org-current-level) 0)))))
+    ;; Expand INCLUDE keywords.
+    (goto-char (point-min))
+    (while (re-search-forward include-re nil t)
+      (unless (org-in-commented-heading-p)
+        (let ((element (org-element-at-point)))
+          (when (org-element-type-p element 'keyword)
+            (forward-line 0)
+            ;; Extract arguments from keyword's value.
+            (let* ((indentation (org-current-text-indentation))
+                   (value (org-element-property :value element))
+                   (parameters (org-export-parse-include-value value dir))
+                   (file (if expand-env
+                             (substitute-env-in-file-name
+                              (plist-get parameters :file))
+                           (plist-get parameters :file))))
+              ;; Remove keyword.
+              (delete-region (point) (line-beginning-position 2))
+              (cond
+               ((not file)) ; Do nothing.
+               ((and (not (org-url-p file))
+                     (not (file-readable-p file)))
+                (error "Cannot include file %s" file))
+               ;; Check if files has already been parsed.  Look after
+               ;; inclusion lines too, as different parts of the same
+               ;; file can be included too.
+               ((member (list file (plist-get parameters :lines)) included)
+                (error "Recursive file inclusion: %s" file))
+               (t
+                (org-export--blindly-expand-include
+                 parameters
+                 :includer-file includer-file
+                 :file-prefix file-prefix
+                 :footnotes footnotes
+                 :already-included included
+                 :expand-env expand-env
+                 :indentation indentation)
+                ;; Expand footnotes after all files have been
+                ;; included.  Footnotes are stored at end of buffer.
+
+
+--- ox.el:3480-3549 ---
+
+          :lines lines
+          :env env
+          :minlevel minlevel
+          :args args
+          :block block
+          :unmatched (org-babel-parse-header-arguments value t))))
+
+(cl-defun org-export--blindly-expand-include
+    (parameters
+     &key includer-file file-prefix footnotes
+     already-included expand-env indentation)
+  "Unconditionally include reference defined by PARAMETERS in the buffer.
+PARAMETERS is a plist of the form returned by `org-export-parse-include-value'.
+
+INCLUDER-FILE is a path to the file where the include keyword is
+being expanded.  FILE-PREFIX is a hash-table of file and
+prefixes, which can be provided to ensure consistent prefixing.
+FOOTNOTES is a hash-table for storing and resolving footnotes,
+which when provided allows footnotes to be handled appropriately.
+ALREADY-INCLUDED is a list of included names along with their
+line restriction which prevents recursion.  EXPAND-ENV is a flag to
+expand environment variables for #+INCLUDE keywords in the included
+file.  INDENTATION is the common indentation to be added."
+  (let* ((coding-system-for-read
+          (or (plist-get parameters :coding-system)
+              coding-system-for-read))
+         (file (plist-get parameters :file))
+         (lines (plist-get parameters :lines))
+         (args (plist-get parameters :args))
+         (block (plist-get parameters :block))
+         (ind indentation))
+    (cond
+     ((eq (plist-get parameters :env) 'literal)
+      (insert
+       (let ((ind-str (make-string ind ?\s))
+             (arg-str (if (stringp args) (format " %s" args) ""))
+             (contents
+              (org-escape-code-in-string
+               (org-export--prepare-file-contents file lines))))
+         (format "%s#+BEGIN_%s%s\n%s%s#+END_%s\n"
+                 ind-str block arg-str contents ind-str block))))
+     ((stringp block)
+      (insert
+       (let ((ind-str (make-string ind ?\s))
+             (contents
+              (org-export--prepare-file-contents file lines)))
+         (format "%s#+BEGIN_%s\n%s%s#+END_%s\n"
+                 ind-str block contents ind-str block))))
+     (t
+      (insert
+       (with-temp-buffer
+         (let ((org-inhibit-startup t)
+               (lines
+                (if-let* ((location (plist-get parameters :location)))
+                    (org-export--inclusion-absolute-lines
+                     file location
+                     (plist-get parameters :only-contents)
+                     lines)
+                  lines)))
+           (org-mode)
+           (insert
+            (org-export--prepare-file-contents
+             file lines ind (plist-get parameters :minlevel)
+             (and file-prefix
+                  (or (gethash file file-prefix)
+                      (puthash file
+                               (hash-table-count file-prefix)
+                               file-prefix)))
+             footnotes includer-file)))
+         (org-export-expand-include-keyword
+
+
+--- ox.el:3611-3731 ---
+
+		start-line
+		(save-excursion
+		  (+ start-line
+		     (let ((counter 0))
+		       (while (< (point) end) (cl-incf counter) (forward-line))
+		       counter))))))))
+
+(defun org-export--update-included-link (file-dir includer-dir)
+  "Update relative file name of link at point, if possible.
+
+FILE-DIR is the directory of the file being included.
+INCLUDER-DIR is the directory of the file where the inclusion is
+going to happen.
+
+Move point after the link."
+  (let* ((link (org-element-link-parser))
+	 (path (org-element-property :path link)))
+    (if (or (not (string= "file" (org-element-property :type link)))
+	    (file-remote-p path)
+	    (file-name-absolute-p path))
+	(goto-char (org-element-end link))
+      (let ((new-path (file-relative-name (expand-file-name path file-dir)
+					  includer-dir))
+	    (new-link (org-element-copy link)))
+	(org-element-put-property new-link :path new-path)
+	(when (org-element-contents-begin link)
+	  (org-element-adopt new-link
+	    (buffer-substring
+	     (org-element-contents-begin link)
+	     (org-element-contents-end link))))
+	(delete-region (org-element-begin link)
+		       (org-element-end link))
+	(insert (org-element-interpret-data new-link))))))
+
+(defun org-export--prepare-file-contents
+    (file &optional lines ind minlevel id footnotes includer)
+  "Prepare contents of FILE for inclusion and return it as a string.
+
+When optional argument LINES is a string specifying a range of
+lines, include only those lines.
+
+Optional argument IND, when non-nil, is an integer specifying the
+global indentation of returned contents.  Since its purpose is to
+allow an included file to stay in the same environment it was
+created (e.g., a list item), it doesn't apply past the first
+headline encountered.
+
+Optional argument MINLEVEL, when non-nil, is an integer
+specifying the level that any top-level headline in the included
+file should have.
+
+Optional argument ID is an integer that will be inserted before
+each footnote definition and reference if FILE is an Org file.
+This is useful to avoid conflicts when more than one Org file
+with footnotes is included in a document.
+
+Optional argument FOOTNOTES is a hash-table to store footnotes in
+the included document.
+
+Optional argument INCLUDER is the file name where the inclusion
+is to happen."
+  (with-temp-buffer
+    (insert (org-file-contents file))
+    (when lines
+      (let* ((lines (split-string lines "-"))
+	     (lbeg (string-to-number (car lines)))
+	     (lend (string-to-number (cadr lines)))
+	     (beg (if (zerop lbeg) (point-min)
+		    (goto-char (point-min))
+		    (forward-line (1- lbeg))
+		    (point)))
+	     (end (if (zerop lend) (point-max)
+		    (goto-char (point-min))
+		    (forward-line (1- lend))
+		    (point))))
+	(narrow-to-region beg end)))
+    ;; Adapt all file links within the included document that contain
+    ;; relative paths in order to make these paths relative to the
+    ;; base document, or absolute.
+    (when includer
+      (let ((file-dir (file-name-directory file))
+	    (includer-dir (file-name-directory includer)))
+	(unless (file-equal-p file-dir includer-dir)
+	  (goto-char (point-min))
+	  (unless (eq major-mode 'org-mode)
+	    (let ((org-inhibit-startup t)) (org-mode)))	;set regexps
+	  (let ((regexp (concat org-link-plain-re "\\|" org-link-angle-re)))
+	    (while (re-search-forward org-link-any-re nil t)
+	      (let ((link (save-excursion
+			    (forward-char -1)
+			    (org-element-context))))
+		(when (org-element-type-p link 'link)
+		  ;; Look for file links within link's description.
+		  ;; Org doesn't support such construct, but
+		  ;; `org-export-insert-image-links' may activate
+		  ;; them.
+		  (let ((contents-begin
+			 (org-element-contents-begin link))
+			(begin (org-element-begin link)))
+		    (when contents-begin
+		      (save-excursion
+			(goto-char (org-element-contents-end link))
+			(while (re-search-backward regexp contents-begin t)
+			  (save-match-data
+			    (org-export--update-included-link
+			     file-dir includer-dir))
+			  (goto-char (match-beginning 0)))))
+		    ;; Update current link, if necessary.
+		    (when (string= "file" (org-element-property :type link))
+		      (goto-char begin)
+		      (org-export--update-included-link
+		       file-dir includer-dir))))))))))
+    ;; Remove blank lines at beginning and end of contents.  The logic
+    ;; behind that removal is that blank lines around include keyword
+    ;; override blank lines in included file.
+    (goto-char (point-min))
+    (org-skip-whitespace)
+    (forward-line 0)
+    (delete-region (point-min) (point))
+    (goto-char (point-max))
+    (skip-chars-backward " \r\t\n")
+
+
+--- ox.el:4911-4916 ---
+
+	 info 'first-match)))))
+
+;;;; For Raw objects
+;;
+;; `org-export-raw-string' builds a pseudo-object out of a string
+;; that any export backend returns as-is.
+
+oc.el: 74798 bytes; SHA-256 71a21bea22654aeb84dc39884c1f7ed4d735a9be317b7f6d6f106c473c8962d6
+
+--- oc.el:607-630 ---
+
+        '(adaptive outside after))))
+
+
+;;; Generic tools
+(defun org-cite-list-bibliography-files ()
+  "List all bibliography files defined in the buffer."
+  (delete-dups
+   (append (mapcar (lambda (value)
+		     (pcase value
+		       (`(,f . ,d)
+                        (setq f (org-strip-quotes f))
+                        (if (or (file-name-absolute-p f)
+                                (file-remote-p f)
+                                (equal d default-directory))
+                            ;; Keep absolute paths, remote paths, and
+                            ;; local relative paths.
+                            f
+                          ;; Adjust relative bibliography path for
+                          ;; #+SETUP files located in other directory.
+                          ;; Also, see `org-export--update-included-link'.
+                          (file-relative-name
+                           (expand-file-name f d) default-directory)))))
+		   (pcase (org-collect-keywords
+
+
+--- oc.el:1278-1350 ---
+
+          ;; appropriately.
+          (save-match-data (funcall activate cite))
+          ;; Move after cite object and make sure to return
+          ;; a non-nil value.
+          (goto-char (org-element-end cite)))))))
+
+
+;;; Internal interface with Org Export library (export capability)
+(defun org-cite-store-bibliography (info)
+  "Store bibliography in the communication channel.
+
+Bibliography is stored as a list of absolute file names in the `:bibliography'
+property.
+
+INFO is the communication channel, as a plist.  It is modified by side-effect."
+  (plist-put info :bibliography (org-cite-list-bibliography-files)))
+
+(defun org-cite-store-export-processor (info)
+  "Store export processor in the `:cite-export' property during export.
+
+Export processor is stored as a triplet, or nil.
+
+When non-nil, it is defined as (NAME BIBLIOGRAPHY-STYLE
+CITATION-STYLE) where NAME is a symbol, whereas
+BIBLIOGRAPHY-STYLE and CITATION-STYLE are strings, or nil.
+
+INFO is the communication channel, as a plist.  It is modified by
+side-effect."
+  (let* ((err
+          (lambda (s)
+            (user-error "Invalid cite export processor declaration: %S" s)))
+         (processor
+          (pcase (plist-get info :cite-export)
+            ((or "" `nil) nil)
+            ;; Value is a string.  It comes from a "cite_export"
+            ;; keyword.
+            ((and (pred stringp) s)
+             (org-cite-read-processor-declaration s))
+            ;; Value is an alist.  It must come from
+            ;; `org-cite-export-processors' variable.  Find the most
+            ;; appropriate processor according to current export
+            ;; backend.
+            ((and (pred consp) alist)
+             (let* ((backend (plist-get info :back-end))
+                    (candidates
+                     ;; Limit candidates to processors associated to
+                     ;; backends derived from or equal to the current
+                     ;; one.
+                     (sort (seq-filter
+                            (pcase-lambda (`(,key . ,_))
+                              (org-export-derived-backend-p backend key))
+                            alist)
+                           (lambda (a b)
+                             (org-export-derived-backend-p (car a) (car b))))))
+               ;; Select the closest candidate, or fallback to t.
+               (pcase (or (car candidates) (assq t alist))
+                 ('nil nil)
+                 (`(,_ . ,p)
+                  ;; Normalize value by turning it into a triplet.
+                  (pcase p
+                    (`(,(pred symbolp))
+                     (append p (list nil nil)))
+                    (`(,(pred symbolp) ,(pred string-or-null-p))
+                     (append p (list nil)))
+                    (`(,(pred symbolp)
+                       ,(pred string-or-null-p)
+                       ,(pred string-or-null-p))
+                     p)
+                    (_ (funcall err p))))
+                 (other (funcall err (cdr other))))))
+            (other (funcall err other)))))
+    (pcase processor
+
+
+--- oc.el:1386-1466 ---
+
+         (funcall export-bibilography
+	          (org-cite-list-keys info)
+                  (plist-get info :bibliography)
+                  (org-cite-bibliography-style info)
+                  (org-cite-bibliography-properties keyword)
+                  (plist-get info :back-end)
+                  info))))
+    (other (error "Invalid `:cite-export' value: %S" other))))
+
+(defun org-cite-process-citations (info)
+  "Replace all citations in the parse tree.
+INFO is the communication channel, as a plist.  Parse tree is modified
+by side-effect."
+  (dolist (cite (org-cite-list-citations info))
+    (let ((replacement (org-cite-export-citation cite nil info))
+          (blanks (or (org-element-post-blank cite) 0)))
+      (if (null replacement)
+          ;; Before removing the citation, transfer its `:post-blank'
+          ;; property to the object before, if any.
+          (org-cite--set-previous-post-blank cite blanks info)
+        ;; Make sure there is a space between a quotation mark and
+        ;; a citation.  This is particularly important when using
+        ;; `adaptive' note rule.  See `org-cite-note-rules'.
+        (let ((previous (org-export-get-previous-element cite info)))
+          (when (and (org-string-nw-p previous)
+                     (string-suffix-p "\"" previous))
+            (org-cite--set-previous-post-blank cite 1 info)))
+        (pcase replacement
+          ;; String.
+          ((pred stringp)
+           ;; Handle `:post-blank' before replacing value.
+           (let ((output (concat (org-trim replacement)
+                                 (make-string blanks ?\s))))
+             (org-element-insert-before (org-export-raw-string output) cite)))
+          ;; Single element.
+          (`(,(pred symbolp) . ,_)
+           (org-cite--set-post-blank replacement blanks)
+           (org-element-insert-before replacement cite))
+          ;; Secondary string: splice objects at cite's place.
+          ;; Transfer `:post-blank' to the last object.
+          ((pred consp)
+           (let ((last nil))
+             (dolist (datum replacement)
+               (setq last datum)
+               (org-element-insert-before datum cite))
+             (org-cite--set-post-blank last blanks)))
+          (_
+           (error "Invalid return value from citation export processor: %S"
+                  replacement))))
+      (org-element-extract cite))))
+
+(defun org-cite-process-bibliography (info)
+  "Replace all \"print_bibliography\" keywords in the parse tree.
+
+INFO is the communication channel, as a plist.  Parse tree is modified
+by side effect."
+  (org-element-map (plist-get info :parse-tree) 'keyword
+    (lambda (keyword)
+      (when (equal "PRINT_BIBLIOGRAPHY" (org-element-property :key keyword))
+        (let ((replacement (org-cite-export-bibliography keyword nil info))
+              (blanks (or (org-element-post-blank keyword) 0)))
+          (pcase replacement
+            ;; Before removing the citation, transfer its
+            ;; `:post-blank' property to the element before, if any.
+            ('nil
+             (org-cite--set-previous-post-blank keyword blanks info)
+             (org-element-extract keyword))
+            ;; Handle `:post-blank' before replacing keyword with string.
+            ((pred stringp)
+             (let ((output (concat (org-element-normalize-string replacement)
+                                   (make-string blanks ?\n))))
+               (org-element-set keyword (org-export-raw-string output))))
+            ;; List of elements: splice contents before keyword and
+            ;; remove the latter.  Transfer `:post-blank' to last
+            ;; element.
+            ((and `(,(pred listp) . ,_) contents)
+             (let ((last nil))
+               (dolist (datum contents)
+                 (setq last datum)
+                 (org-element-insert-before datum keyword))
+               (org-cite--set-post-blank last blanks)
+
+org-element.el: 371675 bytes; SHA-256 063ecf047af3863b06ce205c2415c64a49556a77da54a3f4431ad384d6853b4a
+
+--- org-element.el:539-724 ---
+
+
+(cl-defun org-element--generate-copy-script
+    (buffer
+     &key
+     copy-unreadable drop-visibility drop-narrowing
+     drop-contents drop-text-properties drop-locals)
+  "Generate a function duplicating BUFFER.
+
+The copy will preserve local variables, visibility, contents and
+narrowing of the original buffer.  If a region was active in
+BUFFER, contents will be narrowed to that region instead.
+
+When optional key COPY-UNREADABLE is non-nil, do not ensure that all
+the copied local variables will be readable in another Emacs session.
+
+When optional keys DROP-VISIBILITY, DROP-NARROWING, DROP-CONTENTS,
+DROP-TEXT-PROPERTIES, or DROP-LOCALS are non-nil, do not preserve
+visibility, narrowing, contents, text properties of contents, or local
+variables correspondingly.
+
+The resulting function can be evaluated at a later time, from
+another buffer, effectively cloning the original buffer there.
+
+The function assumes BUFFER's major mode is `org-mode'."
+  (with-current-buffer buffer
+    (let ((str (unless drop-contents
+                 (org-with-wide-buffer
+                  (if drop-text-properties
+                      (substring-no-properties (buffer-string))
+                    (buffer-string)))))
+          (narrowing
+           (unless drop-narrowing
+             (if (org-region-active-p)
+	         (list (region-beginning) (region-end))
+	       (list (point-min) (point-max)))))
+	  (pos (point))
+	  (varvals
+           (unless drop-locals
+	     (let ((varvals nil))
+	       (dolist (entry (buffer-local-variables (buffer-base-buffer)))
+	         (when (consp entry)
+		   (let ((var (car entry))
+		         (val (cdr entry)))
+		     (and (not (memq var org-element-ignored-local-variables))
+			  (or (memq var
+				    '(default-directory
+                                      ;; Required to convert file
+                                      ;; links in the #+INCLUDEd
+                                      ;; files.  See
+                                      ;; `org-export--prepare-file-contents'.
+				      buffer-file-name
+				      buffer-file-coding-system
+                                      ;; Needed to preserve folding state
+                                      char-property-alias-alist))
+			      (string-match-p "^\\(org-\\|orgtbl-\\)"
+					      (symbol-name var)))
+			  ;; Skip unreadable values, as they cannot be
+			  ;; sent to external process.
+			  (or copy-unreadable (not val)
+                              (ignore-errors (read (format "%S" val))))
+			  (push (cons var val) varvals)))))
+               varvals)))
+	  (ols
+           (unless drop-visibility
+	     (let (ov-set)
+	       (dolist (ov (overlays-in (point-min) (point-max)))
+	         (let ((invis-prop (overlay-get ov 'invisible)))
+		   (when invis-prop
+		     (push (list (overlay-start ov) (overlay-end ov)
+			         (overlay-properties ov))
+			   ov-set))))
+	       ov-set))))
+      (lambda ()
+	(let ((inhibit-modification-hooks t))
+	  ;; Set major mode. Ignore `org-mode-hook' and other hooks as
+	  ;; they have been run already in BUFFER.
+          (unless (eq major-mode 'org-mode)
+            (delay-mode-hooks
+              (let ((org-inhibit-startup t)) (org-mode))))
+	  ;; Copy specific buffer local variables.
+	  (pcase-dolist (`(,var . ,val) varvals)
+	    (set (make-local-variable var) val))
+	  ;; Whole buffer contents when requested.
+          (when str
+            (let ((inhibit-read-only t))
+              (erase-buffer) (insert str)))
+          ;; Make org-element-cache not complain about changed buffer
+          ;; state.
+          (org-element-cache-reset nil 'no-persistence)
+	  ;; Narrowing.
+          (when narrowing
+	    (apply #'narrow-to-region narrowing))
+	  ;; Current position of point.
+	  (goto-char pos)
+	  ;; Overlays with invisible property.
+	  (pcase-dolist (`(,start ,end ,props) ols)
+            (let ((ov (make-overlay start end)))
+              (while props
+                (overlay-put ov (pop props) (pop props)))))
+          ;; Text property folds.
+          (unless drop-visibility (org-fold-core--update-buffer-folds))
+          ;; Never write the buffer copy to disk, despite
+          ;; `buffer-file-name' not being nil.
+          (setq write-contents-functions (list (lambda (&rest _) t))))))))
+
+(cl-defun org-element-copy-buffer (&key to-buffer drop-visibility
+                                        drop-narrowing drop-contents
+                                        drop-locals)
+  "Return a copy of the current buffer.
+The copy preserves Org buffer-local variables, visibility and
+narrowing.
+
+IMPORTANT: The buffer copy may also have variable `buffer-file-name'
+copied.
+
+To prevent Emacs overwriting the original buffer file,
+`write-contents-functions' is set to \\='(always).  Do not alter this
+variable and do not do anything that might alter it (like calling a
+major mode) to prevent data corruption.  Also, do note that Emacs may
+jump into the created buffer if the original file buffer is closed and
+then re-opened.  Making edits in the buffer copy may also trigger
+Emacs save dialog.  Prefer using `org-element-with-buffer-copy' macro
+when possible.
+
+When optional key TO-BUFFER is non-nil, copy into BUFFER.
+
+Optional keys DROP-VISIBILITY, DROP-NARROWING, DROP-CONTENTS, and
+DROP-LOCALS are passed to `org-element--generate-copy-script'."
+  (let ((copy-buffer-fun (org-element--generate-copy-script
+                          (current-buffer)
+                          :copy-unreadable 'do-not-check
+                          :drop-visibility drop-visibility
+                          :drop-narrowing drop-narrowing
+                          :drop-contents drop-contents
+                          :drop-locals drop-locals))
+	(new-buf (or to-buffer (generate-new-buffer (buffer-name)))))
+    (with-current-buffer new-buf
+      (funcall copy-buffer-fun)
+      (set-buffer-modified-p nil))
+    new-buf))
+
+(cl-defmacro org-element-with-buffer-copy ( &rest body
+                                            &key to-buffer drop-visibility
+                                            drop-narrowing drop-contents
+                                            drop-locals
+                                            &allow-other-keys)
+  "Apply BODY in a copy of the current buffer.
+The copy preserves local variables, visibility and contents of
+the original buffer.  Point is at the beginning of the buffer
+when BODY is applied.
+
+Optional keys can modify what is being copied and the generated buffer
+copy.  TO-BUFFER, DROP-VISIBILITY, DROP-NARROWING, DROP-CONTENTS, and
+DROP-LOCALS are passed as arguments to `org-element-copy-buffer'."
+  (declare (debug t))
+  ;; Drop keyword arguments from BODY.
+  (while (keywordp (car body)) (pop body) (pop body))
+  (org-with-gensyms (buf-copy)
+    `(let ((,buf-copy (org-element-copy-buffer
+                       :to-buffer ,to-buffer
+                       :drop-visibility ,drop-visibility
+                       :drop-narrowing ,drop-narrowing
+                       :drop-contents ,drop-contents
+                       :drop-locals ,drop-locals)))
+       (unwind-protect
+	   (with-current-buffer ,buf-copy
+	     (goto-char (point-min))
+             (prog1
+	         (progn ,@body)
+               ;; `org-element-copy-buffer' carried the value of
+               ;; `buffer-file-name' from the original buffer.  When not
+               ;; killed, the new buffer copy may become a target of
+               ;; `find-file'.  Prevent this.
+               (setq buffer-file-name nil)))
+	 (and (buffer-live-p ,buf-copy)
+	      ;; Kill copy without confirmation.
+	      (progn (with-current-buffer ,buf-copy
+		       (restore-buffer-modified-p nil))
+                     (unless ,to-buffer
+		       (kill-buffer ,buf-copy))))))))
+
+
+;;; Accessors and Setters
+;;
+;; Provide four accessors: `org-element-type', `org-element-property'
+
+org-element-ast.el: 47677 bytes; SHA-256 7f13d157475ce9599b9ca34a0ec19bcaaca61036bfd47fa21ca0c55b0d87bea2
+
+--- org-element-ast.el:781-839 ---
+
+(defun org-element-copy (datum &optional keep-contents)
+  "Return a copy of DATUM.
+DATUM is an element, object, string or nil.  `:parent' property
+is cleared and contents are removed in the process.
+Secondary objects are also copied and their `:parent' is re-assigned.
+
+When optional argument KEEP-CONTENTS is non-nil, do not remove the
+contents.  Instead, copy the children recursively, updating their
+`:parent' property.
+
+As a special case, `anonymous' nodes do not have their contents
+removed.  The contained children are copied recursively, updating
+their `:parent' property to the copied `anonymous' node.
+
+When DATUM is `plain-text', all the properties are removed."
+  (pcase (org-element-type datum t)
+    ((guard (null datum)) nil)
+    (`plain-text (substring-no-properties datum))
+    (`nil (error "Not an Org syntax node: %S" datum))
+    (`anonymous
+     (let* ((node-copy (copy-sequence datum))
+            (tail node-copy))
+       (while tail
+         (setcar tail (org-element-copy (car tail) t))
+         (org-element-put-property (car tail) :parent node-copy)
+         (setq tail (cdr tail)))
+       node-copy))
+    (type
+     (let ((node-copy (append (list type (copy-sequence (cadr datum))) (copy-sequence (cddr datum)))))
+       ;; Copy `:standard-properties'
+       (when-let* ((parray (org-element-property-raw :standard-properties node-copy)))
+         (org-element-put-property node-copy :standard-properties (copy-sequence parray)))
+       ;; Clear `:parent'.
+       (org-element-put-property node-copy :parent nil)
+       ;; We cannot simply return the copied property list.  When
+       ;; DATUM is i.e. a headline, it's property list `:title' can
+       ;; contain parsed objects.  The objects will contain
+       ;; `:parent' property set to the DATUM itself.  When copied,
+       ;; these inner `:parent' property values will contain
+       ;; incorrect object decoupled from DATUM.  Changes to the
+       ;; DATUM copy will no longer be reflected in the `:parent'
+       ;; properties.  So, we need to reassign inner `:parent'
+       ;; properties to the DATUM copy explicitly.
+       (dolist (secondary-prop (org-element-property :secondary node-copy))
+         (when-let* ((secondary-value (org-element-property secondary-prop node-copy)))
+           (setq secondary-value (org-element-copy secondary-value t))
+           (if (org-element-type secondary-value)
+               (org-element-put-property secondary-value :parent node-copy)
+             (dolist (el secondary-value)
+               (org-element-put-property el :parent node-copy)))
+           (org-element-put-property node-copy secondary-prop secondary-value)))
+       (when keep-contents
+         (let ((contents (org-element-contents node-copy)))
+           (while contents
+             (setcar contents (org-element-copy (car contents) t))
+             (setq contents (cdr contents)))))
+       (org-element-resolve-deferred node-copy 'force)
+       node-copy))))
+
+
+org.el: 894838 bytes; SHA-256 f80f9804307d3396f31d59b61d89aaffb9a54b8ef147dd3ecf4a350af2f7d979
+
+--- org.el:4679-4763 ---
+
+	(org-compute-latex-and-related-regexp)))))
+
+(defun org-collect-keywords (keywords &optional unique directory)
+  "Return values for KEYWORDS in current buffer, as an alist.
+
+KEYWORDS is a list of strings.  Return value is a list of
+elements with the pattern:
+
+  (NAME . LIST-OF-VALUES)
+
+where NAME is the upcase name of the keyword, and LIST-OF-VALUES
+is a list of non-empty values, as strings, in order of appearance
+in the buffer.
+
+When KEYWORD appears in UNIQUE list, LIST-OF-VALUE is its first
+value, empty or not, appearing in the buffer, as a string.
+
+When KEYWORD appears in DIRECTORIES, each value is a cons cell:
+
+  (VALUE . DIRECTORY)
+
+where VALUE is the regular value, and DIRECTORY is the variable
+`default-directory' for the buffer containing the keyword.  This
+is important for values containing relative file names, since the
+function follows SETUPFILE keywords, and may change its working
+directory."
+  (let* ((keywords (cons "SETUPFILE" (mapcar #'upcase keywords)))
+	 (unique (mapcar #'upcase unique))
+	 (alist (org--collect-keywords-1
+		 keywords unique directory
+		 (and buffer-file-name (list buffer-file-name))
+		 nil)))
+    ;; Re-order results.
+    (dolist (entry alist)
+      (pcase entry
+	(`(,_ . ,(and value (pred consp)))
+	 (setcdr entry (nreverse value)))))
+    (nreverse alist)))
+
+(defun org--collect-keywords-1 (keywords unique directory files alist)
+  (org-with-point-at 1
+    (let ((case-fold-search t)
+	  (regexp (org-make-options-regexp keywords)))
+      (while (and keywords (re-search-forward regexp nil t))
+        (let ((element (org-element-at-point)))
+          (when (org-element-type-p element 'keyword)
+            (let ((value (org-element-property :value element)))
+              (pcase (org-element-property :key element)
+		("SETUPFILE"
+		 (when (org-string-nw-p value)
+		   (let* ((uri (org-strip-quotes value))
+			  (uri-is-url (org-url-p uri))
+			  (uri (if uri-is-url
+				   uri
+                                 ;; In case of error, be safe.
+                                 ;; See bug#68976.
+                                 (ignore-errors ; return nil when expansion fails.
+				   (expand-file-name uri)))))
+		     (unless (or (not uri) (member uri files))
+		       (with-temp-buffer
+			 (unless uri-is-url
+			   (setq default-directory (file-name-directory uri)))
+			 (let ((contents (org-file-contents uri :noerror)))
+			   (when contents
+			     (insert contents)
+			     ;; Fake Org mode: `org-element-at-point'
+			     ;; doesn't need full set-up.
+			     (let ((major-mode 'org-mode))
+                               (setq-local tab-width 8)
+			       (setq alist
+				     (org--collect-keywords-1
+				      keywords unique directory
+				      (cons uri files)
+				      alist))))))))))
+		(keyword
+		 (let ((entry (assoc keyword alist))
+		       (final
+			(cond ((not (member keyword directory)) value)
+			      (buffer-file-name
+			       (cons value
+				     (file-name-directory buffer-file-name)))
+			      (t (cons value default-directory)))))
+		   (cond ((member keyword unique)
+			  (push (cons keyword final) alist)
+			  (setq keywords (remove keyword keywords))

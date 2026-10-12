@@ -1,0 +1,18 @@
+Running 14 tests (2026-10-12 19:05:34+0000, selector `"^p0-"')
+   passed   1/14  p0-01-copy-hook-lifecycle (0.110596 sec)
+   passed   2/14  p0-02-recursive-include-and-origin (0.003841 sec)
+   passed   3/14  p0-03-filter-retains-structured-citations (0.000731 sec)
+   passed   4/14  p0-04-full-annotation-replaces-citations (0.000746 sec)
+   passed   5/14  p0-05-bibliography-discovery-advice (0.000296 sec)
+   passed   6/14  p0-06-html-coexistence-and-guard (0.001034 sec)
+   passed   7/14  p0-07-selection-and-options (0.001951 sec)
+   passed   8/14  p0-08-copy-error-cleanup (0.000370 sec)
+   passed   9/14  p0-09-public-filter-tool-on-texmacs-ast (0.000308 sec)
+   passed  10/14  p0-10-island-coordinates-and-replacement-identity (0.002274 sec)
+   passed  11/14  p0-11-discovery-can-read-setup-files (0.000404 sec)
+   passed  12/14  p0-12-macro-babel-stage-controls (0.000853 sec)
+   passed  13/14  p0-13-full-annotation-queries-id-database (0.000641 sec)
+   passed  14/14  p0-14-local-copy-shares-mutable-values (0.000307 sec)
+
+Ran 14 tests, 14 results as expected, 0 unexpected (2026-10-12 19:05:34+0000, 0.124683 sec)
+

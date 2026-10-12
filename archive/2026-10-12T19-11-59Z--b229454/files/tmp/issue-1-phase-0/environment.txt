@@ -1,0 +1,13 @@
+Emacs: 31.1
+Org: 9.8.10
+Executable: /nix/store/md6yhzwcim4l4pq50nwmcsspw8lvd0q9-emacs-with-packages-31.1/bin/emacs
+org: /nix/store/mqf0cn6cfj75w64s8bmrhqibw1nlii73-emacs-packages-deps/share/emacs/site-lisp/elpa/org-9.8.10/org.elc
+ox: /nix/store/mqf0cn6cfj75w64s8bmrhqibw1nlii73-emacs-packages-deps/share/emacs/site-lisp/elpa/org-9.8.10/ox.elc
+oc: /nix/store/mqf0cn6cfj75w64s8bmrhqibw1nlii73-emacs-packages-deps/share/emacs/site-lisp/elpa/org-9.8.10/oc.elc
+org-export-as: (backend &optional subtreep visible-only body-only ext-plist)
+org-export--annotate-info: (backend info &optional subtreep visible-only ext-plist)
+org-export-copy-buffer: (&rest rest)
+org-export-expand-include-keyword: (&optional included dir footnotes includer-file expand-env)
+org-export-filter-apply-functions: (filters value info)
+org-cite-list-bibliography-files: nil
+org-cite-process-citations: (info)
