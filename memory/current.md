@@ -2,47 +2,44 @@
 
 ## Active objective
 
-Issue #1 Phase 0 is complete on 2026-10-13: user authorized investigation,
-isolated tests and necessary GAW archive. Independent flake probes pass 14/14,
-0 unexpected (0.124683s), on Emacs 31.1 / Org 9.8.10 selected by the updated
-project lock. User committed lock update as b22945493102edc1823fe063f9d278ba628bdf5e;
-eleven copied Lisp sources and lock match this exact committed snapshot. User
-reapplied the uncommitted USTC flake.nix overlay; preserve it unstaged. Mirror
-transport was authorized and retains original source hashes. Local Org 9.8-pre
-and the old-lock 9.8.8 environment are not development baselines.
-Reproducible evidence, stage/API/side-effect table and two adapter candidates:
-archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md, with REPORT.md / REPRODUCE.md
-under files/tmp/issue-1-phase-0/. Archive-only checkpoint is byte-verified;
-locate it through manifest first-parent history. Full project checks, native/PDF
-output and real external-package integration have not run; no production edits
-or GitHub issue writes were made. Historical 312/312 is not current validation.
+Issue #1 Phase 1a contract and Phase 1b bounded implementation are complete
+in the ordinary worktree on the user's explicit implementation request.
+Contract: memory/filter-contract.md. Standard Org parse-tree filters now run
+on the prepared private selected AST after context/mappings, before resolution
+and bibliography planning. Only citation-reference keys may change; each callback
+validates original topology/values/INFO/mappings/work-buffer state, including nil
+returns. Filter stage detaches structures via pure owning before native waits,
+so retained callback references cannot alter the conversion. Pure lowering/input
+construction, worker protocol and native consumers remain independent.
 
-Confirmed: no after-includes hook in locked Org; filters precede INFO :parse-tree
-collection and citation output replacement. Full annotate still calls org-id-find
-with Cite processors disabled. Org copy aliases mutable local configuration;
-preprocessing changes STM offsets and replacement AST invalidates island keys.
-Controlled native INCLUDE relocates nested local file links but does not provide
-a complete origin map in observed fixtures. Bibliography discovery retains
-relative paths and can read SETUPFILE. Pure lowering must not acquire that I/O.
-Standard filter tools with actual texmacs backend remap private citation keys
-without generic export. The user's new INBOX section 11 adopts candidate A as
-the preferred direction and explicitly selects Phase 1a contract design next;
-Phase 1b production implementation waits for that contract. Planned first scope:
-preserve node set, identities, parent/child relations and STM source/ownership;
-only citation-reference :key may change. Reject replacement AST, raw output,
-other semantic mutations and invalid island/post-blank mappings explicitly;
-root identity alone is insufficient. Define supported INFO fields, real texmacs
-backend identity, private Org context, snapshot/filter ownership and exact stage
-placement before resolution, bibliography planning and input-create. This plan
-is adopted, but the detailed contract is not yet finalized or implemented.
-Full annotation remains research only. If candidate A cannot meet the minimal
-contract, stop with evidence rather than automatically switching to candidate B.
-Next action: Phase 1a citation-key AST-filter contract, including negative-test
-obligations and source/error/wait consistency. Preserve the generic guard,
-canonical source, coherent ownership and provenance. Later phases remain conditional: bounded
-source composition, bibliography discovery, real extension/frontend integration.
-The local report is ready for issue discussion; external posting needs separate
-authorization. Evidence.md records validation limits and capture audit details.
+Final independent-flake gate on project lock passes all 8 checks, focused 12/12
+(7.266296s) and installed ERT 324/324 (164.341759s), warning-as-error compilation
+and package-lint. Emacs 31.1 / Org 9.8.10; USTC transport from the user's overlay.
+User authorized repeated exact 240s isolated flake checks. Verified 21 isolated
+inputs equal current project bytes; flake lock equals committed b229454 snapshot.
+Five-file candidate diff against that baseline SHA-256:
+e4e15c8ff1eae7892cd39f02a2bee4e0386fe5f707da2627d8f157fedff84bd7.
+Paths: org-texmacs-context.el, org-texmacs-document.el, org-texmacs.el,
+tests/ert/ert.el, README.org. Ordinary commit is not yet made. User's unstaged
+flake.nix overlay is unchanged (diff hash 2af6574f... in evidence); exclude it.
+
+Native regressions establish remapped key ownership, bibliography/resolution
+equivalence and session readback; restored notes, core-only backend lookup,
+developer/user order, nil returns, illegal changes/error cleanup/context switching,
+escaped AST references and filter selection/function changes at waits are covered.
+Full gate includes prior HTML guard/coexistence and selection/native/PDF cases.
+Real Org-roam integration, arbitrary filter mutations and full preprocessing are
+not supported by this node. Callback side effects/closure state are not sandboxed.
+No external issue writes or ordinary project Git mutations have been performed.
+Next action: exact-path staging approval for the five files, staged review and
+tmp/commit.md; user makes ordinary commit. Then verify commit identity against
+the checked diff. Do not start Phase 2/3 implementation without their independent
+source-composition/bibliography input contracts and user-selected scope.
+
+Phase 0 evidence remains immutable at
+archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. Its 14 probes are historical
+investigation, not production validation. Main is b229454 (updated project lock);
+local Org 9.8-pre/old-lock 9.8.8 are not current development baselines.
 
 v0.4.0 is released. User committed final HTML regression as
 the final HTML coexistence regression revision, created tag and published GitHub release.
@@ -119,7 +116,7 @@ remain unsupported.
 
 - Current main is the user's flake-input update revision b229454; lock selects
   Org 9.8.10. Ordinary index is empty and flake.nix has the user's unstaged mirror
-  overlay. Production Lisp remains v0.4.0; Phase 0 changed no package code.
+  overlay. The five-file Phase 1 candidate is recorded above; not yet committed.
   Release-era observations below describe their historical baseline.
 - Main HEAD observed on 2026-10-09:
   the final HTML coexistence regression revision.
@@ -170,7 +167,8 @@ remain unsupported.
   cleanup failure stops transport. Explicit resource/executable primitives are
   outside the PDF subset, and custom installed styles are not sandboxed.
 - Earlier validation/progress details belong in project.md, evidence.md and GAW
-  history. Current whole installed regression is 312/312; GUI layout/general
+  history. Release regression was 312/312; current Phase 1 candidate is 324/324.
+  GUI layout/general
   pagination convergence are unverified. Use maintained structural/text checks.
 
 ## Persistent workflow and knowledge

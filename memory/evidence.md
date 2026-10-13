@@ -1227,3 +1227,57 @@ not completed interface design or authorization to change production paths.
 No new tests/source changes/remote issue writes were made for this review.
 Phase 0 archive remains immutable; the revision's necessary content is distilled
 here and in current/backlog, so no duplicate raw INBOX archive is needed.
+
+## Issue #1 Phase 1a/1b verified candidate (2026-10-13)
+
+- User explicitly requested implementing revised INBOX plan; Phase 1a contract
+  is memory/filter-contract.md. Ordinary code paths changed: org-texmacs.el,
+  org-texmacs-context.el, org-texmacs-document.el, tests/ert/ert.el and README.org.
+  No worker/session/native consumer, public signature or source directive policy
+  changes. Standard AST filters are a bounded new preparation capability.
+- Exact independent gate authorized for repeated use: timeout 240s nix flake
+  check -L --no-write-lock-file path:/home/lingyu/Projects/org-texmacs/tmp/issue-1-phase-1.
+  Final exit 0/all 8 checks pass, focused 12/12 (7.266296s), full installed ERT
+  324/324 (164.341759s), warning-as-error package compilation and package-lint.
+  Host x86_64-linux, Emacs 31.1 / Org 9.8.10 / native TeXmacs 2.1.5. Other systems
+  omitted by Nix; no GUI/actual Org-roam integration verification was performed.
+- Isolated flake copies the project lock and user's mirror overlay, adding only
+  focused check wiring. Twenty-one package/source/README/lock/test/driver files
+  compare byte-exactly with ordinary worktree. Lock remains the committed b229454
+  snapshot. Root flake.nix overlay diff SHA-256 remains
+  2af6574fe8302fa7a5e64d3e93e8955cf7c36f0a4c6c2f135a2edffe8b65032a;
+  agent did not modify/stage it. No lock writes occurred. Mirrors retain fixed
+  source hashes; these results do not establish official ELPA availability.
+- Exact five-file uncommitted candidate diff against b229454 SHA-256:
+  e4e15c8ff1eae7892cd39f02a2bee4e0386fe5f707da2627d8f157fedff84bd7.
+  This hash identifies checked worktree bytes, not a committed implementation.
+  Main still identifies the dependency baseline. No resultant project-parent
+  association is invented for the uncommitted tree.
+- Native ERT compares UUID-remapped document with original external-key source
+  output, verifies original source state and owned key, bibliography contents
+  and session native readback. Positive nil remapping, selected/restored notes,
+  backend/global order, restricted INFO/location, local core-only registry and
+  no-filter legacy behavior are covered. Full gate retains previous HTML guard,
+  subtree/region/narrowing/overrides, pure-input, worker and .tm/PDF regressions.
+- Negative cases include root/subtree replacement, parent/position/affix/type/
+  text/STM metadata/INFO/work-config changes, cyclic topology, key empty, buffer
+  text properties, callback returning in wrong current buffer, missing remapped
+  entries and exceptions. Validate nil-returning callbacks individually, so a
+  later filter cannot repair prohibited intermediate return state. No worker
+  request/stop is allowed on these failures. Functions/config changes at native
+  waits invalidate output; function identity uses eq rather than structural equal.
+- Final review added current-buffer validation and detached owning after filters
+  because callbacks can retain private AST references. A real-worker regression
+  mutates escaped keys during native waits and confirms the completed input keeps
+  the correct remapped key and valid STM/bibliography request mapping. Temporary
+  owning uses separate mapping/INFO shells before native results are filled.
+- Intermediate focused iterations found backend records absent from a copying
+  branch, a fixture assuming nonexistent special-block :value, and a test rebinding
+  a compiler-deduplicated identical function. These were corrected. Earlier full
+  322/322 (162.398472s) passed before the last two regressions/ownership fix; final
+  324/324 above supersedes that candidate and no post-gate source edits occurred.
+- User callback external I/O/edits and closure hidden state are not sandboxed or
+  rolled back. No full annotation/discovery/generic exporter integration and no
+  actual Org-roam compatibility claim. GitHub issue was not modified. Maintained
+  tests now preserve reproduction, so no new raw archive is necessary; Phase 0
+  archive stays immutable. Current memory carries stage/commit handoff status.

@@ -280,18 +280,20 @@ native or GUI evidence before they can be claimed as verified.
 
 ### Org ecosystem preparation interoperability
 
-Phase 0 was selected and completed on 2026-10-13; production integration
-remains unresolved. Independent flake on the user's updated project lock passes
-14/14 controlled probes (Emacs 31.1 / Org 9.8.10). Stage table, candidate comparison
-and reproduction: archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. The user's
-INBOX section 11 revision adopts candidate A (existing preparation plus standard
-AST filters) as preferred and selects **Phase 1a contract design** next. Phase 1b
-implementation is conditional on completing that contract. Initial planned scope
+Phase 1a/1b are now implemented and verified in a five-file worktree candidate,
+with exact-path staging/ordinary user commit still pending. Contract lives in
+memory/filter-contract.md. Standard filters may change citation keys only, with
+per-callback graph/work-context validation and independent ownership before waits.
+Focused 12/12, installed ERT 324/324 and all 8 isolated flake checks pass on the
+current lock's Emacs 31.1 / Org 9.8.10. Broader ecosystem preparation remains
+unresolved: Phase 2 source composition/provenance and Phase 3 bibliography discovery
+need their own contracts; Phase 4 actual package combination is unverified.
+Phase 0's stage table/candidate comparison/reproduction is preserved at
+archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. Candidate A was selected by
+the user's INBOX section 11 and is now the bounded implementation above. Contract
 preserves node set/identity/parentage and STM source/ownership, allowing only
-citation-reference :key mutation. Other changes/replacement/raw output must fail
-explicitly; root identity is insufficient. INFO fields/context, filter snapshot
-and precise placement before owning/resolution/bibliography planning remain to
-be defined. If A cannot meet this contract, stop rather than auto-switch to B.
+citation-reference :key changes. Replacement/raw/other mutations fail explicitly.
+Broader mutation support needs a new contract; do not auto-switch to candidate B.
 Full copy/annotate reuse adds ID lookup, mutable-local aliasing and source/STM
 mapping hazards; disabling Cite output also skips discovery. Locked Org has no
 after-includes hook. Retain the generic guard and pure-layer I/O boundary;

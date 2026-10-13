@@ -15,6 +15,8 @@
 ```text
 explicit Org source buffer
   -> private parsing and restricted Org context
+  -> bounded standard citation-key AST filters when configured
+  -> detached structures before native dependency preparation
   -> owned prepared input
        AST + INFO + islands + post-blank mappings + style + initial
        source-file + resource-base
@@ -631,6 +633,32 @@ This boundary is implemented by project commit
 the ARCH-01 layering refactor revision and covered by the maintained
 worker, encoding, and native-session tests.
 
+## Phase 1 bounded citation-key AST filters (verified worktree)
+
+Five-file implementation candidate on the updated-lock b229454 baseline; ordinary
+commit pending. Source adapter captures effective source-local/global and backend
+developer AST filters, resolves function identities and rechecks them across waits.
+Run with actual named texmacs backend, locally available without installing menu
+for core-only APIs, in the private complete masked Org snapshot after selection,
+pruning/restored dependencies and STM mappings. No options-filter/buffer-hook or
+generic exporter phase is introduced. Detailed contract: memory/filter-contract.md.
+
+INFO is restricted/read-only: supported context options, backend object, explicit
+input file/resource base, supplied bibliography path identities, processors nil;
+final parse-tree/input-buffer/export caches are absent. Validate each callback's
+same root, original graph topology/value/text properties, parentage, mappings,
+INFO and private buffer/configuration. Only existing nonempty citation key values
+may differ; existing citation preflight enforces grammar and dependency semantics.
+After filters, reuse pure owning to detach AST/INFO/mappings and remap worker
+requests before native waits; final input owning still copies parsed dependencies.
+
+Focused 12/12 and full installed ERT 324/324, compilation/package-lint/all 8
+independent-flake checks pass on Emacs 31.1 / Org 9.8.10. Native bibliography/key
+semantics and session readback are verified; 21 source/lock/test inputs match
+the ordinary worktree. Source/native consumers' earlier regression remains covered.
+No real Org-roam integration, broader AST replacement or user callback sandboxing
+is claimed. No public API signature, worker protocol or native consumer is changed.
+
 ## Downstream work not yet implemented
 
 Issue #1 Phase 0 provides investigation evidence, not new production support:
@@ -640,15 +668,17 @@ processors are disabled; full annotation also performs ambient ID lookup, and
 native buffer copy aliases mutable locals. Source-coordinate and AST identity
 mapping remain explicit integration boundaries. Locked Org has no after-includes
 hook; latest-upstream ordering cannot substitute for version-specific evidence.
-Current baseline includes the user's committed lock update and uncommitted mirror
-transport; production Lisp remains v0.4.0. See evidence/backlog and
+At Phase 0 the baseline included the user's committed lock update and uncommitted
+mirror transport, with v0.4.0 Lisp. Phase 1 now adds the candidate above. See
+evidence/backlog and
 archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. This investigation does not
 extend support claims, allow pure lowering I/O, or remove the guard.
 
-Current source preparation does not run Org export preprocessing/parse-tree
-filters or Org Cite bibliography discovery. Thus existing ecosystem interfaces
-can remain operational for their own backends without their extension semantics
-being consumed by TeXmacs. Backend guard admits unrelated backends; maintained
+Current source preparation supports bounded citation-key parse-tree filters
+through standard Org install/apply tools. It does not run buffer-level export
+preprocessing or Org Cite bibliography discovery. Standard key-only AST filters
+can participate; other ecosystem extension semantics are not automatically
+consumed by TeXmacs. Backend guard admits unrelated backends; maintained
 isolation includes ASCII and the released controlled HTML composition
 case below; actual joint HTML/Org-roam package/database integration is unverified.
 Future information-flow design is tracked in issue #1:
