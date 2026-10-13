@@ -10,13 +10,14 @@ Necessary eight text files archived at
 archive/2026-10-13T16-45-34Z--049a5a0/MANIFEST.md; immutable, no production/native
 claim from research alone. Target/implemented contract: memory/preprocessing-contract.md.
 
-Phase 2b A/B/C implemented in uncommitted working tree on main049a5a0. Node A
+Phase 2b A/B/C committed by user as bounded preprocessing revision on main049a5a0;
+commit identity and exact reviewed diff/message verified on 2026-10-14. Node A
 3 focused/344 ERT (173.063596s); Node B 8 focused/349 ERT (172.609625s), separate
 GAW checkpoints. Final C gate: 35/35 focused (16.023371s:18 new Phase2 +17 Phase3b),
 359/359 installed ERT (180.303530s), all ten checks (eight original +research/focused)
 and warning-as-error compilation/package-lint. Current lock/mirror independent
 flake, user-authorized builds/network and repeated exact240s checks under
-project tmp/issue-1-phase-2. No project lock/ordinary Git mutation.
+project tmp/issue-1-phase-2. Lock unchanged; ordinary commit performed by user.
 
 New lazy optional org-texmacs-preprocess module exposes prepare-buffer-preprocessed,
 document-from-buffer-preprocessed and export-from-buffer-preprocessed. Full,
@@ -50,21 +51,19 @@ Final 23 source/lock/test inputs byte-match root. Manifest
 tmp/issue-1-phase-2/final-inputs.json SHA c88fc898... in evidence. Logs
 node-c-{focused,check}-final.log. User mirror-only original diff remains7a882736...;
 root flake includes just new preprocess fileset line plus mirror; lock unchanged.
-User authorized staging/message generation: all seven Phase2 paths now staged;
-flake staging includes only the preprocess fileset line, mirror remains unstaged.
-Complete staged diff reviewed/check-clean, SHA-256 bbb18e19330b81634f407d7ccf8efec3658a19e645c815c9edfe14a31b71f2bc.
-Six whole-file staged contents match final validated hashes and working files.
-tmp/commit.md regenerated: feat(document): add bounded Org preprocessing and INCLUDE composition,
-footer Refs #1. Suitable as one coherent commit; no new tests for staging alone.
-No ordinary commit or issue write. Next user commits, then verify commit identity.
+User committed seven reviewed Phase2 paths; committed diff exactly matches
+staged SHA-256 bbb18e19330b81634f407d7ccf8efec3658a19e645c815c9edfe14a31b71f2bc.
+Subject/body/footer match tmp/commit.md (Refs #1). Index empty; only user mirror
+overlay remains unstaged. Prior validation applies by byte identity; no fresh
+regression solely for commit verification. No external issue write.
 Phase 4 real package integration and broader composition policies remain separately
 selected work; issue #1 still incomplete, closing footer premature.
 
 Phase 3b A/B/C is complete and committed by user as the opt-in Org Cite discovery
 revision, main 049a5a0 on c26b932. Seven-file committed diff exactly matches
 reviewed staged SHA-256 810024f4...; subject/body/footer match tmp/commit.md.
-At that commit verification index was empty and only mirror was dirty; current
-seven Phase2b path changes are listed above. Prior validation applies
+At that commit verification index was empty and only mirror was dirty;
+Phase2b is now separately committed as described above. Prior validation applies
 by byte identity: 17/17 focused, 341/341 installed ERT, all nine checks.
 No new regression was run solely for commit identity or plan review.
 
@@ -179,9 +178,9 @@ remain unsupported.
 
 ## Baseline and staging
 
-- Current main is the opt-in bibliography discovery revision 049a5a0 on c26b932;
-  lock selects Org9.8.10. Seven Phase2b paths staged including new preprocess
-  module; user mirror still unstaged. Candidate and message reviewed above.
+- Current main is the bounded preprocessing revision on bibliography discovery
+  revision 049a5a0; lock selects Org9.8.10. Index empty; only user mirror remains
+  unstaged. Committed diff/message verified above.
   Phase 3b committed diff matches staged/validated candidate SHA-256 in evidence.
   Release-era observations below describe their historical baseline.
 - Main HEAD observed on 2026-10-09:

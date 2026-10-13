@@ -1667,3 +1667,17 @@ fileset wiring; split not necessary, medium difficulty for coupled intermediate
 changes. No ordinary commit, lockfile edit or issue write; no project parent for
 this uncommitted candidate checkpoint. User commit verification is next.
 
+## Phase 2 user commit verification (2026-10-14)
+
+User reported completion; read-only inspection verified bounded preprocessing
+commit c52509573e5bccddeb661cf1dab1802733ac7dec on bibliography discovery
+049a5a00bdd52d83e1f03823accc9324f4bcee0c. Complete HEAD-parent binary diff
+byte-equals reviewed tmp/issue-1-phase-2/staged.diff, SHA-256 bbb18e19330b81634f407d7ccf8efec3658a19e645c815c9edfe14a31b71f2bc.
+All subject/body/footer text matches tmp/commit.md, including Refs #1.
+Index empty, only flake.nix USTC overlay remains unstaged and excluded from commit.
+Earlier 35 focused/359 installed ERT/ten checks apply by verified candidate byte
+identity with documented mirror transport; no new test/network operation was run.
+This checkpoint associates the exact commit inspected, not the historical tests
+retroactively. Phase2 first profile complete; Phase4/broader contracts remain
+separate, no external issue change or closure claim.
+

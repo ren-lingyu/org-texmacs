@@ -703,7 +703,8 @@ remain downstream work; issue #1 is not entirely closed by this node.
 
 ## Phase 2b bounded protected source composition
 
-Implemented/verified in uncommitted tree on the opt-in bibliography revision.
+Implemented/verified and user-committed as bounded preprocessing revision on
+the opt-in bibliography revision; committed diff matches validated staged bytes.
 Independent org-texmacs-preprocess module with lazy prepare-buffer-preprocessed,
 document-from-buffer-preprocessed/export-from-buffer-preprocessed APIs; optional
 provided BibTeX, restricted ext-plist, explicit discover-bibliography boolean.

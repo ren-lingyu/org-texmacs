@@ -291,7 +291,7 @@ archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md, not production validation.
 User selected Phase 2a/2b execution after section14 review. Phase 2a twelve locked
 probes/model/report/comparison complete and archived at
 archive/2026-10-13T16-45-34Z--049a5a0/MANIFEST.md. Bounded Phase 2b A/B/C implemented
-and verified in uncommitted tree: 18 new ERT, 35 focused (includes17 Phase3b),
+and verified, then user-committed: 18 new ERT, 35 focused (includes17 Phase3b),
 359 installed ERT/all ten checks. Contract memory/preprocessing-contract.md;
 architecture/validation in project/evidence. Full common-directory/bare-file
 composition, owned original/working/context/node origins, fixed file receipts,
@@ -299,8 +299,8 @@ protected STM and captured standard hooks/native INCLUDE, separately requested C
 integration. Old APIs unaffected. No full native lifecycle or arbitrary callback
 sandbox/FS atomicity. Cross-directory STM resource encoding, original selection map,
 INCLUDE parameters/partial footnote scope/odd-level normalization remain later
-contracts rather than supported semantics. User should review/commit current seven
-paths before new stage. Phase 4 real package integration remains independently
+contracts rather than supported semantics. Seven-path commit identity/diff/message
+verified; index empty, only user mirror remains unstaged. Phase 4 real package integration remains independently
 selected work, with optional small managed bibliography test not a Phase 2 blocker.
 No personal DB/package compatibility claim, file/menu policy or issue closure.
 
