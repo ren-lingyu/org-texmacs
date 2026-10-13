@@ -280,8 +280,11 @@ Reject table formulas, layout/control rows and columns, and non-rectangular
 tables.  Table cells use the existing inline subset without STM discovery.
 
 Prepare a private snapshot without mode hooks or export preprocessing,
-validate supported structure,
-then synchronously parse each island with the shared worker.  Do not cache
+apply the source's captured Org AST filters before owning and resolution,
+then validate supported structure.  Filters may only change citation keys;
+see the restricted context contract in the README.  Their configuration is
+rechecked across waits; arbitrary user callback side effects are not sandboxed.
+Synchronously parse each island with the shared worker.  Do not cache
 the result.  Invoke headline formatters outside private parser bindings,
 both during structural preflight and final lowering.  Do not modify
 source/live Org nodes.  Reject source, mode, narrowing
@@ -291,6 +294,26 @@ The result preserves source-dependent text semantics for later encoding;
 it does not provide export, native buffer updates or rendering."
   (org-texmacs--prepare-buffer source-buffer #'org-texmacs-document
                                bibliography-sources subtree-position region ext-plist))
+
+(defun org-texmacs--filter-own-preparation (prepared)
+  "Detach PREPARED from AST and INFO references retained by user filters.
+Reuse the pure owning constructor.  Keep adapter-owned mapping/INFO shells
+separate from that read-only temporary input before filling native results."
+  (let* ((input (org-texmacs-input-create
+                 (car prepared) (nth 4 prepared)
+                 :islands (nth 1 prepared) :post-blanks (nth 3 prepared)))
+         (islands (mapcar (lambda (entry) (cons (car entry) (cdr entry)))
+                          (org-texmacs-input-islands input)))
+         (entries (make-hash-table :test #'eq)))
+    (cl-mapc (lambda (old new) (puthash old new entries)) (nth 1 prepared) islands)
+    (list (org-texmacs-input-ast input) islands
+          (mapcar (lambda (request)
+                    (list (gethash (car request) entries)
+                          (copy-sequence (nth 1 request))
+                          (and (nth 2 request) (copy-sequence (nth 2 request)))))
+                  (nth 2 prepared))
+          (org-texmacs-input-post-blanks input)
+          (copy-sequence (org-texmacs-input-info input)))))
 
 (defun org-texmacs--prepare-buffer
     (source-buffer consumer &optional bibliography-sources subtree-position region
@@ -349,9 +372,19 @@ it does not provide export, native buffer updates or rendering."
            (style (org-texmacs--document-copy-style org-texmacs-document-style))
            (initial (org-texmacs--document-copy-initial org-texmacs-document-initial))
            (source (org-texmacs--source-buffer-text))
+           (filter-state (org-texmacs--context-filter-state))
            (prepared (org-texmacs--document-prepare-source
                       source tags heading-settings link-settings base-info
-                      subtree-position region restriction))
+                      subtree-position region restriction
+                      (when (cadr filter-state)
+                        (lambda (prepared)
+                          (setq-local default-directory resource-base)
+                          (setq-local org-texmacs-fragment-tags
+                                      (mapcar #'copy-sequence tags))
+                          (org-texmacs--context-filter-apply
+                           prepared filter-state source-file resource-base
+                           bibliography-source-snapshot)
+                          (org-texmacs--filter-own-preparation prepared)))))
            (info (nth 4 prepared)))
       (cl-labels ((check ()
                    (unless (buffer-live-p buffer)
@@ -361,6 +394,12 @@ it does not provide export, native buffer updates or rendering."
                                   (= tick (buffer-chars-modified-tick)))
                        (signal 'org-texmacs-document-error '("Source buffer changed")))
                      (org-texmacs--fragment-check-tags tags)
+                     (let ((current (org-texmacs--context-filter-state)))
+                       (unless (and (equal (car filter-state) (car current))
+                                    (= (length (cadr filter-state)) (length (cadr current)))
+                                    (cl-every #'eq (cadr filter-state) (cadr current)))
+                         (signal 'org-texmacs-document-error
+                                 '("Org AST filter configuration changed during conversion"))))
                      (unless (equal bibliography-original-snapshot bibliography-sources)
                        (signal 'org-texmacs-document-error
                                '("Bibliography source texts changed during preparation")))

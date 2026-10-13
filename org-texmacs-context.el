@@ -114,6 +114,182 @@ Parse raw metadata with private Org syntax; never discover STM in metadata."
    ((vectorp value) (apply #'vector (mapcar #'org-texmacs--context-copy value)))
    (t value)))
 
+(defun org-texmacs--context-filter-copy (value &optional parents)
+  "Copy filter configuration VALUE, retaining opaque function identities."
+  (cond
+   ((functionp value) value)
+   ((stringp value) (substring-no-properties value))
+   ((memq value parents)
+    (signal 'org-texmacs-document-error '("Cyclic AST filter configuration")))
+   ((consp value)
+    (cons (org-texmacs--context-filter-copy (car value) (cons value parents))
+          (org-texmacs--context-filter-copy (cdr value) (cons value parents))))
+   ((vectorp value)
+    (apply #'vector
+           (mapcar (lambda (item)
+                     (org-texmacs--context-filter-copy item (cons value parents)))
+                   value)))
+   ((recordp value)
+    (apply #'record
+           (cl-loop for index below (length value)
+                    collect (org-texmacs--context-filter-copy
+                             (aref value index) (cons value parents)))))
+   ((or (null value) (symbolp value) (numberp value)) value)
+   (t (signal 'org-texmacs-document-error '("Opaque AST filter configuration")))))
+
+(defun org-texmacs--context-filter-state ()
+  "Capture the source's TeXmacs backend and effective AST filter functions.
+Do not register a frontend or run callbacks.  Resolve function bindings now."
+  (let* ((backend
+          (org-texmacs--context-filter-copy
+           (or (org-export-get-backend 'texmacs)
+               (org-export-create-backend :name 'texmacs))))
+         (filters (plist-get (org-export-install-filters
+                              (list :back-end backend)) :filter-parse-tree)))
+    (unless (and (proper-list-p filters) (cl-every #'functionp filters))
+      (signal 'org-texmacs-document-error '("Invalid Org AST filter list")))
+    (list backend (mapcar #'indirect-function filters))))
+
+(defun org-texmacs--context-filter-properties (string)
+  "Describe STRING's text properties without copying referenced AST objects."
+  (let ((position 0) result)
+    (while (< position (length string))
+      (let ((end (next-property-change position string (length string))))
+        (push (list position end (text-properties-at position string)) result)
+        (setq position end)))
+    (nreverse result)))
+
+(defun org-texmacs--context-filter-snapshot (roots keys)
+  "Freeze ROOTS' topology and values, except citation key cells in KEYS.
+Return bounded validation functions over original objects.  Never recursively
+compare an untrusted returned tree, or retain mutable fields as value copies."
+  (let ((seen (make-hash-table :test #'eq)) checks)
+    (cl-labels
+        ((same (left right)
+           (and (= (length left) (length right))
+                (cl-every #'eq left right)))
+         (properties-same (left right)
+           (and (= (length left) (length right))
+                (cl-every
+                 (lambda (a b)
+                   (and (= (car a) (car b)) (= (cadr a) (cadr b))
+                        (same (nth 2 a) (nth 2 b)))) left right)))
+         (walk (value)
+           (unless (or (gethash value seen) (functionp value))
+             (puthash value t seen)
+             (cond
+              ((stringp value)
+               (let ((text (substring-no-properties value))
+                     (properties (org-texmacs--context-filter-properties value)))
+                 (push (lambda ()
+                         (and (equal text (substring-no-properties value))
+                              (properties-same
+                               properties
+                               (org-texmacs--context-filter-properties value)))) checks)
+                 (dolist (run properties)
+                   (mapc #'walk (nth 2 run)))))
+              ((consp value)
+               (let ((left (car value)) (right (cdr value))
+                     (key (gethash value keys)))
+                 (push (lambda ()
+                         (and (or key (eq left (car value)))
+                              (eq right (cdr value)))) checks)
+                 (unless key (walk left))
+                 (walk right)))
+              ((or (vectorp value) (recordp value))
+               (let ((items (cl-loop for index below (length value)
+                                     collect (aref value index))))
+                 (push (lambda ()
+                         (same items (cl-loop for index below (length value)
+                                              collect (aref value index)))) checks)
+                 (mapc #'walk items)))
+              ((markerp value)
+               (let ((position (marker-position value))
+                     (buffer (marker-buffer value)))
+                 (push (lambda ()
+                         (and (equal position (marker-position value))
+                              (eq buffer (marker-buffer value)))) checks)))
+              ((or (null value) (symbolp value) (numberp value) (bufferp value)))
+              (t (signal 'org-texmacs-document-error
+                         '("Opaque AST filter input")))))))
+      (mapc #'walk roots))
+    checks))
+
+(defun org-texmacs--context-filter-apply
+    (prepared state source-file resource-base bibliography)
+  "Apply captured STATE filters to PREPARED in the private Org buffer.
+Allow only existing citation-reference key changes; INFO is a restricted,
+read-only view.  Do not run preprocessing, discovery or citation processors."
+  (when (cadr state)
+    (let* ((ast (car prepared))
+           (backend (car state))
+           (org-export-current-backend 'texmacs)
+           (org-export-registered-backends
+            (cons backend
+                  (cl-remove-if (lambda (entry)
+                                  (eq (org-export-backend-name entry) 'texmacs))
+                                org-export-registered-backends)))
+           (org-export-filter-parse-tree-functions (copy-sequence (cadr state)))
+           (context (nth 4 prepared))
+           (info (list :back-end backend :with-cite-processors nil
+                       :input-file (and source-file (copy-sequence source-file))
+                       :texmacs-resource-base
+                       (and resource-base (copy-sequence resource-base))
+                       :bibliography (mapcar (lambda (entry) (copy-sequence (car entry)))
+                                             bibliography)))
+           (keys (make-hash-table :test #'eq))
+           (citations (org-element-map ast 'citation-reference #'identity))
+           (buffer (current-buffer))
+           (tick (buffer-modified-tick))
+           (mode major-mode)
+           (bounds (cons (point-min) (point-max)))
+           (directory (copy-sequence default-directory))
+           (file buffer-file-name)
+           (settings '(org-todo-regexp org-done-keywords org-priority-regexp
+                       org-odd-levels-only org-footnote-section org-link-parameters
+                       org-link-abbrev-alist org-link-abbrev-alist-local
+                       org-texmacs-fragment-tags
+                       org-export-filter-parse-tree-functions))
+           (values (mapcar #'symbol-value settings))
+           checks)
+      (dolist (option org-texmacs--context-option-alist)
+        (setq info (append info (list (car option) (plist-get context (car option))))))
+      (dolist (citation citations)
+        (let ((cell (cdr (plist-member (cadr citation) :key))))
+          (unless cell
+            (signal 'org-texmacs-document-error '("Missing citation key property")))
+          (puthash cell t keys)))
+      (setq checks (org-texmacs--context-filter-snapshot
+                    (list prepared info values) keys))
+      (org-export-filter-apply-functions
+       (mapcar
+        (lambda (filter)
+          (lambda (tree name view)
+            (let ((result (funcall filter tree name view)))
+              (unless (and (or (null result) (eq result ast))
+                           (eq (current-buffer) buffer)
+                           (buffer-live-p buffer)
+                           (with-current-buffer buffer
+                             (and (= tick (buffer-modified-tick))
+                                  (eq mode major-mode)
+                                  (equal bounds (cons (point-min) (point-max)))
+                                  (equal directory default-directory)
+                                  (equal file buffer-file-name)
+                                  (cl-every
+                                   (lambda (setting value)
+                                     (eq (symbol-value setting) value))
+                                   settings values)))
+                           (cl-every #'funcall checks)
+                           (cl-every
+                            (lambda (citation)
+                              (let ((key (org-element-property :key citation)))
+                                (and (stringp key) (> (length key) 0)))) citations))
+                (signal 'org-texmacs-document-error
+                        '("AST filter may only change citation-reference keys")))
+              result)))
+        (cadr state)) ast info)))
+  prepared)
+
 (defun org-texmacs--context-base-options ()
   "Snapshot supported global and source-buffer-local Org options.
 Do not inspect source keywords or run BIND, SETUPFILE, hooks or filters."

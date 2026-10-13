@@ -1519,13 +1519,15 @@ constants, concatenation, preambles, repairs and duplicate keys or fields."
       (nreverse signatures))))
 
 (defun org-texmacs--document-prepare-source
-    (source tags headings links info &optional subtree-position region restriction)
+    (source tags headings links info &optional subtree-position region restriction
+            filter)
   "Prepare SOURCE under private Org link syntax using fixed LINKS settings.
 TAGS and HEADINGS are the conversion's other parser inputs.
 Return prepared structure without invoking headline formatters or lowering.
 Never register protocols globally or reset source element caches.  Keep
 Org's internal regexp regeneration confined to this preparation boundary.
 INFO is the fixed supported global and buffer-local context snapshot.
+Optional FILTER consumes the completed preparation in its private Org buffer.
 Optional SUBTREE-POSITION selects a subtree in that complete source snapshot.
 REGION selects its (BEGIN . END) body while retaining subtree configuration.
 RESTRICTION is the source's captured outer body boundary, not a live narrowing."
@@ -1550,10 +1552,11 @@ RESTRICTION is the source's captured outer body boundary, not a live narrowing."
         (insert source)
         (org-texmacs--document-prepare
          source (org-texmacs--fragment-collect tags) headings (nth 2 links) info
-         subtree-position region restriction)))))
+         subtree-position region restriction filter)))))
 
 (defun org-texmacs--document-prepare
-    (source spans heading-settings &optional abbrevs info subtree-position region restriction)
+    (source spans heading-settings &optional abbrevs info subtree-position region
+            restriction filter)
   "Prepare SOURCE and discovered SPANS without starting a worker.
 HEADING-SETTINGS is the source's effective heading configuration snapshot.
 Install it locally after private mode initialization, before parsing source.
@@ -1565,6 +1568,7 @@ Island entries initially contain placeholder strees for structural validation.
 All positions refer to the complete, unnarrowed source snapshot.
 Optional SUBTREE-POSITION selects a body plus owned dependencies before walking.
 REGION takes precedence for body selection; reject truncated STM islands.
+Optional FILTER is called after context and mapping construction, before return.
 RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
   (with-temp-buffer
     (let ((org-element-use-cache nil)
@@ -1721,9 +1725,11 @@ RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
           (when remaining
             (signal 'org-texmacs-document-error '("Unconsumed fragment spans")))
           (setq islands (nreverse islands) requests (nreverse requests))
-          (if (or subtree-position region)
-              (list ast islands requests blanks info)
-            (org-texmacs--context-prepare ast islands requests blanks info)))))))
+          (let ((prepared
+                 (if (or subtree-position region)
+                     (list ast islands requests blanks info)
+                   (org-texmacs--context-prepare ast islands requests blanks info))))
+            (if filter (funcall filter prepared) prepared)))))))
 
 (provide 'org-texmacs-document)
 

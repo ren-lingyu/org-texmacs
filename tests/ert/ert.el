@@ -6688,4 +6688,275 @@ Only tests with explicit example names use this helper; do not run Babel."
                                          (concat (math "<alpha>") " "))))))
           (org-texmacs-session-close session))))))
 
+(defun org-texmacs-test--ast-filter-remap (tree backend info)
+  "Map the controlled UUID in TREE using the standard filter signature."
+  (should (eq backend 'texmacs))
+  (should (eq org-export-current-backend 'texmacs))
+  (should (eq (plist-get info :back-end) (org-export-get-backend 'texmacs)))
+  (should (derived-mode-p 'org-mode))
+  (should-not buffer-file-name)
+  (should-not (plist-member info :parse-tree))
+  (should-not (plist-member info :input-buffer))
+  (should-not (plist-get info :with-cite-processors))
+  (org-element-map tree 'citation-reference
+    (lambda (reference)
+      (when (equal (org-element-property :key reference) "managed-uuid")
+        (org-element-put-property reference :key "external-key"))))
+  tree)
+
+(ert-deftest org-texmacs-ast-filter-native-citation-and-owned-output ()
+  (org-texmacs-test--with-worker
+    (let* ((sources '(("refs.bib" . "@book{external-key, title={Filter book}, author={Ada Example}, year=2026}")))
+           (text "#+bibliography: refs.bib\nA[cite:@managed-uuid].\n#+print_bibliography:\n")
+           input expected)
+      (with-temp-buffer
+        (org-mode) (insert (replace-regexp-in-string "managed-uuid" "external-key" text))
+        (let ((org-export-filter-parse-tree-functions nil))
+          (setq expected (org-texmacs-document-from-buffer (current-buffer) sources))))
+      (with-temp-buffer
+        (org-mode) (insert text)
+        (goto-char 3) (set-mark 5)
+        (let ((before (org-texmacs-test--document-buffer-state (current-buffer)))
+              (org-export-filter-parse-tree-functions
+               '(org-texmacs-test--ast-filter-remap)))
+          (setq input (org-texmacs-prepare-buffer (current-buffer) sources))
+          (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))
+          (should (equal (org-element-map (org-texmacs-input-ast input) 'citation-reference
+                           (lambda (r) (org-element-property :key r))) '("external-key")))))
+      (let* ((document (org-texmacs-document input))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (should (equal document expected))
+              (org-texmacs-session-set-document session document)
+              (should (equal (org-texmacs--session-read session)
+                             (org-texmacs-test--native-hex (org-texmacs-document-body expected)))))
+          (org-texmacs-session-close session))))))
+
+(ert-deftest org-texmacs-ast-filter-missing-key-before-worker ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+bibliography: refs.bib\n[cite:@managed-uuid]\n#+print_bibliography:\n")
+    (let ((org-export-filter-parse-tree-functions '(org-texmacs-test--ast-filter-remap)))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Missing remapped key started worker"))))
+        (should-error (org-texmacs-prepare-buffer (current-buffer) '(("refs.bib" . "@book{other}")))
+                      :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-ast-filter-rejects-non-key-mutations ()
+  (dolist
+      (mutation
+       (list
+        (lambda (tree _info) (org-element-copy tree t))
+        (lambda (tree _info)
+          (let ((p (org-element-map tree 'paragraph #'identity nil t)))
+            (org-element-set-contents p "replacement")) tree)
+        (lambda (tree _info)
+          (org-element-map tree 'citation-reference
+            (lambda (r) (org-element-put-property r :parent nil))) tree)
+        (lambda (tree _info)
+          (org-element-map tree 'citation-reference
+            (lambda (r) (org-element-put-property r :begin 0))) tree)
+        (lambda (tree _info)
+          (org-element-map tree 'citation-reference
+            (lambda (r) (org-element-put-property r :prefix '("changed")))) tree)
+        (lambda (tree _info)
+          (org-element-map tree 'citation-reference
+            (lambda (r) (org-element-put-property r :key ""))) tree)
+        (lambda (tree _info) (setcar tree 'raw) tree)
+        (lambda (tree _info) (setcdr (last tree) tree) tree)
+        (lambda (tree _info)
+          (org-element-map tree 'special-block
+            (lambda (b) (aset (org-element-property :type b) 0 ?X))) tree)
+        (lambda (tree _info)
+          (org-element-map tree 'paragraph
+            (lambda (p)
+              (let ((leaf (cl-find-if #'stringp (org-element-contents p))))
+                (when (and leaf (> (length leaf) 0)) (aset leaf 0 ?X))))) tree)
+        (lambda (tree _info) (insert "changed work text") tree)
+        (lambda (tree _info) (put-text-property (point-min) (point-max) 'p0 t) tree)
+        (lambda (tree _info) (setq-local org-footnote-section "Changed") tree)
+        (lambda (tree info) (plist-put info :with-title nil) tree)))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+bibliography: refs.bib\nText [cite:@managed-uuid].\n"
+              "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n#+print_bibliography:\n")
+      (let* ((source (current-buffer))
+             (before (org-texmacs-test--document-buffer-state source))
+             work
+             (org-export-filter-parse-tree-functions
+              (list (lambda (tree _backend info)
+                      (setq work (current-buffer))
+                      (funcall mutation tree info)))))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Invalid filter started worker")))
+                  ((symbol-function 'org-texmacs--worker-stop)
+                   (lambda () (ert-fail "Invalid filter stopped healthy worker"))))
+          (should-error (org-texmacs-prepare-buffer source '(("refs.bib" . "@book{external-key}")))
+                        :type 'org-texmacs-document-error))
+        (should-not (buffer-live-p work))
+        (should (equal before (org-texmacs-test--document-buffer-state source)))))))
+
+(ert-deftest org-texmacs-ast-filter-validates-each-nil-return ()
+  (with-temp-buffer
+    (org-mode) (insert "Text\n")
+    (let* (second
+           (org-export-filter-parse-tree-functions
+            (list (lambda (tree _backend _info) (setcar tree 'raw) nil)
+                  (lambda (tree _backend _info) (setq second t) (setcar tree 'org-data) tree))))
+      (should-error (org-texmacs-prepare-buffer (current-buffer))
+                    :type 'org-texmacs-document-error)
+      (should-not second))))
+
+(ert-deftest org-texmacs-ast-filter-order-nil-and-core-only-backend ()
+  (with-temp-buffer
+    (org-mode) (insert "Text\n")
+    (let* ((registered org-export-registered-backends)
+           (org-export-registered-backends
+            (cl-remove-if (lambda (b) (eq (org-export-backend-name b) 'texmacs)) registered))
+           (registry org-export-registered-backends)
+           seen
+           (org-export-filter-parse-tree-functions
+            (list (lambda (tree backend info)
+                    (push 'first seen)
+                    (should (eq backend 'texmacs))
+                    (should (eq (plist-get info :back-end) (org-export-get-backend backend)))
+                    (should (eq (org-element-type tree) 'org-data)) nil)
+                  (lambda (tree _backend _info) (push 'second seen) tree))))
+      (should (org-texmacs-input-p (org-texmacs-prepare-buffer (current-buffer))))
+      (should (equal (nreverse seen) '(first second)))
+      (should (eq registry org-export-registered-backends))
+      (should-not (org-export-get-backend 'texmacs)))))
+
+(ert-deftest org-texmacs-ast-filter-error-unwinds-context ()
+  (with-temp-buffer
+    (org-mode) (insert "Text\n")
+    (let* ((before (org-texmacs-test--document-buffer-state (current-buffer)))
+           (registry org-export-registered-backends)
+           work
+           (org-export-filter-parse-tree-functions
+            (list (lambda (_tree _backend _info)
+                    (setq work (current-buffer)) (error "Controlled filter error")))))
+      (should-error (org-texmacs-prepare-buffer (current-buffer)))
+      (should-not (buffer-live-p work))
+      (should (eq registry org-export-registered-backends))
+      (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))
+      (let ((org-export-filter-parse-tree-functions nil))
+        (should (org-texmacs-input-p (org-texmacs-prepare-buffer (current-buffer))))))))
+
+(ert-deftest org-texmacs-ast-filter-selection-and-restored-footnotes ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+bibliography: refs.bib\n* Root\nA[fn:n] [cite:@managed-uuid]\n"
+              "#+print_bibliography:\n* Other\n[cite:@outside]\n\n[fn:n] [cite:@managed-uuid]\n")
+      (goto-char (point-min)) (search-forward "* Root")
+      (let ((org-export-filter-parse-tree-functions '(org-texmacs-test--ast-filter-remap)))
+        (let ((input (org-texmacs-prepare-buffer
+                      (current-buffer) '(("refs.bib" . "@book{external-key, title={Book}}")) (point))))
+          (should (equal (org-element-map (org-texmacs-input-ast input) 'citation-reference
+                           (lambda (r) (org-element-property :key r)))
+                         '("external-key" "external-key")))
+          (should (org-texmacs-document-p (org-texmacs-document input))))))))
+
+(ert-deftest org-texmacs-ast-filter-settings-and-function-wait-checks ()
+  (dolist (change '(list function))
+    (with-temp-buffer
+      (org-mode) (insert "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
+      (let* ((source (current-buffer))
+             (filter (lambda (tree _backend _info) tree))
+             (org-export-filter-parse-tree-functions
+              (if (eq change 'list) (list filter) '(org-texmacs-test--ast-filter-wait)))
+             (old-function (and (fboundp 'org-texmacs-test--ast-filter-wait)
+                                (symbol-function 'org-texmacs-test--ast-filter-wait))))
+        (unwind-protect
+            (progn
+              (fset 'org-texmacs-test--ast-filter-wait filter)
+              (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                         (lambda (&rest _)
+                           (with-current-buffer source
+                             (if (eq change 'list)
+                                 (setq org-export-filter-parse-tree-functions nil)
+                               (fset 'org-texmacs-test--ast-filter-wait
+                                     (lambda (_tree _backend _info) nil))))
+                           '(math "x"))))
+                (should-error (org-texmacs-prepare-buffer source)
+                              :type 'org-texmacs-document-error)))
+          (if old-function (fset 'org-texmacs-test--ast-filter-wait old-function)
+            (fmakunbound 'org-texmacs-test--ast-filter-wait)))))))
+
+(ert-deftest org-texmacs-ast-filter-backend-order-and-snapshot-context ()
+  (with-temp-buffer
+    (org-mode)
+    (setq-local buffer-file-name "/source/input.org")
+    (setq-local default-directory "/resource/")
+    (insert "#+TITLE: Rich *title*\nText\n")
+    (let* (seen
+           (backend (org-export-create-backend
+                     :name 'texmacs
+                     :filters
+                     (list (cons :filter-parse-tree
+                                 (lambda (tree _backend info)
+                                   (push 'developer seen)
+                                   (should (equal (plist-get info :input-file) "/source/input.org"))
+                                   (should (equal default-directory "/resource/"))
+                                   (should (equal (org-element-interpret-data (plist-get info :title))
+                                                  "Rich *title*"))
+                                   (should-not (plist-get info :bibliography)) tree)))))
+           (org-export-registered-backends (cons backend org-export-registered-backends))
+           (org-export-filter-parse-tree-functions
+            (list (lambda (tree _backend _info) (push 'user seen) tree))))
+      (should (org-texmacs-input-p (org-texmacs-prepare-buffer (current-buffer))))
+      (should (equal (reverse seen) '(developer user)))
+      (should (eq backend (org-export-get-backend 'texmacs))))))
+
+(ert-deftest org-texmacs-ast-filter-nil-return-remaps-keys ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+bibliography: refs.bib\n[cite:@managed-uuid]\n#+print_bibliography:\n")
+      (let ((org-export-filter-parse-tree-functions
+             (list (lambda (tree backend info)
+                     (org-texmacs-test--ast-filter-remap tree backend info) nil))))
+        (let ((input (org-texmacs-prepare-buffer
+                      (current-buffer) '(("refs.bib" . "@book{external-key, title={Book}}")))))
+          (should (equal (cadr (plist-get (org-texmacs-input-info input)
+                                         :texmacs-bibliography-output)) '("external-key"))))))))
+
+(ert-deftest org-texmacs-ast-filter-rejects-buffer-context-switch ()
+  (with-temp-buffer
+    (org-mode) (insert "Text\n")
+    (let* ((source (current-buffer))
+           (before (org-texmacs-test--document-buffer-state source))
+           (org-export-filter-parse-tree-functions
+            (list (lambda (tree _backend _info) (set-buffer source) tree))))
+      (should-error (org-texmacs-prepare-buffer source) :type 'org-texmacs-document-error)
+      (should (equal before (org-texmacs-test--document-buffer-state source))))))
+
+(ert-deftest org-texmacs-ast-filter-escaped-tree-cannot-change-owned-preparation ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+bibliography: refs.bib\n[cite:@managed-uuid]\n"
+              "(math \"x\")\n#+print_bibliography:\n")
+      (let* (escaped
+             (original-request (symbol-function 'org-texmacs--worker-request))
+             (org-export-filter-parse-tree-functions
+              (list (lambda (tree backend info)
+                      (setq escaped tree)
+                      (org-texmacs-test--ast-filter-remap tree backend info)))))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest args)
+                     (let ((result (apply original-request args)))
+                       (org-element-map escaped 'citation-reference
+                         (lambda (r) (org-element-put-property r :key "late-mutation")))
+                       result))))
+          (let ((input (org-texmacs-prepare-buffer
+                        (current-buffer) '(("refs.bib" . "@book{external-key, title={Book}}")))))
+            (should (equal (org-element-map (org-texmacs-input-ast input) 'citation-reference
+                             (lambda (r) (org-element-property :key r))) '("external-key")))
+            (should (equal (org-element-map escaped 'citation-reference
+                             (lambda (r) (org-element-property :key r))) '("late-mutation")))
+            (should (org-texmacs-document-p (org-texmacs-document input)))))))))
+
 ;;; ert.el ends here

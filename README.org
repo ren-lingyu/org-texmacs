@@ -813,9 +813,59 @@ The source's tag-group definitions are also snapshotted for filtering.  Org's
 standard COMMENT and ARCHIVE markers retain their native parser semantics.
 Arbitrary Org parser customization is not supported.
 There is no INCLUDE/SETUPFILE expansion, BIND or macro processing, Babel
-execution, export hook or filter.  The corresponding source directives are
+execution or buffer-level export hook.  The corresponding source directives are
 rejected before lowering and never cause an external file read.
 This is structural conversion, not a byte-for-byte Org round trip.
+
+** Citation key AST filters
+Source preparation consumes the source buffer's effective
+=org-export-filter-parse-tree-functions= and TeXmacs backend parse-tree filters
+through Org's standard filter tools.  No package-specific registration is needed.
+The first supported change is a nonempty =citation-reference= =:key= string,
+for example mapping a managed literature UUID to an explicitly provided BibTeX
+entry key.  Existing citation grammar and bibliography restrictions still apply.
+
+Filters run after selection, pruning, dependency restoration and STM mapping,
+before resolution, bibliography planning, native requests and input owning.
+The tree contains the selected body and needed footnotes.  Each filter receives
+that tree, backend name =texmacs= and a read-only, restricted INFO view: the
+supported effective context options, =:back-end=, explicit =:input-file=,
+=:texmacs-resource-base=, supplied =:bibliography= path identities, and
+=:with-cite-processors nil=.  Final =:parse-tree=, =:input-buffer=, exporter caches
+and native bibliography output are absent.  This is not a complete Org export
+environment.  Filters must use their tree argument.
+
+Execution uses a private, non-visiting Org buffer holding the complete masked
+source snapshot and copied supported parser settings.  Core-only source APIs
+provide a TeXmacs backend locally without installing the export menu.  No generic
+exporter, options filters, preprocessing hooks, Cite output processor, global ID
+lookup or automatic bibliography discovery is run by the package.
+
+#+begin_src emacs-lisp
+  (defun my-citation-keys (tree backend _info)
+    (when (eq backend 'texmacs)
+      (org-element-map tree 'citation-reference
+        (lambda (reference)
+          (when (equal (org-element-property :key reference) "managed-uuid")
+            (org-element-put-property reference :key "external-key")))))
+    tree)
+  (add-hook 'org-export-filter-parse-tree-functions #'my-citation-keys)
+  ;; Continue to supply explicit bibliography text snapshots to the source APIs.
+#+end_src
+
+After every callback, including nil returns, preparation checks the original
+AST topology, node identities, parent links, other values/text properties,
+island/post-blank mappings, INFO and work-buffer state.  Replacing a tree or
+subtree, rebuilding property containers, changing other fields/STM content or
+editing work text fails before native requests.  A nil return retains the tree
+as in Org.  Filter errors propagate with private-buffer cleanup.  Selected
+function bindings and filter configuration join the checks across worker waits.
+After this stage, structures and mappings are copied before native waits;
+references retained by a filter cannot change the completed preparation.
+User closures' hidden state and arbitrary callback I/O or edits to other buffers
+are not frozen, sandboxed or rolled back.  Pure prepared-input construction and
+document lowering never run filters.  Controlled fixtures establish this bounded
+contract; real Org-roam integration remains unverified.
 
 ** Explicit bibliography snapshots
 The preparation API accepts an optional alist of source paths to BibTeX text:
