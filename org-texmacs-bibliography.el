@@ -83,12 +83,12 @@ SOURCE-FILE and RESOURCE-BASE must agree.  GLOBALS is an owned list."
   (let ((component path))
     (while (and component (not (equal component "/")))
       (when (file-symlink-p component)
-        (signal 'org-texmacs-document-error '("Automatic bibliography symlinks are unsupported")))
+        (signal 'org-texmacs-document-error '("Automatic dependency symlinks are unsupported")))
       (setq component (file-name-directory (directory-file-name component)))))
   (let ((attributes (file-attributes path 'integer)))
     (unless (and attributes (null (file-attribute-type attributes))
                  (file-readable-p path) (<= (file-attribute-size attributes) 1048576))
-      (signal 'org-texmacs-document-error '("Bibliography needs a readable regular file of at most 1 MiB")))
+      (signal 'org-texmacs-document-error '("Dependency needs a readable regular file of at most 1 MiB")))
     (list (file-attribute-size attributes)
           (file-attribute-modification-time attributes)
           (file-attribute-status-change-time attributes)
@@ -101,7 +101,7 @@ SOURCE-FILE and RESOURCE-BASE must agree.  GLOBALS is an owned list."
     (set-buffer-multibyte nil)
     (insert-file-contents-literally path nil 0 1048577)
     (when (> (buffer-size) 1048576)
-      (signal 'org-texmacs-document-error '("Bibliography grew beyond 1 MiB")))
+      (signal 'org-texmacs-document-error '("Dependency grew beyond 1 MiB")))
     (buffer-string)))
 
 (defun org-texmacs--bibliography-acquire (paths base provided document &optional check)
@@ -149,24 +149,26 @@ Return owned sources, effective view and observed dependency receipts."
              (after (org-texmacs--bibliography-file-attributes path)))
         (unless (and (equal before after) (equal before (nth 1 receipt))
                      (equal digest (nth 2 receipt)))
-          (signal 'org-texmacs-document-error '("Bibliography dependency changed during conversion")))))))
+          (signal 'org-texmacs-document-error '("Captured dependency changed during conversion")))))))
 
-(defun org-texmacs--bibliography-convert
-    (source-buffer consumer provided subtree-position region ext-plist)
+(cl-defun org-texmacs--bibliography-convert
+    (source-buffer consumer provided subtree-position region ext-plist
+                   &optional preprocessing (discover t))
   "Run CONSUMER in one opt-in SOURCE-BUFFER bibliography transaction.
 PROVIDED, SUBTREE-POSITION, REGION and EXT-PLIST retain explicit API semantics."
   (unless (and (bufferp source-buffer) (buffer-live-p source-buffer))
     (signal 'org-texmacs-document-error '("Expected a live Org buffer object")))
   (with-current-buffer source-buffer
-    (let* ((globals (org-texmacs--bibliography-globals))
+    (let* ((globals (and discover (org-texmacs--bibliography-globals)))
            (collector (symbol-function 'org-cite-list-bibliography-files))
            (options (org-texmacs--document-options))
            (style (org-texmacs--document-copy-style org-texmacs-document-style))
            (initial (org-texmacs--document-copy-initial org-texmacs-document-initial))
            (configuration-check
             (lambda ()
-              (unless (and (equal globals (org-texmacs--bibliography-globals))
-                           (eq collector (symbol-function 'org-cite-list-bibliography-files))
+              (unless (and (or (not discover)
+                               (and (equal globals (org-texmacs--bibliography-globals))
+                                    (eq collector (symbol-function 'org-cite-list-bibliography-files))))
                            (equal options (org-texmacs--document-options))
                            (equal style org-texmacs-document-style)
                            (equal initial org-texmacs-document-initial))
@@ -177,17 +179,33 @@ PROVIDED, SUBTREE-POSITION, REGION and EXT-PLIST retain explicit API semantics."
        (lambda (source tags headings links info file base texts check)
          (let* ((guard (lambda () (funcall check) (funcall configuration-check)))
                 (_ (funcall guard))
-                (discovery (org-texmacs--bibliography-discover
-                            source tags headings links info file base globals))
-                (_ (funcall guard))
-                (acquired (org-texmacs--bibliography-acquire
-                           (car discovery) base texts (cadr discovery) guard))
+                (composition (and preprocessing
+                                  (funcall preprocessing source tags headings links
+                                           info file base texts guard)))
+                (working (if composition (plist-get composition :source) source))
+                (composition-check (plist-get composition :check))
+                (dependency-guard (lambda ()
+                                    (funcall guard)
+                                    (when composition-check (funcall composition-check))))
+                (_ (funcall dependency-guard))
+                (discovery (and discover (org-texmacs--bibliography-discover
+                                         working tags headings links
+                                         (org-combine-plists info (plist-get composition :context))
+                                         file base globals)))
+                (_ (funcall dependency-guard))
+                (acquired (if discover
+                              (org-texmacs--bibliography-acquire
+                               (car discovery) base texts (cadr discovery) dependency-guard)
+                            (list :sources texts)))
                 (receipts (plist-get acquired :receipts)))
-           (funcall guard)
-           (plist-put acquired :check
-                      (lambda ()
-                        (funcall configuration-check)
-                        (org-texmacs--bibliography-check-receipts receipts)))))))))
+           (funcall dependency-guard)
+           (org-combine-plists
+            composition acquired
+            (list :check
+                  (lambda ()
+                    (funcall configuration-check)
+                    (when composition-check (funcall composition-check))
+                    (org-texmacs--bibliography-check-receipts receipts))))))))))
 
 ;;;###autoload
 (defun org-texmacs-document-from-buffer-discover-bibliography

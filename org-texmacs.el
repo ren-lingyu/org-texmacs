@@ -62,6 +62,10 @@
 (autoload 'org-texmacs-export-from-buffer-discover-bibliography
   "org-texmacs-bibliography")
 
+(autoload 'org-texmacs-prepare-buffer-preprocessed "org-texmacs-preprocess")
+(autoload 'org-texmacs-document-from-buffer-preprocessed "org-texmacs-preprocess")
+(autoload 'org-texmacs-export-from-buffer-preprocessed "org-texmacs-preprocess")
+
 (defconst org-texmacs--cache-miss (make-symbol "org-texmacs-cache-miss")
   "Sentinel distinguishing an absent cached tree from a stored value.")
 
@@ -383,7 +387,8 @@ separate from that read-only temporary input before filling native results."
            (initial (org-texmacs--document-copy-initial org-texmacs-document-initial))
            (source (org-texmacs--source-buffer-text))
            (filter-state (org-texmacs--context-filter-state))
-           (prepared nil) (info nil) (dependency-check nil))
+           (prepared nil) (info nil) (dependency-check nil)
+           (working-source source) (annotation nil))
       (cl-labels ((check ()
                    (unless (buffer-live-p buffer)
                      (signal 'org-texmacs-document-error '("Source buffer was killed")))
@@ -435,14 +440,23 @@ separate from that read-only temporary input before filling native results."
                   effective-bibliography
                   (org-texmacs--bibliography-view-copy (plist-get setup :view))
                   dependency-check (plist-get setup :check)
-                  base-info (plist-put base-info :texmacs-effective-bibliography
-                                       effective-bibliography))))
+                  annotation (plist-get setup :annotate)
+                  base-info (org-combine-plists
+                             base-info
+                             (org-texmacs--context-copy (plist-get setup :context))
+                             (list :texmacs-effective-bibliography
+                                   effective-bibliography)))
+            (when (plist-member setup :source)
+              (unless (stringp (plist-get setup :source))
+                (signal 'org-texmacs-document-error '("Invalid working source snapshot")))
+              (setq working-source (substring-no-properties (plist-get setup :source))))))
         (check)
         (setq prepared (org-texmacs--document-prepare-source
-                      source tags heading-settings link-settings base-info
+                      working-source tags heading-settings link-settings base-info
                       subtree-position region restriction
-                      (when (cadr filter-state)
+                      (when (or annotation (cadr filter-state))
                         (lambda (prepared)
+                          (when annotation (funcall annotation prepared))
                           (setq-local default-directory resource-base)
                           (setq-local org-texmacs-fragment-tags
                                       (mapcar #'copy-sequence tags))

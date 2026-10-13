@@ -977,6 +977,83 @@ context, normally produced by =org-texmacs-prepare-buffer=.  Lowering checks the
 prefix, key order and entry snapshot rather than formatting or reading data.
 Native tree readback does not establish GUI citation display or typesetting.
 
+** Opt-in protected preprocessing and INCLUDE
+Use =org-texmacs-prepare-buffer-preprocessed= for owned prepared input,
+=org-texmacs-document-from-buffer-preprocessed= for a document, or
+=org-texmacs-export-from-buffer-preprocessed= for native =.tm= bytes.
+Their arguments are =source-buffer= followed by optional =bibliography-sources=,
+=ext-plist= and =discover-bibliography=.  The last argument accepts only =t= or
+=nil= and separately enables bibliography discovery over the composed document.
+Existing source APIs, bibliography-discovery wrappers and menu actions retain
+their earlier contracts.
+
+#+begin_src emacs-lisp
+;; Full, unnarrowed Org source; includes share its effective resource directory.
+;; Set the last argument to t only when bibliography discovery is wanted.
+(org-texmacs-export-from-buffer-preprocessed org-source-buffer nil nil t)
+#+end_src
+
+The adapter captures original source/configuration before callbacks, invokes
+the effective =org-export-before-processing-functions=, expands native INCLUDE
+over protected owned file snapshots, then invokes
+=org-export-before-parsing-functions=.  Hooks receive =texmacs= and a private
+working view; their return values are ignored as in Org.  Ordinary text changes
+and generated STM are supported.  Changes to mode, location, narrowing, supported
+parser/options/style configuration or protected original STM tokens fail.
+Original hook variables and the generic TeXmacs export guard remain intact;
+generic export is also rejected inside the working view.  Private mode hooks
+are suppressed.  Arbitrary callback code and I/O are not sandboxed.
+
+This is a bounded stage adapter with declared differences from the native export
+pipeline: it does not run full annotation, global ID lookup, comment-tree deletion,
+macros, Babel or Cite output processors.  Genuine SETUPFILE, BIND, MACRO and
+CITE_EXPORT directives remain rejected.  STM is protected before those native
+stages; preprocessing-looking payload stays literal.  INCLUDE advice sees
+projected snapshot filenames; real third-party lifecycle equivalence is unverified.
+Private source-boundary markers can affect native whitespace trimming; no
+byte-identical native working document is promised.
+
+Initial support is full unnarrowed source with ordinary headline levels
+(=org-odd-levels-only= disabled for source and native defaults), visiting or
+non-file, with a local resource base.  Visiting directory and resource base must
+agree.  An existing visiting identity must be a regular file; absent identities
+for unsaved sources are accepted.  Includes cannot alias that observed root file.
+INCLUDE accepts column-zero bare quoted complete file references:
+=#+INCLUDE: "part.org"=.  Every included source must share the root's lexical
+resource directory.  Local regular UTF-8 files are limited to 64 KiB each,
+eight nesting levels, 32 occurrences including root and 256 KiB aggregate source
+and final working bytes.  Cycles, physical alias ambiguity, symlink components,
+remote/URL/tilde/control paths, =:lines=, locations, =:minlevel=, literal/include
+environment parameters and commented-heading includes fail explicitly.
+Subtree, region, narrowing, cross-directory STM and general source composition
+need separate origin/selection policies.  Native whole-file footnote renaming
+feeds the existing supported footnote grammar; partial-file extraction is excluded.
+
+Repeated includes reuse fixed owned texts while each insertion has a distinct
+occurrence.  Equal STM content or old numeric offsets do not establish identity.
+Original STM payloads have validated opaque tokens; lost/duplicated tokens fail.
+Generated STM has no invented original file/range.  All accepted resource contexts
+share the root base, so unchanged relative STM resources retain a defined base;
+native relocation of ordinary Org file links alone cannot justify cross-directory
+STM support.
+
+Prepared INFO owns =:texmacs-original-source=, =:texmacs-composition-sources= and
+=:texmacs-source-origins=.  =:texmacs-island-origins= maps owned island AST/string
+identities to origin data (source file, occurrence, original/working range and
+kind).  Exact original ranges belong to protected STM; ordinary intervals describe
+derived source context and working bounds.  Generated text has an explicit
+generated context.  Provenance is attached before the existing citation-key-only
+AST filters, which run once, and is remapped by the pure owning constructor.
+No new pure input slot, file read or Org parsing is introduced in lowering.
+
+File texts are fixed at acquisition.  Include and optional bibliography receipts,
+source/configuration/hook identities and explicit texts are checked across hooks,
+reads, native waits and before document/byte return.  Dependency changes fail
+without retry, text replacement, rediscovery or filter replay.  Owned mirrors
+are validated and removed after composition, including error paths.  These
+observations are not filesystem/database atomicity, an ABA guarantee or a
+security sandbox.  No output file is published by the first adapter.
+
 ** Headline metadata and presentation
 Document conversion snapshots these standard Org options from the source
 buffer and accepts their listed =#+OPTIONS= keys.  It does not introduce

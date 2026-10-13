@@ -1586,10 +1586,19 @@ RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
         (insert (org-texmacs--fragment-mask
                  (org-texmacs-fragment-span-source span))))
       (cl-labels
-          ((register (node raw tag)
-             (let ((entry (cons node '(concat ""))))
+          ((register (node raw tag &optional begin end)
+             (let* ((entry (cons node '(concat "")))
+                    (request (list entry raw tag)))
+               ;; Composition needs coordinates for inline string identity keys.
+               ;; Retain them before context/filter owning; legacy requests keep
+               ;; their existing three fields.  Pure INFO later owns origins.
+               (when (plist-get info :texmacs-source-origins)
+                 (setq request
+                       (append request
+                               (list (cons (or begin (org-element-property :begin node))
+                                           (or end (org-element-property :end node)))))))
                (push entry islands)
-               (push (list entry raw tag) requests)))
+               (push request requests)))
            (whitespace (node)
              (when (or (assq (org-element-type node) org-texmacs--document-markup-tags)
                        (memq (org-element-type node)
@@ -1634,7 +1643,7 @@ RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
                          (let ((leaf (copy-sequence
                                       (org-texmacs-fragment-span-source span))))
                            (push leaf children)
-                           (register leaf leaf (org-texmacs-fragment-span-tag span)))
+                           (register leaf leaf (org-texmacs-fragment-span-tag span) begin stop))
                          (setq position stop)))
                      (when (< position end)
                        (push (buffer-substring-no-properties position end) children))
