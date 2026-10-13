@@ -1281,3 +1281,23 @@ here and in current/backlog, so no duplicate raw INBOX archive is needed.
   actual Org-roam compatibility claim. GitHub issue was not modified. Maintained
   tests now preserve reproduction, so no new raw archive is necessary; Phase 0
   archive stays immutable. Current memory carries stage/commit handoff status.
+
+User subsequently authorized exact-path staging and commit-message generation.
+Only the five implementation/test/README paths were staged. Full staged diff
+SHA-256 matches e4e15c8f... above; diff --check passes. The reviewed staged change
+is one coherent feature node. tmp/commit.md contains the Conventional Commit
+subject "feat(document): consume Org AST filters for citation keys", Chinese
+change bullets and Refs #1. flake.nix remains unstaged; no ordinary commit was
+executed and no new tests were needed for this unchanged-byte staging step.
+
+The user has now committed the citation-key AST filter revision. Read-only Git
+inspection verifies its sole project parent is the flake-input update baseline,
+subject "feat(document): consume Org AST filters for citation keys", and the
+complete changed-path set is precisely the five approved files. Complete diff
+SHA-256 matches e4e15c8ff1eae7892cd39f02a2bee4e0386fe5f707da2627d8f157fedff84bd7,
+so the committed code/tests/README are the checked candidate bytes. Ordinary
+index is empty and only the user's flake.nix mirror overlay is dirty, retaining
+its recorded 2af6574f... diff hash. No new build/test or external lookup was run.
+This checkpoint's project association identifies that byte-verified resultant
+code/lock snapshot; earlier validation used the recorded isolated/mirror context,
+not an independently tested unmirrored or other-platform environment.

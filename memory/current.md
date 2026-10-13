@@ -3,7 +3,7 @@
 ## Active objective
 
 Issue #1 Phase 1a contract and Phase 1b bounded implementation are complete
-in the ordinary worktree on the user's explicit implementation request.
+and committed by the user as the citation-key AST filter revision (main c26b932).
 Contract: memory/filter-contract.md. Standard Org parse-tree filters now run
 on the prepared private selected AST after context/mappings, before resolution
 and bibliography planning. Only citation-reference keys may change; each callback
@@ -17,10 +17,11 @@ Final independent-flake gate on project lock passes all 8 checks, focused 12/12
 and package-lint. Emacs 31.1 / Org 9.8.10; USTC transport from the user's overlay.
 User authorized repeated exact 240s isolated flake checks. Verified 21 isolated
 inputs equal current project bytes; flake lock equals committed b229454 snapshot.
-Five-file candidate diff against that baseline SHA-256:
+The committed five-file diff against that baseline matches SHA-256:
 e4e15c8ff1eae7892cd39f02a2bee4e0386fe5f707da2627d8f157fedff84bd7.
 Paths: org-texmacs-context.el, org-texmacs-document.el, org-texmacs.el,
-tests/ert/ert.el, README.org. Ordinary commit is not yet made. User's unstaged
+tests/ert/ert.el, README.org. Commit identity and complete changed-path set are
+verified; ordinary index is empty. User's unstaged
 flake.nix overlay is unchanged (diff hash 2af6574f... in evidence); exclude it.
 
 Native regressions establish remapped key ownership, bibliography/resolution
@@ -30,15 +31,19 @@ escaped AST references and filter selection/function changes at waits are covere
 Full gate includes prior HTML guard/coexistence and selection/native/PDF cases.
 Real Org-roam integration, arbitrary filter mutations and full preprocessing are
 not supported by this node. Callback side effects/closure state are not sandboxed.
-No external issue writes or ordinary project Git mutations have been performed.
-Next action: exact-path staging approval for the five files, staged review and
-tmp/commit.md; user makes ordinary commit. Then verify commit identity against
-the checked diff. Do not start Phase 2/3 implementation without their independent
-source-composition/bibliography input contracts and user-selected scope.
+User completed the ordinary commit after approved staging/message generation.
+Subject: "feat(document): consume Org AST filters for citation keys". Its parent
+is the flake-input update baseline b229454; complete committed diff contains only
+the five verified paths and matches the checked e4e15c8f... hash. No new tests were
+run for identity verification. User overlay remains unstaged and unchanged; no
+external issue write was performed. Phase 1 is complete. Next action: user selects
+Phase 2 source-composition/provenance or Phase 3 bibliography-discovery contract
+design; their order may be adjusted. Do not automatically implement those stages
+without their independent input contracts and selected scope.
 
 Phase 0 evidence remains immutable at
 archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. Its 14 probes are historical
-investigation, not production validation. Main is b229454 (updated project lock);
+investigation, not production validation. Main is c26b932 on updated project lock;
 local Org 9.8-pre/old-lock 9.8.8 are not current development baselines.
 
 v0.4.0 is released. User committed final HTML regression as
@@ -114,9 +119,9 @@ remain unsupported.
 
 ## Baseline and staging
 
-- Current main is the user's flake-input update revision b229454; lock selects
-  Org 9.8.10. Ordinary index is empty and flake.nix has the user's unstaged mirror
-  overlay. The five-file Phase 1 candidate is recorded above; not yet committed.
+- Current main is the citation-key AST filter revision c26b932; lock selects
+  Org 9.8.10. Index is empty; flake.nix has the user's unstaged mirror overlay.
+  The committed Phase 1 diff is byte-verified against the checked candidate above.
   Release-era observations below describe their historical baseline.
 - Main HEAD observed on 2026-10-09:
   the final HTML coexistence regression revision.

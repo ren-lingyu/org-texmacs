@@ -633,10 +633,11 @@ This boundary is implemented by project commit
 the ARCH-01 layering refactor revision and covered by the maintained
 worker, encoding, and native-session tests.
 
-## Phase 1 bounded citation-key AST filters (verified worktree)
+## Phase 1 committed bounded citation-key AST filters
 
-Five-file implementation candidate on the updated-lock b229454 baseline; ordinary
-commit pending. Source adapter captures effective source-local/global and backend
+Committed as the citation-key AST filter revision, with five-file diff on the
+updated-lock baseline matching the validated candidate hash. Source adapter
+captures effective source-local/global and backend
 developer AST filters, resolves function identities and rechecks them across waits.
 Run with actual named texmacs backend, locally available without installing menu
 for core-only APIs, in the private complete masked Org snapshot after selection,

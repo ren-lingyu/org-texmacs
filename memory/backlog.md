@@ -280,8 +280,9 @@ native or GUI evidence before they can be claimed as verified.
 
 ### Org ecosystem preparation interoperability
 
-Phase 1a/1b are now implemented and verified in a five-file worktree candidate,
-with exact-path staging/ordinary user commit still pending. Contract lives in
+Phase 1a/1b are implemented, verified and committed as the citation-key AST filter
+revision; the complete five-file committed diff matches validated bytes.
+Contract lives in
 memory/filter-contract.md. Standard filters may change citation keys only, with
 per-callback graph/work-context validation and independent ownership before waits.
 Focused 12/12, installed ERT 324/324 and all 8 isolated flake checks pass on the
