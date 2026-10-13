@@ -280,6 +280,19 @@ native or GUI evidence before they can be claimed as verified.
 
 ### Org ecosystem preparation interoperability
 
+The user's INBOX section 12 was reviewed/adopted for Phase 3a investigation,
+now complete: 25/25 controlled probes on current locked Emacs 31.1 / Org 9.8.10,
+no production edits. Results: archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md.
+Draft contract: memory/bibliography-contract.md, explicitly pending production
+selection. Prefer standalone opt-in adapter while preserving old source API
+defaults; effective declaration data must enter preparation in addition to text
+snapshots. Raw discovery needs copied globals/full STM-masked view, BIND disabled
+before copy, preprocessing rejection and explicit directory/identity semantics.
+Acquisition needs fixed text priority/ownership and observed file receipts plus
+source/config checks before output. Whole transaction is not implemented.
+Phase 3b requires contract review and scoped authorization; Phase 2 composition /
+provenance and Phase 4 real integrations remain independent unresolved work.
+
 Phase 1a/1b are implemented, verified and committed as the citation-key AST filter
 revision; the complete five-file committed diff matches validated bytes.
 Contract lives in

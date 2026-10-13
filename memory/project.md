@@ -662,6 +662,19 @@ is claimed. No public API signature, worker protocol or native consumer is chang
 
 ## Downstream work not yet implemented
 
+Phase 3a now has component research evidence only: 25/25 isolated probes,
+current locked Emacs 31.1 / Org 9.8.10, no production capability change. Native
+Cite discovery can enter raw STM text, mutate a shared global bibliography tail,
+widen selection and read SETUPFILE; visiting filename directory can differ from
+captured resource-base. Current source API's explicit texts do not add effective
+declaration identities, so global-only discovery requires preparation data work.
+Pure input/planner already accept owned declaration data without extra slots/I/O.
+Full-view STM masking/global copying/BIND suppression and local UTF-8 acquisition
+receipts work as controlled models; no complete source/native/output transaction
+or actual managed-package integration is established. Proposed boundaries are in
+memory/bibliography-contract.md; evidence/report at
+archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md. Phase 3b is not implemented.
+
 Issue #1 Phase 0 provides investigation evidence, not new production support:
 14/14 isolated probes on the updated project lock's Emacs 31.1 / Org 9.8.10.
 Public filter tools work with texmacs backend and preserve citation AST when

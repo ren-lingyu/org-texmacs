@@ -1301,3 +1301,79 @@ its recorded 2af6574f... diff hash. No new build/test or external lookup was run
 This checkpoint's project association identifies that byte-verified resultant
 code/lock snapshot; earlier validation used the recorded isolated/mirror context,
 not an independently tested unmirrored or other-platform environment.
+
+## Phase 3a bibliography discovery/acquisition investigation (2026-10-13)
+
+- User supplied INBOX section 12 and requested review/conditional execution with
+  ongoing GAW updates. Its investigation-first scope is appropriate; Phase 3a
+  executed, Phase 3b/Phase 2 production implementation explicitly not authorized.
+  Code baseline is the committed citation-key filter revision; main and ordinary
+  index remain unchanged, only the existing user USTC overlay is dirty.
+- Exact final command: timeout 120s nix build --no-link --no-write-lock-file
+  path:/home/lingyu/Projects/org-texmacs/tmp/issue-1-phase-3a#checks.x86_64-linux.discovery.
+  Exit 0, 25/25, 0 unexpected, ERT 0.207506s. Actual Emacs 31.1 / Org 9.8.10,
+  x86_64-linux; independent lock equals project/committed lock. Eleven code copies
+  compare with committed c26b932 snapshot and ordinary bytes. Org fixed hash is
+  unchanged with USTC URL transport; dependencies were cached. No new native
+  TeXmacs execution or entire project check was performed. Pipeline native stages,
+  remote URL reads and inaccessible-file cases use controlled substitutes.
+- Native list-bibliography-files appends globals after document declarations and
+  delete-dups raw strings before advice; the shared global tail can be mutated.
+  Advice can reintroduce duplicates; immediately copy returned path strings.
+  store-bibliography overwrites existing INFO paths and can retain relative names;
+  get-environment does not make discovery/acquisition equivalent or enforce
+  explicit text priority. No output processor/generic exporter/filter executes
+  during tested discovery itself.
+- Native collect-keywords widens narrowing and follows nested SETUPFILE, rebasing
+  each declared bibliography path. Missing SETUPFILE can be silently omitted;
+  URL setup is passed to org-file-contents (stubbed here). Raw TeXmacs block text
+  is treated as Org keywords, returning island.bib and triggering its SETUPFILE
+  read. This is an adapter interoperability boundary, not a production fix here.
+- For visiting file in visit/ with default-directory base/, native discovery
+  returns ../visit/refs.bib; existing explicit source snapshot refs.bib points
+  to base/refs.bib. Non-file relative paths use effective directory, absolute and
+  quoted names remain declared identities. Cannot silently normalize away that
+  difference or use linked-resource base to infer a new bibliography policy.
+- Private model first checks current restricted context, then uses full source
+  copy with own global bibliography, no BIND variable processing, and all authored
+  inline/block STM masked. Standard return advice still runs once; source and
+  global values/restriction stay unchanged in controlled fixtures. Hidden/out-of-
+  body STM must also be masked since native discovery later widens. Real SETUPFILE
+  is rejected before discovery/read; visiting/base conflict is rejected explicitly.
+- Acquisition model normalizes lexical local IDs once, classifies remote names
+  before suppressing file handlers (initial prototype failed that distinction),
+  preserves all explicit sources and gives their text priority without stat/read,
+  then fills missing discovered sources. Explicit duplicate identities fail.
+  Local UTF-8 owned text survives external mutation; invalid UTF-8/BibTeX, missing,
+  directory/unreadable/symlink/physical hardlink aliases, changes during/after read
+  and same-byte file replacements are controlled negative evidence. Receipts
+  contain observed inode/device/size/mtime/ctime plus byte digest; checks verify
+  fixed text rather than replacing it. No ABA-proof/transaction/security promise.
+- Existing source API provided with global bibliography texts but no document
+  BIBLIOGRAPHY declaration fails unresolved-key planning. With declaration and
+  Phase 1 remap it succeeds once. Pure owned explicit effective declaration view
+  resolves the key without I/O or new input slot. Standalone text acquisition
+  alone is insufficient; future preparation needs a trusted owned declaration
+  data boundary, not synthetic Org text or collector monkey patches.
+- Three strategies compared: frontend opt-in, existing API policy opt-in, separate
+  opt-in adapter. Prefer the last with whole-operation guards and declaration view.
+  Draft memory/bibliography-contract.md records proposed local/UTF-8/size/alias/
+  directory/preprocessing limits and before-publication receipt/source checks.
+  Components are verified; integrated source/config/native wait/failure transaction
+  still needs maintained tests and Phase 3b scope approval. Real Org-roam context
+  and external database semantics were not established.
+- Necessary seventeen pure-text files plus manifest archived at
+  archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md: report, draft, reproduction,
+  exact flake/lock/probes/fixtures/output and source byte proof/excerpts. Every
+  copy/digest and full staged candidate verified; project association identifies
+  the exact code/lock used by component research, not uncommitted mirror history.
+  Introduced via manifest first-parent path history; archive-only checkpoint
+  separate from active memory. Original ERT blank EOF is retained for fidelity.
+  Full archive first-parent diff SHA-256:
+  29a812b08d51d9de236fbabbaaacf978886f647c5160e72b04692e6a8e2dcf0b.
+- Phase 0 archive and Phase 1 contract remain unchanged. No new production
+  tests/README/package files, ordinary Git state or remote issue writes. Public
+  issue/comment fetch failed; local INBOX's remote-reference claim is not
+  independently verified. Upstream manual is background; locked source/probes
+  supply behavior evidence. Transient research syntax/binding/STM assumptions
+  were corrected before the final result, not counted as passed checks.

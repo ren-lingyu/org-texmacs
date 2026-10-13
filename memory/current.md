@@ -2,6 +2,48 @@
 
 ## Active objective
 
+Phase 3a is complete on 2026-10-13. User asked to review/execute new INBOX
+section 12 if sound and update GAW continuously; it is appropriate and was followed
+as investigation only. No Phase 3b/Phase 2 production change was authorized or made.
+Independent locked flake component probes pass 25/25, 0 unexpected (0.207506s),
+Emacs 31.1 / Org 9.8.10. Eleven copied project Lisp files and lock match main's
+committed c26b932 snapshot; uncommitted USTC overlay is unchanged. Native pipeline
+operations, inaccessible-file and remote URL cases are controlled substitutes;
+no new TeXmacs operation, real database or full project gate ran for this research.
+
+Necessary report, comparison, draft contract, probes/fixtures/source excerpts and
+outputs are archived at archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md,
+with REPORT.md/CONTRACT.md/REPRODUCE.md under files/tmp/issue-1-phase-3a/.
+Seventeen selected text copies and digests are verified; archive-only checkpoint
+is introduced through manifest first-parent history. Phase 0 archive is unchanged.
+Current proposed contract: memory/bibliography-contract.md, not implemented or
+approved production interface; Phase 1 filter contract remains authoritative.
+
+Key findings: raw native discovery mutates shared global lists via delete-dups,
+widens selection, follows SETUPFILE (missing files may silently vanish) and reads
+Org-looking declarations/SETUPFILE inside TeXmacs blocks. Visiting file directory
+and captured resource-base can disagree. Raw-string dedup precedes advice; returned
+relative/duplicate paths need explicit owning/normalization. Texts alone do not
+enable global/managed-only citations in current source APIs: effective declaration
+data must also reach preparation. Pure planner accepts that explicit view already,
+without new input slots or I/O.
+Private research view copies globals, masks all STM even outside body scope,
+disables BIND before Org copy and rejects real preprocessing before discovery.
+Acquisition model preserves every explicit text with priority, fills missing local
+UTF-8 sources and uses file attributes/digests to invalidate changed/replaced files
+without replacing owned text. These are validated components, not a full transaction.
+Recommended next design is a standalone opt-in adapter with owned declaration view
+and source/config/dependency guards from before discovery to before output. Proposed
+first restrictions: aligned visiting-directory/resource-base, local UTF-8 bounded
+regular files, no real SETUPFILE/remote/symlink/physical-alias auto reads. Directory
+policy/limits and public wrapper spelling require review. No DB/FS transaction or
+ABA-proof/sandbox promise; no real managed-package compatibility claim.
+Next action: user reviews/selects Phase 3b contract and implementation scope.
+Do not automatically implement it; section 12 explicitly excludes that authorization.
+Remote issue comment lookup failed; no issue writes were made. Phase 1 remains the
+committed baseline below; its 324/324 gate is historical validation for this code,
+not an additional result of the Phase 3a research.
+
 Issue #1 Phase 1a contract and Phase 1b bounded implementation are complete
 and committed by the user as the citation-key AST filter revision (main c26b932).
 Contract: memory/filter-contract.md. Standard Org parse-tree filters now run
@@ -36,10 +78,9 @@ Subject: "feat(document): consume Org AST filters for citation keys". Its parent
 is the flake-input update baseline b229454; complete committed diff contains only
 the five verified paths and matches the checked e4e15c8f... hash. No new tests were
 run for identity verification. User overlay remains unstaged and unchanged; no
-external issue write was performed. Phase 1 is complete. Next action: user selects
-Phase 2 source-composition/provenance or Phase 3 bibliography-discovery contract
-design; their order may be adjusted. Do not automatically implement those stages
-without their independent input contracts and selected scope.
+external issue write was performed. Phase 1 is complete. Phase 3a investigation
+is now complete above; Phase 2/3b still require their independent contracts
+and user-selected implementation scope.
 
 Phase 0 evidence remains immutable at
 archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. Its 14 probes are historical
