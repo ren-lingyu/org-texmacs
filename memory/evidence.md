@@ -1550,3 +1550,18 @@ probe, flake/lock, output and byte/source proof (8 text files) archived, verifie
 archive/2026-10-13T16-45-34Z--049a5a0/MANIFEST.md. Archive-only checkpoint precedes
 current-memory adoption; additional project parent denotes the research baseline.
 
+# Phase 2b Node A verified (2026-10-14 Asia/Shanghai)
+
+Private initializer can return a separately owned working source and structured
+context, while original source guards remain baseline before initialization. A
+pre-filter annotator can install identity-keyed origins. Private STM registration
+retains working ranges when composition context exists; legacy request tuples stay
+unchanged. Pure input INFO owns/remaps annotated node references; no public slot or
+I/O added. Three focused ERT (0.122164s) cover original vs derived ownership,
+distinct equal-text islands with exact node/range remapping before one filter,
+and original source mutation rejection before working parse. Complete isolated
+gate 344/344 ERT (173.063596s), all ten checks (eight existing + twelve research
+probes + focused derivation). Logs tmp/issue-1-phase-2/node-a-{focused,check}.log.
+Production main/document/tests uncommitted; no project parent attaches to this
+candidate checkpoint. Protected native composition/public end-to-end still pending.
+

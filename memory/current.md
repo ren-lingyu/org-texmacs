@@ -13,8 +13,12 @@ directory, bare full-file local UTF-8 <=64KiB includes, depth8/occurrences32/agg
 Whole-file footnotes retain occurrence after native renaming; the initial opposite
 assumption was corrected before final probe acceptance. No partial include/selection
 or cross-directory STM policy. No pure input slot/I/O or generic lifecycle claim.
-Current next: Phase 2b Node A owned original/working/context data and private request
-range annotations, then protected composition and whole native transaction.
+Phase 2b Node A verified: three focused (0.122164s), 344/344 installed ERT
+(173.063596s), all ten isolated checks (eight existing + probes/focused). Owned
+original/working/context data and private island ranges/annotation precede filters;
+legacy requests keep three fields, no new input slot/I/O. Next protected composition
+module, then public/bibliography/whole-native transaction validation. Node A source
+changes remain uncommitted; no ordinary staging/commit performed.
 Section 14 and memory/preprocessing-plan-review.md route the work.
 User additionally authorized isolated builds/necessary network and repeated exact
 240s checks at tmp/issue-1-phase-2, current project lock/mirror, no lock update.
