@@ -1,0 +1,6 @@
+Emacs 31.1
+Org 9.8.10
+Native TeXmacs operations: not run
+org: /nix/store/mqf0cn6cfj75w64s8bmrhqibw1nlii73-emacs-packages-deps/share/emacs/site-lisp/elpa/org-9.8.10/org.elc
+ox: /nix/store/mqf0cn6cfj75w64s8bmrhqibw1nlii73-emacs-packages-deps/share/emacs/site-lisp/elpa/org-9.8.10/ox.elc
+oc: /nix/store/mqf0cn6cfj75w64s8bmrhqibw1nlii73-emacs-packages-deps/share/emacs/site-lisp/elpa/org-9.8.10/oc.elc

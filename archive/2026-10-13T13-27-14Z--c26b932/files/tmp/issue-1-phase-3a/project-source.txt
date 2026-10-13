@@ -1,0 +1,16 @@
+Exact project source snapshot: c26b932a8376c610603eaeb0f9ed8af98c1f6476
+Each research copy equals ordinary worktree and committed bytes.
+
+org-texmacs.el	41070 bytes	SHA-256 5183a7987f78ae34953811ab04a2005d9a876c7750870eb1bbdaf850e64a1a41
+org-texmacs-core.el	7579 bytes	SHA-256 25a470c3d69afc468160a557455f9c9dbc65beff707a2fe6c602be06663e7d22
+org-texmacs-ast.el	1328 bytes	SHA-256 f24a5e1e8773b58d7609f80adfd925a7af4f6fea7656ba170fa502dfe9453d7f
+org-texmacs-source.el	4558 bytes	SHA-256 553d7b50fee66c9ffc30362a9635fdd2d72cad24f030dfe7775b6958c223aacf
+org-texmacs-fragment.el	14609 bytes	SHA-256 a3cf952a298d8202a32bf0d88fb167826960492b750c3a0ebad845b035ab806c
+org-texmacs-worker.el	11539 bytes	SHA-256 58cf49619fae44706bf9e946f44edfd5bcef6b214eb97afbec49675aa76e7404
+org-texmacs-context.el	38863 bytes	SHA-256 13b2aa26d6530fd7038d898d5c5bae46113ec33a4f64b3fe2d23a8da9feeaa8f
+org-texmacs-document.el	96772 bytes	SHA-256 4643fd9065f5dcedc22bbc03d15d15ebe0979629b9c14d1210b48af2892c910e
+org-texmacs-input.el	12651 bytes	SHA-256 53ecd56fa9ad5aac49484e8624ab5d293d96a113eafd96c11b737c8c6b1593cc
+org-texmacs-session.el	25658 bytes	SHA-256 5c8f162bcd9945aa5b8a92730e89a3783a34a8688b38b55c306d21cf834e9995
+ox-texmacs.el	11367 bytes	SHA-256 c7ddce89803ba8631387362198dbd25b8e7cece2d8c3b2d106f82012e2095af9
+flake.lock	1752 bytes	SHA-256 118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a
+User mirror overlay unchanged: SHA-256 2af6574fe8302fa7a5e64d3e93e8955cf7c36f0a4c6c2f135a2edffe8b65032a

@@ -1,0 +1,541 @@
+Org 9.8.10 installed source excerpts; historical research evidence.
+Source root: /nix/store/7xfmq5ckr95pxfqs19g5vl2yih982xyi-emacs-org-9.8.10/share/emacs/site-lisp/elpa/org-9.8.10
+Range headings are original 1-based lines.
+
+oc.el: 74798 bytes; SHA-256 71a21bea22654aeb84dc39884c1f7ed4d735a9be317b7f6d6f106c473c8962d6
+
+--- oc.el:607-630 ---
+
+        '(adaptive outside after))))
+
+
+;;; Generic tools
+(defun org-cite-list-bibliography-files ()
+  "List all bibliography files defined in the buffer."
+  (delete-dups
+   (append (mapcar (lambda (value)
+		     (pcase value
+		       (`(,f . ,d)
+                        (setq f (org-strip-quotes f))
+                        (if (or (file-name-absolute-p f)
+                                (file-remote-p f)
+                                (equal d default-directory))
+                            ;; Keep absolute paths, remote paths, and
+                            ;; local relative paths.
+                            f
+                          ;; Adjust relative bibliography path for
+                          ;; #+SETUP files located in other directory.
+                          ;; Also, see `org-export--update-included-link'.
+                          (file-relative-name
+                           (expand-file-name f d) default-directory)))))
+		   (pcase (org-collect-keywords
+
+
+--- oc.el:1278-1350 ---
+
+          ;; appropriately.
+          (save-match-data (funcall activate cite))
+          ;; Move after cite object and make sure to return
+          ;; a non-nil value.
+          (goto-char (org-element-end cite)))))))
+
+
+;;; Internal interface with Org Export library (export capability)
+(defun org-cite-store-bibliography (info)
+  "Store bibliography in the communication channel.
+
+Bibliography is stored as a list of absolute file names in the `:bibliography'
+property.
+
+INFO is the communication channel, as a plist.  It is modified by side-effect."
+  (plist-put info :bibliography (org-cite-list-bibliography-files)))
+
+(defun org-cite-store-export-processor (info)
+  "Store export processor in the `:cite-export' property during export.
+
+Export processor is stored as a triplet, or nil.
+
+When non-nil, it is defined as (NAME BIBLIOGRAPHY-STYLE
+CITATION-STYLE) where NAME is a symbol, whereas
+BIBLIOGRAPHY-STYLE and CITATION-STYLE are strings, or nil.
+
+INFO is the communication channel, as a plist.  It is modified by
+side-effect."
+  (let* ((err
+          (lambda (s)
+            (user-error "Invalid cite export processor declaration: %S" s)))
+         (processor
+          (pcase (plist-get info :cite-export)
+            ((or "" `nil) nil)
+            ;; Value is a string.  It comes from a "cite_export"
+            ;; keyword.
+            ((and (pred stringp) s)
+             (org-cite-read-processor-declaration s))
+            ;; Value is an alist.  It must come from
+            ;; `org-cite-export-processors' variable.  Find the most
+            ;; appropriate processor according to current export
+            ;; backend.
+            ((and (pred consp) alist)
+             (let* ((backend (plist-get info :back-end))
+                    (candidates
+                     ;; Limit candidates to processors associated to
+                     ;; backends derived from or equal to the current
+                     ;; one.
+                     (sort (seq-filter
+                            (pcase-lambda (`(,key . ,_))
+                              (org-export-derived-backend-p backend key))
+                            alist)
+                           (lambda (a b)
+                             (org-export-derived-backend-p (car a) (car b))))))
+               ;; Select the closest candidate, or fallback to t.
+               (pcase (or (car candidates) (assq t alist))
+                 ('nil nil)
+                 (`(,_ . ,p)
+                  ;; Normalize value by turning it into a triplet.
+                  (pcase p
+                    (`(,(pred symbolp))
+                     (append p (list nil nil)))
+                    (`(,(pred symbolp) ,(pred string-or-null-p))
+                     (append p (list nil)))
+                    (`(,(pred symbolp)
+                       ,(pred string-or-null-p)
+                       ,(pred string-or-null-p))
+                     p)
+                    (_ (funcall err p))))
+                 (other (funcall err (cdr other))))))
+            (other (funcall err other)))))
+    (pcase processor
+
+org.el: 894838 bytes; SHA-256 f80f9804307d3396f31d59b61d89aaffb9a54b8ef147dd3ecf4a350af2f7d979
+
+--- org.el:4681-4773 ---
+
+(defun org-collect-keywords (keywords &optional unique directory)
+  "Return values for KEYWORDS in current buffer, as an alist.
+
+KEYWORDS is a list of strings.  Return value is a list of
+elements with the pattern:
+
+  (NAME . LIST-OF-VALUES)
+
+where NAME is the upcase name of the keyword, and LIST-OF-VALUES
+is a list of non-empty values, as strings, in order of appearance
+in the buffer.
+
+When KEYWORD appears in UNIQUE list, LIST-OF-VALUE is its first
+value, empty or not, appearing in the buffer, as a string.
+
+When KEYWORD appears in DIRECTORIES, each value is a cons cell:
+
+  (VALUE . DIRECTORY)
+
+where VALUE is the regular value, and DIRECTORY is the variable
+`default-directory' for the buffer containing the keyword.  This
+is important for values containing relative file names, since the
+function follows SETUPFILE keywords, and may change its working
+directory."
+  (let* ((keywords (cons "SETUPFILE" (mapcar #'upcase keywords)))
+	 (unique (mapcar #'upcase unique))
+	 (alist (org--collect-keywords-1
+		 keywords unique directory
+		 (and buffer-file-name (list buffer-file-name))
+		 nil)))
+    ;; Re-order results.
+    (dolist (entry alist)
+      (pcase entry
+	(`(,_ . ,(and value (pred consp)))
+	 (setcdr entry (nreverse value)))))
+    (nreverse alist)))
+
+(defun org--collect-keywords-1 (keywords unique directory files alist)
+  (org-with-point-at 1
+    (let ((case-fold-search t)
+	  (regexp (org-make-options-regexp keywords)))
+      (while (and keywords (re-search-forward regexp nil t))
+        (let ((element (org-element-at-point)))
+          (when (org-element-type-p element 'keyword)
+            (let ((value (org-element-property :value element)))
+              (pcase (org-element-property :key element)
+		("SETUPFILE"
+		 (when (org-string-nw-p value)
+		   (let* ((uri (org-strip-quotes value))
+			  (uri-is-url (org-url-p uri))
+			  (uri (if uri-is-url
+				   uri
+                                 ;; In case of error, be safe.
+                                 ;; See bug#68976.
+                                 (ignore-errors ; return nil when expansion fails.
+				   (expand-file-name uri)))))
+		     (unless (or (not uri) (member uri files))
+		       (with-temp-buffer
+			 (unless uri-is-url
+			   (setq default-directory (file-name-directory uri)))
+			 (let ((contents (org-file-contents uri :noerror)))
+			   (when contents
+			     (insert contents)
+			     ;; Fake Org mode: `org-element-at-point'
+			     ;; doesn't need full set-up.
+			     (let ((major-mode 'org-mode))
+                               (setq-local tab-width 8)
+			       (setq alist
+				     (org--collect-keywords-1
+				      keywords unique directory
+				      (cons uri files)
+				      alist))))))))))
+		(keyword
+		 (let ((entry (assoc keyword alist))
+		       (final
+			(cond ((not (member keyword directory)) value)
+			      (buffer-file-name
+			       (cons value
+				     (file-name-directory buffer-file-name)))
+			      (t (cons value default-directory)))))
+		   (cond ((member keyword unique)
+			  (push (cons keyword final) alist)
+			  (setq keywords (remove keyword keywords))
+			  (setq regexp (org-make-options-regexp keywords)))
+			 ((null entry) (push (list keyword final) alist))
+			 (t (push final (cdr entry)))))))))))
+      alist)))
+
+(defun org-tag-string-to-alist (s)
+  "Return tag alist associated to string S.
+S is a value for TAGS keyword or produced with
+`org-tag-alist-to-string'.  Return value is an alist suitable for
+`org-tag-alist' or `org-tag-persistent-alist'."
+
+
+--- org.el:4862-4928 ---
+
+  (clrhash org--file-cache))
+
+(defun org-file-contents (file &optional noerror nocache)
+  "Return the contents of FILE, as a string.
+
+FILE can be a file name or URL.
+
+If FILE is a URL, download the contents.  If the URL contents are
+already cached in the `org--file-cache' hash table, the download step
+is skipped.
+
+If NOERROR is non-nil, ignore the error when unable to read the FILE
+from file or URL, and return nil.
+
+If NOCACHE is non-nil, do a fresh fetch of FILE even if cached version
+is available.  This option applies only if FILE is a URL."
+  (let* ((is-url (org-url-p file))
+         (is-remote (condition-case nil
+                        (file-remote-p file)
+                      ;; In case of error, be safe.
+                      ;; See bug#68976.
+                      (t t)))
+         (cache (and is-url
+                     (not nocache)
+                     (gethash file org--file-cache))))
+    (cond
+     (cache)
+     ((or is-url is-remote)
+      (if (org--should-fetch-remote-resource-p file)
+          (condition-case error
+              (with-current-buffer (url-retrieve-synchronously file)
+                (goto-char (point-min))
+                ;; Move point to after the url-retrieve header.
+                (search-forward "\n\n" nil :move)
+                ;; Search for the success code only in the url-retrieve header.
+                (if (save-excursion
+                      (re-search-backward "HTTP.*\\s-+200\\s-OK" nil :noerror))
+                    ;; Update the cache `org--file-cache' and return contents.
+                    (puthash file
+                             (buffer-substring-no-properties (point) (point-max))
+                             org--file-cache)
+                  (funcall (if noerror #'message #'user-error)
+                           "Unable to fetch file from %S"
+                           file)
+                  nil))
+            (error (if noerror
+                       (message "Org couldn't download \"%s\": %s %S" file (car error) (cdr error))
+                     (signal (car error) (cdr error)))))
+        (funcall (if noerror #'message #'user-error)
+                 "The remote resource %S is considered unsafe, and will not be downloaded."
+                 file)))
+     (t
+      (with-temp-buffer
+        (condition-case nil
+	    (progn
+	      (insert-file-contents file)
+	      (buffer-string))
+	  (file-error
+           (funcall (if noerror #'message #'user-error)
+		    "Unable to read file %S"
+		    file)
+	   nil)))))))
+
+(defun org--should-fetch-remote-resource-p (uri)
+  "Return non-nil if the URI should be fetched."
+  (or (eq org-resource-download-policy t)
+      (org--safe-remote-resource-p uri)
+
+org-macs.el: 72542 bytes; SHA-256 224415b3824af2881a484fe7ff8e2f9cfb1ce41bc9257dbf567531653202954d
+
+--- org-macs.el:171-191 ---
+
+
+(defmacro org-with-point-at (epom &rest body)
+  "Move to buffer and point of EPOM for the duration of BODY.
+EPOM is an element, point, or marker."
+  (declare (debug (form body)) (indent 1))
+  (require 'org-element-ast)
+  (org-with-gensyms (mepom)
+    `(let ((,mepom ,epom))
+       (save-excursion
+         (cond
+          ((markerp ,mepom)
+           (set-buffer (marker-buffer ,mepom)))
+          ((numberp ,mepom))
+          (t
+           (when (org-element-property :buffer ,mepom)
+             (set-buffer (org-element-property :buffer ,mepom)))
+           (setq ,mepom (org-element-property :begin ,mepom))))
+	 (org-with-wide-buffer
+	  (goto-char (or ,mepom (point)))
+	  ,@body)))))
+
+
+ox.el: 304128 bytes; SHA-256 a402344967f2d4e531f3250dd27d72e714af721f3917573f300c32d7a2e34a12
+
+--- ox.el:1416-1445 ---
+
+;; along with their value in order to set them as buffer local
+;; variables later in the process.
+
+;;;###autoload
+(defun org-export-get-environment (&optional backend subtreep ext-plist)
+  "Collect export options from the current buffer.
+
+Optional argument BACKEND is an export backend, as returned by
+`org-export-create-backend'.
+
+When optional argument SUBTREEP is non-nil, assume the export is
+done against the current sub-tree.
+
+Third optional argument EXT-PLIST is a property list with
+external parameters overriding Org default settings, but still
+inferior to file-local settings."
+  ;; First install #+BIND variables since these must be set before
+  ;; global options are read.
+  (org-export--set-variables (org-export--list-bound-variables))
+  ;; Get and prioritize export options...
+  (org-combine-plists
+   ;; ... from global variables...
+   (org-export--get-global-options backend)
+   ;; ... from an external property list...
+   ext-plist
+   ;; ... from in-buffer settings...
+   (org-export--get-inbuffer-options backend)
+   ;; ... and from subtree, when appropriate.
+   (and subtreep (org-export--get-subtree-options backend))))
+
+
+
+--- ox.el:1658-1668 ---
+
+		       (org-element-parse-secondary-string
+			value (org-element-restriction 'keyword))
+		     value)))))))))
+
+(defun org-export--list-bound-variables ()
+  "Return variables bound from BIND keywords in current buffer.
+Also look for BIND keywords in setup files.  The return value is
+an alist where associations are (VARIABLE-NAME VALUE)."
+  (when org-export-allow-bind-keywords
+    (pcase (org-collect-keywords '("BIND"))
+      (`(("BIND" . ,values))
+
+
+--- ox.el:2645-2700 ---
+
+;; current subtree.
+
+(defun org-export--set-variables (variable-alist)
+  "Set buffer-local variables according to VARIABLE-ALIST in current buffer."
+  (pcase-dolist (`(,var . ,val) variable-alist)
+    (set (make-local-variable var) (car val))))
+
+(cl-defun org-export-copy-buffer (&key to-buffer drop-visibility
+                                       drop-narrowing drop-contents
+                                       drop-locals)
+  "Return a copy of the current buffer.
+This function calls `org-element-copy-buffer', passing the same
+arguments TO-BUFFER, DROP-VISIBILITY, DROP-NARROWING, DROP-CONTENTS,
+and DROP-LOCALS.
+
+In addition, buffer-local variables are set according to #+BIND:
+keywords."
+  (let ((new-buf (org-element-copy-buffer
+                  :to-buffer to-buffer
+                  :drop-visibility drop-visibility
+                  :drop-narrowing drop-narrowing
+                  :drop-contents drop-contents
+                  :drop-locals drop-locals)))
+    (let ((bind-variables (org-export--list-bound-variables)))
+      (with-current-buffer new-buf
+        (org-export--set-variables bind-variables)))
+    new-buf))
+
+(cl-defmacro org-export-with-buffer-copy ( &rest body
+                                           &key to-buffer drop-visibility
+                                           drop-narrowing drop-contents
+                                           drop-locals
+                                           &allow-other-keys)
+  "Apply BODY in a copy of the current buffer.
+This macro is like `org-element-with-buffer-copy', passing the same
+arguments BODY, TO-BUFFER, DROP-VISIBILITY, DROP-NARROWING,
+DROP-CONTENTS, and DROP-LOCALS.
+
+In addition, buffer-local variables are set according to #+BIND:
+keywords."
+  (declare (debug t))
+  ;; Drop keyword arguments from BODY.
+  (while (keywordp (car body)) (pop body) (pop body))
+  (org-with-gensyms (bind-variables)
+    `(let ((,bind-variables (org-export--list-bound-variables)))
+       (org-element-with-buffer-copy
+        :to-buffer ,to-buffer
+        :drop-visibility ,drop-visibility
+        :drop-narrowing ,drop-narrowing
+        :drop-contents ,drop-contents
+        :drop-locals ,drop-locals
+        (org-export--set-variables ,bind-variables)
+        ,@body))))
+
+(defun org-export--delete-comment-trees ()
+  "Delete commented trees and commented inlinetasks in the buffer.
+
+
+--- project c26b932a8376c610603eaeb0f9ed8af98c1f6476 org-texmacs-source.el:35-64; SHA-256 553d7b50fee66c9ffc30362a9635fdd2d72cad24f030dfe7775b6958c223aacf ---
+
+  (when path
+    (let ((file-name-handler-alist nil))
+      (unless (and (stringp path) (> (length path) 0)
+                   (not (string-match-p "\0" path))
+                   (file-name-absolute-p path))
+        (signal 'org-texmacs-document-error
+                '("Expected an absolute source buffer location")))
+      (org-texmacs--source-copy-path
+       (if (string-prefix-p "~" path) (expand-file-name path) path)))))
+
+(defun org-texmacs--bibliography-source-snapshot (sources resource-base)
+  "Copy explicit path-to-text SOURCES using captured RESOURCE-BASE.
+Resolve source identities without opening files or running file handlers."
+  (unless (proper-list-p sources)
+    (signal 'org-texmacs-document-error '("Expected bibliography source text alist")))
+  (let ((file-name-handler-alist nil) paths result)
+    (dolist (entry sources)
+      (unless (and (consp entry) (stringp (car entry)) (> (length (car entry)) 0)
+                   (not (string-match-p "\0" (car entry))) (stringp (cdr entry)))
+        (signal 'org-texmacs-document-error '("Invalid bibliography source text")))
+      (unless (or (file-name-absolute-p (car entry)) resource-base)
+        (signal 'org-texmacs-document-error '("Relative bibliography identity needs resource base")))
+      (let ((path (org-texmacs--source-copy-path
+                   (expand-file-name (car entry) resource-base))))
+        (when (member path paths)
+          (signal 'org-texmacs-document-error '("Duplicate bibliography source identity")))
+        (push path paths)
+        (push (cons path (substring-no-properties (cdr entry))) result)))
+    (nreverse result)))
+
+
+
+--- project c26b932a8376c610603eaeb0f9ed8af98c1f6476 org-texmacs-context.el:658-697; SHA-256 13b2aa26d6530fd7038d898d5c5bae46113ec33a4f64b3fe2d23a8da9feeaa8f ---
+
+
+(defun org-texmacs--context-prepare
+    (ast islands requests post-blanks base-info &optional subtree-position region)
+  "Apply restricted context to prepared AST and associated mappings.
+Return (AST ISLANDS REQUESTS POST-BLANKS INFO), retaining only mappings and
+worker requests whose identity keys remain reachable after filtering.
+Optional SUBTREE-POSITION clips the owned tree after configuration capture.
+REGION is a frozen (BEGIN . END) pair; it takes precedence for body selection,
+while retaining any subtree configuration.  Parse only the private snapshot."
+  (let* ((base-info (org-texmacs--context-merge-external base-info))
+         (metadata
+          (append (plist-get base-info :texmacs-metadata-present)
+                  (mapcar #'car
+                          (org-texmacs--context-keywords
+                           ast islands '("TITLE" "AUTHOR" "DATE")))))
+         (info (plist-put
+                (plist-put
+                 (org-texmacs--context-validate-info
+                  (org-texmacs--context-merge-options ast islands base-info))
+                 :texmacs-metadata-present metadata)
+                :parse-tree ast))
+         (bibliography-declarations
+          (mapcar (lambda (raw)
+                    (cons raw (caar (org-texmacs--bibliography-source-snapshot
+                                     (list (cons (org-strip-quotes (string-trim raw)) ""))
+                                     (plist-get base-info :texmacs-resource-base)))))
+                  (cdr (assoc "BIBLIOGRAPHY"
+                              (org-texmacs--context-keywords ast islands '("BIBLIOGRAPHY"))))))
+         (_ (setq info (plist-put info :texmacs-bibliography-declarations bibliography-declarations)))
+         (definitions (org-texmacs--context-footnote-definitions ast islands))
+         (_ (when subtree-position
+              (setq info (org-texmacs--context-select-subtree ast subtree-position info))))
+         (_ (when region
+              (let* ((selected (save-restriction
+                                 (narrow-to-region (car region) (cdr region))
+                                 (org-element-parse-buffer)))
+                     (local-definitions
+                      (org-texmacs--context-footnote-definitions selected nil)))
+                ;; A second Org parse gives partial ordinary text its normal
+                ;; narrowed-buffer semantics, without rebuilding source text.
+
+
+--- project c26b932a8376c610603eaeb0f9ed8af98c1f6476 org-texmacs-document.el:365-411; SHA-256 4643fd9065f5dcedc22bbc03d15d15ebe0979629b9c14d1210b48af2892c910e ---
+
+(defun org-texmacs--bibliography-plan (ast islands info bibliography resolution static-labels)
+  "Resolve bare citations and one bibliography print from owned structures.
+Visit named footnote bodies at first use.  Never query buffers or files."
+  (let ((declarations (plist-get info :texmacs-bibliography-declarations))
+        entries citations keys prints visited)
+    (dolist (source bibliography)
+      (when (member (car source) (mapcar #'cdr declarations))
+        (dolist (entry (cdr (cdr source)))
+          (when (assoc (nth 2 entry) entries)
+            (signal 'org-texmacs-document-error '("Ambiguous bibliography key")))
+          (push (cons (nth 2 entry) entry) entries))))
+    (dolist (declaration declarations)
+      (unless (assoc (cdr declaration) bibliography)
+        (signal 'org-texmacs-document-error '("Bibliography declaration needs explicit source data"))))
+    (cl-labels
+        ((affix-empty (value)
+           (and (proper-list-p value)
+                (cl-every (lambda (part) (and (stringp part) (string-blank-p part))) value)))
+         (walk (node)
+           (when (and (consp node) (not (assq node islands)))
+             (pcase (org-element-type node)
+               ('footnote-definition nil)
+               ('footnote-reference
+                (let ((note (cdr (assq node (org-texmacs-resolution-footnotes resolution)))))
+                  (if note
+                      (unless (memq note visited)
+                        (push note visited)
+                        (mapc #'walk (org-element-contents (nth 1 note))))
+                    (mapc #'walk (org-element-contents node)))))
+               ('citation
+                (unless (and (null (org-element-property :style node))
+                             (affix-empty (org-element-property :prefix node))
+                             (affix-empty (org-element-property :suffix node))
+                             (org-element-contents node))
+                  (org-texmacs--document-fail node "Unsupported citation style or affixes"))
+                (let (group)
+                  (dolist (reference (org-element-contents node))
+                    (let ((key (org-element-property :key reference)))
+                      (unless (and (eq (org-element-type reference) 'citation-reference)
+                                   (stringp key) (string-match-p "\\`[-A-Za-z0-9_:.+]+\\'" key)
+                                   (affix-empty (org-element-property :prefix reference))
+                                   (affix-empty (org-element-property :suffix reference)))
+                        (org-texmacs--document-fail node "Unsupported citation reference"))
+                      (unless (assoc key entries)
+                        (org-texmacs--document-fail node "Unresolved citation key"))
+                      (unless (member key keys) (setq keys (append keys (list key))))
+                      (push key group)))
