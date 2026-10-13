@@ -1377,3 +1377,15 @@ not an independently tested unmirrored or other-platform environment.
   independently verified. Upstream manual is background; locked source/probes
   supply behavior evidence. Transient research syntax/binding/STM assumptions
   were corrected before the final result, not counted as passed checks.
+# Phase 3b Node A validation (2026-10-13)
+
+INBOX section 13 selected by user conditional implementation request. New owned
+effective declaration view validated by three maintained ERT tests: ownership and
+invalid/ambiguous view rejection, global-only resolution through Phase 1 remapping
+with unselected explicit data retained, and document disagreement before native
+requests. Pure lowering remains unchanged. Isolated current flake/lock plus user
+mirror configuration: 327/327 installed ERT in 163.753805s and all nine checks
+(eight project checks plus focused); node-a-check.log under tmp/issue-1-phase-3b.
+This validates uncommitted Node A changes, not committed c26b932 alone; no project
+parent is attached to this checkpoint. No automatic discovery public API yet.
+

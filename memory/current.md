@@ -2,6 +2,18 @@
 
 ## Active objective
 
+User added INBOX section 13 and requested review/conditional execution. Plan is
+appropriate; Phase 3b implementation is now selected, with independent A/B/C nodes
+and GAW checkpoints. First-scope decisions: separate opt-in document/byte adapters,
+old explicit APIs unchanged; reject visiting-directory/resource-base conflict,
+automatic remote/URL/tilde/symlink/physical alias sources, non-UTF-8 and >1 MiB/file;
+no preprocessing or pure-layer I/O. Node A effective view is being implemented
+as owned :document raw associations + :sources ordered IDs, validated against
+actual source declarations and passed privately through preparation. No public
+automatic discovery entry is exposed before B/C transaction verification.
+Next action: independently validate Node A, checkpoint its boundary, then implement
+discovery/acquisition and whole-transaction checks with maintained tests/docs.
+
 Phase 3a is complete on 2026-10-13. User asked to review/execute new INBOX
 section 12 if sound and update GAW continuously; it is appropriate and was followed
 as investigation only. No Phase 3b/Phase 2 production change was authorized or made.
@@ -284,3 +296,13 @@ remain unsupported.
    session recovered valid GAW without archive, but user supplied AGENTS.md.
    When a fresh session discovers bootstrap/skills unaided and recovers current
    memory, mark that remaining check complete. Continue project work meanwhile.
+# Phase 3b Node A verified
+
+Owned `:document`/`:sources` bibliography view now crosses private source/context
+preparation without new pure input slots or I/O. Old public defaults unchanged.
+Three focused tests passed; isolated current-lock full check passed all nine
+checks (eight existing plus focused), 327/327 installed ERT, 163.753805 seconds.
+Evidence: tmp/issue-1-phase-3b/node-a-check.log. Production changes uncommitted;
+baseline c26b932, user mirror overlay preserved. Next: Node B private discovery
+and bounded acquisition, then Node C whole-transaction integration/public APIs.
+
