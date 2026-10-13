@@ -1520,3 +1520,33 @@ index mutation or external issue write this turn. Only GAW memory maintenance.
 Future investigation and Phase 2b implementation require subsequent execution
 scope; prior Phase 3b test authorization does not expand to this new plan.
 
+# Phase 2a locked investigation (2026-10-14 Asia/Shanghai)
+
+User requested Phase 2a/2b execution and authorized isolated current-lock builds,
+necessary network and repeated exact240s checks under tmp/issue-1-phase-2.
+Twelve isolated ERT probes pass (0.144719s), Emacs31.1/Org9.8.10 asserted at runtime,
+committed 049a5a0 source/lock byte-verified; mirror unchanged. No production edit,
+actual TeXmacs worker or real third-party/DB operation in research. Actual Org ASCII
+pipeline ignores numeric/arbitrary hook returns and orders before/after/filter;
+native INCLUDE relocates ordinary links but leaves STM image strings unchanged.
+Original selection offsets shift. Protected owned native-mirror model distinguishes
+repeat/equal-text occurrences, masks fake STM directives, rejects marker loss and
+cycles/unsupported paths/parameters, checks file receipts and distinguishes final
+derived/source vs generated hook text ranges without guessing original offsets.
+Full-file footnotes are renamed within occurrence; an initial false expectation
+of extraction failed and was corrected against ox.el (only outside LINES definitions
+are extracted). Final twelve results supersede that failed assertion.
+
+Selected strategy: protected snapshots + actual native INCLUDE and staged hooks,
+not full annotate-info and not reimplemented INCLUDE. Explicit first support is
+common-directory complete-document/whole-file composition with finite local budgets;
+source/STM occurrence ownership, generated policy, final node-keyed provenance and
+full source/config/include/bib guards must be implemented/tested in Phase 2b.
+Input's one resource-base proves cross-directory STM needs a later encoding policy;
+no generic provenance slot yet justified. Research model lacks full public/native
+transaction enforcement; no production claim follows. Contract target and node
+acceptance: memory/preprocessing-contract.md. Exact report, reproduction, prototype,
+probe, flake/lock, output and byte/source proof (8 text files) archived, verified:
+archive/2026-10-13T16-45-34Z--049a5a0/MANIFEST.md. Archive-only checkpoint precedes
+current-memory adoption; additional project parent denotes the research baseline.
+

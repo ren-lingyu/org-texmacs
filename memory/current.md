@@ -2,13 +2,24 @@
 
 ## Active objective
 
-User requested review of INBOX section 14 (line1110) and GAW update only,
-explicitly no execution. Review complete: guidance is appropriate, preferred
-sequence Phase 2a composition/provenance investigation → contract selection →
-bounded Phase 2b nodes → full Phase 4. No Phase 2a probes/prototype/tests or
-production changes performed/authorized this turn. Review details and acceptance
-clarifications: memory/preprocessing-plan-review.md. Future investigation needs
-new execution scope; previous Phase 3b build/network allowances do not transfer.
+On 2026-10-14 user explicitly requested execution of Phase 2a and Phase 2b.
+Phase 2a complete: 12/12 isolated probes (0.144719s), locked Emacs31.1/Org9.8.10.
+Archive: archive/2026-10-13T16-45-34Z--049a5a0/MANIFEST.md. Stage table, runnable
+native-mirror model, comparison and first contract selected before production edits.
+memory/preprocessing-contract.md defines the bounded target; not production support
+until maintained/native gate. First scope: full unnarrowed source, same resource
+directory, bare full-file local UTF-8 <=64KiB includes, depth8/occurrences32/aggregate
+256KiB. Original STM occurrence/ranges distinct from derived/generated origin.
+Whole-file footnotes retain occurrence after native renaming; the initial opposite
+assumption was corrected before final probe acceptance. No partial include/selection
+or cross-directory STM policy. No pure input slot/I/O or generic lifecycle claim.
+Current next: Phase 2b Node A owned original/working/context data and private request
+range annotations, then protected composition and whole native transaction.
+Section 14 and memory/preprocessing-plan-review.md route the work.
+User additionally authorized isolated builds/necessary network and repeated exact
+240s checks at tmp/issue-1-phase-2, current project lock/mirror, no lock update.
+Prototype/adoption must precede bounded Phase 2b implementation. Full Phase 4
+remains independent. No generic exporter or full annotate-info substitution.
 
 Phase 3b A/B/C is complete and committed by user as the opt-in Org Cite discovery
 revision, main 049a5a0 on c26b932. Seven-file committed diff exactly matches
@@ -39,8 +50,8 @@ Isolated copied flake uses current project lock, user USTC overlay, locked
 Emacs31.1/Org9.8.10/TeXmacs2.1.5. During Phase 3b the user authorized repeated
 exact240s isolated flake checks. flake.lock unchanged; stale local Org is not baseline.
 
-Next await user's explicit Phase 2a investigation request; do not automatically
-run the new plan. First questions are native INCLUDE origin/occurrence tracking,
+Next complete isolated Phase 2a prototype and adopted contract before production
+implementation. First questions are native INCLUDE origin/occurrence tracking,
 literal STM protection, original-vs-working selection/configuration, and Phase 3b
 bibliography origin/receipt integration. Unknown provenance fails or has a reviewed
 generated-origin policy; no guessing. Hook-return semantics must be researched
