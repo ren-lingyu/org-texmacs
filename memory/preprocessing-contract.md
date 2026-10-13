@@ -8,6 +8,9 @@ maintained production/native tests pass, not a current support claim.
 
 Separate opt-in prepare/document/.tm-byte APIs, full unnarrowed source only.
 Existing explicit source/dispatcher/bibliography APIs retain their defaults.
+Initial native heading policy requires ordinary levels (odd-levels-only disabled
+both for the source and native defaults); otherwise independent native temp parser
+level normalization can disagree with the final captured parser. Reject explicitly.
 Source buffer, original text/config/locations/explicit BibTeX are captured before
 callbacks; original canonical text differs from owned composed working text.
 Subtree/region/narrowing are rejected by the new adapter pending a real position

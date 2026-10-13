@@ -1565,3 +1565,21 @@ probes + focused derivation). Logs tmp/issue-1-phase-2/node-a-{focused,check}.lo
 Production main/document/tests uncommitted; no project parent attaches to this
 candidate checkpoint. Protected native composition/public end-to-end still pending.
 
+# Phase 2b Node B verified (2026-10-14 Asia/Shanghai)
+
+Independent helper-only org-texmacs-preprocess module and fileset, owned protected
+mirror graph invoking actual native INCLUDE. Fixed file texts reused for repeated
+occurrences, source boundaries and exact STM tokens tracked separately from
+generated hook insertions. Copies supported context, delays mode hooks, keeps
+generic guard intact with a private guard for nested calls. Standard hook utility
+uses owned lists/resolved functions without rebinding original hook variables.
+Native INCLUDE function/default odd-level identity monitored; ordinary headline
+policy required until temp-parser normalization supports other policies.
+Eight focused tests (0.148219s), 349/349 ERT (172.609625s), all ten checks pass.
+Logs tmp/issue-1-phase-2/node-b-{focused,check}.log. Corrected an unused column
+predicate warning and parsed-author/string type mismatch before pass, not counted
+as success. tab-width copied and adjacent-token range marker insertion fixed.
+No public new adapter yet; complete source/hook/include/bib/native/output transaction
+and native origin remapping still require Node C. Candidate uncommitted, no project
+parent attached. Original immutable research archive remains unchanged.
+

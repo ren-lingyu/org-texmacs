@@ -16,9 +16,13 @@ or cross-directory STM policy. No pure input slot/I/O or generic lifecycle claim
 Phase 2b Node A verified: three focused (0.122164s), 344/344 installed ERT
 (173.063596s), all ten isolated checks (eight existing + probes/focused). Owned
 original/working/context data and private island ranges/annotation precede filters;
-legacy requests keep three fields, no new input slot/I/O. Next protected composition
-module, then public/bibliography/whole-native transaction validation. Node A source
-changes remain uncommitted; no ordinary staging/commit performed.
+legacy requests keep three fields, no new input slot/I/O. Node B private protected
+native composition now passes eight focused (0.148219s), 349/349 full ERT
+(172.609625s) and all ten checks. Snapshot/temp cleanup, source occurrences,
+generated hook text, standard hook returns, config/marker refusal and nested
+generic guard/mode hook isolation covered. Main/document/new preprocess module,
+fileset/tests uncommitted. Next Node C public/bibliography/whole-native transaction
+validation; no auto public preprocessing capability claimed until that gate.
 Section 14 and memory/preprocessing-plan-review.md route the work.
 User additionally authorized isolated builds/necessary network and repeated exact
 240s checks at tmp/issue-1-phase-2, current project lock/mirror, no lock update.
