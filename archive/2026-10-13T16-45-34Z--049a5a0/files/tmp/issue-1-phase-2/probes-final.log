@@ -1,0 +1,21 @@
+this derivation will be built:
+  /nix/store/0fdwc1l252ikb1h5kdxnkmg5vpxk4p2c-org-texmacs-phase2-probes.drv
+building '/nix/store/0fdwc1l252ikb1h5kdxnkmg5vpxk4p2c-org-texmacs-phase2-probes.drv'...
+org-texmacs-phase2-probes> Running 12 tests (2026-10-13 16:43:08+0000, selector `"^p2-"')
+org-texmacs-phase2-probes> 
+org-texmacs-phase2-probes>    passed   1/12  p2-00-locked-environment (0.000326 sec)
+org-texmacs-phase2-probes>    passed   2/12  p2-01-native-stage-hook-return-is-ignored (0.096321 sec)
+org-texmacs-phase2-probes>    passed   3/12  p2-02-native-cross-directory-links-not-stm-origin (0.002877 sec)
+org-texmacs-phase2-probes>    passed   4/12  p2-03-repeat-equal-text-distinct-occurrences (0.005525 sec)
+org-texmacs-phase2-probes>    passed   5/12  p2-04-nested-includes-protected-directives-and-hooks (0.004025 sec)
+org-texmacs-phase2-probes>    passed   6/12  p2-05-position-shifts-are-working-ranges (0.020212 sec)
+org-texmacs-phase2-probes>    passed   7/12  p2-06-cycle-missing-cross-directory-and-directives (0.004263 sec)
+org-texmacs-phase2-probes>    passed   8/12  p2-07-stm-marker-loss-is-not-text-equality-recovery (0.001219 sec)
+org-texmacs-phase2-probes>    passed   9/12  p2-08-native-selection-does-not-map-original-offsets (0.000840 sec)
+org-texmacs-phase2-probes>    passed  10/12  p2-09-dependency-change-after-capture (0.003556 sec)
+org-texmacs-phase2-probes>    passed  11/12  p2-10-whole-working-view-origin-distinction (0.002572 sec)
+org-texmacs-phase2-probes>    passed  12/12  p2-11-whole-file-footnotes-retain-occurrence (0.002624 sec)
+org-texmacs-phase2-probes> 
+org-texmacs-phase2-probes> Ran 12 tests, 12 results as expected, 0 unexpected (2026-10-13 16:43:08+0000, 0.144719 sec)
+org-texmacs-phase2-probes> 
+org-texmacs-phase2-probes> Locked environment: Emacs 31.1, Org 9.8.10

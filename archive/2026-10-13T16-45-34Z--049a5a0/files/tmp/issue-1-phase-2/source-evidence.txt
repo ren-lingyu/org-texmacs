@@ -1,0 +1,21 @@
+Research uses committed main 049a5a00bdd52d83e1f03823accc9324f4bcee0c plus unchanged mirror transport.
+org-texmacs-session.el: 25658 bytes SHA-256 5c8f162bcd9945aa5b8a92730e89a3783a34a8688b38b55c306d21cf834e9995
+org-texmacs-source.el: 6327 bytes SHA-256 084a8f02f70d0da067382403b80b7b16173c1e14dceeb2b27d28fff5dc95e108
+org-texmacs-input.el: 12651 bytes SHA-256 53ecd56fa9ad5aac49484e8624ab5d293d96a113eafd96c11b737c8c6b1593cc
+org-texmacs-document.el: 96772 bytes SHA-256 4643fd9065f5dcedc22bbc03d15d15ebe0979629b9c14d1210b48af2892c910e
+org-texmacs-ast.el: 1328 bytes SHA-256 f24a5e1e8773b58d7609f80adfd925a7af4f6fea7656ba170fa502dfe9453d7f
+org-texmacs-context.el: 39862 bytes SHA-256 3d47a4600ff8c1043da1868c51eba8ac601b8bdb0474794a187098a1f4cd4c7b
+org-texmacs-worker.el: 11539 bytes SHA-256 58cf49619fae44706bf9e946f44edfd5bcef6b214eb97afbec49675aa76e7404
+org-texmacs-core.el: 7579 bytes SHA-256 25a470c3d69afc468160a557455f9c9dbc65beff707a2fe6c602be06663e7d22
+org-texmacs-fragment.el: 14609 bytes SHA-256 a3cf952a298d8202a32bf0d88fb167826960492b750c3a0ebad845b035ab806c
+org-texmacs-bibliography.el: 12963 bytes SHA-256 b310104e9670cc9e477a7fdb9065ba31dfe5716fab89de8411a6c3a57cc60e7f
+org-texmacs.el: 42741 bytes SHA-256 2111d48307baf807500e9e6d1c06a4bc97b649145b8f7549919a23bced697163
+ox-texmacs.el: 11367 bytes SHA-256 c7ddce89803ba8631387362198dbd25b8e7cece2d8c3b2d106f82012e2095af9
+flake.lock: 1752 bytes SHA-256 118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a
+org-texmacs-worker.scm: 25587 bytes SHA-256 ca0463d153d3b2637d5f34252dcc44c9816aa43dae613a3b3519cf784749b5bd
+README.org: 90923 bytes SHA-256 774edd309c907a6893bed0113a67ef1402927ac83c19526477919bd3fd613b39
+LICENSE: 35149 bytes SHA-256 3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986
+Root flake.nix includes unchanged user mirror overlay: SHA-256 e5da300802c400f722350d83f7389e76ae3e921a390bafb08aafe4f17380d1c4
+Locked /nix/store/7xfmq5ckr95pxfqs19g5vl2yih982xyi-emacs-org-9.8.10/share/emacs/site-lisp/elpa/org-9.8.10/ox.el: 304128 bytes SHA-256 a402344967f2d4e531f3250dd27d72e714af721f3917573f300c32d7a2e34a12
+Locked /nix/store/7xfmq5ckr95pxfqs19g5vl2yih982xyi-emacs-org-9.8.10/share/emacs/site-lisp/elpa/org-9.8.10/oc.el: 74798 bytes SHA-256 71a21bea22654aeb84dc39884c1f7ed4d735a9be317b7f6d6f106c473c8962d6
+Source excerpts interpreted: ox.el 3090-3155 lifecycle, 3318-3455 INCLUDE/parser, 3500-3835 reader/recursion/link/headline/footnote transforms. No complete origin-map claim.
