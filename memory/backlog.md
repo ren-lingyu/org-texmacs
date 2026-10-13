@@ -280,18 +280,18 @@ native or GUI evidence before they can be claimed as verified.
 
 ### Org ecosystem preparation interoperability
 
-The user's INBOX section 12 was reviewed/adopted for Phase 3a investigation,
-now complete: 25/25 controlled probes on current locked Emacs 31.1 / Org 9.8.10,
-no production edits. Results: archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md.
-Draft contract: memory/bibliography-contract.md, explicitly pending production
-selection. Prefer standalone opt-in adapter while preserving old source API
-defaults; effective declaration data must enter preparation in addition to text
-snapshots. Raw discovery needs copied globals/full STM-masked view, BIND disabled
-before copy, preprocessing rejection and explicit directory/identity semantics.
-Acquisition needs fixed text priority/ownership and observed file receipts plus
-source/config checks before output. Whole transaction is not implemented.
-Phase 3b requires contract review and scoped authorization; Phase 2 composition /
-provenance and Phase 4 real integrations remain independent unresolved work.
+Phase 3b A/B/C selected through the user's INBOX section 13 review/execute
+request is complete in the uncommitted working tree. Independent opt-in
+bibliography discovery/acquisition adapters preserve old API defaults, owned
+effective declarations and fixed local texts, full STM masking, standard Cite
+advice and whole-transaction checks. Contract memory/bibliography-contract.md;
+final 17 focused/341 installed ERT/all nine checks pass. Details/limits in project
+and evidence. Phase 3a research is archived at
+archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md, not production validation.
+Phase 2 composition/provenance and Phase 4 real package integration remain
+independent unresolved work. Next candidate real org-roam-organize managed
+bibliography + UUID mapping integration needs its own selected scope; no actual
+package/database compatibility claim yet. File/menu policy remains separate.
 
 Phase 1a/1b are implemented, verified and committed as the citation-key AST filter
 revision; the complete five-file committed diff matches validated bytes.
@@ -300,8 +300,8 @@ memory/filter-contract.md. Standard filters may change citation keys only, with
 per-callback graph/work-context validation and independent ownership before waits.
 Focused 12/12, installed ERT 324/324 and all 8 isolated flake checks pass on the
 current lock's Emacs 31.1 / Org 9.8.10. Broader ecosystem preparation remains
-unresolved: Phase 2 source composition/provenance and Phase 3 bibliography discovery
-need their own contracts; Phase 4 actual package combination is unverified.
+unresolved: Phase 2 source composition/provenance still needs its contract;
+Phase 3b bounded discovery is implemented above; Phase 4 combination is unverified.
 Phase 0's stage table/candidate comparison/reproduction is preserved at
 archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. Candidate A was selected by
 the user's INBOX section 11 and is now the bounded implementation above. Contract
@@ -311,8 +311,9 @@ Broader mutation support needs a new contract; do not auto-switch to candidate B
 Full copy/annotate reuse adds ID lookup, mutable-local aliasing and source/STM
 mapping hazards; disabling Cite output also skips discovery. Locked Org has no
 after-includes hook. Retain the generic guard and pure-layer I/O boundary;
-preprocessing, bibliography acquisition and real integration need separate
-contracts. No issue writes were made; third-party source lookup failed and
+preprocessing and real integration need separate contracts; the selected
+bibliography acquisition contract is implemented above. No issue writes were made;
+third-party source lookup failed and
 extension behavior remains attributed rather than independently verified.
 
 Status: **unresolved-design**, following the user's 2026-10-09 v0.4.0 review note.

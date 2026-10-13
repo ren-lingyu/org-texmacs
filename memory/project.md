@@ -500,7 +500,7 @@ the subtree export revision matches the verified six-file diff.
 - Dispatcher subtreep now supports readonly buffer/.tm/PDF consumers, using
   captured selection and unchanged new-file/overwrite contracts. Region/visible/
   body-only/async/extra external overrides remain unsupported. Generic API
-  adaptation is still deliberately deferred, and no auto bibliography reader exists.
+  adaptation remains deferred; the separate Phase 3b opt-in reader is below.
 - Final subtree 7/7, backend 11/11 and Nix compilation/package-lint/installed
   ERT 291/291 (132.40s) pass. Six files are committed; index was empty at
   subtree commit verification, before region work.
@@ -660,20 +660,44 @@ the ordinary worktree. Source/native consumers' earlier regression remains cover
 No real Org-roam integration, broader AST replacement or user callback sandboxing
 is claimed. No public API signature, worker protocol or native consumer is changed.
 
-## Downstream work not yet implemented
+## Phase 3b opt-in bibliography discovery/acquisition
 
-Phase 3a now has component research evidence only: 25/25 isolated probes,
-current locked Emacs 31.1 / Org 9.8.10, no production capability change. Native
-Cite discovery can enter raw STM text, mutate a shared global bibliography tail,
-widen selection and read SETUPFILE; visiting filename directory can differ from
-captured resource-base. Current source API's explicit texts do not add effective
-declaration identities, so global-only discovery requires preparation data work.
-Pure input/planner already accept owned declaration data without extra slots/I/O.
-Full-view STM masking/global copying/BIND suppression and local UTF-8 acquisition
-receipts work as controlled models; no complete source/native/output transaction
-or actual managed-package integration is established. Proposed boundaries are in
-memory/bibliography-contract.md; evidence/report at
-archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md. Phase 3b is not implemented.
+Implemented and verified in the uncommitted working tree on the committed Phase 1
+baseline. Independent org-texmacs-bibliography module, lazy autoloads from main and
+flake fileset inclusion. Public document/byte wrappers end in
+`-from-buffer-discover-bibliography`, preserving optional text/selection/options
+arguments. Existing explicit APIs/menu/pure constructors retain defaults.
+
+Private preparation accepts owned effective bibliography view with original raw
+keyword associations and ordered discovered IDs. It validates actual declarations,
+adds active identities as data, and preserves document/new-source distinction in
+INFO; no synthetic keyword text, planner I/O or new input slot. Discovery uses
+shared private parser/context helpers with fixed headings/links and masks every
+inline/block STM, including pruned/out-of-selection content. Unsupported genuine
+preprocessing fails before standard Cite collector, which runs once with normal
+advice and copied global bibliography. Captured source-file/base directory must
+agree for visiting buffers; non-file buffers use captured local base.
+
+Own/classify/normalize/dedup paths. Explicit texts retain priority without stat/read
+and unselected data remains owned. Append missing discovered local regular UTF-8
+BibTeX <=1 MiB; reject symlink components, auto physical aliases, remote/URL/tilde/
+control paths. Validate fixed text grammar/native entry structure. Receipts observe
+size/mtime/ctime/inode/device + byte SHA-256; verify around acquisition/native waits
+and final document/byte return, never replacing text or replaying discovery/filters.
+Whole source/config/filter/provided-text baseline precedes discovery; opt-in global
+bibliography/collector/options/style/initial checks join existing source guards.
+No FS/DB atomicity, ABA-proof, arbitrary callback sandbox, file publication or real
+managed-package compatibility claim. Contract: memory/bibliography-contract.md.
+
+Final 17/17 focused (7.708077s), 341/341 installed ERT (171.422224s) and all nine
+isolated checks (eight project + focused) pass on locked Emacs31.1/Org9.8.10/
+TeXmacs2.1.5. Maintained actual file acquisition/native parse/format/session readback/
+bytes tests and controlled changes across discovery/acquisition/native/output.
+HTML/ASCII/generic guard regressions remain covered. Twenty-two copied inputs
+match project bytes; evidence includes hashes and preserved mirror overlay proof.
+Phase 3a component evidence remains immutable at
+archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md. Phase 2/4 and file/menu policy
+remain downstream work; issue #1 is not entirely closed by this node.
 
 Issue #1 Phase 0 provides investigation evidence, not new production support:
 14/14 isolated probes on the updated project lock's Emacs 31.1 / Org 9.8.10.
@@ -690,7 +714,7 @@ extend support claims, allow pure lowering I/O, or remove the guard.
 
 Current source preparation supports bounded citation-key parse-tree filters
 through standard Org install/apply tools. It does not run buffer-level export
-preprocessing or Org Cite bibliography discovery. Standard key-only AST filters
+preprocessing; standard Cite discovery is opt-in above. Standard key-only AST filters
 can participate; other ecosystem extension semantics are not automatically
 consumed by TeXmacs. Backend guard admits unrelated backends; maintained
 isolation includes ASCII and the released controlled HTML composition

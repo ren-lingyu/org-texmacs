@@ -2,102 +2,56 @@
 
 ## Active objective
 
-User added INBOX section 13 and requested review/conditional execution. Plan is
-appropriate; Phase 3b implementation is now selected, with independent A/B/C nodes
-and GAW checkpoints. First-scope decisions: separate opt-in document/byte adapters,
-old explicit APIs unchanged; reject visiting-directory/resource-base conflict,
-automatic remote/URL/tilde/symlink/physical alias sources, non-UTF-8 and >1 MiB/file;
-no preprocessing or pure-layer I/O. Node A effective view is being implemented
-as owned :document raw associations + :sources ordered IDs, validated against
-actual source declarations and passed privately through preparation. No public
-automatic discovery entry is exposed before B/C transaction verification.
-Next action: independently validate Node A, checkpoint its boundary, then implement
-discovery/acquisition and whole-transaction checks with maintained tests/docs.
+User selected INBOX section 13 by review/conditional implementation request.
+Plan suitable; Phase 3b A/B/C is authorized. Node A effective declaration context
+and Node B private discovery/acquisition passed independent full gates with
+separate GAW checkpoints. Node C whole transaction and two opt-in public adapters
+complete: final 17/17 focused ERT (7.708077s), 341/341 installed ERT
+(171.422224s), all nine isolated checks pass. Code is uncommitted/unstaged.
 
-Phase 3a is complete on 2026-10-13. User asked to review/execute new INBOX
-section 12 if sound and update GAW continuously; it is appropriate and was followed
-as investigation only. No Phase 3b/Phase 2 production change was authorized or made.
-Independent locked flake component probes pass 25/25, 0 unexpected (0.207506s),
-Emacs 31.1 / Org 9.8.10. Eleven copied project Lisp files and lock match main's
-committed c26b932 snapshot; uncommitted USTC overlay is unchanged. Native pipeline
-operations, inaccessible-file and remote URL cases are controlled substitutes;
-no new TeXmacs operation, real database or full project gate ran for this research.
+Scope: independent org-texmacs-bibliography module exposes
+org-texmacs-document-from-buffer-discover-bibliography and
+org-texmacs-export-from-buffer-discover-bibliography. Old explicit APIs/menu
+unchanged. Full-source private STM-masked standard Cite discovery once; owned
+raw-document declarations + ordered effective IDs; explicit texts win without
+stat/read, missing local regular UTF-8 <=1 MiB files appended. Reject visiting
+file directory/base mismatch, remote/URL/tilde/control paths, symlink components
+and physical aliases among automatic reads. No preprocessing, pure-layer I/O or
+new input slot. Source baseline predates discovery. Fixed-text receipts plus
+source/config/filter/collector/explicit-text checks through native waits and final
+document/byte return. No file-output policy/FS-DB atomicity/ABA/sandbox claim.
+Phase 2 source composition and Phase 4 real org-roam-organize integration separate.
 
-Necessary report, comparison, draft contract, probes/fixtures/source excerpts and
-outputs are archived at archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md,
-with REPORT.md/CONTRACT.md/REPRODUCE.md under files/tmp/issue-1-phase-3a/.
-Seventeen selected text copies and digests are verified; archive-only checkpoint
-is introduced through manifest first-parent history. Phase 0 archive is unchanged.
-Current proposed contract: memory/bibliography-contract.md, not implemented or
-approved production interface; Phase 1 filter contract remains authoritative.
+Node A: three focused, 327/327 installed ERT 163.753805s, all nine checks.
+Node B: seven focused, 331/331 installed ERT 164.625142s, all nine checks.
+Nine includes eight existing + focused. Final C logs
+tmp/issue-1-phase-3b/node-c-{focused,check}-final.log; 22 inputs
+byte-equal current project, manifest hash 9937e1c2... in evidence.
+Isolated copied flake uses current project lock, user USTC overlay, locked
+Emacs31.1/Org9.8.10/TeXmacs2.1.5. User authorized repeated exact240s isolated
+flake checks this task. flake.lock unchanged; stale local Org is not baseline.
 
-Key findings: raw native discovery mutates shared global lists via delete-dups,
-widens selection, follows SETUPFILE (missing files may silently vanish) and reads
-Org-looking declarations/SETUPFILE inside TeXmacs blocks. Visiting file directory
-and captured resource-base can disagree. Raw-string dedup precedes advice; returned
-relative/duplicate paths need explicit owning/normalization. Texts alone do not
-enable global/managed-only citations in current source APIs: effective declaration
-data must also reach preparation. Pure planner accepts that explicit view already,
-without new input slots or I/O.
-Private research view copies globals, masks all STM even outside body scope,
-disables BIND before Org copy and rejects real preprocessing before discovery.
-Acquisition model preserves every explicit text with priority, fills missing local
-UTF-8 sources and uses file attributes/digests to invalidate changed/replaced files
-without replacing owned text. These are validated components, not a full transaction.
-Recommended next design is a standalone opt-in adapter with owned declaration view
-and source/config/dependency guards from before discovery to before output. Proposed
-first restrictions: aligned visiting-directory/resource-base, local UTF-8 bounded
-regular files, no real SETUPFILE/remote/symlink/physical-alias auto reads. Directory
-policy/limits and public wrapper spelling require review. No DB/FS transaction or
-ABA-proof/sandbox promise; no real managed-package compatibility claim.
-Next action: user reviews/selects Phase 3b contract and implementation scope.
-Do not automatically implement it; section 12 explicitly excludes that authorization.
-Remote issue comment lookup failed; no issue writes were made. Phase 1 remains the
-committed baseline below; its 324/324 gate is historical validation for this code,
-not an additional result of the Phase 3a research.
+Next user reviews/commits seven changed paths; staging needs separate approval.
+flake.nix includes one new fileset entry plus user mirror hunk: stage only the
+module entry if requested, preserve the uncommitted mirror. Mirror-only diff
+hash remains 2af6574f...; flake.lock unchanged. No external issue writes or real
+third-party/database verification. Phase 2/4 need separate selection; issue #1
+not globally complete. No unpassed implementation work remains in Phase 3b.
 
-Issue #1 Phase 1a contract and Phase 1b bounded implementation are complete
-and committed by the user as the citation-key AST filter revision (main c26b932).
-Contract: memory/filter-contract.md. Standard Org parse-tree filters now run
-on the prepared private selected AST after context/mappings, before resolution
-and bibliography planning. Only citation-reference keys may change; each callback
-validates original topology/values/INFO/mappings/work-buffer state, including nil
-returns. Filter stage detaches structures via pure owning before native waits,
-so retained callback references cannot alter the conversion. Pure lowering/input
-construction, worker protocol and native consumers remain independent.
+## Relevant established baseline
 
-Final independent-flake gate on project lock passes all 8 checks, focused 12/12
-(7.266296s) and installed ERT 324/324 (164.341759s), warning-as-error compilation
-and package-lint. Emacs 31.1 / Org 9.8.10; USTC transport from the user's overlay.
-User authorized repeated exact 240s isolated flake checks. Verified 21 isolated
-inputs equal current project bytes; flake lock equals committed b229454 snapshot.
-The committed five-file diff against that baseline matches SHA-256:
-e4e15c8ff1eae7892cd39f02a2bee4e0386fe5f707da2627d8f157fedff84bd7.
-Paths: org-texmacs-context.el, org-texmacs-document.el, org-texmacs.el,
-tests/ert/ert.el, README.org. Commit identity and complete changed-path set are
-verified; ordinary index is empty. User's unstaged
-flake.nix overlay is unchanged (diff hash 2af6574f... in evidence); exclude it.
-
-Native regressions establish remapped key ownership, bibliography/resolution
-equivalence and session readback; restored notes, core-only backend lookup,
-developer/user order, nil returns, illegal changes/error cleanup/context switching,
-escaped AST references and filter selection/function changes at waits are covered.
-Full gate includes prior HTML guard/coexistence and selection/native/PDF cases.
-Real Org-roam integration, arbitrary filter mutations and full preprocessing are
-not supported by this node. Callback side effects/closure state are not sandboxed.
-User completed the ordinary commit after approved staging/message generation.
-Subject: "feat(document): consume Org AST filters for citation keys". Its parent
-is the flake-input update baseline b229454; complete committed diff contains only
-the five verified paths and matches the checked e4e15c8f... hash. No new tests were
-run for identity verification. User overlay remains unstaged and unchanged; no
-external issue write was performed. Phase 1 is complete. Phase 3a investigation
-is now complete above; Phase 2/3b still require their independent contracts
-and user-selected implementation scope.
-
-Phase 0 evidence remains immutable at
-archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. Its 14 probes are historical
-investigation, not production validation. Main is c26b932 on updated project lock;
-local Org 9.8-pre/old-lock 9.8.8 are not current development baselines.
+Main c26b932: user-committed Phase 1 key-only AST filters on b229454 lock update,
+historical 12 focused/324 installed ERT/all eight checks. Filter graph/INFO/buffer
+validation, selected function identity checks and callback-reference detachment
+remain unchanged. Contract: memory/filter-contract.md.
+Phase 3a 25/25 research probes (0.207506s), exact c26b932 source/lock: raw Cite
+enters STM text, mutates global list tails, widens scope, follows SETUPFILE and
+uses visiting directory. These findings motivate the adapter. Immutable archive:
+archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md with report/contract/reproduction
+under files/tmp/issue-1-phase-3a. Phase 0 fourteen-probe archive:
+archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. Both unchanged. Active contract
+memory/bibliography-contract.md is now selected for Phase 3b, not an unselected
+production proposal. Issue #1 still has separate Phase 2/4 work.
 
 v0.4.0 is released. User committed final HTML regression as
 the final HTML coexistence regression revision, created tag and published GitHub release.
@@ -173,8 +127,9 @@ remain unsupported.
 ## Baseline and staging
 
 - Current main is the citation-key AST filter revision c26b932; lock selects
-  Org 9.8.10. Index is empty; flake.nix has the user's unstaged mirror overlay.
-  The committed Phase 1 diff is byte-verified against the checked candidate above.
+  Org 9.8.10. Index empty; seven Phase 3b paths changed (new adapter untracked).
+  flake.nix retains mirror plus new module fileset entry.
+  The committed Phase 1 diff is byte-verified in evidence.md.
   Release-era observations below describe their historical baseline.
 - Main HEAD observed on 2026-10-09:
   the final HTML coexistence regression revision.
@@ -191,7 +146,7 @@ remain unsupported.
   signature block; cryptographic signature verification was not performed.
   Release/tag identity evidence and remaining limits are in evidence.md.
 
-## Verified review supplement
+## Released HTML review evidence (historical)
 
 - New ERT uses actual HTML exporter and controlled temporary preprocessing hook,
   around-advice on include expansion, and parse-tree filter. Their output effects
@@ -263,11 +218,9 @@ remain unsupported.
 
 ## Blockers and next actions
 
-- No project-code blocker. User observed ELPA apparently usable after temporarily
-  removing overlay. Current unmirrored Nix gate passes, with cache reuse; both
-  authorized HEAD probes timeout from this agent environment. Keep availability
-  as not independently confirmed here; cause/global availability remain unknown.
-  Original mirror-backed evidence must not be rewritten as upstream-backed.
+- No Phase 3b code blocker. Current full validation uses the user mirror overlay.
+  Release-era no-overlay results/HEAD timeouts below are historical, not fresh
+  network availability evidence. No extra upstream fetch probe is needed.
 
 1. The native PDF consumer revision is verified against the seven-file SHA-256 on the baseline interactive export revision:
    00164bbb3491e4addd74c75a0c53ab86cd8397855e659c25a572a5ae84044464.
@@ -286,7 +239,7 @@ remain unsupported.
    fragment/generic API remain deferred by user choice.
    At release closure the overlay was removed and the no-overlay check passed.
    Two release-era HEAD attempts timed out. Current lock/mirror state and the
-   newly authorized Phase 0 checks are recorded above.
+   completed issue #1 nodes are recorded above.
    Published release notes are now authoritative for publication scope. Old tmp
    drafts are regenerable preparation artifacts, not remaining release tasks.
 2. Keep dispatcher policy and replacement/backup/atomic-publication boundaries
@@ -296,22 +249,3 @@ remain unsupported.
    session recovered valid GAW without archive, but user supplied AGENTS.md.
    When a fresh session discovers bootstrap/skills unaided and recovers current
    memory, mark that remaining check complete. Continue project work meanwhile.
-# Phase 3b Node B verified
-
-Private org-texmacs-bibliography module implements full STM-masked standard Cite
-discovery plus bounded local UTF-8 acquisition/receipt verification. No public
-automatic entry yet. Seven focused tests passed; full isolated check passed nine
-checks, 331/331 installed ERT in 164.625142s. Real file reads/symlinks/hardlinks,
-negative paths/UTF-8/size and controlled advice are covered. Next Node C installs
-the guard before discovery and exposes document/bytes only after full validation.
-
-# Phase 3b Node A verified
-
-Owned `:document`/`:sources` bibliography view now crosses private source/context
-preparation without new pure input slots or I/O. Old public defaults unchanged.
-Three focused tests passed; isolated current-lock full check passed all nine
-checks (eight existing plus focused), 327/327 installed ERT, 163.753805 seconds.
-Evidence: tmp/issue-1-phase-3b/node-a-check.log. Production changes uncommitted;
-baseline c26b932, user mirror overlay preserved. Next: Node B private discovery
-and bounded acquisition, then Node C whole-transaction integration/public APIs.
-

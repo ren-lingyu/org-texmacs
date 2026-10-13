@@ -1,9 +1,11 @@
-# Phase 3b proposed bibliography discovery/acquisition contract
+# Phase 3b bibliography discovery/acquisition contract
 
-This is the output of Phase 3a research, not an implemented or user-approved
-production interface. Phase 3b needs explicit selection/authorization. The exact
-public wrapper name and internal parameter spelling remain implementation choices.
-Phase 1's current filter contract and old explicit API defaults remain unchanged.
+Selected by the user's review/execute request for INBOX section 13. Nodes A/B/C
+are implemented and fully validated, with independent checkpoints.
+Public wrappers are
+`org-texmacs-document-from-buffer-discover-bibliography` and
+`org-texmacs-export-from-buffer-discover-bibliography`, in an independent module.
+Phase 1's filter contract and old explicit API defaults remain unchanged.
 
 ## Preferred strategy and unavoidable preparation change
 
@@ -13,7 +15,7 @@ interactive frontend may adopt that adapter later under its own policy; do not
 silently enable discovery in every existing source API or dispatcher action.
 
 The existing texts parameter is insufficient for global/advice-only sources:
-current context creates declaration identities exclusively from document keywords,
+the original explicit API creates declaration identities from document keywords,
 and the planner ignores supplied sources not selected by that view. The new adapter
 must provide an explicit owned effective declaration view at preparation's context
 boundary, before Phase 1 filters/owning/planning. Preserve raw document keyword
@@ -30,7 +32,7 @@ explicit data already; no new input slot or pure-layer I/O is required.
   supported parser/context settings, filter function identities, explicit texts and
   global bibliography values before user advice or acquisition. Own strings/lists;
   mutable closure/DB internals are outside the consistency promise.
-- Proposed first scope rejects a visiting-file directory/resource-base mismatch
+- Initial scope rejects a visiting-file directory/resource-base mismatch
   rather than silently changing existing explicit identity semantics. Native Cite
   uses visiting file directory for document declarations while existing explicit
   snapshots use resource-base. Supporting the conflict needs a later deliberate
@@ -61,7 +63,7 @@ explicit data already; no new input slot or pure-layer I/O is required.
   against captured discovery base, then deduplicate lexical absolute identities
   preserving first occurrence. Relative advice paths must follow native context's
   base convention or be absolute; no implicit DB-directory inference is possible.
-- Classify remote/URL inputs before suppressing file-name handlers. Initial model
+- Classify remote/URL inputs before suppressing file-name handlers. Initial adapter
   rejects remote/URL/tilde/malformed/empty identities. Do not turn TRAMP syntax into
   a local pathname by disabling handlers before classification.
 - Normalize provided bibliography-sources under their existing captured-base
@@ -76,10 +78,10 @@ explicit data already; no new input slot or pure-layer I/O is required.
 
 ## Local acquisition and receipts
 
-- Proposed first reader admits bounded regular local UTF-8 BibTeX text. The research
-  model uses 1 MiB/file, rejects symlinks/physical aliases between auto-read paths,
+- Initial reader admits bounded regular local UTF-8 BibTeX text. It
+  uses 1 MiB/file, rejects symlink components/physical aliases between auto-read paths,
   directories, missing/unreadable files, malformed BibTeX and invalid UTF-8. These
-  proposed limits need maintained positive/negative tests before production.
+  limits are covered by maintained positive/negative tests.
 - Normalize only lexical identities; do not canonicalize symlinks behind caller
   supplied identities. Physical alias detection is an acquisition observation,
   separate from bibliography source identity. Explicit text identities need not
@@ -115,11 +117,12 @@ explicit data already; no new input slot or pure-layer I/O is required.
   global registration/advice leaks or worker operations before preflight. Arbitrary
   advice/filter side effects are neither rolled back nor claimed safe to replay.
 
-## Before selecting Phase 3b
+## Validation and remaining integration boundary
 
-Review the directory-conflict restriction, local UTF-8/size/alias limits and effective
-declaration injection shape. Add maintained tests for the entire transaction, not
-only the component research models, including source/config/dependency mutations
-during discovery/acquisition/native waits and before output. No real Org-roam
+Directory conflict, local UTF-8/size/alias limits and effective declaration shape
+were reviewed and selected. Maintained tests cover the entire transaction,
+including source/config/dependency mutations during discovery/acquisition/native
+waits and before document/byte return. Final 17 focused/341 installed ERT and
+all nine isolated checks pass; evidence.md records versions/limits. No real Org-roam
 compatibility claim until independent integration fixtures establish it. Phase 2
 provenance/source composition remains a separate design; issue #1 stays unfinished.

@@ -1402,3 +1402,61 @@ original source/global list. No actual DB lookup/native adapter end-to-end claim
 yet; source-to-native transaction/public APIs are Node C. Changes uncommitted;
 no project parent used. Initial reader rejects symlink ancestors as well as leaf.
 
+# Phase 3b Node C/final validation (2026-10-13)
+
+User selected INBOX section 13; A/B/C complete, code remains uncommitted on
+c26b932. New independent bibliography adapter exposes document/.tm byte opt-in
+APIs only. Existing explicit defaults, pure planner/input slots and Phase 1
+per-callback restriction/once-only execution remain unchanged. Shared transaction
+guard installed before discovery; acquired texts fixed and receipts validate
+through native operations/final return. Separate source/config/global Cite/
+collector/explicit-source checks. Final audit reuses the existing private parser
+for full discovery view with captured links/headings; fresh full-text parse masks
+blocks even when context prunes their AST nodes. Standard collector is not replaced.
+
+Final isolated current-lock/mirror gate: 17/17 focused ERT (7.708077s), 341/341
+installed ERT (171.422224s), all nine checks (eight project checks + focused),
+warning-as-error package compilation and package-lint. Emacs31.1/Org9.8.10/
+TeXmacs2.1.5, x86_64-linux only. Logs node-c-focused-final.log and
+node-c-check-final.log under tmp/issue-1-phase-3b. Intermediate C complete gate
+before link-context reuse also passed, but final counts/bytes govern this claim.
+Early docstring width error and hex-leaf readback assertion were corrected,
+not counted as successful tests. No full-regression timeout or remaining failure.
+
+Maintained coverage: old API no discovery/read; standard advice/global/document
+sources, lexical dedup, explicit absent text priority/unselected ownership;
+inline/block/out-of-restriction STM and source-local link config; remote/URL/tilde/
+control/missing/directory/symlink/hardlink/invalid-UTF-8/size errors. Actual UTF-8
+files plus native bibliography parse/format, UUID mapping once, session readback
+and serialized bytes. Controlled source/global/filter/collector/option/explicit
+text mutations during discovery, source/file changes during acquisition, changes
+at STM wait, bibliography parse/format, document consumer and serialization return.
+Private buffers/advice cleaned on errors; callbacks are not sandboxed. Existing
+HTML/ASCII/generic guard/native/PDF regressions remain part of full gate. No real
+Org-roam package/DB lookup, atomic FS-DB/ABA, file publication or Phase 2 claim.
+
+All 22 copied source/lock/test files byte-equal working tree. Exact ordered JSON
+byte/length/SHA-256 manifest tmp/issue-1-phase-3b/final-inputs.json SHA-256:
+9937e1c2f460d9bd46dcecd41931e74ed6bacaa9b02f21e1ba33bbcf498902ae.
+Root/isolated flake differ only in the additional focused derivation; root's new
+module fileset entry is present in both. Removing that sole new root entry and
+reconstructing its mirror-only diff gives the unchanged user overlay SHA-256:
+2af6574fe8302fa7a5e64d3e93e8955cf7c36f0a4c6c2f135a2edffe8b65032a.
+flake.lock remains 118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a.
+Seven changed working-tree paths and final content SHA-256 (flake includes mirror):
+
+- README.org: 774edd309c907a6893bed0113a67ef1402927ac83c19526477919bd3fd613b39
+- flake.nix: e5da300802c400f722350d83f7389e76ae3e921a390bafb08aafe4f17380d1c4
+- org-texmacs-bibliography.el: b310104e9670cc9e477a7fdb9065ba31dfe5716fab89de8411a6c3a57cc60e7f
+- org-texmacs-context.el: 3d47a4600ff8c1043da1868c51eba8ac601b8bdb0474794a187098a1f4cd4c7b
+- org-texmacs-source.el: 084a8f02f70d0da067382403b80b7b16173c1e14dceeb2b27d28fff5dc95e108
+- org-texmacs.el: 2111d48307baf807500e9e6d1c06a4bc97b649145b8f7549919a23bced697163
+- tests/ert/ert.el: 1a9a6e869509027a75e8db05adbba185d93d5e261d5f1c765c9dfce289d02f40
+
+Ordinary index remains empty; no project commit or issue write performed. No
+project parent attaches to this checkpoint because tested implementation is an
+uncommitted candidate, not c26b932 alone. Maintained tests/docs are primary future
+reproduction; temporary logs/manifest are regenerable, no new archive needed.
+Phase 0/3a immutable archives unchanged. Next ordinary staging needs separate
+approval, including partial flake staging to exclude user mirror hunk.
+
