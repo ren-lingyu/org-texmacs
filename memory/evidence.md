@@ -1649,3 +1649,21 @@ memory checkpoint has no project parent; archive research baseline parent remain
 separate. Next ordinary review/staging must exclude user mirror; Phase4 requires
 separate scope. Issue #1 still incomplete beyond the selected first contract.
 
+## Phase 2 staging and commit-message review (2026-10-14)
+
+User explicitly authorized staging and message generation. Seven paths staged:
+README.org, flake.nix, org-texmacs-preprocess.el, org-texmacs-bibliography.el,
+org-texmacs-document.el, org-texmacs.el, tests/ert/ert.el. Partial flake candidate
+contains only new module fileset entry; all USTC overlay edits remain unstaged.
+Complete staged diff (966 insertions,28 deletions) reviewed, diff --check clean.
+tmp/issue-1-phase-2/staged.diff SHA-256:
+bbb18e19330b81634f407d7ccf8efec3658a19e645c815c9edfe14a31b71f2bc.
+Six whole-file staged inputs equal final validated hashes above and working tree.
+Earlier 35/35 focused,359/359 ERT and ten checks remain applicable with documented
+mirror transport difference; no new tests solely for staging. tmp/commit.md regenerated
+from staged evidence with English feat(document) subject, Chinese body, Refs #1.
+One coherent capability including supporting transaction/provenance/tests/docs/
+fileset wiring; split not necessary, medium difficulty for coupled intermediate
+changes. No ordinary commit, lockfile edit or issue write; no project parent for
+this uncommitted candidate checkpoint. User commit verification is next.
+

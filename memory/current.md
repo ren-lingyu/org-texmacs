@@ -50,8 +50,13 @@ Final 23 source/lock/test inputs byte-match root. Manifest
 tmp/issue-1-phase-2/final-inputs.json SHA c88fc898... in evidence. Logs
 node-c-{focused,check}-final.log. User mirror-only original diff remains7a882736...;
 root flake includes just new preprocess fileset line plus mirror; lock unchanged.
-No ordinary staging/commit or issue write. Next user reviews/stages/commits seven
-paths (partial flake staging must exclude mirror), then verify commit identity.
+User authorized staging/message generation: all seven Phase2 paths now staged;
+flake staging includes only the preprocess fileset line, mirror remains unstaged.
+Complete staged diff reviewed/check-clean, SHA-256 bbb18e19330b81634f407d7ccf8efec3658a19e645c815c9edfe14a31b71f2bc.
+Six whole-file staged contents match final validated hashes and working files.
+tmp/commit.md regenerated: feat(document): add bounded Org preprocessing and INCLUDE composition,
+footer Refs #1. Suitable as one coherent commit; no new tests for staging alone.
+No ordinary commit or issue write. Next user commits, then verify commit identity.
 Phase 4 real package integration and broader composition policies remain separately
 selected work; issue #1 still incomplete, closing footer premature.
 
@@ -175,8 +180,8 @@ remain unsupported.
 ## Baseline and staging
 
 - Current main is the opt-in bibliography discovery revision 049a5a0 on c26b932;
-  lock selects Org9.8.10. Ordinary index empty; seven Phase2b paths changed,
-  including new untracked preprocess module; user mirror still unstaged.
+  lock selects Org9.8.10. Seven Phase2b paths staged including new preprocess
+  module; user mirror still unstaged. Candidate and message reviewed above.
   Phase 3b committed diff matches staged/validated candidate SHA-256 in evidence.
   Release-era observations below describe their historical baseline.
 - Main HEAD observed on 2026-10-09:
