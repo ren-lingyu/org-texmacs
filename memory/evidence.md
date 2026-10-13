@@ -1481,3 +1481,42 @@ commit, source edit, lock update or remote write. Current memory now awaits user
 commit and subsequent identity verification; no project parent attached to this
 staging checkpoint because implementation remains an uncommitted candidate.
 
+# Phase 3b commit identity and Phase 2 plan review (2026-10-13)
+
+Read-only verification finds user-committed main
+049a5a00bdd52d83e1f03823accc9324f4bcee0c, parent c26b932. Seven-file complete
+committed diff SHA-256 equals the approved staged candidate:
+810024f4aeb543142ec9d5413e024c0232bb836a6fe252ddba0c6faf3da06ad5.
+Subject/body/Refs footer match reviewed tmp/commit.md. Index empty; only user
+mirror overlay remains dirty. Root flake content SHA-256 remains e5da3008... as
+in final tested inputs; lock remains 118fef56... . Remaining mirror diff on new
+fileset-containing baseline SHA-256:
+7a8827365304ff14f47a66f8282bbae968ba33f042261073f5e924bff48cb697.
+This differs from the original mirror-only diff due to index/hunk baseline, not
+overlay content. Prior 17 focused/341 ERT/all-nine gate is transferred by exact
+candidate byte identity, not by rerunning tests. Project parent associates this
+verified implementation/review baseline, not new Phase 2 runtime evidence.
+
+User explicitly requested INBOX section 14 review and GAW maintenance, no plan
+execution. Declared ordinary/starting-GAW baselines match local observations.
+Review source section starts line1110, full INBOX SHA-256:
+5ed50e2c1f7f2e92c2ee08a35dcbc0822c341e23ce4b80de2fd5221cd8ee2eb1.
+Reviewed complete section: Phase 2a investigation before contract-selected bounded
+Phase 2b; full Phase 4 follows stable composition, optional earlier small managed
+bibliography integration separate. Plan appropriate and consistent with goals and
+Phase 0 limitations (no after-includes hook/full-origin proof; simple hook invocation
+does not establish full lifecycle). memory/preprocessing-plan-review.md records
+review status, provenance, reasons, acceptance clarifications and deliverables.
+
+Clarifications are future questions, not new verified capabilities: protect STM
+literal directives across preprocessing; origin identity includes inclusion
+occurrence/generated or unknown segments; hook-return protocol separate from AST
+filter return rules; original/working selection/config precedence; STM resource
+origins beyond relocated Org links; composition/bibliography origin and receipt
+contract; bounded include dependency and invalidation policy. No origin model,
+input slot extension, numerical include limits or lifecycle strategy selected yet.
+No Phase 2 probe/prototype/native/test/build/network command, ordinary file edit,
+index mutation or external issue write this turn. Only GAW memory maintenance.
+Future investigation and Phase 2b implementation require subsequent execution
+scope; prior Phase 3b test authorization does not expand to this new plan.
+

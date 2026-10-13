@@ -281,17 +281,22 @@ native or GUI evidence before they can be claimed as verified.
 ### Org ecosystem preparation interoperability
 
 Phase 3b A/B/C selected through the user's INBOX section 13 review/execute
-request is complete in the uncommitted working tree. Independent opt-in
-bibliography discovery/acquisition adapters preserve old API defaults, owned
+request is complete and committed as the opt-in bibliography discovery revision.
+Independent opt-in bibliography discovery/acquisition adapters preserve defaults, owned
 effective declarations and fixed local texts, full STM masking, standard Cite
 advice and whole-transaction checks. Contract memory/bibliography-contract.md;
 final 17 focused/341 installed ERT/all nine checks pass. Details/limits in project
 and evidence. Phase 3a research is archived at
 archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md, not production validation.
-Phase 2 composition/provenance and Phase 4 real package integration remain
-independent unresolved work. Next candidate real org-roam-organize managed
-bibliography + UUID mapping integration needs its own selected scope; no actual
-package/database compatibility claim yet. File/menu policy remains separate.
+User's INBOX section 14 now prefers Phase 2a composition/provenance investigation,
+then selected bounded Phase 2b, then full Phase 4. Review complete and appropriate;
+no execution authorized this review turn. memory/preprocessing-plan-review.md
+records STM directive protection, origin/occurrence, hook-return, selection/config,
+resource/bibliography origin and dependency-policy clarifications. No prototype or
+new test result exists for Phase 2. Optional earlier small org-roam-organize managed
+bibliography/UUID integration needs separate scope, is not Phase 2-blocking and
+cannot establish full issue #1 completion. No real package/database compatibility
+claim yet. File/menu policy remains separate.
 
 Phase 1a/1b are implemented, verified and committed as the citation-key AST filter
 revision; the complete five-file committed diff matches validated bytes.

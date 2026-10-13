@@ -662,9 +662,10 @@ is claimed. No public API signature, worker protocol or native consumer is chang
 
 ## Phase 3b opt-in bibliography discovery/acquisition
 
-Implemented and verified in the uncommitted working tree on the committed Phase 1
-baseline. Independent org-texmacs-bibliography module, lazy autoloads from main and
-flake fileset inclusion. Public document/byte wrappers end in
+Committed by the user as the opt-in bibliography discovery revision on the Phase 1
+baseline; full committed diff matches validated staged bytes (evidence.md).
+Independent org-texmacs-bibliography module, lazy autoloads from main and flake
+fileset inclusion. Public document/byte wrappers end in
 `-from-buffer-discover-bibliography`, preserving optional text/selection/options
 arguments. Existing explicit APIs/menu/pure constructors retain defaults.
 

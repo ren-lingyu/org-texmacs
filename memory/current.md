@@ -2,13 +2,20 @@
 
 ## Active objective
 
-User selected INBOX section 13 by review/conditional implementation request.
-Plan suitable; Phase 3b A/B/C is authorized. Node A effective declaration context
-and Node B private discovery/acquisition passed independent full gates with
-separate GAW checkpoints. Node C whole transaction and two opt-in public adapters
-complete: final 17/17 focused ERT (7.708077s), 341/341 installed ERT
-(171.422224s), all nine isolated checks pass. Seven implementation paths staged
-under subsequent user authorization; ordinary project commit remains user action.
+User requested review of INBOX section 14 (line1110) and GAW update only,
+explicitly no execution. Review complete: guidance is appropriate, preferred
+sequence Phase 2a composition/provenance investigation → contract selection →
+bounded Phase 2b nodes → full Phase 4. No Phase 2a probes/prototype/tests or
+production changes performed/authorized this turn. Review details and acceptance
+clarifications: memory/preprocessing-plan-review.md. Future investigation needs
+new execution scope; previous Phase 3b build/network allowances do not transfer.
+
+Phase 3b A/B/C is complete and committed by user as the opt-in Org Cite discovery
+revision, main 049a5a0 on c26b932. Seven-file committed diff exactly matches
+reviewed staged SHA-256 810024f4...; subject/body/footer match tmp/commit.md.
+Index empty; only user mirror overlay remains dirty. Prior validation applies
+by byte identity: 17/17 focused, 341/341 installed ERT, all nine checks.
+No new regression was run solely for commit identity or plan review.
 
 Scope: independent org-texmacs-bibliography module exposes
 org-texmacs-document-from-buffer-discover-bibliography and
@@ -29,20 +36,26 @@ Nine includes eight existing + focused. Final C logs
 tmp/issue-1-phase-3b/node-c-{focused,check}-final.log; 22 inputs
 byte-equal current project, manifest hash 9937e1c2... in evidence.
 Isolated copied flake uses current project lock, user USTC overlay, locked
-Emacs31.1/Org9.8.10/TeXmacs2.1.5. User authorized repeated exact240s isolated
-flake checks this task. flake.lock unchanged; stale local Org is not baseline.
+Emacs31.1/Org9.8.10/TeXmacs2.1.5. During Phase 3b the user authorized repeated
+exact240s isolated flake checks. flake.lock unchanged; stale local Org is not baseline.
 
-Next user reviews/commits the seven staged paths. tmp/commit.md contains reviewed
-message `feat(document): add opt-in Org Cite bibliography discovery`, Refs #1.
-flake.nix has only the new module fileset entry staged; user mirror stays unstaged.
-Complete staged diff SHA-256 810024f4... in evidence. Mirror-only original diff
-hash remains 2af6574f...; flake.lock unchanged. No external issue writes or real
-third-party/database verification. Phase 2/4 need separate selection; issue #1
-not globally complete. No unpassed implementation work remains in Phase 3b.
+Next await user's explicit Phase 2a investigation request; do not automatically
+run the new plan. First questions are native INCLUDE origin/occurrence tracking,
+literal STM protection, original-vs-working selection/configuration, and Phase 3b
+bibliography origin/receipt integration. Unknown provenance fails or has a reviewed
+generated-origin policy; no guessing. Hook-return semantics must be researched
+independently from the existing AST-filter return/mutation contract.
+
+INBOX and ordinary source/tests/docs untouched during review. Main 049a5a0,
+flake.lock unchanged; root flake content still matches prior mirror-backed tested
+hash e5da3008... . Current remaining mirror diff SHA-256 7a882736... reflects the
+new committed fileset baseline; original overlay content was not changed. No
+remote issue writes or real third-party/database verification. Issue #1 remains
+incomplete; use reference footer until remaining work is actually resolved.
 
 ## Relevant established baseline
 
-Main c26b932: user-committed Phase 1 key-only AST filters on b229454 lock update,
+Phase 1 c26b932: user-committed key-only AST filters on b229454 lock update,
 historical 12 focused/324 installed ERT/all eight checks. Filter graph/INFO/buffer
 validation, selected function identity checks and callback-reference detachment
 remain unchanged. Contract: memory/filter-contract.md.
@@ -128,10 +141,9 @@ remain unsupported.
 
 ## Baseline and staging
 
-- Current main is the citation-key AST filter revision c26b932; lock selects
-  Org 9.8.10. Index empty; seven Phase 3b paths changed (new adapter untracked).
-  flake.nix retains mirror plus new module fileset entry.
-  The committed Phase 1 diff is byte-verified in evidence.md.
+- Current main is the opt-in bibliography discovery revision 049a5a0 on c26b932;
+  lock selects Org9.8.10. Ordinary index empty; only user mirror remains unstaged.
+  Phase 3b committed diff matches staged/validated candidate SHA-256 in evidence.
   Release-era observations below describe their historical baseline.
 - Main HEAD observed on 2026-10-09:
   the final HTML coexistence regression revision.
