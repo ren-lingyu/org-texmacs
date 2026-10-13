@@ -23,6 +23,18 @@ decision.
 
 ## Active next
 
+### Phase 2c INCLUDE parameter investigation
+
+User's INBOX section15 proposes location, only-contents, minlevel and lines on
+the committed Phase2b baseline, before Phase4. Reviewed as suitable bounded
+direction; **unresolved-design** pending locked investigation/selection mapping
+contract. No execution authorization from the notification alone. Review:
+memory/include-parameters-plan-review.md. Resolve original-coordinate projection,
+retained STM identity, out-of-selection footnotes/nested dependencies, parameter
+combinations, per-file vs occurrence identity/cycles and budget accounting first.
+Common resource base/full root/ordinary levels remain; wrappers and cross-directory
+STM separate. Phase4 real integration remains subsequent, issue #1 open.
+
 ### DOC-01: Complete document-wide semantic resolution
 
 Status: **adopted-later** for remaining bounded variants; its critical resolution

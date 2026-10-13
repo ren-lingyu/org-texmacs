@@ -2,6 +2,13 @@
 
 ## Active objective
 
+New INBOX section15 (around line1340) reviewed on 2026-10-14: Phase2c parameter
+expansion is a coherent proposed next sequence before Phase4, starting with locked
+isolated investigation. Review/refinements: memory/include-parameters-plan-review.md.
+No execution requested by this notification; no new probes/builds/production edits.
+Next on explicit execution request: Phase2c-a native selection/mirror mapping and
+dependency-closure investigation, contract gate before implementation.
+
 User requested Phase 2a and Phase 2b execution on 2026-10-14. Both complete for
 selected bounded first profile. Phase 2a twelve isolated probes (0.144719s),
 locked Emacs31.1/Org9.8.10, native stage/source/selection/provenance research,
