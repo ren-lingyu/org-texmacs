@@ -1460,3 +1460,24 @@ reproduction; temporary logs/manifest are regenerable, no new archive needed.
 Phase 0/3a immutable archives unchanged. Next ordinary staging needs separate
 approval, including partial flake staging to exclude user mirror hunk.
 
+# Phase 3b staged candidate/message (2026-10-13)
+
+User expressly authorized staging and commit-message generation. Seven staged
+paths: README.org, flake.nix (new module fileset hunk only),
+org-texmacs-bibliography.el, org-texmacs-context.el, org-texmacs-source.el,
+org-texmacs.el, tests/ert/ert.el. All six full-file staged contents match final
+validated byte hashes above. Staged flake contains no user USTC overlay; only
+that unchanged mirror patch remains unstaged. Complete staged candidate reviewed,
+git diff --cached --check passes. No new tests necessary for staging verification.
+Complete staged diff SHA-256:
+810024f4aeb543142ec9d5413e024c0232bb836a6fe252ddba0c6faf3da06ad5.
+tmp/commit.md contains reviewed Conventional Commit message:
+feat(document): add opt-in Org Cite bibliography discovery; Chinese body describes
+the adapter, declaration ownership, bounded acquisition/receipts, tests/docs/build
+fileset. Refs #1, not Closes: Phase 2/4 remain independent. Suitable as one coherent
+commit, split not necessary; separating coupled preparation/acquisition/guard
+and tests requires hunk reconstruction (medium difficulty). No native project
+commit, source edit, lock update or remote write. Current memory now awaits user's
+commit and subsequent identity verification; no project parent attached to this
+staging checkpoint because implementation remains an uncommitted candidate.
+

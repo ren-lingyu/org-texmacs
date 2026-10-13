@@ -7,7 +7,8 @@ Plan suitable; Phase 3b A/B/C is authorized. Node A effective declaration contex
 and Node B private discovery/acquisition passed independent full gates with
 separate GAW checkpoints. Node C whole transaction and two opt-in public adapters
 complete: final 17/17 focused ERT (7.708077s), 341/341 installed ERT
-(171.422224s), all nine isolated checks pass. Code is uncommitted/unstaged.
+(171.422224s), all nine isolated checks pass. Seven implementation paths staged
+under subsequent user authorization; ordinary project commit remains user action.
 
 Scope: independent org-texmacs-bibliography module exposes
 org-texmacs-document-from-buffer-discover-bibliography and
@@ -31,9 +32,10 @@ Isolated copied flake uses current project lock, user USTC overlay, locked
 Emacs31.1/Org9.8.10/TeXmacs2.1.5. User authorized repeated exact240s isolated
 flake checks this task. flake.lock unchanged; stale local Org is not baseline.
 
-Next user reviews/commits seven changed paths; staging needs separate approval.
-flake.nix includes one new fileset entry plus user mirror hunk: stage only the
-module entry if requested, preserve the uncommitted mirror. Mirror-only diff
+Next user reviews/commits the seven staged paths. tmp/commit.md contains reviewed
+message `feat(document): add opt-in Org Cite bibliography discovery`, Refs #1.
+flake.nix has only the new module fileset entry staged; user mirror stays unstaged.
+Complete staged diff SHA-256 810024f4... in evidence. Mirror-only original diff
 hash remains 2af6574f...; flake.lock unchanged. No external issue writes or real
 third-party/database verification. Phase 2/4 need separate selection; issue #1
 not globally complete. No unpassed implementation work remains in Phase 3b.
