@@ -1,8 +1,10 @@
 # Selected initial Phase 2b composition contract
 
 User requested Phase 2a and 2b execution on 2026-10-14. Research first; bounded
-implementation follows this selected profile. This is a target contract until
-maintained production/native tests pass, not a current support claim.
+implementation follows this selected profile. Phase 2b A/B/C is now implemented
+and fully validated in the uncommitted working tree: 18 new ERT, final35 focused
+(including17 Phase3b),359 installed ERT/all ten isolated checks. Actual native
+parse/footnotes/bibliography/session readback/bytes covered; no real package proof.
 
 ## Scope and native-reuse boundary
 
@@ -39,7 +41,9 @@ Mutable closure/DB internals and arbitrary callback I/O are not sandboxed.
 Bare quoted full-file local Org INCLUDE only, column zero, same lexical resource
 directory as the root. Reject INCLUDE parameters/locations/lines/env, directory
 conflict, URL/remote/tilde/control paths, symlink components, cycles and physical
-alias ambiguity. Visiting directory must agree with resource-base; fileless roots
+alias ambiguity. Visiting directory must agree with resource-base; existing root identity must
+be regular, absent identities are allowed and acquired aliases of an observed root
+are rejected. Fileless roots
 need a local base. Read UTF-8 regular files <=64 KiB each, <=8 nesting levels,
 <=32 source occurrences and <=256 KiB aggregate source/working bytes. No file-local
 variable evaluation. Whole-file included footnotes are natively renamed within

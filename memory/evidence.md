@@ -1583,3 +1583,69 @@ No public new adapter yet; complete source/hook/include/bib/native/output transa
 and native origin remapping still require Node C. Candidate uncommitted, no project
 parent attached. Original immutable research archive remains unchanged.
 
+# Phase 2b Node C/final acceptance (2026-10-14 Asia/Shanghai)
+
+Selected bounded initial composition profile complete on uncommitted candidate,
+main baseline049a5a0. Independent lazy optional preprocess module exposes owned
+prepare/document/.tm byte APIs. Before-processing/parsing stages +actual native
+INCLUDE over fixed protected mirrors; original canonical snapshot/config baseline
+precedes callbacks. Node-keyed origins attached before once-only Phase1 callbacks,
+working ranges captured explicitly during registration and remapped by pure owning.
+No new public input slot/pure I/O/worker operation. Explicit new boolean separately
+requests composed Cite discovery with existing priority/read receipts; old APIs/menu
+defaults and original Phase3b wrappers unchanged. Shared transaction preprocessor
+initializer prevents guard capture after preprocessing or late checks after output.
+
+Final focused35/35 (16.023371s:18 new Phase2 ERT +17 Phase3b), installed359/359
+(180.303530s), all ten isolated checks (eight originals +research/focused), strict
+compilation/package-lint pass. Twelve locked research probes also pass in full gate,
+but remain distinct evidence. Emacs31.1/Org9.8.10/TeXmacs2.1.5, x86_64-linux only.
+Logs tmp/issue-1-phase-2/node-c-focused-final.log/node-c-check-final.log. Full check
+authorized240s; no timeout/remaining failure. Source mutation/read-time file changes,
+markers/config changes, missing/cycle/parameters/directories, size/occurrence budget,
+observed-root hardlink alias and temporary cleanup tests; actual UTF8/local file
+composition/nested repeats, six equal STM origin keys, private mode/nested generic
+guards, generated STM and full-file native footnotes. UUID/bib/filter/discovery
+once, actual native bib parse/format, session readback and bytes; include changes
+at native parse/format/serialization reject result. Old HTML/ASCII/PDF/selection and
+worker/domain-error behavior remain covered. Tests/prototype substitutions are not
+actual Org-roam/database integration or GUI/STM resource rendering evidence.
+
+Scope is deliberately full unnarrowed/ordinary-headline/common-directory/bare-file:
+64KiB/file, depth8,32 occurrences incl root,256KiB aggregate. Existing visiting
+identity must be regular or absent; physical root aliases rejected. Cross-directory
+STM and original selection maps, include options/partial extraction, broader
+parser/config lifetime and real packages remain separate. Tokens validate original
+STM identity; generated STM has no guessed file/range. Ordinary intervals are
+derived contexts (before-processing text rewrites), after-parsing changes have
+generated contexts, not exact original char correspondences. No macro/Babel/BIND/
+SETUPFILE/Cite processor/full annotation, FS/DB atomicity/ABA/callback sandbox/file
+publication claim. Generic guard retained, projected names visible to INCLUDE advice.
+
+Final23 copied code/lock/test inputs exactly equal root. Ordered final-inputs.json
+under tmp/issue-1-phase-2 SHA-256:
+c88fc8983442c9e49110da947db20bf38ca754e76eb6c13e2aee1161b8d60da5.
+Root/isolated flake differ only by probe/focused definitions; sole production
+fileset addition is org-texmacs-preprocess.el. Removing that line reproduces
+unchanged user mirror-only diff SHA-256:
+7a8827365304ff14f47a66f8282bbae968ba33f042261073f5e924bff48cb697.
+flake.lock remains118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a.
+Seven current changed paths and content SHA-256 (flake includes mirror):
+
+- README.org: 9830164710ee9eec5eaa744fcda3a4b1fb78ff80d2d971ea059974763b52c4a1
+- flake.nix: 57bac69941349d236cdc257eb11fd587ad2bc860e27858b3fe210432f818d62f
+- org-texmacs-preprocess.el: 28df0be7b6f5b8c2e53228bd15d4091948c90dd0e717d48aa8a79d2711bcf83c
+- org-texmacs-bibliography.el: 00ab1e3780fd8032e1f40f26a080a0e004053bc46f3032f1ffb603116e6fc132
+- org-texmacs-document.el: 5a7dc7e85ff4e679dbd88bb3f21470a4ac6e0880813f420c1a1033fcfe5f3ba8
+- org-texmacs.el: 728b660921f54c06708fcfc14c9ea70f34a2758c265c06ce864034fa74035499
+- tests/ert/ert.el: 0c32929f78b642cd2e8c2f27b9a7242a2842e084764654a29ab1c1620ff8cd43
+
+No ordinary staging/commit/lock/issue mutation. Current production tests/docs
+retain reproducible implementation evidence; no duplicate source-code archive.
+Original eight-file research archive remains immutable. Early syntax/width errors,
+column predicate warning, parsed-author/string copy error and footnote research
+assumption corrected before final gates. Candidate is uncommitted, so final GAW
+memory checkpoint has no project parent; archive research baseline parent remains
+separate. Next ordinary review/staging must exclude user mirror; Phase4 requires
+separate scope. Issue #1 still incomplete beyond the selected first contract.
+

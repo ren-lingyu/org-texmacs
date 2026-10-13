@@ -2,37 +2,64 @@
 
 ## Active objective
 
-On 2026-10-14 user explicitly requested execution of Phase 2a and Phase 2b.
-Phase 2a complete: 12/12 isolated probes (0.144719s), locked Emacs31.1/Org9.8.10.
-Archive: archive/2026-10-13T16-45-34Z--049a5a0/MANIFEST.md. Stage table, runnable
-native-mirror model, comparison and first contract selected before production edits.
-memory/preprocessing-contract.md defines the bounded target; not production support
-until maintained/native gate. First scope: full unnarrowed source, same resource
-directory, bare full-file local UTF-8 <=64KiB includes, depth8/occurrences32/aggregate
-256KiB. Original STM occurrence/ranges distinct from derived/generated origin.
-Whole-file footnotes retain occurrence after native renaming; the initial opposite
-assumption was corrected before final probe acceptance. No partial include/selection
-or cross-directory STM policy. No pure input slot/I/O or generic lifecycle claim.
-Phase 2b Node A verified: three focused (0.122164s), 344/344 installed ERT
-(173.063596s), all ten isolated checks (eight existing + probes/focused). Owned
-original/working/context data and private island ranges/annotation precede filters;
-legacy requests keep three fields, no new input slot/I/O. Node B private protected
-native composition now passes eight focused (0.148219s), 349/349 full ERT
-(172.609625s) and all ten checks. Snapshot/temp cleanup, source occurrences,
-generated hook text, standard hook returns, config/marker refusal and nested
-generic guard/mode hook isolation covered. Main/document/new preprocess module,
-fileset/tests uncommitted. Next Node C public/bibliography/whole-native transaction
-validation; no auto public preprocessing capability claimed until that gate.
-Section 14 and memory/preprocessing-plan-review.md route the work.
-User additionally authorized isolated builds/necessary network and repeated exact
-240s checks at tmp/issue-1-phase-2, current project lock/mirror, no lock update.
-Prototype/adoption must precede bounded Phase 2b implementation. Full Phase 4
-remains independent. No generic exporter or full annotate-info substitution.
+User requested Phase 2a and Phase 2b execution on 2026-10-14. Both complete for
+selected bounded first profile. Phase 2a twelve isolated probes (0.144719s),
+locked Emacs31.1/Org9.8.10, native stage/source/selection/provenance research,
+runnable protected native-mirror model, strategy comparison and adopted contract.
+Necessary eight text files archived at
+archive/2026-10-13T16-45-34Z--049a5a0/MANIFEST.md; immutable, no production/native
+claim from research alone. Target/implemented contract: memory/preprocessing-contract.md.
+
+Phase 2b A/B/C implemented in uncommitted working tree on main049a5a0. Node A
+3 focused/344 ERT (173.063596s); Node B 8 focused/349 ERT (172.609625s), separate
+GAW checkpoints. Final C gate: 35/35 focused (16.023371s:18 new Phase2 +17 Phase3b),
+359/359 installed ERT (180.303530s), all ten checks (eight original +research/focused)
+and warning-as-error compilation/package-lint. Current lock/mirror independent
+flake, user-authorized builds/network and repeated exact240s checks under
+project tmp/issue-1-phase-2. No project lock/ordinary Git mutation.
+
+New lazy optional org-texmacs-preprocess module exposes prepare-buffer-preprocessed,
+document-from-buffer-preprocessed and export-from-buffer-preprocessed. Full,
+unnarrowed ordinary-level sources only, common lexical resource directory, active
+column-zero bare complete-file INCLUDE; local UTF8 regular <=64KiB/file, depth8,
+32 occurrences including root, 256KiB aggregate source/working. Reject parameters,
+partial selection, cross-directory STM/links, odd levels, cycles, symlink/physical
+aliases (including observed root), nonregular existing visiting identity. Missing
+visiting identities allowed; canonical live text never reloaded from disk.
+
+Owned original/derived snapshots and context feed existing preparation; exact
+island working bounds captured during registration, origins attached before the
+once-only key filters and remapped by pure owning. No new input slot/pure I/O.
+Protected unique tokens/occurrence boundaries plus actual native INCLUDE over
+fixed mirrors; standard hook utility with captured functions, original generic
+hook guard intact, private nested guard, mode-hook suppression. Full native exporter
+lifecycle not claimed; no macros/Babel/BIND/SETUPFILE/Cite processors. Ordinary
+before-processing rewritten root is derived context, before-parsing edits have
+explicit generated context; original exact ranges only for protected STM. New STM
+is generated, never recovered by raw-string equality. Snapshots/temp artifacts own
+source context; projected filenames visible to INCLUDE advice, no real package proof.
+
+Bibliography is separately requested by final boolean on the new API, over composed
+full masked text with existing fixed explicit-text priority/acquisition receipts.
+Old explicit/bibliography/menu APIs retain defaults. Root source/config/hooks/native
+include identities/explicit text/include/bib dependencies checked from before
+callbacks through native operations/final doc or byte return. No replay or text
+replacement, file publication, FS/DB atomicity, ABA or sandbox promise.
+
+Final 23 source/lock/test inputs byte-match root. Manifest
+tmp/issue-1-phase-2/final-inputs.json SHA c88fc898... in evidence. Logs
+node-c-{focused,check}-final.log. User mirror-only original diff remains7a882736...;
+root flake includes just new preprocess fileset line plus mirror; lock unchanged.
+No ordinary staging/commit or issue write. Next user reviews/stages/commits seven
+paths (partial flake staging must exclude mirror), then verify commit identity.
+Phase 4 real package integration and broader composition policies remain separately
+selected work; issue #1 still incomplete, closing footer premature.
 
 Phase 3b A/B/C is complete and committed by user as the opt-in Org Cite discovery
 revision, main 049a5a0 on c26b932. Seven-file committed diff exactly matches
 reviewed staged SHA-256 810024f4...; subject/body/footer match tmp/commit.md.
-Index empty; only user mirror overlay remains dirty. Prior validation applies
+At that commit verification index was empty and only mirror was dirty; current
+seven Phase2b path changes are listed above. Prior validation applies
 by byte identity: 17/17 focused, 341/341 installed ERT, all nine checks.
 No new regression was run solely for commit identity or plan review.
 
@@ -58,19 +85,6 @@ Isolated copied flake uses current project lock, user USTC overlay, locked
 Emacs31.1/Org9.8.10/TeXmacs2.1.5. During Phase 3b the user authorized repeated
 exact240s isolated flake checks. flake.lock unchanged; stale local Org is not baseline.
 
-Next complete isolated Phase 2a prototype and adopted contract before production
-implementation. First questions are native INCLUDE origin/occurrence tracking,
-literal STM protection, original-vs-working selection/configuration, and Phase 3b
-bibliography origin/receipt integration. Unknown provenance fails or has a reviewed
-generated-origin policy; no guessing. Hook-return semantics must be researched
-independently from the existing AST-filter return/mutation contract.
-
-INBOX and ordinary source/tests/docs untouched during review. Main 049a5a0,
-flake.lock unchanged; root flake content still matches prior mirror-backed tested
-hash e5da3008... . Current remaining mirror diff SHA-256 7a882736... reflects the
-new committed fileset baseline; original overlay content was not changed. No
-remote issue writes or real third-party/database verification. Issue #1 remains
-incomplete; use reference footer until remaining work is actually resolved.
 
 ## Relevant established baseline
 
@@ -161,7 +175,8 @@ remain unsupported.
 ## Baseline and staging
 
 - Current main is the opt-in bibliography discovery revision 049a5a0 on c26b932;
-  lock selects Org9.8.10. Ordinary index empty; only user mirror remains unstaged.
+  lock selects Org9.8.10. Ordinary index empty; seven Phase2b paths changed,
+  including new untracked preprocess module; user mirror still unstaged.
   Phase 3b committed diff matches staged/validated candidate SHA-256 in evidence.
   Release-era observations below describe their historical baseline.
 - Main HEAD observed on 2026-10-09:
@@ -251,7 +266,7 @@ remain unsupported.
 
 ## Blockers and next actions
 
-- No Phase 3b code blocker. Current full validation uses the user mirror overlay.
+- No Phase 2b code blocker. Current full validation uses the user mirror overlay.
   Release-era no-overlay results/HEAD timeouts below are historical, not fresh
   network availability evidence. No extra upstream fetch probe is needed.
 

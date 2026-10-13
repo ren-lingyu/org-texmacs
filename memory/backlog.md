@@ -288,15 +288,21 @@ advice and whole-transaction checks. Contract memory/bibliography-contract.md;
 final 17 focused/341 installed ERT/all nine checks pass. Details/limits in project
 and evidence. Phase 3a research is archived at
 archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md, not production validation.
-User's INBOX section 14 now prefers Phase 2a composition/provenance investigation,
-then selected bounded Phase 2b, then full Phase 4. Review complete and appropriate;
-no execution authorized this review turn. memory/preprocessing-plan-review.md
-records STM directive protection, origin/occurrence, hook-return, selection/config,
-resource/bibliography origin and dependency-policy clarifications. No prototype or
-new test result exists for Phase 2. Optional earlier small org-roam-organize managed
-bibliography/UUID integration needs separate scope, is not Phase 2-blocking and
-cannot establish full issue #1 completion. No real package/database compatibility
-claim yet. File/menu policy remains separate.
+User selected Phase 2a/2b execution after section14 review. Phase 2a twelve locked
+probes/model/report/comparison complete and archived at
+archive/2026-10-13T16-45-34Z--049a5a0/MANIFEST.md. Bounded Phase 2b A/B/C implemented
+and verified in uncommitted tree: 18 new ERT, 35 focused (includes17 Phase3b),
+359 installed ERT/all ten checks. Contract memory/preprocessing-contract.md;
+architecture/validation in project/evidence. Full common-directory/bare-file
+composition, owned original/working/context/node origins, fixed file receipts,
+protected STM and captured standard hooks/native INCLUDE, separately requested Cite
+integration. Old APIs unaffected. No full native lifecycle or arbitrary callback
+sandbox/FS atomicity. Cross-directory STM resource encoding, original selection map,
+INCLUDE parameters/partial footnote scope/odd-level normalization remain later
+contracts rather than supported semantics. User should review/commit current seven
+paths before new stage. Phase 4 real package integration remains independently
+selected work, with optional small managed bibliography test not a Phase 2 blocker.
+No personal DB/package compatibility claim, file/menu policy or issue closure.
 
 Phase 1a/1b are implemented, verified and committed as the citation-key AST filter
 revision; the complete five-file committed diff matches validated bytes.
@@ -305,8 +311,8 @@ memory/filter-contract.md. Standard filters may change citation keys only, with
 per-callback graph/work-context validation and independent ownership before waits.
 Focused 12/12, installed ERT 324/324 and all 8 isolated flake checks pass on the
 current lock's Emacs 31.1 / Org 9.8.10. Broader ecosystem preparation remains
-unresolved: Phase 2 source composition/provenance still needs its contract;
-Phase 3b bounded discovery is implemented above; Phase 4 combination is unverified.
+unresolved beyond the bounded Phase2b composition and Phase3b discovery above:
+broader provenance/selection/resource policies and Phase4 combination are unverified.
 Phase 0's stage table/candidate comparison/reproduction is preserved at
 archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. Candidate A was selected by
 the user's INBOX section 11 and is now the bounded implementation above. Contract
@@ -316,8 +322,9 @@ Broader mutation support needs a new contract; do not auto-switch to candidate B
 Full copy/annotate reuse adds ID lookup, mutable-local aliasing and source/STM
 mapping hazards; disabling Cite output also skips discovery. Locked Org has no
 after-includes hook. Retain the generic guard and pure-layer I/O boundary;
-preprocessing and real integration need separate contracts; the selected
-bibliography acquisition contract is implemented above. No issue writes were made;
+broader preprocessing and real integration need separate contracts; selected
+bounded composition/bibliography acquisition contracts are implemented above.
+No issue writes were made;
 third-party source lookup failed and
 extension behavior remains attributed rather than independently verified.
 

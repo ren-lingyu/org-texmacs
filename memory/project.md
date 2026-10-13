@@ -697,8 +697,58 @@ bytes tests and controlled changes across discovery/acquisition/native/output.
 HTML/ASCII/generic guard regressions remain covered. Twenty-two copied inputs
 match project bytes; evidence includes hashes and preserved mirror overlay proof.
 Phase 3a component evidence remains immutable at
-archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md. Phase 2/4 and file/menu policy
+archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md. Broader Phase2 composition
+policies, Phase4 and file/menu policy
 remain downstream work; issue #1 is not entirely closed by this node.
+
+## Phase 2b bounded protected source composition
+
+Implemented/verified in uncommitted tree on the opt-in bibliography revision.
+Independent org-texmacs-preprocess module with lazy prepare-buffer-preprocessed,
+document-from-buffer-preprocessed/export-from-buffer-preprocessed APIs; optional
+provided BibTeX, restricted ext-plist, explicit discover-bibliography boolean.
+No menu/generic adapter or silent preprocessing of old APIs. Contract:
+memory/preprocessing-contract.md, detailed support/limits in README.
+
+Source/config/explicit texts captured before callbacks, original source guarded
+separately from returned owned working text/context. Before-processing/parsing
+hooks use captured function identities/owned lists and native hook return semantics;
+private options/parser/location/mode changes rejected. Mode hooks suppressed,
+generic guard retained, private nested generic guard. Genuine SETUPFILE/BIND/MACRO/
+CITE_EXPORT still fail; no Babel/Lisp macros/full annotate-info lifecycle.
+
+Protected original STM tokens and source occurrence boundaries survive actual
+native INCLUDE over fixed owned projected files. Roots/whole local includes share
+resource directory and ordinary headline policy; <=64KiB/file, eight levels,
+32 occurrences (root included), aggregate source/working <=256KiB. Reject cycles,
+symlink/physical alias ambiguities (incl observed root), remote/tilde/control/
+parameters/commented-heading includes and selection. Snapshot reads have receipts
+and mirror hashes, cleanup success/error. Repeated files use fixed text but distinct
+instances, equal text never identity. Whole-file footnotes natively renamed;
+partial scope beyond first policy. No cross-directory STM path rewriting.
+
+INFO owns original source, source occurrences/texts, derived/generated working
+intervals and identity-keyed island origins. Private registration retains coordinates
+for inline string keys; annotator runs before one Phase1 filter pass, pure owning
+remaps keys into copied AST. No new input slot/I/O/worker operation. Original exact
+ranges belong to captured STM; ordinary intervals are transformation context, not
+original character correspondence. New/changed text/STM has derived/generated
+context; unknown origins are not invented from equal source values.
+
+Optional bibliography uses composed full STM-masked declarations and original
+shared base, unchanged explicit-text priority and Phase3b receipts. Original/source
+snapshots distinguish declarations' contexts. Original source/settings/hook/include
+function identities, explicit texts and include/bib receipts checked through native
+operations and final document/bytes. Checks never replace owned text/retry or replay
+filters. No atomic FS/DB/ABA/sandbox/file publication or real Org-roam claim.
+
+Final isolated same-lock/mirror gate: 18 new ERT,35 focused (incl17 Phase3b),
+359/359 installed ERT (180.303530s),all ten checks. Actual files/native STM/footnotes/
+bib remapping/session readback/bytes and negative callback/read/wait/serialization
+changes, budgets, root alias and cleanup tested. Old HTML/ASCII/PDF/generic guards
+remain covered. Exact source/input/mirror proof in evidence. Phase2a original
+12-probe model/research remains immutable at
+archive/2026-10-13T16-45-34Z--049a5a0/MANIFEST.md.
 
 Issue #1 Phase 0 provides investigation evidence, not new production support:
 14/14 isolated probes on the updated project lock's Emacs 31.1 / Org 9.8.10.
@@ -715,7 +765,8 @@ extend support claims, allow pure lowering I/O, or remove the guard.
 
 Current source preparation supports bounded citation-key parse-tree filters
 through standard Org install/apply tools. It does not run buffer-level export
-preprocessing; standard Cite discovery is opt-in above. Standard key-only AST filters
+preprocessing by default; protected composition and Cite discovery are opt-in above.
+Standard key-only AST filters
 can participate; other ecosystem extension semantics are not automatically
 consumed by TeXmacs. Backend guard admits unrelated backends; maintained
 isolation includes ASCII and the released controlled HTML composition
@@ -724,8 +775,8 @@ Future information-flow design is tracked in issue #1:
 https://github.com/ren-lingyu/org-texmacs/issues/1. It preserves canonical source,
 AST-first/ownership/provenance and is not a v0.4.0 release blocker.
 Temporary org-collect-keywords rebinding is scoped to private restricted option
-collection, not a permanent standard-interface replacement. Preprocessing reuse
-belongs to a later adapter/ownership design; pure lowering/native bibliography
+collection, not a permanent standard-interface replacement. Broader preprocessing reuse
+needs contracts beyond the bounded adapter above; pure lowering/native bibliography
 need not acquire implicit database/file dependencies. UUID syntax is accepted by
 the current key grammar; absent matching entry/remapping causes unresolved-key
 failure. Keep these distinctions in support claims.

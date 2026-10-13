@@ -2,6 +2,10 @@
 
 ## Status and authority
 
+Historical review below was review-only on 2026-10-13. Subsequent user request on
+2026-10-14 authorized Phase 2a/2b execution; selected first profile is now implemented
+and validated. Current contract/state: preprocessing-contract.md and current.md.
+
 Reviewed 2026-10-13 under the user's explicit review/GAW-update-only request.
 Plan is appropriate as guidance: Phase 2a investigation → contract selection →
 small independently validated Phase 2b nodes → full Phase 4 integration.
