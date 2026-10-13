@@ -57,6 +57,11 @@
 (require 'org-texmacs-input)
 (require 'org-texmacs-session)
 
+(autoload 'org-texmacs-document-from-buffer-discover-bibliography
+  "org-texmacs-bibliography")
+(autoload 'org-texmacs-export-from-buffer-discover-bibliography
+  "org-texmacs-bibliography")
+
 (defconst org-texmacs--cache-miss (make-symbol "org-texmacs-cache-miss")
   "Sentinel distinguishing an absent cached tree from a stored value.")
 
@@ -317,7 +322,7 @@ separate from that read-only temporary input before filling native results."
 
 (defun org-texmacs--prepare-buffer
     (source-buffer consumer &optional bibliography-sources subtree-position region
-                   ext-plist)
+                   ext-plist effective-bibliography initializer)
   "Prepare SOURCE-BUFFER and call CONSUMER before the final source check."
   (unless (and (bufferp source-buffer) (buffer-live-p source-buffer))
     (signal 'org-texmacs-document-error '("Expected a live Org buffer object")))
@@ -337,6 +342,8 @@ separate from that read-only temporary input before filling native results."
       ;; the body selection captured in this conversion.
       (setq region (cons (car region) (cdr region))))
     (setq ext-plist (org-texmacs--context-external-options ext-plist))
+    (setq effective-bibliography
+          (org-texmacs--bibliography-view-copy effective-bibliography))
     (let* ((buffer source-buffer)
            (bounds (cons (point-min) (point-max)))
            (restriction (and (buffer-narrowed-p) bounds))
@@ -366,6 +373,9 @@ separate from that read-only temporary input before filling native results."
            (link-settings (org-texmacs--document-link-settings))
            (base-info (plist-put (org-texmacs--document-options) :texmacs-resource-base resource-base))
            (_ (setq base-info (plist-put base-info :texmacs-external-options ext-plist)))
+           (_ (when effective-bibliography
+                (setq base-info (plist-put base-info :texmacs-effective-bibliography
+                                          effective-bibliography))))
            (subtree-settings (and subtree-position (org-texmacs--context-subtree-settings)))
            (_ (when subtree-position
                 (setq base-info (plist-put base-info :texmacs-subtree-settings subtree-settings))))
@@ -373,19 +383,7 @@ separate from that read-only temporary input before filling native results."
            (initial (org-texmacs--document-copy-initial org-texmacs-document-initial))
            (source (org-texmacs--source-buffer-text))
            (filter-state (org-texmacs--context-filter-state))
-           (prepared (org-texmacs--document-prepare-source
-                      source tags heading-settings link-settings base-info
-                      subtree-position region restriction
-                      (when (cadr filter-state)
-                        (lambda (prepared)
-                          (setq-local default-directory resource-base)
-                          (setq-local org-texmacs-fragment-tags
-                                      (mapcar #'copy-sequence tags))
-                          (org-texmacs--context-filter-apply
-                           prepared filter-state source-file resource-base
-                           bibliography-source-snapshot)
-                          (org-texmacs--filter-own-preparation prepared)))))
-           (info (nth 4 prepared)))
+           (prepared nil) (info nil) (dependency-check nil))
       (cl-labels ((check ()
                    (unless (buffer-live-p buffer)
                      (signal 'org-texmacs-document-error '("Source buffer was killed")))
@@ -420,7 +418,39 @@ separate from that read-only temporary input before filling native results."
                                '("Org property settings changed during conversion")))
                      (unless (equal bounds (cons (point-min) (point-max)))
                        (signal 'org-texmacs-document-error
-                               '("Source restriction changed during conversion"))))))
+                               '("Source restriction changed during conversion")))
+                     (when dependency-check (funcall dependency-check)))))
+        (check)
+        (when initializer
+          (let ((setup (funcall initializer source tags heading-settings link-settings
+                                base-info source-file resource-base
+                                bibliography-source-snapshot #'check)))
+            (setq bibliography-source-snapshot
+                  (org-texmacs--bibliography-source-snapshot
+                   (plist-get setup :sources) resource-base)
+                  bibliography-signatures
+                  (mapcar (lambda (entry)
+                            (org-texmacs--bibliography-validate-source (cdr entry)))
+                          bibliography-source-snapshot)
+                  effective-bibliography
+                  (org-texmacs--bibliography-view-copy (plist-get setup :view))
+                  dependency-check (plist-get setup :check)
+                  base-info (plist-put base-info :texmacs-effective-bibliography
+                                       effective-bibliography))))
+        (check)
+        (setq prepared (org-texmacs--document-prepare-source
+                      source tags heading-settings link-settings base-info
+                      subtree-position region restriction
+                      (when (cadr filter-state)
+                        (lambda (prepared)
+                          (setq-local default-directory resource-base)
+                          (setq-local org-texmacs-fragment-tags
+                                      (mapcar #'copy-sequence tags))
+                          (org-texmacs--context-filter-apply
+                           prepared filter-state source-file resource-base
+                           bibliography-source-snapshot)
+                          (org-texmacs--filter-own-preparation prepared)))))
+        (setq info (nth 4 prepared))
         (check)
         (let (keys)
           (dolist (signatures bibliography-signatures)

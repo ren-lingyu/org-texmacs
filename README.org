@@ -502,8 +502,8 @@ overwrite writable regular outputs.  Explicit new-file saving APIs remain
 exclusive.  Source-buffer adapters retain their earlier calls and add optional
 subtree-position, region and external configuration arguments.  Narrowed sources
 now export their accessible body; restriction changes during prompts/native waits
-reject results.  Bibliography data still comes from explicit text snapshots,
-without opening declared =.bib= files.
+reject results.  Existing APIs use explicit bibliography text snapshots.
+The opt-in discovery APIs below can acquire missing local =.bib= files.
 
 This version does not implement generic =org-export-as=/publishing, =visible-only=,
 =body-only= fragments, async export or unrestricted preprocessing.  Native PDF
@@ -839,7 +839,8 @@ Execution uses a private, non-visiting Org buffer holding the complete masked
 source snapshot and copied supported parser settings.  Core-only source APIs
 provide a TeXmacs backend locally without installing the export menu.  No generic
 exporter, options filters, preprocessing hooks, Cite output processor, global ID
-lookup or automatic bibliography discovery is run by the package.
+lookup is run by this filter stage.  Automatic bibliography discovery belongs
+to the separate opt-in adapter below and precedes this stage.
 
 #+begin_src emacs-lisp
   (defun my-citation-keys (tree backend _info)
@@ -919,8 +920,55 @@ static STM labels.  The source-semantic output root retains encoding provenance.
 Styles, nonempty citation affixes, dependency fields (=crossref=, =xdata=,
 =related=, =entryset=), print options, multiple print locations and citations in
 headings, emphasis, table cells or link descriptions are unsupported.  Org's
-=CITE_EXPORT= processors and global bibliography configuration are not invoked;
-this constructor uses explicit document declarations and native plain policy.
+=CITE_EXPORT= processors are not invoked; pure construction uses explicit
+declaration data and native plain policy.  The opt-in adapter can prepare that
+data from the effective Org Cite global bibliography configuration.
+
+** Opt-in bibliography discovery
+Use =org-texmacs-document-from-buffer-discover-bibliography= for a completed
+document or =org-texmacs-export-from-buffer-discover-bibliography= for native
+=.tm= bytes.  Both accept the existing optional =bibliography-sources=,
+=subtree-position=, =region= and =ext-plist= arguments.  Existing APIs and
+dispatcher actions retain their explicit snapshot behavior.
+
+#+begin_src emacs-lisp
+(let ((org-cite-global-bibliography '("references.bib")))
+  (org-texmacs-export-from-buffer-discover-bibliography org-source-buffer))
+#+end_src
+
+The adapter captures the live source, configuration and provided texts before
+calling =org-cite-list-bibliography-files= exactly once.  Standard advice on
+that Org Cite interface participates naturally; no package registration is
+required.  Discovery uses a private full-source Org view, masking inline and
+block STM even outside the selected body.  Real SETUPFILE, INCLUDE, BIND, macro
+and other unsupported preprocessing directives still fail before discovery.
+It does not invoke generic Org export, options filters or Cite processors.
+
+Returned local paths are copied, resolved against the captured resource base
+and deduplicated by absolute lexical identity, preserving first occurrence.
+Document declarations must remain represented.  Explicit provided texts take
+priority without a disk read/stat, even if their identities name absent files;
+unselected explicit sources remain owned and validated.  Only missing discovered
+sources are acquired.  An owned effective declaration view feeds the existing
+preparation and restricted AST filters, which run once.  Pure input construction
+and lowering perform no discovery or file I/O.
+
+Initial automatic reads support local readable regular UTF-8 BibTeX files of
+at most 1 MiB each and the same bounded BibTeX grammar described above.  Symlink
+components, physical aliases among acquired files, remote/URL/tilde paths and
+malformed identities are rejected.  Visiting buffers must have the same source
+file directory and effective resource base; non-file buffers need a local
+resource base.  The canonical source includes unsaved edits and is not reread
+from disk.  These limits belong to this initial acquisition policy.
+
+Source, supported configuration, filter/collector function identities and
+provided texts are checked throughout conversion.  Acquired texts remain fixed;
+file identity/size/mtime/ctime and byte digests are verified around reads, native
+waits and before returning a document or serialized bytes.  Changes reject the
+result without rediscovery, filter replay or text replacement.  These observed
+checks are not an atomic filesystem/database transaction, an ABA guarantee or
+a sandbox for arbitrary advice.  No output file is published by these APIs;
+file/menu policy and real third-party package integration remain separate work.
 
 Pure manual inputs need fixed INFO =:texmacs-bibliography-declarations= mapping
 raw keyword values to absolute identities, and =:texmacs-bibliography-output=

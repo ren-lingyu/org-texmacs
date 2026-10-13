@@ -15,6 +15,7 @@
 
 (require 'org-texmacs)
 (require 'ox-texmacs)
+(require 'org-texmacs-bibliography)
 
 (defconst org-texmacs-test--readme
   (or (getenv "ORG_TEXMACS_TEST_README")
@@ -6958,5 +6959,345 @@ Only tests with explicit example names use this helper; do not run Babel."
             (should (equal (org-element-map escaped 'citation-reference
                              (lambda (r) (org-element-property :key r))) '("late-mutation")))
             (should (org-texmacs-document-p (org-texmacs-document input)))))))))
+
+(ert-deftest org-texmacs-bibliography-view-owned-and-invalid ()
+  (let* ((id (copy-sequence "/source/refs.bib"))
+         (raw (copy-sequence "refs.bib"))
+         (view (list :document (list (cons raw id)) :sources (list id)))
+         (owned (org-texmacs--bibliography-view-copy view)))
+    (aset id 1 ?X) (aset raw 0 ?X)
+    (should (equal owned '(:document (("refs.bib" . "/source/refs.bib"))
+                                    :sources ("/source/refs.bib")))))
+  (dolist (view '(t (:sources ("relative.bib") :document nil)
+                   (:document nil :document nil)
+                   (:sources ("/a" "/a") :document nil)
+                   (:sources ("/a") :document (("refs" . "/b")))
+                   (:sources ("/a" "/b") :document (("refs" . "/a") ("refs" . "/b")))))
+    (should-error (org-texmacs--bibliography-view-copy view) :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-bibliography-view-global-only-resolution ()
+  (with-temp-buffer
+    (org-mode) (insert "[cite:@managed-uuid]\n#+print_bibliography:\n")
+    (setq-local default-directory "/source/")
+    (let ((org-export-filter-parse-tree-functions '(org-texmacs-test--ast-filter-remap)))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (text &rest _)
+                   (if (equal text "@book{external-key}")
+                       '(document (bib-entry "book" "external-key" (document)))
+                     '(document (bib-entry "book" "unused" (document))))))
+                ((symbol-function 'org-texmacs--bibliography-format)
+                 (lambda (plan)
+                   (list (plist-get plan :prefix) (plist-get plan :keys) (plist-get plan :entries)
+                         (list 'bib-list "1" (list 'document
+                                                   (list 'label (concat (plist-get plan :prefix) "-external-key"))))))))
+        (let ((input (org-texmacs--prepare-buffer
+                      (current-buffer) #'identity
+                      '(("refs.bib" . "@book{external-key}") ("unused.bib" . "@book{unused}"))
+                      nil nil nil '(:document nil :sources ("/source/refs.bib")))))
+          (should (= (length (org-texmacs-input-bibliography input)) 2))
+          (should (equal (plist-get (org-texmacs-input-info input)
+                                   :texmacs-bibliography-source-identities) '("/source/refs.bib")))
+          (cl-letf (((symbol-function 'org-file-contents)
+                     (lambda (&rest _) (ert-fail "Pure planner read file"))))
+            (should (org-texmacs-document-p (org-texmacs-document input)))))))))
+
+(ert-deftest org-texmacs-bibliography-view-rejects-document-disagreement ()
+  (with-temp-buffer
+    (org-mode) (setq-local default-directory "/source/")
+    (insert "#+bibliography: refs.bib\nText\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _) (ert-fail "Bad view started worker"))))
+      (should-error (org-texmacs--prepare-buffer
+                     (current-buffer) #'identity '(("refs.bib" . "@book{key}"))
+                     nil nil nil '(:document nil :sources ("/source/refs.bib")))
+                    :type 'org-texmacs-document-error))))
+
+(defmacro org-texmacs-test--with-bibliography-files (&rest body)
+  "Run BODY in a private directory with a real UTF-8 bibliography."
+  (declare (indent 0) (debug t))
+  `(let ((directory (make-temp-file "org-texmacs-bibliography-" t)))
+     (unwind-protect
+         (with-temp-buffer
+           (org-mode)
+           (setq-local default-directory (file-name-as-directory directory))
+           (let ((coding-system-for-write 'utf-8-unix))
+             (write-region "@book{external-key, title={Café}}" nil
+                           (expand-file-name "refs.bib") nil 'silent))
+           ,@body)
+       (delete-directory directory t))))
+
+(ert-deftest org-texmacs-bibliography-auto-private-discovery ()
+  (org-texmacs-test--with-bibliography-files
+    (insert "#+bibliography: refs.bib\n(math \"x\")\n#+begin_texmacs\n"
+            "#+bibliography: island.bib\n#+SETUPFILE: secret.org\n#+end_texmacs\n")
+    (setq-local org-link-abbrev-alist-local '(("paper" . "https://example.org/%s")))
+    (let* ((source (buffer-string))
+           (globals (list "a.bib" "b.bib" "a.bib"))
+           (original (copy-tree globals)) (calls 0)
+           (spy (lambda (paths)
+                  (cl-incf calls)
+                  (should (equal org-link-abbrev-alist-local
+                                 '(("paper" . "https://example.org/%s"))))
+                  (append paths '("./a.bib")))))
+      (unwind-protect
+          (progn
+            (advice-add 'org-cite-list-bibliography-files :filter-return spy)
+            (cl-letf (((symbol-function 'org-file-contents)
+                       (lambda (&rest _) (ert-fail "STM caused external keyword read"))))
+              (let ((result (org-texmacs--bibliography-discover
+                             source (org-texmacs--fragment-tags)
+                             (org-texmacs--document-heading-settings)
+                             (org-texmacs--document-link-settings)
+                             (plist-put (org-texmacs--document-options)
+                                        :texmacs-resource-base default-directory)
+                             nil default-directory globals)))
+                (should (equal (car result) '("refs.bib" "a.bib" "b.bib" "./a.bib")))
+                (should (= calls 1))
+                (should (equal globals original))
+                (should (equal source (buffer-string))))))
+        (advice-remove 'org-cite-list-bibliography-files spy)))))
+
+(ert-deftest org-texmacs-bibliography-auto-acquire-and-receipts ()
+  (org-texmacs-test--with-bibliography-files
+    (let* ((provided '(("absent.bib" . "@book{explicit}") ("unused.bib" . "@book{unused}")))
+           (result (org-texmacs--bibliography-acquire
+                    '("absent.bib" "refs.bib" "./refs.bib") default-directory provided nil))
+           (texts (plist-get result :sources)) (receipts (plist-get result :receipts)))
+      (should (= (length texts) 3)) (should (= (length receipts) 1))
+      (should (equal (cdar texts) "@book{explicit}"))
+      (should (string-match-p "Café" (cdr (nth 2 texts))))
+      (org-texmacs--bibliography-check-receipts receipts)
+      (write-region "@book{changed}" nil "refs.bib" nil 'silent)
+      (should-error (org-texmacs--bibliography-check-receipts receipts)
+                    :type 'org-texmacs-document-error)
+      (should (string-match-p "Café" (cdr (nth 2 texts)))))))
+
+(ert-deftest org-texmacs-bibliography-auto-rejects-locations-and-files ()
+  (org-texmacs-test--with-bibliography-files
+    (dolist (path '("" "~/.bib" "https://example.org/ref.bib" "/ssh:host:/ref.bib" "bad\nname"))
+      (should-error (org-texmacs--bibliography-local-path path default-directory)
+                    :type 'org-texmacs-document-error))
+    (dolist (path '("missing.bib" "."))
+      (should-error (org-texmacs--bibliography-acquire (list path) default-directory nil nil)
+                    :type 'org-texmacs-document-error))
+    (make-symbolic-link (expand-file-name "refs.bib") (expand-file-name "link.bib"))
+    (should-error (org-texmacs--bibliography-acquire '("link.bib") default-directory nil nil)
+                  :type 'org-texmacs-document-error)
+    (add-name-to-file (expand-file-name "refs.bib") (expand-file-name "alias.bib"))
+    (should-error (org-texmacs--bibliography-acquire '("refs.bib" "alias.bib") default-directory nil nil)
+                  :type 'org-texmacs-document-error)
+    (let ((coding-system-for-write 'no-conversion))
+      (write-region (unibyte-string 255) nil "invalid.bib" nil 'silent))
+    (should-error (org-texmacs--bibliography-acquire '("invalid.bib") default-directory nil nil)
+                  :type 'org-texmacs-document-error)
+    (write-region (make-string 1048577 ?a) nil "large.bib" nil 'silent)
+    (should-error (org-texmacs--bibliography-acquire '("large.bib") default-directory nil nil)
+                  :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-bibliography-auto-rejects-dropped-declaration ()
+  (should-error (org-texmacs--bibliography-acquire nil "/source/" nil
+                                                 '(("refs.bib" . "/source/refs.bib")))
+                :type 'org-texmacs-document-error))
+
+(ert-deftest org-texmacs-bibliography-auto-default-api-is-explicit ()
+  (with-temp-buffer
+    (org-mode) (insert "Text\n")
+    (cl-letf (((symbol-function 'org-cite-list-bibliography-files)
+               (lambda () (ert-fail "Old API discovered files")))
+              ((symbol-function 'org-texmacs--bibliography-file-bytes)
+               (lambda (&rest _) (ert-fail "Old API read files"))))
+      (should (org-texmacs-document-p (org-texmacs-document-from-buffer (current-buffer)))))))
+
+(ert-deftest org-texmacs-bibliography-auto-source-to-native ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (insert "[cite:@managed-uuid]\n#+print_bibliography:\n")
+      (setq-local buffer-file-name (expand-file-name "unsaved.org"))
+      (let* ((source (current-buffer)) (before (org-texmacs-test--document-buffer-state source))
+             (calls 0) (filters 0)
+             (org-cite-global-bibliography '("refs.bib" "./refs.bib"))
+             (org-export-filter-parse-tree-functions
+              (list (lambda (tree backend info)
+                      (cl-incf filters)
+                      (should (equal (plist-get info :bibliography)
+                                     (list (expand-file-name "refs.bib"))))
+                      (org-texmacs-test--ast-filter-remap tree backend info))))
+             (spy (lambda (paths) (cl-incf calls) paths))
+             (session nil))
+        (unwind-protect
+            (progn
+              (advice-add 'org-cite-list-bibliography-files :filter-return spy)
+              (let ((document (org-texmacs-document-from-buffer-discover-bibliography source)))
+                (should (= calls 1)) (should (= filters 1))
+                (setq session (org-texmacs-session-open))
+                (org-texmacs-session-set-document session document)
+                (let ((native (org-texmacs--session-read-document session)))
+                  (should (string-match-p (org-texmacs-test--native-hex "external-key")
+                                          (prin1-to-string native)))
+                  (should (string-match-p "bib-list" (prin1-to-string native)))))
+              (setq calls 0 filters 0)
+              (let ((bytes (org-texmacs-export-from-buffer-discover-bibliography source)))
+                (should-not (multibyte-string-p bytes))
+                (should (string-match-p "external-key" bytes))
+                (should (= calls 1)) (should (= filters 1)))
+              (should (equal before (org-texmacs-test--document-buffer-state source))))
+          (advice-remove 'org-cite-list-bibliography-files spy)
+          (when session (org-texmacs-session-close session)))))))
+
+(ert-deftest org-texmacs-bibliography-auto-explicit-priority-with-advice ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (insert "[cite:@external-key]\n#+print_bibliography:\n")
+      (let ((org-cite-global-bibliography nil)
+            (spy (lambda (_paths) '("absent.bib" "./absent.bib"))))
+        (unwind-protect
+            (progn
+              (advice-add 'org-cite-list-bibliography-files :filter-return spy)
+              (cl-letf (((symbol-function 'org-texmacs--bibliography-file-attributes)
+                         (lambda (&rest _) (ert-fail "Explicit identity was statted"))))
+                (should (org-texmacs-document-p
+                         (org-texmacs-document-from-buffer-discover-bibliography
+                          (current-buffer) '(("absent.bib" . "@book{external-key, title={Owned}}")
+                                             ("unused.bib" . "@book{unused}")))))))
+          (advice-remove 'org-cite-list-bibliography-files spy))))))
+
+(ert-deftest org-texmacs-bibliography-auto-rejects-preprocessing-and-conflict ()
+  (org-texmacs-test--with-bibliography-files
+    (dolist (directive '("#+SETUPFILE: absent.org\n" "#+INCLUDE: absent.org\n"
+                         "#+BIND: org-cite-global-bibliography nil\n"
+                         "#+MACRO: x text\n" "#+CITE_EXPORT: csl\n"))
+      (erase-buffer) (insert directive)
+      (let ((org-export-allow-bind-keywords t))
+        (cl-letf (((symbol-function 'org-cite-list-bibliography-files)
+                   (lambda () (ert-fail "Unsupported directive reached discovery"))))
+          (should-error (org-texmacs-document-from-buffer-discover-bibliography (current-buffer))
+                        :type 'org-texmacs-document-error))))
+    (erase-buffer) (insert "Text\n")
+    (setq-local buffer-file-name "/different/source.org")
+    (should-error (org-texmacs-document-from-buffer-discover-bibliography (current-buffer))
+                  :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-bibliography-auto-masks-outside-restriction ()
+  (org-texmacs-test--with-bibliography-files
+    (insert "Text\n#+begin_texmacs\n#+bibliography: missing.bib\n"
+            "#+SETUPFILE: absent.org\n#+end_texmacs\n")
+    (narrow-to-region 1 6)
+    (let ((org-cite-global-bibliography nil)
+          (before (org-texmacs-test--document-buffer-state (current-buffer))))
+      (cl-letf (((symbol-function 'org-file-contents)
+                 (lambda (&rest _) (ert-fail "Excluded STM triggered reads"))))
+        (should (org-texmacs-document-p
+                 (org-texmacs-document-from-buffer-discover-bibliography (current-buffer)))))
+      (should (equal before (org-texmacs-test--document-buffer-state (current-buffer)))))))
+
+(ert-deftest org-texmacs-bibliography-auto-rejects-discovery-mutations ()
+  (dolist (change '(source globals filters explicit directory options collector))
+    (org-texmacs-test--with-bibliography-files
+      (insert "Text\n")
+      (let* ((source (current-buffer))
+             (org-cite-global-bibliography nil)
+             (org-export-filter-parse-tree-functions nil)
+             (provided (list (cons "refs.bib" (copy-sequence "@book{key}"))))
+             (calls 0) private
+             (collector (symbol-function 'org-cite-list-bibliography-files)))
+        (unwind-protect
+            (cl-letf (((symbol-function 'org-cite-list-bibliography-files)
+                       (lambda ()
+                         (cl-incf calls) (setq private (current-buffer))
+                         (with-current-buffer source
+                           (pcase change
+                             ('source (insert "Changed"))
+                             ('globals (setq org-cite-global-bibliography '("other.bib")))
+                             ('filters (setq org-export-filter-parse-tree-functions '(ignore)))
+                             ('explicit (aset (cdar provided) 0 ?X))
+                             ('directory (setq-local default-directory "/different/"))
+                             ('options (setq-local org-export-with-toc (not org-export-with-toc)))
+                             ('collector (fset 'org-cite-list-bibliography-files #'ignore))))
+                         '("refs.bib")))
+                      ((symbol-function 'org-texmacs--worker-request)
+                       (lambda (&rest _) (ert-fail "Changed discovery reached native worker"))))
+              (should-error (org-texmacs-document-from-buffer-discover-bibliography source provided)
+                            :type 'org-texmacs-document-error)
+              (should (= calls 1)) (should-not (buffer-live-p private)))
+          (fset 'org-cite-list-bibliography-files collector))))))
+
+(ert-deftest org-texmacs-bibliography-auto-rejects-acquisition-mutations ()
+  (dolist (change '(source file))
+    (org-texmacs-test--with-bibliography-files
+      (insert "Text\n")
+      (let* ((source (current-buffer)) (org-cite-global-bibliography '("refs.bib"))
+             (reader (symbol-function 'org-texmacs--bibliography-file-bytes)))
+        (cl-letf (((symbol-function 'org-texmacs--bibliography-file-bytes)
+                   (lambda (path)
+                     (prog1 (funcall reader path)
+                       (if (eq change 'source)
+                           (with-current-buffer source (insert "Changed"))
+                         (write-region "@book{changed}" nil path nil 'silent)))))
+                  ((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Changed acquisition reached native worker"))))
+          (should-error (org-texmacs-document-from-buffer-discover-bibliography source)
+                        :type 'org-texmacs-document-error))))))
+
+(ert-deftest org-texmacs-bibliography-auto-rejects-native-wait-mutations ()
+  (dolist (change '(file source globals filters explicit))
+    (org-texmacs-test--with-bibliography-files
+      (insert "(math \"x\")\n")
+      (let* ((source (current-buffer)) (org-cite-global-bibliography '("refs.bib"))
+             (org-export-filter-parse-tree-functions nil)
+             (path (expand-file-name "refs.bib")) (calls 0)
+             (provided (list (cons "unused.bib" (copy-sequence "@book{unused}")))))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _)
+                     (cl-incf calls)
+                     (with-current-buffer source
+                       (pcase change
+                         ('file (write-region "@book{changed}" nil path nil 'silent))
+                         ('source (insert "Changed"))
+                         ('globals (setq org-cite-global-bibliography nil))
+                         ('filters (setq org-export-filter-parse-tree-functions '(ignore)))
+                         ('explicit (aset (cdar provided) 0 ?X))))
+                     '(math "x"))))
+          (should-error (org-texmacs-document-from-buffer-discover-bibliography source provided)
+                        :type 'org-texmacs-document-error)
+          (should (= calls 1)))))))
+
+(ert-deftest org-texmacs-bibliography-auto-rejects-before-byte-return ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (insert "Text\n")
+      (let ((org-cite-global-bibliography '("refs.bib"))
+            (path (expand-file-name "refs.bib")))
+        (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                   (lambda (_document)
+                     (write-region "@book{changed}" nil path nil 'silent)
+                     "unpublished")))
+          (should-error (org-texmacs-export-from-buffer-discover-bibliography (current-buffer))
+                        :type 'org-texmacs-document-error))))))
+
+(ert-deftest org-texmacs-bibliography-auto-rejects-native-dependency-stages ()
+  (org-texmacs-test--with-worker
+    (dolist (target '(org-texmacs--worker-request org-texmacs--bibliography-format
+                      org-texmacs-document))
+      (org-texmacs-test--with-bibliography-files
+        (insert "[cite:@managed-uuid]\n#+print_bibliography:\n")
+        (let* ((org-cite-global-bibliography '("refs.bib"))
+               (path (expand-file-name "refs.bib")) (discovery-calls 0) (filter-calls 0)
+               (org-export-filter-parse-tree-functions
+                (list (lambda (tree backend info)
+                        (cl-incf filter-calls)
+                        (org-texmacs-test--ast-filter-remap tree backend info))))
+               (original (symbol-function target))
+               (spy (lambda (paths) (cl-incf discovery-calls) paths)))
+          (unwind-protect
+              (progn
+                (advice-add 'org-cite-list-bibliography-files :filter-return spy)
+                (cl-letf (((symbol-function target)
+                           (lambda (&rest args)
+                             (prog1 (apply original args)
+                               (write-region "@book{changed}" nil path nil 'silent)))))
+                  (should-error (org-texmacs-document-from-buffer-discover-bibliography
+                                 (current-buffer)) :type 'org-texmacs-document-error))
+                (should (= discovery-calls 1)) (should (= filter-calls 1)))
+            (advice-remove 'org-cite-list-bibliography-files spy)))))))
 
 ;;; ert.el ends here

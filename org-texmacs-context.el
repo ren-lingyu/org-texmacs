@@ -683,6 +683,21 @@ while retaining any subtree configuration.  Parse only the private snapshot."
                                      (plist-get base-info :texmacs-resource-base)))))
                   (cdr (assoc "BIBLIOGRAPHY"
                               (org-texmacs--context-keywords ast islands '("BIBLIOGRAPHY"))))))
+         (view (plist-get base-info :texmacs-effective-bibliography))
+         (_ (when view
+              (unless (equal bibliography-declarations (plist-get view :document))
+                (signal 'org-texmacs-document-error
+                        '("Effective bibliography disagrees with document declarations")))
+              (setq info (plist-put info :texmacs-bibliography-document-declarations
+                                    bibliography-declarations))
+              (setq info (plist-put info :texmacs-bibliography-source-identities
+                                    (plist-get view :sources)))
+              (setq bibliography-declarations
+                    (append bibliography-declarations
+                            (mapcar (lambda (id) (cons id id))
+                                    (cl-remove-if
+                                     (lambda (id) (member id (mapcar #'cdr bibliography-declarations)))
+                                     (plist-get view :sources)))))))
          (_ (setq info (plist-put info :texmacs-bibliography-declarations bibliography-declarations)))
          (definitions (org-texmacs--context-footnote-definitions ast islands))
          (_ (when subtree-position

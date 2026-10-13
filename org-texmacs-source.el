@@ -62,6 +62,36 @@ Resolve source identities without opening files or running file handlers."
         (push (cons path (substring-no-properties (cdr entry))) result)))
     (nreverse result)))
 
+(defun org-texmacs--bibliography-view-copy (view)
+  "Own explicit effective bibliography VIEW without discovery or I/O.
+VIEW is nil for legacy preparation, or a plist with :document raw-to-absolute
+declarations and :sources ordered unique absolute identities."
+  (when view
+    (unless (and (proper-list-p view) (= (length view) 4)
+                 (memq (car view) '(:document :sources))
+                 (memq (nth 2 view) '(:document :sources))
+                 (not (eq (car view) (nth 2 view)))
+                 (proper-list-p (plist-get view :document))
+                 (proper-list-p (plist-get view :sources)))
+      (signal 'org-texmacs-document-error '("Invalid effective bibliography view")))
+    (let (sources document)
+      (dolist (id (plist-get view :sources))
+        (setq id (org-texmacs--source-copy-path id))
+        (unless (and id (not (member id sources)))
+          (signal 'org-texmacs-document-error '("Duplicate effective bibliography identity")))
+        (push id sources))
+      (dolist (entry (plist-get view :document))
+        (unless (and (consp entry) (stringp (car entry))
+                     (> (length (car entry)) 0) (stringp (cdr entry)))
+          (signal 'org-texmacs-document-error '("Invalid document bibliography association")))
+        (let ((id (org-texmacs--source-copy-path (cdr entry))))
+          (unless (and (member id sources)
+                       (or (not (assoc (car entry) document))
+                           (equal id (cdr (assoc (car entry) document)))))
+            (signal 'org-texmacs-document-error '("Missing or ambiguous bibliography identity")))
+          (push (cons (substring-no-properties (car entry)) id) document)))
+      (list :document (nreverse document) :sources (nreverse sources)))))
+
 (defun org-texmacs--block-p (node)
   "Return non-nil when Org NODE is a TeXmacs special block."
   (and (consp node)
