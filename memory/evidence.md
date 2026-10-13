@@ -1208,3 +1208,22 @@ archived diagnostic names describe reconstruction-time state and remain unchange
 - Third-party public source lookups returned cache miss; package extension claims
   stay attributed to INBOX. No remote issue write was made. Phase 1 contract and
   scoped implementation remain the next decision, not completed work.
+
+## Issue #1 plan revision after Phase 0 (2026-10-13)
+
+User added INBOX section 11, confirming Phase 0 findings and selecting Phase 1a
+contract design before Phase 1b implementation. Candidate A is preferred:
+standard AST filters on existing preparation, no package-specific registration
+or generic string exporter. The planned first envelope preserves node set,
+identity, parentage, STM source/ownership and identity-keyed mappings; only
+citation-reference :key may change. Replaced trees/raw output/other semantic
+changes require explicit rejection, not only a root-identity check. INFO fields,
+snapshot/filter ownership, private Org context, actual backend and placement
+before resolution/bibliography planning/input-create must be specified first.
+If A cannot satisfy that envelope, pause with evidence, not automatic fallback
+to full annotation. Phases 2/3 remain separate external-input designs and may
+change order; Phase 4 real integration is later. This is an adopted plan update,
+not completed interface design or authorization to change production paths.
+No new tests/source changes/remote issue writes were made for this review.
+Phase 0 archive remains immutable; the revision's necessary content is distilled
+here and in current/backlog, so no duplicate raw INBOX archive is needed.

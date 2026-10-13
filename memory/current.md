@@ -25,13 +25,21 @@ Controlled native INCLUDE relocates nested local file links but does not provide
 a complete origin map in observed fixtures. Bibliography discovery retains
 relative paths and can read SETUPFILE. Pure lowering must not acquire that I/O.
 Standard filter tools with actual texmacs backend remap private citation keys
-without generic export. Prefer a constrained Phase 1 preparation adapter with
-explicit INFO/context and identity validation; it is a recommendation, not an
-implemented or fully adopted filter contract. Full copy/annotate reuse remains
-conditional and blocked for direct production adoption by the identified risks.
-Next action: review/select Phase 1 citation-key AST-filter contract and scoped
-implementation paths/tests. Preserve the generic guard, canonical source,
-coherent ownership and provenance. Later phases remain conditional: bounded
+without generic export. The user's new INBOX section 11 adopts candidate A as
+the preferred direction and explicitly selects Phase 1a contract design next;
+Phase 1b production implementation waits for that contract. Planned first scope:
+preserve node set, identities, parent/child relations and STM source/ownership;
+only citation-reference :key may change. Reject replacement AST, raw output,
+other semantic mutations and invalid island/post-blank mappings explicitly;
+root identity alone is insufficient. Define supported INFO fields, real texmacs
+backend identity, private Org context, snapshot/filter ownership and exact stage
+placement before resolution, bibliography planning and input-create. This plan
+is adopted, but the detailed contract is not yet finalized or implemented.
+Full annotation remains research only. If candidate A cannot meet the minimal
+contract, stop with evidence rather than automatically switching to candidate B.
+Next action: Phase 1a citation-key AST-filter contract, including negative-test
+obligations and source/error/wait consistency. Preserve the generic guard,
+canonical source, coherent ownership and provenance. Later phases remain conditional: bounded
 source composition, bibliography discovery, real extension/frontend integration.
 The local report is ready for issue discussion; external posting needs separate
 authorization. Evidence.md records validation limits and capture audit details.

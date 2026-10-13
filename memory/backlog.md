@@ -283,10 +283,15 @@ native or GUI evidence before they can be claimed as verified.
 Phase 0 was selected and completed on 2026-10-13; production integration
 remains unresolved. Independent flake on the user's updated project lock passes
 14/14 controlled probes (Emacs 31.1 / Org 9.8.10). Stage table, candidate comparison
-and reproduction: archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. Prefer a small
-Phase 1 candidate using standard filter install/apply tools on existing private
-preparation, with explicit texmacs backend/INFO and identity checks. Citation-key
-remapping is the proposed first contract, not yet an adopted implementation.
+and reproduction: archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. The user's
+INBOX section 11 revision adopts candidate A (existing preparation plus standard
+AST filters) as preferred and selects **Phase 1a contract design** next. Phase 1b
+implementation is conditional on completing that contract. Initial planned scope
+preserves node set/identity/parentage and STM source/ownership, allowing only
+citation-reference :key mutation. Other changes/replacement/raw output must fail
+explicitly; root identity is insufficient. INFO fields/context, filter snapshot
+and precise placement before owning/resolution/bibliography planning remain to
+be defined. If A cannot meet this contract, stop rather than auto-switch to B.
 Full copy/annotate reuse adds ID lookup, mutable-local aliasing and source/STM
 mapping hazards; disabling Cite output also skips discovery. Locked Org has no
 after-includes hook. Retain the generic guard and pure-layer I/O boundary;
