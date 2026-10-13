@@ -1389,3 +1389,16 @@ mirror configuration: 327/327 installed ERT in 163.753805s and all nine checks
 This validates uncommitted Node A changes, not committed c26b932 alone; no project
 parent is attached to this checkpoint. No automatic discovery public API yet.
 
+# Phase 3b Node B validation (2026-10-13)
+
+Independent adapter module and flake fileset inclusion; helper-only API at this
+node. Seven focused tests (0.153534s), 331/331 installed ERT (164.625142s), all
+nine isolated checks passed. Logs node-b-focused.log/node-b-check.log under
+tmp/issue-1-phase-3b. Maintained real local UTF-8 acquisition and receipts tests;
+explicit absent identity/unused sources preserved, lexical duplicate collapse,
+missing/directory/symlink/hardlink/non-UTF-8/oversize errors. Standard collector
+with controlled advice runs once, masks fake STM SETUPFILE/bibliography, preserves
+original source/global list. No actual DB lookup/native adapter end-to-end claim
+yet; source-to-native transaction/public APIs are Node C. Changes uncommitted;
+no project parent used. Initial reader rejects symlink ancestors as well as leaf.
+

@@ -296,6 +296,15 @@ remain unsupported.
    session recovered valid GAW without archive, but user supplied AGENTS.md.
    When a fresh session discovers bootstrap/skills unaided and recovers current
    memory, mark that remaining check complete. Continue project work meanwhile.
+# Phase 3b Node B verified
+
+Private org-texmacs-bibliography module implements full STM-masked standard Cite
+discovery plus bounded local UTF-8 acquisition/receipt verification. No public
+automatic entry yet. Seven focused tests passed; full isolated check passed nine
+checks, 331/331 installed ERT in 164.625142s. Real file reads/symlinks/hardlinks,
+negative paths/UTF-8/size and controlled advice are covered. Next Node C installs
+the guard before discovery and exposes document/bytes only after full validation.
+
 # Phase 3b Node A verified
 
 Owned `:document`/`:sources` bibliography view now crosses private source/context
