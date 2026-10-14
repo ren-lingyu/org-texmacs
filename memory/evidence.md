@@ -1989,3 +1989,21 @@ Generic lifecycle, full native resources/selection origins/menu keys remain sepa
 nonblocking scope. Provider guarantees and ordinary partial-write error boundary
 unchanged. No new verification solely for project-parent association.
 
+## Phase 5 staged review and footer preparation (2026-10-14)
+
+User explicitly authorized staging/message and asked for skill-compliant footer.
+Only seven expected Phase5 paths staged,376 insertions/43 deletions; complete staged
+diff reviewed and --check clean. Each staged blob matches worktree and accepted
+final-inputs.json SHA256 entry. Staged binary diff SHA256:
+68f76e19edefa2afda14e1b373ea7e010731b78093e413b029c8603a46928054.
+Only flake.nix user mirror unstaged; no lock changes or new tests for staging.
+Prior381core/79focused/9real/all10checks apply by exact byte identity.
+
+tmp/commit.md regenerated from staged diff; feat(export)! subject, Chinese body,
+BREAKING CHANGE footer explains full frontend default preprocessing/hooks and
+provider constraints versus direct APIs. Blank line separates Closes #1 footer:
+selected local INBOX architecture/frontend acceptance achieved, live remote issue
+still unavailable/no external mutation. Suitable one coupled frontend/transaction/
+discovery/coverage commit; split not necessary, difficulty medium. No ordinary
+commit; next user commit then committed identity verification, no candidate parent.
+
