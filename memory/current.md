@@ -2,7 +2,7 @@
 
 ## Active objective
 
-Rewritten INBOX section17 Phase4a-4d implemented and accepted in uncommitted tree
+Rewritten INBOX section17 Phase4a-4d implemented, accepted and user committed
 on native parameter baseline1a254a7. User prioritizes completed working buffer +
 effective supported Org context, not source-origin recovery or third-party read/DB
 interception. Existing explicit preparation already consumes completed working Org;
@@ -41,12 +41,13 @@ manifest hashes/provenance in evidence. Immutable necessary9text archive:
 archive/2026-10-14T06-28-22Z--1a254a7/MANIFEST.md. No inferred project parent.
 
 Five project changes README.org/preprocess module/ERT/optional integration runner
-and fixtures now explicitly staged under user authorization; user mirror remains
-the only unstaged path, lock unchanged. Complete staged diff reviewed, --check passes
-and all five staged/worktree files byte-match the accepted final-inputs manifest.
-Message tmp/commit.md: feat(document): support cross-directory INCLUDE with real
-extension coverage, Refs #1, no new breaking footer. Suitable as one coherent commit.
-Next user ordinary commit, then verify committed bytes/message. Latest section17 selected
+and fixtures user committed as the cross-directory INCLUDE/real extension coverage
+revision. Complete committed diff equals reviewed staged SHA2566eb3e3d0...;
+all five committed blobs match accepted final-inputs manifest. Full commit message
+matches tmp/commit.md, feat(document) subject, Refs #1, no new breaking footer.
+Index empty; user mirror remains the only dirty path, lock unchanged. Prior gates
+transfer by byte identity; no new test or external tracking write.
+No further implementation selected. Latest section17 selected
 acceptance complete; original proposal's formal frontend/default dispatcher policy
 was not selected here and remains separate. Do not automatically close#1/external
 tracking: distinguish achieved opt-in interoperability from any adopted frontend
@@ -225,9 +226,9 @@ remain unsupported.
 
 ## Baseline and staging
 
-- Current main is the native INCLUDE parameter revision on bounded preprocessing
-  revision; lock selects Org9.8.10. Accepted Phase4 README/module/ERT/optional
-  integration runner+fixture changes staged; only user mirror remains unstaged.
+- Current main is the cross-directory INCLUDE/real extension coverage revision on
+  the native INCLUDE parameter revision; lock selects Org9.8.10. Phase4 committed
+  diff/message verified; index empty, only user mirror remains unstaged.
   Committed Phase2c diff/message matches reviewed candidate.
   Phase 3b committed diff matches staged/validated candidate SHA-256 in evidence.
   Release-era observations below describe their historical baseline.

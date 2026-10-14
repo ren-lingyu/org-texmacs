@@ -1922,3 +1922,17 @@ serve one coupled cross-directory interoperability change. Default frontend swit
 not selected in this commit; overall issue closure remains separate. No ordinary
 commit or external tracking write. Candidate still uncommitted, no project parent.
 
+## Phase 4 user commit identity verification (2026-10-14)
+
+User reports commit completed. Read-only verification observes project HEAD
+6f018decef3907ab20ef68700751912799dc8432, parent native parameter baseline
+1a254a792286fe9c98a7529a6d13879ff707de24. Complete binary committed diff SHA256
+6eb3e3d01832957691b01869099a95e5203588959e8fdf523bb898b3cd322a78
+equals reviewed staged candidate. All five committed blobs equal accepted final
+input manifest entries; full message matches tmp/commit.md, including Refs #1.
+Index empty and only flake.nix user mirror dirty. Prior 373core/32focused/7real
+integration gates apply by verified byte identity; no new tests merely for commit
+verification. No external issue closure or further phase selected. This observation
+supports associating the committed snapshot with this verification checkpoint;
+it does not retrospectively establish original uncommitted-run commit provenance.
+
