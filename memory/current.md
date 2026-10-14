@@ -10,7 +10,11 @@ absolute encoding differs from proposed unified relative-final policy; consumer
 contract must be separate. Bibliography base, generated STM origins and callback
 DB dependencies need explicit evidence. No new execution/build/network download
 authorization; next execution begins isolated locked investigation, not equality
-check deletion. Three public source opens failed; real package claims unverified.
+check deletion. User authorized read-only local three-package inspection; standard
+interfaces independently verified, runtime compatibility still unverified. Include
+DB location preparation reads via insert-file-contents outside fixed native reader;
+organize queries live DB and expands managed bibliography paths at each node file.
+Exact local revisions/hashes in evidence; no package loading/mode/test execution.
 
 Phase2c native preprocessing simplification implemented, accepted and user-committed
 on Phase2b baseline; exact commit diff/message verified on 2026-10-14.

@@ -68,10 +68,42 @@ native INCLUDE and BibTeX receipts: those receipts do not automatically cover an
 Org-roam query result. A owned captured query result/version check or documented
 explicit validation limit may be needed; no DB/FS atomicity/sandbox promise.
 
-Public source lookup attempted for the three links already in INBOX via web on this
-review: all GitHub opens returned cache-miss/fetch errors. No shell fetch/retry or
-new independent source verification. Interface descriptions remain user-reported;
-actual pinned source/runtime inspection is part of execution, not this review.
+Initial public-source opens failed. User subsequently authorized read-only access
+to the three repositories under /home/lingyu/Projects. Relevant local code now
+independently inspected; all three worktrees clean at inspection. No loading/mode
+activation/query/build/test/download performed. Runtime compatibility unverified.
+Local exact identities and hashes are recorded in evidence.md.
+
+Verified interface facts:
+
+- Include global mode installs before-processing buffer marker and around-advice
+  on native INCLUDE. The advice normalizes ROAM_INCLUDE/mounts before each native
+  expansion and carries dynamic recursive context plus a handler in
+  org-execute-file-search-functions. Headline node lookup converts the DB point
+  into physical line search; no backend-specific converter. Captured/advised native
+  function and preserved line count are relevant existing mechanisms, not proof
+  of actual joint runtime compatibility.
+- Include node resolution queries org-roam-node-from-id and validates saved node
+  files using insert-file-contents in a hook-suppressed temporary Org buffer.
+  This bypasses current fixed org-file-contents capture. File/DB can therefore
+  determine a location before native captured reads, even without modifying any
+  live source. Phase4 must examine that dependency/time boundary. Source isolation
+  is not dependency consistency; package deliberately does not sync/repair DB.
+- Organize global mode installs backend-independent key-only AST export filter
+  and, for :bibliography t registry, Org Cite filter-return advice. Managed files
+  are expanded relative to each DB node file before appending/deduplication after
+  normal Cite results. Thus managed discovery returns normalized paths; this
+  differs from unresolved authored cross-directory relative keyword policy.
+  Export filter changes only matching citation-reference :key values and returns
+  the same tree, ignoring backend/info arguments. These semantics fit Phase1's
+  intended mutation surface; actual DB/entry/native compatibility still needs ERT.
+  Managed tag/node/ref queries and registry configuration are live dependencies.
+- Blog export-content-entry reads a saved source into fresh buffer, assigns source
+  file/directory and runs Org mode before dynamically configured HTML export.
+  Its export-to-file uses org-export-to-file 'html with scoped body filters;
+  publication/index/attachments introduce own file/cache writes. Loading/source
+  inspection is not publication validation; future fixture tests must own all
+  publish/staging/DB/cache paths and assert restored global state.
 
 ## Acceptance and issue boundary
 

@@ -1767,3 +1767,37 @@ test/network action solely to associate commit. This checkpoint's project parent
 is the actual snapshot inspected, not retrospective original test provenance.
 Phase2c complete, Phase4 real package integration separately selected; no issue write.
 
+## Local third-party source review (2026-10-14)
+
+User authorized read-only inspection of three package repositories under
+/home/lingyu/Projects after public-source web cache misses. All three native Git
+status reports clean; no dependency/generated/DB directories scanned, no packages
+loaded, no modes/queries/build/test/download run. Reviewed relevant Elisp entry
+points and support helpers, not entire dependency trees. Exact observed HEADs and
+primary module SHA256:
+
+- org-roam-include: ca62c8fb5c23064253877480edb2ba83a2cf2afb;
+  org-roam-include.el996fb667f1dac805e5f6ebca5f82f30ae70a3fafbf430d742a9fd20b4be41043.
+- org-roam-organize: eaaee8e47137e4bebc65b3cce6b7c409bc5a24cd;
+  org-roam-organize-cite.el5b71f2ad4b534f7b951628f8f2adfb3c745c9f865698b3de6d48d81e3adf23f7.
+- org-roam-blog: 778d410f55710bca22a2d84a301a72b7b099b874;
+  org-roam-blog.elc62c33de73773d4762f7e1117aa50274eed9c6c1a5900f0a7c342772b2d3a1cb.
+
+Include623-814/994-1130: global mode installs buffer-marker before-processing hook,
+native INCLUDE around-advice with recursive dynamic context/custom file-search
+handler. Node identity comes from org-roam-node-from-id; saved location preparation
+653+ uses direct insert-file-contents into hook-suppressed Org buffer, bypassing
+our fixed org-file-contents reader. Physical line search derives from DB point.
+This is a concrete extra dependency boundary to test, not a proven runtime failure.
+Organize cite28-145/429-594: managed bibliography DB paths expanded at each node
+file, appended after standard Cite results under Org-derived/global-mode guard;
+AST filter ignores backend/info, changes only matching citation-reference :key
+and returns original tree. Global setup/teardown verified in organize.el52-113.
+Registry/tag/node/ref queries remain live state; file receipts do not cover DB.
+Blog535-566/1043-1095: HTML org-export-to-file under dynamic body filters, saved
+source buffer file/directory and Org mode; publish/index/attachment paths have
+separate effects. Existing interface descriptions now source-verified. No claim
+of fixture-backed package/native/HTML runtime compatibility, DB atomicity or #1
+completion. Review updated at memory/cross-directory-integration-plan-review.md.
+External OIDs identify inspected source only; no foreign project-parent attachment.
+
