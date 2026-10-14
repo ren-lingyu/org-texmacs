@@ -1,0 +1,124 @@
+this derivation will be built:
+  /nix/store/9cvpf0fndcxj0aid2680zv5dhbia6hnz-org-texmacs-phase6-probes.drv
+building '/nix/store/9cvpf0fndcxj0aid2680zv5dhbia6hnz-org-texmacs-phase6-probes.drv'...
+org-texmacs-phase6-probes> 
+org-texmacs-phase6-probes> Running 5 tests (2026-10-14 13:04:56+0000, selector `"^phase6-probe-"')
+org-texmacs-phase6-probes> ENV Emacs 31.1 Org 9.8.10 ox /nix/store/g1hmaj5kbmp3n4c7p21i35mj3rgv6hgp-emacs-packages-deps/share/emacs/site-lisp/elpa/org-9.8.10/ox.elc
+org-texmacs-phase6-probes> SOURCE org-export--dispatch-action
+org-texmacs-phase6-probes> (defun org-export--dispatch-action
+org-texmacs-phase6-probes>     (prompt allowed-keys entries options first-key expertp)
+org-texmacs-phase6-probes>   "Read a character from command input and act accordingly.
+org-texmacs-phase6-probes> 
+org-texmacs-phase6-probes> PROMPT is the displayed prompt, as a string.  ALLOWED-KEYS is
+org-texmacs-phase6-probes> a list of characters available at a given step in the process.
+org-texmacs-phase6-probes> ENTRIES is a list of menu entries.  OPTIONS, FIRST-KEY and
+org-texmacs-phase6-probes> EXPERTP are the same as defined in `org-export--dispatch-ui',
+org-texmacs-phase6-probes> which see.
+org-texmacs-phase6-probes> 
+org-texmacs-phase6-probes> Toggle export options when required.  Otherwise, return value is
+org-texmacs-phase6-probes> a list with action as CAR and a list of interactive export
+org-texmacs-phase6-probes> options as CDR."
+org-texmacs-phase6-probes>   (let (key)
+org-texmacs-phase6-probes>     ;; Scrolling: When in non-expert mode, act on motion keys (C-n,
+org-texmacs-phase6-probes>     ;; C-p, SPC, DEL), and translate down/up arrow keys and scroll
+org-texmacs-phase6-probes>     ;; wheel to C-n/C-p, respectively.
+org-texmacs-phase6-probes>     (while (and (setq key
+org-texmacs-phase6-probes>                       (pcase (read-event prompt)
+org-texmacs-phase6-probes>                         ((or 'up
+org-texmacs-phase6-probes>                              `(wheel-up . ,_)
+org-texmacs-phase6-probes>                              `(double-wheel-up . ,_)
+org-texmacs-phase6-probes>                              `(triple-wheel-up . ,_))
+org-texmacs-phase6-probes>                          ?\C-p)
+org-texmacs-phase6-probes>                         ((or 'down
+org-texmacs-phase6-probes>                              `(wheel-down . ,_)
+org-texmacs-phase6-probes>                              `(double-wheel-down . ,_)
+org-texmacs-phase6-probes>                              `(triple-wheel-down . ,_))
+org-texmacs-phase6-probes>                          ?\C-n)
+org-texmacs-phase6-probes>                         (event event)))
+org-texmacs-phase6-probes>              (not expertp)
+org-texmacs-phase6-probes>              ;; FIXME: Don't use C-v (22) here, as it is used as a
+org-texmacs-phase6-probes>              ;; modifier key in the export dispatch.
+org-texmacs-phase6-probes>              (memq key '(14 16 ?\s ?\d 134217846)))
+org-texmacs-phase6-probes>       (org-scroll key t))
+org-texmacs-phase6-probes>     (cond
+org-texmacs-phase6-probes>      ;; Ignore undefined associations.
+org-texmacs-phase6-probes>      ((not (memq key allowed-keys))
+org-texmacs-phase6-probes>       (ding)
+org-texmacs-phase6-probes>       (unless expertp (message "Invalid key") (sit-for 1))
+org-texmacs-phase6-probes>       (org-export--dispatch-ui options first-key expertp))
+org-texmacs-phase6-probes>      ;; q key at first level aborts export.  At second level, cancel
+org-texmacs-phase6-probes>      ;; first key instead.
+org-texmacs-phase6-probes>      ((eq key ?q) (if (not first-key) (user-error "Export aborted")
+org-texmacs-phase6-probes>                  (org-export--dispatch-ui options nil expertp)))
+org-texmacs-phase6-probes>      ;; Help key: Switch back to standard interface if expert UI was
+org-texmacs-phase6-probes>      ;; active.
+org-texmacs-phase6-probes>      ((eq key ??) (org-export--dispatch-ui options first-key nil))
+org-texmacs-phase6-probes>      ;; Send request for template insertion along with export scope.
+org-texmacs-phase6-probes>      ((eq key ?#) (cons 'template (memq 'subtree options)))
+org-texmacs-phase6-probes>      ;; Switch to asynchronous export stack.
+org-texmacs-phase6-probes>      ((eq key ?&) '(stack))
+org-texmacs-phase6-probes>      ;; Toggle options: C-b (2) C-v (22) C-s (19) C-f (6) C-a (1).
+org-texmacs-phase6-probes>      ((memq key '(2 22 19 6 1))
+org-texmacs-phase6-probes>       (org-export--dispatch-ui
+org-texmacs-phase6-probes>        (let ((option (cl-case key (2 'body) (22 'visible) (19 'subtree)
+org-texmacs-phase6-probes>                            (6 'force) (1 'async))))
+org-texmacs-phase6-probes>       (if (memq option options) (remq option options)
+org-texmacs-phase6-probes>         (cons option options)))
+org-texmacs-phase6-probes>        first-key expertp))
+org-texmacs-phase6-probes>      ;; Action selected: Send key and options back to
+org-texmacs-phase6-probes>      ;; `org-export-dispatch'.
+org-texmacs-phase6-probes>      ((or first-key (functionp (nth 2 (assq key entries))))
+org-texmacs-phase6-probes>       (cons (cond
+org-texmacs-phase6-probes>           ((not first-key) (nth 2 (assq key entries)))
+org-texmacs-phase6-probes>           ;; Publishing actions are hard-coded.  Send a special
+org-texmacs-phase6-probes>           ;; signal to `org-export-dispatch'.
+org-texmacs-phase6-probes>           ((eq first-key ?P)
+org-texmacs-phase6-probes>            (cl-case key
+org-texmacs-phase6-probes>              (?f 'publish-current-file)
+org-texmacs-phase6-probes>              (?p 'publish-current-project)
+org-texmacs-phase6-probes>              (?x 'publish-choose-project)
+org-texmacs-phase6-probes>              (?a 'publish-all)))
+org-texmacs-phase6-probes>           ;; Return first action associated to FIRST-KEY + KEY
+org-texmacs-phase6-probes>           ;; path. Indeed, derived backends can share the same
+org-texmacs-phase6-probes>           ;; FIRST-KEY.
+org-texmacs-phase6-probes>           (t (catch 'found
+org-texmacs-phase6-probes>                (dolist (entry (member (assq first-key entries) entries))
+org-texmacs-phase6-probes>                  (let ((match (assq key (nth 2 entry))))
+org-texmacs-phase6-probes>                    (when match (throw 'found (nth 2 match))))))))
+org-texmacs-phase6-probes>          options))
+org-texmacs-phase6-probes>      ;; Otherwise, enter sub-menu.
+org-texmacs-phase6-probes>      (t (org-export--dispatch-ui options key expertp)))))
+org-texmacs-phase6-probes> MENU ((90 "Own" ((97 "A" ignore) (98 "B" forward-char)))) KEYS "Za" RESULT (ignore)
+org-texmacs-phase6-probes> MENU ((90 "Own" ((97 "A" ignore) (98 "B" forward-char)))) KEYS "Zb" RESULT (forward-char)
+org-texmacs-phase6-probes> MENU ((90 "Own" ((97 "A" ignore))) (90 "Other" ((98 "B" forward-char)))) KEYS "Za" RESULT (ignore)
+org-texmacs-phase6-probes> MENU ((90 "Own" ((97 "A" ignore))) (90 "Other" ((98 "B" forward-char)))) KEYS "Zb" RESULT (forward-char)
+org-texmacs-phase6-probes> MENU ((90 "Own" ((97 "A" ig
+org-texmacs-phase6-probes>    passed  1/5  phase6-probe-native-menu-key-behavior (0.018870 sec)
+org-texmacs-phase6-probes> 
+org-texmacs-phase6-probes>    passed  2/5  phase6-probe-native-registration-identity (0.000029 sec)
+org-texmacs-phase6-probes>    passed  3/5  phase6-probe-native-ui-dispatch-asserted (0.000045 sec)
+org-texmacs-phase6-probes>    passed  4/5  phase6-probe-nil-menu (0.000019 sec)
+org-texmacs-phase6-probes> 
+org-texmacs-phase6-probes> Invalid key
+org-texmacs-phase6-probes> 
+org-texmacs-phase6-probes>    passed  5/5  phase6-probe-unicode-and-special-keys (1.002733 sec)
+org-texmacs-phase6-probes> 
+org-texmacs-phase6-probes> Ran 5 tests, 5 results as expected, 0 unexpected (2026-10-14 13:04:57+0000, 1.021877 sec)
+org-texmacs-phase6-probes> 
+org-texmacs-phase6-probes> nore))) (90 "Other" ((97 "B" forward-char)))) KEYS "Za" RESULT (ignore)
+org-texmacs-phase6-probes> MENU ((90 "Own" ((97 "A" ignore))) (90 "Other" ((97 "B" forward-char)))) KEYS "Zb" ERROR (error "Menu exhausted events")
+org-texmacs-phase6-probes> REGISTRY repeated-name=((phase6-test (90 "Second" ((98 "Action" ignore)))))
+org-texmacs-phase6-probes> SPECIAL 113 ERROR (user-error "Export aborted")
+org-texmacs-phase6-probes> SPECIAL 63 ERROR (error "Menu exhausted events")
+org-texmacs-phase6-probes> SPECIAL 35 RESULT (template)
+org-texmacs-phase6-probes> SPECIAL 38 RESULT (stack)
+org-texmacs-phase6-probes> SPECIAL 80 RESULT (publish-all)
+org-texmacs-phase6-probes> SPECIAL 2 ERROR (error "Menu exhausted events")
+org-texmacs-phase6-probes> SPECIAL 22 ERROR (error "Menu exhausted events")
+org-texmacs-phase6-probes> SPECIAL 19 ERROR (error "Menu exhausted events")
+org-texmacs-phase6-probes> SPECIAL 6 ERROR (error "Menu exhausted events")
+org-texmacs-phase6-probes> SPECIAL 1 ERROR (error "Menu exhausted events")
+org-texmacs-phase6-probes> SPECIAL 14 RESULT (ignore)
+org-texmacs-phase6-probes> SPECIAL 16 RESULT (ignore)
+org-texmacs-phase6-probes> SPECIAL 32 RESULT (ignore)
+org-texmacs-phase6-probes> SPECIAL 127 RESULT (ignore)

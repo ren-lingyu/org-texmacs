@@ -1,0 +1,78 @@
+[
+  {
+    "name": "org-roam-include",
+    "sourceRoot": "/home/lingyu/Projects/org-roam-include",
+    "head": "ca62c8fb5c23064253877480edb2ba83a2cf2afb",
+    "files": [
+      {
+        "path": "org-roam-include.el",
+        "bytes": 48416,
+        "sha256": "996fb667f1dac805e5f6ebca5f82f30ae70a3fafbf430d742a9fd20b4be41043"
+      }
+    ]
+  },
+  {
+    "name": "org-roam-organize",
+    "sourceRoot": "/home/lingyu/Projects/org-roam-organize",
+    "head": "eaaee8e47137e4bebc65b3cce6b7c409bc5a24cd",
+    "files": [
+      {
+        "path": "org-roam-organize-capture.el",
+        "bytes": 16420,
+        "sha256": "0053297fb1a225a556b9bfe4b6244331f9066067966a439a26d485497900f377"
+      },
+      {
+        "path": "org-roam-organize-cite-biblatex.el",
+        "bytes": 7884,
+        "sha256": "36cdd992cf88a428ca707001ada59fc270e5257784518f5f828c85f9e4108de9"
+      },
+      {
+        "path": "org-roam-organize-cite-citar.el",
+        "bytes": 42714,
+        "sha256": "c9243169f97affcb4886e8d31ebd4f84398d035f97cb6f4bf3711d828e9f6c31"
+      },
+      {
+        "path": "org-roam-organize-cite-display.el",
+        "bytes": 17997,
+        "sha256": "54c4f9c0b5c92a6c98e8055493ba8e52467f3fcfeb306df8960f02f66840599f"
+      },
+      {
+        "path": "org-roam-organize-cite.el",
+        "bytes": 38399,
+        "sha256": "5b71f2ad4b534f7b951628f8f2adfb3c745c9f865698b3de6d48d81e3adf23f7"
+      },
+      {
+        "path": "org-roam-organize-core.el",
+        "bytes": 68754,
+        "sha256": "8ccb0ae2e438d39154e3d9b83a2f28ab0119ce90032275ed57369959fabda1e8"
+      },
+      {
+        "path": "org-roam-organize-entry.el",
+        "bytes": 12146,
+        "sha256": "dd6f6f791ec5b4cc725de1a097e7cac223612a7cec16189a1cd458630018893a"
+      },
+      {
+        "path": "org-roam-organize-moc.el",
+        "bytes": 14181,
+        "sha256": "15b2d52c494f9db85c569a4356c05527620690728f32e18aa476d08642af03d3"
+      },
+      {
+        "path": "org-roam-organize.el",
+        "bytes": 5406,
+        "sha256": "172e44b1b808e026c55ca1f85d74f51c6121078532a6526fcea061e46d1d1abc"
+      }
+    ]
+  },
+  {
+    "name": "org-roam-blog",
+    "sourceRoot": "/home/lingyu/Projects/org-roam-blog",
+    "head": "778d410f55710bca22a2d84a301a72b7b099b874",
+    "files": [
+      {
+        "path": "org-roam-blog.el",
+        "bytes": 113297,
+        "sha256": "c62c33de73773d4762f7e1117aa50274eed9c6c1a5900f0a7c342772b2d3a1cb"
+      }
+    ]
+  }
+]
