@@ -23,15 +23,18 @@ decision.
 
 ## Active next
 
-### Reviewed proposal: Phase 5 formal frontend/preprocessing integration
+### Active: Phase 5 formal frontend/preprocessing integration
 
-INBOX section18 reviewed suitable on committed Phase4 baseline; review only,
-implementation/tests not authorized. Contract review and unresolved choices:
-memory/frontend-preprocessing-plan-review.md. Proposed5a interface matrix before
+INBOX section18 reviewed suitable and user now requested execution on Phase4
+baseline; task isolated120s builds/240s checks/network authorized.5a four locked
+probes pass, selected contract memory/frontend-preprocessing-contract.md.
+Original review memory/frontend-preprocessing-plan-review.md.5a interface matrix before
 5b full-buffer provider routing,5c preserved direct local scopes,5d real extension/
 three-consumer regression. Keep PDF inside original transaction checks; guard
 coexistence already covered by core loaded-frontend tests; expose provider limits
-as default support change; choose independent explicit discovery entry/scope.
+as default support change; independent buffer-local discovery boolean default nil
+selected for both full/local exports.5b/5c implemented with eight new core cases,
+first73focused pass;5d two real frontend cases/HTML-blog retarget underway, gate pending.
 Generic exporter, full lifecycle/provenance/resources and key changes remain
 deferred;#1 closure judged after selected frontend architecture acceptance.
 

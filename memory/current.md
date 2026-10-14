@@ -2,14 +2,27 @@
 
 ## Active objective
 
-User requested review only of INBOX section18 Phase5 frontend/preprocessing plan
-on committed Phase4 baseline. Reviewed suitable, with transaction lifetime,
+User now requested execution of INBOX section18 Phase5 on committed Phase4 baseline.
+User authorized120s isolated probes/focused/integration and repeated240s full check
+under tmp/issue-1-phase-5, necessary network/store/cache/logs; no lock edits.
+Initial isolated evaluation failed missing copied worker.scm, repaired input list
+and reran same authorized probe command; no production edits before5a acceptance.
+Reviewed suitable, with transaction lifetime,
 existing guard coverage, changed full-buffer provider support profile and independent
 discovery entry/scope clarified in memory/frontend-preprocessing-plan-review.md.
-No INBOX/production changes or Phase5 tests/implementation selected. Next: user
-adopts revised contract/authorizes5a, then locked isolated probes before5b; no
-Phase4 test authorization carried into this new task. Discovery default nil and
-source-local frontend option are recommendations pending5a decision. Overall#1
+5a four locked probes pass3.144554s; contract selected in
+memory/frontend-preprocessing-contract.md.5b/5c minimum frontend routing implemented:
+shared byte-buffer helper, independent discovery option, original consumer callback
+transaction. Eight new core ERT, first73focused49.631466s pass; additional local
+discovery file/PDF+overrides coverage now running.5d two actual frontend fixtures
+and joint HTML/blog retarget added; first8/9 failed only PDF fi ligature assertion,
+corrected NFKC semantic inspection, running final integration. No provider weakening.
+Context additionally rejects unresolved ROAM_INCLUDE keyword and subtree mount;
+prevents dropped selected-root mount metadata without special converter or DB query.
+No INBOX edits selected. Explicit source-buffer-local frontend discovery boolean
+org-texmacs-export-discover-bibliography defaults nil, applies full and local.
+PDF/native serialization remain inside provider transaction; no fallback/guard
+removal. Next5b/5c core coverage/docs and5d real frontend fixture then gates. Overall#1
 closure after selected frontend acceptance, not generic export/resource parity.
 
 Rewritten INBOX section17 Phase4a-4d implemented, accepted and user committed
@@ -57,7 +70,7 @@ all five committed blobs match accepted final-inputs manifest. Full commit messa
 matches tmp/commit.md, feat(document) subject, Refs #1, no new breaking footer.
 Index empty; user mirror remains the only dirty path, lock unchanged. Prior gates
 transfer by byte identity; no new test or external tracking write.
-Phase5 is now reviewed as a proposed next stage, not implemented. Latest section17 selected
+Phase5 is now selected and underway as above. Latest section17 selected
 acceptance complete; original proposal's formal frontend/default dispatcher policy
 was not selected here and remains separate. Do not automatically close#1/external
 tracking: distinguish achieved opt-in interoperability from any adopted frontend
