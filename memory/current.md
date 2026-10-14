@@ -48,6 +48,17 @@ and behavioral compatibility on9.8 not established; release_9.8 org-element.el
 web fetch failed. Keep lower-bound decision unresolved pending isolated version
 validation or explicit conservative supported-baseline policy (tested9.8.10).
 No new package minimum change, test build or download performed in this follow-up.
+User requested isolated independent-flake signature audit. Prepared
+tmp/org-minimum-api with13 production Lisp copies/SHA manifest, copied pinned
+nixpkgs node and org98 non-flake input release_9.8. signatures.el reads tagged
+definitions and actual project direct-call arities, compares baseline runtime9.8.10;
+reports callbacks/generated-accessor gaps separately, not behavior compatibility.
+Necessary new Org9.8 source fetch/isolated lock and build network authorization
+pending under AGENTS network/dependency rule; no build/download run yet.
+Exact proposed120s lock path:/home/lingyu/Projects/org-texmacs/tmp/org-minimum-api,
+then120s nix build -L --no-link --no-write-lock-file same#checks.x86_64-linux.signatures.
+Root project/lock/mirror unchanged by this audit preparation. Necessary unique
+signature evidence will be evaluated for selective archive after actual results.
 User asked whether temporary-test archival was assessed. Selection confirmed:
 native menu/registry/shared-prefix/control-key probes have independent value,
 Eight original-byte artifacts archived and verified in an archive-only checkpoint:
