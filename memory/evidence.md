@@ -2007,3 +2007,22 @@ still unavailable/no external mutation. Suitable one coupled frontend/transactio
 discovery/coverage commit; split not necessary, difficulty medium. No ordinary
 commit; next user commit then committed identity verification, no candidate parent.
 
+## Phase 5 user commit verification (2026-10-14)
+
+User reports commit completed. Project HEAD5f4c9c0d921617a7a53a030d1127b82ff8640eeb,
+parent6f018decef3907ab20ef68700751912799dc8432. Complete binary committed diff
+SHA25668f76e19edefa2afda14e1b373ea7e010731b78093e413b029c8603a46928054
+equals reviewed staged candidate. Every one of seven committed blobs equals
+accepted final-inputs.json hash. Prior381core/79focused/9real/all10checks apply by
+byte identity; no new tests. Index empty, only flake.nix user mirror dirty.
+
+Full message matches current user-edited tmp/commit.md: same feat(export)! subject,
+body/footer punctuation changed to halfwidth and closing footer now Closes: #1.
+BREAKING CHANGE and blank separator retained; native Git trailer parser recognizes
+Closes: #1. Initial verification asserted older no-colon spelling and failed only
+that expectation; subsequent exact-message/blob verification passes. Preserve user
+edits, no project commit/message rewrite or external issue write. Selected local
+INBOX architecture/frontend complete, current remote issue state not verified.
+This committed snapshot is actually checked and supports a project parent for this
+verification checkpoint, not retrospective provenance of original candidate runs.
+

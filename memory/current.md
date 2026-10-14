@@ -29,14 +29,14 @@ org-texmacs-export-discover-bibliography defaults nil, applies full and local.
 PDF/native serialization remain inside provider transaction; no fallback/guard
 removal. Seven project files changed: README.org, ox-texmacs.el, org-texmacs.el,
 org-texmacs-context.el, tests/ert/ert.el and both tests/integration files.
-User authorized staging/message generation: all seven paths explicitly staged,
-only mirror remains unstaged. Complete staged diff reviewed/--check clean; every
-staged blob matches worktree and accepted final-inputs.json, gates transfer by byte
-identity. tmp/commit.md subject feat(export)!: preprocess full frontend exports in
-checked transactions; BREAKING CHANGE footer for changed full frontend defaults/
-constraints, blank line then Closes #1 per skill. Suitable one coherent commit.
-Next user ordinary commit and identity verification. Selected local INBOX#1
-architecture/frontend acceptance complete; closing footer appropriate after review,
+User committed Phase5 as the full frontend preprocessing revision. Complete binary
+committed diff equals staged SHA25668f76e19...; all seven committed blobs match
+accepted final-inputs.json. Full message matches current user-edited tmp/commit.md:
+feat(export)! subject, halfwidth punctuation, BREAKING CHANGE footer, blank line
+then Closes: #1 trailer. Git trailer parser recognizes Closes: #1. Preserve user's
+message edits; no commit rewrite or message regeneration. Prior gates transfer by
+byte identity; no new tests solely for commit verification. Index empty, only user
+mirror dirty. Selected local INBOX#1 architecture/frontend acceptance complete;
 not generic export/resource parity. Live issue page lookup failed; no current remote
 state/content claim or external tracking write.
 
@@ -265,10 +265,10 @@ direct source APIs and local scopes retain direct preparation.
 
 ## Baseline and staging
 
-- Current main is the cross-directory INCLUDE/real extension coverage revision on
-  the native INCLUDE parameter revision; lock selects Org9.8.10. Phase4 committed
-  diff/message verified. Seven accepted Phase5 project files staged; unchanged
-  user mirror remains unstaged; no Phase5 ordinary commit yet.
+- Current main is the Phase5 full frontend preprocessing revision on the Phase4
+  cross-directory INCLUDE/real extension coverage revision; lock selects Org9.8.10.
+  Phase4/5 committed diffs
+  verified. Index empty; unchanged user mirror remains unstaged.
   Committed Phase2c diff/message matches reviewed candidate.
   Phase 3b committed diff matches staged/validated candidate SHA-256 in evidence.
   Release-era observations below describe their historical baseline.

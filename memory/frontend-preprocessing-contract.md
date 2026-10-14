@@ -44,10 +44,11 @@ Context refuses unresolved ROAM_INCLUDE keyword/subtree mount before root metada
 is dropped; no extension converter/DB adapter. Exact240s full gate exits0:
 381/381 core ERT178.555109s, all10logged flake checks/strictcompile/package-lint,
 79focused57.349582s/9real11.487037s/4probes3.585992s pass.25project inputs and
-11copied foreign modules byte-match manifests. Selected5a-5d accepted, uncommitted.
+11copied foreign modules byte-match manifests. Selected5a-5d accepted and user
+committed; exact seven-file committed diff/blob/message verification in evidence.
 Necessary nine texts archived immutably:
 archive/2026-10-14T07-51-02Z--6f018de/MANIFEST.md. Capture context is Phase4 commit,
-not original candidate run provenance. No project staging/commit or external write.
+not original candidate run provenance. Agent made no ordinary commit or external write.
 Selected local INBOX issue#1 architecture/frontend goals complete, suitable for
 closing footer after user review/commit. Live GitHub page unavailable this run;
 do not claim current remote state/content. Generic/lifecycle/resource/menu goals

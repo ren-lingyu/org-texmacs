@@ -730,7 +730,8 @@ original review memory/frontend-preprocessing-plan-review.md remains historical.
 
 ## Phase 5 accepted formal frontend/preprocessing integration
 
-Uncommitted candidate on verified Phase4 revision. Optional ox-texmacs retains
+User committed accepted Phase5 on verified Phase4 revision; seven-file diff/blobs
+match tested candidate and full message matches user-edited draft. Optional ox-texmacs retains
 backend/menu/keys and generic guard but full unselected unnarrowed commands now
 use existing bounded preprocessing provider, with native parameters and current
 ordinary-level/local/path/alias/UTF8/budget constraints. Subtree/region/narrowing
@@ -754,7 +755,7 @@ missing nodes/local mount refusal, HTML before-after and actual blog publish;
 existing selection/options/source/dependency/native failure regressions maintained.
 25project+11foreign modules match manifests. Only x86_64-linux/pinned fixtures,
 not all registries/GUI/general resource rendering/whole generic lifecycle.
-Selected local issue#1 architecture/frontend complete subject to user review/commit;
+Selected local issue#1 architecture/frontend complete and committed;
 remote page failed to fetch, no external issue state/content claim/write.
 
 ## Phase 2c accepted native preprocessing simplification

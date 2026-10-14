@@ -35,10 +35,10 @@ coexistence already covered by core loaded-frontend tests; expose provider limit
 as default support change; independent buffer-local discovery boolean default nil
 selected for both full/local exports. Eight new core and two new real frontend cases,
 joint HTML/blog retarget;79focused/9real/381core ERT/all10checks accepted.
-Seven project files uncommitted/unstaged, only other dirty path user mirror.
-Contract/evidence/archive in current memory. Next user review/stage/commit then
-identity verification; selected INBOX#1 architecture/frontend goals complete and
-closing footer suitable, live issue page unavailable/no remote state change.
+Seven project files user committed and identity verified; index empty/only user
+mirror dirty. Contract/evidence/archive in current memory. Selected INBOX#1
+architecture/frontend goals complete; BREAKING CHANGE and Closes: #1 retained in
+verified message. Live issue page unavailable/no remote state change verified.
 Generic exporter, full lifecycle/provenance/resources and key changes remain
 deferred;#1 closure judged after selected frontend architecture acceptance.
 
