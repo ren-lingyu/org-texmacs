@@ -25,12 +25,14 @@ decision.
 
 ### Phase 4 cross-directory INCLUDE and actual interoperability
 
-New INBOX section17 reviewed suitable; **unresolved-design** pending locked native
-and pinned-package investigation/contract. Ordinary cross-directory content can
-precede complete STM resources/rendering, no full provenance prerequisite.
-Resolve source versus output bases, bibliography declaration identities and scoped
-fixture-backed DB/hook dependencies; do not silently change absolute native hlink
-consumer behavior or drop resource context. Review:
+Rewritten INBOX section17 reviewed suitable; **unresolved-design** pending4a locked
+working-buffer/context and cross-directory contract investigation. User prioritizes
+final working input over STM resources; relative STM follows final document base,
+no original include-directory recovery/provenance requirement. Third-party internal
+reads/DB do not require interception or full provider dependency closure; preserve
+existing own-read and final snapshot guarantees, use real fixture evidence for gaps.
+Investigate native context and absolute vs relative consumer policy separately.
+Review:
 memory/cross-directory-integration-plan-review.md. User requested review only;
 no implementation/tests/download selected. Real fixture integration then joint HTML/
 blog noninterference remains separate acceptance. Reproducible gaps alone do not

@@ -1,120 +1,91 @@
-# Phase 4 cross-directory INCLUDE and real extension review
+# Revised Phase 4 working-buffer/context plan review
 
-User requested review of INBOX section17 around1470 on 2026-10-14. Baseline
-native INCLUDE parameter revision1a254a7 verified, only user mirror dirty/index
-empty. Plan is suitable as the next investigation/contract sequence. Review only:
-no INBOX edit, implementation, build/test/download or external issue mutation.
+User rewrote INBOX section17 around1470 and requested review on2026-10-14.
+Committed baseline is native INCLUDE parameter revision1a254a7; only user mirror
+unstaged/index empty. Review only, no INBOX/project edits, new probes/tests/load,
+downloads or external issue writes. Previous version of this review is in GAW
+first-parent history; current text supersedes original-directory/resource-origin
+and third-party-read interception prerequisites.
 
-## Adopted direction and bounded interpretation
+## Decision and interpretation
 
-Allow ordinary cross-directory Org content without requiring full source maps,
-occurrence IDs or completion of STM resource rendering. Native Org owns include
-selection/headlines/footnotes/ordinary links; actual dependency snapshots and source
-consistency remain required. Real include/organize/blog packages tested through
-standard interfaces, package-specific converters only if demonstrated necessary.
-STM trees/resources/rendering stay separate; PDF primitive restrictions unchanged
-unless independently selected/validated. No automatic general syntax/export scope.
+Revised plan is appropriate. User explicitly prioritizes preparation consuming
+preprocessed working buffer plus effective standard Org context over support for
+STM-native resources. Input is not plain text alone: own/capture file identity,
+default directory, supported buffer-local parser/export configuration and necessary
+INFO under an explicit preparation boundary. AST-first/pure lowering/canonical source
+stay; this does not automatically require full generic export lifecycle/annotation.
 
-## Refinements required before removing checks
+Org owns include selection/recursion/headline/footnote/ordinary-link relocation.
+Preparation consumes final working document; no original source/occurrence/AST
+origin reconstruction. Standard final context governs relative bibliography and STM
+resources unless an existing explicit standard interface provides a different
+meaning. Managed bibliography paths already expanded by organize at node file are
+explicit discovery results, not justification for inventing declaration provenance.
 
-- Current same-base rejection occurs in parse-include and fixed capture; private
-  context uses root base, while native recursion supplies included-file directory.
-  Removing equality checks alone is not a complete semantic change. Probe nested
-  relative include resolution, link relocation, missing/symlink/physical aliases,
-  selected/excluded dependencies, STM shielding and final transaction checks with
-  actual original file identities. Preserve existing file/UTF8/depth/count/budgets.
-- Distinguish authored source resource directory from target document base. First
-  establish the target identified by original relative path at its source, then
-  express it relative to a chosen destination if that consumer supports it. Merely
-  resolving original text against the output directory changes its meaning.
-  Never rewrite arbitrary STM strings. Any per-island directory must be associated
-  until native parsing/resource encoding completes, only when required; hooks'
-  generated/moved payload needs an explicit fallback/rejection policy. No universal
-  origin map demanded. Resource-free STM from different directories should not be
-  rejected solely because it could hypothetically contain resource strings.
-- Existing ordinary Org raw paths remain relative in structured results, but
-  org-texmacs-session.el native-file-target currently resolves marked hlink targets
-  to absolute system paths on an owned body copy. Section17's unified relative
-  final-document policy is a consumer contract proposal, not current behavior.
-  Treat any serialization/session/output-base change as a separately bounded node;
-  do not bundle it into basic cross-directory INCLUDE. Source base, explicit output
-  base and native session/byte-only/PDF base need independent decisions/evidence.
-- Bibliography declarations are not ordinary file links. Current Phase3 collector
-  and normalized explicit identities use one root resource base; actual cross-dir
-  relative declaration behavior needs locked probes before acceptance. Decide root
-  document versus declaration-source semantics explicitly, including equal names
-  in multiple dirs, selected/pruned declarations, global/managed discovery and
-  explicit text priority. Preserve only necessary declaration identity/context or
-  reject the affected ambiguous case; never silently read a same-named root file.
-  Arbitrary unused/resource-free cross-directory content need not be blocked.
+STM relative resources intentionally use each final document's base; standalone
+versus included content may therefore resolve differently. This is the selected
+semantic policy, not lost original-directory provenance that preparation must
+repair. Resources expressible with final context may be handled at structured/native
+boundaries. No source-origin table or package-specific registration required to
+recover earlier directories. Do not reinterpret arbitrary STM strings.
 
-## Real extension and database evidence
+## Clarifications for Phase 4a investigation
 
-Pin actual package and dependency revisions and project Org lock in an independent
-flake, with isolated Org-roam DB/BibTeX/Org files, modes and paths. No personal DB,
-global installation, lock updates or shell downloads implied by plan review.
-Actual package modes/hooks/advice/database queries must run; controlled substitute
-callbacks only diagnose boundaries, not establish compatibility. Test individual
-packages first, then their joint lifecycle and plain HTML export/publish before,
-during and after TeXmacs failures/cleanup. Managed bibliography and UUID remapping
-require fixture-backed actual queries and observable native citation results.
+- Establish actual locked Org working-buffer lifecycle, file identity/default-dir,
+  supported local parser/options and export INFO; compare finite current adapter.
+  Final buffer plus normal context must be demonstrably sufficient for supported
+  conversions, not inferred from valid text alone. Capture owned input before
+  preparation/native waits, recheck original supplied input as documented, detach
+  AST/INFO before consumers. No hidden ambient current-buffer dependency.
+- Distinguish guarantees by boundary. Existing adapter's own native reads and
+  acquired BibTeX have fixed snapshots/receipts. Those remain accurately described
+  while supported. An external provider's files/DB queries are its preprocessing
+  implementation; final working input ownership does not require interception,
+  complete dependency enumeration or an atomic external-state snapshot. Actual
+  wrong output or explicit stronger adopted guarantee can justify further work,
+  but internal use of insert-file-contents/DB alone is not a prerequisite defect.
+- Review any change to current public guard/result/context contract explicitly;
+  don't remove current native-read validation merely as a side effect of new APIs.
+  Clarify whether a future entry receives a completed working buffer or invokes
+  preprocessing itself, who owns lifetime/context and when snapshot begins.
+  Native pipelines/read adapters can remain providers above the same preparation
+  boundary; investigation chooses the minimum suitable interface.
+- Remove unnecessary same-directory exclusions based on locked native link and
+  include evidence, retaining local file validation/UTF8/alias/budgets/native
+  cycles/cleanup. Relative declared bibliography uses final effective context;
+  missing files or unsupported syntax fail honestly, without guessing old origin.
+  Native ordinary-link relocation must retain the target Org actually established.
+- Structured raw Org file links currently remain relative, while native-file-target
+  resolves marked hlinks to absolute system paths on owned body copy. Desired
+  relative final representation is a consumer-policy investigation, not permission
+  to silently alter existing serialization/session/PDF contracts. Source/final
+  document position and destination-dependent native semantics must be measured.
+- STM resource statement is direction, not a blanket claim that all image/include/
+  executable primitives are already supported. Existing discovery grammar and PDF
+  restrictions retain correctness; paths/tree transfer/rendering separately tested.
+  Complete native resources/GUI rendering do not block plain cross-directory work.
 
-Current private preparation suppresses mode hooks, supplies finite context, bounds
-AST filters to key changes and scopes native helper bindings. Real packages might
-need private-buffer state/advice context or additional file/DB reads. Prove whether
-those are missing standard context, unsupported semantics or package bugs before
-adding adapters. Audit actual file/DB dependencies of callbacks separately from
-native INCLUDE and BibTeX receipts: those receipts do not automatically cover an
-Org-roam query result. A owned captured query result/version check or documented
-explicit validation limit may be needed; no DB/FS atomicity/sandbox promise.
+## Real packages and acceptance
 
-Initial public-source opens failed. User subsequently authorized read-only access
-to the three repositories under /home/lingyu/Projects. Relevant local code now
-independently inspected; all three worktrees clean at inspection. No loading/mode
-activation/query/build/test/download performed. Runtime compatibility unverified.
-Local exact identities and hashes are recorded in evidence.md.
+Local source review is complete for user-authorized clean repositories:
+include ca62c8f, organize eaaee8e, blog778d410 (exact hashes in evidence.md).
+Include global before-processing marker/native around-advice/physical line-search;
+organize global Cite discovery and key-only AST filter; blog standard HTML export
+with scoped filters all independently source-verified, not runtime-verified.
+Include's direct saved-file reads and live DB lookup are facts for fixture design,
+not requirements that org-texmacs replace them. Organize's live registry/DB queries
+likewise belong to the provider; use actual synthetic DB fixture in integration.
 
-Verified interface facts:
+Follow4a context+cross-dir probes/contract/maintained implementation ->4b real
+include mode/hooks/advice/fixture ->4c real organize managed paths/UUID filters ->4d
+joint TeXmacs and blog HTML/export/publish state-restoration regression. Pin package
+and dependency revisions to project Org environment; personal databases/global
+configuration not used. No loading/downloading/testing authorized by this review.
+Controlled substitute callbacks diagnose interfaces but don't establish real
+compatibility. Test provider output first, then final preparation/native results.
 
-- Include global mode installs before-processing buffer marker and around-advice
-  on native INCLUDE. The advice normalizes ROAM_INCLUDE/mounts before each native
-  expansion and carries dynamic recursive context plus a handler in
-  org-execute-file-search-functions. Headline node lookup converts the DB point
-  into physical line search; no backend-specific converter. Captured/advised native
-  function and preserved line count are relevant existing mechanisms, not proof
-  of actual joint runtime compatibility.
-- Include node resolution queries org-roam-node-from-id and validates saved node
-  files using insert-file-contents in a hook-suppressed temporary Org buffer.
-  This bypasses current fixed org-file-contents capture. File/DB can therefore
-  determine a location before native captured reads, even without modifying any
-  live source. Phase4 must examine that dependency/time boundary. Source isolation
-  is not dependency consistency; package deliberately does not sync/repair DB.
-- Organize global mode installs backend-independent key-only AST export filter
-  and, for :bibliography t registry, Org Cite filter-return advice. Managed files
-  are expanded relative to each DB node file before appending/deduplication after
-  normal Cite results. Thus managed discovery returns normalized paths; this
-  differs from unresolved authored cross-directory relative keyword policy.
-  Export filter changes only matching citation-reference :key values and returns
-  the same tree, ignoring backend/info arguments. These semantics fit Phase1's
-  intended mutation surface; actual DB/entry/native compatibility still needs ERT.
-  Managed tag/node/ref queries and registry configuration are live dependencies.
-- Blog export-content-entry reads a saved source into fresh buffer, assigns source
-  file/directory and runs Org mode before dynamically configured HTML export.
-  Its export-to-file uses org-export-to-file 'html with scoped body filters;
-  publication/index/attachments introduce own file/cache writes. Loading/source
-  inspection is not publication validation; future fixture tests must own all
-  publish/staging/DB/cache paths and assert restored global state.
-
-## Acceptance and issue boundary
-
-Suggested nodes: locked cross-dir probes -> ordinary-content contract/implementation
-with explicit declaration/resource exceptions -> separately selected minimum STM
-resource policy if needed -> pinned include/organize fixture checks -> joint/blog
-HTML/publish noninterference gate. Stable maintained regression accompanies each
-implementation node; real integrations may use a separate reproducible check.
-
-Reproducible gaps satisfy investigation deliverables, not automatic interoperability
-success or closure of issue#1. Report exact package/revisions/input/expected/actual,
-owning layer and remaining remedy. Do not label an issue resolved while adopted
-core use cases still fail. No full STM resources/GUI/image/PDF support required
-before ordinary cross-directory content and real-package tests.
+Reproducible gaps count as investigation output; do not call adopted failed cases
+supported or close#1 simply because a gap is documented. Core capability unsupported
+input and extension defects remain distinct. Minimal resource enhancement is
+separate future scope; no generic export, DB/FS atomicity or callback sandbox claim.

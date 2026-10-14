@@ -1801,3 +1801,27 @@ of fixture-backed package/native/HTML runtime compatibility, DB atomicity or #1
 completion. Review updated at memory/cross-directory-integration-plan-review.md.
 External OIDs identify inspected source only; no foreign project-parent attachment.
 
+## Revised working-buffer/context priority (2026-10-14)
+
+User explicitly prioritizes final preprocessed buffer -> AST over native STM resource
+support and rewrote INBOX section17 accordingly. Complete new section reviewed:
+appropriate4a standard Org context/cross-dir investigation ->4b include ->4c organize
+->4d joint/blog HTML/publish. Input includes normal effective context, not only text;
+canonical source/owned snapshots/pure lowering retained, full generic lifecycle not
+automatically selected. STM relative paths intentionally use final document base,
+not original included file directory; standalone/include may resolve differently.
+No original directory/source map/occurrence machinery required to recover history.
+Native resources separate optional follow-up, existing PDF restrictions retained.
+
+Previous review overconstrained third-party reads/DB as potential prerequisite to
+intercept/close all dependency paths. Their direct-read/live-query facts remain
+source-verified, but internal provider details alone do not demonstrate a defect
+or require org-texmacs to own their implementation. Existing adapter own-read
+receipts, external provider guarantee limits and final input coherent snapshot
+must be distinguished. Further adaptation needs actual wrong output or explicitly
+adopted stronger guarantee. Existing native absolute hlink translation is unchanged;
+relative final output is a separate consumer contract question. Updated current
+review/backlog record supersedes earlier source-origin/dependency prerequisites.
+No runtime evidence/code/INBOX edits/tests/network action in this review; next is
+Phase4a investigation on explicit execution request. Issue#1 still incomplete.
+

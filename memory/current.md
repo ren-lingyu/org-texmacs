@@ -2,19 +2,19 @@
 
 ## Active objective
 
-User's new INBOX section17 (around1470) reviewed on 2026-10-14. Suitable Phase4
-direction: ordinary cross-directory INCLUDE first, minimal resource/declaration
-contract and actual pinned include/organize/blog fixture integration. Review:
-memory/cross-directory-integration-plan-review.md. Current source/native file link
-absolute encoding differs from proposed unified relative-final policy; consumer
-contract must be separate. Bibliography base, generated STM origins and callback
-DB dependencies need explicit evidence. No new execution/build/network download
-authorization; next execution begins isolated locked investigation, not equality
-check deletion. User authorized read-only local three-package inspection; standard
-interfaces independently verified, runtime compatibility still unverified. Include
-DB location preparation reads via insert-file-contents outside fixed native reader;
-organize queries live DB and expands managed bibliography paths at each node file.
-Exact local revisions/hashes in evidence; no package loading/mode/test execution.
+User rewrote INBOX section17 on2026-10-14 after explicitly prioritizing final working
+buffer + standard effective Org context as preparation input over STM resources.
+Reviewed appropriate. STM relative resources use final document base, including
+intentional different meaning standalone vs INCLUDE; no original-directory recovery
+or full provenance needed. Review: memory/cross-directory-integration-plan-review.md.
+Previous third-party read/DB interception prerequisite was too strong: preserve
+existing own-read receipts and final input ownership, don't imply complete provider
+dependency/DB transaction coverage. Only demonstrated defects/explicit guarantees
+justify extra adaptation. Current native absolute hlink representation vs preferred
+relative output needs separate consumer policy investigation. Next4a locked context/
+cross-dir investigation, then4b include/4c organize/4d joint HTML/blog fixtures.
+Local source interfaces verified, actual runtime integration not yet. No execution,
+package loading, test/download or ordinary project/INBOX edit in this review.
 
 Phase2c native preprocessing simplification implemented, accepted and user-committed
 on Phase2b baseline; exact commit diff/message verified on 2026-10-14.
