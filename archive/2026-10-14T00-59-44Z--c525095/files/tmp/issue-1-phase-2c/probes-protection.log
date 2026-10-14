@@ -1,0 +1,102 @@
+this derivation will be built:
+  /nix/store/i9jkaj6mv641nbd3jkzcslna7lfachc8-org-texmacs-phase2c-probes.drv
+building '/nix/store/i9jkaj6mv641nbd3jkzcslna7lfachc8-org-texmacs-phase2c-probes.drv'...
+org-texmacs-phase2c-probes> Running 9 tests (2026-10-14 00:43:03+0000, selector `"^p2c-"')
+org-texmacs-phase2c-probes>    passed  1/9  p2c-00-environment (0.000228 sec)
+org-texmacs-phase2c-probes> 
+org-texmacs-phase2c-probes>    passed  2/9  p2c-01-parameter-matrix (0.124909 sec)
+org-texmacs-phase2c-probes>    passed  3/9  p2c-02-selected-nested-dependencies (0.001180 sec)
+org-texmacs-phase2c-probes> 
+org-texmacs-phase2c-probes>    passed  4/9  p2c-03-external-footnote-stm (0.001009 sec)
+org-texmacs-phase2c-probes> 
+org-texmacs-phase2c-probes>    passed  5/9  p2c-04-stm-native-effects (0.003673 sec)
+org-texmacs-phase2c-probes> 
+org-texmacs-phase2c-probes>    passed  6/9  p2c-05-fixed-native-reader (0.002183 sec)
+org-texmacs-phase2c-probes> 
+org-texmacs-phase2c-probes>    passed  7/9  p2c-06-partial-stm-native-selection (0.000899 sec)
+org-texmacs-phase2c-probes> 
+org-texmacs-phase2c-probes>    passed  8/9  p2c-07-repeated-footnote-native-identity (0.001839 sec)
+org-texmacs-phase2c-probes> 
+org-texmacs-phase2c-probes>    passed  9/9  p2c-08-line-preserving-protection (0.002858 sec)
+org-texmacs-phase2c-probes> 
+org-texmacs-phase2c-probes> Ran 9 tests, 9 results as expected, 0 unexpected (2026-10-14 00:43:03+0000, 0.139047 sec)
+org-texmacs-phase2c-probes> 
+org-texmacs-phase2c-probes> CASE "part.org::*Alpha" -> "* Alpha
+org-texmacs-phase2c-probes> :PROPERTIES:
+org-texmacs-phase2c-probes> :CUSTOM_ID: alpha
+org-texmacs-phase2c-probes> :END:
+org-texmacs-phase2c-probes> First
+org-texmacs-phase2c-probes> Second
+org-texmacs-phase2c-probes> ** Child
+org-texmacs-phase2c-probes> Child body
+org-texmacs-phase2c-probes> "
+org-texmacs-phase2c-probes> CASE "part.org::#alpha" :only-contents t -> "First
+org-texmacs-phase2c-probes> Second
+org-texmacs-phase2c-probes> * Child
+org-texmacs-phase2c-probes> Child body
+org-texmacs-phase2c-probes> "
+org-texmacs-phase2c-probes> CASE "part.org" :lines "6-8" -> "First
+org-texmacs-phase2c-probes> Second
+org-texmacs-phase2c-probes> "
+org-texmacs-phase2c-probes> CASE "part.org::*Alpha" :minlevel 3 -> "*** Alpha
+org-texmacs-phase2c-probes> :PROPERTIES:
+org-texmacs-phase2c-probes> :CUSTOM_ID: alpha
+org-texmacs-phase2c-probes> :END:
+org-texmacs-phase2c-probes> First
+org-texmacs-phase2c-probes> Second
+org-texmacs-phase2c-probes> **** Child
+org-texmacs-phase2c-probes> Child body
+org-texmacs-phase2c-probes> "
+org-texmacs-phase2c-probes> CASE "part.org::*Alpha" :only-contents t :lines "1-3" -> "First
+org-texmacs-phase2c-probes> Second
+org-texmacs-phase2c-probes> "
+org-texmacs-phase2c-probes> CASE "part.org::*Alpha" :lines "2-4" -> ":PROPERTIES:
+org-texmacs-phase2c-probes> :CUSTOM_ID: alpha
+org-texmacs-phase2c-probes> :END:
+org-texmacs-phase2c-probes> "
+org-texmacs-phase2c-probes> FOOTNOTE "Selected[fn:-0-a]
+org-texmacs-phase2c-probes> 
+org-texmacs-phase2c-probes> [fn:-0-a] Note (math \"x\")
+org-texmacs-phase2c-probes> 
+org-texmacs-phase2c-probes> "
+org-texmacs-phase2c-probes> STM input="#+begin_texmacs
+org-texmacs-phase2c-probes> #+INCLUDE: \"absent.org\"
+org-texmacs-phase2c-probes> #+end_texmacs
+org-texmacs-phase2c-probes> " error=(error "Cannot include file /build/phase2c-ck4qFK/absent.org")
+org-texmacs-phase2c-probes> STM input="(math \"[fn:a]\")
+org-texmacs-phase2c-probes> [fn:a] Note
+org-texmacs-phase2c-probes> " result="(math \"[fn:-0-a]\")
+org-texmacs-phase2c-probes> [fn:-0-a] Note
+org-texmacs-phase2c-probes> "
+org-texmacs-phase2c-probes> STM input="(concat \"
+org-texmacs-phase2c-probes> * Payload heading
+org-texmacs-phase2c-probes> \")
+org-texmacs-phase2c-probes> " result="(concat \"
+org-texmacs-phase2c-probes> *** Payload heading
+org-texmacs-phase2c-probes> \")
+org-texmacs-phase2c-probes> "
+org-texmacs-phase2c-probes> FIXED reads=4 result="* Alpha
+org-texmacs-phase2c-probes> Fixed
+org-texmacs-phase2c-probes> * Alpha
+org-texmacs-phase2c-probes> Fixed
+org-texmacs-phase2c-probes> "
+org-texmacs-phase2c-probes> PARTIAL STM "Body
+org-texmacs-phase2c-probes> "
+org-texmacs-phase2c-probes> REPEATED "Text[fn:-0-a]
+org-texmacs-phase2c-probes> [fn:-0-a] Note
+org-texmacs-phase2c-probes> Text[fn:-0-a]
+org-texmacs-phase2c-probes> [fn:-0-a] Note
+org-texmacs-phase2c-probes> "
+org-texmacs-phase2c-probes> PROTECTED "part.org::*Alpha" :only-contents t -> "(concat \"
+org-texmacs-phase2c-probes> * Payload [fn:a]
+org-texmacs-phase2c-probes> \")
+org-texmacs-phase2c-probes> "
+org-texmacs-phase2c-probes> PROTECTED "part.org" :lines "2-5" -> "(concat \"
+org-texmacs-phase2c-probes> * Payload [fn:a]
+org-texmacs-phase2c-probes> \")
+org-texmacs-phase2c-probes> "
+org-texmacs-phase2c-probes> PROTECTED "part.org::*Alpha" :minlevel 3 -> "*** Alpha
+org-texmacs-phase2c-probes> (concat \"
+org-texmacs-phase2c-probes> * Payload [fn:a]
+org-texmacs-phase2c-probes> \")
+org-texmacs-phase2c-probes> "
