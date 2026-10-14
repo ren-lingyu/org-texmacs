@@ -2259,3 +2259,14 @@ results:9.8 API/signature/strict compilation passed, full ERT/native regressions
 still9.8.10. Prose-only post-audit refinement, no executable/dependency value change;
 archived input manifest/comment patch remains the exact earlier tested snapshot.
 
+## Documentation staging and message preparation (2026-10-14)
+
+User authorized staging and commit message. Exactly README.org/org-texmacs.el/
+ox-texmacs.el staged, complete diff reviewed and diff --check clean. Staged blobs
+match current worktree. Only prose/comment changes, no executable/dependency version
+change; isolated signatures/compile evidence remains scoped as previously recorded.
+tmp/commit.md replaces completed Phase6 draft: docs(package) subject, Chinese
+ASCII-punctuation body, Refs: #1, #2 trailer. No new issue-closing or breaking
+claim. Coherent single commit, split not necessary/difficulty low. User mirror
+excluded and unstaged; no project commit or new builds performed.
+
