@@ -928,8 +928,8 @@ data from the effective Org Cite global bibliography configuration.
 Use =org-texmacs-document-from-buffer-discover-bibliography= for a completed
 document or =org-texmacs-export-from-buffer-discover-bibliography= for native
 =.tm= bytes.  Both accept the existing optional =bibliography-sources=,
-=subtree-position=, =region= and =ext-plist= arguments.  Existing APIs and
-dispatcher actions retain their explicit snapshot behavior.
+=subtree-position=, =region= and =ext-plist= arguments.  Existing direct APIs
+retain their explicit snapshot behavior; frontend discovery is controlled separately by =org-texmacs-export-discover-bibliography=.
 
 #+begin_src emacs-lisp
 (let ((org-cite-global-bibliography '("references.bib")))
@@ -984,7 +984,8 @@ Use =org-texmacs-prepare-buffer-preprocessed= for owned prepared input,
 Their arguments are =source-buffer= followed by optional =bibliography-sources=,
 =ext-plist= and =discover-bibliography=.  The last argument accepts exactly =t=
 or =nil= and separately enables discovery over the composed document.
-Existing APIs and dispatcher actions retain their earlier defaults.
+Existing direct APIs retain their earlier defaults.  Full-document dispatcher
+actions now use this provider, as described in the frontend section below.
 
 #+begin_src emacs-lisp
 ;; Full unnarrowed source; native INCLUDE can read other local directories.
@@ -1065,8 +1066,10 @@ actual package modes/hooks/advice/queries, and removes them after each case.
 The maintained cases cover =org-roam-include= node/headline expansion, recursive
 cross-directory includes, native parameter forwarding, file-node replacement
 mounts, cycles and missing nodes; =org-roam-organize= managed bibliography discovery,
-UUID-to-citekey AST filtering and missing refs; and joint TeXmacs conversion plus
-standard HTML export and actual =org-roam-blog= publication.  They check source
+UUID-to-citekey AST filtering and missing refs; frontend discovery off/on,
+readonly =.tm= view, file serialization, PDF text, failed output preservation
+and selected mount refusal; and joint frontend conversion plus standard HTML
+export and actual =org-roam-blog= publication.  They check source
 isolation, helper/hook restoration, mode teardown and generated HTML content.
 No package-specific conversion, database-query replacement or read interception is
 used for the third-party implementations.
@@ -1377,18 +1380,47 @@ never permit overwrite.
 The buffer action displays its result when
 =org-export-show-temporary-export-buffer= is non-nil.
 
-Dispatcher actions use the structured owned-input pipeline directly.  They do
-not run Org's generic string-transcoder pipeline, INCLUDE/macros/Babel or
-generic export hooks.  Loading this module installs a conditional early
+Full, unnarrowed exports with no subtree or active region use the bounded
+preprocessing provider: captured before-processing/before-parsing hooks, native
+INCLUDE and then the same structural preparation.  Its local path/UTF-8/alias
+checks, ordinary headline-level requirement, 64 KiB/include, depth eight,
+32 expansions and 256 KiB captured/final text budgets also apply to documents
+without INCLUDE.  Unsupported inputs fail; there is no direct-conversion fallback.
+
+Subtree, active region and narrowing retain direct preparation and existing
+selection/configuration precedence.  They do not run preprocessing hooks or
+expand INCLUDE; unresolved preprocessing directives and mounts fail explicitly.
+A caller with a completed working Org buffer can use the direct preparation or
+source APIs without running preprocessing again.  The frontend does not infer
+that a buffer has already been preprocessed.
+
+Each action prepares once and runs native serialization or PDF rendering inside
+that route's source/configuration/dependency checks.  File naming uses the original
+source context, not a temporary working buffer.  The frontend does not run Org's
+generic string-transcoder, macro/Babel or full export lifecycle.
+Loading this module installs a conditional early
 =org-export-before-processing-functions= guard: generic =org-export-as=,
 =org-export-to-buffer= or =org-export-to-file= calls for =texmacs= or its
 derivatives fail explicitly before Org's preprocessing.  The guard is inert
 for unrelated backends.  This is a bounded dispatcher frontend; generic export
 and publishing APIs are not implemented by this backend.
 
-These commands pass no bibliography snapshots and never read =.bib= files.
-Documents needing explicit snapshots can use the existing Lisp source adapters
-with =BIBLIOGRAPHY-SOURCES=.  Unrestricted overrides, visible/body-only
+These commands pass no explicit bibliography snapshots.  The independent
+buffer-local boolean =org-texmacs-export-discover-bibliography= defaults to nil;
+set it to t to enable standard Org Cite discovery/acquisition for any of the
+three outputs, including direct subtree/region/narrowing exports.  It is captured
+before file prompts and checked during conversion; it is not an =ext-plist= key.
+With nil, citations needing unsupplied bibliography fail explicitly and this
+package does not invoke the collector or automatic file acquisition.  Upstream
+hooks and AST filters may still access their own external state.
+
+#+begin_src emacs-lisp
+  (setq-local org-texmacs-export-discover-bibliography t)
+  (org-texmacs-export-to-texmacs)
+#+end_src
+
+Documents needing explicit text snapshots can use the existing Lisp source
+adapters with =BIBLIOGRAPHY-SOURCES=.  Unrestricted overrides, visible/body-only
 and async semantics remain future design work.  Loading =org-texmacs= alone
 does not register this menu or guard, and no PDF viewer opens.
 
@@ -1416,8 +1448,9 @@ The plist must have unique supported keys and valid values, even when a later
 file or subtree setting overrides them.  Unknown keys, duplicate keys, improper
 or cyclic lists and invalid value types fail before prompts or worker requests.
 Output paths, styles/initial values, hooks, filters, parser settings and
-bibliography sources are outside this plist.  It does not run Org preprocessing
-or introduce file reads.  File naming retains the existing source/subtree policy.
+bibliography sources and discovery are outside this plist.  The plist only changes
+effective configuration; preprocessing/discovery follow the selected frontend route.
+File naming retains the existing source/subtree policy.
 
 #+begin_src emacs-lisp
   (org-texmacs-export-as-texmacs
@@ -1454,7 +1487,8 @@ File/global options, output naming and needed footnote/bibliography dependencies
 come from the complete source snapshot.  The containing subtree heading can
 supply =EXPORT_*= properties even when narrowing hides that heading.  Explicit
 subtree positions must be inside the source's accessible range.  Targets outside
-the emitted body/dependencies still fail; no external data reader is added.
+the emitted body/dependencies still fail.  Direct APIs retain explicit dependency
+inputs; frontend discovery can acquire bibliography when enabled.
 Unsupported preprocessing directives anywhere in the source remain rejected.
 
 The source is briefly widened only for a synchronous text copy inside a saved
@@ -1543,9 +1577,10 @@ exist in the emitted scope, including restored footnotes; links to excluded
 headings or the omitted root heading fail before worker requests.  Source file
 identity and resource base stay the original source's captured values.
 
-Subtree citations use the existing explicit BibTeX text snapshot contract and
-need a =PRINT_BIBLIOGRAPHY= inside the selected body.  No =.bib= or global ID
-database is opened.  =CITE_EXPORT= and unsupported preprocessing directives
+Subtree citations need a =PRINT_BIBLIOGRAPHY= inside the selected body.
+Direct APIs use explicit BibTeX text snapshots; frontend discovery can separately
+acquire missing bibliography when enabled.  Direct preparation does not query
+a global ID database.  =CITE_EXPORT= and unsupported preprocessing directives
 remain rejected.  The menu supplies no bibliography texts; Lisp callers can
 pass them to the source adapters.
 

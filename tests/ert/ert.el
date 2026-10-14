@@ -5115,7 +5115,9 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
           (existing (generate-new-buffer " *texmacs-frontend-existing*"))
           (org-export-show-temporary-export-buffer t))
       (unwind-protect
-          (cl-letf (((symbol-function 'org-texmacs-export-to-buffer) (lambda (&rest _) output))
+          (cl-letf (((symbol-function 'org-texmacs--export-byte-consumer)
+                     (lambda (&rest _) (lambda (&rest _) (unibyte-string ?A))))
+                    ((symbol-function 'org-texmacs--export-byte-buffer) (lambda (&rest _) output))
                     ((symbol-function 'display-buffer) (lambda (&rest _) (error "Display failure"))))
             (should-error (org-texmacs-export-as-texmacs))
             (should-not (buffer-live-p output))
@@ -5256,9 +5258,9 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                          (should (eq source (current-buffer)))
                          (set-buffer prompt-buffer)
                          "chosen.other"))
-                      ((symbol-function 'org-texmacs-export-from-buffer)
-                       (lambda (buffer &rest _)
-                         (should (eq buffer source))
+                      ((symbol-function 'org-texmacs-document-serialize)
+                       (lambda (_document &rest _)
+                         (should (eq (current-buffer) source))
                          bytes)))
               (let ((file (expand-file-name "chosen.tm" test-directory)))
                 (should (equal file (org-texmacs-export-to-texmacs)))
@@ -5275,7 +5277,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (org-mode)
       (insert "Source.\n")
       (setq buffer-file-name (expand-file-name "source.tm" test-directory))
-      (cl-letf (((symbol-function 'org-texmacs-export-from-buffer)
+      (cl-letf (((symbol-function 'org-texmacs-document-serialize)
                  (lambda (&rest _) (encode-coding-string "NativeBytes" 'us-ascii))))
         (should (equal (concat buffer-file-name ".tm") (org-texmacs-export-to-texmacs)))
         (should-not (file-exists-p buffer-file-name)))
@@ -5284,12 +5286,12 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
         (with-temp-file file (insert "Keep"))
         (make-symbolic-link file link)
         (cl-letf (((symbol-function 'org-export-output-file-name) (lambda (&rest _) link))
-                  ((symbol-function 'org-texmacs-export-from-buffer)
+                  ((symbol-function 'org-texmacs-document-serialize)
                    (lambda (&rest _) (ert-fail "Invalid target converted"))))
           (should-error (org-texmacs-export-to-texmacs) :type 'file-error))
         (cl-letf (((symbol-function 'org-export-output-file-name) (lambda (&rest _) file))
                   ((symbol-function 'file-writable-p) (lambda (&rest _) nil))
-                  ((symbol-function 'org-texmacs-export-from-buffer)
+                  ((symbol-function 'org-texmacs-document-serialize)
                    (lambda (&rest _) (ert-fail "Unwritable target converted"))))
           (should-error (org-texmacs-export-to-texmacs) :type 'file-error))
         (with-temp-buffer
@@ -5304,14 +5306,14 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (setq buffer-file-name (expand-file-name "source.org" test-directory))
       (let ((file (expand-file-name "source.pdf" test-directory)))
         (with-temp-file file (insert "PreviousOutput"))
-        (cl-letf (((symbol-function 'org-texmacs-export-pdf-from-buffer)
+        (cl-letf (((symbol-function 'org-texmacs-document-pdf)
                    (lambda (&rest _) (signal 'org-texmacs-rendering-error '("Rejected")))))
           (should-error (org-texmacs-export-to-texmacs-pdf) :type 'org-texmacs-rendering-error))
         (with-temp-buffer
           (insert-file-contents-literally file)
           (should (equal "PreviousOutput" (buffer-string))))
         (let ((writer (symbol-function 'write-region)))
-          (cl-letf (((symbol-function 'org-texmacs-export-pdf-from-buffer)
+          (cl-letf (((symbol-function 'org-texmacs-document-pdf)
                      (lambda (&rest _) (encode-coding-string "PartialPDF" 'us-ascii)))
                     ((symbol-function 'write-region)
                      (lambda (start _end target &rest _)
@@ -7807,5 +7809,171 @@ Only tests with explicit example names use this helper; do not run Babel."
     (insert "#+INCLUDE: \"parts/a.org\" :lines \"2-3\"\n")
     (should-error (org-texmacs-prepare-buffer-preprocessed (current-buffer))
                   :type 'org-texmacs-document-error)))
+
+
+(ert-deftest org-texmacs-export-backend-preprocessed-three-consumers ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (make-directory "parts")
+      (write-region "IncludedFrontendSentinel\n" nil "parts/a.org" nil 'silent)
+      (insert "#+EXPORT_FILE_NAME: selected-name\n#+INCLUDE: \"parts/a.org\"\n")
+      (setq buffer-file-name (expand-file-name "source.org"))
+      (let* ((before (org-texmacs-test--document-buffer-state (current-buffer)))
+             (hooks 0) (filters 0)
+             (org-export-before-processing-functions
+              (append org-export-before-processing-functions
+                      (list (lambda (_backend) (cl-incf hooks)))))
+             (org-export-filter-parse-tree-functions
+              (list (lambda (tree _backend _info) (cl-incf filters) tree)))
+             (org-export-show-temporary-export-buffer nil)
+             (output (org-texmacs-export-as-texmacs)) bytes)
+        (unwind-protect
+            (with-current-buffer output
+              (setq bytes (buffer-string))
+              (should buffer-read-only)
+              (should-not enable-multibyte-characters)
+              (should (eq buffer-file-coding-system 'no-conversion))
+              (should (string-match-p "IncludedFrontendSentinel" bytes)))
+          (kill-buffer output))
+        (let ((file (org-texmacs-export-to-texmacs)))
+          (should (equal file (expand-file-name "selected-name.tm")))
+          (with-temp-buffer
+            (set-buffer-multibyte nil) (insert-file-contents-literally file)
+            (should (equal bytes (buffer-string)))))
+        (let ((file (org-texmacs-export-to-texmacs-pdf)))
+          (should (equal file (expand-file-name "selected-name.pdf")))
+          (should (string-match-p "IncludedFrontendSentinel"
+                                  (org-texmacs-test--pdf-text file))))
+        (should (= hooks 3)) (should (= filters 3))
+        (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))))))
+
+(ert-deftest org-texmacs-export-backend-preprocessing-failure-no-output ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (setq buffer-file-name (expand-file-name "source.org"))
+      (dolist (text '("#+INCLUDE: missing.org\n" "#+SETUPFILE: missing.org\n"
+                      "#+begin_texmacs\n(math \"broken\"\n#+end_texmacs\n"))
+        (erase-buffer) (insert text)
+        (dolist (entry '((org-texmacs-export-to-texmacs . "source.tm")
+                        (org-texmacs-export-to-texmacs-pdf . "source.pdf")))
+          (write-region "Keep" nil (cdr entry) nil 'silent)
+          (should-error (funcall (car entry)))
+          (with-temp-buffer
+            (insert-file-contents-literally (cdr entry))
+            (should (equal "Keep" (buffer-string)))))
+        (let ((buffers (buffer-list)))
+          (should-error (org-texmacs-export-as-texmacs))
+          (should (equal buffers (buffer-list))))))))
+
+(ert-deftest org-texmacs-export-backend-full-provider-profile ()
+  (org-texmacs-test--with-bibliography-files
+    (insert "Text\n")
+    (setq-local org-odd-levels-only t)
+    (should-error (org-texmacs-export-as-texmacs) :type 'org-texmacs-document-error)
+    (should (org-texmacs-input-p (org-texmacs-prepare-buffer (current-buffer))))
+    (setq-local org-odd-levels-only nil)
+    (erase-buffer) (insert (make-string 262145 ?a))
+    (should-error (org-texmacs-export-as-texmacs) :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-export-backend-local-route-and-discovery ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (write-region "@book{external-key, title={LocalFrontendReference}}" nil "refs.bib" nil 'silent)
+      (insert "* Outside\nOther\n* Chosen\n[cite:@external-key]\n#+print_bibliography:\n")
+      (setq buffer-file-name (expand-file-name "source.org"))
+      (let ((org-cite-global-bibliography '("refs.bib"))
+            (org-export-show-temporary-export-buffer nil)
+            (org-export-before-processing-functions
+             (list (lambda (&rest _) (ert-fail "Local export replayed preprocessing")))))
+        (goto-char (point-min)) (search-forward "* Chosen") (beginning-of-line)
+        (should-error (org-texmacs-export-as-texmacs nil t) :type 'org-texmacs-document-error)
+        (setq-local org-texmacs-export-discover-bibliography t)
+        (dolist (scope '(subtree region narrowing))
+          (save-restriction
+            (goto-char (point-min)) (search-forward "* Chosen") (beginning-of-line)
+            (let ((begin (point)) (transient-mark-mode t))
+              (pcase scope
+                ('region (set-mark begin) (goto-char (point-max)) (setq mark-active t))
+                ('narrowing (narrow-to-region begin (point-max))))
+              (let ((output (org-texmacs-export-as-texmacs nil (eq scope 'subtree))))
+                (unwind-protect
+                    (with-current-buffer output
+                      (should (string-match-p "bib-list" (buffer-string)))
+                  (kill-buffer output)))
+              (let ((file (org-texmacs-export-to-texmacs nil (eq scope 'subtree))))
+                (with-temp-buffer
+                  (insert-file-contents-literally file)
+                  (should (string-match-p "bib-list" (buffer-string)))))
+              (let ((file (org-texmacs-export-to-texmacs-pdf nil (eq scope 'subtree))))
+                (should (string-match-p "LocalFrontendReference" (org-texmacs-test--pdf-text file)))))
+            (setq mark-active nil))))))))
+
+(ert-deftest org-texmacs-export-backend-local-preprocessing-refusal ()
+  (org-texmacs-test--with-bibliography-files
+    (dolist (text '("* Mount\n:PROPERTIES:\n:ROAM_INCLUDE: missing-id\n:END:\nOld body\n"
+                    "* Heading\n#+ROAM_INCLUDE: missing-id\n"
+                    "* Heading\n#+INCLUDE: missing.org\n"))
+      (erase-buffer) (insert text) (goto-char (point-min))
+      (should-error (org-texmacs-export-as-texmacs nil t) :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-export-backend-discovery-disabled-and-invalid ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (insert "Text\n")
+      (let ((org-export-show-temporary-export-buffer nil))
+        (cl-letf (((symbol-function 'org-cite-list-bibliography-files)
+                   (lambda (&rest _) (ert-fail "Disabled discovery called collector")))
+                  ((symbol-function 'org-texmacs--bibliography-acquire)
+                   (lambda (&rest _) (ert-fail "Disabled discovery acquired files"))))
+          (kill-buffer (org-texmacs-export-as-texmacs))))
+      (setq-local org-texmacs-export-discover-bibliography 'invalid)
+      (cl-letf (((symbol-function 'read-file-name)
+                 (lambda (&rest _) (ert-fail "Invalid discovery prompted"))))
+        (should-error (org-texmacs-export-to-texmacs) :type 'user-error)))))
+
+(ert-deftest org-texmacs-export-backend-dependency-and-option-waits ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (setq buffer-file-name (expand-file-name "source.org"))
+      (dolist (change '(include bibliography option source))
+        (dolist (format '(tm pdf))
+          (write-region "Original text\n" nil "part.org" nil 'silent)
+          (write-region "@book{external-key, title={Original}, author={Doe, Jane}, year={2026}}\n"
+                        nil "refs.bib" nil 'silent)
+          (erase-buffer)
+          (insert "#+INCLUDE: part.org\n")
+          (when (eq change 'bibliography)
+            (insert "#+bibliography: refs.bib\n[cite:@external-key]\n#+print_bibliography:\n"))
+          (setq-local org-texmacs-export-discover-bibliography (eq change 'bibliography))
+          (let* ((source (current-buffer))
+                 (file (concat "source." (symbol-name format)))
+                 (consumer (if (eq format 'pdf) 'org-texmacs-document-pdf
+                             'org-texmacs-document-serialize)))
+            (write-region "Keep" nil file nil 'silent)
+            (cl-letf (((symbol-function consumer)
+                       (lambda (_document)
+                         (with-current-buffer source
+                           (pcase change
+                             ('include (write-region "Changed" nil "part.org" nil 'silent))
+                             ('bibliography (write-region "Changed" nil "refs.bib" nil 'silent))
+                             ('option (setq-local org-texmacs-export-discover-bibliography t))
+                             ('source (goto-char (point-max)) (insert "Changed"))))
+                         (encode-coding-string "NativeBytes" 'us-ascii))))
+              (should-error (funcall (if (eq format 'pdf) 'org-texmacs-export-to-texmacs-pdf
+                                      'org-texmacs-export-to-texmacs))
+                            :type 'org-texmacs-document-error))
+            (with-temp-buffer
+              (insert-file-contents-literally file)
+              (should (equal "Keep" (buffer-string))))))))))
+
+(ert-deftest org-texmacs-export-backend-discovery-captured-before-prompt ()
+  (org-texmacs-test--with-bibliography-files
+    (insert "Text\n")
+    (cl-letf (((symbol-function 'read-file-name)
+               (lambda (&rest _)
+                 (setq-local org-texmacs-export-discover-bibliography t)
+                 "chosen.tm")))
+      (should-error (org-texmacs-export-to-texmacs) :type 'org-texmacs-document-error))
+    (should-not (file-exists-p "chosen.tm"))))
 
 ;;; ert.el ends here

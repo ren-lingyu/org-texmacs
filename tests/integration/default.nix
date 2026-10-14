@@ -3,7 +3,7 @@
 # The caller supplies an Emacs with org-texmacs and Org-roam, and explicit,
 # pinned Elisp-only source directories for the three real extensions.
 pkgs.runCommand "org-texmacs-org-extension-integration" {
-  nativeBuildInputs = [ emacs pkgs.texmacs ];
+  nativeBuildInputs = [ emacs pkgs.texmacs pkgs.poppler-utils ];
   ORG_TEXMACS_TEST_PROGRAM = pkgs.lib.getExe' pkgs.texmacs "texmacs";
   ORG_TEXMACS_TEST_README = ../../README.org;
 } ''

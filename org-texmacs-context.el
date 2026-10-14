@@ -40,7 +40,7 @@
   "Org keywords consumed by the restricted context adapter.")
 
 (defconst org-texmacs--context-rejected-keywords
-  '("SETUPFILE" "INCLUDE" "BIND" "MACRO" "CITE_EXPORT")
+  '("SETUPFILE" "INCLUDE" "ROAM_INCLUDE" "BIND" "MACRO" "CITE_EXPORT")
   "Source directives that require preprocessing outside this adapter.")
 
 (defconst org-texmacs--context-export-properties
@@ -614,6 +614,9 @@ Keep global declarations in INFO; body dependencies are restored separately."
           (when (org-element-type-p drawer 'property-drawer)
             (dolist (property (org-element-contents drawer))
               (let ((key (upcase (org-element-property :key property))))
+                (when (string= key "ROAM_INCLUDE")
+                  (signal 'org-texmacs-document-error
+                          '("Subtree mount requires preprocessing")))
                 (when (and (string-prefix-p "EXPORT_" key)
                            (not (member key org-texmacs--context-export-properties)))
                   (signal 'org-texmacs-document-error

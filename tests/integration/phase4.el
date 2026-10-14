@@ -4,6 +4,7 @@
 (require 'org-roam-include)
 (require 'org-roam-organize)
 (require 'org-roam-blog)
+(require 'ucs-normalize)
 
 (defconst org-texmacs-integration--section "22222222-2222-4222-8222-222222222222")
 (defconst org-texmacs-integration--nested "33333333-3333-4333-8333-333333333333")
@@ -135,7 +136,15 @@
           (insert text)
           (let ((before (org-export-as 'html nil nil t)))
             (should (string-match-p "Nested content" before))
-            (should (string-match-p "TeXmacs" (org-texmacs-export-from-buffer-preprocessed (current-buffer) nil nil t)))
+            (let ((org-texmacs-export-discover-bibliography t)
+                  (org-export-show-temporary-export-buffer nil)
+                  (output nil))
+              (unwind-protect
+                  (progn
+                    (setq output (org-texmacs-export-as-texmacs))
+                    (with-current-buffer output
+                      (should (string-match-p "TeXmacs" (buffer-string)))))
+                (when (buffer-live-p output) (kill-buffer output))))
             (should (equal before (org-export-as 'html nil nil t)))))
         (let ((result (org-roam-blog-publish)))
           (princ (format "BLOG result=%S\n" result))
@@ -231,5 +240,57 @@
           (should-error (org-texmacs-prepare-buffer-preprocessed (current-buffer))
                         :type 'org-texmacs-document-error)
           (should (equal before (org-texmacs-test--document-buffer-state (current-buffer)))))))))
+
+(ert-deftest org-texmacs-integration-frontend-three-consumers-and-discovery ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-integration--fixture
+      (org-texmacs-integration--enable t t)
+      (with-temp-buffer
+        (org-mode) (setq buffer-file-name (expand-file-name "root.org" notes))
+        (insert (format "#+ROAM_INCLUDE: %s :only-contents t\n[cite:@%s]\n#+print_bibliography:\n"
+                        org-texmacs-integration--section org-texmacs-integration--reference))
+        (let ((before (org-texmacs-test--document-buffer-state (current-buffer)))
+              (org-export-show-temporary-export-buffer nil))
+          (should-error (org-texmacs-export-as-texmacs) :type 'org-texmacs-document-error)
+          (setq-local org-texmacs-export-discover-bibliography t)
+          (let ((output (org-texmacs-export-as-texmacs)) bytes)
+            (unwind-protect
+                (with-current-buffer output
+                  (setq bytes (buffer-string))
+                  (should (string-match-p "Nested content" bytes))
+                  (should (string-match-p "Actual fixture reference" bytes)))
+              (kill-buffer output))
+            (let ((file (org-texmacs-export-to-texmacs)))
+              (with-temp-buffer
+                (set-buffer-multibyte nil)
+                (insert-file-contents-literally file)
+                (should (equal bytes (buffer-string))))))
+          (let* ((file (org-texmacs-export-to-texmacs-pdf))
+                 (text (ucs-normalize-NFKC-string (org-texmacs-test--pdf-text file))))
+            (should (string-match-p "Nested content" text))
+            (should (string-match-p "Actual fixture reference" text)))
+          (should (equal before (org-texmacs-test--document-buffer-state (current-buffer)))))))))
+
+(ert-deftest org-texmacs-integration-frontend-errors-and-local-mount-refusal ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-integration--fixture
+      (org-texmacs-integration--enable t t)
+      (with-temp-buffer
+        (org-mode) (setq buffer-file-name (expand-file-name "root.org" notes))
+        (insert "#+ROAM_INCLUDE: absent-node\n")
+        (dolist (entry '((org-texmacs-export-to-texmacs . "root.tm")
+                        (org-texmacs-export-to-texmacs-pdf . "root.pdf")))
+          (let ((file (expand-file-name (cdr entry) notes)))
+            (org-texmacs-integration--write file "Keep")
+            (should-error (funcall (car entry)) :type 'org-texmacs-document-error)
+            (with-temp-buffer
+              (insert-file-contents-literally file)
+              (should (equal "Keep" (buffer-string))))))
+        (erase-buffer)
+        (insert (format "* Mount\n:PROPERTIES:\n:ROAM_INCLUDE: %s\n:END:\nOld body\n"
+                        org-texmacs-integration--file))
+        (goto-char (point-min))
+        (should-error (org-texmacs-export-as-texmacs nil t) :type 'org-texmacs-document-error)
+        (should-not org-roam-include--export-buffer-p)))))
 
 ;;; phase4.el ends here

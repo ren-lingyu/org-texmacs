@@ -687,8 +687,21 @@ Return the new buffer; display it only when called interactively from Org.
 Interactive calls pass no bibliography snapshots; use Lisp arguments when those
 are needed.  This is a native source view, not rendered TeXmacs output."
   (interactive (list (org-texmacs--export-interactive-source)))
-  (let* ((bytes (org-texmacs-export-from-buffer source-buffer bibliography-sources subtree-position region ext-plist))
-         (output (generate-new-buffer "*Org TeXmacs Export*"))
+  (let ((output (org-texmacs--export-byte-buffer
+                 (org-texmacs-export-from-buffer
+                  source-buffer bibliography-sources subtree-position region ext-plist)))
+        complete)
+    (unwind-protect
+        (progn
+          (when (called-interactively-p 'interactive) (display-buffer output))
+          (setq complete t)
+          output)
+      (unless complete
+        (let ((kill-buffer-query-functions nil)) (kill-buffer output))))))
+
+(defun org-texmacs--export-byte-buffer (bytes)
+  "Create a fresh readonly native view of checked unibyte BYTES."
+  (let* ((output (generate-new-buffer "*Org TeXmacs Export*"))
          complete)
     (unwind-protect
         (progn
@@ -704,7 +717,6 @@ are needed.  This is a native source view, not rendered TeXmacs output."
             (setq buffer-undo-list t)
             (set-buffer-modified-p nil)
             (goto-char (point-min)))
-          (when (called-interactively-p 'interactive) (display-buffer output))
           (setq complete t)
           output)
       (unless complete
