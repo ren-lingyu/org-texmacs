@@ -1,0 +1,25 @@
+this derivation will be built:
+  /nix/store/i7hic6pq6pn92i639wlzifdm53rlm3zn-org-texmacs-phase4-probes.drv
+building '/nix/store/i7hic6pq6pn92i639wlzifdm53rlm3zn-org-texmacs-phase4-probes.drv'...
+org-texmacs-phase4-probes> Running 6 tests (2026-10-14 05:58:15+0000, selector `"^p4-"')
+org-texmacs-phase4-probes> 
+org-texmacs-phase4-probes>    passed  1/6  p4-00-environment (0.001038 sec)
+org-texmacs-phase4-probes> 
+org-texmacs-phase4-probes>    passed  2/6  p4-01-native-nested-context-links-and-notes (0.107158 sec)
+org-texmacs-phase4-probes> 
+org-texmacs-phase4-probes>    passed  3/6  p4-02-actual-export-working-context (0.001224 sec)
+org-texmacs-phase4-probes> 
+org-texmacs-phase4-probes>    passed  4/6  p4-03-final-context-relative-bibliography (0.001174 sec)
+org-texmacs-phase4-probes>    passed  5/6  p4-04-current-adapter-directory-rejection (0.001821 sec)
+org-texmacs-phase4-probes>    passed  6/6  p4-05-stm-relative-path-remains-working-text (0.000901 sec)
+org-texmacs-phase4-probes> 
+org-texmacs-phase4-probes> Ran 6 tests, 6 results as expected, 0 unexpected (2026-10-14 05:58:15+0000, 0.113537 sec)
+org-texmacs-phase4-probes> 
+org-texmacs-phase4-probes> Emacs=31.1 Org=9.8.10 Org-roam-library=/nix/store/rac3ndmy5686wwfiq6x2bnx5l36njyx7-emacs-packages-deps/share/emacs/site-lisp/elpa/org-roam-20260425.1623/org-roam.elc
+org-texmacs-phase4-probes> NESTED #("[[file:parts/sub/asset.txt][Asset]] [fn:-0-a]
+org-texmacs-phase4-probes> [fn:-0-a] Note
+org-texmacs-phase4-probes> " 28 33 (:parent (link (:standard-properties [1 nil 19 24 27 1 nil nil nil nil nil nil nil nil nil nil nil nil] :type "file" :type-explicit-p t :path "parts/sub/asset.txt" :format bracket :raw-link "file:asset.txt" :application nil :search-option nil) #("Asset" 0 5 (:parent #2)))))
+org-texmacs-phase4-probes> CONTEXT ((:stage before :private t :file "/build/phase4-probes-mvVprz/root.org" :directory "/build/phase4-probes-mvVprz/" :toc nil :mode org-mode) (:stage after :file "/build/phase4-probes-mvVprz/root.org" :directory "/build/phase4-probes-mvVprz/" :toc nil))
+org-texmacs-phase4-probes> BIB text="#+bibliography: refs.bib
+org-texmacs-phase4-probes> Text
+org-texmacs-phase4-probes> " files=("refs.bib")
