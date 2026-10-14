@@ -2,6 +2,16 @@
 
 ## Active objective
 
+User's new INBOX section17 (around1470) reviewed on 2026-10-14. Suitable Phase4
+direction: ordinary cross-directory INCLUDE first, minimal resource/declaration
+contract and actual pinned include/organize/blog fixture integration. Review:
+memory/cross-directory-integration-plan-review.md. Current source/native file link
+absolute encoding differs from proposed unified relative-final policy; consumer
+contract must be separate. Bibliography base, generated STM origins and callback
+DB dependencies need explicit evidence. No new execution/build/network download
+authorization; next execution begins isolated locked investigation, not equality
+check deletion. Three public source opens failed; real package claims unverified.
+
 Phase2c native preprocessing simplification implemented, accepted and user-committed
 on Phase2b baseline; exact commit diff/message verified on 2026-10-14.
 User requested INBOX correction,
