@@ -14,30 +14,58 @@ Review finds the proposed three frontend/five explicit-source APIs compatible
 with AST-first ownership and existing direct/full-preprocessing routes. Preserve
 explicit file signatures/new-file creation, frontend naming/overwrite policy,
 special bibliography/preprocessing entry points, menu opt-in and generic guard.
-Refinements recommended, not yet adopted implementation decisions:
-- Resolve fixed-name conflicts concretely (safe error or identity-owned reuse),
-  and test identity after kill/recreation/rename plus foreign same-name buffers.
-- Specify content replacement and display error outcomes separately for newly
-  allocated and previously successful frontend results. Existing frontend
-  unwind cleanup kills output on display failure (ox-texmacs.el current lines
-  122-129); ERT at5107 explicitly expects death. That cleanup/assertion must
-  change for reusable results; keep explicit-source fresh-buffer failure cleanup.
-- Test API signatures, commandp, module ownership and genuine fresh loading.
-  Current package-load ERT asserts old explicit export-to-pdf is defined in
-  org-texmacs.el; the new frontend belongs in ox-texmacs.el. The reused PDF name
-  must remain defined with its new contract, rather than be tested as absent.
+User subsequently adopted explicit issue3 implementation contracts, resolving
+the review's lifecycle/conflict/module questions. These decisions govern future
+implementation without choosing its mechanism or authorizing code/test work:
+- Fully generate/check new bytes before replacing a managed frontend result.
+  Conversion or content-commit failure preserves the previous result without
+  partial updates. After successful content commit, display failure does not
+  roll back content or destroy a reused buffer. On first creation, display
+  failure cleans up only the newly allocated result.
+- Reuse only frontend-owned buffers, never ownership inferred from names.
+  Default name is *Org TeXmacs Export*; if occupied by another buffer, allocate
+  a unique alternative and stably reuse it. After kill, recreate on next export.
+  User rename, modification or takeover relinquishes automatic overwrite;
+  preserve that buffer and create a new result next time. Explicit-source
+  results never enter frontend management and remain caller-owned. No dedicated
+  cleanup command. Ownership detection and transactional update mechanism are
+  implementation choices, constrained by these observable outcomes.
+- org-texmacs-export-to-pdf-file is a noninteractive explicit-source function
+  defined in org-texmacs.el; org-texmacs-export-to-pdf is an interactive standard
+  command defined in ox-texmacs.el. Use independent Emacs processes to verify
+  main-module and frontend loading, function ownership, signatures and commandp.
+  For reused old names verify new semantics rather than symbol absence; update
+  existing module-ownership assertions and provide no compatibility aliases.
   Three retired names should have no definitions/aliases in a fresh process;
-  preserved special entry names remain valid. Document loading/migration clearly.
-- Old interactive-only tests must be replaced with command-boundary assertions
-  while preserving their source/destination safety coverage under Lisp calls.
+  preserved special entry names remain valid. Other API/file/conversion policy
+  from INBOX remains unchanged.
+
+Complete current design extraction is in memory/export-api-contract.md: original
+INBOX API/signatures/mapping/file/conversion/scope/acceptance plus user supplemental
+contracts. User explicitly requested skill-based archive selection and sufficient
+extraction when not archiving. Applied global archive guidance and project archive
+skill: no raw capture warranted for this active plan/design exchange without unique
+experimental evidence or retiring source. Operational information is retained in
+the contract, independently of INBOX/chat. Reassess at retirement or upon new
+independently valuable evidence. No byte-exact original capture is claimed.
+
+Implementation implications from the prior read-only review remain: current
+frontend unwind cleanup at ox-texmacs.el122-129 and ERT5107 expect output death
+on display failure and must distinguish new from reused results. Package-load
+ERT's main-module PDF ownership assertion must change. Replace old interactive
+tests with command-boundary assertions while retaining Lisp source/target safety
+coverage. Document loading and migration clearly. These are future changes;
+current production behavior and validation claims remain unchanged.
 
 Public issue3, Emacs interactive manual and upstream Org source could not be
 fetched. No remote issue status or new upstream interactive compatibility claim;
 the proposed interactive nil org-mode declaration needs targeted validation
 when implementation/tests are authorized. Review is grounded in local INBOX,
 current source/tests and recovered contracts, not a new runtime test result.
-Next action: user may refine or select implementation with its own permissions;
-review alone does not authorize project edits or reuse prior task test grants.
+Next action: implement against INBOX plus the user's adopted supplemental
+contracts if subsequently authorized. Design adoption alone does not authorize
+project/INBOX edits, tests or reuse prior task test grants. No external issue
+update was requested or performed.
 
 ## Previous completed work
 
