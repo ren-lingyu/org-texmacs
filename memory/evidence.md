@@ -2186,3 +2186,18 @@ new option docstring already states nil/default and load-only behavior. No proje
 write or build performed. Audit is bounded to changed contracts/related descriptions,
 not a new exhaustive all-API/all-version verification.
 
+## Authorized documentation corrections (2026-10-14)
+
+User requested modifications to relevant documentation/comments/dependency statements.
+Only README.org/org-texmacs.el/ox-texmacs.el edited. Five audited stale descriptions
+corrected and cross-linked to real extension/dispatcher sections; seven core and two
+frontend options distinguished, tested locked Org9.8.10 stated. Main/frontend module
+commentary clarifies explicit pre-load menu, declared minimum vs tested lock, optional
+Org-roam/extensions and external TeXmacs runtime. Actual Package-Requires and Nix
+runtime dependency list retained because no new dependency or minimum-bump evidence.
+README heading targets and complete diff inspected, diff --check clean. Lisp code,
+metadata versions/dependency values, flake/lock untouched; user mirror preserved.
+No executable tests/builds run for prose/comment-only changes; no staging/message
+or project commit performed. Prior gates validate implementation, not rerun on new
+comment/document bytes. Raw evidence archive unchanged, no new probes to archive.
+
