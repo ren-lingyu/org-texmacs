@@ -2,7 +2,8 @@
 
 User selected INBOX section16 execution on 2026-10-14 after architecture review;
 section15 is explicitly superseded. Native parameter/STM/fixed-read probes9/9 pass.
-Refactor27/27 focused13.482343s; full acceptance pending in isolated Phase2c flake.
+Refactor27/27 focused13.482343s;368/368 installed ERT209.352130s, all five
+current x86_64-linux flake checks/strict compilation/package-lint pass.
 This contract replaces the original-range/occurrence profile of committed Phase2b;
 its earlier contract is preserved by first-parent GAW history, not an active demand.
 

@@ -2,88 +2,54 @@
 
 ## Active objective
 
-Newer INBOX section15 (around1380) reviewed on 2026-10-14: preferable Phase2c
-direction is native preprocessing -> owned working Org -> existing preparation,
-minimal necessary protection/dependencies/resource origins. It revises earlier
-parameter-extension direction; exact original maps/general provenance are not
-prerequisites. User requested INBOX correction, GAW maintenance and execution;
-old section15 marked superseded and new plan renumbered16. Review:
-memory/include-parameters-plan-review.md. Starting independent locked-flake
-direct-native parameter/STM/read-consistency probes, comparison and minimal
-contract gate before refactor. Existing Phase2b remains current support.
-User authorized current-task 120s probes/focused and repeated exact240s flake check
-under tmp/issue-1-phase-2c, necessary network/store/cache/isolated logs, no lock edits.
-Initial native probes8/8 then line-preserving protection probe9/9 pass. Actual
-native STM hazards: fake INCLUDE inside STM block reads missing file, footnote-like
-STM strings renamed, multiline STM stars relevelled; partial line selection silently
-drops fragment delimiters. Fixed scoped org-file-contents experiment reuses captured
-bytes across four location/read calls. Parameter matrix and external note STM pass.
-Chosen candidate uses scoped fixed reader plus line-count-preserving STM shielding,
-native parameter selection/transform; no occurrence mirrors/general origins. Original
-and final working snapshots + captured source texts/receipts remain. Production
-rewrite in progress, first focused build stopped on docstring width before ERT;
-corrected; final27/27 focused pass13.482343s. README/API docs and maintained tests
-now explicitly replace original/occurrence origins with owned original/final working
-strings and captured path/text pairs. Partial supported STM selections fail; native
-same-file location recursion policy preserved. Full240s gate running in check-initial.log.
-No staging/commit/lock changes. Candidate pending full gate; details REPORT.md in tmp.
+Phase2c native preprocessing simplification implemented and accepted in uncommitted
+working tree on user-committed Phase2b baseline. User requested INBOX correction,
+GAW and execution; old15 explicitly superseded, new16 current. Nine locked native
+probes selected scoped fixed reads and line-preserving STM shielding; Org owns
+location/only-contents/lines/minlevel and headline/footnote/link transformations.
+No general original-coordinate or occurrence-map prerequisite.27/27 focused
+13.482343s; complete368/368 installed ERT209.352130s; all five current x86_64-linux
+flake checks, strict compilation/package-lint pass. Other platforms/GUI/real
+packages unverified. User authorized120s probes/focused and repeated240s full check
+under tmp/issue-1-phase-2c, necessary network/store/cache/logs, no lock edits.
 
-User requested Phase 2a and Phase 2b execution on 2026-10-14. Both complete for
-selected bounded first profile. Phase 2a twelve isolated probes (0.144719s),
-locked Emacs31.1/Org9.8.10, native stage/source/selection/provenance research,
-runnable protected native-mirror model, strategy comparison and adopted contract.
-Necessary eight text files archived at
-archive/2026-10-13T16-45-34Z--049a5a0/MANIFEST.md; immutable, no production/native
-claim from research alone. Target/implemented contract: memory/preprocessing-contract.md.
+Updated production files: org-texmacs-preprocess.el, tests/ert/ert.el, README.org.
+Public prepare/document/.tm-byte signatures unchanged; optional explicit Cite
+boolean retained. Native helper bindings scoped/unwound, actual source paths and
+fixed copy-returning reads, lazy selected dependencies, native recursion/error
+policy. Partial existing supported STM rejects; source/config/hooks/helper identities/
+receipt checks through acquisition, hooks, native operations and final return.
+Full-root/ordinary-level/common-base,64KiB files/depth8/32 expansions/256KiB captured
+original+final budgets. Native SETUPFILE/BIND/macros/Babel/full annotation/generic
+export/wrappers remain absent; no callback sandbox/atomic FS/DB/ABA claim.
 
-Phase 2b A/B/C committed by user as bounded preprocessing revision on main049a5a0;
-commit identity and exact reviewed diff/message verified on 2026-10-14. Node A
-3 focused/344 ERT (173.063596s); Node B 8 focused/349 ERT (172.609625s), separate
-GAW checkpoints. Final C gate: 35/35 focused (16.023371s:18 new Phase2 +17 Phase3b),
-359/359 installed ERT (180.303530s), all ten checks (eight original +research/focused)
-and warning-as-error compilation/package-lint. Current lock/mirror independent
-flake, user-authorized builds/network and repeated exact240s checks under
-project tmp/issue-1-phase-2. Lock unchanged; ordinary commit performed by user.
+INFO owns original/final text and captured path/texts; adapter no longer promises
+exact original ranges, occurrence IDs, generic AST/node/island origin annotations.
+README/API docs/maintained assertions updated explicitly. Existing pure input slot,
+worker/native consumer and Phase1/Phase3 transaction contracts retained. New9 ERT
+cover parameters, retained/partial STM, external note STM, selected dependencies,
+reader copies, native cycle policy, errors/depth/UTF8/restoration; older mutation,
+HTML/ASCII/PDF/native regressions pass. Contract: memory/preprocessing-contract.md.
 
-New lazy optional org-texmacs-preprocess module exposes prepare-buffer-preprocessed,
-document-from-buffer-preprocessed and export-from-buffer-preprocessed. Full,
-unnarrowed ordinary-level sources only, common lexical resource directory, active
-column-zero bare complete-file INCLUDE; local UTF8 regular <=64KiB/file, depth8,
-32 occurrences including root, 256KiB aggregate source/working. Reject parameters,
-partial selection, cross-directory STM/links, odd levels, cycles, symlink/physical
-aliases (including observed root), nonregular existing visiting identity. Missing
-visiting identities allowed; canonical live text never reloaded from disk.
+Final23 copied inputs byte-equal project, final-inputs.json SHA b0d0ef3f... in evidence.
+Root flake remains only unchanged user USTC overlay; lock unchanged. No ordinary
+staging/commit or issue write. Next user reviews/stages three production paths,
+then user commit identity verification. Phase4 real integration separately selected;
+issue #1 still incomplete and Refs #1 appropriate. No new stage beyond Phase2c.
 
-Owned original/derived snapshots and context feed existing preparation; exact
-island working bounds captured during registration, origins attached before the
-once-only key filters and remapped by pure owning. No new input slot/pure I/O.
-Protected unique tokens/occurrence boundaries plus actual native INCLUDE over
-fixed mirrors; standard hook utility with captured functions, original generic
-hook guard intact, private nested guard, mode-hook suppression. Full native exporter
-lifecycle not claimed; no macros/Babel/BIND/SETUPFILE/Cite processors. Ordinary
-before-processing rewritten root is derived context, before-parsing edits have
-explicit generated context; original exact ranges only for protected STM. New STM
-is generated, never recovered by raw-string equality. Snapshots/temp artifacts own
-source context; projected filenames visible to INCLUDE advice, no real package proof.
+Necessary native comparison/reproduction artifacts (seven texts plus manifest)
+archived immutably at archive/2026-10-14T00-59-44Z--c525095/MANIFEST.md. Capture
+context is Phase2b commit, not original provenance of uncommitted candidate tests.
+Nine native probes rely on pinned Org, not candidate preprocessing; reproduction
+limits explicit. Old Phase2a archive remains unchanged. Selected implementation
+needs maintained candidate sources, not just capture-context commit.
 
-Bibliography is separately requested by final boolean on the new API, over composed
-full masked text with existing fixed explicit-text priority/acquisition receipts.
-Old explicit/bibliography/menu APIs retain defaults. Root source/config/hooks/native
-include identities/explicit text/include/bib dependencies checked from before
-callbacks through native operations/final doc or byte return. No replay or text
-replacement, file publication, FS/DB atomicity, ABA or sandbox promise.
-
-Final 23 source/lock/test inputs byte-match root. Manifest
-tmp/issue-1-phase-2/final-inputs.json SHA c88fc898... in evidence. Logs
-node-c-{focused,check}-final.log. User mirror-only original diff remains7a882736...;
-root flake includes just new preprocess fileset line plus mirror; lock unchanged.
-User committed seven reviewed Phase2 paths; committed diff exactly matches
-staged SHA-256 bbb18e19330b81634f407d7ccf8efec3658a19e645c815c9edfe14a31b71f2bc.
-Subject/body/footer match tmp/commit.md (Refs #1). Index empty; only user mirror
-overlay remains unstaged. Prior validation applies by byte identity; no fresh
-regression solely for commit verification. No external issue write.
-Phase 4 real package integration and broader composition policies remain separately
-selected work; issue #1 still incomplete, closing footer premature.
+Phase2a/2b earlier complete and user committed as bounded preprocessing revision
+on bibliography revision049a5a0. Exact reviewed seven-path diff/message verified,
+SHA bbb18e19330b81634f407d7ccf8efec3658a19e645c815c9edfe14a31b71f2bc, Refs #1;
+index empty/only mirror at verification. Earlier Phase2b validation was35focused/
+359ERT and full checks, now superseded by Phase2c gates above. Initial research12
+locked probes/contract archived at archive/2026-10-13T16-45-34Z--049a5a0/MANIFEST.md.
 
 Phase 3b A/B/C is complete and committed by user as the opt-in Org Cite discovery
 revision, main 049a5a0 on c26b932. Seven-file committed diff exactly matches
@@ -205,8 +171,8 @@ remain unsupported.
 ## Baseline and staging
 
 - Current main is the bounded preprocessing revision on bibliography discovery
-  revision 049a5a0; lock selects Org9.8.10. Index empty; only user mirror remains
-  unstaged. Committed diff/message verified above.
+  revision 049a5a0; lock selects Org9.8.10. Index empty; accepted Phase2c edits in
+  README/module/ERT and user mirror remain unstaged. Baseline diff/message verified.
   Phase 3b committed diff matches staged/validated candidate SHA-256 in evidence.
   Release-era observations below describe their historical baseline.
 - Main HEAD observed on 2026-10-09:

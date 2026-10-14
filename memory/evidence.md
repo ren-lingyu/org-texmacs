@@ -1709,3 +1709,30 @@ Initial duplicate flake checks/docstring widths and stale origin/cycle/multiline
 grammar expectations corrected. No ordinary staging/commit/lock/issue write.
 Candidate uncommitted, no project association for this implementation checkpoint.
 
+## Phase 2c accepted candidate and preserved evidence (2026-10-14)
+
+Final27/27 focused13.482343s,368/368 installed ERT209.352130s; exact240s full
+isolated flake check exits0/all checks passed. Log reports five current x86_64-linux
+flake checks; package-lint and warning-as-error compilation pass, native9 probes
+also rerun0.141351s. No omitted-platform/GUI/real-package claim. Older count summaries
+are not this gate: prior Phase2 log says running9 and Phase3b says running4;
+earlier memory ten/nine summaries overcounted, preserved history is not a new gate.
+
+23 source/lock/test files copied into isolated tree byte-equal root. Ordered JSON
+final-inputs.json SHA-256 b0d0ef3febb8cddfcca283747dceae67b2c4d337c9417bddf1196a1d18edad9a.
+Final preprocess module52e4a4f87084681bcdeb6b6281253de3c0331be0df59023c3d6595735717fcc4;
+lock remains118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a.
+Root flake diff still exactly user USTC overlay, no production flake change. Index
+empty, only three production files README/module/ERT plus user mirror changed;
+ignored INBOX modified as explicitly authorized. Source/lock unchanged since gate.
+
+Seven necessary pure-text native comparison artifacts and manifest captured and
+byte-verified at archive/2026-10-14T00-59-44Z--c525095/MANIFEST.md, archive-only
+checkpoint with no inferred project parent. Source and capture-context provenance
+separated, reproduction limitations explicit; no source/worker binaries/database.
+Primary candidate validation retained by maintained ERT/source and current memory,
+not redundant production archive. Existing immutable snapshots untouched.
+Phase2c scope complete; user ordinary review/staging/commit next, Phase4 separately
+selected. No issue closure, ordinary staging/commit/network publication. Final
+memory checkpoint has no project parent for uncommitted accepted implementation.
+

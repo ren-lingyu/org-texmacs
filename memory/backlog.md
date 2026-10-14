@@ -23,22 +23,23 @@ decision.
 
 ## Active next
 
-### Phase 2c native preprocessing simplification investigation
+### Completed: Phase 2c native preprocessing simplification
 
 Newer INBOX section15 around1380 revises parameter-support plan: prefer native
 preprocessing into owned final working Org and existing preparation; only needed
 STM protection/dependency checks/resource origins. Parameters remain probe matrix,
-not a mandate to extend mirror mapping. Reviewed suitable; **unresolved-design**
-pending direct-native locked probes and minimal contract. Exact original positions
+not a mandate to extend mirror mapping. Reviewed suitable; investigated and minimum contract adopted. Exact original positions
 and general AST provenance are not prerequisites. Review:
-memory/include-parameters-plan-review.md. Resolve fixed actual recursive reads,
-stage-specific STM hazards, resource needs and observable origin-field changes.
+memory/include-parameters-plan-review.md. Fixed actual recursive reads,
+stage-specific STM hazards, resource needs and observable field changes addressed
+by adopted memory/preprocessing-contract.md and maintained regressions.
 User now requested execution and INBOX correction: new plan is section16, old15
 superseded. Nine native probes selected a fixed reader and line-preserving STM
 shielding; minimal original/final/dependency snapshot contract adopted. Refactor
-in progress,27 focused pass; full gate pending. Exact-origin/occurrence prerequisites
+accepted:27 focused/368 ERT/all five current x86_64-linux checks pass; ordinary
+review/staging/commit next. Exact-origin/occurrence prerequisites
 removed explicitly from adapter INFO/docs/tests, no change to pure lowering.
-Existing Phase2b/common-base unchanged;
+Existing full-root/common-base/ordinary-level policy retained;
 cross-directory resource policy and Phase4 integration separate, issue #1 open.
 
 ### DOC-01: Complete document-wide semantic resolution

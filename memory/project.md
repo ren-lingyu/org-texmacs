@@ -701,7 +701,7 @@ archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md. Broader Phase2 composition
 policies, Phase4 and file/menu policy
 remain downstream work; issue #1 is not entirely closed by this node.
 
-## Phase 2c native preprocessing simplification candidate
+## Phase 2c accepted native preprocessing simplification
 
 User selected new INBOX section16, superseding parameter-mirror extension plan.
 Candidate on committed Phase2b/bibliography baseline uses actual native INCLUDE
@@ -717,11 +717,12 @@ removed origin fields. Common-base/full-root/ordinary-level profile retained.
 Nine isolated native probes establish fixed reads/parameter semantics, STM literal
 INCLUDE read, footnote renaming and raw headline-like text mutation hazards; scoped
 line-preserving shielding comparison passes.27/27 maintained focused pass13.482343s,
-full acceptance running. Native output/footnotes/bib/filter/transactions tested;
+complete368/368 installed ERT209.352130s, all five current flake checks pass.
+Native output/footnotes/bib/filter/transactions tested;
 no real package/GUI proof. Original Phase2b committed profile passed35 focused,
-359 installed ERT/all ten checks; its exact-origin/occurrence support is being
+359 installed ERT/complete isolated check; its exact-origin/occurrence support is
 replaced explicitly, not claimed for new candidate. User mirror remains unchanged,
-lock unchanged and ordinary index empty. No production acceptance before full gate.
+lock unchanged and ordinary index empty. Candidate accepted in uncommitted tree; user review/staging/commit next.
 Phase2a research archive remains immutable:
 archive/2026-10-13T16-45-34Z--049a5a0/MANIFEST.md.
 
