@@ -19,6 +19,17 @@ Phase4a locked context/cross-directory probes start in tmp/issue-1-phase-4, then
 User authorized task120s probes/focused/integration and repeated240s exact full
 flake check under this isolated path, necessary networking/store/cache/logs, no
 personal DB/project lock/third-party repo edits. Original code still baseline.
+Phase4a six locked probes pass0.113537s: native working copy retains file/default-dir/
+local :with-toc; nested links relocated; relative bibliography and STM left as final
+working text. Cross-dir equality checks removed, captured include private context
+uses its file directory, root/final context retained; existing explicit preparation
+already consumes completed working buffers without replay. Five maintained ERT
+added,32/32 focused pass17.775013s. Actual package fixtures7/7 pass9.025827s,
+include/organize/joint blog publication, mount/parameters/cycles/failure cleanup,
+missing refs and mode teardown. No query/node/third-party read substitutes or
+package-specific production converter. Optional tests/integration runner uses
+explicit pinned sources, default core checks unchanged. Final240s full gate running
+in tmp/issue-1-phase-4/check-final.log; candidate not fully accepted yet.
 
 Phase2c native preprocessing simplification implemented, accepted and user-committed
 on Phase2b baseline; exact commit diff/message verified on 2026-10-14.

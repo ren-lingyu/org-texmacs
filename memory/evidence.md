@@ -1825,3 +1825,43 @@ review/backlog record supersedes earlier source-origin/dependency prerequisites.
 No runtime evidence/code/INBOX edits/tests/network action in this review; next is
 Phase4a investigation on explicit execution request. Issue#1 still incomplete.
 
+## Phase 4a and actual extension focused evidence (2026-10-14)
+
+User requested revised section17 execution;120s isolated probes/focused/integration
+and repeated240s full gate authorized under tmp/issue-1-phase-4, current lock/mirror,
+necessary dependency networking/store/cache, no personal DB/third-party repo edits.
+Six context probes0.113537s pass onEmacs31.1/Org9.8.10/Org-roam20260425.1623 with
+native SQLite. Initial environment log org-roam-version getter raises search-failed;
+removed getter, version assertions/sqlite/library path kept. Actual native copy
+retains file/default-directory/local with-toc; nested links relocated to source-root
+relative parts/sub/asset.txt, footnotes preserved; relative BIBLIOGRAPHY refs.bib
+and STM asset.png unchanged final text. Baseline cross-dir rejection observed.
+
+Production removes two included-directory equality checks, normalizes capture paths
+and gives each private include parser its file directory; root/final context remains.
+Five maintained ERT add native cross-dir link/note/.tm and owned contexts, final root
+bib declaration semantics, STM block/PDF restriction, completed working input without
+preprocessing replay, partial block refusal.32focused pass17.775013s. First docstring
+width corrected; initial resource test used unconfigured inline image and therefore
+ordinary text, corrected to genuine texmacs block before final pass.
+
+Real extension source copies under isolated extensions dirs match clean local
+repositories previously inspected; modes/hooks/advice and org-roam-db-sync/queries
+run against synthetic SQLite/source/BibTeX/publication fixtures. No query/node/read
+mock or package-specific converter. Include ca62c8f, organize eaaee8e, blog778d410.
+Initial3fixture gate include passed, organize refused incomplete registry (missing
+exactly-one MOC). Corrected fixture registry, no package patch.3then6fixtures passed;
+final7/7 pass9.025827s using maintained optional Nix runner. Actual node/headline/
+recursive cross-dir/parameters/whole-file property mount, cycles/missing node with
+helper/search/hook/source restoration; actual managed node-relative bibliography,
+UUID key filter/native bibliography, missing refs before worker; joint HTML before/
+after .tm conversion and actual blog publication with nested content/reference text;
+mode teardown restores standard interfaces. Package-specific DB internals remain
+provider responsibility, no stronger atomicity or complete dependency claims.
+
+Contract memory/working-buffer-context-contract.md. Current production files README,
+preprocess module,ERT and optional integration runner/fixtures; default flake/lock
+unchanged apart from user mirror. Full gate running, candidate uncommitted/not yet
+accepted globally; no ordinary staging/commit/issue write. Source-specific resource
+recovery/relative native output/generic exporter remain outside selected work.
+
