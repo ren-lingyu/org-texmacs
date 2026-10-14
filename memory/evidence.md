@@ -2135,3 +2135,17 @@ in memory. Archive immutable. Capture HEAD is context, candidate manifest define
 uncommitted tested inputs; no inferred additional project parent. x86_64-linux only,
 no GUI/runtime refresh/later registry monitoring or current remote issue status claim.
 
+## Phase 6 staging and trailer review (2026-10-14)
+
+User authorized staging and commit message. Exactly README.org/ox-texmacs.el/
+tests/ert/ert.el staged; complete staged diff reviewed, diff --check clean and
+all three staged blobs byte-match accepted final-inputs.json and current worktree.
+Prior gates transfer by byte identity; no additional build needed. User flake.nix
+mirror remains unstaged, root lock unchanged. One coherent feature/migration/test
+commit, split not necessary (difficulty low). tmp/commit.md replaced prior completed
+Phase5 draft with feat(export)! subject, Chinese body/ASCII punctuation, adjacent
+BREAKING-CHANGE: and Closes: #2 trailers; git interpret-trailers recognizes both.
+Breaking effect is removal of implicit dispatcher menu, explicit pre-load config
+required. Selected issue2 acceptance complete; remote closure/status not asserted.
+No ordinary commit or issue write; user reviews and commits manually.
+

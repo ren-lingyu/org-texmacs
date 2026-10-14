@@ -349,10 +349,11 @@ of menu, no runtime refresh/fallback.6a locked native conflict/load probes first
 own/validate before registration, genuine fresh-load cases and compatibility docs.
 Selected contract memory/export-menu-contract.md. Phase6a-6d accepted:5native,
 84focused,386core,9real fixtures/all10checks/strictcompile/lint pass. Three project
-files implementation/ERT/README changed, unstaged; default menu now nil with explicit
+files implementation/ERT/README changed, now staged under user authorization; default menu now nil with explicit
 pre-load configuration and documented migration. Eight necessary text artifacts
 archived at archive/2026-10-14T13-19-02Z--5f4c9c0/MANIFEST.md. No ordinary
-staging/commit/issue write. Release migration notes remain for a future release.
+commit/issue write. Commit draft prepared; next user review/manual commit.
+Release migration notes remain for a future release.
 
 ### Org ecosystem preparation interoperability
 
