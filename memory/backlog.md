@@ -33,7 +33,9 @@ pending direct-native locked probes and minimal contract. Exact original positio
 and general AST provenance are not prerequisites. Review:
 memory/include-parameters-plan-review.md. Resolve fixed actual recursive reads,
 stage-specific STM hazards, resource needs and observable origin-field changes.
-No execution authorization from review. Existing Phase2b/common-base unchanged;
+User now requested execution and INBOX correction: new plan is section16, old15
+superseded. Investigation active-next; implementation gated on evidence/contract.
+Existing Phase2b/common-base unchanged;
 cross-directory resource policy and Phase4 integration separate, issue #1 open.
 
 ### DOC-01: Complete document-wide semantic resolution

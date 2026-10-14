@@ -6,11 +6,13 @@ Newer INBOX section15 (around1380) reviewed on 2026-10-14: preferable Phase2c
 direction is native preprocessing -> owned working Org -> existing preparation,
 minimal necessary protection/dependencies/resource origins. It revises earlier
 parameter-extension direction; exact original maps/general provenance are not
-prerequisites. Two section15 headings need explicit supersession in source plan.
-Review: memory/include-parameters-plan-review.md. No execution requested; no new
-probes/builds/production edits. Next on execution request: independent locked-flake
+prerequisites. User requested INBOX correction, GAW maintenance and execution;
+old section15 marked superseded and new plan renumbered16. Review:
+memory/include-parameters-plan-review.md. Starting independent locked-flake
 direct-native parameter/STM/read-consistency probes, comparison and minimal
 contract gate before refactor. Existing Phase2b remains current support.
+User authorized current-task 120s probes/focused and repeated exact240s flake check
+under tmp/issue-1-phase-2c, necessary network/store/cache/isolated logs, no lock edits.
 
 User requested Phase 2a and Phase 2b execution on 2026-10-14. Both complete for
 selected bounded first profile. Phase 2a twelve isolated probes (0.144719s),
