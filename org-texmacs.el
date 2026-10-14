@@ -27,6 +27,13 @@
 
 ;;; Commentary:
 
+;; Package-Requires declares minimum versions.  Development and regression
+;; validation use the project's flake.lock (Emacs 31.1 and Org 9.8.10).
+;; Org 9.8 separately passed API/signature checks and strict module compilation;
+;; full ERT/native behavior regression on that minimum version is unverified.
+;; Org-roam and its extensions are optional integration-test dependencies.
+;; TeXmacs is an external runtime dependency, checked by the setup command.
+;;
 ;; Use `org-texmacs-tree' to derive an Org-compatible TeXmacs tree from a
 ;; native TeXmacs special block, with lazy parsing and Org-managed caching.
 ;; Discover paragraph source spans with `org-texmacs-fragment-at-point' or
@@ -40,7 +47,8 @@
 ;; Use `org-texmacs-session-open', `org-texmacs-session-set-document' and
 ;; `org-texmacs-session-close' to manage explicit native document state.
 ;; Source stays in Org; completed documents can be serialized, saved or rendered
-;; as native PDF.  Load optional `ox-texmacs' for bounded Org dispatcher actions.
+;; as native PDF.  Load optional `ox-texmacs' for bounded export commands;
+;; configure its menu keys before loading to enable Org dispatcher entries.
 ;; No GUI preview or combined live Org/TeXmacs document AST is provided.
 ;; Use `org-texmacs-check-setup' to inspect the capabilities required by the
 ;; package without starting TeXmacs.

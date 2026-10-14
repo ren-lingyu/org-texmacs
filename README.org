@@ -33,7 +33,16 @@ Org's source buffer and live AST remain unchanged.
 - Unix-domain socket support in both Emacs and TeXmacs.
 
 The implementation has been tested on =x86_64-linux= with Emacs 31.1,
-Org 9.8-pre and TeXmacs 2.1.5.  Other platforms have not been validated.
+Org 9.8.10 and TeXmacs 2.1.5 from the project flake and lockfile.  This locked
+environment is the development and regression baseline; an existing local Org
+installation does not select the project's dependency versions.  The package's
+Org 9.8 minimum has passed a separate API existence/signature check and strict
+compilation of all production Lisp modules with Emacs 31.1.  Complete ERT and
+native behavior regressions remain validated on Org 9.8.10; they have not been
+run on Org 9.8.  Other platforms have not been validated.
+
+Org-roam and the three extensions described under [[*Optional real Org extension integration][Optional real Org extension integration]]
+are optional test dependencies, not package runtime requirements.
 
 The Scheme service runs inside TeXmacs; a separate =guile= executable is
 not required to use the package.  The standalone Guile dependency in the
@@ -144,8 +153,10 @@ defers loading.  It does not start TeXmacs.  The first block cache miss or
 fragment tree request starts the worker, as does document island parsing
 or opening a native session; source discovery alone does not.
 
-The package currently exposes seven customizable variables.  This complete
-example assumes the package is already on =load-path= and explicitly sets
+The core exposes seven customizable variables, shown in this example.  The
+optional =ox-texmacs= frontend adds =org-texmacs-export-discover-bibliography= and
+=org-texmacs-export-menu-keys=, described under [[*Org export dispatcher][Org export dispatcher]].
+The example assumes the package is already on =load-path= and explicitly sets
 the source/straight defaults.  For a different installation path, copy its
 =:custom= section into the corresponding declaration above rather than
 adding a second declaration.  The straight opt-out guidance above still applies.
@@ -499,9 +510,8 @@ lowering and native consumers use owned input instead of generic string export.
 Load =(require 'ox-texmacs)= to register the backend and export commands.
 The dispatcher menu requires explicit key configuration before loading; the
 core package alone does not register this frontend.  The frontend uses Org
-output names and can
-overwrite writable regular outputs.  Explicit new-file saving APIs remain
-exclusive.  Source-buffer adapters retain their earlier calls and add optional
+output names and can overwrite writable regular outputs.  Explicit new-file
+saving APIs remain exclusive.  Source-buffer adapters retain their earlier calls and add optional
 subtree-position, region and external configuration arguments.  Narrowed sources
 now export their accessible body; restriction changes during prompts/native waits
 reject results.  Existing APIs use explicit bibliography text snapshots.
@@ -868,7 +878,9 @@ references retained by a filter cannot change the completed preparation.
 User closures' hidden state and arbitrary callback I/O or edits to other buffers
 are not frozen, sandboxed or rolled back.  Pure prepared-input construction and
 document lowering never run filters.  Controlled fixtures establish this bounded
-contract; real Org-roam integration remains unverified.
+contract; pinned real Org-roam extension fixtures also exercise managed citation
+key filtering, as described under [[*Optional real Org extension integration][Optional real Org extension integration]].
+That evidence does not cover arbitrary databases or extension configurations.
 
 ** Explicit bibliography snapshots
 The preparation API accepts an optional alist of source paths to BibTeX text:
@@ -969,8 +981,10 @@ file identity/size/mtime/ctime and byte digests are verified around reads, nativ
 waits and before returning a document or serialized bytes.  Changes reject the
 result without rediscovery, filter replay or text replacement.  These observed
 checks are not an atomic filesystem/database transaction, an ABA guarantee or
-a sandbox for arbitrary advice.  No output file is published by these APIs;
-file/menu policy and real third-party package integration remain separate work.
+a sandbox for arbitrary advice.  These explicit discovery APIs return documents
+or bytes without publishing an output file.  The frontend's independent discovery
+option and output policy are described under [[*Org export dispatcher][Org export dispatcher]];
+pinned real package coverage is described under [[*Optional real Org extension integration][Optional real Org extension integration]].
 
 Pure manual inputs need fixed INFO =:texmacs-bibliography-declarations= mapping
 raw keyword values to absolute identities, and =:texmacs-bibliography-output=
@@ -1687,8 +1701,9 @@ failure stops the worker.  TeXmacs uses an internal headless view so its
 document APIs can focus the buffer; this opens no GUI window and is not a
 preview.  Successful native readback establishes accepted style, explicit
 initial mapping and body structure, not that visual numbering, page references,
-auxiliary data or pagination have been resolved.  Serialization uses the
-independent consumer above; file saving and export remain separate work.
+auxiliary data or pagination have been resolved.  Serialization, new-file saving
+and source export use the independent consumers described above; these operations
+do not update a native session.
 
 * Worker behavior and errors
 The first parse request or session open starts one shared headless TeXmacs

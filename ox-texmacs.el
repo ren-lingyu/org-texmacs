@@ -5,9 +5,11 @@
 
 ;;; Commentary:
 
-;; Register TeXmacs in Org's export dispatcher.  Menu actions consume the
-;; explicit source through one owned pipeline, with bounded full-document
-;; preprocessing and direct local selection.
+;; Register the TeXmacs backend and export commands without a menu by default.
+;; Configure `org-texmacs-export-menu-keys' before the first require to add a
+;; native dispatcher menu; later option changes do not refresh it.
+;; Commands consume the explicit source through one owned pipeline, with bounded
+;; full-document preprocessing and direct local selection.
 ;; This frontend supports synchronous whole-buffer, subtree and active-region
 ;; exports.
 ;; Org's generic string-transcoder/preprocessing APIs are explicitly rejected
