@@ -2,8 +2,9 @@
 
 ## Active objective
 
-Phase2c native preprocessing simplification implemented and accepted in uncommitted
-working tree on user-committed Phase2b baseline. User requested INBOX correction,
+Phase2c native preprocessing simplification implemented, accepted and user-committed
+on Phase2b baseline; exact commit diff/message verified on 2026-10-14.
+User requested INBOX correction,
 GAW and execution; old15 explicitly superseded, new16 current. Nine locked native
 probes selected scoped fixed reads and line-preserving STM shielding; Org owns
 location/only-contents/lines/minlevel and headline/footnote/link transformations.
@@ -32,13 +33,13 @@ reader copies, native cycle policy, errors/depth/UTF8/restoration; older mutatio
 HTML/ASCII/PDF/native regressions pass. Contract: memory/preprocessing-contract.md.
 
 Final23 copied inputs byte-equal project, final-inputs.json SHA b0d0ef3f... in evidence.
-Root flake remains only unchanged user USTC overlay; lock unchanged. User authorized
-staging/message generation: README.org, org-texmacs-preprocess.el, tests/ert/ert.el
-staged; complete diff/check reviewed and validated hashes match accepted inputs.
-Staged SHA972ca91a... in evidence; tmp/commit.md uses feat(document)! native INCLUDE
-subject, explicit BREAKING CHANGE for removed documented INFO origins, Refs #1.
-No ordinary commit or issue write. Next user commits, then identity verification.
-Phase4 real integration separately selected;
+Root flake remains only unchanged user USTC overlay; lock unchanged. User committed
+README.org, org-texmacs-preprocess.el, tests/ert/ert.el. Complete committed diff
+matches staged SHA972ca91a... in evidence; full message matches tmp/commit.md with
+feat(document)! subject, BREAKING CHANGE for removed INFO origins and Refs #1.
+Index empty; only mirror remains dirty. Previous gates transfer by exact candidate
+byte identity; no new tests solely for commit verification or external issue write.
+Phase4 real integration awaits separate selection;
 issue #1 still incomplete and Refs #1 appropriate. No new stage beyond Phase2c.
 
 Necessary native comparison/reproduction artifacts (seven texts plus manifest)
@@ -174,9 +175,9 @@ remain unsupported.
 
 ## Baseline and staging
 
-- Current main is the bounded preprocessing revision on bibliography discovery
-  revision 049a5a0; lock selects Org9.8.10. Accepted Phase2c README/module/ERT edits
-  staged; only user mirror remains unstaged. Baseline diff/message verified.
+- Current main is the native INCLUDE parameter revision on bounded preprocessing
+  revision; lock selects Org9.8.10. Index empty, only user mirror remains unstaged.
+  Committed Phase2c diff/message matches reviewed candidate.
   Phase 3b committed diff matches staged/validated candidate SHA-256 in evidence.
   Release-era observations below describe their historical baseline.
 - Main HEAD observed on 2026-10-09:

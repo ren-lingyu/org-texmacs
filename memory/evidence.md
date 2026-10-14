@@ -1754,3 +1754,16 @@ parameter and regression changes.27focused/368ERT/all5checks apply by exact stag
 byte identity; no new tests solely for staging. No ordinary commit/issue write,
 no project parent for uncommitted candidate. Next verify user's resulting commit.
 
+## Phase 2c user commit verification (2026-10-14)
+
+Read-only inspection verifies user commit1a254a792286fe9c98a7529a6d13879ff707de24
+on c52509573e5bccddeb661cf1dab1802733ac7dec. Complete parent-to-HEAD binary diff
+SHA-256972ca91a5076520ba0fbe0f5a17ccb63f47952c82d858e55de3025270c3a1c09
+exactly matches reviewed staged candidate. Entire subject/body/BREAKING CHANGE/
+Refs #1 message matches tmp/commit.md. Index empty, only original flake.nix USTC
+overlay remains unstaged and excluded.27focused/368ERT/all5checks remain applicable
+by verified candidate identity with documented mirror transport; no new runtime
+test/network action solely to associate commit. This checkpoint's project parent
+is the actual snapshot inspected, not retrospective original test provenance.
+Phase2c complete, Phase4 real package integration separately selected; no issue write.
+

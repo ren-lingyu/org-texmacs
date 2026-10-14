@@ -722,7 +722,8 @@ Native output/footnotes/bib/filter/transactions tested;
 no real package/GUI proof. Original Phase2b committed profile passed35 focused,
 359 installed ERT/complete isolated check; its exact-origin/occurrence support is
 replaced explicitly, not claimed for new candidate. User mirror remains unchanged,
-lock unchanged and ordinary index empty. Candidate accepted in uncommitted tree; user review/staging/commit next.
+lock unchanged and ordinary index empty. User committed accepted candidate;
+complete commit diff/message verified against reviewed staged bytes.
 Phase2a research archive remains immutable:
 archive/2026-10-13T16-45-34Z--049a5a0/MANIFEST.md.
 

@@ -37,7 +37,8 @@ User now requested execution and INBOX correction: new plan is section16, old15
 superseded. Nine native probes selected a fixed reader and line-preserving STM
 shielding; minimal original/final/dependency snapshot contract adopted. Refactor
 accepted:27 focused/368 ERT/all five current x86_64-linux checks pass; ordinary
-review/staging/commit next. Exact-origin/occurrence prerequisites
+user commit diff/message verified, index empty and only mirror dirty.
+Exact-origin/occurrence prerequisites
 removed explicitly from adapter INFO/docs/tests, no change to pure lowering.
 Existing full-root/common-base/ordinary-level policy retained;
 cross-directory resource policy and Phase4 integration separate, issue #1 open.
