@@ -2,6 +2,16 @@
 
 ## Active objective
 
+User requested review only of INBOX section18 Phase5 frontend/preprocessing plan
+on committed Phase4 baseline. Reviewed suitable, with transaction lifetime,
+existing guard coverage, changed full-buffer provider support profile and independent
+discovery entry/scope clarified in memory/frontend-preprocessing-plan-review.md.
+No INBOX/production changes or Phase5 tests/implementation selected. Next: user
+adopts revised contract/authorizes5a, then locked isolated probes before5b; no
+Phase4 test authorization carried into this new task. Discovery default nil and
+source-local frontend option are recommendations pending5a decision. Overall#1
+closure after selected frontend acceptance, not generic export/resource parity.
+
 Rewritten INBOX section17 Phase4a-4d implemented, accepted and user committed
 on native parameter baseline1a254a7. User prioritizes completed working buffer +
 effective supported Org context, not source-origin recovery or third-party read/DB
@@ -47,11 +57,11 @@ all five committed blobs match accepted final-inputs manifest. Full commit messa
 matches tmp/commit.md, feat(document) subject, Refs #1, no new breaking footer.
 Index empty; user mirror remains the only dirty path, lock unchanged. Prior gates
 transfer by byte identity; no new test or external tracking write.
-No further implementation selected. Latest section17 selected
+Phase5 is now reviewed as a proposed next stage, not implemented. Latest section17 selected
 acceptance complete; original proposal's formal frontend/default dispatcher policy
 was not selected here and remains separate. Do not automatically close#1/external
 tracking: distinguish achieved opt-in interoperability from any adopted frontend
-switch remaining in overall issue scope. No further phase or resource work selected.
+switch remaining in overall issue scope. No resource work selected.
 
 Phase2c native preprocessing simplification implemented, accepted and user-committed
 on Phase2b baseline; exact commit diff/message verified on 2026-10-14.

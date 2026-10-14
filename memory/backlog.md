@@ -23,6 +23,18 @@ decision.
 
 ## Active next
 
+### Reviewed proposal: Phase 5 formal frontend/preprocessing integration
+
+INBOX section18 reviewed suitable on committed Phase4 baseline; review only,
+implementation/tests not authorized. Contract review and unresolved choices:
+memory/frontend-preprocessing-plan-review.md. Proposed5a interface matrix before
+5b full-buffer provider routing,5c preserved direct local scopes,5d real extension/
+three-consumer regression. Keep PDF inside original transaction checks; guard
+coexistence already covered by core loaded-frontend tests; expose provider limits
+as default support change; choose independent explicit discovery entry/scope.
+Generic exporter, full lifecycle/provenance/resources and key changes remain
+deferred;#1 closure judged after selected frontend architecture acceptance.
+
 ### Completed selected Phase 4a-4d: working context and real interoperability
 
 User selected rewritten section17; actual working-buffer/context6probes, cross-dir
@@ -33,7 +45,7 @@ or third-party DB/read interception. Default generic/export dispatcher policy an
 STM actual resource/native relative-output enhancement remain separate; not automatic
 requirements inferred from unsupported syntax. New optional integration runner needs
 caller-supplied pinned extensions/runtime, no default dependency changes. User project
-review/staging/commit next. Overall#1 closure must distinguish completed opt-in
+commit identity verified; index empty/only mirror dirty. Overall#1 closure must distinguish completed opt-in
 interoperability from original proposal's frontend switch if still adopted; no external
 issue mutation or silently expanded implementation. Latest17 targets complete.
 

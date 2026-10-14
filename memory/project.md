@@ -703,7 +703,8 @@ remain downstream work; issue #1 is not entirely closed by this node.
 
 ## Phase 4 accepted working-context and actual extension interoperability
 
-Uncommitted accepted candidate on native parameter revision. Preparation's existing
+User committed accepted Phase4 on native parameter revision; complete diff/message
+and five committed blobs match reviewed/validated candidate. Preparation's existing
 explicit buffer APIs consume completed working Org and supported normal context;
 provider history not reconstructed. Cross-directory native INCLUDE now accepted,
 private captured parser uses its own file directory, final root context retained.
@@ -723,7 +724,10 @@ pinned source, no business-logic mock or external package patch. Optional mainta
 Nix integration runner takes explicit runtime/extension sources; no default package
 dependency additions, lock/mirror preserved. Other platforms/GUI/all configs/full
 resource support/generic exporter/default frontend switch not claimed. Project
-review/staging/commit next; immutable evidence archive in evidence/current memory.
+commit identity verified; immutable evidence archive in evidence/current memory.
+Section18 formal frontend integration is a reviewed proposal, not new support:
+memory/frontend-preprocessing-plan-review.md. Current dispatcher still uses direct
+adapters; default routes/discovery/consumer integration await selected5a contract.
 
 ## Phase 2c accepted native preprocessing simplification
 
