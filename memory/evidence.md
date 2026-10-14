@@ -2201,3 +2201,19 @@ No executable tests/builds run for prose/comment-only changes; no staging/messag
 or project commit performed. Prior gates validate implementation, not rerun on new
 comment/document bytes. Raw evidence archive unchanged, no new probes to archive.
 
+## Minimum Org dependency clarification (2026-10-14)
+
+User recalled API existence concern. Earlier "no bump needed" inference was too
+strong: current locked success does not establish9.8 minimum compatibility.
+Read-only project history setup commit81e06ca explicitly raised declared Org9.5
+to9.8 when introducing org-element-cache-store-key/get-key/create checks.
+Official https://raw.githubusercontent.com/bzg/org-mode/release_9.8/lisp/org-element-ast.el
+contains create/property-raw/properties-mapc; selected export options helpers also
+appear in release_9.8 ox.el. These spot observations are not complete current API
+or signature/behavior validation. Browser could not fetch release_9.8 org-element.el
+(cache/internal error); no shell download or new test authorization inferred.
+Conclusion: remembered API boundary exists and drove historical9.8 requirement;
+need for a higher current minimum remains unresolved. Tested9.8.10 can be chosen
+as conservative support policy, without claiming it is earliest API-compatible
+version. Existing prose edits remain unstaged, dependency values unchanged.
+

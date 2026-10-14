@@ -39,6 +39,15 @@ Version0.4.0 unchanged, release not selected. Exactly README.org/org-texmacs.el/
 ox-texmacs.el task edits, unstaged; user flake mirror untouched. Diff whitespace and
 heading link targets inspected; no executable changes or new tests/builds.
 Next user review/optional separately authorized staging and message preparation.
+User questioned minimum Org requirement based on earlier API existence discussion.
+Correction: retaining9.8 was not a validated compatibility conclusion. Read-only
+history recovered setup commit81e06ca changing minimum9.5 to9.8 alongside cache
+store/get/create capability checks. Official release_9.8 AST source confirms
+create/property-raw/properties-mapc definitions, but full current interface/signature
+and behavioral compatibility on9.8 not established; release_9.8 org-element.el
+web fetch failed. Keep lower-bound decision unresolved pending isolated version
+validation or explicit conservative supported-baseline policy (tested9.8.10).
+No new package minimum change, test build or download performed in this follow-up.
 User asked whether temporary-test archival was assessed. Selection confirmed:
 native menu/registry/shared-prefix/control-key probes have independent value,
 Eight original-byte artifacts archived and verified in an archive-only checkpoint:
