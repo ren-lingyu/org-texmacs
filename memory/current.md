@@ -2,16 +2,16 @@
 
 ## Active objective
 
-INBOX coverage audit after Phase5 commit: operational goals/contracts/decisions,
-stage validation, commits and necessary probe evidence are recoverable through
-current memory/first-parent history/archives; raw INBOX itself is not tracked or
-archived there. One specific future menu-key policy was incompletely distilled:
-explicit configuration/no default keys/documentation examples only, now recorded
-in backlog. No production work selected. Recommend one historical original-byte
-archive of current INBOX for user-authored plan wording/revision context, distinct
-from current authority; not captured/deleted in this audit. Its older statuses and
-superseded origin plans must not override current implemented contracts. Capturing
-current file would not recover overwritten earlier versions.
+User authorized retiring current INBOX after coverage audit: original90229byte
+sections1-18 captured byte-exactly and archive-only checkpoint verified at
+archive/2026-10-14T12-48-06Z--5f4c9c0/MANIFEST.md, original SHA25683b74498... in
+evidence. After successful checkpoint, original/source checked against committed
+archive again and ordinary ignored INBOX.md truncated to0bytes, file retained.
+Archived bytes unchanged. Operational goals/contracts/decisions/validation/commits
+remain current memory/history authority. Explicit configuration/no default menu
+keys/documentation examples policy is in backlog. No further work selected.
+Archived older pending/current labels and superseded origins do not override
+implemented contracts; captured current document cannot recover overwritten drafts.
 
 User now requested execution of INBOX section18 Phase5 on committed Phase4 baseline.
 User authorized120s isolated probes/focused/integration and repeated240s full check
@@ -357,7 +357,8 @@ direct source APIs and local scopes retain direct preparation.
 - Root AGENTS.md is an ignored generated bootstrap, reproducible through the
   namespaced governance skill. Retired GOALS.md/REVIEW.md and eligible historical
   probes are in the archive, not normal recovery inputs. INBOX.md remains ignored
-  and untouched; its adopted plan was distilled without needing a raw copy.
+  and is now empty following verified original-byte archival as described above;
+  its adopted plans are distilled into current knowledge, raw copy historical only.
 - Only pure-text files may enter GAW memory, skills or archive. Archive necessary
   unique temporary evidence selectively via the archive skill; never bytecode,
   images, binary containers or regenerable caches.

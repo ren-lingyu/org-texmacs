@@ -2048,3 +2048,23 @@ not mandatory for resuming implementation. No original-file archive or deletion
 performed in this audit, no production/test/Git-history change. Current file cannot
 recover previously overwritten drafts; stale raw statuses must not become authority.
 
+## INBOX original-byte archive and clearing (2026-10-14)
+
+User explicitly authorized archiving then clearing ordinary INBOX.md. Before
+capture file regular/not symlink, ignored/untracked,90229bytes UTF8 pure text,
+SHA25683b744987f3db9ba15a797b2f0cfe08143bc38956ddad828f6e16148186f288a.
+Checked project HEAD5f4c9c0 is capture context, not original source of every plan.
+Original creation/revision dates and overwritten drafts not independently recovered.
+
+Fresh immutable archive:
+archive/2026-10-14T12-48-06Z--5f4c9c0/MANIFEST.md and files/INBOX.md.
+Complete staged change exactly two pure additions, source/archive/index bytes
+identical,1838original lines. GAW check and archive-only public commit pass, no
+additional project parent. Public show confirms original file and manifest only.
+Before clearing, committed archive blob rechecked against same unchanged source
+and expected SHA256; project HEAD unchanged. Original file opened without following
+symlinks and truncated to0bytes, retained; archive and committed bytes remain intact.
+Current memory/backlog authority remains the distilled implemented/deferred state.
+Raw pending/current labels and superseded alternatives historical, not instructions.
+No production code/test/lock/index/history/remote operations; user mirror unchanged.
+

@@ -340,6 +340,8 @@ C-c C-e T registration/keys remain unchanged; this is not a Phase5/#1 completion
 prerequisite. No implementation selected or authorized yet; choose actual interface
 and migration contract when resuming. This detail was recovered during INBOX
 coverage audit, beyond the earlier generic "menu keys deferred" summaries.
+Original plan wording is preserved in the retired INBOX archive:
+archive/2026-10-14T12-48-06Z--5f4c9c0/files/INBOX.md; ordinary INBOX now empty.
 
 ### Org ecosystem preparation interoperability
 
