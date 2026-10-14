@@ -32,9 +32,13 @@ reader copies, native cycle policy, errors/depth/UTF8/restoration; older mutatio
 HTML/ASCII/PDF/native regressions pass. Contract: memory/preprocessing-contract.md.
 
 Final23 copied inputs byte-equal project, final-inputs.json SHA b0d0ef3f... in evidence.
-Root flake remains only unchanged user USTC overlay; lock unchanged. No ordinary
-staging/commit or issue write. Next user reviews/stages three production paths,
-then user commit identity verification. Phase4 real integration separately selected;
+Root flake remains only unchanged user USTC overlay; lock unchanged. User authorized
+staging/message generation: README.org, org-texmacs-preprocess.el, tests/ert/ert.el
+staged; complete diff/check reviewed and validated hashes match accepted inputs.
+Staged SHA972ca91a... in evidence; tmp/commit.md uses feat(document)! native INCLUDE
+subject, explicit BREAKING CHANGE for removed documented INFO origins, Refs #1.
+No ordinary commit or issue write. Next user commits, then identity verification.
+Phase4 real integration separately selected;
 issue #1 still incomplete and Refs #1 appropriate. No new stage beyond Phase2c.
 
 Necessary native comparison/reproduction artifacts (seven texts plus manifest)
@@ -171,8 +175,8 @@ remain unsupported.
 ## Baseline and staging
 
 - Current main is the bounded preprocessing revision on bibliography discovery
-  revision 049a5a0; lock selects Org9.8.10. Index empty; accepted Phase2c edits in
-  README/module/ERT and user mirror remain unstaged. Baseline diff/message verified.
+  revision 049a5a0; lock selects Org9.8.10. Accepted Phase2c README/module/ERT edits
+  staged; only user mirror remains unstaged. Baseline diff/message verified.
   Phase 3b committed diff matches staged/validated candidate SHA-256 in evidence.
   Release-era observations below describe their historical baseline.
 - Main HEAD observed on 2026-10-09:

@@ -1736,3 +1736,21 @@ Phase2c scope complete; user ordinary review/staging/commit next, Phase4 separat
 selected. No issue closure, ordinary staging/commit/network publication. Final
 memory checkpoint has no project parent for uncommitted accepted implementation.
 
+## Phase 2c staged candidate/message review (2026-10-14)
+
+User authorized staging/message generation. Exactly three whole files staged:
+README.org, org-texmacs-preprocess.el, tests/ert/ert.el. Full diff reviewed,
+412 insertions/387 deletions, git diff --cached --check clean. Each staged file
+byte-equals working tree and accepted final-inputs manifest hash. Staged binary
+diff SHA-256972ca91a5076520ba0fbe0f5a17ccb63f47952c82d858e55de3025270c3a1c09.
+Only user flake.nix mirror remains unstaged; lock/index scope unchanged otherwise.
+tmp/commit.md regenerated as feat(document)!: support native INCLUDE parameters
+with fixed snapshots. Chinese body, BREAKING CHANGE for clearly removed documented
+INFO original/occurrence/AST origin contract, Refs #1 because Phase4 still unverified.
+Public function signatures unchanged but documented result data changes require
+callers using old INFO fields to adapt. Suitable as one coherent capability;
+split not necessary, medium difficulty for coupled fixed reads/shielding/contract/
+parameter and regression changes.27focused/368ERT/all5checks apply by exact staged
+byte identity; no new tests solely for staging. No ordinary commit/issue write,
+no project parent for uncommitted candidate. Next verify user's resulting commit.
+
