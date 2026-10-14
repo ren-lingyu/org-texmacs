@@ -1,4 +1,62 @@
-# Phase 2c INCLUDE parameter plan review
+# Phase 2c native preprocessing simplification review
+
+## Revised direction supersedes the earlier mapping prerequisites
+
+User requested review of newer INBOX plan around1380 on 2026-10-14. Two headings
+numbered15 coexist; later simplification plan revises the earlier implementation
+direction. Earlier parameters remain investigation cases, not a mandate to expand
+protected mirror mapping. Recommend explicit supersession/renumbering in INBOX;
+review leaves it untouched. This review authorizes no implementation/build/probe.
+
+Revised direction is suitable and preferable: native Org preprocessing produces
+owned working Org, then existing preparation builds AST/TeXmacs structures. This
+is compatible with AST-first; preprocessing user Org is not serializing a known
+target tree into another language to reconstruct it. No full org-export-as or
+transcoding is required. Previous review overconstrained exact original positions
+and general AST provenance as prerequisites: these are optional unless current
+semantics require them. Keep original/final snapshots, actual fixed dependencies
+and necessary resource origins. Existing implementation remains supported until
+a new contract is experimentally adopted.
+
+Investigation gates:
+
+- Define finite native stages and captured parser/options/hooks before callbacks.
+  No implicit full annotate-info, global ID/database reads, Babel/macros/BIND/
+  SETUPFILE. Preserve generic guard, source isolation and existing API defaults.
+- Native recursive reads must consume fixed owned bytes with actual identities;
+  filename recording/post-read stat alone is insufficient for coherent snapshots.
+  Compare private capture/read or projection approaches without prematurely
+  choosing global reader replacement. Cover repeated/nested/footnote reads,
+  native path semantics, budgets/aliases/cycles, checks through final return and
+  cleanup. Bounded observations are not atomic FS/DB or callback sandboxing.
+- Assess STM protection per stage with evidence. Protected adapter tests do not
+  prove every unprotected stage is unsafe. Probe literal directives, headings,
+  links/footnote-like payload, multiline STM, partial INCLUDE selection, generated
+  STM and intentional hook rewrites. Final discovery alone cannot establish no
+  truncation/change of original semantics. Protect or reject demonstrated hazards
+  without reproducing Org selection and transformation algorithms.
+- Final AST can own final island identities without original coordinates. Equal
+  raw text cannot justify any original provenance that is retained. Common-base
+  policy can avoid broad maps; native Org link relocation does not itself preserve
+  relative STM resources. Cross-directory resource design stays separate.
+- Test location/lines/only-contents/minlevel combinations, selected/excluded nested
+  includes and external footnote extraction, headers/links/bib/STM semantics, fixed
+  reads and cleanup. Phase1 filters and composed Phase3 discovery run once with
+  unchanged explicit-text priority and transaction boundaries. Review any removal
+  of documented original-range/occurrence INFO fields and associated tests/docs
+  explicitly rather than silently weakening an observable contract.
+
+Next on execution request: independent current-lock Org9.8.10 flake direct-native
+probes, comparison with protected mirror, supported/rejected matrix and minimum
+protection/dependency/resource contract before production refactor. Regression
+belongs alongside each refactor node and full final gate. No new runtime evidence
+in this review; existing35 focused/359 ERT/ten checks validate Phase2b only.
+Phase4 follows selected finite Phase2c scope; issue #1 remains incomplete.
+
+The earlier review below records the parameter-focused hypothesis. Its demands
+for exact original mapping, universal occurrence provenance and protected-token
+survival are superseded as prerequisites by the minimal-contract review above;
+they remain candidate techniques only where a demonstrated semantic need exists.
 
 User notified new INBOX.md section 15 on 2026-10-14. Reviewed plan on committed
 bounded preprocessing baseline c525095 with only user mirror overlay dirty.
