@@ -2,34 +2,51 @@
 
 ## Active objective
 
-User rewrote INBOX section17 on2026-10-14 after explicitly prioritizing final working
-buffer + standard effective Org context as preparation input over STM resources.
-Reviewed appropriate. STM relative resources use final document base, including
-intentional different meaning standalone vs INCLUDE; no original-directory recovery
-or full provenance needed. Review: memory/cross-directory-integration-plan-review.md.
-Previous third-party read/DB interception prerequisite was too strong: preserve
-existing own-read receipts and final input ownership, don't imply complete provider
-dependency/DB transaction coverage. Only demonstrated defects/explicit guarantees
-justify extra adaptation. Current native absolute hlink representation vs preferred
-relative output needs separate consumer policy investigation. Next4a locked context/
-cross-dir investigation, then4b include/4c organize/4d joint HTML/blog fixtures.
-Local source interfaces verified. User now requested execution of revised plan;
-Phase4a locked context/cross-directory probes start in tmp/issue-1-phase-4, then
-4b/4c/4d actual local-source packages in isolated synthetic Org-roam fixtures.
-User authorized task120s probes/focused/integration and repeated240s exact full
-flake check under this isolated path, necessary networking/store/cache/logs, no
-personal DB/project lock/third-party repo edits. Original code still baseline.
-Phase4a six locked probes pass0.113537s: native working copy retains file/default-dir/
-local :with-toc; nested links relocated; relative bibliography and STM left as final
-working text. Cross-dir equality checks removed, captured include private context
-uses its file directory, root/final context retained; existing explicit preparation
-already consumes completed working buffers without replay. Five maintained ERT
-added,32/32 focused pass17.775013s. Actual package fixtures7/7 pass9.025827s,
-include/organize/joint blog publication, mount/parameters/cycles/failure cleanup,
-missing refs and mode teardown. No query/node/third-party read substitutes or
-package-specific production converter. Optional tests/integration runner uses
-explicit pinned sources, default core checks unchanged. Final240s full gate running
-in tmp/issue-1-phase-4/check-final.log; candidate not fully accepted yet.
+Rewritten INBOX section17 Phase4a-4d implemented and accepted in uncommitted tree
+on native parameter baseline1a254a7. User prioritizes completed working buffer +
+effective supported Org context, not source-origin recovery or third-party read/DB
+interception. Existing explicit preparation already consumes completed working Org;
+optional native preprocessing remains provider with own fixed reads/receipts.
+Contract: memory/working-buffer-context-contract.md. Local source interfaces now
+actually exercised: include ca62c8f, organize eaaee8e, blog778d410, pinned Org-roam
+20260425.1623/Emacs31.1/Org9.8.10/TeXmacs2.1.5, x86_64-linux only.
+
+Six native probes pass0.113537s (final0.120499s): actual copy retains file/default-dir/
+local with-toc; nested link/notes relocation, final raw bibliography/STM semantics.
+Production drops two included-directory checks and uses each captured file directory
+for its private parser, preserving root final resource context. Root file/default-dir
+agreement, full-root/ordinary levels, local UTF8/aliases/budgets/cycles/STM shielding/
+partial rejection/source/helper/hook/native-return and receipts preserved. No full
+native lifecycle/macros/Babel/generic exporter/pure I/O or resource-origin map.
+
+Five new core cases and32/32 focused17.537532s pass; actual completed working buffer
+context/ownership/no replay, nested link/note/native bytes, root bib declaration and
+STM image block/context+existing PDF refusal. Relative STM/bibliography use final
+context, standalone/INCLUDE may intentionally differ; actual resource loading/
+rendering and relative native-output consumer policy remain separate.
+
+Seven actual extension fixtures pass8.708412s: real SQLite sync/node/queries/global
+modes/hooks/advice, include recursion/parameter forwarding/file mount/cycle/missing
+node and cleanup; organize managed paths/UUID:key/native bibliography/missing refs;
+joint TeXmacs/standard HTML before-after and actual blog publication/content, mode
+teardown/interface restoration. No package-specific converter/query/node/read mocks.
+Optional tests/integration runner supplied explicit pinned Elisp/runtime sources;
+default core dependencies unchanged, no personal DB/foreign repo edits.
+
+Final exact240s isolated flake check passes373/373 core ERT189.379261s, all10 logged
+checks/strict compilation/package-lint. User authorized task120s probes/focused/
+integration and repeated240s full checks in tmp/issue-1-phase-4, network/store/cache/
+logs, no lock edits.25project and11foreign-module inputs byte-match snapshots;
+manifest hashes/provenance in evidence. Immutable necessary9text archive:
+archive/2026-10-14T06-28-22Z--1a254a7/MANIFEST.md. No inferred project parent.
+
+Five project changes README.org/preprocess module/ERT/optional integration runner
+and fixtures, user mirror untouched, lock unchanged/index empty. Next user ordinary
+review/staging/commit, then verify committed bytes/message. Latest section17 selected
+acceptance complete; original proposal's formal frontend/default dispatcher policy
+was not selected here and remains separate. Do not automatically close#1/external
+tracking: distinguish achieved opt-in interoperability from any adopted frontend
+switch remaining in overall issue scope. No further phase or resource work selected.
 
 Phase2c native preprocessing simplification implemented, accepted and user-committed
 on Phase2b baseline; exact commit diff/message verified on 2026-10-14.
@@ -68,7 +85,7 @@ matches staged SHA972ca91a... in evidence; full message matches tmp/commit.md wi
 feat(document)! subject, BREAKING CHANGE for removed INFO origins and Refs #1.
 Index empty; only mirror remains dirty. Previous gates transfer by exact candidate
 byte identity; no new tests solely for commit verification or external issue write.
-Phase4 real integration awaits separate selection;
+Phase4 selected integration now accepted as described above;
 issue #1 still incomplete and Refs #1 appropriate. No new stage beyond Phase2c.
 
 Necessary native comparison/reproduction artifacts (seven texts plus manifest)
@@ -205,7 +222,8 @@ remain unsupported.
 ## Baseline and staging
 
 - Current main is the native INCLUDE parameter revision on bounded preprocessing
-  revision; lock selects Org9.8.10. Index empty, only user mirror remains unstaged.
+  revision; lock selects Org9.8.10. Index empty; accepted Phase4 README/module/ERT/
+  optional integration runner+fixture changes and user mirror remain unstaged.
   Committed Phase2c diff/message matches reviewed candidate.
   Phase 3b committed diff matches staged/validated candidate SHA-256 in evidence.
   Release-era observations below describe their historical baseline.

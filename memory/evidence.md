@@ -1865,3 +1865,40 @@ unchanged apart from user mirror. Full gate running, candidate uncommitted/not y
 accepted globally; no ordinary staging/commit/issue write. Source-specific resource
 recovery/relative native output/generic exporter remain outside selected work.
 
+## Phase 4 accepted final gate and reproducibility (2026-10-14)
+
+Exact authorized240s isolated flake check exits0/all checks passed.373/373 core
+ERT189.379261s,32focused17.537532s,7actualintegration8.708412s,6nativeprobes0.120499s;
+log reports running10checks with strictcompile/package-lint successful. x86_64-linux
+only, omitted platforms remain unverified. Core and real fixture checks include
+native document/STM/bibliography/bytes, actual modes/SQLite/HTML/blog publication,
+negative inputs/cleanup and original supported consumer/configuration regressions.
+
+25source/lock/test inputs byte-equal root, ordered final-inputs.json SHA256
+38e25bfe901041823d2a368237d43f4e7b7d87a19ce7889f16550536c8172761.
+11foreign Elisp modules match clean original repository sources at recorded exact
+commits; extension-inputs.json SHA256
+f7c7b8d398364515e0497789bfbcacc2d425f33a9937ee28fb0a63c4b74448b5.
+Org-roam library version20260425.1623 from pinned Emacs environment; root lock
+118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a unchanged.
+Root flake remains57bac69941349d236cdc257eb11fd587ad2bc860e27858b3fe210432f818d62f,
+only user USTC overlay difference. No default third-party package dependencies.
+
+Necessary nine original-byte pure-text artifacts plus manifest captured/verified
+at archive/2026-10-14T06-28-22Z--1a254a7/MANIFEST.md. Archived native script/log
+are baseline context observations; accepted fixture/candidate manifest explicitly
+separate from capture HEAD. Foreign ordinary histories preserve actual package
+source; no duplicated foreign checkout/DB/binary archive, no inferred project parent.
+Maintained optional integration runner/fixtures and core ERT preserve regeneration.
+
+Five project files changed: README.org, org-texmacs-preprocess.el, tests/ert/ert.el,
+tests/integration/default.nix, tests/integration/phase4.el. Index empty, no ordinary
+staging/commit/external issue write. Current latest section17 selected4a-4d complete.
+Generic exporter/default dispatcher switch, original source selection mapping and
+STM actual resources/relative native-output consumers are separate/unselected here;
+full source/DB atomicity not claimed. Old original Phase4 proposal mentioned formal
+frontend switching; do not conflate tested opt-in standard interfaces with changing
+default menu behavior when judging overall#1 closure. No blanket real-package/all
+registry/GUI/all-platform compatibility claim. Next user project review/staging/
+commit then exact identity verification; candidate checkpoint no project parent.
+

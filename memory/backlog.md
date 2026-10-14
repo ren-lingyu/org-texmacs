@@ -23,20 +23,19 @@ decision.
 
 ## Active next
 
-### Phase 4 cross-directory INCLUDE and actual interoperability
+### Completed selected Phase 4a-4d: working context and real interoperability
 
-Rewritten INBOX section17 reviewed suitable; **unresolved-design** pending4a locked
-working-buffer/context and cross-directory contract investigation. User prioritizes
-final working input over STM resources; relative STM follows final document base,
-no original include-directory recovery/provenance requirement. Third-party internal
-reads/DB do not require interception or full provider dependency closure; preserve
-existing own-read and final snapshot guarantees, use real fixture evidence for gaps.
-Investigate native context and absolute vs relative consumer policy separately.
-Review:
-memory/cross-directory-integration-plan-review.md. User requested review only;
-no implementation/tests/download selected. Real fixture integration then joint HTML/
-blog noninterference remains separate acceptance. Reproducible gaps alone do not
-establish issue#1 completion.
+User selected rewritten section17; actual working-buffer/context6probes, cross-dir
+implementation5core cases/32focused,7real SQLite/package/HTML/blog fixtures pass;
+full373ERT/all10logged checks accepted. Contract memory/working-buffer-context-contract.md.
+Final document base governs STM/relative bibliography, no original source recovery
+or third-party DB/read interception. Default generic/export dispatcher policy and
+STM actual resource/native relative-output enhancement remain separate; not automatic
+requirements inferred from unsupported syntax. New optional integration runner needs
+caller-supplied pinned extensions/runtime, no default dependency changes. User project
+review/staging/commit next. Overall#1 closure must distinguish completed opt-in
+interoperability from original proposal's frontend switch if still adopted; no external
+issue mutation or silently expanded implementation. Latest17 targets complete.
 
 ### Completed: Phase 2c native preprocessing simplification
 
@@ -347,7 +346,8 @@ per-callback graph/work-context validation and independent ownership before wait
 Focused 12/12, installed ERT 324/324 and all 8 isolated flake checks pass on the
 current lock's Emacs 31.1 / Org 9.8.10. Broader ecosystem preparation remains
 unresolved beyond the bounded Phase2b composition and Phase3b discovery above:
-broader provenance/selection/resource policies and Phase4 combination are unverified.
+broader source-selection/native resource policies remain separate. Selected Phase4
+cross-directory/actual-package combination is now accepted as described above.
 Phase 0's stage table/candidate comparison/reproduction is preserved at
 archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. Candidate A was selected by
 the user's INBOX section 11 and is now the bounded implementation above. Contract
@@ -360,8 +360,8 @@ after-includes hook. Retain the generic guard and pure-layer I/O boundary;
 broader preprocessing and real integration need separate contracts; selected
 bounded composition/bibliography acquisition contracts are implemented above.
 No issue writes were made;
-third-party source lookup failed and
-extension behavior remains attributed rather than independently verified.
+initial public-source lookup failed; later local source and actual SQLite fixtures
+independently verify the selected extension behavior (Phase4 above).
 
 Status: **unresolved-design**, following the user's 2026-10-09 v0.4.0 review note.
 Tracking discussion: https://github.com/ren-lingyu/org-texmacs/issues/1,

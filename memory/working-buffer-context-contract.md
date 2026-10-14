@@ -53,4 +53,5 @@ No node/query/read substitutes; package modes really enabled in SQLite fixtures.
 External include ca62c8f, organize eaaee8e, blog778d410, Org-roam20260425.1623,
 lockedEmacs31.1/Org9.8.10/TeXmacs2.1.5. Default checks don't add third-party packages.
 Actual optional runner is tests/integration/default.nix with caller-provided pinned
-Elisp dirs/runtime. Final full gate pending; no all-platform/GUI/all registry claim.
+Elisp dirs/runtime. Final373/373 core ERT189.379261s/all10logged checks pass; optional fixtures
+rerun7/7 in8.708412s. No all-platform/GUI/all registry claim.

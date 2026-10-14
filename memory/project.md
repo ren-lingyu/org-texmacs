@@ -701,6 +701,30 @@ archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md. Broader Phase2 composition
 policies, Phase4 and file/menu policy
 remain downstream work; issue #1 is not entirely closed by this node.
 
+## Phase 4 accepted working-context and actual extension interoperability
+
+Uncommitted accepted candidate on native parameter revision. Preparation's existing
+explicit buffer APIs consume completed working Org and supported normal context;
+provider history not reconstructed. Cross-directory native INCLUDE now accepted,
+private captured parser uses its own file directory, final root context retained.
+No per-island original directory, general provenance or third-party read/DB adapters.
+Relative BIBLIOGRAPHY/STM interpreted at final context; managed discovery supplies
+its own normalized paths. Ordinary Org links natively relocated then existing typed
+absolute native encoding unchanged. STM resource trees can pass, actual loading/
+rendering not newly verified; existing PDF primitive restrictions retained.
+Contract memory/working-buffer-context-contract.md. README states provider versus
+final ownership guarantees; optional native provider receipts remain bounded.
+
+Five new core ERT,32focused,7actual fixtures; full373core ERT189.379261s/all10logged
+checks/strictcompile/package-lint pass. Real include/organize/blog modes, SQLite DB,
+hooks/advice/query, selected recursion/parameters/mount/error paths, managed paths/
+UUID filters/native bibliography, HTML and actual blog publication verified with
+pinned source, no business-logic mock or external package patch. Optional maintained
+Nix integration runner takes explicit runtime/extension sources; no default package
+dependency additions, lock/mirror preserved. Other platforms/GUI/all configs/full
+resource support/generic exporter/default frontend switch not claimed. Project
+review/staging/commit next; immutable evidence archive in evidence/current memory.
+
 ## Phase 2c accepted native preprocessing simplification
 
 User selected new INBOX section16, superseding parameter-mirror extension plan.
@@ -747,7 +771,8 @@ Standard key-only AST filters
 can participate; other ecosystem extension semantics are not automatically
 consumed by TeXmacs. Backend guard admits unrelated backends; maintained
 isolation includes ASCII and the released controlled HTML composition
-case below; actual joint HTML/Org-roam package/database integration is unverified.
+case below and now the selected real package/SQLite/HTML/blog fixtures above;
+other package/database configurations remain unverified.
 Future information-flow design is tracked in issue #1:
 https://github.com/ren-lingyu/org-texmacs/issues/1. It preserves canonical source,
 AST-first/ownership/provenance and is not a v0.4.0 release blocker.
