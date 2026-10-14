@@ -37,14 +37,14 @@ scope. Package-Requires Emacs31.1/Org9.8 and flake runtime wiring retained: no n
 runtime dependency or proven need to bump minimum; full minimum-version behavior
 untested, API/signature checks passed as detailed below.
 Version0.4.0 unchanged, release not selected. Exactly README.org/org-texmacs.el/
-ox-texmacs.el task edits, now staged under user authorization; user flake mirror untouched. Diff whitespace and
+ox-texmacs.el doc/comment corrections user committed; user flake mirror untouched. Diff whitespace and
 heading link targets inspected; no executable changes. Subsequent authorized
 minimum-version checks are recorded below.
-User authorized staging/message preparation. Complete three-file staged diff reviewed,
-blobs match worktree, diff --check clean. Draft tmp/commit.md uses docs(package)
-subject and Refs: #1, #2 trailer, no new breaking/closing footer. One coherent
-doc/comment correction commit, split not necessary (difficulty low). Next user
-review/manual commit, then read-only diff/message verification; no project commit.
+User committed documentation revision. Exact three-file committed binary diff
+matches reviewed staged SHA2562db2062b...; blobs match worktree, parent verified
+Phase6 commit. Complete message equals tmp/commit.md: docs(package) subject and
+Refs: #1, #2 trailer, no new breaking/closing footer. Index empty, only user mirror
+dirty. No new tests solely for commit verification or further work selected.
 User questioned minimum Org API compatibility; historical setup commit81e06ca
 raised9.5 to9.8 for cache/store/get/create checks. Earlier retention conclusion
 was insufficiently evidenced. User requested isolated independent-flake audit and
@@ -60,7 +60,7 @@ and autoload-loader harness problems corrected, not production incompatibilities
 No API existence/signature evidence demands minimum above9.8; full9.8 behavioral
 compatibility still unverified, full ERT/native baseline remains9.8.10. Dependency
 values unchanged. Root project/lock/mirror untouched by checks; docs/comment edits
-from prior authorized task now staged. No new full regression selected.
+from prior authorized task now committed. No new full regression selected.
 Nine necessary original-byte artifacts archived and verified separately:
 archive/2026-10-14T14-04-21Z--611cb70/MANIFEST.md. Archived patch retains four
 blank context spaces reported by diff --check. Auto-review rejected adding that

@@ -2270,3 +2270,16 @@ ASCII-punctuation body, Refs: #1, #2 trailer. No new issue-closing or breaking
 claim. Coherent single commit, split not necessary/difficulty low. User mirror
 excluded and unstaged; no project commit or new builds performed.
 
+## Documentation user commit verification (2026-10-14)
+
+User reported committed. Read-only verification confirms parent is Phase6
+611cb704567e677bc600c293c2d5a159e2e8f3fe, exact changed paths README.org/
+org-texmacs.el/ox-texmacs.el. Complete committed binary diff SHA256
+2db2062baf99f72e5f2f33ef25c5bc52ccaa8a69660d8d7d9c50ca246a2d5574
+equals reviewed staged diff; all three committed blobs match worktree. Full message
+equals tmp/commit.md, docs(package) subject and Refs: #1, #2 trailer. Index empty,
+only user flake.nix mirror dirty. No new tests just for commit verification; no
+executable/dependency version changes or external issue write. This checkpoint
+associates the actual documentation commit inspected, not original provenance of
+earlier signature runs. Raw signature archive remains immutable.
+
