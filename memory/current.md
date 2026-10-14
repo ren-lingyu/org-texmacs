@@ -2,6 +2,45 @@
 
 ## Active objective
 
+User requested GAW recovery then read-only review of the newly supplied INBOX
+issue3 export API/lifecycle plan. GAW status/check pass, memory worktree clean
+at recovery. Project HEAD exactly matches the plan's investigation baseline
+92476aa073238d1bc38809d4300985c5a444572c; ordinary index empty, only flake.nix
+has the existing user modification. INBOX is now9457bytes, superseding the
+Phase6 working proposal; completed Phase6 contracts remain current capability.
+No implementation, INBOX edits, build/test or external tracking writes selected.
+
+Review finds the proposed three frontend/five explicit-source APIs compatible
+with AST-first ownership and existing direct/full-preprocessing routes. Preserve
+explicit file signatures/new-file creation, frontend naming/overwrite policy,
+special bibliography/preprocessing entry points, menu opt-in and generic guard.
+Refinements recommended, not yet adopted implementation decisions:
+- Resolve fixed-name conflicts concretely (safe error or identity-owned reuse),
+  and test identity after kill/recreation/rename plus foreign same-name buffers.
+- Specify content replacement and display error outcomes separately for newly
+  allocated and previously successful frontend results. Existing frontend
+  unwind cleanup kills output on display failure (ox-texmacs.el current lines
+  122-129); ERT at5107 explicitly expects death. That cleanup/assertion must
+  change for reusable results; keep explicit-source fresh-buffer failure cleanup.
+- Test API signatures, commandp, module ownership and genuine fresh loading.
+  Current package-load ERT asserts old explicit export-to-pdf is defined in
+  org-texmacs.el; the new frontend belongs in ox-texmacs.el. The reused PDF name
+  must remain defined with its new contract, rather than be tested as absent.
+  Three retired names should have no definitions/aliases in a fresh process;
+  preserved special entry names remain valid. Document loading/migration clearly.
+- Old interactive-only tests must be replaced with command-boundary assertions
+  while preserving their source/destination safety coverage under Lisp calls.
+
+Public issue3, Emacs interactive manual and upstream Org source could not be
+fetched. No remote issue status or new upstream interactive compatibility claim;
+the proposed interactive nil org-mode declaration needs targeted validation
+when implementation/tests are authorized. Review is grounded in local INBOX,
+current source/tests and recovered contracts, not a new runtime test result.
+Next action: user may refine or select implementation with its own permissions;
+review alone does not authorize project edits or reuse prior task test grants.
+
+## Previous completed work
+
 User replaced cleared INBOX with new Phase6 explicit Org dispatcher menu plan
 associated issue2, reviewed then user now requested execution. Task authorized120s
 isolated probes/focused/integration and repeated240s full checks/network/store/cache
@@ -351,8 +390,8 @@ direct source APIs and local scopes retain direct preparation.
 
 ## Baseline and staging
 
-- Current main is the Phase5 full frontend preprocessing revision on the Phase4
-  cross-directory INCLUDE/real extension coverage revision; lock selects Org9.8.10.
+- Current main is the post-Phase6 documentation/API-audit clarification revision
+  observed at the issue3 review baseline above; lock selects Org9.8.10.
   Phase4/5 committed diffs
   verified. Index empty; unchanged user mirror remains unstaged.
   Committed Phase2c diff/message matches reviewed candidate.
@@ -431,9 +470,9 @@ direct source APIs and local scopes retain direct preparation.
   holds adopted/deferred/unresolved scope. Superseded progress stays in GAW history.
 - Root AGENTS.md is an ignored generated bootstrap, reproducible through the
   namespaced governance skill. Retired GOALS.md/REVIEW.md and eligible historical
-  probes are in the archive, not normal recovery inputs. INBOX.md remains ignored
+  probes are in the archive, not normal recovery inputs. INBOX.md remains ignored,
   was cleared after verified issue1 original-byte archival, and now contains the
-  newly supplied Phase6 menu plan. Prior adopted plans remain current knowledge;
+  newly supplied issue3 export API/lifecycle plan. Prior adopted plans remain current knowledge;
   archived original is historical only.
 - Only pure-text files may enter GAW memory, skills or archive. Archive necessary
   unique temporary evidence selectively via the archive skill; never bytecode,
