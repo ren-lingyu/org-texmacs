@@ -2068,3 +2068,20 @@ Current memory/backlog authority remains the distilled implemented/deferred stat
 Raw pending/current labels and superseded alternatives historical, not instructions.
 No production code/test/lock/index/history/remote operations; user mirror unchanged.
 
+## New Phase 6 menu configuration plan review (2026-10-14)
+
+After original issue1 INBOX archival/clearing user supplied new9100byte Phase6 plan
+associated issue2, review only. Full new text read; current ox fixed menu registration,
+guard, test top-level loading/hardcoded structure and README recipes inspected.
+Suitable independent nil-default explicit config proposal, fixed existing commands/
+named backend and Phase5 transactions unchanged. Review/distilled decisions in
+memory/export-menu-plan-review.md, backlog/current coordinated.
+Native key-domain/control/shared-prefix/duplicate-backend semantics await6a
+locked independent-flake probes; no runtime compatibility claim from this review.
+Key layers independent (prefix may equal action key), actual inaccessible conflict
+must reject before registry mutation, copy menu data and test real first load.
+Default-menu removal is documented-entry compatibility change; Custom should not
+promise live refresh. No production/INBOX edit/build/test/issue write performed,
+no execution selected or prior task-build authorization transferred. Prior archive
+immutable; latest INBOX no longer empty, and does not replace current contracts.
+

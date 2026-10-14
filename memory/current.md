@@ -2,6 +2,16 @@
 
 ## Active objective
 
+User replaced cleared INBOX with new Phase6 explicit Org dispatcher menu plan
+associated issue2 and requested review only. Reviewed suitable on committed Phase5
+baseline; findings memory/export-menu-plan-review.md. Proposal separates backend,
+optional nil-default complete key config and unchanged export commands/guard.
+6a must determine per-level key conflicts/native nil menus and genuine first-load
+tests before implementation. Validate/own configuration before registration; Custom
+must not imply live refresh. No execution/tests/production edits selected. Next user
+execution selection and task-specific isolated-build authorization, then6a contract.
+Ordinary INBOX now9100bytes; prior archived issue1 original remains immutable.
+
 User authorized retiring current INBOX after coverage audit: original90229byte
 sections1-18 captured byte-exactly and archive-only checkpoint verified at
 archive/2026-10-14T12-48-06Z--5f4c9c0/MANIFEST.md, original SHA25683b74498... in
@@ -357,8 +367,9 @@ direct source APIs and local scopes retain direct preparation.
 - Root AGENTS.md is an ignored generated bootstrap, reproducible through the
   namespaced governance skill. Retired GOALS.md/REVIEW.md and eligible historical
   probes are in the archive, not normal recovery inputs. INBOX.md remains ignored
-  and is now empty following verified original-byte archival as described above;
-  its adopted plans are distilled into current knowledge, raw copy historical only.
+  was cleared after verified issue1 original-byte archival, and now contains the
+  newly supplied Phase6 menu plan. Prior adopted plans remain current knowledge;
+  archived original is historical only.
 - Only pure-text files may enter GAW memory, skills or archive. Archive necessary
   unique temporary evidence selectively via the archive skill; never bytecode,
   images, binary containers or regenerable caches.
