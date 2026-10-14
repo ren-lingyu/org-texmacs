@@ -5023,11 +5023,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 (ert-deftest org-texmacs-export-backend-registration-and-installation ()
   (let ((backend (org-export-get-backend 'texmacs)))
     (should backend)
-    (should (equal (org-export-backend-menu backend)
-                   '(?T "Export to TeXmacs"
-                        ((?T "As TeXmacs buffer" org-texmacs-export-as-texmacs)
-                         (?t "As .tm file" org-texmacs-export-to-texmacs)
-                         (?p "As PDF file" org-texmacs-export-to-texmacs-pdf)))))
+    (should-not (org-export-backend-menu backend))
     (should (equal (file-name-directory (locate-library "ox-texmacs"))
                    (file-name-directory (locate-library "org-texmacs")))))
   (dolist (function '(org-texmacs-export-as-texmacs org-texmacs-export-to-texmacs
@@ -7975,5 +7971,135 @@ Only tests with explicit example names use this helper; do not run Babel."
                  "chosen.tm")))
       (should-error (org-texmacs-export-to-texmacs) :type 'org-texmacs-document-error))
     (should-not (file-exists-p "chosen.tm"))))
+
+
+(defun org-texmacs-test--menu-fresh-process (form)
+  "Evaluate FORM in a fresh locked Emacs with no previous frontend require."
+  (let ((file (make-temp-file "org-texmacs-menu-" nil ".el")))
+    (unwind-protect
+        (progn
+          (with-temp-file file
+            (insert ";;; -*- lexical-binding: t; -*-\n")
+            (prin1 `(progn (require 'ert) (require 'cl-lib) (require 'ox) ,form) (current-buffer)))
+          (with-temp-buffer
+            (let ((status (call-process
+                           (expand-file-name invocation-name invocation-directory) nil t nil
+                           "-Q" "--batch"
+                           "-L" (file-name-directory (locate-library "org"))
+                           "-L" (file-name-directory (locate-library "org-texmacs"))
+                           "--load" file)))
+              (unless (equal status 0)
+                (ert-fail (format "Fresh menu process failed: %s\n%s" status (buffer-string)))))))
+      (delete-file file))))
+
+(ert-deftest org-texmacs-export-menu-first-load-default-and-require ()
+  (org-texmacs-test--menu-fresh-process
+   '(progn
+      (require 'ox-texmacs)
+      (let ((backend (org-export-get-backend 'texmacs))
+            (registry org-export-registered-backends)
+            (hooks (copy-sequence org-export-before-processing-functions)))
+        (should backend) (should-not (org-export-backend-menu backend))
+        (dolist (command '(org-texmacs-export-as-texmacs org-texmacs-export-to-texmacs
+                           org-texmacs-export-to-texmacs-pdf))
+          (should (commandp command)))
+        (setq org-texmacs-export-menu-keys '(:prefix ?Z :buffer ?a :file ?b :pdf ?c))
+        (require 'ox-texmacs)
+        (should (eq registry org-export-registered-backends))
+        (should (eq backend (org-export-get-backend 'texmacs)))
+        (should-not (org-export-backend-menu backend))
+        (should (equal hooks org-export-before-processing-functions))
+        (with-temp-buffer
+          (org-mode)
+          (should-error (org-export-as 'texmacs) :type 'user-error))))))
+
+(ert-deftest org-texmacs-export-menu-first-load-explicit-dispatch-and-ownership ()
+  (org-texmacs-test--menu-fresh-process
+   '(progn
+      (setq org-texmacs-export-menu-keys '(:prefix ?Z :buffer ?a :file ?b :pdf ?c))
+      (require 'ox-texmacs)
+      (let* ((backend (org-export-get-backend 'texmacs))
+             (menu (org-export-backend-menu backend)))
+        (should (equal (car menu) ?Z))
+        (setcar (cdr org-texmacs-export-menu-keys) ?Y)
+        (should (equal (car menu) ?Z))
+        (dolist (entry '((?a . org-texmacs-export-as-texmacs)
+                         (?b . org-texmacs-export-to-texmacs)
+                         (?c . org-texmacs-export-to-texmacs-pdf)))
+          (with-temp-buffer
+            (org-mode) (insert "Text\n")
+            (let ((events (list ?Z (car entry))) (called nil)
+                  (org-export-dispatch-use-expert-ui t)
+                  (org-export-dispatch-last-action nil)
+                  (org-export-dispatch-last-position (make-marker)))
+              (cl-letf (((symbol-function 'read-event)
+                         (lambda (&rest _) (or (pop events) (ert-fail "Input exhausted"))))
+                        ((symbol-function (cdr entry))
+                         (lambda (&rest args)
+                           (should (cl-every #'null args))
+                           (setq called t) 'exported)))
+                (should (eq (org-export-dispatch) 'exported))
+                (should called)))))
+        (require 'ox-texmacs)
+        (should (eq backend (org-export-get-backend 'texmacs)))))))
+
+(ert-deftest org-texmacs-export-menu-first-load-invalid-preserves-registry ()
+  (org-texmacs-test--menu-fresh-process
+   '(progn
+      (org-export-define-backend 'texmacs nil :menu-entry '(?Z "Prior" ((?a "Prior" ignore))))
+      (setq org-texmacs-export-menu-keys '(:prefix ?Z :buffer ?a))
+      (let ((backend (org-export-get-backend 'texmacs))
+            (registry org-export-registered-backends)
+            (hooks (copy-sequence org-export-before-processing-functions)))
+        (should-error (require 'ox-texmacs) :type 'user-error)
+        (should (eq backend (org-export-get-backend 'texmacs)))
+        (should (eq registry org-export-registered-backends))
+        (should (equal hooks org-export-before-processing-functions))
+        (should-not (featurep 'ox-texmacs))))))
+
+(ert-deftest org-texmacs-export-menu-valid-key-domains-and-fields ()
+  (let ((org-export-registered-backends nil))
+    (should-not (org-texmacs--export-menu-entry nil))
+    (should (equal (org-texmacs--export-menu-entry '(:prefix ?界 :buffer ?字 :file ?文 :pdf ?档))
+                   '(?界 "Export to TeXmacs"
+                         ((?字 "As TeXmacs buffer" org-texmacs-export-as-texmacs)
+                          (?文 "As .tm file" org-texmacs-export-to-texmacs)
+                          (?档 "As PDF file" org-texmacs-export-to-texmacs-pdf)))))
+    (should (org-texmacs--export-menu-entry '(:pdf ?p :file ?t :buffer ?T :prefix ?T)))
+    (dolist (value '(t (:prefix ?Z) (:prefix ?Z :buffer ?a :file ?b :pdf ?c :other ?d)
+                      (:prefix ?Z :buffer ?a :file ?b :file ?c)
+                      (:prefix ?Z :buffer ?a :file ?a :pdf ?c)
+                      (:prefix ?Z :buffer "a" :file ?b :pdf ?c)
+                      (:prefix ?Z :buffer ?a :file ?b :pdf)))
+      (should-error (org-texmacs--export-menu-entry value) :type 'user-error))
+    (let ((cycle (list :prefix ?Z)))
+      (setcdr (last cycle) cycle)
+      (should-error (org-texmacs--export-menu-entry cycle) :type 'user-error))
+    (dolist (key '(?q ?? ?# ?& ?P 0 1 2 6 7 14 16 19 22 32 127 128 #xd800 #x200005a))
+      (should-error (org-texmacs--export-menu-entry
+                     (list :prefix key :buffer ?a :file ?b :pdf ?c)) :type 'user-error))
+    (dolist (key '(?q ?? ?# ?& 2 14 32 127))
+      (should-error (org-texmacs--export-menu-entry
+                     (list :prefix ?Z :buffer key :file ?b :pdf ?c)) :type 'user-error))))
+
+(ert-deftest org-texmacs-export-menu-native-shared-prefix-and-conflicts ()
+  (let ((org-export-registered-backends nil))
+    (org-export-define-backend 'menu-peer nil :menu-entry '(?Z "Peer" ((?x "Peer" ignore))))
+    (let* ((backend (org-export-get-backend 'menu-peer))
+           (original (org-export-backend-menu backend))
+           (menu (org-texmacs--export-menu-entry '(:prefix ?Z :buffer ?a :file ?b :pdf ?c))))
+      (org-export-define-backend 'texmacs nil :menu-entry menu)
+      (dolist (keys '("Zx" "Za"))
+        (let ((events (append keys nil)))
+          (cl-letf (((symbol-function 'read-event)
+                     (lambda (&rest _) (or (pop events) (ert-fail "Input exhausted")))))
+            (should (equal (org-export--dispatch-ui nil nil t)
+                           (if (equal keys "Zx") '(ignore) '(org-texmacs-export-as-texmacs)))))))
+      (should-error (org-texmacs--export-menu-entry '(:prefix ?Z :buffer ?x :file ?b :pdf ?c))
+                    :type 'user-error)
+      (should (eq original (org-export-backend-menu backend)))
+      (org-export-define-backend 'menu-peer nil :menu-entry '(?Z "Direct" ignore))
+      (should-error (org-texmacs--export-menu-entry '(:prefix ?Z :buffer ?a :file ?b :pdf ?c))
+                    :type 'user-error))))
 
 ;;; ert.el ends here

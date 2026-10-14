@@ -246,14 +246,64 @@ EXT-PLIST is owned by frontend validation; it cannot override output paths."
   (when (org-export-derived-backend-p backend 'texmacs)
     (org-texmacs--export-reject-string-transcoding)))
 
-(org-export-define-backend 'texmacs
-  '((org-data . org-texmacs--export-reject-string-transcoding)
-    (plain-text . org-texmacs--export-reject-string-transcoding))
-  :menu-entry
-  '(?T "Export to TeXmacs"
-       ((?T "As TeXmacs buffer" org-texmacs-export-as-texmacs)
-        (?t "As .tm file" org-texmacs-export-to-texmacs)
-        (?p "As PDF file" org-texmacs-export-to-texmacs-pdf))))
+(defcustom org-texmacs-export-menu-keys nil
+  "Explicit dispatcher menu keys, configured before loading ox-texmacs.
+Nil registers the backend without a menu.  Otherwise supply a complete plist
+with :prefix, :buffer, :file and :pdf character values.  Action keys must be
+distinct; reserved control/help/publishing keys and existing action conflicts
+are rejected.  Graphic Unicode characters are supported.
+This is a load-time setting.  Changing it after the first require, including
+via Custom, does not refresh the registered menu; use a new Emacs session.
+No default keys or automatic conflict reassignment are provided."
+  :type '(choice (const :tag "No dispatcher menu" nil)
+                 (sexp :tag "Complete explicit key plist"))
+  :group 'org-texmacs)
+
+(defun org-texmacs--export-menu-entry (configuration)
+  "Validate CONFIGURATION and build an independent native Org menu or nil.
+Honor shared prefixes with disjoint actions in currently registered backends.
+Do not change existing backends, hooks, or the user's configuration."
+  (when configuration
+    (unless (and (proper-list-p configuration) (= (length configuration) 8))
+      (user-error "TeXmacs menu requires a complete four-field key plist"))
+    (let ((fields '(:prefix :buffer :file :pdf)) seen)
+      (cl-loop for (field value) on configuration by #'cddr do
+               (unless (and (memq field fields) (not (memq field seen)))
+                 (user-error "Unknown or duplicate TeXmacs menu field: %S" field))
+               (push field seen)
+               (unless (and (characterp value) (<= value #x10ffff)
+                            (not (<= #xd800 value #xdfff))
+                            (string-match-p "\\`[[:graph:]]\\'" (char-to-string value))
+                            (not (memq value '(?q ?? ?# ?&))))
+                 (user-error "Unsupported or reserved TeXmacs menu key: %S" value)))
+      (let* ((prefix (plist-get configuration :prefix))
+             (keys (mapcar (lambda (field) (plist-get configuration field))
+                           '(:buffer :file :pdf))))
+        (when (or (= prefix ?P) (/= (length (delete-dups (copy-sequence keys))) 3))
+          (user-error "Reserved prefix or duplicate TeXmacs action keys"))
+        (dolist (backend org-export-registered-backends)
+          (let ((menu (org-export-backend-menu backend)))
+            (when (and menu (not (eq (org-export-backend-name backend) 'texmacs))
+                       (eq (car menu) prefix))
+              (let ((actions (nth 2 menu)))
+                (unless (and (not (functionp actions)) (proper-list-p actions))
+                  (user-error "TeXmacs prefix conflicts with backend %S"
+                              (org-export-backend-name backend)))
+                (when (cl-some (lambda (action) (memq (car action) keys)) actions)
+                  (user-error "TeXmacs action key conflicts with backend %S"
+                              (org-export-backend-name backend)))))))
+        (list prefix "Export to TeXmacs"
+              (cl-mapcar #'list keys
+                         '("As TeXmacs buffer" "As .tm file" "As PDF file")
+                         '(org-texmacs-export-as-texmacs org-texmacs-export-to-texmacs
+                           org-texmacs-export-to-texmacs-pdf)))))))
+
+;; Validate before replacing any backend or adding its generic export guard.
+(let ((menu (org-texmacs--export-menu-entry org-texmacs-export-menu-keys)))
+  (org-export-define-backend 'texmacs
+    '((org-data . org-texmacs--export-reject-string-transcoding)
+      (plain-text . org-texmacs--export-reject-string-transcoding))
+    :menu-entry menu))
 
 ;; Abort unsupported generic export before Org reads includes or executes Babel.
 ;; This hook is inert for unrelated backends; menu consumers do not run it.

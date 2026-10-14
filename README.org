@@ -496,8 +496,10 @@ subtree, region and existing narrowing with captured configuration/dependencies,
 and restricted =ext-plist= overrides.  Org remains the canonical source; pure
 lowering and native consumers use owned input instead of generic string export.
 
-Load =(require 'ox-texmacs)= to enable =C-c C-e T=; loading =org-texmacs= alone
-keeps the dispatcher optional.  The frontend uses Org output names and can
+Load =(require 'ox-texmacs)= to register the backend and export commands.
+The dispatcher menu requires explicit key configuration before loading; the
+core package alone does not register this frontend.  The frontend uses Org
+output names and can
 overwrite writable regular outputs.  Explicit new-file saving APIs remain
 exclusive.  Source-buffer adapters retain their earlier calls and add optional
 subtree-position, region and external configuration arguments.  Narrowed sources
@@ -1336,19 +1338,49 @@ native layout.  GUI preview and visual layout
 coverage remain future work.
 
 ** Org export dispatcher
-Load the optional frontend to register the =texmacs= dispatcher backend:
+The optional frontend always registers the =texmacs= backend and its three
+export commands, but has no dispatcher menu by default:
 
 #+begin_src emacs-lisp
   (require 'ox-texmacs)
 #+end_src
 
-In Org's =C-c C-e= menu, select =T= for TeXmacs:
+To add a menu, configure the single =org-texmacs-export-menu-keys= option before
+the first =(require 'ox-texmacs)=.  This recommended example restores the former
+keys; these values are examples, not defaults:
+
+#+begin_src emacs-lisp
+  (setq org-texmacs-export-menu-keys
+        '(:prefix ?T :buffer ?T :file ?t :pdf ?p))
+  (require 'ox-texmacs)
+#+end_src
+
+With this explicit configuration, select =T= in Org's =C-c C-e= menu:
 
 | Keys  | Action                                            |
 |-------+---------------------------------------------------|
 | =T T= | Export to a fresh readonly native =.tm= byte buffer |
 | =T t= | Export to Org's local =.tm= output path             |
 | =T p= | Export to Org's local PDF output path               |
+
+=nil= omits only the menu; use =M-x org-texmacs-export-as-texmacs=,
+=M-x org-texmacs-export-to-texmacs= or =M-x org-texmacs-export-to-texmacs-pdf=
+directly without configuring keys.  This changes the former default =C-c C-e T=
+entry: existing users must add the explicit pre-load configuration above.
+
+Non-nil configuration must contain exactly =:prefix=, =:buffer=, =:file= and =:pdf=
+once each, with graphic single-character keys.  Unicode keys are supported;
+whitespace/control/modifier events, =q=, =?=, =#=, =&= and prefix =P= are unavailable.
+Three action keys must differ; the prefix can equal an action key.  Existing
+backends may share a prefix with disjoint submenu actions.  Conflicting action
+keys or an existing direct-action prefix fail at registration.  No default keys
+are filled in, and no later-loaded backend collision monitoring is installed.
+
+Menu configuration is read, validated and copied when the module first loads.
+Later =setq= or Custom changes do not update the registered menu, and repeated
+=require= does not apply them; use a new Emacs session to apply new settings.
+There is no automatic watcher, runtime refresh or key reassignment.  =C-c C-e=
+itself is not rebound, and menu settings do not change export command semantics.
 
 The corresponding commands are =org-texmacs-export-as-texmacs=,
 =org-texmacs-export-to-texmacs= and =org-texmacs-export-to-texmacs-pdf=.
