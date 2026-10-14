@@ -760,6 +760,13 @@ remote page failed to fetch, no external issue state/content claim/write.
 
 ## Phase 6 accepted and committed explicit dispatcher menu
 
+Minimum Org API audit subsequently checks actual release_9.8 (locked source) on
+Emacs31.1:54 direct-call interfaces/41 function references/87 declared capabilities
+present with no direct arity conflicts,13 production modules strict-compile pass.
+No API/signature reason to raise declared9.8 demonstrated. Full behavior regression
+baseline remains9.8.10;9.8 full ERT/native behavior not verified. Raw evidence:
+archive/2026-10-14T14-04-21Z--611cb70/MANIFEST.md.
+
 Supersedes Phase5 fixed T/T/t/p menu policy only. Global option
 org-texmacs-export-menu-keys defaults nil; named backend, generic guard and three
 commands always registered. Complete explicit :prefix/:buffer/:file/:pdf character

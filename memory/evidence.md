@@ -2217,3 +2217,45 @@ need for a higher current minimum remains unresolved. Tested9.8.10 can be chosen
 as conservative support policy, without claiming it is earliest API-compatible
 version. Existing prose edits remain unstaged, dependency values unchanged.
 
+## Isolated Org 9.8 signatures and compilation (2026-10-14)
+
+User authorized task necessary networking/isolated signature checks. Independent
+tmp/org-minimum-api reuses pinned nixpkgs node; source-only Org release_9.8 input
+locked89df5bf46ba214db44eea898cc7cacc0b27fd760, narHash
+sha256-+B/jG8uHl7oXrvMJO12PI6RL6FKoEphxzUw7p+SEAUQ=. Actual Emacs31.1/Org9.8
+source load (no personal Org), compared to pinned runtime9.8.10. Only version/tag
+metadata and upstream autoloads generated; actual upstream Lisp unmodified.
+Static54 direct-call interfaces0 arity conflicts/4 generated unresolved. Actual
+runtime resolves all54, checks41 function references and87 declared capabilities;
+missing/conflicts nil. Definition paths belong to isolated9.8 for direct/reference
+functions.13 production modules strict-compile with warnings-as-errors pass.
+Final120s runtime98 build exits0/no warnings; no complete9.8 ERT/native validation.
+Dynamic callback argument semantics are not proven by reporting signatures.
+Representatives cache store/get/create, property-raw/properties-mapc, option helpers,
+INCLUDE parser/reader/expansion, generated backend constructor/accessors all present.
+
+Initial runtime Nix quote syntax failed evaluation; later generated-autoload loader
+warned compressed-library recursive load. Bare pinned Emacs/preloaded cl-lib and
+jka-compr/9.8 source priority correct harness; clean final run confirms actual
+source paths. These failures do not establish Org incompatibilities. Source input
+manifest13 modules SHA256cdc92d088bfc53f86b1772a9dd5ff9a0145edabd283a3d5712a931dacedf89a2;
+static signatures SHA256322c56bdadf96dc551dc0b3337370bc70ef272df32dbe45e51b0942646120a7e;
+runtime signatures SHA256e1feaf296cf6b691df1944f1e40eefe779ca9f9017efa8303dd135d9b3c4d68b.
+Nine original-byte artifacts archived, reverified and archive-only checkpoint checked:
+archive/2026-10-14T14-04-21Z--611cb70/MANIFEST.md. Probe files, flake/lock,
+input manifest/comment patch, raw sexp reports and explanation retained. Duplicated
+logs/upstream checkout/generated autoloads/bytecode/cache/products not selected.
+Archived original patch contains four blank context lines with leading spaces;
+diff --check warns but fidelity requires preserving bytes. Auto-review rejected
+adding an explanatory note to captured manifest; safe alternative is this memory
+note. Archive unmodified. No inferred project parent for uncommitted snapshot.
+
+Conclusion supersedes earlier unsupported blanket retention/bump suggestions:
+no API/signature necessity to raise minimum above9.8 demonstrated. Declared9.8
+can remain for this boundary; full behavioral baseline9.8.10 is distinct. Values
+and root lock/user mirror unchanged; prior doc/comment corrections still unstaged.
+Prior doc-modification authorization used to refine README/main commentary after
+results:9.8 API/signature/strict compilation passed, full ERT/native regressions
+still9.8.10. Prose-only post-audit refinement, no executable/dependency value change;
+archived input manifest/comment patch remains the exact earlier tested snapshot.
+

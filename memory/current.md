@@ -37,28 +37,33 @@ scope. Package-Requires Emacs31.1/Org9.8 and flake runtime wiring retained: no n
 runtime dependency or proven need to bump minimum; minimum boundary untested.
 Version0.4.0 unchanged, release not selected. Exactly README.org/org-texmacs.el/
 ox-texmacs.el task edits, unstaged; user flake mirror untouched. Diff whitespace and
-heading link targets inspected; no executable changes or new tests/builds.
+heading link targets inspected; no executable changes. Subsequent authorized
+minimum-version checks are recorded below.
 Next user review/optional separately authorized staging and message preparation.
-User questioned minimum Org requirement based on earlier API existence discussion.
-Correction: retaining9.8 was not a validated compatibility conclusion. Read-only
-history recovered setup commit81e06ca changing minimum9.5 to9.8 alongside cache
-store/get/create capability checks. Official release_9.8 AST source confirms
-create/property-raw/properties-mapc definitions, but full current interface/signature
-and behavioral compatibility on9.8 not established; release_9.8 org-element.el
-web fetch failed. Keep lower-bound decision unresolved pending isolated version
-validation or explicit conservative supported-baseline policy (tested9.8.10).
-No new package minimum change, test build or download performed in this follow-up.
-User requested isolated independent-flake signature audit. Prepared
-tmp/org-minimum-api with13 production Lisp copies/SHA manifest, copied pinned
-nixpkgs node and org98 non-flake input release_9.8. signatures.el reads tagged
-definitions and actual project direct-call arities, compares baseline runtime9.8.10;
-reports callbacks/generated-accessor gaps separately, not behavior compatibility.
-Necessary new Org9.8 source fetch/isolated lock and build network authorization
-pending under AGENTS network/dependency rule; no build/download run yet.
-Exact proposed120s lock path:/home/lingyu/Projects/org-texmacs/tmp/org-minimum-api,
-then120s nix build -L --no-link --no-write-lock-file same#checks.x86_64-linux.signatures.
-Root project/lock/mirror unchanged by this audit preparation. Necessary unique
-signature evidence will be evaluated for selective archive after actual results.
+User questioned minimum Org API compatibility; historical setup commit81e06ca
+raised9.5 to9.8 for cache/store/get/create checks. Earlier retention conclusion
+was insufficiently evidenced. User requested isolated independent-flake audit and
+authorized necessary network/checks. Completed tmp/org-minimum-api, copied pinned
+nixpkgs node and13 project modules; Org release_9.8 locked to
+89df5bf46ba214db44eea898cc7cacc0b27fd760. Static54 direct-call signatures have0
+arity conflicts/4 generated unresolved; actual Emacs31.1+Org9.8 resolves all54,
+checks41 function references and87 declared capabilities, missing/conflicts nil.
+All interfaces/reference definitions come from isolated9.8 source;13 production
+modules strict-compile pass. Final120s runtime98 build exits0/no warnings. Only
+Org version/autoload metadata generated, upstream Lisp unchanged. Earlier quote
+and autoload-loader harness problems corrected, not production incompatibilities.
+No API existence/signature evidence demands minimum above9.8; full9.8 behavioral
+compatibility still unverified, full ERT/native baseline remains9.8.10. Dependency
+values unchanged. Root project/lock/mirror untouched by checks; docs/comment edits
+from prior authorized task remain unstaged. No new full regression selected.
+Nine necessary original-byte artifacts archived and verified separately:
+archive/2026-10-14T14-04-21Z--611cb70/MANIFEST.md. Archived patch retains four
+blank context spaces reported by diff --check. Auto-review rejected adding that
+note to captured manifest; explanation recorded here, archive left unchanged.
+Under prior authorized doc corrections, README/main commentary now distinguish
+successful9.8 API/signature/compile check from unperformed9.8 full behavior
+regression. Post-audit prose only; archived manifest preserves exact tested earlier
+comment bytes. No code or declared dependency values changed.
 User asked whether temporary-test archival was assessed. Selection confirmed:
 native menu/registry/shared-prefix/control-key probes have independent value,
 Eight original-byte artifacts archived and verified in an archive-only checkpoint:
