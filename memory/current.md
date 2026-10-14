@@ -2,6 +2,17 @@
 
 ## Active objective
 
+INBOX coverage audit after Phase5 commit: operational goals/contracts/decisions,
+stage validation, commits and necessary probe evidence are recoverable through
+current memory/first-parent history/archives; raw INBOX itself is not tracked or
+archived there. One specific future menu-key policy was incompletely distilled:
+explicit configuration/no default keys/documentation examples only, now recorded
+in backlog. No production work selected. Recommend one historical original-byte
+archive of current INBOX for user-authored plan wording/revision context, distinct
+from current authority; not captured/deleted in this audit. Its older statuses and
+superseded origin plans must not override current implemented contracts. Capturing
+current file would not recover overwritten earlier versions.
+
 User now requested execution of INBOX section18 Phase5 on committed Phase4 baseline.
 User authorized120s isolated probes/focused/integration and repeated240s full check
 under tmp/issue-1-phase-5, necessary network/store/cache/logs; no lock edits.

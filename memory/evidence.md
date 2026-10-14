@@ -2026,3 +2026,25 @@ INBOX architecture/frontend complete, current remote issue state not verified.
 This committed snapshot is actually checked and supports a project parent for this
 verification checkpoint, not retrospective provenance of original candidate runs.
 
+## INBOX persistence coverage audit (2026-10-14)
+
+Current ignored INBOX.md is90229bytes with sections1-18. Stage mappings checked:
+initial goals/Phase0/selected Phase1 in goals/filter contract/evidence and probe
+archive; sections12-13 in bibliography contract/history/reviews/evidence;
+sections14-16 in preprocessing review/contract/history with explicit supersession
+and removal of origin-map contract; rewritten17 in working context/real extension
+review/contract/archive;18 in frontend review/contract/accepted code+verified user
+commit/closing trailer evidence. Operational recovery is sufficient without raw
+INBOX. This is semantic coverage, not a verbatim or every-paragraph equivalence claim.
+
+Specific18.7 future menu-key mechanism was only generically deferred in memory;
+explicit configuration, no default key values, documentation recommendations/examples
+now added to backlog, implementation not selected. Existing archives preserve
+selected evidence/reproduction artifacts; no tracked original INBOX file found.
+Current original has independent historical value as user's evolving plan wording
+and superseded alternatives. Recommend one original-byte immutable archive with
+current capture context/size/SHA256 and non-authoritative status clearly described;
+not mandatory for resuming implementation. No original-file archive or deletion
+performed in this audit, no production/test/Git-history change. Current file cannot
+recover previously overwritten drafts; stale raw statuses must not become authority.
+

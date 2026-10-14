@@ -331,6 +331,16 @@ native or GUI evidence before they can be claimed as verified.
 
 ## Deferred candidates
 
+### Explicit export menu key configuration
+
+INBOX section18.7 explicitly postpones this beyond Phase5. Future design direction:
+TeXmacs export menu keys require explicit user configuration, provide no default
+key values, and show recommended/example values only in documentation. Current
+C-c C-e T registration/keys remain unchanged; this is not a Phase5/#1 completion
+prerequisite. No implementation selected or authorized yet; choose actual interface
+and migration contract when resuming. This detail was recovered during INBOX
+coverage audit, beyond the earlier generic "menu keys deferred" summaries.
+
 ### Org ecosystem preparation interoperability
 
 Phase 3b A/B/C selected through the user's INBOX section 13 review/execute
