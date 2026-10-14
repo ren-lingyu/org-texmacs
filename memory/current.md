@@ -3,13 +3,26 @@
 ## Active objective
 
 User replaced cleared INBOX with new Phase6 explicit Org dispatcher menu plan
-associated issue2 and requested review only. Reviewed suitable on committed Phase5
+associated issue2, reviewed then user now requested execution. Task authorized120s
+isolated probes/focused/integration and repeated240s full checks/network/store/cache
+under tmp/issue-2-phase-6, no root lock edits.6a five native probes pass1.021877s;
+selected contract memory/export-menu-contract.md.6b minimal menu option/validation
+and registration implemented,6c five maintained ERT/fresh batch loading plus
+native dispatcher,6d README migration updated;84focused54.313479s pass.25project
+inputs+11copied foreign modules match isolated snapshot; full240s gate running.
+Reviewed suitable on committed Phase5
 baseline; findings memory/export-menu-plan-review.md. Proposal separates backend,
 optional nil-default complete key config and unchanged export commands/guard.
 6a must determine per-level key conflicts/native nil menus and genuine first-load
 tests before implementation. Validate/own configuration before registration; Custom
-must not imply live refresh. No execution/tests/production edits selected. Next user
-execution selection and task-specific isolated-build authorization, then6a contract.
+must not imply live refresh. Config global nil-default complete four-field plist;
+disjoint shared-prefix/Unicode actions supported, reserved/colliding keys refused.
+No runtime refresh/consumer changes. Next focused/real extension/full gates, archive
+necessary evidence and user review; no ordinary staging/commit/issue write.
+User asked whether temporary-test archival was assessed. Selection confirmed:
+native menu/registry/shared-prefix/control-key probes have independent value,
+archive original script/log plus environment/input hashes/reproduction after final
+gate. Duplicate maintained ERT/build products/caches not selected; no archival yet.
 Ordinary INBOX now9100bytes; prior archived issue1 original remains immutable.
 
 User authorized retiring current INBOX after coverage audit: original90229byte

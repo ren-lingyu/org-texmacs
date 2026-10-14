@@ -2085,3 +2085,30 @@ promise live refresh. No production/INBOX edit/build/test/issue write performed,
 no execution selected or prior task-build authorization transferred. Prior archive
 immutable; latest INBOX no longer empty, and does not replace current contracts.
 
+## Phase 6 native contract and focused node (2026-10-14)
+
+User selected execution, explicitly authorized120s isolated probes/focused/integration
+and repeated240s full checks/network/store/cache. Current project lock mirrored in
+independent tmp/issue-2-phase-6, host Org not used.5native probes pass1.021877s,
+Emacs31.1/Org9.8.10: nil menu backend exists, same-name replaces, shared prefix
+combines disjoint actions, duplicate action first-wins, Unicode routing, reserved
+control/help/publishing behavior. Source read-event interface confirmed. Initial
+wrong UI signature and one120s/exit124 read-input timeout were harness failures;
+source-only investigation then read-event injection corrected, no production defect.
+
+Global nil-default org-texmacs-export-menu-keys four-field complete plist selected;
+graphic Unicode/control/modifier/surrogate/reserved validation and duplicate fields/
+actions reject. Independent generated menu, conflict scan current other backends,
+disjoint sharing allowed/direct prefix collision refused. Native registration after
+validation, generic guard/commands unchanged. Custom load-time only, no live setter/
+watch/refresh/fallback; migration/default visibility documented. Contract in memory.
+Five new core cases include three genuine fresh locked subprocess scenarios and
+native dispatch plus config domains/collisions. Existing fixed-menu assertion now
+expects nil; menu-independent three native outputs/Phase5 fixtures retained.
+84focused54.313479s pass, package strict compile success. Full240s check running,
+not accepted globally yet.25project and11foreign inputs byte-match isolation;
+user mirror/root lock unchanged, production only ox-texmacs.el/README.org/ERT changed.
+User queried temporary evidence archival: selected native probes/environment/input
+manifests/reproduction for after final gate; no caches/products/duplicate ERT capture.
+No ordinary staging/commit or external tracking mutation.
+

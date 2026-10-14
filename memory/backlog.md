@@ -331,22 +331,25 @@ native or GUI evidence before they can be claimed as verified.
 
 ## Deferred candidates
 
-### Explicit export menu key configuration — Phase 6 proposal reviewed
+### Explicit export menu key configuration — Phase 6 active
 
 INBOX section18.7 explicitly postpones this beyond Phase5. Future design direction:
 TeXmacs export menu keys require explicit user configuration, provide no default
 key values, and show recommended/example values only in documentation. Current
 C-c C-e T registration/keys remain unchanged; this is not a Phase5/#1 completion
-prerequisite. No implementation selected or authorized yet; choose actual interface
-and migration contract when resuming. This detail was recovered during INBOX
+prerequisite. This direction was originally deferred, then selected as Phase6 below.
+The detail was recovered during INBOX
 coverage audit, beyond the earlier generic "menu keys deferred" summaries.
 Original plan wording is preserved in the retired INBOX archive:
 archive/2026-10-14T12-48-06Z--5f4c9c0/files/INBOX.md. Newly supplied INBOX Phase6
-associated issue2 is reviewed suitable, execution not selected. Detailed review:
+associated issue2 reviewed then user selected execution. Detailed review:
 memory/export-menu-plan-review.md. One complete nil-default prefix/buffer/file/pdf
 setting, registration at first module load, backend/commands/guard remain independent
 of menu, no runtime refresh/fallback.6a locked native conflict/load probes first;
 own/validate before registration, genuine fresh-load cases and compatibility docs.
+Selected contract memory/export-menu-contract.md.5native probes/84focused pass,
+three project files implementation/ERT/README changed; full386core/real gate running.
+No ordinary staging/commit/issue write, temporary evidence archival selection made.
 
 ### Org ecosystem preparation interoperability
 
