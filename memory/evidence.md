@@ -2149,3 +2149,18 @@ Breaking effect is removal of implicit dispatcher menu, explicit pre-load config
 required. Selected issue2 acceptance complete; remote closure/status not asserted.
 No ordinary commit or issue write; user reviews and commits manually.
 
+## Phase 6 user commit verification (2026-10-14)
+
+User reported committed. Read-only verification establishes exact three changed
+paths README.org/ox-texmacs.el/tests/ert/ert.el and Phase5 baseline parent.
+All three committed blobs match accepted final-inputs.json, isolation and worktree.
+Complete committed binary diff SHA256
+df6612dcf8809547294d7e5725c44967372a3dc5f483763227844e803cca3a37.
+Full message equals tmp/commit.md, feat(export)! subject and adjacent
+BREAKING-CHANGE:/Closes: #2 trailers. Index empty, only user USTC mirror unstaged.
+Prior gates transfer by byte identity; no additional tests merely for provenance.
+Selected Phase6/issue2 local acceptance complete and committed; remote issue status
+not verified, no external tracking write. This checkpoint associates the exact
+project commit whose paths/blobs/message were actually inspected, not a guessed
+original parent of archived candidate tests. Archive remains immutable.
+

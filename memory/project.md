@@ -758,7 +758,7 @@ not all registries/GUI/general resource rendering/whole generic lifecycle.
 Selected local issue#1 architecture/frontend complete and committed;
 remote page failed to fetch, no external issue state/content claim/write.
 
-## Phase 6 accepted explicit dispatcher menu (uncommitted candidate)
+## Phase 6 accepted and committed explicit dispatcher menu
 
 Supersedes Phase5 fixed T/T/t/p menu policy only. Global option
 org-texmacs-export-menu-keys defaults nil; named backend, generic guard and three
@@ -774,7 +774,8 @@ Contract memory/export-menu-contract.md; only frontend/README/core ERT changed.
 386core/84focused/9real/5native/all10checks/strictcompile/package-lint pass in pinned
 x86_64-linux isolation. Eight necessary raw text artifacts archived at
 archive/2026-10-14T13-19-02Z--5f4c9c0/MANIFEST.md. Selected issue2 goal accepted,
-pending user review/commit; remote issue state unverified and unchanged.
+user committed, exact paths/blobs/message verified against accepted inputs/draft.
+Index empty, only user mirror dirty; remote issue state unverified, no issue write.
 
 ## Phase 2c accepted native preprocessing simplification
 

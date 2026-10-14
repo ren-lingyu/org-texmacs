@@ -19,14 +19,14 @@ optional nil-default complete key config and unchanged export commands/guard.
 tests. Validate/own configuration before registration; Custom
 must not imply live refresh. Config global nil-default complete four-field plist;
 disjoint shared-prefix/Unicode actions supported, reserved/colliding keys refused.
-No runtime refresh/consumer changes. Selected6a-6d acceptance complete; user
-authorized staging/message preparation. README.org/ox-texmacs.el/tests/ert/ert.el
-now staged, blobs match accepted manifest/worktree. Draft tmp/commit.md uses
-feat(export)! subject, adjacent BREAKING-CHANGE: and Closes: #2 trailers, both
-recognized by git interpret-trailers. Coherent single commit, split not necessary.
-User mirror remains unstaged/root lock unchanged. Next user review/manual commit,
-then read-only committed diff/message/blob verification; no ordinary commit or issue
-write performed. Remote issue2 status unverified. Do not regenerate user-edited draft.
+No runtime refresh/consumer changes. Selected6a-6d acceptance complete and user
+committed. Three committed paths README.org/ox-texmacs.el/tests/ert/ert.el and
+blobs match accepted manifest/worktree/isolation; parent is verified Phase5 baseline.
+Full message matches tmp/commit.md: feat(export)! subject, adjacent BREAKING-CHANGE:
+and Closes: #2 trailers. Index empty, only user mirror remains unstaged/root lock
+unchanged. Prior gates transfer by byte identity, no new tests solely for commit
+verification. No further implementation selected or external issue write performed.
+Remote issue2 status unverified. Preserve completed draft/user wording.
 User asked whether temporary-test archival was assessed. Selection confirmed:
 native menu/registry/shared-prefix/control-key probes have independent value,
 Eight original-byte artifacts archived and verified in an archive-only checkpoint:
