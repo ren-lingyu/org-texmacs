@@ -1,0 +1,67 @@
+[
+  {
+    "path": "org-texmacs-ast.el",
+    "bytes": 1328,
+    "sha256": "f24a5e1e8773b58d7609f80adfd925a7af4f6fea7656ba170fa502dfe9453d7f"
+  },
+  {
+    "path": "org-texmacs-bibliography.el",
+    "bytes": 14091,
+    "sha256": "00ab1e3780fd8032e1f40f26a080a0e004053bc46f3032f1ffb603116e6fc132"
+  },
+  {
+    "path": "org-texmacs-context.el",
+    "bytes": 40052,
+    "sha256": "b83a6931d839a94054351cb0ebcd773f26b9cb1d78753916a8add85fd8715991"
+  },
+  {
+    "path": "org-texmacs-core.el",
+    "bytes": 7579,
+    "sha256": "25a470c3d69afc468160a557455f9c9dbc65beff707a2fe6c602be06663e7d22"
+  },
+  {
+    "path": "org-texmacs-document.el",
+    "bytes": 97393,
+    "sha256": "5a7dc7e85ff4e679dbd88bb3f21470a4ac6e0880813f420c1a1033fcfe5f3ba8"
+  },
+  {
+    "path": "org-texmacs-fragment.el",
+    "bytes": 14609,
+    "sha256": "a3cf952a298d8202a32bf0d88fb167826960492b750c3a0ebad845b035ab806c"
+  },
+  {
+    "path": "org-texmacs-input.el",
+    "bytes": 12651,
+    "sha256": "53ecd56fa9ad5aac49484e8624ab5d293d96a113eafd96c11b737c8c6b1593cc"
+  },
+  {
+    "path": "org-texmacs-preprocess.el",
+    "bytes": 25074,
+    "sha256": "97f2899981f13f66176f43676172162df1145066cc66307a3772c73535ff63aa"
+  },
+  {
+    "path": "org-texmacs-session.el",
+    "bytes": 25658,
+    "sha256": "5c8f162bcd9945aa5b8a92730e89a3783a34a8688b38b55c306d21cf834e9995"
+  },
+  {
+    "path": "org-texmacs-source.el",
+    "bytes": 6327,
+    "sha256": "084a8f02f70d0da067382403b80b7b16173c1e14dceeb2b27d28fff5dc95e108"
+  },
+  {
+    "path": "org-texmacs-worker.el",
+    "bytes": 11539,
+    "sha256": "58cf49619fae44706bf9e946f44edfd5bcef6b214eb97afbec49675aa76e7404"
+  },
+  {
+    "path": "org-texmacs.el",
+    "bytes": 44458,
+    "sha256": "fc50377aa1b9f5f1fbe34c382b5419aa1064dab7209d827abc9bb8b3fdf663c6"
+  },
+  {
+    "path": "ox-texmacs.el",
+    "bytes": 17566,
+    "sha256": "3a598b3df9f9b45b2aeecea258e28a9df7e3b64612599c097a5e09e71fd3c171"
+  }
+]

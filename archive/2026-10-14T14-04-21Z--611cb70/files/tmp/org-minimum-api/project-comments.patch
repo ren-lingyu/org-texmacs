@@ -1,0 +1,46 @@
+diff --git a/org-texmacs.el b/org-texmacs.el
+index 425982d..56c7a31 100644
+--- a/org-texmacs.el
++++ b/org-texmacs.el
+@@ -27,6 +27,12 @@
+ 
+ ;;; Commentary:
+ 
++;; Package-Requires declares minimum versions.  Development and regression
++;; validation use the project's flake.lock (Emacs 31.1 and Org 9.8.10); the
++;; minimum Org version is not a separately validated compatibility matrix.
++;; Org-roam and its extensions are optional integration-test dependencies.
++;; TeXmacs is an external runtime dependency, checked by the setup command.
++;;
+ ;; Use `org-texmacs-tree' to derive an Org-compatible TeXmacs tree from a
+ ;; native TeXmacs special block, with lazy parsing and Org-managed caching.
+ ;; Discover paragraph source spans with `org-texmacs-fragment-at-point' or
+@@ -40,7 +46,8 @@
+ ;; Use `org-texmacs-session-open', `org-texmacs-session-set-document' and
+ ;; `org-texmacs-session-close' to manage explicit native document state.
+ ;; Source stays in Org; completed documents can be serialized, saved or rendered
+-;; as native PDF.  Load optional `ox-texmacs' for bounded Org dispatcher actions.
++;; as native PDF.  Load optional `ox-texmacs' for bounded export commands;
++;; configure its menu keys before loading to enable Org dispatcher entries.
+ ;; No GUI preview or combined live Org/TeXmacs document AST is provided.
+ ;; Use `org-texmacs-check-setup' to inspect the capabilities required by the
+ ;; package without starting TeXmacs.
+diff --git a/ox-texmacs.el b/ox-texmacs.el
+index 0f7c4f8..58ac79c 100644
+--- a/ox-texmacs.el
++++ b/ox-texmacs.el
+@@ -5,9 +5,11 @@
+ 
+ ;;; Commentary:
+ 
+-;; Register TeXmacs in Org's export dispatcher.  Menu actions consume the
+-;; explicit source through one owned pipeline, with bounded full-document
+-;; preprocessing and direct local selection.
++;; Register the TeXmacs backend and export commands without a menu by default.
++;; Configure `org-texmacs-export-menu-keys' before the first require to add a
++;; native dispatcher menu; later option changes do not refresh it.
++;; Commands consume the explicit source through one owned pipeline, with bounded
++;; full-document preprocessing and direct local selection.
+ ;; This frontend supports synchronous whole-buffer, subtree and active-region
+ ;; exports.
+ ;; Org's generic string-transcoder/preprocessing APIs are explicitly rejected

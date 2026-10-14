@@ -1,0 +1,46 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1791487292,
+        "narHash": "sha256-tqM7xDEsaeK1p6VvRygeZ9LkQRpUUkbRT02BHv6hnTM=",
+        "ref": "refs/heads/nixpkgs-unstable",
+        "rev": "8edc0c72e3a38faf5434e40d1f19431125fe4b30",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/NixOS/nixpkgs.git"
+      },
+      "original": {
+        "ref": "refs/heads/nixpkgs-unstable",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/NixOS/nixpkgs.git"
+      }
+    },
+    "org98": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771693617,
+        "narHash": "sha256-+B/jG8uHl7oXrvMJO12PI6RL6FKoEphxzUw7p+SEAUQ=",
+        "owner": "bzg",
+        "repo": "org-mode",
+        "rev": "89df5bf46ba214db44eea898cc7cacc0b27fd760",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bzg",
+        "ref": "release_9.8",
+        "repo": "org-mode",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "org98": "org98"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
