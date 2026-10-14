@@ -758,6 +758,24 @@ not all registries/GUI/general resource rendering/whole generic lifecycle.
 Selected local issue#1 architecture/frontend complete and committed;
 remote page failed to fetch, no external issue state/content claim/write.
 
+## Phase 6 accepted explicit dispatcher menu (uncommitted candidate)
+
+Supersedes Phase5 fixed T/T/t/p menu policy only. Global option
+org-texmacs-export-menu-keys defaults nil; named backend, generic guard and three
+commands always registered. Complete explicit :prefix/:buffer/:file/:pdf character
+plist configured before first require generates native menu after validation.
+Graphic Unicode allowed, whitespace/control/modifier/surrogate/reserved keys refused;
+three actions distinct, prefix may equal action. Existing disjoint same-prefix
+submenus allowed; colliding actions/direct-function prefixes reject before registry
+or guard changes. Owned generated menu; no live setter/watcher/refresh/fallback or
+monitor of later backend registrations. Conversion/consumer transactions unchanged.
+README explains default-menu removal, explicit pre-load example and direct M-x.
+Contract memory/export-menu-contract.md; only frontend/README/core ERT changed.
+386core/84focused/9real/5native/all10checks/strictcompile/package-lint pass in pinned
+x86_64-linux isolation. Eight necessary raw text artifacts archived at
+archive/2026-10-14T13-19-02Z--5f4c9c0/MANIFEST.md. Selected issue2 goal accepted,
+pending user review/commit; remote issue state unverified and unchanged.
+
 ## Phase 2c accepted native preprocessing simplification
 
 User selected new INBOX section16, superseding parameter-mirror extension plan.

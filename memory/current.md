@@ -8,21 +8,27 @@ isolated probes/focused/integration and repeated240s full checks/network/store/c
 under tmp/issue-2-phase-6, no root lock edits.6a five native probes pass1.021877s;
 selected contract memory/export-menu-contract.md.6b minimal menu option/validation
 and registration implemented,6c five maintained ERT/fresh batch loading plus
-native dispatcher,6d README migration updated;84focused54.313479s pass.25project
-inputs+11copied foreign modules match isolated snapshot; full240s gate running.
+native dispatcher,6d README migration updated. Final240s gate exits0:386core
+ERT175.465056s,84focused56.135881s,9real extension fixtures10.962176s,
+5native probes1.021619s, all10checks/strict compilation/package-lint pass.
+25project inputs+11copied foreign modules match isolated snapshot before/after gate.
 Reviewed suitable on committed Phase5
 baseline; findings memory/export-menu-plan-review.md. Proposal separates backend,
 optional nil-default complete key config and unchanged export commands/guard.
-6a must determine per-level key conflicts/native nil menus and genuine first-load
-tests before implementation. Validate/own configuration before registration; Custom
+6a established per-level conflicts/native nil menus and genuine first-load
+tests. Validate/own configuration before registration; Custom
 must not imply live refresh. Config global nil-default complete four-field plist;
 disjoint shared-prefix/Unicode actions supported, reserved/colliding keys refused.
-No runtime refresh/consumer changes. Next focused/real extension/full gates, archive
-necessary evidence and user review; no ordinary staging/commit/issue write.
+No runtime refresh/consumer changes. Selected6a-6d acceptance complete; next user
+review and separately authorized staging/message preparation. Three project files
+README.org/ox-texmacs.el/tests/ert/ert.el remain unstaged, user mirror/root lock
+unchanged. No ordinary commit or issue write; remote issue2 status unverified.
 User asked whether temporary-test archival was assessed. Selection confirmed:
 native menu/registry/shared-prefix/control-key probes have independent value,
-archive original script/log plus environment/input hashes/reproduction after final
-gate. Duplicate maintained ERT/build products/caches not selected; no archival yet.
+Eight original-byte artifacts archived and verified in an archive-only checkpoint:
+archive/2026-10-14T13-19-02Z--5f4c9c0/MANIFEST.md. Probe script/log, reports,
+isolated flake/lock and two input manifests retained. Duplicate maintained ERT
+logs/build products/caches/DB/PDF/full foreign checkouts not selected.
 Ordinary INBOX now9100bytes; prior archived issue1 original remains immutable.
 
 User authorized retiring current INBOX after coverage audit: original90229byte

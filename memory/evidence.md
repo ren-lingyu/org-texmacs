@@ -2112,3 +2112,26 @@ User queried temporary evidence archival: selected native probes/environment/inp
 manifests/reproduction for after final gate; no caches/products/duplicate ERT capture.
 No ordinary staging/commit or external tracking mutation.
 
+## Phase 6 final acceptance and selective archive (2026-10-14)
+
+Exact authorized240s isolated flake check exits0:386/386 core ERT175.465056s,
+84/84 focused56.135881s,9/9 actual extensions10.962176s,5/5 native probes1.021619s;
+all10logged checks, strict compilation and package-lint pass. Selected6a-6d accepted.
+25project inputs match isolation before/after gate; final-inputs.json SHA256
+4de96b5514e3b5045fcab6f5da4d6e5b682e5b1e37a48abbc1eaed12563d711c.
+11copied foreign modules match extension-inputs.json SHA256
+f7c7b8d398364515e0497789bfbcacc2d425f33a9937ee28fb0a63c4b74448b5.
+Root lock/user USTC overlay unchanged, no foreign repo/personal DB writes.
+Only README.org/ox-texmacs.el/tests/ert/ert.el are task project changes, unstaged.
+
+User asked whether temporary tests were considered for archival. Selection completed:
+eight original-byte pure-text artifacts captured, SHA256/size/source copies verified,
+complete archive-only staged transition reviewed, GAW check/checkpoint successful.
+Manifest: archive/2026-10-14T13-19-02Z--5f4c9c0/MANIFEST.md. Retained reports,
+native probe script/log with necessary pinned source excerpt, independent flake/lock,
+project/foreign input manifests. Duplicate maintained ERT/build logs, caches, DB/PDF,
+binary products and full foreign checkouts excluded; harness-failure facts distilled
+in memory. Archive immutable. Capture HEAD is context, candidate manifest defines
+uncommitted tested inputs; no inferred additional project parent. x86_64-linux only,
+no GUI/runtime refresh/later registry monitoring or current remote issue status claim.
+
