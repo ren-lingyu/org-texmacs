@@ -13,8 +13,12 @@ dependency/DB transaction coverage. Only demonstrated defects/explicit guarantee
 justify extra adaptation. Current native absolute hlink representation vs preferred
 relative output needs separate consumer policy investigation. Next4a locked context/
 cross-dir investigation, then4b include/4c organize/4d joint HTML/blog fixtures.
-Local source interfaces verified, actual runtime integration not yet. No execution,
-package loading, test/download or ordinary project/INBOX edit in this review.
+Local source interfaces verified. User now requested execution of revised plan;
+Phase4a locked context/cross-directory probes start in tmp/issue-1-phase-4, then
+4b/4c/4d actual local-source packages in isolated synthetic Org-roam fixtures.
+User authorized task120s probes/focused/integration and repeated240s exact full
+flake check under this isolated path, necessary networking/store/cache/logs, no
+personal DB/project lock/third-party repo edits. Original code still baseline.
 
 Phase2c native preprocessing simplification implemented, accepted and user-committed
 on Phase2b baseline; exact commit diff/message verified on 2026-10-14.
