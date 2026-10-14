@@ -4,8 +4,9 @@
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;;; Commentary:
-;; Compose an owned protected working document with native INCLUDE.  Original
-;; source, include occurrences and generated text remain separate inputs.
+;; Native INCLUDE consumes fixed source snapshots in a private transaction.
+;; Line-preserving STM protection keeps native parameter semantics separate
+;; from final AST construction; general original provenance is not required.
 
 ;;; Code:
 
@@ -131,279 +132,222 @@ FILE and BASE preserve source context.  FILTER-VALUE is captured configuration."
 
 (defun org-texmacs--preprocess-compose
     (source tags headings links info source-file base check hooks)
-  "Compose owned SOURCE under fixed parser/context and transaction CHECK.
-TAGS, HEADINGS, LINKS, INFO, SOURCE-FILE and BASE are captured inputs.
-HOOKS contains two captured hook states.  Return working text/origins/receipts."
+  "Compose SOURCE with native INCLUDE and fixed owned dependency reads.
+TAGS, HEADINGS, LINKS, INFO, SOURCE-FILE and BASE are captured context.
+CHECK and HOOKS guard the original transaction.
+Return working text and receipts."
   (unless (and base (not (nth 2 headings))
                (not (default-value 'org-odd-levels-only)))
     (org-texmacs--preprocess-fail "Composition needs a local base and ordinary headline levels"))
   (org-texmacs--bibliography-local-path base base)
+  (setq base (file-name-as-directory base))
   (when source-file
     (org-texmacs--bibliography-local-path source-file base)
-    (unless (equal (file-name-directory source-file) (file-name-as-directory base))
+    (unless (equal (file-name-directory source-file) base)
       (org-texmacs--preprocess-fail "Composition source directory conflicts with resource base")))
-  (setq base (file-name-as-directory base))
-  (let ((directory nil)
-        (nonce (substring (secure-hash 'sha256 (format "%s%s" source (float-time))) 0 20))
-        (org-mode-hook nil) (change-major-mode-hook nil) (after-change-major-mode-hook nil)
-        (delay-mode-hooks t) (org-inhibit-startup t)
-        (kill-buffer-query-functions nil) (kill-buffer-hook nil)
-        (org-export-use-babel nil) (org-export-allow-bind-keywords nil)
-        (org-export-replace-macros nil) (org-element-use-cache nil)
-        (filter-value (org-texmacs--context-filter-copy org-export-filter-parse-tree-functions))
-        (style (org-texmacs--document-copy-style org-texmacs-document-style))
-        (initial (org-texmacs--document-copy-initial org-texmacs-document-initial))
-        (backend (car (org-texmacs--context-filter-state)))
-        (include-function (symbol-function 'org-export-expand-include-keyword))
-        (next 0) (total 0) origins payloads receipts mirrors cache
-        (physical
-         (when source-file
-           (let* ((file-name-handler-alist nil)
-                  (attributes (file-attributes source-file 'integer)))
-             (when attributes
-               (unless (null (file-attribute-type attributes))
-                 (org-texmacs--preprocess-fail "Visiting source identity must be regular or absent"))
-               (list (list (file-attribute-inode-number attributes)
-                           (file-attribute-device-number attributes))))))))
-    (setq directory (make-temp-file "org-texmacs-composition-" t))
-    (unwind-protect
-        (let ((org-export-registered-backends (cons backend org-export-registered-backends)))
-          (cl-labels
-              ((guard ()
-                 (funcall check)
-                 (unless (and (eq include-function (symbol-function 'org-export-expand-include-keyword))
-                              (not (default-value 'org-odd-levels-only)))
-                   (org-texmacs--preprocess-fail "Native composition configuration changed"))
-                 (org-texmacs--bibliography-check-receipts receipts))
-               (context (file)
-                 (org-texmacs--preprocess-context tags headings links info file base filter-value)
-                 (setq-local org-texmacs-document-style (copy-sequence style))
-                 (setq-local org-texmacs-document-initial (org-texmacs--context-copy initial)))
-               (capture (file)
-                 (guard)
-                 (or (cdr (assoc file cache))
-                     (let* ((file-name-handler-alist nil)
-                            (attrs (org-texmacs--bibliography-file-attributes file))
-                            (identity (nthcdr 3 attrs)))
-                       (when (or (> (car attrs) 65536) (member identity physical))
-                         (org-texmacs--preprocess-fail "Large include or ambiguous physical source alias"))
-                       (let* ((bytes (org-texmacs--bibliography-file-bytes file))
-                              (new (org-texmacs--bibliography-file-attributes file))
-                              (text (decode-coding-string bytes 'utf-8-unix)))
-                         (guard)
-                         (unless (and (equal attrs new) (<= (length bytes) 65536)
-                                      (equal bytes (encode-coding-string text 'utf-8-unix))
-                                      (not (cl-some (lambda (c) (> c #x10ffff)) text)))
-                           (org-texmacs--preprocess-fail "Changed or non-UTF-8 include"))
-                         (push identity physical) (push (cons file text) cache)
-                         (push (list (copy-sequence file) attrs (secure-hash 'sha256 bytes)) receipts)
-                         text))))
-               (protect (file occurrence generated)
-                 (let ((spans
-                        (mapcar (lambda (span)
-                                  (list (org-texmacs-fragment-span-begin span)
-                                        (org-texmacs-fragment-span-end span) 'stm))
-                                (org-texmacs--fragment-collect tags))))
-                   (org-element-map (org-element-parse-buffer) 'special-block
-                     (lambda (node)
-                       (when (org-texmacs--block-p node)
-                         (push (list (org-element-property :begin node)
-                                     (org-element-property :end node) 'stm) spans))))
-                   (dolist (span (sort spans (lambda (a b) (> (car a) (car b)))))
-                     (protect-span span file occurrence generated))))
-               (protect-span (span file occurrence generated)
-                 (let* ((raw (buffer-substring-no-properties (car span) (cadr span)))
-                        (token (format "TXMPAYLOAD%sX%d" nonce (length payloads))))
-                   (push (list token raw (and (not generated) file)
-                               (if generated -1 occurrence)
-                               (and (not generated) (cons (car span) (cadr span)))
-                               (nth 2 span)) payloads)
-                   (delete-region (car span) (cadr span)) (goto-char (car span))
-                   (insert token (if (string-suffix-p "\n" raw) "\n" ""))))
-               (materialize (text file ancestors depth)
-                 (guard)
-                 (when (or (> depth 8) (>= next 32))
-                   (org-texmacs--preprocess-fail "Composition depth or occurrence budget exceeded"))
-                 (cl-incf total (string-bytes text))
-                 (when (> total 262144)
-                   (org-texmacs--preprocess-fail "Composition exceeds 256 KiB source budget"))
-                 (when (string-match-p nonce text)
-                   (org-texmacs--preprocess-fail "Reserved composition marker in source"))
-                 (let* ((occurrence (prog1 next (cl-incf next)))
-                        (mirror (expand-file-name (format "source-%d.org" occurrence) directory)))
-                   (push (list occurrence (and file (copy-sequence file))
-                               (substring-no-properties text)) origins)
-                   (with-temp-buffer
-                     (context file) (insert text) (protect file occurrence nil)
-                     (when (zerop occurrence)
-                       (org-texmacs--preprocess-stage (car hooks) #'guard)
-                       (protect nil -1 t))
-                     (let ((includes
-                            (org-element-map (org-element-parse-buffer) 'keyword
-                              (lambda (node)
-                                (let ((key (org-element-property :key node)))
-                                  (when (member key '("SETUPFILE" "BIND" "MACRO" "CITE_EXPORT"))
-                                    (org-texmacs--preprocess-fail "Unsupported preprocessing directive"))
-                                  (and (equal key "INCLUDE") node))))))
-                       (dolist (node (reverse includes))
-                         (let ((value (org-element-property :value node)))
-                           (unless (and (string-match "\\`\"\\([^\"\n]+\\)\"[ \t]*\\'" value)
-                                        (save-match-data (save-excursion
-                                          (goto-char (org-element-property :begin node))
-                                          (and (zerop (current-column))
-                                               (not (org-in-commented-heading-p))))))
-                             (org-texmacs--preprocess-fail "Only active column-zero bare quoted INCLUDE is supported"))
-                           (let* ((raw (match-string 1 value))
-                                  (id (org-texmacs--bibliography-local-path raw base)))
-                             (when (string-match-p "\\(::\\|[$]\\)" raw)
-                               (org-texmacs--preprocess-fail "Unsupported include search or environment path"))
-                             (unless (equal (file-name-directory id) base)
-                               (org-texmacs--preprocess-fail "Include resource directory conflicts with root"))
-                             (when (member id ancestors)
-                               (org-texmacs--preprocess-fail "Recursive include source"))
-                             (let ((child (materialize (capture id) id (cons id ancestors) (1+ depth))))
-                               (goto-char (org-element-property :begin node))
-                               (delete-region (point) (line-beginning-position 2))
-                               (insert (format "#+INCLUDE: \"%s\"\n" child)))))))
-                     ;; Native keyword scanning must not acquire literal lines
-                     ;; in source/other blocks that its parser interprets differently.
-                     (goto-char (point-max))
-                     (let ((case-fold-search t))
-                       (while (re-search-backward "^[ \t]*#\\+\\(INCLUDE\\|SETUPFILE\\|BIND\\|MACRO\\|CITE_EXPORT\\):" nil t)
-                         (let ((begin (line-beginning-position)) (end (line-beginning-position 2)))
-                           (unless (string-prefix-p (format "#+INCLUDE: \"%s/" directory)
-                                                    (buffer-substring-no-properties begin end))
-                             (protect-span (list begin end 'literal) file occurrence nil)))))
-                     (goto-char (point-min))
-                     (insert (format "# TXMSTART%s:%d\n" nonce occurrence))
-                     (goto-char (point-max)) (unless (bolp) (insert "\n"))
-                     (insert (format "# TXMEND%s:%d\n" nonce occurrence))
-                     (when (> (buffer-size) 262144)
-                       (org-texmacs--preprocess-fail "Protected working source budget exceeded"))
-                     (let ((coding-system-for-write 'utf-8-unix))
-                       (write-region (point-min) (point-max) mirror nil 'silent))
-                     (push (cons mirror (secure-hash 'sha256 (current-buffer))) mirrors))
-                   mirror)))
-            (let ((root (materialize source source-file (and source-file (list source-file)) 0))
-                  output segments ranges)
-              (with-temp-buffer
-                (context source-file) (insert-file-contents root)
-                (guard)
-                (org-export-expand-include-keyword nil directory nil root)
-                (guard)
-                (setq output (buffer-string)))
-              (dolist (mirror mirrors)
-                (with-temp-buffer
-                  (insert-file-contents (car mirror))
-                  (unless (equal (cdr mirror) (secure-hash 'sha256 (current-buffer)))
-                    (org-texmacs--preprocess-fail "Owned include mirror changed"))))
-              (with-temp-buffer
-                (context source-file)
-                (let ((input output) stack parts seen)
-                  (with-temp-buffer
-                    (insert input) (goto-char (point-min))
-                    (let ((start (point-min)))
-                      (while (re-search-forward (format "^# TXM\\(START\\|END\\)%s:\\([0-9]+\\)\n" nonce) nil t)
-                        (push (list 'text (buffer-substring start (match-beginning 0))) parts)
-                        (push (list (intern (downcase (match-string 1)))
-                                    (string-to-number (match-string 2))) parts)
-                        (setq start (point)))
-                      (push (list 'text (buffer-substring start (point-max))) parts)))
-                  (dolist (part (nreverse parts))
-                    (pcase (car part)
-                      ('start
-                       (when (memq (cadr part) seen)
-                         (org-texmacs--preprocess-fail "Duplicate source occurrence boundary"))
-                       (push (cadr part) seen) (push (cadr part) stack))
-                      ('end
-                       (unless (eq (pop stack) (cadr part))
-                         (org-texmacs--preprocess-fail "Source occurrence boundary changed")))
-                      ('text
-                       (when (> (length (cadr part)) 0)
-                         (unless stack (org-texmacs--preprocess-fail "Unowned native inclusion text"))
-                         (let ((begin (point)))
-                           (insert (cadr part))
-                           (add-text-properties begin (point)
-                             (list 'org-texmacs--preprocess-origin (car stack)
-                                   'rear-nonsticky t)))))))
-                  (unless (and (null stack) (= (length seen) (length origins)))
-                    (org-texmacs--preprocess-fail "Missing source occurrence boundary")))
-                (let ((after-change-functions
-                       (list (lambda (begin end _old)
-                               (let ((inhibit-modification-hooks t))
-                                 (put-text-property begin end 'org-texmacs--preprocess-origin -1))))))
-                  (org-texmacs--preprocess-stage (cadr hooks) #'guard))
-                (dolist (payload payloads)
-                  (goto-char (point-min))
-                  (unless (search-forward (car payload) nil t)
-                    (org-texmacs--preprocess-fail "Protected source marker lost"))
-                  (let ((begin (match-beginning 0))
-                        (raw (nth 1 payload)))
-                    (replace-match (if (string-suffix-p "\n" raw) (substring raw 0 -1) raw) t t)
-                    (put-text-property begin (point) 'org-texmacs--preprocess-origin (nth 3 payload))
-                    (when (eq (nth 5 payload) 'stm)
-                      (push (list (copy-marker begin t) (copy-marker (point))
-                                  (nth 2 payload) (nth 3 payload) (nth 4 payload)) ranges)))
-                  (when (search-forward (car payload) nil t)
-                    (org-texmacs--preprocess-fail "Protected source marker duplicated")))
-                (when (or (> (string-bytes (buffer-string)) 262144)
-                          (string-match-p nonce (buffer-string)))
-                  (org-texmacs--preprocess-fail "Working budget exceeded or reserved marker remains"))
-                (let ((position (point-min)))
-                  (while (< position (point-max))
-                    (let* ((occurrence (or (get-text-property position 'org-texmacs--preprocess-origin) -1))
-                           (end (next-single-property-change position 'org-texmacs--preprocess-origin nil (point-max))))
-                      (unless (and (integerp occurrence) (>= occurrence -1)
-                                   (or (= occurrence -1) (assq occurrence origins)))
-                        (org-texmacs--preprocess-fail "Invalid working origin property"))
-                      (push (list position end occurrence (cadr (assq occurrence origins))
-                                  (if (< occurrence 0) 'generated 'derived)) segments)
-                      (setq position end))))
-                (setq output (buffer-substring-no-properties (point-min) (point-max)))
-                (setq ranges
-                      (mapcar (lambda (range)
-                                (prog1 (list (marker-position (car range))
-                                             (marker-position (cadr range))
-                                             (nth 2 range) (nth 3 range) (nth 4 range))
-                                  (set-marker (car range) nil) (set-marker (cadr range) nil))) ranges)))
-              (guard)
-              (list :source output :segments (nreverse segments) :ranges ranges
-                    :origins (nreverse origins) :receipts receipts))))
-      (delete-directory directory t))))
-
-(defun org-texmacs--preprocess-annotate (composition prepared)
-  "Attach owned COMPOSITION origins to PREPARED before AST filters.
-Working ranges are explicit parser coordinates, not equal-text matches."
-  (let ((segments (plist-get composition :segments))
-        (ranges (plist-get composition :ranges))
-        (islands (nth 1 prepared)) origin-map)
+  (let* ((nonce (substring (secure-hash 'sha256 (format "%s%s" source (float-time))) 0 20))
+         (org-mode-hook nil) (change-major-mode-hook nil) (after-change-major-mode-hook nil)
+         (delay-mode-hooks t) (org-inhibit-startup t) (org-element-use-cache nil)
+         (kill-buffer-query-functions nil) (kill-buffer-hook nil)
+         (org-export-use-babel nil) (org-export-allow-bind-keywords nil)
+         (org-export-replace-macros nil)
+         (filter-value (org-texmacs--context-filter-copy org-export-filter-parse-tree-functions))
+         (style (org-texmacs--document-copy-style org-texmacs-document-style))
+         (initial (org-texmacs--document-copy-initial org-texmacs-document-initial))
+         (backend (car (org-texmacs--context-filter-state)))
+         (expand (symbol-function 'org-export-expand-include-keyword))
+         (parser (symbol-function 'org-export-parse-include-value))
+         (prepare (symbol-function 'org-export--prepare-file-contents))
+         (reader (symbol-function 'org-file-contents))
+         (active-reader reader)
+         (native-functions
+          (mapcar (lambda (name) (cons name (symbol-function name)))
+                  '(org-file-contents org-export-parse-include-value
+                    org-export--prepare-file-contents org-export-expand-include-keyword
+                    org-export--inclusion-absolute-lines)))
+         (active-functions native-functions)
+         (depth -1) (occurrences 1) (total (string-bytes source))
+         cache receipts payloads physical)
+    (when (> total 262144) (org-texmacs--preprocess-fail "Source exceeds 256 KiB"))
+    (when source-file
+      (let ((attrs (file-attributes source-file 'integer)))
+        (when attrs
+          (unless (null (file-attribute-type attrs))
+            (org-texmacs--preprocess-fail "Visiting source identity must be regular or absent"))
+          (push (list (file-attribute-inode-number attrs)
+                      (file-attribute-device-number attrs)) physical))))
     (cl-labels
-        ((walk (node)
-           (when (consp node)
-             (let ((begin (org-element-property :begin node))
-                   (end (org-element-property :end node)))
-               (when (and (integerp begin) (integerp end))
-                 (org-element-put-property
-                  node :texmacs-origin-context
-                  (org-texmacs--context-copy
-                   (cl-remove-if-not (lambda (segment)
-                                       (and (< (car segment) end) (> (cadr segment) begin)))
-                                     segments)))))
-             (unless (assq node islands) (mapc #'walk (org-element-contents node))))))
-      (walk (car prepared)))
-    (dolist (request (nth 2 prepared))
-      (let* ((working (nth 3 request))
-             (range (cl-find-if (lambda (range)
-                                 (and (= (car working) (car range))
-                                      (>= (cdr working) (cadr range)))) ranges))
-             (origin (list :source-file (and range (nth 2 range))
-                           :occurrence (if range (nth 3 range) -1)
-                           :original-range (and range (nth 4 range))
-                           :working-range (cons (car working) (cdr working))
-                           :kind (if (and range (nth 4 range)) 'original 'generated))))
-        (push (cons (caar request) (org-texmacs--context-copy origin)) origin-map)))
-    (setcar (nthcdr 4 prepared)
-            (plist-put (nth 4 prepared) :texmacs-island-origins (nreverse origin-map)))))
+        ((guard ()
+           (funcall check)
+           (unless (and (not (default-value 'org-odd-levels-only))
+                        (eq active-reader (symbol-function 'org-file-contents))
+                        (cl-every (lambda (entry)
+                                    (eq (cdr entry) (symbol-function (car entry))))
+                                  active-functions))
+             (org-texmacs--preprocess-fail "Native composition configuration changed"))
+           (org-texmacs--bibliography-check-receipts receipts))
+         (context (file)
+           (org-texmacs--preprocess-context tags headings links info file base filter-value)
+           (setq-local org-texmacs-document-style (copy-sequence style))
+           (setq-local org-texmacs-document-initial (org-texmacs--context-copy initial)))
+         (protect ()
+           (when (string-match-p nonce (buffer-string))
+             ;; Existing tokens are allowed on the root's second protection pass.
+             (let ((text (buffer-string)))
+               (dolist (payload payloads)
+                 (setq text (replace-regexp-in-string
+                             (regexp-quote (car payload)) "" text t t)))
+               (when (string-match-p nonce text)
+                 (org-texmacs--preprocess-fail "Reserved STM marker in source"))))
+           (let ((spans (mapcar (lambda (span)
+                                 (cons (org-texmacs-fragment-span-begin span)
+                                       (org-texmacs-fragment-span-end span)))
+                               (org-texmacs--fragment-collect tags))))
+             (org-element-map (org-element-parse-buffer) 'special-block
+               (lambda (node)
+                 (when (org-texmacs--block-p node)
+                   (push (cons (org-element-property :begin node)
+                               (org-element-property :end node)) spans))))
+             (dolist (span (sort spans (lambda (a b) (> (car a) (car b)))))
+               (let* ((raw (buffer-substring-no-properties (car span) (cdr span)))
+                      (id (length payloads))
+                      (start (format "TXMB%sX%dA" nonce id))
+                      (end (format "TXME%sX%dZ" nonce id))
+                      (newlines (cl-count ?\n raw))
+                      (trailing (string-suffix-p "\n" raw))
+                      (token (concat start (make-string (- newlines (if trailing 1 0)) ?\n)
+                                     end (if trailing "\n" ""))))
+                 (push (list token raw start end) payloads)
+                 (delete-region (car span) (cdr span)) (goto-char (car span))
+                 (insert token)))
+             spans))
+         (capture (file)
+           (guard)
+           (org-texmacs--bibliography-local-path file base)
+           (unless (equal (file-name-directory file) base)
+             (org-texmacs--preprocess-fail "Dependency resource directory conflicts with root"))
+           (or (cdr (assoc file cache))
+               (let* ((attrs (org-texmacs--bibliography-file-attributes file))
+                      (identity (nthcdr 3 attrs)))
+                 (when (or (> (car attrs) 65536) (member identity physical))
+                   (org-texmacs--preprocess-fail "Large include or ambiguous physical source alias"))
+                 (let* ((bytes (org-texmacs--bibliography-file-bytes file))
+                        (after (org-texmacs--bibliography-file-attributes file))
+                        (text (decode-coding-string bytes 'utf-8-unix)))
+                   (guard)
+                   (unless (and (equal attrs after) (<= (length bytes) 65536)
+                                (equal bytes (encode-coding-string text 'utf-8-unix))
+                                (not (cl-some (lambda (c) (> c #x10ffff)) text)))
+                     (org-texmacs--preprocess-fail "Changed or non-UTF-8 include"))
+                   (cl-incf total (length bytes))
+                   (when (> total 262144) (org-texmacs--preprocess-fail "Source budget exceeded"))
+                   (push identity physical)
+                   (push (list (copy-sequence file) attrs (secure-hash 'sha256 bytes)) receipts)
+                   (with-temp-buffer
+                     (context file) (insert text)
+                     (let ((spans (protect)))
+                       (let ((entry (list text (buffer-string) spans)))
+                         (push (cons file entry) cache) entry)))))))
+         (selection (entry lines)
+           (when lines
+             (with-temp-buffer
+               (insert (car entry))
+               (let* ((ends (split-string lines "-"))
+                      (first (string-to-number (car ends)))
+                      (last (string-to-number (cadr ends)))
+                      (begin (progn (goto-char (point-min))
+                                    (unless (zerop first) (forward-line (1- first))) (point)))
+                      (end (if (zerop last) (point-max)
+                             (goto-char (point-min)) (forward-line (1- last)) (point))))
+                 (dolist (span (nth 2 entry))
+                   (when (and (< (car span) end) (> (cdr span) begin)
+                              (not (and (<= begin (car span)) (>= end (cdr span)))))
+                     (org-texmacs--preprocess-fail "INCLUDE selection truncates STM")))))))
+         (counts ()
+           (mapcar (lambda (payload)
+                     (save-excursion
+                       (goto-char (point-min))
+                       (let ((count 0))
+                         (while (search-forward (car payload) nil t) (cl-incf count)) count)))
+                   payloads)))
+      (with-temp-buffer
+        (context source-file) (insert source) (protect)
+        (let ((before (counts)))
+          (org-texmacs--preprocess-stage (car hooks) #'guard)
+          (unless (equal before (counts))
+            (org-texmacs--preprocess-fail "Preprocessing changed protected STM")))
+        (protect)
+        (when (> (string-bytes (buffer-string)) 262144)
+          (org-texmacs--preprocess-fail "Protected root working budget exceeded"))
+        ;; Scoped reader substitution preserves native paths and line selection.
+        ;; It does not persistently advise Org or service unrelated callers.
+        (let ((org-export-registered-backends (cons backend org-export-registered-backends)))
+          (cl-letf (((symbol-function 'org-export-parse-include-value)
+                     (lambda (value &optional directory)
+                       (when (string-match-p "\\`[ \t]*\"?~" value)
+                         (org-texmacs--preprocess-fail "Tilde include paths are unsupported"))
+                       (let* ((parameters (funcall parser value directory))
+                              (file (plist-get parameters :file)))
+                         (unless (and file (not (plist-get parameters :env))
+                                      (not (plist-get parameters :block))
+                                      (not (plist-get parameters :coding-system))
+                                      (not (plist-get parameters :unmatched))
+                                      (or (not (plist-get parameters :minlevel))
+                                          (> (plist-get parameters :minlevel) 0)))
+                           (org-texmacs--preprocess-fail "Unsupported INCLUDE parameters"))
+                         (org-texmacs--bibliography-local-path file base)
+                         (unless (equal (file-name-directory file) base)
+                           (org-texmacs--preprocess-fail "Include resource directory conflicts with root"))
+                         (cl-incf occurrences)
+                         (when (> occurrences 32) (org-texmacs--preprocess-fail "Occurrence budget exceeded"))
+                         (capture file) parameters)))
+                    ((symbol-function 'org-file-contents)
+                     (lambda (file &optional _noerror _nocache)
+                       (copy-sequence (cadr (capture file)))))
+                    ((symbol-function 'org-export--prepare-file-contents)
+                     (lambda (file &optional lines ind level id footnotes includer)
+                       (selection (capture file) lines)
+                       (funcall prepare file lines ind level id footnotes includer)))
+                    ((symbol-function 'org-export-expand-include-keyword)
+                     (lambda (&rest args)
+                       (cl-incf depth)
+                       (unwind-protect
+                           (progn
+                             (when (> depth 8) (org-texmacs--preprocess-fail "Include depth exceeded"))
+                             (apply expand args))
+                         (cl-decf depth)))))
+            (setq active-reader (symbol-function 'org-file-contents))
+            (setq active-functions
+                  (mapcar (lambda (entry)
+                            (cons (car entry) (symbol-function (car entry)))) native-functions))
+            (condition-case err
+                (org-export-expand-include-keyword nil base nil source-file)
+              (org-texmacs-document-error (signal (car err) (cdr err)))
+              (error (org-texmacs--preprocess-fail (error-message-string err))))))
+        (setq active-reader reader)
+        (setq active-functions native-functions)
+        (guard)
+        (let ((before (counts)))
+          (org-texmacs--preprocess-stage (cadr hooks) #'guard)
+          (unless (equal before (counts))
+            (org-texmacs--preprocess-fail "Preprocessing changed protected STM")))
+        (org-element-map (org-element-parse-buffer) 'keyword
+          (lambda (node)
+            (when (member (org-element-property :key node)
+                          '("SETUPFILE" "BIND" "MACRO" "CITE_EXPORT"))
+              (org-texmacs--preprocess-fail "Unsupported preprocessing directive"))))
+        (dolist (payload payloads)
+          (goto-char (point-min))
+          (while (search-forward (car payload) nil t)
+            (replace-match (nth 1 payload) t t)))
+        (when (or (> (string-bytes (buffer-string)) 262144)
+                  (string-match-p nonce (buffer-string)))
+          (org-texmacs--preprocess-fail "Working budget exceeded or partial STM marker remains"))
+        (guard)
+        (list :source (buffer-substring-no-properties (point-min) (point-max))
+              :sources (mapcar (lambda (entry) (cons (copy-sequence (car entry))
+                                                   (copy-sequence (cadr entry)))) cache)
+              :receipts receipts)))))
 
 (defun org-texmacs--preprocess-convert (source-buffer consumer sources options discover)
   "Run opt-in SOURCE-BUFFER composition through CONSUMER.
@@ -432,10 +376,8 @@ SOURCES and OPTIONS are explicit inputs.  DISCOVER separately enables Cite."
                 (receipts (plist-get composition :receipts)))
            (list :source (plist-get composition :source)
                  :context (list :texmacs-original-source (copy-sequence source)
-                                :texmacs-source-origins (plist-get composition :segments)
-                                :texmacs-composition-sources (plist-get composition :origins))
-                 :annotate (lambda (prepared)
-                             (org-texmacs--preprocess-annotate composition prepared))
+                                :texmacs-preprocessed-source (plist-get composition :source)
+                                :texmacs-preprocessing-sources (plist-get composition :sources))
                  :check (lambda ()
                           (funcall hook-check)
                           (org-texmacs--bibliography-check-receipts receipts)))))
@@ -444,26 +386,21 @@ SOURCES and OPTIONS are explicit inputs.  DISCOVER separately enables Cite."
 ;;;###autoload
 (defun org-texmacs-prepare-buffer-preprocessed
     (source-buffer &optional bibliography-sources ext-plist discover-bibliography)
-  "Prepare full SOURCE-BUFFER with opt-in protected native Org composition.
-BIBLIOGRAPHY-SOURCES supplies explicit text snapshots; EXT-PLIST supplies the
-existing restricted options.  DISCOVER-BIBLIOGRAPHY, exactly t or nil, enables
-the separate Phase 3b bibliography reader over composed declarations.
-Run captured before-processing/parsing hooks on private protected views and
-native INCLUDE over fixed local UTF-8 mirrors.  Original text, source contexts,
-occurrences and generated text are owned separately in INFO.  No full native
-export lifecycle or source-position equivalence is claimed.
-Only full unnarrowed sources with ordinary headline levels and a shared local
-resource directory are supported.  INCLUDE accepts bare quoted complete files,
-at most 64 KiB each, eight levels, 32 occurrences including root and 256 KiB
-aggregate source/working bytes.  Reject symlink/remote/alias/parameter/directory
-conflicts.  No macros, Babel, SETUPFILE or BIND processing is performed.
-Hooks cannot change supported private configuration or original STM tokens;
-arbitrary callback I/O is not sandboxed.  New STM has explicit generated origin.
-Owned input has node-keyed island origins in :texmacs-island-origins.  Exact
-original ranges belong to protected STM; ordinary ranges describe transformed
-working context.  Root source and acquired dependency consistency is verified
-through native waits and before return without retry or text replacement.
-No subtree/region mapping, generic exporter, output file or menu is created."
+  "Prepare full SOURCE-BUFFER with opt-in native Org composition.
+BIBLIOGRAPHY-SOURCES supplies explicit texts; EXT-PLIST restricted options.
+DISCOVER-BIBLIOGRAPHY is exactly t or nil and separately enables Cite discovery.
+Run captured preprocessing hooks in a private view and native INCLUDE with fixed
+local UTF-8 source reads.  STM shielding preserves line counts for location,
+only-contents, lines and minlevel selection.  Partial STM selections fail.
+INFO owns original/final working text and acquired original dependency texts;
+no exact original position, occurrence or generic AST origin map is promised.
+Full unnarrowed ordinary-level sources and one local resource base are required.
+Includes have limits of 64 KiB/file, eight levels, 32 expansions including root
+and 256 KiB original-source/final-working bytes.  Reject unsupported wrappers,
+paths, aliases, configuration changes and damaged protected STM.  No full native
+export lifecycle, macro/Babel/SETUPFILE/BIND execution, file or menu is added.
+Source/configuration/dependency checks enclose native waits and final return;
+callbacks are not sandboxed and no atomic filesystem guarantee is made."
   (org-texmacs--preprocess-convert
    source-buffer #'identity bibliography-sources ext-plist discover-bibliography))
 

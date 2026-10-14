@@ -977,82 +977,69 @@ context, normally produced by =org-texmacs-prepare-buffer=.  Lowering checks the
 prefix, key order and entry snapshot rather than formatting or reading data.
 Native tree readback does not establish GUI citation display or typesetting.
 
-** Opt-in protected preprocessing and INCLUDE
+** Opt-in native preprocessing and INCLUDE
 Use =org-texmacs-prepare-buffer-preprocessed= for owned prepared input,
 =org-texmacs-document-from-buffer-preprocessed= for a document, or
 =org-texmacs-export-from-buffer-preprocessed= for native =.tm= bytes.
 Their arguments are =source-buffer= followed by optional =bibliography-sources=,
-=ext-plist= and =discover-bibliography=.  The last argument accepts only =t= or
-=nil= and separately enables bibliography discovery over the composed document.
-Existing source APIs, bibliography-discovery wrappers and menu actions retain
-their earlier contracts.
+=ext-plist= and =discover-bibliography=.  The last argument accepts exactly =t=
+or =nil= and separately enables discovery over the composed document.
+Existing APIs and dispatcher actions retain their earlier defaults.
 
 #+begin_src emacs-lisp
-;; Full, unnarrowed Org source; includes share its effective resource directory.
-;; Set the last argument to t only when bibliography discovery is wanted.
+;; Full unnarrowed source; includes share its local resource directory.
 (org-texmacs-export-from-buffer-preprocessed org-source-buffer nil nil t)
 #+end_src
 
-The adapter captures original source/configuration before callbacks, invokes
-the effective =org-export-before-processing-functions=, expands native INCLUDE
-over protected owned file snapshots, then invokes
-=org-export-before-parsing-functions=.  Hooks receive =texmacs= and a private
-working view; their return values are ignored as in Org.  Ordinary text changes
-and generated STM are supported.  Changes to mode, location, narrowing, supported
-parser/options/style configuration or protected original STM tokens fail.
-Original hook variables and the generic TeXmacs export guard remain intact;
-generic export is also rejected inside the working view.  Private mode hooks
-are suppressed.  Arbitrary callback code and I/O are not sandboxed.
+Captured before-processing hooks run in a private protected root view, then native
+Org INCLUDE expands fixed owned sources, followed by before-parsing hooks.  Hooks
+receive =texmacs=; return values are ignored.  Ordinary text and generated STM are
+accepted, while changes to supported configuration or protected STM fail.
+The generic export guard remains active and private mode hooks are suppressed.
+This adapter does not run full annotation, global ID lookup, macros, Babel,
+SETUPFILE/BIND processing or Cite output processors; genuine unsupported directives
+in the final document fail.  Arbitrary callbacks and I/O are not sandboxed.
 
-This is a bounded stage adapter with declared differences from the native export
-pipeline: it does not run full annotation, global ID lookup, comment-tree deletion,
-macros, Babel or Cite output processors.  Genuine SETUPFILE, BIND, MACRO and
-CITE_EXPORT directives remain rejected.  STM is protected before those native
-stages; preprocessing-looking payload stays literal.  INCLUDE advice sees
-projected snapshot filenames; real third-party lifecycle equivalence is unverified.
-Private source-boundary markers can affect native whitespace trimming; no
-byte-identical native working document is promised.
+Org implements =::location=, =:only-contents=, =:lines= and =:minlevel= selection,
+heading adjustment and footnote extraction.  Line-count-preserving STM shielding
+prevents native INCLUDE, headline and footnote operations from changing payload.
+STM discovery retains its existing paragraph/special-block grammar; this adapter
+does not extend discovery across Org headline boundaries.
+Selection intersecting only part of an original STM fragment/block fails explicitly;
+no original character map or textual recreation of Org selection rules is used.
+Native location lookup and content preparation use transaction-local fixed readers
+with original path identities; no occurrence mirrors are created.  Scoped helper
+bindings are restored on success/error.  Real third-party advice compatibility
+remains unverified.
 
-Initial support is full unnarrowed source with ordinary headline levels
-(=org-odd-levels-only= disabled for source and native defaults), visiting or
-non-file, with a local resource base.  Visiting directory and resource base must
-agree.  An existing visiting identity must be a regular file; absent identities
-for unsaved sources are accepted.  Includes cannot alias that observed root file.
-INCLUDE accepts column-zero bare quoted complete file references:
-=#+INCLUDE: "part.org"=.  Every included source must share the root's lexical
-resource directory.  Local regular UTF-8 files are limited to 64 KiB each,
-eight nesting levels, 32 occurrences including root and 256 KiB aggregate source
-and final working bytes.  Cycles, physical alias ambiguity, symlink components,
-remote/URL/tilde/control paths, =:lines=, locations, =:minlevel=, literal/include
-environment parameters and commented-heading includes fail explicitly.
-Subtree, region, narrowing, cross-directory STM and general source composition
-need separate origin/selection policies.  Native whole-file footnote renaming
-feeds the existing supported footnote grammar; partial-file extraction is excluded.
+The source must be full, unnarrowed and use ordinary headline levels
+(=org-odd-levels-only= disabled for both source and native defaults).  Visiting
+identity and resource base must agree; existing identity is regular or absent.
+Included local UTF-8 regular files share the lexical root directory and are limited
+to 64 KiB each.  Original captured texts total at most 256 KiB, final working text
+at most 256 KiB, recursion at most eight levels and includes at most 32 expansions
+including root.  Repeated reads reuse fixed text.  Symlink/physical aliases, cycles,
+remote/URL/tilde/control paths and unsupported INCLUDE wrappers/options fail.
+Native recursion policy remains authoritative; nested location-only references
+to the same file can be rejected even when their selected headings differ.
+Cross-directory STM resources and root subtree/region/narrowing remain separate.
 
-Repeated includes reuse fixed owned texts while each insertion has a distinct
-occurrence.  Equal STM content or old numeric offsets do not establish identity.
-Original STM payloads have validated opaque tokens; lost/duplicated tokens fail.
-Generated STM has no invented original file/range.  All accepted resource contexts
-share the root base, so unchanged relative STM resources retain a defined base;
-native relocation of ordinary Org file links alone cannot justify cross-directory
-STM support.
+Prepared INFO owns =:texmacs-original-source=, =:texmacs-preprocessed-source= and
+=:texmacs-preprocessing-sources= (original acquired file identities/texts).
+These replace the adapter's earlier =:texmacs-composition-sources=,
+=:texmacs-source-origins= and =:texmacs-island-origins= data.  Exact original
+ranges, occurrence IDs and generic AST origins are no longer part of this adapter's
+contract.  Final islands are identified from the working document and owned by
+existing preparation.  The shared resource base preserves accepted relative STM
+meaning; native relocation of ordinary links does not justify cross-directory STM.
+Phase 1 citation-key filters and optional bibliography discovery run once;
+explicit bibliography texts retain priority.  Pure lowering performs no file I/O.
 
-Prepared INFO owns =:texmacs-original-source=, =:texmacs-composition-sources= and
-=:texmacs-source-origins=.  =:texmacs-island-origins= maps owned island AST/string
-identities to origin data (source file, occurrence, original/working range and
-kind).  Exact original ranges belong to protected STM; ordinary intervals describe
-derived source context and working bounds.  Generated text has an explicit
-generated context.  Provenance is attached before the existing citation-key-only
-AST filters, which run once, and is remapped by the pure owning constructor.
-No new pure input slot, file read or Org parsing is introduced in lowering.
-
-File texts are fixed at acquisition.  Include and optional bibliography receipts,
-source/configuration/hook identities and explicit texts are checked across hooks,
-reads, native waits and before document/byte return.  Dependency changes fail
-without retry, text replacement, rediscovery or filter replay.  Owned mirrors
-are validated and removed after composition, including error paths.  These
-observations are not filesystem/database atomicity, an ABA guarantee or a
-security sandbox.  No output file is published by the first adapter.
+Acquired texts and receipts are fixed; source/configuration/hooks and include/bib
+attributes plus byte hashes are checked across reads, callbacks, native waits and
+before final document/bytes return.  Changes reject results without retries,
+rediscovery or filter replay.  Observations are not filesystem/database atomicity,
+an ABA guarantee or a security sandbox.  No output file is published by this adapter.
 
 ** Headline metadata and presentation
 Document conversion snapshots these standard Org options from the source

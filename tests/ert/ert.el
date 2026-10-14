@@ -7367,18 +7367,16 @@ Only tests with explicit example names use this helper; do not run Babel."
    (plist-put (org-texmacs--document-options) :texmacs-resource-base default-directory)
    buffer-file-name default-directory #'ignore (org-texmacs--preprocess-hooks)))
 
-(ert-deftest org-texmacs-preprocess-component-native-nested-occurrences ()
+(ert-deftest org-texmacs-preprocess-component-native-fixed-sources ()
   (org-texmacs-test--with-bibliography-files
     (write-region "(math \"same\")\n" nil "a.org" nil 'silent)
     (write-region "#+INCLUDE: \"a.org\"\n" nil "b.org" nil 'silent)
     (insert "#+INCLUDE: \"a.org\"\n#+INCLUDE: \"b.org\"\n")
-    (let* ((result (org-texmacs-test--compose))
-           (ranges (plist-get result :ranges)))
-      (should (= (length ranges) 2))
-      (should-not (= (nth 3 (car ranges)) (nth 3 (cadr ranges))))
-      (should (equal (nth 2 (car ranges)) (nth 2 (cadr ranges))))
+    (let ((result (org-texmacs-test--compose)))
+      (should (= (length (plist-get result :sources)) 2))
       (should (= (length (plist-get result :receipts)) 2))
-      (should-not (string-match-p "TXMPAYLOAD\\|TXMSTART" (plist-get result :source))))))
+      (should (equal (plist-get result :source) "(math \"same\")\n(math \"same\")\n"))
+      (should-not (plist-member result :ranges)))))
 
 (ert-deftest org-texmacs-preprocess-component-hooks-generated-and-protected ()
   (org-texmacs-test--with-bibliography-files
@@ -7394,8 +7392,8 @@ Only tests with explicit example names use this helper; do not run Babel."
            (result (org-texmacs-test--compose)))
       (should (equal (reverse events) '(before after)))
       (should (string-match-p "absent.org" (plist-get result :source)))
-      (should (cl-find -1 (plist-get result :segments) :key #'caddr))
-      (should (= (length (plist-get result :ranges)) 1)))))
+      (should (string-match-p "Generated suffix" (plist-get result :source)))
+      (should-not (plist-member result :ranges)))))
 
 (ert-deftest org-texmacs-preprocess-component-rejects-marker-and-config-edits ()
   (dolist (change '(text directory options mode))
@@ -7432,7 +7430,7 @@ Only tests with explicit example names use this helper; do not run Babel."
     (org-mode) (insert "Text\n")
     (should-error (org-export-as 'texmacs) :type 'user-error)))
 
-(ert-deftest org-texmacs-preprocess-source-to-native-and-owned-origins ()
+(ert-deftest org-texmacs-preprocess-source-to-native-and-owned-snapshots ()
   (org-texmacs-test--with-worker
     (org-texmacs-test--with-bibliography-files
       (write-region "(math \"x\")(math \"x\")\n[[file:asset.txt][Asset]]\n" nil "a.org" nil 'silent)
@@ -7441,16 +7439,12 @@ Only tests with explicit example names use this helper; do not run Babel."
       (setq-local buffer-file-name (expand-file-name "root.org"))
       (let* ((source (current-buffer)) (before (org-texmacs-test--document-buffer-state source))
              (input (org-texmacs-prepare-buffer-preprocessed source))
-             (origins (plist-get (org-texmacs-input-info input) :texmacs-island-origins))
+             (info (org-texmacs-input-info input))
              (document (org-texmacs-document input)) (session nil))
-        (should (= (length origins) 6))
-        (should (= (length (delete-dups (mapcar (lambda (entry) (plist-get (cdr entry) :occurrence)) origins))) 3))
-        (should (= (length (delete-dups (mapcar (lambda (entry) (plist-get (cdr entry) :source-file)) origins))) 2))
-        (cl-mapc (lambda (origin island) (should (eq (car origin) (car island))))
-                 origins (org-texmacs-input-islands input))
-        (dolist (entry origins)
-          (should (eq (plist-get (cdr entry) :kind) 'original))
-          (should (plist-get (cdr entry) :original-range)))
+        (should (= (length (org-texmacs-input-islands input)) 6))
+        (should (= (length (plist-get info :texmacs-preprocessing-sources)) 2))
+        (should (equal (plist-get info :texmacs-original-source) (buffer-string)))
+        (should-not (plist-member info :texmacs-island-origins))
         (should (equal before (org-texmacs-test--document-buffer-state source)))
         (unwind-protect
             (progn
@@ -7510,11 +7504,9 @@ Only tests with explicit example names use this helper; do not run Babel."
       (insert "#+INCLUDE: \"part.org\"\n")
       (let* ((org-export-before-parsing-functions
               (list (lambda (_backend) (goto-char (point-max)) (insert "\n(math \"new\")\n"))))
-             (input (org-texmacs-prepare-buffer-preprocessed (current-buffer)))
-             (origins (mapcar #'cdr (plist-get (org-texmacs-input-info input) :texmacs-island-origins))))
-        (should (= (length origins) 2))
-        (should (cl-find 'original origins :key (lambda (origin) (plist-get origin :kind))))
-        (should (cl-find 'generated origins :key (lambda (origin) (plist-get origin :kind))))
+             (input (org-texmacs-prepare-buffer-preprocessed (current-buffer))))
+        (should (= (length (org-texmacs-input-islands input)) 2))
+        (should (string-match-p "new" (plist-get (org-texmacs-input-info input) :texmacs-preprocessed-source)))
         (should (string-match-p "footnote" (prin1-to-string (org-texmacs-document-body
                                                              (org-texmacs-document input)))))))))
 
@@ -7619,10 +7611,119 @@ Only tests with explicit example names use this helper; do not run Babel."
                    (insert "#+begin_texmacs\n#+INCLUDE: \"absent.org\"\n#+end_texmacs\n")))))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _) '(concat "generated"))))
-        (let* ((input (org-texmacs-prepare-buffer-preprocessed (current-buffer)))
-               (origin (cdar (plist-get (org-texmacs-input-info input) :texmacs-island-origins))))
-          (should (eq (plist-get origin :kind) 'generated))
-          (should-not (plist-get origin :original-range))
-          (should-not (plist-get origin :source-file)))))))
+        (let ((input (org-texmacs-prepare-buffer-preprocessed (current-buffer))))
+          (should (= (length (org-texmacs-input-islands input)) 1))
+          (should (string-match-p "absent.org" (plist-get (org-texmacs-input-info input)
+                                                          :texmacs-preprocessed-source))))))))
+
+(ert-deftest org-texmacs-preprocess-native-parameter-combinations ()
+  (org-texmacs-test--with-bibliography-files
+    (write-region "* Alpha\n:PROPERTIES:\n:CUSTOM_ID: alpha\n:END:\nFirst\nSecond\n** Child\nBody\n* Beta\nOutside\n"
+                  nil "part.org" nil 'silent)
+    (dolist (value '("\"part.org::#alpha\" :only-contents t :lines \"1-3\""
+                     "\"part.org::*Alpha\" :only-contents t :lines \"1-3\""))
+      (erase-buffer) (insert (format "#+INCLUDE: %s\n" value))
+      (should (equal (plist-get (org-texmacs-test--compose) :source) "First\nSecond\n")))
+    (erase-buffer) (insert "#+INCLUDE: \"part.org::*Alpha\" :minlevel 3\n")
+    (let ((text (plist-get (org-texmacs-test--compose) :source)))
+      (should (string-match-p "^\\*\\*\\* Alpha" text))
+      (should (string-match-p "^\\*\\*\\*\\* Child" text))
+      (should-not (string-match-p "Outside" text)))))
+
+(ert-deftest org-texmacs-preprocess-selected-stm-native-readback ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (write-region "* Alpha\n(math \"[fn:a]\")\n* Beta\nOutside\n" nil "part.org" nil 'silent)
+      (insert "#+INCLUDE: \"part.org::*Alpha\" :only-contents t\n")
+      (let* ((input (org-texmacs-prepare-buffer-preprocessed (current-buffer)))
+             (text (plist-get (org-texmacs-input-info input) :texmacs-preprocessed-source)))
+        (should (equal text "(math \"[fn:a]\")\n"))
+        (should (string-match-p "math" (prin1-to-string
+                                        (org-texmacs-document-body (org-texmacs-document input)))))
+        (should (string-match-p "TeXmacs" (org-texmacs-export-from-buffer-preprocessed (current-buffer))))))))
+
+(ert-deftest org-texmacs-preprocess-lines-protect-multiline-stm ()
+  (org-texmacs-test--with-bibliography-files
+    (write-region "* Alpha\n#+begin_texmacs\n(concat \"\nSTM [fn:a]\n\")\n#+end_texmacs\n* Beta\n" nil "part.org" nil 'silent)
+    (insert "#+INCLUDE: \"part.org\" :lines \"2-7\" :minlevel 3\n")
+    (should (equal (plist-get (org-texmacs-test--compose) :source)
+                   "#+begin_texmacs\n(concat \"\nSTM [fn:a]\n\")\n#+end_texmacs\n"))
+    (erase-buffer) (insert "#+INCLUDE: \"part.org\" :lines \"3-4\"\n")
+    (should-error (org-texmacs-test--compose) :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-preprocess-selection-avoids-excluded-reads ()
+  (org-texmacs-test--with-bibliography-files
+    (write-region "* Selected\nKept\n* Excluded\n#+INCLUDE: \"absent.org\"\n" nil "part.org" nil 'silent)
+    (insert "#+INCLUDE: \"part.org::*Selected\" :only-contents t\n")
+    (let ((result (org-texmacs-test--compose)))
+      (should (equal (plist-get result :source) "Kept\n"))
+      (should (= (length (plist-get result :receipts)) 1)))))
+
+(ert-deftest org-texmacs-preprocess-selected-external-footnote-stm ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (write-region "Text[fn:a]\nOutside\n[fn:a] Note (math \"x\")\n" nil "part.org" nil 'silent)
+      (insert "#+INCLUDE: \"part.org\" :lines \"1-2\"\n")
+      (let* ((input (org-texmacs-prepare-buffer-preprocessed (current-buffer)))
+             (text (plist-get (org-texmacs-input-info input) :texmacs-preprocessed-source)))
+        (should-not (string-match-p "Outside" text))
+        (should (string-match-p "Note (math" text))
+        (should (string-match-p "footnote" (prin1-to-string
+                                            (org-texmacs-document-body (org-texmacs-document input)))))))))
+
+(ert-deftest org-texmacs-preprocess-native-reader-restored-after-failure ()
+  (org-texmacs-test--with-bibliography-files
+    (insert "#+INCLUDE: \"missing.org\"\n")
+    (let ((reader (symbol-function 'org-file-contents))
+          (parser (symbol-function 'org-export-parse-include-value)))
+      (should-error (org-texmacs-test--compose) :type 'org-texmacs-document-error)
+      (should (eq reader (symbol-function 'org-file-contents)))
+      (should (eq parser (symbol-function 'org-export-parse-include-value))))))
+
+(ert-deftest org-texmacs-preprocess-selected-same-file-native-cycle-policy ()
+  (org-texmacs-test--with-bibliography-files
+    (write-region "* Alpha\nFirst\n* Beta\nSecond\n"
+                  nil "part.org" nil 'silent)
+    (insert "#+INCLUDE: \"part.org::*Alpha\" :only-contents t\n#+INCLUDE: \"part.org::*Beta\" :only-contents t\n")
+    (let ((result (org-texmacs-test--compose)))
+      (should (equal (plist-get result :source) "First\nSecond\n"))
+      (should (= (length (plist-get result :sources)) 1)))
+    (erase-buffer) (insert "#+INCLUDE: \"part.org::*Alpha\" :only-contents t\n")
+    ;; Locked Org considers nested location-only references to the same file
+    ;; recursive even when their headings differ.  Keep its policy.
+    (write-region "* Alpha\n#+INCLUDE: \"part.org::*Beta\" :only-contents t\n* Beta\nKept\n"
+                  nil "part.org" nil 'silent)
+    (should-error (org-texmacs-test--compose) :type 'org-texmacs-document-error)
+    (write-region "* Alpha\n#+INCLUDE: \"part.org::*Alpha\" :only-contents t\n"
+                  nil "part.org" nil 'silent)
+    (should-error (org-texmacs-test--compose) :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-preprocess-fixed-read-copies-and-parameter-errors ()
+  (org-texmacs-test--with-bibliography-files
+    (write-region "* Alpha\nFirst\n* Beta\nSecond\n" nil "part.org" nil 'silent)
+    (insert "#+INCLUDE: \"part.org::*Alpha\" :only-contents t\n#+INCLUDE: \"part.org::*Beta\" :only-contents t\n")
+    (let ((prepare (symbol-function 'org-export--prepare-file-contents)))
+      (cl-letf (((symbol-function 'org-export--prepare-file-contents)
+                 (lambda (file &rest args)
+                   (let ((copy (org-file-contents file))) (aset copy 0 ?X))
+                   (apply prepare file args))))
+        (should (equal (plist-get (org-texmacs-test--compose) :source) "First\nSecond\n"))))
+    (dolist (value '("\"part.org::*Absent\"" "\"part.org\" src emacs-lisp"
+                     "\"part.org\" :unknown t" "\"~/part.org\""
+                     "\"part.org\" :minlevel 0" "\"part.org\" :lines \"bad\""))
+      (erase-buffer) (insert (format "#+INCLUDE: %s\n" value))
+      (should-error (org-texmacs-test--compose) :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-preprocess-native-depth-and-invalid-utf8 ()
+  (org-texmacs-test--with-bibliography-files
+    (dotimes (i 10)
+      (write-region (if (= i 9) "End\n" (format "#+INCLUDE: \"p%d.org\"\n" (1+ i)))
+                    nil (format "p%d.org" i) nil 'silent))
+    (insert "#+INCLUDE: \"p0.org\"\n")
+    (should-error (org-texmacs-test--compose) :type 'org-texmacs-document-error)
+    (let ((coding-system-for-write 'no-conversion))
+      (write-region (unibyte-string 255) nil "bad.org" nil 'silent))
+    (erase-buffer) (insert "#+INCLUDE: \"bad.org\"\n")
+    (should-error (org-texmacs-test--compose) :type 'org-texmacs-document-error)))
 
 ;;; ert.el ends here
