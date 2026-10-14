@@ -2164,3 +2164,25 @@ not verified, no external tracking write. This checkpoint associates the exact
 project commit whose paths/blobs/message were actually inspected, not a guessed
 original parent of archived candidate tests. Archive remains immutable.
 
+## Post-Phase6 documentation and dependency audit (2026-10-14)
+
+Baseline committed Phase6, worktree differs only user flake mirror. Read-only
+targeted inspection of README install/configuration/filter/discovery/preprocessing/
+integration/dispatcher/session/check sections, module commentary/docstrings,
+Package-Requires, committed flake/source fileset, lock and core/optional test wiring.
+Latest menu default/migration/key validation/load lifecycle documented accurately.
+No new external runtime dependency in Phase6; Org required by header/flake and
+all production modules in fileset, Org-roam/extensions optional integration only.
+Header/flake version0.4.0 consistent, future release not selected.
+README stale findings: line36 tested Org9.8-pre vs current9.8.10;147 seven variables
+package-wide vs seven core plus two frontend;871 real Org-roam unverified and973
+real third-party integration separate future work vs actual pinned fixtures;1691
+file saving/export future work vs existing separate consumers. Recommend precise
+replacement/cross-links without widening fixture support claims. Minimum Org9.8
+is declaration, current tested9.8.10 not proof of minimum or other revisions;
+no minimum-boundary experiment/new dependency bump justified by this audit.
+Frontend commentary could clarify optional menu but does not assert default keys;
+new option docstring already states nil/default and load-only behavior. No project
+write or build performed. Audit is bounded to changed contracts/related descriptions,
+not a new exhaustive all-API/all-version verification.
+

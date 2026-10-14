@@ -27,6 +27,18 @@ and Closes: #2 trailers. Index empty, only user mirror remains unstaged/root loc
 unchanged. Prior gates transfer by byte identity, no new tests solely for commit
 verification. No further implementation selected or external issue write performed.
 Remote issue2 status unverified. Preserve completed draft/user wording.
+User requested current documentation/comment/dependency audit after commit.
+Read-only audit of tracked frontend/core metadata, README affected API/install/
+validation sections and flake/test dependency wiring: latest menu contract docs
+and option docstrings consistent, no new required runtime dependency. README still
+has stale validation/deferred wording at lines36 (Org9.8-pre),147 (seven variables
+claimed package-wide, now seven core plus two frontend),871 (real Org-roam
+unverified),973 (real third-party integration still future),1691 (file saving/export
+still future rather than independent existing consumers). Recommend focused README
+corrections/cross-links; no project edits/builds authorized by audit request.
+Minimum metadata Emacs31.1/Org9.8 differs deliberately from tested Org9.8.10;
+lower Org9.8 boundary not independently validated, no evidence mandates bump.
+Version0.4.0 consistent between header/flake; new release/version not selected.
 User asked whether temporary-test archival was assessed. Selection confirmed:
 native menu/registry/shared-prefix/control-key probes have independent value,
 Eight original-byte artifacts archived and verified in an archive-only checkpoint:
