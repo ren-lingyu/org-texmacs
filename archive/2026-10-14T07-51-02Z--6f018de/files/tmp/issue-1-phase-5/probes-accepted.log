@@ -1,0 +1,11 @@
+this derivation will be built:
+  /nix/store/3m2xrg9r4f7f37hisrkqmrq7z1adwg2n-org-texmacs-phase5-probes.drv
+building '/nix/store/3m2xrg9r4f7f37hisrkqmrq7z1adwg2n-org-texmacs-phase5-probes.drv'...
+org-texmacs-phase5-probes> Running 4 tests (2026-10-14 07:35:49+0000, selector `"^phase5-probe-"')
+org-texmacs-phase5-probes>    passed  1/4  phase5-probe-full-profile-versus-direct (0.120367 sec)
+org-texmacs-phase5-probes>    passed  2/4  phase5-probe-loaded-frontend-guard-and-hooks (0.005668 sec)
+org-texmacs-phase5-probes>    passed  3/4  phase5-probe-local-discovery-and-selection (1.507154 sec)
+org-texmacs-phase5-probes>    passed  4/4  phase5-probe-preprocessed-pdf-transaction (1.511181 sec)
+org-texmacs-phase5-probes> 
+org-texmacs-phase5-probes> Ran 4 tests, 4 results as expected, 0 unexpected (2026-10-14 07:35:52+0000, 3.144554 sec)
+org-texmacs-phase5-probes> 

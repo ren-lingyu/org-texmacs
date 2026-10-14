@@ -1,0 +1,127 @@
+[
+  {
+    "path": "LICENSE",
+    "bytes": 35149,
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  {
+    "path": "README.org",
+    "bytes": 100051,
+    "sha256": "3859b8adb78b1ff812044679e2822d15b0010d7899c2d68f5ab8c3560bafcee7"
+  },
+  {
+    "path": "flake.lock",
+    "bytes": 1752,
+    "sha256": "118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a"
+  },
+  {
+    "path": "org-texmacs-ast.el",
+    "bytes": 1328,
+    "sha256": "f24a5e1e8773b58d7609f80adfd925a7af4f6fea7656ba170fa502dfe9453d7f"
+  },
+  {
+    "path": "org-texmacs-bibliography.el",
+    "bytes": 14091,
+    "sha256": "00ab1e3780fd8032e1f40f26a080a0e004053bc46f3032f1ffb603116e6fc132"
+  },
+  {
+    "path": "org-texmacs-context.el",
+    "bytes": 40052,
+    "sha256": "b83a6931d839a94054351cb0ebcd773f26b9cb1d78753916a8add85fd8715991"
+  },
+  {
+    "path": "org-texmacs-core.el",
+    "bytes": 7579,
+    "sha256": "25a470c3d69afc468160a557455f9c9dbc65beff707a2fe6c602be06663e7d22"
+  },
+  {
+    "path": "org-texmacs-document.el",
+    "bytes": 97393,
+    "sha256": "5a7dc7e85ff4e679dbd88bb3f21470a4ac6e0880813f420c1a1033fcfe5f3ba8"
+  },
+  {
+    "path": "org-texmacs-fragment.el",
+    "bytes": 14609,
+    "sha256": "a3cf952a298d8202a32bf0d88fb167826960492b750c3a0ebad845b035ab806c"
+  },
+  {
+    "path": "org-texmacs-input.el",
+    "bytes": 12651,
+    "sha256": "53ecd56fa9ad5aac49484e8624ab5d293d96a113eafd96c11b737c8c6b1593cc"
+  },
+  {
+    "path": "org-texmacs-preprocess.el",
+    "bytes": 25074,
+    "sha256": "97f2899981f13f66176f43676172162df1145066cc66307a3772c73535ff63aa"
+  },
+  {
+    "path": "org-texmacs-session.el",
+    "bytes": 25658,
+    "sha256": "5c8f162bcd9945aa5b8a92730e89a3783a34a8688b38b55c306d21cf834e9995"
+  },
+  {
+    "path": "org-texmacs-source.el",
+    "bytes": 6327,
+    "sha256": "084a8f02f70d0da067382403b80b7b16173c1e14dceeb2b27d28fff5dc95e108"
+  },
+  {
+    "path": "org-texmacs-worker.el",
+    "bytes": 11539,
+    "sha256": "58cf49619fae44706bf9e946f44edfd5bcef6b214eb97afbec49675aa76e7404"
+  },
+  {
+    "path": "org-texmacs-worker.scm",
+    "bytes": 25587,
+    "sha256": "ca0463d153d3b2637d5f34252dcc44c9816aa43dae613a3b3519cf784749b5bd"
+  },
+  {
+    "path": "org-texmacs.el",
+    "bytes": 44009,
+    "sha256": "23cd89f9faa807edbdf9a537bbfe03a40d7b425d26d1201a5d8ad74a8c96c7ac"
+  },
+  {
+    "path": "ox-texmacs.el",
+    "bytes": 14165,
+    "sha256": "3aad56128b003d74af7f63c0854a932f436fcd5adb8ad83b1d45955283840a5a"
+  },
+  {
+    "path": "tests/default.nix",
+    "bytes": 162,
+    "sha256": "e16f23109c2314622ae7cb023c0b84d135261becd99d8b47bb224035bf0a7b14"
+  },
+  {
+    "path": "tests/ert/default.nix",
+    "bytes": 494,
+    "sha256": "9c256c93c82362090a25732eca8ee9ff4f9554168f917d751a9da8e13460c6eb"
+  },
+  {
+    "path": "tests/ert/ert.el",
+    "bytes": 428164,
+    "sha256": "7338c326d3100103e2bb1ab203eef6effb2618cc29dfda147817dbcb23b9c105"
+  },
+  {
+    "path": "tests/ert/run.scm",
+    "bytes": 601,
+    "sha256": "3118733dd90ea07e0d891659680e079456a9eac1d5f0247ef1b90c086e088f08"
+  },
+  {
+    "path": "tests/integration/default.nix",
+    "bytes": 835,
+    "sha256": "4c93816032bd67f7e46f1e3f47490ff0c7d1f943765178cc724be365e6474b7e"
+  },
+  {
+    "path": "tests/integration/phase4.el",
+    "bytes": 17203,
+    "sha256": "88896752ec91444281a96fb5b01f1fc694532be8c34ea50e59512315658ebf5e"
+  },
+  {
+    "path": "tests/package-lint/default.nix",
+    "bytes": 364,
+    "sha256": "362a7e1bae443d5377a780ce8e0edcd23563728bd2d9092d78ca7f8a87eeff1d"
+  },
+  {
+    "path": "tests/package-lint/run.scm",
+    "bytes": 1401,
+    "sha256": "b87e42fffd9aaa84e2f87858cbaab460e358aaaff2d44568a38fb519b63e30d2"
+  }
+]
