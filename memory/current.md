@@ -2,13 +2,41 @@
 
 ## Active objective
 
-User requested GAW recovery then read-only review of the newly supplied INBOX
+User now selected implementation of issue3 against memory/export-api-contract.md.
+Authorized project API/lifecycle/documentation/maintained-test edits. Separately
+authorized repeated120s isolated focused/integration Nix builds and240s complete
+flake checks under tmp/issue-3-api, necessary locked-dependency network/store/cache
+writes, no root lock changes. Existing user flake mirror stays untouched.
+Selected implementation/acceptance complete in the uncommitted worktree:
+three standard Org interactive frontend commands, five explicit noninteractive
+source APIs, exact renames without aliases, original file/conversion/menu policy.
+Managed result has identity token/name/tick/state checks; user takeover creates
+new result. Atomic change group rolls back content failure; explicit undo reset
+and refreshed tick preserve reuse after rollback. Display failure keeps committed
+reused results but cleans new allocations; explicit buffers remain fresh/caller-owned.
+README and ERT/actual integration call sites synchronized;10new maintained tests.
+Corrected focused110/110 passes83.751063s. Exact240s isolated complete gate exits0:
+396core ERT199.315532s,9real fixtures11.658110s, all6logged flake checks and
+strict module compilation/package-lint pass.25project+11foreign inputs verified
+byte-identical before/after gate. Initial sandbox socket/compiler/test failures
+and fixes are distilled in evidence; no pending failure. Locked Emacs31.1/
+Org9.8.10/TeXmacs2.1.5/x86_64-linux only; other systems/GUI/current9.8 full
+behavior unverified. No raw archive selected: maintained reproduction tests and
+extracted evidence suffice, no unique transient probe or retired document.
+Five ordinary paths changed: README.org/org-texmacs.el/ox-texmacs.el/
+tests/ert/ert.el/tests/integration/phase4.el. Only other dirty path is the
+untouched user flake mirror. Root lock/INBOX/version unchanged, index empty.
+Next: offer exact five-path staging approval then staged-diff commit-message
+preparation under the established workflow. Ordinary commit/external issue work
+remains separate; no further implementation or test rerun selected.
+
+Earlier user requested GAW recovery then read-only review of the newly supplied INBOX
 issue3 export API/lifecycle plan. GAW status/check pass, memory worktree clean
 at recovery. Project HEAD exactly matches the plan's investigation baseline
 92476aa073238d1bc38809d4300985c5a444572c; ordinary index empty, only flake.nix
 has the existing user modification. INBOX is now9457bytes, superseding the
 Phase6 working proposal; completed Phase6 contracts remain current capability.
-No implementation, INBOX edits, build/test or external tracking writes selected.
+That review did not select implementation, INBOX edits, tests or external writes.
 
 Review finds the proposed three frontend/five explicit-source APIs compatible
 with AST-first ownership and existing direct/full-preprocessing routes. Preserve
@@ -49,23 +77,15 @@ experimental evidence or retiring source. Operational information is retained in
 the contract, independently of INBOX/chat. Reassess at retirement or upon new
 independently valuable evidence. No byte-exact original capture is claimed.
 
-Implementation implications from the prior read-only review remain: current
-frontend unwind cleanup at ox-texmacs.el122-129 and ERT5107 expect output death
-on display failure and must distinguish new from reused results. Package-load
-ERT's main-module PDF ownership assertion must change. Replace old interactive
-tests with command-boundary assertions while retaining Lisp source/target safety
-coverage. Document loading and migration clearly. These are future changes;
-current production behavior and validation claims remain unchanged.
-
-Public issue3, Emacs interactive manual and upstream Org source could not be
-fetched. No remote issue status or new upstream interactive compatibility claim;
-the proposed interactive nil org-mode declaration needs targeted validation
-when implementation/tests are authorized. Review is grounded in local INBOX,
-current source/tests and recovered contracts, not a new runtime test result.
-Next action: implement against INBOX plus the user's adopted supplemental
-contracts if subsequently authorized. Design adoption alone does not authorize
-project/INBOX edits, tests or reuse prior task test grants. No external issue
-update was requested or performed.
+Prior review's unconditional frontend cleanup, main-module PDF ownership and
+interactive-only test concerns are addressed in the accepted candidate above.
+Initial public issue3/manual/Org fetches failed. Later GNU Emacs Command Modes
+documentation supports the mode declaration; actual fresh compiled processes
+verify interactive nil plus command-modes(org-mode), signatures and ownership.
+Remote issue3 state and upstream Org comparison remain unverified.
+Implementation and fresh task-specific tests are now selected as above; the
+prior design-only authority limit is superseded by those user authorizations.
+No INBOX edits or external issue update requested or performed.
 
 ## Previous completed work
 

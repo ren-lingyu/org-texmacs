@@ -23,6 +23,19 @@ decision.
 
 ## Active next
 
+### Completed selected Issue #3: export API and managed result lifecycle
+
+User selected implementation after adopting the complete
+contract in memory/export-api-contract.md. Accepted worktree candidate changes normal frontend/
+explicit-source names and interactive boundary without aliases, adds managed
+result ownership/reuse and transactional replacement, preserves conversion/file/
+menu scope, and updates README/maintained ERT/real integration references.
+Focused110/110, real fixtures9/9,396core ERT and complete isolated checks/strict
+compilation/package-lint pass. Candidate remains uncommitted; exact inputs and
+validation in memory/evidence.md/current.md. Ordinary staging/commit and remote issue action remain
+separate. Prior generic exporter/preview/atomic-file questions do not expand this
+selected API/lifecycle scope.
+
 ### Completed selected Phase 5a-5d: formal frontend/preprocessing integration
 
 INBOX section18 reviewed suitable and user now requested execution on Phase4

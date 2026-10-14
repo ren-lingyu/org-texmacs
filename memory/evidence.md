@@ -2283,3 +2283,86 @@ executable/dependency version changes or external issue write. This checkpoint
 associates the actual documentation commit inspected, not original provenance of
 earlier signature runs. Raw signature archive remains immutable.
 
+## Issue #3 export API and managed buffer acceptance (2026-10-15)
+
+User selected implementation against memory/export-api-contract.md on inspected
+baseline92476aa073238d1bc38809d4300985c5a444572c. Tested sources are the
+uncommitted five-path candidate, not unchanged baseline commit. No candidate
+project parent inferred; a later user commit can be verified by byte identity.
+No ordinary staging/commit, version/INBOX/root-lock/external issue changes.
+Existing user flake mirror retained.
+
+Implemented three interactive frontend/five noninteractive explicit-source APIs,
+exact rename map without aliases, PDF module separation, maintained special
+preprocessing/bibliography/Document/Session/setup names. Conversion/provider
+transactions, menu opt-in and naming/overwrite versus exclusive creation unchanged.
+Managed result checks identity/token/name/tick/native-view attributes; rename/
+edit/takeover creates a new result. Unique collision names stably reused. Source
+death does not kill result; explicit views stay fresh/caller-owned/undisplayed.
+Atomic change group protects content/point on commit failure, followed by undo
+disable/tick refresh. Conversion failure preserves old result; display failure
+keeps committed reused content, but removes only new allocations.
+
+Ten new maintained tests cover lifecycle, actual partial-insertion rollback,
+foreign/explicit results, takeover variants, cleanup/hooks/raw bytes/source state
+and two independent compiled fresh-load processes. Existing native selection/
+file/PDF/discovery/menu/HTML tests and real integration references synchronized.
+Initial sandbox daemon socket denial handled by same authorized commands escalated.
+Compiler caught renamed-reference docstring over80cols, fixed. First110focused
+107pass/3fail: cancellation left undo enabled; compiled interactive-form omitted
+mode metadata; legacy narrowing assertion called deleted prompt helper. Corrected
+undo reset, assert command-modes, remove obsolete helper assertion while retaining
+frontend restriction-change/pre-worker guard and explicit safety/command tests.
+No pending failures. GNU Emacs supports command mode tagging:
+https://www.gnu.org/software/emacs/manual/html_node/elisp/Command-Modes.html.
+Actual compiled fresh processes verify signatures/ownership/commandp and
+interactive nil with org-mode metadata; tagging does not replace runtime checks.
+Remote issue3 and upstream Org fetches failed; no remote-state/Org comparison claim.
+
+User authorized repeated exact120s focused/integration and240s full commands:
+
+- timeout 120s nix build 'path:./tmp/issue-3-api#checks.x86_64-linux.focused' --no-link --no-update-lock-file --print-build-logs
+- timeout 120s nix build 'path:./tmp/issue-3-api#checks.x86_64-linux.integration' --no-link --no-update-lock-file --print-build-logs
+- timeout 240s nix flake check path:./tmp/issue-3-api --no-update-lock-file --print-build-logs
+
+Final focused110/11083.751063s; real fixtures9/9 (first11.370098s,
+final11.658110s); installed ERT396/396199.315532s. Complete gate exits0,
+all6logged checks pass, including strict module compilation/package lint and
+focused/integration derivations. Full gate reuses completed focused derivation
+and reruns changed integration/core/lint inputs. Locked Emacs31.1/Org9.8.10/
+TeXmacs2.1.5 with existing pinned Org-roam/include/organize/blog fixtures,
+x86_64-linux only. No other-system/GUI/pagination or full Org9.8 behavior claim;
+earlier minimum audit predates candidate. Whitespace check passes;25project+
+11foreign inputs byte-match before/after gate. Five task paths plus untouched
+user mirror dirty; ordinary index empty.
+
+Exact final candidate SHA-256:
+
+| Project path | Digest |
+| --- | --- |
+| README.org | b0f7c6b0bb588dfcdad16564c721c186b608b85437c4b9b7e79b2232c1bdb4fa |
+| org-texmacs.el | ed98a6eefc3a53efef02326f041ea738bbf96572ad5d0fed97529943d7af708d |
+| ox-texmacs.el | d3639caa37ff7e7b3a00055022278f7ae64893cd3eeee779f636b4da466e360d |
+| tests/ert/ert.el | 72ece8c9482d7cab882633a04d64c155cb0fa2e05069985341ba60db3622d62b |
+| tests/integration/phase4.el | 54d702d49752725cb7df7f3fe3b3b12c4d12625eb2a18eef5ceacb481d9c81f1 |
+
+Project manifest SHA256b891870fbe55c8995e5d76f0d185215e7c094e2339ee89e2d59add753b121420;
+foreign manifest f4ff7bb5ba39869e2e636b7233f1d129f858c09d01e1e70b42e395a2a9e1cb64;
+isolated flake5127f7ca41e971305b0cd44c0f64226ec9f0809b9fa092f81205768373f2b825;
+root/copied lock118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a.
+Isolation derives from previous mirror-equipped Phase6 fixture with unchanged
+lock/11extension modules, adds Org-roam only to test Emacs, replaces probe checks
+with focused/real integration. Focused selector includes export-, serialization-export,
+pdf-, preprocess, subtree, region, narrow, overrides, external names. Core/lint
+and integration runner/phase4.el are maintained project tests. No ad hoc native
+probe, business-logic mock or external-source patch.
+
+Archive assessment under global/project archive skills: no raw capture selected.
+Active plan/decisions extracted into durable contract; loading/lifecycle/rollback
+reproduction is maintained in project tests. Transient logs/build products/duplicate
+fixtures have no independent retention value here. Outcomes/commands/failure
+causes/fixes/exact hashes/fixture context/limits extracted above. Incidental tmp
+filenames/digests describe checks, not required semantic dependencies. Reassess
+on INBOX retirement or independently valuable new evidence; no default whole
+directory/conversation capture or tmp clearing.
+

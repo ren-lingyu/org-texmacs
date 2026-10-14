@@ -44,14 +44,34 @@ consumer constructs a complete file wrapper only after native encoding.
   of a completed document result.
 - `org-texmacs-document-save`: explicit absolute local new-file saving consumer
   of a completed document result.
-- `org-texmacs-export-from-buffer` / `org-texmacs-export-to-file`: explicit source
+- `org-texmacs-export-texmacs-from-buffer` / `org-texmacs-export-to-texmacs-file`: explicit source
   byte/file export adapters.
-- `org-texmacs-export-to-buffer`: readonly native byte view; it and file export
-  also provide M-x commands (committed node below).
+- `org-texmacs-export-to-buffer`: fresh readonly native byte view, noninteractive,
+  caller-owned; explicit-source file/byte adapters are also noninteractive.
 - `org-texmacs-document-pdf` / `org-texmacs-document-save-pdf`: native PDF bytes
   and new-file consumers; `org-texmacs-export-pdf-from-buffer` /
-  `org-texmacs-export-to-pdf`: checked explicit-source adapters, with M-x file
-  export (committed PDF node below).
+  `org-texmacs-export-to-pdf-file`: checked noninteractive explicit-source adapters.
+- Optional ox-texmacs defines three interactive commands: export-as-texmacs,
+  export-to-texmacs and export-to-pdf with the org-texmacs prefix and standard
+  five optional Org arguments. The buffer command manages one untouched derived
+  result by identity/state; user takeover yields a new result. See issue3 below.
+
+These API names and lifecycle are the accepted issue3 worktree candidate, not
+yet a committed/released revision. Historical node descriptions below retain
+their original names/interactive contracts. The adopted current design is
+memory/export-api-contract.md; live validation/acceptance is in current.md.
+
+Managed frontend results are tracked by buffer identity, local ownership token,
+original actual name, modification tick and native-view attributes. Name collision
+allocates a unique result; killed/renamed/edited/repurposed results are not overwritten.
+Checked bytes precede atomic-change-group content commit. Failure restores old
+content/point/unmodified state and disabled undo; the post-rollback tick permits
+later reuse. Display errors preserve committed reused content and remove only
+new allocations. Explicit source buffers use a distinct fresh prefix and no display.
+No extra cleanup command, source reference or source-lifetime coupling introduced.
+Independent compiled loading verifies module ownership, signatures, commandp and
+Org mode metadata.396core/110focused/9real/complete Nix compile/lint acceptance
+passes on pinned x86_64-linux; current evidence retains limits and exact hashes.
 
 The result does not retain the source buffer. Pure lowering does not read a
 buffer or start a worker.

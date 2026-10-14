@@ -12,8 +12,11 @@ not be fetched and no external tracking write was performed.
 
 The purpose is to separate normal Org interactive exports from explicit-source
 Lisp adapters. This intentionally breaks old APIs without compatibility aliases.
-No project implementation, INBOX edit or test/build execution is authorized by
-the design decision alone. Prior task validation grants do not carry forward.
+The user subsequently selected implementation and separately authorized current
+task isolated focused/integration120s and full240s Nix checks, including necessary
+locked-dependency network/store/cache writes. Current execution/validation state
+is in memory/current.md. No INBOX or external issue edit selected; prior unrelated
+task validation grants do not carry forward.
 
 ## Public API and loading
 
