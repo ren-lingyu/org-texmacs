@@ -1681,3 +1681,31 @@ This checkpoint associates the exact commit inspected, not the historical tests
 retroactively. Phase2 first profile complete; Phase4/broader contracts remain
 separate, no external issue change or closure claim.
 
+## Phase 2c native investigation and contract selection (2026-10-14)
+
+User requested INBOX correction/GAW/execution. Old15 marked superseded, new16
+current; authorized120s probes/focused and repeated240s isolated flake check under
+tmp/issue-1-phase-2c with necessary network/store/cache, no lock edits.
+9/9 locked Emacs31.1/Org9.8.10 native probes pass. Parameter matrix/headline+
+CUSTOM_ID/only-contents/lines/minlevel, ignored excluded nested reads, extracted
+outside-selection footnote STM and fixed-copy reader across four native calls.
+Unprotected texmacs block fake INCLUDE attempts absent-file read; footnote-like
+STM renamed; multiline raw star text relevelled, but the latter exceeds existing
+fragment paragraph grammar and is not supported-island proof. Native partial lines
+can silently remove delimiters. Line-preserving shielding survives tested native
+selections. Logs probes-second.log/probes-protection.log, script phase2c-probes.el
+and REPORT.md under task tmp. Research has no TeXmacs/database/package joint proof.
+
+Selected minimal candidate: real-path fixed native reads, no occurrence mirrors/
+generic original maps; original/final/captured file texts owned in INFO. Partial
+supported STM checked against native selected lines. Native same-file location
+nesting rejection retained; sibling sections reuse one snapshot. Native helpers/
+source/config/hooks/receipts guarded, limits/alias/UTF8 checks retained; common-base,
+full-root, ordinary-level, no pure I/O or changed public signatures. README/API
+docs explicitly remove adapter origins.27/27 focused pass13.482343s with9 new cases
+and revised original-origin expectations, actual STM/notes/bib/native output and
+source/dependency mutation covered. Full368 gate running, acceptance pending.
+Initial duplicate flake checks/docstring widths and stale origin/cycle/multiline
+grammar expectations corrected. No ordinary staging/commit/lock/issue write.
+Candidate uncommitted, no project association for this implementation checkpoint.
+

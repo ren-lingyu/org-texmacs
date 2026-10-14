@@ -13,6 +13,20 @@ direct-native parameter/STM/read-consistency probes, comparison and minimal
 contract gate before refactor. Existing Phase2b remains current support.
 User authorized current-task 120s probes/focused and repeated exact240s flake check
 under tmp/issue-1-phase-2c, necessary network/store/cache/isolated logs, no lock edits.
+Initial native probes8/8 then line-preserving protection probe9/9 pass. Actual
+native STM hazards: fake INCLUDE inside STM block reads missing file, footnote-like
+STM strings renamed, multiline STM stars relevelled; partial line selection silently
+drops fragment delimiters. Fixed scoped org-file-contents experiment reuses captured
+bytes across four location/read calls. Parameter matrix and external note STM pass.
+Chosen candidate uses scoped fixed reader plus line-count-preserving STM shielding,
+native parameter selection/transform; no occurrence mirrors/general origins. Original
+and final working snapshots + captured source texts/receipts remain. Production
+rewrite in progress, first focused build stopped on docstring width before ERT;
+corrected; final27/27 focused pass13.482343s. README/API docs and maintained tests
+now explicitly replace original/occurrence origins with owned original/final working
+strings and captured path/text pairs. Partial supported STM selections fail; native
+same-file location recursion policy preserved. Full240s gate running in check-initial.log.
+No staging/commit/lock changes. Candidate pending full gate; details REPORT.md in tmp.
 
 User requested Phase 2a and Phase 2b execution on 2026-10-14. Both complete for
 selected bounded first profile. Phase 2a twelve isolated probes (0.144719s),

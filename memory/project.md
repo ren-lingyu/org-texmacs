@@ -701,54 +701,28 @@ archive/2026-10-13T13-27-14Z--c26b932/MANIFEST.md. Broader Phase2 composition
 policies, Phase4 and file/menu policy
 remain downstream work; issue #1 is not entirely closed by this node.
 
-## Phase 2b bounded protected source composition
+## Phase 2c native preprocessing simplification candidate
 
-Implemented/verified and user-committed as bounded preprocessing revision on
-the opt-in bibliography revision; committed diff matches validated staged bytes.
-Independent org-texmacs-preprocess module with lazy prepare-buffer-preprocessed,
-document-from-buffer-preprocessed/export-from-buffer-preprocessed APIs; optional
-provided BibTeX, restricted ext-plist, explicit discover-bibliography boolean.
-No menu/generic adapter or silent preprocessing of old APIs. Contract:
-memory/preprocessing-contract.md, detailed support/limits in README.
+User selected new INBOX section16, superseding parameter-mirror extension plan.
+Candidate on committed Phase2b/bibliography baseline uses actual native INCLUDE
+with transaction-local fixed org-file-contents reader, actual path identities and
+line-count-preserving protection of existing supported STM spans. Native location,
+only-contents, lines, minlevel/headline/footnote/link operations retained; original
+selected line interval checked only for partial STM, not generic coordinate mapping.
+No occurrence mirrors or node origin annotations; original/final text and captured
+path/text snapshots owned in INFO. Existing signatures/pure/input/native boundaries
+unchanged. Contract memory/preprocessing-contract.md; README explicitly updates
+removed origin fields. Common-base/full-root/ordinary-level profile retained.
 
-Source/config/explicit texts captured before callbacks, original source guarded
-separately from returned owned working text/context. Before-processing/parsing
-hooks use captured function identities/owned lists and native hook return semantics;
-private options/parser/location/mode changes rejected. Mode hooks suppressed,
-generic guard retained, private nested generic guard. Genuine SETUPFILE/BIND/MACRO/
-CITE_EXPORT still fail; no Babel/Lisp macros/full annotate-info lifecycle.
-
-Protected original STM tokens and source occurrence boundaries survive actual
-native INCLUDE over fixed owned projected files. Roots/whole local includes share
-resource directory and ordinary headline policy; <=64KiB/file, eight levels,
-32 occurrences (root included), aggregate source/working <=256KiB. Reject cycles,
-symlink/physical alias ambiguities (incl observed root), remote/tilde/control/
-parameters/commented-heading includes and selection. Snapshot reads have receipts
-and mirror hashes, cleanup success/error. Repeated files use fixed text but distinct
-instances, equal text never identity. Whole-file footnotes natively renamed;
-partial scope beyond first policy. No cross-directory STM path rewriting.
-
-INFO owns original source, source occurrences/texts, derived/generated working
-intervals and identity-keyed island origins. Private registration retains coordinates
-for inline string keys; annotator runs before one Phase1 filter pass, pure owning
-remaps keys into copied AST. No new input slot/I/O/worker operation. Original exact
-ranges belong to captured STM; ordinary intervals are transformation context, not
-original character correspondence. New/changed text/STM has derived/generated
-context; unknown origins are not invented from equal source values.
-
-Optional bibliography uses composed full STM-masked declarations and original
-shared base, unchanged explicit-text priority and Phase3b receipts. Original/source
-snapshots distinguish declarations' contexts. Original source/settings/hook/include
-function identities, explicit texts and include/bib receipts checked through native
-operations and final document/bytes. Checks never replace owned text/retry or replay
-filters. No atomic FS/DB/ABA/sandbox/file publication or real Org-roam claim.
-
-Final isolated same-lock/mirror gate: 18 new ERT,35 focused (incl17 Phase3b),
-359/359 installed ERT (180.303530s),all ten checks. Actual files/native STM/footnotes/
-bib remapping/session readback/bytes and negative callback/read/wait/serialization
-changes, budgets, root alias and cleanup tested. Old HTML/ASCII/PDF/generic guards
-remain covered. Exact source/input/mirror proof in evidence. Phase2a original
-12-probe model/research remains immutable at
+Nine isolated native probes establish fixed reads/parameter semantics, STM literal
+INCLUDE read, footnote renaming and raw headline-like text mutation hazards; scoped
+line-preserving shielding comparison passes.27/27 maintained focused pass13.482343s,
+full acceptance running. Native output/footnotes/bib/filter/transactions tested;
+no real package/GUI proof. Original Phase2b committed profile passed35 focused,
+359 installed ERT/all ten checks; its exact-origin/occurrence support is being
+replaced explicitly, not claimed for new candidate. User mirror remains unchanged,
+lock unchanged and ordinary index empty. No production acceptance before full gate.
+Phase2a research archive remains immutable:
 archive/2026-10-13T16-45-34Z--049a5a0/MANIFEST.md.
 
 Issue #1 Phase 0 provides investigation evidence, not new production support:

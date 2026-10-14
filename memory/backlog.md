@@ -34,7 +34,10 @@ and general AST provenance are not prerequisites. Review:
 memory/include-parameters-plan-review.md. Resolve fixed actual recursive reads,
 stage-specific STM hazards, resource needs and observable origin-field changes.
 User now requested execution and INBOX correction: new plan is section16, old15
-superseded. Investigation active-next; implementation gated on evidence/contract.
+superseded. Nine native probes selected a fixed reader and line-preserving STM
+shielding; minimal original/final/dependency snapshot contract adopted. Refactor
+in progress,27 focused pass; full gate pending. Exact-origin/occurrence prerequisites
+removed explicitly from adapter INFO/docs/tests, no change to pure lowering.
 Existing Phase2b/common-base unchanged;
 cross-directory resource policy and Phase4 integration separate, issue #1 open.
 
