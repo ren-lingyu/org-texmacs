@@ -1902,3 +1902,23 @@ default menu behavior when judging overall#1 closure. No blanket real-package/al
 registry/GUI/all-platform compatibility claim. Next user project review/staging/
 commit then exact identity verification; candidate checkpoint no project parent.
 
+## Phase 4 staged candidate review (2026-10-14)
+
+User explicitly authorized staging and commit-message generation. Five expected
+paths only staged: README.org, org-texmacs-preprocess.el, tests/ert/ert.el,
+tests/integration/default.nix and tests/integration/phase4.el. Complete staged diff
+reviewed:391 insertions/14 deletions; cached --check passes. Every staged blob equals
+both current worktree bytes and its accepted final-inputs.json entry; preceding
+373core/32focused/7actual integration gates transfer by byte identity, no new test.
+Binary staged diff SHA256:
+6eb3e3d01832957691b01869099a95e5203588959e8fdf523bb898b3cd322a78.
+Only unstaged path flake.nix (user mirror); root lock untouched.
+
+tmp/commit.md generated solely from staged changes: feat(document): support
+cross-directory INCLUDE with real extension coverage; Chinese body, Refs #1,
+additive capability/no new breaking footer. Split assessment not necessary,
+difficulty medium: implementation, input contract and native/real fixture coverage
+serve one coupled cross-directory interoperability change. Default frontend switch
+not selected in this commit; overall issue closure remains separate. No ordinary
+commit or external tracking write. Candidate still uncommitted, no project parent.
+

@@ -41,8 +41,12 @@ manifest hashes/provenance in evidence. Immutable necessary9text archive:
 archive/2026-10-14T06-28-22Z--1a254a7/MANIFEST.md. No inferred project parent.
 
 Five project changes README.org/preprocess module/ERT/optional integration runner
-and fixtures, user mirror untouched, lock unchanged/index empty. Next user ordinary
-review/staging/commit, then verify committed bytes/message. Latest section17 selected
+and fixtures now explicitly staged under user authorization; user mirror remains
+the only unstaged path, lock unchanged. Complete staged diff reviewed, --check passes
+and all five staged/worktree files byte-match the accepted final-inputs manifest.
+Message tmp/commit.md: feat(document): support cross-directory INCLUDE with real
+extension coverage, Refs #1, no new breaking footer. Suitable as one coherent commit.
+Next user ordinary commit, then verify committed bytes/message. Latest section17 selected
 acceptance complete; original proposal's formal frontend/default dispatcher policy
 was not selected here and remains separate. Do not automatically close#1/external
 tracking: distinguish achieved opt-in interoperability from any adopted frontend
@@ -86,7 +90,7 @@ feat(document)! subject, BREAKING CHANGE for removed INFO origins and Refs #1.
 Index empty; only mirror remains dirty. Previous gates transfer by exact candidate
 byte identity; no new tests solely for commit verification or external issue write.
 Phase4 selected integration now accepted as described above;
-issue #1 still incomplete and Refs #1 appropriate. No new stage beyond Phase2c.
+Refs #1 remains appropriate pending separate overall issue/frontend scope review.
 
 Necessary native comparison/reproduction artifacts (seven texts plus manifest)
 archived immutably at archive/2026-10-14T00-59-44Z--c525095/MANIFEST.md. Capture
@@ -222,8 +226,8 @@ remain unsupported.
 ## Baseline and staging
 
 - Current main is the native INCLUDE parameter revision on bounded preprocessing
-  revision; lock selects Org9.8.10. Index empty; accepted Phase4 README/module/ERT/
-  optional integration runner+fixture changes and user mirror remain unstaged.
+  revision; lock selects Org9.8.10. Accepted Phase4 README/module/ERT/optional
+  integration runner+fixture changes staged; only user mirror remains unstaged.
   Committed Phase2c diff/message matches reviewed candidate.
   Phase 3b committed diff matches staged/validated candidate SHA-256 in evidence.
   Release-era observations below describe their historical baseline.
