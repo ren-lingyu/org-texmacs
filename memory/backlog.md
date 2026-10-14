@@ -23,7 +23,7 @@ decision.
 
 ## Active next
 
-### Active: Phase 5 formal frontend/preprocessing integration
+### Completed selected Phase 5a-5d: formal frontend/preprocessing integration
 
 INBOX section18 reviewed suitable and user now requested execution on Phase4
 baseline; task isolated120s builds/240s checks/network authorized.5a four locked
@@ -33,8 +33,12 @@ Original review memory/frontend-preprocessing-plan-review.md.5a interface matrix
 three-consumer regression. Keep PDF inside original transaction checks; guard
 coexistence already covered by core loaded-frontend tests; expose provider limits
 as default support change; independent buffer-local discovery boolean default nil
-selected for both full/local exports.5b/5c implemented with eight new core cases,
-first73focused pass;5d two real frontend cases/HTML-blog retarget underway, gate pending.
+selected for both full/local exports. Eight new core and two new real frontend cases,
+joint HTML/blog retarget;79focused/9real/381core ERT/all10checks accepted.
+Seven project files uncommitted/unstaged, only other dirty path user mirror.
+Contract/evidence/archive in current memory. Next user review/stage/commit then
+identity verification; selected INBOX#1 architecture/frontend goals complete and
+closing footer suitable, live issue page unavailable/no remote state change.
 Generic exporter, full lifecycle/provenance/resources and key changes remain
 deferred;#1 closure judged after selected frontend architecture acceptance.
 
@@ -49,7 +53,7 @@ STM actual resource/native relative-output enhancement remain separate; not auto
 requirements inferred from unsupported syntax. New optional integration runner needs
 caller-supplied pinned extensions/runtime, no default dependency changes. User project
 commit identity verified; index empty/only mirror dirty. Overall#1 closure must distinguish completed opt-in
-interoperability from original proposal's frontend switch if still adopted; no external
+interoperability from original proposal's frontend switch, now completed by Phase5; no external
 issue mutation or silently expanded implementation. Latest17 targets complete.
 
 ### Completed: Phase 2c native preprocessing simplification

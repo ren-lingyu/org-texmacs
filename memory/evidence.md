@@ -1936,3 +1936,56 @@ verification. No external issue closure or further phase selected. This observat
 supports associating the committed snapshot with this verification checkpoint;
 it does not retrospectively establish original uncommitted-run commit provenance.
 
+## Phase 5 selected frontend acceptance (2026-10-14)
+
+User selected INBOX section18 execution on verified6f018de Phase4 baseline,
+authorized120s isolated probes/focused/integration and repeated exact240s full
+check/network/store/cache/logs under tmp/issue-1-phase-5. No root lock edits.
+Four baseline probes pass3.144554s: loaded ox guard/hooks/nested generic rejection,
+actual callback PDF/changed native dependency, scoped discovery, full/direct profile.
+Initial isolated copy/load/let harness errors repaired; no production defect inferred.
+
+Frontend full route uses existing --preprocess-convert; scoped direct with/without
+discovery uses existing bibliography/prepare callback transactions. Default-nil
+buffer-local org-texmacs-export-discover-bibliography explicit for all consumers/
+scopes; captured before prompts/checks through final byte return. Shared byte-view
+initializer, no public signature/protocol/pure I/O change. Native serialize/PDF
+within original transaction; global generic guard/menu/keys unchanged. Full provider
+profile now constrains defaults, documented. Context refuses unresolved ROAM_INCLUDE
+keyword and selected-root mount before discarded metadata. No package converter/DB
+adapter or source-origin recovery. Public direct APIs/explicit text priority retained.
+
+Eight new core ERT plus existing legacy consumer failure seams updated;79focused
+54.728771s, final full rerun57.349582s. Two new actual frontend cases and joint
+HTML/blog retarget;9real10.629183s, final11.487037s. Actual modes/SQLite/queries/
+hooks/advice, false discovery explicit failure/true .tm view/file equality/native
+PDF text, missing-node preserve existing .tm/PDF, local mount refusal and HTML/blog
+publication/source/teardown restoration. Initial8/9 was PDF fi ligature assertion;
+NFKC semantic comparison corrects that test, no package/render changes.
+
+Exact240s full flake check exits0, all checks passed/logged10,381/381 core ERT
+178.555109s; strict compilation/package-lint and4candidateprobes3.585992s pass.
+Other platforms omitted, no GUI/all-registry/native resource/full lifecycle claim.
+25root source/lock/test inputs byte-equal isolated final snapshot before/after gate;
+final-inputs.json SHA256740964a9c69fa8707461aa32dc48dc3d5aa306314840646a500c2960cff122ad.
+11copied foreign modules match Phase4 source manifest exactly, same pinned revisions;
+extension manifest SHA256f7c7b8d398364515e0497789bfbcacc2d425f33a9937ee28fb0a63c4b74448b5.
+Root lock118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a and
+mirror57bac69941349d236cdc257eb11fd587ad2bc860e27858b3fe210432f818d62f unchanged.
+
+Nine necessary original-byte pure-text artifacts verified and archived immutably:
+archive/2026-10-14T07-51-02Z--6f018de/MANIFEST.md. Capture HEAD is context,
+baseline probe provenance separate from uncommitted candidate/actual fixture log;
+archive-only checkpoint has no inferred project parent. Maintained ordinary tests
+and foreign source histories preserve code, no personal DB/PDF/binary/checkout copy.
+
+Seven project files changed: README.org, ox-texmacs.el, org-texmacs.el,
+org-texmacs-context.el, tests/ert/ert.el, tests/integration/default.nix and phase4.el.
+Index empty, no ordinary staging/commit/issue write; root mirror other dirty path.
+Selected INBOX#1 architecture and formal frontend goals complete, closing footer
+appropriate after user review/commit. Live GitHub issue page fetch failed/cache miss
+and search provided no relevant page; no current remote-content/status claim.
+Generic lifecycle, full native resources/selection origins/menu keys remain separate
+nonblocking scope. Provider guarantees and ordinary partial-write error boundary
+unchanged. No new verification solely for project-parent association.
+

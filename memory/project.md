@@ -725,9 +725,37 @@ Nix integration runner takes explicit runtime/extension sources; no default pack
 dependency additions, lock/mirror preserved. Other platforms/GUI/all configs/full
 resource support/generic exporter/default frontend switch not claimed. Project
 commit identity verified; immutable evidence archive in evidence/current memory.
-Section18 formal frontend integration is a reviewed proposal, not new support:
-memory/frontend-preprocessing-plan-review.md. Current dispatcher still uses direct
-adapters; default routes/discovery/consumer integration await selected5a contract.
+Section18 formal frontend integration is now accepted as described below;
+original review memory/frontend-preprocessing-plan-review.md remains historical.
+
+## Phase 5 accepted formal frontend/preprocessing integration
+
+Uncommitted candidate on verified Phase4 revision. Optional ox-texmacs retains
+backend/menu/keys and generic guard but full unselected unnarrowed commands now
+use existing bounded preprocessing provider, with native parameters and current
+ordinary-level/local/path/alias/UTF8/budget constraints. Subtree/region/narrowing
+remain direct; unresolved ROAM_INCLUDE keyword/selected-root mount fail explicitly.
+One preparation/document per invocation, serialize/PDF inside original provider/
+source/config/hook/dependency checks. No fallback/second converter/general provenance.
+Independent buffer-local boolean org-texmacs-export-discover-bibliography default
+nil applies full/local; true reuses standard Cite discovery/fixed acquisition.
+Capture route/options before naming/prompts, check discovery before/after consumers
+and final return. False skips acquisition/collector but not external hook/filter DB
+effects. Direct explicit APIs and explicit-text priority unchanged.
+Shared readonly unibyte view initialization; original source naming/overwrite/target
+protection/byte writer/display cleanup retained, write failure can leave partial
+output. No new public preprocessed PDF adapter needed or native protocol change.
+Contract memory/frontend-preprocessing-contract.md. README/API docs updated.
+
+Eight new core ERT,79focused57.349582s,9real fixtures11.487037s,381core178.555109s,
+all10logged isolated flake checks/strict compile/lint accepted. Actual include/
+organize+SQLite three frontend outputs/discovery false-true/PDF normalized text,
+missing nodes/local mount refusal, HTML before-after and actual blog publish;
+existing selection/options/source/dependency/native failure regressions maintained.
+25project+11foreign modules match manifests. Only x86_64-linux/pinned fixtures,
+not all registries/GUI/general resource rendering/whole generic lifecycle.
+Selected local issue#1 architecture/frontend complete subject to user review/commit;
+remote page failed to fetch, no external issue state/content claim/write.
 
 ## Phase 2c accepted native preprocessing simplification
 
@@ -768,16 +796,16 @@ evidence/backlog and
 archive/2026-10-12T19-11-59Z--b229454/MANIFEST.md. This investigation does not
 extend support claims, allow pure lowering I/O, or remove the guard.
 
-Current source preparation supports bounded citation-key parse-tree filters
+Current direct source preparation supports bounded citation-key parse-tree filters
 through standard Org install/apply tools. It does not run buffer-level export
 preprocessing by default; protected composition and Cite discovery are opt-in above.
 Standard key-only AST filters
 can participate; other ecosystem extension semantics are not automatically
 consumed by TeXmacs. Backend guard admits unrelated backends; maintained
 isolation includes ASCII and the released controlled HTML composition
-case below and now the selected real package/SQLite/HTML/blog fixtures above;
+case below and now the selected real package/SQLite/frontend/HTML/blog fixtures above;
 other package/database configurations remain unverified.
-Future information-flow design is tracked in issue #1:
+Selected information-flow design and frontend work is tracked in issue #1:
 https://github.com/ren-lingyu/org-texmacs/issues/1. It preserves canonical source,
 AST-first/ownership/provenance and is not a v0.4.0 release blocker.
 Temporary org-collect-keywords rebinding is scoped to private restricted option

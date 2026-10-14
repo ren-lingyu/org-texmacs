@@ -13,17 +13,28 @@ discovery entry/scope clarified in memory/frontend-preprocessing-plan-review.md.
 5a four locked probes pass3.144554s; contract selected in
 memory/frontend-preprocessing-contract.md.5b/5c minimum frontend routing implemented:
 shared byte-buffer helper, independent discovery option, original consumer callback
-transaction. Eight new core ERT, first73focused49.631466s pass; additional local
-discovery file/PDF+overrides coverage now running.5d two actual frontend fixtures
-and joint HTML/blog retarget added; first8/9 failed only PDF fi ligature assertion,
-corrected NFKC semantic inspection, running final integration. No provider weakening.
+transaction. Eight new core ERT;79focused54.728771s pass, includes all local
+discovery byte/file/PDF+overrides.5d nine actual extension fixtures10.629183s pass:
+two new frontend cases and joint HTML/blog retarget, PDF NFKC semantic inspection.
+No provider weakening. Exact240s full gate exits0:381core ERT178.555109s,
+all10checks/strictcompile/package-lint;79focused57.349582s,9real11.487037s and
+4probes3.585992s in full rerun pass.25project inputs and11copied foreign modules
+match manifests;740964a9... final project manifest. Lock/mirror unchanged.
+Selected5a-5d accepted. Necessary9text evidence archived immutably:
+archive/2026-10-14T07-51-02Z--6f018de/MANIFEST.md; no inferred candidate project parent.
 Context additionally rejects unresolved ROAM_INCLUDE keyword and subtree mount;
 prevents dropped selected-root mount metadata without special converter or DB query.
 No INBOX edits selected. Explicit source-buffer-local frontend discovery boolean
 org-texmacs-export-discover-bibliography defaults nil, applies full and local.
 PDF/native serialization remain inside provider transaction; no fallback/guard
-removal. Next5b/5c core coverage/docs and5d real frontend fixture then gates. Overall#1
-closure after selected frontend acceptance, not generic export/resource parity.
+removal. Seven project files changed: README.org, ox-texmacs.el, org-texmacs.el,
+org-texmacs-context.el, tests/ert/ert.el and both tests/integration files.
+No project staging/commit. Next user review/explicit-path staging/message then user
+commit and identity verification. Full frontend default/bounded profile is a public
+behavior change, document that when drafting commit. Selected local INBOX#1
+architecture/frontend acceptance complete; closing footer appropriate after review,
+not generic export/resource parity. Live issue page lookup failed; no current remote
+state/content claim or external tracking write.
 
 Rewritten INBOX section17 Phase4a-4d implemented, accepted and user committed
 on native parameter baseline1a254a7. User prioritizes completed working buffer +
@@ -70,11 +81,11 @@ all five committed blobs match accepted final-inputs manifest. Full commit messa
 matches tmp/commit.md, feat(document) subject, Refs #1, no new breaking footer.
 Index empty; user mirror remains the only dirty path, lock unchanged. Prior gates
 transfer by byte identity; no new test or external tracking write.
-Phase5 is now selected and underway as above. Latest section17 selected
+Phase5 is now implemented and accepted as above. Latest section17 selected
 acceptance complete; original proposal's formal frontend/default dispatcher policy
 was not selected here and remains separate. Do not automatically close#1/external
-tracking: distinguish achieved opt-in interoperability from any adopted frontend
-switch remaining in overall issue scope. No resource work selected.
+tracking based solely on historical Phase4 state: Phase5 now completes selected
+formal frontend switching. No resource work selected.
 
 Phase2c native preprocessing simplification implemented, accepted and user-committed
 on Phase2b baseline; exact commit diff/message verified on 2026-10-14.
@@ -244,14 +255,16 @@ native bytes are complete. Public new-file-only APIs stay exclusive. Atomic
 replacement, backups and target-version locking are not adopted prerequisites.
 User rejected a standalone PDF preview command; no such command is adopted.
 The frontend supports synchronous buffer/subtree/region/narrowing actions.
-Generic string export/publishing, preprocessing and visible-only selection
-remain unsupported.
+Generic string export/publishing and visible-only selection remain unsupported.
+Full dispatcher preprocessing is now accepted as described in Phase5 above;
+direct source APIs and local scopes retain direct preparation.
 
 ## Baseline and staging
 
 - Current main is the cross-directory INCLUDE/real extension coverage revision on
   the native INCLUDE parameter revision; lock selects Org9.8.10. Phase4 committed
-  diff/message verified; index empty, only user mirror remains unstaged.
+  diff/message verified; index empty. Seven accepted Phase5 project files and
+  unchanged user mirror remain unstaged; no Phase5 ordinary commit yet.
   Committed Phase2c diff/message matches reviewed candidate.
   Phase 3b committed diff matches staged/validated candidate SHA-256 in evidence.
   Release-era observations below describe their historical baseline.

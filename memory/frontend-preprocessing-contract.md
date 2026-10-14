@@ -36,11 +36,19 @@ ordinary file write failure can leave partial output, no rollback/atomic claim.
 PDF resource restrictions/cleanup retained. No new public preprocessed PDF API
 needed: frontend callback composes existing document/native consumer.
 
-5b/5c implemented with eight new core ERT; first73focused49.631466s pass. Expanded
-local discovery file/PDF/overrides coverage running.5d real frontend fixtures
-and HTML/blog publication now use frontend; initial8/9 failure solely PDF fi ligature
-assertion corrected by NFKC semantic comparison, final integration running.
+5b/5c implemented with eight new core ERT;79focused54.728771s pass, local discovery
+buffer/.tm/PDF and overrides included.5d nine actual fixtures10.629183s pass;
+two new frontend cases and joint HTML/blog publication now use frontend.
+PDF fi ligature handled with NFKC semantic comparison.
 Context refuses unresolved ROAM_INCLUDE keyword/subtree mount before root metadata
-is dropped; no extension converter/DB adapter. Core/global gate still pending.
-Next gates and necessary archival. No project staging/commit or
-external tracking mutation authorized by execution request.
+is dropped; no extension converter/DB adapter. Exact240s full gate exits0:
+381/381 core ERT178.555109s, all10logged flake checks/strictcompile/package-lint,
+79focused57.349582s/9real11.487037s/4probes3.585992s pass.25project inputs and
+11copied foreign modules byte-match manifests. Selected5a-5d accepted, uncommitted.
+Necessary nine texts archived immutably:
+archive/2026-10-14T07-51-02Z--6f018de/MANIFEST.md. Capture context is Phase4 commit,
+not original candidate run provenance. No project staging/commit or external write.
+Selected local INBOX issue#1 architecture/frontend goals complete, suitable for
+closing footer after user review/commit. Live GitHub page unavailable this run;
+do not claim current remote state/content. Generic/lifecycle/resource/menu goals
+remain separate nonblocking scope, not reasons to leave selected architecture open.
