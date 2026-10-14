@@ -987,7 +987,7 @@ or =nil= and separately enables discovery over the composed document.
 Existing APIs and dispatcher actions retain their earlier defaults.
 
 #+begin_src emacs-lisp
-;; Full unnarrowed source; includes share its local resource directory.
+;; Full unnarrowed source; native INCLUDE can read other local directories.
 (org-texmacs-export-from-buffer-preprocessed org-source-buffer nil nil t)
 #+end_src
 
@@ -1009,20 +1009,21 @@ Selection intersecting only part of an original STM fragment/block fails explici
 no original character map or textual recreation of Org selection rules is used.
 Native location lookup and content preparation use transaction-local fixed readers
 with original path identities; no occurrence mirrors are created.  Scoped helper
-bindings are restored on success/error.  Real third-party advice compatibility
-remains unverified.
+bindings are restored on success/error.  Real extension integration is validated
+with the pinned isolated fixtures described below; broader advice behavior is not
+inferred from those cases.
 
 The source must be full, unnarrowed and use ordinary headline levels
 (=org-odd-levels-only= disabled for both source and native defaults).  Visiting
 identity and resource base must agree; existing identity is regular or absent.
-Included local UTF-8 regular files share the lexical root directory and are limited
+Included local UTF-8 regular files may be in different directories and are limited
 to 64 KiB each.  Original captured texts total at most 256 KiB, final working text
 at most 256 KiB, recursion at most eight levels and includes at most 32 expansions
 including root.  Repeated reads reuse fixed text.  Symlink/physical aliases, cycles,
 remote/URL/tilde/control paths and unsupported INCLUDE wrappers/options fail.
 Native recursion policy remains authoritative; nested location-only references
 to the same file can be rejected even when their selected headings differ.
-Cross-directory STM resources and root subtree/region/narrowing remain separate.
+Root subtree/region/narrowing remain separate.
 
 Prepared INFO owns =:texmacs-original-source=, =:texmacs-preprocessed-source= and
 =:texmacs-preprocessing-sources= (original acquired file identities/texts).
@@ -1030,8 +1031,20 @@ These replace the adapter's earlier =:texmacs-composition-sources=,
 =:texmacs-source-origins= and =:texmacs-island-origins= data.  Exact original
 ranges, occurrence IDs and generic AST origins are no longer part of this adapter's
 contract.  Final islands are identified from the working document and owned by
-existing preparation.  The shared resource base preserves accepted relative STM
-meaning; native relocation of ordinary links does not justify cross-directory STM.
+existing preparation.  Native Org relocates ordinary file links across directories.
+Relative bibliography declarations and STM resources use the final document's
+effective context; they do not automatically retain the included file's directory.
+This meaning can differ from standalone conversion.  Native STM resource parsing,
+path resolution and rendering remain separate; PDF resource restrictions still apply.
+
+A caller may also pass an already preprocessed Org working buffer to the existing
+=org-texmacs-prepare-buffer=, =org-texmacs-document-from-buffer= or byte adapter.
+Provide the working buffer with its effective supported Org configuration,
+=buffer-file-name= and =default-directory=.  Preparation owns a snapshot of that
+input and checks it during conversion; it does not invoke or reconstruct the
+external preprocessing provider, its source history, file reads or database state.
+That provider owns its preprocessing guarantees.  The opt-in preprocessing wrapper
+above remains a separate provider with its own native-read/dependency checks.
 Phase 1 citation-key filters and optional bibliography discovery run once;
 explicit bibliography texts retain priority.  Pure lowering performs no file I/O.
 
@@ -1040,6 +1053,31 @@ attributes plus byte hashes are checked across reads, callbacks, native waits an
 before final document/bytes return.  Changes reject results without retries,
 rediscovery or filter replay.  Observations are not filesystem/database atomicity,
 an ABA guarantee or a security sandbox.  No output file is published by this adapter.
+
+** Optional real Org extension integration
+=tests/integration/default.nix= provides a separate ERT check.  Its caller supplies
+=pkgs=, an =emacs= containing this package and Org-roam, and =extensionSources=
+with pinned Elisp source directories named =include=, =organize= and =blog=.
+The normal core checks do not install these extensions.  The fixture creates its
+own Org files, SQLite database, ID locations and publication directories, runs
+actual package modes/hooks/advice/queries, and removes them after each case.
+
+The maintained cases cover =org-roam-include= node/headline expansion, recursive
+cross-directory includes, native parameter forwarding, file-node replacement
+mounts, cycles and missing nodes; =org-roam-organize= managed bibliography discovery,
+UUID-to-citekey AST filtering and missing refs; and joint TeXmacs conversion plus
+standard HTML export and actual =org-roam-blog= publication.  They check source
+isolation, helper/hook restoration, mode teardown and generated HTML content.
+No package-specific conversion, database-query replacement or read interception is
+used for the third-party implementations.
+
+The investigated sources are include =ca62c8f=, organize =eaaee8e= and blog
+=778d410=, with project-locked Emacs 31.1, Org 9.8.10 and Org-roam 20260425.1623.
+Use exact source revisions with this runner; integration evidence is scoped to the
+maintained fixture inputs, not arbitrary registries, databases, resource rendering
+or all package configurations.  Their preprocessing internals own their external
+state guarantees.  Preparation owns the supplied final working input; the optional
+native preprocessing provider additionally checks the dependencies it acquires.
 
 ** Headline metadata and presentation
 Document conversion snapshots these standard Org options from the source

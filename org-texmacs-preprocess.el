@@ -187,7 +187,8 @@ Return working text and receipts."
              (org-texmacs--preprocess-fail "Native composition configuration changed"))
            (org-texmacs--bibliography-check-receipts receipts))
          (context (file)
-           (org-texmacs--preprocess-context tags headings links info file base filter-value)
+           (org-texmacs--preprocess-context
+            tags headings links info file (if file (file-name-directory file) base) filter-value)
            (setq-local org-texmacs-document-style (copy-sequence style))
            (setq-local org-texmacs-document-initial (org-texmacs--context-copy initial)))
          (protect ()
@@ -223,9 +224,7 @@ Return working text and receipts."
              spans))
          (capture (file)
            (guard)
-           (org-texmacs--bibliography-local-path file base)
-           (unless (equal (file-name-directory file) base)
-             (org-texmacs--preprocess-fail "Dependency resource directory conflicts with root"))
+           (setq file (org-texmacs--bibliography-local-path file base))
            (or (cdr (assoc file cache))
                (let* ((attrs (org-texmacs--bibliography-file-attributes file))
                       (identity (nthcdr 3 attrs)))
@@ -296,8 +295,6 @@ Return working text and receipts."
                                           (> (plist-get parameters :minlevel) 0)))
                            (org-texmacs--preprocess-fail "Unsupported INCLUDE parameters"))
                          (org-texmacs--bibliography-local-path file base)
-                         (unless (equal (file-name-directory file) base)
-                           (org-texmacs--preprocess-fail "Include resource directory conflicts with root"))
                          (cl-incf occurrences)
                          (when (> occurrences 32) (org-texmacs--preprocess-fail "Occurrence budget exceeded"))
                          (capture file) parameters)))
@@ -394,7 +391,9 @@ local UTF-8 source reads.  STM shielding preserves line counts for location,
 only-contents, lines and minlevel selection.  Partial STM selections fail.
 INFO owns original/final working text and acquired original dependency texts;
 no exact original position, occurrence or generic AST origin map is promised.
-Full unnarrowed ordinary-level sources and one local resource base are required.
+Full unnarrowed ordinary-level sources and a local resource base are required.
+Cross-directory INCLUDE uses native link relocation.  STM and bibliography paths
+use the final working document context, without recovering original directories.
 Includes have limits of 64 KiB/file, eight levels, 32 expansions including root
 and 256 KiB original-source/final-working bytes.  Reject unsupported wrappers,
 paths, aliases, configuration changes and damaged protected STM.  No full native

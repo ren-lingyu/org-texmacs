@@ -7726,4 +7726,86 @@ Only tests with explicit example names use this helper; do not run Babel."
     (erase-buffer) (insert "#+INCLUDE: \"bad.org\"\n")
     (should-error (org-texmacs-test--compose) :type 'org-texmacs-document-error)))
 
+(ert-deftest org-texmacs-preprocess-cross-directory-native-links-and-notes ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (make-directory "parts/sub" t)
+      (write-region "* Alpha\n#+INCLUDE: \"sub/b.org\"\n" nil "parts/a.org" nil 'silent)
+      (write-region "[[file:asset.txt][Asset]] [fn:a] (math \"x\")\n[fn:a] Note\n"
+                    nil "parts/sub/b.org" nil 'silent)
+      (insert "#+INCLUDE: \"parts/a.org::*Alpha\" :only-contents t :minlevel 2\n")
+      (setq-local buffer-file-name (expand-file-name "root.org"))
+      (let* ((before (org-texmacs-test--document-buffer-state (current-buffer)))
+             (input (org-texmacs-prepare-buffer-preprocessed (current-buffer)))
+             (text (plist-get (org-texmacs-input-info input) :texmacs-preprocessed-source))
+             (document (org-texmacs-document input)))
+        (should (string-match-p "parts/sub/asset.txt" text))
+        (should (string-match-p "Note" text))
+        (should (= (length (plist-get (org-texmacs-input-info input) :texmacs-preprocessing-sources)) 2))
+        (should (string-match-p (regexp-quote (expand-file-name "parts/sub/asset.txt"))
+                               (prin1-to-string (org-texmacs--native-document-wire document))))
+        (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))
+        (should (string-match-p "TeXmacs" (org-texmacs-export-from-buffer-preprocessed (current-buffer))))))))
+
+(ert-deftest org-texmacs-preprocess-cross-directory-final-bibliography-base ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (make-directory "parts")
+      (write-region "Not BibTeX\n" nil "parts/refs.bib" nil 'silent)
+      (write-region "#+bibliography: refs.bib\n[cite:@external-key]\n#+print_bibliography:\n"
+                    nil "parts/a.org" nil 'silent)
+      (insert "#+INCLUDE: \"parts/a.org\"\n")
+      (let* ((input (org-texmacs-prepare-buffer-preprocessed (current-buffer) nil nil t))
+             (bibliography (org-texmacs-input-bibliography input)))
+        (should (assoc (expand-file-name "refs.bib") bibliography))
+        (should-not (assoc (expand-file-name "parts/refs.bib") bibliography))
+        (should (string-match-p "bib-list" (prin1-to-string
+                                            (org-texmacs-document-body (org-texmacs-document input)))))))))
+
+(ert-deftest org-texmacs-preprocess-cross-directory-stm-final-context ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (make-directory "parts")
+      (write-region "#+begin_texmacs\n(image \"asset.png\")\n#+end_texmacs\n" nil "parts/a.org" nil 'silent)
+      (insert "#+INCLUDE: \"parts/a.org\"\n")
+      (let* ((input (org-texmacs-prepare-buffer-preprocessed (current-buffer)))
+             (document (org-texmacs-document input)))
+        (should (equal (plist-get (org-texmacs-input-info input) :texmacs-preprocessed-source)
+                       "#+begin_texmacs\n(image \"asset.png\")\n#+end_texmacs\n"))
+        (should (equal (org-texmacs-input-resource-base input) default-directory))
+        (should (string-match-p "asset.png" (prin1-to-string (org-texmacs-document-body document))))
+        (should-not (plist-member (org-texmacs-input-info input) :texmacs-island-origins))
+        (should-error (org-texmacs-document-pdf document) :type 'org-texmacs-error)))))
+
+(ert-deftest org-texmacs-preprocess-completed-working-buffer-context ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (make-directory "parts")
+      (write-region "* Included\nText (math \"x\")\n" nil "parts/a.org" nil 'silent)
+      (insert "#+INCLUDE: \"parts/a.org\"\n")
+      (let ((canonical (buffer-string)) (directory default-directory)
+            (file (expand-file-name "root.org")))
+        (with-temp-buffer
+          (org-mode) (setq default-directory directory buffer-file-name file)
+          (setq-local org-export-with-toc nil)
+          (insert canonical) (org-export-expand-include-keyword)
+          (let* ((before (org-texmacs-test--document-buffer-state (current-buffer)))
+                 (org-export-before-processing-functions
+                  (list (lambda (&rest _) (ert-fail "Preparation replayed preprocessing"))))
+                 (input (org-texmacs-prepare-buffer (current-buffer))))
+            (should (equal (org-texmacs-input-source-file input) file))
+            (should (equal (org-texmacs-input-resource-base input) directory))
+            (should-not (plist-get (org-texmacs-input-info input) :with-toc))
+            (should (org-texmacs-document-p (org-texmacs-document input)))
+            (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))))
+        (should (equal canonical (buffer-string)))))))
+
+(ert-deftest org-texmacs-preprocess-cross-directory-partial-stm-rejected ()
+  (org-texmacs-test--with-bibliography-files
+    (make-directory "parts")
+    (write-region "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n" nil "parts/a.org" nil 'silent)
+    (insert "#+INCLUDE: \"parts/a.org\" :lines \"2-3\"\n")
+    (should-error (org-texmacs-prepare-buffer-preprocessed (current-buffer))
+                  :type 'org-texmacs-document-error)))
+
 ;;; ert.el ends here
