@@ -2,6 +2,23 @@
 
 ## Active objective
 
+User selected read-only feasibility investigation of nonblocking export and GAW
+recording, explicitly no business-code changes. Static investigation complete:
+memory/nonblocking-export-investigation.md. Feasible; prototype relatively small,
+production compatibility medium to high effort. Existing external native worker
+is called synchronously; CPU parsing/lowering also stays in Emacs. Cooperative
+thread could preserve much stack/configuration for I/O-dominated work, but dynamic
+worker-busy is thread-local and shared worker serialization/callback audit needed.
+Callback jobs require resumable transaction state; child Emacs isolates CPU but
+needs explicit context/function/environment portability and parent-side guards.
+No route adopted, no profiling/test/prototype/process launch or code edit. Prior
+Issue6 test permissions do not authorize tests for this new investigation task.
+Only user flake mirror dirty, ordinary index empty. Next if user selects further
+work: measure actual stage time AND editor responsiveness before implementation.
+No new raw archive: no unique experiment/retired source; findings extracted.
+
+## Completed Issue #6
+
 Issue6 implementation, automated and user interactive acceptance complete,
 user committed. Read-only verification confirms the three committed blobs and
 complete binary diff equal the accepted staged/tested candidate and archive patch.

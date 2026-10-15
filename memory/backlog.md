@@ -389,12 +389,15 @@ commit. This is a user-reported responsiveness observation, not a measured
 performance regression or an established cause. Exact input, duration, stage and
 impact on editing/input handling have not been characterized.
 
-Keep separate from Issue6 buffer cleanup/configuration correctness and its staged
-fix. No profiling, optimization, async/parallel export, incremental conversion or
-new implementation is selected. If user later selects investigation, first measure
-the actual interactive path and input responsiveness, identify the blocking stage,
-then propose a bounded remedy preserving snapshot/ownership/error contracts.
-Do not assume that parallelization or asynchronous APIs are the required solution.
+Keep separate from committed Issue6 correctness fix. User subsequently selected
+read-only nonblocking-export feasibility investigation; completed findings in
+memory/nonblocking-export-investigation.md. Feasible, prototype relatively small,
+reliable compatibility medium to high effort. Same-process cooperative threads,
+callback worker jobs and child Emacs compared; no route adopted. Dynamic busy
+binding is not a cross-thread mutex; child configuration/hooks/DB portability and
+long-lived source guards are important boundaries. No benchmark/prototype/code
+change or async/parallel implementation selected. Next if authorized: measure
+actual interactive stage timing and input responsiveness, then choose remedy.
 
 ### Explicit export menu key configuration — Phase 6 accepted and committed
 
