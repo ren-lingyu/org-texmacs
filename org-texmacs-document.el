@@ -531,6 +531,40 @@ Visit named footnote bodies at first use.  Never query buffers or files."
        (mapcar (lambda (line) (org-texmacs--document-create :body line))
                (or (split-string value "\n" nil) '(""))))))))
 
+(defun org-texmacs--document-table-alignment (contents)
+  "Extract at most one complete alignment row from validated CONTENTS.
+Return (ROWS ALIGNMENTS FORMAT-ROW), keeping ROWS in source order.
+ALIGNMENTS is nil or a list of column strings l, c or r.  FORMAT-ROW is the
+removed row identity or nil.  Never mutate the Org AST."
+  (let ((case-fold-search nil) rows alignment format-row)
+    (dolist (row contents)
+      (if (eq (org-element-property :type row) 'rule)
+          (push row rows)
+        (let* ((fields
+                (mapcar
+                 (lambda (cell)
+                   (let ((values (org-element-contents cell)))
+                     (when (and (proper-list-p values) (cl-every #'stringp values))
+                       (string-trim (apply #'concat values)))))
+                 (org-element-contents row)))
+               (control
+                (or (org-export-table-row-is-special-p row nil)
+                    (cl-some
+                     (lambda (text)
+                       (and text (string-match-p
+                                  "\\`<\\(?:[lcr][0-9]*\\|[0-9]+\\)>\\'" text)))
+                     fields))))
+          (if (not control)
+              (push row rows)
+            (unless (cl-every (lambda (text) (member text '("<l>" "<c>" "<r>")))
+                              fields)
+              (org-texmacs--document-fail row "Unsupported table control row"))
+            (when alignment
+              (org-texmacs--document-fail row "Multiple table alignment rows"))
+            (setq alignment (mapcar (lambda (text) (substring text 1 2)) fields)
+                  format-row row)))))
+    (list (nreverse rows) alignment format-row)))
+
 (defun org-texmacs--document-pack (tag parts)
   "Wrap lowered PARTS in TAG, prefixing provenance paths by child index."
   (let ((index 0) (children nil) (paths nil) (file-paths nil))
@@ -1185,7 +1219,7 @@ from one snapshot."
              (list (format "%d" row) (format "%d" row) "1" "-1"
                    property "1ln"))))
          (table-block (node ancestors)
-           (let ((contents (org-element-contents node)))
+           (let ((contents (org-element-contents node)) alignment)
              (unless (and (eq (org-element-property :type node) 'org)
                           (null (org-element-property :tblfm node))
                           (proper-list-p contents) contents)
@@ -1213,8 +1247,21 @@ from one snapshot."
                                  cells))
                      (org-texmacs--document-fail row "Invalid table row")))
                   (t (org-texmacs--document-fail row "Unsupported table row")))))
-             (when (org-export-table-has-special-column-p node)
-               (org-texmacs--document-fail node "Unsupported special table column"))
+             (let* ((plan (org-texmacs--document-table-alignment contents))
+                    (filtered (car plan))
+                    (view node))
+               (setq alignment (cadr plan))
+               (when alignment
+                 ;; A format row must not hide a special column.  Reparent only
+                 ;; copied rows; prepared input and source identities stay intact.
+                 (setq view (org-element-copy node t))
+                 (apply #'org-element-set-contents view
+                        (cl-loop for original in contents
+                                 for copied in (org-element-contents view)
+                                 unless (eq original (nth 2 plan)) collect copied)))
+               (when (org-export-table-has-special-column-p view)
+                 (org-texmacs--document-fail node "Unsupported special table column"))
+               (setq contents filtered))
              (let ((columns nil) (row-number 0) (previous-rule nil)
                    rows rules)
                (dolist (row contents)
@@ -1246,15 +1293,26 @@ from one snapshot."
                      (setq previous-rule nil))))
                (unless (> row-number 0)
                  (org-texmacs--document-fail node "Org table has no data rows"))
+               (when (and alignment (/= (length alignment) columns))
+                 (org-texmacs--document-fail node "Table alignment column count differs"))
                (org-texmacs--document-pack
                 'tabular
                 (list
                  (org-texmacs--document-pack
                   'tformat
-                  (append (nreverse rules)
-                          (list
-                           (org-texmacs--document-pack
-                            'table (nreverse rows))))))))))
+                  (append
+                   (cl-loop for value in alignment for column from 1
+                            collect
+                            (org-texmacs--document-pack
+                             'cwith
+                             (mapcar
+                              (lambda (text) (org-texmacs--document-create :body text))
+                              (list "1" "-1" (number-to-string column)
+                                    (number-to-string column) "cell-halign" value))))
+                   (nreverse rules)
+                   (list
+                    (org-texmacs--document-pack
+                     'table (nreverse rows))))))))))
          (list-item (node kind ancestors)
            (when (or (org-element-property :checkbox node)
                      (org-element-property :counter node))

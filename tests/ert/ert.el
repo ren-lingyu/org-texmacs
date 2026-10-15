@@ -3644,6 +3644,123 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
            (row (cell "h3") (cell "h4"))
            (row (cell "a") (cell "b"))))))))))
 
+(ert-deftest org-texmacs-document-table-alignment-row-positions-and-ownership ()
+  :tags '(issue4)
+  (dolist (position '(0 1 2))
+    (with-temp-buffer
+      (org-mode)
+      (let ((lines '("| LeftLongest | MiddleLongest | RightLongest |\n"
+                     "| L | C | R |\n")))
+        (dotimes (index 3)
+          (when (= index position) (insert "| <l> | <c> | <r> |\n"))
+          (when (< index 2) (insert (nth index lines)))))
+      (let* ((source (buffer-string))
+             (input (org-texmacs-prepare-buffer (current-buffer)))
+             (print-circle t)
+             (before (prin1-to-string (org-texmacs-input-ast input)))
+             (document (org-texmacs-document input)))
+        (should
+         (equal (org-texmacs-document-body document)
+                '(document
+                  (tabular
+                   (tformat
+                    (cwith "1" "-1" "1" "1" "cell-halign" "l")
+                    (cwith "1" "-1" "2" "2" "cell-halign" "c")
+                    (cwith "1" "-1" "3" "3" "cell-halign" "r")
+                    (table
+                     (row (cell "LeftLongest") (cell "MiddleLongest") (cell "RightLongest"))
+                     (row (cell "L") (cell "C") (cell "R"))))))))
+        (should (equal before (prin1-to-string (org-texmacs-input-ast input))))
+        (should (equal source (buffer-string)))))))
+
+(ert-deftest org-texmacs-document-table-alignment-column-counts-and-rules ()
+  :tags '(issue4)
+  (dolist (count '(1 2 4))
+    (with-temp-buffer
+      (org-mode)
+      (let ((fields (make-list count "<c>")) (data (make-list count "x")))
+        (insert "| " (mapconcat #'identity fields " | ") " |\n"
+                "| " (mapconcat #'identity data " | ") " |\n"))
+      (let* ((body (org-texmacs-document-body
+                    (org-texmacs-document-from-buffer (current-buffer))))
+             (format (cadadr body)))
+        (should (eq (car format) 'tformat))
+        (should (= (length (cdr format)) (1+ count)))
+        (should (= (length (cdr (cadr (car (last format))))) count)))))
+  (with-temp-buffer
+    (org-mode)
+    (insert "|---+---|\n| <r> | <l> |\n| Head | Col |\n"
+            "|---+---|\n| 1 | 2 |\n|---+---|\n")
+    (should
+     (equal
+      (org-texmacs-document-body (org-texmacs-document-from-buffer (current-buffer)))
+      '(document
+        (tabular
+         (tformat
+          (cwith "1" "-1" "1" "1" "cell-halign" "r")
+          (cwith "1" "-1" "2" "2" "cell-halign" "l")
+          (cwith "1" "1" "1" "-1" "cell-tborder" "1ln")
+          (cwith "1" "1" "1" "-1" "cell-bborder" "1ln")
+          (cwith "2" "2" "1" "-1" "cell-bborder" "1ln")
+          (table (row (cell "Head") (cell "Col"))
+                 (row (cell "1") (cell "2"))))))))))
+
+(ert-deftest org-texmacs-document-table-alignment-caption-reference-and-files ()
+  :tags '(issue4)
+  (org-texmacs-test--with-worker
+    (let (documents)
+      (dolist (format '(nil "| <l> | <r> |\n"))
+        (with-temp-buffer
+          (org-mode)
+          (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n[[t]]\n\n"
+                  "#+name: t\n#+caption: Caption [[./caption.org][CaptionFile]]\n"
+                  (or format "") "| [[./asset.org][AssetFile]] | =<r>= <alpha> |\n"
+                  "\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
+          (push (org-texmacs-document-from-buffer (current-buffer)) documents)))
+      (let* ((aligned (car documents)) (plain (cadr documents))
+             (body (copy-tree (org-texmacs-document-body aligned))))
+        (cl-labels ((strip (node)
+                      (when (consp node)
+                        (when (eq (car node) 'tformat)
+                          (setcdr node
+                                  (cl-remove-if
+                                   (lambda (child)
+                                     (and (consp child) (eq (car child) 'cwith)
+                                          (equal (nth 5 child) "cell-halign")))
+                                   (cdr node))))
+                        (mapc #'strip (cdr node)))))
+          (strip body))
+        (should (equal body (org-texmacs-document-body plain)))
+        (should (equal (org-texmacs-document-stm-paths aligned)
+                       (org-texmacs-document-stm-paths plain)))
+        (should (= (length (org-texmacs-document-file-paths aligned)) 2))
+        (dolist (path (org-texmacs-document-file-paths aligned))
+          (let ((leaf (org-texmacs-document-body aligned)))
+            (dolist (index path) (setq leaf (nth (1+ index) leaf)))
+            (should (member leaf '("./caption.org" "./asset.org")))))
+        (should (consp (org-texmacs--native-encode-document aligned)))))))
+
+(ert-deftest org-texmacs-document-table-alignment-rejections ()
+  :tags '(issue4)
+  (dolist (source '("| <l> | <r> |\n| <l> | <r> |\n| a | b |\n"
+                    "| <l> | <r> |\n| a | b |\n| <r> | <l> |\n"
+                    "| <l> | |\n| a | b |\n"
+                    "| <l> | data |\n| a | b |\n"
+                    "| <r10> | data |\n| a | b |\n"
+                    "| <10> |\n| a |\n"
+                    "| <l> | <r> |\n"
+                    "|---+---|\n| <l> | <r> |\n|---+---|\n"
+                    "| <l> | <r> |\n| a | b | c |\n"
+                    "| a | b |\n| <l> | <r> | <c> |\n"
+                    "|---+---|\n| <l> | <r> |\n|---+---|\n| a | b |\n"
+                    "| <l> | <r> |\n| / | < |\n| # | data |\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source)
+      (should-error (org-texmacs-document-from-buffer (current-buffer))
+                    :type 'org-texmacs-document-error)
+      (should (equal source (buffer-string))))))
+
 (ert-deftest org-texmacs-document-rejects-advanced-table-semantics ()
   (dolist
       (source
@@ -6071,6 +6188,58 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                              (/ (+ (nth 0 long) (nth 2 long)) 2.0))) 1.0))))
       (let ((text (org-texmacs-test--pdf-text actual)))
         (should-not (string-match-p "\\bquote\\b" text))))))
+
+(ert-deftest org-texmacs-pdf-table-alignment-frontend-and-native-layout ()
+  :tags '(issue4)
+  (org-texmacs-test--with-worker
+    (let ((actual (expand-file-name "table.pdf" test-directory))
+          (reference (expand-file-name "table-reference.pdf" test-directory)))
+      (with-temp-buffer
+        (org-mode)
+        (setq buffer-file-name (expand-file-name "table.org" test-directory))
+        (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+                "#+begin_quote\nQuoteTableContext\n#+end_quote\n\n"
+                "| LeftLongest | MiddleLongest | RightLongest |\n"
+                "| <l> | <c> | <r> |\n| L | C | R |\n")
+        (set-buffer-modified-p nil)
+        (let ((before (buffer-string)))
+          (let ((file (org-texmacs-export-to-texmacs)))
+            (with-temp-buffer
+              (insert-file-contents-literally file nil 0 32)
+              (should (string-prefix-p "<TeXmacs|" (buffer-string)))))
+          (should (equal actual (org-texmacs-export-to-pdf)))
+          (should (equal before (buffer-string)))
+          (should-not (buffer-modified-p))))
+      (org-texmacs-document-save-pdf
+       (org-texmacs--document-create
+        :body '(document
+                (quotation (document (concat "QuoteTableContext ")))
+                (tabular
+                 (tformat
+                  (cwith "1" "-1" "1" "1" "cell-halign" "l")
+                  (cwith "1" "-1" "2" "2" "cell-halign" "c")
+                  (cwith "1" "-1" "3" "3" "cell-halign" "r")
+                  (table
+                   (row (cell "LeftLongest") (cell "MiddleLongest") (cell "RightLongest"))
+                   (row (cell "L") (cell "C") (cell "R")))))))
+       reference)
+      (let ((words (org-texmacs-test--pdf-words actual))
+            (expected (org-texmacs-test--pdf-words reference)))
+        (dolist (token '("QuoteTableContext" "LeftLongest" "MiddleLongest" "RightLongest" "L" "C" "R"))
+          (cl-mapc (lambda (a b) (should (<= (abs (- a b)) 1.0)))
+                   (org-texmacs-test--pdf-word words token)
+                   (org-texmacs-test--pdf-word expected token)))
+        (dolist (column '(("LeftLongest" "L" left)
+                          ("MiddleLongest" "C" center)
+                          ("RightLongest" "R" right)))
+          (let* ((a (org-texmacs-test--pdf-word words (nth 0 column)))
+                 (b (org-texmacs-test--pdf-word words (nth 1 column)))
+                 (position (lambda (bounds)
+                             (pcase (nth 2 column)
+                               ('left (nth 0 bounds))
+                               ('right (nth 2 bounds))
+                               (_ (/ (+ (nth 0 bounds) (nth 2 bounds)) 2.0))))))
+            (should (<= (abs (- (funcall position a) (funcall position b))) 1.0))))))))
 
 (ert-deftest org-texmacs-pdf-footnote-text-and-repeated-markers ()
   (org-texmacs-test--with-worker

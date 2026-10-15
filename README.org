@@ -719,9 +719,29 @@ Org rule rows become =1ln= top or bottom borders on adjacent TeXmacs rows; a
 rule separating the first row group preserves the visible header boundary
 without implicitly making header contents bold.  Leading and trailing rules
 are supported, but consecutive rules are rejected because their multiplicity
-has no lossless mapping in this subset.  =#+TBLFM=, alignment/width cookie
-rows, special control rows or columns, merged/grouped cells, non-Org table
-types and ragged rows are rejected rather than approximated.
+has no lossless mapping in this subset.
+
+A table may have one independent alignment-format row anywhere in its body:
+
+#+begin_example
+| <l>  | <c>   | <r>  |
+| Name | Score | Rank |
+|------+-------+------|
+| A    | 95    | 1    |
+#+end_example
+
+Every cell of that row must contain exactly =<l>=, =<c>= or =<r>=, with optional
+surrounding whitespace, and its column count must match the data rows.  It sets
+native =cell-halign= for each complete column and is omitted from output and
+border coordinates.  Multiple format rows are rejected even if identical;
+partial declarations and cookies mixed with data are unsupported.  Tables without
+a format row retain their previous alignment; numerical content does not enable
+automatic alignment inference.  Removing the format row does not repair the
+remaining table: missing data or consecutive rules still fail.
+
+=#+TBLFM=, width cookies such as =<10>= / =<r10>=, other special control rows or
+columns, merged/grouped cells, non-Org table types and ragged rows are rejected
+rather than approximated.
 
 Basic tables accept =#+NAME:= and =#+CAPTION:=.  A captioned table becomes
 =(big-table TABULAR CAPTION)=; TeXmacs supplies its table counter and caption
