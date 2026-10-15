@@ -2,6 +2,25 @@
 
 ## Active objective
 
+User requested read-only review of updated INBOX Issue6 temporary-buffer prompts,
+on the accepted case-insensitive wrapper revision. No implementation, INBOX edits,
+runtime probes/tests or external writes selected. INBOX is8020bytes; source SHA256
+and complete operational extraction/review in memory/temp-buffer-cleanup-review.md.
+Main/index unchanged, only existing flake.nix mirror dirty. Review accepts narrow
+owned-buffer lifetime repair, preserving file context through callbacks and error
+semantics, but requires batch-aware regression design: C INTERACTIVE is an
+environment condition, not called-interactively-p. --batch skips this confirmation,
+so stubbing yes-or-no-p alone is insufficient. Require a positive pre-fix control
+and scoped confirmation-path exercise. Also cover INCLUDE capture's independent
+file-bearing temp buffer even for a non-file root, plus bibliography callback.
+Exact runtime target/stack still untraced; no reproduced-failure claim. No raw
+archive: active proposal without unique experiments, sufficient content distilled.
+Next: present review findings; implementation/testing require user selection.
+Host GAW binding changed to0.7.0 during review; public status and check at the
+actual .agents worktree pass. Completed Issue5 state follows.
+
+## Completed Issue #5
+
 User selected implementing case-insensitive Org TeXmacs wrapper names and GAW
 updates, associated issue5: https://github.com/ren-lingyu/org-texmacs/issues/5.
 Public page fetch failed; no remote issue content/state claim or external write.
