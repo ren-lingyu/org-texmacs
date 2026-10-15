@@ -1,5 +1,29 @@
 # org-texmacs current memory
 
+## Current priority: Issue #4 plan review and table-format decision
+
+User prioritizes Issue4 over nonblocking work and requested read-only review of
+new INBOX block/table guidance on measured Issue6 baseline. Review completed:
+A fixes/audits existing quote/center/static-code/list native semantics first;
+B adds explicit table alignment as a separate feature/issue/commit. Date/metadata,
+NAME/reference redesign, async/layout extras excluded; A+B do not close allIssue4.
+Native quote-env/quotation choice remains to be tested on2.1.5; existing normalized
+PDF text helper cannot establish centering/alignment. Review recommends explicit
+content/layout evidence and retained unsupported-width negative cases. No native
+probe/test or business/document edit performed. Existing Issue4 fetched open and
+scope confirmed; no external issue write/new table-alignment issue selected.
+
+User now adopts B's minimal format policy: at most ONE independent complete
+alignment-format row per table. Zero rows preserves existing table behavior.
+Two or more format rows reject, including identical declarations; do not resolve
+conflicts, merge declarations or choose first/last override. Existing proposal's
+allowed tokens are<l>/<c>/<r>, width/group/formula/other unsupported rows still
+reject. This is an adopted design constraint, not implementation authorization.
+Record in normal GAW memory only; INBOX and production remain unchanged. No new
+raw archive: active proposal/decision with no unique runtime artifact; useful
+scope/review/decision extracted here. Next await user selection of implementation
+or further plan refinement. Completed nonblocking motivation/tracking follows.
+
 ## Current state: large byte-step no-INCLUDE measurement complete
 
 User now considers investigation sufficient and explicitly accepts the observed

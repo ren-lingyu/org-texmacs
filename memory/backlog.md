@@ -23,6 +23,24 @@ decision.
 
 ## Active next
 
+### Issue #4 block mapping audit / separate explicit table alignment proposal
+
+Status: **unresolved-design**; user-prioritized plan review complete, implementation
+not yet selected. New INBOX proposes A:block native semantics repair/audit then
+B:explicit table-column alignment, separately reviewed/committed. A addresses
+Issue4 quote/container subset; dates/other metadata still outstanding, no overall
+Issue4 closure. B is new syntax support requiring separate tracking, no new issue
+creation selected. PDF acceptance needs actual content/layout evidence beyond
+existing normalized-text helper; retain unsupported-width controls and source/
+island/API/table-reference contracts.
+
+Adopted user decision for B: at most one independent complete alignment-format
+row, zero allowed as existing behavior. Reject multiple format rows even if
+identical; no conflict repair, merging or override priority. Allowed<l>/<c>/<r>
+only per current proposal, width/formula/special-column/group limitations retained.
+Read-only review/decision is not authorization for code/doc/test changes. Issue7
+remains tracked as accepted motivation with no implementation selected.
+
 ### Completed selected Issue #6: private temporary-buffer cleanup
 
 User selected reviewed lifetime-only repair and continuous GAW updates. Root
