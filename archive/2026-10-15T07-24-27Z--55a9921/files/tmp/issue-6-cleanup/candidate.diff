@@ -1,0 +1,487 @@
+diff --git a/org-texmacs-bibliography.el b/org-texmacs-bibliography.el
+index c86c348..87c1eda 100644
+--- a/org-texmacs-bibliography.el
++++ b/org-texmacs-bibliography.el
+@@ -50,32 +50,39 @@ SOURCE-FILE and RESOURCE-BASE must agree.  GLOBALS is an owned list."
+       (org-texmacs--document-prepare-source
+        source tags headings links (copy-sequence base-info) nil nil nil
+        (lambda (prepared)
+-         (setq-local default-directory (copy-sequence resource-base))
+-         (setq-local buffer-file-name (and source-file (copy-sequence source-file)))
+-         (setq-local org-cite-global-bibliography (mapcar #'copy-sequence globals))
+-         (org-element-map (org-element-parse-buffer) 'special-block
+-           (lambda (block)
+-             (when (org-texmacs--block-p block)
+-               (let ((begin (org-element-property :contents-begin block))
+-                     (end (org-element-property :contents-end block)))
+-                 (when begin
+-                   (let ((mask (org-texmacs--fragment-mask
+-                                (buffer-substring-no-properties begin end))))
+-                     (goto-char begin) (delete-region begin end) (insert mask)))))))
+-         (let* ((buffer (current-buffer)) (text (buffer-string))
+-                (paths (org-cite-list-bibliography-files)))
+-           (unless (and (eq buffer (current-buffer))
+-                        (equal text (buffer-string))
+-                        (equal buffer-file-name source-file)
+-                        (equal default-directory resource-base)
+-                        (proper-list-p paths) (cl-every #'stringp paths))
+-             (signal 'org-texmacs-document-error
+-                     '("Bibliography discovery changed its private context")))
+-           (setq result
+-                 (list (mapcar #'substring-no-properties paths)
+-                       (plist-get (nth 4 prepared)
+-                                  :texmacs-bibliography-declarations))))
+-         prepared)))
++         (let ((work-buffer (current-buffer)))
++           (unwind-protect
++               (progn
++                 (setq-local default-directory (copy-sequence resource-base))
++                 (setq-local buffer-file-name (and source-file (copy-sequence source-file)))
++                 (setq-local org-cite-global-bibliography (mapcar #'copy-sequence globals))
++                 (org-element-map (org-element-parse-buffer) 'special-block
++                   (lambda (block)
++                     (when (org-texmacs--block-p block)
++                       (let ((begin (org-element-property :contents-begin block))
++                             (end (org-element-property :contents-end block)))
++                         (when begin
++                           (let ((mask (org-texmacs--fragment-mask
++                                        (buffer-substring-no-properties begin end))))
++                             (goto-char begin) (delete-region begin end) (insert mask)))))))
++                 (let* ((buffer (current-buffer)) (text (buffer-string))
++                        (paths (org-cite-list-bibliography-files)))
++                   (unless (and (eq buffer (current-buffer))
++                                (equal text (buffer-string))
++                                (equal buffer-file-name source-file)
++                                (equal default-directory resource-base)
++                                (proper-list-p paths) (cl-every #'stringp paths))
++                     (signal 'org-texmacs-document-error
++                             '("Bibliography discovery changed its private context")))
++                   (setq result
++                         (list (mapcar #'substring-no-properties paths)
++                               (plist-get (nth 4 prepared)
++                                          :texmacs-bibliography-declarations))))
++                 prepared)
++             ;; Retire this owned view's file identity.
++             (when (buffer-live-p work-buffer)
++               (with-current-buffer work-buffer
++                 (setq-local buffer-file-name nil))))))))
+     result))
+ 
+ (defun org-texmacs--bibliography-file-attributes (path)
+@@ -166,14 +173,16 @@ PROVIDED, SUBTREE-POSITION, REGION and EXT-PLIST retain explicit API semantics."
+            (initial (org-texmacs--document-copy-initial org-texmacs-document-initial))
+            (configuration-check
+             (lambda ()
+-              (unless (and (or (not discover)
+-                               (and (equal globals (org-texmacs--bibliography-globals))
+-                                    (eq collector (symbol-function 'org-cite-list-bibliography-files))))
+-                           (equal options (org-texmacs--document-options))
+-                           (equal style org-texmacs-document-style)
+-                           (equal initial org-texmacs-document-initial))
+-                (signal 'org-texmacs-document-error
+-                        '("Bibliography transaction configuration changed"))))))
++              ;; Native INCLUDE and callbacks may run in other private buffers.
++              (with-current-buffer source-buffer
++                (unless (and (or (not discover)
++                                 (and (equal globals (org-texmacs--bibliography-globals))
++                                      (eq collector (symbol-function 'org-cite-list-bibliography-files))))
++                             (equal options (org-texmacs--document-options))
++                             (equal style org-texmacs-document-style)
++                             (equal initial org-texmacs-document-initial))
++                  (signal 'org-texmacs-document-error
++                          '("Bibliography transaction configuration changed")))))))
+       (org-texmacs--prepare-buffer
+        source-buffer consumer provided subtree-position region ext-plist nil
+        (lambda (source tags headings links info file base texts check)
+diff --git a/org-texmacs-preprocess.el b/org-texmacs-preprocess.el
+index 66095fe..974c237 100644
+--- a/org-texmacs-preprocess.el
++++ b/org-texmacs-preprocess.el
+@@ -243,10 +243,17 @@ Return working text and receipts."
+                    (push identity physical)
+                    (push (list (copy-sequence file) attrs (secure-hash 'sha256 bytes)) receipts)
+                    (with-temp-buffer
+-                     (context file) (insert text)
+-                     (let ((spans (protect)))
+-                       (let ((entry (list text (buffer-string) spans)))
+-                         (push (cons file entry) cache) entry)))))))
++                     (let ((work-buffer (current-buffer)))
++                       (unwind-protect
++                           (progn
++                             (context file) (insert text)
++                             (let ((spans (protect)))
++                               (let ((entry (list text (buffer-string) spans)))
++                                 (push (cons file entry) cache) entry)))
++                         ;; Retire this owned view's file identity.
++                         (when (buffer-live-p work-buffer)
++                           (with-current-buffer work-buffer
++                             (setq-local buffer-file-name nil))))))))))
+          (selection (entry lines)
+            (when lines
+              (with-temp-buffer
+@@ -270,81 +277,88 @@ Return working text and receipts."
+                          (while (search-forward (car payload) nil t) (cl-incf count)) count)))
+                    payloads)))
+       (with-temp-buffer
+-        (context source-file) (insert source) (protect)
+-        (let ((before (counts)))
+-          (org-texmacs--preprocess-stage (car hooks) #'guard)
+-          (unless (equal before (counts))
+-            (org-texmacs--preprocess-fail "Preprocessing changed protected STM")))
+-        (protect)
+-        (when (> (string-bytes (buffer-string)) 262144)
+-          (org-texmacs--preprocess-fail "Protected root working budget exceeded"))
+-        ;; Scoped reader substitution preserves native paths and line selection.
+-        ;; It does not persistently advise Org or service unrelated callers.
+-        (let ((org-export-registered-backends (cons backend org-export-registered-backends)))
+-          (cl-letf (((symbol-function 'org-export-parse-include-value)
+-                     (lambda (value &optional directory)
+-                       (when (string-match-p "\\`[ \t]*\"?~" value)
+-                         (org-texmacs--preprocess-fail "Tilde include paths are unsupported"))
+-                       (let* ((parameters (funcall parser value directory))
+-                              (file (plist-get parameters :file)))
+-                         (unless (and file (not (plist-get parameters :env))
+-                                      (not (plist-get parameters :block))
+-                                      (not (plist-get parameters :coding-system))
+-                                      (not (plist-get parameters :unmatched))
+-                                      (or (not (plist-get parameters :minlevel))
+-                                          (> (plist-get parameters :minlevel) 0)))
+-                           (org-texmacs--preprocess-fail "Unsupported INCLUDE parameters"))
+-                         (org-texmacs--bibliography-local-path file base)
+-                         (cl-incf occurrences)
+-                         (when (> occurrences 32) (org-texmacs--preprocess-fail "Occurrence budget exceeded"))
+-                         (capture file) parameters)))
+-                    ((symbol-function 'org-file-contents)
+-                     (lambda (file &optional _noerror _nocache)
+-                       (copy-sequence (cadr (capture file)))))
+-                    ((symbol-function 'org-export--prepare-file-contents)
+-                     (lambda (file &optional lines ind level id footnotes includer)
+-                       (selection (capture file) lines)
+-                       (funcall prepare file lines ind level id footnotes includer)))
+-                    ((symbol-function 'org-export-expand-include-keyword)
+-                     (lambda (&rest args)
+-                       (cl-incf depth)
+-                       (unwind-protect
+-                           (progn
+-                             (when (> depth 8) (org-texmacs--preprocess-fail "Include depth exceeded"))
+-                             (apply expand args))
+-                         (cl-decf depth)))))
+-            (setq active-reader (symbol-function 'org-file-contents))
+-            (setq active-functions
+-                  (mapcar (lambda (entry)
+-                            (cons (car entry) (symbol-function (car entry)))) native-functions))
+-            (condition-case err
+-                (org-export-expand-include-keyword nil base nil source-file)
+-              (org-texmacs-document-error (signal (car err) (cdr err)))
+-              (error (org-texmacs--preprocess-fail (error-message-string err))))))
+-        (setq active-reader reader)
+-        (setq active-functions native-functions)
+-        (guard)
+-        (let ((before (counts)))
+-          (org-texmacs--preprocess-stage (cadr hooks) #'guard)
+-          (unless (equal before (counts))
+-            (org-texmacs--preprocess-fail "Preprocessing changed protected STM")))
+-        (org-element-map (org-element-parse-buffer) 'keyword
+-          (lambda (node)
+-            (when (member (org-element-property :key node)
+-                          '("SETUPFILE" "BIND" "MACRO" "CITE_EXPORT"))
+-              (org-texmacs--preprocess-fail "Unsupported preprocessing directive"))))
+-        (dolist (payload payloads)
+-          (goto-char (point-min))
+-          (while (search-forward (car payload) nil t)
+-            (replace-match (nth 1 payload) t t)))
+-        (when (or (> (string-bytes (buffer-string)) 262144)
+-                  (string-match-p nonce (buffer-string)))
+-          (org-texmacs--preprocess-fail "Working budget exceeded or partial STM marker remains"))
+-        (guard)
+-        (list :source (buffer-substring-no-properties (point-min) (point-max))
+-              :sources (mapcar (lambda (entry) (cons (copy-sequence (car entry))
+-                                                   (copy-sequence (cadr entry)))) cache)
+-              :receipts receipts)))))
++        (let ((work-buffer (current-buffer)))
++          (unwind-protect
++              (progn
++                (context source-file) (insert source) (protect)
++                (let ((before (counts)))
++                  (org-texmacs--preprocess-stage (car hooks) #'guard)
++                  (unless (equal before (counts))
++                    (org-texmacs--preprocess-fail "Preprocessing changed protected STM")))
++                (protect)
++                (when (> (string-bytes (buffer-string)) 262144)
++                  (org-texmacs--preprocess-fail "Protected root working budget exceeded"))
++                ;; Scoped reader substitution preserves native paths and line selection.
++                ;; It does not persistently advise Org or service unrelated callers.
++                (let ((org-export-registered-backends (cons backend org-export-registered-backends)))
++                  (cl-letf (((symbol-function 'org-export-parse-include-value)
++                             (lambda (value &optional directory)
++                               (when (string-match-p "\\`[ \t]*\"?~" value)
++                                 (org-texmacs--preprocess-fail "Tilde include paths are unsupported"))
++                               (let* ((parameters (funcall parser value directory))
++                                      (file (plist-get parameters :file)))
++                                 (unless (and file (not (plist-get parameters :env))
++                                              (not (plist-get parameters :block))
++                                              (not (plist-get parameters :coding-system))
++                                              (not (plist-get parameters :unmatched))
++                                              (or (not (plist-get parameters :minlevel))
++                                                  (> (plist-get parameters :minlevel) 0)))
++                                   (org-texmacs--preprocess-fail "Unsupported INCLUDE parameters"))
++                                 (org-texmacs--bibliography-local-path file base)
++                                 (cl-incf occurrences)
++                                 (when (> occurrences 32) (org-texmacs--preprocess-fail "Occurrence budget exceeded"))
++                                 (capture file) parameters)))
++                            ((symbol-function 'org-file-contents)
++                             (lambda (file &optional _noerror _nocache)
++                               (copy-sequence (cadr (capture file)))))
++                            ((symbol-function 'org-export--prepare-file-contents)
++                             (lambda (file &optional lines ind level id footnotes includer)
++                               (selection (capture file) lines)
++                               (funcall prepare file lines ind level id footnotes includer)))
++                            ((symbol-function 'org-export-expand-include-keyword)
++                             (lambda (&rest args)
++                               (cl-incf depth)
++                               (unwind-protect
++                                   (progn
++                                     (when (> depth 8) (org-texmacs--preprocess-fail "Include depth exceeded"))
++                                     (apply expand args))
++                                 (cl-decf depth)))))
++                    (setq active-reader (symbol-function 'org-file-contents))
++                    (setq active-functions
++                          (mapcar (lambda (entry)
++                                    (cons (car entry) (symbol-function (car entry)))) native-functions))
++                    (condition-case err
++                        (org-export-expand-include-keyword nil base nil source-file)
++                      (org-texmacs-document-error (signal (car err) (cdr err)))
++                      (error (org-texmacs--preprocess-fail (error-message-string err))))))
++                (setq active-reader reader)
++                (setq active-functions native-functions)
++                (guard)
++                (let ((before (counts)))
++                  (org-texmacs--preprocess-stage (cadr hooks) #'guard)
++                  (unless (equal before (counts))
++                    (org-texmacs--preprocess-fail "Preprocessing changed protected STM")))
++                (org-element-map (org-element-parse-buffer) 'keyword
++                  (lambda (node)
++                    (when (member (org-element-property :key node)
++                                  '("SETUPFILE" "BIND" "MACRO" "CITE_EXPORT"))
++                      (org-texmacs--preprocess-fail "Unsupported preprocessing directive"))))
++                (dolist (payload payloads)
++                  (goto-char (point-min))
++                  (while (search-forward (car payload) nil t)
++                    (replace-match (nth 1 payload) t t)))
++                (when (or (> (string-bytes (buffer-string)) 262144)
++                          (string-match-p nonce (buffer-string)))
++                  (org-texmacs--preprocess-fail "Working budget exceeded or partial STM marker remains"))
++                (guard)
++                (list :source (buffer-substring-no-properties (point-min) (point-max))
++                      :sources (mapcar (lambda (entry) (cons (copy-sequence (car entry))
++                                                           (copy-sequence (cadr entry)))) cache)
++                      :receipts receipts))
++            ;; Retire this owned view's file identity.
++            (when (buffer-live-p work-buffer)
++              (with-current-buffer work-buffer
++                (setq-local buffer-file-name nil)))))))))
+ 
+ (defun org-texmacs--preprocess-convert (source-buffer consumer sources options discover)
+   "Run opt-in SOURCE-BUFFER composition through CONSUMER.
+diff --git a/tests/ert/ert.el b/tests/ert/ert.el
+index 3702563..a3d5161 100644
+--- a/tests/ert/ert.el
++++ b/tests/ert/ert.el
+@@ -8361,4 +8361,197 @@ Only tests with explicit example names use this helper; do not run Babel."
+             (should (equal (car result) '("refs.bib")))))
+         (should (equal state (org-texmacs-test--document-buffer-state (current-buffer))))))))
+ 
++
++(defun org-texmacs-test--observe-cleanup (thunk &optional failure)
++  "Call THUNK observing actual private buffer destruction.
++FAILURE injects an error after modification in root, include or bibliography."
++  (let ((context (symbol-function 'org-texmacs--preprocess-context))
++        (collect (symbol-function 'org-texmacs--fragment-collect))
++        (cite (symbol-function 'org-cite-list-bibliography-files))
++        (kill (symbol-function 'kill-buffer))
++        (other (generate-new-buffer " *cleanup-user-owned*"))
++        records killed)
++    (unwind-protect
++        (progn
++          (with-current-buffer other (insert "User-owned sentinel"))
++          (cl-labels
++              ((register (kind)
++                 (let ((record (list (current-buffer) kind buffer-file-name default-directory)))
++                   (push record records) record))
++               (fail (kind)
++                 (when (eq failure kind)
++                   (should (buffer-modified-p))
++                   ;; Cleanup must target the owned object after a callback switches.
++                   (set-buffer other)
++                   (signal 'org-texmacs-document-error '("Cleanup sentinel")))))
++            (cl-letf (((symbol-function 'org-texmacs--preprocess-context)
++                       (lambda (&rest args)
++                         (apply context args)
++                         (should (equal buffer-file-name (nth 4 args)))
++                         (should (equal default-directory (nth 5 args)))
++                         (register (if (and buffer-file-name
++                                            (equal (file-name-nondirectory buffer-file-name)
++                                                   "part.org")) 'include 'root))))
++                      ((symbol-function 'org-texmacs--fragment-collect)
++                       (lambda (&rest args)
++                         (prog1 (apply collect args)
++                           (when-let* ((record (assq (current-buffer) records)))
++                             (fail (nth 1 record))))))
++                      ((symbol-function 'org-cite-list-bibliography-files)
++                       (lambda (&rest args)
++                         (register 'bibliography)
++                         (prog1 (apply cite args) (fail 'bibliography))))
++                      ((symbol-function 'kill-buffer)
++                       (lambda (&optional buffer)
++                         (let* ((target (get-buffer (or buffer (current-buffer))))
++                                (record (assq target records)))
++                           (when record
++                             (push (list target (buffer-local-value 'buffer-file-name target)
++                                         (buffer-modified-p target)) killed))
++                           ;; Observe, never replace the actual destruction or throw here.
++                           (funcall kill buffer)))))
++              (funcall thunk)))
++          (should records)
++          (dolist (record records)
++            (let ((event (assq (car record) killed)))
++              (should event)
++              (should-not (and (nth 1 event) (nth 2 event)))
++              (should-not (buffer-live-p (car record)))))
++          (should (buffer-live-p other))
++          (with-current-buffer other
++            (should (equal (buffer-string) "User-owned sentinel"))
++            (should (buffer-modified-p))
++            (should-not buffer-file-name))
++          (mapcar #'cadr records))
++      (dolist (record records)
++        (when (buffer-live-p (car record))
++          (with-current-buffer (car record) (setq buffer-file-name nil))
++          (funcall kill (car record))))
++      (funcall kill other))))
++
++(defmacro org-texmacs-test--with-cleanup-source (&rest body)
++  "Run BODY in a real visiting Org buffer and a test-owned directory."
++  (declare (indent 0) (debug t))
++  `(org-texmacs-test--with-bibliography-files
++     (write-region "Included cleanup sentinel\n" nil "part.org" nil 'silent)
++     (write-region "#+INCLUDE: \"part.org\"\n" nil "source.org" nil 'silent)
++     (let ((source (find-file-noselect (expand-file-name "source.org"))))
++       (unwind-protect
++           (with-current-buffer source
++             (org-mode)
++             ,@body)
++         (when (buffer-live-p source)
++           (with-current-buffer source (set-buffer-modified-p nil))
++           (kill-buffer source))))))
++
++(ert-deftest org-texmacs-cleanup-full-native-file-exports ()
++  (org-texmacs-test--with-worker
++    (org-texmacs-test--with-cleanup-source
++      ;; Native INCLUDE uses another private buffer; guards must inspect SOURCE.
++      (setq-local org-export-with-toc nil)
++      (dolist (modified '(nil t))
++        (set-buffer-modified-p modified)
++        (goto-char 3) (set-mark 2)
++        (dolist (discover '(nil t))
++          (setq-local org-texmacs-export-discover-bibliography discover)
++          (let ((before (org-texmacs-test--document-buffer-state (current-buffer)))
++                (file buffer-file-name) (base default-directory))
++            (dolist (command '(org-texmacs-export-to-texmacs org-texmacs-export-to-pdf))
++              (let ((kinds
++                     (org-texmacs-test--observe-cleanup
++                      (lambda ()
++                        (let ((output (funcall command)))
++                          (should (file-regular-p output))
++                          (if (eq command 'org-texmacs-export-to-pdf)
++                              (should (string-match-p "Included cleanup sentinel"
++                                                      (org-texmacs-test--pdf-text output)))
++                            (with-temp-buffer
++                              (insert-file-contents output)
++                              (should (string-match-p "Included cleanup sentinel" (buffer-string))))))))))
++                (should (memq 'root kinds)) (should (memq 'include kinds))
++                (should (eq (and (memq 'bibliography kinds) t) discover)))
++              (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))
++              (should (equal file buffer-file-name)) (should (equal base default-directory)))))))))
++
++(ert-deftest org-texmacs-cleanup-nonfile-include-capture ()
++  (org-texmacs-test--with-bibliography-files
++    (write-region "Included\n" nil "part.org" nil 'silent)
++    (insert "#+INCLUDE: \"part.org\"\n")
++    (let ((before (org-texmacs-test--document-buffer-state (current-buffer)))
++          (kinds (org-texmacs-test--observe-cleanup
++                  (lambda ()
++                    (should (equal (plist-get (org-texmacs-test--compose) :source) "Included\n"))))))
++      (should (equal (sort kinds #'string-lessp) '(include root)))
++      (should (equal before (org-texmacs-test--document-buffer-state (current-buffer)))))))
++
++(ert-deftest org-texmacs-cleanup-errors-preserve-output-and-source ()
++  (org-texmacs-test--with-cleanup-source
++    (setq-local org-texmacs-export-discover-bibliography t)
++    (insert "Initially modified\n") (set-mark 2)
++    (let ((before (org-texmacs-test--document-buffer-state (current-buffer)))
++          (file buffer-file-name) (base default-directory))
++      (dolist (stage '(root include bibliography))
++        (dolist (existing '(nil t))
++          (dolist (entry '((org-texmacs-export-to-texmacs . "source.tm")
++                           (org-texmacs-export-to-pdf . "source.pdf")))
++            (when (file-exists-p (cdr entry)) (delete-file (cdr entry)))
++            (when existing (write-region "Keep" nil (cdr entry) nil 'silent))
++            (let ((kinds
++                   (org-texmacs-test--observe-cleanup
++                    (lambda ()
++                      (should (equal (should-error (funcall (car entry))
++                                                   :type 'org-texmacs-document-error)
++                                     '(org-texmacs-document-error "Cleanup sentinel")))) stage)))
++              (should (memq stage kinds)))
++            (if existing
++                (with-temp-buffer
++                  (insert-file-contents-literally (cdr entry))
++                  (should (equal (buffer-string) "Keep")))
++              (should-not (file-exists-p (cdr entry))))
++            (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))
++            (should (equal file buffer-file-name)) (should (equal base default-directory))))))))
++
++(ert-deftest org-texmacs-cleanup-local-discovery-and-direct-preparation ()
++  (org-texmacs-test--with-cleanup-source
++    (erase-buffer) (insert "* Heading\nLocal text\n")
++    (setq-local org-texmacs-export-discover-bibliography t)
++    (let ((before (org-texmacs-test--document-buffer-state (current-buffer)))
++          (file buffer-file-name))
++      (should (org-texmacs-input-p (org-texmacs-prepare-buffer (current-buffer))))
++      (save-restriction
++        (narrow-to-region 1 (point-max))
++        (let ((kinds
++               (org-texmacs-test--observe-cleanup
++                (lambda ()
++                  (should (org-texmacs-document-p
++                           (org-texmacs-document-from-buffer-discover-bibliography
++                            (current-buffer) nil 1)))))))
++          (should (equal kinds '(bibliography)))))
++      (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))
++      (should (equal file buffer-file-name)))))
++
++
++(ert-deftest org-texmacs-cleanup-source-configuration-guard ()
++  (dolist (discover '(nil t))
++    (org-texmacs-test--with-cleanup-source
++      (setq-local org-export-with-toc nil)
++      (let ((source (current-buffer)))
++        (should
++         (equal
++          (should-error
++           (org-texmacs--bibliography-convert
++            source #'identity nil nil nil nil
++            (lambda (_text _tags _headings _links _info _file _base _texts check)
++              (with-temp-buffer
++                (org-mode)
++                ;; This matches the snapshot; the actual source has changed.
++                (setq-local org-export-with-toc nil)
++                (with-current-buffer source (setq-local org-export-with-toc t))
++                (funcall check)))
++            discover)
++           :type 'org-texmacs-document-error)
++          '(org-texmacs-document-error "Bibliography transaction configuration changed")))
++        ;; External callback changes are detected, not rolled back by the package.
++        (should org-export-with-toc)))))
++
+ ;;; ert.el ends here

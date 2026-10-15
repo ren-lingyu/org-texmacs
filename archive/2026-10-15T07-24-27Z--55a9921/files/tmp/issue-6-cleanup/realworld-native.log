@@ -1,0 +1,21 @@
+this derivation will be built:
+  /nix/store/n2ncb5sb3vdqmfrg26fyc0qq4fl42sn4-org-texmacs-cleanup-focused.drv
+building '/nix/store/n2ncb5sb3vdqmfrg26fyc0qq4fl42sn4-org-texmacs-cleanup-focused.drv'...
+org-texmacs-cleanup-focused> Running 6 tests (2026-10-15 07:22:05+0000, selector `"^org-texmacs-cleanup-"')
+org-texmacs-cleanup-focused>    passed  1/6  org-texmacs-cleanup-errors-preserve-output-and-source (0.197152 sec)
+org-texmacs-cleanup-focused>    passed  2/6  org-texmacs-cleanup-full-native-file-exports (2.584593 sec)
+org-texmacs-cleanup-focused>    passed  3/6  org-texmacs-cleanup-local-discovery-and-direct-preparation (0.015054 sec)
+org-texmacs-cleanup-focused>    passed  4/6  org-texmacs-cleanup-nonfile-include-capture (0.007141 sec)
+org-texmacs-cleanup-focused> REALWORLD-NATIVE test.org discover=nil command=org-texmacs-export-to-texmacs
+org-texmacs-cleanup-focused> REALWORLD-NATIVE test.org discover=nil command=org-texmacs-export-to-pdf
+org-texmacs-cleanup-focused> REALWORLD-NATIVE test.org discover=t command=org-texmacs-export-to-texmacs
+org-texmacs-cleanup-focused> REALWORLD-NATIVE test.org discover=t command=org-texmacs-export-to-pdf
+org-texmacs-cleanup-focused> REALWORLD-NATIVE test_include.org discover=nil command=org-texmacs-export-to-texmacs
+org-texmacs-cleanup-focused> REALWORLD-NATIVE test_include.org discover=nil command=org-texmacs-export-to-pdf
+org-texmacs-cleanup-focused> REALWORLD-NATIVE test_include.org discover=t command=org-texmacs-export-to-texmacs
+org-texmacs-cleanup-focused> REALWORLD-NATIVE test_include.org discover=t command=org-texmacs-export-to-pdf
+org-texmacs-cleanup-focused>    passed  5/6  org-texmacs-cleanup-realworld-repro (5.279271 sec)
+org-texmacs-cleanup-focused>    passed  6/6  org-texmacs-cleanup-source-configuration-guard (0.004878 sec)
+org-texmacs-cleanup-focused> 
+org-texmacs-cleanup-focused> Ran 6 tests, 6 results as expected, 0 unexpected (2026-10-15 07:22:13+0000, 8.088419 sec)
+org-texmacs-cleanup-focused> 

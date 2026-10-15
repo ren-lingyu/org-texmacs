@@ -1,0 +1,182 @@
+#+TITLE: Snake Lemma Graphics Test
+
+* Snake lemma
+给定一个交换图, 其中两条短正合列均为 exact sequences. 上方为 kernel, 下方为 cokernel. 右侧绕行的箭头表示 connecting morphism.
+
+#+begin_texmacs
+(big-figure
+(with
+  "gr-frame" (tuple "scale" "1cm" (tuple "0.5gw" "0.5gh"))
+  "gr-geometry" (tuple "geometry" "15.2cm" "8.6cm" "center")
+  (graphics ""
+
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "-5.0" "2.7") (point "-4.2" "2.7")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "-2.15" "2.7") (point "-1.05" "2.7")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "1.05" "2.7") (point "2.15" "2.7")))
+
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "-5.0" "0.85") (point "-3.65" "0.85")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "-2.75" "0.85") (point "-0.45" "0.85")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "0.45" "0.85") (point "2.75" "0.85")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "3.65" "0.85") (point "5.0" "0.85")))
+
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "-5.0" "-0.85") (point "-3.65" "-0.85")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "-2.75" "-0.85") (point "-0.45" "-0.85")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "0.45" "-0.85") (point "2.75" "-0.85")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "3.65" "-0.85") (point "5.0" "-0.85")))
+
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "-2.08" "-2.7") (point "-1.1" "-2.7")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "1.1" "-2.7") (point "2.08" "-2.7")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "4.25" "-2.7") (point "5.0" "-2.7")))
+
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "-3.2" "2.3") (point "-3.2" "1.25")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "0" "2.3") (point "0" "1.25")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "3.2" "2.3") (point "3.2" "1.25")))
+
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "-3.2" "0.5") (point "-3.2" "-0.5")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "0" "0.5") (point "0" "-0.5")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "3.2" "0.5") (point "3.2" "-0.5")))
+
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "-3.2" "-1.2") (point "-3.2" "-2.2")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "0" "-1.2") (point "0" "-2.2")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "3.2" "-1.2") (point "3.2" "-2.2")))
+
+    (with "line-width" "0.8ln"
+      (line (point "4.3" "2.7") (point "6.5" "2.7")))
+    (with "line-width" "0.8ln"
+      (line (point "6.5" "2.7") (point "6.5" "-3.8")))
+    (with "line-width" "0.8ln"
+      (line (point "6.5" "-3.8") (point "-3.2" "-3.8")))
+    (with "arrow-end" "<gtr>" "line-width" "0.8ln"
+      (line (point "-3.2" "-3.8") (point "-3.2" "-3.15")))
+
+    (math-at "0" (point "-5.35" "2.7"))
+    (math-at
+      (concat (math-up "ker") (around* "(" "<alpha>" ")"))
+      (point "-3.2" "2.7"))
+    (math-at
+      (concat (math-up "ker") (around* "(" "<beta>" ")"))
+      (point "0" "2.7"))
+    (math-at
+      (concat (math-up "ker") (around* "(" "<gamma>" ")"))
+      (point "3.2" "2.7"))
+
+    (math-at "0" (point "-5.35" "0.85"))
+    (math-at "A" (point "-3.2" "0.85"))
+    (math-at "B" (point "0" "0.85"))
+    (math-at "C" (point "3.2" "0.85"))
+    (math-at "0" (point "5.35" "0.85"))
+
+    (math-at "0" (point "-5.35" "-0.85"))
+    (math-at (concat "A" (rsup "<prime>")) (point "-3.2" "-0.85"))
+    (math-at (concat "B" (rsup "<prime>")) (point "0" "-0.85"))
+    (math-at (concat "C" (rsup "<prime>")) (point "3.2" "-0.85"))
+    (math-at "0" (point "5.35" "-0.85"))
+
+    (math-at
+      (concat (math-up "coker") (around* "(" "<alpha>" ")"))
+      (point "-3.2" "-2.7"))
+    (math-at
+      (concat (math-up "coker") (around* "(" "<beta>" ")"))
+      (point "0" "-2.7"))
+    (math-at
+      (concat (math-up "coker") (around* "(" "<gamma>" ")"))
+      (point "3.2" "-2.7"))
+    (math-at "0" (point "5.35" "-2.7"))
+
+    (math-at
+      (concat "f" (rsub (math-up "ker")))
+      (point "-1.6" "3.03"))
+    (math-at
+      (concat "g" (rsub (math-up "ker")))
+      (point "1.6" "3.03"))
+
+    (math-at "f" (point "-1.6" "1.18"))
+    (math-at "g" (point "1.6" "1.18"))
+    (math-at
+      (concat "f" (rsup "<prime>"))
+      (point "-1.6" "-0.52"))
+    (math-at
+      (concat "g" (rsup "<prime>"))
+      (point "1.6" "-0.52"))
+
+    (math-at
+      (concat "f" (rsub (math-up "coker")))
+      (point "-1.6" "-2.35"))
+    (math-at
+      (concat "g" (rsub (math-up "coker")))
+      (point "1.6" "-2.35"))
+
+    (math-at
+      (concat "<iota>" (rsub "A"))
+      (point "-3.58" "1.8"))
+    (math-at
+      (concat "<iota>" (rsub "B"))
+      (point "0.38" "1.8"))
+    (math-at
+      (concat "<iota>" (rsub "C"))
+      (point "3.58" "1.8"))
+
+    (math-at "<alpha>" (point "-3.58" "0"))
+    (math-at "<beta>" (point "0.38" "0"))
+    (math-at "<gamma>" (point "3.58" "0"))
+
+    (math-at
+      (concat "<pi>" (rsub "A"))
+      (point "-3.58" "-1.8"))
+    (math-at
+      (concat "<pi>" (rsub "B"))
+      (point "0.38" "-1.8"))
+    (math-at
+      (concat "<pi>" (rsub "C"))
+      (point "3.58" "-1.8"))
+
+    (math-at "<delta>" (point "6.9" "-0.15"))))
+    "Snake Lemma")
+#+end_texmacs
+
+* Connecting morphism
+
+图中右侧的折线路径表示连接态射 (math (concat "<delta>:" (math-up "ker") (around* "(" "<gamma>" ")") "<rightarrow>" (math-up "coker") (around* "(" "<alpha>" ")"))).
+
+由蛇引理得到下面的六项正合列, 连同首尾的零对象.
+
+#+begin_texmacs
+(equation
+  (concat
+    "0<longrightarrow>"
+    (math-up "ker") (around* "(" "<alpha>" ")")
+    "<longrightarrow>"
+    (math-up "ker") (around* "(" "<beta>" ")")
+    "<longrightarrow>"
+    (math-up "ker") (around* "(" "<gamma>" ")")
+    (above "<longrightarrow>" "<delta>")
+    (math-up "coker") (around* "(" "<alpha>" ")")
+    "<longrightarrow>"
+    (math-up "coker") (around* "(" "<beta>" ")")
+    "<longrightarrow>"
+    (math-up "coker") (around* "(" "<gamma>" ")")
+    "<longrightarrow>0"))
+#+end_texmacs
