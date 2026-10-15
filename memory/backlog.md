@@ -381,7 +381,16 @@ native or GUI evidence before they can be claimed as verified.
 
 ### Export responsiveness during synchronous operation
 
-Status: **deferred-candidate**.
+Status: **deferred-candidate**, development motivation explicitly user-accepted;
+concrete design and implementation remain unselected.
+
+User considers current static investigation and byte-step measurements sufficient
+to motivate developing parallel/nonblocking export. Near-linear observed scaling
+still gives perceptible blocking and tens-of-seconds waits for this math workload.
+Do not require more profiling merely to justify that motivation. Separate allowing
+editing during export from multiple simultaneous native conversions; execution
+route/parallelism degree/cancellation/stale-source policy remain design decisions.
+This acceptance does not authorize immediate business edits or new tests.
 
 After accepting Issue6 interactive behavior, user reported a slight "卡手" feeling
 during "非并行导出" and asked to record it separately after preparing the current
@@ -403,8 +412,9 @@ realworld math, direct/single-INCLUDE, tm/PDF, cold/warm. Results extracted in
 memory/export-timing-results.md: warm wait-path shares89.8–95.8%, no measured GC,
 STM requests3–24 at~50ms each; INCLUDE overhead small. Request completion waits
 on a different process from socket client; polling/wakeup investigation is next
-candidate, not proven fix or selected implementation. Isolate request latency
-before deciding synchronous optimization versus nonblocking UX. No further
+candidate, not proven fix or selected implementation. Request-latency isolation
+remains optional optimization investigation, not prerequisite to accepting the
+nonblocking development motivation above. No further
 benchmark/prototype/code work authorized merely by this candidate.
 User later separately selected and authorized larger no-INCLUDE measurements:
 memory/large-document-timing.md.16outcomes,10successes/4standard256KiB budget

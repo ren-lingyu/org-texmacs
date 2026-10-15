@@ -2,6 +2,14 @@
 
 ## Current state: large byte-step no-INCLUDE measurement complete
 
+User now considers investigation sufficient and explicitly accepts the observed
+blocking as a basic motivation for developing parallel/nonblocking export. This
+adopts the motivation, not a specific implementation or immediate code work.
+Near-linear observed scaling does not remove long command blocking. Nonblocking
+editing and concurrent native conversions remain separate design goals; neither
+parallel worker count nor threads/callbacks/child-process route chosen. No further
+measurement required merely to establish the accepted motivation.
+
 User selected larger bytes after finding prior~50KiB matrix insufficient. Four
 sequential authorized600s independent flake builds complete, no system Emacs or
 business edits.16outcomes:10native successes/4standard budget rejections/2native
@@ -24,9 +32,11 @@ empty. Fixed frontend-then-explicit order and render caches confound API speed
 comparison. No successful4MiB export claim or all-exports-pass claim.
 
 Selected measurement task complete; no timeout/production limit change, async
-implementation or followup test selected. Next if user selects: isolate request
-poll/wakeup vs native costs, study final large-response deadline policy, or separate
-prose-size/island-count effects. Earlier small matrix remains scoped below.
+implementation or followup test selected. Next if user selects development:
+define job/return/cancellation/stale-result/ownership/serialization contracts and
+choose route, using existing feasibility and timing evidence. Further poll/wakeup,
+large-response or prose/island profiling is optional targeted work, not a required
+prerequisite for accepted motivation. Earlier small matrix remains scoped below.
 
 ## Completed smaller export timing matrix
 

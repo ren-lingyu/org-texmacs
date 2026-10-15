@@ -101,6 +101,14 @@ temporary script/result. Current extraction is this file; archive is evidence.
 
 ## Next boundary
 
+User accepts this investigation as sufficient basic motivation to develop
+parallel/nonblocking export. Near-linear observed total growth (roughly4x time
+for4x bytes across successful sizes) does not eliminate perceptible synchronous
+blocking. This is empirical fixed-composition scaling, not proof of O(n);
+largest failure latency is not a successful-export complexity datapoint. No more
+profiling needed merely to establish motivation. Nonblocking UI and concurrent
+native conversions remain distinct possible goals; concrete route not adopted.
+
 User-selected large-step experiment complete. Both standard256KiB budget and
 explicit-source default response deadline constrain current large-document use.
 No timeout-policy/limit change, parallel/async implementation or followup runtime
