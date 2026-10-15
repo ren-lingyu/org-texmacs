@@ -7,14 +7,15 @@
   preserve raw STM source and are parsed independently by TeXmacs.
 - Parsed TeXmacs islands participate as structured strees; they are not kept as
   opaque payload strings and are not reparsed as Org.
-- Accepted issue5 worktree candidate recognizes Org TeXmacs special-block names
+- Accepted user-committed issue5 revision recognizes Org TeXmacs special-block names
   without case, retaining original AST :type/source/body spelling. A shared
   source predicate also excludes block descendants from inline fragment discovery;
   preprocessing/bibliography shielding and pure island checks use that predicate.
   Native STM/inline fragment tags remain case-sensitive. Five new ERT cover162
   marker/name/ambient-case combinations and native output/shielding.401core/
   114focused/9real/complete Nix strict compilation/lint acceptance passes in
-  locked x86_64-linux isolation. Candidate uncommitted; exact evidence/limits
+  locked x86_64-linux isolation. Committed blobs/diff equal accepted candidate;
+  exact evidence/limits
   and issue association in memory/evidence.md/current.md.
 - The implementation does not require physical grafting of all TeXmacs pseudo
   nodes into one live Org element cache.

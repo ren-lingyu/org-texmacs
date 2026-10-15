@@ -2476,8 +2476,7 @@ Archive selection under global/project skills: no original-byte capture selected
 No ad hoc probe or retired document; maintained ERT preserves all new reproduction.
 Build logs/copied dependencies/snapshots duplicate reproducible maintained checks;
 results, semantic findings, exact inputs, commands and limits extracted above.
-No whole-directory/conversation capture or tmp cleanup. Task implementation/docs
-remain uncommitted; external tracking separate.
+No whole-directory/conversation capture or tmp cleanup; external tracking separate.
 
 User subsequently authorized staging and commit-message generation. Exactly four
 paths above staged, complete diff reviewed:115 insertions/6 deletions; cached
@@ -2493,3 +2492,13 @@ One coherent predicate/consumer/docs/regression fix; split not necessary, low
 difficulty. Existing acceptance transfers by exact byte identity; no new tests
 solely for staging. No ordinary commit or external issue action performed.
 No unique raw evidence selected for archive; staged findings extracted here.
+
+User reported committing. Read-only verification confirms current main is a direct
+child of the previous export API revision and changes exactly the four accepted
+paths. Full committed binary diff SHA256 equals the reviewed staged digest above;
+all four committed blobs match the accepted manifest and worktree. Full commit
+message equals reviewed tmp/commit.md, including parsed Closes: #5. Index empty,
+only existing user flake.nix mirror dirty. This checkpoint's project parent is the
+actual inspected committed revision; acceptance transfers by exact byte identity,
+no new tests solely for commit verification. No further implementation selected,
+no remote publication/status verification or external issue write performed.

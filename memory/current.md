@@ -17,11 +17,12 @@ and bibliography masking. Focused114/114 passes48.641846s; actual locked Org9.8.
 confirms preserved original :type and case-insensitive opening/closing markers.
 Latest real extension fixtures9/9 pass11.781628s. Exact240s full gate exits0:
 401/401core ERT204.454363s, all6logged checks/strict compilation/package-lint pass.
-Selected request acceptance complete in uncommitted candidate, no failures.
+Selected request implementation/acceptance complete and user committed, no failures.
 25project+11unchanged pinned fixture modules isolated; user flake mirror untouched.
 Final25project+11foreign inputs byte-match isolated snapshot before/after gate;
-four task files now explicitly staged with user authorization; only existing user
-flake mirror remains unstaged. Staged blobs equal the accepted manifest/worktree.
+four committed task blobs equal the accepted manifest/worktree. Complete committed
+diff equals the reviewed staged candidate; ordinary index empty, only existing
+user flake mirror remains unstaged.
 No root lock/INBOX/version change. Validation is locked Emacs31.1/Org9.8.10/
 TeXmacs2.1.5/x86_64-linux, not other systems or full minimum9.8 behavior.
 Archive assessment: maintained regression tests preserve all new reproduction,
@@ -31,9 +32,11 @@ synchronized. User authorized staging and commit-message preparation; full stage
 review and whitespace check pass. tmp/commit.md now describes this fix with
 fix(source) subject, Chinese body and Closes: #5. User explicitly clarified
 closure intent for the accepted fix; this does not establish remote issue state.
-Next: user-controlled ordinary commit, then verify actual committed content before
-grounding memory to it. No ordinary commit or external issue action performed;
-no new tests needed for unchanged-byte staging. Earlier diagnosis follows.
+User commit and its full message now verified; this checkpoint associates the
+actual inspected project revision. Existing acceptance transfers by byte identity,
+no new tests solely for commit verification. No further implementation selected;
+remote push/issue state unverified and no external write performed. Completed
+tmp/commit.md is preparation only, not current commit authority. Earlier diagnosis follows.
 
 Initial read-only report: begin_texmacs and BEGIN_texmacs work while
 begin_TEXMACS/BEGIN_TEXMACS reportedly fail. Static inspection
