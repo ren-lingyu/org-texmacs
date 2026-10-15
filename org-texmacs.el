@@ -566,7 +566,7 @@ separate from that read-only temporary input before filling native results."
           result)))))
 
 ;;;###autoload
-(defun org-texmacs-export-from-buffer
+(defun org-texmacs-export-texmacs-from-buffer
     (source-buffer &optional bibliography-sources subtree-position region ext-plist)
   "Export explicit Org SOURCE-BUFFER to a complete native .tm byte string.
 Optional SUBTREE-POSITION selects the containing subtree in owned preparation.
@@ -602,19 +602,15 @@ Return unibyte PDF data; no final output file or GUI preview is created."
    bibliography-sources subtree-position region ext-plist))
 
 ;;;###autoload
-(defun org-texmacs-export-to-pdf (source-buffer file &optional bibliography-sources)
+(defun org-texmacs-export-to-pdf-file (source-buffer file &optional bibliography-sources)
   "Render explicit Org SOURCE-BUFFER to a new local PDF at absolute FILE.
 Capture the destination before preparation, then render with explicit
 BIBLIOGRAPHY-SOURCES and check source/dependencies before writing PDF bytes.
 Use the existing exclusive creation and partial-write file-error boundary.
-M-x captures the current Org source and prompts for a new .pdf destination;
-interactive calls pass no bibliography snapshots.  No GUI preview opens."
-  (interactive (org-texmacs--export-file-arguments "pdf"))
+This is a noninteractive explicit-source API.  No GUI preview opens."
   (let ((target (org-texmacs--native-save-target file)))
     (org-texmacs--native-save-bytes
      (org-texmacs-export-pdf-from-buffer source-buffer bibliography-sources) target)
-    (when (called-interactively-p 'interactive)
-      (message "Exported native PDF to %s" target))
     target))
 
 (defun org-texmacs--export-interactive-source ()
@@ -656,27 +652,6 @@ during Org parsing or prompts.  Do not run mode hooks or export preprocessing."
         ;; private buffer a visiting source when it is disposed.
         (let ((buffer-file-name file)) (funcall function))))))
 
-(defun org-texmacs--export-file-arguments (&optional extension)
-  "Capture an interactive source before prompting for a new local file.
-EXTENSION is a fixed consumer suffix, defaulting to tm."
-  (let* ((source (org-texmacs--export-interactive-source))
-         (bounds (cons (point-min) (point-max)))
-         (directory (org-texmacs--source-capture-path default-directory))
-         (source-file (buffer-file-name (buffer-base-buffer)))
-         (extension (or extension "tm"))
-         (name (concat (if source-file (file-name-base source-file) "export")
-                       "." extension)))
-    (unless (org-texmacs--document-local-file-path-p directory)
-      (user-error "Interactive file export requires a local working directory"))
-    (let ((target
-           (expand-file-name
-            (read-file-name (format "Export to new %s file: " extension) directory nil nil name)
-            directory)))
-      (unless (with-current-buffer source
-                (equal bounds (cons (point-min) (point-max))))
-        (user-error "Source restriction changed during file prompt"))
-      (list source target))))
-
 ;;;###autoload
 (defun org-texmacs-export-to-buffer
     (source-buffer &optional bibliography-sources subtree-position region ext-plist)
@@ -686,30 +661,21 @@ REGION is an optional (BEGIN . END) body range with priority over subtree body
 selection, retaining subtree configuration.  EXT-PLIST provides restricted
 configuration overrides.  See `org-texmacs-prepare-buffer'.
 Pass explicit BIBLIOGRAPHY-SOURCES snapshots to
-`org-texmacs-export-from-buffer'.
+`org-texmacs-export-texmacs-from-buffer'.
 Create the derived buffer only after export/source checking succeeds.  Retain
 native bytes in a unibyte `special-mode' buffer with no-conversion coding, no
 visiting file and no mode hooks.  Never reuse or overwrite another export
 buffer.
-Return the new buffer; display it only when called interactively from Org.
-Interactive calls pass no bibliography snapshots; use Lisp arguments when those
-are needed.  This is a native source view, not rendered TeXmacs output."
-  (interactive (list (org-texmacs--export-interactive-source)))
-  (let ((output (org-texmacs--export-byte-buffer
-                 (org-texmacs-export-from-buffer
-                  source-buffer bibliography-sources subtree-position region ext-plist)))
-        complete)
-    (unwind-protect
-        (progn
-          (when (called-interactively-p 'interactive) (display-buffer output))
-          (setq complete t)
-          output)
-      (unless complete
-        (let ((kill-buffer-query-functions nil)) (kill-buffer output))))))
+Return the new buffer without displaying it.  The Lisp caller owns its lifetime.
+This is a native source view, not rendered TeXmacs output."
+  (org-texmacs--export-byte-buffer
+   (org-texmacs-export-texmacs-from-buffer
+    source-buffer bibliography-sources subtree-position region ext-plist)))
 
-(defun org-texmacs--export-byte-buffer (bytes)
-  "Create a fresh readonly native view of checked unibyte BYTES."
-  (let* ((output (generate-new-buffer "*Org TeXmacs Export*"))
+(defun org-texmacs--export-byte-buffer (bytes &optional name)
+  "Create a fresh readonly native view of checked unibyte BYTES.
+Optional NAME overrides the explicit-source result name prefix."
+  (let* ((output (generate-new-buffer (or name "*Org TeXmacs Source Export*")))
          complete)
     (unwind-protect
         (progn
@@ -732,26 +698,20 @@ are needed.  This is a native source view, not rendered TeXmacs output."
           (when (buffer-live-p output) (kill-buffer output)))))))
 
 ;;;###autoload
-(defun org-texmacs-export-to-file (source-buffer file &optional bibliography-sources)
+(defun org-texmacs-export-to-texmacs-file (source-buffer file &optional bibliography-sources)
   "Export explicit Org SOURCE-BUFFER to a new local native file at FILE.
 Validate and copy the absolute destination before preparation.  Export with
-`org-texmacs-export-from-buffer' and BIBLIOGRAPHY-SOURCES, checking source and
-dependency consistency through native serialization before opening the file.
+`org-texmacs-export-texmacs-from-buffer' and BIBLIOGRAPHY-SOURCES, checking
+source and dependency consistency through serialization before opening the file.
 Write the already serialized bytes once and return the copied path.
 The destination does not redefine source-relative links.  Existing files or
 symlinks are never overwritten; use the same exclusive creation and file-error
 boundary as `org-texmacs-document-save'.  No source/output buffer is visited or
 changed, and no generic Org export preprocessing or session update runs.
-Interactively capture the current unnarrowed Org buffer before prompting in its
-local working directory.  Suggest its file stem, or export.tm, as the name.
-Interactive calls supply no bibliography snapshots; use Lisp arguments
-for them."
-  (interactive (org-texmacs--export-file-arguments))
+This is a noninteractive explicit-source API."
   (let ((target (org-texmacs--native-save-target file)))
     (org-texmacs--native-save-bytes
-     (org-texmacs-export-from-buffer source-buffer bibliography-sources) target)
-    (when (called-interactively-p 'interactive)
-      (message "Exported TeXmacs document to %s" target))
+     (org-texmacs-export-texmacs-from-buffer source-buffer bibliography-sources) target)
     target))
 
 ;;;###autoload

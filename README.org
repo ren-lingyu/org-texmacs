@@ -1253,16 +1253,16 @@ does not provide atomic content publication, replacement, backups, an export
 frontend or rendering.
 
 ** Exporting an explicit Org source buffer
-=org-texmacs-export-from-buffer SOURCE-BUFFER &optional BIBLIOGRAPHY-SOURCES SUBTREE-POSITION REGION EXT-PLIST=
+=org-texmacs-export-texmacs-from-buffer SOURCE-BUFFER &optional BIBLIOGRAPHY-SOURCES SUBTREE-POSITION REGION EXT-PLIST=
 returns complete native =.tm= bytes directly from an explicit Org buffer.
-=org-texmacs-export-to-file SOURCE-BUFFER FILE &optional BIBLIOGRAPHY-SOURCES=
+=org-texmacs-export-to-texmacs-file SOURCE-BUFFER FILE &optional BIBLIOGRAPHY-SOURCES=
 exports to an explicit new local file and returns its copied path.  Both use
 the existing restricted preparation, captured settings and optional explicit
 BibTeX text snapshots.
 
 #+begin_src emacs-lisp
-  (org-texmacs-export-from-buffer (current-buffer))
-  (org-texmacs-export-to-file (current-buffer) "/absolute/output/new-document.tm")
+  (org-texmacs-export-texmacs-from-buffer (current-buffer))
+  (org-texmacs-export-to-texmacs-file (current-buffer) "/absolute/output/new-document.tm")
 #+end_src
 
 Lowering and native serialization run inside preparation's final consistency
@@ -1280,34 +1280,30 @@ their existing preparation errors.  For a completed document snapshot, use the
 independent serialization/save consumers above; they retain its captured content
 even if the original source later changes.
 
-** Interactive export and a native byte buffer
-In an Org buffer, =M-x org-texmacs-export-to-buffer= creates and
-displays a fresh read-only =special-mode= buffer containing the native =.tm=
-bytes.  Each export gets its own buffer; previous exports remain intact.
-The buffer has no visiting file, uses =no-conversion= coding and is derived
-output for inspection/copying.  It is not rendered TeXmacs preview.  Mode hooks
-do not run while the view is initialized; failed exports leave no new view.
+** Explicit-source native byte buffers
+=org-texmacs-export-to-buffer SOURCE-BUFFER &optional BIBLIOGRAPHY-SOURCES SUBTREE-POSITION REGION EXT-PLIST=
+is a noninteractive Lisp API.  It returns a fresh read-only, unibyte
+=special-mode= buffer without displaying it.  Each call creates an independent
+result, normally named =*Org TeXmacs Source Export*= with a unique suffix when
+needed.  The Lisp caller owns its lifetime and can use =kill-buffer= to clean up.
 
-=M-x org-texmacs-export-to-file= captures the original Org source before its
-file prompt and asks for a new file in the source's local working directory.
-The suggested name uses the visiting source's file stem, or =export.tm= for
-non-file buffers.  Existing targets still fail explicitly.  Non-Org buffers
-fail before the prompt; remote working directories are outside this
-interactive file chooser's subset.  The explicit source/file Lisp API remains
-available when the caller chooses a native local destination separately.
-
-Interactive commands supply no bibliography snapshots and do not read =.bib=
-files.  Documents needing those snapshots should call the same functions from
-Lisp with the explicit third/second argument, respectively:
+The buffer contains exact native =.tm= bytes with =no-conversion= coding and
+no visiting file.  Mode hooks do not run during initialization; initialization
+failure removes only the newly allocated view.  Existing results remain intact.
+This is native source for inspection/copying, not rendered TeXmacs preview.
 
 #+begin_src emacs-lisp
-  (org-texmacs-export-to-buffer source-buffer bibliography-sources)
-  (org-texmacs-export-to-file source-buffer output-file bibliography-sources)
+  (let ((output (org-texmacs-export-to-buffer source-buffer bibliography-sources)))
+    (unwind-protect
+        (with-current-buffer output (buffer-string))
+      (kill-buffer output)))
 #+end_src
 
-Lisp calls to =org-texmacs-export-to-buffer= return the fresh buffer without
-displaying it.  No Org dispatcher entry, generic preprocessing, automatic edit
-hooks or source synchronization is installed.
+The main module provides five noninteractive explicit-source export APIs:
+=org-texmacs-export-texmacs-from-buffer=, =org-texmacs-export-pdf-from-buffer=,
+=org-texmacs-export-to-buffer=, =org-texmacs-export-to-texmacs-file= and
+=org-texmacs-export-to-pdf-file=.  Their explicit source, optional snapshots,
+selection and new-file policies remain independent of the frontend below.
 
 ** Native PDF rendering
 =org-texmacs-document-pdf DOCUMENT= returns unibyte PDF bytes from a completed
@@ -1317,13 +1313,12 @@ partial-write rules as native document saving.
 
 =org-texmacs-export-pdf-from-buffer SOURCE-BUFFER &optional BIBLIOGRAPHY-SOURCES SUBTREE-POSITION REGION EXT-PLIST=
 returns PDF bytes from an explicit Org buffer.
-=org-texmacs-export-to-pdf SOURCE-BUFFER FILE &optional BIBLIOGRAPHY-SOURCES=
-writes them only after preparation's final consistency check.  Its interactive
-command captures the source before prompting and suggests =source-stem.pdf=
-or =export.pdf=.  Interactive calls supply no bibliography snapshots.
+=org-texmacs-export-to-pdf-file SOURCE-BUFFER FILE &optional BIBLIOGRAPHY-SOURCES=
+writes them to a new absolute local destination only after preparation's final
+consistency check.  Both functions are noninteractive Lisp APIs.
 
 #+begin_src emacs-lisp
-  (org-texmacs-export-to-pdf (current-buffer) "/absolute/output/new-document.pdf")
+  (org-texmacs-export-to-pdf-file (current-buffer) "/absolute/output/new-document.pdf")
 #+end_src
 
 The headless worker installs the structured document directly in a temporary
@@ -1371,14 +1366,14 @@ keys; these values are examples, not defaults:
 
 With this explicit configuration, select =T= in Org's =C-c C-e= menu:
 
-| Keys  | Action                                            |
-|-------+---------------------------------------------------|
-| =T T= | Export to a fresh readonly native =.tm= byte buffer |
-| =T t= | Export to Org's local =.tm= output path             |
-| =T p= | Export to Org's local PDF output path               |
+| Keys  | Action                                                |
+|-------+-------------------------------------------------------|
+| =T T= | Export to the managed readonly native =.tm= byte buffer |
+| =T t= | Export to Org's local =.tm= output path                 |
+| =T p= | Export to Org's local PDF output path                  |
 
 =nil= omits only the menu; use =M-x org-texmacs-export-as-texmacs=,
-=M-x org-texmacs-export-to-texmacs= or =M-x org-texmacs-export-to-texmacs-pdf=
+=M-x org-texmacs-export-to-texmacs= or =M-x org-texmacs-export-to-pdf=
 directly without configuring keys.  This changes the former default =C-c C-e T=
 entry: existing users must add the explicit pre-load configuration above.
 
@@ -1397,7 +1392,7 @@ There is no automatic watcher, runtime refresh or key reassignment.  =C-c C-e=
 itself is not rebound, and menu settings do not change export command semantics.
 
 The corresponding commands are =org-texmacs-export-as-texmacs=,
-=org-texmacs-export-to-texmacs= and =org-texmacs-export-to-texmacs-pdf=.
+=org-texmacs-export-to-texmacs= and =org-texmacs-export-to-pdf=.
 They accept Org's standard optional arguments =async subtreep visible-only
 body-only ext-plist=.  =subtreep= and the restricted =ext-plist= below are supported;
 =async=, =visible-only= and =body-only= must be nil and fail before conversion or
@@ -1421,10 +1416,37 @@ written without encoding conversion or an added newline.  Standard filesystem
 errors propagate; write failure can leave partial output.  This ordinary write
 policy provides no backups, atomic replacement or target-version concurrency
 protection.  The explicit =org-texmacs-document-save= / =-save-pdf= and
-=org-texmacs-export-to-file= / =-to-pdf= APIs still require a new destination and
-never permit overwrite.
-The buffer action displays its result when
-=org-export-show-temporary-export-buffer= is non-nil.
+=org-texmacs-export-to-texmacs-file= / =-to-pdf-file= APIs still require a new
+destination and never permit overwrite.
+The buffer action reuses its untouched frontend-owned result, normally named
+=*Org TeXmacs Export*=.  If the name is occupied by another buffer, it allocates
+a unique alternative and stably reuses that result.  Ownership is checked by
+identity and state, not name alone.  User edits, renaming, changing the mode,
+visiting a file or otherwise taking over the result end automatic reuse; the next
+export creates a new result and preserves the old buffer.  Explicit-source
+results never enter frontend management.
+
+Conversion and source/dependency checks finish before result replacement.  A
+conversion or content-commit error preserves the previous content without a
+partial update.  After content commit, display failure keeps a reused buffer
+and its new content; display failure on a newly allocated result removes only
+that new buffer.  Results remain readonly, unmodified, unibyte =special-mode=
+buffers with =no-conversion= coding and no visiting file.  Mode hooks do not run.
+=org-export-show-temporary-export-buffer= controls display.  Use =kill-buffer=
+to clean up; the next export recreates a closed result.  Closing the Org source
+does not delete the result, and no dedicated cleanup command is provided.
+
+This API revision provides no compatibility aliases.  Replace
+=org-texmacs-export-from-buffer= with =org-texmacs-export-texmacs-from-buffer=,
+=org-texmacs-export-to-file= with =org-texmacs-export-to-texmacs-file=, and the old
+explicit-source =org-texmacs-export-to-pdf SOURCE-BUFFER FILE= with
+=org-texmacs-export-to-pdf-file SOURCE-BUFFER FILE=.  The old frontend
+=org-texmacs-export-to-texmacs-pdf= is now =org-texmacs-export-to-pdf= in
+=ox-texmacs.el=, with Org's five optional arguments.  Load =ox-texmacs= for the
+three interactive commands; loading =org-texmacs= provides the five Lisp APIs.
+The explicit buffer and file APIs no longer appear as =M-x= commands.
+Preprocessing/bibliography special entry points and Document/Session APIs retain
+their names and contracts.
 
 Full, unnarrowed exports with no subtree or active region use the bounded
 preprocessing provider: captured before-processing/before-parsing hooks, native
@@ -1582,7 +1604,7 @@ mark or the caller's pair during a worker wait cannot redirect the export.
 Source edits or changes to the captured configuration still invalidate it.
 
 #+begin_src emacs-lisp
-  (org-texmacs-export-from-buffer source-buffer nil nil (cons begin end))
+  (org-texmacs-export-texmacs-from-buffer source-buffer nil nil (cons begin end))
 #+end_src
 
 *** Subtree export, configuration and dependencies
@@ -1595,7 +1617,7 @@ or source-text reconstruction is used.
 
 #+begin_src emacs-lisp
   (org-texmacs-export-to-texmacs nil t)
-  (org-texmacs-export-to-texmacs-pdf nil t)
+  (org-texmacs-export-to-pdf nil t)
 #+end_src
 
 Supported subtree properties override the captured file/global configuration:
@@ -1631,7 +1653,7 @@ remain rejected.  The menu supplies no bibliography texts; Lisp callers can
 pass them to the source adapters.
 
 The explicit source APIs =org-texmacs-prepare-buffer=,
-=org-texmacs-document-from-buffer=, =org-texmacs-export-from-buffer=,
+=org-texmacs-document-from-buffer=, =org-texmacs-export-texmacs-from-buffer=,
 =org-texmacs-export-pdf-from-buffer= and =org-texmacs-export-to-buffer= accept an
 optional third =SUBTREE-POSITION= after =BIBLIOGRAPHY-SOURCES=.  It is an integer
 inside the source's accessible range, and nil retains accessible-buffer behavior:

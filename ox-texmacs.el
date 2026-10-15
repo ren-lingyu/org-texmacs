@@ -99,10 +99,53 @@ local selection uses direct preparation.  No failure changes the chosen route."
             (check)
             bytes))))))
 
+(defvar org-texmacs--export-managed-buffer nil
+  "Frontend result record: buffer, original name and last modification tick.
+A result relinquished by its user is never automatically reclaimed.")
+
+(defvar-local org-texmacs--export-buffer-owner nil
+  "Identity of the frontend record owning this result buffer.")
+
+(defun org-texmacs--export-managed-buffer-p (record)
+  "Return non-nil when RECORD still owns an untouched native result."
+  (and record (buffer-live-p (car record))
+       (with-current-buffer (car record)
+         (and (eq org-texmacs--export-buffer-owner record)
+              (equal (buffer-name) (nth 1 record))
+              (= (buffer-modified-tick) (nth 2 record))
+              (eq major-mode 'special-mode)
+              buffer-read-only (not (buffer-modified-p))
+              (not enable-multibyte-characters) (not buffer-file-name)
+              (not (buffer-narrowed-p))
+              (eq buffer-file-coding-system 'no-conversion)
+              (null buffer-file-format) (null buffer-offer-save)
+              (eq buffer-undo-list t)))))
+
+(defun org-texmacs--export-update-buffer (record bytes)
+  "Commit checked BYTES to RECORD, preserving its old content on failure."
+  (with-current-buffer (car record)
+    (let ((inhibit-read-only t) (inhibit-modification-hooks t)
+          (position (point)) complete)
+      (unwind-protect
+          (progn
+            (atomic-change-group
+              (erase-buffer)
+              (insert bytes)
+              (goto-char (point-min))
+              (set-buffer-modified-p nil))
+            (setq complete t))
+        (unless complete
+          (goto-char position)
+          (set-buffer-modified-p nil))
+        (setq buffer-undo-list t)
+        ;; A cancelled change group also advances the modification tick.
+        (setf (nth 2 record) (buffer-modified-tick))))
+    (current-buffer)))
+
 ;;;###autoload
 (defun org-texmacs-export-as-texmacs
     (&optional async subtreep visible-only body-only ext-plist)
-  "Export the current Org buffer to a fresh readonly native .tm byte buffer.
+  "Export the current Org buffer to a managed readonly native .tm byte buffer.
 Reject non-nil ASYNC, VISIBLE-ONLY or BODY-ONLY.
 Existing narrowing bounds the exported body.
 EXT-PLIST accepts only the documented restricted configuration keys
@@ -110,21 +153,37 @@ and is captured before preparation.  An active region selects the body.
 Full documents use bounded preprocessing; selections use direct preparation.
 The buffer-local discovery option independently enables bibliography reads.
 Non-nil SUBTREEP supplies subtree configuration and, without a region, its body.
-Return the new buffer.  Display it when
-`org-export-show-temporary-export-buffer' is non-nil."
-  (interactive)
+Reuse the frontend's untouched result, or create a uniquely named new result.
+User edits, renaming or takeover end automatic reuse.  Explicit-source results
+are independent.  Conversion or content commit failure preserves the old result.
+Display when `org-export-show-temporary-export-buffer' is non-nil.  Display
+failure retains a reused result's new content, but removes a newly created view.
+Return the result buffer; its lifetime is independent of the Org source."
+  (interactive nil org-mode)
   (let* ((selection (org-texmacs--export-check-options
                     async subtreep visible-only body-only ext-plist))
          (bytes (funcall (org-texmacs--export-byte-consumer 'tm selection)
                          (current-buffer) nil (car selection) (cadr selection)
                          (nth 2 selection)))
-         (output (org-texmacs--export-byte-buffer bytes)) complete)
+         (record org-texmacs--export-managed-buffer)
+         (reuse (org-texmacs--export-managed-buffer-p record))
+         (output (if reuse (org-texmacs--export-update-buffer record bytes)
+                   (org-texmacs--export-byte-buffer bytes "*Org TeXmacs Export*")))
+         complete)
+    (unless reuse
+      (setq record (list output (buffer-name output)
+                         (with-current-buffer output (buffer-modified-tick)))
+            org-texmacs--export-managed-buffer record)
+      (with-current-buffer output
+        (setq org-texmacs--export-buffer-owner record)))
     (unwind-protect
         (progn
           (when org-export-show-temporary-export-buffer (display-buffer output))
           (setq complete t)
           output)
-      (unless complete
+      (unless (or complete reuse)
+        (when (eq org-texmacs--export-managed-buffer record)
+          (setq org-texmacs--export-managed-buffer nil))
         (let ((kill-buffer-query-functions nil))
           (when (buffer-live-p output) (kill-buffer output)))))))
 
@@ -141,14 +200,14 @@ and overwrite an existing writable regular output after source checking.
 Non-nil SUBTREEP uses the containing subtree's configuration and output name.
 Full documents preprocess; selections prepare directly.  The buffer-local
 discovery option independently enables bibliography reads.  Return destination."
-  (interactive)
+  (interactive nil org-mode)
   (let ((selection (org-texmacs--export-check-options
                    async subtreep visible-only body-only ext-plist)))
     (org-texmacs--export-named-file ".tm" (org-texmacs--export-byte-consumer 'tm selection)
                                      (car selection) (cadr selection) (nth 2 selection))))
 
 ;;;###autoload
-(defun org-texmacs-export-to-texmacs-pdf
+(defun org-texmacs-export-to-pdf
     (&optional async subtreep visible-only body-only ext-plist)
   "Export the current Org buffer to Org's local PDF output path.
 Reject non-nil ASYNC, VISIBLE-ONLY or BODY-ONLY.
@@ -160,7 +219,7 @@ and overwrite an existing writable regular output after source checking.
 Non-nil SUBTREEP uses the containing subtree's configuration and output name.
 Full documents preprocess; selections prepare directly.  The buffer-local
 discovery option independently enables bibliography reads.  No PDF viewer runs."
-  (interactive)
+  (interactive nil org-mode)
   (let ((selection (org-texmacs--export-check-options
                    async subtreep visible-only body-only ext-plist)))
     (org-texmacs--export-named-file ".pdf" (org-texmacs--export-byte-consumer 'pdf selection)
@@ -298,7 +357,7 @@ Do not change existing backends, hooks, or the user's configuration."
               (cl-mapcar #'list keys
                          '("As TeXmacs buffer" "As .tm file" "As PDF file")
                          '(org-texmacs-export-as-texmacs org-texmacs-export-to-texmacs
-                           org-texmacs-export-to-texmacs-pdf)))))))
+                           org-texmacs-export-to-pdf)))))))
 
 ;; Validate before replacing any backend or adding its generic export guard.
 (let ((menu (org-texmacs--export-menu-entry org-texmacs-export-menu-keys)))
