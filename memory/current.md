@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Completed candidate: Issue4 remaining date repair and semantic audit
+## Completed committed delivery: Issue4 remaining date repair and semantic audit
 
 Final user-approved plan implemented and locally accepted. Four task files changed:
 README.org, document/input modules, maintained ERT. Date timestamps preserve full
@@ -30,15 +30,17 @@ stable, user flake mirror untouched. User authorized sequential A/B staging and
 messages, polling at most3minutes between deliveries. User committed A during
 that wait; verified parent is quote/table baseline, exactly four changed paths,
 all25date-input blobs and full Refs:#4 message match approved A draft.
-B now staged: README.org/tests/ert/ert.el only; all25index blobs match final
-accepted candidate identities. tmp/commit.md now contains test(document) audit
-message with Closes:#4. Only user flake.nix remains unstaged. No new tests or
-ordinary agent commits performed; date-only subset has no separate fullgate.
-Next user commits B, then verify parent=A, two paths, all25accepted blobs and
-message; remote issue closure/publication remains unverified. No external writes.
-Independent A/B patches reconstruct final candidate byte-exactly. No new archive
-needed for this delivery transition: ordinary commit plus extracted memory and
-existing immutable evidence suffice. Project association identifies exact A
+B now user-committed and verified: parent=A, exactly README.org/tests/ert/ert.el,
+all25committed input blobs match final accepted candidate identities, full
+approved test(document)/Closes:#4 message unchanged. Ordinary index empty; only
+user flake.nix remains unstaged. tmp/commit.md is historical B draft. Prior
+423core/37focused/9real/full flake acceptance transfers by exact byte identity;
+no new tests or ordinary agent commits; date-only subset has no separate fullgate.
+Local implementation, review and both committed deliveries complete. Remote
+publication/issue closure remains unverified; check when reported/relevant.
+No external writes. Independent A/B patches reconstruct final candidate exactly.
+No new archive needed: ordinary commits plus extracted memory and existing
+immutable evidence suffice. Project association identifies exact inspected B
 commit verification, not original uncommitted combined runtime-test provenance.
 
 Selected34necessary original pure-text artifacts byte/digest/source-stability
