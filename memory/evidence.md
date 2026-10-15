@@ -2831,3 +2831,19 @@ Root flake user mirror untouched, ordinary index empty. No default timeout/sourc
 budget increase, business-code edit or async implementation. Single sample/fixed
 order/cache bias, math density/request-count confound, batchGC/userGUI limits
 recorded; earlier small zero-GC statement not generalized to large measurements.
+
+
+## Issue4 date delivery verification and final audit staging
+
+Sequential staging/messages expressly authorized, at most3minutes polling between
+A/B. A user commit04a11dfbd7b7fc5d980198c0d5c4a269831b6447 parent exactly
+8435e5d49a30d43f672040e7feb9699f21e1fcc5; four expected paths, all25date-input
+manifest blobs and complete approved fix(document)/Refs:#4 message verified.
+B README.org/tests/ert/ert.el only staged afterward; all25index blobs equal final
+accepted candidate manifest. test(document) draft with Closes:#4 in tmp/commit.md.
+Prior423core/37focused/9real/full flake acceptance transfers to unchanged combined
+candidate by byte identity, no new tests or date-only fullgate claim. Only user
+flake mirror unstaged. No agent project commit/external issue mutation. Next
+verify user B commit/parent/blobs/message; remote closure not yet established.
+No new archive needed; immutable prior evidence and extracted memory suffice.
+Project parent associates exact inspected A, not original combined test provenance.

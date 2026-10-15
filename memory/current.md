@@ -26,15 +26,20 @@ Eleven new maintained ERT replace one old rejection (+10net). Corrected red36:
 27pass/9date-related failures23.868628s. Initial diagnostic/fixture failures and
 limitations extracted in closure record; no fabricated unsafe-NUL failure claim.
 25baseline/25candidate/11extension identities checked; candidate source/root lock
-stable, user flake mirror untouched. Ordinary index empty; no staging/commit auth.
-
-Independent date-state.patch (4files/date7new tests) and audit-state.patch
-(README/tests4new PDF tests) under tmp/issue-4-closure reconstruct final candidate
-byte-exactly. Date-only hash manifest is a review subset, not a separate fullgate.
-Next user reviews, then explicitly authorizes separate staging/messages if desired;
-last audit delivery can use Closes:#4 after review. User makes project commits;
-verify resulting blobs/message/parent and remote closure afterward. #4 remains
-open until that tracking action, no external writes in this implementation turn.
+stable, user flake mirror untouched. User authorized sequential A/B staging and
+messages, polling at most3minutes between deliveries. User committed A during
+that wait; verified parent is quote/table baseline, exactly four changed paths,
+all25date-input blobs and full Refs:#4 message match approved A draft.
+B now staged: README.org/tests/ert/ert.el only; all25index blobs match final
+accepted candidate identities. tmp/commit.md now contains test(document) audit
+message with Closes:#4. Only user flake.nix remains unstaged. No new tests or
+ordinary agent commits performed; date-only subset has no separate fullgate.
+Next user commits B, then verify parent=A, two paths, all25accepted blobs and
+message; remote issue closure/publication remains unverified. No external writes.
+Independent A/B patches reconstruct final candidate byte-exactly. No new archive
+needed for this delivery transition: ordinary commit plus extracted memory and
+existing immutable evidence suffice. Project association identifies exact A
+commit verification, not original uncommitted combined runtime-test provenance.
 
 Selected34necessary original pure-text artifacts byte/digest/source-stability
 verified in separate archive-only checkpoint:

@@ -1,7 +1,8 @@
 # Issue4 remaining repair and semantic audit
 
 Implementation and bounded audit complete on committed quote/table baseline;
-accepted candidate remains uncommitted pending user review. Final adopted policy:
+date delivery A now user-committed and verified, audit B staged awaiting user
+commit. Final adopted policy:
 date metadata timestamps emit complete raw-value as literal text, including
 angle/square delimiters and internal spaces; no formatting/normalization/analysis.
 Private helper org-texmacs--document-date-timestamp-text(raw) returns string,
@@ -22,8 +23,11 @@ copies. Root lock/user flake/original examples unchanged. Independent locked fla
 uses source/extension hashes. Baseline413core is preceding-task evidence; current
 423core acceptance and date/advice/ownership/snapshot/native/PDF evidence follow.
 Native readback alone is not treated as semantic/layout proof.
-#4 remains open until full acceptance and user final commit; no ordinary staging
-or project commit authority. #7 performance/#9 names/native typography out of scope.
+#4 remains open until user final delivery/tracking. User now authorizes sequential
+A/B staging and messages, at most3minutes polling for A commit before B.
+A user commit parent/four paths/all25date-input blobs/full Refs:#4 message
+verified. B README/tests staged, all25final accepted index identities verified.
+Agent made no project commit. Combined acceptance is not a date-only fullgate. #7 performance/#9 names/native typography out of scope.
 
 ## Bounded audit matrix
 
@@ -82,7 +86,7 @@ private helper docstrings describe exact scope; root user flake remains untouche
 ## Accepted delivery and retention
 
 25baseline/25candidate inputs and11extension identities verified. Root lock and
-user flake mirror unchanged; ordinary index empty. Independent date-state.patch
+user flake mirror unchanged; B audit staged. Independent date-state.patch
 contains two source modules/date README/seven new date ERT (replaces one old),
 audit-state.patch only README/four PDF ERT. Both reconstruct final four files
 byte-exactly; date-only subset has own hashes but no separate fullgate claim.
@@ -94,10 +98,12 @@ in separate archive-only checkpoint:
 archive/2026-10-15T13-12-14Z--8435e5d/MANIFEST.md.
 Includes seven specifically relevant small pinned native .ts definitions, not a
 dependency-tree archive. Other diagnostic/fixture findings extracted above; no
-PDF/binary/whole tmp capture. Current checkpoint has no external candidate parent.
+PDF/binary/whole tmp capture. Original implementation checkpoint had no external candidate parent.
 
 Implementation/validation complete; #4 local closure conditions satisfied under
-recorded limits. Next user review, explicit staging/message authorization for
-separate date then audit deliveries; final reviewed delivery can use Closes:#4.
-User project commits only; verify blobs/parents/messages and remote tracking when
-reported. No staging/project commits/external issue writes performed this turn.
+recorded limits. User authorized sequential staging/messages with at most3minutes
+polling; A committed in that window and verified, B staged with Closes:#4 draft.
+Next user commits B; verify parent=A/two paths/all25blobs/message, then reported
+remote tracking. No new tests, agent project commits or external writes. No new
+archive: extracted delivery state and ordinary history suffice, existing immutable
+raw evidence unchanged. Project association is exact A commit verification only.

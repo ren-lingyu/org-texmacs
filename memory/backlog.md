@@ -37,11 +37,13 @@ only user flake change remains unstaged. A Refs:#4, B Closes:#8.
 Full contract/evidence/archive in memory/block-table-implementation.md/current.md.
 
 Issue4 remaining date repair/native audit now implemented and fully locally
-validated, pending user review/separate commits and closure tracking. Complete
+validated; date delivery A now user-committed/identity verified, audit delivery B
+staged pending user commit and closure tracking. Complete
 raw timestamp literal, private captured advice helper, bounded tag audit and
 native style limits documented;423core/37focused/9real/full compile/lint pass.
 Seven date tests replace one rejection, four audit PDF tests added. See
-memory/issue-4-closure.md. Ordinary index empty; staging not yet authorized.
+memory/issue-4-closure.md. Sequential staging/messages authorized; user A commit
+verified within3minutes, B README/tests staged with final25accepted identities.
 Final reviewed audit delivery may use Closes:#4; no external closure performed.
 B independently tracked by closed/completed Issue8:
 https://github.com/ren-lingyu/org-texmacs/issues/8.
