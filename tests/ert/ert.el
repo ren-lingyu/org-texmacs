@@ -6323,6 +6323,143 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (should (= (length matches) 1))
     (cdar matches)))
 
+(ert-deftest org-texmacs-pdf-preformatted-lines-and-indent ()
+  :tags '(issue4-closure)
+  (org-texmacs-test--with-worker
+    (let ((actual (expand-file-name "code.pdf" test-directory))
+          (reference (expand-file-name "code-reference.pdf" test-directory)))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\nCodeBefore\n\n"
+                "#+begin_example -i\n  ExampleOne\n    ExampleTwo\n\n  ExampleThree\n#+end_example\n\n"
+                ": FixedOne\n:   FixedTwo\n\n"
+                "#+begin_src text -i\n  SourceOne\n\n    SourceTwo\n#+end_src\n\nCodeAfter\n")
+        (org-texmacs-export-to-pdf-file (current-buffer) actual))
+      (org-texmacs-document-save-pdf
+       (org-texmacs--document-create
+        :body '(document (concat "CodeBefore ")
+                         (code (document "  ExampleOne" "    ExampleTwo" "" "  ExampleThree"))
+                         (code (document "FixedOne" "  FixedTwo"))
+                         (code (document "  SourceOne" "" "    SourceTwo"))
+                         (concat "CodeAfter ")))
+       reference)
+      (let ((words (org-texmacs-test--pdf-words actual))
+            (expected (org-texmacs-test--pdf-words reference)))
+        (dolist (token '("CodeBefore" "ExampleOne" "ExampleTwo" "ExampleThree"
+                         "FixedOne" "FixedTwo" "SourceOne" "SourceTwo" "CodeAfter"))
+          (cl-mapc (lambda (a b) (should (<= (abs (- a b)) 1.0)))
+                   (org-texmacs-test--pdf-word words token)
+                   (org-texmacs-test--pdf-word expected token)))
+        (let ((one (org-texmacs-test--pdf-word words "ExampleOne"))
+              (two (org-texmacs-test--pdf-word words "ExampleTwo"))
+              (three (org-texmacs-test--pdf-word words "ExampleThree")))
+          (should (> (car two) (+ (car one) 1.0)))
+          (should (<= (abs (- (car one) (car three))) 1.0))
+          (should (<= (abs (- (- (cadr three) (cadr two))
+                             (* 2 (- (cadr two) (cadr one))))) 1.0)))
+        (should (> (car (org-texmacs-test--pdf-word words "FixedTwo"))
+                   (+ 1.0 (car (org-texmacs-test--pdf-word words "FixedOne")))))))))
+
+(ert-deftest org-texmacs-pdf-list-multiparagraph-native-layout ()
+  :tags '(issue4-closure)
+  (org-texmacs-test--with-worker
+    (let ((actual (expand-file-name "lists.pdf" test-directory))
+          (reference (expand-file-name "lists-reference.pdf" test-directory)))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+                "- OuterOne\n\n  OuterMore\n\n  1. InnerOne\n  2. InnerTwo\n- OuterTwo\n\n"
+                "Separator\n\n- TermOne :: BodyOne\n\n  BodyMore\n- TermTwo :: BodyTwo\n")
+        (org-texmacs-export-to-pdf-file (current-buffer) actual))
+      (org-texmacs-document-save-pdf
+       (org-texmacs--document-create
+        :body '(document
+                (itemize
+                 (document (concat (item) "OuterOne ") (concat "OuterMore ")
+                           (enumerate (document (concat (item) "InnerOne ")
+                                                (concat (item) "InnerTwo ")))
+                           (concat (item) "OuterTwo ")))
+                (concat "Separator ")
+                (description
+                 (document (concat (item* "TermOne") "BodyOne ")
+                           (concat "BodyMore ") (concat (item* "TermTwo") "BodyTwo ")))))
+       reference)
+      (let ((words (org-texmacs-test--pdf-words actual))
+            (expected (org-texmacs-test--pdf-words reference)))
+        (dolist (token '("OuterOne" "OuterMore" "InnerOne" "InnerTwo" "OuterTwo"
+                         "TermOne." "BodyOne" "BodyMore" "TermTwo." "BodyTwo"))
+          (cl-mapc (lambda (a b) (should (<= (abs (- a b)) 1.0)))
+                   (org-texmacs-test--pdf-word words token)
+                   (org-texmacs-test--pdf-word expected token)))
+        (let ((outer (car (org-texmacs-test--pdf-word words "OuterOne"))))
+          (dolist (token '("OuterMore" "OuterTwo"))
+            (should (<= (abs (- outer (car (org-texmacs-test--pdf-word words token)))) 1.0)))
+          (should (> (car (org-texmacs-test--pdf-word words "InnerOne")) (+ outer 1.0)))))
+      (should (string-match-p "1\\. InnerOne 2\\. InnerTwo"
+                              (org-texmacs-test--pdf-text actual))))))
+
+(ert-deftest org-texmacs-pdf-caption-number-and-reference-semantics ()
+  :tags '(issue4-closure)
+  (org-texmacs-test--with-worker
+    (let ((actual (expand-file-name "captions.pdf" test-directory))
+          (reference (expand-file-name "captions-reference.pdf" test-directory)))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\nBeforeTable [[one]] [[two]]\n\n"
+                "#+name: one\n#+caption[ShortOne]: LongCaptionOne\n| LeftOne | RightOne |\n\n"
+                "#+name: two\n#+caption: LongCaptionTwo\n| LeftTwo | RightTwo |\n\n"
+                "AfterTable [[one][FirstTable]] [[two]]\n")
+        (org-texmacs-export-to-pdf-file (current-buffer) actual))
+      (org-texmacs-document-save-pdf
+       (org-texmacs--document-create
+        :body '(document
+                (concat "BeforeTable " (reference "native-one") " " (reference "native-two") " ")
+                (big-table
+                 (tabular (tformat (table (row (cell "LeftOne") (cell "RightOne")))))
+                 (surround (label "native-one") ""
+                           (caption-detailed "LongCaptionOne" "ShortOne")))
+                (big-table
+                 (tabular (tformat (table (row (cell "LeftTwo") (cell "RightTwo")))))
+                 (surround (label "native-two") "" "LongCaptionTwo"))
+                (concat "AfterTable " (hlink "FirstTable" "#native-one") " "
+                        (reference "native-two") " ")))
+       reference)
+      (let ((words (org-texmacs-test--pdf-words actual))
+            (expected (org-texmacs-test--pdf-words reference)))
+        (dolist (token '("BeforeTable" "LeftOne" "RightOne" "LongCaptionOne"
+                         "LeftTwo" "RightTwo" "LongCaptionTwo" "AfterTable" "FirstTable"))
+          (cl-mapc (lambda (a b) (should (<= (abs (- a b)) 1.0)))
+                   (org-texmacs-test--pdf-word words token)
+                   (org-texmacs-test--pdf-word expected token))))
+      (let ((text (org-texmacs-test--pdf-text actual)))
+        (dolist (pattern '("BeforeTable 1 2" "Table 1\\. LongCaptionOne"
+                           "Table 2\\. LongCaptionTwo" "AfterTable FirstTable 2"))
+          (should (string-match-p pattern text)))
+        (should-not (string-match-p "ShortOne" text))))))
+
+(ert-deftest org-texmacs-pdf-five-level-headline-counter-and-toc ()
+  :tags '(issue4-closure)
+  (org-texmacs-test--with-worker
+    (let ((file (expand-file-name "headings.pdf" test-directory)))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+OPTIONS: toc:5 H:5 title:nil author:nil date:nil\n"
+                "* FirstHeading\nBodyFirst [[*SecondHeading]]\n"
+                "** ChildHeading\nBodyChild\n*** ThirdHeading\nBodyThird\n"
+                "**** FourthHeading\nBodyFourth\n***** FifthHeading\nBodyFifth\n"
+                "****** LowHeading\nBodyLow\n"
+                "* SecondHeading\nBodySecond [[*FirstHeading]] [[*FourthHeading]] [[*FifthHeading]]\n"
+                "* UnnumberedHeading\n:PROPERTIES:\n:UNNUMBERED: t\n:END:\nBodyUnnumbered\n")
+        (org-texmacs-export-to-pdf-file (current-buffer) file))
+      (let ((text (org-texmacs-test--pdf-text file)))
+        (dolist (pattern '("1 FirstHeading" "1\\.1 ChildHeading" "1\\.1\\.1 ThirdHeading"
+                           "1\\.1\\.1\\.1 FourthHeading" "1\\.1\\.1\\.1\\.1 FifthHeading"
+                           "BodyFirst 2" "BodySecond 1 1\\.1\\.1\\.1 1\\.1\\.1\\.1\\.1"
+                           "LowHeading BodyLow" "UnnumberedHeading BodyUnnumbered"))
+          (should (string-match-p pattern text)))
+        (should (= 2 (cl-count "FirstHeading" (split-string text "[^[:alnum:]]+" t)
+                               :test #'equal)))))))
+
 (ert-deftest org-texmacs-pdf-date-literal-layout ()
   :tags '(issue4-closure)
   (org-texmacs-test--with-worker

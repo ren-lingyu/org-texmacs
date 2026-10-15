@@ -757,8 +757,10 @@ tables place their private label inside the caption, after the native table
 counter binding; undescribed links use =reference= and described links use
 =hlink=.  An uncaptioned named table has an invisible anchor and requires a
 link description.  No table number is invented for it.  Ambiguous referenced
-names or collisions with dedicated targets fail explicitly.  Native tree readback does
-not verify displayed reference numbers, caption layout or pagination.
+names or collisions with dedicated targets fail explicitly.  Maintained native
+PDF checks cover two caption counters, displayed references and caption geometry
+against an independent native reference; arbitrary styles and pagination remain
+outside this bounded verification.
 
 These rules apply while lowering Org nodes, not as a rewrite of the final
 TeXmacs tree.  STM islands remain opaque and unchanged, including their
@@ -1129,6 +1131,14 @@ or all package configurations.  Their preprocessing internals own their external
 state guarantees.  Preparation owns the supplied final working input; the optional
 native preprocessing provider additionally checks the dependencies it acquires.
 
+The locked native semantic audit also exercises static code line/blank-line
+geometry, multiparagraph and nested lists, two table caption counters and
+references, and five-level heading/TOC/reference agreement.  Native decoration
+and metadata definitions are checked alongside rendered content; successful
+serialization or readback alone is not treated as layout verification.
+These checks are bounded to the test fixtures and pinned TeXmacs environment,
+not arbitrary styles, fonts or pagination.
+
 ** Headline metadata and presentation
 Document conversion snapshots these standard Org options from the source
 buffer and accepts their listed =#+OPTIONS= keys.  It does not introduce
@@ -1145,6 +1155,12 @@ parallel TeXmacs display switches:
 | =org-export-with-section-numbers=   | =num=       | Select the deepest numbered section level           |
 | =org-export-with-toc=               | =toc=       | Build a static TOC to the selected depth            |
 | =org-export-with-title/author/date= | =title/author/date= | Control rich document metadata output          |
+
+Native section counters and their presentation are distinct.  The pinned
+=generic= style hides displayed =paragraph=/=subparagraph= numbers by default
+(levels four/five), while native references and the static TOC retain their
+logical numbers.  The exporter keeps that native style policy; it does not
+replace native counters or force heading-number visibility.
 
 =tags:not-in-toc= shows tags in the body heading but omits them from TOC
 entries.
