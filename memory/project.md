@@ -98,8 +98,10 @@ buffer or start a worker.
   composition, INCLUDE capture and bibliography discovery buffers. Object-captured
   unwind-protect preserves processing context and error propagation even after
   callback current-buffer switches. Four actual kill-entry/native regressions
-  fail before and pass after repair.405core/9real/full Nix strict compilation/lint
-  pass on locked x86_64-linux; actual interactive verification still pending.
+  fail before and pass after repair. Interactive INCLUDE feedback exposed an
+  ambient-buffer configuration guard bug; bibliography transaction checks now
+  explicitly inspect the captured source. Five maintained tests plus eight actual
+  exact-fixture tm/PDF exports pass; revised full gate and interactive retry pending.
   Exact evidence and acceptance status in memory/current.md/evidence.md.
 - Prepared input owns copied AST/string structure, rebuilds parent links, and
   remaps identity-keyed INFO/island/post-blank data.

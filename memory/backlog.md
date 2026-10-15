@@ -28,9 +28,11 @@ decision.
 User selected reviewed lifetime-only repair and continuous GAW updates. Root
 composition/INCLUDE capture/bibliography discovery all confirmed with runtime
 kill-entry danger-state assertions. Three bounded unwind-protect repairs and
-four maintained regressions implemented;4/4 focused pass after expected4/4 red.
-405core/9real/full Nix strict compile/lint pass; actual interactive tm/PDF check
-requested and pending. No new public
+five maintained regressions implemented. User confirms no-INCLUDE no-popup but
+reports INCLUDE configuration error; reproduced with source-local with-toc=nil.
+Configuration guard now source-anchored, five maintained tests and exact user
+fixture's8native tm/PDF outputs pass. Revised full gate running; interactive retry
+pending. Earlier405core/9real gate covers previous candidate only. No new public
 API, INCLUDE mapping, rendering or output policy change. Current details and
 authorization in memory/current.md; original review extracted separately.
 Tracking https://github.com/ren-lingyu/org-texmacs/issues/6, no external writes.

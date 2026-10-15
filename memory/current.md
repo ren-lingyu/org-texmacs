@@ -2,6 +2,31 @@
 
 ## Active objective
 
+Interactive feedback: user confirms direct file without INCLUDE no longer prompts,
+but INCLUDE export fails "Bibliography transaction configuration changed".
+User provided tmp/realworld_test: test_include.org (22bytes) includes ./test.org
+(6447bytes; title, Chinese prose, large native graphics/math STM and equation).
+Interactive acceptance therefore not complete; continue selected Issue6 work,
+preserve fixtures and existing changes. Prior focused/full commands remain
+authorized for this task. User's exact local configuration has not been inspected.
+
+Exact two-file fixture in clean isolation passes preparation with discovery nil/t
+(5/5 focused including temporary probe,5.052564s). Additional maintained source
+buffer-local org-export-with-toc=nil reproduces the identical configuration error
+on INCLUDE (1/5 failure2.483592s). --bibliography-convert's configuration-check
+reads ambient current buffer, including native INCLUDE private buffers, instead
+of captured source-buffer; not caused by clearing file identity itself. This
+pre-existing guard bug was uncovered during Issue6 acceptance; source-anchoring
+repair now applied in the same already-authorized bibliography file. Added a
+fifth maintained ERT proving genuine source configuration changes still reject
+even when current private buffer matches the original snapshot. Updated focused
+passes6/6 (five maintained plus exact realworld native probe)8.088419s. Both actual
+user files with source-local with-toc=nil x discovery nil/t x native tm/PDF produce
+eight valid outputs with preserved source state; probe5.279271s. No original user
+fixture edits. Revised240s full gate running; earlier405/405 applies only to the
+previous candidate, not this revision. Interactive retry of reloaded bibliography
+module still needed, no user result for this revision yet.
+
 User now selected implementing the reviewed Issue6 plan and explicitly reminded
 continuous GAW maintenance. Authorized preprocessing/bibliography owned-lifetime
 and maintained regression edits; no ordinary staging/commit or INBOX edits.
@@ -15,10 +40,10 @@ INCLUDE and local discovery/direct preparation. Error test exercises12 combinati
 (three private lifetimes x absent/existing output x tm/pdf), propagates exact
 sentinel after switching to a user-owned buffer. No leaked observed buffers or
 source/user-state changes. Strict byte/native production compilation passed.
-Full authorized240s isolated flake check exits0:405/405core ERT205.240427s,
+Previous authorized240s isolated flake check exited0:405/405core ERT205.240427s,
 real extension9/9 pass11.484144s, all checks and strict compilation/lint pass.
-Implementation and automated acceptance complete; actual interactive no-popup
-verification requested from user but not yet answered, do not claim that result.
+That earlier automated acceptance missed source-local configuration during INCLUDE;
+current revised acceptance is tracked above. User confirms no-INCLUDE no-popup.
 Before-repair four tests intentionally fail4/4 (2.107358s), establishing root,
 non-file INCLUDE and local bibliography danger states at actual kill entry.
 Source/default-directory context remains available throughout processing and
@@ -26,9 +51,9 @@ original errors propagate. Runtime evidence and exact hashes in evidence.md;
 pre-fix inputs/logs retained under tmp/issue-6-cleanup. Final25project+11foreign
 inputs match tested isolation; root lock unchanged. Exact changed-file/diff hashes
 in evidence.md. Validation locked Emacs31.1/Org9.8.10/TeXmacs2.1.5/x86_64-linux,
-not other systems or GUI. No raw archive selected: maintained tests/history plus
-distilled evidence suffice, no unique probe/retired source. Next receive actual
-interactive check and user review/staging decision. Only three task paths plus
+not other systems or GUI. Reassess selective capture of the new exact-input probe
+at acceptance. Next complete revised full gate and receive interactive retry.
+Only three task paths plus
 existing flake mirror dirty; ordinary index empty, no task staging/commit,
 INBOX/version/root-lock/external issue action or tmp cleanup.
 

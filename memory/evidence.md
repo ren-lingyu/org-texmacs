@@ -2583,3 +2583,38 @@ Final archive assessment: no unique transient probe or retired source, maintaine
 ERT + previous production history reproduce all new scenarios and expected-red
 comparison; counts, hashes, commands, cause and limits extracted above. No raw
 archive or tmp cleanup. GAW current/model/backlog synchronized to this state.
+
+### Interactive feedback and INCLUDE configuration guard follow-up
+
+User confirms no-INCLUDE interactive export no longer prompts, but INCLUDE fails
+with "Bibliography transaction configuration changed". Supplied ignored fixtures:
+tmp/realworld_test/test.org,6447bytes,SHA256
+73e9e8da9310fa73561633efa410e9003883e8924db708b91cd2ca3e640985bb;
+test_include.org,22bytes,SHA256
+cf802a0cc4da13622c21546d9fbd4c847c8e1d020c5360024cda66c0f337dbc6,
+contains #+INCLUDE: ./test.org. Included file has title, Chinese prose, native
+snake-lemma graphics/math and equation STM. Original files left unchanged.
+
+Isolated exact files pass preparation in clean Org context with discovery nil/t
+(temporary fifth focused test,5/5 in5.052564s). Adding source-buffer-local
+org-export-with-toc=nil to maintained full-native-file-exports reproduces exactly
+the user's error (1/5 fails,2.483592s). Actual user's locals not inspected, so do
+not assert their precise setting. Native INCLUDE calls guards in private buffers;
+--bibliography-convert configuration-check previously read ambient options/style/
+initial/globals instead of the captured source. This bug predates file-identity
+cleanup and is exposed by this acceptance path, not caused by that cleanup.
+
+Same authorized bibliography path now anchors configuration-check to source-buffer.
+No condition removed or failure bypassed. Fifth maintained ERT changes true source
+with-toc while current private buffer matches original snapshot; must still reject
+with discovery nil/t. Source-local with-toc=nil added to actual native full export
+regression, proving ordinary INCLUDE no longer produces a false configuration error.
+
+Updated focused6/6 pass5.137303s with original preparation probe; upgraded exact
+fixture probe performs actual frontend exports. Final focused6/6 pass8.088419s,
+native fixture probe5.279271s: two user files x discovery nil/t x tm/PDF =8valid
+native outputs with source state retained under with-toc=nil. Five tests maintained
+in repo, one extra temporary probe loaded only by focused isolated harness.
+No package mapping/rendering change. Revised complete240s check running; do not
+transfer previous405core/9real acceptance to changed code without new result.
+Current interactive acceptance remains pending reloaded-module retry by user.
