@@ -1,0 +1,1 @@
+(document (concat "PlainInline " (strong "BoldInline") " " (em "ItalicInline") " " (underline "UnderlineInline") " " (strike-through "StrikeInline") " " (verbatim "VerbatimInline") " " (next-line) "AfterBreak " (hlink "ExternalLink" "https://example.org") " "))

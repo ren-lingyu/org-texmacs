@@ -1,0 +1,452 @@
+diff --git a/README.org b/README.org
+index 8f540f6..fb8e5b5 100644
+--- a/README.org
++++ b/README.org
+@@ -1158,10 +1158,13 @@ keywords are consumed instead of becoming body nodes.
+ =#+TITLE=, =#+AUTHOR= and =#+DATE= remain parsed rich Org objects in the
+ prepared input and lower into a leading =doc-data=.  Titles use =doc-title=;
+ authors use =doc-author=, =author-data= and =author-name= without heuristic
+-name splitting; dates use =doc-date=.  A single explicit date timestamp is
+-formatted as =YYYY-MM-DD=, while a missing date is not replaced with today.
+-Timestamp ranges, repeaters, warnings and timestamps with times are not yet
+-part of this metadata subset and are rejected.
++name splitting; dates use =doc-date=.  Date metadata timestamps preserve their
++complete Org =:raw-value= as literal TeXmacs text, including angle/square
++brackets, internal whitespace, weekday, time, timezone-like suffixes, ranges,
++repeaters, warnings and diary expressions.  Their contents are not interpreted,
++normalized or evaluated.  A missing date is not replaced with today.  This is
++literal display, not native calendar semantics or additional structured metadata.
++Malformed timestamp data and native encoding failures remain explicit errors.
+ Their =title=, =author= and =date= options independently suppress output.
+ Metadata is not scanned for STM fragments.  In a source document without any
+ of these three keywords, default author data alone does not create =doc-data=.
+@@ -1169,6 +1172,31 @@ Unsupported =#+OPTIONS= keys and preprocessing directives are errors instead
+ of silently invoking a broader export pipeline.  Loading =ox= supplies Org's
+ option conversion and filtering policies but does not run an exporter.
+ 
++The private =org-texmacs--document-date-timestamp-text= function accepts one
++owned raw timestamp string and returns a string, unchanged by default.  Advanced
++Lisp callers may advise it for their own display policy.  For example, this
++optional advice strips delimiters only from single active timestamps; ranges
++and other forms remain unchanged:
++
++#+begin_src emacs-lisp
++  (defun my-org-texmacs-date-display (raw)
++    (replace-regexp-in-string "\\`<\\([^<>]*\\)>\\'" "\\1" raw))
++
++  (advice-add 'org-texmacs--document-date-timestamp-text
++              :filter-return #'my-org-texmacs-date-display)
++  ;; Remove the customization with:
++  ;; (advice-remove 'org-texmacs--document-date-timestamp-text
++  ;;                #'my-org-texmacs-date-display)
++#+end_src
++
++This is a private interface, not a stable formatter option or external export
++configuration key.  Keep advice side-effect-free; it may run during preflight
++and lowering.  Inputs and returned strings are copied.  A string result,
++including an empty string, is required.  Each prepared input captures the
++function definition; later advice changes affect newly prepared inputs, not the
++existing conversion.  Mutable state captured by advice is not frozen.
++The rest of a rich date field retains its ordinary inline handling.
++
+ The default =org-texmacs-format-headline-function= is
+ =org-texmacs-format-headline-default-function=.  It joins a strong TODO/DONE
+ keyword, literal priority cookie, lowered title parts and a literal tag
+diff --git a/org-texmacs-document.el b/org-texmacs-document.el
+index 7eefb86..177c4fd 100644
+--- a/org-texmacs-document.el
++++ b/org-texmacs-document.el
+@@ -94,6 +94,15 @@ tag string.  Preserve TITLE-PARTS without merging adjacent text."
+     (org-texmacs--document-copy-stree
+      (if (= (length parts) 1) (car parts) (cons 'concat parts)))))
+ 
++(defun org-texmacs--document-date-timestamp-text (raw)
++  "Return RAW date metadata timestamp text unchanged.
++This private function may be advised to customize display.  It receives an
++owned string, including Org delimiters, and must return a string.  Calls may
++occur during preflight and lowering; no invocation count is guaranteed.
++Keep advice side-effect-free.  The conversion captures this function's
++definition, not mutable state captured by advice."
++  raw)
++
+ (defun org-texmacs--document-options ()
+   "Snapshot supported Org document policies and the selected formatter.
+ File keywords are merged later from the prepared AST without following setup
+@@ -101,14 +110,16 @@ files.  Do not run export preprocessing, BIND, hooks or filters here.
+ Capture `tab-width' for preformatted content.  Resolve a formatter symbol now
+ so later redefinition affects only new calls."
+   (let ((formatter (indirect-function org-texmacs-format-headline-function))
++        (date-formatter (indirect-function 'org-texmacs--document-date-timestamp-text))
+         (info (plist-put (org-texmacs--context-base-options)
+                          :texmacs-tab-width tab-width)))
+     (unless (and (memq org-export-with-todo-keywords '(nil t))
+                  (memq org-export-with-priority '(nil t))
+                  (memq org-export-with-tags '(nil t not-in-toc))
+-                 (functionp formatter))
++                 (functionp formatter) (functionp date-formatter))
+       (signal 'org-texmacs-document-error '("Invalid headline presentation options")))
+-    (plist-put info :texmacs-format-headline-function formatter)))
++    (setq info (plist-put info :texmacs-format-headline-function formatter))
++    (plist-put info :texmacs-date-timestamp-text-function date-formatter)))
+ 
+ (cl-defstruct (org-texmacs-document
+                (:constructor org-texmacs--document-create)
+@@ -654,6 +665,7 @@ from one snapshot."
+         (headline-alt-parts nil)
+         (preformatted-tab-width nil)
+         (headline-formatter nil)
++        (date-formatter nil)
+         (static-labels (org-texmacs--document-static-labels islands))
+         (info (or info '(:with-todo-keywords t :with-priority nil :with-tags t
+                         :texmacs-format-headline-function
+@@ -671,6 +683,10 @@ from one snapshot."
+           (if (memq :texmacs-format-headline-function info)
+               (plist-get info :texmacs-format-headline-function)
+             #'org-texmacs-format-headline-default-function)
++          date-formatter
++          (if (memq :texmacs-date-timestamp-text-function info)
++              (plist-get info :texmacs-date-timestamp-text-function)
++            (indirect-function 'org-texmacs--document-date-timestamp-text))
+           toc-setting
+           (and (memq :with-toc info) (plist-get info :with-toc)))
+     (unless (and (wholenump headline-limit) (<= headline-limit 5)
+@@ -679,7 +695,7 @@ from one snapshot."
+                                   (plist-get info :section-numbers) t)))
+                    (or (memq value '(nil t)) (wholenump value)))
+                  (or (memq toc-setting '(nil t)) (wholenump toc-setting))
+-                 (functionp headline-formatter))
++                 (functionp headline-formatter) (functionp date-formatter))
+       (signal 'org-texmacs-document-error '("Invalid headline lowering options")))
+     (setq toc-depth
+           (cond ((eq toc-setting t) headline-limit)
+@@ -871,20 +887,22 @@ from one snapshot."
+                                            (cdr (assq node (plist-get citation-plan :citations)))))))
+                      (blank node space)))
+               ((and (consp node) (eq (org-element-type node) 'timestamp))
+-               (let ((year (org-element-property :year-start node))
+-                     (month (org-element-property :month-start node))
+-                     (day (org-element-property :day-start node)))
+-                 (unless (and (eq context 'date)
+-                              (memq (org-element-property :type node) '(active inactive))
+-                              (integerp year) (integerp month) (<= 1 month 12)
+-                              (integerp day) (<= 1 day 31)
+-                              (null (org-element-property :hour-start node))
+-                              (null (org-element-property :repeater-type node))
+-                              (null (org-element-property :warning-type node))
++               (let ((raw (org-element-property :raw-value node)))
++                 (unless (and (eq context 'date) (stringp raw) (> (length raw) 0)
++                              (not (memq node ancestors))
+                               (null (org-element-contents node)))
+-                   (org-texmacs--document-fail node "Unsupported metadata timestamp"))
+-                 (cons (text (format "%04d-%02d-%02d" year month day) space)
+-                       (blank node space))))
++                   (org-texmacs--document-fail node "Invalid or unsupported metadata timestamp"))
++                 ;; Preserve the full literal, including delimiters and spaces.
++                 ;; Advice sees no source-owned or prepared-input-owned string.
++                 (let ((value (funcall date-formatter (substring-no-properties raw))))
++                   (unless (stringp value)
++                     (org-texmacs--document-fail node "Date timestamp conversion must return text"))
++                   (when (> (length value) 0)
++                     (setcar space (memq (aref value (1- (length value)))
++                                         '(?\s ?\t ?\r ?\n))))
++                   (cons (org-texmacs--document-create
++                          :body (substring-no-properties value))
++                         (blank node space)))))
+               ((and (consp node) (eq (org-element-type node) 'link))
+                (when (memq node ancestors)
+                  (org-texmacs--document-fail node "Cyclic Org AST"))
+diff --git a/org-texmacs-input.el b/org-texmacs-input.el
+index b8ba5e4..9e49592 100644
+--- a/org-texmacs-input.el
++++ b/org-texmacs-input.el
+@@ -107,7 +107,8 @@ owned AST nodes, detached/duplicate mapping keys, deferred values and opaque
+ objects.
+ Discard Org's source buffer and parent bookkeeping.  INFO must be a plist
+ with unique keyword keys; nil selects fixed lowering defaults.  A supplied
+-headline formatter is resolved now and retained as an opaque function;
++headline formatter and the private date timestamp converter are resolved now
++and retained as opaque functions;
+ mutable state captured by a user closure is not frozen.  Never mutate the
+ returned input, its accessors' values, or arguments from a formatter."
+   (unless (and (consp ast) (eq (car ast) 'org-data))
+@@ -199,19 +200,25 @@ returned input, its accessors' values, or arguments from a formatter."
+         (setq info (or info '(:with-todo-keywords t :with-priority nil :with-tags t
+                              :texmacs-format-headline-function
+                              org-texmacs-format-headline-default-function)))
++        (unless (memq :texmacs-date-timestamp-text-function info)
++          (setq info (append info
++                             (list :texmacs-date-timestamp-text-function
++                                   'org-texmacs--document-date-timestamp-text))))
+         (while info
+           (let ((key (pop info)) (value (pop info)))
+             (unless (and (keywordp key) (not (memq key seen)))
+               (fail "Invalid or duplicate options key"))
+             (push key seen)
+-            (when (eq key :texmacs-format-headline-function)
++            (when (memq key '(:texmacs-format-headline-function
++                              :texmacs-date-timestamp-text-function))
+               (setq value (indirect-function value))
+-              (unless (functionp value) (fail "Invalid headline formatter")))
++              (unless (functionp value) (fail "Invalid presentation function")))
+             (setq new-info
+                   (append new-info
+                           (list key
+                                 (cond
+-                                 ((eq key :texmacs-format-headline-function) value)
++                                 ((memq key '(:texmacs-format-headline-function
++                                               :texmacs-date-timestamp-text-function)) value)
+                                  ((memq key '(:title :author :date)) (secondary value))
+                                  (t (data value))))))))
+         ;; INFO secondary strings create their nodes after the AST copy.  Apply
+diff --git a/tests/ert/ert.el b/tests/ert/ert.el
+index 4072da1..59716d2 100644
+--- a/tests/ert/ert.el
++++ b/tests/ert/ert.el
+@@ -722,7 +722,7 @@
+                 (doc-data
+                  (doc-title (concat "A " (strong "Bold") " " "title"))
+                  (doc-author (author-data (author-name (em "Name"))))
+-                 (doc-date "2026-09-14"))
++                 (doc-date "<2026-09-14>"))
+                 (concat "Body ")))))))
+ 
+ (ert-deftest org-texmacs-context-metadata-options-and-provenance ()
+@@ -790,18 +790,190 @@
+                    (doc-data
+                     (doc-title "<#4E2D> <less>alpha<gtr>")
+                     (doc-author (author-data (author-name (em "Author"))))
+-                    (doc-date "2026-09-15"))
++                    (doc-date "<less>2026-09-15<gtr>"))
+                    (concat "Body "))))))
+           (org-texmacs-session-close session))))))
+ 
+-(ert-deftest org-texmacs-document-rejects-complex-metadata-timestamps ()
+-  (dolist (date '("<2026-09-15 12:00>" "<2026-09-15>--<2026-09-16>"))
++(ert-deftest org-texmacs-document-date-timestamp-raw-text ()
++  :tags '(issue4-closure)
++  (dolist (raw '("<2026-10-14>" "[2026-10-14 Wed]"
++                 "<2026-10-14 Wed 15:30 +0800>"
++                 "<2026-10-14  15:30  +0800>"
++                 "<2026-10-14 Wed 15:30-16:00>"
++                 "<2026-10-14 Wed>--<2026-10-15 Thu>"
++                 "[2026-10-14 Wed]--[2026-10-15 Thu]"
++                 "<2026-10-14 Wed +1w>" "<2026-10-14 Wed .+1m/2m>"
++                 "<2026-10-14 Wed -3d>"
++                 "<%%(diary-anniversary 10 14 2000)>"))
+     (with-temp-buffer
+       (org-mode)
+-      (insert "#+DATE: " date "\nBody\n")
++      (setq-local org-export-with-author nil)
++      (insert "#+DATE: " raw "\nBody\n")
++      (let* ((state (org-texmacs-test--document-buffer-state (current-buffer)))
++             (input (org-texmacs-prepare-buffer (current-buffer)))
++             (date (car (plist-get (org-texmacs-input-info input) :date))))
++        (should (eq (org-element-type date) 'timestamp))
++        (should (equal (org-element-property :raw-value date) raw))
++        (cl-letf (((symbol-function 'org-texmacs--worker-request)
++                   (lambda (&rest _) (ert-fail "Pure date lowering started worker"))))
++          (should (equal (org-texmacs-document-body (org-texmacs-document input))
++                         `(document (doc-data (doc-date ,raw)) (concat "Body ")))))
++        (should (equal state (org-texmacs-test--document-buffer-state (current-buffer))))))))
++
++(ert-deftest org-texmacs-document-date-precedence-and-suppression ()
++  :tags '(issue4-closure)
++  (with-temp-buffer
++    (org-mode)
++      (setq-local org-export-with-author nil)
++    (insert "Body\n")
++    (let ((raw "<2026-10-14 Wed 15:30 +0800>"))
++      (should (equal (cadr (org-texmacs-document-body
++                           (org-texmacs-document-from-buffer
++                            (current-buffer) nil nil nil (list :date raw))))
++                     `(doc-data (doc-date ,raw))))
++      (insert "#+DATE: *Release* " raw " =literal=\n")
++      (let ((body (org-texmacs-document-body
++                   (org-texmacs-document-from-buffer
++                    (current-buffer) nil nil nil '(:date "External")))))
++        (should (equal (cadr body)
++                       `(doc-data (doc-date (concat (strong "Release") " "
++                                                    ,raw " " (verbatim "literal")))))))
++      (dolist (options '((:with-date nil) (:date nil :with-date nil)))
++        (should-not (memq 'doc-data
++                          (flatten-tree
++                           (org-texmacs-document-body
++                            (org-texmacs-document-from-buffer
++                             (current-buffer) nil nil nil options))))))
++      (insert "* Chosen\n:PROPERTIES:\n:EXPORT_DATE: [2026-10-15 Thu]\n:END:\n")
++      (search-backward "* Chosen")
++      (should (equal (cadr (org-texmacs-document-body
++                           (org-texmacs-document-from-buffer
++                            (current-buffer) nil (point) nil '(:date "External"))))
++                     '(doc-data (doc-title "Chosen") (doc-date "[2026-10-15 Thu]"))))))
++  (with-temp-buffer
++    (org-mode)
++      (setq-local org-export-with-author nil) (insert "Body\n")
++    (should-not (memq 'doc-data
++                      (flatten-tree (org-texmacs-document-body
++                                     (org-texmacs-document-from-buffer (current-buffer))))))))
++
++(ert-deftest org-texmacs-document-date-malformed-and-context ()
++  :tags '(issue4-closure)
++  (dolist (value '(nil "" 42))
++    (with-temp-buffer
++      (org-mode)
++      (setq-local org-export-with-author nil) (insert "#+DATE: <2026-10-14>\n")
++      (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
++             (date (car (plist-get (org-texmacs-input-info input) :date))))
++        (org-element-put-property date :raw-value value)
++        (should-error (org-texmacs-document input) :type 'org-texmacs-document-error))))
++  (with-temp-buffer
++    (org-mode)
++      (setq-local org-export-with-author nil) (insert "#+DATE: <2026-10-14>\n")
++    (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
++           (date (car (plist-get (org-texmacs-input-info input) :date))))
++      (org-element-set-contents date "unexpected")
++      (should-error (org-texmacs-document input) :type 'org-texmacs-document-error)))
++  (dolist (source '("<2026-10-14>\n" "#+TITLE: <2026-10-14>\n"))
++    (with-temp-buffer
++      (org-mode)
++      (setq-local org-export-with-author nil) (insert source)
+       (should-error (org-texmacs-document-from-buffer (current-buffer))
+                     :type 'org-texmacs-document-error))))
+ 
++(ert-deftest org-texmacs-document-date-advice-snapshot-and-ownership ()
++  :tags '(issue4-closure)
++  (let ((raw "<2026-10-14 Wed 15:30 +0800>") result input)
++    (with-temp-buffer
++      (org-mode)
++      (setq-local org-export-with-author nil) (insert "#+DATE: " raw "\n")
++      (let ((advice (lambda (text) (aset text 0 ?X) (setq result text))))
++        (unwind-protect
++            (progn
++              (advice-add 'org-texmacs--document-date-timestamp-text :override advice)
++              (setq input (org-texmacs-prepare-buffer (current-buffer))))
++          (advice-remove 'org-texmacs--document-date-timestamp-text advice)))
++      (let* ((date (car (plist-get (org-texmacs-input-info input) :date)))
++             (document (org-texmacs-document input)))
++        (should (equal (org-element-property :raw-value date) raw))
++        (should (equal (org-texmacs-document-body document)
++                       '(document (doc-data (doc-date "X2026-10-14 Wed 15:30 +0800>")))))
++        (aset result 1 ?Y)
++        (should (equal (org-texmacs-document-body document)
++                       '(document (doc-data (doc-date "X2026-10-14 Wed 15:30 +0800>")))))
++        (should (equal (org-texmacs-document-body
++                        (org-texmacs-document-from-buffer (current-buffer)))
++                       `(document (doc-data (doc-date ,raw)))))))
++    ;; Pure construction also fixes the function, without buffer preparation.
++    (let ((advice (lambda (_text) "PureDate")))
++      (unwind-protect
++          (progn
++            (advice-add 'org-texmacs--document-date-timestamp-text :override advice)
++            (setq input (org-texmacs-input-create
++                         (org-element-create 'org-data nil)
++                         (list :date (list (org-element-create
++                                            'timestamp (list :raw-value raw)))))))
++        (advice-remove 'org-texmacs--document-date-timestamp-text advice))
++      (should (equal (org-texmacs-document-body (org-texmacs-document input))
++                     '(document (doc-data (doc-date "PureDate"))))))))
++
++(ert-deftest org-texmacs-document-date-advice-result-and-error ()
++  :tags '(issue4-closure)
++  (dolist (value '(42 nil (strong "bad")))
++    (let ((advice (lambda (_raw) value)))
++      (unwind-protect
++          (progn
++            (advice-add 'org-texmacs--document-date-timestamp-text :override advice)
++            (with-temp-buffer
++              (org-mode)
++      (setq-local org-export-with-author nil) (insert "#+DATE: <2026-10-14>\n")
++              (should-error (org-texmacs-document-from-buffer (current-buffer))
++                            :type 'org-texmacs-document-error)))
++        (advice-remove 'org-texmacs--document-date-timestamp-text advice))))
++  (let ((advice (lambda (_raw) "")))
++    (unwind-protect
++        (progn
++          (advice-add 'org-texmacs--document-date-timestamp-text :override advice)
++          (with-temp-buffer
++            (org-mode)
++      (setq-local org-export-with-author nil) (insert "#+DATE: <2026-10-14>\n")
++            (should (equal (org-texmacs-document-body
++                            (org-texmacs-document-from-buffer (current-buffer)))
++                           '(document (doc-data (doc-date "")))))))
++      (advice-remove 'org-texmacs--document-date-timestamp-text advice)))
++  (let ((advice (lambda (_raw) (error "DateAdviceFailure"))))
++    (unwind-protect
++        (progn
++          (advice-add 'org-texmacs--document-date-timestamp-text :override advice)
++          (with-temp-buffer
++            (org-mode)
++      (setq-local org-export-with-author nil) (insert "#+DATE: <2026-10-14>\n")
++            (let ((state (org-texmacs-test--document-buffer-state (current-buffer))))
++              (should-error (org-texmacs-document-from-buffer (current-buffer)))
++              (should (equal state (org-texmacs-test--document-buffer-state
++                                    (current-buffer)))))))
++      (advice-remove 'org-texmacs--document-date-timestamp-text advice))))
++
++(ert-deftest org-texmacs-document-date-worker-wait-snapshot ()
++  :tags '(issue4-closure)
++  (let ((advice (lambda (_raw) "ChangedDate")))
++    (unwind-protect
++        (with-temp-buffer
++          (org-mode)
++      (setq-local org-export-with-author nil) (insert "#+DATE: <2026-10-14>\n(math \"x\")\n")
++          (cl-letf (((symbol-function 'org-texmacs--worker-request)
++                     (lambda (&rest _)
++                       (advice-add 'org-texmacs--document-date-timestamp-text :override advice)
++                       '(math "x"))))
++            (should (equal (org-texmacs-document-body
++                            (org-texmacs-document-from-buffer (current-buffer)))
++                           '(document (doc-data (doc-date "<2026-10-14>"))
++                                      (concat (math "x") " "))))
++            (should (equal (cadr (org-texmacs-document-body
++                                 (org-texmacs-document-from-buffer (current-buffer))))
++                           '(doc-data (doc-date "ChangedDate"))))))
++      (advice-remove 'org-texmacs--document-date-timestamp-text advice))))
++
+ (ert-deftest org-texmacs-context-filters-tasks-before-worker ()
+   (with-temp-buffer
+     (org-mode)
+@@ -6151,6 +6323,43 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
+     (should (= (length matches) 1))
+     (cdar matches)))
+ 
++(ert-deftest org-texmacs-pdf-date-literal-layout ()
++  :tags '(issue4-closure)
++  (org-texmacs-test--with-worker
++    (let ((raw "<2026-10-14 Wed 15:30 +0800>")
++          (actual (expand-file-name "date.pdf" test-directory))
++          (reference (expand-file-name "date-reference.pdf" test-directory)))
++      (with-temp-buffer
++        (org-mode)
++        (insert "#+OPTIONS: toc:nil\n#+TITLE: DateTitle\n#+AUTHOR: DateAuthor\n"
++                "#+DATE: " raw "\nDateBody\n")
++        (let ((state (org-texmacs-test--document-buffer-state (current-buffer)))
++              (document (org-texmacs-document-from-buffer (current-buffer))))
++          (should (equal (org-texmacs--native-encode-document document)
++                         (org-texmacs-test--native-hex
++                          '(document
++                            (doc-data (doc-title "DateTitle")
++                                      (doc-author (author-data (author-name "DateAuthor")))
++                                      (doc-date "<less>2026-10-14 Wed 15:30 +0800<gtr>"))
++                            (concat "DateBody ")))))
++          (org-texmacs-export-to-pdf-file (current-buffer) actual)
++          (org-texmacs-document-save-pdf
++           (org-texmacs--document-create
++            :body `(document
++                    (doc-data (doc-title "DateTitle")
++                              (doc-author (author-data (author-name "DateAuthor")))
++                              (doc-date ,raw))
++                    (concat "DateBody ")))
++           reference)
++          (should (string-match-p (regexp-quote raw) (org-texmacs-test--pdf-text actual)))
++          (let ((words (org-texmacs-test--pdf-words actual))
++                (expected (org-texmacs-test--pdf-words reference)))
++            (dolist (token '("DateTitle" "DateAuthor" "DateBody" "+0800>"))
++              (cl-mapc (lambda (a b) (should (<= (abs (- a b)) 1.0)))
++                       (org-texmacs-test--pdf-word words token)
++                       (org-texmacs-test--pdf-word expected token))))
++          (should (equal state (org-texmacs-test--document-buffer-state (current-buffer)))))))))
++
+ (ert-deftest org-texmacs-pdf-block-quotation-and-center-layout ()
+   :tags '(issue4)
+   (org-texmacs-test--with-worker

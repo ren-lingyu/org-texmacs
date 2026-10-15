@@ -1,0 +1,5 @@
+this derivation will be built:
+  /nix/store/ksvggr3cp9fgz4iihylglf1chyg2qi9f-org-texmacs-issue4-closure-probes.drv
+building '/nix/store/ksvggr3cp9fgz4iihylglf1chyg2qi9f-org-texmacs-issue4-closure-probes.drv'...
+org-texmacs-issue4-closure-probes> Issue4 closure: 9 dates and 6 native cases
+/nix/store/qhb4hmhy77v58w00s55b699fbznww5lw-org-texmacs-issue4-closure-probes

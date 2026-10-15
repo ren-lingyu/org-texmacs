@@ -1,0 +1,1 @@
+(document (concat "BeforeCode ") (code (document "  AlphaCode" "    BetaCode" "" "  GammaCode (math \"hidden\") <alpha>")) (code (document "FixedFirst" "  FixedSecond")) (code (document "  SourceFirst" "" "    SourceSecond")) (concat "AfterCode "))

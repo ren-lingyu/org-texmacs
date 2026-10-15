@@ -1,0 +1,453 @@
+these 4 derivations will be built:
+  /nix/store/wjkqw6dbimg6zfhdh2qqqvaw5z0id7q3-emacs-org-texmacs-0.4.0.drv
+  /nix/store/gsk79pdf60agfvmvlp4pmdrnpgqnsmwm-emacs-packages-deps.drv
+  /nix/store/bfrxk4bm81hyy14368hf3598dar5r3lm-emacs-with-packages-31.1.drv
+  /nix/store/w7m3w0qvcjqv8lz8jrrvsqp6shy897yz-org-texmacs-issue4-closure-focused.drv
+building '/nix/store/wjkqw6dbimg6zfhdh2qqqvaw5z0id7q3-emacs-org-texmacs-0.4.0.drv'...
+emacs-org-texmacs> structuredAttrs is enabled
+emacs-org-texmacs> Running phase: unpackPhase
+emacs-org-texmacs> unpacking source archive /nix/store/cl2nd6bghrrinh1n9njhqrx5fg1s1r9l-source
+emacs-org-texmacs> source root is source
+emacs-org-texmacs> Running phase: patchPhase
+emacs-org-texmacs> Running phase: updateAutotoolsGnuConfigScriptsPhase
+emacs-org-texmacs> Running phase: configurePhase
+emacs-org-texmacs> no configure script, doing nothing
+emacs-org-texmacs> Running phase: buildPhase
+emacs-org-texmacs> Running phase: installPhase
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-preprocess.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-session.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-source.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-input.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-document.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-ast.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-context.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-worker.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-core.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-fragment.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-bibliography.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/ox-texmacs.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs.el        || exit $?'
+emacs-org-texmacs> Running phase: fixupPhase
+emacs-org-texmacs> shrinking RPATHs of ELF executables and libraries in /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0
+emacs-org-texmacs> shrinking /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-input-a31d8d0e-c236f890.eln
+emacs-org-texmacs> shrinking /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/ox-texmacs-99cfe3f8-5a11d773.eln
+emacs-org-texmacs> shrinking /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-context-604d8d28-f6244440.eln
+emacs-org-texmacs> shrinking /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-source-999634bc-4c14188a.eln
+emacs-org-texmacs> shrinking /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-core-125215e1-8ca14c35.eln
+emacs-org-texmacs> shrinking /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-session-f05a24b9-9f7f5ee5.eln
+emacs-org-texmacs> shrinking /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-ast-5ed05d31-88f45636.eln
+emacs-org-texmacs> shrinking /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-fragment-50d1ffb7-ba42ea57.eln
+emacs-org-texmacs> shrinking /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-worker-103a6f68-9fe90cee.eln
+emacs-org-texmacs> shrinking /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-document-18974593-aea5194c.eln
+emacs-org-texmacs> shrinking /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-0a8b722e-f6b4762b.eln
+emacs-org-texmacs> shrinking /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-bibliography-6e9d73a1-58abd8a8.eln
+emacs-org-texmacs> shrinking /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-preprocess-7b448d28-17209aed.eln
+emacs-org-texmacs> checking for references to /build/ in /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0...
+emacs-org-texmacs> patching script interpreter paths in /nix/store/ig3c07qssd1hxm2l4svb1n2xs7hyrp77-emacs-org-texmacs-0.4.0
+building '/nix/store/gsk79pdf60agfvmvlp4pmdrnpgqnsmwm-emacs-packages-deps.drv'...
+building '/nix/store/bfrxk4bm81hyy14368hf3598dar5r3lm-emacs-with-packages-31.1.drv'...
+building '/nix/store/w7m3w0qvcjqv8lz8jrrvsqp6shy897yz-org-texmacs-issue4-closure-focused.drv'...
+org-texmacs-issue4-closure-focused> Running 36 tests (2026-10-15 13:01:19+0000, selector `(or (tag issue4-closure) (tag issue4) "^org-texmacs-context-.*metadata" "^org-texmacs-document-.*metadata" "^org-texmacs-document-\\(table\\|list\\|preformatted\\|toc\\|footnote\\)")')
+org-texmacs-issue4-closure-focused>    passed   1/36  org-texmacs-pdf-preformatted-lines-and-indent (2.064475 sec)
+org-texmacs-issue4-closure-focused>    passed   2/36  org-texmacs-pdf-list-multiparagraph-native-layout (2.066186 sec)
+org-texmacs-issue4-closure-focused> Test org-texmacs-pdf-date-literal-layout backtrace:
+org-texmacs-issue4-closure-focused>   org-texmacs--document-fail((timestamp (:standard-properties [1 nil n
+org-texmacs-issue4-closure-focused>   #f(compiled-function (node context ancestors space) #<bytecode -0x17
+org-texmacs-issue4-closure-focused>   #f(compiled-function (node) #<bytecode -0x182120f11d74b37f>)((timest
+org-texmacs-issue4-closure-focused>   mapcar(#f(compiled-function (node) #<bytecode -0x182120f11d74b37f>)
+org-texmacs-issue4-closure-focused>   #f(compiled-function (nodes context ancestors &optional space) #<byt
+org-texmacs-issue4-closure-focused>   #f(compiled-function (tag nodes context ancestors) #<bytecode -0x724
+org-texmacs-issue4-closure-focused>   #f(compiled-function (ancestors) #<bytecode 0x1e8ee301c75ff847>)(((o
+org-texmacs-issue4-closure-focused>   org-texmacs--document-lower((org-data (:standard-properties [1 1 1 1
+org-texmacs-issue4-closure-focused>   org-texmacs--prepare-buffer(#<killed buffer> org-texmacs-document ni
+org-texmacs-issue4-closure-focused>   org-texmacs-document-from-buffer(#<killed buffer>)
+org-texmacs-issue4-closure-focused>   (let ((state (org-texmacs-test--document-buffer-state (current-buffe
+org-texmacs-issue4-closure-focused>   (progn (org-mode) (insert "#+OPTIONS: toc:nil\n#+TITLE: DateTitle\n#
+org-texmacs-issue4-closure-focused>   (unwind-protect (progn (org-mode) (insert "#+OPTIONS: toc:nil\n#+TIT
+org-texmacs-issue4-closure-focused>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue4-closure-focused>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue4-closure-focused>   (let ((raw "<2026-10-14 Wed 15:30 +0800>") (actual (expand-file-name
+org-texmacs-issue4-closure-focused>   (let ((default-directory (file-name-as-directory test-directory))) (
+org-texmacs-issue4-closure-focused>   (unwind-protect (let ((default-directory (file-name-as-directory tes
+org-texmacs-issue4-closure-focused>   (let ((org-texmacs--worker-process nil) (org-texmacs--worker-directo
+org-texmacs-issue4-closure-focused>   #f(lambda () [t] (let ((org-texmacs--worker-process nil) (org-texmac
+org-texmacs-issue4-closure-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-closure-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-closure-focused>   ert--run-test-internal(#s(ert--test-execution-info :test ... :result
+org-texmacs-issue4-closure-focused>   ert-run-test(#s(ert-test :name org-texmacs-pdf-date-literal-layout :
+org-texmacs-issue4-closure-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-closure-focused>   ert-run-tests((or (tag issue4-closure) (tag issue4) "^org-texmacs-co
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch((or (tag issue4-closure) (tag issue4) "^org-texm
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch-and-exit((or (tag issue4-closure) (tag issue4) "
+org-texmacs-issue4-closure-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4-closure) (tag is
+org-texmacs-issue4-closure-focused>   command-line-1(("--load" "/nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy96
+org-texmacs-issue4-closure-focused>   command-line()
+org-texmacs-issue4-closure-focused>   normal-top-level()
+org-texmacs-issue4-closure-focused> Test org-texmacs-pdf-date-literal-layout condition:
+org-texmacs-issue4-closure-focused>     (org-texmacs-document-error "Unsupported metadata timestamp" timestamp
+org-texmacs-issue4-closure-focused>                             1)
+org-texmacs-issue4-closure-focused>    FAILED   3/36  org-texmacs-pdf-date-literal-layout (0.003135 sec) at ../nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy961-ert.el:6440
+org-texmacs-issue4-closure-focused>    passed   4/36  org-texmacs-pdf-caption-number-and-reference-semantics (2.092208 sec)
+org-texmacs-issue4-closure-focused> Test org-texmacs-document-date-worker-wait-snapshot backtrace:
+org-texmacs-issue4-closure-focused>   ert-fail(((should (equal (org-texmacs-document-body (org-texmacs-doc
+org-texmacs-issue4-closure-focused>   (if (unwind-protect (setq value-836 (apply fn-834 args-835)) (setq f
+org-texmacs-issue4-closure-focused>   (let (form-description-838) (if (unwind-protect (setq value-836 (app
+org-texmacs-issue4-closure-focused>   (let ((value-836 'ert-form-evaluation-aborted-837)) (let (form-descr
+org-texmacs-issue4-closure-focused>   (let* ((fn-834 #'equal) (args-835 (condition-case err (list (let* ((
+org-texmacs-issue4-closure-focused>   (progn (fset 'org-texmacs--worker-request vnew) (let* ((fn-834 #'equ
+org-texmacs-issue4-closure-focused>   (unwind-protect (progn (fset 'org-texmacs--worker-request vnew) (let
+org-texmacs-issue4-closure-focused>   (let* ((vnew #'(lambda (&rest _) (advice-add 'org-texmacs--document-
+org-texmacs-issue4-closure-focused>   (progn (org-mode) (setq org-export-with-author (prog1 nil (make-loca
+org-texmacs-issue4-closure-focused>   (unwind-protect (progn (org-mode) (setq org-export-with-author (prog
+org-texmacs-issue4-closure-focused>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue4-closure-focused>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue4-closure-focused>   (unwind-protect (let ((temp-buffer (generate-new-buffer " *temp*" t)
+org-texmacs-issue4-closure-focused>   (let ((advice #'(lambda (_raw) "ChangedDate"))) (unwind-protect (let
+org-texmacs-issue4-closure-focused>   #f(lambda () [t] (let ((advice #'...)) (unwind-protect (let (...) (s
+org-texmacs-issue4-closure-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-closure-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-closure-focused>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-issue4-closure-focused>   ert-run-test(#s(ert-test :name org-texmacs-document-date-worker-wait
+org-texmacs-issue4-closure-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-closure-focused>   ert-run-tests((or (tag issue4-closure) (tag issue4) "^org-texmacs-co
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch((or (tag issue4-closure) (tag issue4) "^org-texm
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch-and-exit((or (tag issue4-closure) (tag issue4) "
+org-texmacs-issue4-closure-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4-closure) (tag is
+org-texmacs-issue4-closure-focused>   command-line-1(("--load" "/nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy96
+org-texmacs-issue4-closure-focused>   command-line()
+org-texmacs-issue4-closure-focused>   normal-top-level()
+org-texmacs-issue4-closure-focused> Test org-texmacs-document-date-worker-wait-snapshot condition:
+org-texmacs-issue4-closure-focused>     (ert-test-failed
+org-texmacs-issue4-closure-focused>      ((should (equal (org-texmacs-document-body ...) '(document ... ...)))
+org-texmacs-issue4-closure-focused>       :form
+org-texmacs-issue4-closure-focused>       (equal (document (doc-data ...) (concat ... " "))
+org-texmacs-issue4-closure-focused>          (document (doc-data ...) (concat ... " ")))
+org-texmacs-issue4-closure-focused>       :value nil :explanation (list-elt 1 (list-elt 1 (list-elt 1 ...)))))
+org-texmacs-issue4-closure-focused>    FAILED   5/36  org-texmacs-document-date-worker-wait-snapshot (0.002541 sec) at ../nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy961-ert.el:957
+org-texmacs-issue4-closure-focused> Test org-texmacs-document-date-timestamp-raw-text backtrace:
+org-texmacs-issue4-closure-focused>   ert-fail(((should (equal (org-texmacs-document-body (org-texmacs-doc
+org-texmacs-issue4-closure-focused>   (if (unwind-protect (setq value-731 (apply fn-729 args-730)) (setq f
+org-texmacs-issue4-closure-focused>   (let (form-description-733) (if (unwind-protect (setq value-731 (app
+org-texmacs-issue4-closure-focused>   (let ((value-731 'ert-form-evaluation-aborted-732)) (let (form-descr
+org-texmacs-issue4-closure-focused>   (let* ((fn-729 #'equal) (args-730 (condition-case err (list (let* ((
+org-texmacs-issue4-closure-focused>   (progn (fset 'org-texmacs--worker-request vnew) (let* ((fn-729 #'equ
+org-texmacs-issue4-closure-focused>   (unwind-protect (progn (fset 'org-texmacs--worker-request vnew) (let
+org-texmacs-issue4-closure-focused>   (let* ((vnew #'(lambda (&rest _) (ert-fail "Pure date lowering start
+org-texmacs-issue4-closure-focused>   (let* ((state (org-texmacs-test--document-buffer-state (current-buff
+org-texmacs-issue4-closure-focused>   (progn (org-mode) (setq org-export-with-author (prog1 nil (make-loca
+org-texmacs-issue4-closure-focused>   (unwind-protect (progn (org-mode) (setq org-export-with-author (prog
+org-texmacs-issue4-closure-focused>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue4-closure-focused>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue4-closure-focused>   (let ((raw (car tail))) (let ((temp-buffer (generate-new-buffer " *t
+org-texmacs-issue4-closure-focused>   (while tail (let ((raw (car tail))) (let ((temp-buffer (generate-new
+org-texmacs-issue4-closure-focused>   (let ((tail '("<2026-10-14>" "[2026-10-14 Wed]" "<2026-10-14 Wed 15:
+org-texmacs-issue4-closure-focused>   #f(lambda () [t] (let ((tail '...)) (while tail (let (...) (let ...
+org-texmacs-issue4-closure-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-closure-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-closure-focused>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-issue4-closure-focused>   ert-run-test(#s(ert-test :name org-texmacs-document-date-timestamp-r
+org-texmacs-issue4-closure-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-closure-focused>   ert-run-tests((or (tag issue4-closure) (tag issue4) "^org-texmacs-co
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch((or (tag issue4-closure) (tag issue4) "^org-texm
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch-and-exit((or (tag issue4-closure) (tag issue4) "
+org-texmacs-issue4-closure-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4-closure) (tag is
+org-texmacs-issue4-closure-focused>   command-line-1(("--load" "/nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy96
+org-texmacs-issue4-closure-focused>   command-line()
+org-texmacs-issue4-closure-focused>   normal-top-level()
+org-texmacs-issue4-closure-focused> Test org-texmacs-document-date-timestamp-raw-text condition:
+org-texmacs-issue4-closure-focused>     (ert-test-failed
+org-texmacs-issue4-closure-focused>      ((should (equal (org-texmacs-document-body ...) `...)) :form
+org-texmacs-issue4-closure-focused>       (equal (document (doc-data ...) (concat "Body "))
+org-texmacs-issue4-closure-focused>          (document (doc-data ...) (concat "Body ")))
+org-texmacs-issue4-closure-focused>       :value nil :explanation (list-elt 1 (list-elt 1 (list-elt 1 ...)))))
+org-texmacs-issue4-closure-focused>    FAILED   6/36  org-texmacs-document-date-timestamp-raw-text (0.002274 sec) at ../nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy961-ert.el:797
+org-texmacs-issue4-closure-focused> Test org-texmacs-document-date-precedence-and-suppression backtrace:
+org-texmacs-issue4-closure-focused>   signal(org-texmacs-document-error ("Unsupported metadata timestamp"
+org-texmacs-issue4-closure-focused>   apply(signal (org-texmacs-document-error ("Unsupported metadata time
+org-texmacs-issue4-closure-focused>   (setq value-741 (apply fn-739 args-740))
+org-texmacs-issue4-closure-focused>   (unwind-protect (setq value-741 (apply fn-739 args-740)) (setq form-
+org-texmacs-issue4-closure-focused>   (if (unwind-protect (setq value-741 (apply fn-739 args-740)) (setq f
+org-texmacs-issue4-closure-focused>   (let (form-description-743) (if (unwind-protect (setq value-741 (app
+org-texmacs-issue4-closure-focused>   (let ((value-741 'ert-form-evaluation-aborted-742)) (let (form-descr
+org-texmacs-issue4-closure-focused>   (let* ((fn-739 #'equal) (args-740 (condition-case err (list (car (cd
+org-texmacs-issue4-closure-focused>   (let ((raw "<2026-10-14 Wed 15:30 +0800>")) (let* ((fn-739 #'equal)
+org-texmacs-issue4-closure-focused>   (progn (org-mode) (setq org-export-with-author (prog1 nil (make-loca
+org-texmacs-issue4-closure-focused>   (unwind-protect (progn (org-mode) (setq org-export-with-author (prog
+org-texmacs-issue4-closure-focused>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue4-closure-focused>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue4-closure-focused>   #f(lambda () [t] (let ((temp-buffer (generate-new-buffer " *temp*" t
+org-texmacs-issue4-closure-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-closure-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-closure-focused>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-issue4-closure-focused>   ert-run-test(#s(ert-test :name org-texmacs-document-date-precedence-
+org-texmacs-issue4-closure-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-closure-focused>   ert-run-tests((or (tag issue4-closure) (tag issue4) "^org-texmacs-co
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch((or (tag issue4-closure) (tag issue4) "^org-texm
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch-and-exit((or (tag issue4-closure) (tag issue4) "
+org-texmacs-issue4-closure-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4-closure) (tag is
+org-texmacs-issue4-closure-focused>   command-line-1(("--load" "/nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy96
+org-texmacs-issue4-closure-focused>   command-line()
+org-texmacs-issue4-closure-focused>   normal-top-level()
+org-texmacs-issue4-closure-focused> Test org-texmacs-document-date-precedence-and-suppression condition:
+org-texmacs-issue4-closure-focused>     (org-texmacs-document-error "Unsupported metadata timestamp" timestamp
+org-texmacs-issue4-closure-focused>                             1)
+org-texmacs-issue4-closure-focused>    FAILED   7/36  org-texmacs-document-date-precedence-and-suppression (0.001361 sec) at ../nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy961-ert.el:823
+org-texmacs-issue4-closure-focused> Test org-texmacs-document-date-malformed-and-context backtrace:
+org-texmacs-issue4-closure-focused>   ert-fail(((should-error (org-texmacs-document input) :type 'org-texm
+org-texmacs-issue4-closure-focused>   (if errorp769 nil (ert-fail (append (funcall form-description-fn-770
+org-texmacs-issue4-closure-focused>   (let ((errorp769 nil) (form-description-fn-770 #'(lambda nil form-de
+org-texmacs-issue4-closure-focused>   (let (form-description-768) (let ((errorp769 nil) (form-description-
+org-texmacs-issue4-closure-focused>   (let ((value-766 'ert-form-evaluation-aborted-767)) (let (form-descr
+org-texmacs-issue4-closure-focused>   (let* ((fn-764 #'org-texmacs-document) (args-765 (condition-case err
+org-texmacs-issue4-closure-focused>   (let* ((input (org-texmacs-prepare-buffer (current-buffer))) (date (
+org-texmacs-issue4-closure-focused>   (progn (org-mode) (setq org-export-with-author (prog1 nil (make-loca
+org-texmacs-issue4-closure-focused>   (unwind-protect (progn (org-mode) (setq org-export-with-author (prog
+org-texmacs-issue4-closure-focused>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue4-closure-focused>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue4-closure-focused>   (let ((value (car tail))) (let ((temp-buffer (generate-new-buffer "
+org-texmacs-issue4-closure-focused>   (while tail (let ((value (car tail))) (let ((temp-buffer (generate-n
+org-texmacs-issue4-closure-focused>   (let ((tail '(nil "" 42))) (while tail (let ((value (car tail))) (le
+org-texmacs-issue4-closure-focused>   #f(lambda () [t] (let ((tail '...)) (while tail (let (...) (let ...
+org-texmacs-issue4-closure-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-closure-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-closure-focused>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-issue4-closure-focused>   ert-run-test(#s(ert-test :name org-texmacs-document-date-malformed-a
+org-texmacs-issue4-closure-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-closure-focused>   ert-run-tests((or (tag issue4-closure) (tag issue4) "^org-texmacs-co
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch((or (tag issue4-closure) (tag issue4) "^org-texm
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch-and-exit((or (tag issue4-closure) (tag issue4) "
+org-texmacs-issue4-closure-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4-closure) (tag is
+org-texmacs-issue4-closure-focused>   command-line-1(("--load" "/nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy96
+org-texmacs-issue4-closure-focused>   command-line()
+org-texmacs-issue4-closure-focused>   normal-top-level()
+org-texmacs-issue4-closure-focused> Test org-texmacs-document-date-malformed-and-context condition:
+org-texmacs-issue4-closure-focused>     (ert-test-failed
+org-texmacs-issue4-closure-focused>      ((should-error (org-texmacs-document input) :type
+org-texmacs-issue4-closure-focused>                 'org-texmacs-document-error)
+org-texmacs-issue4-closure-focused>       :form
+org-texmacs-issue4-closure-focused>       (org-texmacs-document
+org-texmacs-issue4-closure-focused>        #s(org-texmacs-input (org-data ... ...)
+org-texmacs-issue4-closure-focused>                         (:title nil :date ... :author ... :select-tags
+org-texmacs-issue4-closure-focused>                                 ... :exclude-tags ... ...)
+org-texmacs-issue4-closure-focused>                         nil nil ("generic") nil nil "/build/" nil))
+org-texmacs-issue4-closure-focused>       :value
+org-texmacs-issue4-closure-focused>       #s(org-texmacs-document (document (doc-data ...)) nil ("generic")
+org-texmacs-issue4-closure-focused>                           nil nil "/build/" nil)
+org-texmacs-issue4-closure-focused>       :fail-reason "did not signal an error"))
+org-texmacs-issue4-closure-focused>    FAILED   8/36  org-texmacs-document-date-malformed-and-context (0.001591 sec) at ../nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy961-ert.el:860
+org-texmacs-issue4-closure-focused> Test org-texmacs-document-date-advice-snapshot-and-ownership backtrace:
+org-texmacs-issue4-closure-focused>   org-texmacs--document-fail((timestamp (:standard-properties [1 nil n
+org-texmacs-issue4-closure-focused>   #f(compiled-function (node context ancestors space) #<bytecode -0x17
+org-texmacs-issue4-closure-focused>   #f(compiled-function (node) #<bytecode -0x182120f11d74b37f>)((timest
+org-texmacs-issue4-closure-focused>   mapcar(#f(compiled-function (node) #<bytecode -0x182120f11d74b37f>)
+org-texmacs-issue4-closure-focused>   #f(compiled-function (nodes context ancestors &optional space) #<byt
+org-texmacs-issue4-closure-focused>   #f(compiled-function (tag nodes context ancestors) #<bytecode -0x724
+org-texmacs-issue4-closure-focused>   #f(compiled-function (ancestors) #<bytecode 0x1e8ee301c75ff847>)(((o
+org-texmacs-issue4-closure-focused>   org-texmacs--document-lower((org-data (:standard-properties [1 1 1 3
+org-texmacs-issue4-closure-focused>   org-texmacs--prepare-buffer(#<killed buffer> identity nil nil nil ni
+org-texmacs-issue4-closure-focused>   org-texmacs-prepare-buffer(#<killed buffer>)
+org-texmacs-issue4-closure-focused>   (setq input (org-texmacs-prepare-buffer (current-buffer)))
+org-texmacs-issue4-closure-focused>   (progn (advice-add 'org-texmacs--document-date-timestamp-text :overr
+org-texmacs-issue4-closure-focused>   (unwind-protect (progn (advice-add 'org-texmacs--document-date-times
+org-texmacs-issue4-closure-focused>   (let ((advice #'(lambda (text) (aset text 0 88) (setq result text)))
+org-texmacs-issue4-closure-focused>   (progn (org-mode) (setq org-export-with-author (prog1 nil (make-loca
+org-texmacs-issue4-closure-focused>   (unwind-protect (progn (org-mode) (setq org-export-with-author (prog
+org-texmacs-issue4-closure-focused>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue4-closure-focused>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue4-closure-focused>   (let ((raw "<2026-10-14 Wed 15:30 +0800>") result input) (let ((temp
+org-texmacs-issue4-closure-focused>   #f(lambda () [t] (let ((raw "<2026-10-14 Wed 15:30 +0800>") result i
+org-texmacs-issue4-closure-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-closure-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-closure-focused>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-issue4-closure-focused>   ert-run-test(#s(ert-test :name org-texmacs-document-date-advice-snap
+org-texmacs-issue4-closure-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-closure-focused>   ert-run-tests((or (tag issue4-closure) (tag issue4) "^org-texmacs-co
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch((or (tag issue4-closure) (tag issue4) "^org-texm
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch-and-exit((or (tag issue4-closure) (tag issue4) "
+org-texmacs-issue4-closure-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4-closure) (tag is
+org-texmacs-issue4-closure-focused>   command-line-1(("--load" "/nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy96
+org-texmacs-issue4-closure-focused>   command-line()
+org-texmacs-issue4-closure-focused>   normal-top-level()
+org-texmacs-issue4-closure-focused> Test org-texmacs-document-date-advice-snapshot-and-ownership condition:
+org-texmacs-issue4-closure-focused>     (org-texmacs-document-error "Unsupported metadata timestamp" timestamp
+org-texmacs-issue4-closure-focused>                             1)
+org-texmacs-issue4-closure-focused>    FAILED   9/36  org-texmacs-document-date-advice-snapshot-and-ownership (0.001470 sec) at ../nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy961-ert.el:884
+org-texmacs-issue4-closure-focused> Test org-texmacs-document-date-advice-result-and-error backtrace:
+org-texmacs-issue4-closure-focused>   ert-fail(((should-error (org-texmacs-document-from-buffer (current-b
+org-texmacs-issue4-closure-focused>   (if errorp815 nil (ert-fail (append (funcall form-description-fn-816
+org-texmacs-issue4-closure-focused>   (let ((errorp815 nil) (form-description-fn-816 #'(lambda nil form-de
+org-texmacs-issue4-closure-focused>   (let (form-description-814) (let ((errorp815 nil) (form-description-
+org-texmacs-issue4-closure-focused>   (let ((value-812 'ert-form-evaluation-aborted-813)) (let (form-descr
+org-texmacs-issue4-closure-focused>   (let* ((fn-810 #'org-texmacs-document-from-buffer) (args-811 (condit
+org-texmacs-issue4-closure-focused>   (progn (org-mode) (setq org-export-with-author (prog1 nil (make-loca
+org-texmacs-issue4-closure-focused>   (unwind-protect (progn (org-mode) (setq org-export-with-author (prog
+org-texmacs-issue4-closure-focused>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue4-closure-focused>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue4-closure-focused>   (progn (advice-add 'org-texmacs--document-date-timestamp-text :overr
+org-texmacs-issue4-closure-focused>   (unwind-protect (progn (advice-add 'org-texmacs--document-date-times
+org-texmacs-issue4-closure-focused>   (let ((advice #'(lambda (_raw) value))) (unwind-protect (progn (advi
+org-texmacs-issue4-closure-focused>   (let ((value (car tail))) (let ((advice #'(lambda (_raw) value))) (u
+org-texmacs-issue4-closure-focused>   (while tail (let ((value (car tail))) (let ((advice #'(lambda (_raw)
+org-texmacs-issue4-closure-focused>   (let ((tail '(42 nil (strong "bad")))) (while tail (let ((value (car
+org-texmacs-issue4-closure-focused>   #f(lambda () [t] (let ((tail '...)) (while tail (let (...) (let ...
+org-texmacs-issue4-closure-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-closure-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-closure-focused>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-issue4-closure-focused>   ert-run-test(#s(ert-test :name org-texmacs-document-date-advice-resu
+org-texmacs-issue4-closure-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-closure-focused>   ert-run-tests((or (tag issue4-closure) (tag issue4) "^org-texmacs-co
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch((or (tag issue4-closure) (tag issue4) "^org-texm
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch-and-exit((or (tag issue4-closure) (tag issue4) "
+org-texmacs-issue4-closure-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4-closure) (tag is
+org-texmacs-issue4-closure-focused>   command-line-1(("--load" "/nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy96
+org-texmacs-issue4-closure-focused>   command-line()
+org-texmacs-issue4-closure-focused>   normal-top-level()
+org-texmacs-issue4-closure-focused> Test org-texmacs-document-date-advice-result-and-error condition:
+org-texmacs-issue4-closure-focused>     (ert-test-failed
+org-texmacs-issue4-closure-focused>      ((should-error (org-texmacs-document-from-buffer (current-buffer))
+org-texmacs-issue4-closure-focused>                 :type 'org-texmacs-document-error)
+org-texmacs-issue4-closure-focused>       :form (org-texmacs-document-from-buffer #<killed buffer>) :value
+org-texmacs-issue4-closure-focused>       #s(org-texmacs-document (document (doc-data ...)) nil ("generic")
+org-texmacs-issue4-closure-focused>                           nil nil "/build/" nil)
+org-texmacs-issue4-closure-focused>       :fail-reason "did not signal an error"))
+org-texmacs-issue4-closure-focused>    FAILED  10/36  org-texmacs-document-date-advice-result-and-error (0.001629 sec) at ../nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy961-ert.el:920
+org-texmacs-issue4-closure-focused>    passed  11/36  org-texmacs-pdf-table-alignment-frontend-and-native-layout (2.002587 sec)
+org-texmacs-issue4-closure-focused>    passed  12/36  org-texmacs-pdf-block-quotation-and-center-layout (1.919308 sec)
+org-texmacs-issue4-closure-focused>    passed  13/36  org-texmacs-document-quote-uniform-quotation (0.013474 sec)
+org-texmacs-issue4-closure-focused>    passed  14/36  org-texmacs-context-metadata-options-and-provenance (0.002631 sec)
+org-texmacs-issue4-closure-focused> Test org-texmacs-context-copies-rich-metadata backtrace:
+org-texmacs-issue4-closure-focused>   ert-fail(((should (equal (org-texmacs-document-body document) '(docu
+org-texmacs-issue4-closure-focused>   (if (unwind-protect (setq value-676 (apply fn-674 args-675)) (setq f
+org-texmacs-issue4-closure-focused>   (let (form-description-678) (if (unwind-protect (setq value-676 (app
+org-texmacs-issue4-closure-focused>   (let ((value-676 'ert-form-evaluation-aborted-677)) (let (form-descr
+org-texmacs-issue4-closure-focused>   (let* ((fn-674 #'equal) (args-675 (condition-case err (list (progn (
+org-texmacs-issue4-closure-focused>   (let* ((info (progn (or (and (memq (type-of input) cl-struct-org-tex
+org-texmacs-issue4-closure-focused>   (let (input) (let ((temp-buffer (generate-new-buffer " *temp*" t)))
+org-texmacs-issue4-closure-focused>   #f(lambda () [t] (let (input) (let ((temp-buffer ...)) (save-current
+org-texmacs-issue4-closure-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-closure-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-closure-focused>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-issue4-closure-focused>   ert-run-test(#s(ert-test :name org-texmacs-context-copies-rich-metad
+org-texmacs-issue4-closure-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-closure-focused>   ert-run-tests((or (tag issue4-closure) (tag issue4) "^org-texmacs-co
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch((or (tag issue4-closure) (tag issue4) "^org-texm
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch-and-exit((or (tag issue4-closure) (tag issue4) "
+org-texmacs-issue4-closure-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4-closure) (tag is
+org-texmacs-issue4-closure-focused>   command-line-1(("--load" "/nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy96
+org-texmacs-issue4-closure-focused>   command-line()
+org-texmacs-issue4-closure-focused>   normal-top-level()
+org-texmacs-issue4-closure-focused> Test org-texmacs-context-copies-rich-metadata condition:
+org-texmacs-issue4-closure-focused>     (ert-test-failed
+org-texmacs-issue4-closure-focused>      ((should
+org-texmacs-issue4-closure-focused>        (equal (org-texmacs-document-body document) '(document ... ...)))
+org-texmacs-issue4-closure-focused>       :form
+org-texmacs-issue4-closure-focused>       (equal (document (doc-data ... ... ...) (concat "Body "))
+org-texmacs-issue4-closure-focused>          (document (doc-data ... ... ...) (concat "Body ")))
+org-texmacs-issue4-closure-focused>       :value nil :explanation (list-elt 1 (list-elt 3 (list-elt 1 ...)))))
+org-texmacs-issue4-closure-focused>    FAILED  15/36  org-texmacs-context-copies-rich-metadata (0.002032 sec) at ../nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy961-ert.el:698
+org-texmacs-issue4-closure-focused> Test org-texmacs-document-metadata-native-encoding backtrace:
+org-texmacs-issue4-closure-focused>   ert-fail(((should (equal (org-texmacs--session-read session) (org-te
+org-texmacs-issue4-closure-focused>   (if (unwind-protect (setq value-716 (apply fn-714 args-715)) (setq f
+org-texmacs-issue4-closure-focused>   (let (form-description-718) (if (unwind-protect (setq value-716 (app
+org-texmacs-issue4-closure-focused>   (let ((value-716 'ert-form-evaluation-aborted-717)) (let (form-descr
+org-texmacs-issue4-closure-focused>   (let* ((fn-714 #'equal) (args-715 (condition-case err (list (org-tex
+org-texmacs-issue4-closure-focused>   (progn (org-texmacs-session-set-document session document) (let* ((f
+org-texmacs-issue4-closure-focused>   (unwind-protect (progn (org-texmacs-session-set-document session doc
+org-texmacs-issue4-closure-focused>   (let ((document (org-texmacs-document-from-buffer (current-buffer)))
+org-texmacs-issue4-closure-focused>   (progn (org-mode) (insert "#+TITLE: 中 <alpha>\n" "#+AUTHOR: /Author/
+org-texmacs-issue4-closure-focused>   (unwind-protect (progn (org-mode) (insert "#+TITLE: 中 <alpha>\n" "#+
+org-texmacs-issue4-closure-focused>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue4-closure-focused>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue4-closure-focused>   (let ((default-directory (file-name-as-directory test-directory))) (
+org-texmacs-issue4-closure-focused>   (unwind-protect (let ((default-directory (file-name-as-directory tes
+org-texmacs-issue4-closure-focused>   (let ((org-texmacs--worker-process nil) (org-texmacs--worker-directo
+org-texmacs-issue4-closure-focused>   (org-texmacs-test--with-worker (let ((temp-buffer (generate-new-buff
+org-texmacs-issue4-closure-focused>   #f(lambda () [t] (org-texmacs-test--with-worker (let ((temp-buffer .
+org-texmacs-issue4-closure-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-closure-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-closure-focused>   ert--run-test-internal(#s(ert--test-execution-info :test ... :result
+org-texmacs-issue4-closure-focused>   ert-run-test(#s(ert-test :name org-texmacs-document-metadata-native-
+org-texmacs-issue4-closure-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-closure-focused>   ert-run-tests((or (tag issue4-closure) (tag issue4) "^org-texmacs-co
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch((or (tag issue4-closure) (tag issue4) "^org-texm
+org-texmacs-issue4-closure-focused>   ert-run-tests-batch-and-exit((or (tag issue4-closure) (tag issue4) "
+org-texmacs-issue4-closure-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4-closure) (tag is
+org-texmacs-issue4-closure-focused>   command-line-1(("--load" "/nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy96
+org-texmacs-issue4-closure-focused>   command-line()
+org-texmacs-issue4-closure-focused>   normal-top-level()
+org-texmacs-issue4-closure-focused> Test org-texmacs-document-metadata-native-encoding condition:
+org-texmacs-issue4-closure-focused>     (ert-test-failed
+org-texmacs-issue4-closure-focused>      ((should
+org-texmacs-issue4-closure-focused>        (equal (org-texmacs--session-read session)
+org-texmacs-issue4-closure-focused>           (org-texmacs-test--native-hex ...)))
+org-texmacs-issue4-closure-focused>       :form
+org-texmacs-issue4-closure-focused>       (equal (document (doc-data ... ... ...) (concat "426f647920"))
+org-texmacs-issue4-closure-focused>          (document (doc-data ... ... ...) (concat "426f647920")))
+org-texmacs-issue4-closure-focused>       :value nil :explanation (list-elt 1 (list-elt 3 (list-elt 1 ...)))))
+org-texmacs-issue4-closure-focused>    FAILED  16/36  org-texmacs-document-metadata-native-encoding (1.847265 sec) at ../nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy961-ert.el:772
+org-texmacs-issue4-closure-focused>    passed  17/36  org-texmacs-document-footnote-rejects-contexts (0.004126 sec)
+org-texmacs-issue4-closure-focused>    passed  18/36  org-texmacs-document-footnote-rich-native (1.767037 sec)
+org-texmacs-issue4-closure-focused>    passed  19/36  org-texmacs-document-footnote-source (0.038557 sec)
+org-texmacs-issue4-closure-focused>    passed  20/36  org-texmacs-document-footnote-stm-exclusion (0.001545 sec)
+org-texmacs-issue4-closure-focused>    passed  21/36  org-texmacs-document-footnote-whitespace-and-empty (0.000065 sec)
+org-texmacs-issue4-closure-focused>    passed  22/36  org-texmacs-document-list-containers-native (2.287379 sec)
+org-texmacs-issue4-closure-focused>    passed  23/36  org-texmacs-document-list-source-forms (0.012585 sec)
+org-texmacs-issue4-closure-focused>    passed  24/36  org-texmacs-document-preformatted-native-and-provenance (1.853469 sec)
+org-texmacs-issue4-closure-focused>    passed  25/36  org-texmacs-document-preformatted-source-forms (0.004581 sec)
+org-texmacs-issue4-closure-focused>    passed  26/36  org-texmacs-document-preformatted-tab-snapshot-and-preserve-indent (0.005507 sec)
+org-texmacs-issue4-closure-focused>    passed  27/36  org-texmacs-document-table-alignment-caption-reference-and-files (1.717787 sec)
+org-texmacs-issue4-closure-focused>    passed  28/36  org-texmacs-document-table-alignment-column-counts-and-rules (0.016881 sec)
+org-texmacs-issue4-closure-focused>    passed  29/36  org-texmacs-document-table-alignment-rejections (0.015308 sec)
+org-texmacs-issue4-closure-focused>    passed  30/36  org-texmacs-document-table-alignment-row-positions-and-ownership (0.003934 sec)
+org-texmacs-issue4-closure-focused>    passed  31/36  org-texmacs-document-table-native-and-provenance (1.725372 sec)
+org-texmacs-issue4-closure-focused>    passed  32/36  org-texmacs-document-table-rule-positions (0.005191 sec)
+org-texmacs-issue4-closure-focused>    passed  33/36  org-texmacs-document-table-source-and-inline-subset (0.004494 sec)
+org-texmacs-issue4-closure-focused>    passed  34/36  org-texmacs-document-toc-static-label-conflict-native (1.845161 sec)
+org-texmacs-issue4-closure-focused>    passed  35/36  org-texmacs-document-toc-structure-and-headline-policies (0.002719 sec)
+org-texmacs-issue4-closure-focused>    passed  36/36  org-texmacs-document-toc-uses-filtered-context (0.001467 sec)
+org-texmacs-issue4-closure-focused> 
+org-texmacs-issue4-closure-focused> Ran 36 tests, 27 results as expected, 9 unexpected (2026-10-15 13:01:43+0000, 23.868628 sec)
+org-texmacs-issue4-closure-focused> 
+org-texmacs-issue4-closure-focused> 9 unexpected results:
+org-texmacs-issue4-closure-focused>    FAILED  org-texmacs-pdf-date-literal-layout
+org-texmacs-issue4-closure-focused>    FAILED  org-texmacs-document-date-worker-wait-snapshot
+org-texmacs-issue4-closure-focused>    FAILED  org-texmacs-document-date-timestamp-raw-text
+org-texmacs-issue4-closure-focused>    FAILED  org-texmacs-document-date-precedence-and-suppression
+org-texmacs-issue4-closure-focused>    FAILED  org-texmacs-document-date-malformed-and-context
+org-texmacs-issue4-closure-focused>    FAILED  org-texmacs-document-date-advice-snapshot-and-ownership
+org-texmacs-issue4-closure-focused>    FAILED  org-texmacs-document-date-advice-result-and-error
+org-texmacs-issue4-closure-focused>    FAILED  org-texmacs-context-copies-rich-metadata
+org-texmacs-issue4-closure-focused>    FAILED  org-texmacs-document-metadata-native-encoding
+org-texmacs-issue4-closure-focused> 
+error: Cannot build '/nix/store/w7m3w0qvcjqv8lz8jrrvsqp6shy897yz-org-texmacs-issue4-closure-focused.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/bk0ybxgddycdy0cxypm0p2dxqblam04c-org-texmacs-issue4-closure-focused
+       Last 25 log lines:
+       >    passed  26/36  org-texmacs-document-preformatted-tab-snapshot-and-preserve-indent (0.005507 sec)
+       >    passed  27/36  org-texmacs-document-table-alignment-caption-reference-and-files (1.717787 sec)
+       >    passed  28/36  org-texmacs-document-table-alignment-column-counts-and-rules (0.016881 sec)
+       >    passed  29/36  org-texmacs-document-table-alignment-rejections (0.015308 sec)
+       >    passed  30/36  org-texmacs-document-table-alignment-row-positions-and-ownership (0.003934 sec)
+       >    passed  31/36  org-texmacs-document-table-native-and-provenance (1.725372 sec)
+       >    passed  32/36  org-texmacs-document-table-rule-positions (0.005191 sec)
+       >    passed  33/36  org-texmacs-document-table-source-and-inline-subset (0.004494 sec)
+       >    passed  34/36  org-texmacs-document-toc-static-label-conflict-native (1.845161 sec)
+       >    passed  35/36  org-texmacs-document-toc-structure-and-headline-policies (0.002719 sec)
+       >    passed  36/36  org-texmacs-document-toc-uses-filtered-context (0.001467 sec)
+       >
+       > Ran 36 tests, 27 results as expected, 9 unexpected (2026-10-15 13:01:43+0000, 23.868628 sec)
+       >
+       > 9 unexpected results:
+       >    FAILED  org-texmacs-pdf-date-literal-layout
+       >    FAILED  org-texmacs-document-date-worker-wait-snapshot
+       >    FAILED  org-texmacs-document-date-timestamp-raw-text
+       >    FAILED  org-texmacs-document-date-precedence-and-suppression
+       >    FAILED  org-texmacs-document-date-malformed-and-context
+       >    FAILED  org-texmacs-document-date-advice-snapshot-and-ownership
+       >    FAILED  org-texmacs-document-date-advice-result-and-error
+       >    FAILED  org-texmacs-context-copies-rich-metadata
+       >    FAILED  org-texmacs-document-metadata-native-encoding
+       >
+       For full logs, run:
+         nix log /nix/store/w7m3w0qvcjqv8lz8jrrvsqp6shy897yz-org-texmacs-issue4-closure-focused.drv

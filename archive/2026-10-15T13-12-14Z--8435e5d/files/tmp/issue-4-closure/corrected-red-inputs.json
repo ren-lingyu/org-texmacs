@@ -1,0 +1,9 @@
+{
+  "critical_inputs": {
+    "tests/ert/ert.el": "9594d9018df0e290b99ca9236f11116d09a48aa6ed4ce7878bc8696ec0e6108c",
+    "org-texmacs-document.el": "3f41521232273cd7d5279561aff9c2adfeb168a9cbad3e9d583fe8ba2ea2a1cb",
+    "org-texmacs-input.el": "53ecd56fa9ad5aac49484e8624ab5d293d96a113eafd96c11b737c8c6b1593cc"
+  },
+  "ert_source_store_path": "/nix/store/bxv1s5whfbamfisdv3rlrzrgga6dy961-ert.el",
+  "reconstruction": "Final ERT minus the later five-level heading PDF test; two production modules from baseline HEAD. Other unchanged code is baseline; intermediate README bytes not retained or claimed identical."
+}

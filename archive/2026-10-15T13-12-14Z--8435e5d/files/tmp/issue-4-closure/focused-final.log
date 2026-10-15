@@ -1,0 +1,91 @@
+these 4 derivations will be built:
+  /nix/store/kbwafykd7axx961m7fpygf78p3hp5bdj-emacs-org-texmacs-0.4.0.drv
+  /nix/store/nl4jwfkv39yhm7r23f6146c5l64dy63d-emacs-packages-deps.drv
+  /nix/store/q9csdd5s7ryl27w9k86x22i5v77pynx4-emacs-with-packages-31.1.drv
+  /nix/store/z3yz9lfaf82r34nggf69kqq36da51rla-org-texmacs-issue4-closure-focused.drv
+building '/nix/store/kbwafykd7axx961m7fpygf78p3hp5bdj-emacs-org-texmacs-0.4.0.drv'...
+emacs-org-texmacs> structuredAttrs is enabled
+emacs-org-texmacs> Running phase: unpackPhase
+emacs-org-texmacs> unpacking source archive /nix/store/vbq6jn62wkwhr51g8n7bsxk59w4czhqq-source
+emacs-org-texmacs> source root is source
+emacs-org-texmacs> Running phase: patchPhase
+emacs-org-texmacs> Running phase: updateAutotoolsGnuConfigScriptsPhase
+emacs-org-texmacs> Running phase: configurePhase
+emacs-org-texmacs> no configure script, doing nothing
+emacs-org-texmacs> Running phase: buildPhase
+emacs-org-texmacs> Running phase: installPhase
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-preprocess.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-session.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-source.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-input.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-document.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-ast.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-context.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-worker.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-core.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-fragment.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-bibliography.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/ox-texmacs.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs.el        || exit $?'
+emacs-org-texmacs> Running phase: fixupPhase
+emacs-org-texmacs> shrinking RPATHs of ELF executables and libraries in /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0
+emacs-org-texmacs> shrinking /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-core-108b9b29-8ca14c35.eln
+emacs-org-texmacs> shrinking /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-ast-43e5ef61-88f45636.eln
+emacs-org-texmacs> shrinking /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-session-f81fed3a-9f7f5ee5.eln
+emacs-org-texmacs> shrinking /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-bibliography-72028791-58abd8a8.eln
+emacs-org-texmacs> shrinking /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-preprocess-4c17a886-17209aed.eln
+emacs-org-texmacs> shrinking /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/ox-texmacs-2837c73e-5a11d773.eln
+emacs-org-texmacs> shrinking /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-document-88052867-6fae52b7.eln
+emacs-org-texmacs> shrinking /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-source-a2f61277-4c14188a.eln
+emacs-org-texmacs> shrinking /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-worker-d23dbf23-9fe90cee.eln
+emacs-org-texmacs> shrinking /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-input-dfdbcffd-113edbb6.eln
+emacs-org-texmacs> shrinking /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-fragment-f4f0420d-ba42ea57.eln
+emacs-org-texmacs> shrinking /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-223f4c0d-f6b4762b.eln
+emacs-org-texmacs> shrinking /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-context-58fc29f6-f6244440.eln
+emacs-org-texmacs> checking for references to /build/ in /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0...
+emacs-org-texmacs> patching script interpreter paths in /nix/store/c5cadjrxv6v3pf54dylnpq14xqf2anqm-emacs-org-texmacs-0.4.0
+building '/nix/store/nl4jwfkv39yhm7r23f6146c5l64dy63d-emacs-packages-deps.drv'...
+building '/nix/store/q9csdd5s7ryl27w9k86x22i5v77pynx4-emacs-with-packages-31.1.drv'...
+building '/nix/store/z3yz9lfaf82r34nggf69kqq36da51rla-org-texmacs-issue4-closure-focused.drv'...
+org-texmacs-issue4-closure-focused> Running 37 tests (2026-10-15 13:03:58+0000, selector `(or (tag issue4-closure) (tag issue4) "^org-texmacs-context-.*metadata" "^org-texmacs-document-.*metadata" "^org-texmacs-document-\\(table\\|list\\|preformatted\\|toc\\|footnote\\)")')
+org-texmacs-issue4-closure-focused>    passed   1/37  org-texmacs-pdf-preformatted-lines-and-indent (2.162399 sec)
+org-texmacs-issue4-closure-focused>    passed   2/37  org-texmacs-pdf-list-multiparagraph-native-layout (2.057249 sec)
+org-texmacs-issue4-closure-focused>    passed   3/37  org-texmacs-pdf-five-level-headline-counter-and-toc (1.862186 sec)
+org-texmacs-issue4-closure-focused>    passed   4/37  org-texmacs-pdf-date-literal-layout (2.142386 sec)
+org-texmacs-issue4-closure-focused>    passed   5/37  org-texmacs-pdf-caption-number-and-reference-semantics (2.019360 sec)
+org-texmacs-issue4-closure-focused>    passed   6/37  org-texmacs-document-date-worker-wait-snapshot (0.004331 sec)
+org-texmacs-issue4-closure-focused>    passed   7/37  org-texmacs-document-date-timestamp-raw-text (0.027461 sec)
+org-texmacs-issue4-closure-focused>    passed   8/37  org-texmacs-document-date-precedence-and-suppression (0.009612 sec)
+org-texmacs-issue4-closure-focused>    passed   9/37  org-texmacs-document-date-malformed-and-context (0.008536 sec)
+org-texmacs-issue4-closure-focused>    passed  10/37  org-texmacs-document-date-advice-snapshot-and-ownership (0.002857 sec)
+org-texmacs-issue4-closure-focused>    passed  11/37  org-texmacs-document-date-advice-result-and-error (0.040853 sec)
+org-texmacs-issue4-closure-focused>    passed  12/37  org-texmacs-pdf-table-alignment-frontend-and-native-layout (2.046108 sec)
+org-texmacs-issue4-closure-focused>    passed  13/37  org-texmacs-pdf-block-quotation-and-center-layout (2.068865 sec)
+org-texmacs-issue4-closure-focused>    passed  14/37  org-texmacs-document-quote-uniform-quotation (0.013616 sec)
+org-texmacs-issue4-closure-focused>    passed  15/37  org-texmacs-context-metadata-options-and-provenance (0.002946 sec)
+org-texmacs-issue4-closure-focused>    passed  16/37  org-texmacs-context-copies-rich-metadata (0.002650 sec)
+org-texmacs-issue4-closure-focused>    passed  17/37  org-texmacs-document-metadata-native-encoding (1.731445 sec)
+org-texmacs-issue4-closure-focused>    passed  18/37  org-texmacs-document-footnote-rejects-contexts (0.013616 sec)
+org-texmacs-issue4-closure-focused>    passed  19/37  org-texmacs-document-footnote-rich-native (1.756146 sec)
+org-texmacs-issue4-closure-focused>    passed  20/37  org-texmacs-document-footnote-source (0.004656 sec)
+org-texmacs-issue4-closure-focused>    passed  21/37  org-texmacs-document-footnote-stm-exclusion (0.004213 sec)
+org-texmacs-issue4-closure-focused>    passed  22/37  org-texmacs-document-footnote-whitespace-and-empty (0.000192 sec)
+org-texmacs-issue4-closure-focused>    passed  23/37  org-texmacs-document-list-containers-native (2.277091 sec)
+org-texmacs-issue4-closure-focused>    passed  24/37  org-texmacs-document-list-source-forms (0.006176 sec)
+org-texmacs-issue4-closure-focused>    passed  25/37  org-texmacs-document-preformatted-native-and-provenance (1.943442 sec)
+org-texmacs-issue4-closure-focused>    passed  26/37  org-texmacs-document-preformatted-source-forms (0.001803 sec)
+org-texmacs-issue4-closure-focused>    passed  27/37  org-texmacs-document-preformatted-tab-snapshot-and-preserve-indent (0.001875 sec)
+org-texmacs-issue4-closure-focused>    passed  28/37  org-texmacs-document-table-alignment-caption-reference-and-files (1.792932 sec)
+org-texmacs-issue4-closure-focused>    passed  29/37  org-texmacs-document-table-alignment-column-counts-and-rules (0.009008 sec)
+org-texmacs-issue4-closure-focused>    passed  30/37  org-texmacs-document-table-alignment-rejections (0.018537 sec)
+org-texmacs-issue4-closure-focused>    passed  31/37  org-texmacs-document-table-alignment-row-positions-and-ownership (0.003908 sec)
+org-texmacs-issue4-closure-focused>    passed  32/37  org-texmacs-document-table-native-and-provenance (1.854442 sec)
+org-texmacs-issue4-closure-focused>    passed  33/37  org-texmacs-document-table-rule-positions (0.005132 sec)
+org-texmacs-issue4-closure-focused>    passed  34/37  org-texmacs-document-table-source-and-inline-subset (0.004437 sec)
+org-texmacs-issue4-closure-focused>    passed  35/37  org-texmacs-document-toc-static-label-conflict-native (1.762019 sec)
+org-texmacs-issue4-closure-focused>    passed  36/37  org-texmacs-document-toc-structure-and-headline-policies (0.007248 sec)
+org-texmacs-issue4-closure-focused>    passed  37/37  org-texmacs-document-toc-uses-filtered-context (0.004559 sec)
+org-texmacs-issue4-closure-focused> 
+org-texmacs-issue4-closure-focused> Ran 37 tests, 37 results as expected, 0 unexpected (2026-10-15 13:04:25+0000, 27.676927 sec)
+org-texmacs-issue4-closure-focused> 
+/nix/store/nxyjwm719nb5pi3h1y6zq6kpmq4g6x75-org-texmacs-issue4-closure-focused
