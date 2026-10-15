@@ -1,0 +1,2546 @@
+[
+  {
+    "factor": 1,
+    "route": "direct",
+    "format": "tm",
+    "temperature": "cold",
+    "expanded_bytes": 6447,
+    "median_s": 1.222419023513794,
+    "min_s": 1.2083470821380615,
+    "max_s": 1.8550772666931152,
+    "wait_s": 1.1983709335327148,
+    "wait_fraction": 0.9824001736325206,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.005778789520263672,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0005235671997070312,
+        "exclusive_s": 0.0005235671997070312
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.10238003730773926,
+        "exclusive_s": 0.0007963180541992188
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.005263090133666992,
+        "exclusive_s": 0.005263090133666992
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.0019078254699707031,
+        "exclusive_s": 0.0019078254699707031
+      },
+      "parse_adapter": {
+        "calls": 3,
+        "inclusive_s": 1.0990638732910156,
+        "exclusive_s": 8.58306884765625e-05
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.0056459903717041016,
+        "exclusive_s": 0.0056459903717041016
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.0002014636993408203,
+        "exclusive_s": 0.0002014636993408203
+      },
+      "rpc_overhead": {
+        "calls": 4,
+        "inclusive_s": 1.200561761856079,
+        "exclusive_s": 0.0013794898986816406
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 9.059906005859375e-06,
+        "exclusive_s": 9.059906005859375e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.10115265846252441,
+        "exclusive_s": 0.10115265846252441
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 0.94631028175354,
+        "exclusive_s": 0.94631028175354
+      },
+      "wait_stm": {
+        "calls": 3,
+        "inclusive_s": 0.1515216827392578,
+        "exclusive_s": 0.1515216827392578
+      },
+      "worker_start": {
+        "calls": 4,
+        "inclusive_s": 0.9469127655029297,
+        "exclusive_s": 0.0004570484161376953
+      }
+    }
+  },
+  {
+    "factor": 1,
+    "route": "direct",
+    "format": "tm",
+    "temperature": "warm",
+    "expanded_bytes": 6447,
+    "median_s": 0.2165677547454834,
+    "min_s": 0.21570587158203125,
+    "max_s": 0.21686792373657227,
+    "wait_s": 0.20152974128723145,
+    "wait_fraction": 0.9337187864747285,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.0036575794219970703,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0003070831298828125,
+        "exclusive_s": 0.0003070831298828125
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.05089879035949707,
+        "exclusive_s": 0.0005834102630615234
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.0027685165405273438,
+        "exclusive_s": 0.0027685165405273438
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.0018427371978759766,
+        "exclusive_s": 0.0018427371978759766
+      },
+      "parse_adapter": {
+        "calls": 3,
+        "inclusive_s": 0.15201616287231445,
+        "exclusive_s": 8.535385131835938e-05
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.004108428955078125,
+        "exclusive_s": 0.004108428955078125
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00014519691467285156,
+        "exclusive_s": 0.00014519691467285156
+      },
+      "rpc_overhead": {
+        "calls": 4,
+        "inclusive_s": 0.20253753662109375,
+        "exclusive_s": 0.0008306503295898438
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 7.867813110351562e-06,
+        "exclusive_s": 7.867813110351562e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.05008959770202637,
+        "exclusive_s": 0.05008959770202637
+      },
+      "wait_stm": {
+        "calls": 3,
+        "inclusive_s": 0.15132999420166016,
+        "exclusive_s": 0.15132999420166016
+      },
+      "worker_start": {
+        "calls": 4,
+        "inclusive_s": 3.5762786865234375e-06,
+        "exclusive_s": 3.5762786865234375e-06
+      }
+    }
+  },
+  {
+    "factor": 1,
+    "route": "direct",
+    "format": "pdf",
+    "temperature": "cold",
+    "expanded_bytes": 6447,
+    "median_s": 2.046710729598999,
+    "min_s": 1.9799904823303223,
+    "max_s": 2.12041974067688,
+    "wait_s": 2.0206379890441895,
+    "wait_fraction": 0.9887329821900466,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.0042040348052978516,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0003788471221923828,
+        "exclusive_s": 0.0003788471221923828
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.8739664554595947,
+        "exclusive_s": 0.006104707717895508
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.0036268234252929688,
+        "exclusive_s": 0.0036268234252929688
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.0025954246520996094,
+        "exclusive_s": 0.0025954246520996094
+      },
+      "parse_adapter": {
+        "calls": 3,
+        "inclusive_s": 1.1556756496429443,
+        "exclusive_s": 4.744529724121094e-05
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.005938291549682617,
+        "exclusive_s": 0.005938291549682617
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00023555755615234375,
+        "exclusive_s": 0.00023555755615234375
+      },
+      "rpc_overhead": {
+        "calls": 4,
+        "inclusive_s": 2.022711753845215,
+        "exclusive_s": 0.0011410713195800781
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 7.3909759521484375e-06,
+        "exclusive_s": 7.3909759521484375e-06
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 0.8667340278625488,
+        "exclusive_s": 0.8667340278625488
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 1.0033442974090576,
+        "exclusive_s": 1.0033442974090576
+      },
+      "wait_stm": {
+        "calls": 3,
+        "inclusive_s": 0.15153002738952637,
+        "exclusive_s": 0.15153002738952637
+      },
+      "worker_start": {
+        "calls": 4,
+        "inclusive_s": 1.0039417743682861,
+        "exclusive_s": 0.0005962848663330078
+      }
+    }
+  },
+  {
+    "factor": 1,
+    "route": "direct",
+    "format": "pdf",
+    "temperature": "warm",
+    "expanded_bytes": 6447,
+    "median_s": 0.4762763977050781,
+    "min_s": 0.47393298149108887,
+    "max_s": 0.4796178340911865,
+    "wait_s": 0.4571545124053955,
+    "wait_fraction": 0.9584606497240755,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.004016399383544922,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.00035190582275390625,
+        "exclusive_s": 0.00035190582275390625
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.30861663818359375,
+        "exclusive_s": 0.0029234886169433594
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.0027637481689453125,
+        "exclusive_s": 0.0027637481689453125
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.0018665790557861328,
+        "exclusive_s": 0.0018665790557861328
+      },
+      "parse_adapter": {
+        "calls": 3,
+        "inclusive_s": 0.15255308151245117,
+        "exclusive_s": 7.843971252441406e-05
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.00412440299987793,
+        "exclusive_s": 0.00412440299987793
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00023746490478515625,
+        "exclusive_s": 0.00023746490478515625
+      },
+      "rpc_overhead": {
+        "calls": 4,
+        "inclusive_s": 0.45816779136657715,
+        "exclusive_s": 0.0010097026824951172
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 8.58306884765625e-06,
+        "exclusive_s": 8.58306884765625e-06
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 0.30528998374938965,
+        "exclusive_s": 0.30528998374938965
+      },
+      "wait_stm": {
+        "calls": 3,
+        "inclusive_s": 0.1516866683959961,
+        "exclusive_s": 0.1516866683959961
+      },
+      "worker_start": {
+        "calls": 4,
+        "inclusive_s": 3.5762786865234375e-06,
+        "exclusive_s": 3.5762786865234375e-06
+      }
+    }
+  },
+  {
+    "factor": 1,
+    "route": "include",
+    "format": "tm",
+    "temperature": "cold",
+    "expanded_bytes": 6447,
+    "median_s": 1.2032222747802734,
+    "min_s": 1.1838281154632568,
+    "max_s": 1.2464890480041504,
+    "wait_s": 1.1838059425354004,
+    "wait_fraction": 0.9838630545229735,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.0049936771392822266,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.00039505958557128906,
+        "exclusive_s": 0.00039505958557128906
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.05089211463928223,
+        "exclusive_s": 0.0004303455352783203
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.0042226314544677734,
+        "exclusive_s": 0.0042226314544677734
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.001871347427368164,
+        "exclusive_s": 0.001871347427368164
+      },
+      "parse_adapter": {
+        "calls": 3,
+        "inclusive_s": 1.1231966018676758,
+        "exclusive_s": 8.511543273925781e-05
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.006121635437011719,
+        "exclusive_s": 0.006121635437011719
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00011610984802246094,
+        "exclusive_s": 0.00011610984802246094
+      },
+      "rpc_overhead": {
+        "calls": 4,
+        "inclusive_s": 1.185243844985962,
+        "exclusive_s": 0.0009434223175048828
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 1.9073486328125e-06,
+        "exclusive_s": 1.9073486328125e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.05029940605163574,
+        "exclusive_s": 0.05029940605163574
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 0.9698963165283203,
+        "exclusive_s": 0.9698963165283203
+      },
+      "wait_stm": {
+        "calls": 3,
+        "inclusive_s": 0.15158987045288086,
+        "exclusive_s": 0.15158987045288086
+      },
+      "worker_start": {
+        "calls": 4,
+        "inclusive_s": 0.9704151153564453,
+        "exclusive_s": 0.000518798828125
+      }
+    }
+  },
+  {
+    "factor": 1,
+    "route": "include",
+    "format": "tm",
+    "temperature": "warm",
+    "expanded_bytes": 6447,
+    "median_s": 0.2251272201538086,
+    "min_s": 0.21913862228393555,
+    "max_s": 0.22518181800842285,
+    "wait_s": 0.2014293670654297,
+    "wait_fraction": 0.8980021832096146,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.006223917007446289,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0004885196685791016,
+        "exclusive_s": 0.0004885196685791016
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.052342891693115234,
+        "exclusive_s": 0.0013725757598876953
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.0034542083740234375,
+        "exclusive_s": 0.0034542083740234375
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.0019686222076416016,
+        "exclusive_s": 0.0019686222076416016
+      },
+      "parse_adapter": {
+        "calls": 3,
+        "inclusive_s": 0.15124869346618652,
+        "exclusive_s": 5.53131103515625e-05
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.0061838626861572266,
+        "exclusive_s": 0.0061838626861572266
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.0003478527069091797,
+        "exclusive_s": 0.0003478527069091797
+      },
+      "rpc_overhead": {
+        "calls": 4,
+        "inclusive_s": 0.20218253135681152,
+        "exclusive_s": 0.0009109973907470703
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 1.9073486328125e-06,
+        "exclusive_s": 1.9073486328125e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.05059933662414551,
+        "exclusive_s": 0.05059933662414551
+      },
+      "wait_stm": {
+        "calls": 3,
+        "inclusive_s": 0.15083003044128418,
+        "exclusive_s": 0.15083003044128418
+      },
+      "worker_start": {
+        "calls": 4,
+        "inclusive_s": 3.5762786865234375e-06,
+        "exclusive_s": 3.5762786865234375e-06
+      }
+    }
+  },
+  {
+    "factor": 1,
+    "route": "include",
+    "format": "pdf",
+    "temperature": "cold",
+    "expanded_bytes": 6447,
+    "median_s": 2.0009090900421143,
+    "min_s": 1.9822008609771729,
+    "max_s": 2.0033774375915527,
+    "wait_s": 1.9697775840759277,
+    "wait_fraction": 0.9862381784707893,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.0064542293548583984,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0006215572357177734,
+        "exclusive_s": 0.0006215572357177734
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.8717455863952637,
+        "exclusive_s": 0.004285097122192383
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.00565028190612793,
+        "exclusive_s": 0.00565028190612793
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.002603292465209961,
+        "exclusive_s": 0.002603292465209961
+      },
+      "parse_adapter": {
+        "calls": 3,
+        "inclusive_s": 1.1043920516967773,
+        "exclusive_s": 8.0108642578125e-05
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.008668184280395508,
+        "exclusive_s": 0.008668184280395508
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00015735626220703125,
+        "exclusive_s": 0.00015735626220703125
+      },
+      "rpc_overhead": {
+        "calls": 4,
+        "inclusive_s": 1.9719741344451904,
+        "exclusive_s": 0.0015940666198730469
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 2.1457672119140625e-06,
+        "exclusive_s": 2.1457672119140625e-06
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 0.8667261600494385,
+        "exclusive_s": 0.8667261600494385
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 0.9513099193572998,
+        "exclusive_s": 0.9513099193572998
+      },
+      "wait_stm": {
+        "calls": 3,
+        "inclusive_s": 0.15174150466918945,
+        "exclusive_s": 0.15174150466918945
+      },
+      "worker_start": {
+        "calls": 4,
+        "inclusive_s": 0.9519124031066895,
+        "exclusive_s": 0.0005397796630859375
+      }
+    }
+  },
+  {
+    "factor": 1,
+    "route": "include",
+    "format": "pdf",
+    "temperature": "warm",
+    "expanded_bytes": 6447,
+    "median_s": 0.48038673400878906,
+    "min_s": 0.47696423530578613,
+    "max_s": 0.4818894863128662,
+    "wait_s": 0.45642518997192383,
+    "wait_fraction": 0.950407169033713,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.005965471267700195,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0005295276641845703,
+        "exclusive_s": 0.0005295276641845703
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.3096299171447754,
+        "exclusive_s": 0.003530740737915039
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.003790140151977539,
+        "exclusive_s": 0.003790140151977539
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.0018658638000488281,
+        "exclusive_s": 0.0018658638000488281
+      },
+      "parse_adapter": {
+        "calls": 3,
+        "inclusive_s": 0.15185928344726562,
+        "exclusive_s": 9.751319885253906e-05
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.0061283111572265625,
+        "exclusive_s": 0.0061283111572265625
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00014138221740722656,
+        "exclusive_s": 0.00014138221740722656
+      },
+      "rpc_overhead": {
+        "calls": 4,
+        "inclusive_s": 0.4577763080596924,
+        "exclusive_s": 0.0013186931610107422
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 1.9073486328125e-06,
+        "exclusive_s": 1.9073486328125e-06
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 0.3053610324859619,
+        "exclusive_s": 0.3053610324859619
+      },
+      "wait_stm": {
+        "calls": 3,
+        "inclusive_s": 0.15103554725646973,
+        "exclusive_s": 0.15103554725646973
+      },
+      "worker_start": {
+        "calls": 4,
+        "inclusive_s": 4.5299530029296875e-06,
+        "exclusive_s": 4.5299530029296875e-06
+      }
+    }
+  },
+  {
+    "factor": 2,
+    "route": "direct",
+    "format": "tm",
+    "temperature": "cold",
+    "expanded_bytes": 12859,
+    "median_s": 1.4503743648529053,
+    "min_s": 1.369997262954712,
+    "max_s": 1.8793678283691406,
+    "wait_s": 1.4167077541351318,
+    "wait_fraction": 0.976787640809421,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.008309125900268555,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0008366107940673828,
+        "exclusive_s": 0.0008366107940673828
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.10413289070129395,
+        "exclusive_s": 0.001779317855834961
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.009674549102783203,
+        "exclusive_s": 0.009674549102783203
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.002913951873779297,
+        "exclusive_s": 0.002913951873779297
+      },
+      "parse_adapter": {
+        "calls": 6,
+        "inclusive_s": 1.3180155754089355,
+        "exclusive_s": 0.00015926361083984375
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.005818367004394531,
+        "exclusive_s": 0.005818367004394531
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.0002987384796142578,
+        "exclusive_s": 0.0002987384796142578
+      },
+      "rpc_overhead": {
+        "calls": 7,
+        "inclusive_s": 1.419814109802246,
+        "exclusive_s": 0.0020630359649658203
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 7.3909759521484375e-06,
+        "exclusive_s": 7.3909759521484375e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.1013185977935791,
+        "exclusive_s": 0.1013185977935791
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 1.0115594863891602,
+        "exclusive_s": 1.0115594863891602
+      },
+      "wait_stm": {
+        "calls": 6,
+        "inclusive_s": 0.303607702255249,
+        "exclusive_s": 0.303607702255249
+      },
+      "worker_start": {
+        "calls": 7,
+        "inclusive_s": 1.0123474597930908,
+        "exclusive_s": 0.0005512237548828125
+      }
+    }
+  },
+  {
+    "factor": 2,
+    "route": "direct",
+    "format": "tm",
+    "temperature": "warm",
+    "expanded_bytes": 12859,
+    "median_s": 0.439725399017334,
+    "min_s": 0.3842804431915283,
+    "max_s": 0.4412417411804199,
+    "wait_s": 0.4047701358795166,
+    "wait_fraction": 0.9199889067365518,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.008745193481445312,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0009479522705078125,
+        "exclusive_s": 0.0009479522705078125
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.10339164733886719,
+        "exclusive_s": 0.0010075569152832031
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.010577917098999023,
+        "exclusive_s": 0.010577917098999023
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.0028829574584960938,
+        "exclusive_s": 0.0028829574584960938
+      },
+      "parse_adapter": {
+        "calls": 6,
+        "inclusive_s": 0.3051431179046631,
+        "exclusive_s": 0.00019788742065429688
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.005716562271118164,
+        "exclusive_s": 0.005716562271118164
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.0002524852752685547,
+        "exclusive_s": 0.0002524852752685547
+      },
+      "rpc_overhead": {
+        "calls": 7,
+        "inclusive_s": 0.4071314334869385,
+        "exclusive_s": 0.0022988319396972656
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 8.344650268554688e-06,
+        "exclusive_s": 8.344650268554688e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.10172486305236816,
+        "exclusive_s": 0.10172486305236816
+      },
+      "wait_stm": {
+        "calls": 6,
+        "inclusive_s": 0.303372859954834,
+        "exclusive_s": 0.303372859954834
+      },
+      "worker_start": {
+        "calls": 7,
+        "inclusive_s": 9.775161743164062e-06,
+        "exclusive_s": 9.775161743164062e-06
+      }
+    }
+  },
+  {
+    "factor": 2,
+    "route": "direct",
+    "format": "pdf",
+    "temperature": "cold",
+    "expanded_bytes": 12859,
+    "median_s": 2.242075204849243,
+    "min_s": 2.2289743423461914,
+    "max_s": 2.3467423915863037,
+    "wait_s": 2.2041304111480713,
+    "wait_fraction": 0.9824157409703655,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.009676218032836914,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0010251998901367188,
+        "exclusive_s": 0.0010251998901367188
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.9261059761047363,
+        "exclusive_s": 0.0070683956146240234
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.009648561477661133,
+        "exclusive_s": 0.009648561477661133
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.0029289722442626953,
+        "exclusive_s": 0.0029289722442626953
+      },
+      "parse_adapter": {
+        "calls": 6,
+        "inclusive_s": 1.2882487773895264,
+        "exclusive_s": 0.0001919269561767578
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.005735635757446289,
+        "exclusive_s": 0.005735635757446289
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.0002765655517578125,
+        "exclusive_s": 0.0002765655517578125
+      },
+      "rpc_overhead": {
+        "calls": 7,
+        "inclusive_s": 2.207146644592285,
+        "exclusive_s": 0.002959012985229492
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 1.0251998901367188e-05,
+        "exclusive_s": 1.0251998901367188e-05
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 0.9185411930084229,
+        "exclusive_s": 0.9185411930084229
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 0.9818465709686279,
+        "exclusive_s": 0.9818465709686279
+      },
+      "wait_stm": {
+        "calls": 6,
+        "inclusive_s": 0.30315566062927246,
+        "exclusive_s": 0.30315566062927246
+      },
+      "worker_start": {
+        "calls": 7,
+        "inclusive_s": 0.982475757598877,
+        "exclusive_s": 0.0006220340728759766
+      }
+    }
+  },
+  {
+    "factor": 2,
+    "route": "direct",
+    "format": "pdf",
+    "temperature": "warm",
+    "expanded_bytes": 12859,
+    "median_s": 0.6420862674713135,
+    "min_s": 0.6331884860992432,
+    "max_s": 0.6979870796203613,
+    "wait_s": 0.6090824604034424,
+    "wait_fraction": 0.9485991077213848,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.007706642150878906,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0008344650268554688,
+        "exclusive_s": 0.0008344650268554688
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.3098881244659424,
+        "exclusive_s": 0.0033452510833740234
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.009908914566040039,
+        "exclusive_s": 0.009908914566040039
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.0028891563415527344,
+        "exclusive_s": 0.0028891563415527344
+      },
+      "parse_adapter": {
+        "calls": 6,
+        "inclusive_s": 0.30521297454833984,
+        "exclusive_s": 0.00013566017150878906
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.005726337432861328,
+        "exclusive_s": 0.005726337432861328
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00013971328735351562,
+        "exclusive_s": 0.00013971328735351562
+      },
+      "rpc_overhead": {
+        "calls": 7,
+        "inclusive_s": 0.611304759979248,
+        "exclusive_s": 0.002215147018432617
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 7.3909759521484375e-06,
+        "exclusive_s": 7.3909759521484375e-06
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 0.3059980869293213,
+        "exclusive_s": 0.3059980869293213
+      },
+      "wait_stm": {
+        "calls": 6,
+        "inclusive_s": 0.3035902976989746,
+        "exclusive_s": 0.3035902976989746
+      },
+      "worker_start": {
+        "calls": 7,
+        "inclusive_s": 7.152557373046875e-06,
+        "exclusive_s": 7.152557373046875e-06
+      }
+    }
+  },
+  {
+    "factor": 2,
+    "route": "include",
+    "format": "tm",
+    "temperature": "cold",
+    "expanded_bytes": 12859,
+    "median_s": 1.4226067066192627,
+    "min_s": 1.392089605331421,
+    "max_s": 1.4318482875823975,
+    "wait_s": 1.3835740089416504,
+    "wait_fraction": 0.9743461401986511,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.010464906692504883,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0009143352508544922,
+        "exclusive_s": 0.0009143352508544922
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.10415530204772949,
+        "exclusive_s": 0.0018496513366699219
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.009224653244018555,
+        "exclusive_s": 0.009224653244018555
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.002947568893432617,
+        "exclusive_s": 0.002947568893432617
+      },
+      "parse_adapter": {
+        "calls": 6,
+        "inclusive_s": 1.2576000690460205,
+        "exclusive_s": 0.00017786026000976562
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.00805211067199707,
+        "exclusive_s": 0.00805211067199707
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.0002923011779785156,
+        "exclusive_s": 0.0002923011779785156
+      },
+      "rpc_overhead": {
+        "calls": 7,
+        "inclusive_s": 1.3863775730133057,
+        "exclusive_s": 0.0020864009857177734
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 2.1457672119140625e-06,
+        "exclusive_s": 2.1457672119140625e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.10143589973449707,
+        "exclusive_s": 0.10143589973449707
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 0.9526610374450684,
+        "exclusive_s": 0.9526610374450684
+      },
+      "wait_stm": {
+        "calls": 6,
+        "inclusive_s": 0.30263352394104004,
+        "exclusive_s": 0.30263352394104004
+      },
+      "worker_start": {
+        "calls": 7,
+        "inclusive_s": 0.9533357620239258,
+        "exclusive_s": 0.00044417381286621094
+      }
+    }
+  },
+  {
+    "factor": 2,
+    "route": "include",
+    "format": "tm",
+    "temperature": "warm",
+    "expanded_bytes": 12859,
+    "median_s": 0.4395008087158203,
+    "min_s": 0.3828694820404053,
+    "max_s": 0.4461705684661865,
+    "wait_s": 0.4035191535949707,
+    "wait_fraction": 0.9181306281870457,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.011386632919311523,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0009257793426513672,
+        "exclusive_s": 0.0009257793426513672
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.10295343399047852,
+        "exclusive_s": 0.0014736652374267578
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.009620904922485352,
+        "exclusive_s": 0.009620904922485352
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.0029370784759521484,
+        "exclusive_s": 0.0029370784759521484
+      },
+      "parse_adapter": {
+        "calls": 6,
+        "inclusive_s": 0.30463194847106934,
+        "exclusive_s": 0.000179290771484375
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.008022785186767578,
+        "exclusive_s": 0.008022785186767578
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00018405914306640625,
+        "exclusive_s": 0.00018405914306640625
+      },
+      "rpc_overhead": {
+        "calls": 7,
+        "inclusive_s": 0.4056098461151123,
+        "exclusive_s": 0.002080678939819336
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 1.6689300537109375e-06,
+        "exclusive_s": 1.6689300537109375e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.10123801231384277,
+        "exclusive_s": 0.10123801231384277
+      },
+      "wait_stm": {
+        "calls": 6,
+        "inclusive_s": 0.3030359745025635,
+        "exclusive_s": 0.3030359745025635
+      },
+      "worker_start": {
+        "calls": 7,
+        "inclusive_s": 1.0013580322265625e-05,
+        "exclusive_s": 1.0013580322265625e-05
+      }
+    }
+  },
+  {
+    "factor": 2,
+    "route": "include",
+    "format": "pdf",
+    "temperature": "cold",
+    "expanded_bytes": 12859,
+    "median_s": 2.2434070110321045,
+    "min_s": 2.1959705352783203,
+    "max_s": 2.3043415546417236,
+    "wait_s": 2.197913885116577,
+    "wait_fraction": 0.9823495006626413,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.00938868522644043,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0008637905120849609,
+        "exclusive_s": 0.0008637905120849609
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.9274990558624268,
+        "exclusive_s": 0.006768941879272461
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.009441375732421875,
+        "exclusive_s": 0.009441375732421875
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.0029325485229492188,
+        "exclusive_s": 0.0029325485229492188
+      },
+      "parse_adapter": {
+        "calls": 6,
+        "inclusive_s": 1.2825927734375,
+        "exclusive_s": 0.000156402587890625
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.008020162582397461,
+        "exclusive_s": 0.008020162582397461
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.0002288818359375,
+        "exclusive_s": 0.0002288818359375
+      },
+      "rpc_overhead": {
+        "calls": 7,
+        "inclusive_s": 2.2007551193237305,
+        "exclusive_s": 0.0023610591888427734
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 1.6689300537109375e-06,
+        "exclusive_s": 1.6689300537109375e-06
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 0.9178259372711182,
+        "exclusive_s": 0.9178259372711182
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 0.9765934944152832,
+        "exclusive_s": 0.9765934944152832
+      },
+      "wait_stm": {
+        "calls": 6,
+        "inclusive_s": 0.30290937423706055,
+        "exclusive_s": 0.30290937423706055
+      },
+      "worker_start": {
+        "calls": 7,
+        "inclusive_s": 0.9771468639373779,
+        "exclusive_s": 0.0005192756652832031
+      }
+    }
+  },
+  {
+    "factor": 2,
+    "route": "include",
+    "format": "pdf",
+    "temperature": "warm",
+    "expanded_bytes": 12859,
+    "median_s": 0.6530580520629883,
+    "min_s": 0.6465377807617188,
+    "max_s": 0.7417666912078857,
+    "wait_s": 0.6092691421508789,
+    "wait_fraction": 0.9423565958250238,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.010183095932006836,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0009341239929199219,
+        "exclusive_s": 0.0009341239929199219
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.31086111068725586,
+        "exclusive_s": 0.003400087356567383
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.008543729782104492,
+        "exclusive_s": 0.008543729782104492
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.0029380321502685547,
+        "exclusive_s": 0.0029380321502685547
+      },
+      "parse_adapter": {
+        "calls": 6,
+        "inclusive_s": 0.3049595355987549,
+        "exclusive_s": 0.00016260147094726562
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.008095979690551758,
+        "exclusive_s": 0.008095979690551758
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00021600723266601562,
+        "exclusive_s": 0.00021600723266601562
+      },
+      "rpc_overhead": {
+        "calls": 7,
+        "inclusive_s": 0.6113319396972656,
+        "exclusive_s": 0.0020546913146972656
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 1.6689300537109375e-06,
+        "exclusive_s": 1.6689300537109375e-06
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 0.3059976100921631,
+        "exclusive_s": 0.3059976100921631
+      },
+      "wait_stm": {
+        "calls": 6,
+        "inclusive_s": 0.30342721939086914,
+        "exclusive_s": 0.30342721939086914
+      },
+      "worker_start": {
+        "calls": 7,
+        "inclusive_s": 8.106231689453125e-06,
+        "exclusive_s": 8.106231689453125e-06
+      }
+    }
+  },
+  {
+    "factor": 4,
+    "route": "direct",
+    "format": "tm",
+    "temperature": "cold",
+    "expanded_bytes": 25683,
+    "median_s": 1.7864711284637451,
+    "min_s": 1.7487611770629883,
+    "max_s": 2.3060662746429443,
+    "wait_s": 1.7159616947174072,
+    "wait_fraction": 0.9627788542238709,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.015671253204345703,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0019049644470214844,
+        "exclusive_s": 0.0019049644470214844
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.10506367683410645,
+        "exclusive_s": 0.0020656585693359375
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.01932501792907715,
+        "exclusive_s": 0.01932501792907715
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.00514984130859375,
+        "exclusive_s": 0.00514984130859375
+      },
+      "parse_adapter": {
+        "calls": 12,
+        "inclusive_s": 1.6190927028656006,
+        "exclusive_s": 0.00030875205993652344
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.010667800903320312,
+        "exclusive_s": 0.010667800903320312
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00016927719116210938,
+        "exclusive_s": 0.00016927719116210938
+      },
+      "rpc_overhead": {
+        "calls": 13,
+        "inclusive_s": 1.7217082977294922,
+        "exclusive_s": 0.0041294097900390625
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 7.62939453125e-06,
+        "exclusive_s": 7.62939453125e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.10185790061950684,
+        "exclusive_s": 0.10185790061950684
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 0.9741573333740234,
+        "exclusive_s": 0.9741573333740234
+      },
+      "wait_stm": {
+        "calls": 12,
+        "inclusive_s": 0.6076550483703613,
+        "exclusive_s": 0.6076550483703613
+      },
+      "worker_start": {
+        "calls": 13,
+        "inclusive_s": 0.9749414920806885,
+        "exclusive_s": 0.0005650520324707031
+      }
+    }
+  },
+  {
+    "factor": 4,
+    "route": "direct",
+    "format": "tm",
+    "temperature": "warm",
+    "expanded_bytes": 25683,
+    "median_s": 0.769766092300415,
+    "min_s": 0.7697069644927979,
+    "max_s": 0.774097204208374,
+    "wait_s": 0.7076241970062256,
+    "wait_fraction": 0.9192717165438128,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.015660762786865234,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0017385482788085938,
+        "exclusive_s": 0.0017385482788085938
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.10506415367126465,
+        "exclusive_s": 0.00215911865234375
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.02228379249572754,
+        "exclusive_s": 0.02228379249572754
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.005063056945800781,
+        "exclusive_s": 0.005063056945800781
+      },
+      "parse_adapter": {
+        "calls": 12,
+        "inclusive_s": 0.6101269721984863,
+        "exclusive_s": 0.00031375885009765625
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.009106636047363281,
+        "exclusive_s": 0.009106636047363281
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00019621849060058594,
+        "exclusive_s": 0.00019621849060058594
+      },
+      "rpc_overhead": {
+        "calls": 13,
+        "inclusive_s": 0.7122876644134521,
+        "exclusive_s": 0.004349470138549805
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 8.344650268554688e-06,
+        "exclusive_s": 8.344650268554688e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.10164785385131836,
+        "exclusive_s": 0.10164785385131836
+      },
+      "wait_stm": {
+        "calls": 12,
+        "inclusive_s": 0.606170654296875,
+        "exclusive_s": 0.606170654296875
+      },
+      "worker_start": {
+        "calls": 13,
+        "inclusive_s": 1.621246337890625e-05,
+        "exclusive_s": 1.621246337890625e-05
+      }
+    }
+  },
+  {
+    "factor": 4,
+    "route": "direct",
+    "format": "pdf",
+    "temperature": "cold",
+    "expanded_bytes": 25683,
+    "median_s": 2.6974897384643555,
+    "min_s": 2.6552045345306396,
+    "max_s": 2.738036632537842,
+    "wait_s": 2.634901285171509,
+    "wait_fraction": 0.9767975194120748,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.013802289962768555,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0009634494781494141,
+        "exclusive_s": 0.0009634494781494141
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 1.0306193828582764,
+        "exclusive_s": 0.009398698806762695
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.012088298797607422,
+        "exclusive_s": 0.012088298797607422
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.005043506622314453,
+        "exclusive_s": 0.005043506622314453
+      },
+      "parse_adapter": {
+        "calls": 12,
+        "inclusive_s": 1.5930404663085938,
+        "exclusive_s": 0.0002899169921875
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.0091094970703125,
+        "exclusive_s": 0.0091094970703125
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.0002963542938232422,
+        "exclusive_s": 0.0002963542938232422
+      },
+      "rpc_overhead": {
+        "calls": 13,
+        "inclusive_s": 2.6399729251861572,
+        "exclusive_s": 0.0045299530029296875
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 7.62939453125e-06,
+        "exclusive_s": 7.62939453125e-06
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 1.0196571350097656,
+        "exclusive_s": 1.0196571350097656
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 0.9309449195861816,
+        "exclusive_s": 0.9309449195861816
+      },
+      "wait_stm": {
+        "calls": 12,
+        "inclusive_s": 0.6571218967437744,
+        "exclusive_s": 0.6571218967437744
+      },
+      "worker_start": {
+        "calls": 13,
+        "inclusive_s": 0.9316682815551758,
+        "exclusive_s": 0.0005424022674560547
+      }
+    }
+  },
+  {
+    "factor": 4,
+    "route": "direct",
+    "format": "pdf",
+    "temperature": "warm",
+    "expanded_bytes": 25683,
+    "median_s": 1.0700099468231201,
+    "min_s": 1.0639514923095703,
+    "max_s": 1.1177966594696045,
+    "wait_s": 1.0148296356201172,
+    "wait_fraction": 0.9507555793387437,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.01416635513305664,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0011494159698486328,
+        "exclusive_s": 0.0011494159698486328
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.413377046585083,
+        "exclusive_s": 0.005370616912841797
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.011211395263671875,
+        "exclusive_s": 0.011211395263671875
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.004933357238769531,
+        "exclusive_s": 0.004933357238769531
+      },
+      "parse_adapter": {
+        "calls": 12,
+        "inclusive_s": 0.6088030338287354,
+        "exclusive_s": 0.00030350685119628906
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.009022951126098633,
+        "exclusive_s": 0.009022951126098633
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.0001697540283203125,
+        "exclusive_s": 0.0001697540283203125
+      },
+      "rpc_overhead": {
+        "calls": 13,
+        "inclusive_s": 1.0192978382110596,
+        "exclusive_s": 0.004452705383300781
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 7.3909759521484375e-06,
+        "exclusive_s": 7.3909759521484375e-06
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 0.4077270030975342,
+        "exclusive_s": 0.4077270030975342
+      },
+      "wait_stm": {
+        "calls": 12,
+        "inclusive_s": 0.6053323745727539,
+        "exclusive_s": 0.6053323745727539
+      },
+      "worker_start": {
+        "calls": 13,
+        "inclusive_s": 1.5497207641601562e-05,
+        "exclusive_s": 1.5497207641601562e-05
+      }
+    }
+  },
+  {
+    "factor": 4,
+    "route": "include",
+    "format": "tm",
+    "temperature": "cold",
+    "expanded_bytes": 25683,
+    "median_s": 1.7572355270385742,
+    "min_s": 1.7264635562896729,
+    "max_s": 1.7654635906219482,
+    "wait_s": 1.6847751140594482,
+    "wait_fraction": 0.9590882566671136,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.022255420684814453,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0017130374908447266,
+        "exclusive_s": 0.0017130374908447266
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.10576319694519043,
+        "exclusive_s": 0.003675699234008789
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.021425485610961914,
+        "exclusive_s": 0.021425485610961914
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.00493168830871582,
+        "exclusive_s": 0.00493168830871582
+      },
+      "parse_adapter": {
+        "calls": 12,
+        "inclusive_s": 1.5873150825500488,
+        "exclusive_s": 0.00033092498779296875
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.01204371452331543,
+        "exclusive_s": 0.01204371452331543
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00022745132446289062,
+        "exclusive_s": 0.00022745132446289062
+      },
+      "rpc_overhead": {
+        "calls": 13,
+        "inclusive_s": 1.690077304840088,
+        "exclusive_s": 0.004378080368041992
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 1.9073486328125e-06,
+        "exclusive_s": 1.9073486328125e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.10137271881103516,
+        "exclusive_s": 0.10137271881103516
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 0.9652729034423828,
+        "exclusive_s": 0.9652729034423828
+      },
+      "wait_stm": {
+        "calls": 12,
+        "inclusive_s": 0.6067872047424316,
+        "exclusive_s": 0.6067872047424316
+      },
+      "worker_start": {
+        "calls": 13,
+        "inclusive_s": 0.9658012390136719,
+        "exclusive_s": 0.0004534721374511719
+      }
+    }
+  },
+  {
+    "factor": 4,
+    "route": "include",
+    "format": "tm",
+    "temperature": "warm",
+    "expanded_bytes": 25683,
+    "median_s": 0.7771317958831787,
+    "min_s": 0.7771158218383789,
+    "max_s": 0.7862002849578857,
+    "wait_s": 0.7082827091217041,
+    "wait_fraction": 0.9092141029495683,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.02118229866027832,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.001956939697265625,
+        "exclusive_s": 0.001956939697265625
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.10662364959716797,
+        "exclusive_s": 0.003978252410888672
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.022072315216064453,
+        "exclusive_s": 0.022072315216064453
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.0050029754638671875,
+        "exclusive_s": 0.0050029754638671875
+      },
+      "parse_adapter": {
+        "calls": 12,
+        "inclusive_s": 0.6096737384796143,
+        "exclusive_s": 0.0002884864807128906
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.01220393180847168,
+        "exclusive_s": 0.01220393180847168
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00035262107849121094,
+        "exclusive_s": 0.00035262107849121094
+      },
+      "rpc_overhead": {
+        "calls": 13,
+        "inclusive_s": 0.7120306491851807,
+        "exclusive_s": 0.0038003921508789062
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 1.9073486328125e-06,
+        "exclusive_s": 1.9073486328125e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.10173869132995605,
+        "exclusive_s": 0.10173869132995605
+      },
+      "wait_stm": {
+        "calls": 12,
+        "inclusive_s": 0.6065897941589355,
+        "exclusive_s": 0.6065897941589355
+      },
+      "worker_start": {
+        "calls": 13,
+        "inclusive_s": 1.4066696166992188e-05,
+        "exclusive_s": 1.4066696166992188e-05
+      }
+    }
+  },
+  {
+    "factor": 4,
+    "route": "include",
+    "format": "pdf",
+    "temperature": "cold",
+    "expanded_bytes": 25683,
+    "median_s": 2.6714329719543457,
+    "min_s": 2.637571334838867,
+    "max_s": 2.704573392868042,
+    "wait_s": 2.609038829803467,
+    "wait_fraction": 0.9747887018136686,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.022383928298950195,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0011188983917236328,
+        "exclusive_s": 0.0011188983917236328
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 1.0240676403045654,
+        "exclusive_s": 0.0035703182220458984
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.018128156661987305,
+        "exclusive_s": 0.018128156661987305
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.005400419235229492,
+        "exclusive_s": 0.005400419235229492
+      },
+      "parse_adapter": {
+        "calls": 12,
+        "inclusive_s": 1.5703010559082031,
+        "exclusive_s": 0.00033020973205566406
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.017385482788085938,
+        "exclusive_s": 0.017385482788085938
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.0001277923583984375,
+        "exclusive_s": 0.0001277923583984375
+      },
+      "rpc_overhead": {
+        "calls": 13,
+        "inclusive_s": 2.6138179302215576,
+        "exclusive_s": 0.004389762878417969
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 2.1457672119140625e-06,
+        "exclusive_s": 2.1457672119140625e-06
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 1.0196309089660645,
+        "exclusive_s": 1.0196309089660645
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 0.9341554641723633,
+        "exclusive_s": 0.9341554641723633
+      },
+      "wait_stm": {
+        "calls": 12,
+        "inclusive_s": 0.6080806255340576,
+        "exclusive_s": 0.6080806255340576
+      },
+      "worker_start": {
+        "calls": 13,
+        "inclusive_s": 0.9346270561218262,
+        "exclusive_s": 0.0004715919494628906
+      }
+    }
+  },
+  {
+    "factor": 4,
+    "route": "include",
+    "format": "pdf",
+    "temperature": "warm",
+    "expanded_bytes": 25683,
+    "median_s": 1.1384003162384033,
+    "min_s": 1.0690984725952148,
+    "max_s": 1.14400315284729,
+    "wait_s": 1.0654919147491455,
+    "wait_fraction": 0.9368762692947994,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.022428035736083984,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0014557838439941406,
+        "exclusive_s": 0.0014557838439941406
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.4657578468322754,
+        "exclusive_s": 0.005602121353149414
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.02004694938659668,
+        "exclusive_s": 0.02004694938659668
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.005022525787353516,
+        "exclusive_s": 0.005022525787353516
+      },
+      "parse_adapter": {
+        "calls": 12,
+        "inclusive_s": 0.6106865406036377,
+        "exclusive_s": 0.00034356117248535156
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.011897087097167969,
+        "exclusive_s": 0.011897087097167969
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00017380714416503906,
+        "exclusive_s": 0.00017380714416503906
+      },
+      "rpc_overhead": {
+        "calls": 13,
+        "inclusive_s": 1.0705246925354004,
+        "exclusive_s": 0.004680156707763672
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 1.6689300537109375e-06,
+        "exclusive_s": 1.6689300537109375e-06
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 0.4582657814025879,
+        "exclusive_s": 0.4582657814025879
+      },
+      "wait_stm": {
+        "calls": 12,
+        "inclusive_s": 0.6072261333465576,
+        "exclusive_s": 0.6072261333465576
+      },
+      "worker_start": {
+        "calls": 13,
+        "inclusive_s": 1.6450881958007812e-05,
+        "exclusive_s": 1.6450881958007812e-05
+      }
+    }
+  },
+  {
+    "factor": 8,
+    "route": "direct",
+    "format": "tm",
+    "temperature": "cold",
+    "expanded_bytes": 51331,
+    "median_s": 2.4855740070343018,
+    "min_s": 2.4447407722473145,
+    "max_s": 3.0407021045684814,
+    "wait_s": 2.395529270172119,
+    "wait_fraction": 0.9637730614307394,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.02832818031311035,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0016856193542480469,
+        "exclusive_s": 0.0016856193542480469
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.2096564769744873,
+        "exclusive_s": 0.007690906524658203
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.022991657257080078,
+        "exclusive_s": 0.022991657257080078
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.00914764404296875,
+        "exclusive_s": 0.00914764404296875
+      },
+      "parse_adapter": {
+        "calls": 24,
+        "inclusive_s": 2.20355224609375,
+        "exclusive_s": 0.0006382465362548828
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.017325639724731445,
+        "exclusive_s": 0.017325639724731445
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.0003681182861328125,
+        "exclusive_s": 0.0003681182861328125
+      },
+      "rpc_overhead": {
+        "calls": 25,
+        "inclusive_s": 2.4048590660095215,
+        "exclusive_s": 0.00862741470336914
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 8.58306884765625e-06,
+        "exclusive_s": 8.58306884765625e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.20058131217956543,
+        "exclusive_s": 0.20058131217956543
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 0.9923453330993652,
+        "exclusive_s": 0.9923453330993652
+      },
+      "wait_stm": {
+        "calls": 24,
+        "inclusive_s": 1.2026026248931885,
+        "exclusive_s": 1.2026026248931885
+      },
+      "worker_start": {
+        "calls": 25,
+        "inclusive_s": 0.9929358959197998,
+        "exclusive_s": 0.0005774497985839844
+      }
+    }
+  },
+  {
+    "factor": 8,
+    "route": "direct",
+    "format": "tm",
+    "temperature": "warm",
+    "expanded_bytes": 51331,
+    "median_s": 1.5209589004516602,
+    "min_s": 1.5095419883728027,
+    "max_s": 1.5396769046783447,
+    "wait_s": 1.401799201965332,
+    "wait_fraction": 0.9214183420165396,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.03834104537963867,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.003662586212158203,
+        "exclusive_s": 0.003662586212158203
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.20572710037231445,
+        "exclusive_s": 0.0037801265716552734
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.03910017013549805,
+        "exclusive_s": 0.03910017013549805
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.009246826171875,
+        "exclusive_s": 0.009246826171875
+      },
+      "parse_adapter": {
+        "calls": 24,
+        "inclusive_s": 1.2099907398223877,
+        "exclusive_s": 0.0006971359252929688
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.01578998565673828,
+        "exclusive_s": 0.01578998565673828
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.0001842975616455078,
+        "exclusive_s": 0.0001842975616455078
+      },
+      "rpc_overhead": {
+        "calls": 25,
+        "inclusive_s": 1.411149263381958,
+        "exclusive_s": 0.009585380554199219
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 8.106231689453125e-06,
+        "exclusive_s": 8.106231689453125e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.20018458366394043,
+        "exclusive_s": 0.20018458366394043
+      },
+      "wait_stm": {
+        "calls": 24,
+        "inclusive_s": 1.2012548446655273,
+        "exclusive_s": 1.2012548446655273
+      },
+      "worker_start": {
+        "calls": 25,
+        "inclusive_s": 3.314018249511719e-05,
+        "exclusive_s": 3.314018249511719e-05
+      }
+    }
+  },
+  {
+    "factor": 8,
+    "route": "direct",
+    "format": "pdf",
+    "temperature": "cold",
+    "expanded_bytes": 51331,
+    "median_s": 3.4142444133758545,
+    "min_s": 3.3849737644195557,
+    "max_s": 3.424443006515503,
+    "wait_s": 3.3038384914398193,
+    "wait_fraction": 0.9676631463454982,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.026556968688964844,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.0030994415283203125,
+        "exclusive_s": 0.0030994415283203125
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 1.1099293231964111,
+        "exclusive_s": 0.005118846893310547
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.033617258071899414,
+        "exclusive_s": 0.033617258071899414
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.00909113883972168,
+        "exclusive_s": 0.00909113883972168
+      },
+      "parse_adapter": {
+        "calls": 24,
+        "inclusive_s": 2.192542791366577,
+        "exclusive_s": 0.0006518363952636719
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.015904903411865234,
+        "exclusive_s": 0.015904903411865234
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00016617774963378906,
+        "exclusive_s": 0.00016617774963378906
+      },
+      "rpc_overhead": {
+        "calls": 25,
+        "inclusive_s": 3.314133882522583,
+        "exclusive_s": 0.008944034576416016
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 1.2636184692382812e-05,
+        "exclusive_s": 1.2636184692382812e-05
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 1.1039040088653564,
+        "exclusive_s": 1.1039040088653564
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 0.9542257785797119,
+        "exclusive_s": 0.9542257785797119
+      },
+      "wait_stm": {
+        "calls": 24,
+        "inclusive_s": 1.2022783756256104,
+        "exclusive_s": 1.2022783756256104
+      },
+      "worker_start": {
+        "calls": 25,
+        "inclusive_s": 0.954833984375,
+        "exclusive_s": 0.0006082057952880859
+      }
+    }
+  },
+  {
+    "factor": 8,
+    "route": "direct",
+    "format": "pdf",
+    "temperature": "warm",
+    "expanded_bytes": 51331,
+    "median_s": 1.8304154872894287,
+    "min_s": 1.8192918300628662,
+    "max_s": 1.8373310565948486,
+    "wait_s": 1.70709228515625,
+    "wait_fraction": 0.9336962551640748,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.03472113609313965,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.003535747528076172,
+        "exclusive_s": 0.003535747528076172
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.5090382099151611,
+        "exclusive_s": 0.006118297576904297
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.04285931587219238,
+        "exclusive_s": 0.04285931587219238
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.009064197540283203,
+        "exclusive_s": 0.009064197540283203
+      },
+      "parse_adapter": {
+        "calls": 24,
+        "inclusive_s": 1.2145717144012451,
+        "exclusive_s": 0.0007510185241699219
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.01567387580871582,
+        "exclusive_s": 0.01567387580871582
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00019288063049316406,
+        "exclusive_s": 0.00019288063049316406
+      },
+      "rpc_overhead": {
+        "calls": 25,
+        "inclusive_s": 1.7166643142700195,
+        "exclusive_s": 0.010393381118774414
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 8.344650268554688e-06,
+        "exclusive_s": 8.344650268554688e-06
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 0.5009763240814209,
+        "exclusive_s": 0.5009763240814209
+      },
+      "wait_stm": {
+        "calls": 24,
+        "inclusive_s": 1.206115961074829,
+        "exclusive_s": 1.206115961074829
+      },
+      "worker_start": {
+        "calls": 25,
+        "inclusive_s": 3.62396240234375e-05,
+        "exclusive_s": 3.62396240234375e-05
+      }
+    }
+  },
+  {
+    "factor": 8,
+    "route": "include",
+    "format": "tm",
+    "temperature": "cold",
+    "expanded_bytes": 51331,
+    "median_s": 2.5137619972229004,
+    "min_s": 2.501952886581421,
+    "max_s": 2.593001365661621,
+    "wait_s": 2.374535322189331,
+    "wait_fraction": 0.9402405201621248,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.05850672721862793,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.003628253936767578,
+        "exclusive_s": 0.003628253936767578
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.20691394805908203,
+        "exclusive_s": 0.004021883010864258
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.03789043426513672,
+        "exclusive_s": 0.03789043426513672
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.009169578552246094,
+        "exclusive_s": 0.009169578552246094
+      },
+      "parse_adapter": {
+        "calls": 24,
+        "inclusive_s": 2.1812963485717773,
+        "exclusive_s": 0.0007627010345458984
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.020143508911132812,
+        "exclusive_s": 0.020143508911132812
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00013875961303710938,
+        "exclusive_s": 0.00013875961303710938
+      },
+      "rpc_overhead": {
+        "calls": 25,
+        "inclusive_s": 2.383445978164673,
+        "exclusive_s": 0.01008462905883789
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 1.9073486328125e-06,
+        "exclusive_s": 1.9073486328125e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.20114636421203613,
+        "exclusive_s": 0.20114636421203613
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 0.9588027000427246,
+        "exclusive_s": 0.9588027000427246
+      },
+      "wait_stm": {
+        "calls": 24,
+        "inclusive_s": 1.2045981884002686,
+        "exclusive_s": 1.2045981884002686
+      },
+      "worker_start": {
+        "calls": 25,
+        "inclusive_s": 0.9596216678619385,
+        "exclusive_s": 0.0007505416870117188
+      }
+    }
+  },
+  {
+    "factor": 8,
+    "route": "include",
+    "format": "tm",
+    "temperature": "warm",
+    "expanded_bytes": 51331,
+    "median_s": 1.55161452293396,
+    "min_s": 1.502281904220581,
+    "max_s": 1.559978723526001,
+    "wait_s": 1.4047248363494873,
+    "wait_fraction": 0.9053310700477862,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.05359983444213867,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.003108978271484375,
+        "exclusive_s": 0.003108978271484375
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.20515203475952148,
+        "exclusive_s": 0.00344085693359375
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.045465707778930664,
+        "exclusive_s": 0.045465707778930664
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.009098052978515625,
+        "exclusive_s": 0.009098052978515625
+      },
+      "parse_adapter": {
+        "calls": 24,
+        "inclusive_s": 1.2111427783966064,
+        "exclusive_s": 0.0007319450378417969
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.020038127899169922,
+        "exclusive_s": 0.020038127899169922
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.00017595291137695312,
+        "exclusive_s": 0.00017595291137695312
+      },
+      "rpc_overhead": {
+        "calls": 25,
+        "inclusive_s": 1.41217041015625,
+        "exclusive_s": 0.009624719619750977
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 1.6689300537109375e-06,
+        "exclusive_s": 1.6689300537109375e-06
+      },
+      "wait_serialize": {
+        "calls": 1,
+        "inclusive_s": 0.20044970512390137,
+        "exclusive_s": 0.20044970512390137
+      },
+      "wait_stm": {
+        "calls": 24,
+        "inclusive_s": 1.2036347389221191,
+        "exclusive_s": 1.2036347389221191
+      },
+      "worker_start": {
+        "calls": 25,
+        "inclusive_s": 3.886222839355469e-05,
+        "exclusive_s": 3.886222839355469e-05
+      }
+    }
+  },
+  {
+    "factor": 8,
+    "route": "include",
+    "format": "pdf",
+    "temperature": "cold",
+    "expanded_bytes": 51331,
+    "median_s": 3.5054492950439453,
+    "min_s": 3.455292224884033,
+    "max_s": 3.55961275100708,
+    "wait_s": 3.379269599914551,
+    "wait_fraction": 0.9630601137991903,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.04945969581604004,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.003595113754272461,
+        "exclusive_s": 0.003595113754272461
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 1.1116712093353271,
+        "exclusive_s": 0.007306575775146484
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.030755043029785156,
+        "exclusive_s": 0.030755043029785156
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.009233951568603516,
+        "exclusive_s": 0.009233951568603516
+      },
+      "parse_adapter": {
+        "calls": 24,
+        "inclusive_s": 2.234769821166992,
+        "exclusive_s": 0.0006556510925292969
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.020092248916625977,
+        "exclusive_s": 0.020092248916625977
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.000186920166015625,
+        "exclusive_s": 0.000186920166015625
+      },
+      "rpc_overhead": {
+        "calls": 25,
+        "inclusive_s": 3.388380527496338,
+        "exclusive_s": 0.008669137954711914
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 2.1457672119140625e-06,
+        "exclusive_s": 2.1457672119140625e-06
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 1.1025233268737793,
+        "exclusive_s": 1.1025233268737793
+      },
+      "wait_startup": {
+        "calls": 1,
+        "inclusive_s": 1.023705005645752,
+        "exclusive_s": 1.023705005645752
+      },
+      "wait_stm": {
+        "calls": 24,
+        "inclusive_s": 1.2042832374572754,
+        "exclusive_s": 1.2042832374572754
+      },
+      "worker_start": {
+        "calls": 25,
+        "inclusive_s": 1.0241467952728271,
+        "exclusive_s": 0.00048828125
+      }
+    }
+  },
+  {
+    "factor": 8,
+    "route": "include",
+    "format": "pdf",
+    "temperature": "warm",
+    "expanded_bytes": 51331,
+    "median_s": 1.8221497535705566,
+    "min_s": 1.8172004222869873,
+    "max_s": 1.8469393253326416,
+    "wait_s": 1.7027926445007324,
+    "wait_fraction": 0.9328162352063748,
+    "gc_count": 0,
+    "gc_s": 0.0,
+    "residual_s": 0.050328969955444336,
+    "stages": {
+      "lowering": {
+        "calls": 2,
+        "inclusive_s": 0.00231170654296875,
+        "exclusive_s": 0.00231170654296875
+      },
+      "native_adapter": {
+        "calls": 1,
+        "inclusive_s": 0.5081760883331299,
+        "exclusive_s": 0.006421327590942383
+      },
+      "native_wire": {
+        "calls": 1,
+        "inclusive_s": 0.024797677993774414,
+        "exclusive_s": 0.024797677993774414
+      },
+      "org_prepare": {
+        "calls": 1,
+        "inclusive_s": 0.0090789794921875,
+        "exclusive_s": 0.0090789794921875
+      },
+      "parse_adapter": {
+        "calls": 24,
+        "inclusive_s": 1.2089264392852783,
+        "exclusive_s": 0.0006375312805175781
+      },
+      "preprocess": {
+        "calls": 1,
+        "inclusive_s": 0.019945383071899414,
+        "exclusive_s": 0.019945383071899414
+      },
+      "publication": {
+        "calls": 1,
+        "inclusive_s": 0.0001461505889892578,
+        "exclusive_s": 0.0001461505889892578
+      },
+      "rpc_overhead": {
+        "calls": 25,
+        "inclusive_s": 1.7112078666687012,
+        "exclusive_s": 0.00859832763671875
+      },
+      "source_capture": {
+        "calls": 1,
+        "inclusive_s": 1.6689300537109375e-06,
+        "exclusive_s": 1.6689300537109375e-06
+      },
+      "wait_render-pdf": {
+        "calls": 1,
+        "inclusive_s": 0.5011115074157715,
+        "exclusive_s": 0.5011115074157715
+      },
+      "wait_stm": {
+        "calls": 24,
+        "inclusive_s": 1.2013702392578125,
+        "exclusive_s": 1.2013702392578125
+      },
+      "worker_start": {
+        "calls": 25,
+        "inclusive_s": 3.4809112548828125e-05,
+        "exclusive_s": 3.4809112548828125e-05
+      }
+    }
+  }
+]

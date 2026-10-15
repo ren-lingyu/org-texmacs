@@ -1,0 +1,29 @@
+this derivation will be built:
+  /nix/store/xdc9mbg9v41snllrksq0p36dik2br9sz-org-texmacs-export-timing-1.drv
+building '/nix/store/xdc9mbg9v41snllrksq0p36dik2br9sz-org-texmacs-export-timing-1.drv'...
+org-texmacs-export-timing> BENCH factor=1 route=direct format=tm temperature=cold repeat=1 wall=1.855077s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=direct format=tm temperature=warm repeat=1 wall=0.215706s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=direct format=pdf temperature=cold repeat=1 wall=2.046711s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=direct format=pdf temperature=warm repeat=1 wall=0.473933s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=include format=tm temperature=cold repeat=1 wall=1.203222s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=include format=tm temperature=warm repeat=1 wall=0.219139s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=include format=pdf temperature=cold repeat=1 wall=2.003377s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=include format=pdf temperature=warm repeat=1 wall=0.480387s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=include format=pdf temperature=cold repeat=2 wall=2.000909s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=include format=pdf temperature=warm repeat=2 wall=0.476964s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=include format=tm temperature=cold repeat=2 wall=1.183828s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=include format=tm temperature=warm repeat=2 wall=0.225182s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=direct format=pdf temperature=cold repeat=2 wall=2.120420s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=direct format=pdf temperature=warm repeat=2 wall=0.476276s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=direct format=tm temperature=cold repeat=2 wall=1.208347s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=direct format=tm temperature=warm repeat=2 wall=0.216868s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=direct format=tm temperature=cold repeat=3 wall=1.222419s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=direct format=tm temperature=warm repeat=3 wall=0.216568s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=direct format=pdf temperature=cold repeat=3 wall=1.979990s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=direct format=pdf temperature=warm repeat=3 wall=0.479618s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=include format=tm temperature=cold repeat=3 wall=1.246489s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=include format=tm temperature=warm repeat=3 wall=0.225127s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=include format=pdf temperature=cold repeat=3 wall=1.982201s gc=0/0.000000s
+org-texmacs-export-timing> BENCH factor=1 route=include format=pdf temperature=warm repeat=3 wall=0.481889s gc=0/0.000000s
+org-texmacs-export-timing> BENCH complete: 24 exports
+/nix/store/spava5vrw626j4w1vglzvrfgizsxgwkb-org-texmacs-export-timing-1
