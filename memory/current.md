@@ -20,15 +20,19 @@ Latest real extension fixtures9/9 pass11.781628s. Exact240s full gate exits0:
 Selected request acceptance complete in uncommitted candidate, no failures.
 25project+11unchanged pinned fixture modules isolated; user flake mirror untouched.
 Final25project+11foreign inputs byte-match isolated snapshot before/after gate;
-ordinary index empty, four task files plus existing user flake mirror dirty.
+four task files now explicitly staged with user authorization; only existing user
+flake mirror remains unstaged. Staged blobs equal the accepted manifest/worktree.
 No root lock/INBOX/version change. Validation is locked Emacs31.1/Org9.8.10/
 TeXmacs2.1.5/x86_64-linux, not other systems or full minimum9.8 behavior.
 Archive assessment: maintained regression tests preserve all new reproduction,
 no ad hoc probe/retired source/unique raw evidence; no raw archive selected.
 Results/commands/hashes/limits extracted in memory/evidence.md, model/backlog
-synchronized. Next: offer four-path staging then commit-message preparation
-under established workflow. No ordinary staging/commit or external issue action
-authorized/performed, no further tests selected. Earlier diagnosis follows.
+synchronized. User authorized staging and commit-message preparation; full staged
+review and whitespace check pass. tmp/commit.md now describes this fix with
+fix(source) subject, Chinese body and Refs: #5 (no assumed closure).
+Next: user-controlled ordinary commit, then verify actual committed content before
+grounding memory to it. No ordinary commit or external issue action performed;
+no new tests needed for unchanged-byte staging. Earlier diagnosis follows.
 
 Initial read-only report: begin_texmacs and BEGIN_texmacs work while
 begin_TEXMACS/BEGIN_TEXMACS reportedly fail. Static inspection

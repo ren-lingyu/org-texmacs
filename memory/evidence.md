@@ -2477,4 +2477,17 @@ No ad hoc probe or retired document; maintained ERT preserves all new reproducti
 Build logs/copied dependencies/snapshots duplicate reproducible maintained checks;
 results, semantic findings, exact inputs, commands and limits extracted above.
 No whole-directory/conversation capture or tmp cleanup. Task implementation/docs
-remain uncommitted until user-controlled staging/commit; external tracking separate.
+remain uncommitted; external tracking separate.
+
+User subsequently authorized staging and commit-message generation. Exactly four
+paths above staged, complete diff reviewed:115 insertions/6 deletions; cached
+whitespace check clean. Each staged blob equals the accepted manifest and worktree.
+Complete binary staged diff SHA256:
+21b8e79f0e73b61cddc3a641ab94bbdc93ec14ec482ffbf08315ac71dbfa0a13.
+Only user flake.nix mirror remains unstaged. tmp/commit.md replaced the completed
+Issue3 draft with fix(source): recognize TeXmacs block names without case,
+four Chinese change bullets and parsed Refs: #5 trailer. Closure not presumed.
+One coherent predicate/consumer/docs/regression fix; split not necessary, low
+difficulty. Existing acceptance transfers by exact byte identity; no new tests
+solely for staging. No ordinary commit or external issue action performed.
+No unique raw evidence selected for archive; staged findings extracted here.
