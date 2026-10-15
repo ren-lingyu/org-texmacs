@@ -25,10 +25,21 @@ behavior unverified. No raw archive selected: maintained reproduction tests and
 extracted evidence suffice, no unique transient probe or retired document.
 Five ordinary paths changed: README.org/org-texmacs.el/ox-texmacs.el/
 tests/ert/ert.el/tests/integration/phase4.el. Only other dirty path is the
-untouched user flake mirror. Root lock/INBOX/version unchanged, index empty.
-Next: offer exact five-path staging approval then staged-diff commit-message
-preparation under the established workflow. Ordinary commit/external issue work
-remains separate; no further implementation or test rerun selected.
+untouched user flake mirror. Root lock/INBOX/version unchanged.
+User then explicitly authorized staging these five paths and generating the
+commit message. Exactly those paths are now staged; all staged blobs match the
+accepted manifest/worktree. Complete staged binary diff SHA256
+756b192be25990ffdc68edcee2816cabe2fa47c3ff25dbbe0561ebbd653fe0b4.
+git-maintenance review finds one coherent commit; split not necessary/medium
+difficulty due to coupled API/producers/consumers/lifecycle/tests. tmp/commit.md
+replaces the completed previous documentation draft: feat(export)! subject
+separate frontend commands from explicit-source APIs, four Chinese bullets,
+adjacent BREAKING-CHANGE and Refs: #3 trailers, parser verified. No closing footer
+without explicit closing intent. Only flake.nix remains unstaged. Prior gates
+transfer by exact staged-byte identity; no test rerun solely for staging.
+Next: user reviews/edits message and performs ordinary commit if desired; agent
+may verify committed identity afterward. No ordinary commit/external issue work
+performed, no further implementation/test selected. Preserve user message edits.
 
 Earlier user requested GAW recovery then read-only review of the newly supplied INBOX
 issue3 export API/lifecycle plan. GAW status/check pass, memory worktree clean

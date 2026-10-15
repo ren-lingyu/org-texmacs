@@ -2366,3 +2366,16 @@ filenames/digests describe checks, not required semantic dependencies. Reassess
 on INBOX retirement or independently valuable new evidence; no default whole
 directory/conversation capture or tmp clearing.
 
+User subsequently authorized exact-five-path staging and commit-message drafting.
+Read complete staged implementation/doc/integration/ERT diffs and recent20subjects;
+candidate is coherent, no split needed (medium splitting difficulty because API
+definitions/callers/docs and lifecycle tests must remain coordinated). Each staged
+blob matches accepted project manifest and worktree. Staged binary diff SHA256
+756b192be25990ffdc68edcee2816cabe2fa47c3ff25dbbe0561ebbd653fe0b4;
+whitespace passes, only user flake mirror unstaged, no new tests solely for staging.
+tmp/commit.md now has feat(export)! subject, four Chinese bullets, complete API/
+interactive/buffer migration BREAKING-CHANGE and adjacent Refs: #3 trailers.
+git interpret-trailers parses both. Issue relationship does not independently
+authorize closing it. No ordinary commit/external write. Prior documentation draft
+was read and replaced as completed/unrelated; preserve subsequent user edits.
+
