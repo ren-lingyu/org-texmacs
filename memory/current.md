@@ -1,6 +1,34 @@
 # org-texmacs current memory
 
-## Current state: export timing investigation complete
+## Current state: large byte-step no-INCLUDE measurement complete
+
+User selected larger bytes after finding prior~50KiB matrix insufficient. Four
+sequential authorized600s independent flake builds complete, no system Emacs or
+business edits.16outcomes:10native successes/4standard budget rejections/2native
+worker errors; every source-state check passes. One live-worker sample per cell,
+not medians. Source64155/256515/1025955/4103715bytes,1811/7241/28961/115841lines.
+Explicit tm/PDF1.828/2.172s,6.986/7.998s,29.329/30.852s,then fail118.046/115.652s.
+Last pair completes1920STM requests (~101/99s wait), final serialize/render waits
+reach~10.001s before generic worker exited-or-timed-out error. Default10s timeout
+unchanged; no separate native exit/deadline tracing or longer-timeout rerun.
+Standard full frontend succeeds first two sizes and rejects larger at256KiB budget.
+Worker waits dominate but Emacs phases grow to seconds; GC now present,~0.27–0.29s
+at largest. Same math density grows request count; not pure text-size causation.
+
+Full extraction/method/commands/limits: memory/large-document-timing.md.20unique
+text artifacts byte-verified in separate archive checkpoint at
+archive/2026-10-15T08-21-16Z--4839029/MANIFEST.md. Single source-script trailing
+blank retained/documented.17package/lock inputs equal associated project revision;
+original6447byte example unchanged. Root flake mirror untouched, ordinary index
+empty. Fixed frontend-then-explicit order and render caches confound API speed
+comparison. No successful4MiB export claim or all-exports-pass claim.
+
+Selected measurement task complete; no timeout/production limit change, async
+implementation or followup test selected. Next if user selects: isolate request
+poll/wakeup vs native costs, study final large-response deadline policy, or separate
+prose-size/island-count effects. Earlier small matrix remains scoped below.
+
+## Completed smaller export timing matrix
 
 User selected multiple sizes x INCLUDE/no-INCLUDE, existing realworld math only,
 independent flake and no business-code changes.96/96 real native exports pass in
@@ -33,9 +61,10 @@ preprocess compose171). MiB standard full export currently rejects before native
 conversion. Larger INCLUDE matched cases must split inputs below64KiB and stay
 within total256KiB. Direct explicit-source API measurement could study conversion
 core beyond that boundary but cannot represent standard INCLUDE/frontend behavior.
-No bound changes or new runtime commands selected/authorized by this observation.
-Next: distinguish within-supported-budget performance, over-budget rejection,
-and optional direct-API large-document stress measurement before proposing builds.
+This initial coverage observation did not itself select new bounds or commands.
+User subsequently selected and separately authorized large no-INCLUDE measurements
+above, distinguishing standard rejections from explicit-API conversion. No bounds
+or default request timeout were changed.
 
 ## Completed static nonblocking export investigation
 

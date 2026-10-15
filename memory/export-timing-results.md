@@ -92,8 +92,11 @@ frontend enforces256KiB source/captured/final budget even without INCLUDE
 full exports currently reject, not merely run slowly. Larger matched INCLUDE
 experiments need split files within those bounds. Direct explicit-source APIs can
 be assessed separately for core conversion stress, without calling it standard
-full/INCLUDE export or silently lifting production limits. No new runtime/bound
-change selected yet; future design must separate performance and rejection cases.
+full/INCLUDE export or silently lifting production limits. User subsequently
+selected and separately authorized the completed large no-INCLUDE experiment in
+memory/large-document-timing.md:~1MiB succeeds in~30s,~4MiB final native response
+waits fail at default10s deadline after~116–118s total. Standard full rejects both
+larger sizes. No production bound/timeout change selected.
 
 Selective20-text-file immutable archive:
 archive/2026-10-15T07-59-37Z--4839029/MANIFEST.md. Contains flake/lock/script,

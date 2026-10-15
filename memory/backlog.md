@@ -406,6 +406,14 @@ on a different process from socket client; polling/wakeup investigation is next
 candidate, not proven fix or selected implementation. Isolate request latency
 before deciding synchronous optimization versus nonblocking UX. No further
 benchmark/prototype/code work authorized merely by this candidate.
+User later separately selected and authorized larger no-INCLUDE measurements:
+memory/large-document-timing.md.16outcomes,10successes/4standard256KiB budget
+rejections/2explicit-source native errors.1MiB explicit tm/PDF~29/31s succeed;
+4MiB reaches~116–118s then final serialize/render wait fails at~10s/defaultdeadline,
+after1920sequentialSTM parses. Source guards preserved. Byte growth also increases
+math requests; no prose-size isolation. Optimization, timeout/limit policy and
+nonblocking implementation remain unselected; these results add a large native
+response boundary to any eventual design, not an automatic demand to lift limits.
 
 ### Explicit export menu key configuration — Phase 6 accepted and committed
 

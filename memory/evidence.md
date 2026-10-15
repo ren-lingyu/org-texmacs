@@ -2731,3 +2731,31 @@ untouched, ordinary index empty. Initial two harness-only failures corrected bef
 complete sampling; original failure logs overwritten, not preserved/claimed present.
 Batch measurements do not prove per-key delay or user's exact interactive timing;
 no business code, async implementation, prototype or further optimization selected.
+
+## Larger byte-step no-INCLUDE measurements (2026-10-15)
+
+User selected and separately authorized exact sequential repeatable600s isolated
+flake builds bench-64k/256k/1m/4m, locked dependency networking/store/cache, temporary
+large input read/write and JSON/log copying. Emacs31.1/Org9.8.10/TeXmacs2.1.5.
+16single-sample outcomes:10native successes,4expected standard size rejections,
+2explicit-source worker errors. All source-state checks pass. Extraction and
+exact commands/phase figures/limits: memory/large-document-timing.md.64155/
+256515/1025955/4103715bytes,1811/7241/28961/115841lines. Explicit tm/PDF
+1.828/2.172s,6.986/7.998s,29.329/30.852s,then failures118.046/115.652s.4MiB
+both complete1920STM requests first;~101/99s parse wait, then~10.001s final
+serialize/render wait and generic exited-or-timed-out worker error. Default10s
+unchanged; no independent native exit/deadline trace. This is failure latency,
+not successful export time; standard larger cases reject256KiB budget before STM.
+
+20necessary unique text artifacts exact-captured/byte-verified separately:
+archive/2026-10-15T08-21-16Z--4839029/MANIFEST.md. One benchmark.el final blank
+retained/documented and exactly classified in staged whitespace review; no clean
+whitespace snapshot claim. Fixture+repeat recipe retain workload without4MiB
+expanded source or native binary. Reconstructed workload digests clearly labeled,
+not claimed as acquired build-file hashes. Successful build logs show actual
+building but diagnostic completion is not all-export success.17package/lockinputs
+match current/frozen/associated committed snapshot; originalfixture unchanged.
+Root flake user mirror untouched, ordinary index empty. No default timeout/source
+budget increase, business-code edit or async implementation. Single sample/fixed
+order/cache bias, math density/request-count confound, batchGC/userGUI limits
+recorded; earlier small zero-GC statement not generalized to large measurements.
