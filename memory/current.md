@@ -25,7 +25,17 @@ use frozen22byte original. No agent writes to original examples.
 No business-code/async prototype or implementation selected. Next if user selects:
 isolate small-request wakeup/transport/native cost, then decide reducing synchronous
 latency versus allowing editing during export. Existing static feasibility options
-remain unadopted. No more benchmark commands needed for current matrix.
+remain unadopted. Existing matrix is complete but user now questions insufficient
+scale: max~50KiB/~1450lines does not cover10k-line or MiB documents. Verified
+standard full-document frontend always uses bounded preprocessing, even without
+INCLUDE: root/captured/final256KiB; each included file64KiB (README1456–1461,
+preprocess compose171). MiB standard full export currently rejects before native
+conversion. Larger INCLUDE matched cases must split inputs below64KiB and stay
+within total256KiB. Direct explicit-source API measurement could study conversion
+core beyond that boundary but cannot represent standard INCLUDE/frontend behavior.
+No bound changes or new runtime commands selected/authorized by this observation.
+Next: distinguish within-supported-budget performance, over-budget rejection,
+and optional direct-API large-document stress measurement before proposing builds.
 
 ## Completed static nonblocking export investigation
 

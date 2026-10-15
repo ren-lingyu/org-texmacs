@@ -85,6 +85,16 @@ blocking, not a guaranteed user-session reproduction or statistically proven spe
 
 ## Evidence and next decision
 
+User points out this matrix is too small for10k-line/MiB documents. Agreed:
+largest~50KiB/~1450lines, no large-document scalability conclusion. Standard full
+frontend enforces256KiB source/captured/final budget even without INCLUDE
+(README1456–1461, preprocess compose171); includes additionally64KiB/file. MiB
+full exports currently reject, not merely run slowly. Larger matched INCLUDE
+experiments need split files within those bounds. Direct explicit-source APIs can
+be assessed separately for core conversion stress, without calling it standard
+full/INCLUDE export or silently lifting production limits. No new runtime/bound
+change selected yet; future design must separate performance and rejection cases.
+
 Selective20-text-file immutable archive:
 archive/2026-10-15T07-59-37Z--4839029/MANIFEST.md. Contains flake/lock/script,
 fixed fixtures, provenance manifests,96 raw results,4 build logs, summary/CSV,
