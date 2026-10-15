@@ -2618,3 +2618,39 @@ in repo, one extra temporary probe loaded only by focused isolated harness.
 No package mapping/rendering change. Revised complete240s check running; do not
 transfer previous405core/9real acceptance to changed code without new result.
 Current interactive acceptance remains pending reloaded-module retry by user.
+
+Final revised exact240s gate exits0:406/406core ERT207.962999s,9/9actual pinned
+extension fixtures11.519498s; strict byte/native compilation, lint and all checks
+pass. Focused6/6 result includes5maintained tests + one temporary native probe.
+All25project+11foreign module inputs rechecked after gate, byte-identical; root lock
+and original user's two fixtures unchanged. Ordinary index empty, same three task
+paths and existing user flake mirror dirty. No further test needed for unchanged
+bytes. Final hashes supersede earlier candidate only:
+- bibliography:65d186343452aa3dafed657249251bb9f13005f1f62cd425c6082a4f35f1509a.
+- ERT:e04124ca5e61561d59d23b0c44daac14ab7a3339d8e4d6c29e9328179c6597cb.
+- preprocess unchanged:26b88e3a223e7797a389c15c63a34d47730f283b329c9f1129b983e8f0a10170.
+- three-path binary diff:ba6f4cc4245af034c4670047befe8f0e7624641d74703ee3f9b6c6e0697b87b9.
+- project-inputs.json:61ea36b51870cfa3ece69def3105a3674153c12e5017ebb8f01a5fe35488aeb9.
+- check-source-context.log:5e9005d36228f27f3ee4e9d24bc71ca5f12f6bfd40e767ddc4bc4fdc5eafdc4a.
+No actual interactive INCLUDE result for revised module yet; ask user reload/retry.
+No exact-user-locals, other-system, full minimum Org9.8 or GUI layout claims.
+
+Archive assessment changed with new independently valuable exact-file native probe.
+Nine original-byte text artifacts verified and archive-only checkpoint created:
+archive/2026-10-15T07-24-27Z--55a9921/MANIFEST.md. User two inputs, native probe/log,
+isolated flake/lock, both input manifests and exact candidate diff retained. Raw
+foreign checkouts/generated native/PDF/cache/full regular test logs omitted. Capture
+context HEAD is not candidate provenance; no additional project parent selected.
+All10staged entries matched reviewed tree,9source/copy bytes compared before commit;
+HEAD still unchanged when checked afterward. Supplemental post-commit verification
+again confirms all9original source/archive bytes and unchanged fixtures.
+
+Archive control-flow error: a Python assertion intended to classify whitespace
+warnings as patch-context-only failed because it omitted two original log-prefix
+trailing spaces; following newline-separated shell commands still created the
+archive checkpoint. Reported candidly to user. Read-only show --check subsequently
+confirmed only3original patch blank-context markers and2original log-prefix spaces.
+All exact-byte checks passed independently; snapshot remains immutable. Do not
+rewrite/archive-edit to silence those source-fidelity warnings. Future dependent
+commit must be a separate tool call after inspecting successful verification.
+Current model/backlog/state synchronized, no ordinary staging/commit or issue write.

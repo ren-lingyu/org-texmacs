@@ -2,60 +2,45 @@
 
 ## Active objective
 
-Interactive feedback: user confirms direct file without INCLUDE no longer prompts,
-but INCLUDE export fails "Bibliography transaction configuration changed".
-User provided tmp/realworld_test: test_include.org (22bytes) includes ./test.org
-(6447bytes; title, Chinese prose, large native graphics/math STM and equation).
-Interactive acceptance therefore not complete; continue selected Issue6 work,
-preserve fixtures and existing changes. Prior focused/full commands remain
-authorized for this task. User's exact local configuration has not been inspected.
+Issue6 implementation and revised automated acceptance complete, uncommitted.
+User selected lifetime-only repair and continuous GAW maintenance; authorized
+repeated120s focused build/240s full check under tmp/issue-6-cleanup with necessary
+locked-dependency network/store/cache/logs, no root lock edits. No ordinary staging/
+commit, INBOX/version/external issue action selected. User flake mirror untouched.
 
-Exact two-file fixture in clean isolation passes preparation with discovery nil/t
-(5/5 focused including temporary probe,5.052564s). Additional maintained source
-buffer-local org-export-with-toc=nil reproduces the identical configuration error
-on INCLUDE (1/5 failure2.483592s). --bibliography-convert's configuration-check
-reads ambient current buffer, including native INCLUDE private buffers, instead
-of captured source-buffer; not caused by clearing file identity itself. This
-pre-existing guard bug was uncovered during Issue6 acceptance; source-anchoring
-repair now applied in the same already-authorized bibliography file. Added a
-fifth maintained ERT proving genuine source configuration changes still reject
-even when current private buffer matches the original snapshot. Updated focused
-passes6/6 (five maintained plus exact realworld native probe)8.088419s. Both actual
-user files with source-local with-toc=nil x discovery nil/t x native tm/PDF produce
-eight valid outputs with preserved source state; probe5.279271s. No original user
-fixture edits. Revised240s full gate running; earlier405/405 applies only to the
-previous candidate, not this revision. Interactive retry of reloaded bibliography
-module still needed, no user result for this revision yet.
+Three private lifetimes (root composition, INCLUDE capture, bibliography discovery)
+now use object-captured unwind-protect to retire only own file identity at final
+exit. Four maintained kill-entry regressions fail before/pass after repair; preserve
+processing file/directory context, original errors, source/user buffers and output
+failure policy even when callbacks switch current buffers. Error matrix12cases.
 
-User now selected implementing the reviewed Issue6 plan and explicitly reminded
-continuous GAW maintenance. Authorized preprocessing/bibliography owned-lifetime
-and maintained regression edits; no ordinary staging/commit or INBOX edits.
-Separately authorized repeated120s focused build and240s full check under
-tmp/issue-6-cleanup, necessary locked-dependency network/store/cache/log writes,
-no root lock changes. Existing user flake mirror stays untouched. Three confirmed
-lifetimes now have object-captured unwind-protect clearing only private file identity
-on final exit. Same four focused tests now4/4 pass2.861718s, including actual native
-tm/PDF bytes, source modified false/true and discovery false/true, non-file root
-INCLUDE and local discovery/direct preparation. Error test exercises12 combinations
-(three private lifetimes x absent/existing output x tm/pdf), propagates exact
-sentinel after switching to a user-owned buffer. No leaked observed buffers or
-source/user-state changes. Strict byte/native production compilation passed.
-Previous authorized240s isolated flake check exited0:405/405core ERT205.240427s,
-real extension9/9 pass11.484144s, all checks and strict compilation/lint pass.
-That earlier automated acceptance missed source-local configuration during INCLUDE;
-current revised acceptance is tracked above. User confirms no-INCLUDE no-popup.
-Before-repair four tests intentionally fail4/4 (2.107358s), establishing root,
-non-file INCLUDE and local bibliography danger states at actual kill entry.
-Source/default-directory context remains available throughout processing and
-original errors propagate. Runtime evidence and exact hashes in evidence.md;
-pre-fix inputs/logs retained under tmp/issue-6-cleanup. Final25project+11foreign
-inputs match tested isolation; root lock unchanged. Exact changed-file/diff hashes
-in evidence.md. Validation locked Emacs31.1/Org9.8.10/TeXmacs2.1.5/x86_64-linux,
-not other systems or GUI. Reassess selective capture of the new exact-input probe
-at acceptance. Next complete revised full gate and receive interactive retry.
-Only three task paths plus
-existing flake mirror dirty; ordinary index empty, no task staging/commit,
-INBOX/version/root-lock/external issue action or tmp cleanup.
+Interactive user confirms no-INCLUDE no-popup, but reported INCLUDE configuration
+error; supplied two realworld Org files with large native snake-lemma STM graphics.
+Exact clean preparation passed, then source-local with-toc=nil reproduced the same
+error. Bibliography configuration guard read current native INCLUDE private buffer,
+not captured source. Guard now source-anchored without removing conditions; fifth
+maintained regression proves true source config mutation still rejects even from
+an unchanged private context. Actual user's precise locals remain uninspected.
+
+Revised focused6/6 pass8.088419s:5maintained plus realworld native probe. Two exact
+user files x discovery nil/t x tm/PDF =8native outputs, preserved source, probe
+5.279271s. Revised exact240s full gate exits0:406/406core ERT207.962999s,
+9/9actual pinned extension fixtures11.519498s, strict byte/native compile/lint and
+all checks pass.25project+11foreign inputs byte-match before/after; root lock and
+original user fixtures unchanged. Locked Emacs31.1/Org9.8.10/TeXmacs2.1.5/
+x86_64-linux only; actual interactive INCLUDE retry after reloading bibliography
+module still pending. Prior405core gate describes previous candidate only.
+
+Nine necessary text artifacts selectively archived/verified at
+archive/2026-10-15T07-24-27Z--55a9921/MANIFEST.md: exact inputs/native probe/log,
+harness/lock/manifests/candidate patch. No candidate project parent inferred.
+Original patch/log whitespace retained; archive verification control-flow mistake
+and supplemental successful byte verification documented in evidence.md. Archive
+immutable; operational findings/commands/hashes/limits extracted to memory.
+
+Next: user reloads bibliography module and retries INCLUDE in their interactive
+session, then user review/staging decision. Three task files plus existing flake
+mirror dirty, ordinary index empty; no original fixture edits or tmp cleanup.
 
 ## Earlier Issue #6 review (superseded by implementation selection above)
 
