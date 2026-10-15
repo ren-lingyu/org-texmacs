@@ -2,14 +2,17 @@
 
 ## Completed implementation: Issue4 block subset + Issue8 table alignment
 
-User-selected A+B implemented, documented and verified; ordinary changes remain
-uncommitted/unstaged in README.org, org-texmacs-document.el, tests/ert/ert.el.
-Existing user flake.nix mirror change untouched. No ordinary staging/commit
-permission. Independent A/B patches reconstruct all three final files byte-exactly;
-review artifacts are tmp/issue-4-block-table/a-state.patch and b-state.patch.
-A is quote repair/audit (Refs #4); B is separately tracked new alignment feature,
-open Issue8 https://github.com/ren-lingyu/org-texmacs/issues/8. Issue4 stays open for
-remaining date/other audit work. No issue closure/release or async work performed.
+User-selected A+B implemented, documented and verified. User now authorizes
+sequential staging/message drafting, at most3minutes polling between deliveries.
+A was staged alone, user committed it during polling, and its parent, exact three
+blobs against a-inputs and Refs:#4 message were verified. B now staged alone in
+README.org, org-texmacs-document.el, tests/ert/ert.el, exact final-inputs blobs.
+Only existing user flake.nix mirror remains unstaged; no code changes this turn.
+Current tmp/commit.md is B: feat(document): support explicit Org table column
+alignment, Closes:#8. Prior A draft is preserved by user's project commit.
+Issue8 https://github.com/ren-lingyu/org-texmacs/issues/8 tracks B independently;
+Issue4 remains open for remaining date/other audit work. No release/async work.
+Project commits remain user-only; B commit/external closure not yet verified.
 
 Quote uniformly lowers to native quotation(document...), including named footnotes;
 center/code/list mappings retained after bounded native comparison. Tables permit
@@ -31,11 +34,13 @@ Contract/method/diagnostic limits: memory/block-table-implementation.md. Necessa
 23raw text artifacts byte-verified in separate archive-only GAW checkpoint:
 archive/2026-10-15T11-15-33Z--4839029/MANIFEST.md.
 No binary PDFs/dependencies/full tmp archived. Remaining useful material extracted
-into current/project/evidence/backlog; no archive of INBOX needed. Candidate is
-uncommitted, so GAW checkpoints have no inferred candidate project parent.
-Next: user review, then obtain explicit path-scoped staging authorization if
-requested. Preserve separate A/B deliveries; stage A patch only for first commit,
-leaving B unstaged, after permission. Project commits remain user's action.
+into current/project/evidence/backlog; no archive of INBOX needed. Original
+combined validation candidate was uncommitted; archive has no inferred
+project parent. This memory checkpoint associates the exact user A commit whose
+parent/blobs/message were just verified, not a committed B validation claim.
+Next: user commits B with tmp/commit.md. On report, verify committed three blobs
+against final-inputs and message/parent before updating committed capability and
+tracking status. Current combined staged state matches the fully validated input.
 
 ## Current state: large byte-step no-INCLUDE measurement complete
 

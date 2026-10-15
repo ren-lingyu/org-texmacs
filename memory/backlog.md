@@ -25,13 +25,16 @@ decision.
 
 ### Issue #4 remaining audit; completed selected block subset and Issue #8
 
-Selected A+B implementation complete and verified, pending user review/commits.
+Selected A+B implementation complete and verified. A user-committed and exact
+blobs verified; B staged, awaiting user commit.
 A fixes quote uniformly to quotation, retaining bounded center/code/list behavior.
 B adds at most one complete plain<l>/<c>/<r> format row anywhere; duplicates,
 partial/mixed/width declarations reject, with existing special-column/formula/group
 limits and source/provenance ownership preserved. Seven maintained regressions;
 23focused/413core/9real/native10/strict compilation/lint pass in locked x86_64-linux.
-Separate A/B patches verified; ordinary index empty and no staging/commit permission.
+Separate A/B patches verified; user authorized sequential staging/message drafting.
+Only B is now staged; user flake change remains unstaged. B draft Closes:#8;
+A committed Refs:#4. Project commits remain user-only.
 Full contract/evidence/archive in memory/block-table-implementation.md/current.md.
 
 Issue4 stays open for dates/other audit work; no additional implementation selected.

@@ -14,11 +14,17 @@
 
 ## Issue4 block subset and separate Issue8 alignment candidate
 
-Validated uncommitted three-file candidate, with25input hashes checked against
+Originally validated uncommitted three-file candidate, with25input hashes checked
+against
 isolated source and11fixed extension identities. Locked Emacs31.1/Org9.8.10/
 TeXmacs2.1.5 on x86_64-linux: final23/23focused13.694420s,413/413core212.650622s,
 9/9real11.469430s,10native probe records, strict compilation/lint/full flake exit0.
 Other systems omitted. Seven new maintained tests plus existing mappings updated.
+User subsequently committed A during authorized3minute polling; parent baseline,
+exact three a-inputs blobs and Refs:#4 message verified. B alone now staged with
+exact final-inputs blobs; Closes:#8 draft prepared. No new test/build required for
+unchanged source. Current memory project-parent association is verified A commit,
+not a committed B claim; original archive association remains unchanged.
 A baseline15/17 establishes two new quote failures; B on A17/21 establishes four
 new alignment failures. First full412/413 found stale named-footnote quote tag;
 final checks cover corrected assertion and linear format-row filtering.

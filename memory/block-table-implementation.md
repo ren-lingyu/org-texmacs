@@ -95,8 +95,13 @@ independent A/B patches. No binaries/PDF/dependencies/full tmp capture. Remainin
 useful findings and adopted contract extracted into memory; INBOX/current proposal
 needs no raw archive. No inferred project-parent for uncommitted candidate.
 
-Implementation/validation complete, README/comments/tests synchronized. Issue4
-remaining audit stays open; Issue8 tracks implemented B independently. External
-closure/release not performed. Next user review, then path-scoped authorization
-before staging A patch only and preparing its commit message, preserving B for
-separate delivery. Ordinary commits remain user's responsibility.
+Implementation/validation complete, README/comments/tests synchronized. User
+then authorized sequential A/B staging and drafting, with at most3minute polling
+between them. A staged from verified patch; user committed within polling period.
+Verified its baseline parent, exactly three a-inputs blobs and Refs:#4 message.
+B now staged alone from verified patch, all three index blobs match final-inputs;
+user flake remains unstaged. Current tmp/commit.md is B feature draft with Closes:#8.
+No extra raw archive: project history and extracted memory suffice for staging/
+message transition. Current memory checkpoint associates exact verified A commit;
+B commit, external closure and release remain unverified. No further tests run.
+Next user commits B; verify parent/blobs/message before recording committed status.
