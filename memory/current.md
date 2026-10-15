@@ -2,17 +2,20 @@
 
 ## Completed implementation: Issue4 block subset + Issue8 table alignment
 
-User-selected A+B implemented, documented and verified. User now authorizes
-sequential staging/message drafting, at most3minutes polling between deliveries.
-A was staged alone, user committed it during polling, and its parent, exact three
-blobs against a-inputs and Refs:#4 message were verified. B now staged alone in
-README.org, org-texmacs-document.el, tests/ert/ert.el, exact final-inputs blobs.
-Only existing user flake.nix mirror remains unstaged; no code changes this turn.
-Current tmp/commit.md is B: feat(document): support explicit Org table column
-alignment, Closes:#8. Prior A draft is preserved by user's project commit.
-Issue8 https://github.com/ren-lingyu/org-texmacs/issues/8 tracks B independently;
-Issue4 remains open for remaining date/other audit work. No release/async work.
-Project commits remain user-only; B commit/external closure not yet verified.
+User-selected A+B implementation, documentation and validation complete, both
+user-committed separately. A quote repair parent/three a-inputs blobs/Refs:#4
+message verified; B parent=A, exactly three changed paths, all25final-inputs
+blobs and Closes:#8 message equal approved draft verified. Ordinary index empty;
+only existing user flake.nix mirror remains unstaged. No new source/test changes.
+Current tmp/commit.md is historical B draft, not a new pending staged message.
+
+GitHub read confirms Issue8 closed/completed and Issue4 open. Latest scope comment:
+https://github.com/ren-lingyu/org-texmacs/issues/4#issuecomment-6191090701
+supersedes earlier table-alignment proposal: completed #8 must not be implemented
+or counted again under #4. Existing table/caption semantics remain auditable;
+dates/other supported tag audit and deferred NAME boundary unchanged. Comment
+still mentions quote mismatch as outstanding, but A already fixes it; report this
+tracking-description gap, do not reopen/reimplement quote. No external edits made.
 
 Quote uniformly lowers to native quotation(document...), including named footnotes;
 center/code/list mappings retained after bounded native comparison. Tables permit
@@ -36,11 +39,15 @@ archive/2026-10-15T11-15-33Z--4839029/MANIFEST.md.
 No binary PDFs/dependencies/full tmp archived. Remaining useful material extracted
 into current/project/evidence/backlog; no archive of INBOX needed. Original
 combined validation candidate was uncommitted; archive has no inferred
-project parent. This memory checkpoint associates the exact user A commit whose
-parent/blobs/message were just verified, not a committed B validation claim.
-Next: user commits B with tmp/commit.md. On report, verify committed three blobs
-against final-inputs and message/parent before updating committed capability and
-tracking status. Current combined staged state matches the fully validated input.
+project parent. Current memory checkpoint associates exact verified B commit,
+whose25accepted input blobs now match combined tested candidate. This is commit
+verification, not a new runtime test or retrospective source-provenance claim.
+Next: report scope-comment quote status gap; if user selects further #4 work,
+plan date metadata and bounded native emitted-tag audit without duplicating #8
+or completed quotation repair. No further implementation currently authorized.
+No new archive: public issue/comment history and extracted memory suffice for
+tracking-only update; existing immutable raw validation archive stays unchanged.
+
 
 ## Current state: large byte-step no-INCLUDE measurement complete
 

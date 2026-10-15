@@ -20,7 +20,7 @@
 - The implementation does not require physical grafting of all TeXmacs pseudo
   nodes into one live Org element cache.
 
-## Validated block/table extension: A committed, B staged
+## Committed block/table extension
 
 Selected Issue4 subset uniformly maps Org quote blocks to native quotation with
 body document, including named footnotes and nested supported content. Center,
@@ -33,9 +33,10 @@ identity exclusion. Zero-format output, source ownership, caption/reference,
 STM and typed-file provenance are preserved. README and seven maintained tests
 updated;23focused/413core/9real/native10/strict compilation/lint pass under locked
 x86_64-linux. A quotation repair is user-committed with exact accepted blobs
-verified. B table alignment is staged with exact fully validated final blobs, awaiting user commit;
-no release or committed-main table capability claim. Scope, tracking and raw
-evidence: current.md and
+verified. B table alignment is now user-committed, parent=A and all25accepted
+input blobs verified against final manifest; no release claim. Issue8 is confirmed
+closed/completed; #4 excludes its feature from remaining scope. Scope, tracking
+and raw evidence: current.md and
 block-table-implementation.md. Date/metadata and remaining Issue4 work unchanged.
 
 ## Current conversion path

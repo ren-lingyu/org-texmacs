@@ -21,10 +21,14 @@ TeXmacs2.1.5 on x86_64-linux: final23/23focused13.694420s,413/413core212.650622s
 9/9real11.469430s,10native probe records, strict compilation/lint/full flake exit0.
 Other systems omitted. Seven new maintained tests plus existing mappings updated.
 User subsequently committed A during authorized3minute polling; parent baseline,
-exact three a-inputs blobs and Refs:#4 message verified. B alone now staged with
-exact final-inputs blobs; Closes:#8 draft prepared. No new test/build required for
-unchanged source. Current memory project-parent association is verified A commit,
-not a committed B claim; original archive association remains unchanged.
+exact three a-inputs blobs and Refs:#4 message verified. B subsequently committed;
+parent=A, exact three changed paths, all25final-inputs blobs, Closes:#8 message
+equal approved draft and empty index verified. No new runtime test on unchanged
+source. Current checkpoint associates verified B; immutable archive unchanged.
+GitHub fetch confirms #8 closed/completed, #4 open. New #4 scope comment
+https://github.com/ren-lingyu/org-texmacs/issues/4#issuecomment-6191090701
+excludes completed #8 from outstanding work but still lists quote mismatch;
+committed A establishes that wording lags local implementation. No external edit.
 A baseline15/17 establishes two new quote failures; B on A17/21 establishes four
 new alignment failures. First full412/413 found stale named-footnote quote tag;
 final checks cover corrected assertion and linear format-row filtering.

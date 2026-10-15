@@ -25,22 +25,24 @@ decision.
 
 ### Issue #4 remaining audit; completed selected block subset and Issue #8
 
-Selected A+B implementation complete and verified. A user-committed and exact
-blobs verified; B staged, awaiting user commit.
+Selected A+B implementation complete, both separately user-committed. Exact A
+three-file blobs, B parent/path set/all25final input blobs and messages verified.
 A fixes quote uniformly to quotation, retaining bounded center/code/list behavior.
 B adds at most one complete plain<l>/<c>/<r> format row anywhere; duplicates,
 partial/mixed/width declarations reject, with existing special-column/formula/group
 limits and source/provenance ownership preserved. Seven maintained regressions;
 23focused/413core/9real/native10/strict compilation/lint pass in locked x86_64-linux.
-Separate A/B patches verified; user authorized sequential staging/message drafting.
-Only B is now staged; user flake change remains unstaged. B draft Closes:#8;
-A committed Refs:#4. Project commits remain user-only.
+Separate A/B patches and committed delivery verified; ordinary index empty,
+only user flake change remains unstaged. A Refs:#4, B Closes:#8.
 Full contract/evidence/archive in memory/block-table-implementation.md/current.md.
 
 Issue4 stays open for dates/other audit work; no additional implementation selected.
-B independently tracked by open Issue8:
+B independently tracked by closed/completed Issue8:
 https://github.com/ren-lingyu/org-texmacs/issues/8.
-Implementation/validation completion does not itself close external issues.
+GitHub read confirms closure. Latest #4 scope comment excludes completed #8
+from remaining work (issuecomment-6191090701); table/caption audit still allowed,
+NAME deferred. Its outstanding-quote wording lags committed A repair; report
+tracking gap without reimplementing quote or modifying external issue.
 Issue7 remains accepted motivation without async implementation selected.
 
 ### Completed selected Issue #6: private temporary-buffer cleanup

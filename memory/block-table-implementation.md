@@ -99,9 +99,18 @@ Implementation/validation complete, README/comments/tests synchronized. User
 then authorized sequential A/B staging and drafting, with at most3minute polling
 between them. A staged from verified patch; user committed within polling period.
 Verified its baseline parent, exactly three a-inputs blobs and Refs:#4 message.
-B now staged alone from verified patch, all three index blobs match final-inputs;
-user flake remains unstaged. Current tmp/commit.md is B feature draft with Closes:#8.
-No extra raw archive: project history and extracted memory suffice for staging/
-message transition. Current memory checkpoint associates exact verified A commit;
-B commit, external closure and release remain unverified. No further tests run.
-Next user commits B; verify parent/blobs/message before recording committed status.
+B was staged alone from verified patch and user then committed it. Parent=A,
+exact three-path diff, all25final-inputs committed blobs, approved Closes:#8
+message and empty index verified. Only user flake remains unstaged. Both deliveries
+are committed; no new tests or business edits for verification. Current memory
+checkpoint associates exact verified B, not an inferred future project snapshot.
+
+GitHub read confirms #8 closed/completed and #4 open. Latest #4 comment:
+https://github.com/ren-lingyu/org-texmacs/issues/4#issuecomment-6191090701
+supersedes its earlier alignment proposal and excludes completed #8 from remaining
+work. Existing table/caption native audit remains in scope; NAME still deferred.
+The comment still lists quote mismatch, which A already fixed; report tracking
+wording gap. Remaining #4 work is dates/other supported-tag audit, not duplicate
+alignment/quote implementation. No new implementation selected or external edits.
+No extra archive for commit/tracking transition: ordinary history, public comment
+and extracted current memory suffice; existing raw validation archive unchanged.
