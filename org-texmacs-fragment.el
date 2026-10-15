@@ -12,6 +12,7 @@
 ;;; Code:
 
 (require 'org-texmacs-core)
+(require 'org-texmacs-source)
 (require 'org)
 
 (defcustom org-texmacs-fragment-tags
@@ -161,10 +162,7 @@ rescan Org context, or change point.  Signal `org-texmacs-error' on failure."
 
 (defun org-texmacs--fragment-texmacs-ancestor-p (paragraph)
   "Return non-nil if PARAGRAPH is inside a TeXmacs special block."
-  (cl-some (lambda (ancestor)
-             (and (eq (org-element-type ancestor) 'special-block)
-                  (equal (org-element-property :type ancestor) "texmacs")))
-           (org-element-lineage paragraph)))
+  (cl-some #'org-texmacs--block-p (org-element-lineage paragraph)))
 
 (defun org-texmacs--fragment-mask (source)
   "Return an inert, equal-length replacement for complete fragment SOURCE.

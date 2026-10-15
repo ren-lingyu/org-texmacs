@@ -93,10 +93,12 @@ declarations and :sources ordered unique absolute identities."
       (list :document (nreverse document) :sources (nreverse sources)))))
 
 (defun org-texmacs--block-p (node)
-  "Return non-nil when Org NODE is a TeXmacs special block."
+  "Return non-nil when Org NODE is a TeXmacs special block.
+Compare its wrapper name without case, preserving NODE and its STM contents."
   (and (consp node)
        (eq (org-element-type node) 'special-block)
-       (equal (org-element-property :type node) "texmacs")))
+       (let ((type (org-element-property :type node)))
+         (and (stringp type) (equal (downcase type) "texmacs")))))
 
 (defun org-texmacs--block-source (block)
   "Return the raw STM source of TeXmacs special BLOCK as a string.

@@ -1043,6 +1043,8 @@
     (should (org-texmacs--block-p (org-element-at-point))))
   (dolist (node (list nil "text"
                      (org-element-create 'paragraph nil)
+                     (org-element-create 'special-block nil)
+                     (org-element-create 'special-block '(:type 42))
                      (org-element-create 'special-block '(:type "example"))
                      (org-element-create 'src-block '(:language "texmacs"))))
     (should-not (org-texmacs--block-p node))))
@@ -8256,5 +8258,107 @@ Only tests with explicit example names use this helper; do not run Babel."
       (should (equal (file-name-base (symbol-file 'org-texmacs-export-to-pdf-file 'defun))
                      "org-texmacs"))
       (should-not (org-export-backend-menu (org-export-get-backend 'texmacs))))))
+
+(ert-deftest org-texmacs-block-case-markers-and-raw-source ()
+  (dolist (fold '(nil t))
+    (dolist (begin '("begin" "BEGIN" "BeGiN"))
+      (dolist (type '("texmacs" "TEXMACS" "TeXmAcS"))
+        (dolist (end '("end" "END" "EnD"))
+          (dolist (end-type '("texmacs" "TEXMACS" "TeXmAcS"))
+            (with-temp-buffer
+              (org-mode)
+              (let ((body "(math (concat \"MiXeD α\" \"<alpha>\"))\n")
+                    (case-fold-search fold))
+                (insert (format "#+%s_%s\n%s#+%s_%s\n" begin type body end end-type))
+                (goto-char (point-min))
+                (let ((block (org-element-at-point))
+                      (text (buffer-string)) (tick (buffer-modified-tick)))
+                  (should (org-texmacs--block-p block))
+                  (should (equal (org-element-property :type block) type))
+                  (should (equal (org-texmacs--block-source block) body))
+                  (should (equal (org-element-property :type block) type))
+                  (should (equal (buffer-string) text))
+                  (should (= (point) (point-min)))
+                  (should (= (buffer-modified-tick) tick))
+                  (should (eq case-fold-search fold)))))))))))
+
+(ert-deftest org-texmacs-block-case-fragment-exclusion ()
+  (dolist (type '("texmacs" "TEXMACS" "TeXmAcS"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "Before (math \"outside\").\n\n"
+              (format "#+BEGIN_%s\n" type)
+              "#+begin_quote\n(math \"inside\")\n#+end_quote\n"
+              "#+END_TEXMACS\n\nAfter (MATH \"literal\").\n")
+      (let ((text (buffer-string)) (tick (buffer-modified-tick)) (position (point)))
+        (should (equal (org-texmacs-test--fragment-sources) '("(math \"outside\")")))
+        (should (equal (buffer-string) text))
+        (should (= (buffer-modified-tick) tick))
+        (should (= (point) position))))))
+
+(ert-deftest org-texmacs-block-case-native-conversion ()
+  (org-texmacs-test--with-worker
+    (let (expected-body expected-paths expected-bytes)
+      (dolist (type '("texmacs" "TEXMACS" "TeXmAcS"))
+        (with-temp-buffer
+          (org-mode)
+          (insert (format "#+BEGIN_%s\n" type)
+                  "(concat \"MiXeDSentinel \" (math (frac \"1\" \"2\")))\n"
+                  "#+END_TEXMACS\n")
+          (goto-char (point-min))
+          (let* ((state (org-texmacs-test--document-buffer-state (current-buffer)))
+                 (input (org-texmacs-prepare-buffer (current-buffer)))
+                 (block (org-element-map (org-texmacs-input-ast input)
+                          'special-block #'identity nil t))
+                 (document (org-texmacs-document input))
+                 (bytes (org-texmacs-export-texmacs-from-buffer (current-buffer))))
+            (should (equal (org-element-property :type block) type))
+            (should (= (length (org-texmacs-input-islands input)) 1))
+            (if expected-bytes
+                (progn
+                  (should (equal (org-texmacs-document-body document) expected-body))
+                  (should (equal (org-texmacs-document-stm-paths document) expected-paths))
+                  (should (equal bytes expected-bytes)))
+              (setq expected-body (org-texmacs-document-body document)
+                    expected-paths (org-texmacs-document-stm-paths document)
+                    expected-bytes bytes)
+              (should (string-match-p "MiXeDSentinel" bytes)))
+            (should (equal state (org-texmacs-test--document-buffer-state (current-buffer))))))))))
+
+(ert-deftest org-texmacs-block-case-preprocessing-shield ()
+  (dolist (type '("texmacs" "TEXMACS" "TeXmAcS"))
+    (org-texmacs-test--with-bibliography-files
+      (let ((payload (concat (format "#+BEGIN_%s\n" type)
+                             "#+INCLUDE: \"absent.org\"\n#+SETUPFILE: absent.org\n"
+                             "#+END_TEXMACS\n")))
+        (write-region payload nil "included.org" nil 'silent)
+        (insert payload "#+INCLUDE: \"included.org\"\n")
+        (let* ((state (org-texmacs-test--document-buffer-state (current-buffer)))
+               (result (org-texmacs-test--compose))
+               (source (plist-get result :source))
+               (first (string-match (regexp-quote payload) source)))
+          (should first)
+          (should (string-match (regexp-quote payload) source (+ first (length payload))))
+          (should (= (length (plist-get result :sources)) 1))
+          (should (equal state (org-texmacs-test--document-buffer-state (current-buffer)))))))))
+
+(ert-deftest org-texmacs-block-case-bibliography-shield ()
+  (dolist (type '("texmacs" "TEXMACS" "TeXmAcS"))
+    (org-texmacs-test--with-bibliography-files
+      (insert "#+bibliography: refs.bib\n" (format "#+BEGIN_%s\n" type)
+              "#+bibliography: absent.bib\n#+SETUPFILE: absent.org\n"
+              "[cite:@GhostKey]\n#+END_TEXMACS\n")
+      (let ((state (org-texmacs-test--document-buffer-state (current-buffer))))
+        (cl-letf (((symbol-function 'org-file-contents)
+                   (lambda (&rest _) (ert-fail "STM caused external keyword read"))))
+          (let ((result (org-texmacs--bibliography-discover
+                         (buffer-string) (org-texmacs--fragment-tags)
+                         (org-texmacs--document-heading-settings)
+                         (org-texmacs--document-link-settings)
+                         (plist-put (org-texmacs--document-options)
+                                    :texmacs-resource-base default-directory)
+                         nil default-directory nil)))
+            (should (equal (car result) '("refs.bib")))))
+        (should (equal state (org-texmacs-test--document-buffer-state (current-buffer))))))))
 
 ;;; ert.el ends here

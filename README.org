@@ -250,6 +250,11 @@ This self-contained example demonstrates traversal and a cache hit:
 * Block source and cache contract
 =org-texmacs-tree= expects a current TeXmacs special-block element from the
 current buffer.  Its body must be accessible under the current narrowing.
+The Org wrapper name is case-insensitive: =#+begin_texmacs=,
+=#+BEGIN_texmacs=, =#+begin_TEXMACS= and =#+BEGIN_TEXMACS= are equivalent,
+as are mixed-case names and their closing markers.  The original source and
+Org block type spelling are preserved.  STM contents and inline fragment tag
+names retain their case-sensitive native meaning.
 After editing, obtain the element again; do not retain a block from an old
 parse or pass an element from another buffer.
 
