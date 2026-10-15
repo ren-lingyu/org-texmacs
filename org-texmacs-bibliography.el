@@ -50,32 +50,39 @@ SOURCE-FILE and RESOURCE-BASE must agree.  GLOBALS is an owned list."
       (org-texmacs--document-prepare-source
        source tags headings links (copy-sequence base-info) nil nil nil
        (lambda (prepared)
-         (setq-local default-directory (copy-sequence resource-base))
-         (setq-local buffer-file-name (and source-file (copy-sequence source-file)))
-         (setq-local org-cite-global-bibliography (mapcar #'copy-sequence globals))
-         (org-element-map (org-element-parse-buffer) 'special-block
-           (lambda (block)
-             (when (org-texmacs--block-p block)
-               (let ((begin (org-element-property :contents-begin block))
-                     (end (org-element-property :contents-end block)))
-                 (when begin
-                   (let ((mask (org-texmacs--fragment-mask
-                                (buffer-substring-no-properties begin end))))
-                     (goto-char begin) (delete-region begin end) (insert mask)))))))
-         (let* ((buffer (current-buffer)) (text (buffer-string))
-                (paths (org-cite-list-bibliography-files)))
-           (unless (and (eq buffer (current-buffer))
-                        (equal text (buffer-string))
-                        (equal buffer-file-name source-file)
-                        (equal default-directory resource-base)
-                        (proper-list-p paths) (cl-every #'stringp paths))
-             (signal 'org-texmacs-document-error
-                     '("Bibliography discovery changed its private context")))
-           (setq result
-                 (list (mapcar #'substring-no-properties paths)
-                       (plist-get (nth 4 prepared)
-                                  :texmacs-bibliography-declarations))))
-         prepared)))
+         (let ((work-buffer (current-buffer)))
+           (unwind-protect
+               (progn
+                 (setq-local default-directory (copy-sequence resource-base))
+                 (setq-local buffer-file-name (and source-file (copy-sequence source-file)))
+                 (setq-local org-cite-global-bibliography (mapcar #'copy-sequence globals))
+                 (org-element-map (org-element-parse-buffer) 'special-block
+                   (lambda (block)
+                     (when (org-texmacs--block-p block)
+                       (let ((begin (org-element-property :contents-begin block))
+                             (end (org-element-property :contents-end block)))
+                         (when begin
+                           (let ((mask (org-texmacs--fragment-mask
+                                        (buffer-substring-no-properties begin end))))
+                             (goto-char begin) (delete-region begin end) (insert mask)))))))
+                 (let* ((buffer (current-buffer)) (text (buffer-string))
+                        (paths (org-cite-list-bibliography-files)))
+                   (unless (and (eq buffer (current-buffer))
+                                (equal text (buffer-string))
+                                (equal buffer-file-name source-file)
+                                (equal default-directory resource-base)
+                                (proper-list-p paths) (cl-every #'stringp paths))
+                     (signal 'org-texmacs-document-error
+                             '("Bibliography discovery changed its private context")))
+                   (setq result
+                         (list (mapcar #'substring-no-properties paths)
+                               (plist-get (nth 4 prepared)
+                                          :texmacs-bibliography-declarations))))
+                 prepared)
+             ;; Retire this owned view's file identity.
+             (when (buffer-live-p work-buffer)
+               (with-current-buffer work-buffer
+                 (setq-local buffer-file-name nil))))))))
     result))
 
 (defun org-texmacs--bibliography-file-attributes (path)
@@ -166,14 +173,16 @@ PROVIDED, SUBTREE-POSITION, REGION and EXT-PLIST retain explicit API semantics."
            (initial (org-texmacs--document-copy-initial org-texmacs-document-initial))
            (configuration-check
             (lambda ()
-              (unless (and (or (not discover)
-                               (and (equal globals (org-texmacs--bibliography-globals))
-                                    (eq collector (symbol-function 'org-cite-list-bibliography-files))))
-                           (equal options (org-texmacs--document-options))
-                           (equal style org-texmacs-document-style)
-                           (equal initial org-texmacs-document-initial))
-                (signal 'org-texmacs-document-error
-                        '("Bibliography transaction configuration changed"))))))
+              ;; Native INCLUDE and callbacks may run in other private buffers.
+              (with-current-buffer source-buffer
+                (unless (and (or (not discover)
+                                 (and (equal globals (org-texmacs--bibliography-globals))
+                                      (eq collector (symbol-function 'org-cite-list-bibliography-files))))
+                             (equal options (org-texmacs--document-options))
+                             (equal style org-texmacs-document-style)
+                             (equal initial org-texmacs-document-initial))
+                  (signal 'org-texmacs-document-error
+                          '("Bibliography transaction configuration changed")))))))
       (org-texmacs--prepare-buffer
        source-buffer consumer provided subtree-position region ext-plist nil
        (lambda (source tags headings links info file base texts check)

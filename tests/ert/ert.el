@@ -8361,4 +8361,197 @@ Only tests with explicit example names use this helper; do not run Babel."
             (should (equal (car result) '("refs.bib")))))
         (should (equal state (org-texmacs-test--document-buffer-state (current-buffer))))))))
 
+
+(defun org-texmacs-test--observe-cleanup (thunk &optional failure)
+  "Call THUNK observing actual private buffer destruction.
+FAILURE injects an error after modification in root, include or bibliography."
+  (let ((context (symbol-function 'org-texmacs--preprocess-context))
+        (collect (symbol-function 'org-texmacs--fragment-collect))
+        (cite (symbol-function 'org-cite-list-bibliography-files))
+        (kill (symbol-function 'kill-buffer))
+        (other (generate-new-buffer " *cleanup-user-owned*"))
+        records killed)
+    (unwind-protect
+        (progn
+          (with-current-buffer other (insert "User-owned sentinel"))
+          (cl-labels
+              ((register (kind)
+                 (let ((record (list (current-buffer) kind buffer-file-name default-directory)))
+                   (push record records) record))
+               (fail (kind)
+                 (when (eq failure kind)
+                   (should (buffer-modified-p))
+                   ;; Cleanup must target the owned object after a callback switches.
+                   (set-buffer other)
+                   (signal 'org-texmacs-document-error '("Cleanup sentinel")))))
+            (cl-letf (((symbol-function 'org-texmacs--preprocess-context)
+                       (lambda (&rest args)
+                         (apply context args)
+                         (should (equal buffer-file-name (nth 4 args)))
+                         (should (equal default-directory (nth 5 args)))
+                         (register (if (and buffer-file-name
+                                            (equal (file-name-nondirectory buffer-file-name)
+                                                   "part.org")) 'include 'root))))
+                      ((symbol-function 'org-texmacs--fragment-collect)
+                       (lambda (&rest args)
+                         (prog1 (apply collect args)
+                           (when-let* ((record (assq (current-buffer) records)))
+                             (fail (nth 1 record))))))
+                      ((symbol-function 'org-cite-list-bibliography-files)
+                       (lambda (&rest args)
+                         (register 'bibliography)
+                         (prog1 (apply cite args) (fail 'bibliography))))
+                      ((symbol-function 'kill-buffer)
+                       (lambda (&optional buffer)
+                         (let* ((target (get-buffer (or buffer (current-buffer))))
+                                (record (assq target records)))
+                           (when record
+                             (push (list target (buffer-local-value 'buffer-file-name target)
+                                         (buffer-modified-p target)) killed))
+                           ;; Observe, never replace the actual destruction or throw here.
+                           (funcall kill buffer)))))
+              (funcall thunk)))
+          (should records)
+          (dolist (record records)
+            (let ((event (assq (car record) killed)))
+              (should event)
+              (should-not (and (nth 1 event) (nth 2 event)))
+              (should-not (buffer-live-p (car record)))))
+          (should (buffer-live-p other))
+          (with-current-buffer other
+            (should (equal (buffer-string) "User-owned sentinel"))
+            (should (buffer-modified-p))
+            (should-not buffer-file-name))
+          (mapcar #'cadr records))
+      (dolist (record records)
+        (when (buffer-live-p (car record))
+          (with-current-buffer (car record) (setq buffer-file-name nil))
+          (funcall kill (car record))))
+      (funcall kill other))))
+
+(defmacro org-texmacs-test--with-cleanup-source (&rest body)
+  "Run BODY in a real visiting Org buffer and a test-owned directory."
+  (declare (indent 0) (debug t))
+  `(org-texmacs-test--with-bibliography-files
+     (write-region "Included cleanup sentinel\n" nil "part.org" nil 'silent)
+     (write-region "#+INCLUDE: \"part.org\"\n" nil "source.org" nil 'silent)
+     (let ((source (find-file-noselect (expand-file-name "source.org"))))
+       (unwind-protect
+           (with-current-buffer source
+             (org-mode)
+             ,@body)
+         (when (buffer-live-p source)
+           (with-current-buffer source (set-buffer-modified-p nil))
+           (kill-buffer source))))))
+
+(ert-deftest org-texmacs-cleanup-full-native-file-exports ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-cleanup-source
+      ;; Native INCLUDE uses another private buffer; guards must inspect SOURCE.
+      (setq-local org-export-with-toc nil)
+      (dolist (modified '(nil t))
+        (set-buffer-modified-p modified)
+        (goto-char 3) (set-mark 2)
+        (dolist (discover '(nil t))
+          (setq-local org-texmacs-export-discover-bibliography discover)
+          (let ((before (org-texmacs-test--document-buffer-state (current-buffer)))
+                (file buffer-file-name) (base default-directory))
+            (dolist (command '(org-texmacs-export-to-texmacs org-texmacs-export-to-pdf))
+              (let ((kinds
+                     (org-texmacs-test--observe-cleanup
+                      (lambda ()
+                        (let ((output (funcall command)))
+                          (should (file-regular-p output))
+                          (if (eq command 'org-texmacs-export-to-pdf)
+                              (should (string-match-p "Included cleanup sentinel"
+                                                      (org-texmacs-test--pdf-text output)))
+                            (with-temp-buffer
+                              (insert-file-contents output)
+                              (should (string-match-p "Included cleanup sentinel" (buffer-string))))))))))
+                (should (memq 'root kinds)) (should (memq 'include kinds))
+                (should (eq (and (memq 'bibliography kinds) t) discover)))
+              (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))
+              (should (equal file buffer-file-name)) (should (equal base default-directory)))))))))
+
+(ert-deftest org-texmacs-cleanup-nonfile-include-capture ()
+  (org-texmacs-test--with-bibliography-files
+    (write-region "Included\n" nil "part.org" nil 'silent)
+    (insert "#+INCLUDE: \"part.org\"\n")
+    (let ((before (org-texmacs-test--document-buffer-state (current-buffer)))
+          (kinds (org-texmacs-test--observe-cleanup
+                  (lambda ()
+                    (should (equal (plist-get (org-texmacs-test--compose) :source) "Included\n"))))))
+      (should (equal (sort kinds #'string-lessp) '(include root)))
+      (should (equal before (org-texmacs-test--document-buffer-state (current-buffer)))))))
+
+(ert-deftest org-texmacs-cleanup-errors-preserve-output-and-source ()
+  (org-texmacs-test--with-cleanup-source
+    (setq-local org-texmacs-export-discover-bibliography t)
+    (insert "Initially modified\n") (set-mark 2)
+    (let ((before (org-texmacs-test--document-buffer-state (current-buffer)))
+          (file buffer-file-name) (base default-directory))
+      (dolist (stage '(root include bibliography))
+        (dolist (existing '(nil t))
+          (dolist (entry '((org-texmacs-export-to-texmacs . "source.tm")
+                           (org-texmacs-export-to-pdf . "source.pdf")))
+            (when (file-exists-p (cdr entry)) (delete-file (cdr entry)))
+            (when existing (write-region "Keep" nil (cdr entry) nil 'silent))
+            (let ((kinds
+                   (org-texmacs-test--observe-cleanup
+                    (lambda ()
+                      (should (equal (should-error (funcall (car entry))
+                                                   :type 'org-texmacs-document-error)
+                                     '(org-texmacs-document-error "Cleanup sentinel")))) stage)))
+              (should (memq stage kinds)))
+            (if existing
+                (with-temp-buffer
+                  (insert-file-contents-literally (cdr entry))
+                  (should (equal (buffer-string) "Keep")))
+              (should-not (file-exists-p (cdr entry))))
+            (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))
+            (should (equal file buffer-file-name)) (should (equal base default-directory))))))))
+
+(ert-deftest org-texmacs-cleanup-local-discovery-and-direct-preparation ()
+  (org-texmacs-test--with-cleanup-source
+    (erase-buffer) (insert "* Heading\nLocal text\n")
+    (setq-local org-texmacs-export-discover-bibliography t)
+    (let ((before (org-texmacs-test--document-buffer-state (current-buffer)))
+          (file buffer-file-name))
+      (should (org-texmacs-input-p (org-texmacs-prepare-buffer (current-buffer))))
+      (save-restriction
+        (narrow-to-region 1 (point-max))
+        (let ((kinds
+               (org-texmacs-test--observe-cleanup
+                (lambda ()
+                  (should (org-texmacs-document-p
+                           (org-texmacs-document-from-buffer-discover-bibliography
+                            (current-buffer) nil 1)))))))
+          (should (equal kinds '(bibliography)))))
+      (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))
+      (should (equal file buffer-file-name)))))
+
+
+(ert-deftest org-texmacs-cleanup-source-configuration-guard ()
+  (dolist (discover '(nil t))
+    (org-texmacs-test--with-cleanup-source
+      (setq-local org-export-with-toc nil)
+      (let ((source (current-buffer)))
+        (should
+         (equal
+          (should-error
+           (org-texmacs--bibliography-convert
+            source #'identity nil nil nil nil
+            (lambda (_text _tags _headings _links _info _file _base _texts check)
+              (with-temp-buffer
+                (org-mode)
+                ;; This matches the snapshot; the actual source has changed.
+                (setq-local org-export-with-toc nil)
+                (with-current-buffer source (setq-local org-export-with-toc t))
+                (funcall check)))
+            discover)
+           :type 'org-texmacs-document-error)
+          '(org-texmacs-document-error "Bibliography transaction configuration changed")))
+        ;; External callback changes are detected, not rolled back by the package.
+        (should org-export-with-toc)))))
+
 ;;; ert.el ends here
