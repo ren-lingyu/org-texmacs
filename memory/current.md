@@ -2,11 +2,14 @@
 
 ## Active objective
 
-Issue6 implementation and revised automated acceptance complete, uncommitted.
+Issue6 implementation, automated and user interactive acceptance complete,
+uncommitted. User now confirms revised interactive behavior appears as expected
+and explicitly authorizes three-path staging plus commit-message generation.
 User selected lifetime-only repair and continuous GAW maintenance; authorized
 repeated120s focused build/240s full check under tmp/issue-6-cleanup with necessary
-locked-dependency network/store/cache/logs, no root lock edits. No ordinary staging/
-commit, INBOX/version/external issue action selected. User flake mirror untouched.
+locked-dependency network/store/cache/logs, no root lock edits. Exactly the two
+production modules and maintained ERT now staged; ordinary commit remains user's
+action. No INBOX/version/external issue write selected. User flake mirror untouched.
 
 Three private lifetimes (root composition, INCLUDE capture, bibliography discovery)
 now use object-captured unwind-protect to retire only own file identity at final
@@ -28,8 +31,9 @@ user files x discovery nil/t x tm/PDF =8native outputs, preserved source, probe
 9/9actual pinned extension fixtures11.519498s, strict byte/native compile/lint and
 all checks pass.25project+11foreign inputs byte-match before/after; root lock and
 original user fixtures unchanged. Locked Emacs31.1/Org9.8.10/TeXmacs2.1.5/
-x86_64-linux only; actual interactive INCLUDE retry after reloading bibliography
-module still pending. Prior405core gate describes previous candidate only.
+x86_64-linux only; user now confirms revised interactive retry meets expectations.
+This is user-reported acceptance, not an independently traced GUI result.
+Prior405core gate describes previous candidate only.
 
 Nine necessary text artifacts selectively archived/verified at
 archive/2026-10-15T07-24-27Z--55a9921/MANIFEST.md: exact inputs/native probe/log,
@@ -38,9 +42,13 @@ Original patch/log whitespace retained; archive verification control-flow mistak
 and supplemental successful byte verification documented in evidence.md. Archive
 immutable; operational findings/commands/hashes/limits extracted to memory.
 
-Next: user reloads bibliography module and retries INCLUDE in their interactive
-session, then user review/staging decision. Three task files plus existing flake
-mirror dirty, ordinary index empty; no original fixture edits or tmp cleanup.
+Three staged blobs and complete binary diff equal accepted snapshot and archived
+candidate; full staged review/whitespace check pass. tmp/commit.md now has
+fix(export) subject, three Chinese bullets and parsed Closes: #6; one coherent
+commit, no breaking API change. No new tests solely for unchanged-byte staging.
+Next: user-controlled ordinary commit, then verify actual committed contents and
+associate that revision. Only existing flake mirror unstaged; no source fixture
+edits or tmp cleanup. Completed Issue5 draft was replaced for current Issue6.
 
 ## Earlier Issue #6 review (superseded by implementation selection above)
 

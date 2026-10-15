@@ -102,7 +102,8 @@ buffer or start a worker.
   ambient-buffer configuration guard bug; bibliography transaction checks now
   explicitly inspect the captured source. Five maintained tests plus eight actual
   exact-fixture tm/PDF exports pass; revised406core/9real/full Nix compile/lint
-  pass. Interactive INCLUDE retry still pending.
+  pass. User reports revised interactive INCLUDE retry meets expectations;
+  accepted candidate staged, ordinary commit still pending.
   Exact evidence and acceptance status in memory/current.md/evidence.md.
 - Prepared input owns copied AST/string structure, rebuilds parent links, and
   remaps identity-keyed INFO/island/post-blank data.

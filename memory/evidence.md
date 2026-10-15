@@ -2654,3 +2654,23 @@ All exact-byte checks passed independently; snapshot remains immutable. Do not
 rewrite/archive-edit to silence those source-fidelity warnings. Future dependent
 commit must be a separate tool call after inspecting successful verification.
 Current model/backlog/state synchronized, no ordinary staging/commit or issue write.
+
+### Issue #6 interactive acceptance, staging and commit-message review
+
+User now reports revised interactive tests appear as expected and explicitly
+authorizes staging/message generation. This closes local interactive acceptance;
+no independent GUI trace or remote issue-state claim. Exactly three paths staged:
+org-texmacs-preprocess.el, org-texmacs-bibliography.el, tests/ert/ert.el.
+Full staged diff reviewed:329insertions/113deletions, whitespace check clean.
+All three staged blobs match final accepted manifest/worktree; complete staged
+binary diff SHA256 equals archived candidate:
+ba6f4cc4245af034c4670047befe8f0e7624641d74703ee3f9b6c6e0697b87b9.
+Only existing user flake.nix mirror remains unstaged; lock/INBOX/version unchanged.
+tmp/commit.md replaces completed Issue5 draft with fix(export): dispose of private
+file-context buffers without prompts, three Chinese change bullets and parsed
+Closes: #6. Closure follows adopted plan and completed user acceptance. One
+coherent accepted fix/regression change, split not necessary, difficulty low.
+No new tests solely for staging; previous406core/9real/6focused and actual8native
+outputs transfer by byte identity. No ordinary project commit or external write.
+No new raw archive needed for acceptance/message exchange; necessary facts
+extracted here. User-controlled commit is next; then verify actual revision.
