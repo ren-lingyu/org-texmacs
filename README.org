@@ -660,7 +660,7 @@ The supported Org subset is deliberately small:
 | Filtered headline table of contents               | Static =table-of-contents= with =toc-N=/links/page references |
 | Title / author / date metadata                     | =doc-data= at the start of the body =document=                 |
 | Unordered / ordered / description list            | =itemize= / =enumerate= / =description= with body =document= |
-| Quote / center block                               | =quote= / =center= with body =document=                      |
+| Quote / center block                               | =quotation= / =center= with body =document=                  |
 | Example / fixed-width / source block               | Static =code= containing a line-wise =document=               |
 | Basic rectangular Org table                       | =tabular= / =tformat= / =table= / =row= / =cell=             |
 | Named/captioned basic table                       | Private anchors and native =big-table= / =caption-detailed= |
@@ -686,6 +686,12 @@ Inline code/verbatim does not parse nested markup, but uses the same prose
 whitespace rule: it is not a preformatted code block.  Nonbreaking spaces
 are not collapsed.  Conversion does not merge adjacent text slots; a slot
 may become empty when its whitespace duplicates a preceding slot.
+
+Quote blocks use the native =quotation= environment for single paragraphs,
+multiple paragraphs and nested supported content.  Center blocks retain the
+native =center= environment.  Structural readback alone does not establish
+layout correctness; maintained PDF checks cover quotation indentation and
+centering against native references in the locked test environment.
 
 Example, fixed-width and source blocks are static preformatted structures.
 They lower to =(code (document LINE...))= without parsing inline Org markup or

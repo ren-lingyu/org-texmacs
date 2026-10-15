@@ -3064,7 +3064,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
           (org-texmacs-session-close session))))))
 
 (ert-deftest org-texmacs-document-named-footnote-blocks-and-local-targets ()
-  (dolist (entry '(("#+begin_quote\nQuote.\n#+end_quote\n" . quote)
+  (dolist (entry '(("#+begin_quote\nQuote.\n#+end_quote\n" . quotation)
                    ("#+begin_center\nCenter.\n#+end_center\n" . center)
                    ("- Item.\n" . itemize)
                    ("#+begin_example\nCode.\n#+end_example\n" . code)
@@ -3431,7 +3431,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
         (should
          (equal (org-texmacs-document-body document)
                 '(document
-                  (quote
+                  (quotation
                    (document (concat "First " (math "q") ". ")
                              (concat "Second. ")))
                   (center
@@ -3440,6 +3440,21 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                      (document (concat (item) "Centered item "))))))))
         (should (equal (org-texmacs-document-stm-paths document)
                        '((0 0 0 1))))))))
+
+(ert-deftest org-texmacs-document-quote-uniform-quotation ()
+  :tags '(issue4)
+  (dolist (contents '("Single.\n" "First.\n\nSecond.\n"
+                      "- Nested item\n" "#+begin_center\nNested.\n#+end_center\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n#+begin_quote\n"
+              contents "#+end_quote\n")
+      (let* ((before (buffer-string))
+             (document (org-texmacs-document-from-buffer (current-buffer)))
+             (container (cadr (org-texmacs-document-body document))))
+        (should (eq (car container) 'quotation))
+        (should (eq (caadr container) 'document))
+        (should (equal before (buffer-string)))))))
 
 (ert-deftest org-texmacs-document-rejects-list-checkbox-and-counter ()
   (dolist (source '("- [ ] Task\n" "1. [@3] Counted\n"))
@@ -3466,7 +3481,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                    (description
                     (document (concat (item* "Term") "Definition ")))))
                  ("#+begin_quote\nQuoted.\n#+end_quote\n"
-                  (document (quote (document (concat "Quoted. ")))))
+                  (document (quotation (document (concat "Quoted. ")))))
                  ("#+begin_center\nCentered.\n#+end_center\n"
                   (document (center (document (concat "Centered. ")))))))
             (with-temp-buffer
@@ -5994,6 +6009,68 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (let ((coding-system-for-read 'utf-8-unix))
         (should (= 0 (call-process program nil t nil "-enc" "UTF-8" file "-"))))
       (replace-regexp-in-string "[[:space:]\f]+" " " (buffer-string)))))
+
+(defun org-texmacs-test--pdf-words (file)
+  "Return FILE's PDF words as (TEXT XMIN YMIN XMAX YMAX) lists."
+  (require 'dom)
+  (require 'xml)
+  (let ((program (executable-find "pdftotext")))
+    (when (getenv "ORG_TEXMACS_TEST_README") (should program))
+    (unless program (ert-skip "PDF layout inspection requires Poppler"))
+    (with-temp-buffer
+      (let ((coding-system-for-read 'utf-8-unix))
+        (should (= 0 (call-process program nil t nil "-bbox" file "-"))))
+      (let ((tree (car (xml-parse-region (point-min) (point-max)))))
+        (mapcar
+         (lambda (word)
+           (cons (dom-text word)
+                 (mapcar (lambda (key) (string-to-number (dom-attr word key)))
+                         '(xMin yMin xMax yMax))))
+         (dom-by-tag tree 'word))))))
+
+(defun org-texmacs-test--pdf-word (words text)
+  "Find exactly one word TEXT in WORDS and return its coordinate list."
+  (let ((matches (cl-remove-if-not (lambda (word) (equal (car word) text)) words)))
+    (should (= (length matches) 1))
+    (cdar matches)))
+
+(ert-deftest org-texmacs-pdf-block-quotation-and-center-layout ()
+  :tags '(issue4)
+  (org-texmacs-test--with-worker
+    (let ((actual (expand-file-name "blocks.pdf" test-directory))
+          (reference (expand-file-name "blocks-reference.pdf" test-directory)))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\nAnchorBefore\n\n"
+                "#+begin_quote\nQuoteFirst\n\nQuoteSecond\n#+end_quote\n\n"
+                "#+begin_center\nCenterShort\n\nCenterLongerContent\n#+end_center\n\n"
+                "AnchorAfter\n")
+        (org-texmacs-export-to-pdf-file (current-buffer) actual))
+      (org-texmacs-document-save-pdf
+       (org-texmacs--document-create
+        :style '("generic")
+        :body '(document
+                (concat "AnchorBefore ")
+                (quotation (document (concat "QuoteFirst ") (concat "QuoteSecond ")))
+                (center (document (concat "CenterShort ") (concat "CenterLongerContent ")))
+                (concat "AnchorAfter ")))
+       reference)
+      (let ((words (org-texmacs-test--pdf-words actual))
+            (expected (org-texmacs-test--pdf-words reference)))
+        (dolist (token '("AnchorBefore" "QuoteFirst" "QuoteSecond"
+                         "CenterShort" "CenterLongerContent" "AnchorAfter"))
+          (cl-mapc (lambda (a b) (should (<= (abs (- a b)) 1.0)))
+                   (org-texmacs-test--pdf-word words token)
+                   (org-texmacs-test--pdf-word expected token)))
+        (let ((anchor (car (org-texmacs-test--pdf-word words "AnchorBefore"))))
+          (dolist (token '("QuoteFirst" "QuoteSecond"))
+            (should (> (car (org-texmacs-test--pdf-word words token)) (+ anchor 1.0)))))
+        (let ((short (org-texmacs-test--pdf-word words "CenterShort"))
+              (long (org-texmacs-test--pdf-word words "CenterLongerContent")))
+          (should (<= (abs (- (/ (+ (nth 0 short) (nth 2 short)) 2.0)
+                             (/ (+ (nth 0 long) (nth 2 long)) 2.0))) 1.0))))
+      (let ((text (org-texmacs-test--pdf-text actual)))
+        (should-not (string-match-p "\\bquote\\b" text))))))
 
 (ert-deftest org-texmacs-pdf-footnote-text-and-repeated-markers ()
   (org-texmacs-test--with-worker

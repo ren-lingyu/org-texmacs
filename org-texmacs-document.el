@@ -1373,7 +1373,7 @@ from one snapshot."
                  (org-texmacs--document-fail node "Unexpected Org container block"))
                (list
                 (org-texmacs--document-pack
-                 (if (eq type 'quote-block) 'quote 'center)
+                 (if (eq type 'quote-block) 'quotation 'center)
                  (list
                   (org-texmacs--document-pack
                    'document (blocks (org-element-contents node) type ancestors))))))
