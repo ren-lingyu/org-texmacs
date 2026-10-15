@@ -39,6 +39,25 @@ closed/completed; #4 excludes its feature from remaining scope. Scope, tracking
 and raw evidence: current.md and
 block-table-implementation.md. Date/metadata and remaining Issue4 work unchanged.
 
+## Validated uncommitted Issue4 date/audit candidate
+
+Date metadata timestamps now emit complete raw-value literal strings, with Org
+brackets/spaces/time/range/repeater/warning/diary content intact and unevaluated.
+Private date text helper is string->string, default identity; prepared input owns
+and fixes its opaque function definition in internal INFO. Copied arguments/
+results isolate advice mutation; malformed raw/structure and nonstring results
+reject. Existing metadata policy and rich inline treatment unchanged. No public
+formatter option or additional native structured metadata introduced.
+
+Bounded package-tag audit confirms existing block/list/table/caption/inline/
+metadata/headline/TOC/footnote/link/citation wrappers in pinned native environment.
+Generic paragraph/subparagraph hide displayed numbers by native default while
+logical counters/TOC/refs agree; documented, no native style override. Eleven
+new regressions replace one (+10net):423core/37focused/9real/native9dates6cases/
+full strict compilation/lint pass. Candidate four files remain uncommitted; no
+release/main date capability claim until user commits. Full audit/evidence/limits
+and separate delivery status in memory/issue-4-closure.md/current.md.
+
 ## Current conversion path
 
 ```text

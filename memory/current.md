@@ -1,24 +1,48 @@
 # org-texmacs current memory
 
-## Active: complete Issue4 date repair and bounded native semantic audit
+## Completed candidate: Issue4 remaining date repair and semantic audit
 
-User approved implementation of final plan on committed table/quote baseline.
-Date policy: all date-metadata timestamp objects preserve complete raw-value,
-including delimiters/internal whitespace; no normalization, interpretation or
-execution. Private raw-string -> string helper only (advice possible), no public
-formatter option/generic metadata framework. Capture helper definition per input/
-conversion; copy arguments/results, reject malformed data/non-string results,
-keep precedence/overrides/suppression/rich text. Dual metadata storage deferred.
-Earlier delimiter removal/minimal timestamp rejection proposals superseded.
-Audit only actually emitted supported native tags; reuse quote/center/alignment
-proof. Dates plus remaining block/list/table/inline/metadata/headline/TOC/reference/
-footnote/citation wrappers require recorded conclusions. #7/#9/native typography
-excluded. User flake dirty unchanged, no ordinary staging/commit permission.
-Isolated tmp/issue-4-closure prepared; user authorizes repeated sequential
-probes120s/focused180s/integration120s/full600s plus locked network/results reads.
-Document/input date logic and README changed; six date regressions drafted.
-Initial probe syntax/preflight diagnostic failures corrected; baseline focused
-red run active against frozen old production. No valid runtime acceptance yet. Detail/audit matrix: memory/issue-4-closure.md.
+Final user-approved plan implemented and locally accepted. Four task files changed:
+README.org, document/input modules, maintained ERT. Date timestamps preserve full
+raw-value including delimiters/internal whitespace as literal text. Private helper
+org-texmacs--document-date-timestamp-text(raw)->string defaults identity; captured
+function per prepared input/conversion, owned arguments/results, invalid return/
+malformed data error. No public formatter option, timestamp interpretation,
+extra structured metadata or generic extension framework. Precedence/overrides/
+suppression/rich text and other timestamp contexts unchanged.
+
+Bounded audit of package-emitted tags complete, per-tag matrix and source/native
+meaning/test links in memory/issue-4-closure.md. No additional production mapping
+change justified. Added code/list/caption PDF native references and5level heading/
+TOC/native-ref regression. Generic4/5number visibility intentionally false in native
+style, counters/references correct; documented boundary. Fonts/footer placement/
+PDF link annotations/pagination/#7/#9 remain excluded. Earlier quote repair and
+closed #8 not redone. Dual storage and delimiter stripping were rejected/deferred
+in favor of default raw and private caller advice.
+
+Final locked x86_64-linux acceptance:423/423core229.047228s,37/37focused27.676927s,
+9/9real12.003782s,native9date/6cases,strict compilation/lint/full flake exit0.
+Eleven new maintained ERT replace one old rejection (+10net). Corrected red36:
+27pass/9date-related failures23.868628s. Initial diagnostic/fixture failures and
+limitations extracted in closure record; no fabricated unsafe-NUL failure claim.
+25baseline/25candidate/11extension identities checked; candidate source/root lock
+stable, user flake mirror untouched. Ordinary index empty; no staging/commit auth.
+
+Independent date-state.patch (4files/date7new tests) and audit-state.patch
+(README/tests4new PDF tests) under tmp/issue-4-closure reconstruct final candidate
+byte-exactly. Date-only hash manifest is a review subset, not a separate fullgate.
+Next user reviews, then explicitly authorizes separate staging/messages if desired;
+last audit delivery can use Closes:#4 after review. User makes project commits;
+verify resulting blobs/message/parent and remote closure afterward. #4 remains
+open until that tracking action, no external writes in this implementation turn.
+
+Selected34necessary original pure-text artifacts byte/digest/source-stability
+verified in separate archive-only checkpoint:
+archive/2026-10-15T13-12-14Z--8435e5d/MANIFEST.md.
+No PDFs/binaries/whole tmp/dependency tree archive; seven specifically relevant
+small pinned native definitions retained as semantic evidence. Remaining useful
+facts extracted into current/project/evidence/backlog. No inferred external parent
+for this uncommitted implementation/acceptance checkpoint.
 
 ## Completed implementation: Issue4 block subset + Issue8 table alignment
 

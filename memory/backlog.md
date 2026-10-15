@@ -36,11 +36,13 @@ Separate A/B patches and committed delivery verified; ordinary index empty,
 only user flake change remains unstaged. A Refs:#4, B Closes:#8.
 Full contract/evidence/archive in memory/block-table-implementation.md/current.md.
 
-Issue4 remaining date repair/native audit is now selected and implementation
-authorized by user-approved final plan. Default date raw unchanged, private
-advice helper with captured definition; no configurable formatter. Closure
-requires audit matrix, regressions, docs and authorized full checks. See
-memory/issue-4-closure.md; ordinary staging/commit not authorized.
+Issue4 remaining date repair/native audit now implemented and fully locally
+validated, pending user review/separate commits and closure tracking. Complete
+raw timestamp literal, private captured advice helper, bounded tag audit and
+native style limits documented;423core/37focused/9real/full compile/lint pass.
+Seven date tests replace one rejection, four audit PDF tests added. See
+memory/issue-4-closure.md. Ordinary index empty; staging not yet authorized.
+Final reviewed audit delivery may use Closes:#4; no external closure performed.
 B independently tracked by closed/completed Issue8:
 https://github.com/ren-lingyu/org-texmacs/issues/8.
 GitHub read confirms closure. Latest #4 scope comment excludes completed #8

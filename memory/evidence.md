@@ -12,6 +12,38 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
+## Issue4 remaining date repair and bounded audit acceptance
+
+User-approved final raw/private-helper plan implemented as uncommitted four-file
+candidate. All25baseline identities compared with capture HEAD,25candidate source
+identities compared with root/isolated snapshot,11fixed extension identities
+verified. Locked Emacs31.1/Org9.8.10/TeXmacs2.1.5/x86_64-linux: final423/423core
+229.047228s,37/37focused27.676927s,9/9real12.003782s,native9date/6cases,
+strict compilation/lint/full flake exit0. Other systems omitted. Eleven new ERT
+replace one former complex-timestamp rejection, plus two old metadata expectations
+updated. Corrected red36:27pass/9date failures23.868628s; exact test source matches
+final ERT minus later heading regression, verified against Nix source and hashed.
+No separate date-only fullgate claim. Separate date/audit patches reconstruct
+final four files; root user flake/lock untouched and ordinary index empty.
+
+Closure audit matrix in memory/issue-4-closure.md records source AST/native tree/
+definition/maintained test for each package-generated tag group. Native reference
+PDFs establish code line/blank/indent, list continuation/nesting/description and
+table caption counters/reference geometry; dates retain raw native literal and
+layout;5level TOC/native refs agree despite intentional native hidden4/5numbers.
+Pinned native decoration definitions distinguish strike extraction hyphens from
+mapping errors. No further production tag fix justified. Scope excludes arbitrary
+user STM/custom formatter tags, fonts/footer/PDF annotations/pagination/#7/#9.
+
+Selected34byte-exact necessary text originals, stable sources/digests verified:
+archive/2026-10-15T13-12-14Z--8435e5d/MANIFEST.md.
+Contains before/after dates, native AST/trees/coordinates, seven selected small
+native definition files, clean red/green/full logs and harness/lock/source hashes/
+independent patches. Other diagnostic errors extracted in memory, binary PDFs and
+whole temporary/dependency trees excluded. Zero external parent: combined source
+is uncommitted, capture HEAD is baseline/context. #4 eligible for final reviewed
+closing delivery, external closure not performed. Project commits remain user's.
+
 ## Issue4 block subset and separate Issue8 alignment candidate
 
 Originally validated uncommitted three-file candidate, with25input hashes checked
