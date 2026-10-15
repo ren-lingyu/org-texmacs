@@ -1,0 +1,13 @@
+this derivation will be built:
+  /nix/store/lpcfnsb54cc94nmsdlmqp5w85xqpjic3-org-texmacs-export-timing-40.drv
+building '/nix/store/lpcfnsb54cc94nmsdlmqp5w85xqpjic3-org-texmacs-export-timing-40.drv'...
+org-texmacs-export-timing> BENCH starting factor=40 route=frontend format=tm bytes=256515
+org-texmacs-export-timing> BENCH finished factor=40 route=frontend format=tm wall=7.427036s gc=1/0.031258s result=success
+org-texmacs-export-timing> BENCH starting factor=40 route=frontend format=pdf bytes=256515
+org-texmacs-export-timing> BENCH finished factor=40 route=frontend format=pdf wall=8.689276s gc=1/0.031493s result=success
+org-texmacs-export-timing> BENCH starting factor=40 route=explicit-source format=tm bytes=256515
+org-texmacs-export-timing> BENCH finished factor=40 route=explicit-source format=tm wall=6.985523s gc=1/0.024399s result=success
+org-texmacs-export-timing> BENCH starting factor=40 route=explicit-source format=pdf bytes=256515
+org-texmacs-export-timing> BENCH finished factor=40 route=explicit-source format=pdf wall=7.997717s gc=1/0.028978s result=success
+org-texmacs-export-timing> BENCH complete: 4 measured outcomes
+/nix/store/p5syf4r6qlxcy54hl94q1zrvhs6vmgjd-org-texmacs-export-timing-40

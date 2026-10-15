@@ -1,0 +1,38 @@
+[
+  {
+    "label": "64k",
+    "factor": 10,
+    "bytes": 64155,
+    "chars": 62775,
+    "lines": 1811,
+    "sha256": "697fc7cf689b8374f413fb2bd7c08f43810c0b15bbe82e26d555879cee4a9802",
+    "provenance": "reconstructed from frozen UTF-8 fixture using title once plus body repeated; not independent hash of deleted build file"
+  },
+  {
+    "label": "256k",
+    "factor": 40,
+    "bytes": 256515,
+    "chars": 250995,
+    "lines": 7241,
+    "sha256": "dd2de1173dcc0f14e033a5fc5a3f50a0ada8cfd392cc67cb0165f146d5e8aff1",
+    "provenance": "reconstructed from frozen UTF-8 fixture using title once plus body repeated; not independent hash of deleted build file"
+  },
+  {
+    "label": "1m",
+    "factor": 160,
+    "bytes": 1025955,
+    "chars": 1003875,
+    "lines": 28961,
+    "sha256": "c22e41f100ce6f352a54d83a48b7fceea607149d765162f79ab9ee36c26acb47",
+    "provenance": "reconstructed from frozen UTF-8 fixture using title once plus body repeated; not independent hash of deleted build file"
+  },
+  {
+    "label": "4m",
+    "factor": 640,
+    "bytes": 4103715,
+    "chars": 4015395,
+    "lines": 115841,
+    "sha256": "32700a3bffd6712fa6db58c43382edfcf6e12d682a69b41f10a2de112951a968",
+    "provenance": "reconstructed from frozen UTF-8 fixture using title once plus body repeated; not independent hash of deleted build file"
+  }
+]

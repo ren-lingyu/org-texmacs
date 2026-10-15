@@ -1,0 +1,13 @@
+this derivation will be built:
+  /nix/store/c5v9yg6ma64flbcchnpbpg7mgakmmgxd-org-texmacs-export-timing-640.drv
+building '/nix/store/c5v9yg6ma64flbcchnpbpg7mgakmmgxd-org-texmacs-export-timing-640.drv'...
+org-texmacs-export-timing> BENCH starting factor=640 route=frontend format=tm bytes=4103715
+org-texmacs-export-timing> BENCH finished factor=640 route=frontend format=tm wall=0.072021s gc=0/0.000000s result=Org TeXmacs document conversion failed: "Source exceeds 256 KiB"
+org-texmacs-export-timing> BENCH starting factor=640 route=frontend format=pdf bytes=4103715
+org-texmacs-export-timing> BENCH finished factor=640 route=frontend format=pdf wall=0.065161s gc=0/0.000000s result=Org TeXmacs document conversion failed: "Source exceeds 256 KiB"
+org-texmacs-export-timing> BENCH starting factor=640 route=explicit-source format=tm bytes=4103715
+org-texmacs-export-timing> BENCH finished factor=640 route=explicit-source format=tm wall=118.046134s gc=4/0.267224s result=TeXmacs worker failure: "TeXmacs worker failure: \"Worker exited or timed out\""
+org-texmacs-export-timing> BENCH starting factor=640 route=explicit-source format=pdf bytes=4103715
+org-texmacs-export-timing> BENCH finished factor=640 route=explicit-source format=pdf wall=115.652022s gc=4/0.290261s result=TeXmacs worker failure: "TeXmacs worker failure: \"Worker exited or timed out\""
+org-texmacs-export-timing> BENCH complete: 4 measured outcomes
+/nix/store/pypylxirzh5836bywmcgbhllxdr2hyr6-org-texmacs-export-timing-640

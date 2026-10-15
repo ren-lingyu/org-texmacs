@@ -1,0 +1,13 @@
+this derivation will be built:
+  /nix/store/94gnlyx7w9d1w88aln9l6rsp479n28sa-org-texmacs-export-timing-160.drv
+building '/nix/store/94gnlyx7w9d1w88aln9l6rsp479n28sa-org-texmacs-export-timing-160.drv'...
+org-texmacs-export-timing> BENCH starting factor=160 route=frontend format=tm bytes=1025955
+org-texmacs-export-timing> BENCH finished factor=160 route=frontend format=tm wall=0.018267s gc=0/0.000000s result=Org TeXmacs document conversion failed: "Source exceeds 256 KiB"
+org-texmacs-export-timing> BENCH starting factor=160 route=frontend format=pdf bytes=1025955
+org-texmacs-export-timing> BENCH finished factor=160 route=frontend format=pdf wall=0.016820s gc=0/0.000000s result=Org TeXmacs document conversion failed: "Source exceeds 256 KiB"
+org-texmacs-export-timing> BENCH starting factor=160 route=explicit-source format=tm bytes=1025955
+org-texmacs-export-timing> BENCH finished factor=160 route=explicit-source format=tm wall=29.328658s gc=2/0.118025s result=success
+org-texmacs-export-timing> BENCH starting factor=160 route=explicit-source format=pdf bytes=1025955
+org-texmacs-export-timing> BENCH finished factor=160 route=explicit-source format=pdf wall=30.852355s gc=2/0.133356s result=success
+org-texmacs-export-timing> BENCH complete: 4 measured outcomes
+/nix/store/sp8hxzwqas97v7qlv1fh9pp08kih02df-org-texmacs-export-timing-160
