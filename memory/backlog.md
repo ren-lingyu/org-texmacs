@@ -25,12 +25,14 @@ decision.
 
 ### Issue #4 block mapping audit / separate explicit table alignment proposal
 
-Status: **unresolved-design**; user-prioritized plan review complete, implementation
-not yet selected. New INBOX proposes A:block native semantics repair/audit then
+Status: **active-next**; user selected reviewed A+B implementation, separate
+deliveries. Quote uniformly quotation; one complete format row anywhere.
+New INBOX proposes A:block native semantics repair/audit then
 B:explicit table-column alignment, separately reviewed/committed. A addresses
 Issue4 quote/container subset; dates/other metadata still outstanding, no overall
-Issue4 closure. B is new syntax support requiring separate tracking, no new issue
-creation selected. PDF acceptance needs actual content/layout evidence beyond
+Issue4 closure. B is independently tracked by newly created open Issue8:
+https://github.com/ren-lingyu/org-texmacs/issues/8.
+PDF acceptance needs actual content/layout evidence beyond
 existing normalized-text helper; retain unsupported-width controls and source/
 island/API/table-reference contracts.
 
@@ -38,7 +40,11 @@ Adopted user decision for B: at most one independent complete alignment-format
 row, zero allowed as existing behavior. Reject multiple format rows even if
 identical; no conflict repair, merging or override priority. Allowed<l>/<c>/<r>
 only per current proposal, width/formula/special-column/group limitations retained.
-Read-only review/decision is not authorization for code/doc/test changes. Issue7
+User now authorizes implementation; exact new flake checks separately authorized.
+A focused17/17/native10records/real9/9pass; B baseline4new regressions fail,
+final combined focused22/22pass13.648062s. Full600s gate running; implementation
+record in memory/block-table-implementation.md. Tests/source snapshots remain separate
+with25input hashes and A patch; ordinary staging/commit not authorized. Issue7
 remains tracked as accepted motivation with no implementation selected.
 
 ### Completed selected Issue #6: private temporary-buffer cleanup

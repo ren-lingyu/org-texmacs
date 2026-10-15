@@ -1,6 +1,33 @@
 # org-texmacs current memory
 
-## Current priority: Issue #4 plan review and table-format decision
+## Active implementation: Issue4 block repair + Issue8 table alignment
+
+User selected reviewed A+B, separate deliveries. Quote uniformlyquotation;
+one complete alignment row anywhere, duplicate/partial/mixed/width rows reject,
+filtered-rule and special-column checks preserve supported subset. B created as
+open Issue8 https://github.com/ren-lingyu/org-texmacs/issues/8; Issue4 stays open
+for date/other audit work. No public API/file policy/metadata/async/NAME changes.
+Exactly README.org/document module/maintainedERT changed; user flake mirror intact,
+ordinary index empty, no staging/commit authorization.
+
+Baseline native10records reproduce oldquote hquotej... and30pt nativequotation
+indent; center/code/list bounded comparisons retain current tags. Valid baseline
+focused17:15pass/2new failures -> A17/17pass9.764553s; A native10/real9/9pass.
+Org helper facts expose mixed cookies and special-column masking, handled with
+explicit lexical field check plus independent filtered AST view. B baseline21:
+17pass/4new failures -> B21/21pass; added native caption/reference/file/STM
+combination, final focused22/22pass13.648062s.7new maintained tests total.
+
+Final exact600s isolated full flake gate running on25verifiedproject+11pinned
+extension inputs. User authorizes repeated120sprobes/180sfocused/120sintegration
+builds and600sfullcheck with locked dependency network/store/cache/tmp/results,
+no rootlock/originalfixture changes. Contract/evidence and diagnostic-only initial
+failures extracted in memory/block-table-implementation.md. A patch/inputmanifest
+and reconstructed3Afiles verified; final B/current input manifest retained. No
+final/full-pass claim yet. Next inspect full output, resolve any failures, then
+selectively archive necessary text and prepare separate A/B review artifacts.
+
+## Earlier Issue4 review (superseded by implementation selection above)
 
 User prioritizes Issue4 over nonblocking work and requested read-only review of
 new INBOX block/table guidance on measured Issue6 baseline. Review completed:
