@@ -2703,3 +2703,31 @@ acceptance transfer by byte identity; no new tests solely for commit verificatio
 Archive immutable, no new raw evidence needed; remote publication/issue state
 unverified, no external writes. Separate user-reported export responsiveness
 candidate remains deferred, with no performance implementation selected.
+
+## Synchronous export timing matrix (2026-10-15)
+
+User selected existing realworld mathematics, multiple sizes x INCLUDE, independent
+flake; separately authorized repeated sequential240s bench-1/2/4/8 builds, locked
+dependency network/store/cache and result copies.96/96actual tm/PDF exports pass,
+3samples each size/route/format/cold-warm cell. Extracted methods, medians, ranges
+locator, exact commands, source drift and limits: memory/export-timing-results.md.
+User clarifies symptom is perceptible synchronous blocking after command invocation.
+Warm direct tm0.217–1.521s/PDF0.476–1.830s; waits89.8–95.8%, no measured GC.
+STM request scaling and~50ms waits suggest investigating poll/wakeup granularity,
+not a demonstrated native CPU bottleneck or approved optimization.
+
+20necessary unique text artifacts (harness/lock/scripts/fixed fixtures/manifests/
+96raw samples/4successful build logs/summaries/report) exact-copied and independently
+verified before archive-only checkpoint:
+archive/2026-10-15T07-59-37Z--4839029/MANIFEST.md. Current findings extracted rather
+than treating raw archive as instruction. Original CSV33CRLF endings and one
+verification-note trailing blank documented and retained; whitespace check findings
+classified exactly, not claimed clean. No binaries/nativeproducts/dependency dump.
+17package/lock input copies equal committed measured project revision byte-for-byte;
+that measured snapshot justifies project association, not origin of untracked
+harness/results. User original INCLUDE gained extra trailing newline during run;
+all scales use fixed22byte sampled version, math source unchanged. Root flake mirror
+untouched, ordinary index empty. Initial two harness-only failures corrected before
+complete sampling; original failure logs overwritten, not preserved/claimed present.
+Batch measurements do not prove per-key delay or user's exact interactive timing;
+no business code, async implementation, prototype or further optimization selected.

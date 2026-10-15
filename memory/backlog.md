@@ -386,8 +386,9 @@ Status: **deferred-candidate**.
 After accepting Issue6 interactive behavior, user reported a slight "卡手" feeling
 during "非并行导出" and asked to record it separately after preparing the current
 commit. This is a user-reported responsiveness observation, not a measured
-performance regression or an established cause. Exact input, duration, stage and
-impact on editing/input handling have not been characterized.
+performance regression. User clarified symptom means perceptible blocking after
+invoking export. Subsequent selected batch stage measurements characterize fixed
+realworld input below; no direct key-latency trace in user interactive Emacs.
 
 Keep separate from committed Issue6 correctness fix. User subsequently selected
 read-only nonblocking-export feasibility investigation; completed findings in
@@ -396,8 +397,15 @@ reliable compatibility medium to high effort. Same-process cooperative threads,
 callback worker jobs and child Emacs compared; no route adopted. Dynamic busy
 binding is not a cross-thread mutex; child configuration/hooks/DB portability and
 long-lived source guards are important boundaries. No benchmark/prototype/code
-change or async/parallel implementation selected. Next if authorized: measure
-actual interactive stage timing and input responsiveness, then choose remedy.
+change or async/parallel implementation selected during static phase. Subsequent
+user-authorized independent flake matrix completes96native exports over1/2/4/8x
+realworld math, direct/single-INCLUDE, tm/PDF, cold/warm. Results extracted in
+memory/export-timing-results.md: warm wait-path shares89.8–95.8%, no measured GC,
+STM requests3–24 at~50ms each; INCLUDE overhead small. Request completion waits
+on a different process from socket client; polling/wakeup investigation is next
+candidate, not proven fix or selected implementation. Isolate request latency
+before deciding synchronous optimization versus nonblocking UX. No further
+benchmark/prototype/code work authorized merely by this candidate.
 
 ### Explicit export menu key configuration — Phase 6 accepted and committed
 

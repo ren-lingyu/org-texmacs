@@ -4,15 +4,20 @@
 
 User selected investigation and GAW recording only, explicitly no business-code
 changes. Read-only static analysis on the user-committed Issue6 repair revision;
-ordinary index empty, only pre-existing user flake.nix mirror dirty. No benchmark,
-test, prototype, process/thread launch or dependency mutation performed. External
+ordinary index empty, only pre-existing user flake.nix mirror dirty. This static
+phase ran no benchmark, test, prototype or process/thread launch.
+Subsequent separately authorized measurements are extracted in
+memory/export-timing-results.md; they do not adopt an async implementation. External
 reads were public primary documentation/source only. No implementation adopted.
 
 Nonblocking export is feasible. A bounded prototype is comparatively small;
 reliable support preserving current configuration/hooks/source guards/result
 ownership is medium to high effort, not merely accepting ASYNC or changing one
 wait call. Effort is qualitative architecture assessment, not a time estimate.
-The reported slight "卡手" feeling has no measured cause or latency yet.
+User later clarified "卡手" means perceptible blocking after invoking export.
+The subsequent96-export batch matrix quantifies related wall time and attributes
+89.8–95.8% of warm command wall time to worker waits, without isolating native versus
+polling/transport costs or tracing the exact interactive session.
 Nonblocking UI and parallel native conversion are distinct: initial implementation
 could serialize all jobs and still return control to editing.
 

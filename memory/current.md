@@ -1,6 +1,33 @@
 # org-texmacs current memory
 
-## Active objective
+## Current state: export timing investigation complete
+
+User selected multiple sizes x INCLUDE/no-INCLUDE, existing realworld math only,
+independent flake and no business-code changes.96/96 real native exports pass in
+four sequential authorized targets (3samples per cell, cold/warm, tm/PDF).
+User clarifies "卡手" means perceptible blocking after invoking export. Warm direct
+medians tm0.217/0.440/0.770/1.521s, PDF0.476/0.642/1.070/1.830s at1/2/4/8x.
+Single INCLUDE adds little; warm wait paths account89.8–95.8%, no measured GC.
+3/6/12/24STM requests at~50ms each and separate worker/client wait target suggest
+investigating poll/wakeup granularity before choosing optimization. Not proven
+removable overhead or native CPU time. Cold worker startup~0.93–1.01s plus initial
+PDF render costs. Batch wall time quantifies command blocking; no direct key/input
+latency trace or precise reproduction of user's interactive configuration.
+
+Full operational extraction: memory/export-timing-results.md.20necessary unique
+text artifacts archived and byte-verified separately at
+archive/2026-10-15T07-59-37Z--4839029/MANIFEST.md. Original CSV CRLF and one final
+blank retained/documented. Package17inputs match actual associated project commit;
+user root flake mirror untouched/index empty. Original math unchanged; current
+INCLUDE gained extra final newline during measurements, all groups consistently
+use frozen22byte original. No agent writes to original examples.
+
+No business-code/async prototype or implementation selected. Next if user selects:
+isolate small-request wakeup/transport/native cost, then decide reducing synchronous
+latency versus allowing editing during export. Existing static feasibility options
+remain unadopted. No more benchmark commands needed for current matrix.
+
+## Completed static nonblocking export investigation
 
 User selected read-only feasibility investigation of nonblocking export and GAW
 recording, explicitly no business-code changes. Static investigation complete:
@@ -11,11 +38,11 @@ thread could preserve much stack/configuration for I/O-dominated work, but dynam
 worker-busy is thread-local and shared worker serialization/callback audit needed.
 Callback jobs require resumable transaction state; child Emacs isolates CPU but
 needs explicit context/function/environment portability and parent-side guards.
-No route adopted, no profiling/test/prototype/process launch or code edit. Prior
-Issue6 test permissions do not authorize tests for this new investigation task.
-Only user flake mirror dirty, ordinary index empty. Next if user selects further
-work: measure actual stage time AND editor responsiveness before implementation.
-No new raw archive: no unique experiment/retired source; findings extracted.
+Static phase selected no route or prototype and needed no raw archive. Subsequent
+separately authorized batch measurements above supersede its no-profiling state;
+see memory/export-timing-results.md. Only user flake mirror dirty, index empty.
+Editor input tracing remains unperformed; user clarified primary symptom is
+perceptible synchronous command blocking, quantified by this batch matrix.
 
 ## Completed Issue #6
 
