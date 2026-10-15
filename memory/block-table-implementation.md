@@ -102,15 +102,17 @@ Verified its baseline parent, exactly three a-inputs blobs and Refs:#4 message.
 B was staged alone from verified patch and user then committed it. Parent=A,
 exact three-path diff, all25final-inputs committed blobs, approved Closes:#8
 message and empty index verified. Only user flake remains unstaged. Both deliveries
-are committed; no new tests or business edits for verification. Current memory
+are committed; no new tests or business edits for verification. Commit-verification
 checkpoint associates exact verified B, not an inferred future project snapshot.
 
 GitHub read confirms #8 closed/completed and #4 open. Latest #4 comment:
 https://github.com/ren-lingyu/org-texmacs/issues/4#issuecomment-6191090701
 supersedes its earlier alignment proposal and excludes completed #8 from remaining
 work. Existing table/caption native audit remains in scope; NAME still deferred.
-The comment still lists quote mismatch, which A already fixed; report tracking
-wording gap. Remaining #4 work is dates/other supported-tag audit, not duplicate
-alignment/quote implementation. No new implementation selected or external edits.
+Its quote wording gap is now clarified by user-authorized followup, posted and
+re-fetched verified:
+https://github.com/ren-lingyu/org-texmacs/issues/4#issuecomment-6191193468
+Remaining #4 work is dates/other supported-tag audit, not duplicate alignment/
+quote implementation. No new implementation selected; no issue closure.
 No extra archive for commit/tracking transition: ordinary history, public comment
 and extracted current memory suffice; existing raw validation archive unchanged.

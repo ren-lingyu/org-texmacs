@@ -14,8 +14,10 @@ https://github.com/ren-lingyu/org-texmacs/issues/4#issuecomment-6191090701
 supersedes earlier table-alignment proposal: completed #8 must not be implemented
 or counted again under #4. Existing table/caption semantics remain auditable;
 dates/other supported tag audit and deferred NAME boundary unchanged. Comment
-still mentions quote mismatch as outstanding, but A already fixes it; report this
-tracking-description gap, do not reopen/reimplement quote. No external edits made.
+previously mentioned quote mismatch as outstanding, but user authorized a followup
+comment clarifying A already fixes it. Posted and re-fetched verified comment:
+https://github.com/ren-lingyu/org-texmacs/issues/4#issuecomment-6191193468
+Quote and #8 alignment are complete; date/remaining native audit stays open.
 
 Quote uniformly lowers to native quotation(document...), including named footnotes;
 center/code/list mappings retained after bounded native comparison. Tables permit
@@ -39,10 +41,10 @@ archive/2026-10-15T11-15-33Z--4839029/MANIFEST.md.
 No binary PDFs/dependencies/full tmp archived. Remaining useful material extracted
 into current/project/evidence/backlog; no archive of INBOX needed. Original
 combined validation candidate was uncommitted; archive has no inferred
-project parent. Current memory checkpoint associates exact verified B commit,
+project parent. The preceding commit-verification checkpoint associates verified B,
 whose25accepted input blobs now match combined tested candidate. This is commit
 verification, not a new runtime test or retrospective source-provenance claim.
-Next: report scope-comment quote status gap; if user selects further #4 work,
+Next: if user selects further #4 work,
 plan date metadata and bounded native emitted-tag audit without duplicating #8
 or completed quotation repair. No further implementation currently authorized.
 No new archive: public issue/comment history and extracted memory suffice for

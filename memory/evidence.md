@@ -24,11 +24,14 @@ User subsequently committed A during authorized3minute polling; parent baseline,
 exact three a-inputs blobs and Refs:#4 message verified. B subsequently committed;
 parent=A, exact three changed paths, all25final-inputs blobs, Closes:#8 message
 equal approved draft and empty index verified. No new runtime test on unchanged
-source. Current checkpoint associates verified B; immutable archive unchanged.
+source. Commit-verification checkpoint associates verified B; archive unchanged.
 GitHub fetch confirms #8 closed/completed, #4 open. New #4 scope comment
 https://github.com/ren-lingyu/org-texmacs/issues/4#issuecomment-6191090701
 excludes completed #8 from outstanding work but still lists quote mismatch;
-committed A establishes that wording lags local implementation. No external edit.
+committed A establishes that wording lags local implementation. User then
+authorized clarification comment, posted and re-fetched successfully:
+https://github.com/ren-lingyu/org-texmacs/issues/4#issuecomment-6191193468
+This resolves tracking wording only; no new test or source change.
 A baseline15/17 establishes two new quote failures; B on A17/21 establishes four
 new alignment failures. First full412/413 found stale named-footnote quote tag;
 final checks cover corrected assertion and linear format-row filtering.

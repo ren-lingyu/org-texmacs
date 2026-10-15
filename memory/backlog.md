@@ -41,8 +41,8 @@ B independently tracked by closed/completed Issue8:
 https://github.com/ren-lingyu/org-texmacs/issues/8.
 GitHub read confirms closure. Latest #4 scope comment excludes completed #8
 from remaining work (issuecomment-6191090701); table/caption audit still allowed,
-NAME deferred. Its outstanding-quote wording lags committed A repair; report
-tracking gap without reimplementing quote or modifying external issue.
+NAME deferred. User-authorized followup issuecomment-6191193468 posted and
+re-fetched, clarifying quotation repair also complete; tracking gap resolved.
 Issue7 remains accepted motivation without async implementation selected.
 
 ### Completed selected Issue #6: private temporary-buffer cleanup
