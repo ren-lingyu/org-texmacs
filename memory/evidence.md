@@ -2486,7 +2486,9 @@ Complete binary staged diff SHA256:
 21b8e79f0e73b61cddc3a641ab94bbdc93ec14ec482ffbf08315ac71dbfa0a13.
 Only user flake.nix mirror remains unstaged. tmp/commit.md replaced the completed
 Issue3 draft with fix(source): recognize TeXmacs block names without case,
-four Chinese change bullets and parsed Refs: #5 trailer. Closure not presumed.
+four Chinese change bullets. User subsequently clarified that the accepted fix
+should close Issue5; draft trailer changed to Closes: #5 and parser verified.
+This records closure intent, not a remote issue state change.
 One coherent predicate/consumer/docs/regression fix; split not necessary, low
 difficulty. Existing acceptance transfers by exact byte identity; no new tests
 solely for staging. No ordinary commit or external issue action performed.

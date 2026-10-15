@@ -29,7 +29,8 @@ no ad hoc probe/retired source/unique raw evidence; no raw archive selected.
 Results/commands/hashes/limits extracted in memory/evidence.md, model/backlog
 synchronized. User authorized staging and commit-message preparation; full staged
 review and whitespace check pass. tmp/commit.md now describes this fix with
-fix(source) subject, Chinese body and Refs: #5 (no assumed closure).
+fix(source) subject, Chinese body and Closes: #5. User explicitly clarified
+closure intent for the accepted fix; this does not establish remote issue state.
 Next: user-controlled ordinary commit, then verify actual committed content before
 grounding memory to it. No ordinary commit or external issue action performed;
 no new tests needed for unchanged-byte staging. Earlier diagnosis follows.
