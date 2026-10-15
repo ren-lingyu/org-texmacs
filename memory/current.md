@@ -1,55 +1,41 @@
 # org-texmacs current memory
 
-## Active implementation: Issue4 block repair + Issue8 table alignment
+## Completed implementation: Issue4 block subset + Issue8 table alignment
 
-User selected reviewed A+B, separate deliveries. Quote uniformlyquotation;
-one complete alignment row anywhere, duplicate/partial/mixed/width rows reject,
-filtered-rule and special-column checks preserve supported subset. B created as
-open Issue8 https://github.com/ren-lingyu/org-texmacs/issues/8; Issue4 stays open
-for date/other audit work. No public API/file policy/metadata/async/NAME changes.
-Exactly README.org/document module/maintainedERT changed; user flake mirror intact,
-ordinary index empty, no staging/commit authorization.
+User-selected A+B implemented, documented and verified; ordinary changes remain
+uncommitted/unstaged in README.org, org-texmacs-document.el, tests/ert/ert.el.
+Existing user flake.nix mirror change untouched. No ordinary staging/commit
+permission. Independent A/B patches reconstruct all three final files byte-exactly;
+review artifacts are tmp/issue-4-block-table/a-state.patch and b-state.patch.
+A is quote repair/audit (Refs #4); B is separately tracked new alignment feature,
+open Issue8 https://github.com/ren-lingyu/org-texmacs/issues/8. Issue4 stays open for
+remaining date/other audit work. No issue closure/release or async work performed.
 
-Baseline native10records reproduce oldquote hquotej... and30pt nativequotation
-indent; center/code/list bounded comparisons retain current tags. Valid baseline
-focused17:15pass/2new failures -> A17/17pass9.764553s; A native10/real9/9pass.
-Org helper facts expose mixed cookies and special-column masking, handled with
-explicit lexical field check plus independent filtered AST view. B baseline21:
-17pass/4new failures -> B21/21pass; added native caption/reference/file/STM
-combination, final focused22/22pass13.648062s.7new maintained tests total.
+Quote uniformly lowers to native quotation(document...), including named footnotes;
+center/code/list mappings retained after bounded native comparison. Tables permit
+zero or ONE complete plain<l>/<c>/<r> row anywhere; reject duplicates/partial/mixed/
+width declarations, preserve existing special-column/formula/group restrictions.
+Remove format before data/border numbering. Linear identity exclusion constructs
+an independent filtered AST view; prepared AST/source/provenance remain unchanged.
+No public API, metadata/date, NAME or file policy change. Seven new maintained tests.
 
-Final exact600s isolated full flake gate running on25verifiedproject+11pinned
-extension inputs. User authorizes repeated120sprobes/180sfocused/120sintegration
-builds and600sfullcheck with locked dependency network/store/cache/tmp/results,
-no rootlock/originalfixture changes. Contract/evidence and diagnostic-only initial
-failures extracted in memory/block-table-implementation.md. A patch/inputmanifest
-and reconstructed3Afiles verified; final B/current input manifest retained. No
-final/full-pass claim yet. Next inspect full output, resolve any failures, then
-selectively archive necessary text and prepare separate A/B review artifacts.
+Final locked Emacs31.1/Org9.8.10/TeXmacs2.1.5 x86_64-linux flake acceptance:
+23/23focused13.694420s;413/413core212.650622s;9/9real11.469430s; native10records;
+strict compilation and lint; fullcheck exits0. Other systems explicitly omitted.
+PDF layout checks compare native references within1pt; no arbitrary-style/GUI claim.
+Initial full412/413 exposed one stale named-footnote quote expectation, corrected
+as part of A; final focused/full validate this and the linear filtering revision.
+25baseline/25final/11extension identities verified; root lock and sources stable.
 
-## Earlier Issue4 review (superseded by implementation selection above)
-
-User prioritizes Issue4 over nonblocking work and requested read-only review of
-new INBOX block/table guidance on measured Issue6 baseline. Review completed:
-A fixes/audits existing quote/center/static-code/list native semantics first;
-B adds explicit table alignment as a separate feature/issue/commit. Date/metadata,
-NAME/reference redesign, async/layout extras excluded; A+B do not close allIssue4.
-Native quote-env/quotation choice remains to be tested on2.1.5; existing normalized
-PDF text helper cannot establish centering/alignment. Review recommends explicit
-content/layout evidence and retained unsupported-width negative cases. No native
-probe/test or business/document edit performed. Existing Issue4 fetched open and
-scope confirmed; no external issue write/new table-alignment issue selected.
-
-User now adopts B's minimal format policy: at most ONE independent complete
-alignment-format row per table. Zero rows preserves existing table behavior.
-Two or more format rows reject, including identical declarations; do not resolve
-conflicts, merge declarations or choose first/last override. Existing proposal's
-allowed tokens are<l>/<c>/<r>, width/group/formula/other unsupported rows still
-reject. This is an adopted design constraint, not implementation authorization.
-Record in normal GAW memory only; INBOX and production remain unchanged. No new
-raw archive: active proposal/decision with no unique runtime artifact; useful
-scope/review/decision extracted here. Next await user selection of implementation
-or further plan refinement. Completed nonblocking motivation/tracking follows.
+Contract/method/diagnostic limits: memory/block-table-implementation.md. Necessary
+23raw text artifacts byte-verified in separate archive-only GAW checkpoint:
+archive/2026-10-15T11-15-33Z--4839029/MANIFEST.md.
+No binary PDFs/dependencies/full tmp archived. Remaining useful material extracted
+into current/project/evidence/backlog; no archive of INBOX needed. Candidate is
+uncommitted, so GAW checkpoints have no inferred candidate project parent.
+Next: user review, then obtain explicit path-scoped staging authorization if
+requested. Preserve separate A/B deliveries; stage A patch only for first commit,
+leaving B unstaged, after permission. Project commits remain user's action.
 
 ## Current state: large byte-step no-INCLUDE measurement complete
 

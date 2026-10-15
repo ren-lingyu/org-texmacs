@@ -12,6 +12,33 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
+## Issue4 block subset and separate Issue8 alignment candidate
+
+Validated uncommitted three-file candidate, with25input hashes checked against
+isolated source and11fixed extension identities. Locked Emacs31.1/Org9.8.10/
+TeXmacs2.1.5 on x86_64-linux: final23/23focused13.694420s,413/413core212.650622s,
+9/9real11.469430s,10native probe records, strict compilation/lint/full flake exit0.
+Other systems omitted. Seven new maintained tests plus existing mappings updated.
+A baseline15/17 establishes two new quote failures; B on A17/21 establishes four
+new alignment failures. First full412/413 found stale named-footnote quote tag;
+final checks cover corrected assertion and linear format-row filtering.
+
+Before/after native PDF reports show old quote visible markers and quotation's
+30pt indent in bounded fixtures; maintained PDF assertions compare native reference
+word bounds within1pt and positive quote/center/column geometry. Org helper facts
+show mixed-cookie rows not always special and format rows masking special columns;
+classifier plus independent filtered AST view handles both. Source/AST ownership,
+caption/reference/typed-file/STM combinations and existing rejection boundaries
+covered. No GUI/arbitrary-style/all-platform guarantee. Contract/provenance and
+initial diagnostic-only failures in memory/block-table-implementation.md.
+
+Selected23original-byte text artifacts, digest/source stability verified:
+archive/2026-10-15T11-15-33Z--4839029/MANIFEST.md.
+Includes red/green/full failure+success logs, reports, harness/lock/manifests and
+separate A/B patches. Excludes binaries, PDFs, dependency sources and redundant
+artifacts. Archive checkpoint has zero external parents; inspected project HEAD
+is baseline/capture context, never claimed as committed final candidate.
+
 ## Interactive export / native byte-view evidence
 
 - The explicit-source export adapter revision matches its verified

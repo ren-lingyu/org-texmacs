@@ -20,6 +20,22 @@
 - The implementation does not require physical grafting of all TeXmacs pseudo
   nodes into one live Org element cache.
 
+## Validated uncommitted block/table extension
+
+Selected Issue4 subset uniformly maps Org quote blocks to native quotation with
+body document, including named footnotes and nested supported content. Center,
+static code and list mappings retain their existing native constructs. Issue8
+adds at most one complete plain<l>/<c>/<r> format row anywhere, applying column
+cell-halign while omitting it from data and border numbering. Duplicate/partial/
+mixed/width rows reject; special columns/formulas/groups remain unsupported.
+Filtered special-column checking uses an independent AST copy and linear row
+identity exclusion. Zero-format output, source ownership, caption/reference,
+STM and typed-file provenance are preserved. README and seven maintained tests
+updated;23focused/413core/9real/native10/strict compilation/lint pass under locked
+x86_64-linux. These are validated working-tree changes, not a release or committed
+main capability. Scope, tracking and raw evidence: current.md and
+block-table-implementation.md. Date/metadata and remaining Issue4 work unchanged.
+
 ## Current conversion path
 
 ```text

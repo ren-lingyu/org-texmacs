@@ -33,7 +33,7 @@ format row masking a formerly unsupported special column. Native table-facts
 probe on pinned Org establishes both behavior boundaries. Literal<alpha> and
 inline-verbatim<r> remain text, not format directives.
 
-## Evidence so far
+## Verification and evidence
 
 Locked Emacs31.1/Org9.8.10/TeXmacs2.1.5/x86_64-linux independent flake,25project+
 11fixed extension modules, no system Emacs. Exact authorized commands use
@@ -73,7 +73,30 @@ midpoint checks. Existing normalized-text helper remains unchanged for content.
 No pixel/font/page-count golden. Successful native/header/layout checks establish
 bounded semantics, not arbitrary style/GUI/all-platform rendering.
 
-Final600s complete gate running. No final acceptance claimed before output checked.
-Keep candidate/source manifest checks coherent if further edits occur. Assess
-archive of necessary raw text after final verification; no binary PDF in GAW.
-GAW current state updated throughout; ordinary project commits remain user's action.
+First full gate:412/413core pass; one named-footnote test retained oldquote
+expectation. Corrected that A expectation in root and reconstructed A candidate.
+Expanded focused selector to include that existing case. Review also replaced
+introduced filtered-row membership scans with format-row identity exclusion,
+avoiding quadratic work for aligned large tables. Final25inputs refreshed;
+final focused23/23pass13.694420s. Final complete flake check exits0:
+413/413core212.650622s,9/9real11.469430s,native10records,strict compilation/lint.
+Other systems omitted;25final source snapshots/11extensions/root lock unchanged.
+A/B patches apply consecutively to baseline and reproduce all three final files.
+A patch includes the later footnote assertion correction; A-focused log predates
+that correction, final combined focused/full validate it. No separate final-A-only
+fullgate claimed. Ordinary index empty; user flake mirror untouched.
+
+Selected23necessary pure-text originals archived byte-exactly, verified with
+source stability and digest checks, in separate archive-only checkpoint:
+archive/2026-10-15T11-15-33Z--4839029/MANIFEST.md.
+Includes before/after native reports and Org helper facts, valid red/green logs,
+first failed/full successful gates, reproducible harness/lock/source identities and
+independent A/B patches. No binaries/PDF/dependencies/full tmp capture. Remaining
+useful findings and adopted contract extracted into memory; INBOX/current proposal
+needs no raw archive. No inferred project-parent for uncommitted candidate.
+
+Implementation/validation complete, README/comments/tests synchronized. Issue4
+remaining audit stays open; Issue8 tracks implemented B independently. External
+closure/release not performed. Next user review, then path-scoped authorization
+before staging A patch only and preparing its commit message, preserving B for
+separate delivery. Ordinary commits remain user's responsibility.
