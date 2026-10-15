@@ -384,6 +384,14 @@ native or GUI evidence before they can be claimed as verified.
 Status: **deferred-candidate**, development motivation explicitly user-accepted;
 concrete design and implementation remain unselected.
 
+Tracked by open [Issue #7: Support nonblocking Org-to-TeXmacs exports](https://github.com/ren-lingyu/org-texmacs/issues/7),
+created at user's request after checking existing issues1–6. Proposal covers
+frontend buffer/tm/PDF responsiveness, existing synchronous APIs, source/dependency
+guards, ownership/error/cancel cleanup and shared worker coexistence. Includes
+measured motivation and distinguishes failed large explicit exports from normal
+frontend256KiB rejection. Implementation route/parallelism degree/job contracts
+remain design questions; no business-code implementation selected by publication.
+
 User considers current static investigation and byte-step measurements sufficient
 to motivate developing parallel/nonblocking export. Near-linear observed scaling
 still gives perceptible blocking and tens-of-seconds waits for this math workload.

@@ -10,6 +10,20 @@ editing and concurrent native conversions remain separate design goals; neither
 parallel worker count nor threads/callbacks/child-process route chosen. No further
 measurement required merely to establish the accepted motivation.
 
+User requested a conventional GitHub issue. Created and verified open Issue #7,
+"Support nonblocking Org-to-TeXmacs exports":
+https://github.com/ren-lingyu/org-texmacs/issues/7.
+English proposal follows recent repository issue style; prior issues1–6 inspected,
+no duplicate found in those results. Includes measured motivation with standard/
+explicit API and failure distinctions, optional frontend nonblocking behavior,
+snapshot/stale-result/ownership/worker coordination, cancellation and regression
+criteria, relates1/3/6. Parallel worker degree and implementation route unresolved;
+size/timeout increases outside initial scope. Issue text is a feature proposal,
+not a finalized implementation contract or instruction to start business edits.
+No further raw archive needed: public issue plus extracted current tracking state
+and existing measurement archive preserve useful evidence. Local tmp draft is not
+authoritative tracking. No new benchmark or project/index edit for issue creation.
+
 User selected larger bytes after finding prior~50KiB matrix insufficient. Four
 sequential authorized600s independent flake builds complete, no system Emacs or
 business edits.16outcomes:10native successes/4standard budget rejections/2native
