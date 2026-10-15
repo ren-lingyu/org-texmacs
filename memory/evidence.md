@@ -2502,3 +2502,60 @@ only existing user flake.nix mirror dirty. This checkpoint's project parent is t
 actual inspected committed revision; acceptance transfers by exact byte identity,
 no new tests solely for commit verification. No further implementation selected,
 no remote publication/status verification or external issue write performed.
+
+## Issue #6: owned temporary-buffer cleanup implementation (2026-10-15)
+
+User adopted the reviewed plan and requested implementation plus continuous GAW
+maintenance. Separate authorization permits repeated exact focused120s Nix build
+and complete240s flake check under tmp/issue-6-cleanup, necessary locked-dependency
+network/store/cache/logs, no root lock changes. User flake mirror is excluded.
+
+Four new maintained ERT observe actual kill-buffer entry and invoke real destruction;
+assertions occur afterward so observation cannot replace errors/cleanup. Private
+objects registered through preprocessing context and actual Cite collector; a
+separate modified user-owned buffer tests ownership after callback current-buffer
+switch. Tests use real find-file-noselect source and test-owned files/directories.
+
+First focused run with unchanged production intentionally fails4/4 in2.107358s:
+all failures are the expected nonempty-file-name AND modified kill-entry assertion.
+Independent root error, non-file-root INCLUDE capture and local bibliography paths
+confirm all three affected lifetimes. This is runtime danger-state evidence, not
+an observed interactive popup/stack trace. Before-production SHA256:
+- preprocess:97f2899981f13f66176f43676172162df1145066cc66307a3772c73535ff63aa.
+- bibliography:00ab1e3780fd8032e1f40f26a080a0e004053bc46f3032f1ffb603116e6fc132.
+- new ERT:6d0ab8dfa181677393e5b20ac7eb06b363f80dfbdce0e694639d1d3c5035a684.
+Red log focused-before.log SHA256
+57bd3ed8fd802f2c8f4b197b0025717d96cd92218b4131b0c262b086adcead25.
+
+Repair captures each owned object and uses unwind-protect to clear only that
+buffer's file identity at final exit, including callback-switch/errors. Root and
+INCLUDE in preprocess module; discovery callback in bibliography module. Lifetime
+starts before context/file assignment. No global confirmation override, generic
+buffer helper, source flag change or context loss during processing. Context/
+snapshot/dependency guards, original errors, native and overwrite contracts retained.
+
+Same focused command now passes4/4 in2.861718s. Actual native tm/PDF output with
+source modified false/true x discovery false/true, non-file INCLUDE, local Cite/
+direct preparation and12 error combinations (root/include/Cite x absent/existing
+output x tm/PDF) pass. Original sentinel error, source text/point/mark/restriction/
+modified/location, untouched user buffer, existing bytes and no new output on
+preparation failure asserted. Strict byte/native production compilation passed.
+Full240s gate is running; interactive Emacs no-popup verification requested from
+user but not yet received. No full-acceptance or GUI result claimed at this point.
+
+Isolated harness reuses prior proven mirror-backed flake, same root lock and11
+unchanged pinned extension modules; focused selector is ^org-texmacs-cleanup-.
+All25project inputs byte-match final snapshot; project-inputs.json SHA256
+6ee3deb45b063a5e22c5a9072c1d8dab37f6bbd42525950a9b83356b45f222af.
+Current changed production SHA256:
+- preprocess:26b88e3a223e7797a389c15c63a34d47730f283b329c9f1129b983e8f0a10170.
+- bibliography:a4fcc65c7f4a8b49c44b030595025024f802d57f332c32826de7e17fd1c80523.
+ERT unchanged since red run. Commands:
+`timeout 120s nix build 'path:./tmp/issue-6-cleanup#checks.x86_64-linux.focused' --no-link --no-update-lock-file --print-build-logs`
+`timeout 240s nix flake check path:./tmp/issue-6-cleanup --no-update-lock-file --print-build-logs`
+
+No raw archive selected so far: maintained tests plus project history reproduce
+the before/after comparison; exact findings/digests/limits extracted here. No unique
+standalone probe or retiring source. Reassess new evidence at final acceptance.
+Ordinary index empty; only three task paths plus existing flake mirror dirty.
+No ordinary staging/commit, INBOX/version/lock/external issue change performed.

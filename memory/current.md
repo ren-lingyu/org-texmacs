@@ -2,6 +2,31 @@
 
 ## Active objective
 
+User now selected implementing the reviewed Issue6 plan and explicitly reminded
+continuous GAW maintenance. Authorized preprocessing/bibliography owned-lifetime
+and maintained regression edits; no ordinary staging/commit or INBOX edits.
+Separately authorized repeated120s focused build and240s full check under
+tmp/issue-6-cleanup, necessary locked-dependency network/store/cache/log writes,
+no root lock changes. Existing user flake mirror stays untouched. Three confirmed
+lifetimes now have object-captured unwind-protect clearing only private file identity
+on final exit. Same four focused tests now4/4 pass2.861718s, including actual native
+tm/PDF bytes, source modified false/true and discovery false/true, non-file root
+INCLUDE and local discovery/direct preparation. Error test exercises12 combinations
+(three private lifetimes x absent/existing output x tm/pdf), propagates exact
+sentinel after switching to a user-owned buffer. No leaked observed buffers or
+source/user-state changes. Strict byte/native production compilation passed.
+Full authorized240s isolated flake check now running; do not claim full acceptance
+or actual interactive no-popup evidence yet. Real extension9/9 pass11.484144s;
+core405 tests ongoing. User interactive check requested, not yet answered.
+Before-repair four tests intentionally fail4/4 (2.107358s), establishing root,
+non-file INCLUDE and local bibliography danger states at actual kill entry.
+Source/default-directory context remains available throughout processing and
+original errors propagate. Runtime evidence and exact hashes in evidence.md;
+pre-fix inputs/logs retained under tmp/issue-6-cleanup. Next complete full gate
+and record acceptance limits; ordinary index empty, no task staging/commit.
+
+## Earlier Issue #6 review (superseded by implementation selection above)
+
 User requested read-only review of updated INBOX Issue6 temporary-buffer prompts,
 on the accepted case-insensitive wrapper revision. No implementation, INBOX edits,
 runtime probes/tests or external writes selected. INBOX is8020bytes; source SHA256
