@@ -2,9 +2,36 @@
 
 ## Active objective
 
-User now asks read-only diagnosis of Org wrapper case: begin_texmacs and
-BEGIN_texmacs work, begin_TEXMACS/BEGIN_TEXMACS reportedly fail. No ordinary
-source/docs edits or task-specific tests authorized/selected. Static inspection
+User selected implementing case-insensitive Org TeXmacs wrapper names and GAW
+updates, associated issue5: https://github.com/ren-lingyu/org-texmacs/issues/5.
+Public page fetch failed; no remote issue content/state claim or external write.
+Separately authorized repeated120s focused Nix build and240s complete flake check
+under tmp/block-case, necessary locked-dependency network/store/cache/logs, no
+root lock edit. Four task files changed: source predicate validates string then
+downcases only its comparison; fragment ancestor exclusion reuses it with explicit
+source-module require; README explains wrapper versus native/fragment tag case;
+five new maintained ERT plus malformed-type rejection cases. Coverage includes
+162 BEGIN/END/name/ambient-case combinations, original AST/body preservation,
+nested fragment exclusion, native bytes, root/included preprocessing protection
+and bibliography masking. Focused114/114 passes48.641846s; actual locked Org9.8.10
+confirms preserved original :type and case-insensitive opening/closing markers.
+Latest real extension fixtures9/9 pass11.781628s. Exact240s full gate exits0:
+401/401core ERT204.454363s, all6logged checks/strict compilation/package-lint pass.
+Selected request acceptance complete in uncommitted candidate, no failures.
+25project+11unchanged pinned fixture modules isolated; user flake mirror untouched.
+Final25project+11foreign inputs byte-match isolated snapshot before/after gate;
+ordinary index empty, four task files plus existing user flake mirror dirty.
+No root lock/INBOX/version change. Validation is locked Emacs31.1/Org9.8.10/
+TeXmacs2.1.5/x86_64-linux, not other systems or full minimum9.8 behavior.
+Archive assessment: maintained regression tests preserve all new reproduction,
+no ad hoc probe/retired source/unique raw evidence; no raw archive selected.
+Results/commands/hashes/limits extracted in memory/evidence.md, model/backlog
+synchronized. Next: offer four-path staging then commit-message preparation
+under established workflow. No ordinary staging/commit or external issue action
+authorized/performed, no further tests selected. Earlier diagnosis follows.
+
+Initial read-only report: begin_texmacs and BEGIN_texmacs work while
+begin_TEXMACS/BEGIN_TEXMACS reportedly fail. Static inspection
 finds exact :type comparison to "texmacs" in org-texmacs--block-p
 (org-texmacs-source.el) and separate fragment ancestor exclusion
 (org-texmacs-fragment.el). Shared predicate also controls source extraction,
@@ -13,7 +40,7 @@ shielding and bibliography masking; these need consistent recognition. Org's
 published Emacs31.1 special-block parser binds case-fold-search t, captures raw
 type spelling and stores it unchanged in :type. Official source:
 https://raw.githubusercontent.com/emacs-mirror/emacs/emacs-31.1/lisp/org/org-element.el.
-Direct release_9.8 source fetch failed; no fresh pinned9.8.10 runtime probe run.
+Direct release_9.8 source fetch failed; initial diagnosis had no runtime probe.
 Conclusion: lowercase-only wrapper name is a local recognition restriction, not
 a necessary worker/AST-first/TeXmacs constraint. A bounded change can compare
 wrapper type case-insensitively (validate string before downcase) and synchronize
@@ -21,11 +48,8 @@ ancestor exclusion; do not modify original Org AST/body/source or native tag cas
 Inline STM fragment tag names remain intentionally literal/case-sensitive.
 If centralizing ancestor test on the shared predicate, make the fragment module's
 source-module dependency explicit rather than relying on main load order.
-Suggested future coverage: BEGIN/END and name-case combinations, body/source
-preservation, no inline discovery inside uppercase wrappers, preprocessing and
-bibliography shielding, normal conversion and unrelated block rejection. This is
-a diagnosis/change option, not implementation or backlog adoption. No unique raw
-evidence to archive; necessary findings are extracted here. Previous issue3
+The diagnosis is now selected for implementation/testing as described above.
+No unique raw evidence to archive; necessary findings are extracted here. Previous issue3
 implementation/acceptance below remains complete and committed.
 
 ## Completed Issue #3

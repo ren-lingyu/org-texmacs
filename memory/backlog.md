@@ -23,6 +23,19 @@ decision.
 
 ## Active next
 
+### Completed selected Issue #5: case-insensitive Org TeXmacs wrappers
+
+User selected source/fragment/doc/test changes and GAW
+maintenance. The adopted boundary is Org wrapper names only, preserving raw
+AST/source/STM and intentional native/inline tag case sensitivity. Shared block
+predicate and fragment exclusion synchronized; explicit internal dependency added.
+Five maintained ERT cover162marker/name cases, native output, fragment exclusion,
+preprocessing and bibliography shielding.114focused/9real/401core/complete Nix
+strict compilation/lint pass; candidate uncommitted, ordinary staging needs user
+approval. Exact scope/authorization/status in memory/current.md. Issue association
+https://github.com/ren-lingyu/org-texmacs/issues/5 supplied by user; public page
+fetch failed, no remote state/content claim or external write selected.
+
 ### Completed selected Issue #3: export API and managed result lifecycle
 
 User selected implementation after adopting the complete

@@ -2401,3 +2401,80 @@ names occur only in migration descriptions; retained special names intentional.
 Scope is issue3-related documents/comments, not a new whole-project audit.
 No raw archive selected: Git preserves commit evidence, substantive conclusions
 are extracted here and in current memory; product source/docs unchanged.
+
+## Issue #5: Org wrapper name case acceptance (2026-10-15)
+
+User first requested diagnosis, then adopted case-insensitive Org block names
+and authorized source/fragment/documentation/test edits plus GAW maintenance.
+User supplied https://github.com/ren-lingyu/org-texmacs/issues/5 as association;
+public page fetch failed, no remote content/state or closure claim/write.
+The selected local request is implemented and validated in an uncommitted
+four-path candidate on the committed issue3 baseline. No candidate project
+parent inferred from unchanged HEAD; later commit can be verified by bytes.
+
+Source predicate validates :type is a string before comparing downcase with
+texmacs, without changing AST/source/body. Fragment ancestry exclusion now uses
+the same predicate and explicitly requires the source module. Direct extraction,
+document/island/scope validation, preprocessing STM shielding and bibliography
+masking inherit consistent recognition. README distinguishes Org wrapper naming
+from intentionally case-sensitive native STM and inline fragment tags. Worker,
+native parsing, source ownership/cache, pure lowering and source output unchanged.
+
+Five new maintained ERT verify162 combinations of BEGIN/END keyword casing,
+opening/closing name casing and ambient case-fold-search (nil/t); raw body and
+Org :type spelling remain unchanged. Nested block content excluded from inline
+discovery while outer fragments remain discoverable and uppercase inline MATH
+remains literal. Actual native conversion yields identical body/STM provenance/
+serialized bytes for lower/upper/mixed wrapper types and preserves complete
+source state. Root and actual included uppercase blocks shield INCLUDE/SETUPFILE
+text without reading absent files; bibliography discovery ignores fake declarations
+and citations in differently cased blocks. Existing invalid-node predicate test
+now includes missing/nonstring :type, avoiding downcase type errors.
+
+The initial diagnosis used exact local comparisons and published Emacs31.1 parser
+source (special-block parser binds case-fold-search t and stores original type):
+https://raw.githubusercontent.com/emacs-mirror/emacs/emacs-31.1/lisp/org/org-element.el.
+Direct release_9.8 source lookup failed; actual locked Org9.8.10 maintained tests
+now confirm the relevant parsing behavior, rather than relying on newer source.
+
+User authorized repeated commands with necessary locked-dependency networking,
+tmp snapshots/logs and Nix store/cache writes, no root lock changes:
+
+- timeout 120s nix build 'path:./tmp/block-case#checks.x86_64-linux.focused' --no-link --no-update-lock-file --print-build-logs
+- timeout 240s nix flake check path:./tmp/block-case --no-update-lock-file --print-build-logs
+
+Focused114/11448.641846s passes; all five new cases pass, native2.147122s and
+162case matrix0.032900s. Complete240s gate exits0:401core ERT204.454363s,
+actual extension fixtures9/9 11.781628s and all6logged checks/strict module
+compilation/package-lint pass. No corrective rerun or failure in this task.
+Full gate reuses focused derivation and runs core/real integration/lint checks.
+Pinned Emacs31.1/Org9.8.10/TeXmacs2.1.5 and same real include/organize/blog+
+Org-roam fixtures as accepted issue3 isolation; x86_64-linux only. Other systems,
+GUI/full minimum9.8 behavior unverified. No new runtime dependency or build wiring.
+
+Before/after gate,25project inputs match root and isolated copied bytes;11foreign
+Elisp modules match unchanged accepted fixture digests. Root lock unchanged,
+user flake mirror untouched, ordinary index empty. Only four task paths changed:
+
+| Path | Final SHA-256 |
+| --- | --- |
+| README.org | db7d41fee382bceb019e5b7115c6f2edc79b434a18966e9d3a8cc3b6dba31ce1 |
+| org-texmacs-source.el | 18afa541de20383bf7df82ccb057d6bde63820ead9315319aa7bdd5d726dc1d9 |
+| org-texmacs-fragment.el | eafb44d70a90d87ee7dc8f069c57e40aaafe7a2b8b7c5405a4faad48ffaad152 |
+| tests/ert/ert.el | a610ff9505e31ad925b1e03f6e08de1803ab90299ee870688b841ecdf3c5fdb1 |
+
+Project manifest SHA2569c5614d614d53a786fb4f18a2aa4f2fb641d272a49069088efedef45523076d0;
+foreign manifest f4ff7bb5ba39869e2e636b7233f1d129f858c09d01e1e70b42e395a2a9e1cb64;
+isolated flake07b58b8cff7ee8c4cae7ea1918ac76b2916284c4902058e85c92adaa9f5401f3;
+root/copied lock118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a.
+Isolation copies maintained test/package inputs and prior pinned fixture, retains
+mirror-equipped flake/lock and optional test-only Org-roam, and changes focused
+selector to block-case, test-block, test-tree, test-fragment, preprocess and
+bibliography names. Actual integration uses unchanged maintained runner/fixtures.
+
+Archive selection under global/project skills: no original-byte capture selected.
+No ad hoc probe or retired document; maintained ERT preserves all new reproduction.
+Build logs/copied dependencies/snapshots duplicate reproducible maintained checks;
+results, semantic findings, exact inputs, commands and limits extracted above.
+No whole-directory/conversation capture or tmp cleanup. Task implementation/docs
+remain uncommitted until user-controlled staging/commit; external tracking separate.
