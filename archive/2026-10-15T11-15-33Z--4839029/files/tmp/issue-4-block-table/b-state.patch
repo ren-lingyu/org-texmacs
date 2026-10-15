@@ -1,0 +1,333 @@
+diff --git a/README.org b/README.org
+index c47eb5d..8f540f6 100644
+--- a/README.org
++++ b/README.org
+@@ -719,9 +719,29 @@ Org rule rows become =1ln= top or bottom borders on adjacent TeXmacs rows; a
+ rule separating the first row group preserves the visible header boundary
+ without implicitly making header contents bold.  Leading and trailing rules
+ are supported, but consecutive rules are rejected because their multiplicity
+-has no lossless mapping in this subset.  =#+TBLFM=, alignment/width cookie
+-rows, special control rows or columns, merged/grouped cells, non-Org table
+-types and ragged rows are rejected rather than approximated.
++has no lossless mapping in this subset.
++
++A table may have one independent alignment-format row anywhere in its body:
++
++#+begin_example
++| <l>  | <c>   | <r>  |
++| Name | Score | Rank |
++|------+-------+------|
++| A    | 95    | 1    |
++#+end_example
++
++Every cell of that row must contain exactly =<l>=, =<c>= or =<r>=, with optional
++surrounding whitespace, and its column count must match the data rows.  It sets
++native =cell-halign= for each complete column and is omitted from output and
++border coordinates.  Multiple format rows are rejected even if identical;
++partial declarations and cookies mixed with data are unsupported.  Tables without
++a format row retain their previous alignment; numerical content does not enable
++automatic alignment inference.  Removing the format row does not repair the
++remaining table: missing data or consecutive rules still fail.
++
++=#+TBLFM=, width cookies such as =<10>= / =<r10>=, other special control rows or
++columns, merged/grouped cells, non-Org table types and ragged rows are rejected
++rather than approximated.
+ 
+ Basic tables accept =#+NAME:= and =#+CAPTION:=.  A captioned table becomes
+ =(big-table TABULAR CAPTION)=; TeXmacs supplies its table counter and caption
+diff --git a/org-texmacs-document.el b/org-texmacs-document.el
+index ae9c3f2..7eefb86 100644
+--- a/org-texmacs-document.el
++++ b/org-texmacs-document.el
+@@ -531,6 +531,40 @@ Visit named footnote bodies at first use.  Never query buffers or files."
+        (mapcar (lambda (line) (org-texmacs--document-create :body line))
+                (or (split-string value "\n" nil) '(""))))))))
+ 
++(defun org-texmacs--document-table-alignment (contents)
++  "Extract at most one complete alignment row from validated CONTENTS.
++Return (ROWS ALIGNMENTS FORMAT-ROW), keeping ROWS in source order.
++ALIGNMENTS is nil or a list of column strings l, c or r.  FORMAT-ROW is the
++removed row identity or nil.  Never mutate the Org AST."
++  (let ((case-fold-search nil) rows alignment format-row)
++    (dolist (row contents)
++      (if (eq (org-element-property :type row) 'rule)
++          (push row rows)
++        (let* ((fields
++                (mapcar
++                 (lambda (cell)
++                   (let ((values (org-element-contents cell)))
++                     (when (and (proper-list-p values) (cl-every #'stringp values))
++                       (string-trim (apply #'concat values)))))
++                 (org-element-contents row)))
++               (control
++                (or (org-export-table-row-is-special-p row nil)
++                    (cl-some
++                     (lambda (text)
++                       (and text (string-match-p
++                                  "\\`<\\(?:[lcr][0-9]*\\|[0-9]+\\)>\\'" text)))
++                     fields))))
++          (if (not control)
++              (push row rows)
++            (unless (cl-every (lambda (text) (member text '("<l>" "<c>" "<r>")))
++                              fields)
++              (org-texmacs--document-fail row "Unsupported table control row"))
++            (when alignment
++              (org-texmacs--document-fail row "Multiple table alignment rows"))
++            (setq alignment (mapcar (lambda (text) (substring text 1 2)) fields)
++                  format-row row)))))
++    (list (nreverse rows) alignment format-row)))
++
+ (defun org-texmacs--document-pack (tag parts)
+   "Wrap lowered PARTS in TAG, prefixing provenance paths by child index."
+   (let ((index 0) (children nil) (paths nil) (file-paths nil))
+@@ -1185,7 +1219,7 @@ from one snapshot."
+              (list (format "%d" row) (format "%d" row) "1" "-1"
+                    property "1ln"))))
+          (table-block (node ancestors)
+-           (let ((contents (org-element-contents node)))
++           (let ((contents (org-element-contents node)) alignment)
+              (unless (and (eq (org-element-property :type node) 'org)
+                           (null (org-element-property :tblfm node))
+                           (proper-list-p contents) contents)
+@@ -1213,8 +1247,21 @@ from one snapshot."
+                                  cells))
+                      (org-texmacs--document-fail row "Invalid table row")))
+                   (t (org-texmacs--document-fail row "Unsupported table row")))))
+-             (when (org-export-table-has-special-column-p node)
+-               (org-texmacs--document-fail node "Unsupported special table column"))
++             (let* ((plan (org-texmacs--document-table-alignment contents))
++                    (filtered (car plan))
++                    (view node))
++               (setq alignment (cadr plan))
++               (when alignment
++                 ;; A format row must not hide a special column.  Reparent only
++                 ;; copied rows; prepared input and source identities stay intact.
++                 (setq view (org-element-copy node t))
++                 (apply #'org-element-set-contents view
++                        (cl-loop for original in contents
++                                 for copied in (org-element-contents view)
++                                 unless (eq original (nth 2 plan)) collect copied)))
++               (when (org-export-table-has-special-column-p view)
++                 (org-texmacs--document-fail node "Unsupported special table column"))
++               (setq contents filtered))
+              (let ((columns nil) (row-number 0) (previous-rule nil)
+                    rows rules)
+                (dolist (row contents)
+@@ -1246,15 +1293,26 @@ from one snapshot."
+                      (setq previous-rule nil))))
+                (unless (> row-number 0)
+                  (org-texmacs--document-fail node "Org table has no data rows"))
++               (when (and alignment (/= (length alignment) columns))
++                 (org-texmacs--document-fail node "Table alignment column count differs"))
+                (org-texmacs--document-pack
+                 'tabular
+                 (list
+                  (org-texmacs--document-pack
+                   'tformat
+-                  (append (nreverse rules)
+-                          (list
+-                           (org-texmacs--document-pack
+-                            'table (nreverse rows))))))))))
++                  (append
++                   (cl-loop for value in alignment for column from 1
++                            collect
++                            (org-texmacs--document-pack
++                             'cwith
++                             (mapcar
++                              (lambda (text) (org-texmacs--document-create :body text))
++                              (list "1" "-1" (number-to-string column)
++                                    (number-to-string column) "cell-halign" value))))
++                   (nreverse rules)
++                   (list
++                    (org-texmacs--document-pack
++                     'table (nreverse rows))))))))))
+          (list-item (node kind ancestors)
+            (when (or (org-element-property :checkbox node)
+                      (org-element-property :counter node))
+diff --git a/tests/ert/ert.el b/tests/ert/ert.el
+index 3b7ea51..4072da1 100644
+--- a/tests/ert/ert.el
++++ b/tests/ert/ert.el
+@@ -3644,6 +3644,123 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
+            (row (cell "h3") (cell "h4"))
+            (row (cell "a") (cell "b"))))))))))
+ 
++(ert-deftest org-texmacs-document-table-alignment-row-positions-and-ownership ()
++  :tags '(issue4)
++  (dolist (position '(0 1 2))
++    (with-temp-buffer
++      (org-mode)
++      (let ((lines '("| LeftLongest | MiddleLongest | RightLongest |\n"
++                     "| L | C | R |\n")))
++        (dotimes (index 3)
++          (when (= index position) (insert "| <l> | <c> | <r> |\n"))
++          (when (< index 2) (insert (nth index lines)))))
++      (let* ((source (buffer-string))
++             (input (org-texmacs-prepare-buffer (current-buffer)))
++             (print-circle t)
++             (before (prin1-to-string (org-texmacs-input-ast input)))
++             (document (org-texmacs-document input)))
++        (should
++         (equal (org-texmacs-document-body document)
++                '(document
++                  (tabular
++                   (tformat
++                    (cwith "1" "-1" "1" "1" "cell-halign" "l")
++                    (cwith "1" "-1" "2" "2" "cell-halign" "c")
++                    (cwith "1" "-1" "3" "3" "cell-halign" "r")
++                    (table
++                     (row (cell "LeftLongest") (cell "MiddleLongest") (cell "RightLongest"))
++                     (row (cell "L") (cell "C") (cell "R"))))))))
++        (should (equal before (prin1-to-string (org-texmacs-input-ast input))))
++        (should (equal source (buffer-string)))))))
++
++(ert-deftest org-texmacs-document-table-alignment-column-counts-and-rules ()
++  :tags '(issue4)
++  (dolist (count '(1 2 4))
++    (with-temp-buffer
++      (org-mode)
++      (let ((fields (make-list count "<c>")) (data (make-list count "x")))
++        (insert "| " (mapconcat #'identity fields " | ") " |\n"
++                "| " (mapconcat #'identity data " | ") " |\n"))
++      (let* ((body (org-texmacs-document-body
++                    (org-texmacs-document-from-buffer (current-buffer))))
++             (format (cadadr body)))
++        (should (eq (car format) 'tformat))
++        (should (= (length (cdr format)) (1+ count)))
++        (should (= (length (cdr (cadr (car (last format))))) count)))))
++  (with-temp-buffer
++    (org-mode)
++    (insert "|---+---|\n| <r> | <l> |\n| Head | Col |\n"
++            "|---+---|\n| 1 | 2 |\n|---+---|\n")
++    (should
++     (equal
++      (org-texmacs-document-body (org-texmacs-document-from-buffer (current-buffer)))
++      '(document
++        (tabular
++         (tformat
++          (cwith "1" "-1" "1" "1" "cell-halign" "r")
++          (cwith "1" "-1" "2" "2" "cell-halign" "l")
++          (cwith "1" "1" "1" "-1" "cell-tborder" "1ln")
++          (cwith "1" "1" "1" "-1" "cell-bborder" "1ln")
++          (cwith "2" "2" "1" "-1" "cell-bborder" "1ln")
++          (table (row (cell "Head") (cell "Col"))
++                 (row (cell "1") (cell "2"))))))))))
++
++(ert-deftest org-texmacs-document-table-alignment-caption-reference-and-files ()
++  :tags '(issue4)
++  (org-texmacs-test--with-worker
++    (let (documents)
++      (dolist (format '(nil "| <l> | <r> |\n"))
++        (with-temp-buffer
++          (org-mode)
++          (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n[[t]]\n\n"
++                  "#+name: t\n#+caption: Caption [[./caption.org][CaptionFile]]\n"
++                  (or format "") "| [[./asset.org][AssetFile]] | =<r>= <alpha> |\n"
++                  "\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
++          (push (org-texmacs-document-from-buffer (current-buffer)) documents)))
++      (let* ((aligned (car documents)) (plain (cadr documents))
++             (body (copy-tree (org-texmacs-document-body aligned))))
++        (cl-labels ((strip (node)
++                      (when (consp node)
++                        (when (eq (car node) 'tformat)
++                          (setcdr node
++                                  (cl-remove-if
++                                   (lambda (child)
++                                     (and (consp child) (eq (car child) 'cwith)
++                                          (equal (nth 5 child) "cell-halign")))
++                                   (cdr node))))
++                        (mapc #'strip (cdr node)))))
++          (strip body))
++        (should (equal body (org-texmacs-document-body plain)))
++        (should (equal (org-texmacs-document-stm-paths aligned)
++                       (org-texmacs-document-stm-paths plain)))
++        (should (= (length (org-texmacs-document-file-paths aligned)) 2))
++        (dolist (path (org-texmacs-document-file-paths aligned))
++          (let ((leaf (org-texmacs-document-body aligned)))
++            (dolist (index path) (setq leaf (nth (1+ index) leaf)))
++            (should (member leaf '("./caption.org" "./asset.org")))))
++        (should (consp (org-texmacs--native-encode-document aligned)))))))
++
++(ert-deftest org-texmacs-document-table-alignment-rejections ()
++  :tags '(issue4)
++  (dolist (source '("| <l> | <r> |\n| <l> | <r> |\n| a | b |\n"
++                    "| <l> | <r> |\n| a | b |\n| <r> | <l> |\n"
++                    "| <l> | |\n| a | b |\n"
++                    "| <l> | data |\n| a | b |\n"
++                    "| <r10> | data |\n| a | b |\n"
++                    "| <10> |\n| a |\n"
++                    "| <l> | <r> |\n"
++                    "|---+---|\n| <l> | <r> |\n|---+---|\n"
++                    "| <l> | <r> |\n| a | b | c |\n"
++                    "| a | b |\n| <l> | <r> | <c> |\n"
++                    "|---+---|\n| <l> | <r> |\n|---+---|\n| a | b |\n"
++                    "| <l> | <r> |\n| / | < |\n| # | data |\n"))
++    (with-temp-buffer
++      (org-mode)
++      (insert source)
++      (should-error (org-texmacs-document-from-buffer (current-buffer))
++                    :type 'org-texmacs-document-error)
++      (should (equal source (buffer-string))))))
++
+ (ert-deftest org-texmacs-document-rejects-advanced-table-semantics ()
+   (dolist
+       (source
+@@ -6072,6 +6189,58 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
+       (let ((text (org-texmacs-test--pdf-text actual)))
+         (should-not (string-match-p "\\bquote\\b" text))))))
+ 
++(ert-deftest org-texmacs-pdf-table-alignment-frontend-and-native-layout ()
++  :tags '(issue4)
++  (org-texmacs-test--with-worker
++    (let ((actual (expand-file-name "table.pdf" test-directory))
++          (reference (expand-file-name "table-reference.pdf" test-directory)))
++      (with-temp-buffer
++        (org-mode)
++        (setq buffer-file-name (expand-file-name "table.org" test-directory))
++        (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
++                "#+begin_quote\nQuoteTableContext\n#+end_quote\n\n"
++                "| LeftLongest | MiddleLongest | RightLongest |\n"
++                "| <l> | <c> | <r> |\n| L | C | R |\n")
++        (set-buffer-modified-p nil)
++        (let ((before (buffer-string)))
++          (let ((file (org-texmacs-export-to-texmacs)))
++            (with-temp-buffer
++              (insert-file-contents-literally file nil 0 32)
++              (should (string-prefix-p "<TeXmacs|" (buffer-string)))))
++          (should (equal actual (org-texmacs-export-to-pdf)))
++          (should (equal before (buffer-string)))
++          (should-not (buffer-modified-p))))
++      (org-texmacs-document-save-pdf
++       (org-texmacs--document-create
++        :body '(document
++                (quotation (document (concat "QuoteTableContext ")))
++                (tabular
++                 (tformat
++                  (cwith "1" "-1" "1" "1" "cell-halign" "l")
++                  (cwith "1" "-1" "2" "2" "cell-halign" "c")
++                  (cwith "1" "-1" "3" "3" "cell-halign" "r")
++                  (table
++                   (row (cell "LeftLongest") (cell "MiddleLongest") (cell "RightLongest"))
++                   (row (cell "L") (cell "C") (cell "R")))))))
++       reference)
++      (let ((words (org-texmacs-test--pdf-words actual))
++            (expected (org-texmacs-test--pdf-words reference)))
++        (dolist (token '("QuoteTableContext" "LeftLongest" "MiddleLongest" "RightLongest" "L" "C" "R"))
++          (cl-mapc (lambda (a b) (should (<= (abs (- a b)) 1.0)))
++                   (org-texmacs-test--pdf-word words token)
++                   (org-texmacs-test--pdf-word expected token)))
++        (dolist (column '(("LeftLongest" "L" left)
++                          ("MiddleLongest" "C" center)
++                          ("RightLongest" "R" right)))
++          (let* ((a (org-texmacs-test--pdf-word words (nth 0 column)))
++                 (b (org-texmacs-test--pdf-word words (nth 1 column)))
++                 (position (lambda (bounds)
++                             (pcase (nth 2 column)
++                               ('left (nth 0 bounds))
++                               ('right (nth 2 bounds))
++                               (_ (/ (+ (nth 0 bounds) (nth 2 bounds)) 2.0))))))
++            (should (<= (abs (- (funcall position a) (funcall position b))) 1.0))))))))
++
+ (ert-deftest org-texmacs-pdf-footnote-text-and-repeated-markers ()
+   (org-texmacs-test--with-worker
+     (let ((file (expand-file-name "footnotes.pdf" test-directory)))

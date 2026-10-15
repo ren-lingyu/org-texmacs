@@ -1,0 +1,210 @@
+this derivation will be built:
+  /nix/store/9rpg4c4mqzbf4ildxcxk16j1zmj37bfs-org-texmacs-issue4-focused.drv
+building '/nix/store/9rpg4c4mqzbf4ildxcxk16j1zmj37bfs-org-texmacs-issue4-focused.drv'...
+org-texmacs-issue4-focused> Running 21 tests (2026-10-15 10:58:41+0000, selector `(or (tag issue4) "^org-texmacs-document-.*table" "^org-texmacs-document-preformatted" "^org-texmacs-document-list" "^org-texmacs-document-quote")')
+org-texmacs-issue4-focused> Test org-texmacs-pdf-table-alignment-frontend-and-native-layout backtrace:
+org-texmacs-issue4-focused>   org-texmacs--document-fail((table-row (:standard-properties [142 142
+org-texmacs-issue4-focused>   #f(compiled-function (node ancestors) #<bytecode -0xf999efa2e58a6b7>
+org-texmacs-issue4-focused>   #f(compiled-function (node context ancestors) #<bytecode 0x199881ce2
+org-texmacs-issue4-focused>   #f(compiled-function (nodes context ancestors) #<bytecode 0xa436de0f
+org-texmacs-issue4-focused>   #f(compiled-function (node context ancestors) #<bytecode 0x199881ce2
+org-texmacs-issue4-focused>   #f(compiled-function (nodes context ancestors) #<bytecode 0xa436de0f
+org-texmacs-issue4-focused>   org-texmacs--document-lower((org-data (:standard-properties [1 1 1 1
+org-texmacs-issue4-focused>   org-texmacs--prepare-buffer(#<killed buffer> #f(compiled-function (i
+org-texmacs-issue4-focused>   org-texmacs--bibliography-convert(#<killed buffer> #f(compiled-funct
+org-texmacs-issue4-focused>   org-texmacs--preprocess-convert(#<killed buffer> #f(compiled-functio
+org-texmacs-issue4-focused>   #f(compiled-function (source sources subtree region options) #<bytec
+org-texmacs-issue4-focused>   org-texmacs--export-named-file(".tm" #f(compiled-function (source so
+org-texmacs-issue4-focused>   org-texmacs-export-to-texmacs()
+org-texmacs-issue4-focused>   (let ((file (org-texmacs-export-to-texmacs))) (let ((temp-buffer (ge
+org-texmacs-issue4-focused>   (let ((before (buffer-string))) (let ((file (org-texmacs-export-to-t
+org-texmacs-issue4-focused>   (progn (org-mode) (setq buffer-file-name (expand-file-name "table.or
+org-texmacs-issue4-focused>   (unwind-protect (progn (org-mode) (setq buffer-file-name (expand-fil
+org-texmacs-issue4-focused>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue4-focused>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue4-focused>   (let ((actual (expand-file-name "table.pdf" test-directory)) (refere
+org-texmacs-issue4-focused>   (let ((default-directory (file-name-as-directory test-directory))) (
+org-texmacs-issue4-focused>   (unwind-protect (let ((default-directory (file-name-as-directory tes
+org-texmacs-issue4-focused>   (let ((org-texmacs--worker-process nil) (org-texmacs--worker-directo
+org-texmacs-issue4-focused>   #f(lambda () [t] (let ((org-texmacs--worker-process nil) (org-texmac
+org-texmacs-issue4-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-focused>   ert--run-test-internal(#s(ert--test-execution-info :test ... :result
+org-texmacs-issue4-focused>   ert-run-test(#s(ert-test :name org-texmacs-pdf-table-alignment-front
+org-texmacs-issue4-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-focused>   ert-run-tests((or (tag issue4) "^org-texmacs-document-.*table" "^org
+org-texmacs-issue4-focused>   ert-run-tests-batch((or (tag issue4) "^org-texmacs-document-.*table"
+org-texmacs-issue4-focused>   ert-run-tests-batch-and-exit((or (tag issue4) "^org-texmacs-document
+org-texmacs-issue4-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4) "^org-texmacs-d
+org-texmacs-issue4-focused>   command-line-1(("--load" "/nix/store/fr7zh9avybh3627q4sw9b19453mznx2
+org-texmacs-issue4-focused>   command-line()
+org-texmacs-issue4-focused>   normal-top-level()
+org-texmacs-issue4-focused> Test org-texmacs-pdf-table-alignment-frontend-and-native-layout condition:
+org-texmacs-issue4-focused>     (org-texmacs-document-error "Unsupported table control row" table-row
+org-texmacs-issue4-focused>                             142)
+org-texmacs-issue4-focused>    FAILED   1/21  org-texmacs-pdf-table-alignment-frontend-and-native-layout (0.138244 sec) at ../nix/store/fr7zh9avybh3627q4sw9b19453mznx2s-ert.el:6157
+org-texmacs-issue4-focused>    passed   2/21  org-texmacs-pdf-block-quotation-and-center-layout (1.905884 sec)
+org-texmacs-issue4-focused>    passed   3/21  org-texmacs-document-list-source-forms (0.008140 sec)
+org-texmacs-issue4-focused>    passed   4/21  org-texmacs-document-list-containers-native (2.167130 sec)
+org-texmacs-issue4-focused>    passed   5/21  org-texmacs-document-quote-and-center-containers (0.006005 sec)
+org-texmacs-issue4-focused>    passed   6/21  org-texmacs-document-quote-uniform-quotation (0.015519 sec)
+org-texmacs-issue4-focused>    passed   7/21  org-texmacs-document-preformatted-native-and-provenance (1.853716 sec)
+org-texmacs-issue4-focused>    passed   8/21  org-texmacs-document-preformatted-source-forms (0.001856 sec)
+org-texmacs-issue4-focused>    passed   9/21  org-texmacs-document-preformatted-tab-snapshot-and-preserve-indent (0.002094 sec)
+org-texmacs-issue4-focused>    passed  10/21  org-texmacs-document-named-table-caption-ownership (0.001061 sec)
+org-texmacs-issue4-focused>    passed  11/21  org-texmacs-document-named-table-captions-and-links (0.028672 sec)
+org-texmacs-issue4-focused>    passed  12/21  org-texmacs-document-named-table-native-and-provenance (1.826932 sec)
+org-texmacs-issue4-focused>    passed  13/21  org-texmacs-document-named-table-rejects-before-worker (0.037562 sec)
+org-texmacs-issue4-focused>    passed  14/21  org-texmacs-document-named-table-uncaptioned-and-priority (0.006424 sec)
+org-texmacs-issue4-focused>    passed  15/21  org-texmacs-document-rejects-advanced-table-semantics (0.014485 sec)
+org-texmacs-issue4-focused> Test org-texmacs-document-table-alignment-column-counts-and-rules backtrace:
+org-texmacs-issue4-focused>   org-texmacs--document-fail((table-row (:standard-properties [1 1 2 8
+org-texmacs-issue4-focused>   #f(compiled-function (node ancestors) #<bytecode -0xf999efa2e58a6b7>
+org-texmacs-issue4-focused>   #f(compiled-function (node context ancestors) #<bytecode 0x199881ce2
+org-texmacs-issue4-focused>   #f(compiled-function (nodes context ancestors) #<bytecode 0xa436de0f
+org-texmacs-issue4-focused>   #f(compiled-function (node context ancestors) #<bytecode 0x199881ce2
+org-texmacs-issue4-focused>   #f(compiled-function (nodes context ancestors) #<bytecode 0xa436de0f
+org-texmacs-issue4-focused>   org-texmacs--document-lower((org-data (:standard-properties [1 1 1 1
+org-texmacs-issue4-focused>   org-texmacs--prepare-buffer(#<killed buffer> org-texmacs-document ni
+org-texmacs-issue4-focused>   org-texmacs-document-from-buffer(#<killed buffer>)
+org-texmacs-issue4-focused>   (let* ((x (org-texmacs-document-from-buffer (current-buffer)))) (pro
+org-texmacs-issue4-focused>   (let* ((body (let* ((x (org-texmacs-document-from-buffer (current-bu
+org-texmacs-issue4-focused>   (progn (org-mode) (let ((fields (make-list count "<c>")) (data (make
+org-texmacs-issue4-focused>   (unwind-protect (progn (org-mode) (let ((fields (make-list count "<c
+org-texmacs-issue4-focused>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue4-focused>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue4-focused>   (let ((count (car tail))) (let ((temp-buffer (generate-new-buffer "
+org-texmacs-issue4-focused>   (while tail (let ((count (car tail))) (let ((temp-buffer (generate-n
+org-texmacs-issue4-focused>   (let ((tail '(1 2 4))) (while tail (let ((count (car tail))) (let ((
+org-texmacs-issue4-focused>   #f(lambda () [t] (let ((tail '...)) (while tail (let (...) (let ...
+org-texmacs-issue4-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-focused>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-issue4-focused>   ert-run-test(#s(ert-test :name org-texmacs-document-table-alignment-
+org-texmacs-issue4-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-focused>   ert-run-tests((or (tag issue4) "^org-texmacs-document-.*table" "^org
+org-texmacs-issue4-focused>   ert-run-tests-batch((or (tag issue4) "^org-texmacs-document-.*table"
+org-texmacs-issue4-focused>   ert-run-tests-batch-and-exit((or (tag issue4) "^org-texmacs-document
+org-texmacs-issue4-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4) "^org-texmacs-d
+org-texmacs-issue4-focused>   command-line-1(("--load" "/nix/store/fr7zh9avybh3627q4sw9b19453mznx2
+org-texmacs-issue4-focused>   command-line()
+org-texmacs-issue4-focused>   normal-top-level()
+org-texmacs-issue4-focused> Test org-texmacs-document-table-alignment-column-counts-and-rules condition:
+org-texmacs-issue4-focused>     (org-texmacs-document-error "Unsupported table control row" table-row
+org-texmacs-issue4-focused>                             1)
+org-texmacs-issue4-focused>    FAILED  16/21  org-texmacs-document-table-alignment-column-counts-and-rules (0.001790 sec) at ../nix/store/fr7zh9avybh3627q4sw9b19453mznx2s-ert.el:3676
+org-texmacs-issue4-focused> Test org-texmacs-document-table-alignment-rejections backtrace:
+org-texmacs-issue4-focused>   ert-fail(((should-error (org-texmacs-document-from-buffer (current-b
+org-texmacs-issue4-focused>   (if errorp3283 nil (ert-fail (append (funcall form-description-fn-32
+org-texmacs-issue4-focused>   (let ((errorp3283 nil) (form-description-fn-3284 #'(lambda nil form-
+org-texmacs-issue4-focused>   (let (form-description-3282) (let ((errorp3283 nil) (form-descriptio
+org-texmacs-issue4-focused>   (let ((value-3280 'ert-form-evaluation-aborted-3281)) (let (form-des
+org-texmacs-issue4-focused>   (let* ((fn-3278 #'org-texmacs-document-from-buffer) (args-3279 (cond
+org-texmacs-issue4-focused>   (progn (org-mode) (insert source) (let* ((fn-3278 #'org-texmacs-docu
+org-texmacs-issue4-focused>   (unwind-protect (progn (org-mode) (insert source) (let* ((fn-3278 #'
+org-texmacs-issue4-focused>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue4-focused>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue4-focused>   (let ((source (car tail))) (let ((temp-buffer (generate-new-buffer "
+org-texmacs-issue4-focused>   (while tail (let ((source (car tail))) (let ((temp-buffer (generate-
+org-texmacs-issue4-focused>   (let ((tail '("| <l> | <r> |\n| <l> | <r> |\n| a | b |\n" "| <l> | <
+org-texmacs-issue4-focused>   #f(lambda () [t] (let ((tail '...)) (while tail (let (...) (let ...
+org-texmacs-issue4-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-focused>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-issue4-focused>   ert-run-test(#s(ert-test :name org-texmacs-document-table-alignment-
+org-texmacs-issue4-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-focused>   ert-run-tests((or (tag issue4) "^org-texmacs-document-.*table" "^org
+org-texmacs-issue4-focused>   ert-run-tests-batch((or (tag issue4) "^org-texmacs-document-.*table"
+org-texmacs-issue4-focused>   ert-run-tests-batch-and-exit((or (tag issue4) "^org-texmacs-document
+org-texmacs-issue4-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4) "^org-texmacs-d
+org-texmacs-issue4-focused>   command-line-1(("--load" "/nix/store/fr7zh9avybh3627q4sw9b19453mznx2
+org-texmacs-issue4-focused>   command-line()
+org-texmacs-issue4-focused>   normal-top-level()
+org-texmacs-issue4-focused> Test org-texmacs-document-table-alignment-rejections condition:
+org-texmacs-issue4-focused>     (ert-test-failed
+org-texmacs-issue4-focused>      ((should-error (org-texmacs-document-from-buffer (current-buffer))
+org-texmacs-issue4-focused>                 :type 'org-texmacs-document-error)
+org-texmacs-issue4-focused>       :form (org-texmacs-document-from-buffer #<killed buffer>) :value
+org-texmacs-issue4-focused>       #s(org-texmacs-document (document (tabular ...)) nil ("generic") nil
+org-texmacs-issue4-focused>                           nil "/build/" nil)
+org-texmacs-issue4-focused>       :fail-reason "did not signal an error"))
+org-texmacs-issue4-focused>    FAILED  17/21  org-texmacs-document-table-alignment-rejections (0.004415 sec) at ../nix/store/fr7zh9avybh3627q4sw9b19453mznx2s-ert.el:3708
+org-texmacs-issue4-focused> Test org-texmacs-document-table-alignment-row-positions-and-ownership backtrace:
+org-texmacs-issue4-focused>   org-texmacs--document-fail((table-row (:standard-properties [1 1 2 2
+org-texmacs-issue4-focused>   #f(compiled-function (node ancestors) #<bytecode -0xf999efa2e58a6b7>
+org-texmacs-issue4-focused>   #f(compiled-function (node context ancestors) #<bytecode 0x199881ce2
+org-texmacs-issue4-focused>   #f(compiled-function (nodes context ancestors) #<bytecode 0xa436de0f
+org-texmacs-issue4-focused>   #f(compiled-function (node context ancestors) #<bytecode 0x199881ce2
+org-texmacs-issue4-focused>   #f(compiled-function (nodes context ancestors) #<bytecode 0xa436de0f
+org-texmacs-issue4-focused>   org-texmacs--document-lower((org-data (:standard-properties [1 1 1 8
+org-texmacs-issue4-focused>   org-texmacs--prepare-buffer(#<killed buffer> identity nil nil nil ni
+org-texmacs-issue4-focused>   org-texmacs-prepare-buffer(#<killed buffer>)
+org-texmacs-issue4-focused>   (let* ((source (buffer-string)) (input (org-texmacs-prepare-buffer (
+org-texmacs-issue4-focused>   (progn (org-mode) (let ((lines '("| LeftLongest | MiddleLongest | Ri
+org-texmacs-issue4-focused>   (unwind-protect (progn (org-mode) (let ((lines '("| LeftLongest | Mi
+org-texmacs-issue4-focused>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue4-focused>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue4-focused>   (let ((position (car tail))) (let ((temp-buffer (generate-new-buffer
+org-texmacs-issue4-focused>   (while tail (let ((position (car tail))) (let ((temp-buffer (generat
+org-texmacs-issue4-focused>   (let ((tail '(0 1 2))) (while tail (let ((position (car tail))) (let
+org-texmacs-issue4-focused>   #f(lambda () [t] (let ((tail '...)) (while tail (let (...) (let ...
+org-texmacs-issue4-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-focused>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-issue4-focused>   ert-run-test(#s(ert-test :name org-texmacs-document-table-alignment-
+org-texmacs-issue4-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-focused>   ert-run-tests((or (tag issue4) "^org-texmacs-document-.*table" "^org
+org-texmacs-issue4-focused>   ert-run-tests-batch((or (tag issue4) "^org-texmacs-document-.*table"
+org-texmacs-issue4-focused>   ert-run-tests-batch-and-exit((or (tag issue4) "^org-texmacs-document
+org-texmacs-issue4-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4) "^org-texmacs-d
+org-texmacs-issue4-focused>   command-line-1(("--load" "/nix/store/fr7zh9avybh3627q4sw9b19453mznx2
+org-texmacs-issue4-focused>   command-line()
+org-texmacs-issue4-focused>   normal-top-level()
+org-texmacs-issue4-focused> Test org-texmacs-document-table-alignment-row-positions-and-ownership condition:
+org-texmacs-issue4-focused>     (org-texmacs-document-error "Unsupported table control row" table-row
+org-texmacs-issue4-focused>                             1)
+org-texmacs-issue4-focused>    FAILED  18/21  org-texmacs-document-table-alignment-row-positions-and-ownership (0.001429 sec) at ../nix/store/fr7zh9avybh3627q4sw9b19453mznx2s-ert.el:3647
+org-texmacs-issue4-focused>    passed  19/21  org-texmacs-document-table-native-and-provenance (1.808906 sec)
+org-texmacs-issue4-focused>    passed  20/21  org-texmacs-document-table-rule-positions (0.005748 sec)
+org-texmacs-issue4-focused>    passed  21/21  org-texmacs-document-table-source-and-inline-subset (0.004818 sec)
+org-texmacs-issue4-focused> 
+org-texmacs-issue4-focused> Ran 21 tests, 17 results as expected, 4 unexpected (2026-10-15 10:58:51+0000, 10.060335 sec)
+org-texmacs-issue4-focused> 
+org-texmacs-issue4-focused> 4 unexpected results:
+org-texmacs-issue4-focused>    FAILED  org-texmacs-pdf-table-alignment-frontend-and-native-layout
+org-texmacs-issue4-focused>    FAILED  org-texmacs-document-table-alignment-column-counts-and-rules
+org-texmacs-issue4-focused>    FAILED  org-texmacs-document-table-alignment-rejections
+org-texmacs-issue4-focused>    FAILED  org-texmacs-document-table-alignment-row-positions-and-ownership
+org-texmacs-issue4-focused> 
+error: Cannot build '/nix/store/9rpg4c4mqzbf4ildxcxk16j1zmj37bfs-org-texmacs-issue4-focused.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/3amn6qrrxb78ac7r1qs2f47z07m17hmf-org-texmacs-issue4-focused
+       Last 25 log lines:
+       >   ert-run-test(#s(ert-test :name org-texmacs-document-table-alignment-
+       >   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+       >   ert-run-tests((or (tag issue4) "^org-texmacs-document-.*table" "^org
+       >   ert-run-tests-batch((or (tag issue4) "^org-texmacs-document-.*table"
+       >   ert-run-tests-batch-and-exit((or (tag issue4) "^org-texmacs-document
+       >   eval((ert-run-tests-batch-and-exit '(or (tag issue4) "^org-texmacs-d
+       >   command-line-1(("--load" "/nix/store/fr7zh9avybh3627q4sw9b19453mznx2
+       >   command-line()
+       >   normal-top-level()
+       > Test org-texmacs-document-table-alignment-row-positions-and-ownership condition:
+       >     (org-texmacs-document-error "Unsupported table control row" table-row
+       >                          1)
+       >    FAILED  18/21  org-texmacs-document-table-alignment-row-positions-and-ownership (0.001429 sec) at ../nix/store/fr7zh9avybh3627q4sw9b19453mznx2s-ert.el:3647
+       >    passed  19/21  org-texmacs-document-table-native-and-provenance (1.808906 sec)
+       >    passed  20/21  org-texmacs-document-table-rule-positions (0.005748 sec)
+       >    passed  21/21  org-texmacs-document-table-source-and-inline-subset (0.004818 sec)
+       >
+       > Ran 21 tests, 17 results as expected, 4 unexpected (2026-10-15 10:58:51+0000, 10.060335 sec)
+       >
+       > 4 unexpected results:
+       >    FAILED  org-texmacs-pdf-table-alignment-frontend-and-native-layout
+       >    FAILED  org-texmacs-document-table-alignment-column-counts-and-rules
+       >    FAILED  org-texmacs-document-table-alignment-rejections
+       >    FAILED  org-texmacs-document-table-alignment-row-positions-and-ownership
+       >
+       For full logs, run:
+         nix log /nix/store/9rpg4c4mqzbf4ildxcxk16j1zmj37bfs-org-texmacs-issue4-focused.drv

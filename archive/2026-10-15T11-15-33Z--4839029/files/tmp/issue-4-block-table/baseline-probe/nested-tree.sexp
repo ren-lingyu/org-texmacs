@@ -1,0 +1,1 @@
+(document (concat "AnchorBefore ") '(document (concat "QuoteBefore ") (itemize (document (concat (item) "QuoteItem "))) (concat "QuoteAfter " (math "x") ". ")) (concat "AnchorAfter "))

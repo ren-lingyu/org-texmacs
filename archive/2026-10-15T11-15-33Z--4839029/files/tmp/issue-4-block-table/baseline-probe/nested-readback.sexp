@@ -1,0 +1,1 @@
+(document (concat "416e63686f724265666f726520") '(document (concat "51756f74654265666f726520") (itemize (document (concat (item) "51756f74654974656d20"))) (concat "51756f7465416674657220" (math "78") "2e20")) (concat "416e63686f72416674657220"))

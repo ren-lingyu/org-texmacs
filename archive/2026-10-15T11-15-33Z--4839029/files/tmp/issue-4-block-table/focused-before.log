@@ -1,0 +1,124 @@
+this derivation will be built:
+  /nix/store/5aiw6nzf06zkxkj5qagqq56372qz6xp9-org-texmacs-issue4-focused.drv
+building '/nix/store/5aiw6nzf06zkxkj5qagqq56372qz6xp9-org-texmacs-issue4-focused.drv'...
+org-texmacs-issue4-focused> Running 17 tests (2026-10-15 10:49:59+0000, selector `(or (tag issue4) "^org-texmacs-document-.*table" "^org-texmacs-document-preformatted" "^org-texmacs-document-list" "^org-texmacs-document-quote")')
+org-texmacs-issue4-focused> Test org-texmacs-pdf-block-quotation-and-center-layout backtrace:
+org-texmacs-issue4-focused>   ert-fail(((should (= (length matches) 1)) :form (= 0 1) :value nil))
+org-texmacs-issue4-focused>   (if (unwind-protect (setq value-5595 (apply fn-5593 args-5594)) (set
+org-texmacs-issue4-focused>   (let (form-description-5597) (if (unwind-protect (setq value-5595 (a
+org-texmacs-issue4-focused>   (let ((value-5595 'ert-form-evaluation-aborted-5596)) (let (form-des
+org-texmacs-issue4-focused>   (let* ((fn-5593 #'=) (args-5594 (condition-case err (list (length ma
+org-texmacs-issue4-focused>   (let ((matches (cl-remove-if-not #'(lambda (word) (equal (car word)
+org-texmacs-issue4-focused>   org-texmacs-test--pdf-word((("AnchorBefore" 85.02 83.200584 144.6 95
+org-texmacs-issue4-focused>   (cl-mapc #'(lambda (a b) (let* ((fn-5598 #'<=) (args-5599 (condition
+org-texmacs-issue4-focused>   (let ((token (car tail))) (cl-mapc #'(lambda (a b) (let* ((fn-5598 #
+org-texmacs-issue4-focused>   (while tail (let ((token (car tail))) (cl-mapc #'(lambda (a b) (let*
+org-texmacs-issue4-focused>   (let ((tail '("AnchorBefore" "QuoteFirst" "QuoteSecond" "CenterShort
+org-texmacs-issue4-focused>   (let ((words (org-texmacs-test--pdf-words actual)) (expected (org-te
+org-texmacs-issue4-focused>   (let ((actual (expand-file-name "blocks.pdf" test-directory)) (refer
+org-texmacs-issue4-focused>   (let ((default-directory (file-name-as-directory test-directory))) (
+org-texmacs-issue4-focused>   (unwind-protect (let ((default-directory (file-name-as-directory tes
+org-texmacs-issue4-focused>   (let ((org-texmacs--worker-process nil) (org-texmacs--worker-directo
+org-texmacs-issue4-focused>   #f(lambda () [t] (let ((org-texmacs--worker-process nil) (org-texmac
+org-texmacs-issue4-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-focused>   ert--run-test-internal(#s(ert--test-execution-info :test ... :result
+org-texmacs-issue4-focused>   ert-run-test(#s(ert-test :name org-texmacs-pdf-block-quotation-and-c
+org-texmacs-issue4-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-focused>   ert-run-tests((or (tag issue4) "^org-texmacs-document-.*table" "^org
+org-texmacs-issue4-focused>   ert-run-tests-batch((or (tag issue4) "^org-texmacs-document-.*table"
+org-texmacs-issue4-focused>   ert-run-tests-batch-and-exit((or (tag issue4) "^org-texmacs-document
+org-texmacs-issue4-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4) "^org-texmacs-d
+org-texmacs-issue4-focused>   command-line-1(("--load" "/nix/store/2s6nzajl5w0n4vn36km8gj67r8p4gqi
+org-texmacs-issue4-focused>   command-line()
+org-texmacs-issue4-focused>   normal-top-level()
+org-texmacs-issue4-focused> Test org-texmacs-pdf-block-quotation-and-center-layout condition:
+org-texmacs-issue4-focused>     (ert-test-failed
+org-texmacs-issue4-focused>      ((should (= (length matches) 1)) :form (= 0 1) :value nil))
+org-texmacs-issue4-focused>    FAILED   1/17  org-texmacs-pdf-block-quotation-and-center-layout (2.066204 sec) at ../nix/store/2s6nzajl5w0n4vn36km8gj67r8p4gqih-ert.el:6037
+org-texmacs-issue4-focused>    passed   2/17  org-texmacs-document-list-source-forms (0.008359 sec)
+org-texmacs-issue4-focused>    passed   3/17  org-texmacs-document-list-containers-native (2.189137 sec)
+org-texmacs-issue4-focused>    passed   4/17  org-texmacs-document-quote-and-center-containers (0.005192 sec)
+org-texmacs-issue4-focused> Test org-texmacs-document-quote-uniform-quotation backtrace:
+org-texmacs-issue4-focused>   ert-fail(((should (eq (car container) 'quotation)) :form (eq quote q
+org-texmacs-issue4-focused>   (if (unwind-protect (setq value-3157 (apply fn-3155 args-3156)) (set
+org-texmacs-issue4-focused>   (let (form-description-3159) (if (unwind-protect (setq value-3157 (a
+org-texmacs-issue4-focused>   (let ((value-3157 'ert-form-evaluation-aborted-3158)) (let (form-des
+org-texmacs-issue4-focused>   (let* ((fn-3155 #'eq) (args-3156 (condition-case err (list (car cont
+org-texmacs-issue4-focused>   (let* ((before (buffer-string)) (document (org-texmacs-document-from
+org-texmacs-issue4-focused>   (progn (org-mode) (insert "#+OPTIONS: toc:nil title:nil author:nil d
+org-texmacs-issue4-focused>   (unwind-protect (progn (org-mode) (insert "#+OPTIONS: toc:nil title:
+org-texmacs-issue4-focused>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue4-focused>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue4-focused>   (let ((contents (car tail))) (let ((temp-buffer (generate-new-buffer
+org-texmacs-issue4-focused>   (while tail (let ((contents (car tail))) (let ((temp-buffer (generat
+org-texmacs-issue4-focused>   (let ((tail '("Single.\n" "First.\n\nSecond.\n" "- Nested item\n" "#
+org-texmacs-issue4-focused>   #f(lambda () [t] (let ((tail '...)) (while tail (let (...) (let ...
+org-texmacs-issue4-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue4-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue4-focused>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-issue4-focused>   ert-run-test(#s(ert-test :name org-texmacs-document-quote-uniform-qu
+org-texmacs-issue4-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue4-focused>   ert-run-tests((or (tag issue4) "^org-texmacs-document-.*table" "^org
+org-texmacs-issue4-focused>   ert-run-tests-batch((or (tag issue4) "^org-texmacs-document-.*table"
+org-texmacs-issue4-focused>   ert-run-tests-batch-and-exit((or (tag issue4) "^org-texmacs-document
+org-texmacs-issue4-focused>   eval((ert-run-tests-batch-and-exit '(or (tag issue4) "^org-texmacs-d
+org-texmacs-issue4-focused>   command-line-1(("--load" "/nix/store/2s6nzajl5w0n4vn36km8gj67r8p4gqi
+org-texmacs-issue4-focused>   command-line()
+org-texmacs-issue4-focused>   normal-top-level()
+org-texmacs-issue4-focused> Test org-texmacs-document-quote-uniform-quotation condition:
+org-texmacs-issue4-focused>     (ert-test-failed
+org-texmacs-issue4-focused>      ((should (eq (car container) 'quotation)) :form (eq quote quotation)
+org-texmacs-issue4-focused>       :value nil))
+org-texmacs-issue4-focused>    FAILED   5/17  org-texmacs-document-quote-uniform-quotation (0.003918 sec) at ../nix/store/2s6nzajl5w0n4vn36km8gj67r8p4gqih-ert.el:3444
+org-texmacs-issue4-focused>    passed   6/17  org-texmacs-document-preformatted-native-and-provenance (1.881957 sec)
+org-texmacs-issue4-focused>    passed   7/17  org-texmacs-document-preformatted-source-forms (0.004824 sec)
+org-texmacs-issue4-focused>    passed   8/17  org-texmacs-document-preformatted-tab-snapshot-and-preserve-indent (0.006680 sec)
+org-texmacs-issue4-focused>    passed   9/17  org-texmacs-document-named-table-caption-ownership (0.003299 sec)
+org-texmacs-issue4-focused>    passed  10/17  org-texmacs-document-named-table-captions-and-links (0.004266 sec)
+org-texmacs-issue4-focused>    passed  11/17  org-texmacs-document-named-table-native-and-provenance (1.764874 sec)
+org-texmacs-issue4-focused>    passed  12/17  org-texmacs-document-named-table-rejects-before-worker (0.097318 sec)
+org-texmacs-issue4-focused>    passed  13/17  org-texmacs-document-named-table-uncaptioned-and-priority (0.002352 sec)
+org-texmacs-issue4-focused>    passed  14/17  org-texmacs-document-rejects-advanced-table-semantics (0.005520 sec)
+org-texmacs-issue4-focused>    passed  15/17  org-texmacs-document-table-native-and-provenance (1.755244 sec)
+org-texmacs-issue4-focused>    passed  16/17  org-texmacs-document-table-rule-positions (0.005174 sec)
+org-texmacs-issue4-focused>    passed  17/17  org-texmacs-document-table-source-and-inline-subset (0.004491 sec)
+org-texmacs-issue4-focused> 
+org-texmacs-issue4-focused> Ran 17 tests, 15 results as expected, 2 unexpected (2026-10-15 10:50:09+0000, 9.931639 sec)
+org-texmacs-issue4-focused> 
+org-texmacs-issue4-focused> 2 unexpected results:
+org-texmacs-issue4-focused>    FAILED  org-texmacs-pdf-block-quotation-and-center-layout
+org-texmacs-issue4-focused>    FAILED  org-texmacs-document-quote-uniform-quotation
+org-texmacs-issue4-focused> 
+error: Cannot build '/nix/store/5aiw6nzf06zkxkj5qagqq56372qz6xp9-org-texmacs-issue4-focused.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/vindp9yksh3gipwm3ikd7krksx00yarg-org-texmacs-issue4-focused
+       Last 25 log lines:
+       >   normal-top-level()
+       > Test org-texmacs-document-quote-uniform-quotation condition:
+       >     (ert-test-failed
+       >      ((should (eq (car container) 'quotation)) :form (eq quote quotation)
+       >       :value nil))
+       >    FAILED   5/17  org-texmacs-document-quote-uniform-quotation (0.003918 sec) at ../nix/store/2s6nzajl5w0n4vn36km8gj67r8p4gqih-ert.el:3444
+       >    passed   6/17  org-texmacs-document-preformatted-native-and-provenance (1.881957 sec)
+       >    passed   7/17  org-texmacs-document-preformatted-source-forms (0.004824 sec)
+       >    passed   8/17  org-texmacs-document-preformatted-tab-snapshot-and-preserve-indent (0.006680 sec)
+       >    passed   9/17  org-texmacs-document-named-table-caption-ownership (0.003299 sec)
+       >    passed  10/17  org-texmacs-document-named-table-captions-and-links (0.004266 sec)
+       >    passed  11/17  org-texmacs-document-named-table-native-and-provenance (1.764874 sec)
+       >    passed  12/17  org-texmacs-document-named-table-rejects-before-worker (0.097318 sec)
+       >    passed  13/17  org-texmacs-document-named-table-uncaptioned-and-priority (0.002352 sec)
+       >    passed  14/17  org-texmacs-document-rejects-advanced-table-semantics (0.005520 sec)
+       >    passed  15/17  org-texmacs-document-table-native-and-provenance (1.755244 sec)
+       >    passed  16/17  org-texmacs-document-table-rule-positions (0.005174 sec)
+       >    passed  17/17  org-texmacs-document-table-source-and-inline-subset (0.004491 sec)
+       >
+       > Ran 17 tests, 15 results as expected, 2 unexpected (2026-10-15 10:50:09+0000, 9.931639 sec)
+       >
+       > 2 unexpected results:
+       >    FAILED  org-texmacs-pdf-block-quotation-and-center-layout
+       >    FAILED  org-texmacs-document-quote-uniform-quotation
+       >
+       For full logs, run:
+         nix log /nix/store/5aiw6nzf06zkxkj5qagqq56372qz6xp9-org-texmacs-issue4-focused.drv

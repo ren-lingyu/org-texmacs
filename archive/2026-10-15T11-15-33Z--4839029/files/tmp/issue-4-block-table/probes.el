@@ -1,0 +1,83 @@
+;;; probes.el --- Native block evidence -*- lexical-binding: t; -*-
+(require 'json)
+(require 'dom)
+(require 'xml)
+(defun issue4-probe-words (file)
+  (with-temp-buffer
+    (let ((coding-system-for-read 'utf-8-unix))
+      (should (= 0 (call-process "pdftotext" nil t nil "-bbox" file "-"))))
+    (let ((tree (car (xml-parse-region (point-min) (point-max)))))
+      (mapcar (lambda (word)
+                (list (dom-text word) (dom-attr word 'xMin) (dom-attr word 'yMin)
+                      (dom-attr word 'xMax) (dom-attr word 'yMax)))
+              (dom-by-tag tree 'word)))))
+(let ((output (getenv "PROBE_OUTPUT")) (coding-system-for-write 'utf-8-unix) records)
+  (org-texmacs-test--with-worker
+    (dolist (case '(("single" . "#+begin_quote\nQuoteSingle\n#+end_quote\n")
+                    ("multi" . "#+begin_quote\nQuoteFirst\n\nQuoteSecond\n#+end_quote\n")
+                    ("nested" . "#+begin_quote\nQuoteBefore\n\n- QuoteItem\n\nQuoteAfter (math \"x\").\n#+end_quote\n")
+                    ("center" . "#+begin_center\nCenterShort\n\nCenterLongerContent\n#+end_center\n")
+                    ("center-list" . "#+begin_center\n- CenterItem\n#+end_center\n")
+                    ("code" . "#+begin_example\n  Literal<alpha>\n\n  (math \"hidden\")\n#+end_example\n")
+                    ("lists" . "- BulletMarker\n\nA separator.\n\n1. NumberMarker\n\nAnother separator.\n\n- TermMarker :: DefinitionMarker\n")))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\nAnchorBefore\n\n"
+                (cdr case) "\nAnchorAfter\n")
+        (let* ((ast (org-element-parse-buffer))
+               (document (org-texmacs-document-from-buffer (current-buffer)))
+               (name (car case))
+               (pdf (expand-file-name (concat name ".pdf") output)))
+          (with-temp-file (expand-file-name (concat name "-ast.sexp") output)
+            (let ((print-circle t)) (prin1 ast (current-buffer))))
+          (with-temp-file (expand-file-name (concat name "-tree.sexp") output)
+            (prin1 (org-texmacs-document-body document) (current-buffer)))
+          (let ((session (org-texmacs-session-open)))
+            (unwind-protect
+                (progn
+                  (org-texmacs-session-set-document session document)
+                  (with-temp-file (expand-file-name (concat name "-readback.sexp") output)
+                    (prin1 (org-texmacs--session-read session) (current-buffer))))
+              (org-texmacs-session-close session)))
+          (org-texmacs-document-save-pdf document pdf)
+          (push `((name . ,name) (kind . "current")
+                  (text . ,(org-texmacs-test--pdf-text pdf))
+                  (words . ,(vconcat (mapcar #'vconcat (issue4-probe-words pdf))))) records)
+          (when (string-match-p "begin_quote" (cdr case))
+            (let* ((body (copy-tree (org-texmacs-document-body document)))
+                   (quotation (cl-find-if (lambda (node) (and (consp node) (memq (car node) '(quote quotation)))) (cdr body))))
+              (should quotation)
+              (setcar quotation 'quotation)
+              (let* ((reference (org-texmacs--document-create
+                                 :body body :style '("generic")
+                                 :stm-paths (org-texmacs-document-stm-paths document)))
+                     (file (expand-file-name (concat name "-quotation.pdf") output)))
+                (org-texmacs-document-save-pdf reference file)
+                (push `((name . ,name) (kind . "quotation")
+                        (text . ,(org-texmacs-test--pdf-text file))
+                        (words . ,(vconcat (mapcar #'vconcat (issue4-probe-words file))))) records))))))))
+  (setq records (nreverse records))
+  (with-temp-file (expand-file-name "report.json" output)
+    (insert (json-serialize `((emacs . ,emacs-version) (org . ,(org-version))
+                              (cases . ,(vconcat records))))))
+  (message "Issue4 native block probe complete: %d records" (length records)))
+
+(let (facts)
+  (dolist (source '("| <l> | <r> |\n| a | b |\n"
+                     "| <l> | |\n| a | b |\n"
+                     "| <l> | data |\n| a | b |\n"
+                     "| <r10> | data |\n| a | b |\n"
+                     "| <alpha> | data |\n| a | b |\n"
+                     "| <l> | <r> |\n| / | < |\n| # | data |\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert source)
+      (let* ((table (org-element-map (org-element-parse-buffer) 'table #'identity nil t))
+             (view (org-element-copy table t)))
+        (apply #'org-element-set-contents view (cdr (org-element-contents view)))
+        (push `((source . ,source)
+                (special_column . ,(if (org-export-table-has-special-column-p table) t :json-false))
+                (column_without_first . ,(if (org-export-table-has-special-column-p view) t :json-false))
+                (special_rows . ,(vconcat (mapcar (lambda (row) (if (org-export-table-row-is-special-p row nil) t :json-false)) (org-element-contents table))))) facts))))
+  (with-temp-file (expand-file-name "table-facts.json" (getenv "PROBE_OUTPUT"))
+    (insert (json-serialize (vconcat (nreverse facts)) :false-object :json-false))))
