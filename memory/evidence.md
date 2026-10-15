@@ -2559,3 +2559,27 @@ the before/after comparison; exact findings/digests/limits extracted here. No un
 standalone probe or retiring source. Reassess new evidence at final acceptance.
 Ordinary index empty; only three task paths plus existing flake mirror dirty.
 No ordinary staging/commit, INBOX/version/lock/external issue change performed.
+
+Final exact240s gate exits0:405/405core ERT205.240427s, real pinned extensions
+9/9 in11.484144s; all four check targets pass, strict byte/native production
+compilation and package-lint accepted. Same focused4/4 result reused in full gate.
+After gate all25project and11foreign inputs match isolated snapshot and unchanged
+fixture sources; root lock matches copied lock, ordinary index empty. Only three
+task paths plus pre-existing user flake mirror dirty. Task binary diff SHA256:
+643872b4d9e92812a9b9204168d773a85625db1da477676b0d54a2814b4bf203.
+Full check.log SHA256
+58b5e4df75d8ed0c6a9d84fad71dd6d7508712454542d42e76d88b8fc0dd6ad6.
+Extension-inputs.json SHA256
+9438de1d9bc2b53a24eb465b20b268df2067ac4ff9027ac0e2364d35663de02f;
+isolated flake f31552e14c7e7f69e7d8d24d652c5d9905d39b192d2be9d07189babae72d5e25;
+root/copied lock118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a.
+Environment locked Emacs31.1/Org9.8.10/TeXmacs2.1.5/x86_64-linux. Other systems,
+full minimum Org9.8 behavior and actual interactive GUI popup elimination not
+verified. User interactive check requested asynchronously and still unanswered;
+implementation/automated acceptance complete, interactive acceptance pending.
+No public API/support policy change requiring README migration; three private
+cleanup comments document identity retirement. No ordinary commit/issue closure.
+Final archive assessment: no unique transient probe or retired source, maintained
+ERT + previous production history reproduce all new scenarios and expected-red
+comparison; counts, hashes, commands, cause and limits extracted above. No raw
+archive or tmp cleanup. GAW current/model/backlog synchronized to this state.

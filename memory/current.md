@@ -15,15 +15,22 @@ INCLUDE and local discovery/direct preparation. Error test exercises12 combinati
 (three private lifetimes x absent/existing output x tm/pdf), propagates exact
 sentinel after switching to a user-owned buffer. No leaked observed buffers or
 source/user-state changes. Strict byte/native production compilation passed.
-Full authorized240s isolated flake check now running; do not claim full acceptance
-or actual interactive no-popup evidence yet. Real extension9/9 pass11.484144s;
-core405 tests ongoing. User interactive check requested, not yet answered.
+Full authorized240s isolated flake check exits0:405/405core ERT205.240427s,
+real extension9/9 pass11.484144s, all checks and strict compilation/lint pass.
+Implementation and automated acceptance complete; actual interactive no-popup
+verification requested from user but not yet answered, do not claim that result.
 Before-repair four tests intentionally fail4/4 (2.107358s), establishing root,
 non-file INCLUDE and local bibliography danger states at actual kill entry.
 Source/default-directory context remains available throughout processing and
 original errors propagate. Runtime evidence and exact hashes in evidence.md;
-pre-fix inputs/logs retained under tmp/issue-6-cleanup. Next complete full gate
-and record acceptance limits; ordinary index empty, no task staging/commit.
+pre-fix inputs/logs retained under tmp/issue-6-cleanup. Final25project+11foreign
+inputs match tested isolation; root lock unchanged. Exact changed-file/diff hashes
+in evidence.md. Validation locked Emacs31.1/Org9.8.10/TeXmacs2.1.5/x86_64-linux,
+not other systems or GUI. No raw archive selected: maintained tests/history plus
+distilled evidence suffice, no unique probe/retired source. Next receive actual
+interactive check and user review/staging decision. Only three task paths plus
+existing flake mirror dirty; ordinary index empty, no task staging/commit,
+INBOX/version/root-lock/external issue action or tmp cleanup.
 
 ## Earlier Issue #6 review (superseded by implementation selection above)
 

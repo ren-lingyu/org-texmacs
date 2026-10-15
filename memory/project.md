@@ -94,6 +94,13 @@ buffer or start a worker.
 
 ## Ownership and snapshot contract
 
+- Issue6 uncommitted repair retires file identity at final exit for owned root
+  composition, INCLUDE capture and bibliography discovery buffers. Object-captured
+  unwind-protect preserves processing context and error propagation even after
+  callback current-buffer switches. Four actual kill-entry/native regressions
+  fail before and pass after repair.405core/9real/full Nix strict compilation/lint
+  pass on locked x86_64-linux; actual interactive verification still pending.
+  Exact evidence and acceptance status in memory/current.md/evidence.md.
 - Prepared input owns copied AST/string structure, rebuilds parent links, and
   remaps identity-keyed INFO/island/post-blank data.
 - Cyclic, multiply owned, detached, duplicate, deferred, or opaque inputs are

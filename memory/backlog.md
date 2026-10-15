@@ -23,6 +23,18 @@ decision.
 
 ## Active next
 
+### active-next: Issue #6 private temporary-buffer cleanup acceptance
+
+User selected reviewed lifetime-only repair and continuous GAW updates. Root
+composition/INCLUDE capture/bibliography discovery all confirmed with runtime
+kill-entry danger-state assertions. Three bounded unwind-protect repairs and
+four maintained regressions implemented;4/4 focused pass after expected4/4 red.
+405core/9real/full Nix strict compile/lint pass; actual interactive tm/PDF check
+requested and pending. No new public
+API, INCLUDE mapping, rendering or output policy change. Current details and
+authorization in memory/current.md; original review extracted separately.
+Tracking https://github.com/ren-lingyu/org-texmacs/issues/6, no external writes.
+
 ### Completed selected Issue #5: case-insensitive Org TeXmacs wrappers
 
 User selected source/fragment/doc/test changes and GAW
