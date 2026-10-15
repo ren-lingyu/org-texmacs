@@ -56,8 +56,14 @@ consumer constructs a complete file wrapper only after native encoding.
   five optional Org arguments. The buffer command manages one untouched derived
   result by identity/state; user takeover yields a new result. See issue3 below.
 
-These API names and lifecycle are the accepted issue3 worktree candidate, not
-yet a committed/released revision. Historical node descriptions below retain
+These API names and lifecycle are the accepted, user-committed issue3 export API
+and managed-result revision, not a new release. Exact five-file committed diff
+and blobs match the staged/validated candidate; see evidence/current.
+The final main commit has BREAKING-CHANGE and Closes: #3 trailers; user explicitly
+judged selected scope sufficient for closure. Ordinary index empty, only user
+flake.nix dirty. Scoped README/docstring/comment audit finds issue3 synchronized.
+No new release or runtime claim; remote issue status remains unverified.
+Historical node descriptions below retain
 their original names/interactive contracts. The adopted current design is
 memory/export-api-contract.md; live validation/acceptance is in current.md.
 

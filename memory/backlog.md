@@ -26,14 +26,17 @@ decision.
 ### Completed selected Issue #3: export API and managed result lifecycle
 
 User selected implementation after adopting the complete
-contract in memory/export-api-contract.md. Accepted worktree candidate changes normal frontend/
+contract in memory/export-api-contract.md. Accepted user-committed revision changes normal frontend/
 explicit-source names and interactive boundary without aliases, adds managed
 result ownership/reuse and transactional replacement, preserves conversion/file/
 menu scope, and updates README/maintained ERT/real integration references.
 Focused110/110, real fixtures9/9,396core ERT and complete isolated checks/strict
-compilation/package-lint pass. Candidate remains uncommitted; exact inputs and
-validation in memory/evidence.md/current.md. Ordinary staging/commit and remote issue action remain
-separate. Prior generic exporter/preview/atomic-file questions do not expand this
+compilation/package-lint pass. Main's five paths/blobs/diff match reviewed
+staged/validated candidate. Its final message has BREAKING-CHANGE and Closes: #3;
+user explicitly judged selected scope sufficient for closure. Current ordinary
+index empty, only user flake.nix dirty. Exact inputs and verification in
+memory/evidence.md/current.md. Remote state unverified, no external issue write
+or new release selected. Prior generic exporter/preview/atomic-file questions do not expand this
 selected API/lifecycle scope.
 
 ### Completed selected Phase 5a-5d: formal frontend/preprocessing integration

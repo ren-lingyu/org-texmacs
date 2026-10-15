@@ -2373,9 +2373,31 @@ definitions/callers/docs and lifecycle tests must remain coordinated). Each stag
 blob matches accepted project manifest and worktree. Staged binary diff SHA256
 756b192be25990ffdc68edcee2816cabe2fa47c3ff25dbbe0561ebbd653fe0b4;
 whitespace passes, only user flake mirror unstaged, no new tests solely for staging.
-tmp/commit.md now has feat(export)! subject, four Chinese bullets, complete API/
-interactive/buffer migration BREAKING-CHANGE and adjacent Refs: #3 trailers.
-git interpret-trailers parses both. Issue relationship does not independently
-authorize closing it. No ordinary commit/external write. Prior documentation draft
-was read and replaced as completed/unrelated; preserve subsequent user edits.
+The completed draft records the API/interactive/buffer migration summary.
+Current committed message is authoritative as verified below; preserve the
+preparation file without regeneration. No ordinary commit/external write by agent.
 
+User committed the selected issue3 revision. Read-only verification of current
+main confirms exactly five expected paths, parent equals investigation baseline,
+five committed blobs match accepted input manifest/worktree and complete binary
+diff SHA256756b192be25990ffdc68edcee2816cabe2fa47c3ff25dbbe0561ebbd653fe0b4
+matches staged review. Complete message contains feat(export)! subject, four
+Chinese bullets and adjacent BREAKING-CHANGE and Closes: #3 trailers; parsed
+with git interpret-trailers. User explicitly judged selected scope complete and
+intends issue3 closure. No remote push/status lookup or external write performed.
+No tests rerun solely for commit verification; previous gates transfer by exact
+byte identity. No ordinary commit performed by agent or new release/work selected.
+This checkpoint associates the actual main commit inspected, without inventing
+original test provenance. Ordinary index empty; only user flake.nix modification
+present, untouched by memory maintenance. Completed tmp/commit.md is historical
+preparation, not authoritative current message or an automatic rewrite target.
+
+User also requested current document/comment synchronization audit. Against
+current main, checked README API names/examples/migration and both buffer/file
+policies, main/frontend export docstrings and related source old-name references.
+No affected stale description found: three frontend/five explicit APIs, command
+boundary, ownership/failure/display contracts and file policy agree. Old normal
+names occur only in migration descriptions; retained special names intentional.
+Scope is issue3-related documents/comments, not a new whole-project audit.
+No raw archive selected: Git preserves commit evidence, substantive conclusions
+are extracted here and in current memory; product source/docs unchanged.

@@ -6,8 +6,9 @@ User now selected implementation of issue3 against memory/export-api-contract.md
 Authorized project API/lifecycle/documentation/maintained-test edits. Separately
 authorized repeated120s isolated focused/integration Nix builds and240s complete
 flake checks under tmp/issue-3-api, necessary locked-dependency network/store/cache
-writes, no root lock changes. Existing user flake mirror stays untouched.
-Selected implementation/acceptance complete in the uncommitted worktree:
+writes, no root lock changes. Existing user flake mirror was untouched during
+implementation; current ordinary index is empty with only user flake.nix dirty.
+Selected implementation/acceptance complete and user committed:
 three standard Org interactive frontend commands, five explicit noninteractive
 source APIs, exact renames without aliases, original file/conversion/menu policy.
 Managed result has identity token/name/tick/state checks; user takeover creates
@@ -23,23 +24,29 @@ and fixes are distilled in evidence; no pending failure. Locked Emacs31.1/
 Org9.8.10/TeXmacs2.1.5/x86_64-linux only; other systems/GUI/current9.8 full
 behavior unverified. No raw archive selected: maintained reproduction tests and
 extracted evidence suffice, no unique transient probe or retired document.
-Five ordinary paths changed: README.org/org-texmacs.el/ox-texmacs.el/
-tests/ert/ert.el/tests/integration/phase4.el. Only other dirty path is the
-untouched user flake mirror. Root lock/INBOX/version unchanged.
-User then explicitly authorized staging these five paths and generating the
-commit message. Exactly those paths are now staged; all staged blobs match the
-accepted manifest/worktree. Complete staged binary diff SHA256
-756b192be25990ffdc68edcee2816cabe2fa47c3ff25dbbe0561ebbd653fe0b4.
-git-maintenance review finds one coherent commit; split not necessary/medium
-difficulty due to coupled API/producers/consumers/lifecycle/tests. tmp/commit.md
-replaces the completed previous documentation draft: feat(export)! subject
-separate frontend commands from explicit-source APIs, four Chinese bullets,
-adjacent BREAKING-CHANGE and Refs: #3 trailers, parser verified. No closing footer
-without explicit closing intent. Only flake.nix remains unstaged. Prior gates
-transfer by exact staged-byte identity; no test rerun solely for staging.
-Next: user reviews/edits message and performs ordinary commit if desired; agent
-may verify committed identity afterward. No ordinary commit/external issue work
-performed, no further implementation/test selected. Preserve user message edits.
+User committed exactly README.org/org-texmacs.el/ox-texmacs.el/
+tests/ert/ert.el/tests/integration/phase4.el as the export API and managed-result
+revision on the verified investigation baseline. Current main's complete committed
+binary diff matches reviewed staged SHA256
+756b192be25990ffdc68edcee2816cabe2fa47c3ff25dbbe0561ebbd653fe0b4;
+five committed blobs match accepted manifest/worktree. Complete message has
+feat(export)! subject, four Chinese bullets, BREAKING-CHANGE and Closes: #3
+trailers, parser verified. User reviewed the selected scope as sufficient to close
+issue3 and explicitly intends closure. No remote push/issue-status lookup or
+external write performed. This checkpoint's project parent is the actual main
+revision inspected; prior acceptance transfers by byte identity, no new tests
+solely for commit verification. Root lock/INBOX/version unchanged.
+Ordinary index empty; only user flake.nix modification present. No ordinary
+project state changed by this memory work. No further implementation/release/
+test work selected. Completed tmp/commit.md is preparation only, not current
+commit authority; preserve it without regeneration.
+
+User also asked whether documents/comments are synchronized. Scoped read-only
+audit against committed HEAD checked README API/use/migration/lifecycle/
+file-policy sections, main/frontend public docstrings and related module stale
+symbol references. No affected stale description found; old names remain in
+explicit migration guidance, special entry names intentionally unchanged.
+No product edits/tests or raw archive needed for this verification.
 
 Earlier user requested GAW recovery then read-only review of the newly supplied INBOX
 issue3 export API/lifecycle plan. GAW status/check pass, memory worktree clean
