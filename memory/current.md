@@ -1,5 +1,25 @@
 # org-texmacs current memory
 
+## Active: complete Issue4 date repair and bounded native semantic audit
+
+User approved implementation of final plan on committed table/quote baseline.
+Date policy: all date-metadata timestamp objects preserve complete raw-value,
+including delimiters/internal whitespace; no normalization, interpretation or
+execution. Private raw-string -> string helper only (advice possible), no public
+formatter option/generic metadata framework. Capture helper definition per input/
+conversion; copy arguments/results, reject malformed data/non-string results,
+keep precedence/overrides/suppression/rich text. Dual metadata storage deferred.
+Earlier delimiter removal/minimal timestamp rejection proposals superseded.
+Audit only actually emitted supported native tags; reuse quote/center/alignment
+proof. Dates plus remaining block/list/table/inline/metadata/headline/TOC/reference/
+footnote/citation wrappers require recorded conclusions. #7/#9/native typography
+excluded. User flake dirty unchanged, no ordinary staging/commit permission.
+Isolated tmp/issue-4-closure prepared; user authorizes repeated sequential
+probes120s/focused180s/integration120s/full600s plus locked network/results reads.
+Document/input date logic and README changed; six date regressions drafted.
+Initial probe syntax/preflight diagnostic failures corrected; baseline focused
+red run active against frozen old production. No valid runtime acceptance yet. Detail/audit matrix: memory/issue-4-closure.md.
+
 ## Completed implementation: Issue4 block subset + Issue8 table alignment
 
 User-selected A+B implementation, documentation and validation complete, both
@@ -46,7 +66,8 @@ whose25accepted input blobs now match combined tested candidate. This is commit
 verification, not a new runtime test or retrospective source-provenance claim.
 Next: if user selects further #4 work,
 plan date metadata and bounded native emitted-tag audit without duplicating #8
-or completed quotation repair. No further implementation currently authorized.
+or completed quotation repair. That earlier tracking phase selected no further implementation; active work above
+now supersedes it.
 No new archive: public issue/comment history and extracted memory suffice for
 tracking-only update; existing immutable raw validation archive stays unchanged.
 
