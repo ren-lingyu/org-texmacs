@@ -378,6 +378,23 @@ native or GUI evidence before they can be claimed as verified.
 
 ## Deferred candidates
 
+### Export responsiveness during synchronous operation
+
+Status: **deferred-candidate**.
+
+After accepting Issue6 interactive behavior, user reported a slight "卡手" feeling
+during "非并行导出" and asked to record it separately after preparing the current
+commit. This is a user-reported responsiveness observation, not a measured
+performance regression or an established cause. Exact input, duration, stage and
+impact on editing/input handling have not been characterized.
+
+Keep separate from Issue6 buffer cleanup/configuration correctness and its staged
+fix. No profiling, optimization, async/parallel export, incremental conversion or
+new implementation is selected. If user later selects investigation, first measure
+the actual interactive path and input responsiveness, identify the blocking stage,
+then propose a bounded remedy preserving snapshot/ownership/error contracts.
+Do not assume that parallelization or asynchronous APIs are the required solution.
+
 ### Explicit export menu key configuration — Phase 6 accepted and committed
 
 INBOX section18.7 explicitly postpones this beyond Phase5. Future design direction:

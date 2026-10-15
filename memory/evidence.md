@@ -2674,3 +2674,16 @@ No new tests solely for staging; previous406core/9real/6focused and actual8nativ
 outputs transfer by byte identity. No ordinary project commit or external write.
 No new raw archive needed for acceptance/message exchange; necessary facts
 extracted here. User-controlled commit is next; then verify actual revision.
+
+## Separate export responsiveness observation (2026-10-15)
+
+After reporting revised Issue6 interactive acceptance, user noted a slight
+"卡手" feeling during "非并行导出" and requested a separate GAW record after the
+current commit preparation. Recorded after staging/message handoff checkpoint,
+separately from the accepted correctness fix. User observation only: no duration,
+latency measurement, stage attribution, exact reproducer or proven regression.
+Added a deferred-candidate to memory/backlog.md; no profiling/optimization or
+async/parallel implementation selected. Future investigation should characterize
+actual interactive responsiveness before choosing a remedy, preserving source
+snapshot/ownership/error contracts. No product/index/draft change or new tests
+for this note. No unique raw evidence selected for archive.

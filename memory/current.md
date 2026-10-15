@@ -50,6 +50,12 @@ Next: user-controlled ordinary commit, then verify actual committed contents and
 associate that revision. Only existing flake mirror unstaged; no source fixture
 edits or tmp cleanup. Completed Issue5 draft was replaced for current Issue6.
 
+After Issue6 staging/message preparation, separately recorded user's slight
+"卡手" feeling during "非并行导出" as a deferred responsiveness observation in
+memory/backlog.md. No measured regression/cause or async/parallel remedy adopted;
+no performance investigation/code/test authorization. It does not block accepted
+Issue6 fix or enter its staged diff/message. Next project action remains user commit.
+
 ## Earlier Issue #6 review (superseded by implementation selection above)
 
 User requested read-only review of updated INBOX Issue6 temporary-buffer prompts,
