@@ -32,9 +32,10 @@ five maintained regressions implemented. User confirms no-INCLUDE no-popup but
 reports INCLUDE configuration error; reproduced with source-local with-toc=nil.
 Configuration guard now source-anchored, five maintained tests and exact user
 fixture's8native tm/PDF outputs pass. Revised406core/9real/full Nix compile/lint
-pass; user confirms revised interactive behavior meets expectations. Exactly three
-paths staged with authorization, tmp/commit.md prepared with Closes: #6; ordinary
-commit pending. Earlier405core gate covers previous candidate only. No new public
+pass; user confirms revised interactive behavior meets expectations and committed
+exactly three accepted paths. Committed blobs/diff/message match reviewed candidate,
+including Closes: #6. Remote state unverified; no further Issue6 work selected.
+Earlier405core gate covers previous candidate only. No new public
 API, INCLUDE mapping, rendering or output policy change. Current details and
 authorization in memory/current.md; original review extracted separately.
 Tracking https://github.com/ren-lingyu/org-texmacs/issues/6, no external writes.

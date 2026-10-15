@@ -3,13 +3,13 @@
 ## Active objective
 
 Issue6 implementation, automated and user interactive acceptance complete,
-uncommitted. User now confirms revised interactive behavior appears as expected
-and explicitly authorizes three-path staging plus commit-message generation.
+user committed. Read-only verification confirms the three committed blobs and
+complete binary diff equal the accepted staged/tested candidate and archive patch.
 User selected lifetime-only repair and continuous GAW maintenance; authorized
 repeated120s focused build/240s full check under tmp/issue-6-cleanup with necessary
 locked-dependency network/store/cache/logs, no root lock edits. Exactly the two
-production modules and maintained ERT now staged; ordinary commit remains user's
-action. No INBOX/version/external issue write selected. User flake mirror untouched.
+production modules and maintained ERT were staged with approval and committed by
+user. No INBOX/version/external issue write selected. User flake mirror untouched.
 
 Three private lifetimes (root composition, INCLUDE capture, bibliography discovery)
 now use object-captured unwind-protect to retire only own file identity at final
@@ -42,19 +42,23 @@ Original patch/log whitespace retained; archive verification control-flow mistak
 and supplemental successful byte verification documented in evidence.md. Archive
 immutable; operational findings/commands/hashes/limits extracted to memory.
 
-Three staged blobs and complete binary diff equal accepted snapshot and archived
-candidate; full staged review/whitespace check pass. tmp/commit.md now has
+Three committed blobs and complete binary diff equal accepted snapshot and archived
+candidate; full staged review/whitespace check passed. Complete committed message
+matches reviewed tmp/commit.md, with
 fix(export) subject, three Chinese bullets and parsed Closes: #6; one coherent
 commit, no breaking API change. No new tests solely for unchanged-byte staging.
-Next: user-controlled ordinary commit, then verify actual committed contents and
-associate that revision. Only existing flake mirror unstaged; no source fixture
-edits or tmp cleanup. Completed Issue5 draft was replaced for current Issue6.
+This checkpoint associates the actual inspected committed revision; no new tests
+solely for unchanged-byte commit verification. Ordinary index empty, only existing
+flake mirror unstaged; no source fixture edits or tmp cleanup. No further Issue6
+implementation selected. Remote publication/issue state unverified. Completed
+tmp/commit.md is preparation only, not current commit authority.
 
 After Issue6 staging/message preparation, separately recorded user's slight
 "卡手" feeling during "非并行导出" as a deferred responsiveness observation in
 memory/backlog.md. No measured regression/cause or async/parallel remedy adopted;
 no performance investigation/code/test authorization. It does not block accepted
-Issue6 fix or enter its staged diff/message. Next project action remains user commit.
+Issue6 fix or enter its committed diff/message. It remains separately deferred;
+recording the observation did not select performance implementation.
 
 ## Earlier Issue #6 review (superseded by implementation selection above)
 

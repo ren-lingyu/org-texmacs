@@ -94,7 +94,7 @@ buffer or start a worker.
 
 ## Ownership and snapshot contract
 
-- Issue6 uncommitted repair retires file identity at final exit for owned root
+- Issue6 user-committed repair retires file identity at final exit for owned root
   composition, INCLUDE capture and bibliography discovery buffers. Object-captured
   unwind-protect preserves processing context and error propagation even after
   callback current-buffer switches. Four actual kill-entry/native regressions
@@ -103,7 +103,7 @@ buffer or start a worker.
   explicitly inspect the captured source. Five maintained tests plus eight actual
   exact-fixture tm/PDF exports pass; revised406core/9real/full Nix compile/lint
   pass. User reports revised interactive INCLUDE retry meets expectations;
-  accepted candidate staged, ordinary commit still pending.
+  committed blobs/diff/message match accepted candidate and reviewed draft.
   Exact evidence and acceptance status in memory/current.md/evidence.md.
 - Prepared input owns copied AST/string structure, rebuilds parent links, and
   remaps identity-keyed INFO/island/post-blank data.

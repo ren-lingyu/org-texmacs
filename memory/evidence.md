@@ -2687,3 +2687,19 @@ async/parallel implementation selected. Future investigation should characterize
 actual interactive responsiveness before choosing a remedy, preserving source
 snapshot/ownership/error contracts. No product/index/draft change or new tests
 for this note. No unique raw evidence selected for archive.
+
+## Issue #6 actual commit verification (2026-10-15)
+
+User reported committing. Read-only verification confirms current main directly
+follows the accepted case-insensitive wrapper revision and changes exactly the
+three Issue6 paths. All three committed blobs equal accepted manifest/worktree;
+complete committed binary diff equals reviewed staged candidate/archive patch,
+SHA256 ba6f4cc4245af034c4670047befe8f0e7624641d74703ee3f9b6c6e0697b87b9.
+Full message matches reviewed tmp/commit.md, including fix(export) subject,
+three Chinese bullets and Closes: #6. Index empty; only user flake mirror dirty.
+This checkpoint's project parent is the actual inspected resulting commit.
+406core/9real/6focused/eight exact-file native exports and user interactive
+acceptance transfer by byte identity; no new tests solely for commit verification.
+Archive immutable, no new raw evidence needed; remote publication/issue state
+unverified, no external writes. Separate user-reported export responsiveness
+candidate remains deferred, with no performance implementation selected.
