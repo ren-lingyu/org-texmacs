@@ -107,7 +107,8 @@ owned AST nodes, detached/duplicate mapping keys, deferred values and opaque
 objects.
 Discard Org's source buffer and parent bookkeeping.  INFO must be a plist
 with unique keyword keys; nil selects fixed lowering defaults.  A supplied
-headline formatter is resolved now and retained as an opaque function;
+headline formatter and the private date timestamp converter are resolved now
+and retained as opaque functions;
 mutable state captured by a user closure is not frozen.  Never mutate the
 returned input, its accessors' values, or arguments from a formatter."
   (unless (and (consp ast) (eq (car ast) 'org-data))
@@ -199,19 +200,25 @@ returned input, its accessors' values, or arguments from a formatter."
         (setq info (or info '(:with-todo-keywords t :with-priority nil :with-tags t
                              :texmacs-format-headline-function
                              org-texmacs-format-headline-default-function)))
+        (unless (memq :texmacs-date-timestamp-text-function info)
+          (setq info (append info
+                             (list :texmacs-date-timestamp-text-function
+                                   'org-texmacs--document-date-timestamp-text))))
         (while info
           (let ((key (pop info)) (value (pop info)))
             (unless (and (keywordp key) (not (memq key seen)))
               (fail "Invalid or duplicate options key"))
             (push key seen)
-            (when (eq key :texmacs-format-headline-function)
+            (when (memq key '(:texmacs-format-headline-function
+                              :texmacs-date-timestamp-text-function))
               (setq value (indirect-function value))
-              (unless (functionp value) (fail "Invalid headline formatter")))
+              (unless (functionp value) (fail "Invalid presentation function")))
             (setq new-info
                   (append new-info
                           (list key
                                 (cond
-                                 ((eq key :texmacs-format-headline-function) value)
+                                 ((memq key '(:texmacs-format-headline-function
+                                               :texmacs-date-timestamp-text-function)) value)
                                  ((memq key '(:title :author :date)) (secondary value))
                                  (t (data value))))))))
         ;; INFO secondary strings create their nodes after the AST copy.  Apply

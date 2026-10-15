@@ -94,6 +94,15 @@ tag string.  Preserve TITLE-PARTS without merging adjacent text."
     (org-texmacs--document-copy-stree
      (if (= (length parts) 1) (car parts) (cons 'concat parts)))))
 
+(defun org-texmacs--document-date-timestamp-text (raw)
+  "Return RAW date metadata timestamp text unchanged.
+This private function may be advised to customize display.  It receives an
+owned string, including Org delimiters, and must return a string.  Calls may
+occur during preflight and lowering; no invocation count is guaranteed.
+Keep advice side-effect-free.  The conversion captures this function's
+definition, not mutable state captured by advice."
+  raw)
+
 (defun org-texmacs--document-options ()
   "Snapshot supported Org document policies and the selected formatter.
 File keywords are merged later from the prepared AST without following setup
@@ -101,14 +110,16 @@ files.  Do not run export preprocessing, BIND, hooks or filters here.
 Capture `tab-width' for preformatted content.  Resolve a formatter symbol now
 so later redefinition affects only new calls."
   (let ((formatter (indirect-function org-texmacs-format-headline-function))
+        (date-formatter (indirect-function 'org-texmacs--document-date-timestamp-text))
         (info (plist-put (org-texmacs--context-base-options)
                          :texmacs-tab-width tab-width)))
     (unless (and (memq org-export-with-todo-keywords '(nil t))
                  (memq org-export-with-priority '(nil t))
                  (memq org-export-with-tags '(nil t not-in-toc))
-                 (functionp formatter))
+                 (functionp formatter) (functionp date-formatter))
       (signal 'org-texmacs-document-error '("Invalid headline presentation options")))
-    (plist-put info :texmacs-format-headline-function formatter)))
+    (setq info (plist-put info :texmacs-format-headline-function formatter))
+    (plist-put info :texmacs-date-timestamp-text-function date-formatter)))
 
 (cl-defstruct (org-texmacs-document
                (:constructor org-texmacs--document-create)
@@ -654,6 +665,7 @@ from one snapshot."
         (headline-alt-parts nil)
         (preformatted-tab-width nil)
         (headline-formatter nil)
+        (date-formatter nil)
         (static-labels (org-texmacs--document-static-labels islands))
         (info (or info '(:with-todo-keywords t :with-priority nil :with-tags t
                         :texmacs-format-headline-function
@@ -671,6 +683,10 @@ from one snapshot."
           (if (memq :texmacs-format-headline-function info)
               (plist-get info :texmacs-format-headline-function)
             #'org-texmacs-format-headline-default-function)
+          date-formatter
+          (if (memq :texmacs-date-timestamp-text-function info)
+              (plist-get info :texmacs-date-timestamp-text-function)
+            (indirect-function 'org-texmacs--document-date-timestamp-text))
           toc-setting
           (and (memq :with-toc info) (plist-get info :with-toc)))
     (unless (and (wholenump headline-limit) (<= headline-limit 5)
@@ -679,7 +695,7 @@ from one snapshot."
                                   (plist-get info :section-numbers) t)))
                    (or (memq value '(nil t)) (wholenump value)))
                  (or (memq toc-setting '(nil t)) (wholenump toc-setting))
-                 (functionp headline-formatter))
+                 (functionp headline-formatter) (functionp date-formatter))
       (signal 'org-texmacs-document-error '("Invalid headline lowering options")))
     (setq toc-depth
           (cond ((eq toc-setting t) headline-limit)
@@ -871,20 +887,22 @@ from one snapshot."
                                            (cdr (assq node (plist-get citation-plan :citations)))))))
                      (blank node space)))
               ((and (consp node) (eq (org-element-type node) 'timestamp))
-               (let ((year (org-element-property :year-start node))
-                     (month (org-element-property :month-start node))
-                     (day (org-element-property :day-start node)))
-                 (unless (and (eq context 'date)
-                              (memq (org-element-property :type node) '(active inactive))
-                              (integerp year) (integerp month) (<= 1 month 12)
-                              (integerp day) (<= 1 day 31)
-                              (null (org-element-property :hour-start node))
-                              (null (org-element-property :repeater-type node))
-                              (null (org-element-property :warning-type node))
+               (let ((raw (org-element-property :raw-value node)))
+                 (unless (and (eq context 'date) (stringp raw) (> (length raw) 0)
+                              (not (memq node ancestors))
                               (null (org-element-contents node)))
-                   (org-texmacs--document-fail node "Unsupported metadata timestamp"))
-                 (cons (text (format "%04d-%02d-%02d" year month day) space)
-                       (blank node space))))
+                   (org-texmacs--document-fail node "Invalid or unsupported metadata timestamp"))
+                 ;; Preserve the full literal, including delimiters and spaces.
+                 ;; Advice sees no source-owned or prepared-input-owned string.
+                 (let ((value (funcall date-formatter (substring-no-properties raw))))
+                   (unless (stringp value)
+                     (org-texmacs--document-fail node "Date timestamp conversion must return text"))
+                   (when (> (length value) 0)
+                     (setcar space (memq (aref value (1- (length value)))
+                                         '(?\s ?\t ?\r ?\n))))
+                   (cons (org-texmacs--document-create
+                          :body (substring-no-properties value))
+                         (blank node space)))))
               ((and (consp node) (eq (org-element-type node) 'link))
                (when (memq node ancestors)
                  (org-texmacs--document-fail node "Cyclic Org AST"))

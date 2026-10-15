@@ -722,7 +722,7 @@
                 (doc-data
                  (doc-title (concat "A " (strong "Bold") " " "title"))
                  (doc-author (author-data (author-name (em "Name"))))
-                 (doc-date "2026-09-14"))
+                 (doc-date "<2026-09-14>"))
                 (concat "Body ")))))))
 
 (ert-deftest org-texmacs-context-metadata-options-and-provenance ()
@@ -790,17 +790,189 @@
                    (doc-data
                     (doc-title "<#4E2D> <less>alpha<gtr>")
                     (doc-author (author-data (author-name (em "Author"))))
-                    (doc-date "2026-09-15"))
+                    (doc-date "<less>2026-09-15<gtr>"))
                    (concat "Body "))))))
           (org-texmacs-session-close session))))))
 
-(ert-deftest org-texmacs-document-rejects-complex-metadata-timestamps ()
-  (dolist (date '("<2026-09-15 12:00>" "<2026-09-15>--<2026-09-16>"))
+(ert-deftest org-texmacs-document-date-timestamp-raw-text ()
+  :tags '(issue4-closure)
+  (dolist (raw '("<2026-10-14>" "[2026-10-14 Wed]"
+                 "<2026-10-14 Wed 15:30 +0800>"
+                 "<2026-10-14  15:30  +0800>"
+                 "<2026-10-14 Wed 15:30-16:00>"
+                 "<2026-10-14 Wed>--<2026-10-15 Thu>"
+                 "[2026-10-14 Wed]--[2026-10-15 Thu]"
+                 "<2026-10-14 Wed +1w>" "<2026-10-14 Wed .+1m/2m>"
+                 "<2026-10-14 Wed -3d>"
+                 "<%%(diary-anniversary 10 14 2000)>"))
     (with-temp-buffer
       (org-mode)
-      (insert "#+DATE: " date "\nBody\n")
+      (setq-local org-export-with-author nil)
+      (insert "#+DATE: " raw "\nBody\n")
+      (let* ((state (org-texmacs-test--document-buffer-state (current-buffer)))
+             (input (org-texmacs-prepare-buffer (current-buffer)))
+             (date (car (plist-get (org-texmacs-input-info input) :date))))
+        (should (eq (org-element-type date) 'timestamp))
+        (should (equal (org-element-property :raw-value date) raw))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Pure date lowering started worker"))))
+          (should (equal (org-texmacs-document-body (org-texmacs-document input))
+                         `(document (doc-data (doc-date ,raw)) (concat "Body ")))))
+        (should (equal state (org-texmacs-test--document-buffer-state (current-buffer))))))))
+
+(ert-deftest org-texmacs-document-date-precedence-and-suppression ()
+  :tags '(issue4-closure)
+  (with-temp-buffer
+    (org-mode)
+      (setq-local org-export-with-author nil)
+    (insert "Body\n")
+    (let ((raw "<2026-10-14 Wed 15:30 +0800>"))
+      (should (equal (cadr (org-texmacs-document-body
+                           (org-texmacs-document-from-buffer
+                            (current-buffer) nil nil nil (list :date raw))))
+                     `(doc-data (doc-date ,raw))))
+      (insert "#+DATE: *Release* " raw " =literal=\n")
+      (let ((body (org-texmacs-document-body
+                   (org-texmacs-document-from-buffer
+                    (current-buffer) nil nil nil '(:date "External")))))
+        (should (equal (cadr body)
+                       `(doc-data (doc-date (concat (strong "Release") " "
+                                                    ,raw " " (verbatim "literal")))))))
+      (dolist (options '((:with-date nil) (:date nil :with-date nil)))
+        (should-not (memq 'doc-data
+                          (flatten-tree
+                           (org-texmacs-document-body
+                            (org-texmacs-document-from-buffer
+                             (current-buffer) nil nil nil options))))))
+      (insert "* Chosen\n:PROPERTIES:\n:EXPORT_DATE: [2026-10-15 Thu]\n:END:\n")
+      (search-backward "* Chosen")
+      (should (equal (cadr (org-texmacs-document-body
+                           (org-texmacs-document-from-buffer
+                            (current-buffer) nil (point) nil '(:date "External"))))
+                     '(doc-data (doc-title "Chosen") (doc-date "[2026-10-15 Thu]"))))))
+  (with-temp-buffer
+    (org-mode)
+      (setq-local org-export-with-author nil) (insert "Body\n")
+    (should-not (memq 'doc-data
+                      (flatten-tree (org-texmacs-document-body
+                                     (org-texmacs-document-from-buffer (current-buffer))))))))
+
+(ert-deftest org-texmacs-document-date-malformed-and-context ()
+  :tags '(issue4-closure)
+  (dolist (value '(nil "" 42))
+    (with-temp-buffer
+      (org-mode)
+      (setq-local org-export-with-author nil) (insert "#+DATE: <2026-10-14>\n")
+      (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
+             (date (car (plist-get (org-texmacs-input-info input) :date))))
+        (org-element-put-property date :raw-value value)
+        (should-error (org-texmacs-document input) :type 'org-texmacs-document-error))))
+  (with-temp-buffer
+    (org-mode)
+      (setq-local org-export-with-author nil) (insert "#+DATE: <2026-10-14>\n")
+    (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
+           (date (car (plist-get (org-texmacs-input-info input) :date))))
+      (org-element-set-contents date "unexpected")
+      (should-error (org-texmacs-document input) :type 'org-texmacs-document-error)))
+  (dolist (source '("<2026-10-14>\n" "#+TITLE: <2026-10-14>\n"))
+    (with-temp-buffer
+      (org-mode)
+      (setq-local org-export-with-author nil) (insert source)
       (should-error (org-texmacs-document-from-buffer (current-buffer))
                     :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-document-date-advice-snapshot-and-ownership ()
+  :tags '(issue4-closure)
+  (let ((raw "<2026-10-14 Wed 15:30 +0800>") result input)
+    (with-temp-buffer
+      (org-mode)
+      (setq-local org-export-with-author nil) (insert "#+DATE: " raw "\n")
+      (let ((advice (lambda (text) (aset text 0 ?X) (setq result text))))
+        (unwind-protect
+            (progn
+              (advice-add 'org-texmacs--document-date-timestamp-text :override advice)
+              (setq input (org-texmacs-prepare-buffer (current-buffer))))
+          (advice-remove 'org-texmacs--document-date-timestamp-text advice)))
+      (let* ((date (car (plist-get (org-texmacs-input-info input) :date)))
+             (document (org-texmacs-document input)))
+        (should (equal (org-element-property :raw-value date) raw))
+        (should (equal (org-texmacs-document-body document)
+                       '(document (doc-data (doc-date "X2026-10-14 Wed 15:30 +0800>")))))
+        (aset result 1 ?Y)
+        (should (equal (org-texmacs-document-body document)
+                       '(document (doc-data (doc-date "X2026-10-14 Wed 15:30 +0800>")))))
+        (should (equal (org-texmacs-document-body
+                        (org-texmacs-document-from-buffer (current-buffer)))
+                       `(document (doc-data (doc-date ,raw)))))))
+    ;; Pure construction also fixes the function, without buffer preparation.
+    (let ((advice (lambda (_text) "PureDate")))
+      (unwind-protect
+          (progn
+            (advice-add 'org-texmacs--document-date-timestamp-text :override advice)
+            (setq input (org-texmacs-input-create
+                         (org-element-create 'org-data nil)
+                         (list :date (list (org-element-create
+                                            'timestamp (list :raw-value raw)))))))
+        (advice-remove 'org-texmacs--document-date-timestamp-text advice))
+      (should (equal (org-texmacs-document-body (org-texmacs-document input))
+                     '(document (doc-data (doc-date "PureDate"))))))))
+
+(ert-deftest org-texmacs-document-date-advice-result-and-error ()
+  :tags '(issue4-closure)
+  (dolist (value '(42 nil (strong "bad")))
+    (let ((advice (lambda (_raw) value)))
+      (unwind-protect
+          (progn
+            (advice-add 'org-texmacs--document-date-timestamp-text :override advice)
+            (with-temp-buffer
+              (org-mode)
+      (setq-local org-export-with-author nil) (insert "#+DATE: <2026-10-14>\n")
+              (should-error (org-texmacs-document-from-buffer (current-buffer))
+                            :type 'org-texmacs-document-error)))
+        (advice-remove 'org-texmacs--document-date-timestamp-text advice))))
+  (let ((advice (lambda (_raw) "")))
+    (unwind-protect
+        (progn
+          (advice-add 'org-texmacs--document-date-timestamp-text :override advice)
+          (with-temp-buffer
+            (org-mode)
+      (setq-local org-export-with-author nil) (insert "#+DATE: <2026-10-14>\n")
+            (should (equal (org-texmacs-document-body
+                            (org-texmacs-document-from-buffer (current-buffer)))
+                           '(document (doc-data (doc-date "")))))))
+      (advice-remove 'org-texmacs--document-date-timestamp-text advice)))
+  (let ((advice (lambda (_raw) (error "DateAdviceFailure"))))
+    (unwind-protect
+        (progn
+          (advice-add 'org-texmacs--document-date-timestamp-text :override advice)
+          (with-temp-buffer
+            (org-mode)
+      (setq-local org-export-with-author nil) (insert "#+DATE: <2026-10-14>\n")
+            (let ((state (org-texmacs-test--document-buffer-state (current-buffer))))
+              (should-error (org-texmacs-document-from-buffer (current-buffer)))
+              (should (equal state (org-texmacs-test--document-buffer-state
+                                    (current-buffer)))))))
+      (advice-remove 'org-texmacs--document-date-timestamp-text advice))))
+
+(ert-deftest org-texmacs-document-date-worker-wait-snapshot ()
+  :tags '(issue4-closure)
+  (let ((advice (lambda (_raw) "ChangedDate")))
+    (unwind-protect
+        (with-temp-buffer
+          (org-mode)
+      (setq-local org-export-with-author nil) (insert "#+DATE: <2026-10-14>\n(math \"x\")\n")
+          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                     (lambda (&rest _)
+                       (advice-add 'org-texmacs--document-date-timestamp-text :override advice)
+                       '(math "x"))))
+            (should (equal (org-texmacs-document-body
+                            (org-texmacs-document-from-buffer (current-buffer)))
+                           '(document (doc-data (doc-date "<2026-10-14>"))
+                                      (concat (math "x") " "))))
+            (should (equal (cadr (org-texmacs-document-body
+                                 (org-texmacs-document-from-buffer (current-buffer))))
+                           '(doc-data (doc-date "ChangedDate"))))))
+      (advice-remove 'org-texmacs--document-date-timestamp-text advice))))
 
 (ert-deftest org-texmacs-context-filters-tasks-before-worker ()
   (with-temp-buffer
@@ -6150,6 +6322,43 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
   (let ((matches (cl-remove-if-not (lambda (word) (equal (car word) text)) words)))
     (should (= (length matches) 1))
     (cdar matches)))
+
+(ert-deftest org-texmacs-pdf-date-literal-layout ()
+  :tags '(issue4-closure)
+  (org-texmacs-test--with-worker
+    (let ((raw "<2026-10-14 Wed 15:30 +0800>")
+          (actual (expand-file-name "date.pdf" test-directory))
+          (reference (expand-file-name "date-reference.pdf" test-directory)))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+OPTIONS: toc:nil\n#+TITLE: DateTitle\n#+AUTHOR: DateAuthor\n"
+                "#+DATE: " raw "\nDateBody\n")
+        (let ((state (org-texmacs-test--document-buffer-state (current-buffer)))
+              (document (org-texmacs-document-from-buffer (current-buffer))))
+          (should (equal (org-texmacs--native-encode-document document)
+                         (org-texmacs-test--native-hex
+                          '(document
+                            (doc-data (doc-title "DateTitle")
+                                      (doc-author (author-data (author-name "DateAuthor")))
+                                      (doc-date "<less>2026-10-14 Wed 15:30 +0800<gtr>"))
+                            (concat "DateBody ")))))
+          (org-texmacs-export-to-pdf-file (current-buffer) actual)
+          (org-texmacs-document-save-pdf
+           (org-texmacs--document-create
+            :body `(document
+                    (doc-data (doc-title "DateTitle")
+                              (doc-author (author-data (author-name "DateAuthor")))
+                              (doc-date ,raw))
+                    (concat "DateBody ")))
+           reference)
+          (should (string-match-p (regexp-quote raw) (org-texmacs-test--pdf-text actual)))
+          (let ((words (org-texmacs-test--pdf-words actual))
+                (expected (org-texmacs-test--pdf-words reference)))
+            (dolist (token '("DateTitle" "DateAuthor" "DateBody" "+0800>"))
+              (cl-mapc (lambda (a b) (should (<= (abs (- a b)) 1.0)))
+                       (org-texmacs-test--pdf-word words token)
+                       (org-texmacs-test--pdf-word expected token))))
+          (should (equal state (org-texmacs-test--document-buffer-state (current-buffer)))))))))
 
 (ert-deftest org-texmacs-pdf-block-quotation-and-center-layout ()
   :tags '(issue4)

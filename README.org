@@ -1158,16 +1158,44 @@ keywords are consumed instead of becoming body nodes.
 =#+TITLE=, =#+AUTHOR= and =#+DATE= remain parsed rich Org objects in the
 prepared input and lower into a leading =doc-data=.  Titles use =doc-title=;
 authors use =doc-author=, =author-data= and =author-name= without heuristic
-name splitting; dates use =doc-date=.  A single explicit date timestamp is
-formatted as =YYYY-MM-DD=, while a missing date is not replaced with today.
-Timestamp ranges, repeaters, warnings and timestamps with times are not yet
-part of this metadata subset and are rejected.
+name splitting; dates use =doc-date=.  Date metadata timestamps preserve their
+complete Org =:raw-value= as literal TeXmacs text, including angle/square
+brackets, internal whitespace, weekday, time, timezone-like suffixes, ranges,
+repeaters, warnings and diary expressions.  Their contents are not interpreted,
+normalized or evaluated.  A missing date is not replaced with today.  This is
+literal display, not native calendar semantics or additional structured metadata.
+Malformed timestamp data and native encoding failures remain explicit errors.
 Their =title=, =author= and =date= options independently suppress output.
 Metadata is not scanned for STM fragments.  In a source document without any
 of these three keywords, default author data alone does not create =doc-data=.
 Unsupported =#+OPTIONS= keys and preprocessing directives are errors instead
 of silently invoking a broader export pipeline.  Loading =ox= supplies Org's
 option conversion and filtering policies but does not run an exporter.
+
+The private =org-texmacs--document-date-timestamp-text= function accepts one
+owned raw timestamp string and returns a string, unchanged by default.  Advanced
+Lisp callers may advise it for their own display policy.  For example, this
+optional advice strips delimiters only from single active timestamps; ranges
+and other forms remain unchanged:
+
+#+begin_src emacs-lisp
+  (defun my-org-texmacs-date-display (raw)
+    (replace-regexp-in-string "\\`<\\([^<>]*\\)>\\'" "\\1" raw))
+
+  (advice-add 'org-texmacs--document-date-timestamp-text
+              :filter-return #'my-org-texmacs-date-display)
+  ;; Remove the customization with:
+  ;; (advice-remove 'org-texmacs--document-date-timestamp-text
+  ;;                #'my-org-texmacs-date-display)
+#+end_src
+
+This is a private interface, not a stable formatter option or external export
+configuration key.  Keep advice side-effect-free; it may run during preflight
+and lowering.  Inputs and returned strings are copied.  A string result,
+including an empty string, is required.  Each prepared input captures the
+function definition; later advice changes affect newly prepared inputs, not the
+existing conversion.  Mutable state captured by advice is not frozen.
+The rest of a rich date field retains its ordinary inline handling.
 
 The default =org-texmacs-format-headline-function= is
 =org-texmacs-format-headline-default-function=.  It joins a strong TODO/DONE
