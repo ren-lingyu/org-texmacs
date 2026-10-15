@@ -2,6 +2,34 @@
 
 ## Active objective
 
+User now asks read-only diagnosis of Org wrapper case: begin_texmacs and
+BEGIN_texmacs work, begin_TEXMACS/BEGIN_TEXMACS reportedly fail. No ordinary
+source/docs edits or task-specific tests authorized/selected. Static inspection
+finds exact :type comparison to "texmacs" in org-texmacs--block-p
+(org-texmacs-source.el) and separate fragment ancestor exclusion
+(org-texmacs-fragment.el). Shared predicate also controls source extraction,
+pure island validation, selected-region/dependency discovery, preprocessing STM
+shielding and bibliography masking; these need consistent recognition. Org's
+published Emacs31.1 special-block parser binds case-fold-search t, captures raw
+type spelling and stores it unchanged in :type. Official source:
+https://raw.githubusercontent.com/emacs-mirror/emacs/emacs-31.1/lisp/org/org-element.el.
+Direct release_9.8 source fetch failed; no fresh pinned9.8.10 runtime probe run.
+Conclusion: lowercase-only wrapper name is a local recognition restriction, not
+a necessary worker/AST-first/TeXmacs constraint. A bounded change can compare
+wrapper type case-insensitively (validate string before downcase) and synchronize
+ancestor exclusion; do not modify original Org AST/body/source or native tag case.
+Inline STM fragment tag names remain intentionally literal/case-sensitive.
+If centralizing ancestor test on the shared predicate, make the fragment module's
+source-module dependency explicit rather than relying on main load order.
+Suggested future coverage: BEGIN/END and name-case combinations, body/source
+preservation, no inline discovery inside uppercase wrappers, preprocessing and
+bibliography shielding, normal conversion and unrelated block rejection. This is
+a diagnosis/change option, not implementation or backlog adoption. No unique raw
+evidence to archive; necessary findings are extracted here. Previous issue3
+implementation/acceptance below remains complete and committed.
+
+## Completed Issue #3
+
 User now selected implementation of issue3 against memory/export-api-contract.md.
 Authorized project API/lifecycle/documentation/maintained-test edits. Separately
 authorized repeated120s isolated focused/integration Nix builds and240s complete
