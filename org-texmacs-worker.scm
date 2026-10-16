@@ -212,7 +212,7 @@
   (for-each
    (lambda (name)
      (if (not (defined? name)) (error "Missing PDF capability" name)))
-   '(supports-native-pdf? print-to-file update-current-buffer string-load
+   '(supports-native-pdf? print-to-file update-current-buffer update-forced string-load
      url-append system-remove buffer-new view-new buffer-close))
   (if (not (supports-native-pdf?)) (error "Native PDF unsupported"))
   (if (not org-texmacs-render-directory) (error "Missing private PDF directory"))
@@ -237,13 +237,17 @@
                   (for-each (lambda (entry) (init-env-tree (car entry) (cdr entry)))
                             (list-ref native 1))
                   (buffer-set-body buffer (list-ref native 2))
-                  ;; Low-level updates avoid deferred generate-all-aux/file APIs.
+                  ;; Invalidation alone does not populate the persistent link
+                  ;; repository used while native PDF boxes are rendered.
+                  ;; Force layout without deferred generate-all-aux/file APIs.
                   (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer))
+                  (update-forced)
                   ;; Native printing establishes typeset bibliography bindings.
                   ;; Update references after that pass before final printing.
                   ;; Both prints use the same owned temporary file.
                   (print-to-file file)
                   (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer))
+                  (update-forced)
                   (print-to-file file)
                   (set! result (string-load file)))
                 (lambda args (set! failure args))))

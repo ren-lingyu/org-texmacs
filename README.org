@@ -1434,9 +1434,11 @@ consistency check.  Both functions are noninteractive Lisp APIs.
 #+end_src
 
 The headless worker installs the structured document directly in a temporary
-native buffer and performs three synchronous native buffer updates.  A first
-native PDF print establishes typeset reference bindings; three further updates
-resolve their uses before the final print to the same temporary file.
+native buffer, invalidates its layout and forces synchronous typesetting before
+printing.  Invalidation alone does not populate the native link information
+needed for PDF annotations.  A first native PDF print establishes typeset
+reference bindings; another invalidation and forced typesetting resolve their
+uses before the final print to the same temporary file.
 It does not serialize and reparse a =.tm= intermediary.
 An existing public session remains unchanged.  The temporary buffer and PDF
 are cleaned up; transport failure removes the worker's private directory.
@@ -1449,9 +1451,11 @@ This first rendering subset rejects explicit =image=, =include=, =extern=,
 use installed TeXmacs resources; custom styles are not sandboxed.  The renderer
 does not run bibliography generation or read caller bibliography files.
 Maintained installed tests inspect the PDF with Poppler, including heading and
-table reference values and literal Unicode text.  PDF semantic regressions also
-check anonymous/named/repeated footnote markers and unique bodies, citation
-groups/repeated citations, and selected bibliography entries.  They normalize
+table reference values, literal Unicode text, external URI annotations and
+same-document link destinations.  These links use TeXmacs's native PDF exporter;
+no separate PDF link layer is added.  PDF semantic regressions also check
+anonymous/named/repeated footnote markers and unique bodies, citation groups/
+repeated citations, and selected bibliography entries.  They normalize
 extracted whitespace and use short fixtures in isolated native configurations;
 they do not assert PDF bytes, pixel snapshots, coordinates or fixed pagination.
 The bounded update/print sequence does not guarantee convergence for every

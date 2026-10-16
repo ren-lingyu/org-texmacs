@@ -6647,6 +6647,19 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (should (= (length matches) 1))
     (cdar matches)))
 
+(defun org-texmacs-test--pdf-links (file)
+  "Return FILE's actual PDF annotations as (TEXT . DESTINATION) pairs."
+  (require 'dom)
+  (require 'xml)
+  (let ((program (executable-find "pdftohtml")))
+    (when (getenv "ORG_TEXMACS_TEST_README") (should program))
+    (unless program (ert-skip "PDF link inspection requires Poppler pdftohtml"))
+    (with-temp-buffer
+      (let ((coding-system-for-read 'utf-8-unix))
+        (should (= 0 (call-process program nil t nil "-xml" "-i" "-hidden" "-stdout" file))))
+      (mapcar (lambda (link) (cons (dom-text link) (dom-attr link 'href)))
+              (dom-by-tag (car (xml-parse-region (point-min) (point-max))) 'a)))))
+
 (ert-deftest org-texmacs-pdf-preformatted-lines-and-indent ()
   :tags '(issue4-closure)
   (org-texmacs-test--with-worker
@@ -6794,7 +6807,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (with-temp-file script
         (insert "(use-modules (generic document-edit))\n"
                 (format
-                 "(begin (catch #t (lambda () (load-buffer (system->url %S)) (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer)) (print-to-file (system->url %S)) (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer)) (print-to-file (system->url %S)) (display \"ISSUE11-RELOAD-OK\\n\")) (lambda args (display \"ISSUE11-RELOAD-ERROR\") (write args))) (quit-TeXmacs))\n"
+                 "(begin (catch #t (lambda () (load-buffer (system->url %S)) (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer)) (update-forced) (print-to-file (system->url %S)) (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer)) (update-forced) (print-to-file (system->url %S)) (display \"ISSUE11-RELOAD-OK\\n\")) (lambda args (display \"ISSUE11-RELOAD-ERROR\") (write args))) (quit-TeXmacs))\n"
                  tm pdf pdf))))
     (unwind-protect
         (with-temp-buffer
@@ -7126,6 +7139,71 @@ bounded word records rather than interpreting the whole output as XML."
                     (dolist (value '("Heading" "Literal <alpha>" "Café" "Table caption" "Section 1" "Table 1"))
                       (should (string-match-p (regexp-quote value) (buffer-string)))))))))
         (org-texmacs-session-close session)))))
+
+(ert-deftest org-texmacs-pdf-hyperlink-annotations ()
+  :tags '(pdf-links)
+  (org-texmacs-test--with-worker
+    (dolist (style '("generic" "article"))
+      (let* ((stem (expand-file-name style test-directory))
+             (tm (concat stem ".tm"))
+             (pdf (concat stem ".pdf"))
+             (again (concat stem "-again.pdf"))
+             (reload (concat stem "-reload.pdf"))
+             (uri (concat "https://example.org/" style))
+             document)
+        (with-temp-buffer
+          (org-mode)
+          (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+                  "[[" uri "][ExternalLink]]\n\nSee [[*Target][InternalLink]].\n\n"
+                  "#+begin_texmacs\n(new-page)\n#+end_texmacs\n\n"
+                  "* Target\nTargetBody\n")
+          (let ((org-texmacs-document-style (list style))
+                (before (org-texmacs-test--document-buffer-state (current-buffer))))
+            (setq document (org-texmacs-document-from-buffer (current-buffer)))
+            (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))))
+        ;; Consume owned input after its source buffer has been destroyed.
+        (org-texmacs-document-save document tm)
+        (org-texmacs-document-save-pdf document pdf)
+        (org-texmacs-document-save-pdf document again)
+        (dolist (file (list pdf again))
+          (let ((links (org-texmacs-test--pdf-links file)))
+            (should (equal uri (cdr (assoc "ExternalLink" links))))
+            (should (string-suffix-p ".html#2" (cdr (assoc "InternalLink" links))))
+            (should-not (assoc "TargetBody" links))))
+        (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+        (let ((links (org-texmacs-test--pdf-links reload)))
+          (should (equal uri (cdr (assoc "ExternalLink" links))))
+          (should (string-suffix-p ".html#2" (cdr (assoc "InternalLink" links)))))
+        (should-not (directory-files org-texmacs--worker-directory nil "\\`render-.*\\.pdf\\'"))))))
+
+(ert-deftest org-texmacs-pdf-typeset-error-recovery ()
+  :tags '(pdf-links)
+  (dolist (failed-update '(1 2))
+    (org-texmacs-test--with-worker
+      (let ((script (expand-file-name "typeset-failure.scm" test-directory)))
+        (with-temp-file script
+          (insert (format "(load %s)\n" (org-texmacs--scheme-string org-texmacs--worker-scheme-file))
+                  "(define original-update update-forced)\n"
+                  "(define update-count 0)\n"
+                  "(set! update-forced (lambda ()\n"
+                  "  (set! update-count (+ update-count 1))\n"
+                  (format "  (if (= update-count %d) (error \"Injected layout failure\")\n" failed-update)
+                  "      (original-update))))\n"))
+        (let* ((org-texmacs--worker-scheme-file script)
+               (document (org-texmacs--document-create :body '(document "Text")))
+               (session (org-texmacs-session-open)))
+          (unwind-protect
+              (progn
+                (org-texmacs-session-set-document session document)
+                (let ((state (org-texmacs--session-read-document session))
+                      (process org-texmacs--worker-process))
+                  (should-error (org-texmacs-document-pdf document) :type 'org-texmacs-rendering-error)
+                  (should (org-texmacs--worker-live-p))
+                  (should-not (directory-files org-texmacs--worker-directory nil "\\`render-.*\\.pdf\\'"))
+                  (should (equal state (org-texmacs--session-read-document session)))
+                  (should (string-prefix-p "%PDF-" (org-texmacs-document-pdf document)))
+                  (should (eq process org-texmacs--worker-process))))
+            (org-texmacs-session-close session)))))))
 
 (ert-deftest org-texmacs-pdf-preflight-protocol-and-source-wait ()
   (cl-letf (((symbol-function 'org-texmacs--worker-call)
