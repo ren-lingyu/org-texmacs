@@ -1,5 +1,15 @@
 # org-texmacs current memory
 
+## Active: supplementary PDF derived-state checks
+
+After verifying committed PDF repair, user selected tests of adjacent behavior
+and practical manual instructions. Current task changes ERT only: actual TOC/
+headline/citation/repeated-footnote target pages and TOC page values across
+generic/article and short/flow documents. Independent12PDF direct/reload2/
+reload6comparison probes and manual ASCII Org/BibTeX/click checklist prepared
+in safe tmp/pdf-links-adjacent. No new runtime test executed; exact new commands
+require user approval. Scope/handoff: memory/pdf-adjacent-checks.md.
+
 ## Completed local repair: PDF hyperlink annotations
 
 User-selected PDF link repair is implemented, automatically accepted and
