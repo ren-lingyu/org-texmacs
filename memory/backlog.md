@@ -23,6 +23,16 @@ decision.
 
 ## Active next
 
+### Issue12 bibliography native ownership — read-only review selected
+
+User selects next bibliography topic and supplies guidance; read-only review
+completed in memory/issue-12-review.md. Native parser/formatter authority,
+remove parallel Emacs grammar/signatures, retain AST/source/key/label invariants.
+Worker nonentry filtering, dependency-field guard/formatter context, preflight
+ordering and error classes must join scope assessment. No implementation/native
+probe execution or new release-blocker classification authorized/adopted yet.
+
+
 ### v0.5.0 release readiness — Issue10 and Issue11 user-committed
 
 Status: Issue10 and Issue11 implementation/automated acceptance/user delivery

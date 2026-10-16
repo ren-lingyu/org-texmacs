@@ -1,5 +1,20 @@
 # org-texmacs current memory
 
+## Active: Issue12 bibliography read-only review
+
+User selected next bibliography work and supplied Issue12 guidance, requesting
+read-only review first. Static review complete; no business edits/tests/native
+experiments or personal-source rereads. Native BibTeX ownership aligns AST-first,
+but rewire raw signatures/fake entries/preflight, acquisition validator and input
+field restrictions; inspect worker nonentry filtering and crossref-family guard/
+selected-only formatter context. Key checks now depend on native AST, so old
+zero-worker/preflight assertions must be narrowed. Distinguish parser errors,
+invalid payload and valid AST/unresolvable relation. Native construct support
+unverified; GitHub12page fetch failed, supplied guidance is current input.
+Nine source/test/README files equal committed project snapshot; only original
+user flake overlay dirty, index empty. Full review and proposed next boundaries:
+memory/issue-12-review.md. No implementation or test execution authorized yet.
+
 ## Completed: supplementary PDF derived-state checks
 
 User-requested supplementary tests/manual plan complete and ERT user-committed.
