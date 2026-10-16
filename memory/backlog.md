@@ -23,10 +23,10 @@ decision.
 
 ## Active next
 
-### v0.5.0 release readiness — adopted priorities, implementation not started
+### v0.5.0 release readiness — Issue11 candidate accepted, user delivery pending
 
-Status: **adopted-later** release requirements; current selected action is review
-and GAW extraction, followed by selected isolated investigation (complete).
+Status: selected Issue11 implementation/automated acceptance complete, uncommitted
+candidate pending user review/delivery. Other release requirements **adopted-later**.
 Full gate, all nine items, evidence limits and decisions:
 memory/release-0.5.0.md. Required P0: #10 inline-footnote STM, #11 equation
 block/paragraph discrepancy resolution, prior block-mapping regression (confirm
@@ -37,9 +37,14 @@ tests/native/PDF/compile/lint and0.5.0 metadata/docs/migration/notes.
 Investigation results: memory/release-0.5.0-investigation.md. #10 gap confirmed,
 #11 concat/native reload cause isolated, links share native/config absence,
 CJK missing-font environment needs positive control, Org fontification reusable
-but edit lifecycle unverified. No business-code/version/release authority.
-Suggested #10 then separate
-#11 diagnosis is not an adopted implementation sequence. #9 adopted-later after
+but edit lifecycle unverified. User selected final Issue11 implementation contract
+in memory/issue-11-implementation.md: bare lifting, explicit known-display mixed
+rejection, leading-list exception; no automatic splitting. Final14/14focused,
+9/9real and430/430core pass, including strict compile/lint/full applicable flake
+checks. Seven stale expectations migrated; candidate pending user review/commit.
+Remote#11 last observed open.
+Adopted priority11->10->PDF links, Chinese fonts postponed, font-lock later.
+No release/version authority. #9 adopted-later after
 0.5.0 before0.6.0; #7 deferred and not a0.5.0 blocker. Earlier native footnote
 placement/page-break concerns excluded absent actionable package regression.
 

@@ -1,12 +1,45 @@
 # org-texmacs current memory
 
-## Active objective: v0.5.0 release readiness review
+## Completed candidate: Issue11 bare STM paragraph repair
+
+User-selected final revised plan implemented and locally accepted; contract,
+context matrix, diagnostics and full evidence in memory/issue-11-implementation.md.
+Exactly document/ERT/README changed, not staged/committed. Bare one registered
+string island plus only other ordinary ASCII whitespace children/no Org objects
+emits complete copied island. Mixed known direct display roots explicitly reject;
+no automatic splitting. Leading list paragraph retains marker/concat and refuses
+display roots. Body/quote/center/separate-note/later-list contexts verified.
+Pure ownership/provenance, source state and unrelated mixed math maintained.
+
+Final14/14focused79.974344s,9/9real12.125815s,430/430core296.145612s; full600s
+flake exit0,strict compile/lint/all applicable checks pass. Locked x86_64-linux
+Emacs31.1/Org9.8.10/TeXmacs2.1.5, other platforms omitted. Seven new ERT,7old bare
+concat/path expectations migrated without relaxing original semantic assertions.
+Structural55route pairs/native23same-root context fixtures and original issue
+PDF/.tm-reload geometry compare; no cross-environment equality claim.
+Final red2expected assertions2.374614s confirm old concat and80.16pt layout gap.
+First full423/430seven stale expectations and intermediate fixture mistakes fully
+extracted, not counted as accepted results. No production changes after first
+focused7/7; final source/lock stable,25baseline/25final/11foreign hashes verified.
+
+14necessary raw text artifacts separately captured/byte-verified:
+archive/2026-10-16T07-46-35Z--8a90b4c/MANIFEST.md. No PDF/binary/dependency/full tmp.
+No inferred project parent: accepted candidate uncommitted; baseline identified
+as exact red-control source in evidence. Ordinary index empty;3task files plus
+user flake mirror dirty, no INBOX/version/lock/example edits or external writes.
+Next user reviews candidate then may authorize staging/message; user makes project
+commit, verify identity and tracking afterward. Remote#11 last observed open.
+#10 then PDF links follow11; Chinese fonts postponed, font-lock later. No other
+feature implementation or release operation selected.
+
+## v0.5.0 release readiness context
 
 User selected INBOX review/GAW extraction, then explicitly requested retrying
-issue reads and local isolated investigation tests on2026-10-16. No business
-project-file edits. Adopted readiness scope and complete independent
-extraction: memory/release-0.5.0.md. Planned, not release-ready or implementation
-permission. Baseline main@8a90b4c confirmed, index empty/only user flake.nix dirty.
+issue reads and local isolated investigation tests on2026-10-16. That initial
+review/investigation phase made no business project-file edits; later Issue11
+implementation was separately selected and completed above. Adopted readiness
+scope: memory/release-0.5.0.md; broader release remains planned, not release-ready.
+Initial baseline main@8a90b4c had empty index/only user flake.nix dirty.
 P0: #10 anonymous/named inline-note STM with structural+native PDF regression;
 #11 standalone block/paragraph equation discrepancy diagnosis/resolution with
 mixed paragraphs and direct-PDF versus native .tm reload comparison; regression
@@ -17,7 +50,7 @@ P2: representative combined real mathematical documents, locked-flake complete
 ERT/native/PDF/strict compile/lint gate,0.5.0 version/docs/notes and migration.
 #9 scheduled after0.5.0 before0.6.0; #7 stays deferred/nonblocking. Native footnote
 placement/page breaks not blockers absent an actionable package regression.
-No production fix chosen. Isolated investigation complete and extracted in
+Issue11 implementation now selected above; original isolated investigation is in
 memory/release-0.5.0-investigation.md. Connector verifies#10/#11/#9/#7 open,
 #4 closed/completed; all3scope comments read, no external writes. #10 reproduced:
 inline note variants0islands/literal STM versus separate definition1/native math;
@@ -31,12 +64,13 @@ matches native control, not faithful reproduction of user's font inconsistency.
 Org Scheme fontification applies to STM spans with text/tick unchanged; editing/
 cleanup/performance integration unverified. Eight footnote boundary probes and
 3structural/native ERT+1quotation/center PDF pass under locked offline flake.
-18source inputs equal committed baseline, root lock/source/INBOX unchanged, only
-user flake mirror dirty. No full release gate. Native reload harness failures
+At that initial investigation checkpoint,18source inputs equaled committed baseline,
+root lock/source/INBOX were unchanged and only user flake mirror was dirty.
+No full release gate was run in that phase. Native reload harness failures
 corrected and explicitly excluded from acceptance. No ordinary staging/release/
 external writes. 37necessary original-byte text artifacts archived and verified separately at
 archive/2026-10-16T06-29-51Z--8a90b4c/MANIFEST.md; PDFs/binaries excluded.
-Next user selects #10/#11 fix plan;
+Issue11 candidate is now implemented/validated above; #10 and PDF links follow it;
 P1 font/export configuration/edit-lifecycle gaps remain before release acceptance.
 
 ## Completed committed delivery: Issue4 remaining date repair and semantic audit

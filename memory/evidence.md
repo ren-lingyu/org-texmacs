@@ -2889,3 +2889,34 @@ archive/2026-10-16T06-29-51Z--8a90b4c/MANIFEST.md. No PDFs/binaries/full tmp.
 Tested snapshot association justified by18committed source identities; independent
 harness/source fixture provenance explicit. Operational findings/diagnostics
 extracted into investigation/current memory. Existing INBOX remains active.
+
+
+## Issue11 bare paragraph repair accepted candidate (2026-10-16)
+
+Final user contract excludes auto splitting and leading-list promotion, rejects
+known direct display-root mixtures and lifts only source-identity bare paragraphs.
+Document/README/ERT only changed; no project staging/commit. Seven new maintained
+ERT,7legacy tree/path assertions migrated while retaining original guarantees.
+Final focused14/14:79.974344s,real extension9/9:12.125815s,full600s flake exit0:
+430/430core296.145612s,strictcompile/lint/all applicable checks pass. Locked
+Emacs31.1/Org9.8.10/TeXmacs2.1.5/x86_64-linux; incompatible systems omitted.
+55structural same-root context pairs,23native context fixtures plus original
+article-margin equation compare bare/block/PDF/native .tm reload text/geometry.
+No cross-native-environment/PDF-byte equality claim. Pure/source/provenance/error
+boundary tests pass. Final baseline target confirms2intended assertion failures
+2.374614s, extra concat and80.16pt mismatch. Baseline failures are expected red,
+not accepted-candidate failures. Initial fixture syntax/shared empty identity and
+missing target empty-slot expectation corrected; first full423/430 exposed7stale
+assertions297.201308s. Diagnostics and migrated assertions preserved/extracted.
+
+25baseline/25final/11foreign identities verified, first/final patches reconstruct
+all3task files exactly.14necessary original text artifacts byte/stability verified
+in separate immutable archive-only checkpoint:
+archive/2026-10-16T07-46-35Z--8a90b4c/MANIFEST.md.
+Raw harness/lock/manifests/patches/paired gate logs/report retained; no binary/PDF/
+dependency tree/full tmp. Accepted candidate uncommitted, no inferred project parent;
+recorded baseline is exact red source. Current operational recovery:
+memory/issue-11-implementation.md. Root INBOX/lock/versions/user flake/examples
+unchanged. Ordinary index empty; only3task paths plus user mirror dirty. Remote#11
+last observed open, user review/delivery/tracking next. No external writes or
+other-feature implementation. Fonts postponed; priority11->10->PDF links.

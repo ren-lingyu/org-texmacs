@@ -63,15 +63,22 @@ and separate delivery status in memory/issue-4-closure.md/current.md.
 
 Read-only INBOX review adopts release readiness priorities in
 memory/release-0.5.0.md. Inline-footnote STM (#10) is a required future extension,
-not current support. Equation block/paragraph PDF discrepancy (#11), PDF annotations
-and Chinese font observations need evidence before attribution or architecture
-changes. Existing bounded native tag audit does not establish these new cases.
+not current support. The initial review required evidence for the equation
+block/paragraph PDF discrepancy (#11), PDF annotations and Chinese fonts; the
+previous bounded native tag audit alone did not establish these cases.
 Isolated probes now reproduce #10 and identify #11 wrapper-sensitive native
-rendering/serialization reload difference; no production fix yet. Links/CJK share
+rendering/serialization reload difference. Uncommitted accepted Issue11 candidate
+implements bare identity-based paragraph lifting and known direct display-root
+mixed rejection; list-first marker route retained, no automatic splitting.
+Final14focused/9real/430core/full compile/lint pass; source/encoding/provenance
+boundaries and matched-context native layout verified. No main/release claim
+until user delivery. Contract/evidence:
+memory/issue-11-implementation.md. Links/CJK share
 native controls and need further config evidence. Org Scheme fontification can
 fontify STM spans; editing integration still unverified. See
 memory/release-0.5.0-investigation.md. #9 post0.5.0/pre0.6.0; #7 deferred.
-Code metadata remains0.4.0; no release candidate test/publication this turn.
+Code metadata remains0.4.0; Issue11 acceptance does not establish complete
+v0.5.0 readiness and no release publication was performed.
 
 ## Current conversion path
 
