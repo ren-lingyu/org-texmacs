@@ -1,0 +1,125 @@
+Running 3 tests (2026-10-16 16:29:46+0000, selector `(or "^org-texmacs-bibliography-issue12-native-constructs$" "^org-texmacs-bibliography-issue12-unused-duplicates$" "^org-texmacs-bibliography-issue12-native-fields$")')
+Test org-texmacs-bibliography-issue12-native-constructs backtrace:
+  signal(org-texmacs-document-error ("Malformed or unsupported BibTeX 
+  (condition-case err (while (progn (skip-chars-forward " \11\n\15") (
+  (let ((bibtex-autoadd-commas nil) (bibtex-expand-strings nil) (imenu
+  (progn (let ((bibtex-autoadd-commas nil) (bibtex-expand-strings nil)
+  (unwind-protect (progn (let ((bibtex-autoadd-commas nil) (bibtex-exp
+  (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+  (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+  org-texmacs--bibliography-validate-source("@string{word={Native}}\n@
+  #f(lambda (entry) [t] (org-texmacs--bibliography-validate-source (cd
+  mapcar(#f(lambda (entry) [t] (org-texmacs--bibliography-validate-sou
+  (let* ((buffer source-buffer) (bounds (cons (point-min) (point-max))
+  (save-current-buffer (set-buffer source-buffer) (if (derived-mode-p 
+  org-texmacs--prepare-buffer(#<killed buffer> identity (("refs.bib" .
+  org-texmacs-prepare-buffer(#<killed buffer> (("refs.bib" . "@string{
+  (let* ((source "@string{word={Native}}\n@preamble{\"Unused preamble\
+  (progn (org-mode) (insert "#+bibliography: refs.bib\n[cite:@key]\n#+
+  (unwind-protect (progn (org-mode) (insert "#+bibliography: refs.bib\
+  (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+  (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+  (let ((default-directory (file-name-as-directory test-directory))) (
+  (unwind-protect (let ((default-directory (file-name-as-directory tes
+  (let ((org-texmacs--worker-process nil) (org-texmacs--worker-directo
+  #f(lambda () [t] (let ((org-texmacs--worker-process nil) (org-texmac
+  #f(compiled-function () #<bytecode -0xc7021f392c61ffc>)()
+  handler-bind-1(#f(compiled-function () #<bytecode -0xc7021f392c61ffc
+  ert--run-test-internal(#s(ert--test-execution-info :test ... :result
+  ert-run-test(#s(ert-test :name org-texmacs-bibliography-issue12-nati
+  ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+  ert-run-tests((or "^org-texmacs-bibliography-issue12-native-construc
+  ert-run-tests-batch((or "^org-texmacs-bibliography-issue12-native-co
+  (let ((stats (ert-run-tests-batch '(or "^org-texmacs-bibliography-is
+  eval((let ((stats (ert-run-tests-batch '(or "^org-texmacs-bibliograp
+  command-line-1(("-L" "/nix/store/xqmnz7c441lisf8fl30qhbcxf1byjd1k-ba
+  command-line()
+  normal-top-level()
+Test org-texmacs-bibliography-issue12-native-constructs condition:
+    (org-texmacs-document-error "Malformed or unsupported BibTeX entry")
+   FAILED  1/3  org-texmacs-bibliography-issue12-native-constructs (0.116054 sec) at ../nix/store/5k2q7faa64qra8m5kr24ds7m9512y2da-ert.el:9964
+Test org-texmacs-bibliography-issue12-native-fields backtrace:
+  signal(org-texmacs-document-error ("Invalid parsed bibliography entr
+  (if (and (consp entry) (eq (car entry) 'bib-entry) (= (length entry)
+  (let ((entry (car tail))) (if (and (consp entry) (eq (car entry) 'bi
+  (while tail (let ((entry (car tail))) (if (and (consp entry) (eq (ca
+  (let ((tail (cdr tree))) (while tail (let ((entry (car tail))) (if (
+  (let ((path (org-texmacs--source-copy-path (car source))) (tree (org
+  (let ((source (car tail))) (if (and (consp source) (stringp (car sou
+  (while tail (let ((source (car tail))) (if (and (consp source) (stri
+  (let ((tail bibliography)) (while tail (let ((source (car tail))) (i
+  (let (paths keys result) (let ((tail bibliography)) (while tail (let
+  org-texmacs--bibliography-copy((("/a.bib" document (bib-comment "Nat
+  (org-texmacs--input-create :ast new-ast :info new-info :islands (fun
+  (let ((new-ast (funcall --cl-node-- ast nil)) new-info seen) (setq i
+  (let (--cl-data-- --cl-node-- --cl-mapping-- --cl-secondary--) (setq
+  (let* ((--cl-fail-- #'(lambda (message) (signal 'org-texmacs-documen
+  (let ((nodes (make-hash-table :test #'eq)) pending) (let* ((--cl-fai
+  (progn (if (and (consp ast) (eq (car ast) 'org-data)) nil (signal 'o
+  (progn (let ((--cl-keys-- --cl-rest--)) (while --cl-keys-- (cond ((m
+  (let* ((islands (car (cdr (plist-member --cl-rest-- ':islands)))) (p
+  org-texmacs-input-create((org-data nil) nil :bibliography (("/a.bib"
+  (let* ((ast (org-element-create 'org-data nil)) (tree '(document (bi
+  #f(lambda () [t] (let* ((ast (org-element-create ... nil)) (tree '..
+  #f(compiled-function () #<bytecode -0xc7021f392c61ffc>)()
+  handler-bind-1(#f(compiled-function () #<bytecode -0xc7021f392c61ffc
+  ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+  ert-run-test(#s(ert-test :name org-texmacs-bibliography-issue12-nati
+  ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+  ert-run-tests((or "^org-texmacs-bibliography-issue12-native-construc
+  ert-run-tests-batch((or "^org-texmacs-bibliography-issue12-native-co
+  (let ((stats (ert-run-tests-batch '(or "^org-texmacs-bibliography-is
+  eval((let ((stats (ert-run-tests-batch '(or "^org-texmacs-bibliograp
+  command-line-1(("-L" "/nix/store/xqmnz7c441lisf8fl30qhbcxf1byjd1k-ba
+  command-line()
+  normal-top-level()
+Test org-texmacs-bibliography-issue12-native-fields condition:
+    (org-texmacs-document-error "Invalid parsed bibliography entry")
+   FAILED  2/3  org-texmacs-bibliography-issue12-native-fields (0.000495 sec) at ../nix/store/5k2q7faa64qra8m5kr24ds7m9512y2da-ert.el:9987
+Test org-texmacs-bibliography-issue12-unused-duplicates backtrace:
+  signal(org-texmacs-document-error ("Duplicate bibliography key"))
+  (progn (signal 'org-texmacs-document-error '("Duplicate bibliography
+  (if (member (nth 2 entry) keys) (progn (signal 'org-texmacs-document
+  (let ((entry (car tail))) (if (and (consp entry) (eq (car entry) 'bi
+  (while tail (let ((entry (car tail))) (if (and (consp entry) (eq (ca
+  (let ((tail (cdr tree))) (while tail (let ((entry (car tail))) (if (
+  (let ((path (org-texmacs--source-copy-path (car source))) (tree (org
+  (let ((source (car tail))) (if (and (consp source) (stringp (car sou
+  (while tail (let ((source (car tail))) (if (and (consp source) (stri
+  (let ((tail bibliography)) (while tail (let ((source (car tail))) (i
+  (let (paths keys result) (let ((tail bibliography)) (while tail (let
+  org-texmacs--bibliography-copy((("/a.bib" document (bib-entry "book"
+  (org-texmacs--input-create :ast new-ast :info new-info :islands (fun
+  (let ((new-ast (funcall --cl-node-- ast nil)) new-info seen) (setq i
+  (let (--cl-data-- --cl-node-- --cl-mapping-- --cl-secondary--) (setq
+  (let* ((--cl-fail-- #'(lambda (message) (signal 'org-texmacs-documen
+  (let ((nodes (make-hash-table :test #'eq)) pending) (let* ((--cl-fai
+  (progn (if (and (consp ast) (eq (car ast) 'org-data)) nil (signal 'o
+  (progn (let ((--cl-keys-- --cl-rest--)) (while --cl-keys-- (cond ((m
+  (let* ((islands (car (cdr (plist-member --cl-rest-- ':islands)))) (p
+  org-texmacs-input-create((org-data nil) nil :bibliography (("/a.bib"
+  (let* ((ast (org-element-create 'org-data nil)) (entry '(bib-entry "
+  #f(lambda () [t] (let* ((ast (org-element-create ... nil)) (entry '.
+  #f(compiled-function () #<bytecode -0xc7021f392c61ffc>)()
+  handler-bind-1(#f(compiled-function () #<bytecode -0xc7021f392c61ffc
+  ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+  ert-run-test(#s(ert-test :name org-texmacs-bibliography-issue12-unus
+  ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+  ert-run-tests((or "^org-texmacs-bibliography-issue12-native-construc
+  ert-run-tests-batch((or "^org-texmacs-bibliography-issue12-native-co
+  (let ((stats (ert-run-tests-batch '(or "^org-texmacs-bibliography-is
+  eval((let ((stats (ert-run-tests-batch '(or "^org-texmacs-bibliograp
+  command-line-1(("-L" "/nix/store/xqmnz7c441lisf8fl30qhbcxf1byjd1k-ba
+  command-line()
+  normal-top-level()
+Test org-texmacs-bibliography-issue12-unused-duplicates condition:
+    (org-texmacs-document-error "Duplicate bibliography key")
+   FAILED  3/3  org-texmacs-bibliography-issue12-unused-duplicates (0.000470 sec) at ../nix/store/5k2q7faa64qra8m5kr24ds7m9512y2da-ert.el:9977
+
+Ran 3 tests, 0 results as expected, 3 unexpected (2026-10-16 16:29:46+0000, 0.293869 sec)
+
+3 unexpected results:
+   FAILED  org-texmacs-bibliography-issue12-native-constructs
+   FAILED  org-texmacs-bibliography-issue12-native-fields
+   FAILED  org-texmacs-bibliography-issue12-unused-duplicates
+

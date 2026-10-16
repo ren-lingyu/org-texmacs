@@ -1,0 +1,29 @@
+{
+  "platform": "x86_64-linux",
+  "emacs": "31.1",
+  "org": "9.8.10",
+  "texmacs": "2.1.5",
+  "full_flake_command": "timeout 600s nix flake check path:./tmp/issue-12-bibliography --no-update-lock-file --print-build-logs",
+  "full_flake_exit": 0,
+  "ert": {
+    "passed": 464,
+    "failed": 0,
+    "seconds": 339.558582
+  },
+  "focused": {
+    "passed": 107,
+    "failed": 0,
+    "seconds": 170.676069
+  },
+  "integration": {
+    "passed": 9,
+    "failed": 0,
+    "seconds": 12.313207
+  },
+  "baseline": {
+    "expected_failures": 3,
+    "check_exit": 0
+  },
+  "native_control_cases": 16,
+  "limits": "No GUI, personal-library or other-platform acceptance; no ordinary project staging or commit."
+}

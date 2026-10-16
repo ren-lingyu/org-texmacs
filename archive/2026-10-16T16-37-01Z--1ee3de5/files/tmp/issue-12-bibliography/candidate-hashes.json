@@ -1,0 +1,21 @@
+{
+  "org-texmacs-preprocess.el": "26b88e3a223e7797a389c15c63a34d47730f283b329c9f1129b983e8f0a10170",
+  "org-texmacs-session.el": "5c8f162bcd9945aa5b8a92730e89a3783a34a8688b38b55c306d21cf834e9995",
+  "org-texmacs-source.el": "18afa541de20383bf7df82ccb057d6bde63820ead9315319aa7bdd5d726dc1d9",
+  "org-texmacs-input.el": "acdba3e42a5369563d5c24d47cdfa42fd97a9052572f85122f4ea013bbb19c28",
+  "org-texmacs-document.el": "8c521baaf89448eab5534eacbfadf5add45cfa46a8d1fb107c4312bcbf8defb4",
+  "org-texmacs-ast.el": "f24a5e1e8773b58d7609f80adfd925a7af4f6fea7656ba170fa502dfe9453d7f",
+  "org-texmacs-context.el": "5ea3f161da97c3883f18b51294408dcba279bb6a0af55c89c79176833c9bc138",
+  "org-texmacs-font-lock.el": "eea552c888eaa726748bb670e39790f1ed30f128c27942a34e425877c97844a2",
+  "org-texmacs-worker.el": "5f286ad6c0195d6d63144f5861e6860e1b39c9609e3bc40f139542033612db62",
+  "org-texmacs-core.el": "25a470c3d69afc468160a557455f9c9dbc65beff707a2fe6c602be06663e7d22",
+  "org-texmacs-fragment.el": "6e059cfc4a86359c7085f52acf5be561f4941a277684ce93eab531f7540a6e43",
+  "org-texmacs-bibliography.el": "f5500572186ab4e9a4c546953155dca622740287edc1e86ca0b5b41a20a1b32b",
+  "org-texmacs.el": "316570021efd46812dda03f25d276e3321459b378f32fa401419188f6bb9dae6",
+  "ox-texmacs.el": "d3639caa37ff7e7b3a00055022278f7ae64893cd3eeee779f636b4da466e360d",
+  "org-texmacs-worker.scm": "8d91bd9c36327aa068a8808c00f381af38f8e1aaa9ce62ea4208ba55d80b6c1c",
+  "README.org": "fe6f653fe3003fb48a5b2fd42a098aadbba3e8c2ed99009b5ee200d0c8617f79",
+  "LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+  "tests/ert/ert.el": "85514c1d1b596eb325518b3b24ecabdefeb9fbf3838c357abaec88f153abab9c",
+  "flake.lock": "118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a"
+}

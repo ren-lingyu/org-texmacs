@@ -1,0 +1,36 @@
+{
+  "capture_context": "1ee3de52f64916e7dcb1c0645ad8fa2b28d293c3",
+  "baseline_equal_committed_files": [
+    "org-texmacs-preprocess.el",
+    "org-texmacs-session.el",
+    "org-texmacs-source.el",
+    "org-texmacs-input.el",
+    "org-texmacs-document.el",
+    "org-texmacs-ast.el",
+    "org-texmacs-context.el",
+    "org-texmacs-font-lock.el",
+    "org-texmacs-worker.el",
+    "org-texmacs-core.el",
+    "org-texmacs-fragment.el",
+    "org-texmacs-bibliography.el",
+    "org-texmacs.el",
+    "ox-texmacs.el",
+    "org-texmacs-worker.scm",
+    "README.org",
+    "LICENSE",
+    "flake.lock"
+  ],
+  "candidate_inputs": "candidate-hashes.json",
+  "task_paths": [
+    "README.org",
+    "org-texmacs-bibliography.el",
+    "org-texmacs-document.el",
+    "org-texmacs-input.el",
+    "org-texmacs-worker.el",
+    "org-texmacs-worker.scm",
+    "org-texmacs.el",
+    "tests/ert/ert.el"
+  ],
+  "runtime_flake": "flake.nix",
+  "root_flake_overlay": "unchanged preexisting user change; isolated flake adds checks and org-roam"
+}
