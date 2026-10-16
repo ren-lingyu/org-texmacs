@@ -112,44 +112,29 @@
          (tree (list 'document entry)))
     (dolist (data (list 'invalid '(("relative.bib" document))
                        (list (cons "/a.bib" '(concat "wrong")))
-                       (list (cons "/a.bib" '(document "opaque entry")))
                        (list (cons "/a.bib" tree) (cons "/a.bib" '(document)))
-                       (list (cons "/a.bib" tree) (cons "/b.bib" tree))
                        '(("/a.bib" document (bib-entry "book" "key"
                                                       (document (bib-field "title" "A")
-                                                                (bib-field "TITLE" "B")))))))
+                                                                (bib-field "TITLE")))))))
       (should-error (org-texmacs-input-create ast nil :bibliography data)
                     :type 'org-texmacs-document-error))))
 
-(ert-deftest org-texmacs-bibliography-source-validation ()
-  (require 'bibtex)
-  (let ((imenu-generic-expression 'unchanged)
-        (imenu-case-fold-search 'unchanged)
-        (bibtex-dialect 'biblatex)
-        (bibtex-autoadd-commas t)
-        (bibtex-expand-strings t))
-    (cl-letf (((symbol-function 'bibtex-validate)
-               (lambda (&rest _) (ert-fail "Global bibliography validator called")))
-              ((symbol-function 'bibtex-strings)
-               (lambda (&rest _) (ert-fail "String database queried")))
-              ((symbol-function 'find-file-noselect)
-               (lambda (&rest _) (ert-fail "Bibliography file opened"))))
-      (should (equal (org-texmacs--bibliography-validate-source
-                      "% Comment\n  @Book{key, title={A {nested} book}, year=2026}\n\n@misc{second, note=\"Text\"}\n")
-                     '(("book" "key" ("title" "year")) ("misc" "second" ("note")))))
-      (dolist (source '("@book{key, title={Missing" "@book{key, title={A} year=2026}"
-                        "@book{key, title={A})" "@unknown{key, title={A}}" "@ Book{key}"
-                        "@string{name={Value}}" "@preamble{\"Text\"}"
-                        "@book{key, title=name}" "@book{key, title={A} # {B}}"
-                        "@book{key, title={A}, TITLE={B}}"
-                        "@book{key}\n@misc{key}" "unparsed trailing text"))
-        (should-error (org-texmacs--bibliography-validate-source source)
-                      :type 'org-texmacs-document-error)))
-    (should (eq imenu-generic-expression 'unchanged))
-    (should (eq imenu-case-fold-search 'unchanged))
-    (should (eq bibtex-dialect 'biblatex))
-    (should bibtex-autoadd-commas)
-    (should bibtex-expand-strings)))
+(ert-deftest org-texmacs-bibliography-native-authority ()
+  :tags '(issue12)
+  (with-temp-buffer
+    (org-mode) (insert "Text\n")
+    (let ((source "Opaque text interpreted only by TeXmacs") seen)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (text &optional syntax)
+                   (setq seen (list text syntax))
+                   '(document (bib-entry "native-type" "native-key"
+                                         (document (bib-field "native-field" "Normalized"))))))
+                ((symbol-function 'find-file-noselect)
+                 (lambda (&rest _) (ert-fail "Explicit source opened a file"))))
+        (let ((input (org-texmacs-prepare-buffer (current-buffer) (list (cons "refs.bib" source)))))
+          (should (equal seen (list source 'bibliography)))
+          (should-not (plist-get (org-texmacs-input-info input) :texmacs-bibliography-output))
+          (should (equal (nth 1 (cadr (cdar (org-texmacs-input-bibliography input)))) "native-type")))))))
 
 (ert-deftest org-texmacs-bibliography-source-snapshot-and-preflight ()
   (with-temp-buffer
@@ -172,9 +157,7 @@
       (setq calls nil)
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _) (ert-fail "Invalid bibliography started worker"))))
-        (dolist (bad '((("a.bib" . "@book{broken, title={Missing"))
-                       (("a.bib" . "@book{key}") ("b.bib" . "@misc{key}"))
-                       (("a.bib" . "") ("./a.bib" . ""))))
+        (dolist (bad '((("a.bib" . "") ("./a.bib" . ""))))
           (should-error (org-texmacs-prepare-buffer (current-buffer) bad)
                         :type 'org-texmacs-document-error)))
       (should (equal (buffer-string) "Text\n")))))
@@ -190,11 +173,12 @@
                (sources (list (cons path text))))
           (cl-letf (((symbol-function 'org-texmacs--worker-request)
                      (lambda (_source &optional syntax)
-                       (pcase change
+                       (when (eq syntax (and (eq stage 'bibliography) 'bibliography))
+                         (pcase change
                          ('text (aset text 0 ?X))
                          ('path (aset path 0 ?X))
                          ('alias (setcar (car sources) "./refs.bib"))
-                         ('list (setcdr sources (list (cons "other.bib" "@book{other}")))))
+                         ('list (setcdr sources (list (cons "other.bib" "@book{other}"))))))
                        (if syntax '(document (bib-entry "book" "key" (document))) '(math "x")))))
             (should-error (org-texmacs-prepare-buffer (current-buffer) sources)
                           :type 'org-texmacs-document-error)))))))
@@ -216,8 +200,8 @@
     (org-mode)
     (insert "Text\n")
     (dolist (response '((concat "wrong")
-                        (document (bib-entry "book" "wrong-key" (document)))
-                        (document (bib-entry "book" "key" (document (bib-field "extra" "lost"))))))
+                        (document (bib-entry "book" "key"))
+                        (document (bib-entry "book" "key" (document (bib-field "broken"))))))
       (let (stopped)
         (cl-letf (((symbol-function 'org-texmacs--worker-request) (lambda (&rest _) response))
                   ((symbol-function 'org-texmacs--worker-stop) (lambda () (setq stopped t))))
@@ -235,8 +219,12 @@
                      (current-buffer)
                      '(("refs.bib" . "% Comment\n  @Book{key, Title={中 <alpha>}, year=2026}")
                        ("empty.bib" . "")))))
-      (let* ((parsed (cdar (org-texmacs-input-bibliography input)))
+      (let* ((raw (cdar (org-texmacs-input-bibliography input)))
+             (parsed (cons 'document (cl-remove-if-not
+                                      (lambda (node) (and (consp node) (eq (car node) 'bib-entry)))
+                                      (cdr raw))))
              (process org-texmacs--worker-process))
+        (should (cl-find-if (lambda (node) (and (consp node) (eq (car node) 'bib-comment))) (cdr raw)))
         (should (equal parsed '(document (bib-entry "book" "key"
                                                       (document (bib-field "title" "<#4E2D> <less>alpha<gtr>")
                                                                 (bib-field "year" "2026"))))))
@@ -247,8 +235,7 @@
                        '(document (concat "Text "))))))))
 
 (ert-deftest org-texmacs-citations-preflight-boundaries ()
-  (dolist (source '("#+bibliography: refs.bib\n[cite:@missing]\n#+print_bibliography:\n"
-                    "#+bibliography: refs.bib\n[cite/author:@key]\n#+print_bibliography:\n"
+  (dolist (source '("#+bibliography: refs.bib\n[cite/author:@key]\n#+print_bibliography:\n"
                     "#+bibliography: refs.bib\n[cite:see @key]\n#+print_bibliography:\n"
                     "#+bibliography: refs.bib\n[cite:@key]\n"
                     "#+bibliography: refs.bib\n[cite:@key]\n#+print_bibliography:\n#+print_bibliography:\n"
@@ -284,7 +271,7 @@
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _) (ert-fail "Pure lowering started worker"))))
         (let ((doc (org-texmacs-document input)))
-          (should (equal (org-texmacs-document-stm-paths doc) '((1))))))
+          (should (equal (org-texmacs-document-stm-paths doc) '((1 1))))))
       (let* ((bad-info (copy-tree (org-texmacs-input-info input)))
              (bad-input nil))
         (setcar (cadr (plist-get bad-info :texmacs-bibliography-output)) "stale")
@@ -337,16 +324,17 @@
       (let* ((doc (org-texmacs-document input))
              (expected '(document
                          (concat "A" (with-bib "org-texmacs-bib-1" (cite "key")) ". ")
-                         (bib-list "1" (document
+                         (with-bib "org-texmacs-bib-1"
+                          (bib-list "1" (document
                                         (concat (bibitem* "1") (label "org-texmacs-bib-1-key")
                                                 "Ada Example. " (newblock)
                                                 (with "font-shape" "italic" "Café <#4E2D> <less>alpha<gtr>")
-                                                ". " (newblock) "Example, 2026." (newblock))))))
+                                                ". " (newblock) "Example, 2026." (newblock)))))))
              (session (org-texmacs-session-open)))
         (unwind-protect
             (progn
               (should (equal (org-texmacs-document-body doc) expected))
-              (should (equal (org-texmacs-document-stm-paths doc) '((1))))
+              (should (equal (org-texmacs-document-stm-paths doc) '((1 1))))
               (org-texmacs-session-set-document session doc)
               (should (equal (org-texmacs--session-read session)
                              (org-texmacs-test--native-hex expected)))
@@ -361,7 +349,7 @@
                      (current-buffer) '(("refs.bib" . "@book{a, title={A}}\n@book{b, title={B}}"))))
                (body (org-texmacs-document-body doc)))
           (should (equal (nth 2 (cadr body)) '(with-bib "org-texmacs-bib-2" (cite "a" "b"))))
-          (should (equal (org-texmacs-document-stm-paths doc) '((1) (2)))))))))
+          (should (equal (org-texmacs-document-stm-paths doc) '((1) (2 1)))))))))
 
 (ert-deftest org-texmacs-test-input-ownership-and-mapping ()
   (let* ((leaf (copy-sequence "island"))
@@ -7899,15 +7887,22 @@ Only tests with explicit example names use this helper; do not run Babel."
                              (org-texmacs-test--native-hex (org-texmacs-document-body expected)))))
           (org-texmacs-session-close session))))))
 
-(ert-deftest org-texmacs-ast-filter-missing-key-before-worker ()
+(ert-deftest org-texmacs-ast-filter-missing-key-after-native-parse ()
   (with-temp-buffer
     (org-mode)
     (insert "#+bibliography: refs.bib\n[cite:@managed-uuid]\n#+print_bibliography:\n")
-    (let ((org-export-filter-parse-tree-functions '(org-texmacs-test--ast-filter-remap)))
+    (let ((org-export-filter-parse-tree-functions '(org-texmacs-test--ast-filter-remap)) calls)
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _) (ert-fail "Missing remapped key started worker"))))
+                 (lambda (_text &optional syntax)
+                   (push syntax calls)
+                   '(document (bib-entry "book" "other" (document)))))
+                ((symbol-function 'org-texmacs--bibliography-format)
+                 (lambda (&rest _) (ert-fail "Unresolved key reached formatter")))
+                ((symbol-function 'org-texmacs--worker-stop)
+                 (lambda () (ert-fail "Unresolved key stopped healthy worker"))))
         (should-error (org-texmacs-prepare-buffer (current-buffer) '(("refs.bib" . "@book{other}")))
-                      :type 'org-texmacs-document-error)))))
+                      :type 'org-texmacs-document-error)
+        (should (equal calls '(bibliography)))))))
 
 (ert-deftest org-texmacs-ast-filter-rejects-non-key-mutations ()
   (dolist
@@ -9964,5 +9959,243 @@ FAILURE injects an error after modification in root, include or bibliography."
             (should (eq (and (memq 'font-lock-string-face
                                     (if (listp face) face (list face))) t)
                         ,enabled))))))))
+
+
+(ert-deftest org-texmacs-bibliography-issue12-native-constructs ()
+  :tags '(issue12)
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+bibliography: refs.bib\n[cite:@key]\n#+print_bibliography:\n")
+      (let* ((source "@string{word={Native}}\n@preamble{\"Unused preamble\"}\n@online{key, title=word # { Title}, year=2026}\n")
+             (input (org-texmacs-prepare-buffer (current-buffer) (list (cons "refs.bib" source))))
+             (document (org-texmacs-document input)))
+        (should (string-match-p "Native" (prin1-to-string (org-texmacs-document-body document))))
+        (should (string-match-p "Title" (prin1-to-string (org-texmacs-document-body document))))
+        (should (org-texmacs--worker-live-p))))))
+
+(ert-deftest org-texmacs-bibliography-issue12-unused-duplicates ()
+  :tags '(issue12)
+  (let* ((ast (org-element-create 'org-data nil))
+         (entry '(bib-entry "book" "unused" (document)))
+         (sources (list (cons "/a.bib" (list 'document entry entry))
+                        (cons "/b.bib" (list 'document entry))))
+         (input (org-texmacs-input-create ast nil :bibliography sources)))
+    (should (equal sources (org-texmacs-input-bibliography input)))
+    (should (org-texmacs-document-p (org-texmacs-document input)))))
+
+(ert-deftest org-texmacs-bibliography-issue12-native-fields ()
+  :tags '(issue12)
+  (let* ((ast (org-element-create 'org-data nil))
+         (tree '(document (bib-comment "Native metadata")
+                          (bib-entry "online" "key"
+                                     (document (bib-field "title" "A")
+                                               (bib-field "TITLE" "B")
+                                               (bib-field "unknown" (native-value "C"))))))
+         (input (org-texmacs-input-create ast nil :bibliography (list (cons "/a.bib" tree)))))
+    (should (equal tree (cdar (org-texmacs-input-bibliography input))))))
+
+
+(ert-deftest org-texmacs-bibliography-issue12-used-key-boundary ()
+  :tags '(issue12)
+  (dolist (entries '((document)
+                     (document (bib-comment "Only metadata"))
+                     (document (bib-entry "book" "key" (document))
+                               (bib-entry "misc" "key" (document)))))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+bibliography: refs.bib\n[cite:@key]\n(math \"x\")\n#+print_bibliography:\n")
+      (let (calls)
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (_text &optional syntax) (push syntax calls) entries))
+                  ((symbol-function 'org-texmacs--worker-stop)
+                   (lambda () (ert-fail "Key resolution stopped healthy worker")))
+                  ((symbol-function 'org-texmacs--bibliography-format)
+                   (lambda (&rest _) (ert-fail "Unresolved key reached formatter"))))
+          (should-error (org-texmacs-prepare-buffer (current-buffer) '(("refs.bib" . "Native input")))
+                        :type 'org-texmacs-document-error)
+          (should (equal calls '(bibliography)))))))
+  (org-texmacs-test--with-worker
+    (dolist (body '("Text\n" "[cite:@other]\n#+print_bibliography:\n"))
+      (with-temp-buffer
+        (org-mode) (insert "#+bibliography: refs.bib\n" body)
+        (should (org-texmacs-input-p
+                 (org-texmacs-prepare-buffer
+                  (current-buffer)
+                  '(("refs.bib" . "@book{key,title={A}}\n@book{key,title={B}}\n@book{other,title={Other}}")))))))))
+
+(ert-deftest org-texmacs-bibliography-issue12-declared-source-ambiguity ()
+  :tags '(issue12)
+  (org-texmacs-test--with-worker
+    (dolist (declared '(nil t))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+bibliography: a.bib\n"
+                (if declared "#+bibliography: b.bib\n" "")
+                "[cite:@key]\n#+print_bibliography:\n")
+        (let ((sources '(("a.bib" . "@book{key,title={A}}")
+                         ("b.bib" . "@book{key,title={B}}"))))
+          (if declared
+              (should-error (org-texmacs-prepare-buffer (current-buffer) sources)
+                            :type 'org-texmacs-document-error)
+            (should (org-texmacs-input-p (org-texmacs-prepare-buffer (current-buffer) sources)))))))))
+
+(ert-deftest org-texmacs-bibliography-issue12-native-reference-boundary ()
+  :tags '(issue12)
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (let ((source "@book{child,title={ChildTitle},crossref={parent}}\n@book{parent,title={ParentTitle}}"))
+        (insert "#+bibliography: refs.bib\n[cite:@child]\n#+print_bibliography:\n")
+        (should-error (org-texmacs-prepare-buffer (current-buffer) (list (cons "refs.bib" source)))
+                      :type 'org-texmacs-document-error)
+        (should (org-texmacs--worker-live-p))
+        (goto-char (point-min)) (search-forward "@child") (insert "; @parent")
+        (let* ((input (org-texmacs-prepare-buffer (current-buffer) (list (cons "refs.bib" source))))
+               (document (org-texmacs-document input)))
+          (should (equal (car (car (last (org-texmacs-document-body document)))) 'with-bib))
+          (should (string-match-p "(cite \"parent\")" (prin1-to-string (org-texmacs-document-body document))))
+          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                     (lambda (&rest _) (ert-fail "Pure lowering invoked parser")))
+                    ((symbol-function 'insert-file-contents)
+                     (lambda (&rest _) (ert-fail "Pure lowering read dependency"))))
+            (should (equal document (org-texmacs-document input)))))))))
+
+(ert-deftest org-texmacs-bibliography-issue12-native-recovery-and-isolation ()
+  :tags '(issue12)
+  (org-texmacs-test--with-worker
+    (let* ((defined (org-texmacs--worker-request "@string{word={Defined}}\n@book{key,title=word}" 'bibliography))
+           (undefined (org-texmacs--worker-request "@book{key,title=word}" 'bibliography))
+           (recovered (org-texmacs--worker-request "@book{key,title={Recovered" 'bibliography)))
+      (should (string-match-p "Defined" (prin1-to-string defined)))
+      (should-not (string-match-p "Defined" (prin1-to-string undefined)))
+      (should (string-match-p "Recovered" (prin1-to-string recovered)))
+      (should (equal (org-texmacs--worker-request "(math \"x\")") '(math "x"))))))
+
+(ert-deftest org-texmacs-bibliography-issue12-reference-and-label-contracts ()
+  :tags '(issue12)
+  (let ((plan '(:prefix "p" :keys ("key") :entries (document))))
+    (dolist (body '((bib-list "1" (document (label "p-key") (cite "missing")))
+                    (bib-list "1" (document (label "p-key") (reference "missing")))
+                    (bib-list "1" (document (label "p-key") (with-bib "other" (cite "key"))))))
+      (cl-letf (((symbol-function 'org-texmacs--worker-call) (lambda (_request) (list 'ok 1 body)))
+                ((symbol-function 'org-texmacs--worker-stop)
+                 (lambda () (ert-fail "Unresolvable native reference stopped worker"))))
+        (should-error (org-texmacs--bibliography-format plan) :type 'org-texmacs-document-error)))
+    (let (stopped)
+      (cl-letf (((symbol-function 'org-texmacs--worker-call)
+                 (lambda (_request) '(ok 1 (bib-list "1" (document (label "p-key") (label "p-key"))))))
+                ((symbol-function 'org-texmacs--worker-stop) (lambda () (setq stopped t))))
+        (should-error (org-texmacs--bibliography-format plan) :type 'org-texmacs-worker-error)
+        (should stopped)))))
+
+(ert-deftest org-texmacs-bibliography-issue12-discovered-native-input ()
+  :tags '(issue12)
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (write-region "@string{word={Discovered}}\n@online{key,title=word # { Title}}" nil "refs.bib" nil 'silent)
+      (insert "[cite:@key]\n#+print_bibliography:\n")
+      (let ((org-cite-global-bibliography '("refs.bib")))
+        (should (string-match-p "Discovered"
+                                (prin1-to-string
+                                 (org-texmacs-document-body
+                                  (org-texmacs-document-from-buffer-discover-bibliography (current-buffer))))))))))
+
+(ert-deftest org-texmacs-bibliography-issue12-metadata-owned-after-worker-wait ()
+  :tags '(issue12)
+  (with-temp-buffer
+    (org-mode)
+    (insert "Text\n(math \"x\")\n")
+    (let* ((metadata (copy-sequence "Metadata"))
+           (tree (list 'document (list 'bib-comment metadata)
+                       '(bib-entry "online" "key" (document (bib-field "title" "Native")))))
+           (parse-count 0))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (_text &optional syntax)
+                   (if syntax (progn (cl-incf parse-count) tree)
+                     (aset metadata 0 ?X) '(math "x")))))
+        (let ((input (org-texmacs-prepare-buffer (current-buffer) '(("refs.bib" . "Opaque native input")))))
+          (should (= parse-count 1))
+          (should (equal (cadr (cadr (cdar (org-texmacs-input-bibliography input)))) "Metadata")))))))
+
+(ert-deftest org-texmacs-pdf-issue12-native-bibliography-and-reload ()
+  :tags '(issue12)
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+              "#+bibliography: refs.bib\nBody[cite:@child; @parent; @online].\n#+print_bibliography:\n")
+      (let* ((sources '(("refs.bib" . "@string{word={Native}}\n@preamble{\"PreambleSentinel\"}\n@book{child,title={ChildTitle},crossref={parent}}\n@book{parent,title={ParentTitle}}\n@online{online,title=word # {Title},year=2026}")))
+             (input (org-texmacs-prepare-buffer (current-buffer) sources))
+             (document (org-texmacs-document input))
+             (pdf (expand-file-name "native.pdf" test-directory))
+             (tm (expand-file-name "native.tm" test-directory))
+             (reload (expand-file-name "reload.pdf" test-directory)))
+        (org-texmacs-document-save document tm)
+        (org-texmacs-document-save-pdf document pdf)
+        (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+        (let ((text (org-texmacs-test--pdf-text pdf))
+              (loaded (org-texmacs-test--pdf-text reload)))
+          (dolist (token '("ChildTitle" "ParentTitle" "NativeTitle"))
+            (should (string-match-p token text))
+            (should (string-match-p token loaded)))
+          (should-not (string-match-p "PreambleSentinel\\|[?]" text))
+          (should-not (string-match-p "PreambleSentinel\\|[?]" loaded))
+          (should (string-match-p "in *\\[[123]\\]" text))
+          (should (equal text loaded)))))))
+
+
+(ert-deftest org-texmacs-bibliography-issue12-native-failure-recovery ()
+  :tags '(issue12)
+  (org-texmacs-test--with-worker
+    (let ((script (expand-file-name "native-failure.scm" test-directory)))
+      (with-temp-file script
+        (insert (format "(load %s)\n" (org-texmacs--scheme-string org-texmacs--worker-scheme-file))
+                "(use-modules (convert bibtex bibtextm))\n"
+                "(define native-parser parse-bibtex-snippet)\n"
+                "(set! parse-bibtex-snippet (lambda (text)\n"
+                "  (if (equal? text \"ForceNativeError\") (error \"Controlled native failure\")\n"
+                "      (native-parser text))))\n"))
+      (let ((org-texmacs--worker-scheme-file script))
+        (with-temp-buffer
+          (org-mode) (insert "Text\n")
+          (let ((before (org-texmacs-test--document-buffer-state (current-buffer))))
+            (should-error (org-texmacs-prepare-buffer (current-buffer)
+                                                     '(("refs.bib" . "ForceNativeError")))
+                          :type 'org-texmacs-parse-error)
+            (should (org-texmacs--worker-live-p))
+            (let ((process org-texmacs--worker-process))
+              (should (org-texmacs-input-p
+                       (org-texmacs-prepare-buffer (current-buffer)
+                                                  '(("refs.bib" . "@book{key,title={Recovered}}")))))
+              (should (eq process org-texmacs--worker-process)))
+            (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))))))))
+
+
+(ert-deftest org-texmacs-bibliography-issue12-native-behavior-controls ()
+  :tags '(issue12)
+  (org-texmacs-test--with-worker
+    (dolist (case '(("@string{word={StringTitle}}\n@book{key,title=word}" "book" "StringTitle")
+                    ("@book{key,title={Concat} # {Title}}" "book" "ConcatTitle")
+                    ("@preamble{\"UnusedPreamble\"}\n@book{key,title={BookTitle}}" "book" "BookTitle")
+                    ("@online{key,title={OnlineTitle}}" "online" "OnlineTitle")
+                    ("@unknown{key,title={UnknownTitle}}" "unknown" "UnknownTitle")
+                    ("@book{key,title=UNDEFINED}" "book" "UNDEFINED")))
+      (let* ((tree (org-texmacs--worker-request (car case) 'bibliography))
+             (entry (cl-find-if (lambda (node) (and (consp node) (eq (car node) 'bib-entry))) (cdr tree))))
+        (should (equal (nth 1 entry) (nth 1 case)))
+        (should (equal (nth 2 (cadr (nth 3 entry))) (nth 2 case)))
+        (should-not (string-match-p "UnusedPreamble" (prin1-to-string tree)))))
+    (with-temp-buffer
+      (org-mode) (insert "#+bibliography: refs.bib\n[cite:@key]\n#+print_bibliography:\n")
+      (let* ((input (org-texmacs-prepare-buffer
+                     (current-buffer)
+                     '(("refs.bib" . "@book{key,title={FirstFieldSentinel},TITLE={SecondFieldSentinel},xdata={missing},related={missing},entryset={missing}}"))))
+             (entry (cl-find-if (lambda (node) (and (consp node) (eq (car node) 'bib-entry)))
+                                (cdr (cdar (org-texmacs-input-bibliography input)))))
+             (body (prin1-to-string (org-texmacs-document-body (org-texmacs-document input)))))
+        (should (= 5 (length (cdr (nth 3 entry)))))
+        (should (string-match-p "FirstFieldSentinel" body))
+        (should-not (string-match-p "SecondFieldSentinel" body))))))
 
 ;;; ert.el ends here

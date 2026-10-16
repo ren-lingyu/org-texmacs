@@ -139,7 +139,6 @@ Return owned sources, effective view and observed dependency receipts."
             (when (member identity physical)
               (signal 'org-texmacs-document-error '("Automatic bibliography physical aliases are unsupported")))
             (push identity physical)
-            (org-texmacs--bibliography-validate-source text)
             (push (list (copy-sequence id) before (secure-hash 'sha256 bytes)) receipts)
             (setq sources (append sources (list (cons (copy-sequence id) text))))))))
     (list :sources sources :view (org-texmacs--bibliography-view-copy

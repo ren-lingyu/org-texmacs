@@ -985,25 +985,39 @@ against the Org source's captured resource base; conversion does not open them
 or query global bibliography files/databases.  Text and path changes during
 worker waits invalidate preparation.  The input's
 =org-texmacs-input-bibliography= accessor returns an owned alist from absolute
-identities to parsed =(document (bib-entry ...))= trees.  Field values retain
-TeXmacs source notation, including Unicode escapes and structured author names.
+identities to native bibliography =document= trees.  Native metadata remains
+owned alongside entries; only top-level =bib-entry= nodes participate in citation
+resolution.  Field values retain TeXmacs source notation, including Unicode
+escapes and structured author names.
 
-Validation uses local Emacs BibTeX parser helpers before any worker request,
-with automatic comma repairs and string expansion disabled.  This initial
-subset accepts standard BibTeX entry types at the start of a line with contiguous
-=@Type= headers, whitespace,
-percent comment lines, and single braced/quoted or decimal field values.
-Malformed entries, duplicate keys/fields, =@string=, =@preamble=, symbolic
-string constants, concatenation and other top-level text are rejected.
-Native parsing must preserve the validated type/key/field-name structure.
+TeXmacs owns BibTeX syntax, entry types, fields, string declarations/references,
+concatenation and native =plain= formatting.  The package does not maintain an
+Emacs-side entry-type or field-value whitelist, compare the result against raw
+entry/field signatures, or promise to detect every native recovery or omitted
+unused field.  Successful native parsing must still produce a safely consumable
+AST and resolve the document's actual citation keys.  This delegation does not
+imply full BibLaTeX/Biber compatibility or make native style omissions an error.
+
+Pinned TeXmacs 2.1.5 controls confirm =@string= substitution, =#= concatenation
+and unknown entry types such as =@online= (formatted through the native fallback).
+String declarations are local to each supplied source text; an undefined variable
+is retained as literal text, including after reusing a worker.  The native parser
+omits =@preamble= from its returned document, retains duplicate entries/fields,
+and the plain formatter uses the first duplicate field.  Plain style ignores
+some fields, including =url= for =@online= in the tested input.  It may recover
+incomplete entries or return an empty entry set for other text; the package does
+not add a second syntax validator to reject such native results.  A used key
+must nevertheless resolve and receive a unique generated label.
 
 Pure callers may supply already parsed trees with =:bibliography= to
 =org-texmacs-input-create=.  The constructor owns separate copies and rejects
-duplicate source identities or citation keys across the snapshot.  It does not
-parse text, read files or start a worker.  The parsed bibliography supplies
-document-wide citation resolution.  Preparation captures each =BIBLIOGRAPHY=
-declaration's identity, requiring matching explicit source data; it opens no
-bibliography files and does not consult global bibliography databases.
+duplicate source identities and malformed consumed entry/field structures.
+Duplicate entries and fields remain native data; only a key actually used in
+the selected document must have exactly one match among effective declared
+sources.  Unused duplicate keys do not independently prevent export.  Pure
+construction does not parse text, read files or start a worker.  Preparation
+captures each =BIBLIOGRAPHY= declaration's identity, requiring matching explicit
+source data; it opens no bibliography files or global databases.
 The two buffer conversion wrappers accept the same optional text-snapshot
 argument, using the preparation checks above.
 
@@ -1012,16 +1026,23 @@ paragraphs and inline footnote bodies.  Citation keys use ASCII letters, digits,
 hyphen, underscore, period, colon or plus.  Each group becomes =with-bib= around
 =cite= with a private prefix.  Named-footnote bodies participate at first use;
 repeated footnote references do not duplicate bibliography entries.
-Missing keys or unavailable declared sources fail before worker requests.
+Unavailable declared sources and unsupported citation syntax fail before native
+requests.  Missing or ambiguous used keys fail after native bibliography parsing,
+before STM island parsing or bibliography formatting.
 
 Exactly one option-free =#+print_bibliography:= is required for citations.
 Preparation formats the selected entry trees with TeXmacs's native =plain=
-style; lowering places the resulting =bib-list= at that keyword.  Plain style
+style; lowering places the resulting =bib-list= inside its native =with-bib=
+prefix context at that keyword.  Plain style
 controls sorting and displayed labels; the package does not assign citation
 numbers by source order or add a bibliography heading.  Generated labels avoid
 static STM labels.  The source-semantic output root retains encoding provenance.
-Styles, nonempty citation affixes, dependency fields (=crossref=, =xdata=,
-=related=, =entryset=), print options, multiple print locations and citations in
+Entry fields are interpreted by TeXmacs, including native dependency behavior.
+The package does not automatically include uncited parent/dependency entries.
+Native-generated internal references must resolve to this bibliography's actual
+labels; otherwise export fails explicitly.  A field ignored by the native style
+is not independently rejected by name.
+Styles, nonempty citation affixes, print options, multiple print locations and citations in
 headings, emphasis, table cells or link descriptions are unsupported.  Org's
 =CITE_EXPORT= processors are not invoked; pure construction uses explicit
 declaration data and native plain policy.  The opt-in adapter can prepare that
@@ -1057,8 +1078,8 @@ preparation and restricted AST filters, which run once.  Pure input construction
 and lowering perform no discovery or file I/O.
 
 Initial automatic reads support local readable regular UTF-8 BibTeX files of
-at most 1 MiB each and the same bounded BibTeX grammar described above.  Symlink
-components, physical aliases among acquired files, remote/URL/tilde paths and
+at most 1 MiB each, interpreted by the same native processing path as explicit
+snapshots.  Symlink components, physical aliases among acquired files, remote/URL/tilde paths and
 malformed identities are rejected.  Visiting buffers must have the same source
 file directory and effective resource base; non-file buffers need a local
 resource base.  The canonical source includes unsaved edits and is not reread

@@ -35,11 +35,12 @@ these native source-semantic trees are separate from the Org AST and islands."
 
 (defun org-texmacs--bibliography-copy (bibliography)
   "Validate and own prepared BIBLIOGRAPHY without parsing or file access.
-Each entry maps an explicit absolute source path to a parsed BibTeX document
-stree.  Reject duplicate paths and citation keys across the complete snapshot."
+Each unique absolute source path maps to a native bibliography document stree.
+Preserve opaque native metadata and duplicate entries/fields.  Citation planning
+checks ambiguity only for keys actually used by the document."
   (unless (proper-list-p bibliography)
     (signal 'org-texmacs-document-error '("Expected a bibliography alist")))
-  (let (paths keys result)
+  (let (paths result)
     (dolist (source bibliography)
       (unless (and (consp source) (stringp (car source)))
         (signal 'org-texmacs-document-error '("Invalid bibliography source")))
@@ -51,21 +52,16 @@ stree.  Reject duplicate paths and citation keys across the complete snapshot."
         (unless (and (consp tree) (eq (car tree) 'document))
           (signal 'org-texmacs-document-error '("Expected a parsed bibliography document")))
         (dolist (entry (cdr tree))
-          (unless (and (consp entry) (eq (car entry) 'bib-entry) (= (length entry) 4)
-                       (stringp (nth 1 entry)) (> (length (nth 1 entry)) 0)
-                       (stringp (nth 2 entry)) (> (length (nth 2 entry)) 0)
-                       (consp (nth 3 entry)) (eq (car (nth 3 entry)) 'document))
-            (signal 'org-texmacs-document-error '("Invalid parsed bibliography entry")))
-          (when (member (nth 2 entry) keys)
-            (signal 'org-texmacs-document-error '("Duplicate bibliography key")))
-          (push (nth 2 entry) keys)
-          (let (fields)
+          (when (and (consp entry) (eq (car entry) 'bib-entry))
+            (unless (and (= (length entry) 4)
+                         (stringp (nth 1 entry)) (> (length (nth 1 entry)) 0)
+                         (stringp (nth 2 entry)) (> (length (nth 2 entry)) 0)
+                         (consp (nth 3 entry)) (eq (car (nth 3 entry)) 'document))
+              (signal 'org-texmacs-document-error '("Invalid parsed bibliography entry")))
             (dolist (field (cdr (nth 3 entry)))
               (unless (and (consp field) (eq (car field) 'bib-field) (= (length field) 3)
-                           (stringp (nth 1 field)) (> (length (nth 1 field)) 0)
-                           (not (member-ignore-case (nth 1 field) fields)))
-                (signal 'org-texmacs-document-error '("Invalid or duplicate bibliography field")))
-              (push (nth 1 field) fields))))
+                           (stringp (nth 1 field)) (> (length (nth 1 field)) 0))
+                (signal 'org-texmacs-document-error '("Invalid parsed bibliography field"))))))
         (push (cons path tree) result)))
     (nreverse result)))
 

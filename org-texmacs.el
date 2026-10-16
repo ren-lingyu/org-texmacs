@@ -191,14 +191,14 @@ preparation and conversion together, use `org-texmacs-document-from-buffer'."
                 (signal 'org-texmacs-worker-error '("Invalid bibliography response status")))
               (setq body (org-texmacs--document-copy-stree (nth 2 response)))
               (unless (and (consp body) (eq (car body) 'bib-list) (= (length body) 3)
-                           (equal (sort (org-texmacs--document-static-labels (list (cons 'body body)))
-                                        #'string-lessp)
+                           (equal (sort (org-texmacs--bibliography-labels body) #'string-lessp)
                                   (sort (mapcar (lambda (key) (concat prefix "-" key)) keys)
                                         #'string-lessp)))
                 (signal 'org-texmacs-worker-error '("Invalid formatted bibliography payload"))))
           (org-texmacs-error
            (org-texmacs--worker-stop)
            (signal 'org-texmacs-worker-error (cdr err))))))
+    (org-texmacs--bibliography-check-references body prefix)
     (list prefix keys entries body)))
 
 ;;;###autoload
@@ -220,8 +220,8 @@ Apply the source and supported-subset contract of
 `org-texmacs-document-from-buffer', including preflight and STM parsing.
 Return an `org-texmacs-input', without opening a native session.
 BIBLIOGRAPHY-SOURCES explicitly maps source paths to BibTeX text strings.
-Capture paths relative to the Org source resource base, validate text before
-worker requests, and own native parsed entries in the input's BIBLIOGRAPHY.
+Capture paths relative to the Org source resource base, parse text with native
+TeXmacs, and own the returned bibliography ASTs in the input's BIBLIOGRAPHY.
 Never open these paths or query a bibliography database.  Resolve document
 bibliography declarations, bare default citations and one bibliography print,
 then prepare native plain output in the fixed INFO context."
@@ -376,10 +376,6 @@ separate from that read-only temporary input before filling native results."
                       (cons (substring-no-properties (car entry))
                             (substring-no-properties (cdr entry))))
                     bibliography-sources))
-           (bibliography-signatures
-            (mapcar (lambda (entry)
-                      (org-texmacs--bibliography-validate-source (cdr entry)))
-                    bibliography-source-snapshot))
            (bibliography nil)
            (tags (org-texmacs--fragment-tags))
            (heading-settings (org-texmacs--document-heading-settings))
@@ -442,10 +438,6 @@ separate from that read-only temporary input before filling native results."
             (setq bibliography-source-snapshot
                   (org-texmacs--bibliography-source-snapshot
                    (plist-get setup :sources) resource-base)
-                  bibliography-signatures
-                  (mapcar (lambda (entry)
-                            (org-texmacs--bibliography-validate-source (cdr entry)))
-                          bibliography-source-snapshot)
                   effective-bibliography
                   (org-texmacs--bibliography-view-copy (plist-get setup :view))
                   dependency-check (plist-get setup :check)
@@ -475,29 +467,28 @@ separate from that read-only temporary input before filling native results."
                           (org-texmacs--filter-own-preparation prepared)))))
         (setq info (nth 4 prepared))
         (check)
-        (let (keys)
-          (dolist (signatures bibliography-signatures)
-            (dolist (signature signatures)
-              (when (member (nth 1 signature) keys)
-                (signal 'org-texmacs-document-error '("Duplicate bibliography key")))
-              (push (nth 1 signature) keys))))
-        ;; Run user formatters only after private parser bindings have unwound.
-        ;; Reject unsupported structure before starting any island request.
-        (let* ((placeholder
-                (cl-mapcar
-                 (lambda (entry signatures)
-                   (cons (car entry)
-                         (cons 'document
-                               (mapcar (lambda (signature)
-                                         (list 'bib-entry (nth 0 signature) (nth 1 signature)
-                                               (cons 'document
-                                                     (mapcar (lambda (field) (list 'bib-field field ""))
-                                                             (nth 2 signature))))) signatures))))
-                 bibliography-source-snapshot bibliography-signatures))
-               (plan (org-texmacs--bibliography-plan
-                      (nth 0 prepared) (nth 1 prepared) info placeholder
+        ;; Reject source-independent citation contracts before native work.
+        ;; Entry identities come exclusively from owned native parser results.
+        (org-texmacs--bibliography-collect
+         (nth 0 prepared) (nth 1 prepared) info
+         (mapcar #'car bibliography-source-snapshot)
+         (org-texmacs--document-resolve (nth 0 prepared) (nth 1 prepared) nil resource-base))
+        (dolist (entry bibliography-source-snapshot)
+          (check)
+          (let ((tree (org-texmacs--worker-request (cdr entry) 'bibliography)))
+            (check)
+            (condition-case err
+                (push (car (org-texmacs--bibliography-copy (list (cons (car entry) tree))))
+                      bibliography)
+              (org-texmacs-document-error
+               (org-texmacs--worker-stop)
+               (signal 'org-texmacs-worker-error (cdr err))))))
+        (setq bibliography (nreverse bibliography))
+        ;; Run user formatters after private parser bindings have unwound.
+        ;; Only the formatted body is temporary; entries are real owned ASTs.
+        (let* ((plan (org-texmacs--bibliography-plan
+                      (nth 0 prepared) (nth 1 prepared) info bibliography
                       (org-texmacs--document-resolve (nth 0 prepared) (nth 1 prepared) nil resource-base) nil)))
-          (setq bibliography placeholder)
           (setq info (plist-put info :texmacs-bibliography-output
                                 (list (plist-get plan :prefix) (plist-get plan :keys)
                                       (plist-get plan :entries)
@@ -511,6 +502,8 @@ separate from that read-only temporary input before filling native results."
                                      (nth 3 prepared) info style initial
                                      source-file resource-base
                                      bibliography)
+        ;; No preflight-only body may escape through a prepared input.
+        (setq info (plist-put info :texmacs-bibliography-output nil))
         (check)
         (dolist (request (nth 2 prepared))
           (check)
@@ -521,29 +514,6 @@ separate from that read-only temporary input before filling native results."
                                     (equal tag (symbol-name (car stree))))))
               (signal 'org-texmacs-parse-error '("TeXmacs root differs from fragment tag")))
             (setcdr (car request) stree)))
-        (setq bibliography nil)
-        (cl-mapc
-         (lambda (entry expected)
-           (check)
-           (let ((tree (org-texmacs--worker-request (cdr entry) 'bibliography)))
-             (check)
-             (condition-case err
-                 (let* ((owned (org-texmacs--bibliography-copy (list (cons (car entry) tree))))
-                        (parsed (cdar owned))
-                        (actual
-                         (mapcar (lambda (item)
-                                   (list (nth 1 item) (nth 2 item)
-                                         (mapcar (lambda (field) (nth 1 field))
-                                                 (cdr (nth 3 item)))))
-                                 (cdr parsed))))
-                   (unless (equal expected actual)
-                     (signal 'org-texmacs-document-error '("Native bibliography changed entry structure")))
-                   (push (car owned) bibliography))
-               (org-texmacs-document-error
-                (org-texmacs--worker-stop)
-                (signal 'org-texmacs-worker-error (cdr err))))))
-         bibliography-source-snapshot bibliography-signatures)
-        (setq bibliography (nreverse bibliography))
         (let* ((static (org-texmacs--document-static-labels (nth 1 prepared)))
                (resolution (org-texmacs--document-resolve (nth 0 prepared) (nth 1 prepared) static resource-base))
                (plan (org-texmacs--bibliography-plan

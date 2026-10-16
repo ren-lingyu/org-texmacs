@@ -463,13 +463,10 @@
         (lambda ()
           (let ((parsed (parse-bibtex-snippet (caddr request))))
             (if (equal? parsed "") (set! parsed '(document)))
-            ;; Text was validated by preparation.  Comments are not entries.
+            ;; Native parsing owns declarations, normalization and recovery.
+            ;; Preserve its full document; Elisp indexes only native entries.
             (if (not (func? parsed 'document)) (error "Invalid bibliography tree"))
-            (list 'ok id
-                  (org-texmacs-bibliography-source-tree
-                   (cons 'document
-                         (list-filter (cdr parsed)
-                                      (lambda (entry) (func? entry 'bib-entry))))))))
+            (list 'ok id (org-texmacs-bibliography-source-tree parsed))))
         (lambda args (list 'error id "Invalid bibliography source")))))
    ((and (list? request) (>= (length request) 2)
          (integer? (cadr request)) (> (cadr request) 0)

@@ -181,7 +181,7 @@ This pure protocol helper does not change worker lifecycle state."
 SOURCE is text data, never Scheme code to execute.  Only one request may run at
 a time.  Parse errors preserve the worker; transport failures or cancellation
 stop it so a later call can start a fresh process.
-SYNTAX is nil for STM or `bibliography' for already validated BibTeX text.
+SYNTAX is nil for STM or `bibliography' for BibTeX text interpreted by TeXmacs.
 The latter parses source data only, without querying files or databases."
   (unless (stringp source)
     (signal 'wrong-type-argument (list 'stringp source)))

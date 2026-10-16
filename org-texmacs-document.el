@@ -12,7 +12,6 @@
 
 ;;; Code:
 
-(require 'bibtex)
 
 (require 'org-texmacs-core)
 (require 'org-texmacs-source)
@@ -378,25 +377,20 @@ read a source buffer, query an ID database or invoke an export consumer."
                       (nreverse resolved))
        :labels labels :files (nreverse files) :footnotes (nreverse footnotes)))))
 
-(defun org-texmacs--bibliography-plan (ast islands info bibliography resolution static-labels)
-  "Resolve bare citations and one bibliography print from owned structures.
-Visit named footnote bodies at first use.  Never query buffers or files."
+(defun org-texmacs--bibliography-collect (ast islands info sources resolution)
+  "Collect actual citation usage from owned Org structures, without BibTeX parsing.
+SOURCES lists available identities.  Check only source-independent contracts;
+entry identities are resolved later against owned native ASTs."
   (let ((declarations (plist-get info :texmacs-bibliography-declarations))
-        entries citations keys prints visited)
-    (dolist (source bibliography)
-      (when (member (car source) (mapcar #'cdr declarations))
-        (dolist (entry (cdr (cdr source)))
-          (when (assoc (nth 2 entry) entries)
-            (signal 'org-texmacs-document-error '("Ambiguous bibliography key")))
-          (push (cons (nth 2 entry) entry) entries))))
+        citations keys prints visited)
     (dolist (declaration declarations)
-      (unless (assoc (cdr declaration) bibliography)
+      (unless (member (cdr declaration) sources)
         (signal 'org-texmacs-document-error '("Bibliography declaration needs explicit source data"))))
     (cl-labels
         ((affix-empty (value)
            (and (proper-list-p value)
                 (cl-every (lambda (part) (and (stringp part) (string-blank-p part))) value)))
-         (walk (node)
+         (walk (node parent)
            (when (and (consp node) (not (assq node islands)))
              (pcase (org-element-type node)
                ('footnote-definition nil)
@@ -405,9 +399,13 @@ Visit named footnote bodies at first use.  Never query buffers or files."
                   (if note
                       (unless (memq note visited)
                         (push note visited)
-                        (mapc #'walk (org-element-contents (nth 1 note))))
-                    (mapc #'walk (org-element-contents node)))))
+                        (mapc (lambda (child) (walk child (nth 1 note)))
+                              (org-element-contents (nth 1 note))))
+                    (mapc (lambda (child) (walk child node)) (org-element-contents node)))))
                ('citation
+                (unless (and parent (memq (org-element-type parent)
+                                           '(paragraph footnote-reference)))
+                  (org-texmacs--document-fail node "Unsupported citation context"))
                 (unless (and (null (org-element-property :style node))
                              (affix-empty (org-element-property :prefix node))
                              (affix-empty (org-element-property :suffix node))
@@ -421,8 +419,6 @@ Visit named footnote bodies at first use.  Never query buffers or files."
                                    (affix-empty (org-element-property :prefix reference))
                                    (affix-empty (org-element-property :suffix reference)))
                         (org-texmacs--document-fail node "Unsupported citation reference"))
-                      (unless (assoc key entries)
-                        (org-texmacs--document-fail node "Unresolved citation key"))
                       (unless (member key keys) (setq keys (append keys (list key))))
                       (push key group)))
                   (push (cons node (nreverse group)) citations)))
@@ -437,22 +433,83 @@ Visit named footnote bodies at first use.  Never query buffers or files."
                    (push node prints))))
                (_
                 (when (eq (org-element-type node) 'headline)
-                  (mapc #'walk (org-element-property :title node)))
-                (mapc #'walk (org-element-contents node)))))))
-      (walk ast))
+                  (mapc (lambda (child) (walk child node)) (org-element-property :title node)))
+                (mapc (lambda (child) (walk child node)) (org-element-contents node)))))))
+      (walk ast nil))
     (unless (or (and (null keys) (null prints)) (= (length prints) 1))
       (signal 'org-texmacs-document-error '("Citations require exactly one bibliography print")))
+    (when (and keys (null declarations))
+      (signal 'org-texmacs-document-error '("Unresolved citation key")))
+    (list :keys keys :citations (nreverse citations) :prints prints)))
+
+(defun org-texmacs--bibliography-plan (ast islands info bibliography resolution static-labels)
+  "Resolve used citation keys against owned native BIBLIOGRAPHY trees.
+Only effective declared sources participate.  Unused duplicate entries remain
+opaque data; used keys must have exactly one candidate.  Never query buffers,
+files, native parsers or field semantics."
+  (let* ((usage (org-texmacs--bibliography-collect
+                 ast islands info (mapcar #'car bibliography) resolution))
+         (keys (plist-get usage :keys))
+         (declarations (mapcar #'cdr (plist-get info :texmacs-bibliography-declarations)))
+         (entries (make-hash-table :test #'equal)) selected)
+    (dolist (source bibliography)
+      (when (member (car source) declarations)
+        (dolist (entry (cdr (cdr source)))
+          (when (and (consp entry) (eq (car entry) 'bib-entry))
+            (push entry (gethash (nth 2 entry) entries))))))
     (dolist (key keys)
-      (when (cl-some (lambda (field)
-                       (member (nth 1 field) '("crossref" "xdata" "related" "entryset")))
-                     (cdr (nth 3 (cdr (assoc key entries)))))
-        (signal 'org-texmacs-document-error '("Bibliography entry dependencies are unsupported"))))
+      (let ((matches (gethash key entries)))
+        (unless matches
+          (signal 'org-texmacs-document-error (list "Unresolved citation key" key)))
+        (when (cdr matches)
+          (signal 'org-texmacs-document-error (list "Ambiguous bibliography key" key)))
+        (push (car matches) selected)))
     (let ((number 1) prefix)
       (while (progn
                (setq prefix (format "org-texmacs-bib-%d" number) number (1+ number))
                (cl-some (lambda (key) (member (concat prefix "-" key) static-labels)) keys)))
-      (list :keys keys :prefix prefix :citations (nreverse citations) :prints prints
-            :entries (cons 'document (mapcar (lambda (key) (cdr (assoc key entries))) keys))))))
+      (append usage (list :prefix prefix :entries (cons 'document (nreverse selected)))))))
+
+(defun org-texmacs--bibliography-labels (body)
+  "Return every static label in owned native BODY, retaining duplicates.
+Dynamic label structures cannot satisfy the bibliography output contract."
+  (let (labels)
+    (cl-labels ((walk (node)
+                  (when (consp node)
+                    (when (eq (car node) 'label)
+                      (unless (and (= (length node) 2) (stringp (cadr node)))
+                        (signal 'org-texmacs-document-error '("Invalid bibliography label")))
+                      (push (cadr node) labels))
+                    (mapc #'walk (cdr node)))))
+      (walk body))
+    (nreverse labels)))
+
+(defun org-texmacs--bibliography-check-references (body prefix)
+  "Check native BODY references under its captured bibliography PREFIX.
+Do not inspect entry fields or expand dependencies.  A native dependency must
+resolve against labels actually generated for this bibliography."
+  (let ((labels (org-texmacs--bibliography-labels body)))
+    (cl-labels
+        ((walk (node current-prefix)
+           (when (consp node)
+             (pcase (car node)
+               ('with-bib
+                (unless (and (= (length node) 3) (stringp (cadr node)))
+                  (signal 'org-texmacs-document-error '("Unsupported native bibliography context")))
+                (walk (nth 2 node) (cadr node)))
+               ((or 'cite 'reference 'pageref)
+                (unless (and (cdr node)
+                             (cl-every (lambda (target)
+                                         (and (stringp target)
+                                              (member (if (eq (car node) 'cite)
+                                                          (concat current-prefix "-" target)
+                                                        target)
+                                                      labels)))
+                                       (cdr node)))
+                  (signal 'org-texmacs-document-error
+                          '("Unresolved native bibliography reference"))))
+               (_ (mapc (lambda (child) (walk child current-prefix)) (cdr node)))))))
+      (walk body prefix))))
 
 (defun org-texmacs--document-unnumbered-value (headline)
   "Return HEADLINE's effective inherited Org UNNUMBERED value."
@@ -1423,13 +1480,15 @@ from one snapshot."
                    (org-texmacs--document-fail node "Missing or stale prepared bibliography output"))
                  (let ((body (org-texmacs--document-copy-stree (nth 3 output))))
                    (unless (and (consp body) (eq (car body) 'bib-list) (= (length body) 3)
-                                (equal (sort (org-texmacs--document-static-labels (list (cons 'body body)))
-                                             #'string-lessp)
+                                (equal (sort (org-texmacs--bibliography-labels body) #'string-lessp)
                                        (sort (mapcar (lambda (key)
                                                        (concat (plist-get citation-plan :prefix) "-" key))
                                                      (plist-get citation-plan :keys)) #'string-lessp)))
                      (org-texmacs--document-fail node "Invalid prepared bibliography labels"))
-                   (list (org-texmacs--document-create :body body :stm-paths '(()))))))
+                   (org-texmacs--bibliography-check-references body (nth 0 output))
+                   (list (org-texmacs--document-create
+                          :body (list 'with-bib (copy-sequence (nth 0 output)) body)
+                          :stm-paths '((1)))))))
               ((eq type 'paragraph)
                (list (paragraph node ancestors)))
               ((memq type '(example-block fixed-width src-block))
@@ -1562,67 +1621,6 @@ buffer-local copies separate from the caller's snapshot and source buffer."
   "Snapshot effective link registration and abbreviation settings."
   (mapcar #'org-texmacs--document-copy-link-setting
           (list org-link-parameters org-link-abbrev-alist org-link-abbrev-alist-local)))
-
-(defun org-texmacs--bibliography-validate-source (source)
-  "Validate the bounded BibTeX SOURCE grammar before native parsing.
-Use Emacs's local parser helpers, never its global validation or file helpers.
-Return ordered type/key/field-name signatures for native consistency checks.
-Accept standard BibTeX entry types, line-start entries, whitespace and percent
-comment lines, and single braced/quoted or decimal field values.  Reject string
-constants, concatenation, preambles, repairs and duplicate keys or fields."
-  (with-temp-buffer
-    (let ((bibtex-autoadd-commas nil)
-          (bibtex-expand-strings nil)
-          (imenu-generic-expression nil)
-          (imenu-case-fold-search nil)
-          (bibtex-BibTeX-entry-alist
-           (mapcar #'list '("Article" "Book" "Booklet" "InBook" "InCollection"
-                            "InProceedings" "Manual" "MastersThesis" "Misc"
-                            "PhdThesis" "Proceedings" "TechReport" "Unpublished")))
-          (case-fold-search t) keys signatures)
-      (bibtex-set-dialect 'BibTeX t)
-      (insert source)
-      (goto-char (point-min))
-      (condition-case err
-          (while (progn (skip-chars-forward " \t\n\r") (not (eobp)))
-            (if (eq (char-after) ?%)
-                (forward-line 1)
-              (unless (save-excursion (skip-chars-backward " \t") (bolp))
-                (signal 'org-texmacs-document-error '("BibTeX entries must start on a line")))
-              (beginning-of-line)
-              (let ((bounds (bibtex-valid-entry)) type key fields)
-                (unless bounds
-                  (signal 'org-texmacs-document-error '("Malformed or unsupported BibTeX entry")))
-                (unless (string-match-p "\\`@[A-Za-z]+\\'" (match-string-no-properties 1))
-                  (signal 'org-texmacs-document-error '("Whitespace after BibTeX @ is unsupported")))
-                (setq type (downcase (substring (match-string-no-properties 1) 1))
-                      key (match-string-no-properties 2))
-                (when (member key keys)
-                  (signal 'org-texmacs-document-error '("Duplicate bibliography key")))
-                (push key keys)
-                (goto-char (match-end 0))
-                (let (field)
-                  (while (setq field (bibtex-parse-field))
-                    (let ((name (downcase (buffer-substring-no-properties
-                                          (nth 1 (car field)) (nth 2 (car field))))))
-                      (when (member name fields)
-                        (signal 'org-texmacs-document-error '("Duplicate bibliography field")))
-                      (push name fields))
-                    (goto-char (nth 1 field))
-                    (let ((literal (bibtex-parse-field-string)))
-                      (cond (literal (goto-char (cdr literal)))
-                            ((looking-at "[0-9]+") (goto-char (match-end 0)))
-                            (t (signal 'org-texmacs-document-error
-                                       '("BibTeX string constants are unsupported")))))
-                    (unless (= (point) (nth 2 field))
-                      (signal 'org-texmacs-document-error '("BibTeX concatenation is unsupported")))
-                    (goto-char (nth 3 field))))
-                (push (list type key (nreverse fields)) signatures)
-                (goto-char (cdr bounds)))))
-        (org-texmacs-document-error (signal (car err) (cdr err)))
-        (error (signal 'org-texmacs-document-error
-                       (list "Malformed bibliography text" (error-message-string err)))))
-      (nreverse signatures))))
 
 (defun org-texmacs--document-prepare-source
     (source tags headings links info &optional subtree-position region restriction
