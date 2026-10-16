@@ -12,7 +12,7 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
-## Issue12 native bibliography ownership acceptance — uncommitted delivery
+## Issue12 native bibliography ownership acceptance and committed delivery
 
 User selected native parser/formatter authority, used-key-only ambiguity and no
 uncited dependency expansion; implementation and exact five-command isolated suite
@@ -29,13 +29,20 @@ Final107/107focused170.676069s;9/9fixed real extension integration12.313207s;
 native .tm/PDF/reload parity, native error/reuse and schema/ownership/source/
 dependency mutations.19candidate hashes match isolation;18pre-fix inputs equal
 capture context, exact task-only patch recorded. User root flake overlay unchanged;
-ordinary index empty and implementation still uncommitted. No personal-library,
+ordinary index empty at validation. Subsequent user-committed delivery verified:
+expected parent/eight changed paths/exact patch/exact draft message and19committed
+input hashes all match. Original runtime candidate was uncommitted; new committed
+equivalence does not change that original provenance. GitHub connector confirms
+Issue12 closed/completed at2026-10-16T16:45:06Z, no comments/milestone.
+Only original user flake overlay remains dirty; index empty. No personal-library,
 GUI, full BibLaTeX or other-platform acceptance. Current implementation/commands/
 limits in memory/issue-12-review.md.14necessary pure-text original-byte artifacts
 separately archived/verified: archive/2026-10-16T16-37-01Z--1ee3de5/MANIFEST.md.
-Project association is capture/pre-fix context, not uncommitted delivery identity.
-After user commit verify exact reviewed delivery and remote Issue12 state; no
-GitHub writes performed and no automatic release milestone added.
+The archive checkpoint association is capture/pre-fix context, not delivery
+identity. The subsequent delivery-verification checkpoint associates the exact
+user-committed project snapshot inspected.
+Delivery and tracking complete; no agent GitHub writes/ordinary commit performed
+and no automatic release milestone added.
 
 ## Default-on STM font-lock acceptance and committed delivery
 

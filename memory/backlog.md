@@ -23,16 +23,6 @@ decision.
 
 ## Active next
 
-### Issue12 bibliography native ownership — implementation complete, delivery pending
-
-User-adopted plan implemented and validated:107focused/464fullERT/9fixed real
-extension integration, strict compile/lint/full flake pass. Native owns BibTeX
-contents; only actual used key ambiguity fails; no automatic uncited dependency
-expansion. Exact implementation/native limits and evidence:
-memory/issue-12-review.md. Eight task paths staged, draft Closes: #12 prepared; still uncommitted. Next user
-review/commit, then verify exact delivery and remote Issue12 status. No automatic
-v0.5.0 milestone or new work on advanced dependencies is implied.
-
 ### v0.5.0 release readiness — Issue10 and Issue11 user-committed
 
 Status: Issue10 and Issue11 implementation/automated acceptance/user delivery

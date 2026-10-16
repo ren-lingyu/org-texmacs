@@ -1,30 +1,27 @@
 # org-texmacs current memory
 
-## Completed implementation: Issue12 bibliography — review/commit pending
+## Completed: Issue12 bibliography delivered and closed
 
-User-adopted native bibliography ownership plan implemented and validated; task
-eight business/test/README paths are staged, still uncommitted. No raw BibTeX whitelist/signatures;
-owned full native AST before used-key resolution. Unused duplicates accepted,
-used ambiguous/missing keys fail, no automatic parent expansion; native output
-references/labels and with-bib context/provenance checked. Acquisition policy,
-source/config/dependency checks, worker lifecycle and pure lowering preserved.
-README/comments/tests updated. Locked x86_64-linux Emacs31.1/Org9.8.10/TeXmacs2.1.5:
-16native controls,3expected old-code failures,107/107focused170.676069s,
-9/9fixed extension integration12.313207s,464/464fullERT339.558582s;
-full authorized600s flake check exit0, strict compilation and lint pass.
-19candidate inputs equal tested snapshot;18pre-fix source/README/lock inputs equal
-committed capture context. Original user flake overlay unchanged and unstaged.
-Final staged8path patch equals validated task patch, staged blobs match19input
-manifest. Draft tmp/commit.md: fix(bibliography): delegate BibTeX interpretation
-to native TeXmacs; footer Closes: #12; SHA256
-f9780248b442723802b13cf5aaf7eda6dbc649c7708045de94636c72eb2f4989. No personal-library rereads or GUI/other-platform/full BibLaTeX claim.
-Current contract/evidence/commands: memory/issue-12-review.md.14necessary original-
-byte text artifacts independently archived and verified at archive/2026-10-16T16-37-01Z--1ee3de5/MANIFEST.md.
-Next: user review and optional fresh-version interactive manual.org check with
-org-organize/discovery enabled; staging/message explicitly authorized and complete,
-commit remains manual. Split not necessary, low difficulty: one coupled fix. After user commit verify exact delivery and Issue12 state
-via GitHub connector, update memory accordingly. Issue was open/no comments/no
-milestone at last remote review; no external close/comment was performed.
+User committed the exact reviewed native bibliography ownership fix, including
+expected parent/eight changed paths/exact patch and commit message with Closes:
+#12.19committed and worktree source/test/README/lock hashes equal the tested
+candidate; ordinary index empty, only original unchanged user flake overlay dirty.
+Original runtime tested an uncommitted candidate; this subsequent delivery check
+establishes exact committed equivalence, not retroactive runtime provenance.
+GitHub connector confirms Issue12 closed/completed, closed_at2026-10-16T16:45:06Z,
+zero comments/no milestone. No agent GitHub write or ordinary commit performed.
+Native AST authority, used-key-only ambiguity, no automatic uncited dependency
+expansion, output reference/label/with-bib/provenance checks delivered. Source/
+configuration/dependency guards, acquisition policy, ownership and lifecycle
+preserved. README/comments/tests synchronized. Locked x86_64-linux
+Emacs31.1/Org9.8.10/TeXmacs2.1.5:16native controls,3expected baseline failures,
+107focused/464fullERT/9fixed real extension tests/full flake/strict compile/lint
+passed. Details and limits: memory/issue-12-review.md.14necessary original-byte
+text artifacts: archive/2026-10-16T16-37-01Z--1ee3de5/MANIFEST.md.
+No personal-library rereads, GUI/other-platform/full BibLaTeX acceptance.
+No implementation/tracking action remains for #12. Optional fresh-version manual.org
+check with org-organize/discovery enabled remains unperformed, not a closure gate.
+Next project choice follows existing v0.5.0 readiness; no new scope/milestone adopted.
 
 ## Completed: supplementary PDF derived-state checks
 

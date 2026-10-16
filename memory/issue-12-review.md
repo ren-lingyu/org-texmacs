@@ -5,7 +5,9 @@
 https://github.com/ren-lingyu/org-texmacs/issues/12 delegates BibTeX contents to
 native TeXmacs instead of an independent Emacs whitelist/signature model. GitHub
 connector successfully read body and all comments: open, zero comments, no
-milestone at review. Public web cache fetch failed; use dedicated connector.
+milestone at review. After user commit, connector confirms closed/completed,
+closed_at2026-10-16T16:45:06Z, zero comments/no milestone. Public web cache fetch
+failed; dedicated connector succeeded.
 User adopted implementation plan and explicitly selected used-key-only ambiguity
 checks and no automatic uncited dependency expansion. Implementation authorized;
 this task's exact probes/baseline/focused/integration/full flake suite plus locked
@@ -18,15 +20,17 @@ whitelist/literal grammar. User reports those files work with ox-latex; do not
 label them corrupt or claim this task tested the personal library. Prior source
 inspection facts remain in memory/pdf-adjacent-checks.md.
 
-Current uncommitted implementation and README/tests prepared. First105focused pass,
-final107focused pass (170.676069s),9fixed real extension tests pass (12.313207s),
-strict package compilation and package lint pass. Full464/464ERT pass in
-339.558582s, complete authorized600s flake check exits0. Root diff-check passes;
-ordinary index was empty at validation. User subsequently authorized sequential
-staging/message:8task paths staged, exact validated patch/blobs verified; original
-flake overlay remains unstaged. Implementation complete, manual user commit pending.
-Root user flake mirror overlay unchanged;19candidate inputs match isolation hash
-manifest. Runtime isolation is tmp/issue-12-bibliography; no system Emacs used.
+User-committed implementation/README/tests exactly verified against staged draft:
+expected parent, eight changed paths, complete task patch, exact commit message
+with Closes: #12, and19committed/worktree input hashes match tested candidate.
+Original user flake overlay unchanged, ordinary index empty. Runtime originally
+used an uncommitted candidate; later exact delivery verification establishes
+committed equivalence without relabeling original runtime provenance.
+First105focused pass, final107focused170.676069s;9fixed real extension tests
+12.313207s;464fullERT339.558582s/complete600s flake check exit0; strict package
+compilation/lint and root diff-check pass. GitHub issue closed/completed; no
+remaining implementation or tracking task. Runtime isolation:
+tmp/issue-12-bibliography; no system Emacs or personal library rereads.
 
 ## Adopted implementation
 
@@ -97,14 +101,12 @@ no PDF-byte identity assertion. Personal libraries, GUI and other versions not
 certified.14necessary original-byte text files independently archived/verified:
 archive/2026-10-16T16-37-01Z--1ee3de5/MANIFEST.md. Logs preserve original whitespace;
 no PDF/binary/personal sources or redundant committed source copies captured.
-Current memory/model/acquisition contract coordinated. Eight task paths now staged;
-next user review/optional manual.org interaction after loading fresh package,
-with org-organize enabled and buffer-local discovery t. User-authorized staging/
-message complete: tmp/commit.md subject fix(bibliography): delegate BibTeX
-interpretation to native TeXmacs, footer Closes: #12. Exact draft SHA256:
-f9780248b442723802b13cf5aaf7eda6dbc649c7708045de94636c72eb2f4989.
-Split not necessary/low: one coupled native ownership fix. Ordinary commit manual. After user commit verify exact delivery and
-Issue12 state; no automatic GitHub close/comment.
+Current memory/model/acquisition contract coordinated. User committed exact staged
+delivery, ordinary index empty; no further staging/commit or remote closure needed.
+Issue12 removed from active backlog. Optional manual.org interaction after loading
+fresh package with org-organize/discovery enabled remains unperformed, not a
+closure gate. Other platforms/GUI/personal libraries not certified. Existing
+v0.5.0 readiness determines subsequent work; no new release milestone adopted.
 
 ## Executed isolated validation commands
 

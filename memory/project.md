@@ -339,12 +339,12 @@ Its default citation/bibliography consumer is committed below.
 - Buffer preparation and both conversion wrappers accept an optional alist of
   path-to-BibTeX-text source snapshots. Paths are identities, expanded once
   against the captured Org resource base. No bibliography file is opened.
-- Issue12 candidate delegates BibTeX grammar and field interpretation to native
+- Delivered Issue12 fix delegates BibTeX grammar and field interpretation to native
   TeXmacs. No Emacs BibTeX helpers, entry-type/value whitelist or raw type/key/field
   signature equality remains. Parser recovery and unused-field omissions are native
   behavior, not independently rejected.107focused/464fullERT/9real extension
-  integration and full flake/strict compile/lint verified; ordinary delivery
-  remains uncommitted. Detailed contract: memory/issue-12-review.md.
+  integration and full flake/strict compile/lint verified. User-committed delivery
+  matches exact validated patch/19input hashes; remote Issue12 closed/completed. Detailed contract: memory/issue-12-review.md.
 - Existing parse-bibliography request returns the full native document (including
   opaque metadata), normalizing empty output to (document). Source notation and
   structured fields remain owned. Copy checks finite stree/document and consumed

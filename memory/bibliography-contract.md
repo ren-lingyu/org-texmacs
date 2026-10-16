@@ -4,7 +4,7 @@ Selected by the user's review/execute request for INBOX section 13. Nodes A/B/C
 are implemented and fully validated, with independent checkpoints.
 Issue12 now replaces the old raw BibTeX grammar/pre-parse signature contract
 with native AST authority;107focused/464fullERT/9fixed extension/full flake
-checks pass, ordinary Issue12 delivery remains uncommitted.
+checks pass; exact user-committed delivery verified and Issue12 closed/completed.
 Current implementation/evidence: memory/issue-12-review.md.
 Public wrappers are
 `org-texmacs-document-from-buffer-discover-bibliography` and
