@@ -1,0 +1,4142 @@
+{
+  "generic-atom-2": {
+    "style": "generic",
+    "variant": "atom",
+    "passes": 2,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "106.08"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          708.06,
+          89.58,
+          714.42
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "106.08"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "757.92",
+        "left": "106.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "715.02",
+        "left": "85.02"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "generic-atom-2.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "generic-atom-2.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "generic-atom-6": {
+    "style": "generic",
+    "variant": "atom",
+    "passes": 6,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "106.08"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          708.06,
+          89.58,
+          714.42
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "106.08"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "757.92",
+        "left": "106.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "715.02",
+        "left": "85.02"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "generic-atom-6.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "generic-atom-6.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "generic-document-2": {
+    "style": "generic",
+    "variant": "document",
+    "passes": 2,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "106.08"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          708.06,
+          89.58,
+          714.42
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "106.08"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "757.92",
+        "left": "106.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "715.02",
+        "left": "85.02"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "generic-document-2.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "generic-document-2.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "generic-document-6": {
+    "style": "generic",
+    "variant": "document",
+    "passes": 6,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "106.08"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          708.06,
+          89.58,
+          714.42
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "106.08"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "757.92",
+        "left": "106.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "715.02",
+        "left": "85.02"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "generic-document-6.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "generic-document-6.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "generic-document-label-2": {
+    "style": "generic",
+    "variant": "document-label",
+    "passes": 2,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "106.08"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          708.06,
+          89.58,
+          714.42
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label2",
+        "target": {
+          "page": 1,
+          "top": "713.28",
+          "left": "95.4"
+        },
+        "uri": "",
+        "rect": [
+          110.52,
+          751.68,
+          115.14,
+          757.44
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "106.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "757.92",
+        "left": "106.08"
+      },
+      "/label4": {
+        "page": 1,
+        "top": "715.02",
+        "left": "85.02"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "713.28",
+        "left": "95.4"
+      },
+      "/label5": {
+        "page": 2,
+        "top": "758.04",
+        "left": "110.82"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "generic-document-label-2.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "generic-document-label-2.html#1"
+      },
+      {
+        "from": 2,
+        "text": "n",
+        "href": "generic-document-label-2.html#1"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-document-label-2.html#1"
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": "generic-document-label-2.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "generic-document-label-6": {
+    "style": "generic",
+    "variant": "document-label",
+    "passes": 6,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "106.08"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          708.06,
+          89.58,
+          714.42
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label2",
+        "target": {
+          "page": 1,
+          "top": "713.28",
+          "left": "95.4"
+        },
+        "uri": "",
+        "rect": [
+          110.52,
+          751.68,
+          115.14,
+          757.44
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "106.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "757.92",
+        "left": "106.08"
+      },
+      "/label4": {
+        "page": 1,
+        "top": "715.02",
+        "left": "85.02"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "713.28",
+        "left": "95.4"
+      },
+      "/label5": {
+        "page": 2,
+        "top": "758.04",
+        "left": "110.82"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "generic-document-label-6.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "generic-document-label-6.html#1"
+      },
+      {
+        "from": 2,
+        "text": "n",
+        "href": "generic-document-label-6.html#1"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-document-label-6.html#1"
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": "generic-document-label-6.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "generic-surround-label-2": {
+    "style": "generic",
+    "variant": "surround-label",
+    "passes": 2,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "106.08"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          708.06,
+          89.58,
+          714.42
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label2",
+        "target": {
+          "page": 1,
+          "top": "713.28",
+          "left": "95.4"
+        },
+        "uri": "",
+        "rect": [
+          110.52,
+          751.68,
+          115.14,
+          757.44
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "106.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "757.92",
+        "left": "106.08"
+      },
+      "/label4": {
+        "page": 1,
+        "top": "715.02",
+        "left": "85.02"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "713.28",
+        "left": "95.4"
+      },
+      "/label5": {
+        "page": 2,
+        "top": "758.04",
+        "left": "110.82"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "generic-surround-label-2.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "generic-surround-label-2.html#1"
+      },
+      {
+        "from": 2,
+        "text": "n",
+        "href": "generic-surround-label-2.html#1"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-surround-label-2.html#1"
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": "generic-surround-label-2.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "generic-surround-label-6": {
+    "style": "generic",
+    "variant": "surround-label",
+    "passes": 6,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "106.08"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          708.06,
+          89.58,
+          714.42
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label2",
+        "target": {
+          "page": 1,
+          "top": "713.28",
+          "left": "95.4"
+        },
+        "uri": "",
+        "rect": [
+          110.52,
+          751.68,
+          115.14,
+          757.44
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "106.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "757.92",
+        "left": "106.08"
+      },
+      "/label4": {
+        "page": 1,
+        "top": "715.02",
+        "left": "85.02"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "713.28",
+        "left": "95.4"
+      },
+      "/label5": {
+        "page": 2,
+        "top": "758.04",
+        "left": "110.82"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "generic-surround-label-6.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "generic-surround-label-6.html#1"
+      },
+      {
+        "from": 2,
+        "text": "n",
+        "href": "generic-surround-label-6.html#1"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-surround-label-6.html#1"
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": "generic-surround-label-6.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          751.62,
+          110.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "generic-package-control-2": {
+    "style": "generic",
+    "variant": "package-control",
+    "passes": 2,
+    "pages": 4,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": {
+          "page": 2,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          722.64,
+          90.3,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": {
+          "page": 2,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          93.06,
+          720.66,
+          170.46,
+          730.68
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": {
+          "page": 2,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          504.9,
+          722.64,
+          510.48,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 3,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          710.64,
+          90.3,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 3,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          93.06,
+          708.66,
+          174.66,
+          718.68
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 3,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          504.9,
+          710.64,
+          510.48,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label2",
+        "target": {
+          "page": 4,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          698.64,
+          90.3,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label2",
+        "target": {
+          "page": 4,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          93.06,
+          698.64,
+          190.14,
+          706.68
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label2",
+        "target": {
+          "page": 4,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          504.9,
+          698.64,
+          510.48,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "None",
+        "target": null,
+        "uri": "https://example.org",
+        "rect": [
+          84.72,
+          679.98,
+          142.8,
+          688.02
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label3",
+        "target": {
+          "page": 3,
+          "top": "710.04",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          165.0,
+          678.0,
+          243.54,
+          688.02
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label4",
+        "target": {
+          "page": 4,
+          "top": "686.4",
+          "left": "107.58"
+        },
+        "uri": "",
+        "rect": [
+          210.18,
+          685.26,
+          215.76,
+          692.88
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label5",
+        "target": {
+          "page": 4,
+          "top": "667.74",
+          "left": "107.58"
+        },
+        "uri": "",
+        "rect": [
+          221.28,
+          685.26,
+          226.92,
+          692.88
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label6",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          669.48,
+          110.34,
+          675.24
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label7",
+        "target": {
+          "page": 2,
+          "top": "672.72",
+          "left": "106.08"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          625.98,
+          89.58,
+          632.34
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label8",
+        "target": {
+          "page": 2,
+          "top": "710.04",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          180.36,
+          683.34,
+          240.24,
+          693.36
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label8",
+        "target": {
+          "page": 2,
+          "top": "710.04",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          149.7,
+          666.54,
+          155.34,
+          674.16
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label9",
+        "target": {
+          "page": 2,
+          "top": "631.2",
+          "left": "95.4"
+        },
+        "uri": "",
+        "rect": [
+          187.74,
+          670.14,
+          192.36,
+          675.9
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label4",
+        "target": {
+          "page": 4,
+          "top": "686.4",
+          "left": "107.58"
+        },
+        "uri": "",
+        "rect": [
+          236.04,
+          666.54,
+          241.62,
+          674.16
+        ]
+      }
+    ],
+    "destinations": {
+      "/label10": {
+        "page": 1,
+        "top": "730.86",
+        "left": "505.2"
+      },
+      "/label11": {
+        "page": 1,
+        "top": "718.86",
+        "left": "505.2"
+      },
+      "/label12": {
+        "page": 1,
+        "top": "706.86",
+        "left": "505.2"
+      },
+      "/label13": {
+        "page": 2,
+        "top": "752.4",
+        "left": "85.02"
+      },
+      "/label0": {
+        "page": 2,
+        "top": "728.7",
+        "left": "85.02"
+      },
+      "/label8": {
+        "page": 2,
+        "top": "710.04",
+        "left": "85.02"
+      },
+      "/label14": {
+        "page": 2,
+        "top": "693.48",
+        "left": "210.48"
+      },
+      "/label15": {
+        "page": 2,
+        "top": "693.48",
+        "left": "221.58"
+      },
+      "/label7": {
+        "page": 2,
+        "top": "672.72",
+        "left": "106.08"
+      },
+      "/label16": {
+        "page": 2,
+        "top": "675.84",
+        "left": "106.08"
+      },
+      "/label17": {
+        "page": 2,
+        "top": "632.94",
+        "left": "85.02"
+      },
+      "/label9": {
+        "page": 2,
+        "top": "631.2",
+        "left": "95.4"
+      },
+      "/label18": {
+        "page": 3,
+        "top": "752.4",
+        "left": "85.02"
+      },
+      "/label1": {
+        "page": 3,
+        "top": "728.7",
+        "left": "85.02"
+      },
+      "/label3": {
+        "page": 3,
+        "top": "710.04",
+        "left": "85.02"
+      },
+      "/label19": {
+        "page": 3,
+        "top": "674.76",
+        "left": "150"
+      },
+      "/label20": {
+        "page": 3,
+        "top": "676.5",
+        "left": "188.04"
+      },
+      "/label21": {
+        "page": 3,
+        "top": "674.76",
+        "left": "236.34"
+      },
+      "/label22": {
+        "page": 4,
+        "top": "752.4",
+        "left": "85.02"
+      },
+      "/label2": {
+        "page": 4,
+        "top": "728.7",
+        "left": "85.02"
+      },
+      "/label4": {
+        "page": 4,
+        "top": "686.4",
+        "left": "107.58"
+      },
+      "/label5": {
+        "page": 4,
+        "top": "667.74",
+        "left": "107.58"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "generic-package-control-2.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "generic-package-control-2.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "generic-package-control-2.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3",
+        "href": "generic-package-control-2.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "generic-package-control-2.html#4"
+      },
+      {
+        "from": 1,
+        "text": "4",
+        "href": "generic-package-control-2.html#4"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "generic-package-control-2.html#3"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "generic-package-control-2.html#3"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "generic-package-control-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-package-control-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "generic-package-control-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "generic-package-control-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "generic-package-control-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-package-control-2.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "generic-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "BackToAlpha",
+        "href": "generic-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": ".",
+        "href": "generic-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "generic-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "n",
+        "href": "generic-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "generic-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "[",
+        "href": "generic-package-control-2.html#4"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-package-control-2.html#4"
+      },
+      {
+        "from": 3,
+        "text": "]",
+        "href": "generic-package-control-2.html#4"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 2,
+        "destination": "/label6",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          669.48,
+          110.34,
+          675.24
+        ]
+      }
+    ]
+  },
+  "generic-package-control-6": {
+    "style": "generic",
+    "variant": "package-control",
+    "passes": 6,
+    "pages": 4,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": {
+          "page": 2,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          722.64,
+          90.3,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": {
+          "page": 2,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          93.06,
+          720.66,
+          170.46,
+          730.68
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": {
+          "page": 2,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          504.9,
+          722.64,
+          510.48,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 3,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          710.64,
+          90.3,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 3,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          93.06,
+          708.66,
+          174.66,
+          718.68
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 3,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          504.9,
+          710.64,
+          510.48,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label2",
+        "target": {
+          "page": 4,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          698.64,
+          90.3,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label2",
+        "target": {
+          "page": 4,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          93.06,
+          698.64,
+          190.14,
+          706.68
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label2",
+        "target": {
+          "page": 4,
+          "top": "728.7",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          504.9,
+          698.64,
+          510.48,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "None",
+        "target": null,
+        "uri": "https://example.org",
+        "rect": [
+          84.72,
+          679.98,
+          142.8,
+          688.02
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label3",
+        "target": {
+          "page": 3,
+          "top": "710.04",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          165.0,
+          678.0,
+          243.54,
+          688.02
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label4",
+        "target": {
+          "page": 4,
+          "top": "686.4",
+          "left": "107.58"
+        },
+        "uri": "",
+        "rect": [
+          210.18,
+          685.26,
+          215.76,
+          692.88
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label5",
+        "target": {
+          "page": 4,
+          "top": "667.74",
+          "left": "107.58"
+        },
+        "uri": "",
+        "rect": [
+          221.28,
+          685.26,
+          226.92,
+          692.88
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label6",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          669.48,
+          110.34,
+          675.24
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label7",
+        "target": {
+          "page": 2,
+          "top": "672.72",
+          "left": "106.08"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          625.98,
+          89.58,
+          632.34
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label8",
+        "target": {
+          "page": 2,
+          "top": "710.04",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          180.36,
+          683.34,
+          240.24,
+          693.36
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label8",
+        "target": {
+          "page": 2,
+          "top": "710.04",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          149.7,
+          666.54,
+          155.34,
+          674.16
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label9",
+        "target": {
+          "page": 2,
+          "top": "631.2",
+          "left": "95.4"
+        },
+        "uri": "",
+        "rect": [
+          187.74,
+          670.14,
+          192.36,
+          675.9
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label4",
+        "target": {
+          "page": 4,
+          "top": "686.4",
+          "left": "107.58"
+        },
+        "uri": "",
+        "rect": [
+          236.04,
+          666.54,
+          241.62,
+          674.16
+        ]
+      }
+    ],
+    "destinations": {
+      "/label10": {
+        "page": 1,
+        "top": "730.86",
+        "left": "505.2"
+      },
+      "/label11": {
+        "page": 1,
+        "top": "718.86",
+        "left": "505.2"
+      },
+      "/label12": {
+        "page": 1,
+        "top": "706.86",
+        "left": "505.2"
+      },
+      "/label13": {
+        "page": 2,
+        "top": "752.4",
+        "left": "85.02"
+      },
+      "/label0": {
+        "page": 2,
+        "top": "728.7",
+        "left": "85.02"
+      },
+      "/label8": {
+        "page": 2,
+        "top": "710.04",
+        "left": "85.02"
+      },
+      "/label14": {
+        "page": 2,
+        "top": "693.48",
+        "left": "210.48"
+      },
+      "/label15": {
+        "page": 2,
+        "top": "693.48",
+        "left": "221.58"
+      },
+      "/label7": {
+        "page": 2,
+        "top": "672.72",
+        "left": "106.08"
+      },
+      "/label16": {
+        "page": 2,
+        "top": "675.84",
+        "left": "106.08"
+      },
+      "/label17": {
+        "page": 2,
+        "top": "632.94",
+        "left": "85.02"
+      },
+      "/label9": {
+        "page": 2,
+        "top": "631.2",
+        "left": "95.4"
+      },
+      "/label18": {
+        "page": 3,
+        "top": "752.4",
+        "left": "85.02"
+      },
+      "/label1": {
+        "page": 3,
+        "top": "728.7",
+        "left": "85.02"
+      },
+      "/label3": {
+        "page": 3,
+        "top": "710.04",
+        "left": "85.02"
+      },
+      "/label19": {
+        "page": 3,
+        "top": "674.76",
+        "left": "150"
+      },
+      "/label20": {
+        "page": 3,
+        "top": "676.5",
+        "left": "188.04"
+      },
+      "/label21": {
+        "page": 3,
+        "top": "674.76",
+        "left": "236.34"
+      },
+      "/label22": {
+        "page": 4,
+        "top": "752.4",
+        "left": "85.02"
+      },
+      "/label2": {
+        "page": 4,
+        "top": "728.7",
+        "left": "85.02"
+      },
+      "/label4": {
+        "page": 4,
+        "top": "686.4",
+        "left": "107.58"
+      },
+      "/label5": {
+        "page": 4,
+        "top": "667.74",
+        "left": "107.58"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "generic-package-control-6.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "generic-package-control-6.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "generic-package-control-6.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3",
+        "href": "generic-package-control-6.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "generic-package-control-6.html#4"
+      },
+      {
+        "from": 1,
+        "text": "4",
+        "href": "generic-package-control-6.html#4"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "generic-package-control-6.html#3"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "generic-package-control-6.html#3"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "generic-package-control-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-package-control-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "generic-package-control-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "generic-package-control-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "generic-package-control-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-package-control-6.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "generic-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "BackToAlpha",
+        "href": "generic-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": ".",
+        "href": "generic-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "generic-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "n",
+        "href": "generic-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "generic-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "[",
+        "href": "generic-package-control-6.html#4"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-package-control-6.html#4"
+      },
+      {
+        "from": 3,
+        "text": "]",
+        "href": "generic-package-control-6.html#4"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 2,
+        "destination": "/label6",
+        "target": null,
+        "uri": "",
+        "rect": [
+          105.78,
+          669.48,
+          110.34,
+          675.24
+        ]
+      }
+    ]
+  },
+  "article-atom-2": {
+    "style": "article",
+    "variant": "atom",
+    "passes": 2,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "121.08"
+        },
+        "uri": "",
+        "rect": [
+          99.72,
+          714.72,
+          104.58,
+          721.08
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "121.08"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "757.92",
+        "left": "121.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "721.68",
+        "left": "100.02"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "article-atom-2.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "article-atom-2.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "article-atom-6": {
+    "style": "article",
+    "variant": "atom",
+    "passes": 6,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "121.08"
+        },
+        "uri": "",
+        "rect": [
+          99.72,
+          714.72,
+          104.58,
+          721.08
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "121.08"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "757.92",
+        "left": "121.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "721.68",
+        "left": "100.02"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "article-atom-6.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "article-atom-6.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "article-document-2": {
+    "style": "article",
+    "variant": "document",
+    "passes": 2,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "121.08"
+        },
+        "uri": "",
+        "rect": [
+          99.72,
+          714.72,
+          104.58,
+          721.08
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "121.08"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "757.92",
+        "left": "121.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "721.68",
+        "left": "100.02"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "article-document-2.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "article-document-2.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "article-document-6": {
+    "style": "article",
+    "variant": "document",
+    "passes": 6,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "121.08"
+        },
+        "uri": "",
+        "rect": [
+          99.72,
+          714.72,
+          104.58,
+          721.08
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "121.08"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "757.92",
+        "left": "121.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "721.68",
+        "left": "100.02"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "article-document-6.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "article-document-6.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "article-document-label-2": {
+    "style": "article",
+    "variant": "document-label",
+    "passes": 2,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "121.08"
+        },
+        "uri": "",
+        "rect": [
+          99.72,
+          714.72,
+          104.58,
+          721.08
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label2",
+        "target": {
+          "page": 1,
+          "top": "719.94",
+          "left": "110.4"
+        },
+        "uri": "",
+        "rect": [
+          125.52,
+          751.68,
+          130.14,
+          757.44
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "121.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "757.92",
+        "left": "121.08"
+      },
+      "/label4": {
+        "page": 1,
+        "top": "721.68",
+        "left": "100.02"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "719.94",
+        "left": "110.4"
+      },
+      "/label5": {
+        "page": 2,
+        "top": "758.04",
+        "left": "125.82"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "article-document-label-2.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "article-document-label-2.html#1"
+      },
+      {
+        "from": 2,
+        "text": "n",
+        "href": "article-document-label-2.html#1"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-document-label-2.html#1"
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": "article-document-label-2.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "article-document-label-6": {
+    "style": "article",
+    "variant": "document-label",
+    "passes": 6,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "121.08"
+        },
+        "uri": "",
+        "rect": [
+          99.72,
+          714.72,
+          104.58,
+          721.08
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label2",
+        "target": {
+          "page": 1,
+          "top": "719.94",
+          "left": "110.4"
+        },
+        "uri": "",
+        "rect": [
+          125.52,
+          751.68,
+          130.14,
+          757.44
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "121.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "757.92",
+        "left": "121.08"
+      },
+      "/label4": {
+        "page": 1,
+        "top": "721.68",
+        "left": "100.02"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "719.94",
+        "left": "110.4"
+      },
+      "/label5": {
+        "page": 2,
+        "top": "758.04",
+        "left": "125.82"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "article-document-label-6.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "article-document-label-6.html#1"
+      },
+      {
+        "from": 2,
+        "text": "n",
+        "href": "article-document-label-6.html#1"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-document-label-6.html#1"
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": "article-document-label-6.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "article-surround-label-2": {
+    "style": "article",
+    "variant": "surround-label",
+    "passes": 2,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "121.08"
+        },
+        "uri": "",
+        "rect": [
+          99.72,
+          714.72,
+          104.58,
+          721.08
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label2",
+        "target": {
+          "page": 1,
+          "top": "719.94",
+          "left": "110.4"
+        },
+        "uri": "",
+        "rect": [
+          125.52,
+          751.68,
+          130.14,
+          757.44
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "121.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "757.92",
+        "left": "121.08"
+      },
+      "/label4": {
+        "page": 1,
+        "top": "721.68",
+        "left": "100.02"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "719.94",
+        "left": "110.4"
+      },
+      "/label5": {
+        "page": 2,
+        "top": "758.04",
+        "left": "125.82"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "article-surround-label-2.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "article-surround-label-2.html#1"
+      },
+      {
+        "from": 2,
+        "text": "n",
+        "href": "article-surround-label-2.html#1"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-surround-label-2.html#1"
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": "article-surround-label-2.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "article-surround-label-6": {
+    "style": "article",
+    "variant": "surround-label",
+    "passes": 6,
+    "pages": 2,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 1,
+          "top": "754.8",
+          "left": "121.08"
+        },
+        "uri": "",
+        "rect": [
+          99.72,
+          714.72,
+          104.58,
+          721.08
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label2",
+        "target": {
+          "page": 1,
+          "top": "719.94",
+          "left": "110.4"
+        },
+        "uri": "",
+        "rect": [
+          125.52,
+          751.68,
+          130.14,
+          757.44
+        ]
+      }
+    ],
+    "destinations": {
+      "/label1": {
+        "page": 1,
+        "top": "754.8",
+        "left": "121.08"
+      },
+      "/label3": {
+        "page": 1,
+        "top": "757.92",
+        "left": "121.08"
+      },
+      "/label4": {
+        "page": 1,
+        "top": "721.68",
+        "left": "100.02"
+      },
+      "/label2": {
+        "page": 1,
+        "top": "719.94",
+        "left": "110.4"
+      },
+      "/label5": {
+        "page": 2,
+        "top": "758.04",
+        "left": "125.82"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 1,
+        "text": "1",
+        "href": "article-surround-label-6.html#1"
+      },
+      {
+        "from": 1,
+        "text": ". ",
+        "href": "article-surround-label-6.html#1"
+      },
+      {
+        "from": 2,
+        "text": "n",
+        "href": "article-surround-label-6.html#1"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-surround-label-6.html#1"
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": "article-surround-label-6.html#1"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          751.62,
+          125.34,
+          757.32
+        ]
+      }
+    ]
+  },
+  "article-package-control-2": {
+    "style": "article",
+    "variant": "package-control",
+    "passes": 2,
+    "pages": 4,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": {
+          "page": 2,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          724.26,
+          90.3,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": {
+          "page": 2,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          93.06,
+          722.34,
+          170.46,
+          732.36
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": {
+          "page": 2,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          504.9,
+          724.26,
+          510.48,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 3,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          712.26,
+          90.3,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 3,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          93.06,
+          710.34,
+          174.66,
+          720.36
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 3,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          504.9,
+          712.26,
+          510.48,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label2",
+        "target": {
+          "page": 4,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          700.26,
+          90.3,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label2",
+        "target": {
+          "page": 4,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          93.06,
+          700.26,
+          190.14,
+          708.36
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label2",
+        "target": {
+          "page": 4,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          504.9,
+          700.26,
+          510.48,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "None",
+        "target": null,
+        "uri": "https://example.org",
+        "rect": [
+          99.72,
+          688.26,
+          157.8,
+          696.36
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label3",
+        "target": {
+          "page": 3,
+          "top": "718.38",
+          "left": "100.02"
+        },
+        "uri": "",
+        "rect": [
+          180.0,
+          686.34,
+          258.54,
+          696.36
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label4",
+        "target": {
+          "page": 4,
+          "top": "701.4",
+          "left": "107.58"
+        },
+        "uri": "",
+        "rect": [
+          225.18,
+          700.26,
+          230.76,
+          707.88
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label5",
+        "target": {
+          "page": 4,
+          "top": "689.4",
+          "left": "107.58"
+        },
+        "uri": "",
+        "rect": [
+          236.28,
+          700.26,
+          241.92,
+          707.88
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label6",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          691.14,
+          125.34,
+          696.9
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label7",
+        "target": {
+          "page": 2,
+          "top": "694.38",
+          "left": "121.08"
+        },
+        "uri": "",
+        "rect": [
+          99.72,
+          654.3,
+          104.58,
+          660.66
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label8",
+        "target": {
+          "page": 2,
+          "top": "718.38",
+          "left": "100.02"
+        },
+        "uri": "",
+        "rect": [
+          195.36,
+          698.34,
+          255.24,
+          708.36
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label8",
+        "target": {
+          "page": 2,
+          "top": "718.38",
+          "left": "100.02"
+        },
+        "uri": "",
+        "rect": [
+          164.7,
+          688.2,
+          170.34,
+          695.82
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label9",
+        "target": {
+          "page": 2,
+          "top": "659.52",
+          "left": "110.4"
+        },
+        "uri": "",
+        "rect": [
+          202.74,
+          691.8,
+          207.36,
+          697.56
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label4",
+        "target": {
+          "page": 4,
+          "top": "701.4",
+          "left": "107.58"
+        },
+        "uri": "",
+        "rect": [
+          251.04,
+          688.2,
+          256.62,
+          695.82
+        ]
+      }
+    ],
+    "destinations": {
+      "/label10": {
+        "page": 1,
+        "top": "732.48",
+        "left": "505.2"
+      },
+      "/label11": {
+        "page": 1,
+        "top": "720.48",
+        "left": "505.2"
+      },
+      "/label12": {
+        "page": 1,
+        "top": "708.48",
+        "left": "505.2"
+      },
+      "/label13": {
+        "page": 2,
+        "top": "752.4",
+        "left": "85.02"
+      },
+      "/label0": {
+        "page": 2,
+        "top": "730.38",
+        "left": "85.02"
+      },
+      "/label8": {
+        "page": 2,
+        "top": "718.38",
+        "left": "100.02"
+      },
+      "/label14": {
+        "page": 2,
+        "top": "708.48",
+        "left": "225.48"
+      },
+      "/label15": {
+        "page": 2,
+        "top": "708.48",
+        "left": "236.58"
+      },
+      "/label7": {
+        "page": 2,
+        "top": "694.38",
+        "left": "121.08"
+      },
+      "/label16": {
+        "page": 2,
+        "top": "697.5",
+        "left": "121.08"
+      },
+      "/label17": {
+        "page": 2,
+        "top": "661.26",
+        "left": "100.02"
+      },
+      "/label9": {
+        "page": 2,
+        "top": "659.52",
+        "left": "110.4"
+      },
+      "/label18": {
+        "page": 3,
+        "top": "752.4",
+        "left": "85.02"
+      },
+      "/label1": {
+        "page": 3,
+        "top": "730.38",
+        "left": "85.02"
+      },
+      "/label3": {
+        "page": 3,
+        "top": "718.38",
+        "left": "100.02"
+      },
+      "/label19": {
+        "page": 3,
+        "top": "696.42",
+        "left": "165"
+      },
+      "/label20": {
+        "page": 3,
+        "top": "698.16",
+        "left": "203.04"
+      },
+      "/label21": {
+        "page": 3,
+        "top": "696.42",
+        "left": "251.34"
+      },
+      "/label22": {
+        "page": 4,
+        "top": "752.4",
+        "left": "85.02"
+      },
+      "/label2": {
+        "page": 4,
+        "top": "730.38",
+        "left": "85.02"
+      },
+      "/label4": {
+        "page": 4,
+        "top": "701.4",
+        "left": "107.58"
+      },
+      "/label5": {
+        "page": 4,
+        "top": "689.4",
+        "left": "107.58"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "article-package-control-2.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "article-package-control-2.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "article-package-control-2.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3",
+        "href": "article-package-control-2.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "article-package-control-2.html#4"
+      },
+      {
+        "from": 1,
+        "text": "4",
+        "href": "article-package-control-2.html#4"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "article-package-control-2.html#3"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "article-package-control-2.html#3"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "article-package-control-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-package-control-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "article-package-control-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "article-package-control-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "article-package-control-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-package-control-2.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "article-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "BackToAlpha",
+        "href": "article-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": ".",
+        "href": "article-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "article-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "n",
+        "href": "article-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "article-package-control-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "[",
+        "href": "article-package-control-2.html#4"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-package-control-2.html#4"
+      },
+      {
+        "from": 3,
+        "text": "]",
+        "href": "article-package-control-2.html#4"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 2,
+        "destination": "/label6",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          691.14,
+          125.34,
+          696.9
+        ]
+      }
+    ]
+  },
+  "article-package-control-6": {
+    "style": "article",
+    "variant": "package-control",
+    "passes": 6,
+    "pages": 4,
+    "annotations": [
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": {
+          "page": 2,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          724.26,
+          90.3,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": {
+          "page": 2,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          93.06,
+          722.34,
+          170.46,
+          732.36
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label0",
+        "target": {
+          "page": 2,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          504.9,
+          724.26,
+          510.48,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 3,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          712.26,
+          90.3,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 3,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          93.06,
+          710.34,
+          174.66,
+          720.36
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label1",
+        "target": {
+          "page": 3,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          504.9,
+          712.26,
+          510.48,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label2",
+        "target": {
+          "page": 4,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          84.72,
+          700.26,
+          90.3,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label2",
+        "target": {
+          "page": 4,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          93.06,
+          700.26,
+          190.14,
+          708.36
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label2",
+        "target": {
+          "page": 4,
+          "top": "730.38",
+          "left": "85.02"
+        },
+        "uri": "",
+        "rect": [
+          504.9,
+          700.26,
+          510.48,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "None",
+        "target": null,
+        "uri": "https://example.org",
+        "rect": [
+          99.72,
+          688.26,
+          157.8,
+          696.36
+        ]
+      },
+      {
+        "from": 1,
+        "destination": "/label3",
+        "target": {
+          "page": 3,
+          "top": "718.38",
+          "left": "100.02"
+        },
+        "uri": "",
+        "rect": [
+          180.0,
+          686.34,
+          258.54,
+          696.36
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label4",
+        "target": {
+          "page": 4,
+          "top": "701.4",
+          "left": "107.58"
+        },
+        "uri": "",
+        "rect": [
+          225.18,
+          700.26,
+          230.76,
+          707.88
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label5",
+        "target": {
+          "page": 4,
+          "top": "689.4",
+          "left": "107.58"
+        },
+        "uri": "",
+        "rect": [
+          236.28,
+          700.26,
+          241.92,
+          707.88
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label6",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          691.14,
+          125.34,
+          696.9
+        ]
+      },
+      {
+        "from": 2,
+        "destination": "/label7",
+        "target": {
+          "page": 2,
+          "top": "694.38",
+          "left": "121.08"
+        },
+        "uri": "",
+        "rect": [
+          99.72,
+          654.3,
+          104.58,
+          660.66
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label8",
+        "target": {
+          "page": 2,
+          "top": "718.38",
+          "left": "100.02"
+        },
+        "uri": "",
+        "rect": [
+          195.36,
+          698.34,
+          255.24,
+          708.36
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label8",
+        "target": {
+          "page": 2,
+          "top": "718.38",
+          "left": "100.02"
+        },
+        "uri": "",
+        "rect": [
+          164.7,
+          688.2,
+          170.34,
+          695.82
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label9",
+        "target": {
+          "page": 2,
+          "top": "659.52",
+          "left": "110.4"
+        },
+        "uri": "",
+        "rect": [
+          202.74,
+          691.8,
+          207.36,
+          697.56
+        ]
+      },
+      {
+        "from": 3,
+        "destination": "/label4",
+        "target": {
+          "page": 4,
+          "top": "701.4",
+          "left": "107.58"
+        },
+        "uri": "",
+        "rect": [
+          251.04,
+          688.2,
+          256.62,
+          695.82
+        ]
+      }
+    ],
+    "destinations": {
+      "/label10": {
+        "page": 1,
+        "top": "732.48",
+        "left": "505.2"
+      },
+      "/label11": {
+        "page": 1,
+        "top": "720.48",
+        "left": "505.2"
+      },
+      "/label12": {
+        "page": 1,
+        "top": "708.48",
+        "left": "505.2"
+      },
+      "/label13": {
+        "page": 2,
+        "top": "752.4",
+        "left": "85.02"
+      },
+      "/label0": {
+        "page": 2,
+        "top": "730.38",
+        "left": "85.02"
+      },
+      "/label8": {
+        "page": 2,
+        "top": "718.38",
+        "left": "100.02"
+      },
+      "/label14": {
+        "page": 2,
+        "top": "708.48",
+        "left": "225.48"
+      },
+      "/label15": {
+        "page": 2,
+        "top": "708.48",
+        "left": "236.58"
+      },
+      "/label7": {
+        "page": 2,
+        "top": "694.38",
+        "left": "121.08"
+      },
+      "/label16": {
+        "page": 2,
+        "top": "697.5",
+        "left": "121.08"
+      },
+      "/label17": {
+        "page": 2,
+        "top": "661.26",
+        "left": "100.02"
+      },
+      "/label9": {
+        "page": 2,
+        "top": "659.52",
+        "left": "110.4"
+      },
+      "/label18": {
+        "page": 3,
+        "top": "752.4",
+        "left": "85.02"
+      },
+      "/label1": {
+        "page": 3,
+        "top": "730.38",
+        "left": "85.02"
+      },
+      "/label3": {
+        "page": 3,
+        "top": "718.38",
+        "left": "100.02"
+      },
+      "/label19": {
+        "page": 3,
+        "top": "696.42",
+        "left": "165"
+      },
+      "/label20": {
+        "page": 3,
+        "top": "698.16",
+        "left": "203.04"
+      },
+      "/label21": {
+        "page": 3,
+        "top": "696.42",
+        "left": "251.34"
+      },
+      "/label22": {
+        "page": 4,
+        "top": "752.4",
+        "left": "85.02"
+      },
+      "/label2": {
+        "page": 4,
+        "top": "730.38",
+        "left": "85.02"
+      },
+      "/label4": {
+        "page": 4,
+        "top": "701.4",
+        "left": "107.58"
+      },
+      "/label5": {
+        "page": 4,
+        "top": "689.4",
+        "left": "107.58"
+      }
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "article-package-control-6.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "article-package-control-6.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "article-package-control-6.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3",
+        "href": "article-package-control-6.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "article-package-control-6.html#4"
+      },
+      {
+        "from": 1,
+        "text": "4",
+        "href": "article-package-control-6.html#4"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "article-package-control-6.html#3"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "article-package-control-6.html#3"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "article-package-control-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-package-control-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "article-package-control-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "article-package-control-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "article-package-control-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-package-control-6.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "article-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "BackToAlpha",
+        "href": "article-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": ".",
+        "href": "article-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "article-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "n",
+        "href": "article-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "article-package-control-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "[",
+        "href": "article-package-control-6.html#4"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-package-control-6.html#4"
+      },
+      {
+        "from": 3,
+        "text": "]",
+        "href": "article-package-control-6.html#4"
+      }
+    ],
+    "dangling": [
+      {
+        "from": 2,
+        "destination": "/label6",
+        "target": null,
+        "uri": "",
+        "rect": [
+          120.78,
+          691.14,
+          125.34,
+          696.9
+        ]
+      }
+    ]
+  }
+}

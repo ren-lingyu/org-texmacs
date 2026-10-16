@@ -1,0 +1,60 @@
+generic-atom-2 annotations 2 dangling 1
+generic-atom-6 annotations 2 dangling 1
+generic-document-2 annotations 2 dangling 1
+generic-document-6 annotations 2 dangling 1
+Multiple definitions in dictionary at byte 0x6fb for key /label2
+generic-document-label-2 annotations 3 dangling 1
+Multiple definitions in dictionary at byte 0x6fb for key /label2
+generic-document-label-6 annotations 3 dangling 1
+Multiple definitions in dictionary at byte 0x6fb for key /label2
+generic-surround-label-2 annotations 3 dangling 1
+Multiple definitions in dictionary at byte 0x6fb for key /label2
+generic-surround-label-6 annotations 3 dangling 1
+Multiple definitions in dictionary at byte 0x11e5 for key /label0
+Multiple definitions in dictionary at byte 0x123f for key /label8
+Multiple definitions in dictionary at byte 0x137e for key /label9
+Multiple definitions in dictionary at byte 0x1403 for key /label1
+Multiple definitions in dictionary at byte 0x145d for key /label3
+Multiple definitions in dictionary at byte 0x156b for key /label2
+Multiple definitions in dictionary at byte 0x15c5 for key /label4
+Multiple definitions in dictionary at byte 0x1621 for key /label5
+generic-package-control-2 annotations 19 dangling 1
+Multiple definitions in dictionary at byte 0x11e5 for key /label0
+Multiple definitions in dictionary at byte 0x123f for key /label8
+Multiple definitions in dictionary at byte 0x137e for key /label9
+Multiple definitions in dictionary at byte 0x1403 for key /label1
+Multiple definitions in dictionary at byte 0x145d for key /label3
+Multiple definitions in dictionary at byte 0x156b for key /label2
+Multiple definitions in dictionary at byte 0x15c5 for key /label4
+Multiple definitions in dictionary at byte 0x1621 for key /label5
+generic-package-control-6 annotations 19 dangling 1
+article-atom-2 annotations 2 dangling 1
+article-atom-6 annotations 2 dangling 1
+article-document-2 annotations 2 dangling 1
+article-document-6 annotations 2 dangling 1
+Multiple definitions in dictionary at byte 0x6e2 for key /label2
+article-document-label-2 annotations 3 dangling 1
+Multiple definitions in dictionary at byte 0x6e2 for key /label2
+article-document-label-6 annotations 3 dangling 1
+Multiple definitions in dictionary at byte 0x6e2 for key /label2
+article-surround-label-2 annotations 3 dangling 1
+Multiple definitions in dictionary at byte 0x6e2 for key /label2
+article-surround-label-6 annotations 3 dangling 1
+Multiple definitions in dictionary at byte 0x131a for key /label0
+Multiple definitions in dictionary at byte 0x1376 for key /label8
+Multiple definitions in dictionary at byte 0x14b9 for key /label9
+Multiple definitions in dictionary at byte 0x1540 for key /label1
+Multiple definitions in dictionary at byte 0x159c for key /label3
+Multiple definitions in dictionary at byte 0x16ad for key /label2
+Multiple definitions in dictionary at byte 0x1707 for key /label4
+Multiple definitions in dictionary at byte 0x1761 for key /label5
+article-package-control-2 annotations 19 dangling 1
+Multiple definitions in dictionary at byte 0x131a for key /label0
+Multiple definitions in dictionary at byte 0x1376 for key /label8
+Multiple definitions in dictionary at byte 0x14b9 for key /label9
+Multiple definitions in dictionary at byte 0x1540 for key /label1
+Multiple definitions in dictionary at byte 0x159c for key /label3
+Multiple definitions in dictionary at byte 0x16ad for key /label2
+Multiple definitions in dictionary at byte 0x1707 for key /label4
+Multiple definitions in dictionary at byte 0x1761 for key /label5
+article-package-control-6 annotations 19 dangling 1

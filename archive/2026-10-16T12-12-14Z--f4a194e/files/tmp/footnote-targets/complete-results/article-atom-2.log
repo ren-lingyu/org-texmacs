@@ -1,0 +1,13 @@
+warning: guile hooks are not available
+Welcome to TeXmacs 2.1.5
+------------------------------------------------------------------------------
+kpsepath works with your TeX distribution
+kpsewhich works with your TeX distribution
+mktextfm works with your TeX distribution
+mktexpk works with your TeX distribution
+texhash works with your TeX distribution
+------------------------------------------------------------------------------
+Installation completed successfully !
+I will now start up the editor
+------------------------------------------------------------------------------
+("footnote" (macro "body" (concat (next-footnote) (render-footnote (the-footnote) (arg "body")) (space "0spc") (label (merge "footnr-" (the-footnote))) (rsup (with "font-shape" "right" (reference (merge "footnote-" (the-footnote))))))))("footnote-text" (macro "body" "id" (surround (concat (note-declare (arg "id")) (flag "Footnote" "brown")) "" (with "the-label" (value (merge "fnlab-" (arg "id"))) (render-footnote (value (merge "fnote-" (arg "id"))) (arg "body"))))))("footnote-nr" "0")("footnote-sep" (macro ". "))("render-footnote" (macro "nr" "body" (render-footnote* (arg "nr") (arg "nr") (arg "body"))))("render-footnote*" (macro "sym" "nr" "body" (float "footnote" "" (document (document (smaller (with "par-mode" "justify" "par-left" "0cm" "par-right" "0cm" "font-shape" "right" "dummy" (value "page-fnote-sep") "dummy" (value "page-fnote-barlen") (surround (concat (locus (id (hard-id (arg "body"))) (link "hyperlink" (id (hard-id (arg "body"))) (url (merge "#footnr-" (arg "nr")))) (arg "sym")) (footnote-sep)) (concat (set-binding (merge "footnote-" (arg "nr")) (value "the-label") "body") (right-flush)) (arg "body")))))))))("the-footnote" (macro (compound "display-footnote" (value (compound "counter-footnote")))))("next-footnote" (macro (concat (compound "inc-footnote") (set-binding (compound "the-footnote")))))FOOTNOTE-OK

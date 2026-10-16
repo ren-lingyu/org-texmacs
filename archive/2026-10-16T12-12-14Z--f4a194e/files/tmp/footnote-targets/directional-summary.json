@@ -1,0 +1,122 @@
+[
+  {
+    "case": "generic-atom-2",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": null
+  },
+  {
+    "case": "generic-atom-6",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": null
+  },
+  {
+    "case": "generic-document-2",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": null
+  },
+  {
+    "case": "generic-document-6",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": null
+  },
+  {
+    "case": "generic-document-label-2",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": true
+  },
+  {
+    "case": "generic-document-label-6",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": true
+  },
+  {
+    "case": "generic-surround-label-2",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": true
+  },
+  {
+    "case": "generic-surround-label-6",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": true
+  },
+  {
+    "case": "generic-package-control-2",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": null
+  },
+  {
+    "case": "generic-package-control-6",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": null
+  },
+  {
+    "case": "article-atom-2",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": null
+  },
+  {
+    "case": "article-atom-6",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": null
+  },
+  {
+    "case": "article-document-2",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": null
+  },
+  {
+    "case": "article-document-6",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": null
+  },
+  {
+    "case": "article-document-label-2",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": true
+  },
+  {
+    "case": "article-document-label-6",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": true
+  },
+  {
+    "case": "article-surround-label-2",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": true
+  },
+  {
+    "case": "article-surround-label-6",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": true
+  },
+  {
+    "case": "article-package-control-2",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": null
+  },
+  {
+    "case": "article-package-control-6",
+    "forward_missing": true,
+    "backlink_lands_on_first_marker": true,
+    "repeat_resolves": null
+  }
+]
