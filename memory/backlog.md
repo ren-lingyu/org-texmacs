@@ -38,9 +38,11 @@ Investigation results: memory/release-0.5.0-investigation.md. #10 gap confirmed,
 #11 concat/native reload cause isolated, links share native/config absence,
 CJK missing-font environment needs positive control. STM font-lock bounded
 investigation now complete: lexical colors reusable, naive integration property/
-stale-range/soft-error/config gaps and64KiB scan~8s. User subsequently selects
-default-on/internal-variable override interface, no public command/Customize;
-bounded implementation planning pending. See memory/font-lock-investigation.md.
+stale-range/soft-error/config gaps and64KiB scan~8s in the original prototype.
+User-selected default-on/internal-variable Scheme presentation now implemented
+as uncommitted candidate,11focused/451core/full compile/lint accepted. GUI/user
+delivery pending; dense1MiB re-fontify~0.489s explicit. Current implementation:
+memory/font-lock-implementation.md; investigation: memory/font-lock-investigation.md.
 User selected final Issue11 implementation contract
 in memory/issue-11-implementation.md: bare lifting, explicit known-display mixed
 rejection, leading-list exception; no automatic splitting. Final14/14focused,
@@ -660,10 +662,10 @@ or augmented live ASTs require separate evidence and adoption.
 Status: **re-adoption-required** for general editing assistance; narrowly scoped
 STM font-lock feasibility P1 investigation for0.5.0 is complete. User selects
 default-on font-lock with an internal nil override, no public command/Customize.
-Embedded Scheme syntax properties acceptable. Bounded integration plan pending;
-naive full-scan/property integration unsuitable. No general editor adopted or
-font-lock feature shipped. See memory/font-lock-investigation.md and
-memory/release-0.5.0.md.
+Embedded Scheme syntax properties/local ownership implemented in uncommitted
+candidate,11focused/451core/full compile/lint accepted. GUI/user delivery pending;
+large-input cost remains explicit. No general editor adopted. See
+memory/font-lock-implementation.md and memory/release-0.5.0.md.
 
 General Scheme editing assistance, preview-oriented UX and other authoring
 conveniences remain outside current commitments. The limited font-lock

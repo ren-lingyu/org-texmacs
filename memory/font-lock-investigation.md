@@ -1,19 +1,22 @@
 # STM font-lock investigation — completed 2026-10-16
 
-User selected bounded pre0.5.0 investigation, not feature implementation.
-No production edits, project staging, lock update, native worker or TeXmacs
-process. User flake overlay preserved. Development/GAW/archive skills applied.
+Initial bounded pre0.5.0 investigation completed without production changes.
+User subsequently adopted default-on/internal-variable contract and explicitly
+requested implementation, now implemented/automatically accepted as uncommitted
+candidate. Current source/validation/limits: memory/font-lock-implementation.md.
+This file retains investigation evidence and the reasoning behind the contract.
 
 ## Adopted interface direction after investigation
 
 User now selects font-lock as default-enabled functionality. No user-facing
 configuration item or dedicated command. Follow-up clarification explicitly
-requires an internal variable, not a command. Proposed internal spelling:
+requires an internal variable, not a command. Implemented internal spelling:
 `org-texmacs--font-lock-enabled`, default t, ordinary defvar-local rather than
 defcustom. nil forces Org-only behavior in that buffer; default binding can
-suppress automatic use globally. Exact refresh/cleanup lifecycle must be defined
-and tested before implementation acceptance; don't leave old Scheme properties
-when disabled. No public minor-mode command or Customize option selected.
+suppress automatic use globally. Refresh/cleanup lifecycle is now implemented
+and regression-tested as described in memory/font-lock-implementation.md;
+disabling restores Org rather than leaving old Scheme properties. No public
+minor-mode command or Customize option selected.
 
 User questioned earlier face-only recommendation. Corrected interpretation:
 Scheme syntax properties inside STM are acceptable and potentially useful for
@@ -28,11 +31,12 @@ code. Do not require face-only transfer as a design constraint.
 Existing helper supplies lexical colors in paragraph fragments, inline notes
 and mixed-case texmacs special blocks; language mapping alone works only for
 source blocks. Tested whole-snapshot prototype remains unshipped and unsuitable.
-Next: bounded implementation plan with local old/new context invalidation,
-opaque-region property management, soft incomplete input, internal variable
-lifecycle and maintained/interactive verification. This discussion adopts the
-interface direction, not a completed implementation. No business files changed;
-new build/test commands still require task-specific authorization.
+User explicitly authorized production implementation. Current candidate is in
+org-texmacs-font-lock.el with main/Nix/ERT/README wiring; final11focused/full451/
+strict compile/lint pass. Default-on internal variable and Scheme-property
+contract above now implemented. No ordinary staging/commit or manual GUI
+acceptance yet. Full source, final evidence and next action:
+memory/font-lock-implementation.md.
 
 Keep presentation separate from AST-first export/discovery/lowering semantics,
 STM opacity and source ownership. No worker/parser for font-lock. Reuse Org and

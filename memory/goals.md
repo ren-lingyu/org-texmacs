@@ -49,6 +49,8 @@ Org source and semantics
 ## Usage goals
 
 - Support an Org-first authoring workflow with structured TeXmacs content.
+- Present embedded STM with default-on Scheme editing properties and an internal
+  disable override, preserving Org ownership boundaries and export semantics.
 - Grow from islands and a finite body subset toward a structured whole-document
   model, including effective configuration, metadata, references, style, and
   initial environment where their semantics are understood.

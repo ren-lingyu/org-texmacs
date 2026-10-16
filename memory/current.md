@@ -69,28 +69,22 @@ User says same files work in ox-latex: record support-boundary mismatch and
 all-collected-entry preflight/weak diagnostics, not corrupt bibliography or
 proven parser conflict. Full file identities/scope/findings:
 memory/pdf-adjacent-checks.md. No personal-source archive justified.
-User-selected pre0.5.0 STM font-lock investigation complete. Subsequent interface
-requirements: default enabled, internal ordinary variable rather than Customize
-option or dedicated command; nil override must suppress it. Proposed internal
-name org-texmacs--font-lock-enabled with buffer-local overrides. User accepts
-embedded Scheme syntax properties; face-only transfer is not a requirement.
-Org determines STM bounds, Scheme handles editor presentation; export unchanged.
-Need bounded implementation plan and explicit refresh/cleanup contract; no business
-files changed yet. Prior investigation evidence follows. Final12/12probe observations pass in locked
-Emacs31.1/Org9.8.10, controlled real JIT hook registration (no GUI).17input
-identities match committed/root/copied production bytes; business unchanged.
-Scheme lexical colors feasible, config mapping alone insufficient for special
-blocks. Direct helper imports syntax properties; face-only prototype leaves
-embedded Org link/hiding props, stale block color after terminator deletion,
-whole-scan soft-error suppresses unrelated fragments; config needs flush.
-64KiB dense full scan8.01s,cache6-8microseconds; single narrowed plain paragraph
-~0.26ms. Per-edit full scan unacceptable; bounded context/property ownership
-recommended if implementation selected. Early2assertion failures were harness
-case-folded marker lookup, corrected; not product bugs. No feature acceptance
-or true GUI behavior claimed. Full conclusions/limits:
-memory/font-lock-investigation.md.15text originals archived separately:
-archive/2026-10-16T13-42-01Z--b970820/MANIFEST.md.
-Current plan reconciliation: memory/release-0.5.0.md. No new release scope chosen.
+Default-on STM font-lock implemented and automatically accepted as uncommitted
+five-file candidate (new module/main/Nix fileset/ERT/README). Internal nil default/
+local override, no dedicated command/Customize. Scheme syntax props/opacity,
+local Org/scanner bounds, old/new owner cleanup and refresh watcher; export
+semantics/source chars unchanged. Existing user flake overlay preserved/index
+empty. Final11focused0.853644s,451core283.173420s,strict compile/lint/full gate
+exit0. Red baseline10expected failures/1control pass.27candidate and17baseline
+identities verified; only5task patch paths. Dense1MiB full ensure17.4s/local
+re-fontify0.489s versus disabled0.000096s; remaining context cost explicit.
+Manual GUI/folding/navigation/third-party behavior pending, concrete fixture/
+procedure at tmp/font-lock-implementation/manual.org and MANUAL.md.13necessary
+text originals archived separately: archive/2026-10-16T14-21-15Z--b970820/MANIFEST.md.
+Full source/authorization/results/limits/next: memory/font-lock-implementation.md.
+No ordinary stage/commit authorized; next user interactive check and optional
+explicit staging/message work. No retest on unchanged source merely for handoff.
+Current plan reconciliation: memory/release-0.5.0.md. Other release gates unchanged.
 
 ## Completed local repair: PDF hyperlink annotations
 

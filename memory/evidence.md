@@ -12,6 +12,28 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
+## Default-on STM font-lock candidate acceptance
+
+User-selected implementation: internal nil default/local override, no dedicated
+command/Customize, Scheme presentation with local Org/scanner ownership and
+restore/cleanup. Five task paths, no worker/export syntax changes. Original user
+flake overlay preserved; ordinary index empty.17baseline identities equal
+committed capture context,27candidate root/task hashes verified; task-only patch
+parsed as exactly5paths. Uncommitted candidate, no inferred project association.
+Locked x86_64-linux Emacs31.1/Org9.8.10/TeXmacs2.1.5. Final11focused0.853644s;
+451core283.173420s/full strict compile/lint exit0. Causal baseline10feature
+failures/1control pass0.789412s; extra restricted-header red reproduced then
+fixed. Source state/Org opacity/discovery/edits/defaults/locality/cleanup and
+fresh-process load coverage. Final dense4/16/64/256KiB/1MiB full ensure0.0775/
+0.2769/1.1048/4.2821/17.4026s; re-fontify0.00234/0.00659/0.02523/0.14680/
+0.48901s. Disabled1MiB~0.000096s; do not attribute enabled cost to ordinary
+Org or claim constant-time typing. GUI/folding/navigation/third-party behavior
+and other platforms unverified. Full contract/limits: memory/font-lock-implementation.md.
+13necessary original-byte text artifacts separately archived/verified:
+archive/2026-10-16T14-21-15Z--b970820/MANIFEST.md.
+No dependencies/binaries/full production copies; raw whitespace retained and
+explained. No ordinary stage/commit, external issue or release action performed.
+
 ## Bounded STM font-lock investigation
 
 Locked standalone flake source/probe checks complete on x86_64-linux,
@@ -33,8 +55,8 @@ retained. Zero project association for mixed uncommitted synthetic harness;
 capture context/unchanged library identities documented in manifest. At the end
 of the investigation no implementation/deferral had been selected. Subsequent
 user discussion adopts default-on/internal-variable nil override, no dedicated
-command or Customize; implementation is still pending. See current contract in
-memory/font-lock-investigation.md.
+command or Customize. Implementation subsequently accepted as uncommitted
+candidate; see current contract/evidence in memory/font-lock-implementation.md.
 
 ## Issue4 remaining date repair and bounded audit acceptance
 
