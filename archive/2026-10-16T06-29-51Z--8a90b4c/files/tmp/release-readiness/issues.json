@@ -1,0 +1,123 @@
+{
+  "4": {
+    "url": "https://github.com/ren-lingyu/org-texmacs/issues/4",
+    "title": "Fix incorrect Org-to-TeXmacs semantic mappings",
+    "issue_number": 4,
+    "body": "## Problem\n\nThe current Org-to-TeXmacs lowering produces valid native trees for many supported Org constructs, but successful serialization or readback does not always mean that TeXmacs interprets those trees correctly. Actual document exports have exposed several semantic mismatches.\n\nKnown cases:\n\n- **Quote blocks:** `quote-block` currently lowers to `(quote (document ...))`. The native `quote` tag is not the intended quotation layout environment, and the resulting PDF can display literal tags instead of formatted quotations. Compare appropriate native quotation environments using single-paragraph, multi-paragraph and nested content.\n- **Date metadata:** Timestamp lowering currently extracts only year, month and day. For example, `#+DATE: <2026-10-14 Wed +0800>` can lose the timezone offset in output. Inspect the Org 9.8.10 AST and effective metadata before choosing representation. Accepted meaningful date/time information must not be silently discarded; unsupported forms should fail explicitly. Preserve `EXPORT_DATE`, external `:date` overrides and existing date suppression/precedence.\n\n## Scope\n\nFix the confirmed mappings and review **only the TeXmacs tags already emitted by the supported lowering**. Pay particular attention to emphasis and strike-through, quote/center containers, list types, headlines, metadata, tables/captions, footnotes, links, TOC and references.\n\nFor each affected construct, verify the source Org AST, generated TeXmacs tree and intended native meaning. Use small native rendering/PDF comparisons for tags whose semantics cannot be established by structural tests alone. Distinguish an incorrect lowering from malformed Org test input or native layout behavior; for example, verify separate ordered/unordered list ASTs before classifying mixed list output as a bug.\n\nAdd focused ERT regressions and update documentation when the supported contract changes. Retain the existing complex inline STM and TeXmacs block regressions.\n\n## Expected outcome\n\nSupported Org constructs map to TeXmacs nodes with the intended native semantics. Known mismatches are resolved or explicitly documented as unsupported, with reproducible regression coverage. An audit of currently emitted tags records any remaining semantic limitations.\n\nThis issue does **not** expand Org syntax coverage, redesign the export API or generic Org export pipeline, or attempt to solve font selection, footnote placement, PDF link annotations or pagination. Special block case-insensitive recognition is tracked separately in #5. Native layout investigations and STM font-lock are also separate follow-up work.",
+    "state": "closed",
+    "user": {
+      "login": "ren-lingyu",
+      "name": "ren-lingyu",
+      "email": null,
+      "avatar_url": "https://avatars.githubusercontent.com/u/217993565?v=4",
+      "id": 217993565
+    },
+    "assignees": null,
+    "labels": null,
+    "milestone": null,
+    "state_reason": "completed",
+    "comments": 3,
+    "created_at": "2026-10-15T04:16:26Z",
+    "updated_at": "2026-10-15T13:33:13Z",
+    "closed_at": "2026-10-15T13:33:13Z",
+    "display_url": "https://github.com/ren-lingyu/org-texmacs/issues/4",
+    "display_title": "Fix incorrect Org-to-TeXmacs semantic mappings"
+  },
+  "7": {
+    "url": "https://github.com/ren-lingyu/org-texmacs/issues/7",
+    "title": "Support nonblocking Org-to-TeXmacs exports",
+    "issue_number": 7,
+    "body": "## Problem\n\nOrg-to-TeXmacs exports run synchronously. Invoking an export can block normal editing until source preparation, sequential STM parsing, and native serialization or PDF rendering finish. Having an external TeXmacs worker does not make the export command nonblocking.\n\nProvide a nonblocking export path so users can continue editing while a conversion is running.\n\n## Motivation\n\nLocal exploratory measurements at `4839029`, using a pinned flake environment (Emacs 31.1, Org 9.8.10, TeXmacs 2.1.5 on x86_64-linux), show perceptible waits even within the standard frontend's current size budget:\n\n| Input size | Export route | .tm | PDF |\n| --- | --- | ---: | ---: |\n| 63 KiB | Standard full-document commands | 1.85 s | 2.82 s |\n| 251 KiB | Standard full-document commands | 7.43 s | 8.69 s |\n| 0.98 MiB | Explicit-source file APIs | 29.33 s | 30.85 s |\n| 3.91 MiB | Explicit-source file APIs | Failed after 118.05 s | Failed after 115.65 s |\n\nThese inputs contain no INCLUDE directives and repeat an existing mathematical/diagram workload. Each table cell is one measurement with a live worker; startup and explicit pre-run GC are excluded. Fixed execution order and caches limit comparisons between routes. These are workload-specific observations, not general prose benchmarks or an asymptotic complexity guarantee.\n\nStandard full-document exports reject the two larger inputs under their existing 256 KiB preprocessing budget. The explicit-source APIs use their existing direct-preparation contract; no limits were changed. In the largest case, 1,920 STM requests completed before the final serialization/rendering response wait reached approximately the default 10-second request deadline and reported a worker failure. Those durations are failure latencies, not successful export times.\n\nThe observed growth is approximately linear for this fixed workload, but that still leaves users waiting seconds or tens of seconds. Around 24–25 seconds of the approximately 30-second export at 0.98 MiB were spent waiting for sequential STM responses. Improving editor responsiveness is worthwhile independently of reducing conversion time.\n\n## Requested behavior\n\n- Offer nonblocking operation for the frontend buffer, .tm file, and PDF export actions, while preserving the existing synchronous Lisp APIs and their return/error contracts.\n- Return control to normal editing while conversion is pending. Make running, completion, failure, and cancellation behavior clear.\n- Preserve a coherent source/configuration/dependency snapshot. Define what happens when the source is edited or killed, or dependencies change, before completion; stale results must not silently replace current results.\n- Preserve existing result-buffer ownership, file overwrite policies, and failure protection. Failed or cancelled jobs must release owned resources without damaging the source or the previous successful result.\n- Coordinate background jobs with existing synchronous worker/session users so shared transport and native state cannot be corrupted.\n\n## Design questions\n\nNonblocking editing and multiple simultaneous conversions are separate goals. A serialized job queue could satisfy the initial responsiveness requirement; whether to support concurrent native conversions should be decided explicitly.\n\nChoose the execution mechanism after reviewing the existing preparation and worker lifetimes. Cooperative threads, callback-driven jobs, and a child Emacs process have different implications for configuration, hooks, bibliography discovery, source guards, and cleanup. Wrapping the current synchronous command in a timer alone does not address long-running work.\n\nDefine the asynchronous invocation/completion contract, cancellation semantics, stale-result policy, and repeated-export behavior before implementation. This issue does not prescribe a particular mechanism.\n\n## Acceptance criteria\n\n- A deliberately slow export allows normal editing to continue before conversion finishes.\n- Supported buffer, .tm, and PDF exports complete with the existing conversion semantics; synchronous APIs retain their documented behavior.\n- Tests cover completion, conversion failure, cancellation, source/dependency changes, source-buffer closure, and overlapping export requests.\n- Existing worker/session users coexist safely with background jobs, and failure/cancellation leaves no owned buffer/process/job resources behind.\n- README and relevant docstrings explain how to invoke and observe nonblocking exports and describe their limitations.\n\nRaising source-size limits or worker timeouts, changing Org-to-TeXmacs mappings, and guaranteeing faster native conversion are outside this issue's initial scope. The large-input failures above are evidence of the need to handle long-running/error paths, not a claim that asynchronous execution fixes those limits.\n\n## Related work\n\n- #1: preprocessing and export integration boundaries.\n- #3: interactive versus explicit-source APIs and result ownership.\n- #6: cleanup of private working buffers on success and failure.\n",
+    "state": "open",
+    "user": {
+      "login": "ren-lingyu",
+      "name": "ren-lingyu",
+      "email": null,
+      "avatar_url": "https://avatars.githubusercontent.com/u/217993565?v=4",
+      "id": 217993565
+    },
+    "assignees": null,
+    "labels": null,
+    "milestone": null,
+    "state_reason": null,
+    "comments": 0,
+    "created_at": "2026-10-15T08:34:08Z",
+    "updated_at": "2026-10-15T08:34:08Z",
+    "closed_at": null,
+    "display_url": "https://github.com/ren-lingyu/org-texmacs/issues/7",
+    "display_title": "Support nonblocking Org-to-TeXmacs exports"
+  },
+  "9": {
+    "url": "https://github.com/ren-lingyu/org-texmacs/issues/9",
+    "title": "Support Org-native names and references for TeXmacs substructures",
+    "issue_number": 9,
+    "body": "## Motivation\n\nOrg is the canonical source of an `org-texmacs` document, while native TeXmacs content is represented by STM islands. Some TeXmacs structures contain multiple **independently numbered and referenceable objects** within one native structure, notably individual rows of multiline equations.\n\nThese objects need distinct identities in Org so that they can be named, located, and referenced with Org's existing mechanisms. Keeping the entire structure in a single opaque TeXmacs block prevents its internal objects from being independently addressable in Org. Conversely, writing them as separate Org elements does not by itself produce the single native structure TeXmacs needs for correct layout and numbering.\n\nThis is a source-structure and reference-semantics requirement, not merely a request for additional visual layouts.\n\n## Desired behavior\n\n- TeXmacs content can participate in Org's existing `#+NAME` semantics, including individually named constituents of a larger structure.\n- An Org document can express several separately identifiable constituents that ultimately form **one valid native TeXmacs structure**. The source retains their separate identities even when the output is a single composed structure.\n- Org-native links can address these constituents. In exported TeXmacs documents, references resolve to the corresponding native targets with correct numbering and reference semantics.\n- The resulting document retains native TeXmacs layout and numbering behavior; the Org integration need not introduce a parallel layout or counter system.\n- Preparation remains non-destructive and preserves the existing Org-as-source, AST-first, and native-STM boundaries.\n\n### Representative use case\n\nA multiline formula has several individually numbered rows. Each row has its own Org name, and other Org content can reference either row independently. TeXmacs still receives a valid multiline formula, with references resolving to the appropriate row numbers.\n\nThis is the initial motivating case. Independently numbered figures and tables may be investigated subsequently; shared parent numbering and subfigure/subtable numbering are not requirements of this issue.\n\n## Design questions\n\nThe implementation remains deliberately open. Investigate:\n\n- How named TeXmacs content should participate in Org name resolution.\n- How separately identified constituents can be represented in the Org source and combined into native STM without losing their identities.\n- How a named source object maps to a native label position, particularly when its output is nested inside a composed structure.\n- How Org links should be lowered to TeXmacs references while respecting native numbering semantics.\n\nThe issue **does not select** an `ATTR_TEXMACS` syntax, composition algorithm, placeholder convention, label-insertion rule, or implementation sequence. Name support, composition, and reference export may be developed separately.\n\n## Scope boundary\n\nThis does not call for general-purpose STM snippet reuse, arbitrary source dependency graphs, or redesigning TeXmacs's native numbering and layout systems. It is separate from #4, which audits semantic correctness of **already supported** Org-to-TeXmacs mappings rather than adding these capabilities.\n\n## Expected outcome\n\nA documented and tested path from independently named Org-side mathematical constituents to one correctly structured TeXmacs multiline formula, with independently resolvable native references. Extend the supported classes of composed structures only after establishing their actual TeXmacs numbering and reference semantics.",
+    "state": "open",
+    "user": {
+      "login": "ren-lingyu",
+      "name": "ren-lingyu",
+      "email": null,
+      "avatar_url": "https://avatars.githubusercontent.com/u/217993565?v=4",
+      "id": 217993565
+    },
+    "assignees": null,
+    "labels": null,
+    "milestone": null,
+    "state_reason": null,
+    "comments": 0,
+    "created_at": "2026-10-15T11:01:16Z",
+    "updated_at": "2026-10-15T11:01:16Z",
+    "closed_at": null,
+    "display_url": "https://github.com/ren-lingyu/org-texmacs/issues/9",
+    "display_title": "Support Org-native names and references for TeXmacs substructures"
+  },
+  "10": {
+    "url": "https://github.com/ren-lingyu/org-texmacs/issues/10",
+    "title": "Support STM fragments inside inline Org footnote definitions",
+    "issue_number": 10,
+    "body": "## Motivation\n\n`org-texmacs` supports Org inline footnotes and TeXmacs STM fragments, but the two currently cannot be combined when the footnote body is defined inline.\n\nFor example:\n\n```org\nText[fn::A formula (math (frac \"1\" \"2\")) in a footnote].\nText[fn:note:Another formula (math \"x\")].\n```\n\nThe STM expressions in these inline footnote bodies are not discovered as islands. By contrast, an ordinary paragraph inside a separate named footnote definition already supports fragment discovery:\n\n```org\nText[fn:note].\n\n[fn:note] A formula (math (frac \"1\" \"2\")) in a footnote.\n```\n\nThis makes STM use depend on how an otherwise supported Org footnote is written.\n\n## Current limitation\n\nFragment discovery currently scans Org `paragraph` elements. Inline footnote bodies belong to `footnote-reference` objects rather than independent paragraphs, and the preparation path does not split their text into identity-mapped STM islands. Document lowering already handles ordinary inline content in footnotes, but admits islands only in paragraph context.\n\nSee `org-texmacs-fragment.el` and `org-texmacs-document.el`. The existing README explicitly documents this limitation.\n\n## Desired behavior\n\n- Recognize configured STM fragments inside the bodies of anonymous inline footnotes (`[fn::...]`) and named footnotes with inline definitions (`[fn:name:...]`).\n- Lower those fragments as native STM subtrees in the TeXmacs footnote body, preserving surrounding supported Org inline content and whitespace behavior.\n- Preserve the existing behavior of separate named footnote definitions, including fragment discovery in their paragraphs, first-use definitions, repeated references, and unused-definition filtering.\n- Keep source and prepared AST ownership intact. STM must remain opaque during Org parsing and lowering; invalid or cross-boundary fragments should fail without silently changing neighboring Org syntax.\n\n## Design considerations\n\nInvestigate how fragment spans can be discovered and masked within an inline footnote's source boundaries, then associated with the correct secondary AST text leaves during preparation. In particular, verify Org's footnote delimiters, nested markup, STM parentheses/quotes, source offsets, and identity/provenance mappings before relaxing the lowering context restriction.\n\nThis should reuse the existing STM parser, prepared-input/island model, and native footnote lowering. It does not require a new footnote syntax, nested footnotes, or general fragment discovery inside all Org secondary objects (such as links, captions, or metadata).\n\n## Acceptance\n\nMaintain focused ERT coverage for anonymous and named inline definitions, adjacent Org markup, multiple fragments, separate-definition compatibility, repeated references, and malformed or boundary-crossing inputs. Include at least one native export/PDF check demonstrating that an STM mathematical expression is typeset inside the footnote rather than emitted as literal source text.",
+    "state": "open",
+    "user": {
+      "login": "ren-lingyu",
+      "name": "ren-lingyu",
+      "email": null,
+      "avatar_url": "https://avatars.githubusercontent.com/u/217993565?v=4",
+      "id": 217993565
+    },
+    "assignees": null,
+    "labels": null,
+    "milestone": null,
+    "state_reason": null,
+    "comments": 0,
+    "created_at": "2026-10-15T17:53:50Z",
+    "updated_at": "2026-10-15T17:53:50Z",
+    "closed_at": null,
+    "display_url": "https://github.com/ren-lingyu/org-texmacs/issues/10",
+    "display_title": "Support STM fragments inside inline Org footnote definitions"
+  },
+  "11": {
+    "url": "https://github.com/ren-lingyu/org-texmacs/issues/11",
+    "title": "Display equations render differently in TeXmacs blocks and paragraph fragments",
+    "issue_number": 11,
+    "body": "## Observed behavior\n\nThe same STM `equation` expression renders differently in a PDF produced by `org-texmacs`, depending on whether it is written inside a `#+begin_texmacs` special block or directly as a paragraph fragment.\n\nIn the observed PDF:\n\n- The expression from the TeXmacs special block is centered, with its equation number `(1)` near the right page margin.\n- The expression from the paragraph fragment begins at the left text margin, with its equation number `(2)` immediately after the expression.\n\nBoth expressions appear as equivalent `<equation|...>` content in the generated `.tm` text, despite the PDF layout difference.\n\n## Reproduction\n\nThe following two expressions occur consecutively in one Org document:\n\n```org\n#+begin_texmacs\n(equation\n  (concat\n    \"0<longrightarrow>\"\n    (math-up \"ker\") (around* \"(\" \"<alpha>\" \")\")\n    \"<longrightarrow>\"\n    (math-up \"ker\") (around* \"(\" \"<beta>\" \")\")\n    \"<longrightarrow>\"\n    (math-up \"ker\") (around* \"(\" \"<gamma>\" \")\")\n    (above \"<longrightarrow>\" \"<delta>\")\n    (math-up \"coker\") (around* \"(\" \"<alpha>\" \")\")\n    \"<longrightarrow>\"\n    (math-up \"coker\") (around* \"(\" \"<beta>\" \")\")\n    \"<longrightarrow>\"\n    (math-up \"coker\") (around* \"(\" \"<gamma>\" \")\")\n    \"<longrightarrow>0\"))\n#+end_texmacs\n\n(equation\n(concat\n\"0<longrightarrow>\"\n(math-up \"ker\") (around* \"(\" \"<alpha>\" \")\")\n\"<longrightarrow>\"\n(math-up \"ker\") (around* \"(\" \"<beta>\" \")\")\n\"<longrightarrow>\"\n(math-up \"ker\") (around* \"(\" \"<gamma>\" \")\")\n(above \"<longrightarrow>\" \"<delta>\")\n(math-up \"coker\") (around* \"(\" \"<alpha>\" \")\")\n\"<longrightarrow>\"\n(math-up \"coker\") (around* \"(\" \"<beta>\" \")\")\n\"<longrightarrow>\"\n(math-up \"coker\") (around* \"(\" \"<gamma>\" \")\")\n\"<longrightarrow>0\"))\n```\n\nThe generated TeXmacs document uses `<style|article>` with A4 paper and explicit 12.7 mm margins. Both expressions are serialized as `<equation|...>` with the same visible contents.\n\n## Expected behavior\n\nEquivalent standalone STM display equations should not differ in alignment or equation-number placement solely because they were authored through these two supported Org input forms.\n\nThis issue documents the observed discrepancy; its cause and resolution have not been established.",
+    "state": "open",
+    "user": {
+      "login": "ren-lingyu",
+      "name": "ren-lingyu",
+      "email": null,
+      "avatar_url": "https://avatars.githubusercontent.com/u/217993565?v=4",
+      "id": 217993565
+    },
+    "assignees": null,
+    "labels": null,
+    "milestone": null,
+    "state_reason": null,
+    "comments": 0,
+    "created_at": "2026-10-16T05:58:04Z",
+    "updated_at": "2026-10-16T05:58:04Z",
+    "closed_at": null,
+    "display_url": "https://github.com/ren-lingyu/org-texmacs/issues/11",
+    "display_title": "Display equations render differently in TeXmacs blocks and paragraph fragments"
+  }
+}
+

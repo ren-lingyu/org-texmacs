@@ -1,0 +1,1 @@
+(document (concat (hlink "ExternalLink" "https://example.org") " ") (concat "See " (hlink "InternalLink" "#org-texmacs-ref-1") ". ") (section "Target") (label "org-texmacs-ref-1") (concat "TargetBody "))

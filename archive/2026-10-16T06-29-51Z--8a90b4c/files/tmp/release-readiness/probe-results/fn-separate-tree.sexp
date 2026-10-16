@@ -1,0 +1,1 @@
+(document (concat "Text" (footnote (surround (label #1="org-texmacs-fn-1") "" (document (concat "A formula " (math (frac "1" "2")) " in a footnote. ")))) ". Again" (rsup (with "font-shape" "right" (reference #1#))) ". "))

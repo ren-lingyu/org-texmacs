@@ -1,0 +1,6 @@
+#+OPTIONS: toc:nil title:nil author:nil date:nil
+#+begin_texmacs
+(equation (concat "0<longrightarrow>" (math-up "ker") (around* "(" "<alpha>" ")") "<longrightarrow>" (math-up "ker") (around* "(" "<beta>" ")") "<longrightarrow>" (math-up "ker") (around* "(" "<gamma>" ")") (above "<longrightarrow>" "<delta>") (math-up "coker") (around* "(" "<alpha>" ")") "<longrightarrow>" (math-up "coker") (around* "(" "<beta>" ")") "<longrightarrow>" (math-up "coker") (around* "(" "<gamma>" ")") "<longrightarrow>0"))
+#+end_texmacs
+
+(equation (concat "0<longrightarrow>" (math-up "ker") (around* "(" "<alpha>" ")") "<longrightarrow>" (math-up "ker") (around* "(" "<beta>" ")") "<longrightarrow>" (math-up "ker") (around* "(" "<gamma>" ")") (above "<longrightarrow>" "<delta>") (math-up "coker") (around* "(" "<alpha>" ")") "<longrightarrow>" (math-up "coker") (around* "(" "<beta>" ")") "<longrightarrow>" (math-up "coker") (around* "(" "<gamma>" ")") "<longrightarrow>0"))

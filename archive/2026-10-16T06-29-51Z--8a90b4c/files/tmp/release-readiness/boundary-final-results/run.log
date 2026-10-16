@@ -1,0 +1,7 @@
+Running 3 tests (2026-10-16 06:26:18+0000, selector `(or "^org-texmacs-document-quote-uniform-quotation$" "^org-texmacs-document-.*container")')
+   passed  1/3  org-texmacs-document-quote-uniform-quotation (0.005338 sec)
+   passed  2/3  org-texmacs-document-list-containers-native (2.072645 sec)
+   passed  3/3  org-texmacs-document-quote-and-center-containers (0.002189 sec)
+
+Ran 3 tests, 3 results as expected, 0 unexpected (2026-10-16 06:26:20+0000, 2.080349 sec)
+

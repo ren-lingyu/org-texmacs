@@ -1,0 +1,2 @@
+#+OPTIONS: toc:nil title:nil author:nil date:nil
+Text[fn:note:Another formula (math "x")]. Again[fn:note].

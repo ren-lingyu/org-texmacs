@@ -1,0 +1,559 @@
+{
+  "geometry": {
+    "equation-combined": [
+      {
+        "text": "0",
+        "xMin": 116.16,
+        "yMin": 37.980584,
+        "xMax": 121.16,
+        "yMax": 50.170584
+      },
+      {
+        "text": "0",
+        "xMin": 447.12,
+        "yMin": 37.980584,
+        "xMax": 452.12,
+        "yMax": 50.170584
+      },
+      {
+        "text": "0",
+        "xMin": 36.0,
+        "yMin": 61.620584,
+        "xMax": 41.0,
+        "yMax": 73.810584
+      },
+      {
+        "text": "0",
+        "xMin": 366.96,
+        "yMin": 61.620584,
+        "xMax": 371.96,
+        "yMax": 73.810584
+      },
+      {
+        "text": "(2)",
+        "xMin": 386.1,
+        "yMin": 61.960584,
+        "xMax": 398.87,
+        "yMax": 73.810584
+      },
+      {
+        "text": "(1)",
+        "xMin": 546.48,
+        "yMin": 38.320584,
+        "xMax": 559.25,
+        "yMax": 50.170584
+      }
+    ],
+    "equation-block": [
+      {
+        "text": "0",
+        "xMin": 116.16,
+        "yMin": 37.980584,
+        "xMax": 121.16,
+        "yMax": 50.170584
+      },
+      {
+        "text": "0",
+        "xMin": 447.12,
+        "yMin": 37.980584,
+        "xMax": 452.12,
+        "yMax": 50.170584
+      },
+      {
+        "text": "(1)",
+        "xMin": 546.48,
+        "yMin": 38.320584,
+        "xMax": 559.25,
+        "yMax": 50.170584
+      }
+    ],
+    "equation-inline": [
+      {
+        "text": "0",
+        "xMin": 51.0,
+        "yMin": 37.980584,
+        "xMax": 56.0,
+        "yMax": 50.170584
+      },
+      {
+        "text": "0",
+        "xMin": 381.96,
+        "yMin": 37.980584,
+        "xMax": 386.96,
+        "yMax": 50.170584
+      },
+      {
+        "text": "(1)",
+        "xMin": 401.1,
+        "yMin": 38.320584,
+        "xMax": 413.87,
+        "yMax": 50.170584
+      }
+    ],
+    "equation-short": [
+      {
+        "text": "x",
+        "xMin": 273.24,
+        "yMin": 85.050584,
+        "xMax": 278.96,
+        "yMax": 95.050584
+      },
+      {
+        "text": "x",
+        "xMin": 85.02,
+        "yMin": 107.250584,
+        "xMax": 90.74,
+        "yMax": 117.250584
+      },
+      {
+        "text": "(1)",
+        "xMin": 497.46,
+        "yMin": 83.200584,
+        "xMax": 510.23,
+        "yMax": 95.050584
+      },
+      {
+        "text": "(2)",
+        "xMin": 121.02,
+        "yMin": 105.400584,
+        "xMax": 133.79,
+        "yMax": 117.250584
+      }
+    ],
+    "direct": [
+      {
+        "text": "0",
+        "xMin": 116.16,
+        "yMin": 37.980584,
+        "xMax": 121.16,
+        "yMax": 50.170584
+      },
+      {
+        "text": "0",
+        "xMin": 447.12,
+        "yMin": 37.980584,
+        "xMax": 452.12,
+        "yMax": 50.170584
+      },
+      {
+        "text": "(1)",
+        "xMin": 546.48,
+        "yMin": 38.320584,
+        "xMax": 559.25,
+        "yMax": 50.170584
+      }
+    ],
+    "concat-single": [
+      {
+        "text": "0",
+        "xMin": 51.0,
+        "yMin": 37.980584,
+        "xMax": 56.0,
+        "yMax": 50.170584
+      },
+      {
+        "text": "0",
+        "xMin": 381.96,
+        "yMin": 37.980584,
+        "xMax": 386.96,
+        "yMax": 50.170584
+      },
+      {
+        "text": "(1)",
+        "xMin": 401.1,
+        "yMin": 38.320584,
+        "xMax": 413.87,
+        "yMax": 50.170584
+      }
+    ],
+    "concat-empty": [
+      {
+        "text": "0",
+        "xMin": 51.0,
+        "yMin": 37.980584,
+        "xMax": 56.0,
+        "yMax": 50.170584
+      },
+      {
+        "text": "0",
+        "xMin": 381.96,
+        "yMin": 37.980584,
+        "xMax": 386.96,
+        "yMax": 50.170584
+      },
+      {
+        "text": "(1)",
+        "xMin": 401.1,
+        "yMin": 38.320584,
+        "xMax": 413.87,
+        "yMax": 50.170584
+      }
+    ],
+    "concat-space": [
+      {
+        "text": "0",
+        "xMin": 51.0,
+        "yMin": 37.980584,
+        "xMax": 56.0,
+        "yMax": 50.170584
+      },
+      {
+        "text": "0",
+        "xMin": 381.96,
+        "yMin": 37.980584,
+        "xMax": 386.96,
+        "yMax": 50.170584
+      },
+      {
+        "text": "(1)",
+        "xMin": 401.1,
+        "yMin": 38.320584,
+        "xMax": 413.87,
+        "yMax": 50.170584
+      }
+    ],
+    "equation-combined-reloaded": [
+      {
+        "text": "(1)",
+        "xMin": 546.48,
+        "yMin": 38.320584,
+        "xMax": 559.25,
+        "yMax": 50.170584
+      },
+      {
+        "text": "(2)",
+        "xMin": 546.48,
+        "yMin": 61.960584,
+        "xMax": 559.25,
+        "yMax": 73.810584
+      },
+      {
+        "text": "0",
+        "xMin": 116.16,
+        "yMin": 37.980584,
+        "xMax": 121.16,
+        "yMax": 50.170584
+      },
+      {
+        "text": "0",
+        "xMin": 447.12,
+        "yMin": 37.980584,
+        "xMax": 452.12,
+        "yMax": 50.170584
+      },
+      {
+        "text": "0",
+        "xMin": 116.16,
+        "yMin": 61.620584,
+        "xMax": 121.16,
+        "yMax": 73.810584
+      },
+      {
+        "text": "0",
+        "xMin": 447.12,
+        "yMin": 61.620584,
+        "xMax": 452.12,
+        "yMax": 73.810584
+      }
+    ]
+  },
+  "annotations": {
+    "links": {
+      "header": "%PDF-1.4",
+      "/Annots": 0,
+      "/Subtype /Link": 0,
+      "/URI": 0,
+      "/ObjStm": 0,
+      "pdfinfo_urls": "Page  Type          URL\n"
+    },
+    "links-native": {
+      "header": "%PDF-1.4",
+      "/Annots": 0,
+      "/Subtype /Link": 0,
+      "/URI": 0,
+      "/ObjStm": 0,
+      "pdfinfo_urls": "Page  Type          URL\n"
+    },
+    "links-reloaded": {
+      "header": "%PDF-1.4",
+      "/Annots": 0,
+      "/Subtype /Link": 0,
+      "/URI": 0,
+      "/ObjStm": 0,
+      "pdfinfo_urls": "Page  Type          URL\n"
+    },
+    "links-native-reloaded": {
+      "header": "%PDF-1.4",
+      "/Annots": 0,
+      "/Subtype /Link": 0,
+      "/URI": 0,
+      "/ObjStm": 0,
+      "pdfinfo_urls": "Page  Type          URL\n"
+    }
+  },
+  "fonts": {
+    "chinese": {
+      "text": "<#4E2D><#6587><#6B63><#6587>\n<#4E2D><#6587><#5C3E><#90E8>.\n\n<#6570><#5B66><#516C><#5F0F>\n\nx = 1\n\n1 <#4E2D><#6587><#6807><#9898>\n<#4E2D><#6587><#7C97><#4F53>\n<#4E2D><#6587><#7B49><#5BBD>\n\n<#4E2D><#6587><#659C><#4F53>\n\n1\n\n\f",
+      "fontspecs": [
+        "<fontspec id=\"0\" size=\"15\" family=\"AAAAAF+EuropeanComputerModernSans\" color=\"#ff0000\"/>",
+        "<fontspec id=\"1\" size=\"15\" family=\"AAAAAB+CMMI10\" color=\"#000000\"/>",
+        "<fontspec id=\"2\" size=\"15\" family=\"AAAAAC+CMR10\" color=\"#000000\"/>",
+        "<fontspec id=\"3\" size=\"15\" family=\"AAAAAE+EuropeanComputerModern\" color=\"#000000\"/>",
+        "<fontspec id=\"4\" size=\"21\" family=\"AAAAAD+EuropeanComputerModern\" color=\"#000000\"/>",
+        "<fontspec id=\"5\" size=\"21\" family=\"AAAAAG+EuropeanComputerModernSans\" color=\"#ff0000\"/>"
+      ],
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAF+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      5  0\nAAAAAB+CMMI10                        Type 1C           Custom           yes yes yes      6  0\nAAAAAC+CMR10                         Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAD+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      9  0\nAAAAAG+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes     10  0\n"
+    },
+    "chinese-native": {
+      "text": "<#4E2D><#6587><#6B63><#6587>\n<#4E2D><#6587><#5C3E><#90E8>.\n\n<#6570><#5B66><#516C><#5F0F>\n\nx = 1\n\n1 <#4E2D><#6587><#6807><#9898>\n<#4E2D><#6587><#7C97><#4F53>\n<#4E2D><#6587><#7B49><#5BBD>\n\n<#4E2D><#6587><#659C><#4F53>\n\n1\n\n\f",
+      "fontspecs": [
+        "<fontspec id=\"0\" size=\"15\" family=\"AAAAAF+EuropeanComputerModernSans\" color=\"#ff0000\"/>",
+        "<fontspec id=\"1\" size=\"15\" family=\"AAAAAB+CMMI10\" color=\"#000000\"/>",
+        "<fontspec id=\"2\" size=\"15\" family=\"AAAAAC+CMR10\" color=\"#000000\"/>",
+        "<fontspec id=\"3\" size=\"15\" family=\"AAAAAE+EuropeanComputerModern\" color=\"#000000\"/>",
+        "<fontspec id=\"4\" size=\"21\" family=\"AAAAAD+EuropeanComputerModern\" color=\"#000000\"/>",
+        "<fontspec id=\"5\" size=\"21\" family=\"AAAAAG+EuropeanComputerModernSans\" color=\"#ff0000\"/>"
+      ],
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAF+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      5  0\nAAAAAB+CMMI10                        Type 1C           Custom           yes yes yes      6  0\nAAAAAC+CMR10                         Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAD+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      9  0\nAAAAAG+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes     10  0\n"
+    }
+  },
+  "sources": {
+    "org-texmacs-ast.el": "f24a5e1e8773b58d7609f80adfd925a7af4f6fea7656ba170fa502dfe9453d7f",
+    "org-texmacs-bibliography.el": "65d186343452aa3dafed657249251bb9f13005f1f62cd425c6082a4f35f1509a",
+    "org-texmacs-context.el": "b83a6931d839a94054351cb0ebcd773f26b9cb1d78753916a8add85fd8715991",
+    "org-texmacs-core.el": "25a470c3d69afc468160a557455f9c9dbc65beff707a2fe6c602be06663e7d22",
+    "org-texmacs-document.el": "ec057db784ed49dd66563c5f99fe919995a810aa0bce80eaf97242746777d7a0",
+    "org-texmacs-fragment.el": "eafb44d70a90d87ee7dc8f069c57e40aaafe7a2b8b7c5405a4faad48ffaad152",
+    "org-texmacs-input.el": "afa00a87e4f92d6302ea322d18584daf71cd0e7699da89b57a428178b940e492",
+    "org-texmacs-preprocess.el": "26b88e3a223e7797a389c15c63a34d47730f283b329c9f1129b983e8f0a10170",
+    "org-texmacs-session.el": "5c8f162bcd9945aa5b8a92730e89a3783a34a8688b38b55c306d21cf834e9995",
+    "org-texmacs-source.el": "18afa541de20383bf7df82ccb057d6bde63820ead9315319aa7bdd5d726dc1d9",
+    "org-texmacs-worker.el": "58cf49619fae44706bf9e946f44edfd5bcef6b214eb97afbec49675aa76e7404",
+    "org-texmacs.el": "ed98a6eefc3a53efef02326f041ea738bbf96572ad5d0fed97529943d7af708d",
+    "ox-texmacs.el": "d3639caa37ff7e7b3a00055022278f7ae64893cd3eeee779f636b4da466e360d",
+    "org-texmacs-worker.scm": "ca0463d153d3b2637d5f34252dcc44c9816aa43dae613a3b3519cf784749b5bd",
+    "README.org": "ba3620fce7dbdf4c3cd2f465ac7fd5d44909bc3f20f6ece6e5ec3407bc55b5ec",
+    "LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "flake.lock": "118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a",
+    "tests/ert/ert.el": "b61f5812176ce7f6e43d54ac901af292078f4ae4e7ac86eb2b6edee901c05dfe"
+  },
+  "outputs": {
+    "probe-results": {
+      "chinese-ast.sexp": "74307e6f6ef1f8383b85edbd872f61da4d79e676aff38cd9495ec2855496d480",
+      "chinese-fonts.txt": "9cc49272fc00d1e1f2c6ea2ad47b116881b93e1c342a9a7cdf375739060f5cad",
+      "chinese-islands.sexp": "fcfd6c21ea3a14d26d9ac965abd484c3d7330dbd5532f64cae726d607e21fc9e",
+      "chinese-native-fonts.txt": "9cc49272fc00d1e1f2c6ea2ad47b116881b93e1c342a9a7cdf375739060f5cad",
+      "chinese-native-text.xml": "33a7c131ea6d055e3de53e88736011efad53942d108cbe2fa2a35ec0b9ca3f89",
+      "chinese-native-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "chinese-native.html": "f43138510f4dd00d1cde9d7a37967c1368527ecd4186a857e0701008818ac365",
+      "chinese-native.pdf": "6b6599140eb1b29c1d0be6fe041be17c4c7b5ae0ec495d8a111f28683d51d8f8",
+      "chinese-native.txt": "8c4fe1d5276de40ee4c265a30aba5b16c7dfce33c78e5be7751fcc6aae6ffd70",
+      "chinese-paths.sexp": "5761689aeb72d31d321bb58b109dedc4ea1108cd72e5af9b1da31340d6fbdd82",
+      "chinese-text.xml": "33a7c131ea6d055e3de53e88736011efad53942d108cbe2fa2a35ec0b9ca3f89",
+      "chinese-tree.sexp": "549f955407f96eb09fc5401a06cef802086eeb800e6a7c7d4e05a227dd35f49b",
+      "chinese-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "chinese.html": "f43138510f4dd00d1cde9d7a37967c1368527ecd4186a857e0701008818ac365",
+      "chinese.org": "6058a3f35835279bb50c79799b62173abe707148c6d064fdad515c1b7db11a6e",
+      "chinese.pdf": "250edd2f814778cbbe4b30d69b9e887f4cbac07c77da3e866a87c5e5481cc300",
+      "chinese.tm": "33347798ad7fd702d5b394a2df6f90cfd92aafad37a7c84e44f043ec9f4a7331",
+      "chinese.txt": "8c4fe1d5276de40ee4c265a30aba5b16c7dfce33c78e5be7751fcc6aae6ffd70",
+      "environment.sexp": "4be3321daa9276ff9c6f0db506cdd59aec0016602bd87485e45fa89d8dd55f88",
+      "equation-block-ast.sexp": "c8fc48fff647bf0530b614918988197725e1bc9134d9aaa5abc5ff17cb3547b6",
+      "equation-block-fonts.txt": "efde0a9fdd34a658e4abbd3f72c51c86c0e7898f03eeefffb9566024b5a660c0",
+      "equation-block-islands.sexp": "b052c3ec59e9841c5e44671f63ef220dab8ca9017447c127562aeb725d5206b1",
+      "equation-block-paths.sexp": "2dffaa8c87ca173b3e3d9405994d7699fe72eae80c0f7fc762f78deb85b1bdcc",
+      "equation-block-text.xml": "442157378cc0e3ddd5a027693db6131986374161bcf32f6ededd4bdf2d385d34",
+      "equation-block-tree.sexp": "199026d7d0bafc8388519e0694c6427e62cdc086f34e00c7d64c4b8c43573b4b",
+      "equation-block-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "equation-block.html": "dbf1f24ab532d66c72473cf8fe36de8cc8b9d1519c4bb3eccb08dfe5a7c8a6af",
+      "equation-block.org": "6c9e5ea9c6a02c054cfa71e822f564fd7fb2ee74ea3e021a237b3d3cc01b3571",
+      "equation-block.pdf": "71e42a2d1e42cd2f33922f1cf9b8d1dc72a04aa45be966a1653b3fea437baf6e",
+      "equation-block.tm": "b49cd3d39dd7c5760d60af1fceb5b86405d2f8268834adb8f00ede7ad13a5ae4",
+      "equation-block.txt": "df8d52437be6b55bd41ba4def76295face7f617437c76295be0677f806c1c984",
+      "equation-combined-ast.sexp": "2b58cbf71e0585f5fdd0ebd196e281a0fd487b72473a4a225b96e304e5766dc7",
+      "equation-combined-fonts.txt": "efde0a9fdd34a658e4abbd3f72c51c86c0e7898f03eeefffb9566024b5a660c0",
+      "equation-combined-islands.sexp": "5eab3107e5c4efef7b5a44190a776c4491eb4fd79b8dc239eecba23303bd526b",
+      "equation-combined-paths.sexp": "c76864d36c689cd0aeebf7ad02c2f070d30ffac7f134d5c1816b85cbc2691102",
+      "equation-combined-text.xml": "edd261740e7e3df2068d5d7167f9c3fe4d3d02c4454a701c880f87954633e32f",
+      "equation-combined-tree.sexp": "37a3f154ea314d22a689c9af15ce3570e9d463e771ee3b4494417d1befbe1401",
+      "equation-combined-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "equation-combined.html": "0bdf21ee25d207cbad3971172261af706c96211eca0068b36ed2717cb43872ea",
+      "equation-combined.org": "b03ce9f7c4efa93da48448071ff99ab149564909446fe4b955e1ac4d77cad374",
+      "equation-combined.pdf": "f49af270153377cfef04a331b3da155d7f5de122e005acd0164ce0b91138e4d6",
+      "equation-combined.tm": "ae9cc8e1316b03b8cfce25bd1b054648dc0fa713aa881df0c9bb7c13b71eb4db",
+      "equation-combined.txt": "79a087793bb27bfffc0594bb6f99ffc75bc086cb9b3dfce5ff0404cda0cfab18",
+      "equation-inline-ast.sexp": "7869fadf23bcb396777dbbf788a907cd58bfa5ca9ee509dcbe071f2426d8ab36",
+      "equation-inline-fonts.txt": "efde0a9fdd34a658e4abbd3f72c51c86c0e7898f03eeefffb9566024b5a660c0",
+      "equation-inline-islands.sexp": "c78d82782e86469b69dba5578bb281c677f880d7c427309d3b956592be3c1ee5",
+      "equation-inline-paths.sexp": "ad973c1413edbbfbec8d17f039af9967a45915c0dd76a4b4f26f425521c12b12",
+      "equation-inline-text.xml": "173c3c34e1a99b18a6c8cb9db4a27272f5feec249d42e0d3dc8abf930e56078a",
+      "equation-inline-tree.sexp": "9176e6baf5eba8a80df195fa2047e083b3019fe5994b3d891daa5f7ba82f5b20",
+      "equation-inline-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "equation-inline.html": "7ad96f7d46f2d27b1cde409c8c1dd205fe3f11dc2f8ea9b74091fb800dc16e3b",
+      "equation-inline.org": "f51ec738463a617e9364f8ba517c780ec872f3eafc8be4ed75f4438cdddd0a9b",
+      "equation-inline.pdf": "d5104a0b11a67e65239054c6734327ae68401c63ceb6f6c52f25dd9e2cfb2106",
+      "equation-inline.tm": "c52618bc27bc556119422cfa799e10ecf0b9223d91b696543f82009b24a0e128",
+      "equation-inline.txt": "df8d52437be6b55bd41ba4def76295face7f617437c76295be0677f806c1c984",
+      "equation-mixed-ast.sexp": "a81f0b3e638e7699cc2ac9c3ab22d7b44412ff30264281f6de7f60d192ece022",
+      "equation-mixed-fonts.txt": "9eb2697a1a5a7bf96a2ab8e9383d72aa72b84bfcf045ba1ba7ab52abc05edcac",
+      "equation-mixed-islands.sexp": "2d9c95ce3bcb0b891d270c081e8694e8cf5fbd95b950e2ea89b9741ce2887264",
+      "equation-mixed-paths.sexp": "5761689aeb72d31d321bb58b109dedc4ea1108cd72e5af9b1da31340d6fbdd82",
+      "equation-mixed-text.xml": "494c308da503a7178fb2640be2cf3c1088fd9567ac5afbd6a5fddbc00a5dfe35",
+      "equation-mixed-tree.sexp": "4ec185d9093e9b855ef8fe5a9ec3f215306852d8fe389cf8fcbe44bcd4d8a106",
+      "equation-mixed-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "equation-mixed.html": "ca7204c1e728d1ed0174634e28bcf7cc731cf8d779ac82b28ee797c4e4e2df1d",
+      "equation-mixed.org": "a11a93726c16ef77ceb44886546d6286bcbbab4b9c31380ebdc4ccb938ae6972",
+      "equation-mixed.pdf": "f2ce71f5a2ec4b8f93c950f71dda739a0fd0681947895c15e1becb5668244bdb",
+      "equation-mixed.tm": "456cde5c8b05f608a7e64e0b4b56b27d3fcaa3e6d62d006ac2494d353e1f39c9",
+      "equation-mixed.txt": "41c2e8cbf7f5079ed94275bd4cd415bd1577aaa46c6ac70fa1e32bc1ac0a9a83",
+      "equation-short-ast.sexp": "a0c6477c21101117cdae2abf1c406b35e99f2656e812c8e7b168681070971830",
+      "equation-short-fonts.txt": "a55b81c5fbb996a9726400d60215b91933094f184dfa69e0a981fd9828162b30",
+      "equation-short-islands.sexp": "4934ba288c1a85562476bd9a7c1884808b817172af533e8520fae5125ad46b9f",
+      "equation-short-paths.sexp": "c76864d36c689cd0aeebf7ad02c2f070d30ffac7f134d5c1816b85cbc2691102",
+      "equation-short-text.xml": "d678e9ff5f9311d7bb233c4364a21d8127252bbe641594cbc883c57c3b86f1be",
+      "equation-short-tree.sexp": "90ebfb05acb795544e13a0b96fb4d92a6d25c7f3a27dd806dd0577cb1374a538",
+      "equation-short-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "equation-short.html": "973744f01d94b7c59d1d220ba2b2d4a35ece65b4d2c2be827f4605a6a462895f",
+      "equation-short.org": "80dea55e9b133bc3277d10ab40f04bea21660c67226b78dfa0b4e5778de74f2a",
+      "equation-short.pdf": "140152a4127736a19260d1c47cc891a00a6c99cd6b836482c58b3d56b15511f8",
+      "equation-short.tm": "96cdc9176cbe09b61fafe01cbb983ad57453c421199a6c3ac6ba4dc84de4f874",
+      "equation-short.txt": "a9389b21c01f340db472966f979f193892f3d5a1972bdac33734b5963034fb83",
+      "fn-anon-ast.sexp": "7d9f912cb93a07a7ff0608f5bab4c2ffbfc34ddc581e9d4deba3a39b7ec7ffd5",
+      "fn-anon-fonts.txt": "1cfa20028b2a78b009d0ad8f9a9df04a87ecb6494f6da9028f79fb10d48d2c88",
+      "fn-anon-islands.sexp": "aaf215657c1641b3e65abc4a8aa222131edbb86b8e67d208ba6c8aa9041735c3",
+      "fn-anon-paths.sexp": "aaf215657c1641b3e65abc4a8aa222131edbb86b8e67d208ba6c8aa9041735c3",
+      "fn-anon-text.xml": "354d831db47120a35575ba88aa59fe5469b4b5294aeb9fcc1e3b888f72f8a586",
+      "fn-anon-tree.sexp": "24593728b63207e91bc21372729548563e47c8b905b1f854d060909ae6c6f4d0",
+      "fn-anon-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "fn-anon.html": "e427aaf84ffcbf10204728714efe34138f85887ee3f19bce8962d0a9df12ba2a",
+      "fn-anon.org": "c0c0638a0c65b3d9311f7d293ea5894a67521c7f39f76e40f59d92966b847bc8",
+      "fn-anon.pdf": "0bd54f7264e9d8e3e3dabcb1770a3005e29145f7c2814242d43b68bfbb78e3eb",
+      "fn-anon.tm": "2f8f401da5f64f573a59763d75ede01e65ed288e3dd6a6280e9d3fdacbcb6aa7",
+      "fn-anon.txt": "f7d1324f468324d0e630a2dd9d86314736314c7e53bff0b6a8019fe315f78ab5",
+      "fn-inline-named-ast.sexp": "0451aaa8e17a96e0d272d6a573ba40ce1eeecd196a701095e5ffee7b8bb2715a",
+      "fn-inline-named-fonts.txt": "1cfa20028b2a78b009d0ad8f9a9df04a87ecb6494f6da9028f79fb10d48d2c88",
+      "fn-inline-named-islands.sexp": "aaf215657c1641b3e65abc4a8aa222131edbb86b8e67d208ba6c8aa9041735c3",
+      "fn-inline-named-paths.sexp": "aaf215657c1641b3e65abc4a8aa222131edbb86b8e67d208ba6c8aa9041735c3",
+      "fn-inline-named-text.xml": "b5f8c6cfe114450c22651c00ea5ba648a2cdc61a30bd1d7874684d83b074302f",
+      "fn-inline-named-tree.sexp": "b0ccdb49a8056e0459733a267ed606996c5971ed00070f3f0871c7850f2367e4",
+      "fn-inline-named-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "fn-inline-named.html": "9f291e048cdce30e0e66df56b8910b8a67d59f4467da5621190470aab5429014",
+      "fn-inline-named.org": "05bd32dd4ce550f0996e13c527f4aa361b85c9784576ee60820501956eaf57ef",
+      "fn-inline-named.pdf": "0e8b3ac7b7e18680198af2a2622fb3be315a92e9c5d73301855cc0622ebec58f",
+      "fn-inline-named.tm": "dd75ae80c0dacc0ddbaa376e8294ac9377e2b0e78e28a9a3d72d759bb6450f3a",
+      "fn-inline-named.txt": "d8c78a49c676c84bf25679497301597ac676c0ac805ef9a5c4630945d4dd3b75",
+      "fn-separate-ast.sexp": "250cceef9337351bb1f2c6a96c989b7ee51b7e03956a574f7fd1bbb875492779",
+      "fn-separate-fonts.txt": "84cbcf67187b1ab3c863c25351c5d37963f98362cbecc8f28f2d957f3c966c1f",
+      "fn-separate-islands.sexp": "fe6125d1504e0d2c5854dfabafd491e265d326d9da0b5c9544184cfe808a8cfc",
+      "fn-separate-paths.sexp": "f8804b355e2e400ecf2f29411a7be63a63ab5daf1d53422fecb22e0007795d5c",
+      "fn-separate-text.xml": "2b93bf5d68cd48aa51047b15c667eb8f0de6f13ffd12445c84d00d97755e9b65",
+      "fn-separate-tree.sexp": "bce3ce26904100f6ac26754b9f5475bdc61a590096ca809c7f268b5b8162d55a",
+      "fn-separate-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "fn-separate.html": "85a88284f6da89110ef4b4ea7e25bc35a85c8bbe4b1a600f973a96458dd0091a",
+      "fn-separate.org": "8ab82f1386e0c142141c18a6ccf118008f1debd075a2019711de03d314a62a0f",
+      "fn-separate.pdf": "0940b1d6c7e814ecd1d54234732aad7fa1386c7893ce9bb3ff511d5fc105715a",
+      "fn-separate.tm": "f623ce1f7f943563037fd64a0152d29f78616a7e610d3145e1e6fd54b0dbb001",
+      "fn-separate.txt": "bab798781f1e70e464c9d14b12bbe941e2dd09169d5fafbcb2472502449bb5d8",
+      "links-ast.sexp": "136c17d4625318f9b653e213ddb8c0eb9412cc4d4b3ed8fc08e7d5eff149f44c",
+      "links-fonts.txt": "e111bad81024dc41a40450001006d948dc298ee50f9507e13ef6c6f9b00d6e73",
+      "links-islands.sexp": "aaf215657c1641b3e65abc4a8aa222131edbb86b8e67d208ba6c8aa9041735c3",
+      "links-native-fonts.txt": "84698e512aab6cded8a86cae0a0e337ac1ee7e7cc622c569c44b96bc1eb032e1",
+      "links-native-text.xml": "8e7e93dca5f5177304545e55322bc9a3bd79f19e410d8488f3478b5fac4d511b",
+      "links-native-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "links-native.html": "557d12392dce0f2353e0571d0bfab442605a1d1f4181f5c7aa66dfab034f0aa6",
+      "links-native.pdf": "5048ba2957274bb7e12e6597a84288aa25b5346ce812359398ad9db3d3c1bdd8",
+      "links-native.tm": "24c157b16c2cdc2b2d22b8baf7174ea6f8b021fb3e5929f0ec66a2921befd2ae",
+      "links-native.txt": "c19450bd6ee84d03d5abb3da6a1756e51ab5d2e36cd8ecbfd5e46afe3fb1932f",
+      "links-paths.sexp": "aaf215657c1641b3e65abc4a8aa222131edbb86b8e67d208ba6c8aa9041735c3",
+      "links-text.xml": "8484883751493889a49d92a17f77be2890460512aa7dddb9800f8d354eca20ae",
+      "links-tree.sexp": "e2dabc6a69656ea3e9566e7bcf54fca1ac46ddca6ca20b79c3df9699c305e127",
+      "links-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "links.html": "34b29d4ad4b3b3d548967a27a249e7c0a5434977c3d5d26888ba85088837ba67",
+      "links.org": "60fc846eaa74c2a8409ec7482e8e3f294057abaa78562699f7adf7ca56377fa2",
+      "links.pdf": "7159499f48d3b4fb9841b64118d02dc0345414b8ac9150715e064fee62252bf7",
+      "links.tm": "0878d21b21672bd0250dfc5d49fca40462ff0b3c44534abce320c4a28dbc5f7f",
+      "links.txt": "a9084ae390ef37b885a4f61b8dd6639658e0b2292db0e4bc0ebd5009ea13a1de",
+      "math-mixed-ast.sexp": "ea696fdc8fad4ea5d3d04e9209383791bf575aab67f4d532c73aef0a36b5da14",
+      "math-mixed-fonts.txt": "25d866e4432717214e8270836184742b47123de6a5a885cbd9d68a3046faa7c4",
+      "math-mixed-islands.sexp": "e153552fd0e48257c7194ff9f9706efb925387a22b24ddba4319ac44e7d676bf",
+      "math-mixed-paths.sexp": "5761689aeb72d31d321bb58b109dedc4ea1108cd72e5af9b1da31340d6fbdd82",
+      "math-mixed-text.xml": "db9ab8202e4bff6396306dd47eb6921e702402824a47e2f4efff60bf37348198",
+      "math-mixed-tree.sexp": "5284319583baeb7ff0f2217b947755e0bdc38ddc65ff36d87abd31fee2d0be2b",
+      "math-mixed-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "math-mixed.html": "e34dc6a50e002f686d2f58084e368f1c5f14585e0909c0562509c71e7a558479",
+      "math-mixed.org": "9373084d06106f2fcf0302268f81b82e0207d1b5d180ff038bc2dcead172f242",
+      "math-mixed.pdf": "3095d81bba4fa38b2a019da9faa360805b6cb3d079d5cb01fec4c29e6180188e",
+      "math-mixed.tm": "a2c048646415e7be83aad9c3d782bdfc5657f9d51e37b559fccb0235cbdd1a47",
+      "math-mixed.txt": "de572ef8d145da02d059e653b21594c118eea4f108f6e74c911d7e48d0fb86f3",
+      "results.sexp": "e667d693c2a65c3e6259925076358f080d6f43d0c7d4f70cb36c280d48c42fa3",
+      "run.log": "cc0db902f8dc9199deb57091ce2c27b8dfcb63169f4b12cff70a8c6d9e055ea3"
+    },
+    "comparison-fixed-results": {
+      "chinese-reload-status.sexp": "4dc6ccbefe54bfcafea40911530e404081b5eb25c342876393fd592ee281c7c4",
+      "chinese-reload.scm": "fc3b054799733d358520c38cdbca425b866b736131f0787fbf79e1c166153096",
+      "chinese-reloaded-fonts.txt": "9cc49272fc00d1e1f2c6ea2ad47b116881b93e1c342a9a7cdf375739060f5cad",
+      "chinese-reloaded-tree.sexp": "04a314e0d4883c02e59771e5f96ff3a36f3aeb7d70e1534ae81b78594fc79cb9",
+      "chinese-reloaded-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "chinese-reloaded.html": "8cbc930fc5ce9272755636bb1c257130c40b28938b9982bf4fa7fdea6dcec8d7",
+      "chinese-reloaded.pdf": "aea25a28baab4548b41130ff39bf388773cb1e0310dd172a2d65578f1e424742",
+      "chinese-reloaded.txt": "8c4fe1d5276de40ee4c265a30aba5b16c7dfce33c78e5be7751fcc6aae6ffd70",
+      "concat-empty-fonts.txt": "efde0a9fdd34a658e4abbd3f72c51c86c0e7898f03eeefffb9566024b5a660c0",
+      "concat-empty-tree.sexp": "3a48cc8a578638b38ea91378354447926ab00106fb5870bb833a234434d4bbd9",
+      "concat-empty-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "concat-empty.html": "29c1f31ee99205c23df2b64edfa85edb0ee2ccbeffb871dce56186dc74ec8bc5",
+      "concat-empty.pdf": "b23c65080fc9de6052838abaae84356521086d96fb199dd8c47247044453df67",
+      "concat-empty.txt": "df8d52437be6b55bd41ba4def76295face7f617437c76295be0677f806c1c984",
+      "concat-single-fonts.txt": "efde0a9fdd34a658e4abbd3f72c51c86c0e7898f03eeefffb9566024b5a660c0",
+      "concat-single-tree.sexp": "623181d7ab8a9a174c3e876d0113562f503e11e74b444eeb97074905f699f2a6",
+      "concat-single-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "concat-single.html": "29c1f31ee99205c23df2b64edfa85edb0ee2ccbeffb871dce56186dc74ec8bc5",
+      "concat-single.pdf": "1e0c1ac42565c20722f2a19f8df9ad79ef5a96c9be2fc14fa0e65b55c5efef95",
+      "concat-single.txt": "df8d52437be6b55bd41ba4def76295face7f617437c76295be0677f806c1c984",
+      "concat-space-fonts.txt": "efde0a9fdd34a658e4abbd3f72c51c86c0e7898f03eeefffb9566024b5a660c0",
+      "concat-space-tree.sexp": "9176e6baf5eba8a80df195fa2047e083b3019fe5994b3d891daa5f7ba82f5b20",
+      "concat-space-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "concat-space.html": "29c1f31ee99205c23df2b64edfa85edb0ee2ccbeffb871dce56186dc74ec8bc5",
+      "concat-space.pdf": "d15a18cba0a3d6069fa0eeeb2f2672a3b0e735ed29268cb63c5b7e65fd741308",
+      "concat-space.txt": "df8d52437be6b55bd41ba4def76295face7f617437c76295be0677f806c1c984",
+      "direct-fonts.txt": "efde0a9fdd34a658e4abbd3f72c51c86c0e7898f03eeefffb9566024b5a660c0",
+      "direct-tree.sexp": "199026d7d0bafc8388519e0694c6427e62cdc086f34e00c7d64c4b8c43573b4b",
+      "direct-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "direct.html": "0a3a9c7cb1af37ebefc1b7c15f7decc5d0537fb72984589610e7fd548aad5f5a",
+      "direct.pdf": "87b9ad8e87b647406b6958e259e4b0748826c637f2f799b22cb6835016c90c8a",
+      "direct.txt": "df8d52437be6b55bd41ba4def76295face7f617437c76295be0677f806c1c984",
+      "equation-combined-reload-status.sexp": "9b3c39c951bad06418126712fd69f1d00fe367fe573198fb8f83a0233155dbc0",
+      "equation-combined-reload.scm": "46b3131a48d9dd72d615166b235c130ae50d0b24bb4d7f3094508e7c3e131632",
+      "equation-combined-reloaded-fonts.txt": "efde0a9fdd34a658e4abbd3f72c51c86c0e7898f03eeefffb9566024b5a660c0",
+      "equation-combined-reloaded-tree.sexp": "11a21571bad5e79fa124c5a4cf6902c9664b406106df0cdd8020a61a9ceba664",
+      "equation-combined-reloaded-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "equation-combined-reloaded.html": "a8ecf1c6870f0cd710e7c1ab4134844ad21732e825e807de62016910dbb3cc8c",
+      "equation-combined-reloaded.pdf": "c39a33a932aa57347b11ee0b3a9c23efc11eb07d5feb6cb061834e9cd5d9f05a",
+      "equation-combined-reloaded.txt": "2382542aeb9c5ad5dc5c113b67036c5934282ef07983a0f31c2c2be9e901d2f3",
+      "links-native-reload-status.sexp": "9b3c39c951bad06418126712fd69f1d00fe367fe573198fb8f83a0233155dbc0",
+      "links-native-reload.scm": "e8c16373b7a7fda41de0011c6c54bcb3c6860e4e6412eddef6fc3c1196b9fceb",
+      "links-native-reloaded-fonts.txt": "84698e512aab6cded8a86cae0a0e337ac1ee7e7cc622c569c44b96bc1eb032e1",
+      "links-native-reloaded-tree.sexp": "d30fb992e84e6087acf7ca314b6de66dee4ba04820123c570236198bf79f8cb8",
+      "links-native-reloaded-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "links-native-reloaded.html": "ff75729361980eca97b21ab21d59aa6562e4ac1990a1fe97b0bc6e5c7efdc766",
+      "links-native-reloaded.pdf": "3566c1cfc2e6a2cb4c568ee1c31883f69aa59e05dfa4825ae5230deea41fb89e",
+      "links-native-reloaded.txt": "c19450bd6ee84d03d5abb3da6a1756e51ab5d2e36cd8ecbfd5e46afe3fb1932f",
+      "links-reload-status.sexp": "9b3c39c951bad06418126712fd69f1d00fe367fe573198fb8f83a0233155dbc0",
+      "links-reload.scm": "2e29f568a3836401829a5611734aca9c6a713ab385b2814b99103f081379f6ef",
+      "links-reloaded-fonts.txt": "e111bad81024dc41a40450001006d948dc298ee50f9507e13ef6c6f9b00d6e73",
+      "links-reloaded-tree.sexp": "b51c9e2513636f948c8889467d0ba626ddf5499e14dc6dbf32ec8f2ce7ed204b",
+      "links-reloaded-urls.txt": "d46a33a46fcbee0276471af335f718713a1c431bd5b979ba6d61bc73fc7657e8",
+      "links-reloaded.html": "ee108f5c64823f61ae029b6d4c336f21dbf78efb991a0b7adbba1b3fc072ca5a",
+      "links-reloaded.pdf": "38ec9348d9d290a18c8149418dbd2eb636d46b0eb86a66215c95f409add25004",
+      "links-reloaded.txt": "a9084ae390ef37b885a4f61b8dd6639658e0b2292db0e4bc0ebd5009ea13a1de",
+      "run.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "std-math.ts": "953f7ae8f43498b78b4d1f85ad8eb5bac5dc641c0d7654efa96ccf74b7fac121",
+      "tm-files.scm": "1a26466b72a924dd63c9fd2a50677def7b1f0bd3ad2badc8333250a97bb8558b",
+      "tm-print.scm": "5bc07737d104f930665a55834c59fb4358abb10eaec75dbe75be4eb93c89c33d"
+    },
+    "boundary-final-results": {
+      "boundaries.sexp": "34faf59c60dde1552f95fca8411eca07a1f97ae3e6a104364500092556b6b7ed",
+      "font-lock-facility.sexp": "8e3ab5f175d980be2a8f001ff82e6915b3bca40296ad2aa2c0ce8b4dbd57d0ec",
+      "run.log": "a1b9936f7f6529af9d6573c725f8bcbb1995a60ea8fb1c8c00ea3719ff6a78e4"
+    }
+  }
+}

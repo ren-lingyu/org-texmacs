@@ -1,0 +1,3 @@
+First comparison build failed before experiment: comparisons.el missing closing parenthesis, End of file during parsing; corrected by closing outer let*. This is a harness failure, not a package regression.
+Poppler bbox HTML contains XML-invalid control text for some mathematical glyphs; Python ElementTree rejected it. Geometry extraction uses bounded word-tag matching, retaining original output unchanged.
+First completed comparisons build produced four valid wrapper PDFs, but all four reload subprocesses returned124 at25s after Guile rejected nested use-modules. No reload success claimed. Corrected to load a file with top-level use-modules; retry same scoped offline comparison command.

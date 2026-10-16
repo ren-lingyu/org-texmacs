@@ -1,0 +1,5 @@
+Running 1 tests (2026-10-16 06:20:05+0000, selector `(or "^org-texmacs-document-block-" "^org-texmacs-pdf-block-quotation-and-center-layout$")')
+   passed  1/1  org-texmacs-pdf-block-quotation-and-center-layout (1.887054 sec)
+
+Ran 1 tests, 1 results as expected, 0 unexpected (2026-10-16 06:20:07+0000, 1.887187 sec)
+

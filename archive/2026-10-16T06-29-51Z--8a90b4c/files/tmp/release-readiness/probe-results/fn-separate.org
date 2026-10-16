@@ -1,0 +1,4 @@
+#+OPTIONS: toc:nil title:nil author:nil date:nil
+Text[fn:note]. Again[fn:note].
+
+[fn:note] A formula (math (frac "1" "2")) in a footnote.
