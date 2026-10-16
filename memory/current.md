@@ -1,5 +1,18 @@
 # org-texmacs current memory
 
+## Selected next: Issue10 guidance review and proposed repair plan
+
+User selected #10 and supplied bounded inline-footnote STM guidance after Issue11
+commit verification. Read-only review confirms three coupled scanner/preparation/
+lowering gates and coordinate-less synthetic paragraph recovery for hidden named
+inline definitions. Proposed plan and two contract clarifications are in
+memory/issue-10-plan.md. Need align inline-note bare-body semantics with Issue11
+and clarify strict malformed-inline-candidate errors without changing legacy
+paragraph scanner stop behavior. No business edits/test/build run in this review;
+implementation/precise flake commands await selection/authorization. Index empty,
+only original user flake mirror dirty. No new archive needed; static knowledge
+extracted, earlier runtime evidence already archived. PDF links follow #10.
+
 ## Completed committed delivery: Issue11 bare STM paragraph repair
 
 User-selected final revised plan implemented and locally accepted; contract,
