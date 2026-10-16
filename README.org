@@ -501,6 +501,25 @@ Each discovery call scans a private copy of the accessible buffer before
 region filtering.  There is no fragment cache or incremental synchronization,
 and large-document performance has not been validated.
 
+* Embedded STM editing
+Loading =org-texmacs= enables Scheme fontification for recognized paragraph
+fragments, direct inline footnote fragments and TeXmacs special-block bodies in
+existing and new Org buffers.  Font Lock must itself be enabled.  STM regions
+use Scheme string and parenthesis syntax; Org link, emphasis and hiding
+properties inside them are suppressed.  Other Org text keeps normal behavior.
+This is lexical presentation, not STM validation or support for arbitrary
+Scheme syntax, evaluation or Org Babel execution.  Export recognition and
+native STM parsing are unchanged.
+
+The implementation processes affected paragraph/block contexts rather than
+copying the whole document on each edit.  Incomplete STM while typing is not an
+export error in the editor.  There is no dedicated command or Customize option.
+The internal buffer-local variable =org-texmacs--font-lock-enabled= defaults to
+=t=; a =nil= local binding suppresses STM presentation, and setting its default
+binding to =nil= suppresses it globally.  Changes to this override or fragment
+entry tags schedule normal refontification.  These internal interfaces may
+change; disabling presentation restores ordinary Org fontification.
+
 * Document conversion and native sessions
 Document conversion and native sessions were introduced in version 0.2.0.
 Version 0.2.1 requires an explicit source buffer for document conversion and

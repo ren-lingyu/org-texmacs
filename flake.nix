@@ -32,6 +32,7 @@
           ./org-texmacs-session.el
           ./org-texmacs-source.el
           ./org-texmacs-fragment.el
+          ./org-texmacs-font-lock.el
           ./org-texmacs-worker.el
           ./org-texmacs-worker.scm
           ./README.org

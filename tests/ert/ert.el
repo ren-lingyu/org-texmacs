@@ -31,7 +31,7 @@
                  "org-texmacs-session"))
   (let ((directory (file-name-directory (locate-library "org-texmacs"))))
     (dolist (feature '(org-texmacs org-texmacs-core org-texmacs-ast
-                       org-texmacs-source org-texmacs-fragment
+                       org-texmacs-source org-texmacs-fragment org-texmacs-font-lock
                        org-texmacs-document org-texmacs-input org-texmacs-context
                        org-texmacs-worker org-texmacs-session))
       (should (featurep feature))
@@ -9763,5 +9763,206 @@ FAILURE injects an error after modification in root, include or bibliography."
           '(org-texmacs-document-error "Bibliography transaction configuration changed")))
         ;; External callback changes are detected, not rolled back by the package.
         (should org-export-with-toc)))))
+
+;;; font-lock-tests.el --- Embedded Scheme presentation regressions -*- lexical-binding: t; -*-
+
+(defmacro org-texmacs-test--with-font-lock (source &rest body)
+  "Run BODY in an Org buffer containing SOURCE, with registered JIT hooks."
+  (declare (indent 1))
+  `(with-temp-buffer
+     (rename-buffer (generate-new-buffer-name "org-texmacs-font-lock-test"))
+     (org-mode) (insert ,source)
+     (buffer-enable-undo) (setq buffer-undo-list nil) (set-buffer-modified-p nil)
+     (let ((noninteractive nil)) (font-lock-mode 1))
+     (should font-lock-mode) (should jit-lock-mode)
+     (font-lock-ensure)
+     ,@body))
+
+(defun org-texmacs-test--font-lock-position (text)
+  "Return the first character position of literal case-sensitive TEXT."
+  (let ((case-fold-search nil))
+    (save-excursion (goto-char (point-min)) (search-forward text)
+                    (- (point) (length text)))))
+
+(defun org-texmacs-test--font-lock-string-p (text)
+  "Return non-nil if TEXT has Scheme string face."
+  (let ((face (get-text-property (org-texmacs-test--font-lock-position text) 'face)))
+    (or (eq face 'font-lock-string-face)
+        (and (listp face) (memq 'font-lock-string-face face)))))
+
+(ert-deftest org-texmacs-font-lock-default-and-ownership ()
+  (org-texmacs-test--with-font-lock "Before (math \"STRING\") after.\n"
+    (let ((text (buffer-string)) (tick (buffer-chars-modified-tick))
+          (undo buffer-undo-list) (mark (mark t)))
+      (goto-char 4)
+      (font-lock-flush) (font-lock-ensure)
+      (should (org-texmacs-test--font-lock-string-p "STRING"))
+      (should (get-text-property (org-texmacs-test--font-lock-position "STRING")
+                                 'syntax-table))
+      (should (equal (substring-no-properties text) (buffer-substring-no-properties
+                                                    (point-min) (point-max))))
+      (should (= tick (buffer-chars-modified-tick)))
+      (should-not (buffer-modified-p)) (should (equal undo buffer-undo-list))
+      (should (= 4 (point))) (should (equal mark (mark t)))
+      (should (= 1 (length (org-texmacs-fragment-map (point-min) (point-max) #'identity)))))))
+
+(ert-deftest org-texmacs-font-lock-opaque-and-disable ()
+  (org-texmacs-test--with-font-lock
+      "Outside *NORMAL*.\n\n(math \"*BOLD* [[https://example.org][TEXT]]\")\n"
+    (setq-local org-hide-emphasis-markers t)
+    (font-lock-flush) (font-lock-ensure)
+    (should (org-texmacs-test--font-lock-string-p "TEXT"))
+    (dolist (text '("[[" "TEXT" "*BOLD*"))
+      (let ((p (org-texmacs-test--font-lock-position text)))
+        (dolist (prop '(keymap mouse-face invisible org-emphasis))
+          (should-not (get-text-property p prop)))))
+    (setq-local org-texmacs--font-lock-enabled nil)
+    (font-lock-ensure)
+    (should-not (org-texmacs-test--font-lock-string-p "TEXT"))
+    (should (get-text-property (org-texmacs-test--font-lock-position "TEXT") 'keymap))
+    (should-not (get-text-property (org-texmacs-test--font-lock-position "TEXT") 'syntax-table))
+    (setq-local org-texmacs--font-lock-enabled t)
+    (font-lock-ensure)
+    (should (org-texmacs-test--font-lock-string-p "TEXT"))))
+
+(ert-deftest org-texmacs-font-lock-discovery-boundaries ()
+  (org-texmacs-test--with-font-lock
+      "* Heading (math \"HEAD\")\n\n| (math \"TABLE\") |\n\n*em (math \"EMPH\")* =(math \"CODE\")= [[https://example.org][(math \"LINK\")]].\n\n#+begin_src text\n(math \"SOURCE\")\n#+end_src\n\nText (math \"PARA\"). [fn::Note (math \"NOTE\")].\n\n#+BeGiN_TeXmAcS\n(unknown \"BLOCK\")\n#+eNd_TeXmAcS\n\n#+begin_quote\n(math \"QUOTE\")\n#+end_quote\n\n- (math \"LIST\")\n\n[fn:n] (math \"DEFINITION\")\n"
+    (dolist (word '("PARA" "NOTE" "BLOCK" "QUOTE" "LIST" "DEFINITION"))
+      (should (org-texmacs-test--font-lock-string-p word)))
+    (dolist (word '("HEAD" "TABLE" "EMPH" "CODE" "LINK" "SOURCE"))
+      (should-not (org-texmacs-test--font-lock-string-p word)))))
+
+(ert-deftest org-texmacs-font-lock-roots-and-configuration ()
+  (org-texmacs-test--with-font-lock
+      (concat (mapconcat (lambda (tag) (format "(%s \"VALUE-%s\")" tag tag))
+                         org-texmacs-fragment-tags "\n\n")
+              "\n\n(custom \"CUSTOM\")\n")
+    (dolist (tag org-texmacs-fragment-tags)
+      (should (org-texmacs-test--font-lock-string-p (concat "VALUE-" tag))))
+    (should-not (org-texmacs-test--font-lock-string-p "CUSTOM"))
+    (setq-local org-texmacs-fragment-tags '("custom"))
+    (font-lock-ensure)
+    (should (org-texmacs-test--font-lock-string-p "CUSTOM"))
+    (should-not (org-texmacs-test--font-lock-string-p "VALUE-math"))
+    (setq-local org-texmacs-fragment-tags '(42))
+    (font-lock-ensure)
+    (should-not (org-texmacs-test--font-lock-string-p "CUSTOM"))))
+
+(ert-deftest org-texmacs-font-lock-edit-old-block-context ()
+  (org-texmacs-test--with-font-lock
+      "Before.\n\n#+begin_texmacs\n(unknown \"BLOCK\")\n#+end_texmacs\n\nAfter.\n"
+    (should (org-texmacs-test--font-lock-string-p "BLOCK"))
+    (goto-char (org-texmacs-test--font-lock-position "#+end_texmacs"))
+    (delete-region (point) (line-end-position))
+    (font-lock-ensure (line-beginning-position) (min (point-max) (1+ (point))))
+    (should-not (org-texmacs-test--font-lock-string-p "BLOCK"))
+    (insert "#+end_texmacs")
+    (font-lock-ensure (line-beginning-position) (line-end-position))
+    (should (org-texmacs-test--font-lock-string-p "BLOCK"))
+    (goto-char (org-texmacs-test--font-lock-position "#+begin_texmacs"))
+    (delete-region (point) (line-end-position))
+    (font-lock-ensure)
+    (should-not (org-texmacs-test--font-lock-string-p "BLOCK"))))
+
+(ert-deftest org-texmacs-font-lock-incomplete-local-recovery ()
+  (org-texmacs-test--with-font-lock
+      "Good (math \"GOOD\").\n\n[fn::Broken (math \"BAD\"].\n\n(math\n \"MULTI\")\n"
+    (should (org-texmacs-test--font-lock-string-p "GOOD"))
+    (should (org-texmacs-test--font-lock-string-p "MULTI"))
+    (goto-char (org-texmacs-test--font-lock-position "\"GOOD\""))
+    (delete-char 1) (font-lock-ensure)
+    (should-not (org-texmacs-test--font-lock-string-p "GOOD"))
+    (should (org-texmacs-test--font-lock-string-p "MULTI"))
+    (insert "\"") (font-lock-ensure)
+    (should (org-texmacs-test--font-lock-string-p "GOOD"))))
+
+(ert-deftest org-texmacs-font-lock-narrowing-mode-and-buffer-isolation ()
+  (org-texmacs-test--with-font-lock "(math \"OUTSIDE\")\n\n(math \"INSIDE\")\n"
+    (let ((source (current-buffer)))
+      (org-texmacs-test--with-font-lock "(math \"OTHER\")\n"
+        (setq-local org-texmacs--font-lock-enabled nil)
+        (font-lock-ensure)
+        (should-not (org-texmacs-test--font-lock-string-p "OTHER")))
+      (should (eq source (current-buffer)))
+      (should (org-texmacs-test--font-lock-string-p "OUTSIDE")))
+    (goto-char (org-texmacs-test--font-lock-position "(math \"INSIDE"))
+    (narrow-to-region (point) (point-max))
+    (let ((bounds (cons (point-min) (point-max))))
+      (setq-local org-texmacs--font-lock-enabled nil)
+      (font-lock-ensure)
+      (should (equal bounds (cons (point-min) (point-max))))
+      (should-not (org-texmacs-test--font-lock-string-p "INSIDE")))
+    (widen) (font-lock-ensure)
+    (should-not (org-texmacs-test--font-lock-string-p "OUTSIDE"))
+    (setq-local org-texmacs--font-lock-enabled t) (font-lock-ensure)
+    (text-mode)
+    (should-not (text-property-not-all (point-min) (point-max)
+                                       'org-texmacs--font-lock-owner nil))
+    (should-not (get-text-property 2 'syntax-table))))
+
+(ert-deftest org-texmacs-font-lock-local-work-and-no-native-process ()
+  (org-texmacs-test--with-font-lock
+      (apply #'concat (make-list 512 "Text (math \"VALUE\") end.\n\n"))
+    (let ((maximum 0) (calls 0)
+          (original (and (fboundp 'org-texmacs--font-lock-paragraph-spans)
+                         (symbol-function 'org-texmacs--font-lock-paragraph-spans))))
+      (should original)
+      (cl-letf (((symbol-function 'org-texmacs--font-lock-paragraph-spans)
+                 (lambda (begin end tags)
+                   (setq maximum (max maximum (- end begin)) calls (1+ calls))
+                   (funcall original begin end tags)))
+                ((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Fontification started a worker"))))
+        (goto-char (/ (point-max) 2)) (search-forward "VALUE") (insert "X")
+        (font-lock-ensure (1- (point)) (point))
+        (should (> calls 0)) (should (< calls 8)) (should (< maximum 100))))))
+
+(ert-deftest org-texmacs-font-lock-global-default-and-font-lock-toggle ()
+  (let ((original (default-value 'org-texmacs--font-lock-enabled)))
+    (unwind-protect
+        (progn
+          (set-default 'org-texmacs--font-lock-enabled nil)
+          (org-texmacs-test--with-font-lock "(math \"GLOBAL\")\n"
+            (should-not (org-texmacs-test--font-lock-string-p "GLOBAL"))
+            (set-default 'org-texmacs--font-lock-enabled t)
+            (font-lock-ensure)
+            (should (org-texmacs-test--font-lock-string-p "GLOBAL"))
+            (font-lock-mode -1)
+            (should-not (get-text-property 2 'syntax-table))
+            (let ((noninteractive nil)) (font-lock-mode 1))
+            (font-lock-ensure)
+            (should (org-texmacs-test--font-lock-string-p "GLOBAL"))
+            (should-not (get 'org-texmacs--font-lock-enabled 'custom-type))
+            (should-not (commandp 'org-texmacs--font-lock-setup))))
+      (set-default 'org-texmacs--font-lock-enabled original))))
+
+(ert-deftest org-texmacs-font-lock-restricted-block-header ()
+  (org-texmacs-test--with-font-lock
+      "#+begin_texmacs\n(math \"BODY\")\n#+end_texmacs\n"
+    (let ((font-lock-dont-widen t))
+      (goto-char (point-min))
+      (narrow-to-region (point-min) (line-end-position))
+      (font-lock-flush) (font-lock-ensure)
+      (should-not (text-property-not-all (point-min) (point-max)
+                                         'org-texmacs--font-lock-owner nil)))))
+
+(ert-deftest org-texmacs-font-lock-existing-buffer-fresh-load ()
+  (dolist (enabled '(t nil))
+    (org-texmacs-test--menu-fresh-process
+     `(progn
+        (set-default 'org-texmacs--font-lock-enabled ,enabled)
+        (with-temp-buffer
+          (rename-buffer (generate-new-buffer-name "font-lock-existing"))
+          (org-mode) (insert "(math \"x\")\n")
+          (let ((noninteractive nil)) (font-lock-mode 1))
+          (require 'org-texmacs)
+          (should (eq font-lock-fontify-region-function #'org-texmacs--font-lock-region))
+          (should (eq (default-value 'org-texmacs--font-lock-enabled) ,enabled))
+          (font-lock-ensure)
+          (let ((face (get-text-property 8 'face)))
+            (should (eq (and (memq 'font-lock-string-face
+                                    (if (listp face) face (list face))) t)
+                        ,enabled))))))))
 
 ;;; ert.el ends here
