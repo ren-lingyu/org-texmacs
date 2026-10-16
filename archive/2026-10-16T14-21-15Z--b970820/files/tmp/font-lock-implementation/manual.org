@@ -1,0 +1,25 @@
+#+TITLE: STM editing checks
+
+* Fragments
+Ordinary *bold* and [[https://example.org][Org link]].
+
+Text (math "x") after; (math "*literal* [[https://example.org][literal]]") is one STM region.
+
+(math
+ "multiline")
+
+An inline note[fn::With (math "y") inside].
+
+* Block
+#+BeGiN_TeXmAcS
+(equation* (math "x=y"))
+#+eNd_TeXmAcS
+
+* Exclusions
+| (math "table") |
+
+=(math "verbatim")=
+
+#+begin_src text
+(math "source")
+#+end_src

@@ -1,0 +1,521 @@
+diff --git a/README.org b/README.org
+index 21cf378..8763a16 100644
+--- a/README.org
++++ b/README.org
+@@ -501,6 +501,25 @@ Each discovery call scans a private copy of the accessible buffer before
+ region filtering.  There is no fragment cache or incremental synchronization,
+ and large-document performance has not been validated.
+ 
++* Embedded STM editing
++Loading =org-texmacs= enables Scheme fontification for recognized paragraph
++fragments, direct inline footnote fragments and TeXmacs special-block bodies in
++existing and new Org buffers.  Font Lock must itself be enabled.  STM regions
++use Scheme string and parenthesis syntax; Org link, emphasis and hiding
++properties inside them are suppressed.  Other Org text keeps normal behavior.
++This is lexical presentation, not STM validation or support for arbitrary
++Scheme syntax, evaluation or Org Babel execution.  Export recognition and
++native STM parsing are unchanged.
++
++The implementation processes affected paragraph/block contexts rather than
++copying the whole document on each edit.  Incomplete STM while typing is not an
++export error in the editor.  There is no dedicated command or Customize option.
++The internal buffer-local variable =org-texmacs--font-lock-enabled= defaults to
++=t=; a =nil= local binding suppresses STM presentation, and setting its default
++binding to =nil= suppresses it globally.  Changes to this override or fragment
++entry tags schedule normal refontification.  These internal interfaces may
++change; disabling presentation restores ordinary Org fontification.
++
+ * Document conversion and native sessions
+ Document conversion and native sessions were introduced in version 0.2.0.
+ Version 0.2.1 requires an explicit source buffer for document conversion and
+diff --git a/org-texmacs.el b/org-texmacs.el
+index 776b426..db3a511 100644
+--- a/org-texmacs.el
++++ b/org-texmacs.el
+@@ -59,6 +59,7 @@
+ (require 'org-texmacs-ast)
+ (require 'org-texmacs-source)
+ (require 'org-texmacs-fragment)
++(require 'org-texmacs-font-lock)
+ (require 'org-texmacs-worker)
+ (require 'org-texmacs-context)
+ (require 'org-texmacs-document)
+diff --git a/tests/ert/ert.el b/tests/ert/ert.el
+index 889c6a9..5a7640b 100644
+--- a/tests/ert/ert.el
++++ b/tests/ert/ert.el
+@@ -31,7 +31,7 @@
+                  "org-texmacs-session"))
+   (let ((directory (file-name-directory (locate-library "org-texmacs"))))
+     (dolist (feature '(org-texmacs org-texmacs-core org-texmacs-ast
+-                       org-texmacs-source org-texmacs-fragment
++                       org-texmacs-source org-texmacs-fragment org-texmacs-font-lock
+                        org-texmacs-document org-texmacs-input org-texmacs-context
+                        org-texmacs-worker org-texmacs-session))
+       (should (featurep feature))
+@@ -9764,4 +9764,205 @@ FAILURE injects an error after modification in root, include or bibliography."
+         ;; External callback changes are detected, not rolled back by the package.
+         (should org-export-with-toc)))))
+ 
++;;; font-lock-tests.el --- Embedded Scheme presentation regressions -*- lexical-binding: t; -*-
++
++(defmacro org-texmacs-test--with-font-lock (source &rest body)
++  "Run BODY in an Org buffer containing SOURCE, with registered JIT hooks."
++  (declare (indent 1))
++  `(with-temp-buffer
++     (rename-buffer (generate-new-buffer-name "org-texmacs-font-lock-test"))
++     (org-mode) (insert ,source)
++     (buffer-enable-undo) (setq buffer-undo-list nil) (set-buffer-modified-p nil)
++     (let ((noninteractive nil)) (font-lock-mode 1))
++     (should font-lock-mode) (should jit-lock-mode)
++     (font-lock-ensure)
++     ,@body))
++
++(defun org-texmacs-test--font-lock-position (text)
++  "Return the first character position of literal case-sensitive TEXT."
++  (let ((case-fold-search nil))
++    (save-excursion (goto-char (point-min)) (search-forward text)
++                    (- (point) (length text)))))
++
++(defun org-texmacs-test--font-lock-string-p (text)
++  "Return non-nil if TEXT has Scheme string face."
++  (let ((face (get-text-property (org-texmacs-test--font-lock-position text) 'face)))
++    (or (eq face 'font-lock-string-face)
++        (and (listp face) (memq 'font-lock-string-face face)))))
++
++(ert-deftest org-texmacs-font-lock-default-and-ownership ()
++  (org-texmacs-test--with-font-lock "Before (math \"STRING\") after.\n"
++    (let ((text (buffer-string)) (tick (buffer-chars-modified-tick))
++          (undo buffer-undo-list) (mark (mark t)))
++      (goto-char 4)
++      (font-lock-flush) (font-lock-ensure)
++      (should (org-texmacs-test--font-lock-string-p "STRING"))
++      (should (get-text-property (org-texmacs-test--font-lock-position "STRING")
++                                 'syntax-table))
++      (should (equal (substring-no-properties text) (buffer-substring-no-properties
++                                                    (point-min) (point-max))))
++      (should (= tick (buffer-chars-modified-tick)))
++      (should-not (buffer-modified-p)) (should (equal undo buffer-undo-list))
++      (should (= 4 (point))) (should (equal mark (mark t)))
++      (should (= 1 (length (org-texmacs-fragment-map (point-min) (point-max) #'identity)))))))
++
++(ert-deftest org-texmacs-font-lock-opaque-and-disable ()
++  (org-texmacs-test--with-font-lock
++      "Outside *NORMAL*.\n\n(math \"*BOLD* [[https://example.org][TEXT]]\")\n"
++    (setq-local org-hide-emphasis-markers t)
++    (font-lock-flush) (font-lock-ensure)
++    (should (org-texmacs-test--font-lock-string-p "TEXT"))
++    (dolist (text '("[[" "TEXT" "*BOLD*"))
++      (let ((p (org-texmacs-test--font-lock-position text)))
++        (dolist (prop '(keymap mouse-face invisible org-emphasis))
++          (should-not (get-text-property p prop)))))
++    (setq-local org-texmacs--font-lock-enabled nil)
++    (font-lock-ensure)
++    (should-not (org-texmacs-test--font-lock-string-p "TEXT"))
++    (should (get-text-property (org-texmacs-test--font-lock-position "TEXT") 'keymap))
++    (should-not (get-text-property (org-texmacs-test--font-lock-position "TEXT") 'syntax-table))
++    (setq-local org-texmacs--font-lock-enabled t)
++    (font-lock-ensure)
++    (should (org-texmacs-test--font-lock-string-p "TEXT"))))
++
++(ert-deftest org-texmacs-font-lock-discovery-boundaries ()
++  (org-texmacs-test--with-font-lock
++      "* Heading (math \"HEAD\")\n\n| (math \"TABLE\") |\n\n*em (math \"EMPH\")* =(math \"CODE\")= [[https://example.org][(math \"LINK\")]].\n\n#+begin_src text\n(math \"SOURCE\")\n#+end_src\n\nText (math \"PARA\"). [fn::Note (math \"NOTE\")].\n\n#+BeGiN_TeXmAcS\n(unknown \"BLOCK\")\n#+eNd_TeXmAcS\n\n#+begin_quote\n(math \"QUOTE\")\n#+end_quote\n\n- (math \"LIST\")\n\n[fn:n] (math \"DEFINITION\")\n"
++    (dolist (word '("PARA" "NOTE" "BLOCK" "QUOTE" "LIST" "DEFINITION"))
++      (should (org-texmacs-test--font-lock-string-p word)))
++    (dolist (word '("HEAD" "TABLE" "EMPH" "CODE" "LINK" "SOURCE"))
++      (should-not (org-texmacs-test--font-lock-string-p word)))))
++
++(ert-deftest org-texmacs-font-lock-roots-and-configuration ()
++  (org-texmacs-test--with-font-lock
++      (concat (mapconcat (lambda (tag) (format "(%s \"VALUE-%s\")" tag tag))
++                         org-texmacs-fragment-tags "\n\n")
++              "\n\n(custom \"CUSTOM\")\n")
++    (dolist (tag org-texmacs-fragment-tags)
++      (should (org-texmacs-test--font-lock-string-p (concat "VALUE-" tag))))
++    (should-not (org-texmacs-test--font-lock-string-p "CUSTOM"))
++    (setq-local org-texmacs-fragment-tags '("custom"))
++    (font-lock-ensure)
++    (should (org-texmacs-test--font-lock-string-p "CUSTOM"))
++    (should-not (org-texmacs-test--font-lock-string-p "VALUE-math"))
++    (setq-local org-texmacs-fragment-tags '(42))
++    (font-lock-ensure)
++    (should-not (org-texmacs-test--font-lock-string-p "CUSTOM"))))
++
++(ert-deftest org-texmacs-font-lock-edit-old-block-context ()
++  (org-texmacs-test--with-font-lock
++      "Before.\n\n#+begin_texmacs\n(unknown \"BLOCK\")\n#+end_texmacs\n\nAfter.\n"
++    (should (org-texmacs-test--font-lock-string-p "BLOCK"))
++    (goto-char (org-texmacs-test--font-lock-position "#+end_texmacs"))
++    (delete-region (point) (line-end-position))
++    (font-lock-ensure (line-beginning-position) (min (point-max) (1+ (point))))
++    (should-not (org-texmacs-test--font-lock-string-p "BLOCK"))
++    (insert "#+end_texmacs")
++    (font-lock-ensure (line-beginning-position) (line-end-position))
++    (should (org-texmacs-test--font-lock-string-p "BLOCK"))
++    (goto-char (org-texmacs-test--font-lock-position "#+begin_texmacs"))
++    (delete-region (point) (line-end-position))
++    (font-lock-ensure)
++    (should-not (org-texmacs-test--font-lock-string-p "BLOCK"))))
++
++(ert-deftest org-texmacs-font-lock-incomplete-local-recovery ()
++  (org-texmacs-test--with-font-lock
++      "Good (math \"GOOD\").\n\n[fn::Broken (math \"BAD\"].\n\n(math\n \"MULTI\")\n"
++    (should (org-texmacs-test--font-lock-string-p "GOOD"))
++    (should (org-texmacs-test--font-lock-string-p "MULTI"))
++    (goto-char (org-texmacs-test--font-lock-position "\"GOOD\""))
++    (delete-char 1) (font-lock-ensure)
++    (should-not (org-texmacs-test--font-lock-string-p "GOOD"))
++    (should (org-texmacs-test--font-lock-string-p "MULTI"))
++    (insert "\"") (font-lock-ensure)
++    (should (org-texmacs-test--font-lock-string-p "GOOD"))))
++
++(ert-deftest org-texmacs-font-lock-narrowing-mode-and-buffer-isolation ()
++  (org-texmacs-test--with-font-lock "(math \"OUTSIDE\")\n\n(math \"INSIDE\")\n"
++    (let ((source (current-buffer)))
++      (org-texmacs-test--with-font-lock "(math \"OTHER\")\n"
++        (setq-local org-texmacs--font-lock-enabled nil)
++        (font-lock-ensure)
++        (should-not (org-texmacs-test--font-lock-string-p "OTHER")))
++      (should (eq source (current-buffer)))
++      (should (org-texmacs-test--font-lock-string-p "OUTSIDE")))
++    (goto-char (org-texmacs-test--font-lock-position "(math \"INSIDE"))
++    (narrow-to-region (point) (point-max))
++    (let ((bounds (cons (point-min) (point-max))))
++      (setq-local org-texmacs--font-lock-enabled nil)
++      (font-lock-ensure)
++      (should (equal bounds (cons (point-min) (point-max))))
++      (should-not (org-texmacs-test--font-lock-string-p "INSIDE")))
++    (widen) (font-lock-ensure)
++    (should-not (org-texmacs-test--font-lock-string-p "OUTSIDE"))
++    (setq-local org-texmacs--font-lock-enabled t) (font-lock-ensure)
++    (text-mode)
++    (should-not (text-property-not-all (point-min) (point-max)
++                                       'org-texmacs--font-lock-owner nil))
++    (should-not (get-text-property 2 'syntax-table))))
++
++(ert-deftest org-texmacs-font-lock-local-work-and-no-native-process ()
++  (org-texmacs-test--with-font-lock
++      (apply #'concat (make-list 512 "Text (math \"VALUE\") end.\n\n"))
++    (let ((maximum 0) (calls 0)
++          (original (and (fboundp 'org-texmacs--font-lock-paragraph-spans)
++                         (symbol-function 'org-texmacs--font-lock-paragraph-spans))))
++      (should original)
++      (cl-letf (((symbol-function 'org-texmacs--font-lock-paragraph-spans)
++                 (lambda (begin end tags)
++                   (setq maximum (max maximum (- end begin)) calls (1+ calls))
++                   (funcall original begin end tags)))
++                ((symbol-function 'org-texmacs--worker-request)
++                 (lambda (&rest _) (ert-fail "Fontification started a worker"))))
++        (goto-char (/ (point-max) 2)) (search-forward "VALUE") (insert "X")
++        (font-lock-ensure (1- (point)) (point))
++        (should (> calls 0)) (should (< calls 8)) (should (< maximum 100))))))
++
++(ert-deftest org-texmacs-font-lock-global-default-and-font-lock-toggle ()
++  (let ((original (default-value 'org-texmacs--font-lock-enabled)))
++    (unwind-protect
++        (progn
++          (set-default 'org-texmacs--font-lock-enabled nil)
++          (org-texmacs-test--with-font-lock "(math \"GLOBAL\")\n"
++            (should-not (org-texmacs-test--font-lock-string-p "GLOBAL"))
++            (set-default 'org-texmacs--font-lock-enabled t)
++            (font-lock-ensure)
++            (should (org-texmacs-test--font-lock-string-p "GLOBAL"))
++            (font-lock-mode -1)
++            (should-not (get-text-property 2 'syntax-table))
++            (let ((noninteractive nil)) (font-lock-mode 1))
++            (font-lock-ensure)
++            (should (org-texmacs-test--font-lock-string-p "GLOBAL"))
++            (should-not (get 'org-texmacs--font-lock-enabled 'custom-type))
++            (should-not (commandp 'org-texmacs--font-lock-setup))))
++      (set-default 'org-texmacs--font-lock-enabled original))))
++
++(ert-deftest org-texmacs-font-lock-restricted-block-header ()
++  (org-texmacs-test--with-font-lock
++      "#+begin_texmacs\n(math \"BODY\")\n#+end_texmacs\n"
++    (let ((font-lock-dont-widen t))
++      (goto-char (point-min))
++      (narrow-to-region (point-min) (line-end-position))
++      (font-lock-flush) (font-lock-ensure)
++      (should-not (text-property-not-all (point-min) (point-max)
++                                         'org-texmacs--font-lock-owner nil)))))
++
++(ert-deftest org-texmacs-font-lock-existing-buffer-fresh-load ()
++  (dolist (enabled '(t nil))
++    (org-texmacs-test--menu-fresh-process
++     `(progn
++        (set-default 'org-texmacs--font-lock-enabled ,enabled)
++        (with-temp-buffer
++          (rename-buffer (generate-new-buffer-name "font-lock-existing"))
++          (org-mode) (insert "(math \"x\")\n")
++          (let ((noninteractive nil)) (font-lock-mode 1))
++          (require 'org-texmacs)
++          (should (eq font-lock-fontify-region-function #'org-texmacs--font-lock-region))
++          (should (eq (default-value 'org-texmacs--font-lock-enabled) ,enabled))
++          (font-lock-ensure)
++          (let ((face (get-text-property 8 'face)))
++            (should (eq (and (memq 'font-lock-string-face
++                                    (if (listp face) face (list face))) t)
++                        ,enabled))))))))
++
+ ;;; ert.el ends here
+--- /dev/null
++++ b/org-texmacs-font-lock.el
+@@ -0,0 +1,247 @@
++;;; org-texmacs-font-lock.el --- Embedded STM presentation -*- lexical-binding: t; package-lint-main-file: "org-texmacs.el"; -*-
++
++;; Copyright (C) 2026 aRenCoco
++;; SPDX-License-Identifier: GPL-3.0-or-later
++
++;;; Commentary:
++
++;; Present recognized STM as embedded Scheme without changing Org source or
++;; export discovery.  All entry points and the default-on override are internal.
++
++;;; Code:
++
++(require 'org-texmacs-fragment)
++(require 'org-src)
++
++(defvar font-lock-beg)
++(defvar font-lock-end)
++
++(defvar-local org-texmacs--font-lock-enabled t
++  "Non-nil means present STM regions using Scheme fontification.
++This is an internal override, not a user option.  Set the default binding
++before loading to suppress automatic presentation globally, or set a local
++binding to nil in an Org buffer.  Changes schedule normal refontification.
++This does not enable Font Lock itself or change accepted export syntax.")
++
++(defvar-local org-texmacs--font-lock-original nil
++  "Org fontification function wrapped in the current buffer.")
++
++(defvar-local org-texmacs--font-lock-dirty nil
++  "Markers delimiting an old owned context affected by a character edit.")
++
++(defun org-texmacs--font-lock-contexts (begin end)
++  "Return paragraph and TeXmacs block contexts intersecting BEGIN through END.
++Each entry is (TYPE BEGIN END CONTENTS-BEGIN CONTENTS-END).  Use Org's
++local element lookup, not a full-source copy or export discovery request."
++  (save-excursion
++    (goto-char begin)
++    (let (contexts)
++      (while (< (point) end)
++        (let* ((position (point))
++               (node (org-element-at-point))
++               (block (org-element-lineage node '(special-block) t))
++               (type (org-element-type node))
++               (target (cond ((and block (org-texmacs--block-p block)) block)
++                             ((eq type 'paragraph) node)
++                             ((memq type '(plain-list item footnote-definition))
++                              (save-excursion
++                                (end-of-line)
++                                (org-element-lineage (org-element-context)
++                                                     '(paragraph) t)))))
++               (next (and node (org-element-property :end node))))
++          (cond
++           (target
++            (let ((b (org-element-property :begin target))
++                  (e (org-element-property :end target))
++                  (cb (org-element-property :contents-begin target))
++                  (ce (org-element-property :contents-end target)))
++              (when (and b e cb ce (< b end) (< begin e)
++                         (< (max (point-min) cb) (min (point-max) ce)))
++                (push (list (if (eq target block) 'block 'paragraph)
++                            (max (point-min) b) (min (point-max) e)
++                            (max (point-min) cb) (min (point-max) ce)) contexts))
++              (goto-char (min (point-max) (max (1+ position) (or e position))))))
++           ((memq type '(src-block example-block export-block fixed-width
++                         table keyword comment comment-block))
++            (goto-char (min (point-max) (max (1+ position) (or next position)))))
++           (t (forward-line 1)))
++          (when (= position (point)) (goto-char end))))
++      (nreverse contexts))))
++
++(defun org-texmacs--font-lock-owned-bounds (begin end)
++  "Return bounds of old owned contexts touching BEGIN or END, or nil."
++  (let (bounds)
++    (dolist (position (list begin (max begin (1- end))))
++      (when (and (< position (point-max))
++                 (get-text-property position 'org-texmacs--font-lock-owner))
++        (let ((b (or (previous-single-property-change
++                      (1+ position) 'org-texmacs--font-lock-owner nil (point-min))
++                     (point-min)))
++              (e (or (next-single-property-change
++                      position 'org-texmacs--font-lock-owner nil (point-max))
++                     (point-max))))
++          (setq bounds (if bounds (cons (min b (car bounds)) (max e (cdr bounds)))
++                        (cons b e))))))
++    bounds))
++
++(defun org-texmacs--font-lock-extend ()
++  "Extend fontification to complete current and previously owned contexts."
++  (let ((begin font-lock-beg) (end font-lock-end)
++        (old (org-texmacs--font-lock-owned-bounds font-lock-beg font-lock-end)))
++    (when old
++      (setq font-lock-beg (min font-lock-beg (car old))
++            font-lock-end (max font-lock-end (cdr old))))
++    (when (and org-texmacs--font-lock-enabled org-src-fontify-natively)
++      (dolist (context (org-texmacs--font-lock-contexts font-lock-beg font-lock-end))
++        (setq font-lock-beg (min font-lock-beg (nth 1 context))
++              font-lock-end (max font-lock-end (nth 2 context)))))
++    (or (/= begin font-lock-beg) (/= end font-lock-end))))
++
++(defun org-texmacs--font-lock-paragraph-spans (begin end tags)
++  "Discover presentation spans within one paragraph BEGIN to END using TAGS.
++Use the existing masking and boundary scanner in a private local Org view.
++Incomplete input is an editing state, not an export error."
++  (when tags
++    (let ((source (buffer-substring-no-properties begin end))
++          (buffer (current-buffer)) (tick (buffer-chars-modified-tick)))
++      (with-temp-buffer
++        (let ((org-element-use-cache nil) (org-inhibit-startup t))
++          (delay-mode-hooks (org-mode))
++          ;; Preserve paragraph context even if list/footnote prefixes were
++          ;; outside CONTENTS-BEGIN and the first characters look structural.
++          (insert "x " source)
++          (condition-case nil
++              (mapcar (lambda (span)
++                        (cons (org-texmacs-fragment-span-begin span)
++                              (org-texmacs-fragment-span-end span)))
++                      (org-texmacs--fragment-scan-paragraph
++                       (org-element-create 'paragraph
++                                           (list :contents-begin 3
++                                                 :contents-end (point-max)))
++                       buffer tick (- begin 3) tags (concat "(" (regexp-opt tags))))
++            (org-texmacs-error nil)))))))
++
++(defun org-texmacs--font-lock-scheme (begin end)
++  "Apply native Scheme presentation to BEGIN through END via a private view.
++The Org helper assumes a preceding character for indentation.  A staging
++newline handles islands at accessible buffer start without touching source."
++  (let ((source (buffer-substring-no-properties begin end)) result)
++    (with-temp-buffer
++      (delay-mode-hooks (org-mode))
++      (insert "\n" source)
++      (org-src-font-lock-fontify-block "scheme" 2 (point-max))
++      (setq result (buffer-substring 2 (point-max))))
++    (let ((position 0) next)
++      (while (< position (length result))
++        (setq next (next-property-change position result (length result)))
++        (add-text-properties (+ begin position) (+ begin next)
++                             (text-properties-at position result))
++        (setq position next)))))
++
++(defun org-texmacs--font-lock-region (begin end &optional loudly)
++  "Fontify BEGIN through END with Org, then opaque embedded Scheme spans.
++LOUDLY is passed to the original Org fontifier.  Never parse STM natively."
++  (save-excursion
++    (save-match-data
++      (let ((font-lock-beg begin) (font-lock-end end))
++        (while (org-texmacs--font-lock-extend))
++        (setq begin font-lock-beg end font-lock-end))
++      (let ((contexts (and org-texmacs--font-lock-enabled org-src-fontify-natively
++                           (org-texmacs--font-lock-contexts begin end)))
++            (tags (condition-case nil (org-texmacs--fragment-tags)
++                    (org-texmacs-error nil))))
++        (funcall org-texmacs--font-lock-original begin end loudly)
++        (dolist (context contexts)
++          (let* ((cb (nth 3 context)) (ce (nth 4 context))
++                 (spans (if (eq (car context) 'block) (list (cons cb ce))
++                          (org-texmacs--font-lock-paragraph-spans cb ce tags))))
++            (when spans
++              (with-silent-modifications
++                (dolist (span spans)
++                  ;; Remove Org's activation/hiding, not just its faces, before
++                  ;; allowing the Scheme fontifier to own these characters.
++                  (org-unfontify-region (car span) (cdr span))
++                  (org-texmacs--font-lock-scheme (car span) (cdr span)))
++                ;; Include block delimiters so their deletion invalidates the
++                ;; formerly owned body, even though delimiters keep Org faces.
++                (put-text-property (nth 1 context) (nth 2 context)
++                                   'org-texmacs--font-lock-owner (list t))
++                (put-text-property (nth 1 context) (nth 2 context)
++                                   'font-lock-multiline t)))))))))
++
++(defun org-texmacs--font-lock-before-change (begin end)
++  "Remember owned context bounds before an edit between BEGIN and END."
++  (let ((bounds (org-texmacs--font-lock-owned-bounds
++                 (max (point-min) (1- begin)) (min (point-max) (1+ end)))))
++    (when bounds
++      (setq org-texmacs--font-lock-dirty
++            (cons (copy-marker (car bounds)) (copy-marker (cdr bounds) t))))))
++
++(defun org-texmacs--font-lock-after-change (begin end _old-length)
++  "Invalidate old owned context and newly changed text between BEGIN and END."
++  (when org-texmacs--font-lock-dirty
++    (let ((b (car org-texmacs--font-lock-dirty))
++          (e (cdr org-texmacs--font-lock-dirty)))
++      (setq org-texmacs--font-lock-dirty nil)
++      (when font-lock-mode
++        (font-lock-flush (max (point-min) (min begin (marker-position b)))
++                         (min (point-max) (max end (marker-position e)))))
++      (set-marker b nil) (set-marker e nil))))
++
++(defun org-texmacs--font-lock-teardown ()
++  "Remove presentation ownership when leaving Org mode."
++  (when org-texmacs--font-lock-original
++    (when (eq font-lock-fontify-region-function #'org-texmacs--font-lock-region)
++      (setq font-lock-fontify-region-function org-texmacs--font-lock-original))
++    (save-restriction
++      (widen)
++      (with-silent-modifications
++        (org-unfontify-region (point-min) (point-max))
++        (remove-text-properties (point-min) (point-max)
++                                '(org-texmacs--font-lock-owner nil))))
++    (when org-texmacs--font-lock-dirty
++      (set-marker (car org-texmacs--font-lock-dirty) nil)
++      (set-marker (cdr org-texmacs--font-lock-dirty) nil))
++    (setq org-texmacs--font-lock-dirty nil org-texmacs--font-lock-original nil)))
++
++(defun org-texmacs--font-lock-setup ()
++  "Install local STM presentation around this Org buffer's fontifier."
++  (when (and (derived-mode-p 'org-mode) (not org-texmacs--font-lock-original))
++    (font-lock-set-defaults)
++    (setq-local org-texmacs--font-lock-original font-lock-fontify-region-function)
++    (setq-local font-lock-fontify-region-function #'org-texmacs--font-lock-region)
++    (setq-local font-lock-extra-managed-props
++                (cons 'org-texmacs--font-lock-owner font-lock-extra-managed-props))
++    (add-hook 'font-lock-extend-region-functions #'org-texmacs--font-lock-extend t t)
++    (add-hook 'before-change-functions #'org-texmacs--font-lock-before-change t t)
++    (add-hook 'after-change-functions #'org-texmacs--font-lock-after-change t t)
++    (add-hook 'change-major-mode-hook #'org-texmacs--font-lock-teardown nil t)
++    (when font-lock-mode (font-lock-flush))))
++
++(defun org-texmacs--font-lock-variable-changed (_symbol _value operation where)
++  "Schedule refresh after an override/configuration change.
++OPERATION is the variable watcher operation and WHERE is its buffer or nil.
++Only invalidate here: watchers run before the new binding becomes visible."
++  (when (memq operation '(set let unlet makunbound))
++    (dolist (buffer (if (bufferp where) (list where) (buffer-list)))
++      (with-current-buffer buffer
++        (when (and org-texmacs--font-lock-original font-lock-mode)
++          (save-restriction
++            (widen)
++            (font-lock-flush)))))))
++
++(add-hook 'org-mode-hook #'org-texmacs--font-lock-setup)
++(add-variable-watcher 'org-texmacs--font-lock-enabled
++                      #'org-texmacs--font-lock-variable-changed)
++(add-variable-watcher 'org-texmacs-fragment-tags
++                      #'org-texmacs--font-lock-variable-changed)
++
++;; Loading the package also covers existing Org buffers.  Private parsing
++;; views created with delayed mode hooks never install presentation machinery.
++(dolist (buffer (buffer-list))
++  (with-current-buffer buffer
++    (when (derived-mode-p 'org-mode) (org-texmacs--font-lock-setup))))
++
++(provide 'org-texmacs-font-lock)
++
++;;; org-texmacs-font-lock.el ends here
+--- a/flake.nix
++++ b/flake.nix
+@@ -32,6 +32,7 @@
+           ./org-texmacs-session.el
+           ./org-texmacs-source.el
+           ./org-texmacs-fragment.el
++          ./org-texmacs-font-lock.el
+           ./org-texmacs-worker.el
+           ./org-texmacs-worker.scm
+           ./README.org

@@ -1,0 +1,9 @@
+{
+  "flake.nix": "3bfa2fb7e27d05052c5ae5def2857a344d83b89a6b641e2cf7ca47de71c7f15a",
+  "flake.lock": "118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a",
+  "baseline.el": "fbd430a2402f359dae2bf4109653f83e938795d76a4fbf0fb38bcdc6127052d7",
+  "performance.el": "798b2428fa46a66164cf5bbbf6739046d3cec9b9b41a23ddb3411f58f88cb29a",
+  "candidate.patch": "ec61c81708f8933c7b76d71efde39bbf7724224edfe64b1b0ef4540553983afd",
+  "candidate-inputs.json": "d823cf2ce64477dd7e1c71ebd93abf3a6e9194c2c2691bb9dd60015e817dd7a9",
+  "baseline-inputs.json": "129dc8f8f5ccae9e39efee8f49e96a400666e92fea4df8d50f08bdc68c024861"
+}

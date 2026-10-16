@@ -1,0 +1,818 @@
+evaluating flake...
+checking flake output 'packages'...
+checking derivation packages.x86_64-linux.default...
+derivation evaluated to /nix/store/kc2pf3xw4g04rw1y9c81c160y8q6fs9i-emacs-org-texmacs-0.4.0.drv
+checking flake output 'legacyPackages'...
+checking flake output 'checks'...
+checking derivation checks.x86_64-linux.package-lint...
+derivation evaluated to /nix/store/wh1cafxvj8sbhp37k0sz5jlaiw29mwlk-org-texmacs-package-lint.drv
+checking derivation checks.x86_64-linux.baseline...
+derivation evaluated to /nix/store/c79b9ky1lk18dla8c1v90czb4zam2pw3-org-texmacs-font-lock-baseline.drv
+checking derivation checks.x86_64-linux.focused...
+derivation evaluated to /nix/store/q0cvnvhf2c4zw1kfqb9hjxp9932yd9vm-org-texmacs-font-lock-focused.drv
+checking derivation checks.x86_64-linux.performance...
+derivation evaluated to /nix/store/15i21w4vdq1a55dgcws0gsa8vb8nrvk6-org-texmacs-font-lock-performance.drv
+checking derivation checks.x86_64-linux.ert...
+derivation evaluated to /nix/store/gxcdj70p9i76wk2ydycyfl00kj1xfhzj-org-texmacs-ert.drv
+checking flake output 'devShells'...
+checking derivation devShells.x86_64-linux.default...
+derivation evaluated to /nix/store/ylppfs165ivc11iz4axwxwdkmfdg4d1l-nix-shell.drv
+checking flake output 'apps'...
+checking flake output 'formatter'...
+checking flake output 'nixosConfigurations'...
+checking flake output 'nixosModules'...
+checking flake output 'overlays'...
+running 6 flake checks...
+building '/nix/store/15i21w4vdq1a55dgcws0gsa8vb8nrvk6-org-texmacs-font-lock-performance.drv'...
+building '/nix/store/2aay10rixfj3fvapagkccgi9i1qsf7wy-run.scm.drv'...
+building '/nix/store/7higrjcrppah2jmf03js6rkbl9yv4fgr-run.scm.drv'...
+building '/nix/store/c79b9ky1lk18dla8c1v90czb4zam2pw3-org-texmacs-font-lock-baseline.drv'...
+run.scm> structuredAttrs is enabled
+run.scm> Running phase: patchPhase
+run.scm> Running phase: updateAutotoolsGnuConfigScriptsPhase
+run.scm> Running phase: configurePhase
+run.scm> no configure script, doing nothing
+run.scm> Running phase: buildPhase
+run.scm> Running phase: checkPhase
+run.scm> Running phase: installPhase
+run.scm> structuredAttrs is enabled
+run.scm> no Makefile or custom installPhase, doing nothing
+run.scm> Running phase: fixupPhase
+run.scm> Running phase: patchPhase
+run.scm> Running phase: updateAutotoolsGnuConfigScriptsPhase
+run.scm> shrinking RPATHs of ELF executables and libraries in /nix/store/9p0zci2b12j8r2hgb9ymk7m5xhprksmd-run.scm
+run.scm> Running phase: configurePhase
+run.scm> checking for references to /build/ in /nix/store/9p0zci2b12j8r2hgb9ymk7m5xhprksmd-run.scm...
+run.scm> patching script interpreter paths in /nix/store/9p0zci2b12j8r2hgb9ymk7m5xhprksmd-run.scm
+run.scm> no configure script, doing nothing
+run.scm> Running phase: buildPhase
+run.scm> Running phase: checkPhase
+building '/nix/store/gxcdj70p9i76wk2ydycyfl00kj1xfhzj-org-texmacs-ert.drv'...
+run.scm> Running phase: installPhase
+run.scm> no Makefile or custom installPhase, doing nothing
+run.scm> Running phase: fixupPhase
+run.scm> shrinking RPATHs of ELF executables and libraries in /nix/store/5y08bkba8qlznl8y07ndlj876am2p8zk-run.scm
+run.scm> checking for references to /build/ in /nix/store/5y08bkba8qlznl8y07ndlj876am2p8zk-run.scm...
+run.scm> patching script interpreter paths in /nix/store/5y08bkba8qlznl8y07ndlj876am2p8zk-run.scm
+building '/nix/store/wh1cafxvj8sbhp37k0sz5jlaiw29mwlk-org-texmacs-package-lint.drv'...
+org-texmacs-ert> Running 451 tests (2026-10-16 14:13:57+0000, selector `t')
+org-texmacs-ert>    passed    1/451  org-texmacs-ast-filter-backend-order-and-snapshot-context (0.120387 sec)
+org-texmacs-ert>    passed    2/451  org-texmacs-ast-filter-error-unwinds-context (0.002216 sec)
+org-texmacs-font-lock-baseline> Running 11 tests (2026-10-16 14:13:57+0000, selector `"^org-texmacs-font-lock-"')
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-default-and-ownership backtrace:
+org-texmacs-font-lock-baseline>   ert-fail(((should (org-texmacs-test--font-lock-string-p "STRING")) :
+org-texmacs-font-lock-baseline>   (if (unwind-protect (setq value-8871 (apply fn-8869 args-8870)) (set
+org-texmacs-font-lock-baseline>   (let (form-description-8873) (if (unwind-protect (setq value-8871 (a
+org-texmacs-font-lock-baseline>   (let ((value-8871 'ert-form-evaluation-aborted-8872)) (let (form-des
+org-texmacs-font-lock-baseline>   (let* ((fn-8869 #'org-texmacs-test--font-lock-string-p) (args-8870 (
+org-texmacs-font-lock-baseline>   (let ((text (buffer-string)) (tick (buffer-chars-modified-tick)) (un
+org-texmacs-font-lock-baseline>   (progn (rename-buffer (generate-new-buffer-name "org-texmacs-font-lo
+org-texmacs-font-lock-baseline>   (unwind-protect (progn (rename-buffer (generate-new-buffer-name "org
+org-texmacs-font-lock-baseline>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-font-lock-baseline>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-font-lock-baseline>   #f(lambda () [t] (let ((temp-buffer (generate-new-buffer " *temp*" t
+org-texmacs-font-lock-baseline>   #f(compiled-function () #<bytecode -0xfe2f1e251c70e4c>)()
+org-texmacs-font-lock-baseline>   handler-bind-1(#f(compiled-function () #<bytecode -0xfe2f1e251c70e4c
+org-texmacs-font-lock-baseline>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-font-lock-baseline>   ert-run-test(#s(ert-test :name org-texmacs-font-lock-default-and-own
+org-texmacs-font-lock-baseline>   ert-run-or-rerun-test(#s(ert--stats :selector "^org-texmacs-font-loc
+org-texmacs-font-lock-baseline>   ert-run-tests("^org-texmacs-font-lock-" #f(compiled-function (event-
+org-texmacs-font-lock-baseline>   ert-run-tests-batch("^org-texmacs-font-lock-")
+org-texmacs-font-lock-baseline>   (let* ((stats (ert-run-tests-batch "^org-texmacs-font-lock-")) (fail
+org-texmacs-font-lock-baseline>   load-with-code-conversion("/nix/store/9a0qwmkzh1wzxhvjh8z5330yi1zcqf
+org-texmacs-font-lock-baseline>   command-line-1(("-L" "/nix/store/kva4b51s51a3m46zab2ya5i03v4ym472-ba
+org-texmacs-font-lock-baseline>   command-line()
+org-texmacs-font-lock-baseline>   normal-top-level()
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-default-and-ownership condition:
+org-texmacs-font-lock-baseline>     (ert-test-failed
+org-texmacs-font-lock-baseline>      ((should (org-texmacs-test--font-lock-string-p "STRING")) :form
+org-texmacs-font-lock-baseline>       (org-texmacs-test--font-lock-string-p "STRING") :value nil))
+org-texmacs-font-lock-baseline>    FAILED   1/11  org-texmacs-font-lock-default-and-ownership (0.110665 sec) at ../nix/store/bsr0jrvz1wiixmji4s2b662hsw011lxm-ert.el:9793
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-discovery-boundaries backtrace:
+org-texmacs-font-lock-baseline>   ert-fail(((should (org-texmacs-test--font-lock-string-p word)) :form
+org-texmacs-font-lock-baseline>   (if (unwind-protect (setq value-8954 (apply fn-8952 args-8953)) (set
+org-texmacs-font-lock-baseline>   (let (form-description-8956) (if (unwind-protect (setq value-8954 (a
+org-texmacs-font-lock-baseline>   (let ((value-8954 'ert-form-evaluation-aborted-8955)) (let (form-des
+org-texmacs-font-lock-baseline>   (let* ((fn-8952 #'org-texmacs-test--font-lock-string-p) (args-8953 (
+org-texmacs-font-lock-baseline>   (let ((word (car tail))) (let* ((fn-8952 #'org-texmacs-test--font-lo
+org-texmacs-font-lock-baseline>   (while tail (let ((word (car tail))) (let* ((fn-8952 #'org-texmacs-t
+org-texmacs-font-lock-baseline>   (let ((tail '("PARA" "NOTE" "BLOCK" "QUOTE" "LIST" "DEFINITION"))) (
+org-texmacs-font-lock-baseline>   (progn (rename-buffer (generate-new-buffer-name "org-texmacs-font-lo
+org-texmacs-font-lock-baseline>   (unwind-protect (progn (rename-buffer (generate-new-buffer-name "org
+org-texmacs-font-lock-baseline>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-font-lock-baseline>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-font-lock-baseline>   #f(lambda () [t] (let ((temp-buffer (generate-new-buffer " *temp*" t
+org-texmacs-font-lock-baseline>   #f(compiled-function () #<bytecode -0xfe2f1e251c70e4c>)()
+org-texmacs-font-lock-baseline>   handler-bind-1(#f(compiled-function () #<bytecode -0xfe2f1e251c70e4c
+org-texmacs-font-lock-baseline>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-font-lock-baseline>   ert-run-test(#s(ert-test :name org-texmacs-font-lock-discovery-bound
+org-texmacs-font-lock-baseline>   ert-run-or-rerun-test(#s(ert--stats :selector "^org-texmacs-font-loc
+org-texmacs-font-lock-baseline>   ert-run-tests("^org-texmacs-font-lock-" #f(compiled-function (event-
+org-texmacs-font-lock-baseline>   ert-run-tests-batch("^org-texmacs-font-lock-")
+org-texmacs-font-lock-baseline>   (let* ((stats (ert-run-tests-batch "^org-texmacs-font-lock-")) (fail
+org-texmacs-font-lock-baseline>   load-with-code-conversion("/nix/store/9a0qwmkzh1wzxhvjh8z5330yi1zcqf
+org-texmacs-font-lock-baseline>   command-line-1(("-L" "/nix/store/kva4b51s51a3m46zab2ya5i03v4ym472-ba
+org-texmacs-font-lock-baseline>   command-line()
+org-texmacs-font-lock-baseline>   normal-top-level()
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-discovery-boundaries condition:
+org-texmacs-font-lock-baseline>     (ert-test-failed
+org-texmacs-font-lock-baseline>      ((should (org-texmacs-test--font-lock-string-p word)) :form
+org-texmacs-font-lock-baseline>       (org-texmacs-test--font-lock-string-p "PARA") :value nil))
+org-texmacs-font-lock-baseline>    FAILED   2/11  org-texmacs-font-lock-discovery-boundaries (0.001008 sec) at ../nix/store/bsr0jrvz1wiixmji4s2b662hsw011lxm-ert.el:9828
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-edit-old-block-context backtrace:
+org-texmacs-font-lock-baseline>   ert-fail(((should (org-texmacs-test--font-lock-string-p "BLOCK")) :f
+org-texmacs-font-lock-baseline>   (if (unwind-protect (setq value-8997 (apply fn-8995 args-8996)) (set
+org-texmacs-font-lock-baseline>   (let (form-description-8999) (if (unwind-protect (setq value-8997 (a
+org-texmacs-font-lock-baseline>   (let ((value-8997 'ert-form-evaluation-aborted-8998)) (let (form-des
+org-texmacs-font-lock-baseline>   (let* ((fn-8995 #'org-texmacs-test--font-lock-string-p) (args-8996 (
+org-texmacs-font-lock-baseline>   (progn (rename-buffer (generate-new-buffer-name "org-texmacs-font-lo
+org-texmacs-font-lock-baseline>   (unwind-protect (progn (rename-buffer (generate-new-buffer-name "org
+org-texmacs-font-lock-baseline>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-font-lock-baseline>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-font-lock-baseline>   #f(lambda () [t] (let ((temp-buffer (generate-new-buffer " *temp*" t
+org-texmacs-font-lock-baseline>   #f(compiled-function () #<bytecode -0xfe2f1e251c70e4c>)()
+org-texmacs-font-lock-baseline>   handler-bind-1(#f(compiled-function () #<bytecode -0xfe2f1e251c70e4c
+org-texmacs-font-lock-baseline>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-font-lock-baseline>   ert-run-test(#s(ert-test :name org-texmacs-font-lock-edit-old-block-
+org-texmacs-font-lock-baseline>   ert-run-or-rerun-test(#s(ert--stats :selector "^org-texmacs-font-loc
+org-texmacs-font-lock-baseline>   ert-run-tests("^org-texmacs-font-lock-" #f(compiled-function (event-
+org-texmacs-font-lock-baseline>   ert-run-tests-batch("^org-texmacs-font-lock-")
+org-texmacs-font-lock-baseline>   (let* ((stats (ert-run-tests-batch "^org-texmacs-font-lock-")) (fail
+org-texmacs-font-lock-baseline>   load-with-code-conversion("/nix/store/9a0qwmkzh1wzxhvjh8z5330yi1zcqf
+org-texmacs-font-lock-baseline>   command-line-1(("-L" "/nix/store/kva4b51s51a3m46zab2ya5i03v4ym472-ba
+org-texmacs-font-lock-baseline>   command-line()
+org-texmacs-font-lock-baseline>   normal-top-level()
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-edit-old-block-context condition:
+org-texmacs-font-lock-baseline>     (ert-test-failed
+org-texmacs-font-lock-baseline>      ((should (org-texmacs-test--font-lock-string-p "BLOCK")) :form
+org-texmacs-font-lock-baseline>       (org-texmacs-test--font-lock-string-p "BLOCK") :value nil))
+org-texmacs-font-lock-baseline>    FAILED   3/11  org-texmacs-font-lock-edit-old-block-context (0.000579 sec) at ../nix/store/bsr0jrvz1wiixmji4s2b662hsw011lxm-ert.el:9852
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-existing-buffer-fresh-load backtrace:
+org-texmacs-font-lock-baseline>   ert-fail("Fresh menu process failed: 255\n\nError: ert-test-failed (
+org-texmacs-font-lock-baseline>   (if (equal status 0) nil (ert-fail (format "Fresh menu process faile
+org-texmacs-font-lock-baseline>   (let ((status (call-process (expand-file-name invocation-name invoca
+org-texmacs-font-lock-baseline>   (progn (let ((status (call-process (expand-file-name invocation-name
+org-texmacs-font-lock-baseline>   (unwind-protect (progn (let ((status (call-process (expand-file-name
+org-texmacs-font-lock-baseline>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-font-lock-baseline>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-font-lock-baseline>   (progn (let ((temp-file file) (temp-buffer (generate-new-buffer " *t
+org-texmacs-font-lock-baseline>   (unwind-protect (progn (let ((temp-file file) (temp-buffer (generate
+org-texmacs-font-lock-baseline>   (let ((file (make-temp-file "org-texmacs-menu-" nil ".el"))) (unwind
+org-texmacs-font-lock-baseline>   org-texmacs-test--menu-fresh-process((progn (set-default 'org-texmac
+org-texmacs-font-lock-baseline>   (let ((enabled (car tail))) (org-texmacs-test--menu-fresh-process (l
+org-texmacs-font-lock-baseline>   (while tail (let ((enabled (car tail))) (org-texmacs-test--menu-fres
+org-texmacs-font-lock-baseline>   (let ((tail '(t nil))) (while tail (let ((enabled (car tail))) (org-
+org-texmacs-font-lock-baseline>   #f(lambda () [t] (let ((tail '...)) (while tail (let (...) (org-texm
+org-texmacs-font-lock-baseline>   #f(compiled-function () #<bytecode -0xfe2f1e251c70e4c>)()
+org-texmacs-font-lock-baseline>   handler-bind-1(#f(compiled-function () #<bytecode -0xfe2f1e251c70e4c
+org-texmacs-font-lock-baseline>   ert--run-test-internal(#s(ert--test-execution-info :test ... :result
+org-texmacs-font-lock-baseline>   ert-run-test(#s(ert-test :name org-texmacs-font-lock-existing-buffer
+org-texmacs-font-lock-baseline>   ert-run-or-rerun-test(#s(ert--stats :selector "^org-texmacs-font-loc
+org-texmacs-font-lock-baseline>   ert-run-tests("^org-texmacs-font-lock-" #f(compiled-function (event-
+org-texmacs-font-lock-baseline>   ert-run-tests-batch("^org-texmacs-font-lock-")
+org-texmacs-font-lock-baseline>   (let* ((stats (ert-run-tests-batch "^org-texmacs-font-lock-")) (fail
+org-texmacs-font-lock-baseline>   load-with-code-conversion("/nix/store/9a0qwmkzh1wzxhvjh8z5330yi1zcqf
+org-texmacs-font-lock-baseline>   command-line-1(("-L" "/nix/store/kva4b51s51a3m46zab2ya5i03v4ym472-ba
+org-texmacs-font-lock-baseline>   command-line()
+org-texmacs-font-lock-baseline>   normal-top-level()
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-existing-buffer-fresh-load condition:
+org-texmacs-font-lock-baseline>     (ert-test-failed
+org-texmacs-font-lock-baseline>      "Fresh menu process failed: 255\n\nError: ert-test-failed (((should (eq font-lock-fontify-region-function #'org-texmacs--font-lock-region)) :form (eq font-lock-default-fontify-region org-texmacs--font-lock-region) :value nil))\n  ert-fail(((should (eq font-lock-fontify-region-function #'org-texmacs--font-lock-region)) :form (eq font-lock-default-fontify-region org-texmacs--font-lock-region) :value nil))\n  (if (unwind-protect (setq value-2 (apply fn-0 args-1)) (setq form-description-4 (nconc (list '(should (eq font-lock-fontify-region-function #'org-texmacs--font-lock-region))) (list :form (cons fn-0 args-1)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (list :value value-2)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-1))))))) (ert--signal-should-execution form-description-4)) nil (ert-fail form-description-4))\n  (let (form-description-4) (if (unwind-protect (setq value-2 (apply fn-0 args-1)) (setq form-description-4 (nconc (list '(should (eq font-lock-fontify-region-function #'org-texmacs--font-lock-region))) (list :form (cons fn-0 args-1)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (list :value value-2)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-1))))))) (ert--signal-should-execution form-description-4)) nil (ert-fail form-description-4)))\n  (let ((value-2 'ert-form-evaluation-aborted-3)) (let (form-description-4) (if (unwind-protect (setq value-2 (apply fn-0 args-1)) (setq form-description-4 (nconc (list '(should (eq font-lock-fontify-region-function #'org-texmacs--font-lock-region))) (list :form (cons fn-0 args-1)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (list :value value-2)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-1))))))) (ert--signal-should-execution form-description-4)) nil (ert-fail form-description-4))) value-2)\n  (let* ((fn-0 #'eq) (args-1 (condition-case err (list font-lock-fontify-region-function #'org-texmacs--font-lock-region) (error (progn (setq fn-0 #'signal) (list (car err) (cdr err))))))) (let ((value-2 'ert-form-evaluation-aborted-3)) (let (form-description-4) (if (unwind-protect (setq value-2 (apply fn-0 args-1)) (setq form-description-4 (nconc (list '(should (eq font-lock-fontify-region-function #'org-texmacs--font-lock-region))) (list :form (cons fn-0 args-1)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (list :value value-2)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-1))))))) (ert--signal-should-execution form-description-4)) nil (ert-fail form-description-4))) value-2))\n  (progn (rename-buffer (generate-new-buffer-name \"font-lock-existing\")) (org-mode) (insert \"(math \\\"x\\\")\\n\") (let ((noninteractive nil)) (font-lock-mode 1)) (require 'org-texmacs) (let* ((fn-0 #'eq) (args-1 (condition-case err (list font-lock-fontify-region-function #'org-texmacs--font-lock-region) (error (progn (setq fn-0 #'signal) (list (car err) (cdr err))))))) (let ((value-2 'ert-form-evaluation-aborted-3)) (let (form-description-4) (if (unwind-protect (setq value-2 (apply fn-0 args-1)) (setq form-description-4 (nconc (list '(should (eq font-lock-fontify-region-function #'org-texmacs--font-lock-region))) (list :form (cons fn-0 args-1)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (list :value value-2)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-1))))))) (ert--signal-should-execution form-description-4)) nil (ert-fail form-description-4))) value-2)) (let* ((fn-5 #'eq) (args-6 (condition-case err (list (default-value 'org-texmacs--font-lock-enabled) t) (error (progn (setq fn-5 #'signal) (list (car err) (cdr err))))))) (let ((value-7 'ert-form-evaluation-aborted-8)) (let (form-description-9) (if (unwind-protect (setq value-7 (apply fn-5 args-6)) (setq form-description-9 (nconc (list '(should (eq (default-value 'org-texmacs--font-lock-enabled) t))) (list :form (cons fn-5 args-6)) (if (eql value-7 'ert-form-evaluation-aborted-8) nil (list :value value-7)) (if (eql value-7 'ert-form-evaluation-aborted-8) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-6))))))) (ert--signal-should-execution form-description-9)) nil (ert-fail form-description-9))) value-7)) (font-lock-ensure) (let ((face (get-text-property 8 'face))) (let* ((fn-10 #'eq) (args-11 (condition-case err (list (and (memq 'font-lock-string-face (if (listp face) face (list face))) t) t) (error (progn (setq fn-10 #'signal) (list (car err) (cdr err))))))) (let ((value-12 'ert-form-evaluation-aborted-13)) (let (form-description-14) (if (unwind-protect (setq value-12 (apply fn-10 args-11)) (setq form-description-14 (nconc (list '(should (eq (and (memq 'font-lock-string-face (if (listp face) face (list face))) t) t))) (list :form (cons fn-10 args-11)) (if (eql value-12 'ert-form-evaluation-aborted-13) nil (list :value value-12)) (if (eql value-12 'ert-form-evaluation-aborted-13) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-11))))))) (ert--signal-should-execution form-description-14)) nil (ert-fail form-description-14))) value-12))))\n  (unwind-protect (progn (rename-buffer (generate-new-buffer-name \"font-lock-existing\")) (org-mode) (insert \"(math \\\"x\\\")\\n\") (let ((noninteractive nil)) (font-lock-mode 1)) (require 'org-texmacs) (let* ((fn-0 #'eq) (args-1 (condition-case err (list font-lock-fontify-region-function #'org-texmacs--font-lock-region) (error (progn (setq fn-0 #'signal) (list (car err) (cdr err))))))) (let ((value-2 'ert-form-evaluation-aborted-3)) (let (form-description-4) (if (unwind-protect (setq value-2 (apply fn-0 args-1)) (setq form-description-4 (nconc (list '(should (eq font-lock-fontify-region-function #'org-texmacs--font-lock-region))) (list :form (cons fn-0 args-1)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (list :value value-2)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-1))))))) (ert--signal-should-execution form-description-4)) nil (ert-fail form-description-4))) value-2)) (let* ((fn-5 #'eq) (args-6 (condition-case err (list (default-value 'org-texmacs--font-lock-enabled) t) (error (progn (setq fn-5 #'signal) (list (car err) (cdr err))))))) (let ((value-7 'ert-form-evaluation-aborted-8)) (let (form-description-9) (if (unwind-protect (setq value-7 (apply fn-5 args-6)) (setq form-description-9 (nconc (list '(should (eq (default-value 'org-texmacs--font-lock-enabled) t))) (list :form (cons fn-5 args-6)) (if (eql value-7 'ert-form-evaluation-aborted-8) nil (list :value value-7)) (if (eql value-7 'ert-form-evaluation-aborted-8) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-6))))))) (ert--signal-should-execution form-description-9)) nil (ert-fail form-description-9))) value-7)) (font-lock-ensure) (let ((face (get-text-property 8 'face))) (let* ((fn-10 #'eq) (args-11 (condition-case err (list (and (memq 'font-lock-string-face (if (listp face) face (list face))) t) t) (error (progn (setq fn-10 #'signal) (list (car err) (cdr err))))))) (let ((value-12 'ert-form-evaluation-aborted-13)) (let (form-description-14) (if (unwind-protect (setq value-12 (apply fn-10 args-11)) (setq form-description-14 (nconc (list '(should (eq (and (memq 'font-lock-string-face (if (listp face) face (list face))) t) t))) (list :form (cons fn-10 args-11)) (if (eql value-12 'ert-form-evaluation-aborted-13) nil (list :value value-12)) (if (eql value-12 'ert-form-evaluation-aborted-13) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-11))))))) (ert--signal-should-execution form-description-14)) nil (ert-fail form-description-14))) value-12)))) (and (buffer-name temp-buffer) (kill-buffer temp-buffer)))\n  (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn (rename-buffer (generate-new-buffer-name \"font-lock-existing\")) (org-mode) (insert \"(math \\\"x\\\")\\n\") (let ((noninteractive nil)) (font-lock-mode 1)) (require 'org-texmacs) (let* ((fn-0 #'eq) (args-1 (condition-case err (list font-lock-fontify-region-function #'org-texmacs--font-lock-region) (error (progn (setq fn-0 #'signal) (list (car err) (cdr err))))))) (let ((value-2 'ert-form-evaluation-aborted-3)) (let (form-description-4) (if (unwind-protect (setq value-2 (apply fn-0 args-1)) (setq form-description-4 (nconc (list '(should (eq font-lock-fontify-region-function #'org-texmacs--font-lock-region))) (list :form (cons fn-0 args-1)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (list :value value-2)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-1))))))) (ert--signal-should-execution form-description-4)) nil (ert-fail form-description-4))) value-2)) (let* ((fn-5 #'eq) (args-6 (condition-case err (list (default-value 'org-texmacs--font-lock-enabled) t) (error (progn (setq fn-5 #'signal) (list (car err) (cdr err))))))) (let ((value-7 'ert-form-evaluation-aborted-8)) (let (form-description-9) (if (unwind-protect (setq value-7 (apply fn-5 args-6)) (setq form-description-9 (nconc (list '(should (eq (default-value 'org-texmacs--font-lock-enabled) t))) (list :form (cons fn-5 args-6)) (if (eql value-7 'ert-form-evaluation-aborted-8) nil (list :value value-7)) (if (eql value-7 'ert-form-evaluation-aborted-8) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-6))))))) (ert--signal-should-execution form-description-9)) nil (ert-fail form-description-9))) value-7)) (font-lock-ensure) (let ((face (get-text-property 8 'face))) (let* ((fn-10 #'eq) (args-11 (condition-case err (list (and (memq 'font-lock-string-face (if (listp face) face (list face))) t) t) (error (progn (setq fn-10 #'signal) (list (car err) (cdr err))))))) (let ((value-12 'ert-form-evaluation-aborted-13)) (let (form-description-14) (if (unwind-protect (setq value-12 (apply fn-10 args-11)) (setq form-description-14 (nconc (list '(should (eq (and (memq 'font-lock-string-face (if (listp face) face (list face))) t) t))) (list :form (cons fn-10 args-11)) (if (eql value-12 'ert-form-evaluation-aborted-13) nil (list :value value-12)) (if (eql value-12 'ert-form-evaluation-aborted-13) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-11))))))) (ert--signal-should-execution form-description-14)) nil (ert-fail form-description-14))) value-12)))) (and (buffer-name temp-buffer) (kill-buffer temp-buffer))))\n  (let ((temp-buffer (generate-new-buffer \" *temp*\" t))) (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn (rename-buffer (generate-new-buffer-name \"font-lock-existing\")) (org-mode) (insert \"(math \\\"x\\\")\\n\") (let ((noninteractive nil)) (font-lock-mode 1)) (require 'org-texmacs) (let* ((fn-0 #'eq) (args-1 (condition-case err (list font-lock-fontify-region-function #'org-texmacs--font-lock-region) (error (progn (setq fn-0 #'signal) (list (car err) (cdr err))))))) (let ((value-2 'ert-form-evaluation-aborted-3)) (let (form-description-4) (if (unwind-protect (setq value-2 (apply fn-0 args-1)) (setq form-description-4 (nconc (list '(should (eq font-lock-fontify-region-function #'org-texmacs--font-lock-region))) (list :form (cons fn-0 args-1)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (list :value value-2)) (if (eql value-2 'ert-form-evaluation-aborted-3) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-1))))))) (ert--signal-should-exec\ndebug-early-backtrace...done\nTest failed: ((should (eq font-lock-fontify-region-function #'org-texmacs--font-lock-region)) :form (eq font-lock-default-fontify-region org-texmacs--font-lock-region) :value nil)\nution form-description-4)) nil (ert-fail form-description-4))) value-2)) (let* ((fn-5 #'eq) (args-6 (condition-case err (list (default-value 'org-texmacs--font-lock-enabled) t) (error (progn (setq fn-5 #'signal) (list (car err) (cdr err))))))) (let ((value-7 'ert-form-evaluation-aborted-8)) (let (form-description-9) (if (unwind-protect (setq value-7 (apply fn-5 args-6)) (setq form-description-9 (nconc (list '(should (eq (default-value 'org-texmacs--font-lock-enabled) t))) (list :form (cons fn-5 args-6)) (if (eql value-7 'ert-form-evaluation-aborted-8) nil (list :value value-7)) (if (eql value-7 'ert-form-evaluation-aborted-8) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-6))))))) (ert--signal-should-execution form-description-9)) nil (ert-fail form-description-9))) value-7)) (font-lock-ensure) (let ((face (get-text-property 8 'face))) (let* ((fn-10 #'eq) (args-11 (condition-case err (list (and (memq 'font-lock-string-face (if (listp face) face (list face))) t) t) (error (progn (setq fn-10 #'signal) (list (car err) (cdr err))))))) (let ((value-12 'ert-form-evaluation-aborted-13)) (let (form-description-14) (if (unwind-protect (setq value-12 (apply fn-10 args-11)) (setq form-description-14 (nconc (list '(should (eq (and (memq 'font-lock-string-face (if (listp face) face (list face))) t) t))) (list :form (cons fn-10 args-11)) (if (eql value-12 'ert-form-evaluation-aborted-13) nil (list :value value-12)) (if (eql value-12 'ert-form-evaluation-aborted-13) nil (let* ((-explainer- (and t (ert--get-explainer 'eq)))) (if -explainer- (list :explanation (apply -explainer- args-11))))))) (ert--signal-should-execution form-description-14)) nil (ert-fail form-description-14))) value-12)))) (and (buffer-name temp-buffer) (kill-buffer temp-buffer)))))\n  load-with-code-conversion(\"/build/org-texmacs-menu-U1U0Vg.el\" \"/build/org-texmacs-menu-U1U0Vg.el\" nil t)\n  command-line-1((\"-L\" \"/nix/store/mqf0cn6cfj75w64s8bmrhqibw1nlii73-emacs-packages-deps/share/emacs/site-lisp/elpa/org-9.8.10/\" \"-L\" \"/nix/store/kva4b51s51a3m46zab2ya5i03v4ym472-baseline/\" \"--load\" \"/build/org-texmacs-menu-U1U0Vg.el\"))\n  command-line()\n  normal-top-level()\n")
+org-texmacs-font-lock-baseline>    FAILED   4/11  org-texmacs-font-lock-existing-buffer-fresh-load (0.273823 sec) at ../nix/store/bsr0jrvz1wiixmji4s2b662hsw011lxm-ert.el:9950
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-global-default-and-font-lock-toggle backtrace:
+org-texmacs-font-lock-baseline>   default-value(org-texmacs--font-lock-enabled)
+org-texmacs-font-lock-baseline>   (let ((original (default-value 'org-texmacs--font-lock-enabled))) (u
+org-texmacs-font-lock-baseline>   #f(lambda () [t] (let ((original (default-value ...))) (unwind-prote
+org-texmacs-font-lock-baseline>   #f(compiled-function () #<bytecode -0xfe2f1e251c70e4c>)()
+org-texmacs-font-lock-baseline>   handler-bind-1(#f(compiled-function () #<bytecode -0xfe2f1e251c70e4c
+org-texmacs-font-lock-baseline>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-font-lock-baseline>   ert-run-test(#s(ert-test :name org-texmacs-font-lock-global-default-
+org-texmacs-font-lock-baseline>   ert-run-or-rerun-test(#s(ert--stats :selector "^org-texmacs-font-loc
+org-texmacs-font-lock-baseline>   ert-run-tests("^org-texmacs-font-lock-" #f(compiled-function (event-
+org-texmacs-font-lock-baseline>   ert-run-tests-batch("^org-texmacs-font-lock-")
+org-texmacs-font-lock-baseline>   (let* ((stats (ert-run-tests-batch "^org-texmacs-font-lock-")) (fail
+org-texmacs-font-lock-baseline>   load-with-code-conversion("/nix/store/9a0qwmkzh1wzxhvjh8z5330yi1zcqf
+org-texmacs-font-lock-baseline>   command-line-1(("-L" "/nix/store/kva4b51s51a3m46zab2ya5i03v4ym472-ba
+org-texmacs-font-lock-baseline>   command-line()
+org-texmacs-font-lock-baseline>   normal-top-level()
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-global-default-and-font-lock-toggle condition:
+org-texmacs-font-lock-baseline>     (void-variable org-texmacs--font-lock-enabled)
+org-texmacs-font-lock-baseline>    FAILED   5/11  org-texmacs-font-lock-global-default-and-font-lock-toggle (0.000048 sec) at ../nix/store/bsr0jrvz1wiixmji4s2b662hsw011lxm-ert.el:9921
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-incomplete-local-recovery backtrace:
+org-texmacs-font-lock-baseline>   ert-fail(((should (org-texmacs-test--font-lock-string-p "GOOD")) :fo
+org-texmacs-font-lock-baseline>   (if (unwind-protect (setq value-9021 (apply fn-9019 args-9020)) (set
+org-texmacs-font-lock-baseline>   (let (form-description-9023) (if (unwind-protect (setq value-9021 (a
+org-texmacs-font-lock-baseline>   (let ((value-9021 'ert-form-evaluation-aborted-9022)) (let (form-des
+org-texmacs-font-lock-baseline>   (let* ((fn-9019 #'org-texmacs-test--font-lock-string-p) (args-9020 (
+org-texmacs-font-lock-baseline>   (progn (rename-buffer (generate-new-buffer-name "org-texmacs-font-lo
+org-texmacs-font-lock-baseline>   (unwind-protect (progn (rename-buffer (generate-new-buffer-name "org
+org-texmacs-font-lock-baseline>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-font-lock-baseline>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-font-lock-baseline>   #f(lambda () [t] (let ((temp-buffer (generate-new-buffer " *temp*" t
+org-texmacs-font-lock-baseline>   #f(compiled-function () #<bytecode -0xfe2f1e251c70e4c>)()
+org-texmacs-font-lock-baseline>   handler-bind-1(#f(compiled-function () #<bytecode -0xfe2f1e251c70e4c
+org-texmacs-font-lock-baseline>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-font-lock-baseline>   ert-run-test(#s(ert-test :name org-texmacs-font-lock-incomplete-loca
+org-texmacs-font-lock-baseline>   ert-run-or-rerun-test(#s(ert--stats :selector "^org-texmacs-font-loc
+org-texmacs-font-lock-baseline>   ert-run-tests("^org-texmacs-font-lock-" #f(compiled-function (event-
+org-texmacs-font-lock-baseline>   ert-run-tests-batch("^org-texmacs-font-lock-")
+org-texmacs-font-lock-baseline>   (let* ((stats (ert-run-tests-batch "^org-texmacs-font-lock-")) (fail
+org-texmacs-font-lock-baseline>   load-with-code-conversion("/nix/store/9a0qwmkzh1wzxhvjh8z5330yi1zcqf
+org-texmacs-font-lock-baseline>   command-line-1(("-L" "/nix/store/kva4b51s51a3m46zab2ya5i03v4ym472-ba
+org-texmacs-font-lock-baseline>   command-line()
+org-texmacs-font-lock-baseline>   normal-top-level()
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-incomplete-local-recovery condition:
+org-texmacs-font-lock-baseline>     (ert-test-failed
+org-texmacs-font-lock-baseline>      ((should (org-texmacs-test--font-lock-string-p "GOOD")) :form
+org-texmacs-font-lock-baseline>       (org-texmacs-test--font-lock-string-p "GOOD") :value nil))
+org-texmacs-font-lock-baseline>    FAILED   6/11  org-texmacs-font-lock-incomplete-local-recovery (0.000672 sec) at ../nix/store/bsr0jrvz1wiixmji4s2b662hsw011lxm-ert.el:9868
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-local-work-and-no-native-process backtrace:
+org-texmacs-font-lock-baseline>   ert-fail(((should original) :form original :value nil))
+org-texmacs-font-lock-baseline>   (if (unwind-protect (setq value-9096 original) (setq form-descriptio
+org-texmacs-font-lock-baseline>   (let (form-description-9097) (if (unwind-protect (setq value-9096 or
+org-texmacs-font-lock-baseline>   (let ((value-9096 (gensym "ert-form-evaluation-aborted-"))) (let (fo
+org-texmacs-font-lock-baseline>   (let ((maximum 0) (calls 0) (original (and (fboundp 'org-texmacs--fo
+org-texmacs-font-lock-baseline>   (progn (rename-buffer (generate-new-buffer-name "org-texmacs-font-lo
+org-texmacs-font-lock-baseline>   (unwind-protect (progn (rename-buffer (generate-new-buffer-name "org
+org-texmacs-font-lock-baseline>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-font-lock-baseline>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-font-lock-baseline>   #f(lambda () [t] (let ((temp-buffer (generate-new-buffer " *temp*" t
+org-texmacs-font-lock-baseline>   #f(compiled-function () #<bytecode -0xfe2f1e251c70e4c>)()
+org-texmacs-font-lock-baseline>   handler-bind-1(#f(compiled-function () #<bytecode -0xfe2f1e251c70e4c
+org-texmacs-font-lock-baseline>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-font-lock-baseline>   ert-run-test(#s(ert-test :name org-texmacs-font-lock-local-work-and-
+org-texmacs-font-lock-baseline>   ert-run-or-rerun-test(#s(ert--stats :selector "^org-texmacs-font-loc
+org-texmacs-font-lock-baseline>   ert-run-tests("^org-texmacs-font-lock-" #f(compiled-function (event-
+org-texmacs-font-lock-baseline>   ert-run-tests-batch("^org-texmacs-font-lock-")
+org-texmacs-font-lock-baseline>   (let* ((stats (ert-run-tests-batch "^org-texmacs-font-lock-")) (fail
+org-texmacs-font-lock-baseline>   load-with-code-conversion("/nix/store/9a0qwmkzh1wzxhvjh8z5330yi1zcqf
+org-texmacs-font-lock-baseline>   command-line-1(("-L" "/nix/store/kva4b51s51a3m46zab2ya5i03v4ym472-ba
+org-texmacs-font-lock-baseline>   command-line()
+org-texmacs-font-lock-baseline>   normal-top-level()
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-local-work-and-no-native-process condition:
+org-texmacs-font-lock-baseline>     (ert-test-failed ((should original) :form original :value nil))
+org-texmacs-font-lock-baseline>    FAILED   7/11  org-texmacs-font-lock-local-work-and-no-native-process (0.002578 sec) at ../nix/store/bsr0jrvz1wiixmji4s2b662hsw011lxm-ert.el:9904
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-narrowing-mode-and-buffer-isolation backtrace:
+org-texmacs-font-lock-baseline>   ert-fail(((should (org-texmacs-test--font-lock-string-p "OUTSIDE"))
+org-texmacs-font-lock-baseline>   (if (unwind-protect (setq value-9064 (apply fn-9062 args-9063)) (set
+org-texmacs-font-lock-baseline>   (let (form-description-9066) (if (unwind-protect (setq value-9064 (a
+org-texmacs-font-lock-baseline>   (let ((value-9064 'ert-form-evaluation-aborted-9065)) (let (form-des
+org-texmacs-font-lock-baseline>   (let* ((fn-9062 #'org-texmacs-test--font-lock-string-p) (args-9063 (
+org-texmacs-font-lock-baseline>   (let ((source (current-buffer))) (let ((temp-buffer (generate-new-bu
+org-texmacs-font-lock-baseline>   (progn (rename-buffer (generate-new-buffer-name "org-texmacs-font-lo
+org-texmacs-font-lock-baseline>   (unwind-protect (progn (rename-buffer (generate-new-buffer-name "org
+org-texmacs-font-lock-baseline>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-font-lock-baseline>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-font-lock-baseline>   #f(lambda () [t] (let ((temp-buffer (generate-new-buffer " *temp*" t
+org-texmacs-font-lock-baseline>   #f(compiled-function () #<bytecode -0xfe2f1e251c70e4c>)()
+org-texmacs-font-lock-baseline>   handler-bind-1(#f(compiled-function () #<bytecode -0xfe2f1e251c70e4c
+org-texmacs-font-lock-baseline>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-font-lock-baseline>   ert-run-test(#s(ert-test :name org-texmacs-font-lock-narrowing-mode-
+org-texmacs-font-lock-baseline>   ert-run-or-rerun-test(#s(ert--stats :selector "^org-texmacs-font-loc
+org-texmacs-font-lock-baseline>   ert-run-tests("^org-texmacs-font-lock-" #f(compiled-function (event-
+org-texmacs-font-lock-baseline>   ert-run-tests-batch("^org-texmacs-font-lock-")
+org-texmacs-font-lock-baseline>   (let* ((stats (ert-run-tests-batch "^org-texmacs-font-lock-")) (fail
+org-texmacs-font-lock-baseline>   load-with-code-conversion("/nix/store/9a0qwmkzh1wzxhvjh8z5330yi1zcqf
+org-texmacs-font-lock-baseline>   command-line-1(("-L" "/nix/store/kva4b51s51a3m46zab2ya5i03v4ym472-ba
+org-texmacs-font-lock-baseline>   command-line()
+org-texmacs-font-lock-baseline>   normal-top-level()
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-narrowing-mode-and-buffer-isolation condition:
+org-texmacs-font-lock-baseline>     (ert-test-failed
+org-texmacs-font-lock-baseline>      ((should (org-texmacs-test--font-lock-string-p "OUTSIDE")) :form
+org-texmacs-font-lock-baseline>       (org-texmacs-test--font-lock-string-p "OUTSIDE") :value nil))
+org-texmacs-font-lock-baseline>    FAILED   8/11  org-texmacs-font-lock-narrowing-mode-and-buffer-isolation (0.000725 sec) at ../nix/store/bsr0jrvz1wiixmji4s2b662hsw011lxm-ert.el:9880
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-opaque-and-disable backtrace:
+org-texmacs-font-lock-baseline>   ert-fail(((should (org-texmacs-test--font-lock-string-p "TEXT")) :fo
+org-texmacs-font-lock-baseline>   (if (unwind-protect (setq value-8920 (apply fn-8918 args-8919)) (set
+org-texmacs-font-lock-baseline>   (let (form-description-8922) (if (unwind-protect (setq value-8920 (a
+org-texmacs-font-lock-baseline>   (let ((value-8920 'ert-form-evaluation-aborted-8921)) (let (form-des
+org-texmacs-font-lock-baseline>   (let* ((fn-8918 #'org-texmacs-test--font-lock-string-p) (args-8919 (
+org-texmacs-font-lock-baseline>   (progn (rename-buffer (generate-new-buffer-name "org-texmacs-font-lo
+org-texmacs-font-lock-baseline>   (unwind-protect (progn (rename-buffer (generate-new-buffer-name "org
+org-texmacs-font-lock-baseline>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-font-lock-baseline>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-font-lock-baseline>   #f(lambda () [t] (let ((temp-buffer (generate-new-buffer " *temp*" t
+org-texmacs-font-lock-baseline>   #f(compiled-function () #<bytecode -0xfe2f1e251c70e4c>)()
+org-texmacs-font-lock-baseline>   handler-bind-1(#f(compiled-function () #<bytecode -0xfe2f1e251c70e4c
+org-texmacs-font-lock-baseline>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-font-lock-baseline>   ert-run-test(#s(ert-test :name org-texmacs-font-lock-opaque-and-disa
+org-texmacs-font-lock-baseline>   ert-run-or-rerun-test(#s(ert--stats :selector "^org-texmacs-font-loc
+org-texmacs-font-lock-baseline>   ert-run-tests("^org-texmacs-font-lock-" #f(compiled-function (event-
+org-texmacs-font-lock-baseline>   ert-run-tests-batch("^org-texmacs-font-lock-")
+org-texmacs-font-lock-baseline>   (let* ((stats (ert-run-tests-batch "^org-texmacs-font-lock-")) (fail
+org-texmacs-font-lock-baseline>   load-with-code-conversion("/nix/store/9a0qwmkzh1wzxhvjh8z5330yi1zcqf
+org-texmacs-font-lock-baseline>   command-line-1(("-L" "/nix/store/kva4b51s51a3m46zab2ya5i03v4ym472-ba
+org-texmacs-font-lock-baseline>   command-line()
+org-texmacs-font-lock-baseline>   normal-top-level()
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-opaque-and-disable condition:
+org-texmacs-font-lock-baseline>     (ert-test-failed
+org-texmacs-font-lock-baseline>      ((should (org-texmacs-test--font-lock-string-p "TEXT")) :form
+org-texmacs-font-lock-baseline>       (org-texmacs-test--font-lock-string-p "TEXT") :value nil))
+org-texmacs-font-lock-baseline>    FAILED   9/11  org-texmacs-font-lock-opaque-and-disable (0.000678 sec) at ../nix/store/bsr0jrvz1wiixmji4s2b662hsw011lxm-ert.el:9809
+org-texmacs-font-lock-baseline>    passed  10/11  org-texmacs-font-lock-restricted-block-header (0.000513 sec)
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-roots-and-configuration backtrace:
+org-texmacs-font-lock-baseline>   ert-fail(((should (org-texmacs-test--font-lock-string-p (concat "VAL
+org-texmacs-font-lock-baseline>   (if (unwind-protect (setq value-8968 (apply fn-8966 args-8967)) (set
+org-texmacs-font-lock-baseline>   (let (form-description-8970) (if (unwind-protect (setq value-8968 (a
+org-texmacs-font-lock-baseline>   (let ((value-8968 'ert-form-evaluation-aborted-8969)) (let (form-des
+org-texmacs-font-lock-baseline>   (let* ((fn-8966 #'org-texmacs-test--font-lock-string-p) (args-8967 (
+org-texmacs-font-lock-baseline>   (let ((tag (car tail))) (let* ((fn-8966 #'org-texmacs-test--font-loc
+org-texmacs-font-lock-baseline>   (while tail (let ((tag (car tail))) (let* ((fn-8966 #'org-texmacs-te
+org-texmacs-font-lock-baseline>   (let ((tail org-texmacs-fragment-tags)) (while tail (let ((tag (car
+org-texmacs-font-lock-baseline>   (progn (rename-buffer (generate-new-buffer-name "org-texmacs-font-lo
+org-texmacs-font-lock-baseline>   (unwind-protect (progn (rename-buffer (generate-new-buffer-name "org
+org-texmacs-font-lock-baseline>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-font-lock-baseline>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-font-lock-baseline>   #f(lambda () [t] (let ((temp-buffer (generate-new-buffer " *temp*" t
+org-texmacs-font-lock-baseline>   #f(compiled-function () #<bytecode -0xfe2f1e251c70e4c>)()
+org-texmacs-font-lock-baseline>   handler-bind-1(#f(compiled-function () #<bytecode -0xfe2f1e251c70e4c
+org-texmacs-font-lock-baseline>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-font-lock-baseline>   ert-run-test(#s(ert-test :name org-texmacs-font-lock-roots-and-confi
+org-texmacs-font-lock-baseline>   ert-run-or-rerun-test(#s(ert--stats :selector "^org-texmacs-font-loc
+org-texmacs-font-lock-baseline>   ert-run-tests("^org-texmacs-font-lock-" #f(compiled-function (event-
+org-texmacs-font-lock-baseline>   ert-run-tests-batch("^org-texmacs-font-lock-")
+org-texmacs-font-lock-baseline>   (let* ((stats (ert-run-tests-batch "^org-texmacs-font-lock-")) (fail
+org-texmacs-font-lock-baseline>   load-with-code-conversion("/nix/store/9a0qwmkzh1wzxhvjh8z5330yi1zcqf
+org-texmacs-font-lock-baseline>   command-line-1(("-L" "/nix/store/kva4b51s51a3m46zab2ya5i03v4ym472-ba
+org-texmacs-font-lock-baseline>   command-line()
+org-texmacs-font-lock-baseline>   normal-top-level()
+org-texmacs-font-lock-baseline> Test org-texmacs-font-lock-roots-and-configuration condition:
+org-texmacs-font-lock-baseline>     (ert-test-failed
+org-texmacs-font-lock-baseline>      ((should (org-texmacs-test--font-lock-string-p (concat "VALUE-" tag)))
+org-texmacs-font-lock-baseline>       :form (org-texmacs-test--font-lock-string-p "VALUE-math") :value nil))
+org-texmacs-font-lock-baseline>    FAILED  11/11  org-texmacs-font-lock-roots-and-configuration (0.000388 sec) at ../nix/store/bsr0jrvz1wiixmji4s2b662hsw011lxm-ert.el:9836
+org-texmacs-font-lock-baseline> 
+org-texmacs-font-lock-baseline> Ran 11 tests, 1 results as expected, 10 unexpected (2026-10-16 14:13:57+0000, 0.789412 sec)
+org-texmacs-font-lock-baseline> 
+org-texmacs-font-lock-baseline> 10 unexpected results:
+org-texmacs-font-lock-baseline>    FAILED  org-texmacs-font-lock-default-and-ownership
+org-texmacs-font-lock-baseline>    FAILED  org-texmacs-font-lock-discovery-boundaries
+org-texmacs-font-lock-baseline>    FAILED  org-texmacs-font-lock-edit-old-block-context
+org-texmacs-font-lock-baseline>    FAILED  org-texmacs-font-lock-existing-buffer-fresh-load
+org-texmacs-font-lock-baseline>    FAILED  org-texmacs-font-lock-global-default-and-font-lock-toggle
+org-texmacs-font-lock-baseline>    FAILED  org-texmacs-font-lock-incomplete-local-recovery
+org-texmacs-font-lock-baseline>    FAILED  org-texmacs-font-lock-local-work-and-no-native-process
+org-texmacs-font-lock-baseline>    FAILED  org-texmacs-font-lock-narrowing-mode-and-buffer-isolation
+org-texmacs-font-lock-baseline>    FAILED  org-texmacs-font-lock-opaque-and-disable
+org-texmacs-font-lock-baseline>    FAILED  org-texmacs-font-lock-roots-and-configuration
+org-texmacs-font-lock-baseline> 
+org-texmacs-font-lock-baseline> Confirmed 10 baseline failures
+org-texmacs-ert>    passed    3/451  org-texmacs-ast-filter-escaped-tree-cannot-change-owned-preparation (1.682349 sec)
+org-texmacs-ert>    passed    4/451  org-texmacs-ast-filter-missing-key-before-worker (0.001683 sec)
+org-texmacs-ert>    passed    5/451  org-texmacs-ast-filter-native-citation-and-owned-output (1.932894 sec)
+org-texmacs-ert>    passed    6/451  org-texmacs-ast-filter-nil-return-remaps-keys (1.589801 sec)
+org-texmacs-ert>    passed    7/451  org-texmacs-ast-filter-order-nil-and-core-only-backend (0.001682 sec)
+org-texmacs-ert>    passed    8/451  org-texmacs-ast-filter-rejects-buffer-context-switch (0.001231 sec)
+org-texmacs-ert>    passed    9/451  org-texmacs-ast-filter-rejects-non-key-mutations (0.019538 sec)
+org-texmacs-ert>    passed   10/451  org-texmacs-ast-filter-selection-and-restored-footnotes (1.599295 sec)
+org-texmacs-ert>    passed   11/451  org-texmacs-ast-filter-settings-and-function-wait-checks (0.002748 sec)
+org-texmacs-ert>    passed   12/451  org-texmacs-ast-filter-validates-each-nil-return (0.001007 sec)
+org-texmacs-ert>    passed   13/451  org-texmacs-bibliography-auto-acquire-and-receipts (0.003981 sec)
+org-texmacs-ert>    passed   14/451  org-texmacs-bibliography-auto-default-api-is-explicit (0.001173 sec)
+org-texmacs-ert>    passed   15/451  org-texmacs-bibliography-auto-explicit-priority-with-advice (1.648508 sec)
+org-texmacs-ert>    passed   16/451  org-texmacs-bibliography-auto-masks-outside-restriction (0.003375 sec)
+org-texmacs-ert>    passed   17/451  org-texmacs-bibliography-auto-private-discovery (0.001399 sec)
+org-texmacs-ert>    passed   18/451  org-texmacs-bibliography-auto-rejects-acquisition-mutations (0.004358 sec)
+org-texmacs-ert>    passed   19/451  org-texmacs-bibliography-auto-rejects-before-byte-return (1.540830 sec)
+org-texmacs-ert>    passed   20/451  org-texmacs-bibliography-auto-rejects-discovery-mutations (0.010351 sec)
+org-texmacs-ert>    passed   21/451  org-texmacs-bibliography-auto-rejects-dropped-declaration (0.000025 sec)
+org-texmacs-ert>    passed   22/451  org-texmacs-bibliography-auto-rejects-locations-and-files (0.029483 sec)
+org-texmacs-ert>    passed   23/451  org-texmacs-bibliography-auto-rejects-native-dependency-stages (1.790475 sec)
+org-texmacs-ert>    passed   24/451  org-texmacs-bibliography-auto-rejects-native-wait-mutations (0.016204 sec)
+org-texmacs-ert>    passed   25/451  org-texmacs-bibliography-auto-rejects-preprocessing-and-conflict (0.005255 sec)
+org-texmacs-ert>    passed   26/451  org-texmacs-bibliography-auto-source-to-native (1.958541 sec)
+org-texmacs-ert>    passed   27/451  org-texmacs-bibliography-input-ownership (0.024579 sec)
+org-texmacs-ert>    passed   28/451  org-texmacs-bibliography-input-rejects-invalid-data (0.000102 sec)
+org-texmacs-ert>    passed   29/451  org-texmacs-bibliography-invalid-native-payload-stops-worker (0.002883 sec)
+org-texmacs-ert>    passed   30/451  org-texmacs-bibliography-native-parsing-and-worker-reuse (1.683616 sec)
+org-texmacs-ert>    passed   31/451  org-texmacs-bibliography-preparation-retains-lowering-boundary (0.004273 sec)
+org-texmacs-ert>    passed   32/451  org-texmacs-bibliography-source-rechecks-worker-waits (0.011394 sec)
+org-texmacs-ert>    passed   33/451  org-texmacs-bibliography-source-snapshot-and-preflight (0.002730 sec)
+org-texmacs-ert>    passed   34/451  org-texmacs-bibliography-source-validation (0.000792 sec)
+org-texmacs-ert>    passed   35/451  org-texmacs-bibliography-view-global-only-resolution (0.002367 sec)
+org-texmacs-ert>    passed   36/451  org-texmacs-bibliography-view-owned-and-invalid (0.000059 sec)
+org-texmacs-ert>    passed   37/451  org-texmacs-bibliography-view-rejects-document-disagreement (0.001516 sec)
+org-texmacs-ert>    passed   38/451  org-texmacs-block-case-bibliography-shield (0.006714 sec)
+org-texmacs-ert>    passed   39/451  org-texmacs-block-case-fragment-exclusion (0.002060 sec)
+org-texmacs-ert>    passed   40/451  org-texmacs-block-case-markers-and-raw-source (0.043666 sec)
+org-texmacs-ert>    passed   41/451  org-texmacs-block-case-native-conversion (1.858027 sec)
+org-texmacs-ert>    passed   42/451  org-texmacs-block-case-preprocessing-shield (0.010856 sec)
+org-texmacs-ert>    passed   43/451  org-texmacs-citations-footnote-order-and-stale-output (0.001987 sec)
+org-texmacs-ert>    passed   44/451  org-texmacs-citations-formatting-wait-and-payload-errors (0.001365 sec)
+org-texmacs-ert>    passed   45/451  org-texmacs-citations-native-output-and-ownership (2.081131 sec)
+org-texmacs-ert>    passed   46/451  org-texmacs-citations-preflight-boundaries (0.037389 sec)
+org-texmacs-ert>    passed   47/451  org-texmacs-cleanup-errors-preserve-output-and-source (0.037745 sec)
+org-texmacs-ert>    passed   48/451  org-texmacs-cleanup-full-native-file-exports (2.307087 sec)
+org-texmacs-ert>    passed   49/451  org-texmacs-cleanup-local-discovery-and-direct-preparation (0.008751 sec)
+org-texmacs-ert>    passed   50/451  org-texmacs-cleanup-nonfile-include-capture (0.004392 sec)
+org-texmacs-ert>    passed   51/451  org-texmacs-cleanup-source-configuration-guard (0.006947 sec)
+org-texmacs-ert>    passed   52/451  org-texmacs-context-archive-headline-discards-contents (0.002031 sec)
+org-texmacs-ert>    passed   53/451  org-texmacs-context-copies-rich-metadata (0.001997 sec)
+org-texmacs-ert>    passed   54/451  org-texmacs-context-does-not-enter-islands (0.001567 sec)
+org-texmacs-ert>    passed   55/451  org-texmacs-context-expands-snapshotted-tag-groups (0.001810 sec)
+org-texmacs-ert>    passed   56/451  org-texmacs-context-file-options-remain-snapshotted (0.001824 sec)
+org-texmacs-ert>    passed   57/451  org-texmacs-context-filters-tasks-before-worker (0.002020 sec)
+org-texmacs-ert>    passed   58/451  org-texmacs-context-metadata-options-and-provenance (0.002167 sec)
+org-texmacs-ert>    passed   59/451  org-texmacs-context-option-precedence (0.002726 sec)
+org-texmacs-ert>    passed   60/451  org-texmacs-context-options-affect-headline-presentation (0.001554 sec)
+org-texmacs-ert>    passed   61/451  org-texmacs-context-rejects-preprocessing-without-reading (0.004472 sec)
+org-texmacs-ert>    passed   62/451  org-texmacs-context-rejects-unsupported-options (0.002455 sec)
+org-texmacs-ert>    passed   63/451  org-texmacs-context-removes-comments (0.001417 sec)
+org-texmacs-ert>    passed   64/451  org-texmacs-context-selects-and-excludes-headlines (0.002286 sec)
+org-texmacs-ert>    passed   65/451  org-texmacs-document-atomic-island (0.000043 sec)
+org-texmacs-ert>    passed   66/451  org-texmacs-document-basic-inline-source (0.002001 sec)
+org-texmacs-ert>    passed   67/451  org-texmacs-document-date-advice-result-and-error (0.005421 sec)
+org-texmacs-ert>    passed   68/451  org-texmacs-document-date-advice-snapshot-and-ownership (0.002014 sec)
+org-texmacs-ert>    passed   69/451  org-texmacs-document-date-malformed-and-context (0.006225 sec)
+org-texmacs-ert>    passed   70/451  org-texmacs-document-date-precedence-and-suppression (0.007094 sec)
+org-texmacs-ert>    passed   71/451  org-texmacs-document-date-timestamp-raw-text (0.044569 sec)
+org-texmacs-ert>    passed   72/451  org-texmacs-document-date-worker-wait-snapshot (0.002258 sec)
+org-texmacs-ert>    passed   73/451  org-texmacs-document-empty (0.000033 sec)
+org-texmacs-ert>    passed   74/451  org-texmacs-document-explicit-info-snapshot (0.002412 sec)
+org-texmacs-ert>    passed   75/451  org-texmacs-document-explicit-source-and-wrapper (0.002978 sec)
+org-texmacs-ert>    passed   76/451  org-texmacs-document-explicit-source-checks-after-lowering (0.001013 sec)
+org-texmacs-ert>    passed   77/451  org-texmacs-document-explicit-source-rejects-invalid-input (0.000199 sec)
+org-texmacs-ert>    passed   78/451  org-texmacs-document-explicit-source-survives-buffer-switch (0.001161 sec)
+org-texmacs-ert>    passed   79/451  org-texmacs-document-five-section-levels-and-unnumbered-property (0.002537 sec)
+org-texmacs-ert>    passed   80/451  org-texmacs-document-footnote-rejects-contexts (0.003725 sec)
+org-texmacs-ert>    passed   81/451  org-texmacs-document-footnote-rich-native (1.638936 sec)
+org-texmacs-ert>    passed   82/451  org-texmacs-document-footnote-source (0.001713 sec)
+org-texmacs-ert>    passed   83/451  org-texmacs-document-footnote-stm-support (0.001469 sec)
+org-texmacs-ert>    passed   84/451  org-texmacs-document-footnote-whitespace-and-empty (0.000072 sec)
+org-texmacs-ert>    passed   85/451  org-texmacs-document-formatter-parser-isolation (0.001995 sec)
+org-texmacs-ert>    passed   86/451  org-texmacs-document-heading-settings-copy-isolation (0.000310 sec)
+org-texmacs-ert>    passed   87/451  org-texmacs-document-heading-settings-parser-parity (0.000595 sec)
+org-texmacs-ert>    passed   88/451  org-texmacs-document-heading-settings-reject-malformed-values (0.000805 sec)
+org-texmacs-ert>    passed   89/451  org-texmacs-document-headline-levels (0.000306 sec)
+org-texmacs-ert>    passed   90/451  org-texmacs-document-inline-native-whitespace (1.542069 sec)
+org-texmacs-ert>    passed   91/451  org-texmacs-document-inline-whitespace-stream (0.000096 sec)
+org-texmacs-ert>    passed   92/451  org-texmacs-document-island-paths-and-copies (0.000057 sec)
+org-texmacs-ert>    passed   93/451  org-texmacs-document-issue10-display-mixtures (0.000362 sec)
+org-texmacs-ert>    passed   94/451  org-texmacs-document-issue10-owned-forward-and-scoped (0.014098 sec)
+org-texmacs-ert>    passed   95/451  org-texmacs-document-issue10-pure-bare (0.000707 sec)
+org-texmacs-ert>    passed   96/451  org-texmacs-document-issue11-bare-identity-and-purity (0.001806 sec)
+org-texmacs-ert>    passed   97/451  org-texmacs-document-issue11-container-structure-and-paths (7.562488 sec)
+org-texmacs-ert>    passed   98/451  org-texmacs-document-issue11-display-mixtures-reject (0.000522 sec)
+org-texmacs-ert>    passed   99/451  org-texmacs-document-issue11-file-provenance-and-source-errors (1.420867 sec)
+org-texmacs-ert>    passed  100/451  org-texmacs-document-issue11-nonbare-boundaries (0.000219 sec)
+org-texmacs-ert>    passed  101/451  org-texmacs-document-line-break-contexts (0.001651 sec)
+org-texmacs-ert>    passed  102/451  org-texmacs-document-list-containers-native (1.942659 sec)
+org-texmacs-ert>    passed  103/451  org-texmacs-document-list-source-forms (0.005957 sec)
+org-texmacs-ert>    passed  104/451  org-texmacs-document-literal-inline-semantics (0.000127 sec)
+org-texmacs-ert>    passed  105/451  org-texmacs-document-lowering-needs-no-source (0.000057 sec)
+org-texmacs-ert>    passed  106/451  org-texmacs-document-markup-single-body (0.000232 sec)
+org-texmacs-ert>    passed  107/451  org-texmacs-document-metadata-native-encoding (1.550787 sec)
+org-texmacs-ert>    passed  108/451  org-texmacs-document-mixed-inline-session (2.007430 sec)
+org-texmacs-ert>    passed  109/451  org-texmacs-document-named-footnote-blocks-and-local-targets (0.012078 sec)
+org-texmacs-ert>    passed  110/451  org-texmacs-document-named-footnote-first-and-repeated (0.003327 sec)
+org-texmacs-ert>    passed  111/451  org-texmacs-document-named-footnote-forward-inline-definition (0.001525 sec)
+org-texmacs-ert>    passed  112/451  org-texmacs-document-named-footnote-label-collision-and-empty (0.000088 sec)
+org-texmacs-ert>    passed  113/451  org-texmacs-document-named-footnote-native (1.568312 sec)
+org-texmacs-ert>    passed  114/451  org-texmacs-document-named-footnote-owned-body-and-provenance (0.002477 sec)
+org-texmacs-ert>    passed  115/451  org-texmacs-document-named-footnote-pruned-definitions (0.002882 sec)
+org-texmacs-ert>    passed  116/451  org-texmacs-document-named-footnote-section-setting (0.002172 sec)
+org-texmacs-ert>    passed  117/451  org-texmacs-document-named-footnote-unused-and-invalid (0.005997 sec)
+org-texmacs-ert>    passed  118/451  org-texmacs-document-named-table-caption-ownership (0.000956 sec)
+org-texmacs-ert>    passed  119/451  org-texmacs-document-named-table-captions-and-links (0.001379 sec)
+org-texmacs-ert>    passed  120/451  org-texmacs-document-named-table-native-and-provenance (1.591457 sec)
+org-texmacs-ert>    passed  121/451  org-texmacs-document-named-table-rejects-before-worker (0.044158 sec)
+org-texmacs-ert>    passed  122/451  org-texmacs-document-named-table-uncaptioned-and-priority (0.002460 sec)
+org-texmacs-ert>    passed  123/451  org-texmacs-document-nested-inline-and-cycles (0.000053 sec)
+org-texmacs-ert>    passed  124/451  org-texmacs-document-nested-list-island (0.001343 sec)
+org-texmacs-ert>    passed  125/451  org-texmacs-document-nested-markup-source-and-native (1.885689 sec)
+org-texmacs-ert>    passed  126/451  org-texmacs-document-paragraphs-and-bold (0.000155 sec)
+org-texmacs-ert>    passed  127/451  org-texmacs-document-preformatted-native-and-provenance (1.632272 sec)
+org-texmacs-ert>    passed  128/451  org-texmacs-document-preformatted-source-forms (0.003304 sec)
+org-texmacs-ert>    passed  129/451  org-texmacs-document-preformatted-tab-snapshot-and-preserve-indent (0.003537 sec)
+org-texmacs-ert>    passed  130/451  org-texmacs-document-preserves-buffer-state-on-exit (0.020273 sec)
+org-texmacs-ert>    passed  131/451  org-texmacs-document-quote-and-center-containers (0.001951 sec)
+org-texmacs-ert>    passed  132/451  org-texmacs-document-quote-uniform-quotation (0.006891 sec)
+org-texmacs-ert>    passed  133/451  org-texmacs-document-readme-native-example (1.690373 sec)
+org-texmacs-ert>    passed  134/451  org-texmacs-document-real-chinese-end-to-end (1.652196 sec)
+org-texmacs-ert>    passed  135/451  org-texmacs-document-real-custom-heading-settings (1.652483 sec)
+org-texmacs-ert>    passed  136/451  org-texmacs-document-real-failure-repair-and-update (2.042699 sec)
+org-texmacs-ert>    passed  137/451  org-texmacs-document-rechecks-explicit-source-after-switch (0.012185 sec)
+org-texmacs-ert>    passed  138/451  org-texmacs-document-reference-label-skips-stm-label (0.000100 sec)
+org-texmacs-ert>    passed  139/451  org-texmacs-document-reference-low-headline-and-target-priority (0.002236 sec)
+org-texmacs-ert>    passed  140/451  org-texmacs-document-reference-native-readback (1.550053 sec)
+org-texmacs-ert>    passed  141/451  org-texmacs-document-reference-preflight-before-island-request (0.001950 sec)
+org-texmacs-ert>    passed  142/451  org-texmacs-document-rejects-advanced-table-semantics (0.005975 sec)
+org-texmacs-ert>    passed  143/451  org-texmacs-document-rejects-ambiguous-and-external-id-links (0.003212 sec)
+org-texmacs-ert>    passed  144/451  org-texmacs-document-rejects-cycles (0.000033 sec)
+org-texmacs-ert>    passed  145/451  org-texmacs-document-rejects-dynamic-code-semantics (0.003740 sec)
+org-texmacs-ert>    passed  146/451  org-texmacs-document-rejects-headline-depth-over-five (0.000946 sec)
+org-texmacs-ert>    passed  147/451  org-texmacs-document-rejects-invalid-mappings (0.000070 sec)
+org-texmacs-ert>    passed  148/451  org-texmacs-document-rejects-invalid-whitespace (0.000064 sec)
+org-texmacs-ert>    passed  149/451  org-texmacs-document-rejects-list-checkbox-and-counter (0.001909 sec)
+org-texmacs-ert>    passed  150/451  org-texmacs-document-rejects-unsupported-source (0.003763 sec)
+org-texmacs-ert>    passed  151/451  org-texmacs-document-relative-headlines-and-low-level-lists (0.002538 sec)
+org-texmacs-ert>    passed  152/451  org-texmacs-document-resolves-dedicated-target (0.001172 sec)
+org-texmacs-ert>    passed  153/451  org-texmacs-document-resolves-local-headline-links (0.001481 sec)
+org-texmacs-ert>    passed  154/451  org-texmacs-document-rich-title-without-worker (0.000343 sec)
+org-texmacs-ert>    passed  155/451  org-texmacs-document-settings-buffer-snapshot (0.002021 sec)
+org-texmacs-ert>    passed  156/451  org-texmacs-document-source-adjacent-islands (0.001247 sec)
+org-texmacs-ert>    passed  157/451  org-texmacs-document-source-cache-remains-observable (0.001077 sec)
+org-texmacs-ert>    passed  158/451  org-texmacs-document-source-custom-level-settings (0.002025 sec)
+org-texmacs-ert>    passed  159/451  org-texmacs-document-source-custom-priority-settings (0.002022 sec)
+org-texmacs-ert>    passed  160/451  org-texmacs-document-source-custom-todo-plain-title (0.001130 sec)
+org-texmacs-ert>    passed  161/451  org-texmacs-document-source-custom-todo-settings (0.002419 sec)
+org-texmacs-ert>    passed  162/451  org-texmacs-document-source-disabled-fragments (0.000834 sec)
+org-texmacs-ert>    passed  163/451  org-texmacs-document-source-preflight (0.002706 sec)
+org-texmacs-ert>    passed  164/451  org-texmacs-document-source-real-error-and-repair (1.449899 sec)
+org-texmacs-ert>    passed  165/451  org-texmacs-document-source-real-islands (1.439946 sec)
+org-texmacs-ert>    passed  166/451  org-texmacs-document-source-rechecks-heading-settings (0.006131 sec)
+org-texmacs-ert>    passed  167/451  org-texmacs-document-source-rechecks-snapshot (0.004346 sec)
+org-texmacs-ert>    passed  168/451  org-texmacs-document-source-rejects-context (0.001144 sec)
+org-texmacs-ert>    passed  169/451  org-texmacs-document-source-root-mismatch (0.001104 sec)
+org-texmacs-ert>    passed  170/451  org-texmacs-document-source-without-islands (0.001354 sec)
+org-texmacs-ert>    passed  171/451  org-texmacs-document-table-alignment-caption-reference-and-files (1.507448 sec)
+org-texmacs-ert>    passed  172/451  org-texmacs-document-table-alignment-column-counts-and-rules (0.005666 sec)
+org-texmacs-ert>    passed  173/451  org-texmacs-document-table-alignment-rejections (0.043393 sec)
+org-texmacs-ert>    passed  174/451  org-texmacs-document-table-alignment-row-positions-and-ownership (0.004037 sec)
+org-texmacs-ert>    passed  175/451  org-texmacs-document-table-native-and-provenance (1.550245 sec)
+org-texmacs-ert>    passed  176/451  org-texmacs-document-table-rule-positions (0.002143 sec)
+org-texmacs-ert>    passed  177/451  org-texmacs-document-table-source-and-inline-subset (0.001458 sec)
+org-texmacs-ert>    passed  178/451  org-texmacs-document-toc-static-label-conflict-native (1.618181 sec)
+org-texmacs-ert>    passed  179/451  org-texmacs-document-toc-structure-and-headline-policies (0.002759 sec)
+org-texmacs-ert>    passed  180/451  org-texmacs-document-toc-uses-filtered-context (0.001584 sec)
+org-texmacs-ert>    passed  181/451  org-texmacs-document-uri-abbreviation-and-stale-settings (0.002083 sec)
+org-texmacs-ert>    passed  182/451  org-texmacs-document-uri-native-islands (1.613657 sec)
+org-texmacs-ert>    passed  183/451  org-texmacs-document-uri-private-syntax-restoration (0.002837 sec)
+org-texmacs-ert>    passed  184/451  org-texmacs-document-uri-rich-description (0.001430 sec)
+org-texmacs-ert>    passed  185/451  org-texmacs-document-uri-source-forms (0.020759 sec)
+org-texmacs-ert>    passed  186/451  org-texmacs-document-uri-type-and-target-contract (0.000110 sec)
+org-texmacs-ert>    passed  187/451  org-texmacs-document-whitespace-island-boundary (0.000043 sec)
+org-texmacs-ert>    passed  188/451  org-texmacs-encoding-decode-contract (0.000058 sec)
+org-texmacs-ert>    passed  189/451  org-texmacs-encoding-real-errors-preserve-parser (1.685799 sec)
+org-texmacs-ert>    passed  190/451  org-texmacs-encoding-real-source-semantics (1.688190 sec)
+org-texmacs-ert>    passed  191/451  org-texmacs-encoding-rejects-invalid-input-before-worker (0.000088 sec)
+org-texmacs-ert>    passed  192/451  org-texmacs-encoding-wire-is-data (0.000033 sec)
+org-texmacs-ert>    passed  193/451  org-texmacs-export-api-frontend-fresh-load (0.143905 sec)
+org-texmacs-ert>    passed  194/451  org-texmacs-export-api-main-module-fresh-load (0.141490 sec)
+org-texmacs-ert>    passed  195/451  org-texmacs-export-backend-buffer-display-error-cleanup (0.000484 sec)
+org-texmacs-ert>    passed  196/451  org-texmacs-export-backend-dependency-and-option-waits (1.729190 sec)
+org-texmacs-ert>    passed  197/451  org-texmacs-export-backend-discovery-captured-before-prompt (0.000456 sec)
+org-texmacs-ert>    passed  198/451  org-texmacs-export-backend-discovery-disabled-and-invalid (1.399886 sec)
+org-texmacs-ert>    passed  199/451  org-texmacs-export-backend-dispatch-and-native-consumers (1.784002 sec)
+org-texmacs-ert>    passed  200/451  org-texmacs-export-backend-dispatch-option-rejection (0.000447 sec)
+org-texmacs-ert>    passed  201/451  org-texmacs-export-backend-full-provider-profile (0.011444 sec)
+org-texmacs-ert>    passed  202/451  org-texmacs-export-backend-generic-preprocessing-guard (0.001432 sec)
+org-texmacs-ert>    passed  203/451  org-texmacs-export-backend-html-hook-advice-filter-isolation (0.002693 sec)
+org-texmacs-ert>    passed  204/451  org-texmacs-export-backend-keyword-naming-and-reexport (1.456101 sec)
+org-texmacs-ert>    passed  205/451  org-texmacs-export-backend-local-preprocessing-refusal (0.003129 sec)
+org-texmacs-ert>    passed  206/451  org-texmacs-export-backend-local-route-and-discovery (3.536764 sec)
+org-texmacs-ert>    passed  207/451  org-texmacs-export-backend-nonfile-prompt-and-native-bytes (0.006585 sec)
+org-texmacs-ert>    passed  208/451  org-texmacs-export-backend-preprocessed-three-consumers (1.638658 sec)
+org-texmacs-ert>    passed  209/451  org-texmacs-export-backend-preprocessing-failure-no-output (1.529561 sec)
+org-texmacs-ert>    passed  210/451  org-texmacs-export-backend-registration-and-installation (0.000077 sec)
+org-texmacs-ert>    passed  211/451  org-texmacs-export-backend-rejects-unsupported-options (0.000783 sec)
+org-texmacs-ert>    passed  212/451  org-texmacs-export-backend-render-and-write-errors (0.010450 sec)
+org-texmacs-ert>    passed  213/451  org-texmacs-export-backend-source-name-and-target-preflight (0.004880 sec)
+org-texmacs-ert>    passed  214/451  org-texmacs-export-backend-source-wait-before-output (0.004362 sec)
+org-texmacs-ert>    passed  215/451  org-texmacs-export-managed-buffer-content-commit-rollback (0.000471 sec)
+org-texmacs-ert>    passed  216/451  org-texmacs-export-managed-buffer-conversion-failure (0.000270 sec)
+org-texmacs-ert>    passed  217/451  org-texmacs-export-managed-buffer-display-failure-contract (0.000267 sec)
+org-texmacs-ert>    passed  218/451  org-texmacs-export-managed-buffer-foreign-and-explicit-results (0.000253 sec)
+org-texmacs-ert>    passed  219/451  org-texmacs-export-managed-buffer-kill-and-source-lifetime (0.000390 sec)
+org-texmacs-ert>    passed  220/451  org-texmacs-export-managed-buffer-no-mode-or-change-hooks (0.000216 sec)
+org-texmacs-ert>    passed  221/451  org-texmacs-export-managed-buffer-reuse-and-source-state (0.000224 sec)
+org-texmacs-ert>    passed  222/451  org-texmacs-export-managed-buffer-user-relinquishment (0.001491 sec)
+org-texmacs-ert>    passed  223/451  org-texmacs-export-menu-first-load-default-and-require (0.266909 sec)
+org-texmacs-ert>    passed  224/451  org-texmacs-export-menu-first-load-explicit-dispatch-and-ownership (0.278669 sec)
+org-texmacs-ert>    passed  225/451  org-texmacs-export-menu-first-load-invalid-preserves-registry (0.145287 sec)
+org-texmacs-ert>    passed  226/451  org-texmacs-export-menu-native-shared-prefix-and-conflicts (0.000441 sec)
+org-texmacs-ert>    passed  227/451  org-texmacs-export-menu-valid-key-domains-and-fields (0.000213 sec)
+org-texmacs-ert>    passed  228/451  org-texmacs-file-links-compose-with-inline-and-stm-provenance (0.000177 sec)
+org-texmacs-ert>    passed  229/451  org-texmacs-file-links-explicit-context-and-unsupported-semantics (0.008990 sec)
+org-texmacs-ert>    passed  230/451  org-texmacs-file-links-native-preflight-validates-provenance (0.000087 sec)
+org-texmacs-ert>    passed  231/451  org-texmacs-file-links-native-readback-and-preflight-preservation (1.585254 sec)
+org-texmacs-ert>    passed  232/451  org-texmacs-file-links-native-rejects-reserved-syntax (0.000140 sec)
+org-texmacs-ert>    passed  233/451  org-texmacs-file-links-preserve-raw-targets-and-frozen-base (0.002227 sec)
+org-texmacs-ert>    passed  234/451  org-texmacs-font-lock-default-and-ownership (0.002651 sec)
+org-texmacs-ert>    passed  235/451  org-texmacs-font-lock-discovery-boundaries (0.003304 sec)
+org-texmacs-ert>    passed  236/451  org-texmacs-font-lock-edit-old-block-context (0.002211 sec)
+org-texmacs-ert>    passed  237/451  org-texmacs-font-lock-existing-buffer-fresh-load (0.519245 sec)
+org-texmacs-ert>    passed  238/451  org-texmacs-font-lock-global-default-and-font-lock-toggle (0.001867 sec)
+org-texmacs-ert>    passed  239/451  org-texmacs-font-lock-incomplete-local-recovery (0.002380 sec)
+org-texmacs-ert>    passed  240/451  org-texmacs-font-lock-local-work-and-no-native-process (0.241827 sec)
+org-texmacs-ert>    passed  241/451  org-texmacs-font-lock-narrowing-mode-and-buffer-isolation (0.002976 sec)
+org-texmacs-ert>    passed  242/451  org-texmacs-font-lock-opaque-and-disable (0.002431 sec)
+org-texmacs-ert>    passed  243/451  org-texmacs-font-lock-restricted-block-header (0.000662 sec)
+org-texmacs-ert>    passed  244/451  org-texmacs-font-lock-roots-and-configuration (0.006375 sec)
+org-texmacs-ert>    passed  245/451  org-texmacs-fragment-issue10-discovery (0.003539 sec)
+org-texmacs-ert>    passed  246/451  org-texmacs-fragment-issue10-invalid-candidates (0.007436 sec)
+org-texmacs-ert>    passed  247/451  org-texmacs-fragment-issue10-object-and-delimiter-boundaries (0.011096 sec)
+org-texmacs-ert>    passed  248/451  org-texmacs-headline-custom-formatter-policy-and-result (0.001304 sec)
+org-texmacs-ert>    passed  249/451  org-texmacs-headline-explicit-tags-only (0.001281 sec)
+org-texmacs-ert>    passed  250/451  org-texmacs-headline-file-options-without-export-environment (0.001249 sec)
+org-texmacs-ert>    passed  251/451  org-texmacs-headline-formatter-copies-and-preserves-parts (0.000047 sec)
+org-texmacs-ert>    passed  252/451  org-texmacs-headline-invalid-formatter-result (0.003425 sec)
+org-texmacs-ert>    passed  253/451  org-texmacs-headline-native-metadata-literal (1.649972 sec)
+org-texmacs-ert>    passed  254/451  org-texmacs-headline-output-settings-snapshot (0.003715 sec)
+org-texmacs-ert>    passed  255/451  org-texmacs-headline-policy-combinations (0.051018 sec)
+org-texmacs-ert>    passed  256/451  org-texmacs-narrowing-config-and-source-state (0.001953 sec)
+org-texmacs-ert>    passed  257/451  org-texmacs-narrowing-empty-and-preflight-boundaries (0.003305 sec)
+org-texmacs-ert>    passed  258/451  org-texmacs-narrowing-native-frontend-naming-and-state (1.718938 sec)
+org-texmacs-ert>    passed  259/451  org-texmacs-narrowing-native-waits-reject-changes-before-write (1.496661 sec)
+org-texmacs-ert>    passed  260/451  org-texmacs-narrowing-owned-notes-bibliography-and-islands (1.696265 sec)
+org-texmacs-ert>    passed  261/451  org-texmacs-narrowing-prompts-and-restriction-changes (1.400439 sec)
+org-texmacs-ert>    passed  262/451  org-texmacs-narrowing-subtree-intersection-and-region-priority (0.004020 sec)
+org-texmacs-ert>    passed  263/451  org-texmacs-overrides-filtering-and-owned-dependencies (1.407976 sec)
+org-texmacs-ert>    passed  264/451  org-texmacs-overrides-global-file-subtree-priority (0.004044 sec)
+org-texmacs-ert>    passed  265/451  org-texmacs-overrides-invalid-plists-before-prompts-and-workers (0.001144 sec)
+org-texmacs-ert> Mark set
+org-texmacs-ert>    passed  266/451  org-texmacs-overrides-native-menu-consumers-and-region (1.658633 sec)
+org-texmacs-ert>    passed  267/451  org-texmacs-overrides-owned-across-prompt-and-native-waits (1.494338 sec)
+org-texmacs-ert>    passed  268/451  org-texmacs-overrides-rich-metadata-and-explicit-nil (0.002581 sec)
+org-texmacs-ert>    passed  269/451  org-texmacs-pdf-block-quotation-and-center-layout (1.685517 sec)
+org-texmacs-ert>    passed  270/451  org-texmacs-pdf-caption-number-and-reference-semantics (1.780712 sec)
+org-texmacs-ert>    passed  271/451  org-texmacs-pdf-citation-text-and-owned-bibliography (1.754505 sec)
+org-texmacs-ert>    passed  272/451  org-texmacs-pdf-cleanup-failure-stops-worker (1.432556 sec)
+org-texmacs-ert>    passed  273/451  org-texmacs-pdf-date-literal-layout (1.880364 sec)
+org-texmacs-ert>    passed  274/451  org-texmacs-pdf-derived-link-targets (4.378132 sec)
+org-texmacs-ert>    passed  275/451  org-texmacs-pdf-explicit-source-export (1.498768 sec)
+org-texmacs-ert>    passed  276/451  org-texmacs-pdf-five-level-headline-counter-and-toc (1.657610 sec)
+org-texmacs-ert>    passed  277/451  org-texmacs-pdf-footnote-text-and-repeated-markers (1.541986 sec)
+org-texmacs-ert>    passed  278/451  org-texmacs-pdf-hyperlink-annotations (5.680871 sec)
+org-texmacs-ert>    passed  279/451  org-texmacs-pdf-issue10-inline-and-separate (10.194998 sec)
+org-texmacs-ert>    passed  280/451  org-texmacs-pdf-issue11-bare-block-and-reload-consistency (50.445435 sec)
+org-texmacs-ert>    passed  281/451  org-texmacs-pdf-issue11-original-equation-layout (3.742598 sec)
+org-texmacs-ert>    passed  282/451  org-texmacs-pdf-list-multiparagraph-native-layout (1.702011 sec)
+org-texmacs-ert>    passed  283/451  org-texmacs-pdf-native-basic (1.491718 sec)
+org-texmacs-ert>    passed  284/451  org-texmacs-pdf-native-session-and-inspection (1.952556 sec)
+org-texmacs-ert>    passed  285/451  org-texmacs-pdf-preflight-protocol-and-source-wait (0.002077 sec)
+org-texmacs-ert>    passed  286/451  org-texmacs-pdf-preformatted-lines-and-indent (1.703481 sec)
+org-texmacs-ert>    passed  287/451  org-texmacs-pdf-render-error-recovery (3.679502 sec)
+org-texmacs-ert>    passed  288/451  org-texmacs-pdf-table-alignment-frontend-and-native-layout (1.757543 sec)
+org-texmacs-ert>    passed  289/451  org-texmacs-pdf-typeset-error-recovery (3.769463 sec)
+org-texmacs-ert>    passed  290/451  org-texmacs-preprocess-bibliography-uuid-and-filters-once (1.592861 sec)
+org-texmacs-ert>    passed  291/451  org-texmacs-preprocess-bounds-aliases-and-temporary-cleanup (0.006646 sec)
+org-texmacs-ert>    passed  292/451  org-texmacs-preprocess-budgets-and-hook-created-stm (0.031572 sec)
+org-texmacs-ert>    passed  293/451  org-texmacs-preprocess-completed-working-buffer-context (1.448981 sec)
+org-texmacs-ert>    passed  294/451  org-texmacs-preprocess-component-hooks-generated-and-protected (0.002293 sec)
+org-texmacs-ert>    passed  295/451  org-texmacs-preprocess-component-native-fixed-sources (0.004610 sec)
+org-texmacs-ert>    passed  296/451  org-texmacs-preprocess-component-native-guard-and-mode-hook-isolation (0.002329 sec)
+org-texmacs-ert>    passed  297/451  org-texmacs-preprocess-component-rejects-files-and-parameters (0.009743 sec)
+org-texmacs-ert>    passed  298/451  org-texmacs-preprocess-component-rejects-marker-and-config-edits (0.004861 sec)
+org-texmacs-ert>    passed  299/451  org-texmacs-preprocess-cross-directory-final-bibliography-base (1.602292 sec)
+org-texmacs-ert>    passed  300/451  org-texmacs-preprocess-cross-directory-native-links-and-notes (1.560954 sec)
+org-texmacs-ert>    passed  301/451  org-texmacs-preprocess-cross-directory-partial-stm-rejected (0.003463 sec)
+org-texmacs-ert>    passed  302/451  org-texmacs-preprocess-cross-directory-stm-final-context (1.413525 sec)
+org-texmacs-ert>    passed  303/451  org-texmacs-preprocess-discovery-off-and-old-api-defaults (0.042161 sec)
+org-texmacs-ert>    passed  304/451  org-texmacs-preprocess-fixed-read-copies-and-parameter-errors (0.011615 sec)
+org-texmacs-ert>    passed  305/451  org-texmacs-preprocess-island-ranges-owned-before-filters (0.001544 sec)
+org-texmacs-ert>    passed  306/451  org-texmacs-preprocess-lines-protect-multiline-stm (0.004867 sec)
+org-texmacs-ert>    passed  307/451  org-texmacs-preprocess-native-depth-and-invalid-utf8 (0.012687 sec)
+org-texmacs-ert>    passed  308/451  org-texmacs-preprocess-native-parameter-combinations (0.009368 sec)
+org-texmacs-ert>    passed  309/451  org-texmacs-preprocess-native-reader-restored-after-failure (0.001506 sec)
+org-texmacs-ert>    passed  310/451  org-texmacs-preprocess-original-and-working-snapshots (0.001130 sec)
+org-texmacs-ert>    passed  311/451  org-texmacs-preprocess-original-source-guard-before-working-parse (0.000480 sec)
+org-texmacs-ert>    passed  312/451  org-texmacs-preprocess-rejects-dependency-changes-at-native-stages (1.857194 sec)
+org-texmacs-ert>    passed  313/451  org-texmacs-preprocess-rejects-include-read-mutations (0.007855 sec)
+org-texmacs-ert>    passed  314/451  org-texmacs-preprocess-rejects-selection-directory-and-odd-levels (0.002054 sec)
+org-texmacs-ert>    passed  315/451  org-texmacs-preprocess-rejects-source-and-hook-mutations (0.012697 sec)
+org-texmacs-ert>    passed  316/451  org-texmacs-preprocess-selected-external-footnote-stm (1.431562 sec)
+org-texmacs-ert>    passed  317/451  org-texmacs-preprocess-selected-same-file-native-cycle-policy (0.009491 sec)
+org-texmacs-ert>    passed  318/451  org-texmacs-preprocess-selected-stm-native-readback (1.548414 sec)
+org-texmacs-ert>    passed  319/451  org-texmacs-preprocess-selection-avoids-excluded-reads (0.003675 sec)
+org-texmacs-ert>    passed  320/451  org-texmacs-preprocess-source-to-native-and-owned-snapshots (2.251825 sec)
+org-texmacs-ert>    passed  321/451  org-texmacs-preprocess-whole-file-footnotes-and-generated-stm (1.501782 sec)
+org-texmacs-ert> Mark set
+org-texmacs-ert>    passed  322/451  org-texmacs-region-dispatch-and-subtree-priority (1.720801 sec)
+org-texmacs-ert>    passed  323/451  org-texmacs-region-footnote-dependencies-and-islands (1.492889 sec)
+org-texmacs-ert> Mark set
+org-texmacs-ert>    passed  324/451  org-texmacs-region-frozen-selection-and-stale-source (1.455903 sec)
+org-texmacs-ert>    passed  325/451  org-texmacs-region-headings-and-complete-native-block (1.446432 sec)
+org-texmacs-ert>    passed  326/451  org-texmacs-region-invalid-boundaries-and-link-scope (0.005323 sec)
+org-texmacs-ert>    passed  327/451  org-texmacs-region-owned-bibliography-and-resource-base (1.552398 sec)
+org-texmacs-ert> Mark set
+org-texmacs-ert>    passed  328/451  org-texmacs-region-partial-text-and-file-context (0.002395 sec)
+org-texmacs-ert>    passed  329/451  org-texmacs-serialization-export-bibliography-wait (1.561340 sec)
+org-texmacs-ert>    passed  330/451  org-texmacs-serialization-export-buffer-initialization-and-failure (0.000807 sec)
+org-texmacs-ert>    passed  331/451  org-texmacs-serialization-export-buffer-native-and-owned (1.558609 sec)
+org-texmacs-ert>    passed  332/451  org-texmacs-serialization-export-destination-and-preflight (0.004410 sec)
+org-texmacs-ert>    passed  333/451  org-texmacs-serialization-export-explicit-command-boundary (0.000053 sec)
+org-texmacs-ert>    passed  334/451  org-texmacs-serialization-export-explicit-file-source (1.425151 sec)
+org-texmacs-ert>    passed  335/451  org-texmacs-serialization-export-native-source-and-file (1.579629 sec)
+org-texmacs-ert>    passed  336/451  org-texmacs-serialization-export-source-waits-before-output (0.008851 sec)
+org-texmacs-ert>    passed  337/451  org-texmacs-serialization-native-errors-preserve-worker (1.542925 sec)
+org-texmacs-ert>    passed  338/451  org-texmacs-serialization-native-roundtrip-and-session-independence (1.724003 sec)
+org-texmacs-ert>    passed  339/451  org-texmacs-serialization-owned-org-document (1.716305 sec)
+org-texmacs-ert>    passed  340/451  org-texmacs-serialization-preflight-and-protocol (0.000315 sec)
+org-texmacs-ert>    passed  341/451  org-texmacs-serialization-save-copied-path-and-races (0.000527 sec)
+org-texmacs-ert>    passed  342/451  org-texmacs-serialization-save-error-boundaries (0.000173 sec)
+org-texmacs-ert>    passed  343/451  org-texmacs-serialization-save-native-bytes-and-caller-isolation (1.455211 sec)
+org-texmacs-ert>    passed  344/451  org-texmacs-serialization-save-preflight (0.000361 sec)
+org-texmacs-ert>    passed  345/451  org-texmacs-session-invalid-and-stale-handles (0.000042 sec)
+org-texmacs-ert>    passed  346/451  org-texmacs-session-readme-example (1.800806 sec)
+org-texmacs-ert>    passed  347/451  org-texmacs-session-real-close-failure-stops-worker (1.459204 sec)
+org-texmacs-ert>    passed  348/451  org-texmacs-session-real-complete-document-state (1.811649 sec)
+org-texmacs-ert>    passed  349/451  org-texmacs-session-real-encoding-error-preserves-body (1.671812 sec)
+org-texmacs-ert>    passed  350/451  org-texmacs-session-real-lifecycle (2.036516 sec)
+org-texmacs-ert>    passed  351/451  org-texmacs-session-real-restart-invalidates-handle (2.397769 sec)
+org-texmacs-ert>    passed  352/451  org-texmacs-session-real-update-failure-discards-buffer (1.663415 sec)
+org-texmacs-ert>    passed  353/451  org-texmacs-session-response-contract (0.000110 sec)
+org-texmacs-ert>    passed  354/451  org-texmacs-source-location-checks-after-preflight (0.001887 sec)
+org-texmacs-ert>    passed  355/451  org-texmacs-source-location-expands-home-during-preparation (0.001215 sec)
+org-texmacs-ert>    passed  356/451  org-texmacs-source-location-explicit-buffer-snapshot (0.002266 sec)
+org-texmacs-ert>    passed  357/451  org-texmacs-source-location-indirect-buffer-context (0.001111 sec)
+org-texmacs-ert>    passed  358/451  org-texmacs-source-location-invalidates-worker-snapshot (0.004299 sec)
+org-texmacs-ert>    passed  359/451  org-texmacs-source-location-owned-pure-input (0.000123 sec)
+org-texmacs-ert>    passed  360/451  org-texmacs-source-location-rejects-implicit-paths (0.000084 sec)
+org-texmacs-ert>    passed  361/451  org-texmacs-subtree-configuration-and-owned-selection (0.002442 sec)
+org-texmacs-ert>    passed  362/451  org-texmacs-subtree-date-and-filter-overrides (0.002358 sec)
+org-texmacs-ert>    passed  363/451  org-texmacs-subtree-dispatch-file-naming-and-source-state (1.683534 sec)
+org-texmacs-ert>    passed  364/451  org-texmacs-subtree-external-footnotes-and-stm-order (1.526278 sec)
+org-texmacs-ert>    passed  365/451  org-texmacs-subtree-links-and-invalid-scope-preflight (0.010470 sec)
+org-texmacs-ert>    passed  366/451  org-texmacs-subtree-owned-bibliography-and-resource-base (1.663711 sec)
+org-texmacs-ert>    passed  367/451  org-texmacs-subtree-selection-and-property-waits (1.515165 sec)
+org-texmacs-ert>    passed  368/451  org-texmacs-test-block-p (0.000645 sec)
+org-texmacs-ert>    passed  369/451  org-texmacs-test-block-source-exact (0.001594 sec)
+org-texmacs-ert>    passed  370/451  org-texmacs-test-block-source-rejects-invalid-bounds (0.000057 sec)
+org-texmacs-ert>    passed  371/451  org-texmacs-test-block-source-rejects-other-nodes (0.000026 sec)
+org-texmacs-ert>    passed  372/451  org-texmacs-test-block-source-strips-properties (0.000363 sec)
+org-texmacs-ert>    passed  373/451  org-texmacs-test-capability-check-rejects-malformed-input (0.000019 sec)
+org-texmacs-ert>    passed  374/451  org-texmacs-test-capability-check-reports-all-failures (0.000030 sec)
+org-texmacs-ert>    passed  375/451  org-texmacs-test-capability-types (0.000019 sec)
+org-texmacs-ert>    passed  376/451  org-texmacs-test-ensure-setup-signals-error (0.000054 sec)
+org-texmacs-ert>    passed  377/451  org-texmacs-test-fragment-at-point-boundaries (0.003626 sec)
+org-texmacs-ert>    passed  378/451  org-texmacs-test-fragment-buffer-local-tags (0.001176 sec)
+org-texmacs-ert>    passed  379/451  org-texmacs-test-fragment-custom-real-error-and-repair (1.573433 sec)
+org-texmacs-ert>    passed  380/451  org-texmacs-test-fragment-custom-tags (0.002809 sec)
+org-texmacs-ert>    passed  381/451  org-texmacs-test-fragment-default-native-exclusions (0.054969 sec)
+org-texmacs-ert>    passed  382/451  org-texmacs-test-fragment-default-real-trees (3.715588 sec)
+org-texmacs-ert>    passed  383/451  org-texmacs-test-fragment-default-sources (0.096666 sec)
+org-texmacs-ert>    passed  384/451  org-texmacs-test-fragment-default-tags (0.000037 sec)
+org-texmacs-ert>    passed  385/451  org-texmacs-test-fragment-invalid-tags (0.001320 sec)
+org-texmacs-ert>    passed  386/451  org-texmacs-test-fragment-map-callback-context (0.000576 sec)
+org-texmacs-ert>    passed  387/451  org-texmacs-test-fragment-map-checks-tags (0.001488 sec)
+org-texmacs-ert>    passed  388/451  org-texmacs-test-fragment-map-rejects-callback-source-changes (0.001971 sec)
+org-texmacs-ert>    passed  389/451  org-texmacs-test-fragment-mask-preserves-shape (0.000093 sec)
+org-texmacs-ert>    passed  390/451  org-texmacs-test-fragment-masking-keeps-native-object-exclusions (0.005361 sec)
+org-texmacs-ert>    passed  391/451  org-texmacs-test-fragment-masking-preserves-adjacent-markup (0.006573 sec)
+org-texmacs-ert>    passed  392/451  org-texmacs-test-fragment-mixed-boundaries (0.056437 sec)
+org-texmacs-ert>    passed  393/451  org-texmacs-test-fragment-narrowing (0.000482 sec)
+org-texmacs-ert>    passed  394/451  org-texmacs-test-fragment-prefix (0.000040 sec)
+org-texmacs-ert>    passed  395/451  org-texmacs-test-fragment-prefix-is-case-sensitive (0.000038 sec)
+org-texmacs-ert>    passed  396/451  org-texmacs-test-fragment-region-filtering-preserves-precedence (0.001981 sec)
+org-texmacs-ert>    passed  397/451  org-texmacs-test-fragment-rejects-invalid-arguments (0.000243 sec)
+org-texmacs-ert>    passed  398/451  org-texmacs-test-fragment-rejects-reader-extensions (0.000054 sec)
+org-texmacs-ert>    passed  399/451  org-texmacs-test-fragment-scan-is-isolated (0.000623 sec)
+org-texmacs-ert>    passed  400/451  org-texmacs-test-fragment-scan-resumes-next-paragraph (0.001800 sec)
+org-texmacs-ert>    passed  401/451  org-texmacs-test-fragment-source-cases (0.011979 sec)
+org-texmacs-ert>    passed  402/451  org-texmacs-test-fragment-structural-boundaries (0.001424 sec)
+org-texmacs-ert>    passed  403/451  org-texmacs-test-fragment-structural-scan-stays-in-paragraph (0.000022 sec)
+org-texmacs-ert>    passed  404/451  org-texmacs-test-fragment-tag-prefixes (0.007923 sec)
+org-texmacs-ert>    passed  405/451  org-texmacs-test-fragment-tag-snapshots (0.000881 sec)
+org-texmacs-ert>    passed  406/451  org-texmacs-test-fragment-tags-do-not-restrict-blocks (1.492378 sec)
+org-texmacs-ert>    passed  407/451  org-texmacs-test-fragment-tree-copies-stree-strings (0.001142 sec)
+org-texmacs-ert>    passed  408/451  org-texmacs-test-fragment-tree-narrowing-and-text-properties (0.000644 sec)
+org-texmacs-ert>    passed  409/451  org-texmacs-test-fragment-tree-real-error-and-repair (1.530935 sec)
+org-texmacs-ert>    passed  410/451  org-texmacs-test-fragment-tree-real-parser (1.519756 sec)
+org-texmacs-ert>    passed  411/451  org-texmacs-test-fragment-tree-rechecks-after-worker-wait (0.003096 sec)
+org-texmacs-ert>    passed  412/451  org-texmacs-test-fragment-tree-rechecks-tags (0.001833 sec)
+org-texmacs-ert>    passed  413/451  org-texmacs-test-fragment-tree-rejects-invalid-spans (0.000529 sec)
+org-texmacs-ert>    passed  414/451  org-texmacs-test-fragment-tree-rejects-other-or-dead-buffer (0.000684 sec)
+org-texmacs-ert>    passed  415/451  org-texmacs-test-fragment-tree-rejects-stale-source (0.001970 sec)
+org-texmacs-ert>    passed  416/451  org-texmacs-test-fragment-tree-root-and-error-contract (0.000591 sec)
+org-texmacs-ert>    passed  417/451  org-texmacs-test-fragment-tree-shares-worker-with-blocks (1.544979 sec)
+org-texmacs-ert>    passed  418/451  org-texmacs-test-input-captures-formatter-without-calling-it (0.000172 sec)
+org-texmacs-ert>    passed  419/451  org-texmacs-test-input-defaults-ignore-ambient-options (0.000080 sec)
+org-texmacs-ert>    passed  420/451  org-texmacs-test-input-document-settings-ownership (0.000063 sec)
+org-texmacs-ert>    passed  421/451  org-texmacs-test-input-ownership-and-mapping (0.000127 sec)
+org-texmacs-ert>    passed  422/451  org-texmacs-test-input-pure-core (0.000083 sec)
+org-texmacs-ert>    passed  423/451  org-texmacs-test-input-rejects-invalid-document-settings (0.000103 sec)
+org-texmacs-ert>    passed  424/451  org-texmacs-test-input-rejects-invalid-ownership (0.000083 sec)
+org-texmacs-ert>    passed  425/451  org-texmacs-test-input-rejects-unresolved-and-opaque-data (0.000076 sec)
+org-texmacs-ert>    passed  426/451  org-texmacs-test-input-secondary-ownership (0.000082 sec)
+org-texmacs-ert>    passed  427/451  org-texmacs-test-package-loads (0.005361 sec)
+org-texmacs-ert>    passed  428/451  org-texmacs-test-prepare-buffer-independent-result (0.003230 sec)
+org-texmacs-ert>    passed  429/451  org-texmacs-test-setup-check-passes (0.000098 sec)
+org-texmacs-ert>    passed  430/451  org-texmacs-test-setup-checks-configured-program (0.000061 sec)
+org-texmacs-ert>    passed  431/451  org-texmacs-test-stree-org-round-trip (0.000032 sec)
+org-texmacs-ert>    passed  432/451  org-texmacs-test-stree-to-org-builds-parent-links (0.000026 sec)
+org-texmacs-ert>    passed  433/451  org-texmacs-test-stree-to-org-copies-strings (0.000017 sec)
+org-texmacs-ert>    passed  434/451  org-texmacs-test-texmacs-headless-parse (1.342233 sec)
+org-texmacs-ert>    passed  435/451  org-texmacs-test-tree-blocks-share-worker (1.447644 sec)
+org-texmacs-ert>    passed  436/451  org-texmacs-test-tree-edit-and-error-recovery (1.624833 sec)
+org-texmacs-ert>    passed  437/451  org-texmacs-test-tree-prefix-edit-remains-correct (0.001290 sec)
+org-texmacs-ert>    passed  438/451  org-texmacs-test-tree-real-parser-and-cache (1.421966 sec)
+org-texmacs-ert>    passed  439/451  org-texmacs-test-tree-rejects-text-changed-during-parse (0.001047 sec)
+org-texmacs-ert>    passed  440/451  org-texmacs-test-tree-rejects-wrong-block (0.000030 sec)
+org-texmacs-ert>    passed  441/451  org-texmacs-test-worker-decode-escaped-response-and-errors (0.000032 sec)
+org-texmacs-ert>    passed  442/451  org-texmacs-test-worker-decode-rejects-reader-references (0.000034 sec)
+org-texmacs-ert>    passed  443/451  org-texmacs-test-worker-decode-scopes-reader-settings (0.000327 sec)
+org-texmacs-ert>    passed  444/451  org-texmacs-test-worker-recovers-from-source-errors (1.971369 sec)
+org-texmacs-ert>    passed  445/451  org-texmacs-test-worker-rejects-invalid-responses (0.000080 sec)
+org-texmacs-ert>    passed  446/451  org-texmacs-test-worker-rejects-reentrant-request (0.000031 sec)
+org-texmacs-ert>    passed  447/451  org-texmacs-test-worker-request-builder-error-preserves-process (1.407734 sec)
+org-texmacs-ert>    passed  448/451  org-texmacs-test-worker-request-timeout-cleans-up (1.449686 sec)
+org-texmacs-ert>    passed  449/451  org-texmacs-test-worker-restarts-after-exit (2.312654 sec)
+org-texmacs-ert>    passed  450/451  org-texmacs-test-worker-reuses-process (1.647904 sec)
+org-texmacs-ert>    passed  451/451  org-texmacs-test-worker-start-timeout-cleans-up (0.102314 sec)
+org-texmacs-ert> 
+org-texmacs-ert> Ran 451 tests, 451 results as expected, 0 unexpected (2026-10-16 14:18:40+0000, 283.173420 sec)
+org-texmacs-ert> 
+all checks passed!
+warning: The check omitted these incompatible systems: aarch64-darwin, aarch64-linux, armv6l-linux, armv7l-linux, i686-linux, powerpc64le-linux, riscv64-linux, x86_64-freebsd
+Use '--all-systems' to check all.

@@ -1,0 +1,15 @@
+Running 11 tests (2026-10-16 14:13:11+0000, selector `"^org-texmacs-font-lock-"')
+   passed   1/11  org-texmacs-font-lock-default-and-ownership (0.109310 sec)
+   passed   2/11  org-texmacs-font-lock-discovery-boundaries (0.003334 sec)
+   passed   3/11  org-texmacs-font-lock-edit-old-block-context (0.001987 sec)
+   passed   4/11  org-texmacs-font-lock-existing-buffer-fresh-load (0.508979 sec)
+   passed   5/11  org-texmacs-font-lock-global-default-and-font-lock-toggle (0.001616 sec)
+   passed   6/11  org-texmacs-font-lock-incomplete-local-recovery (0.002299 sec)
+   passed   7/11  org-texmacs-font-lock-local-work-and-no-native-process (0.212790 sec)
+   passed   8/11  org-texmacs-font-lock-narrowing-mode-and-buffer-isolation (0.002927 sec)
+   passed   9/11  org-texmacs-font-lock-opaque-and-disable (0.002687 sec)
+   passed  10/11  org-texmacs-font-lock-restricted-block-header (0.000650 sec)
+   passed  11/11  org-texmacs-font-lock-roots-and-configuration (0.006681 sec)
+
+Ran 11 tests, 11 results as expected, 0 unexpected (2026-10-16 14:13:12+0000, 0.853644 sec)
+
