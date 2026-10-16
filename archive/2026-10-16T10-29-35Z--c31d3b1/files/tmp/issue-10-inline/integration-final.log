@@ -1,0 +1,117 @@
+these 4 derivations will be built:
+  /nix/store/qfbgzsz1b3bxb8rwxqnhh7b5rxv064b9-emacs-org-texmacs-0.4.0.drv
+  /nix/store/0g97s1zc76hrfnkrn9mic5fg0267l978-emacs-packages-deps.drv
+  /nix/store/3lxdp3s0rdlwdi0xymixvs7lfwm1b48p-emacs-with-packages-31.1.drv
+  /nix/store/kyg3rq2csx05xlfly92cn4c1x0rvmqnf-org-texmacs-org-extension-integration.drv
+building '/nix/store/qfbgzsz1b3bxb8rwxqnhh7b5rxv064b9-emacs-org-texmacs-0.4.0.drv'...
+emacs-org-texmacs> structuredAttrs is enabled
+emacs-org-texmacs> Running phase: unpackPhase
+emacs-org-texmacs> unpacking source archive /nix/store/s22dzs06s8jljb4wkbrd8hfc5kz5qar9-source
+emacs-org-texmacs> source root is source
+emacs-org-texmacs> Running phase: patchPhase
+emacs-org-texmacs> Running phase: updateAutotoolsGnuConfigScriptsPhase
+emacs-org-texmacs> Running phase: configurePhase
+emacs-org-texmacs> no configure script, doing nothing
+emacs-org-texmacs> Running phase: buildPhase
+emacs-org-texmacs> Running phase: installPhase
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-preprocess.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-session.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-source.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-input.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-document.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-ast.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-context.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-worker.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-core.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-fragment.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-bibliography.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/ox-texmacs.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs.el        || exit $?'
+emacs-org-texmacs> Running phase: fixupPhase
+emacs-org-texmacs> shrinking RPATHs of ELF executables and libraries in /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0
+emacs-org-texmacs> shrinking /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-context-66624530-d5b3ca08.eln
+emacs-org-texmacs> shrinking /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-49799961-f6b4762b.eln
+emacs-org-texmacs> shrinking /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-input-3d50b34c-113edbb6.eln
+emacs-org-texmacs> shrinking /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/ox-texmacs-78c67c2a-5a11d773.eln
+emacs-org-texmacs> shrinking /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-ast-c80b779a-88f45636.eln
+emacs-org-texmacs> shrinking /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-session-3c7679cc-9f7f5ee5.eln
+emacs-org-texmacs> shrinking /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-fragment-642239c2-47bef0ed.eln
+emacs-org-texmacs> shrinking /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-source-4bb714b2-4c14188a.eln
+emacs-org-texmacs> shrinking /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-worker-76e96575-9fe90cee.eln
+emacs-org-texmacs> shrinking /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-preprocess-25a34fdf-17209aed.eln
+emacs-org-texmacs> shrinking /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-document-e3359407-f2569ec7.eln
+emacs-org-texmacs> shrinking /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-core-a9edfb01-8ca14c35.eln
+emacs-org-texmacs> shrinking /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-bibliography-2a6c4d40-58abd8a8.eln
+emacs-org-texmacs> checking for references to /build/ in /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0...
+emacs-org-texmacs> patching script interpreter paths in /nix/store/zn4sgzy2v60p7q6z6m368dvgy4x02ri6-emacs-org-texmacs-0.4.0
+building '/nix/store/0g97s1zc76hrfnkrn9mic5fg0267l978-emacs-packages-deps.drv'...
+building '/nix/store/3lxdp3s0rdlwdi0xymixvs7lfwm1b48p-emacs-with-packages-31.1.drv'...
+building '/nix/store/kyg3rq2csx05xlfly92cn4c1x0rvmqnf-org-texmacs-org-extension-integration.drv'...
+org-texmacs-org-extension-integration> Running 9 tests (2026-10-16 10:23:19+0000, selector `"^org-texmacs-integration-"')
+org-texmacs-org-extension-integration> Clearing removed files...
+org-texmacs-org-extension-integration> Clearing removed files...done
+org-texmacs-org-extension-integration> Processing modified files...
+org-texmacs-org-extension-integration> Processing modified files...done
+org-texmacs-org-extension-integration>    passed  1/9  org-texmacs-integration-frontend-errors-and-local-mount-refusal (0.136008 sec)
+org-texmacs-org-extension-integration> Clearing removed files...
+org-texmacs-org-extension-integration> Clearing removed files...done
+org-texmacs-org-extension-integration> Processing modified files...
+org-texmacs-org-extension-integration> Processing modified files...done
+org-texmacs-org-extension-integration>    passed  2/9  org-texmacs-integration-frontend-three-consumers-and-discovery (2.313916 sec)
+org-texmacs-org-extension-integration> Clearing removed files...
+org-texmacs-org-extension-integration> Clearing removed files...done
+org-texmacs-org-extension-integration> Processing modified files...
+org-texmacs-org-extension-integration> Processing modified files...done
+org-texmacs-org-extension-integration> Clearing removed files...
+org-texmacs-org-extension-integration> Clearing removed files...done
+org-texmacs-org-extension-integration> Processing modified files...
+org-texmacs-org-extension-integration> Processing modified files...done
+org-texmacs-org-extension-integration> Checking syntactical structure (done)
+org-texmacs-org-extension-integration> Checking for duplicate keys (done)
+org-texmacs-org-extension-integration> Buffer is syntactically correct
+org-texmacs-org-extension-integration> Org-roam Blog publication completed
+org-texmacs-org-extension-integration> 
+org-texmacs-org-extension-integration>    passed  3/9  org-texmacs-integration-joint-html-and-blog-publication (1.689318 sec)
+org-texmacs-org-extension-integration> Clearing removed files...
+org-texmacs-org-extension-integration> Clearing removed files...done
+org-texmacs-org-extension-integration> Processing modified files...
+org-texmacs-org-extension-integration> Processing modified files...done
+org-texmacs-org-extension-integration>    passed  4/9  org-texmacs-integration-mode-teardown-restores-standard-interfaces (0.017648 sec)
+org-texmacs-org-extension-integration> Clearing removed files...
+org-texmacs-org-extension-integration> Clearing removed files...done
+org-texmacs-org-extension-integration> Processing modified files...
+org-texmacs-org-extension-integration> Processing modified files...done
+org-texmacs-org-extension-integration>    passed  5/9  org-texmacs-integration-real-include-mount-and-error-restoration (1.438511 sec)
+org-texmacs-org-extension-integration> Clearing removed files...
+org-texmacs-org-extension-integration> Clearing removed files...done
+org-texmacs-org-extension-integration> Processing modified files...
+org-texmacs-org-extension-integration> Processing modified files...done
+org-texmacs-org-extension-integration>    passed  6/9  org-texmacs-integration-real-include-native-document (1.528886 sec)
+org-texmacs-org-extension-integration> Clearing removed files...
+org-texmacs-org-extension-integration> Clearing removed files...done
+org-texmacs-org-extension-integration> Processing modified files...
+org-texmacs-org-extension-integration> Processing modified files...done
+org-texmacs-org-extension-integration> Clearing removed files...
+org-texmacs-org-extension-integration> Clearing removed files...done
+org-texmacs-org-extension-integration> Processing modified files...
+org-texmacs-org-extension-integration> Processing modified files...done
+org-texmacs-org-extension-integration>    passed  7/9  org-texmacs-integration-real-include-parameters-and-cycle (1.440871 sec)
+org-texmacs-org-extension-integration> Clearing removed files...
+org-texmacs-org-extension-integration> Clearing removed files...done
+org-texmacs-org-extension-integration> Processing modified files...
+org-texmacs-org-extension-integration> Processing modified files...done
+org-texmacs-org-extension-integration>    passed  8/9  org-texmacs-integration-real-organize-cite-and-bibliography (1.612502 sec)
+org-texmacs-org-extension-integration> Clearing removed files...
+org-texmacs-org-extension-integration> Clearing removed files...done
+org-texmacs-org-extension-integration> Processing modified files...
+org-texmacs-org-extension-integration> Processing modified files...done
+org-texmacs-org-extension-integration> Clearing removed files...
+org-texmacs-org-extension-integration> Clearing removed files...done
+org-texmacs-org-extension-integration> Processing modified files...
+org-texmacs-org-extension-integration> Processing modified files...done
+org-texmacs-org-extension-integration>    passed  9/9  org-texmacs-integration-real-organize-missing-ref-error (0.039247 sec)
+org-texmacs-org-extension-integration> 
+org-texmacs-org-extension-integration> Ran 9 tests, 9 results as expected, 0 unexpected (2026-10-16 10:23:29+0000, 10.217289 sec)
+org-texmacs-org-extension-integration> 
+org-texmacs-org-extension-integration> BLOG result=(:status success :staging nil :static-published nil :promoted ("/build/org-texmacs-real-extensions-turUBQ/public/_org/root.html") :plan ((:kind content :source "/build/org-texmacs-real-extensions-turUBQ/notes/root.org" :target "/build/org-texmacs-real-extensions-turUBQ/public/_org/root.html" :owner "posts")) :diagnostics nil)
+/nix/store/wjfclbf73v4kp5w3qfb7698pcyvf6a9i-org-texmacs-org-extension-integration

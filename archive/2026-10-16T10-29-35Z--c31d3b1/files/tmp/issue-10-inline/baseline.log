@@ -1,0 +1,134 @@
+this derivation will be built:
+  /nix/store/0071k6y086yxpjlrg5qxnr7h9nlx6xpg-org-texmacs-issue10-baseline.drv
+building '/nix/store/0071k6y086yxpjlrg5qxnr7h9nlx6xpg-org-texmacs-issue10-baseline.drv'...
+org-texmacs-issue10-baseline> Running 2 tests (2026-10-16 10:04:15+0000, selector `(or "^org-texmacs-fragment-issue10-discovery$" "^org-texmacs-document-issue10-pure-bare$")')
+org-texmacs-issue10-baseline> Test org-texmacs-document-issue10-pure-bare backtrace:
+org-texmacs-issue10-baseline>   signal(org-texmacs-document-error ("Island outside paragraph text" p
+org-texmacs-issue10-baseline>   org-texmacs--document-fail(#("island" 0 6 (:parent (footnote-referen
+org-texmacs-issue10-baseline>   (if (and (stringp node) (eq context 'paragraph)) nil (org-texmacs--d
+org-texmacs-issue10-baseline>   (cond (entry (if (and (stringp node) (eq context 'paragraph)) nil (o
+org-texmacs-issue10-baseline>   (let ((entry (assq node islands))) (cond (entry (if (and (stringp no
+org-texmacs-issue10-baseline>   #f(lambda (node context ancestors space) [(--cl-blocks-- #f(lambda (
+org-texmacs-issue10-baseline>   funcall(#f(lambda (node context ancestors space) [(--cl-blocks-- #f(
+org-texmacs-issue10-baseline>   #f(lambda (node) [(space (t nil)) (ancestors ((footnote-reference ..
+org-texmacs-issue10-baseline>   mapcar(#f(lambda (node) [(space (t nil)) (ancestors ((footnote-refer
+org-texmacs-issue10-baseline>   (apply #'append (mapcar #'(lambda (node) (funcall --cl-inline-- node
+org-texmacs-issue10-baseline>   (let ((space (or space (list t (memq context '(title toc-title autho
+org-texmacs-issue10-baseline>   (progn (if (proper-list-p nodes) nil (signal 'org-texmacs-document-e
+org-texmacs-issue10-baseline>   #f(lambda (nodes context ancestors &optional space) [(--cl-inline--
+org-texmacs-issue10-baseline>   funcall(#f(lambda (nodes context ancestors &optional space) [(--cl-i
+org-texmacs-issue10-baseline>   (let ((parts (funcall --cl-inlines-- (org-element-contents definitio
+org-texmacs-issue10-baseline>   (if (eq (org-element-type definition) 'footnote-definition) (org-tex
+org-texmacs-issue10-baseline>   (let* ((body (if (eq (org-element-type definition) 'footnote-definit
+org-texmacs-issue10-baseline>   (if (not first) (org-texmacs--document-pack 'rsup (list (org-texmacs
+org-texmacs-issue10-baseline>   (cons (if (not first) (org-texmacs--document-pack 'rsup (list (org-t
+org-texmacs-issue10-baseline>   (let* ((note (cdr (assq node (progn (or (and ... t) (signal ... ...)
+org-texmacs-issue10-baseline>   (cond (entry (if (and (stringp node) (eq context 'paragraph)) nil (o
+org-texmacs-issue10-baseline>   (let ((entry (assq node islands))) (cond (entry (if (and (stringp no
+org-texmacs-issue10-baseline>   #f(lambda (node context ancestors space) [(--cl-blocks-- #f(lambda (
+org-texmacs-issue10-baseline>   funcall(#f(lambda (node context ancestors space) [(--cl-blocks-- #f(
+org-texmacs-issue10-baseline>   #f(lambda (node) [(space (nil nil)) (ancestors ((paragraph ... ... .
+org-texmacs-issue10-baseline>   mapcar(#f(lambda (node) [(space (nil nil)) (ancestors ((paragraph (:
+org-texmacs-issue10-baseline>   (apply #'append (mapcar #'(lambda (node) (funcall --cl-inline-- node
+org-texmacs-issue10-baseline>   (let ((space (or space (list t (memq context '(title toc-title autho
+org-texmacs-issue10-baseline>   (progn (if (proper-list-p nodes) nil (signal 'org-texmacs-document-e
+org-texmacs-issue10-baseline>   #f(lambda (nodes context ancestors &optional space) [(--cl-inline--
+org-texmacs-issue10-baseline>   funcall(#f(lambda (nodes context ancestors &optional space) [(--cl-i
+org-texmacs-issue10-baseline>   (append (and marker (list marker)) (funcall --cl-inlines-- contents
+org-texmacs-issue10-baseline>   (org-texmacs--document-pack 'concat (append (and marker (list marker
+org-texmacs-issue10-baseline>   (if (and bare (not other) (not marker)) (funcall --cl-island-- bare
+org-texmacs-issue10-baseline>   (let ((contents (org-element-contents node)) bare other) (if (proper
+org-texmacs-issue10-baseline>   #f(lambda (node ancestors &optional marker) [(--cl-inlines-- #f(lamb
+org-texmacs-issue10-baseline>   funcall(#f(lambda (node ancestors &optional marker) [(--cl-inlines--
+org-texmacs-issue10-baseline>   (list (funcall --cl-paragraph-- node ancestors))
+org-texmacs-issue10-baseline>   (cond (entry (if (org-texmacs--block-p node) nil (org-texmacs--docum
+org-texmacs-issue10-baseline>   (let ((ancestors (cons node ancestors)) (type (org-element-type node
+org-texmacs-issue10-baseline>   (progn (if (and (consp node) (not (memq node ancestors))) nil (org-t
+org-texmacs-issue10-baseline>   #f(lambda (node context ancestors) [(--cl-list-item-- #f(lambda (nod
+org-texmacs-issue10-baseline>   funcall(#f(lambda (node context ancestors) [(--cl-list-item-- #f(lam
+org-texmacs-issue10-baseline>   (nconc result (funcall --cl-block-- (car-safe (prog1 nodes (setq nod
+org-texmacs-issue10-baseline>   (setq result (nconc result (funcall --cl-block-- (car-safe (prog1 no
+org-texmacs-issue10-baseline>   (if (funcall --cl-low-headline-p-- (car nodes)) (let (headlines) (wh
+org-texmacs-issue10-baseline>   (while nodes (if (funcall --cl-low-headline-p-- (car nodes)) (let (h
+org-texmacs-issue10-baseline>   (let (result) (while nodes (if (funcall --cl-low-headline-p-- (car n
+org-texmacs-issue10-baseline>   (progn (if (proper-list-p nodes) nil (signal 'org-texmacs-document-e
+org-texmacs-issue10-baseline>   #f(lambda (nodes context ancestors) [(--cl-block-- #f(lambda (node c
+org-texmacs-issue10-baseline>   funcall(#f(lambda (nodes context ancestors) [(--cl-block-- #f(lambda
+org-texmacs-issue10-baseline>   (append (funcall --cl-metadata-- (list ast)) (funcall --cl-toc-- (li
+org-texmacs-issue10-baseline>   (org-texmacs--document-pack 'document (append (funcall --cl-metadata
+org-texmacs-issue10-baseline>   (let ((result (org-texmacs--document-pack 'document (append (funcall
+org-texmacs-issue10-baseline>   (let (--cl-inline-- --cl-inlines-- --cl-one-body-- --cl-paragraph--
+org-texmacs-issue10-baseline>   (let* ((--cl-text-- #'(lambda (string space) (let (...) (if ... ...)
+org-texmacs-issue10-baseline>   (let* ((used-islands nil) (used-blanks nil) (style (org-texmacs--doc
+org-texmacs-issue10-baseline>   org-texmacs--document-lower((org-data (:standard-properties [nil nil
+org-texmacs-issue10-baseline>   org-texmacs-document(#s(org-texmacs-input :ast (org-data (:standard-
+org-texmacs-issue10-baseline>   (let ((document (org-texmacs-document input))) (let* ((fn-3251 #'equ
+org-texmacs-issue10-baseline>   (progn (fset 'buffer-substring-no-properties vnew) (fset 'org-texmac
+org-texmacs-issue10-baseline>   (unwind-protect (progn (fset 'buffer-substring-no-properties vnew) (
+org-texmacs-issue10-baseline>   (let* ((vnew #'(lambda (&rest _) (ert-fail "Pure lowering started wo
+org-texmacs-issue10-baseline>   (let* ((leaf (copy-sequence "island")) (note (org-element-create 'fo
+org-texmacs-issue10-baseline>   (let ((tree (car tail))) (let* ((leaf (copy-sequence "island")) (not
+org-texmacs-issue10-baseline>   (while tail (let ((tree (car tail))) (let* ((leaf (copy-sequence "is
+org-texmacs-issue10-baseline>   (let ((tail (append org-texmacs-test--fragment-strees '((with "mode"
+org-texmacs-issue10-baseline>   #f(lambda () [t] (let ((tail (append org-texmacs-test--fragment-stre
+org-texmacs-issue10-baseline>   #f(compiled-function () #<bytecode -0x1d8b60ecfee248bc>)()
+org-texmacs-issue10-baseline>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b60ecfee248b
+org-texmacs-issue10-baseline>   ert--run-test-internal(#s(ert--test-execution-info :test ... :result
+org-texmacs-issue10-baseline>   ert-run-test(#s(ert-test :name org-texmacs-document-issue10-pure-bar
+org-texmacs-issue10-baseline>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue10-baseline>   ert-run-tests((or "^org-texmacs-fragment-issue10-discovery$" "^org-t
+org-texmacs-issue10-baseline>   ert-run-tests-batch((or "^org-texmacs-fragment-issue10-discovery$" "
+org-texmacs-issue10-baseline>   (let ((stats (ert-run-tests-batch '(or "^org-texmacs-fragment-issue1
+org-texmacs-issue10-baseline>   eval((let ((stats (ert-run-tests-batch '(or "^org-texmacs-fragment-i
+org-texmacs-issue10-baseline>   command-line-1(("-L" "/nix/store/8wkcm015ak6gk6ia6c6xch8v2fj16f1x-ba
+org-texmacs-issue10-baseline>   command-line()
+org-texmacs-issue10-baseline>   normal-top-level()
+org-texmacs-issue10-baseline> Test org-texmacs-document-issue10-pure-bare condition:
+org-texmacs-issue10-baseline>     (org-texmacs-document-error "Island outside paragraph text" plain-text
+org-texmacs-issue10-baseline>                           nil)
+org-texmacs-issue10-baseline>    FAILED  1/2  org-texmacs-document-issue10-pure-bare (0.034855 sec) at ../nix/store/8dzlqwcwx7msql053k5adzzv6lvpvfq8-ert.el:3446
+org-texmacs-issue10-baseline> Test org-texmacs-fragment-issue10-discovery backtrace:
+org-texmacs-issue10-baseline>   ert-fail(((should (equal (mapcar #'org-texmacs-fragment-span-source
+org-texmacs-issue10-baseline>   (if (unwind-protect (setq value-3238 (apply fn-3236 args-3237)) (set
+org-texmacs-issue10-baseline>   (let (form-description-3240) (if (unwind-protect (setq value-3238 (a
+org-texmacs-issue10-baseline>   (let ((value-3238 'ert-form-evaluation-aborted-3239)) (let (form-des
+org-texmacs-issue10-baseline>   (let* ((fn-3236 #'equal) (args-3237 (condition-case err (list (mapca
+org-texmacs-issue10-baseline>   (let ((spans (org-texmacs-fragment-map (point-min) (point-max) #'ide
+org-texmacs-issue10-baseline>   (progn (fset 'org-texmacs--worker-request vnew) (let ((spans (org-te
+org-texmacs-issue10-baseline>   (unwind-protect (progn (fset 'org-texmacs--worker-request vnew) (let
+org-texmacs-issue10-baseline>   (let* ((vnew #'(lambda (&rest _) (ert-fail "Discovery started worker
+org-texmacs-issue10-baseline>   (let ((before (org-texmacs-test--document-buffer-state (current-buff
+org-texmacs-issue10-baseline>   (progn (org-mode) (insert "A" prefix "Before (math \"x\") after (mat
+org-texmacs-issue10-baseline>   (unwind-protect (progn (org-mode) (insert "A" prefix "Before (math \
+org-texmacs-issue10-baseline>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue10-baseline>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue10-baseline>   (let ((prefix (car tail))) (let ((temp-buffer (generate-new-buffer "
+org-texmacs-issue10-baseline>   (while tail (let ((prefix (car tail))) (let ((temp-buffer (generate-
+org-texmacs-issue10-baseline>   (let ((tail '("[fn::" "[fn:n:"))) (while tail (let ((prefix (car tai
+org-texmacs-issue10-baseline>   #f(lambda () [t] (let ((tail '...)) (while tail (let (...) (let ...
+org-texmacs-issue10-baseline>   #f(compiled-function () #<bytecode -0x1d8b60ecfee248bc>)()
+org-texmacs-issue10-baseline>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b60ecfee248b
+org-texmacs-issue10-baseline>   ert--run-test-internal(#s(ert--test-execution-info :test ... :result
+org-texmacs-issue10-baseline>   ert-run-test(#s(ert-test :name org-texmacs-fragment-issue10-discover
+org-texmacs-issue10-baseline>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue10-baseline>   ert-run-tests((or "^org-texmacs-fragment-issue10-discovery$" "^org-t
+org-texmacs-issue10-baseline>   ert-run-tests-batch((or "^org-texmacs-fragment-issue10-discovery$" "
+org-texmacs-issue10-baseline>   (let ((stats (ert-run-tests-batch '(or "^org-texmacs-fragment-issue1
+org-texmacs-issue10-baseline>   eval((let ((stats (ert-run-tests-batch '(or "^org-texmacs-fragment-i
+org-texmacs-issue10-baseline>   command-line-1(("-L" "/nix/store/8wkcm015ak6gk6ia6c6xch8v2fj16f1x-ba
+org-texmacs-issue10-baseline>   command-line()
+org-texmacs-issue10-baseline>   normal-top-level()
+org-texmacs-issue10-baseline> Test org-texmacs-fragment-issue10-discovery condition:
+org-texmacs-issue10-baseline>     (ert-test-failed
+org-texmacs-issue10-baseline>      ((should (equal (mapcar ... spans) '("(math \"x\")" "(math \"y\")")))
+org-texmacs-issue10-baseline>       :form (equal nil ("(math \"x\")" "(math \"y\")")) :value nil
+org-texmacs-issue10-baseline>       :explanation (different-types nil ("(math \"x\")" "(math \"y\")"))))
+org-texmacs-issue10-baseline>    FAILED  2/2  org-texmacs-fragment-issue10-discovery (0.102651 sec) at ../nix/store/8dzlqwcwx7msql053k5adzzv6lvpvfq8-ert.el:3428
+org-texmacs-issue10-baseline> 
+org-texmacs-issue10-baseline> Ran 2 tests, 0 results as expected, 2 unexpected (2026-10-16 10:04:15+0000, 0.295610 sec)
+org-texmacs-issue10-baseline> 
+org-texmacs-issue10-baseline> 2 unexpected results:
+org-texmacs-issue10-baseline>    FAILED  org-texmacs-document-issue10-pure-bare
+org-texmacs-issue10-baseline>    FAILED  org-texmacs-fragment-issue10-discovery
+org-texmacs-issue10-baseline> 
+/nix/store/lxmdh7ky97r5gg4m68h6vav7qm15nzis-org-texmacs-issue10-baseline

@@ -1,0 +1,689 @@
+evaluating flake...
+checking flake output 'packages'...
+checking derivation packages.x86_64-linux.default...
+derivation evaluated to /nix/store/qfbgzsz1b3bxb8rwxqnhh7b5rxv064b9-emacs-org-texmacs-0.4.0.drv
+checking flake output 'legacyPackages'...
+checking flake output 'checks'...
+checking derivation checks.x86_64-linux.package-lint...
+derivation evaluated to /nix/store/mjszm6iqjyxvnvz9j6s3p7iya6gq914c-org-texmacs-package-lint.drv
+checking derivation checks.x86_64-linux.baseline...
+derivation evaluated to /nix/store/hlaq96bwk4cbcpf6hmmrlk9y0sc4bc4a-org-texmacs-issue10-baseline.drv
+checking derivation checks.x86_64-linux.focused...
+derivation evaluated to /nix/store/ij3jnrkhxg1rgfjn5by938c3cgwrbkir-org-texmacs-issue10-focused.drv
+checking derivation checks.x86_64-linux.integration...
+derivation evaluated to /nix/store/kyg3rq2csx05xlfly92cn4c1x0rvmqnf-org-texmacs-org-extension-integration.drv
+checking derivation checks.x86_64-linux.ert...
+derivation evaluated to /nix/store/r22wl2g65af0j7p6c6qadln1rmnpnhkw-org-texmacs-ert.drv
+checking flake output 'devShells'...
+checking derivation devShells.x86_64-linux.default...
+derivation evaluated to /nix/store/az59x73359ybgx9vz4zc78s5qldgkij6-nix-shell.drv
+checking flake output 'apps'...
+checking flake output 'formatter'...
+checking flake output 'nixosConfigurations'...
+checking flake output 'nixosModules'...
+checking flake output 'overlays'...
+running 6 flake checks...
+building '/nix/store/fldbwd5ajryh7pncw5bd17scfryd3bhv-run.scm.drv'...
+building '/nix/store/qlf7czpzpf08g17sryn85l66sqwpx5vd-run.scm.drv'...
+building '/nix/store/hlaq96bwk4cbcpf6hmmrlk9y0sc4bc4a-org-texmacs-issue10-baseline.drv'...
+building '/nix/store/ij3jnrkhxg1rgfjn5by938c3cgwrbkir-org-texmacs-issue10-focused.drv'...
+run.scm> structuredAttrs is enabled
+run.scm> Running phase: patchPhase
+run.scm> Running phase: updateAutotoolsGnuConfigScriptsPhase
+run.scm> Running phase: configurePhase
+run.scm> no configure script, doing nothing
+run.scm> Running phase: buildPhase
+run.scm> Running phase: checkPhase
+run.scm> Running phase: installPhase
+run.scm> no Makefile or custom installPhase, doing nothing
+run.scm> Running phase: fixupPhase
+run.scm> shrinking RPATHs of ELF executables and libraries in /nix/store/bigh8ph7yh5afk95hjmcxica4b79j3pp-run.scm
+run.scm> checking for references to /build/ in /nix/store/bigh8ph7yh5afk95hjmcxica4b79j3pp-run.scm...
+run.scm> patching script interpreter paths in /nix/store/bigh8ph7yh5afk95hjmcxica4b79j3pp-run.scm
+run.scm> structuredAttrs is enabled
+run.scm> Running phase: patchPhase
+run.scm> Running phase: updateAutotoolsGnuConfigScriptsPhase
+run.scm> Running phase: configurePhase
+run.scm> no configure script, doing nothing
+run.scm> Running phase: buildPhase
+run.scm> Running phase: checkPhase
+run.scm> Running phase: installPhase
+run.scm> no Makefile or custom installPhase, doing nothing
+run.scm> Running phase: fixupPhase
+run.scm> shrinking RPATHs of ELF executables and libraries in /nix/store/5sfpq9w6klabmxxr1n5h7yj92f7i9ibz-run.scm
+run.scm> checking for references to /build/ in /nix/store/5sfpq9w6klabmxxr1n5h7yj92f7i9ibz-run.scm...
+run.scm> patching script interpreter paths in /nix/store/5sfpq9w6klabmxxr1n5h7yj92f7i9ibz-run.scm
+building '/nix/store/r22wl2g65af0j7p6c6qadln1rmnpnhkw-org-texmacs-ert.drv'...
+building '/nix/store/mjszm6iqjyxvnvz9j6s3p7iya6gq914c-org-texmacs-package-lint.drv'...
+org-texmacs-ert> Running 437 tests (2026-10-16 10:23:40+0000, selector `t')
+org-texmacs-ert>    passed    1/437  org-texmacs-ast-filter-backend-order-and-snapshot-context (0.130287 sec)
+org-texmacs-ert>    passed    2/437  org-texmacs-ast-filter-error-unwinds-context (0.002073 sec)
+org-texmacs-issue10-baseline> Running 2 tests (2026-10-16 10:23:40+0000, selector `(or "^org-texmacs-fragment-issue10-discovery$" "^org-texmacs-document-issue10-pure-bare$")')
+org-texmacs-issue10-baseline> Test org-texmacs-document-issue10-pure-bare backtrace:
+org-texmacs-issue10-baseline>   signal(org-texmacs-document-error ("Island outside paragraph text" p
+org-texmacs-issue10-baseline>   org-texmacs--document-fail(#("island" 0 6 (:parent (footnote-referen
+org-texmacs-issue10-baseline>   (if (and (stringp node) (eq context 'paragraph)) nil (org-texmacs--d
+org-texmacs-issue10-baseline>   (cond (entry (if (and (stringp node) (eq context 'paragraph)) nil (o
+org-texmacs-issue10-baseline>   (let ((entry (assq node islands))) (cond (entry (if (and (stringp no
+org-texmacs-issue10-baseline>   #f(lambda (node context ancestors space) [(--cl-blocks-- #f(lambda (
+org-texmacs-issue10-baseline>   funcall(#f(lambda (node context ancestors space) [(--cl-blocks-- #f(
+org-texmacs-issue10-baseline>   #f(lambda (node) [(space (t nil)) (ancestors ((footnote-reference ..
+org-texmacs-issue10-baseline>   mapcar(#f(lambda (node) [(space (t nil)) (ancestors ((footnote-refer
+org-texmacs-issue10-baseline>   (apply #'append (mapcar #'(lambda (node) (funcall --cl-inline-- node
+org-texmacs-issue10-baseline>   (let ((space (or space (list t (memq context '(title toc-title autho
+org-texmacs-issue10-baseline>   (progn (if (proper-list-p nodes) nil (signal 'org-texmacs-document-e
+org-texmacs-issue10-baseline>   #f(lambda (nodes context ancestors &optional space) [(--cl-inline--
+org-texmacs-issue10-baseline>   funcall(#f(lambda (nodes context ancestors &optional space) [(--cl-i
+org-texmacs-issue10-baseline>   (let ((parts (funcall --cl-inlines-- (org-element-contents definitio
+org-texmacs-issue10-baseline>   (if (eq (org-element-type definition) 'footnote-definition) (org-tex
+org-texmacs-issue10-baseline>   (let* ((body (if (eq (org-element-type definition) 'footnote-definit
+org-texmacs-issue10-baseline>   (if (not first) (org-texmacs--document-pack 'rsup (list (org-texmacs
+org-texmacs-issue10-baseline>   (cons (if (not first) (org-texmacs--document-pack 'rsup (list (org-t
+org-texmacs-issue10-baseline>   (let* ((note (cdr (assq node (progn (or (and ... t) (signal ... ...)
+org-texmacs-issue10-baseline>   (cond (entry (if (and (stringp node) (eq context 'paragraph)) nil (o
+org-texmacs-issue10-baseline>   (let ((entry (assq node islands))) (cond (entry (if (and (stringp no
+org-texmacs-issue10-baseline>   #f(lambda (node context ancestors space) [(--cl-blocks-- #f(lambda (
+org-texmacs-issue10-baseline>   funcall(#f(lambda (node context ancestors space) [(--cl-blocks-- #f(
+org-texmacs-issue10-baseline>   #f(lambda (node) [(space (nil nil)) (ancestors ((paragraph ... ... .
+org-texmacs-issue10-baseline>   mapcar(#f(lambda (node) [(space (nil nil)) (ancestors ((paragraph (:
+org-texmacs-issue10-baseline>   (apply #'append (mapcar #'(lambda (node) (funcall --cl-inline-- node
+org-texmacs-issue10-baseline>   (let ((space (or space (list t (memq context '(title toc-title autho
+org-texmacs-issue10-baseline>   (progn (if (proper-list-p nodes) nil (signal 'org-texmacs-document-e
+org-texmacs-issue10-baseline>   #f(lambda (nodes context ancestors &optional space) [(--cl-inline--
+org-texmacs-issue10-baseline>   funcall(#f(lambda (nodes context ancestors &optional space) [(--cl-i
+org-texmacs-issue10-baseline>   (append (and marker (list marker)) (funcall --cl-inlines-- contents
+org-texmacs-issue10-baseline>   (org-texmacs--document-pack 'concat (append (and marker (list marker
+org-texmacs-issue10-baseline>   (if (and bare (not other) (not marker)) (funcall --cl-island-- bare
+org-texmacs-issue10-baseline>   (let ((contents (org-element-contents node)) bare other) (if (proper
+org-texmacs-issue10-baseline>   #f(lambda (node ancestors &optional marker) [(--cl-inlines-- #f(lamb
+org-texmacs-issue10-baseline>   funcall(#f(lambda (node ancestors &optional marker) [(--cl-inlines--
+org-texmacs-issue10-baseline>   (list (funcall --cl-paragraph-- node ancestors))
+org-texmacs-issue10-baseline>   (cond (entry (if (org-texmacs--block-p node) nil (org-texmacs--docum
+org-texmacs-issue10-baseline>   (let ((ancestors (cons node ancestors)) (type (org-element-type node
+org-texmacs-issue10-baseline>   (progn (if (and (consp node) (not (memq node ancestors))) nil (org-t
+org-texmacs-issue10-baseline>   #f(lambda (node context ancestors) [(--cl-list-item-- #f(lambda (nod
+org-texmacs-issue10-baseline>   funcall(#f(lambda (node context ancestors) [(--cl-list-item-- #f(lam
+org-texmacs-issue10-baseline>   (nconc result (funcall --cl-block-- (car-safe (prog1 nodes (setq nod
+org-texmacs-issue10-baseline>   (setq result (nconc result (funcall --cl-block-- (car-safe (prog1 no
+org-texmacs-issue10-baseline>   (if (funcall --cl-low-headline-p-- (car nodes)) (let (headlines) (wh
+org-texmacs-issue10-baseline>   (while nodes (if (funcall --cl-low-headline-p-- (car nodes)) (let (h
+org-texmacs-issue10-baseline>   (let (result) (while nodes (if (funcall --cl-low-headline-p-- (car n
+org-texmacs-issue10-baseline>   (progn (if (proper-list-p nodes) nil (signal 'org-texmacs-document-e
+org-texmacs-issue10-baseline>   #f(lambda (nodes context ancestors) [(--cl-block-- #f(lambda (node c
+org-texmacs-issue10-baseline>   funcall(#f(lambda (nodes context ancestors) [(--cl-block-- #f(lambda
+org-texmacs-issue10-baseline>   (append (funcall --cl-metadata-- (list ast)) (funcall --cl-toc-- (li
+org-texmacs-issue10-baseline>   (org-texmacs--document-pack 'document (append (funcall --cl-metadata
+org-texmacs-issue10-baseline>   (let ((result (org-texmacs--document-pack 'document (append (funcall
+org-texmacs-issue10-baseline>   (let (--cl-inline-- --cl-inlines-- --cl-one-body-- --cl-paragraph--
+org-texmacs-issue10-baseline>   (let* ((--cl-text-- #'(lambda (string space) (let (...) (if ... ...)
+org-texmacs-issue10-baseline>   (let* ((used-islands nil) (used-blanks nil) (style (org-texmacs--doc
+org-texmacs-issue10-baseline>   org-texmacs--document-lower((org-data (:standard-properties [nil nil
+org-texmacs-issue10-baseline>   org-texmacs-document(#s(org-texmacs-input :ast (org-data (:standard-
+org-texmacs-issue10-baseline>   (let ((document (org-texmacs-document input))) (let* ((fn-3251 #'equ
+org-texmacs-issue10-baseline>   (progn (fset 'buffer-substring-no-properties vnew) (fset 'org-texmac
+org-texmacs-issue10-baseline>   (unwind-protect (progn (fset 'buffer-substring-no-properties vnew) (
+org-texmacs-issue10-baseline>   (let* ((vnew #'(lambda (&rest _) (ert-fail "Pure lowering started wo
+org-texmacs-issue10-baseline>   (let* ((leaf (copy-sequence "island")) (note (org-element-create 'fo
+org-texmacs-issue10-baseline>   (let ((tree (car tail))) (let* ((leaf (copy-sequence "island")) (not
+org-texmacs-issue10-baseline>   (while tail (let ((tree (car tail))) (let* ((leaf (copy-sequence "is
+org-texmacs-issue10-baseline>   (let ((tail (append org-texmacs-test--fragment-strees '((with "mode"
+org-texmacs-issue10-baseline>   #f(lambda () [t] (let ((tail (append org-texmacs-test--fragment-stre
+org-texmacs-issue10-baseline>   #f(compiled-function () #<bytecode -0x1d8b60ecfee248bc>)()
+org-texmacs-issue10-baseline>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b60ecfee248b
+org-texmacs-issue10-baseline>   ert--run-test-internal(#s(ert--test-execution-info :test ... :result
+org-texmacs-issue10-baseline>   ert-run-test(#s(ert-test :name org-texmacs-document-issue10-pure-bar
+org-texmacs-issue10-baseline>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue10-baseline>   ert-run-tests((or "^org-texmacs-fragment-issue10-discovery$" "^org-t
+org-texmacs-issue10-baseline>   ert-run-tests-batch((or "^org-texmacs-fragment-issue10-discovery$" "
+org-texmacs-issue10-baseline>   (let ((stats (ert-run-tests-batch '(or "^org-texmacs-fragment-issue1
+org-texmacs-issue10-baseline>   eval((let ((stats (ert-run-tests-batch '(or "^org-texmacs-fragment-i
+org-texmacs-issue10-baseline>   command-line-1(("-L" "/nix/store/8wkcm015ak6gk6ia6c6xch8v2fj16f1x-ba
+org-texmacs-issue10-baseline>   command-line()
+org-texmacs-issue10-baseline>   normal-top-level()
+org-texmacs-issue10-baseline> Test org-texmacs-document-issue10-pure-bare condition:
+org-texmacs-issue10-baseline>     (org-texmacs-document-error "Island outside paragraph text" plain-text
+org-texmacs-issue10-baseline>                           nil)
+org-texmacs-issue10-baseline>    FAILED  1/2  org-texmacs-document-issue10-pure-bare (0.038869 sec) at ../nix/store/ik9wpiwbypjc2yg7pizzajam1pxz18pa-ert.el:3446
+org-texmacs-issue10-baseline> Test org-texmacs-fragment-issue10-discovery backtrace:
+org-texmacs-issue10-baseline>   ert-fail(((should (equal (mapcar #'org-texmacs-fragment-span-source
+org-texmacs-issue10-baseline>   (if (unwind-protect (setq value-3238 (apply fn-3236 args-3237)) (set
+org-texmacs-issue10-baseline>   (let (form-description-3240) (if (unwind-protect (setq value-3238 (a
+org-texmacs-issue10-baseline>   (let ((value-3238 'ert-form-evaluation-aborted-3239)) (let (form-des
+org-texmacs-issue10-baseline>   (let* ((fn-3236 #'equal) (args-3237 (condition-case err (list (mapca
+org-texmacs-issue10-baseline>   (let ((spans (org-texmacs-fragment-map (point-min) (point-max) #'ide
+org-texmacs-issue10-baseline>   (progn (fset 'org-texmacs--worker-request vnew) (let ((spans (org-te
+org-texmacs-issue10-baseline>   (unwind-protect (progn (fset 'org-texmacs--worker-request vnew) (let
+org-texmacs-issue10-baseline>   (let* ((vnew #'(lambda (&rest _) (ert-fail "Discovery started worker
+org-texmacs-issue10-baseline>   (let ((before (org-texmacs-test--document-buffer-state (current-buff
+org-texmacs-issue10-baseline>   (progn (org-mode) (insert "A" prefix "Before (math \"x\") after (mat
+org-texmacs-issue10-baseline>   (unwind-protect (progn (org-mode) (insert "A" prefix "Before (math \
+org-texmacs-issue10-baseline>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue10-baseline>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue10-baseline>   (let ((prefix (car tail))) (let ((temp-buffer (generate-new-buffer "
+org-texmacs-issue10-baseline>   (while tail (let ((prefix (car tail))) (let ((temp-buffer (generate-
+org-texmacs-issue10-baseline>   (let ((tail '("[fn::" "[fn:n:"))) (while tail (let ((prefix (car tai
+org-texmacs-issue10-baseline>   #f(lambda () [t] (let ((tail '...)) (while tail (let (...) (let ...
+org-texmacs-issue10-baseline>   #f(compiled-function () #<bytecode -0x1d8b60ecfee248bc>)()
+org-texmacs-issue10-baseline>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b60ecfee248b
+org-texmacs-issue10-baseline>   ert--run-test-internal(#s(ert--test-execution-info :test ... :result
+org-texmacs-issue10-baseline>   ert-run-test(#s(ert-test :name org-texmacs-fragment-issue10-discover
+org-texmacs-issue10-baseline>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue10-baseline>   ert-run-tests((or "^org-texmacs-fragment-issue10-discovery$" "^org-t
+org-texmacs-issue10-baseline>   ert-run-tests-batch((or "^org-texmacs-fragment-issue10-discovery$" "
+org-texmacs-issue10-baseline>   (let ((stats (ert-run-tests-batch '(or "^org-texmacs-fragment-issue1
+org-texmacs-issue10-baseline>   eval((let ((stats (ert-run-tests-batch '(or "^org-texmacs-fragment-i
+org-texmacs-issue10-baseline>   command-line-1(("-L" "/nix/store/8wkcm015ak6gk6ia6c6xch8v2fj16f1x-ba
+org-texmacs-issue10-baseline>   command-line()
+org-texmacs-issue10-baseline>   normal-top-level()
+org-texmacs-issue10-baseline> Test org-texmacs-fragment-issue10-discovery condition:
+org-texmacs-issue10-baseline>     (ert-test-failed
+org-texmacs-issue10-baseline>      ((should (equal (mapcar ... spans) '("(math \"x\")" "(math \"y\")")))
+org-texmacs-issue10-baseline>       :form (equal nil ("(math \"x\")" "(math \"y\")")) :value nil
+org-texmacs-issue10-baseline>       :explanation (different-types nil ("(math \"x\")" "(math \"y\")"))))
+org-texmacs-issue10-baseline>    FAILED  2/2  org-texmacs-fragment-issue10-discovery (0.106903 sec) at ../nix/store/ik9wpiwbypjc2yg7pizzajam1pxz18pa-ert.el:3428
+org-texmacs-issue10-baseline> 
+org-texmacs-issue10-baseline> Ran 2 tests, 0 results as expected, 2 unexpected (2026-10-16 10:23:41+0000, 0.313889 sec)
+org-texmacs-issue10-baseline> 
+org-texmacs-issue10-baseline> 2 unexpected results:
+org-texmacs-issue10-baseline>    FAILED  org-texmacs-document-issue10-pure-bare
+org-texmacs-issue10-baseline>    FAILED  org-texmacs-fragment-issue10-discovery
+org-texmacs-issue10-baseline> 
+org-texmacs-ert>    passed    3/437  org-texmacs-ast-filter-escaped-tree-cannot-change-owned-preparation (1.639582 sec)
+org-texmacs-ert>    passed    4/437  org-texmacs-ast-filter-missing-key-before-worker (0.001623 sec)
+org-texmacs-ert>    passed    5/437  org-texmacs-ast-filter-native-citation-and-owned-output (1.909408 sec)
+org-texmacs-ert>    passed    6/437  org-texmacs-ast-filter-nil-return-remaps-keys (1.612502 sec)
+org-texmacs-ert>    passed    7/437  org-texmacs-ast-filter-order-nil-and-core-only-backend (0.002105 sec)
+org-texmacs-ert>    passed    8/437  org-texmacs-ast-filter-rejects-buffer-context-switch (0.001642 sec)
+org-texmacs-ert>    passed    9/437  org-texmacs-ast-filter-rejects-non-key-mutations (0.027350 sec)
+org-texmacs-ert>    passed   10/437  org-texmacs-ast-filter-selection-and-restored-footnotes (1.613923 sec)
+org-texmacs-ert>    passed   11/437  org-texmacs-ast-filter-settings-and-function-wait-checks (0.002672 sec)
+org-texmacs-ert>    passed   12/437  org-texmacs-ast-filter-validates-each-nil-return (0.000999 sec)
+org-texmacs-ert>    passed   13/437  org-texmacs-bibliography-auto-acquire-and-receipts (0.004109 sec)
+org-texmacs-ert>    passed   14/437  org-texmacs-bibliography-auto-default-api-is-explicit (0.001488 sec)
+org-texmacs-ert>    passed   15/437  org-texmacs-bibliography-auto-explicit-priority-with-advice (1.664492 sec)
+org-texmacs-ert>    passed   16/437  org-texmacs-bibliography-auto-masks-outside-restriction (0.003382 sec)
+org-texmacs-ert>    passed   17/437  org-texmacs-bibliography-auto-private-discovery (0.001448 sec)
+org-texmacs-ert>    passed   18/437  org-texmacs-bibliography-auto-rejects-acquisition-mutations (0.004415 sec)
+org-texmacs-ert>    passed   19/437  org-texmacs-bibliography-auto-rejects-before-byte-return (1.543553 sec)
+org-texmacs-ert>    passed   20/437  org-texmacs-bibliography-auto-rejects-discovery-mutations (0.033408 sec)
+org-texmacs-ert>    passed   21/437  org-texmacs-bibliography-auto-rejects-dropped-declaration (0.000025 sec)
+org-texmacs-ert>    passed   22/437  org-texmacs-bibliography-auto-rejects-locations-and-files (0.028015 sec)
+org-texmacs-ert>    passed   23/437  org-texmacs-bibliography-auto-rejects-native-dependency-stages (1.754414 sec)
+org-texmacs-ert>    passed   24/437  org-texmacs-bibliography-auto-rejects-native-wait-mutations (0.016449 sec)
+org-texmacs-ert>    passed   25/437  org-texmacs-bibliography-auto-rejects-preprocessing-and-conflict (0.005434 sec)
+org-texmacs-ert>    passed   26/437  org-texmacs-bibliography-auto-source-to-native (1.959541 sec)
+org-texmacs-ert>    passed   27/437  org-texmacs-bibliography-input-ownership (0.021676 sec)
+org-texmacs-ert>    passed   28/437  org-texmacs-bibliography-input-rejects-invalid-data (0.000090 sec)
+org-texmacs-ert>    passed   29/437  org-texmacs-bibliography-invalid-native-payload-stops-worker (0.002937 sec)
+org-texmacs-ert>    passed   30/437  org-texmacs-bibliography-native-parsing-and-worker-reuse (1.662973 sec)
+org-texmacs-ert>    passed   31/437  org-texmacs-bibliography-preparation-retains-lowering-boundary (0.003306 sec)
+org-texmacs-ert>    passed   32/437  org-texmacs-bibliography-source-rechecks-worker-waits (0.007875 sec)
+org-texmacs-ert>    passed   33/437  org-texmacs-bibliography-source-snapshot-and-preflight (0.001878 sec)
+org-texmacs-ert>    passed   34/437  org-texmacs-bibliography-source-validation (0.000567 sec)
+org-texmacs-ert>    passed   35/437  org-texmacs-bibliography-view-global-only-resolution (0.001617 sec)
+org-texmacs-ert>    passed   36/437  org-texmacs-bibliography-view-owned-and-invalid (0.000046 sec)
+org-texmacs-ert>    passed   37/437  org-texmacs-bibliography-view-rejects-document-disagreement (0.001089 sec)
+org-texmacs-ert>    passed   38/437  org-texmacs-block-case-bibliography-shield (0.004489 sec)
+org-texmacs-ert>    passed   39/437  org-texmacs-block-case-fragment-exclusion (0.001448 sec)
+org-texmacs-ert>    passed   40/437  org-texmacs-block-case-markers-and-raw-source (0.033420 sec)
+org-texmacs-ert>    passed   41/437  org-texmacs-block-case-native-conversion (1.863227 sec)
+org-texmacs-ert>    passed   42/437  org-texmacs-block-case-preprocessing-shield (0.009936 sec)
+org-texmacs-ert>    passed   43/437  org-texmacs-citations-footnote-order-and-stale-output (0.001838 sec)
+org-texmacs-ert>    passed   44/437  org-texmacs-citations-formatting-wait-and-payload-errors (0.001266 sec)
+org-texmacs-ert>    passed   45/437  org-texmacs-citations-native-output-and-ownership (2.042427 sec)
+org-texmacs-ert>    passed   46/437  org-texmacs-citations-preflight-boundaries (0.006820 sec)
+org-texmacs-ert>    passed   47/437  org-texmacs-cleanup-errors-preserve-output-and-source (0.036845 sec)
+org-texmacs-ert>    passed   48/437  org-texmacs-cleanup-full-native-file-exports (2.299359 sec)
+org-texmacs-ert>    passed   49/437  org-texmacs-cleanup-local-discovery-and-direct-preparation (0.009289 sec)
+org-texmacs-ert>    passed   50/437  org-texmacs-cleanup-nonfile-include-capture (0.004645 sec)
+org-texmacs-ert>    passed   51/437  org-texmacs-cleanup-source-configuration-guard (0.007245 sec)
+org-texmacs-ert>    passed   52/437  org-texmacs-context-archive-headline-discards-contents (0.002181 sec)
+org-texmacs-ert>    passed   53/437  org-texmacs-context-copies-rich-metadata (0.002075 sec)
+org-texmacs-ert>    passed   54/437  org-texmacs-context-does-not-enter-islands (0.001705 sec)
+org-texmacs-ert>    passed   55/437  org-texmacs-context-expands-snapshotted-tag-groups (0.001900 sec)
+org-texmacs-ert>    passed   56/437  org-texmacs-context-file-options-remain-snapshotted (0.001976 sec)
+org-texmacs-ert>    passed   57/437  org-texmacs-context-filters-tasks-before-worker (0.002226 sec)
+org-texmacs-ert>    passed   58/437  org-texmacs-context-metadata-options-and-provenance (0.002387 sec)
+org-texmacs-ert>    passed   59/437  org-texmacs-context-option-precedence (0.002984 sec)
+org-texmacs-ert>    passed   60/437  org-texmacs-context-options-affect-headline-presentation (0.001750 sec)
+org-texmacs-ert>    passed   61/437  org-texmacs-context-rejects-preprocessing-without-reading (0.005226 sec)
+org-texmacs-ert>    passed   62/437  org-texmacs-context-rejects-unsupported-options (0.002736 sec)
+org-texmacs-ert>    passed   63/437  org-texmacs-context-removes-comments (0.001634 sec)
+org-texmacs-ert>    passed   64/437  org-texmacs-context-selects-and-excludes-headlines (0.002453 sec)
+org-texmacs-ert>    passed   65/437  org-texmacs-document-atomic-island (0.000042 sec)
+org-texmacs-ert>    passed   66/437  org-texmacs-document-basic-inline-source (0.001672 sec)
+org-texmacs-ert>    passed   67/437  org-texmacs-document-date-advice-result-and-error (0.033645 sec)
+org-texmacs-ert>    passed   68/437  org-texmacs-document-date-advice-snapshot-and-ownership (0.001987 sec)
+org-texmacs-ert>    passed   69/437  org-texmacs-document-date-malformed-and-context (0.005716 sec)
+org-texmacs-ert>    passed   70/437  org-texmacs-document-date-precedence-and-suppression (0.006276 sec)
+org-texmacs-ert>    passed   71/437  org-texmacs-document-date-timestamp-raw-text (0.014262 sec)
+org-texmacs-ert>    passed   72/437  org-texmacs-document-date-worker-wait-snapshot (0.002244 sec)
+org-texmacs-ert>    passed   73/437  org-texmacs-document-empty (0.000031 sec)
+org-texmacs-ert>    passed   74/437  org-texmacs-document-explicit-info-snapshot (0.002412 sec)
+org-texmacs-ert>    passed   75/437  org-texmacs-document-explicit-source-and-wrapper (0.003061 sec)
+org-texmacs-ert>    passed   76/437  org-texmacs-document-explicit-source-checks-after-lowering (0.001045 sec)
+org-texmacs-ert>    passed   77/437  org-texmacs-document-explicit-source-rejects-invalid-input (0.000189 sec)
+org-texmacs-ert>    passed   78/437  org-texmacs-document-explicit-source-survives-buffer-switch (0.001166 sec)
+org-texmacs-ert>    passed   79/437  org-texmacs-document-five-section-levels-and-unnumbered-property (0.002586 sec)
+org-texmacs-ert>    passed   80/437  org-texmacs-document-footnote-rejects-contexts (0.003764 sec)
+org-texmacs-ert>    passed   81/437  org-texmacs-document-footnote-rich-native (1.594458 sec)
+org-texmacs-ert>    passed   82/437  org-texmacs-document-footnote-source (0.001630 sec)
+org-texmacs-ert>    passed   83/437  org-texmacs-document-footnote-stm-support (0.001460 sec)
+org-texmacs-ert>    passed   84/437  org-texmacs-document-footnote-whitespace-and-empty (0.000067 sec)
+org-texmacs-ert>    passed   85/437  org-texmacs-document-formatter-parser-isolation (0.001990 sec)
+org-texmacs-ert>    passed   86/437  org-texmacs-document-heading-settings-copy-isolation (0.000296 sec)
+org-texmacs-ert>    passed   87/437  org-texmacs-document-heading-settings-parser-parity (0.000603 sec)
+org-texmacs-ert>    passed   88/437  org-texmacs-document-heading-settings-reject-malformed-values (0.000784 sec)
+org-texmacs-ert>    passed   89/437  org-texmacs-document-headline-levels (0.000311 sec)
+org-texmacs-ert>    passed   90/437  org-texmacs-document-inline-native-whitespace (1.582405 sec)
+org-texmacs-ert>    passed   91/437  org-texmacs-document-inline-whitespace-stream (0.000098 sec)
+org-texmacs-ert>    passed   92/437  org-texmacs-document-island-paths-and-copies (0.000060 sec)
+org-texmacs-ert>    passed   93/437  org-texmacs-document-issue10-display-mixtures (0.000374 sec)
+org-texmacs-ert>    passed   94/437  org-texmacs-document-issue10-owned-forward-and-scoped (0.013435 sec)
+org-texmacs-ert>    passed   95/437  org-texmacs-document-issue10-pure-bare (0.000709 sec)
+org-texmacs-ert>    passed   96/437  org-texmacs-document-issue11-bare-identity-and-purity (0.001741 sec)
+org-texmacs-ert>    passed   97/437  org-texmacs-document-issue11-container-structure-and-paths (7.581754 sec)
+org-texmacs-ert>    passed   98/437  org-texmacs-document-issue11-display-mixtures-reject (0.000805 sec)
+org-texmacs-ert>    passed   99/437  org-texmacs-document-issue11-file-provenance-and-source-errors (1.447345 sec)
+org-texmacs-ert>    passed  100/437  org-texmacs-document-issue11-nonbare-boundaries (0.000181 sec)
+org-texmacs-ert>    passed  101/437  org-texmacs-document-line-break-contexts (0.001566 sec)
+org-texmacs-ert>    passed  102/437  org-texmacs-document-list-containers-native (2.037265 sec)
+org-texmacs-ert>    passed  103/437  org-texmacs-document-list-source-forms (0.005949 sec)
+org-texmacs-ert>    passed  104/437  org-texmacs-document-literal-inline-semantics (0.000138 sec)
+org-texmacs-ert>    passed  105/437  org-texmacs-document-lowering-needs-no-source (0.000055 sec)
+org-texmacs-ert>    passed  106/437  org-texmacs-document-markup-single-body (0.000231 sec)
+org-texmacs-ert>    passed  107/437  org-texmacs-document-metadata-native-encoding (1.615408 sec)
+org-texmacs-ert>    passed  108/437  org-texmacs-document-mixed-inline-session (2.055291 sec)
+org-texmacs-ert>    passed  109/437  org-texmacs-document-named-footnote-blocks-and-local-targets (0.008106 sec)
+org-texmacs-ert>    passed  110/437  org-texmacs-document-named-footnote-first-and-repeated (0.002464 sec)
+org-texmacs-ert>    passed  111/437  org-texmacs-document-named-footnote-forward-inline-definition (0.001189 sec)
+org-texmacs-ert>    passed  112/437  org-texmacs-document-named-footnote-label-collision-and-empty (0.000077 sec)
+org-texmacs-ert>    passed  113/437  org-texmacs-document-named-footnote-native (1.612902 sec)
+org-texmacs-ert>    passed  114/437  org-texmacs-document-named-footnote-owned-body-and-provenance (0.033613 sec)
+org-texmacs-ert>    passed  115/437  org-texmacs-document-named-footnote-pruned-definitions (0.003490 sec)
+org-texmacs-ert>    passed  116/437  org-texmacs-document-named-footnote-section-setting (0.002202 sec)
+org-texmacs-ert>    passed  117/437  org-texmacs-document-named-footnote-unused-and-invalid (0.005910 sec)
+org-texmacs-ert>    passed  118/437  org-texmacs-document-named-table-caption-ownership (0.000972 sec)
+org-texmacs-ert>    passed  119/437  org-texmacs-document-named-table-captions-and-links (0.001386 sec)
+org-texmacs-ert>    passed  120/437  org-texmacs-document-named-table-native-and-provenance (1.634335 sec)
+org-texmacs-ert>    passed  121/437  org-texmacs-document-named-table-rejects-before-worker (0.012674 sec)
+org-texmacs-ert>    passed  122/437  org-texmacs-document-named-table-uncaptioned-and-priority (0.002649 sec)
+org-texmacs-ert>    passed  123/437  org-texmacs-document-nested-inline-and-cycles (0.000057 sec)
+org-texmacs-ert>    passed  124/437  org-texmacs-document-nested-list-island (0.001417 sec)
+org-texmacs-ert>    passed  125/437  org-texmacs-document-nested-markup-source-and-native (1.916146 sec)
+org-texmacs-ert>    passed  126/437  org-texmacs-document-paragraphs-and-bold (0.000154 sec)
+org-texmacs-ert>    passed  127/437  org-texmacs-document-preformatted-native-and-provenance (1.655561 sec)
+org-texmacs-ert>    passed  128/437  org-texmacs-document-preformatted-source-forms (0.002174 sec)
+org-texmacs-ert>    passed  129/437  org-texmacs-document-preformatted-tab-snapshot-and-preserve-indent (0.001956 sec)
+org-texmacs-ert>    passed  130/437  org-texmacs-document-preserves-buffer-state-on-exit (0.013561 sec)
+org-texmacs-ert>    passed  131/437  org-texmacs-document-quote-and-center-containers (0.001370 sec)
+org-texmacs-ert>    passed  132/437  org-texmacs-document-quote-uniform-quotation (0.004693 sec)
+org-texmacs-ert>    passed  133/437  org-texmacs-document-readme-native-example (1.716626 sec)
+org-texmacs-ert>    passed  134/437  org-texmacs-document-real-chinese-end-to-end (1.696183 sec)
+org-texmacs-ert>    passed  135/437  org-texmacs-document-real-custom-heading-settings (1.631783 sec)
+org-texmacs-ert>    passed  136/437  org-texmacs-document-real-failure-repair-and-update (2.035859 sec)
+org-texmacs-ert>    passed  137/437  org-texmacs-document-rechecks-explicit-source-after-switch (0.012235 sec)
+org-texmacs-ert>    passed  138/437  org-texmacs-document-reference-label-skips-stm-label (0.000098 sec)
+org-texmacs-ert>    passed  139/437  org-texmacs-document-reference-low-headline-and-target-priority (0.002123 sec)
+org-texmacs-ert>    passed  140/437  org-texmacs-document-reference-native-readback (1.616401 sec)
+org-texmacs-ert>    passed  141/437  org-texmacs-document-reference-preflight-before-island-request (0.001689 sec)
+org-texmacs-ert>    passed  142/437  org-texmacs-document-rejects-advanced-table-semantics (0.006023 sec)
+org-texmacs-ert>    passed  143/437  org-texmacs-document-rejects-ambiguous-and-external-id-links (0.003184 sec)
+org-texmacs-ert>    passed  144/437  org-texmacs-document-rejects-cycles (0.000032 sec)
+org-texmacs-ert>    passed  145/437  org-texmacs-document-rejects-dynamic-code-semantics (0.003634 sec)
+org-texmacs-ert>    passed  146/437  org-texmacs-document-rejects-headline-depth-over-five (0.000925 sec)
+org-texmacs-ert>    passed  147/437  org-texmacs-document-rejects-invalid-mappings (0.000069 sec)
+org-texmacs-ert>    passed  148/437  org-texmacs-document-rejects-invalid-whitespace (0.000063 sec)
+org-texmacs-ert>    passed  149/437  org-texmacs-document-rejects-list-checkbox-and-counter (0.001976 sec)
+org-texmacs-ert>    passed  150/437  org-texmacs-document-rejects-unsupported-source (0.003554 sec)
+org-texmacs-ert>    passed  151/437  org-texmacs-document-relative-headlines-and-low-level-lists (0.002458 sec)
+org-texmacs-ert>    passed  152/437  org-texmacs-document-resolves-dedicated-target (0.001123 sec)
+org-texmacs-ert>    passed  153/437  org-texmacs-document-resolves-local-headline-links (0.001485 sec)
+org-texmacs-ert>    passed  154/437  org-texmacs-document-rich-title-without-worker (0.000327 sec)
+org-texmacs-ert>    passed  155/437  org-texmacs-document-settings-buffer-snapshot (0.001989 sec)
+org-texmacs-ert>    passed  156/437  org-texmacs-document-source-adjacent-islands (0.001218 sec)
+org-texmacs-ert>    passed  157/437  org-texmacs-document-source-cache-remains-observable (0.001085 sec)
+org-texmacs-ert>    passed  158/437  org-texmacs-document-source-custom-level-settings (0.002046 sec)
+org-texmacs-ert>    passed  159/437  org-texmacs-document-source-custom-priority-settings (0.002035 sec)
+org-texmacs-ert>    passed  160/437  org-texmacs-document-source-custom-todo-plain-title (0.001117 sec)
+org-texmacs-ert>    passed  161/437  org-texmacs-document-source-custom-todo-settings (0.002401 sec)
+org-texmacs-ert>    passed  162/437  org-texmacs-document-source-disabled-fragments (0.000841 sec)
+org-texmacs-ert>    passed  163/437  org-texmacs-document-source-preflight (0.002738 sec)
+org-texmacs-ert>    passed  164/437  org-texmacs-document-source-real-error-and-repair (1.493429 sec)
+org-texmacs-ert>    passed  165/437  org-texmacs-document-source-real-islands (1.498662 sec)
+org-texmacs-ert>    passed  166/437  org-texmacs-document-source-rechecks-heading-settings (0.006795 sec)
+org-texmacs-ert>    passed  167/437  org-texmacs-document-source-rechecks-snapshot (0.039044 sec)
+org-texmacs-ert>    passed  168/437  org-texmacs-document-source-rejects-context (0.001108 sec)
+org-texmacs-ert>    passed  169/437  org-texmacs-document-source-root-mismatch (0.001034 sec)
+org-texmacs-ert>    passed  170/437  org-texmacs-document-source-without-islands (0.001302 sec)
+org-texmacs-ert>    passed  171/437  org-texmacs-document-table-alignment-caption-reference-and-files (1.545413 sec)
+org-texmacs-ert>    passed  172/437  org-texmacs-document-table-alignment-column-counts-and-rules (0.005597 sec)
+org-texmacs-ert>    passed  173/437  org-texmacs-document-table-alignment-rejections (0.011030 sec)
+org-texmacs-ert>    passed  174/437  org-texmacs-document-table-alignment-row-positions-and-ownership (0.004060 sec)
+org-texmacs-ert>    passed  175/437  org-texmacs-document-table-native-and-provenance (1.590590 sec)
+org-texmacs-ert>    passed  176/437  org-texmacs-document-table-rule-positions (0.002015 sec)
+org-texmacs-ert>    passed  177/437  org-texmacs-document-table-source-and-inline-subset (0.001426 sec)
+org-texmacs-ert>    passed  178/437  org-texmacs-document-toc-static-label-conflict-native (1.642686 sec)
+org-texmacs-ert>    passed  179/437  org-texmacs-document-toc-structure-and-headline-policies (0.002590 sec)
+org-texmacs-ert>    passed  180/437  org-texmacs-document-toc-uses-filtered-context (0.001578 sec)
+org-texmacs-ert>    passed  181/437  org-texmacs-document-uri-abbreviation-and-stale-settings (0.002103 sec)
+org-texmacs-ert>    passed  182/437  org-texmacs-document-uri-native-islands (1.663233 sec)
+org-texmacs-ert>    passed  183/437  org-texmacs-document-uri-private-syntax-restoration (0.003070 sec)
+org-texmacs-ert>    passed  184/437  org-texmacs-document-uri-rich-description (0.001468 sec)
+org-texmacs-ert>    passed  185/437  org-texmacs-document-uri-source-forms (0.020347 sec)
+org-texmacs-ert>    passed  186/437  org-texmacs-document-uri-type-and-target-contract (0.000113 sec)
+org-texmacs-ert>    passed  187/437  org-texmacs-document-whitespace-island-boundary (0.000045 sec)
+org-texmacs-ert>    passed  188/437  org-texmacs-encoding-decode-contract (0.000064 sec)
+org-texmacs-ert>    passed  189/437  org-texmacs-encoding-real-errors-preserve-parser (1.737593 sec)
+org-texmacs-ert>    passed  190/437  org-texmacs-encoding-real-source-semantics (1.757110 sec)
+org-texmacs-ert>    passed  191/437  org-texmacs-encoding-rejects-invalid-input-before-worker (0.000094 sec)
+org-texmacs-ert>    passed  192/437  org-texmacs-encoding-wire-is-data (0.000037 sec)
+org-texmacs-ert>    passed  193/437  org-texmacs-export-api-frontend-fresh-load (0.149394 sec)
+org-texmacs-ert>    passed  194/437  org-texmacs-export-api-main-module-fresh-load (0.150006 sec)
+org-texmacs-ert>    passed  195/437  org-texmacs-export-backend-buffer-display-error-cleanup (0.000369 sec)
+org-texmacs-ert>    passed  196/437  org-texmacs-export-backend-dependency-and-option-waits (1.703405 sec)
+org-texmacs-ert>    passed  197/437  org-texmacs-export-backend-discovery-captured-before-prompt (0.000428 sec)
+org-texmacs-ert>    passed  198/437  org-texmacs-export-backend-discovery-disabled-and-invalid (1.390494 sec)
+org-texmacs-ert>    passed  199/437  org-texmacs-export-backend-dispatch-and-native-consumers (1.781087 sec)
+org-texmacs-ert>    passed  200/437  org-texmacs-export-backend-dispatch-option-rejection (0.000415 sec)
+org-texmacs-ert>    passed  201/437  org-texmacs-export-backend-full-provider-profile (0.010710 sec)
+org-texmacs-ert>    passed  202/437  org-texmacs-export-backend-generic-preprocessing-guard (0.001528 sec)
+org-texmacs-ert>    passed  203/437  org-texmacs-export-backend-html-hook-advice-filter-isolation (0.002638 sec)
+org-texmacs-ert>    passed  204/437  org-texmacs-export-backend-keyword-naming-and-reexport (1.540734 sec)
+org-texmacs-ert>    passed  205/437  org-texmacs-export-backend-local-preprocessing-refusal (0.003765 sec)
+org-texmacs-ert>    passed  206/437  org-texmacs-export-backend-local-route-and-discovery (3.471712 sec)
+org-texmacs-ert>    passed  207/437  org-texmacs-export-backend-nonfile-prompt-and-native-bytes (0.006869 sec)
+org-texmacs-ert>    passed  208/437  org-texmacs-export-backend-preprocessed-three-consumers (1.681196 sec)
+org-texmacs-ert>    passed  209/437  org-texmacs-export-backend-preprocessing-failure-no-output (1.569039 sec)
+org-texmacs-ert>    passed  210/437  org-texmacs-export-backend-registration-and-installation (0.000082 sec)
+org-texmacs-ert>    passed  211/437  org-texmacs-export-backend-rejects-unsupported-options (0.000586 sec)
+org-texmacs-ert>    passed  212/437  org-texmacs-export-backend-render-and-write-errors (0.010035 sec)
+org-texmacs-ert>    passed  213/437  org-texmacs-export-backend-source-name-and-target-preflight (0.004842 sec)
+org-texmacs-ert>    passed  214/437  org-texmacs-export-backend-source-wait-before-output (0.004299 sec)
+org-texmacs-ert>    passed  215/437  org-texmacs-export-managed-buffer-content-commit-rollback (0.000487 sec)
+org-texmacs-ert>    passed  216/437  org-texmacs-export-managed-buffer-conversion-failure (0.000258 sec)
+org-texmacs-ert>    passed  217/437  org-texmacs-export-managed-buffer-display-failure-contract (0.000249 sec)
+org-texmacs-ert>    passed  218/437  org-texmacs-export-managed-buffer-foreign-and-explicit-results (0.000233 sec)
+org-texmacs-ert>    passed  219/437  org-texmacs-export-managed-buffer-kill-and-source-lifetime (0.000379 sec)
+org-texmacs-ert>    passed  220/437  org-texmacs-export-managed-buffer-no-mode-or-change-hooks (0.000210 sec)
+org-texmacs-ert>    passed  221/437  org-texmacs-export-managed-buffer-reuse-and-source-state (0.000211 sec)
+org-texmacs-ert>    passed  222/437  org-texmacs-export-managed-buffer-user-relinquishment (0.001437 sec)
+org-texmacs-ert>    passed  223/437  org-texmacs-export-menu-first-load-default-and-require (0.279593 sec)
+org-texmacs-ert>    passed  224/437  org-texmacs-export-menu-first-load-explicit-dispatch-and-ownership (0.302113 sec)
+org-texmacs-ert>    passed  225/437  org-texmacs-export-menu-first-load-invalid-preserves-registry (0.153047 sec)
+org-texmacs-ert>    passed  226/437  org-texmacs-export-menu-native-shared-prefix-and-conflicts (0.000375 sec)
+org-texmacs-ert>    passed  227/437  org-texmacs-export-menu-valid-key-domains-and-fields (0.000135 sec)
+org-texmacs-ert>    passed  228/437  org-texmacs-file-links-compose-with-inline-and-stm-provenance (0.000135 sec)
+org-texmacs-ert>    passed  229/437  org-texmacs-file-links-explicit-context-and-unsupported-semantics (0.006206 sec)
+org-texmacs-ert>    passed  230/437  org-texmacs-file-links-native-preflight-validates-provenance (0.000055 sec)
+org-texmacs-ert>    passed  231/437  org-texmacs-file-links-native-readback-and-preflight-preservation (1.688989 sec)
+org-texmacs-ert>    passed  232/437  org-texmacs-file-links-native-rejects-reserved-syntax (0.000123 sec)
+org-texmacs-ert>    passed  233/437  org-texmacs-file-links-preserve-raw-targets-and-frozen-base (0.001870 sec)
+org-texmacs-ert>    passed  234/437  org-texmacs-fragment-issue10-discovery (0.003396 sec)
+org-texmacs-ert>    passed  235/437  org-texmacs-fragment-issue10-invalid-candidates (0.007853 sec)
+org-texmacs-ert>    passed  236/437  org-texmacs-fragment-issue10-object-and-delimiter-boundaries (0.011309 sec)
+org-texmacs-ert>    passed  237/437  org-texmacs-headline-custom-formatter-policy-and-result (0.001224 sec)
+org-texmacs-ert>    passed  238/437  org-texmacs-headline-explicit-tags-only (0.001211 sec)
+org-texmacs-ert>    passed  239/437  org-texmacs-headline-file-options-without-export-environment (0.001123 sec)
+org-texmacs-ert>    passed  240/437  org-texmacs-headline-formatter-copies-and-preserves-parts (0.000036 sec)
+org-texmacs-ert>    passed  241/437  org-texmacs-headline-invalid-formatter-result (0.003104 sec)
+org-texmacs-ert>    passed  242/437  org-texmacs-headline-native-metadata-literal (1.639843 sec)
+org-texmacs-ert>    passed  243/437  org-texmacs-headline-output-settings-snapshot (0.003473 sec)
+org-texmacs-ert>    passed  244/437  org-texmacs-headline-policy-combinations (0.049225 sec)
+org-texmacs-ert>    passed  245/437  org-texmacs-narrowing-config-and-source-state (0.001979 sec)
+org-texmacs-ert>    passed  246/437  org-texmacs-narrowing-empty-and-preflight-boundaries (0.003261 sec)
+org-texmacs-ert>    passed  247/437  org-texmacs-narrowing-native-frontend-naming-and-state (1.764799 sec)
+org-texmacs-ert>    passed  248/437  org-texmacs-narrowing-native-waits-reject-changes-before-write (1.541249 sec)
+org-texmacs-ert>    passed  249/437  org-texmacs-narrowing-owned-notes-bibliography-and-islands (1.737630 sec)
+org-texmacs-ert>    passed  250/437  org-texmacs-narrowing-prompts-and-restriction-changes (1.452661 sec)
+org-texmacs-ert>    passed  251/437  org-texmacs-narrowing-subtree-intersection-and-region-priority (0.003993 sec)
+org-texmacs-issue10-focused> Running 46 tests (2026-10-16 10:23:40+0000, selector `(or (tag issue10) (tag issue11) "^org-texmacs-document-.*footnote" "^org-texmacs-.*region" "^org-texmacs-.*subtree")')
+org-texmacs-issue10-focused>    passed   1/46  org-texmacs-pdf-issue10-inline-and-separate (10.604098 sec)
+org-texmacs-issue10-focused>    passed   2/46  org-texmacs-fragment-issue10-object-and-delimiter-boundaries (0.016677 sec)
+org-texmacs-issue10-focused>    passed   3/46  org-texmacs-fragment-issue10-invalid-candidates (0.009234 sec)
+org-texmacs-issue10-focused>    passed   4/46  org-texmacs-fragment-issue10-discovery (0.004046 sec)
+org-texmacs-issue10-focused>    passed   5/46  org-texmacs-document-issue10-pure-bare (0.029517 sec)
+org-texmacs-issue10-focused>    passed   6/46  org-texmacs-document-issue10-owned-forward-and-scoped (0.012565 sec)
+org-texmacs-issue10-focused>    passed   7/46  org-texmacs-document-issue10-display-mixtures (0.000416 sec)
+org-texmacs-issue10-focused>    passed   8/46  org-texmacs-pdf-issue11-original-equation-layout (3.914569 sec)
+org-texmacs-issue10-focused>    passed   9/46  org-texmacs-pdf-issue11-bare-block-and-reload-consistency (51.039423 sec)
+org-texmacs-issue10-focused>    passed  10/46  org-texmacs-document-issue11-nonbare-boundaries (0.000269 sec)
+org-texmacs-issue10-focused>    passed  11/46  org-texmacs-document-issue11-file-provenance-and-source-errors (1.424279 sec)
+org-texmacs-issue10-focused>    passed  12/46  org-texmacs-document-issue11-display-mixtures-reject (0.000614 sec)
+org-texmacs-issue10-focused>    passed  13/46  org-texmacs-document-issue11-container-structure-and-paths (7.519073 sec)
+org-texmacs-issue10-focused>    passed  14/46  org-texmacs-document-issue11-bare-identity-and-purity (0.002213 sec)
+org-texmacs-issue10-focused>    passed  15/46  org-texmacs-document-named-footnote-unused-and-invalid (0.008451 sec)
+org-texmacs-issue10-focused>    passed  16/46  org-texmacs-document-named-footnote-section-setting (0.002971 sec)
+org-texmacs-issue10-focused>    passed  17/46  org-texmacs-document-named-footnote-pruned-definitions (0.003779 sec)
+org-texmacs-issue10-focused>    passed  18/46  org-texmacs-document-named-footnote-owned-body-and-provenance (0.001856 sec)
+org-texmacs-issue10-focused>    passed  19/46  org-texmacs-document-named-footnote-native (1.621411 sec)
+org-texmacs-issue10-focused>    passed  20/46  org-texmacs-document-named-footnote-label-collision-and-empty (0.000112 sec)
+org-texmacs-issue10-focused>    passed  21/46  org-texmacs-document-named-footnote-forward-inline-definition (0.001454 sec)
+org-texmacs-issue10-focused>    passed  22/46  org-texmacs-document-named-footnote-first-and-repeated (0.002279 sec)
+org-texmacs-issue10-focused>    passed  23/46  org-texmacs-document-named-footnote-blocks-and-local-targets (0.006648 sec)
+org-texmacs-issue10-focused>    passed  24/46  org-texmacs-document-footnote-whitespace-and-empty (0.000063 sec)
+org-texmacs-issue10-focused>    passed  25/46  org-texmacs-document-footnote-stm-support (0.001336 sec)
+org-texmacs-issue10-focused>    passed  26/46  org-texmacs-document-footnote-source (0.001084 sec)
+org-texmacs-issue10-focused>    passed  27/46  org-texmacs-document-footnote-rich-native (1.580113 sec)
+org-texmacs-issue10-focused>    passed  28/46  org-texmacs-document-footnote-rejects-contexts (0.004327 sec)
+org-texmacs-issue10-focused>    passed  29/46  org-texmacs-subtree-selection-and-property-waits (1.440821 sec)
+org-texmacs-issue10-focused>    passed  30/46  org-texmacs-subtree-owned-bibliography-and-resource-base (1.623829 sec)
+org-texmacs-issue10-focused>    passed  31/46  org-texmacs-subtree-links-and-invalid-scope-preflight (0.006542 sec)
+org-texmacs-issue10-focused>    passed  32/46  org-texmacs-subtree-external-footnotes-and-stm-order (1.533760 sec)
+org-texmacs-issue10-focused>    passed  33/46  org-texmacs-subtree-dispatch-file-naming-and-source-state (1.722001 sec)
+org-texmacs-issue10-focused>    passed  34/46  org-texmacs-subtree-date-and-filter-overrides (0.002582 sec)
+org-texmacs-issue10-focused>    passed  35/46  org-texmacs-subtree-configuration-and-owned-selection (0.002246 sec)
+org-texmacs-issue10-focused>    passed  36/46  org-texmacs-overrides-global-file-subtree-priority (0.003032 sec)
+org-texmacs-issue10-focused>    passed  37/46  org-texmacs-narrowing-subtree-intersection-and-region-priority (0.003098 sec)
+org-texmacs-issue10-focused> Mark set
+org-texmacs-issue10-focused>    passed  38/46  org-texmacs-overrides-native-menu-consumers-and-region (1.690758 sec)
+org-texmacs-issue10-focused> Mark set
+org-texmacs-issue10-focused>    passed  39/46  org-texmacs-region-dispatch-and-subtree-priority (1.737172 sec)
+org-texmacs-issue10-focused>    passed  40/46  org-texmacs-region-footnote-dependencies-and-islands (1.548753 sec)
+org-texmacs-issue10-focused> Mark set
+org-texmacs-issue10-focused>    passed  41/46  org-texmacs-region-frozen-selection-and-stale-source (1.489042 sec)
+org-texmacs-issue10-focused>    passed  42/46  org-texmacs-region-headings-and-complete-native-block (1.484669 sec)
+org-texmacs-issue10-focused>    passed  43/46  org-texmacs-region-invalid-boundaries-and-link-scope (0.004300 sec)
+org-texmacs-issue10-focused>    passed  44/46  org-texmacs-region-owned-bibliography-and-resource-base (1.602102 sec)
+org-texmacs-issue10-focused> Mark set
+org-texmacs-issue10-focused>    passed  45/46  org-texmacs-region-partial-text-and-file-context (0.002518 sec)
+org-texmacs-issue10-focused>    passed  46/46  org-texmacs-test-fragment-region-filtering-preserves-precedence (0.002773 sec)
+org-texmacs-issue10-focused> 
+org-texmacs-issue10-focused> Ran 46 tests, 46 results as expected, 0 unexpected (2026-10-16 10:25:14+0000, 93.714702 sec)
+org-texmacs-issue10-focused> 
+org-texmacs-ert>    passed  252/437  org-texmacs-overrides-filtering-and-owned-dependencies (1.424623 sec)
+org-texmacs-ert>    passed  253/437  org-texmacs-overrides-global-file-subtree-priority (0.004018 sec)
+org-texmacs-ert>    passed  254/437  org-texmacs-overrides-invalid-plists-before-prompts-and-workers (0.001106 sec)
+org-texmacs-ert> Mark set
+org-texmacs-ert>    passed  255/437  org-texmacs-overrides-native-menu-consumers-and-region (1.644370 sec)
+org-texmacs-ert>    passed  256/437  org-texmacs-overrides-owned-across-prompt-and-native-waits (1.433387 sec)
+org-texmacs-ert>    passed  257/437  org-texmacs-overrides-rich-metadata-and-explicit-nil (0.002513 sec)
+org-texmacs-ert>    passed  258/437  org-texmacs-pdf-block-quotation-and-center-layout (1.688560 sec)
+org-texmacs-ert>    passed  259/437  org-texmacs-pdf-caption-number-and-reference-semantics (1.776359 sec)
+org-texmacs-ert>    passed  260/437  org-texmacs-pdf-citation-text-and-owned-bibliography (1.754775 sec)
+org-texmacs-ert>    passed  261/437  org-texmacs-pdf-cleanup-failure-stops-worker (1.461589 sec)
+org-texmacs-ert>    passed  262/437  org-texmacs-pdf-date-literal-layout (1.784336 sec)
+org-texmacs-ert>    passed  263/437  org-texmacs-pdf-explicit-source-export (1.485969 sec)
+org-texmacs-ert>    passed  264/437  org-texmacs-pdf-five-level-headline-counter-and-toc (1.675511 sec)
+org-texmacs-ert>    passed  265/437  org-texmacs-pdf-footnote-text-and-repeated-markers (1.545225 sec)
+org-texmacs-ert>    passed  266/437  org-texmacs-pdf-issue10-inline-and-separate (10.210723 sec)
+org-texmacs-ert>    passed  267/437  org-texmacs-pdf-issue11-bare-block-and-reload-consistency (49.900263 sec)
+org-texmacs-ert>    passed  268/437  org-texmacs-pdf-issue11-original-equation-layout (3.700611 sec)
+org-texmacs-ert>    passed  269/437  org-texmacs-pdf-list-multiparagraph-native-layout (1.666745 sec)
+org-texmacs-ert>    passed  270/437  org-texmacs-pdf-native-basic (1.492571 sec)
+org-texmacs-ert>    passed  271/437  org-texmacs-pdf-native-session-and-inspection (1.987001 sec)
+org-texmacs-ert>    passed  272/437  org-texmacs-pdf-preflight-protocol-and-source-wait (0.002275 sec)
+org-texmacs-ert>    passed  273/437  org-texmacs-pdf-preformatted-lines-and-indent (1.671153 sec)
+org-texmacs-ert>    passed  274/437  org-texmacs-pdf-render-error-recovery (3.674548 sec)
+org-texmacs-ert>    passed  275/437  org-texmacs-pdf-table-alignment-frontend-and-native-layout (1.713975 sec)
+org-texmacs-ert>    passed  276/437  org-texmacs-preprocess-bibliography-uuid-and-filters-once (1.605302 sec)
+org-texmacs-ert>    passed  277/437  org-texmacs-preprocess-bounds-aliases-and-temporary-cleanup (0.006604 sec)
+org-texmacs-ert>    passed  278/437  org-texmacs-preprocess-budgets-and-hook-created-stm (0.031097 sec)
+org-texmacs-ert>    passed  279/437  org-texmacs-preprocess-completed-working-buffer-context (1.408957 sec)
+org-texmacs-ert>    passed  280/437  org-texmacs-preprocess-component-hooks-generated-and-protected (0.002207 sec)
+org-texmacs-ert>    passed  281/437  org-texmacs-preprocess-component-native-fixed-sources (0.004453 sec)
+org-texmacs-ert>    passed  282/437  org-texmacs-preprocess-component-native-guard-and-mode-hook-isolation (0.002299 sec)
+org-texmacs-ert>    passed  283/437  org-texmacs-preprocess-component-rejects-files-and-parameters (0.009564 sec)
+org-texmacs-ert>    passed  284/437  org-texmacs-preprocess-component-rejects-marker-and-config-edits (0.004961 sec)
+org-texmacs-ert>    passed  285/437  org-texmacs-preprocess-cross-directory-final-bibliography-base (1.543328 sec)
+org-texmacs-ert>    passed  286/437  org-texmacs-preprocess-cross-directory-native-links-and-notes (1.513618 sec)
+org-texmacs-ert>    passed  287/437  org-texmacs-preprocess-cross-directory-partial-stm-rejected (0.004119 sec)
+org-texmacs-ert>    passed  288/437  org-texmacs-preprocess-cross-directory-stm-final-context (1.410841 sec)
+org-texmacs-ert>    passed  289/437  org-texmacs-preprocess-discovery-off-and-old-api-defaults (0.006763 sec)
+org-texmacs-ert>    passed  290/437  org-texmacs-preprocess-fixed-read-copies-and-parameter-errors (0.011386 sec)
+org-texmacs-ert>    passed  291/437  org-texmacs-preprocess-island-ranges-owned-before-filters (0.001540 sec)
+org-texmacs-ert>    passed  292/437  org-texmacs-preprocess-lines-protect-multiline-stm (0.004869 sec)
+org-texmacs-ert>    passed  293/437  org-texmacs-preprocess-native-depth-and-invalid-utf8 (0.012712 sec)
+org-texmacs-ert>    passed  294/437  org-texmacs-preprocess-native-parameter-combinations (0.009344 sec)
+org-texmacs-ert>    passed  295/437  org-texmacs-preprocess-native-reader-restored-after-failure (0.001470 sec)
+org-texmacs-ert>    passed  296/437  org-texmacs-preprocess-original-and-working-snapshots (0.001115 sec)
+org-texmacs-ert>    passed  297/437  org-texmacs-preprocess-original-source-guard-before-working-parse (0.000458 sec)
+org-texmacs-ert>    passed  298/437  org-texmacs-preprocess-rejects-dependency-changes-at-native-stages (1.788434 sec)
+org-texmacs-ert>    passed  299/437  org-texmacs-preprocess-rejects-include-read-mutations (0.005180 sec)
+org-texmacs-ert>    passed  300/437  org-texmacs-preprocess-rejects-selection-directory-and-odd-levels (0.001351 sec)
+org-texmacs-ert>    passed  301/437  org-texmacs-preprocess-rejects-source-and-hook-mutations (0.008558 sec)
+org-texmacs-ert>    passed  302/437  org-texmacs-preprocess-selected-external-footnote-stm (1.394548 sec)
+org-texmacs-ert>    passed  303/437  org-texmacs-preprocess-selected-same-file-native-cycle-policy (0.042824 sec)
+org-texmacs-ert>    passed  304/437  org-texmacs-preprocess-selected-stm-native-readback (1.526403 sec)
+org-texmacs-ert>    passed  305/437  org-texmacs-preprocess-selection-avoids-excluded-reads (0.003480 sec)
+org-texmacs-ert>    passed  306/437  org-texmacs-preprocess-source-to-native-and-owned-snapshots (2.223688 sec)
+org-texmacs-ert>    passed  307/437  org-texmacs-preprocess-whole-file-footnotes-and-generated-stm (1.448359 sec)
+org-texmacs-ert> Mark set
+org-texmacs-ert>    passed  308/437  org-texmacs-region-dispatch-and-subtree-priority (1.721786 sec)
+org-texmacs-ert>    passed  309/437  org-texmacs-region-footnote-dependencies-and-islands (1.511016 sec)
+org-texmacs-ert> Mark set
+org-texmacs-ert>    passed  310/437  org-texmacs-region-frozen-selection-and-stale-source (1.440793 sec)
+org-texmacs-ert>    passed  311/437  org-texmacs-region-headings-and-complete-native-block (1.468898 sec)
+org-texmacs-ert>    passed  312/437  org-texmacs-region-invalid-boundaries-and-link-scope (0.004842 sec)
+org-texmacs-ert>    passed  313/437  org-texmacs-region-owned-bibliography-and-resource-base (1.543841 sec)
+org-texmacs-ert> Mark set
+org-texmacs-ert>    passed  314/437  org-texmacs-region-partial-text-and-file-context (0.002732 sec)
+org-texmacs-ert>    passed  315/437  org-texmacs-serialization-export-bibliography-wait (1.542567 sec)
+org-texmacs-ert>    passed  316/437  org-texmacs-serialization-export-buffer-initialization-and-failure (0.000628 sec)
+org-texmacs-ert>    passed  317/437  org-texmacs-serialization-export-buffer-native-and-owned (1.494442 sec)
+org-texmacs-ert>    passed  318/437  org-texmacs-serialization-export-destination-and-preflight (0.004927 sec)
+org-texmacs-ert>    passed  319/437  org-texmacs-serialization-export-explicit-command-boundary (0.000050 sec)
+org-texmacs-ert>    passed  320/437  org-texmacs-serialization-export-explicit-file-source (1.390221 sec)
+org-texmacs-ert>    passed  321/437  org-texmacs-serialization-export-native-source-and-file (1.541777 sec)
+org-texmacs-ert>    passed  322/437  org-texmacs-serialization-export-source-waits-before-output (0.008909 sec)
+org-texmacs-ert>    passed  323/437  org-texmacs-serialization-native-errors-preserve-worker (1.538202 sec)
+org-texmacs-ert>    passed  324/437  org-texmacs-serialization-native-roundtrip-and-session-independence (1.693155 sec)
+org-texmacs-ert>    passed  325/437  org-texmacs-serialization-owned-org-document (1.618677 sec)
+org-texmacs-ert>    passed  326/437  org-texmacs-serialization-preflight-and-protocol (0.000271 sec)
+org-texmacs-ert>    passed  327/437  org-texmacs-serialization-save-copied-path-and-races (0.000608 sec)
+org-texmacs-ert>    passed  328/437  org-texmacs-serialization-save-error-boundaries (0.000179 sec)
+org-texmacs-ert>    passed  329/437  org-texmacs-serialization-save-native-bytes-and-caller-isolation (1.451589 sec)
+org-texmacs-ert>    passed  330/437  org-texmacs-serialization-save-preflight (0.000396 sec)
+org-texmacs-ert>    passed  331/437  org-texmacs-session-invalid-and-stale-handles (0.000037 sec)
+org-texmacs-ert>    passed  332/437  org-texmacs-session-readme-example (1.718534 sec)
+org-texmacs-ert>    passed  333/437  org-texmacs-session-real-close-failure-stops-worker (1.446127 sec)
+org-texmacs-ert>    passed  334/437  org-texmacs-session-real-complete-document-state (1.799283 sec)
+org-texmacs-ert>    passed  335/437  org-texmacs-session-real-encoding-error-preserves-body (1.654641 sec)
+org-texmacs-ert>    passed  336/437  org-texmacs-session-real-lifecycle (2.004463 sec)
+org-texmacs-ert>    passed  337/437  org-texmacs-session-real-restart-invalidates-handle (2.393181 sec)
+org-texmacs-ert>    passed  338/437  org-texmacs-session-real-update-failure-discards-buffer (1.650088 sec)
+org-texmacs-ert>    passed  339/437  org-texmacs-session-response-contract (0.000137 sec)
+org-texmacs-ert>    passed  340/437  org-texmacs-source-location-checks-after-preflight (0.002399 sec)
+org-texmacs-ert>    passed  341/437  org-texmacs-source-location-expands-home-during-preparation (0.001971 sec)
+org-texmacs-ert>    passed  342/437  org-texmacs-source-location-explicit-buffer-snapshot (0.002993 sec)
+org-texmacs-ert>    passed  343/437  org-texmacs-source-location-indirect-buffer-context (0.001541 sec)
+org-texmacs-ert>    passed  344/437  org-texmacs-source-location-invalidates-worker-snapshot (0.006096 sec)
+org-texmacs-ert>    passed  345/437  org-texmacs-source-location-owned-pure-input (0.000189 sec)
+org-texmacs-ert>    passed  346/437  org-texmacs-source-location-rejects-implicit-paths (0.000133 sec)
+org-texmacs-ert>    passed  347/437  org-texmacs-subtree-configuration-and-owned-selection (0.003697 sec)
+org-texmacs-ert>    passed  348/437  org-texmacs-subtree-date-and-filter-overrides (0.003332 sec)
+org-texmacs-ert>    passed  349/437  org-texmacs-subtree-dispatch-file-naming-and-source-state (1.657046 sec)
+org-texmacs-ert>    passed  350/437  org-texmacs-subtree-external-footnotes-and-stm-order (1.526824 sec)
+org-texmacs-ert>    passed  351/437  org-texmacs-subtree-links-and-invalid-scope-preflight (0.006970 sec)
+org-texmacs-ert>    passed  352/437  org-texmacs-subtree-owned-bibliography-and-resource-base (1.588801 sec)
+org-texmacs-ert>    passed  353/437  org-texmacs-subtree-selection-and-property-waits (1.400444 sec)
+org-texmacs-ert>    passed  354/437  org-texmacs-test-block-p (0.000559 sec)
+org-texmacs-ert>    passed  355/437  org-texmacs-test-block-source-exact (0.001397 sec)
+org-texmacs-ert>    passed  356/437  org-texmacs-test-block-source-rejects-invalid-bounds (0.000055 sec)
+org-texmacs-ert>    passed  357/437  org-texmacs-test-block-source-rejects-other-nodes (0.000025 sec)
+org-texmacs-ert>    passed  358/437  org-texmacs-test-block-source-strips-properties (0.000290 sec)
+org-texmacs-ert>    passed  359/437  org-texmacs-test-capability-check-rejects-malformed-input (0.000034 sec)
+org-texmacs-ert>    passed  360/437  org-texmacs-test-capability-check-reports-all-failures (0.000028 sec)
+org-texmacs-ert>    passed  361/437  org-texmacs-test-capability-types (0.000019 sec)
+org-texmacs-ert>    passed  362/437  org-texmacs-test-ensure-setup-signals-error (0.000050 sec)
+org-texmacs-ert>    passed  363/437  org-texmacs-test-fragment-at-point-boundaries (0.003575 sec)
+org-texmacs-ert>    passed  364/437  org-texmacs-test-fragment-buffer-local-tags (0.001053 sec)
+org-texmacs-ert>    passed  365/437  org-texmacs-test-fragment-custom-real-error-and-repair (1.458401 sec)
+org-texmacs-ert>    passed  366/437  org-texmacs-test-fragment-custom-tags (0.002760 sec)
+org-texmacs-ert>    passed  367/437  org-texmacs-test-fragment-default-native-exclusions (0.089389 sec)
+org-texmacs-ert>    passed  368/437  org-texmacs-test-fragment-default-real-trees (3.605339 sec)
+org-texmacs-ert>    passed  369/437  org-texmacs-test-fragment-default-sources (0.061517 sec)
+org-texmacs-ert>    passed  370/437  org-texmacs-test-fragment-default-tags (0.000049 sec)
+org-texmacs-ert>    passed  371/437  org-texmacs-test-fragment-invalid-tags (0.000695 sec)
+org-texmacs-ert>    passed  372/437  org-texmacs-test-fragment-map-callback-context (0.000574 sec)
+org-texmacs-ert>    passed  373/437  org-texmacs-test-fragment-map-checks-tags (0.001309 sec)
+org-texmacs-ert>    passed  374/437  org-texmacs-test-fragment-map-rejects-callback-source-changes (0.001902 sec)
+org-texmacs-ert>    passed  375/437  org-texmacs-test-fragment-mask-preserves-shape (0.000095 sec)
+org-texmacs-ert>    passed  376/437  org-texmacs-test-fragment-masking-keeps-native-object-exclusions (0.005183 sec)
+org-texmacs-ert>    passed  377/437  org-texmacs-test-fragment-masking-preserves-adjacent-markup (0.006384 sec)
+org-texmacs-ert>    passed  378/437  org-texmacs-test-fragment-mixed-boundaries (0.055178 sec)
+org-texmacs-ert>    passed  379/437  org-texmacs-test-fragment-narrowing (0.000444 sec)
+org-texmacs-ert>    passed  380/437  org-texmacs-test-fragment-prefix (0.000031 sec)
+org-texmacs-ert>    passed  381/437  org-texmacs-test-fragment-prefix-is-case-sensitive (0.000029 sec)
+org-texmacs-ert>    passed  382/437  org-texmacs-test-fragment-region-filtering-preserves-precedence (0.001914 sec)
+org-texmacs-ert>    passed  383/437  org-texmacs-test-fragment-rejects-invalid-arguments (0.000214 sec)
+org-texmacs-ert>    passed  384/437  org-texmacs-test-fragment-rejects-reader-extensions (0.000055 sec)
+org-texmacs-ert>    passed  385/437  org-texmacs-test-fragment-scan-is-isolated (0.000573 sec)
+org-texmacs-ert>    passed  386/437  org-texmacs-test-fragment-scan-resumes-next-paragraph (0.001768 sec)
+org-texmacs-ert>    passed  387/437  org-texmacs-test-fragment-source-cases (0.011285 sec)
+org-texmacs-ert>    passed  388/437  org-texmacs-test-fragment-structural-boundaries (0.001361 sec)
+org-texmacs-ert>    passed  389/437  org-texmacs-test-fragment-structural-scan-stays-in-paragraph (0.000025 sec)
+org-texmacs-ert>    passed  390/437  org-texmacs-test-fragment-tag-prefixes (0.007362 sec)
+org-texmacs-ert>    passed  391/437  org-texmacs-test-fragment-tag-snapshots (0.000765 sec)
+org-texmacs-ert>    passed  392/437  org-texmacs-test-fragment-tags-do-not-restrict-blocks (1.533518 sec)
+org-texmacs-ert>    passed  393/437  org-texmacs-test-fragment-tree-copies-stree-strings (0.001132 sec)
+org-texmacs-ert>    passed  394/437  org-texmacs-test-fragment-tree-narrowing-and-text-properties (0.000685 sec)
+org-texmacs-ert>    passed  395/437  org-texmacs-test-fragment-tree-real-error-and-repair (1.492018 sec)
+org-texmacs-ert>    passed  396/437  org-texmacs-test-fragment-tree-real-parser (1.493104 sec)
+org-texmacs-ert>    passed  397/437  org-texmacs-test-fragment-tree-rechecks-after-worker-wait (0.003338 sec)
+org-texmacs-ert>    passed  398/437  org-texmacs-test-fragment-tree-rechecks-tags (0.001699 sec)
+org-texmacs-ert>    passed  399/437  org-texmacs-test-fragment-tree-rejects-invalid-spans (0.000502 sec)
+org-texmacs-ert>    passed  400/437  org-texmacs-test-fragment-tree-rejects-other-or-dead-buffer (0.000682 sec)
+org-texmacs-ert>    passed  401/437  org-texmacs-test-fragment-tree-rejects-stale-source (0.001928 sec)
+org-texmacs-ert>    passed  402/437  org-texmacs-test-fragment-tree-root-and-error-contract (0.000499 sec)
+org-texmacs-ert>    passed  403/437  org-texmacs-test-fragment-tree-shares-worker-with-blocks (1.546949 sec)
+org-texmacs-ert>    passed  404/437  org-texmacs-test-input-captures-formatter-without-calling-it (0.000184 sec)
+org-texmacs-ert>    passed  405/437  org-texmacs-test-input-defaults-ignore-ambient-options (0.000095 sec)
+org-texmacs-ert>    passed  406/437  org-texmacs-test-input-document-settings-ownership (0.000055 sec)
+org-texmacs-ert>    passed  407/437  org-texmacs-test-input-ownership-and-mapping (0.000106 sec)
+org-texmacs-ert>    passed  408/437  org-texmacs-test-input-pure-core (0.000075 sec)
+org-texmacs-ert>    passed  409/437  org-texmacs-test-input-rejects-invalid-document-settings (0.000090 sec)
+org-texmacs-ert>    passed  410/437  org-texmacs-test-input-rejects-invalid-ownership (0.000088 sec)
+org-texmacs-ert>    passed  411/437  org-texmacs-test-input-rejects-unresolved-and-opaque-data (0.000067 sec)
+org-texmacs-ert>    passed  412/437  org-texmacs-test-input-secondary-ownership (0.000072 sec)
+org-texmacs-ert>    passed  413/437  org-texmacs-test-package-loads (0.005254 sec)
+org-texmacs-ert>    passed  414/437  org-texmacs-test-prepare-buffer-independent-result (0.003312 sec)
+org-texmacs-ert>    passed  415/437  org-texmacs-test-setup-check-passes (0.000095 sec)
+org-texmacs-ert>    passed  416/437  org-texmacs-test-setup-checks-configured-program (0.000062 sec)
+org-texmacs-ert>    passed  417/437  org-texmacs-test-stree-org-round-trip (0.000031 sec)
+org-texmacs-ert>    passed  418/437  org-texmacs-test-stree-to-org-builds-parent-links (0.000027 sec)
+org-texmacs-ert>    passed  419/437  org-texmacs-test-stree-to-org-copies-strings (0.000016 sec)
+org-texmacs-ert>    passed  420/437  org-texmacs-test-texmacs-headless-parse (1.345764 sec)
+org-texmacs-ert>    passed  421/437  org-texmacs-test-tree-blocks-share-worker (1.436916 sec)
+org-texmacs-ert>    passed  422/437  org-texmacs-test-tree-edit-and-error-recovery (1.606861 sec)
+org-texmacs-ert>    passed  423/437  org-texmacs-test-tree-prefix-edit-remains-correct (0.001084 sec)
+org-texmacs-ert>    passed  424/437  org-texmacs-test-tree-real-parser-and-cache (1.401772 sec)
+org-texmacs-ert>    passed  425/437  org-texmacs-test-tree-rejects-text-changed-during-parse (0.000969 sec)
+org-texmacs-ert>    passed  426/437  org-texmacs-test-tree-rejects-wrong-block (0.000029 sec)
+org-texmacs-ert>    passed  427/437  org-texmacs-test-worker-decode-escaped-response-and-errors (0.000032 sec)
+org-texmacs-ert>    passed  428/437  org-texmacs-test-worker-decode-rejects-reader-references (0.000032 sec)
+org-texmacs-ert>    passed  429/437  org-texmacs-test-worker-decode-scopes-reader-settings (0.000387 sec)
+org-texmacs-ert>    passed  430/437  org-texmacs-test-worker-recovers-from-source-errors (1.935858 sec)
+org-texmacs-ert>    passed  431/437  org-texmacs-test-worker-rejects-invalid-responses (0.000058 sec)
+org-texmacs-ert>    passed  432/437  org-texmacs-test-worker-rejects-reentrant-request (0.000021 sec)
+org-texmacs-ert>    passed  433/437  org-texmacs-test-worker-request-builder-error-preserves-process (1.334110 sec)
+org-texmacs-ert>    passed  434/437  org-texmacs-test-worker-request-timeout-cleans-up (1.445150 sec)
+org-texmacs-ert>    passed  435/437  org-texmacs-test-worker-restarts-after-exit (2.233289 sec)
+org-texmacs-ert>    passed  436/437  org-texmacs-test-worker-reuses-process (1.633906 sec)
+org-texmacs-ert>    passed  437/437  org-texmacs-test-worker-start-timeout-cleans-up (0.103019 sec)
+org-texmacs-ert> 
+org-texmacs-ert> Ran 437 tests, 437 results as expected, 0 unexpected (2026-10-16 10:28:08+0000, 267.394606 sec)
+org-texmacs-ert> 
+all checks passed!
+warning: The check omitted these incompatible systems: aarch64-darwin, aarch64-linux, armv6l-linux, armv7l-linux, i686-linux, powerpc64le-linux, riscv64-linux, x86_64-freebsd
+Use '--all-systems' to check all.

@@ -1,0 +1,520 @@
+diff --git a/README.org b/README.org
+index 20d3042..e456ae4 100644
+--- a/README.org
++++ b/README.org
+@@ -298,6 +298,16 @@ Line breaks inside the group are supported, but a blank line would cross
+ the paragraph boundary and prevent recognition of that fragment.  These
+ examples describe source and AST structure, not display placement or numbering.
+ 
++Fragments are also recognized in direct plain text of anonymous =[fn::...]=
++and named =[fn:name:...]= inline footnote definitions.  Org determines the
++body and delimiter boundaries.  Discovery does not enter emphasis, links,
++code or verbatim objects inside a footnote; an adjacent fragment remains
++eligible.  Configured-root candidates that cannot finish within the inline
++footnote body, or use unsupported reader punctuation, signal an error rather
++than silently becoming literal text.  The ordinary paragraph stop rule above
++is unchanged.  STM strings containing brackets or newlines must still obey
++Org's footnote grammar; the exporter does not repair footnote delimiters.
++
+ Source discovery returns an =org-texmacs-fragment-span=, not an Org node or a
+ parsed TeXmacs tree.  Parsing that span returns a fresh pseudo tree with the
+ same root tag as the source.  Its children have Org parent links, but the
+@@ -431,9 +441,9 @@ The entry list is not recursive: =sqrt= above remains a child of =math=
+ without needing its own entry.
+ 
+ ** Recognition limits
+-Configured roots are recognized only in paragraph text, including
+-paragraphs in list items and quote blocks.  They need not occupy a whole
+-paragraph.  Headline text, table cells, native objects such as emphasis,
++Configured roots are recognized in paragraph text, including paragraphs in
++list items and quote blocks, and direct text of inline footnote bodies.
++They need not occupy a whole paragraph or footnote body.  Headline text, table cells, native objects such as emphasis,
+ link descriptions and code/verbatim, source blocks, and TeXmacs special-block
+ bodies are excluded.
+ 
+@@ -664,7 +674,7 @@ The supported Org subset is deliberately small:
+ | Example / fixed-width / source block               | Static =code= containing a line-wise =document=               |
+ | Basic rectangular Org table                       | =tabular= / =tformat= / =table= / =row= / =cell=             |
+ | Named/captioned basic table                       | Private anchors and native =big-table= / =caption-detailed= |
+-| Recognized paragraph fragment                     | One parsed STM subtree                                       |
++| Recognized paragraph / inline-footnote fragment   | One parsed STM subtree                                       |
+ | =texmacs= special block                           | One parsed STM subtree, even for a string or =document= root |
+ | COMMENT / comment block                           | Removed before structural preflight                         |
+ | Task, archive and select/exclude filtering        | Org policy applied before STM worker requests                |
+@@ -694,13 +704,16 @@ Such paragraphs emit the complete island directly, without an additional
+ =concat=; the island's internal tree and text remain unchanged.  Recognition
+ still uses =org-texmacs-fragment-tags=; no separate display-tag option is added.
+ This rule applies in ordinary body text, quote/center containers, separate
+-footnote definitions and later list paragraphs.  A leading list paragraph keeps
+-its existing list-marker/=concat= structure and is not promoted.
++footnote definitions and later list paragraphs.  Inline footnote bodies use
++the same bare rule inside their existing body =document=, including restored
++named definitions.  A leading list paragraph keeps its existing
++list-marker/=concat= structure and is not promoted.
+ 
+ Other paragraphs keep their existing =concat= and whitespace semantics.
+ Direct fragment roots =equation=, =eqnarray=, =align=, =gather=, =eqsplit= and
+-their starred forms are rejected in such paragraphs, including leading list
+-paragraphs: use a standalone paragraph or a TeXmacs special block instead.
++their starred forms are rejected in such paragraphs and non-bare inline
++footnote bodies, including leading list paragraphs: use a standalone body
++or a TeXmacs special block instead.
+ The exporter does not split mixed paragraphs automatically or inspect nested
+ STM to infer display layout.  Ordinary =math= mixtures remain supported;
+ arbitrary custom-root layout remains governed by TeXmacs.  Native STM parsing
+@@ -855,9 +868,12 @@ The source's =org-footnote-section= is captured, and its special heading is
+ omitted while needed definitions are retained.  Missing or ambiguous named
+ definitions, nested footnotes and footnotes in headings, emphasis, table
+ cells or link descriptions are rejected.
+-STM syntax inside inline footnote bodies is not discovered as a TeXmacs
+-island.  Paragraphs in separate definitions use normal fragment discovery;
+-their STM roots and local file targets retain provenance when emitted.
++Direct text in inline definitions and paragraphs in separate definitions use
++normal configured fragment discovery.  Inline bodies follow the bare-island
++and mixed-display boundaries described above; their STM roots and local file
++targets retain provenance and are emitted only at first use.  Required inline
++definitions restored after filtering or body selection retain the same STM
++behavior; pure lowering never reads source text.
+ Adjacent footnotes remain adjacent nodes without added separators or
+ package-assigned footnote numbers.  Native body round trips do not establish
+ rendering or numbering correctness.
+diff --git a/org-texmacs-context.el b/org-texmacs-context.el
+index c9bc47c..0978e0e 100644
+--- a/org-texmacs-context.el
++++ b/org-texmacs-context.el
+@@ -560,7 +560,14 @@ from this parsed snapshot; never fall back to a buffer or external data."
+                        (progn (org-element-extract definition) definition)
+                      (org-element-create
+                       'footnote-definition (list :label label)
+-                      (apply #'org-element-create 'paragraph nil
++                      ;; Keep the original inline body interval in this fixed
++                      ;; snapshot so fragment preparation can split its strings.
++                      (apply #'org-element-create 'paragraph
++                             (let ((begin (org-element-property :contents-begin definition))
++                                   (end (org-element-property :contents-end definition)))
++                               (and begin end
++                                    (list :begin begin :end end :contents-begin begin
++                                          :contents-end end :post-blank 0)))
+                              (org-element-contents definition))))))
+               (apply #'org-element-set-contents ast
+                      (append (org-element-contents ast) (list restored))))))))
+diff --git a/org-texmacs-document.el b/org-texmacs-document.el
+index b12a3f5..d76e8b3 100644
+--- a/org-texmacs-document.el
++++ b/org-texmacs-document.el
+@@ -601,8 +601,9 @@ removed row identity or nil.  Never mutate the Org AST."
+ 
+ AST must be an `org-data' snapshot.  ISLANDS is an identity-keyed alist
+ of (NODE . STREE): NODE is a complete TeXmacs special block or a standalone
+-plain-text child of a paragraph.  A preparation layer must split text at
+-fragment boundaries and mask foreign markup before constructing this input.
++plain-text child of a paragraph or inline footnote body.  A preparation
++layer must split text at fragment boundaries and mask foreign markup before
++constructing this input.
+ This function never discovers or parses fragments.  Every mapping must be
+ consumed exactly once; each mapped root contributes one output child.
+ INFO fixes metadata, headline/TOC output policies and formatter for this
+@@ -639,10 +640,11 @@ boundaries.  Suppress leading whitespace at paragraph/title starts and after
+ explicit breaks; a final whitespace run remains one space.  Inline code is
+ literal, not preformatted.  Never normalize STM islands, merge adjacent
+ strings or flatten island strees.  Reject unsupported nodes and semantics.
+-An ordinary paragraph containing exactly one island and otherwise only ASCII
+-prose whitespace emits that island directly.  Other paragraphs retain concat;
+-known display-math roots cannot be mixed into them.  Leading list paragraphs
+-retain their marker/concat and reject display roots even when otherwise bare.
++An ordinary paragraph or inline footnote body containing exactly one island
++and otherwise only ASCII prose whitespace emits that island directly.
++Other paragraphs retain concat; known display-math roots cannot be mixed
++into them.  Leading list paragraphs retain their marker/concat and reject
++display roots even when otherwise bare.
+ 
+ Return a fresh result with STM root paths, retaining no Org properties or
+ source objects.  Do not read or modify source/caller buffers, encode text,
+@@ -808,8 +810,8 @@ from one snapshot."
+            (let ((entry (assq node islands)))
+              (cond
+               (entry
+-               (unless (and (stringp node) (eq context 'paragraph))
+-                 (org-texmacs--document-fail node "Island outside paragraph text"))
++               (unless (and (stringp node) (memq context '(paragraph footnote)))
++                 (org-texmacs--document-fail node "Island outside paragraph or footnote text"))
+                ;; An island is opaque, even if its root is an atomic string.
+                (setcar space nil)
+                (list (island node entry)))
+@@ -867,13 +869,10 @@ from one snapshot."
+                                  'document
+                                  (blocks (org-element-contents definition)
+                                          'footnote-definition (cons definition ancestors)))
+-                              (let ((parts (inlines (org-element-contents definition) 'footnote
+-                                                    (cons definition ancestors))))
+-                                (org-texmacs--document-pack
+-                                 'document
+-                                 (list (org-texmacs--document-pack
+-                                        'concat (or parts
+-                                                    (list (org-texmacs--document-create :body "")))))))))
++                              (org-texmacs--document-pack
++                               'document
++                               (list (paragraph definition (cons definition ancestors)
++                                                nil 'footnote)))))
+                            (labelled
+                             (if anchor
+                                 (org-texmacs--document-pack
+@@ -997,7 +996,7 @@ from one snapshot."
+             ((null parts) (org-texmacs--document-create :body ""))
+             ((null (cdr parts)) (car parts))
+             (t (org-texmacs--document-pack 'concat parts))))
+-         (paragraph (node ancestors &optional marker)
++         (paragraph (node ancestors &optional marker context)
+            (let ((contents (org-element-contents node)) bare other)
+              (unless (proper-list-p contents)
+                (org-texmacs--document-fail node "Invalid paragraph contents"))
+@@ -1017,9 +1016,13 @@ from one snapshot."
+                               (memq (cadr entry) org-texmacs--document-display-math-tags))
+                      (org-texmacs--document-fail
+                       node "Display STM requires a standalone paragraph or TeXmacs block"))))
+-               (org-texmacs--document-pack
+-                'concat (append (and marker (list marker))
+-                                (inlines contents 'paragraph ancestors))))))
++               (let ((parts (inlines contents (or context 'paragraph) ancestors)))
++                 (org-texmacs--document-pack
++                  'concat (append (and marker (list marker))
++                                  (or parts
++                                      (and (eq context 'footnote)
++                                           (list (org-texmacs--document-create
++                                                  :body ""))))))))))
+          (metadata-field (tag nodes context ancestors)
+            (unless (proper-list-p nodes)
+              (signal 'org-texmacs-document-error '("Invalid parsed document metadata")))
+@@ -1710,13 +1713,16 @@ RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
+                       (count (or (org-element-property :post-blank node) 0)))
+                  (push (cons node (buffer-substring-no-properties (- end count) end))
+                        blanks))
+-               (mapc #'whitespace (org-element-contents node))))
++               (if (and (eq (org-element-type node) 'footnote-reference)
++                        (eq (org-element-property :type node) 'inline))
++                   (paragraph node)
++                 (mapc #'whitespace (org-element-contents node)))))
+            (paragraph (node)
+              (let ((position (org-element-property :contents-begin node))
+                    (children nil))
+                (if (null position)
+-                   ;; Restored inline definitions have synthetic paragraphs.
+-                   ;; They carry already parsed inline data, not fragment spans.
++                   ;; Coordinate-less synthetic paragraphs carry already parsed
++                   ;; inline data, not source fragment intervals.
+                    (mapc #'whitespace (org-element-contents node))
+                (dolist (child (org-element-contents node))
+                  (if (not (stringp child))
+diff --git a/org-texmacs-fragment.el b/org-texmacs-fragment.el
+index 3fe9175..8058d9e 100644
+--- a/org-texmacs-fragment.el
++++ b/org-texmacs-fragment.el
+@@ -18,7 +18,7 @@
+ (defcustom org-texmacs-fragment-tags
+   '("math" "equation" "equation*" "eqnarray" "eqnarray*" "align" "align*"
+     "gather" "gather*" "eqsplit" "eqsplit*")
+-  "Literal root tag names recognized in Org paragraph text.
++  "Literal root tag names recognized in paragraph and inline footnote text.
+ 
+ This is an entry list, not a TeXmacs validity or rendering specification.
+ It does not restrict child tags or TeXmacs special-block contents.  Names
+@@ -95,9 +95,10 @@ adjacent string quote.  Leave point just after the tag, before its boundary."
+ (defun org-texmacs--fragment-end (start)
+   "Return the balanced fragment end at START, or nil.
+ 
+-The caller must narrow to the containing paragraph.  Use dedicated string
+-and escape syntax, ignoring Org syntax properties.  Reject unsupported
+-reader punctuation outside strings instead of returning a truncated span.
++The caller must narrow to the containing paragraph or inline footnote body.
++Use dedicated string and escape syntax, ignoring Org syntax properties.
++Reject unsupported reader punctuation outside strings instead of returning
++a truncated span.
+ This only discovers boundaries; the worker validates STM data."
+   (save-excursion
+     (with-syntax-table org-texmacs--fragment-syntax-table
+@@ -190,12 +191,52 @@ TAGS is the source configuration snapshot; REGEXP matches its prefixes."
+             (stop nil))
+         (while (and (not stop) (setq start (org-texmacs--fragment-next regexp)))
+           (let ((tag (buffer-substring-no-properties (1+ start) (point))))
+-            (when (save-excursion
+-                    (goto-char start)
+-                    (eq (org-element-type (org-element-context)) 'paragraph))
+-              (let ((end (org-texmacs--fragment-end start)))
+-                (if (not end)
+-                    (setq stop t)
++            (let* ((context (save-excursion
++                              (goto-char start) (org-element-context)))
++                   (inline-note (and (eq (org-element-type context) 'footnote-reference)
++                                     (eq (org-element-property :type context) 'inline))))
++              (when (or (eq (org-element-type context) 'paragraph) inline-note)
++                (let ((end (save-restriction
++                             (when inline-note
++                               (narrow-to-region
++                                (org-element-property :contents-begin context)
++                                (org-element-property :contents-end context)))
++                             (org-texmacs--fragment-end start))))
++                  (if (not end)
++                      (if inline-note
++                          (signal 'org-texmacs-error
++                                  '("Invalid STM candidate in inline footnote"))
++                        (setq stop t))
++                  (when inline-note
++                    ;; An Org object beginning in STM string data is foreign
++                    ;; markup handled by masking.  A real adjacent object must
++                    ;; not lend its closing characters to this candidate.
++                    ;; Context gives bounds but not parsed object children.
++                    ;; Resolve this note in the current masked Org snapshot.
++                    (let ((parsed (save-excursion
++                                    (org-element-map (org-element-parse-buffer)
++                                        'footnote-reference
++                                      (lambda (node)
++                                        (and (= (org-element-property :begin node)
++                                                (org-element-property :begin context))
++                                             node)) nil t))))
++                      (unless parsed
++                        (signal 'org-texmacs-error '("Inline footnote context changed")))
++                      (dolist (child (org-element-contents parsed))
++                        (unless (stringp child)
++                          (let ((begin (org-element-property :begin child))
++                                (stop (org-element-property :end child)))
++                            (when (and begin stop (< start begin end)
++                                       (not (save-excursion
++                                              (with-syntax-table
++                                                  org-texmacs--fragment-syntax-table
++                                                (let ((parse-sexp-lookup-properties nil))
++                                                  (nth 3 (parse-partial-sexp
++                                                          start begin))))))
++                                       (> (- stop (or (org-element-property
++                                                       :post-blank child) 0)) end))
++                              (signal 'org-texmacs-error
++                                      '("STM crosses an inline footnote object"))))))))
+                   (let ((source (buffer-substring-no-properties start end)))
+                     (push (org-texmacs--fragment-span-create
+                            :buffer buffer :tick tick
+@@ -205,7 +246,7 @@ TAGS is the source configuration snapshot; REGEXP matches its prefixes."
+                     (goto-char start)
+                     (delete-region start end)
+                     (insert (org-texmacs--fragment-mask source)))
+-                  (goto-char end))))))
++                  (goto-char end)))))))
+         (nreverse spans)))))
+ 
+ (defun org-texmacs--fragment-collect (tags)
+@@ -263,12 +304,16 @@ accessible buffer before filtering; region edges never truncate a formula.
+ Current narrowing acts as the document boundary; do not implicitly widen.
+ 
+ Recognize literal `org-texmacs-fragment-tags' only in paragraph text,
+-including list item paragraphs.  Exclude emphasis, links and code, as well
++including list item paragraphs and direct inline footnote body text.
++Exclude emphasis, links and code, as well
+ as headlines, table cells, source blocks and TeXmacs special-block bodies.
+ Support nested lists, strings, escapes and newlines within a paragraph.
+ Unsupported reader punctuation outside strings, including Scheme comments,
+ or an unclosed candidate stops recognition for the rest of that paragraph.
+-Balanced input is not necessarily valid STM; this API does not parse it.
++In inline footnote text, such a candidate signals `org-texmacs-error'
++instead; it must finish within the Org footnote body.  Footnote delimiters
++are never repaired.  Balanced input is not necessarily valid STM; this API
++does not parse it.
+ 
+ Spans are read-only snapshots, not Org nodes.  Obtain fresh spans after any
+ source edit or tag configuration change.  No worker or cache is used:
+diff --git a/tests/ert/ert.el b/tests/ert/ert.el
+index ab04823..2ce933d 100644
+--- a/tests/ert/ert.el
++++ b/tests/ert/ert.el
+@@ -3425,19 +3425,189 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
+                                        (surround (label "org-texmacs-fn-2") "" (document)))
+                                       (label "org-texmacs-fn-1")))))))
+ 
+-(ert-deftest org-texmacs-document-footnote-stm-exclusion ()
++(ert-deftest org-texmacs-fragment-issue10-discovery ()
++  :tags '(issue10)
++  (dolist (prefix '("[fn::" "[fn:n:"))
++    (with-temp-buffer
++      (org-mode)
++      (insert "A" prefix "Before (math \"x\") after (math \"y\")].\n")
++      (let ((before (org-texmacs-test--document-buffer-state (current-buffer))))
++        (cl-letf (((symbol-function 'org-texmacs--worker-request)
++                   (lambda (&rest _) (ert-fail "Discovery started worker"))))
++          (let ((spans (org-texmacs-fragment-map (point-min) (point-max) #'identity)))
++            (should (equal (mapcar #'org-texmacs-fragment-span-source spans)
++                           '("(math \"x\")" "(math \"y\")")))
++            (dolist (span spans)
++              (should (equal (org-texmacs-fragment-span-source
++                              (org-texmacs-fragment-at-point (org-texmacs-fragment-span-begin span)))
++                             (org-texmacs-fragment-span-source span))))))
++        (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))))))
++
++(ert-deftest org-texmacs-document-issue10-pure-bare ()
++  :tags '(issue10)
++  (dolist (tree (append org-texmacs-test--fragment-strees
++                       '((with "mode" "math" "x") "atomic" " " "")))
++    (let* ((leaf (copy-sequence "island"))
++           (note (org-element-create 'footnote-reference '(:type inline)
++                                     " \t" leaf "\r\n"))
++           (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil "A" note)))
++           (input (org-texmacs-input-create ast nil :islands (list (cons leaf tree)))))
++      (cl-letf (((symbol-function 'org-texmacs--worker-request)
++                 (lambda (&rest _) (ert-fail "Pure lowering started worker")))
++                ((symbol-function 'buffer-substring-no-properties)
++                 (lambda (&rest _) (ert-fail "Pure lowering read buffer"))))
++        (let ((document (org-texmacs-document input)))
++          (should (equal (org-texmacs-document-body document)
++                         `(document (concat "A" (footnote (document ,tree))))))
++          (should (equal (org-texmacs-document-stm-paths document) '((0 1 0 0)))))))))
++
++(ert-deftest org-texmacs-fragment-issue10-object-and-delimiter-boundaries ()
++  :tags '(issue10)
++  (dolist (body '("(math \"~x\") ~tail~"
++                  "*bold* (math \"[x]\") [[https://example.org][link]]"
++                  "(math\n (frac \"1\" \"2\")) ~literal~"
++                  "~(math \"code\")~ (math \"yes\")"
++                  "*(math \"bold\")* (math \"yes\")"
++                  "[[https://example.org][(math \"link\")]] (math \"yes\")"))
++    (with-temp-buffer
++      (org-mode) (insert "A[fn::" body "].\n")
++      (let ((spans (org-texmacs-fragment-map (point-min) (point-max) #'identity)))
++        (should (= (length spans) 1))
++        (should-not (string-match-p "code\\|bold\\|link"
++                                    (org-texmacs-fragment-span-source (car spans)))))
++      (cl-letf (((symbol-function 'org-texmacs--worker-request)
++                 (lambda (_source) '(math "accepted"))))
++        (should (= (length (org-texmacs-document-stm-paths
++                            (org-texmacs-document-from-buffer (current-buffer)))) 1)))))
++  (with-temp-buffer
++    (org-mode) (insert "A[fn::(with \"mode\" \"math\" \"x\")].\n")
++    (let ((org-texmacs-fragment-tags '("with")))
++      (should (= (length (org-texmacs-fragment-map (point-min) (point-max) #'identity)) 1)))
++    (let ((org-texmacs-fragment-tags nil))
++      (should-not (org-texmacs-fragment-map (point-min) (point-max) #'identity)))))
++
++(ert-deftest org-texmacs-fragment-issue10-invalid-candidates ()
++  :tags '(issue10)
++  (dolist (source '("A[fn::(math \"x\" ~)~].\n"
++                    "A[fn::(math \"x\"].\n"
++                    "A[fn:n:(math \"x\"]. )\n"
++                    "A[fn::(math ;comment\n \"x\")].\n"
++                    "A[fn::(math \"x]suffix\")].\n"))
++    (with-temp-buffer
++      (org-mode) (insert source)
++      (let ((before (org-texmacs-test--document-buffer-state (current-buffer))))
++        (cl-letf (((symbol-function 'org-texmacs--worker-request)
++                   (lambda (&rest _) (ert-fail "Invalid candidate started worker"))))
++          (should-error (org-texmacs-fragment-map (point-min) (point-max) #'identity)
++                        :type 'org-texmacs-error)
++          (should-error (org-texmacs-fragment-at-point 1) :type 'org-texmacs-error)
++          (should-error (org-texmacs-document-from-buffer (current-buffer))
++                        :type 'org-texmacs-error))
++        (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))))))
++
++(ert-deftest org-texmacs-document-issue10-owned-forward-and-scoped ()
++  :tags '(issue10)
++  (dolist (scope '(full selected subtree region narrowed))
++    (let (input requests)
++      (with-temp-buffer
++        (org-mode)
++        (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
++                "* Hidden\nHidden[fn:n:Before (math \"x\") [[file:note.txt][File]] (math \"y\")].\n"
++                "Unused[fn:u:(math \"unused\")].\n"
++                "* Visible :keep:\nA[fn:n] repeat[fn:n].\n")
++        (setq-local default-directory "/base/")
++        (when (eq scope 'selected) (goto-char 1) (insert "#+SELECT_TAGS: keep\n"))
++        (goto-char (point-min)) (search-forward "* Visible") (beginning-of-line)
++        (let ((begin (point)) (end (point-max)))
++          (when (eq scope 'narrowed) (narrow-to-region begin end))
++          (cl-letf (((symbol-function 'org-texmacs--worker-request)
++                     (lambda (raw)
++                       (push raw requests)
++                       (cond ((string-match-p "unused" raw) '(math "unused"))
++                             ((string-match-p "x" raw) '(math "x"))
++                             (t '(math "y")))))
++                    ((symbol-function 'org-footnote-get-definition)
++                     (lambda (&rest _) (ert-fail "Definition source fallback"))))
++            (let ((before (org-texmacs-test--document-buffer-state (current-buffer))))
++              (setq input (org-texmacs-prepare-buffer
++                           (current-buffer) nil (and (eq scope 'subtree) begin)
++                           (and (eq scope 'region) (cons begin end))))
++              (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))))))
++      (should (equal (reverse requests)
++                     (append '("(math \"x\")" "(math \"y\")")
++                             (and (eq scope 'full) '("(math \"unused\")")))))
++      (unless (eq scope 'full) (should-not (member "(math \"unused\")" requests)))
++      ;; The source buffer is already dead; both pure conversions must succeed.
++      (cl-letf (((symbol-function 'org-texmacs--worker-request)
++                 (lambda (&rest _) (ert-fail "Owned lowering requested worker")))
++                ((symbol-function 'buffer-substring-no-properties)
++                 (lambda (&rest _) (ert-fail "Owned lowering read buffer"))))
++        (let* ((first (org-texmacs-document input)) (second (org-texmacs-document input))
++               (body (org-texmacs-document-body first)))
++          (should (equal body (org-texmacs-document-body second)))
++          (should (= (length (org-texmacs-document-stm-paths first)) (if (eq scope 'full) 3 2)))
++          (should (= (length (org-texmacs-document-file-paths first)) 1))
++          (should (= (cl-count 'footnote (flatten-tree body)) (if (eq scope 'full) 2 1)))
++          (should (memq 'reference (flatten-tree body)))
++          (should (string-match-p "/base/note.txt" (org-texmacs--native-document-wire first))))))))
++
++(ert-deftest org-texmacs-document-issue10-display-mixtures ()
++  :tags '(issue10)
++  (dolist (tag org-texmacs--document-display-math-tags)
++    (dolist (label '(nil "n"))
++      (let* ((leaf (copy-sequence "island"))
++             (note (org-element-create 'footnote-reference (list :type 'inline :label label)
++                                       "Before " leaf))
++             (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil note))))
++        (should-error (org-texmacs--document-lower ast (list (cons leaf (list tag "x"))))
++                      :type 'org-texmacs-document-error)))))
++
++(ert-deftest org-texmacs-pdf-issue10-inline-and-separate ()
++  :tags '(issue10)
++  (org-texmacs-test--with-worker
++    (dolist (kind '(anonymous named forward bare))
++      (let* ((directory (make-temp-file (expand-file-name "note-" test-directory) t))
++             (tm (expand-file-name "inline.tm" directory))
++             (pdf (expand-file-name "inline.pdf" directory))
++             (reference (expand-file-name "separate.pdf" directory))
++             (reload (expand-file-name "reload.pdf" directory))
++             (payload (if (eq kind 'bare) "(equation* \"x=1\")"
++                        "Before (math (frac \"1\" \"2\")) after"))
++             (inline (pcase kind
++                       ('anonymous (concat "A[fn::" payload "].\n"))
++                       ('forward (concat "A[fn:n] then[fn:n:" payload "].\n"))
++                       (_ (concat "A[fn:n:" payload "].\n"))))
++             (separate (concat (if (eq kind 'forward) "A[fn:n] then[fn:n].\n" "A[fn:n].\n")
++                               "\n[fn:n] " payload "\n")))
++        (dolist (source (list inline separate))
++          (with-temp-buffer
++            (org-mode) (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n" source)
++            (let ((document (org-texmacs-document-from-buffer (current-buffer))))
++              (should (= (length (org-texmacs-document-stm-paths document)) 1))
++              (if (eq source inline)
++                  (progn (org-texmacs-document-save document tm)
++                         (org-texmacs-document-save-pdf document pdf))
++                (org-texmacs-document-save-pdf document reference)))))
++        (org-texmacs-test--issue11-compare-pdfs pdf reference)
++        (should-not (string-match-p "math\\|frac\\|equation" (org-texmacs-test--pdf-text pdf)))
++        (org-texmacs-test--issue11-reload-pdf tm reload directory)
++        (org-texmacs-test--issue11-compare-pdfs pdf reload)))))
++
++(ert-deftest org-texmacs-document-footnote-stm-support ()
+   (with-temp-buffer
+     (org-mode)
+     (insert "A[fn::(math \"hidden\")] (math \"visible\")\n")
+     (let (requests)
+       (cl-letf (((symbol-function 'org-texmacs--worker-request)
+-                 (lambda (source) (push source requests) '(math "visible"))))
++                 (lambda (source)
++                   (push source requests)
++                   (if (string-match-p "hidden" source) '(math "hidden") '(math "visible")))))
+         (let ((result (org-texmacs-document-from-buffer (current-buffer))))
+-          (should (equal requests '("(math \"visible\")")))
++          (should (equal (reverse requests) '("(math \"hidden\")" "(math \"visible\")")))
+           (should (equal (org-texmacs-document-body result)
+-                         '(document (concat "A" (footnote (document (concat "(math \"hidden\")")))
++                         '(document (concat "A" (footnote (document (math "hidden")))
+                                             " " (math "visible") " "))))
+-          (should (equal (org-texmacs-document-stm-paths result) '((0 3)))))))))
++          (should (equal (org-texmacs-document-stm-paths result) '((0 1 0 0) (0 3)))))))))
+ 
+ (ert-deftest org-texmacs-document-footnote-rich-native ()
+   (org-texmacs-test--with-worker

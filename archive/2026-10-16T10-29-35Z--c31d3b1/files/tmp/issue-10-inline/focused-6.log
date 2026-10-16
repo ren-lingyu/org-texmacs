@@ -1,0 +1,143 @@
+these 4 derivations will be built:
+  /nix/store/05jdmshi6vsvcf79jip3lcw6cciap28i-emacs-org-texmacs-0.4.0.drv
+  /nix/store/16lpnzfbnnzcmrjz454jmjjigfghddkf-emacs-packages-deps.drv
+  /nix/store/0xwnn247cdbaard4hzk0n2h1cbscn474-emacs-with-packages-31.1.drv
+  /nix/store/ah9s6nfxmgw9z1hlvn11136lykrdjj48-org-texmacs-issue10-focused.drv
+building '/nix/store/05jdmshi6vsvcf79jip3lcw6cciap28i-emacs-org-texmacs-0.4.0.drv'...
+emacs-org-texmacs> structuredAttrs is enabled
+emacs-org-texmacs> Running phase: unpackPhase
+emacs-org-texmacs> unpacking source archive /nix/store/qqh8lzv0x2jyvkag5wl7x3b337my3a09-source
+emacs-org-texmacs> source root is source
+emacs-org-texmacs> Running phase: patchPhase
+emacs-org-texmacs> Running phase: updateAutotoolsGnuConfigScriptsPhase
+emacs-org-texmacs> Running phase: configurePhase
+emacs-org-texmacs> no configure script, doing nothing
+emacs-org-texmacs> Running phase: buildPhase
+emacs-org-texmacs> Running phase: installPhase
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-preprocess.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-session.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-source.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-input.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-document.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-ast.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-context.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-worker.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-core.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-fragment.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs-bibliography.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/ox-texmacs.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/site-lisp/org-texmacs.el        || exit $?'
+emacs-org-texmacs> Running phase: fixupPhase
+emacs-org-texmacs> shrinking RPATHs of ELF executables and libraries in /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0
+emacs-org-texmacs> shrinking /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-core-7bf4b10a-8ca14c35.eln
+emacs-org-texmacs> shrinking /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-preprocess-24760199-17209aed.eln
+emacs-org-texmacs> shrinking /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-bibliography-7bdefca7-58abd8a8.eln
+emacs-org-texmacs> shrinking /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-ast-fed4d4a3-88f45636.eln
+emacs-org-texmacs> shrinking /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/ox-texmacs-dde5b56a-5a11d773.eln
+emacs-org-texmacs> shrinking /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-source-e4eb2821-4c14188a.eln
+emacs-org-texmacs> shrinking /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-session-b27c1b29-9f7f5ee5.eln
+emacs-org-texmacs> shrinking /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-worker-0d94c456-9fe90cee.eln
+emacs-org-texmacs> shrinking /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-fragment-ad26eb03-5fdb6108.eln
+emacs-org-texmacs> shrinking /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-f2ad2417-f6b4762b.eln
+emacs-org-texmacs> shrinking /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-context-c54de8c7-d5b3ca08.eln
+emacs-org-texmacs> shrinking /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-input-fe64d66f-113edbb6.eln
+emacs-org-texmacs> shrinking /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0/share/emacs/native-lisp/31.1-799cacdd/org-texmacs-document-dbb3cbcb-f2569ec7.eln
+emacs-org-texmacs> checking for references to /build/ in /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0...
+emacs-org-texmacs> patching script interpreter paths in /nix/store/k9j74jk91vs53xjpa9xz8pglgbf8n16d-emacs-org-texmacs-0.4.0
+building '/nix/store/16lpnzfbnnzcmrjz454jmjjigfghddkf-emacs-packages-deps.drv'...
+building '/nix/store/0xwnn247cdbaard4hzk0n2h1cbscn474-emacs-with-packages-31.1.drv'...
+building '/nix/store/ah9s6nfxmgw9z1hlvn11136lykrdjj48-org-texmacs-issue10-focused.drv'...
+org-texmacs-issue10-focused> 
+org-texmacs-issue10-focused> Running 7 tests (2026-10-16 10:11:20+0000, selector `(tag issue10)')
+org-texmacs-issue10-focused>    passed  1/7  org-texmacs-document-issue10-display-mixtures (0.000449 sec)
+org-texmacs-issue10-focused>    passed  2/7  org-texmacs-document-issue10-owned-forward-and-scoped (0.031687 sec)
+org-texmacs-issue10-focused>    passed  3/7  org-texmacs-document-issue10-pure-bare (0.000719 sec)
+org-texmacs-issue10-focused>    passed  4/7  org-texmacs-fragment-issue10-discovery (0.002523 sec)
+org-texmacs-issue10-focused> Test org-texmacs-fragment-issue10-invalid-candidates backtrace:
+org-texmacs-issue10-focused>   ert-fail(((should-error (org-texmacs-fragment-map (point-min) (point
+org-texmacs-issue10-focused>   (if errorp3286 nil (ert-fail (append (funcall form-description-fn-32
+org-texmacs-issue10-focused>   (let ((errorp3286 nil) (form-description-fn-3287 #'(lambda nil form-
+org-texmacs-issue10-focused>   (let (form-description-3285) (let ((errorp3286 nil) (form-descriptio
+org-texmacs-issue10-focused>   (let ((value-3283 'ert-form-evaluation-aborted-3284)) (let (form-des
+org-texmacs-issue10-focused>   (let* ((fn-3281 #'org-texmacs-fragment-map) (args-3282 (condition-ca
+org-texmacs-issue10-focused>   (progn (fset 'org-texmacs--worker-request vnew) (let* ((fn-3281 #'or
+org-texmacs-issue10-focused>   (unwind-protect (progn (fset 'org-texmacs--worker-request vnew) (let
+org-texmacs-issue10-focused>   (let* ((vnew #'(lambda (&rest _) (ert-fail "Invalid candidate starte
+org-texmacs-issue10-focused>   (let ((before (org-texmacs-test--document-buffer-state (current-buff
+org-texmacs-issue10-focused>   (progn (org-mode) (insert source) (let ((before (org-texmacs-test--d
+org-texmacs-issue10-focused>   (unwind-protect (progn (org-mode) (insert source) (let ((before (org
+org-texmacs-issue10-focused>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-issue10-focused>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-issue10-focused>   (let ((source (car tail))) (let ((temp-buffer (generate-new-buffer "
+org-texmacs-issue10-focused>   (while tail (let ((source (car tail))) (let ((temp-buffer (generate-
+org-texmacs-issue10-focused>   (let ((tail '("A[fn::(math \"x\" ~)~].\n" "A[fn::(math \"x\"].\n" "A
+org-texmacs-issue10-focused>   #f(lambda () [t] (let ((tail '...)) (while tail (let (...) (let ...
+org-texmacs-issue10-focused>   #f(compiled-function () #<bytecode -0x1d8b90eaf7e249ac>)()
+org-texmacs-issue10-focused>   handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b90eaf7e249a
+org-texmacs-issue10-focused>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-issue10-focused>   ert-run-test(#s(ert-test :name org-texmacs-fragment-issue10-invalid-
+org-texmacs-issue10-focused>   ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+org-texmacs-issue10-focused>   ert-run-tests((tag issue10) #f(compiled-function (event-type &rest e
+org-texmacs-issue10-focused>   ert-run-tests-batch((tag issue10))
+org-texmacs-issue10-focused>   ert-run-tests-batch-and-exit((tag issue10))
+org-texmacs-issue10-focused>   eval((ert-run-tests-batch-and-exit '(tag issue10)) t)
+org-texmacs-issue10-focused>   command-line-1(("--load" "/nix/store/0ai77rb72hz3acc4512qf6rbaqnf1nw
+org-texmacs-issue10-focused>   command-line()
+org-texmacs-issue10-focused>   normal-top-level()
+org-texmacs-issue10-focused> Test org-texmacs-fragment-issue10-invalid-candidates condition:
+org-texmacs-issue10-focused>     (ert-test-failed
+org-texmacs-issue10-focused>      ((should-error
+org-texmacs-issue10-focused>        (org-texmacs-fragment-map (point-min) (point-max) #'identity) :type
+org-texmacs-issue10-focused>        'org-texmacs-error)
+org-texmacs-issue10-focused>       :form (org-texmacs-fragment-map 1 23 identity) :value
+org-texmacs-issue10-focused>       (#s(org-texmacs-fragment-span #<killed buffer> 6 7 19
+org-texmacs-issue10-focused>                                "(math \"x\" ~)" "math"
+org-texmacs-issue10-focused>                                ("math" "equation" "equation*"
+org-texmacs-issue10-focused>                                 "eqnarray" "eqnarray*" "align"
+org-texmacs-issue10-focused>                                 "align*" "gather" "gather*" "eqsplit"
+org-texmacs-issue10-focused>                                 ...)))
+org-texmacs-issue10-focused>       :fail-reason "did not signal an error"))
+org-texmacs-issue10-focused>    FAILED  5/7  org-texmacs-fragment-issue10-invalid-candidates (0.000537 sec) at ../nix/store/0ai77rb72hz3acc4512qf6rbaqnf1nwb-ert.el:3485
+org-texmacs-issue10-focused>    passed  6/7  org-texmacs-fragment-issue10-object-and-delimiter-boundaries (0.003412 sec)
+org-texmacs-issue10-focused>    passed  7/7  org-texmacs-pdf-issue10-inline-and-separate (10.171819 sec)
+org-texmacs-issue10-focused> 
+org-texmacs-issue10-focused> Ran 7 tests, 6 results as expected, 1 unexpected (2026-10-16 10:11:30+0000, 10.251422 sec)
+org-texmacs-issue10-focused> 
+org-texmacs-issue10-focused> 1 unexpected results:
+org-texmacs-issue10-focused>    FAILED  org-texmacs-fragment-issue10-invalid-candidates
+org-texmacs-issue10-focused> 
+org-texmacs-issue10-focused> CROSS:(footnote-reference (:standard-properties [2 nil 7 20 21 0 nil nil nil nil nil nil nil nil #<buffer  *temp*> nil nil (paragraph (:standard-properties [1 1 1 23 23 0 nil top-comment element t nil nil nil nil #<buffer  *temp*> nil nil (section (:standard-properties [1 1 1 23 23 0 nil first-section element t nil 1 23 nil #<buffer  *temp*> nil nil (org-data (:standard-properties [1 1 1 23 23 0 nil org-data nil t nil 3 23 nil #<buffer  *temp*> [org-element-deferred org-element--get-global-node-properties nil t] nil nil] :pre-blank 0 :path nil))]))]))] :label nil :type inline))
+org-texmacs-issue10-focused> FULL:(org-data (:standard-properties [1 1 1 23 23 0 nil org-data nil nil nil 3 23 nil #<buffer  *temp*> nil nil nil] :pre-blank 0 :path nil :CATEGORY nil) (section (:standard-properties [1 1 1 23 23 0 nil first-section nil nil nil 1 23 nil #<buffer  *temp*> nil nil #0]) (paragraph (:standard-properties [1 1 1 23 23 0 nil top-comment nil nil nil nil nil nil #<buffer  *temp*> nil nil #1]) #("A" 0 1 (:parent #2)) (footnote-reference (:standard-properties [2 nil 7 20 21 0 nil nil nil nil nil nil nil nil #<buffer  *temp*> nil nil #2] :label nil :type inline) #("(math \"x\" " 0 10 (:parent #3)) (code (:standard-properties [17 nil nil nil 20 0 nil nil nil nil nil nil nil nil #<buffer  *temp*> nil nil #3] :value ")"))) #(".
+org-texmacs-issue10-focused> " 0 2 (:parent #2)))))
+error: Cannot build '/nix/store/ah9s6nfxmgw9z1hlvn11136lykrdjj48-org-texmacs-issue10-focused.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/a2cfzbd1ihgf0yy6k6znbngwlzfy6009-org-texmacs-issue10-focused
+       Last 25 log lines:
+       > Test org-texmacs-fragment-issue10-invalid-candidates condition:
+       >     (ert-test-failed
+       >      ((should-error
+       >        (org-texmacs-fragment-map (point-min) (point-max) #'identity) :type
+       >        'org-texmacs-error)
+       >       :form (org-texmacs-fragment-map 1 23 identity) :value
+       >       (#s(org-texmacs-fragment-span #<killed buffer> 6 7 19
+       >                               "(math \"x\" ~)" "math"
+       >                                 ("math" "equation" "equation*"
+       >                                   "eqnarray" "eqnarray*" "align"
+       >                                  "align*" "gather" "gather*" "eqsplit"
+       >                                   ...)))
+       >       :fail-reason "did not signal an error"))
+       >    FAILED  5/7  org-texmacs-fragment-issue10-invalid-candidates (0.000537 sec) at ../nix/store/0ai77rb72hz3acc4512qf6rbaqnf1nwb-ert.el:3485
+       >    passed  6/7  org-texmacs-fragment-issue10-object-and-delimiter-boundaries (0.003412 sec)
+       >    passed  7/7  org-texmacs-pdf-issue10-inline-and-separate (10.171819 sec)
+       >
+       > Ran 7 tests, 6 results as expected, 1 unexpected (2026-10-16 10:11:30+0000, 10.251422 sec)
+       >
+       > 1 unexpected results:
+       >    FAILED  org-texmacs-fragment-issue10-invalid-candidates
+       >
+       > CROSS:(footnote-reference (:standard-properties [2 nil 7 20 21 0 nil nil nil nil nil nil nil nil #<buffer  *temp*> nil nil (paragraph (:standard-properties [1 1 1 23 23 0 nil top-comment element t nil nil nil nil #<buffer  *temp*> nil nil (section (:standard-properties [1 1 1 23 23 0 nil first-section element t nil 1 23 nil #<buffer  *temp*> nil nil (org-data (:standard-properties [1 1 1 23 23 0 nil org-data nil t nil 3 23 nil #<buffer  *temp*> [org-element-deferred org-element--get-global-node-properties nil t] nil nil] :pre-blank 0 :path nil))]))]))] :label nil :type inline))
+       > FULL:(org-data (:standard-properties [1 1 1 23 23 0 nil org-data nil nil nil 3 23 nil #<buffer  *temp*> nil nil nil] :pre-blank 0 :path nil :CATEGORY nil) (section (:standard-properties [1 1 1 23 23 0 nil first-section nil nil nil 1 23 nil #<buffer  *temp*> nil nil #0]) (paragraph (:standard-properties [1 1 1 23 23 0 nil top-comment nil nil nil nil nil nil #<buffer  *temp*> nil nil #1]) #("A" 0 1 (:parent #2)) (footnote-reference (:standard-properties [2 nil 7 20 21 0 nil nil nil nil nil nil nil nil #<buffer  *temp*> nil nil #2] :label nil :type inline) #("(math \"x\" " 0 10 (:parent #3)) (code (:standard-properties [17 nil nil nil 20 0 nil nil nil nil nil nil nil nil #<buffer  *temp*> nil nil #3] :value ")"))) #(".
+       > " 0 2 (:parent #2)))))
+       For full logs, run:
+         nix log /nix/store/ah9s6nfxmgw9z1hlvn11136lykrdjj48-org-texmacs-issue10-focused.drv
