@@ -2976,3 +2976,16 @@ project parent. Operational contract/diagnostics/next: memory/issue-10-plan.md.
 Candidate pending user review/authorized staging/message/user commit verification.
 Index empty;5task files plus existing user flake dirty. Remote#10 last observed
 open, no closure check/write/publication. Fonts postponed, PDF links next.
+
+
+## Issue10 staging and message readiness (2026-10-16)
+
+User authorized sequential staging/message and max3minute inter-group polling.
+Reviewed as one coherent capability: exactly README,fragment/document/context,ERT
+staged; no second group/inter-group wait. Complete staged diff reviewed and
+whitespace check clean; all25index input hashes equal accepted candidate manifest
+and worktree, so prior46focused/9real/437core validation transfers by exact bytes.
+Only existing user flake mirror unstaged. tmp/commit.md prepared as feat(document):
+support STM fragments in inline footnotes, Closes:#10. Full message extracted in
+memory/issue-10-plan.md for recovery; no new archive needed for active draft.
+No ordinary commit or external write; user review/commit verification next.

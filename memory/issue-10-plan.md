@@ -57,8 +57,9 @@ strict compilation,lint/all applicable flake checks pass. Locked x86_64-linux
 only; no foreign-platform or GUI claim. Initial2expected red failures0.295610s,
 final repeated red2expected0.313889s (not candidate failures). Source stable and
 all25baseline/25candidate/11extension hashes verified; final patch reconstructs
-all5task files independently and byte-exactly. Ordinary index empty, user mirror
-unchanged. Prior46/46/9/9/437core pass followed by README-only audit correction;
+all5task files independently and byte-exactly. At automated acceptance index was
+empty, user mirror unchanged. Prior46/46/9/9/437core pass followed by README-only
+audit correction;
 other24inputs stable, final real/full gate rerun includes synchronized README.
 
 Diagnostics extracted: initial strict docstring width corrected before functional
@@ -80,8 +81,28 @@ Other intermediate failures sufficiently extracted; no PDF/binary/dependency/ful
 tmp/INBOX capture. Committed baseline is exact old red source, not accepted source;
 no inferred additional project parent for uncommitted acceptance.
 
-Selected local implementation/automated acceptance complete; user review/delivery
-pending. Exactly5task paths changed, not staged/committed. Next separately
-authorized staging/message then user commit; verify exact input blobs and tracking.
+Selected local implementation/automated acceptance complete. User authorized
+sequential staging/message with at most3minutes between groups. Five strongly
+coupled files form one commit, no split/inter-group polling needed. Exactly
+README.org,fragment/document/context modules and maintained ERT now staged; all25
+index input hashes match accepted manifest/worktree, staged diff check clean.
+Only original user flake remains unstaged. User review/commit pending; verify
+exact input blobs, parent, full message and tracking after user commit.
 Remote#10 last observed open, no current closure check or external write. Fonts
 postponed; PDF links follow #10 by priority. No release/version operation selected.
+
+## Staged delivery message
+
+tmp/commit.md holds the following reviewed draft for user review.
+feat classifies newly supported previously excluded inline-note STM combination.
+
+```text
+feat(document): support STM fragments in inline footnotes
+
+- 支持匿名及具名 inline footnote 正文中的 STM 发现, 字符串分割和 island lowering.
+- 为恢复的具名 inline 定义保留快照正文区间, 使过滤及 subtree/region 导出能够注册所需 islands 和 provenance.
+- 脚注正文复用 bare island 规则, 明确拒绝非 bare 正文中的已知行间根, 并在 discovery 阶段拒绝不完整及跨脚注/对象边界的候选.
+- 增加 7 项结构, 所有权, 选区及原生 PDF/.tm 重载回归, 将原有排除断言改为支持断言, 同步 README 与 docstring 的支持边界.
+
+Closes: #10
+```

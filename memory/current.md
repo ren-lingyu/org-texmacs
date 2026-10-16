@@ -2,8 +2,9 @@
 
 ## Completed candidate: Issue10 inline footnote STM
 
-Final user-selected contract implemented/automatically accepted, uncommitted and
-unstaged. Full contract/implementation/diagnostics: memory/issue-10-plan.md.
+Final user-selected contract implemented/automatically accepted, now staged as
+one coherent feat(document) commit; uncommitted. Full contract/implementation/
+diagnostics: memory/issue-10-plan.md.
 Anonymous/named inline definitions admit configured direct-text fragments; shared
 Issue11 bare eligibility promotes complete copied island, other bodies retain
 concat and reject known direct display roots. Empty inline note keeps concat("").
@@ -29,10 +30,14 @@ independent patch reconstructs all5task files byte-exactly, source/root lock sta
 archive/2026-10-16T10-29-35Z--c31d3b1/MANIFEST.md.
 No PDFs/binaries/dependency tree/full tmp/INBOX capture. Uncommitted acceptance has
 no inferred additional project parent; recorded committed baseline is exact red
-source/capture context only. Ordinary index empty;5task files plus original user
-flake mirror dirty. No version/lock/INBOX/example/external writes. Next user reviews
-candidate, may separately authorize staging/message, then makes project commit;
-verify exact blobs/parent/message afterward. Remote#10 last observed open, closure
+source/capture context only. User authorized staging/message: exactly5task paths
+staged, all25index input hashes equal accepted snapshot/worktree; diff check clean.
+Only original user flake mirror unstaged. tmp/commit.md draft: feat(document):
+support STM fragments in inline footnotes, Closes:#10; full draft preserved in
+memory/issue-10-plan.md. One coupled group, no inter-group polling. No version/
+lock/INBOX/example/external writes. Next user reviews draft and makes project
+commit; verify exact blobs/parent/message afterward. Remote#10 last observed open;
+closure
 not checked/performed. PDF links next by priority; fonts postponed,font-lock later.
 v0.5.0 remains planned, not release-ready. No other implementation selected.
 

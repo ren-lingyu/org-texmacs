@@ -49,8 +49,9 @@ Remote#11 closure not
 rechecked, last observed open.
 Issue10 adopted contract implemented: memory/issue-10-plan.md. Final46focused/9real/
 437core/full compile/lint pass,25final identities and5file reconstruction verified.
-Exactly5task paths unstaged/uncommitted, existing user flake excluded; local user
-review/commit and remote#10 tracking pending. No external writes.
+Exactly5task paths now staged as one feat(document) delivery, all25index hashes
+match accepted inputs; tmp/commit.md has Closes:#10, full draft in Issue10 record.
+Existing user flake remains unstaged; user review/commit/remote#10 tracking pending. No external writes.
 Adopted priority11->10->PDF links, Chinese fonts postponed, font-lock later.
 No release/version authority. #9 adopted-later after
 0.5.0 before0.6.0; #7 deferred and not a0.5.0 blocker. Earlier native footnote

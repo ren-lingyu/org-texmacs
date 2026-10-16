@@ -69,7 +69,8 @@ malformed/cross-object errors, snapshot-coordinate recovery for hidden named
 definitions, request filtering and first-use/provenance boundaries verified.
 7new maintained ERT plus migrated exclusion; final46focused/9real/437core/strict
 compile/lint/full checks pass. All25final inputs match worktree,5file patch
-reconstructs exactly; index empty/user flake excluded. User review/commit pending,
+reconstructs exactly;5task files now staged,25index hashes match accepted inputs,
+user flake unstaged. Full delivery draft in memory/issue-10-plan.md. User commit pending,
 no main/remote closure claim. Contract/evidence: memory/issue-10-plan.md.
 The initial review required evidence for the equation
 block/paragraph PDF discrepancy (#11), PDF annotations and Chinese fonts; the
