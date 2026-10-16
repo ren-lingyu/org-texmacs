@@ -95,10 +95,20 @@ inside locally recognized paragraph/block regions with Org activation suppressio
 and owned old/new cleanup. Export semantics/source chars unchanged. Final11focused/
 451core/full compile/lint pass; dense1MiB local re-fontify~0.489s remains a limit.
 Exact parent/5paths/patch/message and26committed source hashes verified; index
-empty, only preexisting user flake overlay unstaged. GUI acceptance pending.
+empty, only preexisting user flake overlay unstaged at that delivery. GUI basic usability
+now user-accepted; detailed interactions remain unverified.
 See memory/font-lock-implementation.md. #9 post0.5.0/pre0.6.0; #7 deferred.
 Code metadata remains0.4.0; Issue11 acceptance does not establish complete
 v0.5.0 readiness and no release publication was performed.
+
+TeXmacs special-block editing/indentation separately adopted: candidate
+org-texmacs-edit.el reuses native Org source-edit lifecycle and selected Scheme
+indentation, keeping special-block AST/export semantics. Public
+org-texmacs-edit-mode defaults to bundled scheme-mode; optional scheme-ts-mode
+and grammar require user installation. No mandatory dependency added.30focused/478fullERT, fixed extension integration,
+strict compile/lint/full flake pass; not staged/committed. Actual TS/GUI editing
+unverified. Details:
+memory/block-editing-implementation.md.
 
 ## Current conversion path
 

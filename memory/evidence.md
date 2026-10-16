@@ -1,5 +1,21 @@
 # org-texmacs durable evidence
 
+## TeXmacs special-block editing/indentation candidate acceptance
+
+User separately adopted native Org source editing and Scheme indentation, then
+public custom scheme-mode/scheme-ts-mode choice. Locked Emacs31.1/Org9.8.10/
+TeXmacs2.1.5 x86_64-linux: two old-code failures confirmed; final30focused,
+478full ERT (340.820181s), fixed real extension integration and strict byte/native
+compile/lint/full flake exit0. Original mirror overlay preserved; all28 final
+candidate inputs unchanged after gate,27 byte-equal isolated copies excluding
+intentional flake harness. Uncommitted candidate, no ordinary staging/commit.
+Optional TS mode/grammar absent in locked runtime: availability and controlled
+dispatch tested, real TS/GUI editing unverified. No new mandatory dependency,
+Babel/parser/export scope or release requirement. Contract, rationale, identities,
+validation limits and sufficient distilled evidence:
+memory/block-editing-implementation.md. No raw archive selected; reproducible
+pinned extraction plus maintained tests retain necessary evidence.
+
 ## Evidence levels
 
 - A source/documentation observation establishes an available API or declared

@@ -1,17 +1,38 @@
 # org-texmacs current memory
 
-## Latest observation: GUI font-lock and block editing gap
+## Ready for review: TeXmacs block editing and indentation
 
-User reports GUI font-lock feels basically usable; record as basic user-observed
-presentation acceptance only. Detailed idle/folding/sexp/third-party/performance
-coverage not supplied. User reports texmacs block lacks source-code editing mode
-and native code indentation. Static review: current font-lock stages/copies Org
-Scheme helper properties; it does not install editing/indentation entrypoints.
-Candidate follow-up: dedicated Scheme source-edit environment and block-local
-indentation while retaining Org special-block AST/export and island ownership.
-No business edits/tests or implementation/release commitment authorized. Existing
-AUTHORING-01 boundary retained; findings distilled into font-lock implementation,
-release readiness and backlog. No raw artifact/archive needed for this report.
+User-authorized implementation complete and verified, not staged/committed.
+New org-texmacs-edit.el plus main/Nix fileset/README/ERT wiring provides native
+Org source-edit/save/exit/abort/reuse for complete TeXmacs special blocks and
+Scheme indentation for TAB/line/region in the original Org buffer. Keep native
+special-block AST, exact no-change body whitespace and container semantics;
+no Babel, STM parsing, inline editing or export changes. Original user flake
+mirror overlay preserved byte-for-byte apart from the single new module line.
+
+User additionally requested public org-texmacs-edit-mode choice: bundled
+scheme-mode default (explicit require scheme, no new package dependency), optional
+user-installed scheme-ts-mode plus grammar. Missing optional support errors
+before source changes; no install/silent fallback. Fontification unchanged.
+Pinned runtime has Tree-sitter but no scheme-ts-mode/grammar, so actual TS editing
+remains unverified; controlled tests prove dispatch/error paths only.
+
+Isolation tmp/block-editing; two old-code negative controls confirmed. Final
+30focused/478fullERT (340.820181s), fixed real extension integration, strict byte/
+native compile and lint/full flake exit0. All28 candidate identities unchanged
+and27 match snapshot (intentional flake harness difference). No code edits after
+full gate. Exact contract/rationale/hash list and limits:
+memory/block-editing-implementation.md. No raw archive needed: maintained tests,
+locked regeneration and distilled facts retain necessary evidence. User GUI
+font-lock basic acceptance is separate from unperformed new GUI editing/real TS
+acceptance. No automatic release milestone or external issue closure added.
+
+Next: user may review/try C-c ' and TAB in a fresh loaded package; optional TS
+requires their installed mode/grammar. If staging is requested, include only the
+five task paths, staging only new module fileset hunk from flake.nix and preserving
+the original user overlay. Ordinary commit remains user's action. Do not stage
+without explicit authorization. GAW checkpoint has zero added project parents:
+main is the baseline, while successful tests use an uncommitted candidate.
 
 ## Completed: Issue12 bibliography delivered and closed
 

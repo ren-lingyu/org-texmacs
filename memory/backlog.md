@@ -659,22 +659,16 @@ or augmented live ASTs require separate evidence and adoption.
 
 ### AUTHORING-01: Editing assistance
 
-Status: **re-adoption-required** for general editing assistance; narrowly scoped
-STM font-lock feasibility P1 investigation for0.5.0 is complete. User selects
-default-on font-lock with an internal nil override, no public command/Customize.
-Embedded Scheme syntax properties/local ownership implemented/user-committed,
-11focused/451core/full compile/lint accepted; exact delivery verified. GUI
-basic usability user-reported as acceptable; detailed interaction checks and
-large-input cost remain explicit. User reports missing texmacs-block source-edit
-mode and native code indentation. Static review confirms presentation-only module;
-proposed candidate is dedicated Scheme source editing and block-local indentation,
-keeping Org special-block/export ownership. No implementation or release gate
-adopted for this report. No general editor adopted. See
+Status: **re-adoption-required** for general editing assistance. Bounded STM
+font-lock is delivered and GUI basic usability user-accepted; detailed navigation,
+third-party interaction and large-input cost remain explicit. User now separately
+adopts texmacs-block Scheme source editing and block-local indentation, with
+org-texmacs-edit-mode public choice (scheme-mode default, optional user-installed
+scheme-ts-mode/grammar). Candidate implemented and verified:30focused/478fullERT, fixed extension
+integration, strict compile/lint/full flake pass; not staged/committed.
+No Babel, paragraph editing, preview UX or broader Scheme execution adopted.
+No additional release gate inferred. See memory/block-editing-implementation.md,
 memory/font-lock-implementation.md and memory/release-0.5.0.md.
-
-General Scheme editing assistance, preview-oriented UX and other authoring
-conveniences remain outside current commitments. The limited font-lock
-investigation above supersedes the former blanket deferral only for that scope.
 
 ## Current unsupported cases are not automatic commitments
 

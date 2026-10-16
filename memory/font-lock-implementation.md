@@ -63,8 +63,9 @@ navigation/third-party/performance certification; exact GUI config not supplied.
 User also reports texmacs block has no source editing environment/native code
 indentation. Static source confirms current module only stages Scheme fontifier
 properties; no source-edit dispatch, Scheme major-mode binding, or indentation
-integration. Treat editing/indentation as a separate reported gap, not failed
-font-lock or new implementation/release authorization.
+integration. Editing/indentation is a separate task from font-lock. User has
+now authorized its bounded implementation and optional custom Scheme-mode choice;
+see memory/block-editing-implementation.md. No added release gate inferred.
 
 Initial harness path and ERT brackets corrected before causal baseline. Strict
 compile required dynamic Font Lock range declarations. Initial implementation
@@ -136,5 +137,7 @@ feat(font-lock): highlight embedded STM as Scheme by default
 
 Next: basic GUI presentation user-accepted; detailed idle display/folding/
 sexp navigation/third-party checks remain unverified. Source-edit/Scheme indentation
-is a newly reported separate candidate; no implementation selected. Other release gates in
-memory/release-0.5.0.md. No automatic new implementation/retest/release selected.
+is separately authorized and implemented/automatically verified as an uncommitted
+candidate in
+memory/block-editing-implementation.md. Other release gates in
+memory/release-0.5.0.md; no release action selected.

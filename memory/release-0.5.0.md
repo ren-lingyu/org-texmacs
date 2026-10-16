@@ -33,8 +33,10 @@ committed delivery records for current local status. Still planned/not accepted.
   index empty, original flake overlay unstaged. Prior acceptance transfers by
   exact bytes. User now reports GUI font-lock basically usable: basic presentation
   user-accepted; detailed folding/third-party/navigation remains unverified.
-  Newly reported block source-edit/indentation gap is separate, not automatically
-  an adopted release requirement or implementation authorization.
+  Block source-edit/indentation separately authorized, candidate implemented with
+  custom Scheme-mode selection;30focused/478fullERT, fixed extension integration,
+  strict compile/lint/full flake pass; not staged/committed. No added release gate
+  inferred. See memory/block-editing-implementation.md.
   Contract/final evidence: memory/font-lock-implementation.md.
 - Item7: representative mathematical full-document .tm/PDF workflow acceptance
   combining supported features still pending; short combined link fixtures and
