@@ -287,3 +287,66 @@ PDF binary excluded by project pure-text rule; original user files unchanged.
 Current project HEAD only capture context; no extra project parent inferred.
 No adopted package workaround or external issue write. Bibliography topic paused
 per user's request; native anchor/PDF diagnosis remains separate.
+
+## Reopened manual bibliography validation triage
+
+User now reports enabling discovery reaches org-texmacs--bibliography-validate-source
+and fails "Malformed or unsupported BibTeX entry", suspects another package.
+Read-only check: task refs.bib still185bytes/two ordinary @book entries, same
+fixture accepted by explicit-source tests. Validation error is Emacs-side
+bibtex-valid-entry returning nil, before native bibliography parsing. Automatic
+collector intentionally includes org-cite-global-bibliography and collector advice;
+acquire validates every collected missing source, not only local declaration.
+Thus an additional global/advised source with unsupported/malformed entries is
+a concrete hypothesis; not established for user's actual running Emacs. Parser
+customization/advice or loaded-version differences also unverified. No claim
+of package conflict or new reproducible regression.
+
+Suggested bounded interactive isolation: in manual.org set buffer-local
+org-cite-global-bibliography=nil, retain discovery=t, retry standard PDF command.
+If still failing, inspect org-cite-list-bibliography-files for extra paths before
+blaming refs.bib/parser. User environment/collector output not yet supplied.
+Current error lacks failing file identity, a verified diagnostic limitation,
+not an adopted implementation task. No code changes or new tests executed.
+
+## User-mode collection comparison and authorized external inspection
+
+User reports disabling org-organize-mode makes manual export succeed. Normal
+org-cite-list-bibliography-files returns only refs.bib; failing mode-enabled
+state returns refs.bib plus3specific literature files. Thus mode-dependent
+collection expansion is observed, not evidence of BibTeX parser mutation. Exact
+org-organize implementation/global-versus-advice source not traced.
+
+User explicitly authorized read-only checks of these3external files this turn:
+under /home/lingyu/org/roam/literature/,
+- 093cfe86-4239-4b7e-b2cb-988f6b5c71bc/cite.bib:480bytes,SHA256 c71ef5b36b252d9eac2c8c9ac6f194e56a86e96a1dd38d07bbeb965cc6d1bb36.
+- 23fd3654-0b6b-4b12-a814-030e0789deb4/bibliography.bib:475bytes,SHA256 c1733513fd5a15ca4af413bdfe4e2c7097ceb021ba43bf7efe66e6571b8df126.
+- 2a54185a-1ae2-4cf6-8451-7f17cf7fccc8/cite.bib:473bytes,SHA256 9f4863c21e73fb620a1b686c860f423204d6fe07530a2f7cb45683bb59e80163.
+All regular, no symlink components, below1MiB. No edits, Emacs execution,
+build/test/network or external copying authorized/performed. Do not treat this
+limited read authorization as future general access to the personal library.
+
+Read-only contract findings: second file line1uses @online, absent from fixed
+standard BibTeX entry-type list in bibliography-validate-source. This is a
+concrete input corresponding to Malformed or unsupported BibTeX entry. Third
+file line6has month=MM, a bare string identifier rejected by current literal-only
+field grammar (string constants unsupported); additional bounded rejection even
+if @online addressed. First file @article has braced fields, no identified
+violation of these specific rules; no new runtime parsing/formatting acceptance
+claimed. No user-environment replay pinpointing exact failing-file stack frame.
+
+User explicitly says these files work in ox-latex. Preserve that fact and do
+not call the personal library corrupt or generally invalid BibTeX/BibLaTeX.
+The demonstrated mismatch is current org-texmacs standard-type/literal-only
+support boundary versus user's working LaTeX bibliography pipeline. Collector
+acquisition validates all collected files/entries before lowering even when
+entries are uncited. This broad preflight and missing filename in errors make
+the mode-expanded library fail inconveniently. Do not rewrite @online or personal
+templates to hide unsupported semantics. BibLaTeX expansion, collection changes
+and richer file/entry diagnostics are follow-up candidates, not adopted repairs.
+
+No raw archive of personal external BibTeX files: read-only scope, minimal
+extracted facts/identities suffice; no need to copy personal entries into GAW.
+Current manual workaround (user-confirmed) is disabling mode; exact failing
+inputs and support-policy rationale now known by static inspection. Further
+runtime reproduction/design requires selection and separate command authority.

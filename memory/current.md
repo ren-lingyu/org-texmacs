@@ -60,8 +60,18 @@ annotation /label0 while backlink /label1 valid. No worker necessary; exact
 native binding/PDF cause unresolved. GUI creation/export user-reported, not
 agent-witnessed.2text artifacts archived separately, PDF excluded:
 archive/2026-10-16T12-55-42Z--b970820/MANIFEST.md
-Manual bibliography troubleshooting deferred at user's request. Next: user may
-select further native binding/PDF diagnosis or upstream tracking, no repair adopted. Chinese fonts postponed, font-lock later; no release action selected.
+Manual bibliography triage: user reports org-organize-mode off succeeds with
+collector only refs.bib; on adds3literature .bib files and validation fails.
+Authorized read-only inspection found @online in second external file, outside
+fixed standard-type grammar; third template month=MM also outside literal-only
+values. No external files changed or copied, no new Emacs/test execution.
+User says same files work in ox-latex: record support-boundary mismatch and
+all-collected-entry preflight/weak diagnostics, not corrupt bibliography or
+proven parser conflict. Full file identities/scope/findings:
+memory/pdf-adjacent-checks.md. No personal-source archive justified.
+Next: user may select compatibility/collection/diagnostic follow-up or native
+footnote diagnosis/upstream tracking; no repair adopted. Fonts postponed,
+font-lock later; no release action selected.
 
 ## Completed local repair: PDF hyperlink annotations
 

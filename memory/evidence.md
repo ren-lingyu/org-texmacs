@@ -3167,3 +3167,20 @@ archive/2026-10-16T12-55-42Z--b970820/MANIFEST.md
 Original user .tm and authored PDF identity/dictionary report retained; PDF binary
 excluded, user files unchanged. Capture HEAD not provenance of user-created files;
 no inferred project parent. No issue write or package workaround adopted.
+
+
+## Mode-expanded bibliography support mismatch (2026-10-16)
+
+User confirms manual export works with org-organize-mode off, collector only
+refs.bib; failing state adds3specific external .bib files. User authorized bounded
+read-only inspection: all regular/no symlinks,480/475/473bytes. Second uses
+@online (outside current standard-type whitelist, same unsupported-entry error);
+third template month=MM outside literal-only value grammar. File identities and
+exact authorized paths in memory/pdf-adjacent-checks.md. No new Emacs replay,
+tests, native parsing or personal file edits/copies. User explicitly reports
+ox-latex uses these files successfully; do not label library generally malformed.
+Current org-texmacs preflights every collected entry, including uncited; supported
+grammar mismatch plus missing failing-file diagnostic explains the observed
+failure pattern. Exact parser stack attribution/extra-source implementation not
+traced. No raw personal archive: minimal extracted facts suffice. No package
+repair, broad BibLaTeX support or collector-policy change adopted.
