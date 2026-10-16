@@ -1,0 +1,4916 @@
+{
+  "article-flow-direct.pdf": {
+    "pages": 9,
+    "marker_pages": {
+      "AlphaBodySentinel": 2,
+      "OmegaBodySentinel": 8,
+      "NamedFootnoteBodySentinel": 2,
+      "FirstTitleSentinel": 9,
+      "SecondTitleSentinel": 9
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "article-flow-direct.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "article-flow-direct.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "article-flow-direct.html#8"
+      },
+      {
+        "from": 1,
+        "text": "8",
+        "href": "article-flow-direct.html#8"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "article-flow-direct.html#9"
+      },
+      {
+        "from": 1,
+        "text": "9",
+        "href": "article-flow-direct.html#9"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "article-flow-direct.html#8"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "article-flow-direct.html#8"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "article-flow-direct.html#9"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-flow-direct.html#9"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "article-flow-direct.html#9"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "article-flow-direct.html#9"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "article-flow-direct.html#9"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-flow-direct.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "article-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": "BackToAlpha",
+        "href": "article-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": ".",
+        "href": "article-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "article-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": ". ",
+        "href": "article-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": "n",
+        "href": "article-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "article-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": ". ",
+        "href": "article-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": "[",
+        "href": "article-flow-direct.html#9"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "article-flow-direct.html#9"
+      },
+      {
+        "from": 8,
+        "text": "]",
+        "href": "article-flow-direct.html#9"
+      }
+    ],
+    "annotations": [
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          84.72,
+          724.26,
+          90.3,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          93.06,
+          722.34,
+          170.46,
+          732.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          504.9,
+          724.26,
+          510.48,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          84.72,
+          712.26,
+          90.3,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          93.06,
+          710.34,
+          174.66,
+          720.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          504.9,
+          712.26,
+          510.48,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          84.72,
+          700.26,
+          90.3,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          93.06,
+          700.26,
+          190.14,
+          708.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          504.9,
+          700.26,
+          510.48,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "https://example.org",
+        "to": null,
+        "destination": "None",
+        "rect": [
+          99.72,
+          688.26,
+          157.8,
+          696.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label3",
+        "rect": [
+          180.0,
+          686.34,
+          258.54,
+          696.36
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 9,
+        "destination": "/label4",
+        "rect": [
+          225.18,
+          704.58,
+          230.76,
+          712.2
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 9,
+        "destination": "/label5",
+        "rect": [
+          236.28,
+          704.58,
+          241.92,
+          712.2
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          120.78,
+          695.46,
+          125.34,
+          701.22
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 2,
+        "destination": "/label7",
+        "rect": [
+          99.72,
+          86.88,
+          104.58,
+          93.24
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          195.36,
+          698.34,
+          255.24,
+          708.36
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          164.7,
+          688.2,
+          170.34,
+          695.82
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label9",
+        "rect": [
+          202.74,
+          691.8,
+          207.36,
+          697.56
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 9,
+        "destination": "/label4",
+        "rect": [
+          251.04,
+          688.2,
+          256.62,
+          695.82
+        ]
+      }
+    ],
+    "dangling_destinations": [
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          120.78,
+          695.46,
+          125.34,
+          701.22
+        ]
+      }
+    ],
+    "normalized_page_text_sha256": [
+      "c5348bdb46cdfea94e385e63842f251e62d1bed8d164c101dde07c6dad98b576",
+      "3ebb75086c6f210d8006c0f3b2e3655f23bc7f2f136ef95782da362eaf0784bc",
+      "53edccefd2568c77c033fdba8b304e3696254e4e9ea572eb43f7bb96020f9d1b",
+      "3704bf23ba0c7596590ccbfb2d5e5ac46cb62cdd45f12298f8c163356e3e7940",
+      "d0b070e9ea295455ff4dfbc974e378f496ad70ccb5d4047824698d13352ae6d9",
+      "b164336eed0b052e82b87bfea29412b8940e8d3d5df9946448cb858a3a67ff13",
+      "3bbf6f1e0245b98d4a19ee08c03021cc821ca8b30a7bac2e730e1071207b820c",
+      "28d023259ddb1b51aab274ce7cc7ff161b48d0cbf64ad80e16484ebd95bbf872",
+      "d9d2d9d866523b436cfe606ffd72a9c24587740e511e57f883e87b68981bb758"
+    ]
+  },
+  "article-flow-reload-2.pdf": {
+    "pages": 9,
+    "marker_pages": {
+      "AlphaBodySentinel": 2,
+      "OmegaBodySentinel": 8,
+      "NamedFootnoteBodySentinel": 2,
+      "FirstTitleSentinel": 9,
+      "SecondTitleSentinel": 9
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "article-flow-reload-2.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "article-flow-reload-2.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "article-flow-reload-2.html#8"
+      },
+      {
+        "from": 1,
+        "text": "8",
+        "href": "article-flow-reload-2.html#8"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "article-flow-reload-2.html#9"
+      },
+      {
+        "from": 1,
+        "text": "9",
+        "href": "article-flow-reload-2.html#9"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "article-flow-reload-2.html#8"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "article-flow-reload-2.html#8"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "article-flow-reload-2.html#9"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-flow-reload-2.html#9"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "article-flow-reload-2.html#9"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "article-flow-reload-2.html#9"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "article-flow-reload-2.html#9"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-flow-reload-2.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "article-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": "BackToAlpha",
+        "href": "article-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": ".",
+        "href": "article-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "article-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": ". ",
+        "href": "article-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": "n",
+        "href": "article-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "article-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": ". ",
+        "href": "article-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": "[",
+        "href": "article-flow-reload-2.html#9"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "article-flow-reload-2.html#9"
+      },
+      {
+        "from": 8,
+        "text": "]",
+        "href": "article-flow-reload-2.html#9"
+      }
+    ],
+    "annotations": [
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          84.72,
+          724.26,
+          90.3,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          93.06,
+          722.34,
+          170.46,
+          732.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          504.9,
+          724.26,
+          510.48,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          84.72,
+          712.26,
+          90.3,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          93.06,
+          710.34,
+          174.66,
+          720.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          504.9,
+          712.26,
+          510.48,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          84.72,
+          700.26,
+          90.3,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          93.06,
+          700.26,
+          190.14,
+          708.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          504.9,
+          700.26,
+          510.48,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "https://example.org",
+        "to": null,
+        "destination": "None",
+        "rect": [
+          99.72,
+          688.26,
+          157.8,
+          696.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label3",
+        "rect": [
+          180.0,
+          686.34,
+          258.54,
+          696.36
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 9,
+        "destination": "/label4",
+        "rect": [
+          225.18,
+          704.58,
+          230.76,
+          712.2
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 9,
+        "destination": "/label5",
+        "rect": [
+          236.28,
+          704.58,
+          241.92,
+          712.2
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          120.78,
+          695.46,
+          125.34,
+          701.22
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 2,
+        "destination": "/label7",
+        "rect": [
+          99.72,
+          86.88,
+          104.58,
+          93.24
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          195.36,
+          698.34,
+          255.24,
+          708.36
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          164.7,
+          688.2,
+          170.34,
+          695.82
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label9",
+        "rect": [
+          202.74,
+          691.8,
+          207.36,
+          697.56
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 9,
+        "destination": "/label4",
+        "rect": [
+          251.04,
+          688.2,
+          256.62,
+          695.82
+        ]
+      }
+    ],
+    "dangling_destinations": [
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          120.78,
+          695.46,
+          125.34,
+          701.22
+        ]
+      }
+    ],
+    "normalized_page_text_sha256": [
+      "c5348bdb46cdfea94e385e63842f251e62d1bed8d164c101dde07c6dad98b576",
+      "3ebb75086c6f210d8006c0f3b2e3655f23bc7f2f136ef95782da362eaf0784bc",
+      "53edccefd2568c77c033fdba8b304e3696254e4e9ea572eb43f7bb96020f9d1b",
+      "3704bf23ba0c7596590ccbfb2d5e5ac46cb62cdd45f12298f8c163356e3e7940",
+      "d0b070e9ea295455ff4dfbc974e378f496ad70ccb5d4047824698d13352ae6d9",
+      "b164336eed0b052e82b87bfea29412b8940e8d3d5df9946448cb858a3a67ff13",
+      "3bbf6f1e0245b98d4a19ee08c03021cc821ca8b30a7bac2e730e1071207b820c",
+      "28d023259ddb1b51aab274ce7cc7ff161b48d0cbf64ad80e16484ebd95bbf872",
+      "d9d2d9d866523b436cfe606ffd72a9c24587740e511e57f883e87b68981bb758"
+    ]
+  },
+  "article-flow-reload-6.pdf": {
+    "pages": 9,
+    "marker_pages": {
+      "AlphaBodySentinel": 2,
+      "OmegaBodySentinel": 8,
+      "NamedFootnoteBodySentinel": 2,
+      "FirstTitleSentinel": 9,
+      "SecondTitleSentinel": 9
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "article-flow-reload-6.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "article-flow-reload-6.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "article-flow-reload-6.html#8"
+      },
+      {
+        "from": 1,
+        "text": "8",
+        "href": "article-flow-reload-6.html#8"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "article-flow-reload-6.html#9"
+      },
+      {
+        "from": 1,
+        "text": "9",
+        "href": "article-flow-reload-6.html#9"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "article-flow-reload-6.html#8"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "article-flow-reload-6.html#8"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "article-flow-reload-6.html#9"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-flow-reload-6.html#9"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "article-flow-reload-6.html#9"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "article-flow-reload-6.html#9"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "article-flow-reload-6.html#9"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-flow-reload-6.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "article-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": "BackToAlpha",
+        "href": "article-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": ".",
+        "href": "article-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "article-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": ". ",
+        "href": "article-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": "n",
+        "href": "article-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "article-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": ". ",
+        "href": "article-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": "[",
+        "href": "article-flow-reload-6.html#9"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "article-flow-reload-6.html#9"
+      },
+      {
+        "from": 8,
+        "text": "]",
+        "href": "article-flow-reload-6.html#9"
+      }
+    ],
+    "annotations": [
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          84.72,
+          724.26,
+          90.3,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          93.06,
+          722.34,
+          170.46,
+          732.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          504.9,
+          724.26,
+          510.48,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          84.72,
+          712.26,
+          90.3,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          93.06,
+          710.34,
+          174.66,
+          720.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          504.9,
+          712.26,
+          510.48,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          84.72,
+          700.26,
+          90.3,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          93.06,
+          700.26,
+          190.14,
+          708.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          504.9,
+          700.26,
+          510.48,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "https://example.org",
+        "to": null,
+        "destination": "None",
+        "rect": [
+          99.72,
+          688.26,
+          157.8,
+          696.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label3",
+        "rect": [
+          180.0,
+          686.34,
+          258.54,
+          696.36
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 9,
+        "destination": "/label4",
+        "rect": [
+          225.18,
+          704.58,
+          230.76,
+          712.2
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 9,
+        "destination": "/label5",
+        "rect": [
+          236.28,
+          704.58,
+          241.92,
+          712.2
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          120.78,
+          695.46,
+          125.34,
+          701.22
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 2,
+        "destination": "/label7",
+        "rect": [
+          99.72,
+          86.88,
+          104.58,
+          93.24
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          195.36,
+          698.34,
+          255.24,
+          708.36
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          164.7,
+          688.2,
+          170.34,
+          695.82
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label9",
+        "rect": [
+          202.74,
+          691.8,
+          207.36,
+          697.56
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 9,
+        "destination": "/label4",
+        "rect": [
+          251.04,
+          688.2,
+          256.62,
+          695.82
+        ]
+      }
+    ],
+    "dangling_destinations": [
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          120.78,
+          695.46,
+          125.34,
+          701.22
+        ]
+      }
+    ],
+    "normalized_page_text_sha256": [
+      "c5348bdb46cdfea94e385e63842f251e62d1bed8d164c101dde07c6dad98b576",
+      "3ebb75086c6f210d8006c0f3b2e3655f23bc7f2f136ef95782da362eaf0784bc",
+      "53edccefd2568c77c033fdba8b304e3696254e4e9ea572eb43f7bb96020f9d1b",
+      "3704bf23ba0c7596590ccbfb2d5e5ac46cb62cdd45f12298f8c163356e3e7940",
+      "d0b070e9ea295455ff4dfbc974e378f496ad70ccb5d4047824698d13352ae6d9",
+      "b164336eed0b052e82b87bfea29412b8940e8d3d5df9946448cb858a3a67ff13",
+      "3bbf6f1e0245b98d4a19ee08c03021cc821ca8b30a7bac2e730e1071207b820c",
+      "28d023259ddb1b51aab274ce7cc7ff161b48d0cbf64ad80e16484ebd95bbf872",
+      "d9d2d9d866523b436cfe606ffd72a9c24587740e511e57f883e87b68981bb758"
+    ]
+  },
+  "article-short-direct.pdf": {
+    "pages": 4,
+    "marker_pages": {
+      "AlphaBodySentinel": 2,
+      "OmegaBodySentinel": 3,
+      "NamedFootnoteBodySentinel": 2,
+      "FirstTitleSentinel": 4,
+      "SecondTitleSentinel": 4
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "article-short-direct.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "article-short-direct.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "article-short-direct.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3",
+        "href": "article-short-direct.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "article-short-direct.html#4"
+      },
+      {
+        "from": 1,
+        "text": "4",
+        "href": "article-short-direct.html#4"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "article-short-direct.html#3"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "article-short-direct.html#3"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "article-short-direct.html#4"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-short-direct.html#4"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "article-short-direct.html#4"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "article-short-direct.html#4"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "article-short-direct.html#4"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-short-direct.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "article-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": "BackToAlpha",
+        "href": "article-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": ".",
+        "href": "article-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "article-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": "n",
+        "href": "article-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "article-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": "[",
+        "href": "article-short-direct.html#4"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-short-direct.html#4"
+      },
+      {
+        "from": 3,
+        "text": "]",
+        "href": "article-short-direct.html#4"
+      }
+    ],
+    "annotations": [
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          84.72,
+          724.26,
+          90.3,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          93.06,
+          722.34,
+          170.46,
+          732.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          504.9,
+          724.26,
+          510.48,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          84.72,
+          712.26,
+          90.3,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          93.06,
+          710.34,
+          174.66,
+          720.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          504.9,
+          712.26,
+          510.48,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          84.72,
+          700.26,
+          90.3,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          93.06,
+          700.26,
+          190.14,
+          708.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          504.9,
+          700.26,
+          510.48,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "https://example.org",
+        "to": null,
+        "destination": "None",
+        "rect": [
+          99.72,
+          688.26,
+          157.8,
+          696.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label3",
+        "rect": [
+          180.0,
+          686.34,
+          258.54,
+          696.36
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 4,
+        "destination": "/label4",
+        "rect": [
+          225.18,
+          700.26,
+          230.76,
+          707.88
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 4,
+        "destination": "/label5",
+        "rect": [
+          236.28,
+          700.26,
+          241.92,
+          707.88
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          120.78,
+          691.14,
+          125.34,
+          696.9
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 2,
+        "destination": "/label7",
+        "rect": [
+          99.72,
+          654.3,
+          104.58,
+          660.66
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          195.36,
+          698.34,
+          255.24,
+          708.36
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          164.7,
+          688.2,
+          170.34,
+          695.82
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label9",
+        "rect": [
+          202.74,
+          691.8,
+          207.36,
+          697.56
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 4,
+        "destination": "/label4",
+        "rect": [
+          251.04,
+          688.2,
+          256.62,
+          695.82
+        ]
+      }
+    ],
+    "dangling_destinations": [
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          120.78,
+          691.14,
+          125.34,
+          696.9
+        ]
+      }
+    ],
+    "normalized_page_text_sha256": [
+      "27029d940dabac9622e9bc0dbbc9f1a8989aa0893bcf7d92bf267078238b7f71",
+      "f8318b525b2e5d8ac91a38e65c04e728de5a7304da3dfc2d2acaf271b96a21d3",
+      "9d60961236c075f201d99794f1a1df4e037291419cb51e294956e6317ead4f4b",
+      "c604f146974cf8ea8720072cdf941598d623c687e1e75949310c4976ec1a7cba"
+    ]
+  },
+  "article-short-reload-2.pdf": {
+    "pages": 4,
+    "marker_pages": {
+      "AlphaBodySentinel": 2,
+      "OmegaBodySentinel": 3,
+      "NamedFootnoteBodySentinel": 2,
+      "FirstTitleSentinel": 4,
+      "SecondTitleSentinel": 4
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "article-short-reload-2.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "article-short-reload-2.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "article-short-reload-2.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3",
+        "href": "article-short-reload-2.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "article-short-reload-2.html#4"
+      },
+      {
+        "from": 1,
+        "text": "4",
+        "href": "article-short-reload-2.html#4"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "article-short-reload-2.html#3"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "article-short-reload-2.html#3"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "article-short-reload-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-short-reload-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "article-short-reload-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "article-short-reload-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "article-short-reload-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-short-reload-2.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "article-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "BackToAlpha",
+        "href": "article-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": ".",
+        "href": "article-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "article-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "n",
+        "href": "article-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "article-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "[",
+        "href": "article-short-reload-2.html#4"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-short-reload-2.html#4"
+      },
+      {
+        "from": 3,
+        "text": "]",
+        "href": "article-short-reload-2.html#4"
+      }
+    ],
+    "annotations": [
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          84.72,
+          724.26,
+          90.3,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          93.06,
+          722.34,
+          170.46,
+          732.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          504.9,
+          724.26,
+          510.48,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          84.72,
+          712.26,
+          90.3,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          93.06,
+          710.34,
+          174.66,
+          720.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          504.9,
+          712.26,
+          510.48,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          84.72,
+          700.26,
+          90.3,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          93.06,
+          700.26,
+          190.14,
+          708.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          504.9,
+          700.26,
+          510.48,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "https://example.org",
+        "to": null,
+        "destination": "None",
+        "rect": [
+          99.72,
+          688.26,
+          157.8,
+          696.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label3",
+        "rect": [
+          180.0,
+          686.34,
+          258.54,
+          696.36
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 4,
+        "destination": "/label4",
+        "rect": [
+          225.18,
+          700.26,
+          230.76,
+          707.88
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 4,
+        "destination": "/label5",
+        "rect": [
+          236.28,
+          700.26,
+          241.92,
+          707.88
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          120.78,
+          691.14,
+          125.34,
+          696.9
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 2,
+        "destination": "/label7",
+        "rect": [
+          99.72,
+          654.3,
+          104.58,
+          660.66
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          195.36,
+          698.34,
+          255.24,
+          708.36
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          164.7,
+          688.2,
+          170.34,
+          695.82
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label9",
+        "rect": [
+          202.74,
+          691.8,
+          207.36,
+          697.56
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 4,
+        "destination": "/label4",
+        "rect": [
+          251.04,
+          688.2,
+          256.62,
+          695.82
+        ]
+      }
+    ],
+    "dangling_destinations": [
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          120.78,
+          691.14,
+          125.34,
+          696.9
+        ]
+      }
+    ],
+    "normalized_page_text_sha256": [
+      "27029d940dabac9622e9bc0dbbc9f1a8989aa0893bcf7d92bf267078238b7f71",
+      "f8318b525b2e5d8ac91a38e65c04e728de5a7304da3dfc2d2acaf271b96a21d3",
+      "9d60961236c075f201d99794f1a1df4e037291419cb51e294956e6317ead4f4b",
+      "c604f146974cf8ea8720072cdf941598d623c687e1e75949310c4976ec1a7cba"
+    ]
+  },
+  "article-short-reload-6.pdf": {
+    "pages": 4,
+    "marker_pages": {
+      "AlphaBodySentinel": 2,
+      "OmegaBodySentinel": 3,
+      "NamedFootnoteBodySentinel": 2,
+      "FirstTitleSentinel": 4,
+      "SecondTitleSentinel": 4
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "article-short-reload-6.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "article-short-reload-6.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "article-short-reload-6.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3",
+        "href": "article-short-reload-6.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "article-short-reload-6.html#4"
+      },
+      {
+        "from": 1,
+        "text": "4",
+        "href": "article-short-reload-6.html#4"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "article-short-reload-6.html#3"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "article-short-reload-6.html#3"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "article-short-reload-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-short-reload-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "article-short-reload-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "article-short-reload-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "article-short-reload-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "article-short-reload-6.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "article-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "BackToAlpha",
+        "href": "article-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": ".",
+        "href": "article-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "article-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "n",
+        "href": "article-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "article-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "[",
+        "href": "article-short-reload-6.html#4"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "article-short-reload-6.html#4"
+      },
+      {
+        "from": 3,
+        "text": "]",
+        "href": "article-short-reload-6.html#4"
+      }
+    ],
+    "annotations": [
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          84.72,
+          724.26,
+          90.3,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          93.06,
+          722.34,
+          170.46,
+          732.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          504.9,
+          724.26,
+          510.48,
+          731.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          84.72,
+          712.26,
+          90.3,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          93.06,
+          710.34,
+          174.66,
+          720.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          504.9,
+          712.26,
+          510.48,
+          719.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          84.72,
+          700.26,
+          90.3,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          93.06,
+          700.26,
+          190.14,
+          708.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          504.9,
+          700.26,
+          510.48,
+          707.88
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "https://example.org",
+        "to": null,
+        "destination": "None",
+        "rect": [
+          99.72,
+          688.26,
+          157.8,
+          696.36
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label3",
+        "rect": [
+          180.0,
+          686.34,
+          258.54,
+          696.36
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 4,
+        "destination": "/label4",
+        "rect": [
+          225.18,
+          700.26,
+          230.76,
+          707.88
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 4,
+        "destination": "/label5",
+        "rect": [
+          236.28,
+          700.26,
+          241.92,
+          707.88
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          120.78,
+          691.14,
+          125.34,
+          696.9
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 2,
+        "destination": "/label7",
+        "rect": [
+          99.72,
+          654.3,
+          104.58,
+          660.66
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          195.36,
+          698.34,
+          255.24,
+          708.36
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          164.7,
+          688.2,
+          170.34,
+          695.82
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label9",
+        "rect": [
+          202.74,
+          691.8,
+          207.36,
+          697.56
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 4,
+        "destination": "/label4",
+        "rect": [
+          251.04,
+          688.2,
+          256.62,
+          695.82
+        ]
+      }
+    ],
+    "dangling_destinations": [
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          120.78,
+          691.14,
+          125.34,
+          696.9
+        ]
+      }
+    ],
+    "normalized_page_text_sha256": [
+      "27029d940dabac9622e9bc0dbbc9f1a8989aa0893bcf7d92bf267078238b7f71",
+      "f8318b525b2e5d8ac91a38e65c04e728de5a7304da3dfc2d2acaf271b96a21d3",
+      "9d60961236c075f201d99794f1a1df4e037291419cb51e294956e6317ead4f4b",
+      "c604f146974cf8ea8720072cdf941598d623c687e1e75949310c4976ec1a7cba"
+    ]
+  },
+  "generic-flow-direct.pdf": {
+    "pages": 9,
+    "marker_pages": {
+      "AlphaBodySentinel": 2,
+      "OmegaBodySentinel": 8,
+      "NamedFootnoteBodySentinel": 2,
+      "FirstTitleSentinel": 9,
+      "SecondTitleSentinel": 9
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "generic-flow-direct.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "generic-flow-direct.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "generic-flow-direct.html#8"
+      },
+      {
+        "from": 1,
+        "text": "8",
+        "href": "generic-flow-direct.html#8"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "generic-flow-direct.html#9"
+      },
+      {
+        "from": 1,
+        "text": "9",
+        "href": "generic-flow-direct.html#9"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "generic-flow-direct.html#8"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "generic-flow-direct.html#8"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "generic-flow-direct.html#9"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-flow-direct.html#9"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "generic-flow-direct.html#9"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "generic-flow-direct.html#9"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "generic-flow-direct.html#9"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-flow-direct.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "generic-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": "BackToAlpha",
+        "href": "generic-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": ".",
+        "href": "generic-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "generic-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": ". ",
+        "href": "generic-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": "n",
+        "href": "generic-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "generic-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": ". ",
+        "href": "generic-flow-direct.html#2"
+      },
+      {
+        "from": 8,
+        "text": "[",
+        "href": "generic-flow-direct.html#9"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "generic-flow-direct.html#9"
+      },
+      {
+        "from": 8,
+        "text": "]",
+        "href": "generic-flow-direct.html#9"
+      }
+    ],
+    "annotations": [
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          84.72,
+          722.64,
+          90.3,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          93.06,
+          720.66,
+          170.46,
+          730.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          504.9,
+          722.64,
+          510.48,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          84.72,
+          710.64,
+          90.3,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          93.06,
+          708.66,
+          174.66,
+          718.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          504.9,
+          710.64,
+          510.48,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          84.72,
+          698.64,
+          90.3,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          93.06,
+          698.64,
+          190.14,
+          706.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          504.9,
+          698.64,
+          510.48,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "https://example.org",
+        "to": null,
+        "destination": "None",
+        "rect": [
+          84.72,
+          679.98,
+          142.8,
+          688.02
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label3",
+        "rect": [
+          165.0,
+          678.0,
+          243.54,
+          688.02
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 9,
+        "destination": "/label4",
+        "rect": [
+          210.18,
+          681.84,
+          215.76,
+          689.4
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 9,
+        "destination": "/label5",
+        "rect": [
+          221.28,
+          681.84,
+          226.92,
+          689.4
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          105.78,
+          665.1,
+          110.34,
+          670.8
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 2,
+        "destination": "/label7",
+        "rect": [
+          84.72,
+          86.94,
+          89.58,
+          93.3
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          180.36,
+          683.34,
+          240.24,
+          693.36
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          149.7,
+          666.54,
+          155.34,
+          674.16
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label9",
+        "rect": [
+          187.74,
+          670.14,
+          192.36,
+          675.9
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 9,
+        "destination": "/label4",
+        "rect": [
+          236.04,
+          666.54,
+          241.62,
+          674.16
+        ]
+      }
+    ],
+    "dangling_destinations": [
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          105.78,
+          665.1,
+          110.34,
+          670.8
+        ]
+      }
+    ],
+    "normalized_page_text_sha256": [
+      "e4ba22d7e36994c209eef95495844b22f00766614280a68917d558bd809b1eb5",
+      "b80935419e1cbe8e603a9c0c1706d22998f1f01bdc0718ea920f366cf86d8971",
+      "054285e306c8362f9fcc0588561fb0b8d2ce5cb23852cf58f6755c92b69de633",
+      "b9e7fd8c0818bb94dd5bdc7bac3df5c930f5adbe2cfd6eed17db998f525c265c",
+      "bb3a2d6b6e62519936b003161924a9df7318790aebce2a7fc746da5ae80ef30e",
+      "3ad00b2325402fc1a921bf89ca812cfc6c764f2308206a204213d4a293e75cc3",
+      "c084e8180c42f1d9dfa0aa6f511acd7b570bc68ee6b36cbe58bff1fcb25b82cb",
+      "f06f06c8931c92197bf2fd76fe8fa60705641620dd18d629c12c4a8989535f76",
+      "a7e690333279d4c9b68e6de34586feb73046e42625e72deac021b352b181563a"
+    ]
+  },
+  "generic-flow-reload-2.pdf": {
+    "pages": 9,
+    "marker_pages": {
+      "AlphaBodySentinel": 2,
+      "OmegaBodySentinel": 8,
+      "NamedFootnoteBodySentinel": 2,
+      "FirstTitleSentinel": 9,
+      "SecondTitleSentinel": 9
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "generic-flow-reload-2.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "generic-flow-reload-2.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "generic-flow-reload-2.html#8"
+      },
+      {
+        "from": 1,
+        "text": "8",
+        "href": "generic-flow-reload-2.html#8"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "generic-flow-reload-2.html#9"
+      },
+      {
+        "from": 1,
+        "text": "9",
+        "href": "generic-flow-reload-2.html#9"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "generic-flow-reload-2.html#8"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "generic-flow-reload-2.html#8"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "generic-flow-reload-2.html#9"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-flow-reload-2.html#9"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "generic-flow-reload-2.html#9"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "generic-flow-reload-2.html#9"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "generic-flow-reload-2.html#9"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-flow-reload-2.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "generic-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": "BackToAlpha",
+        "href": "generic-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": ".",
+        "href": "generic-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "generic-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": ". ",
+        "href": "generic-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": "n",
+        "href": "generic-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "generic-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": ". ",
+        "href": "generic-flow-reload-2.html#2"
+      },
+      {
+        "from": 8,
+        "text": "[",
+        "href": "generic-flow-reload-2.html#9"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "generic-flow-reload-2.html#9"
+      },
+      {
+        "from": 8,
+        "text": "]",
+        "href": "generic-flow-reload-2.html#9"
+      }
+    ],
+    "annotations": [
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          84.72,
+          722.64,
+          90.3,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          93.06,
+          720.66,
+          170.46,
+          730.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          504.9,
+          722.64,
+          510.48,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          84.72,
+          710.64,
+          90.3,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          93.06,
+          708.66,
+          174.66,
+          718.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          504.9,
+          710.64,
+          510.48,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          84.72,
+          698.64,
+          90.3,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          93.06,
+          698.64,
+          190.14,
+          706.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          504.9,
+          698.64,
+          510.48,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "https://example.org",
+        "to": null,
+        "destination": "None",
+        "rect": [
+          84.72,
+          679.98,
+          142.8,
+          688.02
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label3",
+        "rect": [
+          165.0,
+          678.0,
+          243.54,
+          688.02
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 9,
+        "destination": "/label4",
+        "rect": [
+          210.18,
+          681.84,
+          215.76,
+          689.4
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 9,
+        "destination": "/label5",
+        "rect": [
+          221.28,
+          681.84,
+          226.92,
+          689.4
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          105.78,
+          665.1,
+          110.34,
+          670.8
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 2,
+        "destination": "/label7",
+        "rect": [
+          84.72,
+          86.94,
+          89.58,
+          93.3
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          180.36,
+          683.34,
+          240.24,
+          693.36
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          149.7,
+          666.54,
+          155.34,
+          674.16
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label9",
+        "rect": [
+          187.74,
+          670.14,
+          192.36,
+          675.9
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 9,
+        "destination": "/label4",
+        "rect": [
+          236.04,
+          666.54,
+          241.62,
+          674.16
+        ]
+      }
+    ],
+    "dangling_destinations": [
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          105.78,
+          665.1,
+          110.34,
+          670.8
+        ]
+      }
+    ],
+    "normalized_page_text_sha256": [
+      "e4ba22d7e36994c209eef95495844b22f00766614280a68917d558bd809b1eb5",
+      "b80935419e1cbe8e603a9c0c1706d22998f1f01bdc0718ea920f366cf86d8971",
+      "054285e306c8362f9fcc0588561fb0b8d2ce5cb23852cf58f6755c92b69de633",
+      "b9e7fd8c0818bb94dd5bdc7bac3df5c930f5adbe2cfd6eed17db998f525c265c",
+      "bb3a2d6b6e62519936b003161924a9df7318790aebce2a7fc746da5ae80ef30e",
+      "3ad00b2325402fc1a921bf89ca812cfc6c764f2308206a204213d4a293e75cc3",
+      "c084e8180c42f1d9dfa0aa6f511acd7b570bc68ee6b36cbe58bff1fcb25b82cb",
+      "f06f06c8931c92197bf2fd76fe8fa60705641620dd18d629c12c4a8989535f76",
+      "a7e690333279d4c9b68e6de34586feb73046e42625e72deac021b352b181563a"
+    ]
+  },
+  "generic-flow-reload-6.pdf": {
+    "pages": 9,
+    "marker_pages": {
+      "AlphaBodySentinel": 2,
+      "OmegaBodySentinel": 8,
+      "NamedFootnoteBodySentinel": 2,
+      "FirstTitleSentinel": 9,
+      "SecondTitleSentinel": 9
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "generic-flow-reload-6.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "generic-flow-reload-6.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "generic-flow-reload-6.html#8"
+      },
+      {
+        "from": 1,
+        "text": "8",
+        "href": "generic-flow-reload-6.html#8"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "generic-flow-reload-6.html#9"
+      },
+      {
+        "from": 1,
+        "text": "9",
+        "href": "generic-flow-reload-6.html#9"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "generic-flow-reload-6.html#8"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "generic-flow-reload-6.html#8"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "generic-flow-reload-6.html#9"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-flow-reload-6.html#9"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "generic-flow-reload-6.html#9"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "generic-flow-reload-6.html#9"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "generic-flow-reload-6.html#9"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-flow-reload-6.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "generic-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": "BackToAlpha",
+        "href": "generic-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": ".",
+        "href": "generic-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "generic-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": ". ",
+        "href": "generic-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": "n",
+        "href": "generic-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "generic-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": ". ",
+        "href": "generic-flow-reload-6.html#2"
+      },
+      {
+        "from": 8,
+        "text": "[",
+        "href": "generic-flow-reload-6.html#9"
+      },
+      {
+        "from": 8,
+        "text": "1",
+        "href": "generic-flow-reload-6.html#9"
+      },
+      {
+        "from": 8,
+        "text": "]",
+        "href": "generic-flow-reload-6.html#9"
+      }
+    ],
+    "annotations": [
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          84.72,
+          722.64,
+          90.3,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          93.06,
+          720.66,
+          170.46,
+          730.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          504.9,
+          722.64,
+          510.48,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          84.72,
+          710.64,
+          90.3,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          93.06,
+          708.66,
+          174.66,
+          718.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label1",
+        "rect": [
+          504.9,
+          710.64,
+          510.48,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          84.72,
+          698.64,
+          90.3,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          93.06,
+          698.64,
+          190.14,
+          706.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 9,
+        "destination": "/label2",
+        "rect": [
+          504.9,
+          698.64,
+          510.48,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "https://example.org",
+        "to": null,
+        "destination": "None",
+        "rect": [
+          84.72,
+          679.98,
+          142.8,
+          688.02
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 8,
+        "destination": "/label3",
+        "rect": [
+          165.0,
+          678.0,
+          243.54,
+          688.02
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 9,
+        "destination": "/label4",
+        "rect": [
+          210.18,
+          681.84,
+          215.76,
+          689.4
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 9,
+        "destination": "/label5",
+        "rect": [
+          221.28,
+          681.84,
+          226.92,
+          689.4
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          105.78,
+          665.1,
+          110.34,
+          670.8
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 2,
+        "destination": "/label7",
+        "rect": [
+          84.72,
+          86.94,
+          89.58,
+          93.3
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          180.36,
+          683.34,
+          240.24,
+          693.36
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          149.7,
+          666.54,
+          155.34,
+          674.16
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 2,
+        "destination": "/label9",
+        "rect": [
+          187.74,
+          670.14,
+          192.36,
+          675.9
+        ]
+      },
+      {
+        "from": 8,
+        "uri": "",
+        "to": 9,
+        "destination": "/label4",
+        "rect": [
+          236.04,
+          666.54,
+          241.62,
+          674.16
+        ]
+      }
+    ],
+    "dangling_destinations": [
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          105.78,
+          665.1,
+          110.34,
+          670.8
+        ]
+      }
+    ],
+    "normalized_page_text_sha256": [
+      "e4ba22d7e36994c209eef95495844b22f00766614280a68917d558bd809b1eb5",
+      "b80935419e1cbe8e603a9c0c1706d22998f1f01bdc0718ea920f366cf86d8971",
+      "054285e306c8362f9fcc0588561fb0b8d2ce5cb23852cf58f6755c92b69de633",
+      "b9e7fd8c0818bb94dd5bdc7bac3df5c930f5adbe2cfd6eed17db998f525c265c",
+      "bb3a2d6b6e62519936b003161924a9df7318790aebce2a7fc746da5ae80ef30e",
+      "3ad00b2325402fc1a921bf89ca812cfc6c764f2308206a204213d4a293e75cc3",
+      "c084e8180c42f1d9dfa0aa6f511acd7b570bc68ee6b36cbe58bff1fcb25b82cb",
+      "f06f06c8931c92197bf2fd76fe8fa60705641620dd18d629c12c4a8989535f76",
+      "a7e690333279d4c9b68e6de34586feb73046e42625e72deac021b352b181563a"
+    ]
+  },
+  "generic-short-direct.pdf": {
+    "pages": 4,
+    "marker_pages": {
+      "AlphaBodySentinel": 2,
+      "OmegaBodySentinel": 3,
+      "NamedFootnoteBodySentinel": 2,
+      "FirstTitleSentinel": 4,
+      "SecondTitleSentinel": 4
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "generic-short-direct.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "generic-short-direct.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "generic-short-direct.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3",
+        "href": "generic-short-direct.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "generic-short-direct.html#4"
+      },
+      {
+        "from": 1,
+        "text": "4",
+        "href": "generic-short-direct.html#4"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "generic-short-direct.html#3"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "generic-short-direct.html#3"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "generic-short-direct.html#4"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-short-direct.html#4"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "generic-short-direct.html#4"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "generic-short-direct.html#4"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "generic-short-direct.html#4"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-short-direct.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "generic-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": "BackToAlpha",
+        "href": "generic-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": ".",
+        "href": "generic-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "generic-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": "n",
+        "href": "generic-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "generic-short-direct.html#2"
+      },
+      {
+        "from": 3,
+        "text": "[",
+        "href": "generic-short-direct.html#4"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-short-direct.html#4"
+      },
+      {
+        "from": 3,
+        "text": "]",
+        "href": "generic-short-direct.html#4"
+      }
+    ],
+    "annotations": [
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          84.72,
+          722.64,
+          90.3,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          93.06,
+          720.66,
+          170.46,
+          730.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          504.9,
+          722.64,
+          510.48,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          84.72,
+          710.64,
+          90.3,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          93.06,
+          708.66,
+          174.66,
+          718.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          504.9,
+          710.64,
+          510.48,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          84.72,
+          698.64,
+          90.3,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          93.06,
+          698.64,
+          190.14,
+          706.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          504.9,
+          698.64,
+          510.48,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "https://example.org",
+        "to": null,
+        "destination": "None",
+        "rect": [
+          84.72,
+          679.98,
+          142.8,
+          688.02
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label3",
+        "rect": [
+          165.0,
+          678.0,
+          243.54,
+          688.02
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 4,
+        "destination": "/label4",
+        "rect": [
+          210.18,
+          685.26,
+          215.76,
+          692.88
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 4,
+        "destination": "/label5",
+        "rect": [
+          221.28,
+          685.26,
+          226.92,
+          692.88
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          105.78,
+          669.48,
+          110.34,
+          675.24
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 2,
+        "destination": "/label7",
+        "rect": [
+          84.72,
+          625.98,
+          89.58,
+          632.34
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          180.36,
+          683.34,
+          240.24,
+          693.36
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          149.7,
+          666.54,
+          155.34,
+          674.16
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label9",
+        "rect": [
+          187.74,
+          670.14,
+          192.36,
+          675.9
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 4,
+        "destination": "/label4",
+        "rect": [
+          236.04,
+          666.54,
+          241.62,
+          674.16
+        ]
+      }
+    ],
+    "dangling_destinations": [
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          105.78,
+          669.48,
+          110.34,
+          675.24
+        ]
+      }
+    ],
+    "normalized_page_text_sha256": [
+      "e71ea656e361ebfeee9045b7d297586b2d758fbbef50cd76b4c75a7dc1309e40",
+      "f5efccd43d3c75c3b7c019e0276e9cc9a38048e70a7f0d0c9753db8edc06a408",
+      "61d946beb0ba269d6d66362973825c0b6156490b1c1fbc786551e7c1714126d7",
+      "07a0982b661e47ec24cb551f73d3bee87f008c12a907586fa0c2965d5136be9b"
+    ]
+  },
+  "generic-short-reload-2.pdf": {
+    "pages": 4,
+    "marker_pages": {
+      "AlphaBodySentinel": 2,
+      "OmegaBodySentinel": 3,
+      "NamedFootnoteBodySentinel": 2,
+      "FirstTitleSentinel": 4,
+      "SecondTitleSentinel": 4
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "generic-short-reload-2.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "generic-short-reload-2.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "generic-short-reload-2.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3",
+        "href": "generic-short-reload-2.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "generic-short-reload-2.html#4"
+      },
+      {
+        "from": 1,
+        "text": "4",
+        "href": "generic-short-reload-2.html#4"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "generic-short-reload-2.html#3"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "generic-short-reload-2.html#3"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "generic-short-reload-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-short-reload-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "generic-short-reload-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "generic-short-reload-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "generic-short-reload-2.html#4"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-short-reload-2.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "generic-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "BackToAlpha",
+        "href": "generic-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": ".",
+        "href": "generic-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "generic-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "n",
+        "href": "generic-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "generic-short-reload-2.html#2"
+      },
+      {
+        "from": 3,
+        "text": "[",
+        "href": "generic-short-reload-2.html#4"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-short-reload-2.html#4"
+      },
+      {
+        "from": 3,
+        "text": "]",
+        "href": "generic-short-reload-2.html#4"
+      }
+    ],
+    "annotations": [
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          84.72,
+          722.64,
+          90.3,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          93.06,
+          720.66,
+          170.46,
+          730.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          504.9,
+          722.64,
+          510.48,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          84.72,
+          710.64,
+          90.3,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          93.06,
+          708.66,
+          174.66,
+          718.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          504.9,
+          710.64,
+          510.48,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          84.72,
+          698.64,
+          90.3,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          93.06,
+          698.64,
+          190.14,
+          706.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          504.9,
+          698.64,
+          510.48,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "https://example.org",
+        "to": null,
+        "destination": "None",
+        "rect": [
+          84.72,
+          679.98,
+          142.8,
+          688.02
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label3",
+        "rect": [
+          165.0,
+          678.0,
+          243.54,
+          688.02
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 4,
+        "destination": "/label4",
+        "rect": [
+          210.18,
+          685.26,
+          215.76,
+          692.88
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 4,
+        "destination": "/label5",
+        "rect": [
+          221.28,
+          685.26,
+          226.92,
+          692.88
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          105.78,
+          669.48,
+          110.34,
+          675.24
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 2,
+        "destination": "/label7",
+        "rect": [
+          84.72,
+          625.98,
+          89.58,
+          632.34
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          180.36,
+          683.34,
+          240.24,
+          693.36
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          149.7,
+          666.54,
+          155.34,
+          674.16
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label9",
+        "rect": [
+          187.74,
+          670.14,
+          192.36,
+          675.9
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 4,
+        "destination": "/label4",
+        "rect": [
+          236.04,
+          666.54,
+          241.62,
+          674.16
+        ]
+      }
+    ],
+    "dangling_destinations": [
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          105.78,
+          669.48,
+          110.34,
+          675.24
+        ]
+      }
+    ],
+    "normalized_page_text_sha256": [
+      "e71ea656e361ebfeee9045b7d297586b2d758fbbef50cd76b4c75a7dc1309e40",
+      "f5efccd43d3c75c3b7c019e0276e9cc9a38048e70a7f0d0c9753db8edc06a408",
+      "61d946beb0ba269d6d66362973825c0b6156490b1c1fbc786551e7c1714126d7",
+      "07a0982b661e47ec24cb551f73d3bee87f008c12a907586fa0c2965d5136be9b"
+    ]
+  },
+  "generic-short-reload-6.pdf": {
+    "pages": 4,
+    "marker_pages": {
+      "AlphaBodySentinel": 2,
+      "OmegaBodySentinel": 3,
+      "NamedFootnoteBodySentinel": 2,
+      "FirstTitleSentinel": 4,
+      "SecondTitleSentinel": 4
+    },
+    "visible_links": [
+      {
+        "from": 1,
+        "text": "1 AlphaDestination",
+        "href": "generic-short-reload-6.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2",
+        "href": "generic-short-reload-6.html#2"
+      },
+      {
+        "from": 1,
+        "text": "2 OmegaDestination",
+        "href": "generic-short-reload-6.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3",
+        "href": "generic-short-reload-6.html#3"
+      },
+      {
+        "from": 1,
+        "text": "3 ReferencesDestination",
+        "href": "generic-short-reload-6.html#4"
+      },
+      {
+        "from": 1,
+        "text": "4",
+        "href": "generic-short-reload-6.html#4"
+      },
+      {
+        "from": 1,
+        "text": "ExternalLink",
+        "href": "https://example.org"
+      },
+      {
+        "from": 1,
+        "text": "ForwardToOmega",
+        "href": "generic-short-reload-6.html#3"
+      },
+      {
+        "from": 1,
+        "text": ".",
+        "href": "generic-short-reload-6.html#3"
+      },
+      {
+        "from": 2,
+        "text": "[",
+        "href": "generic-short-reload-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-short-reload-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": ",",
+        "href": "generic-short-reload-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "2",
+        "href": "generic-short-reload-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "]",
+        "href": "generic-short-reload-6.html#4"
+      },
+      {
+        "from": 2,
+        "text": "t",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": ".",
+        "href": ""
+      },
+      {
+        "from": 2,
+        "text": "1",
+        "href": "generic-short-reload-6.html#2"
+      },
+      {
+        "from": 2,
+        "text": ". ",
+        "href": "generic-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "BackToAlpha",
+        "href": "generic-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": ".",
+        "href": "generic-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "generic-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "n",
+        "href": "generic-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": ". ",
+        "href": "generic-short-reload-6.html#2"
+      },
+      {
+        "from": 3,
+        "text": "[",
+        "href": "generic-short-reload-6.html#4"
+      },
+      {
+        "from": 3,
+        "text": "1",
+        "href": "generic-short-reload-6.html#4"
+      },
+      {
+        "from": 3,
+        "text": "]",
+        "href": "generic-short-reload-6.html#4"
+      }
+    ],
+    "annotations": [
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          84.72,
+          722.64,
+          90.3,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          93.06,
+          720.66,
+          170.46,
+          730.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 2,
+        "destination": "/label0",
+        "rect": [
+          504.9,
+          722.64,
+          510.48,
+          730.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          84.72,
+          710.64,
+          90.3,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          93.06,
+          708.66,
+          174.66,
+          718.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label1",
+        "rect": [
+          504.9,
+          710.64,
+          510.48,
+          718.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          84.72,
+          698.64,
+          90.3,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          93.06,
+          698.64,
+          190.14,
+          706.68
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 4,
+        "destination": "/label2",
+        "rect": [
+          504.9,
+          698.64,
+          510.48,
+          706.26
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "https://example.org",
+        "to": null,
+        "destination": "None",
+        "rect": [
+          84.72,
+          679.98,
+          142.8,
+          688.02
+        ]
+      },
+      {
+        "from": 1,
+        "uri": "",
+        "to": 3,
+        "destination": "/label3",
+        "rect": [
+          165.0,
+          678.0,
+          243.54,
+          688.02
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 4,
+        "destination": "/label4",
+        "rect": [
+          210.18,
+          685.26,
+          215.76,
+          692.88
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 4,
+        "destination": "/label5",
+        "rect": [
+          221.28,
+          685.26,
+          226.92,
+          692.88
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          105.78,
+          669.48,
+          110.34,
+          675.24
+        ]
+      },
+      {
+        "from": 2,
+        "uri": "",
+        "to": 2,
+        "destination": "/label7",
+        "rect": [
+          84.72,
+          625.98,
+          89.58,
+          632.34
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          180.36,
+          683.34,
+          240.24,
+          693.36
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label8",
+        "rect": [
+          149.7,
+          666.54,
+          155.34,
+          674.16
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 2,
+        "destination": "/label9",
+        "rect": [
+          187.74,
+          670.14,
+          192.36,
+          675.9
+        ]
+      },
+      {
+        "from": 3,
+        "uri": "",
+        "to": 4,
+        "destination": "/label4",
+        "rect": [
+          236.04,
+          666.54,
+          241.62,
+          674.16
+        ]
+      }
+    ],
+    "dangling_destinations": [
+      {
+        "from": 2,
+        "uri": "",
+        "to": null,
+        "destination": "/label6",
+        "rect": [
+          105.78,
+          669.48,
+          110.34,
+          675.24
+        ]
+      }
+    ],
+    "normalized_page_text_sha256": [
+      "e71ea656e361ebfeee9045b7d297586b2d758fbbef50cd76b4c75a7dc1309e40",
+      "f5efccd43d3c75c3b7c019e0276e9cc9a38048e70a7f0d0c9753db8edc06a408",
+      "61d946beb0ba269d6d66362973825c0b6156490b1c1fbc786551e7c1714126d7",
+      "07a0982b661e47ec24cb551f73d3bee87f008c12a907586fa0c2965d5136be9b"
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "generic-short": {
+    "pages": true,
+    "marker_pages": true,
+    "normalized_page_text_sha256": true
+  },
+  "generic-flow": {
+    "pages": true,
+    "marker_pages": true,
+    "normalized_page_text_sha256": true
+  },
+  "article-short": {
+    "pages": true,
+    "marker_pages": true,
+    "normalized_page_text_sha256": true
+  },
+  "article-flow": {
+    "pages": true,
+    "marker_pages": true,
+    "normalized_page_text_sha256": true
+  }
+}

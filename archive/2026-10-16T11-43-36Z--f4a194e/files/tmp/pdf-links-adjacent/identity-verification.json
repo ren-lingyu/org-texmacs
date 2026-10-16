@@ -1,0 +1,105 @@
+{
+  "head": "f4a194e128bc97de7bd929e19713791dd53efe87",
+  "inputs": [
+    {
+      "path": "org-texmacs-preprocess.el",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "org-texmacs-session.el",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "org-texmacs-source.el",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "org-texmacs-input.el",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "org-texmacs-document.el",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "org-texmacs-ast.el",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "org-texmacs-context.el",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "org-texmacs-worker.el",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "org-texmacs-core.el",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "org-texmacs-fragment.el",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "org-texmacs-bibliography.el",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "org-texmacs.el",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "ox-texmacs.el",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "org-texmacs-worker.scm",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "README.org",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "LICENSE",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "flake.lock",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "tests/default.nix",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "tests/ert/default.nix",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "tests/ert/run.scm",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "tests/ert/ert.el",
+      "equals_committed_blob": false
+    },
+    {
+      "path": "tests/package-lint/default.nix",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "tests/package-lint/run.scm",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "tests/integration/default.nix",
+      "equals_committed_blob": true
+    },
+    {
+      "path": "tests/integration/phase4.el",
+      "equals_committed_blob": true
+    }
+  ]
+}

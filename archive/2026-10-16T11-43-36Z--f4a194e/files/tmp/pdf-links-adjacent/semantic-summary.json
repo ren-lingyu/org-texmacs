@@ -1,0 +1,86 @@
+[
+  {
+    "file": "article-flow-direct.pdf",
+    "pages": 9,
+    "link_annotations": 19,
+    "dangling_count": 1,
+    "semantic_target_mismatches": []
+  },
+  {
+    "file": "article-flow-reload-2.pdf",
+    "pages": 9,
+    "link_annotations": 19,
+    "dangling_count": 1,
+    "semantic_target_mismatches": []
+  },
+  {
+    "file": "article-flow-reload-6.pdf",
+    "pages": 9,
+    "link_annotations": 19,
+    "dangling_count": 1,
+    "semantic_target_mismatches": []
+  },
+  {
+    "file": "article-short-direct.pdf",
+    "pages": 4,
+    "link_annotations": 19,
+    "dangling_count": 1,
+    "semantic_target_mismatches": []
+  },
+  {
+    "file": "article-short-reload-2.pdf",
+    "pages": 4,
+    "link_annotations": 19,
+    "dangling_count": 1,
+    "semantic_target_mismatches": []
+  },
+  {
+    "file": "article-short-reload-6.pdf",
+    "pages": 4,
+    "link_annotations": 19,
+    "dangling_count": 1,
+    "semantic_target_mismatches": []
+  },
+  {
+    "file": "generic-flow-direct.pdf",
+    "pages": 9,
+    "link_annotations": 19,
+    "dangling_count": 1,
+    "semantic_target_mismatches": []
+  },
+  {
+    "file": "generic-flow-reload-2.pdf",
+    "pages": 9,
+    "link_annotations": 19,
+    "dangling_count": 1,
+    "semantic_target_mismatches": []
+  },
+  {
+    "file": "generic-flow-reload-6.pdf",
+    "pages": 9,
+    "link_annotations": 19,
+    "dangling_count": 1,
+    "semantic_target_mismatches": []
+  },
+  {
+    "file": "generic-short-direct.pdf",
+    "pages": 4,
+    "link_annotations": 19,
+    "dangling_count": 1,
+    "semantic_target_mismatches": []
+  },
+  {
+    "file": "generic-short-reload-2.pdf",
+    "pages": 4,
+    "link_annotations": 19,
+    "dangling_count": 1,
+    "semantic_target_mismatches": []
+  },
+  {
+    "file": "generic-short-reload-6.pdf",
+    "pages": 4,
+    "link_annotations": 19,
+    "dangling_count": 1,
+    "semantic_target_mismatches": []
+  }
+]

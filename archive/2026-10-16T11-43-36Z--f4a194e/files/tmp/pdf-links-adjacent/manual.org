@@ -1,0 +1,32 @@
+#+OPTIONS: toc:t num:t title:nil author:nil date:nil
+#+BIBLIOGRAPHY: refs.bib
+[[https://example.org][ExternalLink]] and [[*OmegaDestination][ForwardToOmega]].
+
+#+begin_texmacs
+(new-page)
+#+end_texmacs
+
+* AlphaDestination
+AlphaBodySentinel. Group [cite:@alpha; @beta].
+
+First[fn:n].
+
+#+begin_texmacs
+(new-page)
+#+end_texmacs
+
+* OmegaDestination
+OmegaBodySentinel. [[*AlphaDestination][BackToAlpha]].
+
+AlphaNumber [[*AlphaDestination]]. Again[fn:n]. Repeat [cite:@alpha].
+
+#+begin_texmacs
+(new-page)
+#+end_texmacs
+
+* ReferencesDestination
+BibSectionSentinel.
+
+#+print_bibliography:
+
+[fn:n] NamedFootnoteBodySentinel.
