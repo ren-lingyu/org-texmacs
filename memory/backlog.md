@@ -41,7 +41,8 @@ but edit lifecycle unverified. User selected final Issue11 implementation contra
 in memory/issue-11-implementation.md: bare lifting, explicit known-display mixed
 rejection, leading-list exception; no automatic splitting. Final14/14focused,
 9/9real and430/430core pass, including strict compile/lint/full applicable flake
-checks. Seven stale expectations migrated; candidate pending user review/commit.
+checks. Seven stale expectations migrated;3task files staged as one coherent fix,
+message in tmp/commit.md with Closes:#11, pending user review/commit.
 Remote#11 last observed open.
 Adopted priority11->10->PDF links, Chinese fonts postponed, font-lock later.
 No release/version authority. #9 adopted-later after

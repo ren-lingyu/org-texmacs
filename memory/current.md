@@ -4,7 +4,11 @@
 
 User-selected final revised plan implemented and locally accepted; contract,
 context matrix, diagnostics and full evidence in memory/issue-11-implementation.md.
-Exactly document/ERT/README changed, not staged/committed. Bare one registered
+Exactly document/ERT/README changed, now staged as one coherent fix; uncommitted.
+Commit draft tmp/commit.md: fix(document): preserve native layout of standalone
+STM fragments; Closes:#11. No second group, so no inter-group polling needed.
+All3staged blobs equal accepted isolated snapshot and worktree; diff check clean.
+Bare one registered
 string island plus only other ordinary ASCII whitespace children/no Org objects
 emits complete copied island. Mixed known direct display roots explicitly reject;
 no automatic splitting. Leading list paragraph retains marker/concat and refuses
@@ -25,10 +29,10 @@ focused7/7; final source/lock stable,25baseline/25final/11foreign hashes verifie
 14necessary raw text artifacts separately captured/byte-verified:
 archive/2026-10-16T07-46-35Z--8a90b4c/MANIFEST.md. No PDF/binary/dependency/full tmp.
 No inferred project parent: accepted candidate uncommitted; baseline identified
-as exact red-control source in evidence. Ordinary index empty;3task files plus
-user flake mirror dirty, no INBOX/version/lock/example edits or external writes.
-Next user reviews candidate then may authorize staging/message; user makes project
-commit, verify identity and tracking afterward. Remote#11 last observed open.
+as exact red-control source in evidence. Ordinary index contains exactly3task files; only
+user flake mirror remains unstaged, no INBOX/version/lock/example edits or external writes.
+Next user reviews draft and makes project commit; verify exact blobs, parent,
+message and tracking afterward. Remote#11 last observed open.
 #10 then PDF links follow11; Chinese fonts postponed, font-lock later. No other
 feature implementation or release operation selected.
 
