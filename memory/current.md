@@ -5,7 +5,11 @@
 User selected PDF links next after completed/closed Issues10 and11. Investigate
 native print/export/configuration first; fix demonstrated package defects or
 document verified native/configuration limits, no independent PDF link system.
-Static review/probe preparation ongoing; no business edits or new tests run.
+Locked2.1.5source audit and12PDF baseline complete: all0annotations; named
+destinations/text remain. Native update-forced control8/8restores2annotations;
+package/reload controls stay0. Candidate worker+reload fixes12/12PDFs. Three-file
+worker/ERT/README candidate prepared;2new maintained tests and complete acceptance
+pending separately authorized baseline/focused/integration/full flake checks.
 Scope, evidence limits and pending exact flake commands:
 memory/pdf-links-investigation.md. Existing user flake mirror remains untouched.
 

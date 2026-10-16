@@ -987,3 +987,13 @@ verified tracking state, unresolved follow-up or next action changes; an unchang
 state does not require a checkpoint. If lookup fails, retain explicit uncertainty.
 Read-only verification does not authorize external issue writes. User requested
 this recurring delivery check on2026-10-16.
+
+## PDF link consumer candidate (not yet fully accepted)
+
+User selected release-readiness PDF links. Locked TeXmacs2.1.5baseline12PDFs have
+0annotations, actual forced native layout8/8restores them, candidate package/
+reload matrix12/12has external URI/internal destination annotations. Existing
+update-current-buffer only invalidates; worker now adds update-forced before each
+print to retain native link state for PDF rendering. Pure AST/native encoding
+unchanged. Two ERT/README candidate updates prepared; complete regression pending.
+Details/authorization/evidence limits: memory/pdf-links-investigation.md.
