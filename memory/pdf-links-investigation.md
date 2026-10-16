@@ -1,4 +1,4 @@
-# PDF hyperlink repair: locally accepted, awaiting user delivery
+# PDF hyperlink repair: user-committed and verified
 
 ## Objective and result (2026-10-16)
 
@@ -73,9 +73,10 @@ reading/copying. No dependency updates. No further checks needed without changes
 All18original baseline inputs match committed main source, all25final candidate
 inputs match project/isolated copies before and after final gate, all11foreign
 Elisp hashes match fixed extension manifests. Exact three-file patch remains
-identical to complete staged diff after explicit user staging authorization.
-All25index hashes equal accepted candidate; exactly3task paths staged, unrelated
-user flake unstaged. User review/commit are pending; no ordinary agent commit.
+identical to user-committed complete diff. Verified parent=Issue10 baseline,
+exactly3changed paths, all25committed input hashes equal accepted candidate and
+complete message equals reviewed tmp draft. Ordinary index empty, only unrelated
+user flake unstaged. Prior acceptance transfers by byte identity; no agent commit.
 No inferred project parent for the uncommitted accepted candidate.
 
 Twenty necessary original-byte text artifacts captured and byte/digest/source-
@@ -91,8 +92,9 @@ import were corrected, not counted as accepted results; diagnostics extracted.
 Pypdf warns about duplicate native destination keys in baseline and successful
 controls; unrelated native dictionary rewrite is outside scope. Existing archive
 records remain immutable. Working tmp is reproducible evidence, not current
-workflow authority. Next: user review/delivery; fonts postponed, font-lock and
-representative/full release-readiness work remain separate.
+workflow authority. User delivery is verified; user now selected adjacent
+supplementary tests/manual-check plan. Fonts postponed; font-lock and broader
+release-readiness work remain separate.
 
 ## Read-only adjacent-risk review after acceptance
 
@@ -151,3 +153,14 @@ fix(pdf): restore native hyperlink annotations
 No additional raw archive warranted for current staging/draft: exact candidate
 patch and original acceptance are already immutable; this memory retains full
 message and delivery state. Next is user commit and read-only verification.
+
+## User commit verified; adjacent checks selected
+
+User reports commit; read-only inspection verifies exact parent/path set,
+all25committed input hashes, complete approved fix(pdf) message and full binary
+patch. No issue trailer/association, so no related remote issue lookup needed.
+Index empty, user flake remains unstaged. This delivery checkpoint's project
+association identifies the exact committed verification snapshot, not retrospective
+provenance for original uncommitted native tests. No new archive needed merely
+for commit verification. User now selects supplementary adjacent tests and useful
+manual inspection instructions; no further business-code repair selected.

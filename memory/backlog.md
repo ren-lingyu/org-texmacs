@@ -55,8 +55,10 @@ No external writes. User-selected PDF-link consumer repair is now locally
 implemented and accepted, awaiting user review/delivery: synchronous layout
 before both prints, native annotations restored,2new ERT/README synchronized.
 36focused/9real/439core/full strict compile/lint pass; see
-memory/pdf-links-investigation.md. User-authorized3file staging/message now
-complete, all25index identities/patch match acceptance; user commit pending.
+memory/pdf-links-investigation.md. User-committed3file delivery now verified:
+exact parent/paths/all25input hashes/full patch/full reviewed message. User now
+selects supplementary adjacent tests/manual-check instructions; no business
+repair or extra release scope adopted.
 Adopted priority11->10->PDF links, Chinese fonts postponed, font-lock later.
 No release/version authority. #9 adopted-later after
 0.5.0 before0.6.0; #7 deferred and not a0.5.0 blocker. Earlier native footnote

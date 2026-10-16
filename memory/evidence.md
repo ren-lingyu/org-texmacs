@@ -3075,3 +3075,16 @@ fix(pdf): restore native hyperlink annotations; full3bullet Chinese draft retain
 in memory/pdf-links-investigation.md. No issue trailer without established
 association/closure intent. User review/commit verification next. No new archive
 needed; current message retained and accepted implementation/evidence archived.
+
+
+## PDF repair user commit delivery verification (2026-10-16)
+
+Read-only inspection confirms exact reviewed fix(pdf): restore native hyperlink
+annotations, one parent=Issue10 baseline, exactly README/worker/ERT paths.
+All25committed input SHA256 equal accepted candidate manifest, complete patch
+equals archived candidate.patch, full message equals reviewed draft. Index empty,
+only original user flake unstaged. Previous36focused/9real/439core/full acceptance
+transfers by exact bytes; no verification-only retest. No issue trailer, so no
+related remote issue state check needed. Additional project parent grounds this
+actual committed-delivery verification, not original uncommitted runtime source.
+User selects next adjacent supplementary tests and practical manual-check plan.

@@ -1000,7 +1000,8 @@ Two maintained ERT verify actual URI/cross-page targets/repeated renders/reload/
 released-source ownership and both forced-layout errors/session isolation/retry.
 README/reload helper synchronized. Baseline2intended failures,36focused/9real/
 439core/full strict compile/lint/all7checks pass in locked x86_64-linux.
-Three-file candidate accepted and explicitly user-authorized staged; all25index
-hashes/full patch verified, fix(pdf) message ready. User commit pending. Broader release remains
+Three-file delivery user-committed; exact parent/paths/all25committed input
+hashes/full patch/full reviewed fix(pdf) message verified. Index empty, only
+user flake unstaged. Broader release remains
 incomplete. Contract/commands/provenance/immutable archive:
 memory/pdf-links-investigation.md.

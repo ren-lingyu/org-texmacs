@@ -165,7 +165,8 @@ final12PDFs contain exact external URI and valid internal targets. Two maintaine
 regressions cover cross-page jumps, released source/repeats/reload and both new
 layout failure phases with cleanup/retry/public-session isolation. README updated.
 36focused/9real/439core/full7checks/strict compilation/lint pass, x86_64-linux only.
-Three-file candidate awaits user delivery; no issue/release write. Full contract
+Three-file delivery user-committed and exact inputs/diff/message verified; no
+issue association or release write. Full contract
 and immutable text evidence: memory/pdf-links-investigation.md. Item4 package
 repair/automatic verification is complete; this is not complete release readiness.
 Chinese fonts remain postponed, font-lock and representative combined workflows
