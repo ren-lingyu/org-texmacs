@@ -3088,3 +3088,24 @@ transfers by exact bytes; no verification-only retest. No issue trailer, so no
 related remote issue state check needed. Additional project parent grounds this
 actual committed-delivery verification, not original uncommitted runtime source.
 User selects next adjacent supplementary tests and practical manual-check plan.
+
+
+## Supplementary PDF derived-state checks (2026-10-16)
+
+On verified committed PDF repair production source, added one maintained ERT
+(4direct fixtures) plus12PDF independent native reload matrix and manual ASCII
+fixture/checklist. All24non-ERT snapshot inputs match committed blobs, final ERT
+is uncommitted and identified by25input manifest/exact patch. Initial/final probe
+annotation and convergence reports byte-identical after test-only numbered-TOC
+expectation fix. Full600s flake exits0,440/440core285.609164s,6/6focused19.054185s,
+strict compile/lint accepted on x86_64-linux; no separate real-extension rerun.
+All checked TOC/heading/citation/repeated-footnote target pages valid in12PDFs;
+4groups direct/reload2/reload6 agree page count/marker pages/normalized text.
+Same-page exact-entry click landing remains manual and no GUI result claimed.
+Each PDF also has1dangling /label6 first-use footnote annotation among19links;
+repeated note target valid. Native reload/extra passes retain it. Cause/native
+responsibility/release impact unresolved; no business repair made or adopted.
+Full operational extraction: memory/pdf-adjacent-checks.md.17selected original-byte
+text artifacts archived/verified separately: archive/2026-10-16T11-43-36Z--f4a194e/MANIFEST.md
+PDFs/binaries/dependencies/full tmp excluded. No inferred project parent for
+uncommitted test runtime; ordinary index untouched and user flake preserved.

@@ -543,6 +543,13 @@ the native PDF consumer revision matches the verified seven-file diff.
   installed ERT 271/271 pass. The verified node is committed;
   the temporary mirror overlay is excluded.
 
+Supplementary derived-state probes on the committed PDF-link repair use2styles
+and short/flow documents across direct/reload2/reload6. All12retain correct
+checked TOC/heading/citation/repeated-note target pages; pagination and normalized
+text stable for these fixtures. Exactly1dangling first-use footnote destination
+per PDF remains unexplained; do not claim all footnote links valid or a generic
+convergence guarantee. See memory/pdf-adjacent-checks.md.
+
 ## CONSUMER-01 committed bounded ox-texmacs frontend
 
 the bounded ox-texmacs frontend revision matches the verified six-file diff.

@@ -162,5 +162,8 @@ patch. No issue trailer/association, so no related remote issue lookup needed.
 Index empty, user flake remains unstaged. This delivery checkpoint's project
 association identifies the exact committed verification snapshot, not retrospective
 provenance for original uncommitted native tests. No new archive needed merely
-for commit verification. User now selects supplementary adjacent tests and useful
-manual inspection instructions; no further business-code repair selected.
+for commit verification. Supplementary adjacent tests and manual instructions are now complete:
+6focused/440core/full gate pass and12PDF comparison stable for checked targets.
+Separate first-use footnote dangling target observed in all12; cause unresolved.
+No further business-code repair selected. Full findings and archive reference:
+memory/pdf-adjacent-checks.md.

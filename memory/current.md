@@ -1,14 +1,26 @@
 # org-texmacs current memory
 
-## Active: supplementary PDF derived-state checks
+## Completed: supplementary PDF derived-state checks
 
-After verifying committed PDF repair, user selected tests of adjacent behavior
-and practical manual instructions. Current task changes ERT only: actual TOC/
-headline/citation/repeated-footnote target pages and TOC page values across
-generic/article and short/flow documents. Independent12PDF direct/reload2/
-reload6comparison probes and manual ASCII Org/BibTeX/click checklist prepared
-in safe tmp/pdf-links-adjacent. No new runtime test executed; exact new commands
-require user approval. Scope/handoff: memory/pdf-adjacent-checks.md.
+User-requested supplementary tests/manual plan complete. Only ERT changed;
+no business code or ordinary index touched. User's flake overlay preserved.
+Focused6/6 (19.054185s), full440/440 (285.609164s), authorized600s full flake
+exit0 including strict compilation/lint and final12PDF probes on x86_64-linux.
+All12PDFs: TOC/heading/citation/repeated-note checked target pages correct;
+4style/size groups have stable pagination/marker pages/normalized text across
+direct/reload2/reload6. Same-page exact landing remains a manual click check.
+Separate confirmed gap: first-use footnote annotation has dangling /label6 in
+all12PDFs; repeated note valid. More passes/native reload do not remove it;
+root cause/native responsibility/release impact not yet established. No repair
+adopted. Concrete manual PDF and First-versus-Again procedure available under
+tmp/pdf-links-adjacent/results and MANUAL.md. No GUI clicks claimed.
+All24non-ERT snapshot inputs match committed production source; supplementary
+ERT uncommitted, initial/final manifests and exact patch explicit.17necessary
+original-byte text artifacts archived/verified separately, no PDF/binaries:
+archive/2026-10-16T11-43-36Z--f4a194e/MANIFEST.md.
+Scope, exact commands, findings and limitations: memory/pdf-adjacent-checks.md.
+Next: user can perform ready click checks; investigate first-note gap only if
+selected. Chinese fonts postponed, font-lock later; no release action selected.
 
 ## Completed local repair: PDF hyperlink annotations
 
@@ -34,9 +46,7 @@ memory/pdf-links-investigation.md. Twenty necessary original-byte text artifacts
 archived separately and verified: archive/2026-10-16T11-13-53Z--847845c/MANIFEST.md.
 No PDFs/binaries/full tmp/INBOX archive. Original whitespace retained/explained;
 no candidate project parent inferred. No further test needed without changes.
-Next: user selected supplementary tests of adjacent annotations/layout-derived
-state, plus a practical manual check plan where appropriate. Prepare bounded
-checks against this committed repair, request exact new build/test authorization.
+Supplementary tests and manual plan now completed above.
 Chinese fonts postponed, font-lock later; no new business repair/release selected.
 
 ## Completed committed delivery: Issue10 inline footnote STM

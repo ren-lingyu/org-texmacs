@@ -52,13 +52,18 @@ Parent=Issue11 baseline, all25committed hashes/full approved message verified.
 Index empty, existing user flake unstaged; remote#10 verified closed/completed
 on2026-10-16. Remote timestamps/sources: memory/evidence.md.
 No external writes. User-selected PDF-link consumer repair is now locally
-implemented and accepted, awaiting user review/delivery: synchronous layout
+implemented, accepted and user-committed: synchronous layout
 before both prints, native annotations restored,2new ERT/README synchronized.
 36focused/9real/439core/full strict compile/lint pass; see
 memory/pdf-links-investigation.md. User-committed3file delivery now verified:
 exact parent/paths/all25input hashes/full patch/full reviewed message. User now
 selects supplementary adjacent tests/manual-check instructions; no business
 repair or extra release scope adopted.
+Supplementary12PDF matrix found stable TOC/page/reference behavior and one
+separate gap: first-use footnote annotation points to absent /label6 in every
+direct/reload2/reload6 PDF; repeated-note target remains valid. Cause, native
+responsibility and release impact not yet decided. Retain bounded follow-up
+candidate, not an adopted repair; memory/pdf-adjacent-checks.md.
 Adopted priority11->10->PDF links, Chinese fonts postponed, font-lock later.
 No release/version authority. #9 adopted-later after
 0.5.0 before0.6.0; #7 deferred and not a0.5.0 blocker. Earlier native footnote
