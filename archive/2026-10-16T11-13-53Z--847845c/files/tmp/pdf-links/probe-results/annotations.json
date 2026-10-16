@@ -1,0 +1,102 @@
+{
+  "native-article-change-export-postscript.pdf": {
+    "pages": 1,
+    "links": [],
+    "named_destinations": [
+      "/label0"
+    ],
+    "text": "ExternalLink\nInternalLink\nTargetBody"
+  },
+  "native-article-change-print-to-file.pdf": {
+    "pages": 1,
+    "links": [],
+    "named_destinations": [
+      "/label0"
+    ],
+    "text": "ExternalLink\nInternalLink\nTargetBody"
+  },
+  "native-article-preserve-export-postscript.pdf": {
+    "pages": 1,
+    "links": [],
+    "named_destinations": [
+      "/label0"
+    ],
+    "text": "ExternalLink\nInternalLink\nTargetBody"
+  },
+  "native-article-preserve-print-to-file.pdf": {
+    "pages": 1,
+    "links": [],
+    "named_destinations": [
+      "/label0"
+    ],
+    "text": "ExternalLink\nInternalLink\nTargetBody"
+  },
+  "native-generic-change-export-postscript.pdf": {
+    "pages": 1,
+    "links": [],
+    "named_destinations": [
+      "/label0"
+    ],
+    "text": "ExternalLink\nInternalLink\nTargetBody\n1"
+  },
+  "native-generic-change-print-to-file.pdf": {
+    "pages": 1,
+    "links": [],
+    "named_destinations": [
+      "/label0"
+    ],
+    "text": "ExternalLink\nInternalLink\nTargetBody\n1"
+  },
+  "native-generic-preserve-export-postscript.pdf": {
+    "pages": 1,
+    "links": [],
+    "named_destinations": [
+      "/label0"
+    ],
+    "text": "ExternalLink\nInternalLink\nTargetBody\n1"
+  },
+  "native-generic-preserve-print-to-file.pdf": {
+    "pages": 1,
+    "links": [],
+    "named_destinations": [
+      "/label0"
+    ],
+    "text": "ExternalLink\nInternalLink\nTargetBody\n1"
+  },
+  "package-article.pdf": {
+    "pages": 1,
+    "links": [],
+    "named_destinations": [
+      "/label0",
+      "/label1"
+    ],
+    "text": "ExternalLink\nSee InternalLink.\n1 Target\nTargetBody\nTarget 1"
+  },
+  "package-generic.pdf": {
+    "pages": 1,
+    "links": [],
+    "named_destinations": [
+      "/label0",
+      "/label1"
+    ],
+    "text": "ExternalLink\nSee InternalLink.\n1 Target\nTargetBody\n1"
+  },
+  "reload-article.pdf": {
+    "pages": 1,
+    "links": [],
+    "named_destinations": [
+      "/label0",
+      "/label1"
+    ],
+    "text": "ExternalLink\nSee InternalLink.\n1 Target\nTargetBody\nTarget 1"
+  },
+  "reload-generic.pdf": {
+    "pages": 1,
+    "links": [],
+    "named_destinations": [
+      "/label0",
+      "/label1"
+    ],
+    "text": "ExternalLink\nSee InternalLink.\n1 Target\nTargetBody\n1"
+  }
+}

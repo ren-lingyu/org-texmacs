@@ -1,0 +1,87 @@
+Running 2 tests (2026-10-16 11:05:09+0000, selector `(tag pdf-links)')
+Test org-texmacs-pdf-hyperlink-annotations backtrace:
+  ert-fail(((should (equal uri (cdr (assoc "ExternalLink" links)))) :f
+  (if (unwind-protect (setq value-6399 (apply fn-6397 args-6398)) (set
+  (let (form-description-6401) (if (unwind-protect (setq value-6399 (a
+  (let ((value-6399 'ert-form-evaluation-aborted-6400)) (let (form-des
+  (let* ((fn-6397 #'equal) (args-6398 (condition-case err (list uri (c
+  (let ((links (org-texmacs-test--pdf-links file))) (let* ((fn-6397 #'
+  (let ((file (car tail))) (let ((links (org-texmacs-test--pdf-links f
+  (while tail (let ((file (car tail))) (let ((links (org-texmacs-test-
+  (let ((tail (list pdf again))) (while tail (let ((file (car tail))) 
+  (let* ((stem (expand-file-name style test-directory)) (tm (concat st
+  (let ((style (car tail))) (let* ((stem (expand-file-name style test-
+  (while tail (let ((style (car tail))) (let* ((stem (expand-file-name
+  (let ((tail '("generic" "article"))) (while tail (let ((style (car t
+  (let ((default-directory (file-name-as-directory test-directory))) (
+  (unwind-protect (let ((default-directory (file-name-as-directory tes
+  (let ((org-texmacs--worker-process nil) (org-texmacs--worker-directo
+  #f(lambda () [t] (let ((org-texmacs--worker-process nil) (org-texmac
+  #f(compiled-function () #<bytecode -0x1d8b60ecfee248bc>)()
+  handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b60ecfee248b
+  ert--run-test-internal(#s(ert--test-execution-info :test ... :result
+  ert-run-test(#s(ert-test :name org-texmacs-pdf-hyperlink-annotations
+  ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+  ert-run-tests((tag pdf-links) #f(compiled-function (event-type &rest
+  ert-run-tests-batch((tag pdf-links))
+  (let ((stats (ert-run-tests-batch '(tag pdf-links)))) (unless (= (er
+  eval((let ((stats (ert-run-tests-batch '(tag pdf-links)))) (unless (
+  command-line-1(("-L" "/nix/store/hmvx4sfd2wib1by123iwndjsd0kyqnf4-ba
+  command-line()
+  normal-top-level()
+Test org-texmacs-pdf-hyperlink-annotations condition:
+    (ert-test-failed
+     ((should (equal uri (cdr ...))) :form
+      (equal "https://example.org/generic" nil) :value nil :explanation
+      (different-types "https://example.org/generic" nil)))
+   FAILED  1/2  org-texmacs-pdf-hyperlink-annotations (2.026265 sec) at ../nix/store/ksfhqyh8j6b6zszdj0lcszz8xc7nlanq-ert.el:7143
+Test org-texmacs-pdf-typeset-error-recovery backtrace:
+  ert-fail(((should-error (org-texmacs-document-pdf document) :type 'o
+  (if errorp6432 nil (ert-fail (append (funcall form-description-fn-64
+  (let ((errorp6432 nil) (form-description-fn-6433 #'(lambda nil form-
+  (let (form-description-6431) (let ((errorp6432 nil) (form-descriptio
+  (let ((value-6429 'ert-form-evaluation-aborted-6430)) (let (form-des
+  (let* ((fn-6427 #'org-texmacs-document-pdf) (args-6428 (condition-ca
+  (let ((state (org-texmacs--session-read-document session)) (process 
+  (progn (org-texmacs-session-set-document session document) (let ((st
+  (unwind-protect (progn (org-texmacs-session-set-document session doc
+  (let* ((org-texmacs--worker-scheme-file script) (document (let ((bod
+  (let ((script (expand-file-name "typeset-failure.scm" test-directory
+  (let ((default-directory (file-name-as-directory test-directory))) (
+  (unwind-protect (let ((default-directory (file-name-as-directory tes
+  (let ((org-texmacs--worker-process nil) (org-texmacs--worker-directo
+  (let ((failed-update (car tail))) (let ((org-texmacs--worker-process
+  (while tail (let ((failed-update (car tail))) (let ((org-texmacs--wo
+  (let ((tail '(1 2))) (while tail (let ((failed-update (car tail))) (
+  #f(lambda () [t] (let ((tail '...)) (while tail (let (...) (let ... 
+  #f(compiled-function () #<bytecode -0x1d8b60ecfee248bc>)()
+  handler-bind-1(#f(compiled-function () #<bytecode -0x1d8b60ecfee248b
+  ert--run-test-internal(#s(ert--test-execution-info :test ... :result
+  ert-run-test(#s(ert-test :name org-texmacs-pdf-typeset-error-recover
+  ert-run-or-rerun-test(#s(ert--stats :selector ... :tests ... :test-m
+  ert-run-tests((tag pdf-links) #f(compiled-function (event-type &rest
+  ert-run-tests-batch((tag pdf-links))
+  (let ((stats (ert-run-tests-batch '(tag pdf-links)))) (unless (= (er
+  eval((let ((stats (ert-run-tests-batch '(tag pdf-links)))) (unless (
+  command-line-1(("-L" "/nix/store/hmvx4sfd2wib1by123iwndjsd0kyqnf4-ba
+  command-line()
+  normal-top-level()
+Test org-texmacs-pdf-typeset-error-recovery condition:
+    (ert-test-failed
+     ((should-error (org-texmacs-document-pdf document) :type
+		    'org-texmacs-rendering-error)
+      :form
+      (org-texmacs-document-pdf
+       #s(org-texmacs-document (document "Text") nil ("generic") nil nil
+			       nil nil))
+      :value
+      "%PDF-1.4\15\n%\275\276\274\15\n1 0 obj\15\n<< /Type /ExtGState\15\n/LW 1.0\15\n/LC 0\15\n/LJ 0\15\n/ML 10.0\15\n/RI /RelativeColorimetric\15\n/OP false\15\n/op false\15\n/FL 1.0\15\n/SA false\15\n/BM /Normal\15\n/SMask /None\15\n/CA 1.0\15\n/ca 1.0\15\n/AIS false\15\n/TK true\15\n>>\15\nendobj\15\n2 0 obj\15\n<<\15\n\11/Filter /FlateDecode\15\n\11/Length 3 0 R\15\n>>\15\nstream\15\nx\234\225P\313\n\3020\20\274\7\366\37\366X\17\326l\332&\351U\320\202\7A\15\370\1Z+B\205VA?\337\335\206B\21/fC\30fg\366\221\16\224N\265E-1\202S\13\252\343\4\303\2624\6)\327\231\301\276\6u\4u\37r\204\22}\3jQ\35\10\233\207\310\347$z\232\350\257\240.?\305;P\36_\261\207\376\256#\261\257&\24\341F\236\33\250e\20 \2iC\16\311\344\276\304\320F_8\263k\275\345\234\265\251\225\3430\360\4I\230a`;\15\33\212*\251#\343\362\221xG\302\373\221xF\342\337\21\263\2540\374\25T\270\"\326\241Xg\25\206\265\371~\0\221\204F\215\15\nendstream\15\nendobj\15\n3 0 obj\15\n189\15\nendobj\15\n6 0 obj\15\n<<\15\n\11/Type /Page\15\n\11/Parent 7 0 R\15\n\11/MediaBox [ 0 0 595.274419 841.890584 ]\15\n\11/Resources <<\15\n\11\11/ProcSet [ /PDF /Text ]\15\n\11\11/ExtGState <<\15\n\11\11\11/GS1 4 0 R\15\n\11\11>>\15\n\11\11/Font <<\15\n\11\11\11/FN1 5 0 R\15\n\11\11>>\15\n\11>>\15\n\11/Contents 2 0 R\15\n>>\15\nendobj\15\n4 0 obj\15\n<< /Type /ExtGState /CA 1  /ca 1 >>\15\nendobj\15\n8 0 obj\15\n<<\15\n\11/Subtype /Type1C\15\n\11/Filter /FlateDecode\15\n\11/Length 9 0 R\15\n>>\15\nstream\15\nx\234uS[h\34U\30\236M\262;\7\255i-\4\24m:\264\10\5k\266\25[\251\"h\304\212\305b\15)X(\264[;i\323\354%\231n\262\273\331\331\335\271\354\\\317\\vgvf\257\331K\332$6)\336P\252>\364\241X\350\223}\20\264\240\202\225\372\340\203\276\316\224\25\352\3546y\364\3779?\234s\376\357\347\377\316\377\35\03724\200\370|\276\340[=\33\177\361\235y\"6\213\207\242o\307\"\263\363q\2348\36;\217\23\321\227&b\221Pt\2\2770\37\16\21\7\17\314\306{\220\243\356\16\304}\316\347>?\340\356\32t\237\31\332\205\274\211\307\236\32\335\275\15\214>\330>\372\307\211G\243;N>\0325\317\370w!\210o\377\366^|\365i/\"\300\13\376\335;{\7/\354@\6}\276S\371\306\273x\24'Bq\374<6E\304\"\330q<\36:\32\213\306\261s\323\361Hh\26;\227\302\"Sq\"\3641\216\35\34\363\374\360~\354b<>\373Z0\230H$\306\222\227_\11\205\303c\321p0{1\24M\340\321\340fr\20\333\342\203m\21\302\0363\302\372\214\260MJX\217\323\377\245z\35\373\17N\342\361$\202\354D\16!G\221\223\310)$\340\275\0322\201\334\365\351\3\223\3?\f\336sEg\331\315\214\324Z\343?\372\311*YOW\362\205\274\316j\242\"\302\336\22$Q\346e\261g\222\344m\200,I\336\215w.\250B/G\25\15\306\310[\371%\252I7)0\354\212\177\272\377\214\314\240kpM[3\352z\255X+\202\177\367\240\373P\230V\222T\206\246H1#\21\342\234B@0\203B\350\354\325\240g\3161\321\213\333\366n\240\4$dB\313\250\244\312\330TY\256\303\32\370\5u\36\240\216\17\205%hI%X\220tA\343\13y\231\23s<\305P\334\231\331S\354G2\30~8u\353\341\221\221dw\301\277\22\320\326\325uc]o\24\226J5\263l\333\25\323.\332zYk\27;J\0076aSiJ\300\226-\301`J\224\234\206\31p\4\355\336C\17\243\220\204):Kg\27\305\264\24\21\303Jx\263\317C\217\373\214m\365\31\206a9\242\245\325E\215\256\320\25\270\344\365\371;\352\334C\177CaU\256\227l\243d\351\266\322T\233r\23\266aGnse\321\26l\256\314\332\264\231\3\26YH\351\213FX\235\321\302`%\220t\26\374\303\356\11g\310I\2178\321\300\22l\310K\212\251X\212a\230%\251.\333\342\6\273\261\270\312V\251J\316\376\360\346\1\365\330\24X\310\245\322\351\324\344\373\351\261\3257\252\370\362\364\265\271\6\331\312\266\231+\364\n\267\2oK\267V\257\177\7Je\263\252\327\224\202R\22t\316d\31\201\7\2427=?G\361T\236N]&\2221\206\344I1\255d\224\254\226-P\5\252H\233\254\301\232y\23\340\337\nw\340\367\300\241:#\335\\@\273a|\363\311g\313k\327[\237\13&4\305\276\363&o\261&m\320W.hg\264\220\247\200g\235}nw\4R\262\347\334D\374\330d,\303\221\")\201\370\375.\201\302\220p\272\2037\247?M~\3017\244%X7\32F\255b\325\326o\360\267\340M0w6\0#\322\245\364\34\317ry\226\343EN\340$\316\323 \247\360\220Wx5U\312U\331&\310\267\344\266\334\6\267Qg\306\331\263\321\335\343\34G\207\335\253\15w\334\323^\7.\303\26\323b*\251\352\"\270\371\236\337\312\2243\26Yd\213\264LC\232c9\226\311R9:\33\301#gO'\23\354\202\264 \365g\374k\177\304\177oM\330\373\10\272'\217\232^/U\213\226i\31%\260\376e{\325\257\6\356\276\334\272\244\260\"\315\260\213y\177_\35\203}\350_[\320yO\304\11;cP6]fl\246\314\224/}=sc\372+\240\242w~\362\267W:+\327\352W*W\365U\25lx\360\327{8\270\317\253\341\216o\333;\203\26\5S\3249U\324\274\237\246x\16\5!\221#si@e3\251\324\345\17~Nn\310\246f\231f\303\360\367\360\335\241~\201\340f\201\341\321\373\217\236\360\326\223\377\1\210\370S@\15\nendstream\15\nendobj\15\n9 0 obj\15\n1142\15\nendobj\15\n5 0 obj\15\n<<\15\n\11/Type /Font\15\n\11/Subtype /Type1\15\n\11/BaseFont /AAAAAB+EuropeanComputerModern-RomanRegular10pt\15\n\11/FirstChar 0\15\n\11/LastChar 120\15\n\11/Widths [ 500 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 500 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 722 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 444 0 0 0 0 0 0 0 0 0 0 0 0 0 0 389 0 0 0 528 ]\15\n\11/Encoding 10 0 R\15\n\11/ToUnicode 11 0 R\15\n\11/FontDescriptor 12 0 R\15\n>>\15\nendobj\15\n10 0 obj\15\n<<\15\n\11/Type /Encoding\15\n\11/BaseEncoding /WinAnsiEncoding\15\n\11/Differences [ 0\15\n/grave\15\n]\15\n>>\15\nendobj\15\n11 0 obj\15\n<<\15\n\11/Filter /FlateDecode\15\n\11/Length 13 0 R\15\n>>\15\nstream\15\nx\234]P\313n\303 \20\274#\345\37\366\230\34\"\354\244\256s@\226\252D\221|\350Cu\373\1\30\326\16R\15\10\343\203\377\276k\334\246R\0170\373\232e\30~\256/\2655\21\370[p\252\301\10\235\261:\340\350\246\240\20Z\354\215e\371\1\264Q\361'K\267\32\244g\234\310\315<F\34j\3339&\4\360wj\2161\314\260}\322\256\305\35\343\257Ac0\266\207\355\347\271\331\1o&\357\277p@\33!\203\252\2\215\35-z\226\376E\16\10<\321\366\265\246\276\211\363\2368\177\23\37\263G8\244<_\305(\247q\364Ra\220\266G&\262\254\2q\275V\33\206V\377k\26+\245\355\324M\206\15\23\307\234f\263\214\200\211\342!\305\4L<\26)&`\242\\\353\345R/Ok|\252\226\345\277k\226w\310\13\270\377@M!\220\370dXR\275\3505\26\357\236z\347\201X\313a\337\265Pw\307\15\nendstream\15\nendobj\15\n13 0 obj\15\n254\15\nendobj\15\n12 0 obj\15\n<<\15\n\11/Type /FontDescriptor\15\n\11/FontName /AAAAAB+EuropeanComputerModern-RomanRegular10pt\15\n\11/FontFamily (European Computer Modern)\15\n\11/FontStretch /Normal\15\n\11/FontWeight 400\15\n\11/FontBBox [ -40 -250 1055 935 ]\15\n\11/ItalicAngle 0\15\n\11/Ascent 935\15\n\11/Descent -250\15\n\11/CapHeight 683\15\n\11/XHeight 430\15\n\11/StemV 0\15\n\11/CharSet (/one/T/e/t/x)\15\n\11/Flags 32\15\n\11/FontFile3 8 0 R\15\n>>\15\nendobj\15\n7 0 obj\15\n<<\15\n\11/Type /Pages\15\n\11/Count 1\15\n\11/Kids [ 6 0 R ]\15\n>>\15\nendobj\15\n14 0 obj\15\n<<\15\n\11/Type /Catalog\15\n\11/Pages 7 0 R\15\n>>\15\nendobj\15\n15 0 obj\15\n<<\15\n\11/Title (no_name_3.tm)\15\n\11/Creator (TeXmacs 2.1.5)\15\n\11/Producer (TeXmacs 2.1.5 + Hummus 4.0)\15\n\11/CreationDate (D:20261016110513Z)\15\n>>\15\nendobj\15\nxref\15\n0 16\15\n0000000000 65535 f\15\n0000000016 00000 n\15\n0000000227 00000 n\15\n0000000501 00000 n\15\n0000000757 00000 n\15\n0000002080 00000 n\15\n0000000523 00000 n\15\n0000003404 00000 n\15\n0000000811 00000 n\15\n0000002057 00000 n\15\n0000002560 00000 n\15\n0000002667 00000 n\15\n0000003031 00000 n\15\n0000003008 00000 n\15\n0000003473 00000 n\15\n0000003531 00000 n\15\ntrailer\15\n<<\15\n\11/Size 16\15\n\11/Root 14 0 R\15\n\11/Info 15 0 R\15\n\11/ID [ <A295ED63BC17FC1959507643E3CF75C2> <A295ED63BC17FC1959507643E3CF75C2> ]\15\n>>\15\nstartxref\15\n3685\15\n%%EOF"
+      :fail-reason "did not signal an error"))
+   FAILED  2/2  org-texmacs-pdf-typeset-error-recovery (1.688746 sec) at ../nix/store/ksfhqyh8j6b6zszdj0lcszz8xc7nlanq-ert.el:7179
+
+Ran 2 tests, 0 results as expected, 2 unexpected (2026-10-16 11:05:13+0000, 3.833453 sec)
+
+2 unexpected results:
+   FAILED  org-texmacs-pdf-hyperlink-annotations
+   FAILED  org-texmacs-pdf-typeset-error-recovery
+

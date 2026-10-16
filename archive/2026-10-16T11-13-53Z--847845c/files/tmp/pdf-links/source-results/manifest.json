@@ -1,0 +1,39 @@
+{
+  "version": "2.1.5",
+  "source": "/nix/store/mjbs4glrz46hgjrvylq6mrpyg45p2j1n-TeXmacs-2.1.5-src.tar.gz",
+  "package": "/nix/store/5ri673m8kksap2p2r7gwgqjfwh410sls-texmacs-2.1.5",
+  "files": {
+    "TeXmacs/progs/texmacs/texmacs/tm-files.scm": {
+      "bytes": 29784,
+      "sha256": "1a26466b72a924dd63c9fd2a50677def7b1f0bd3ad2badc8333250a97bb8558b"
+    },
+    "TeXmacs/progs/texmacs/texmacs/tm-print.scm": {
+      "bytes": 8459,
+      "sha256": "5bc07737d104f930665a55834c59fb4358abb10eaec75dbe75be4eb93c89c33d"
+    },
+    "TeXmacs/packages/standard/std-markup.ts": {
+      "bytes": 26737,
+      "sha256": "718db0ff8433a036c0282dd8ddcea4eb0a1e41d322756decab6819474506595c"
+    },
+    "src/Edit/Editor/edit_main.cpp": {
+      "bytes": 14594,
+      "sha256": "8e3dcdd2694a41e25e014e2f91ff4f201df8ebffcb46c42f9022665431991af2"
+    },
+    "src/Typeset/Bridge/bridge.cpp": {
+      "bytes": 11827,
+      "sha256": "2a3bd99f927156f81b13a1198a826bc6ba6eaf0a8ffcab7566eb58cafb263987"
+    },
+    "src/Typeset/Bridge/typesetter.cpp": {
+      "bytes": 8491,
+      "sha256": "f4201e461baca75d20e1a92df6442e3288cff29051d283a367b3a4ee4bd3702f"
+    },
+    "src/Typeset/Concat/concat_active.cpp": {
+      "bytes": 15328,
+      "sha256": "f41ef5be48d7f9c2b4994052c2acb50ab8d6c03948475a6788b48e995a725cc2"
+    },
+    "src/Plugins/Pdf/pdf_hummus_renderer.cpp": {
+      "bytes": 82669,
+      "sha256": "310dc4526ecc7688683a69672f7004bb514bca6d8c4c55fad11540ea45db67ba"
+    }
+  }
+}
