@@ -1,0 +1,16 @@
+Running 12 tests (2026-10-16 13:36:21+0000, selector `t')
+   passed   1/12  fl-basic-boundaries-and-ownership (0.109981 sec)
+   passed   2/12  fl-buffer-isolation (0.001914 sec)
+   passed   3/12  fl-config-only-special-block-control (0.000462 sec)
+   passed   4/12  fl-default-and-local-tags (0.005746 sec)
+   passed   5/12  fl-embedded-org-observations (0.001342 sec)
+   passed   6/12  fl-incremental-edit-observations (0.004008 sec)
+   passed   7/12  fl-malformed-note-soft-failure (0.000986 sec)
+   passed   8/12  fl-multiline-and-block-edit (0.002612 sec)
+   passed   9/12  fl-narrowing-disable-major-mode (0.003536 sec)
+   passed  10/12  fl-native-helper-properties (0.000585 sec)
+   passed  11/12  fl-quote-edit-boundary (0.002274 sec)
+   passed  12/12  fl-size-costs (9.397467 sec)
+
+Ran 12 tests, 12 results as expected, 0 unexpected (2026-10-16 13:36:31+0000, 9.531266 sec)
+
