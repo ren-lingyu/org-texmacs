@@ -51,8 +51,11 @@ User committed exactly5task paths as one feat(document) delivery with Closes:#10
 Parent=Issue11 baseline, all25committed hashes/full approved message verified.
 Index empty, existing user flake unstaged; remote#10 verified closed/completed
 on2026-10-16. Remote timestamps/sources: memory/evidence.md.
-No external writes. User now selected PDF links for bounded investigation/handling;
-see memory/pdf-links-investigation.md. No specific production repair adopted yet.
+No external writes. User-selected PDF-link consumer repair is now locally
+implemented and accepted, awaiting user review/delivery: synchronous layout
+before both prints, native annotations restored,2new ERT/README synchronized.
+36focused/9real/439core/full strict compile/lint pass; see
+memory/pdf-links-investigation.md. No ordinary staging/commit yet.
 Adopted priority11->10->PDF links, Chinese fonts postponed, font-lock later.
 No release/version authority. #9 adopted-later after
 0.5.0 before0.6.0; #7 deferred and not a0.5.0 blocker. Earlier native footnote

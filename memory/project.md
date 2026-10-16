@@ -84,9 +84,9 @@ Final14focused/9real/430core/full compile/lint pass; source/encoding/provenance
 boundaries and matched-context native layout verified. Delivery parent/path set/
 all25input hashes/full approved message verified; repair now on local main.
 Remote#11 verified closed/completed on2026-10-16; publication refs not checked. Contract/evidence:
-memory/issue-11-implementation.md. Links/CJK share
-native controls and need further config evidence. Org Scheme fontification can
-fontify STM spans; editing integration still unverified. See
+memory/issue-11-implementation.md. The subsequent PDF-link sequencing repair
+is accepted below; CJK native/configuration evidence remains incomplete.
+Org Scheme fontification can fontify STM spans; editing integration still unverified. See
 memory/release-0.5.0-investigation.md. #9 post0.5.0/pre0.6.0; #7 deferred.
 Code metadata remains0.4.0; Issue11 acceptance does not establish complete
 v0.5.0 readiness and no release publication was performed.
@@ -517,9 +517,10 @@ the native PDF consumer revision matches the verified seven-file diff.
   native rendering inside the source/dependency consistency check; the latter
   also supports M-x with a captured source and a .pdf destination suggestion.
 - The native bridge encodes owned fields once; headless Scheme installs them
-  directly in a temporary native buffer, runs three synchronous low-level
-  updates and print-to-file. Semantic fix the PDF semantic regression and citation repair revision then updates three
-  times and prints again to resolve typeset bibliography references.
+  directly in a temporary native buffer, originally invalidated layout three
+  times before print-to-file. The accepted PDF-link repair below adds forced
+  synchronous layout before each print. The earlier citation repair adds another
+  three invalidations and final print to resolve typeset bibliography references.
   It does not reparse serialized .tm or run deferred
   generate-all-aux/bibliography generation. Existing public sessions are isolated.
 - Temporary files are in the worker's private directory. Buffer/file cleanup
@@ -988,12 +989,17 @@ state does not require a checkpoint. If lookup fails, retain explicit uncertaint
 Read-only verification does not authorize external issue writes. User requested
 this recurring delivery check on2026-10-16.
 
-## PDF link consumer candidate (not yet fully accepted)
+## Accepted local PDF hyperlink consumer repair
 
-User selected release-readiness PDF links. Locked TeXmacs2.1.5baseline12PDFs have
-0annotations, actual forced native layout8/8restores them, candidate package/
-reload matrix12/12has external URI/internal destination annotations. Existing
-update-current-buffer only invalidates; worker now adds update-forced before each
-print to retain native link state for PDF rendering. Pure AST/native encoding
-unchanged. Two ERT/README candidate updates prepared; complete regression pending.
-Details/authorization/evidence limits: memory/pdf-links-investigation.md.
+User selected release-readiness PDF links. Original12native/package/reload PDFs
+had0annotations; forcing native layout restored them in8native causal controls,
+then final package/native/reload12/12had URI/internal destination annotations.
+Worker calls update-forced before each existing print, preserving two-print
+reference handling, owned buffers/files and errors. Pure AST/encoding unchanged.
+Two maintained ERT verify actual URI/cross-page targets/repeated renders/reload/
+released-source ownership and both forced-layout errors/session isolation/retry.
+README/reload helper synchronized. Baseline2intended failures,36focused/9real/
+439core/full strict compile/lint/all7checks pass in locked x86_64-linux.
+Three-file candidate accepted, not staged/user-committed. Broader release remains
+incomplete. Contract/commands/provenance/immutable archive:
+memory/pdf-links-investigation.md.

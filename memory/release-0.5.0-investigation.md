@@ -1,5 +1,10 @@
 # v0.5.0 isolated investigation,2026-10-16
 
+Historical initial investigation below. Subsequent accepted repairs supersede
+its next-action state: Issues10/11 are committed/closed; PDF annotation consumer
+sequencing is repaired and locally accepted in memory/pdf-links-investigation.md.
+Initial control observations remain valid within their recorded configuration.
+
 ## Scope and provenance
 
 User explicitly requested retrying issue reads, local isolated investigation tests

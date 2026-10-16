@@ -3028,3 +3028,36 @@ Next recommendation remains bounded PDF annotation/export-path/configuration
 investigation, since prior package/native controls all lacked link annotations.
 No new implementation selected. Fonts postponed, font-lock later. Routine issue
 metadata needs extraction, not a new raw archive; existing archives stay immutable.
+
+
+## PDF hyperlink consumer repair accepted (2026-10-16)
+
+User selected PDF links after Issue10/11 closure. Locked native source audit plus
+12PDF baseline,8native-only synchronous-layout causal controls and12finalPDFs
+identify consumer sequencing defect: update-current-buffer invalidates, while
+update-forced before each existing print restores actual URI/internal annotations.
+No AST/provenance/PDF rewrite/serialized reparse/public API or protocol change.
+Three task files worker/ERT/README; existing native reload helper synchronized.
+
+Original worker fails both new regressions for intended assertions3.833453s.
+Candidate36focused125.005432s,9actual extension10.292105s and439core279.377034s
+pass. Exact600s flake check exits0; all7checks/strictcompile/lint accepted.
+Actual URI/cross-page targets, repeat same worker, native reload, destroyed source
+and each forced-layout error/retry/private-output cleanup/public-session state
+covered. x86_64-linux pinned Emacs31.1/Org9.8.10/TeXmacs2.1.5 only.
+
+18baseline inputs equal committed main,25candidate equal project/isolation and
+11extension identities verified before/after gate; exact3file patch unchanged,
+root lock/user flake stable, ordinary index empty. Candidate uncommitted; no
+inferred project parent for mixed native/uncommitted runtime evidence.
+Full operational evidence/commands/diagnostic limits: memory/pdf-links-investigation.md.
+
+20necessary original-byte text artifacts separately archived and source/digest/
+stability/complete index verified: archive/2026-10-16T11-13-53Z--847845c/MANIFEST.md.
+No PDF/binary/dependency/fulltmp/INBOX capture. Manifest classifies original
+whitespace: baseline.log lines11/45/56+EOF87; candidate.patch blank context7/74/103;
+focused.log EOF40; full.log prefixed blanks529/531. Raw bytes unchanged, normal
+product diff whitespace clean. Initial temporary Lisp/module failures extracted,
+not acceptance. Native duplicate-destination warnings present in both negative/
+positive controls; no unrelated native PDF rewrite. User review/delivery pending,
+no external issue write or full release claim.

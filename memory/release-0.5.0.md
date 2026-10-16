@@ -154,3 +154,19 @@ needed. INBOX and existing archives unchanged. Planning checkpoint has no inferr
 project parent; explicitly named baseline is review context, not new test provenance.
 Subsequent experiments now have independently valuable raw evidence selected
 separately, without retiring or archiving this active INBOX plan.
+
+## PDF hyperlink outcome after Issue10/11
+
+User selected item4. A package native-consumer sequencing defect is now repaired
+and automatically accepted: update-current-buffer alone invalidates; actual
+update-forced before each existing print preserves native link state for PDF
+annotations. Baseline/native-only force/final matrices establish causality,
+final12PDFs contain exact external URI and valid internal targets. Two maintained
+regressions cover cross-page jumps, released source/repeats/reload and both new
+layout failure phases with cleanup/retry/public-session isolation. README updated.
+36focused/9real/439core/full7checks/strict compilation/lint pass, x86_64-linux only.
+Three-file candidate awaits user delivery; no issue/release write. Full contract
+and immutable text evidence: memory/pdf-links-investigation.md. Item4 package
+repair/automatic verification is complete; this is not complete release readiness.
+Chinese fonts remain postponed, font-lock and representative combined workflows
+and release metadata/docs/notes remain separately selected work.

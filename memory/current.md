@@ -1,17 +1,27 @@
 # org-texmacs current memory
 
-## Active: PDF hyperlink annotation investigation
+## Completed local repair: PDF hyperlink annotations
 
-User selected PDF links next after completed/closed Issues10 and11. Investigate
-native print/export/configuration first; fix demonstrated package defects or
-document verified native/configuration limits, no independent PDF link system.
-Locked2.1.5source audit and12PDF baseline complete: all0annotations; named
-destinations/text remain. Native update-forced control8/8restores2annotations;
-package/reload controls stay0. Candidate worker+reload fixes12/12PDFs. Three-file
-worker/ERT/README candidate prepared;2new maintained tests and complete acceptance
-pending separately authorized baseline/focused/integration/full flake checks.
-Scope, evidence limits and pending exact flake commands:
-memory/pdf-links-investigation.md. Existing user flake mirror remains untouched.
+User-selected PDF link task is implemented and automatically accepted, awaiting
+user review/delivery. Worker now forces synchronous native layout before each
+existing print; invalidation alone had omitted link annotations. Pure AST and
+encoding unchanged. Three task files: worker, ERT, README; two new regressions.
+Controlled baseline12PDFs all0annotations, native-only force8/8restores URI and
+internal destination, final package/native/reload12/12have both. Original worker
+fails both maintained regressions as intended. Focused36/36 (125.005432s), real
+extension9/9 (10.292105s), core439/439 (279.377034s), complete600s flake exit0,
+strict compilation/lint/all seven applicable checks pass on locked x86_64-linux.
+18baseline/25candidate/11foreign identities verified; root lock/source stable.
+Ordinary index empty, user flake unchanged and unstaged. No project staging/
+commit or external write authorized/performed; no full release acceptance.
+
+Contract, exact commands, provenance and remaining validation limits:
+memory/pdf-links-investigation.md. Twenty necessary original-byte text artifacts
+archived separately and verified: archive/2026-10-16T11-13-53Z--847845c/MANIFEST.md.
+No PDFs/binaries/full tmp/INBOX archive. Original whitespace retained/explained;
+no candidate project parent inferred. No further test needed without changes.
+Next: user review/delivery. Chinese fonts postponed, font-lock later; no new
+implementation or release operation selected.
 
 ## Completed committed delivery: Issue10 inline footnote STM
 
@@ -51,8 +61,8 @@ recorded baseline is exact red source/capture context. Current checkpoint ground
 actual committed delivery verification, not original runtime-test provenance.
 Local Issue10 implementation/validation/user delivery complete. No version/lock/
 INBOX/example/external writes. Remote#10 verified closed/completed on2026-10-16;
-closure timestamp/source recorded in memory/evidence.md. PDF links next by priority, implementation requires separate user
-selection; fonts postponed,font-lock later.
+closure timestamp/source recorded in memory/evidence.md. Subsequent PDF link
+repair is accepted above; fonts postponed,font-lock later.
 v0.5.0 remains planned, not release-ready. No other implementation selected.
 
 ## Completed committed delivery: Issue11 bare STM paragraph repair
@@ -92,7 +102,7 @@ candidate was then uncommitted; baseline identifies exact red-control source.
 Current delivery verification grounds the newly inspected committed snapshot.
 No INBOX/version/lock/example edits or external writes. Local Issue11 delivery is
 complete; remote#11 verified closed/completed, as is#10.
-PDF links follow completed11/10; Chinese fonts postponed, font-lock later. No other
+Subsequent PDF link repair is accepted above; Chinese fonts postponed, font-lock later. No other
 feature implementation or release operation selected.
 
 ## v0.5.0 release readiness context
@@ -133,7 +143,8 @@ No full release gate was run in that phase. Native reload harness failures
 corrected and explicitly excluded from acceptance. No ordinary staging/release/
 external writes. 37necessary original-byte text artifacts archived and verified separately at
 archive/2026-10-16T06-29-51Z--8a90b4c/MANIFEST.md; PDFs/binaries excluded.
-Issue11 and Issue10 repairs are now implemented/validated/user-committed above; PDF links follow them;
+Issue11 and Issue10 repairs are now implemented/validated/user-committed above;
+subsequent PDF link consumer repair is locally accepted above;
 P1 font/export configuration/edit-lifecycle gaps remain before release acceptance.
 
 ## Completed committed delivery: Issue4 remaining date repair and semantic audit
