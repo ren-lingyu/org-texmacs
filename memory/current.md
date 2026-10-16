@@ -1,45 +1,31 @@
 # org-texmacs current memory
 
-## Ready for review: TeXmacs block editing and indentation
+## Completed: TeXmacs block editing and indentation delivered
 
-User-authorized implementation complete and verified, staged, awaiting user commit.
-New org-texmacs-edit.el plus main/Nix fileset/README/ERT wiring provides native
-Org source-edit/save/exit/abort/reuse for complete TeXmacs special blocks and
-Scheme indentation for TAB/line/region in the original Org buffer. Keep native
-special-block AST, exact no-change body whitespace and container semantics;
-no Babel, STM parsing, inline editing or export changes. Original user flake
-mirror overlay preserved byte-for-byte apart from the single new module line.
+User committed the exact reviewed feat(edit) candidate. Read-only verification
+confirms single expected bibliography-delivery parent, exactly five task paths,
+full binary patch and complete commit message hashes match approved staging.
+All28 tested worktree identities unchanged;27 committed source/test/README/lock
+inputs byte-equal tested candidate, with root flake intentionally excluding the
+original user mirror overlay. Index empty; only that unchanged overlay unstaged.
+No tests rerun just for delivery. The new project-parent association records exact
+committed equivalence checked now, not retroactive original runtime provenance.
 
-User additionally requested public org-texmacs-edit-mode choice: bundled
-scheme-mode default (explicit require scheme, no new package dependency), optional
-user-installed scheme-ts-mode plus grammar. Missing optional support errors
-before source changes; no install/silent fallback. Fontification unchanged.
-Pinned runtime has Tree-sitter but no scheme-ts-mode/grammar, so actual TS editing
-remains unverified; controlled tests prove dispatch/error paths only.
+Native Org source-edit/save/exit/abort/reuse and Scheme TAB/line/region indentation
+are delivered for complete TeXmacs special blocks. Public org-texmacs-edit-mode
+defaults to bundled scheme-mode; optional user-installed scheme-ts-mode/grammar
+checked explicitly. No added mandatory dependency, Babel/parser/export change or
+inline editing. Fontification remains independent. Prior30focused/478fullERT
+(340.820181s), fixed extension integration, strict byte/native compile/lint/full
+flake acceptance transfers by exact bytes; actual TS/GUI editing unverified.
 
-Isolation tmp/block-editing; two old-code negative controls confirmed. Final
-30focused/478fullERT (340.820181s), fixed real extension integration, strict byte/
-native compile and lint/full flake exit0. All28 candidate identities unchanged
-and27 match snapshot (intentional flake harness difference). No code edits after
-full gate. Exact contract/rationale/hash list and limits:
-memory/block-editing-implementation.md. No raw archive needed: maintained tests,
-locked regeneration and distilled facts retain necessary evidence. User GUI
-font-lock basic acceptance is separate from unperformed new GUI editing/real TS
-acceptance. No automatic release milestone or external issue closure added.
-
-User explicitly authorized sequential staging/message preparation, maximum3min
-intermediate polling. All five task paths staged; flake.nix has only new module
-fileset hunk, original mirror overlay remains unstaged. Full staged diff reviewed,
---check passes, staged bytes match the tested candidate except intentional overlay
-exclusion. tmp/commit.md contains feat(edit) message, no issue footer. Single
-coherent feature, split not necessary (low difficulty). Real TS/GUI editing still
-unverified, no tests repeated just for staging. Next: user commit, then verify
-exact parent/5paths/patch/message and consider GAW delivery update. Ordinary
-commit remains user's action. Checkpoint has zero additional project parents:
-successful tests were against uncommitted candidate, not main baseline.
-
-Staged patch SHA256:c10531c6e48fb263860156f48beb4ee37cfb86eca9b0c961a276480197e3c797.
-Message SHA256:bfaf65598e462992cf9ded20ea3e6bb3c8a26a93ca242cf199987a5b4ff49a61.
+Contract, rationale, candidate identities and delivery evidence:
+memory/block-editing-implementation.md. No raw archive needed: tests and distilled
+memory retain necessary evidence. No linked external issue or closing footer for
+this feature, so no issue-status check required. No release action/milestone added.
+Next project choice follows memory/release-0.5.0.md. Optional fresh-package GUI
+editing acceptance may be collected; do not infer it from earlier font-lock
+basic GUI feedback. No implementation/staging action remains for this task.
 
 ## Completed: Issue12 bibliography delivered and closed
 

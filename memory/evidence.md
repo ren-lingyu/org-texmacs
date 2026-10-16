@@ -1,6 +1,6 @@
 # org-texmacs durable evidence
 
-## TeXmacs special-block editing/indentation candidate acceptance
+## TeXmacs special-block editing/indentation acceptance and delivery
 
 User separately adopted native Org source editing and Scheme indentation, then
 public custom scheme-mode/scheme-ts-mode choice. Locked Emacs31.1/Org9.8.10/
@@ -8,9 +8,12 @@ TeXmacs2.1.5 x86_64-linux: two old-code failures confirmed; final30focused,
 478full ERT (340.820181s), fixed real extension integration and strict byte/native
 compile/lint/full flake exit0. Original mirror overlay preserved; all28 final
 candidate inputs unchanged after gate,27 byte-equal isolated copies excluding
-intentional flake harness. User-authorized five-path staging/message preparation complete; original mirror
-overlay excluded from index. Ordinary commit pending. Exact staged patch/message
-identities in memory/block-editing-implementation.md.
+intentional flake harness. User subsequently committed the exact reviewed five-path change. Single expected
+parent, complete binary patch/message hashes and27 committed input identities
+match tested candidate; root flake excludes the original mirror overlay, which
+remains unchanged and unstaged. Index empty. No tests rerun; acceptance transfers
+by byte equivalence, not a claim runtime originally used the committed revision.
+Delivery association and identities: memory/block-editing-implementation.md.
 Optional TS mode/grammar absent in locked runtime: availability and controlled
 dispatch tested, real TS/GUI editing unverified. No new mandatory dependency,
 Babel/parser/export scope or release requirement. Contract, rationale, identities,

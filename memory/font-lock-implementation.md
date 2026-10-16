@@ -137,7 +137,7 @@ feat(font-lock): highlight embedded STM as Scheme by default
 
 Next: basic GUI presentation user-accepted; detailed idle display/folding/
 sexp navigation/third-party checks remain unverified. Source-edit/Scheme indentation
-is separately authorized and implemented/automatically verified as an uncommitted
-candidate in
+is separately implemented/automatically verified/user-committed, with exact delivery
+verified in
 memory/block-editing-implementation.md. Other release gates in
 memory/release-0.5.0.md; no release action selected.

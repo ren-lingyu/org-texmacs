@@ -4,7 +4,8 @@
 
 User requests dedicated Scheme editing for texmacs special blocks and native
 Scheme indentation in original Org buffers. User subsequently requests a public
-Customize option for scheme-ts-mode. Candidate implemented and verified, staged, awaiting user commit. This is a bounded authoring addition, not
+Customize option for scheme-ts-mode. Implemented, verified and user-committed; exact delivery verified.
+This is a bounded authoring addition, not
 Babel, a new STM parser, inline-fragment editing or general Scheme execution.
 
 org-texmacs-edit-mode defaults to bundled scheme-mode. Optional scheme-ts-mode
@@ -118,7 +119,7 @@ Exactly README.org, flake.nix, org-texmacs-edit.el, org-texmacs.el and
 tests/ert/ert.el staged. Only new module fileset line staged in flake; original
 user mirror remains unstaged. Full staged review/--check pass. Staged code, tests
 and docs byte-equal accepted candidate. No tests rerun. One coherent feat(edit)
-commit, split not necessary/low difficulty. User makes ordinary commit.
+commit, split not necessary/low difficulty. User subsequently committed; see delivery below.
 
 Staged binary patch SHA256:
 c10531c6e48fb263860156f48beb4ee37cfb86eca9b0c961a276480197e3c797.
@@ -133,3 +134,20 @@ feat(edit): add Scheme editing and indentation for TeXmacs blocks
 - 新增 `org-texmacs-edit-mode`, 默认使用 `scheme-mode`, 允许选择用户安装的 `scheme-ts-mode` 和 Scheme grammar, 缺少可选支持时明确报错.
 - 接入主模块与 Nix 打包, 补充编辑生命周期, 缩进和模式选择回归, 在 README 中说明操作方式与依赖边界.
 ```
+
+## Committed delivery verification
+
+User committed feat(edit) with one expected bibliography-delivery parent and
+exactly the five approved paths. Full committed binary patch and complete message
+match hashes above. All28 worktree candidate identities still identical;27
+committed inputs match candidate byte-for-byte, except intentional exclusion of
+user mirror overlay in committed flake. Ordinary index empty; only unchanged
+original mirror overlay unstaged. Prior validation transfers by exact bytes.
+No build/test/network or ordinary Git mutation for this verification.
+
+New GAW project-parent association denotes delivery equivalence checked against
+the committed snapshot, not original runtime provenance: tests ran on uncommitted
+candidate. No linked issue/footer, so no issue-state query needed. No raw archive
+selected; maintained ERT, distilled facts/hash identities and project history
+retain necessary evidence. Actual Scheme TS mode/grammar and GUI editing remain
+unverified; this does not broaden prior basic font-lock GUI acceptance.
