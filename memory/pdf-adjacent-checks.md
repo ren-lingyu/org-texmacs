@@ -258,3 +258,32 @@ project parent supports this exact delivery verification, not retrospective
 runtime provenance for earlier uncommitted suite or native synthetic controls.
 No new raw archive: committed patch/history and extracted verification suffice.
 Native first-note failure remains separately diagnosed, no repair selected.
+
+## User native interactive reproduction and supplied artifacts
+
+User asks to defer manual.org bibliography troubleshooting. Reports directly
+creating a new file and inserting footnote in TeXmacs from nix develop, exporting
+PDF, first reference says "destinition not found". Supplied pair:
+tmp/realworld_test/test_footnote.{tm,pdf}. Agent read files, did not launch GUI.
+329byte .tm header2.1.5/generic/paper, only native footnote(Test), no package
+surround. Saved references contain both footnote-1 and footnr-1 tuple(1,1).
+8436byte PDF1.4 uncompressed dictionary inspection: catalog24uses Dests11;
+annotation7first marker /Dest /label0, absent from Dests11 (only label1/2/3);
+annotation8body backlink /Dest /label1 exists, target x162.96/y754.8 within first
+marker rect162.66,751.62,167.22,757.32. Concrete artifact confirms missing PDF
+destination, beyond viewer report. PDF SHA256 f68a3add30bc20e465673a881c630f6478fa44ed4e2ade1884e3186857b31bf5.
+TM SHA2569292549cfdf671067de2d8b6a7d8c87c2788985215f5d54c4ccc1b82ce02b339.
+
+User's independent native interactive report plus artifact matches headless
+controls. Package worker and buffer lifecycle not necessary; native saved
+reference records exist yet PDF forward destination absent. Does not trace
+runtime original-key-to-ID mapping or exact macro/C++ loss. GUI operation and
+file pairing provenance are user-reported, not independently witnessed; no
+blanket claim across other versions/configurations. No tests/builds or product
+changes in this read-only inspection. Minimal user .tm plus authored PDF
+identity/dictionary report archived as2original-byte text captures:
+archive/2026-10-16T12-55-42Z--b970820/MANIFEST.md
+PDF binary excluded by project pure-text rule; original user files unchanged.
+Current project HEAD only capture context; no extra project parent inferred.
+No adopted package workaround or external issue write. Bibliography topic paused
+per user's request; native anchor/PDF diagnosis remains separate.

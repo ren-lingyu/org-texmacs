@@ -3149,3 +3149,21 @@ No issue association, no required related remote lookup. Project-parent edge
 records committed delivery verification, not original uncommitted or native-only
 runtime provenance. Existing archives unchanged; no new raw capture needed.
 Native footnote forward-target gap remains separately unresolved/unrepaired.
+
+
+## User native interactive footnote artifacts (2026-10-16)
+
+User reports new document/native footnote/PDF export in nix develop TeXmacs,
+first reference destination-not-found. Source329byte .tm header2.1.5/generic/paper,
+only native footnote and saved footnote-1/footnr-1 tuple(1,1) references. Agent
+read paired8436byte PDF: catalog Dests11contains label1/2/3, first annotation
+points absent label0, body backlink label1 present and coordinates land in first
+marker. Independent user-reported interactive route matches prior native-only
+controls; worker/package surround not necessary. Exact runtime key/PDF defect
+untraced, GUI actions not agent witnessed; no other-version/config claim.
+No builds/tests/project changes. User defers bibliography topic. Full extraction:
+memory/pdf-adjacent-checks.md.2text artifacts verified/archived separately:
+archive/2026-10-16T12-55-42Z--b970820/MANIFEST.md
+Original user .tm and authored PDF identity/dictionary report retained; PDF binary
+excluded, user files unchanged. Capture HEAD not provenance of user-created files;
+no inferred project parent. No issue write or package workaround adopted.

@@ -550,7 +550,9 @@ text stable for these fixtures. Exactly1dangling first-use footnote destination
 per PDF subsequently reproduced in20native-only controls, even bare footnote;
 package wrapper not necessary. Literal native forward/body prefix agrees, but
 runtime binding/PDF destination loss/mismatch untraced. Do not claim all footnote
-links valid, GUI/other versions affected, or a generic convergence guarantee. See memory/pdf-adjacent-checks.md.
+links valid or a generic convergence guarantee. User later supplied independent
+native interactive reproduction and agent verified its PDF missing first target;
+no package worker necessary. Other versions/configurations remain unverified. See memory/pdf-adjacent-checks.md.
 
 ## CONSUMER-01 committed bounded ox-texmacs frontend
 

@@ -64,7 +64,9 @@ separate gap: first-use footnote annotation points to absent /label6 in every
 direct/reload2/reload6 PDF; repeated-note target remains valid. Cause, native
 responsibility and release impact initially unestablished. Subsequent20native
 controls reproduce without package code, so package wrapper not a necessary
-cause. Exact native binding/PDF failure and release impact remain unresolved.
+cause. User's native interactive reproduction and supplied PDF destination
+inspection now corroborate this beyond headless controls. Exact native
+binding/PDF failure and release impact remain unresolved.
 Retain bounded follow-up
 candidate, not an adopted repair; memory/pdf-adjacent-checks.md.
 Adopted priority11->10->PDF links, Chinese fonts postponed, font-lock later.

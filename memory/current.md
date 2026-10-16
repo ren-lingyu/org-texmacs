@@ -36,8 +36,9 @@ Even bare native footnote reproduces; package wrapper not a necessary cause.
 No org-texmacs module/Emacs executed in native-only experiment. Post-layout
 macros show forward reference footnote-<nr>, body set-binding with same literal
 prefix, separate footnr-<nr> backlink. Runtime key identity/PDF callbacks not
-traced, so exact loss/mismatch cause still unresolved. No native GUI/general
-version claim, business repair or workaround selected. Final exact240s flake
+traced, so exact loss/mismatch cause still unresolved. User native interactive
+reproduction subsequently supplied below; no general version claim, business
+repair or workaround selected. Final exact240s flake
 command exits0, sampling additions leave annotation report byte-identical.
 Two early harness initialization/focus failures rejected by guards; diagnostic
 limits extracted.13necessary original-byte text artifacts archived separately:
@@ -52,8 +53,15 @@ Current project parent grounds this committed-delivery verification, not origina
 uncommitted runtime or synthetic native-control provenance. Full draft and
 verification: memory/pdf-adjacent-checks.md. No new archive needed; existing
 immutable evidence retained. Native first-note gap remains unresolved/unrepaired.
-Next: user selects further native diagnosis/GUI comparison, or other release
-work. Chinese fonts postponed, font-lock later; no release action selected.
+User now reports independent native interactive reproduction from nix develop;
+provided tmp/realworld_test/test_footnote.tm/PDF. Agent verified minimal native
+footnote, .tm footnote-1/footnr-1 saved references and PDF catalog missing first
+annotation /label0 while backlink /label1 valid. No worker necessary; exact
+native binding/PDF cause unresolved. GUI creation/export user-reported, not
+agent-witnessed.2text artifacts archived separately, PDF excluded:
+archive/2026-10-16T12-55-42Z--b970820/MANIFEST.md
+Manual bibliography troubleshooting deferred at user's request. Next: user may
+select further native binding/PDF diagnosis or upstream tracking, no repair adopted. Chinese fonts postponed, font-lock later; no release action selected.
 
 ## Completed local repair: PDF hyperlink annotations
 
