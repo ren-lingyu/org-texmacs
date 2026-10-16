@@ -21,9 +21,12 @@ committed delivery records for current local status. Still planned/not accepted.
   pre0.5.0 gate. Missing-font baseline exists; positive native CJK configuration/
   original inconsistency and practical conclusion still needed. Bounded fix,
   tested configuration or evidence-based explicit deferral can close it.
-- Item6: STM font-lock initial Org-based feasibility positive; incremental edits/
-  cleanup/compatibility/cost and implement-versus-explicit-deferral decision not
-  complete. Investigation required; implementation conditional.
+- Item6: bounded STM font-lock investigation complete (12/12 observational probes,
+  locked Emacs31.1/Org9.8.10). Lexical highlighting feasible; naive integration
+  has Org-property/stale-range/soft-error/config gaps and64KiB full scan~8s.
+  Recommend bounded context/property ownership if implemented, or explicit
+  deferral. User decision pending; implementation conditional, no feature shipped.
+  Full findings: memory/font-lock-investigation.md.
 - Item7: representative mathematical full-document .tm/PDF workflow acceptance
   combining supported features still pending; short combined link fixtures and
   isolated original math regressions are useful but not whole release acceptance.

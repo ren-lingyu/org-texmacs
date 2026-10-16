@@ -69,14 +69,22 @@ User says same files work in ox-latex: record support-boundary mismatch and
 all-collected-entry preflight/weak diagnostics, not corrupt bibliography or
 proven parser conflict. Full file identities/scope/findings:
 memory/pdf-adjacent-checks.md. No personal-source archive justified.
-User asks remaining pre0.5.0 work. Read-only gate reconciliation recorded atop
-memory/release-0.5.0.md:10/11/package links complete; original block fixture
-identity, Chinese font positive control/conclusion, font-lock editor-life/deferral
-decision, representative workflows/final gates and0.5.0 metadata/docs remain.
-Font postponement changes ordering, not explicit removal from release gate.
-Native first-note repair/full BibLaTeX support/new diagnostics are not automatically
-adopted blockers. No project edits/new tests/raw archive/release actions selected.
-Next: user selects remaining release work or additional scope.
+User-selected pre0.5.0 STM font-lock investigation complete; implementation and
+release deferral remain unselected. Final12/12probe observations pass in locked
+Emacs31.1/Org9.8.10, controlled real JIT hook registration (no GUI).17input
+identities match committed/root/copied production bytes; business unchanged.
+Scheme lexical colors feasible, config mapping alone insufficient for special
+blocks. Direct helper imports syntax properties; face-only prototype leaves
+embedded Org link/hiding props, stale block color after terminator deletion,
+whole-scan soft-error suppresses unrelated fragments; config needs flush.
+64KiB dense full scan8.01s,cache6-8microseconds; single narrowed plain paragraph
+~0.26ms. Per-edit full scan unacceptable; bounded context/property ownership
+recommended if implementation selected. Early2assertion failures were harness
+case-folded marker lookup, corrected; not product bugs. No feature acceptance
+or true GUI behavior claimed. Full conclusions/limits:
+memory/font-lock-investigation.md.15text originals archived separately:
+archive/2026-10-16T13-42-01Z--b970820/MANIFEST.md.
+Current plan reconciliation: memory/release-0.5.0.md. No new release scope chosen.
 
 ## Completed local repair: PDF hyperlink annotations
 

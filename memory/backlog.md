@@ -36,8 +36,11 @@ deferral permitted. P2 representative combined documents, complete locked-flake
 tests/native/PDF/compile/lint and0.5.0 metadata/docs/migration/notes.
 Investigation results: memory/release-0.5.0-investigation.md. #10 gap confirmed,
 #11 concat/native reload cause isolated, links share native/config absence,
-CJK missing-font environment needs positive control, Org fontification reusable
-but edit lifecycle unverified. User selected final Issue11 implementation contract
+CJK missing-font environment needs positive control. STM font-lock bounded
+investigation now complete: lexical colors reusable, naive integration property/
+stale-range/soft-error/config gaps and64KiB scan~8s; implementation or explicit
+deferral still pending. See memory/font-lock-investigation.md.
+User selected final Issue11 implementation contract
 in memory/issue-11-implementation.md: bare lifting, explicit known-display mixed
 rejection, leading-list exception; no automatic splitting. Final14/14focused,
 9/9real and430/430core pass, including strict compile/lint/full applicable flake
@@ -654,9 +657,10 @@ or augmented live ASTs require separate evidence and adoption.
 ### AUTHORING-01: Editing assistance
 
 Status: **re-adoption-required** for general editing assistance; narrowly scoped
-STM font-lock feasibility is now **adopted-later** P1 investigation for0.5.0.
-Implementation remains conditional on evidence/cost; no general editor adopted.
-See memory/release-0.5.0.md.
+STM font-lock feasibility P1 investigation for0.5.0 is complete; bounded
+integration or explicit deferral decision pending. Lexical colors feasible,
+naive full-scan/property integration unsuitable. No feature/general editor
+adopted. See memory/font-lock-investigation.md and memory/release-0.5.0.md.
 
 General Scheme editing assistance, preview-oriented UX and other authoring
 conveniences remain outside current commitments. The limited font-lock

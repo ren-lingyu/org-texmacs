@@ -12,6 +12,27 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
+## Bounded STM font-lock investigation
+
+Locked standalone flake source/probe checks complete on x86_64-linux,
+Emacs31.1/Org9.8.10. Final12/12expected observational ERT,9.531266s;
+17unchanged project inputs equal committed/root/task copies. No business code
+or index edits. Controlled actual JIT hook registration/ensure/flush, not GUI
+redisplay. Org Scheme colors feasible; config mapping alone fails special blocks.
+Direct helper imports syntax properties; face-only wrapper leaves Org link/
+hiding props inside STM, stale block end ranges, global malformed-note error
+suppresses other colors; config refresh policy needed. Cold dense full scan
+4/16/64KiB~0.038/0.528/8.015s; cached geometry6-8microseconds; narrowed plain
+paragraph~0.26ms.256KiB guarded out. No universal complexity/GUI/feature-ready
+claim. Early2assertions were case-folded harness marker lookup, corrected.
+Details/next decision: memory/font-lock-investigation.md.
+15necessary pure-text originals byte-verified/archived separately:
+archive/2026-10-16T13-42-01Z--b970820/MANIFEST.md.
+No binary/cache/whole dependency or production copies; original log blank line
+retained. Zero project association for mixed uncommitted synthetic harness;
+capture context/unchanged library identities documented in manifest. No font-lock
+implementation or release deferral selected.
+
 ## Issue4 remaining date repair and bounded audit acceptance
 
 User-approved final raw/private-helper plan implemented as uncommitted four-file

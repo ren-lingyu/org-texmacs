@@ -86,8 +86,11 @@ all25input hashes/full approved message verified; repair now on local main.
 Remote#11 verified closed/completed on2026-10-16; publication refs not checked. Contract/evidence:
 memory/issue-11-implementation.md. The subsequent PDF-link sequencing repair
 is accepted below; CJK native/configuration evidence remains incomplete.
-Org Scheme fontification can fontify STM spans; editing integration still unverified. See
-memory/release-0.5.0-investigation.md. #9 post0.5.0/pre0.6.0; #7 deferred.
+STM font-lock bounded investigation complete: Org Scheme lexical colors feasible,
+but naive wrapper has property/invalidation/soft-error gaps and64KiB scan~8s.
+Bounded context integration recommended if selected; no shipped editor feature
+or GUI acceptance. Implement/explicit-deferral decision pending. See
+memory/font-lock-investigation.md. #9 post0.5.0/pre0.6.0; #7 deferred.
 Code metadata remains0.4.0; Issue11 acceptance does not establish complete
 v0.5.0 readiness and no release publication was performed.
 
