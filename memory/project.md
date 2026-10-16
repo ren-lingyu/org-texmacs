@@ -339,24 +339,22 @@ Its default citation/bibliography consumer is committed below.
 - Buffer preparation and both conversion wrappers accept an optional alist of
   path-to-BibTeX-text source snapshots. Paths are identities, expanded once
   against the captured Org resource base. No bibliography file is opened.
-- Text is validated with local Emacs BibTeX entry/field helpers and fixed
-  standard entry types. Automatic commas and string expansion are disabled;
-  high-level `bibtex-validate` and global file/string databases are not called.
-  The initial grammar accepts line-start standard entries with contiguous
-  `@Type` headers, percent comments,
-  whitespace, and single braced/quoted or decimal field values. Reject
-  malformed entries, repeated keys/fields, strings, preambles, concatenation
-  and other top-level data explicitly.
-- A `parse-bibliography` worker operation parses validated text with TeXmacs's
-  native converter, removes non-entry comments, and normalizes empty output to
-  `(document)`. It uses the existing parse response/error and worker lifecycle.
-  Structured author names and native source notation remain in the field trees.
-- Prepared input adds `bibliography`, a path-to-parsed-document alist. Pure
-  construction copies/validates the trees and rejects duplicate paths or keys
-  across sources. Original text/path/list mutations, including path aliases,
-  invalidate preparation across
-  worker waits. Native type/key/field signatures must match local validation;
-  inconsistent payloads stop the worker as protocol failures.
+- Issue12 candidate delegates BibTeX grammar and field interpretation to native
+  TeXmacs. No Emacs BibTeX helpers, entry-type/value whitelist or raw type/key/field
+  signature equality remains. Parser recovery and unused-field omissions are native
+  behavior, not independently rejected.107focused/464fullERT/9real extension
+  integration and full flake/strict compile/lint verified; ordinary delivery
+  remains uncommitted. Detailed contract: memory/issue-12-review.md.
+- Existing parse-bibliography request returns the full native document (including
+  opaque metadata), normalizing empty output to (document). Source notation and
+  structured fields remain owned. Copy checks finite stree/document and consumed
+  entry/field shape, not duplicate fields/unused keys; duplicate paths still fail.
+- Preparation snapshots and guards sources/config/dependencies, runs source-only
+  citation checks, parses each owned bibliography text once, owns native ASTs,
+  resolves actual used keys and structurally preflights, then parses STM islands
+  and formats final collision-free native output. No fake entry AST/signatures.
+  A temporary formatted bib-list is preflight-only and never escapes in input.
+  Text/path/list/alias mutations still invalidate the transaction around waits.
 - Original dependency trees remain in prepared input; document results hold
   the native formatted output rather than the original entry forest.
   The following implemented node consumes it for citations and bibliography output.
@@ -369,21 +367,27 @@ eight-file diff. This bounded capability is included in v0.4.0.
 - Preparation captures explicit document BIBLIOGRAPHY identities before pruning,
   using the fixed source resource base and provided text snapshots. No global
   bibliography/export processor or file/database lookup is invoked.
-- Pure planning resolves bare default ASCII-key groups; missing/unavailable
-  dependencies and unsupported semantics fail before worker calls. Footnote
-  bodies are visited at first reference; repeated notes do not duplicate entries.
+- Pure planning resolves bare default ASCII-key groups only against effective
+  declared native AST entries. Used missing/ambiguous keys fail after bibliography
+  parsing, before STM/format requests; unused duplicate keys remain owned.
+  Unavailable source identities/unsupported citation syntax fail before native work.
+  Footnote bodies are visited at first use; repeats do not duplicate entries.
 - One option-free PRINT_BIBLIOGRAPHY is required for citations. Native plain
   formatting occurs during preparation. The owned INFO view contains prefix,
   key order, selected entry trees and the source-semantic bib-list body. Pure
-  lowering validates that view and its label set, emitting with-bib/cite groups
-  and the prepared list without workers. Private prefixes avoid static STM labels.
+  lowering validates that view, every generated label (including duplicates)
+  and native cite/reference/pageref targets. Both Org cite groups and bibliography
+  output use native with-bib prefix context; the bib-list subtree retains STM
+  provenance. Private prefixes avoid authored static STM labels. No worker in
+  pure lowering; no automatic uncited dependency expansion.
 - Generated bibliography roots join source-semantic provenance in stm-paths.
   Native Cork text is converted to UTF-8 while ASCII source notation is retained.
   Native prefix/style/default-style values are restored on success/error.
   Formatting domain errors preserve the worker; invalid payloads stop it.
-- Styles, nonempty affixes, entry dependency fields (crossref/xdata/related/
-  entryset), print options/multiple locations, and non-paragraph/inline-footnote
-  citation contexts remain unsupported. No automatic heading or source-order
+- Styles, nonempty affixes, print options/multiple locations, and non-paragraph/
+  inline-footnote citation contexts remain unsupported. No dependency-field name
+  blacklist: native style owns interpretation/omission. Native dangling references
+  fail as document errors while valid existing selected references may export. No automatic heading or source-order
   numbering is assigned. Native readback is not GUI/typesetting verification.
 - Source identity/text copying now resides in the source layer, so context
   preparation does not depend on document lowering for declaration capture.
@@ -789,7 +793,8 @@ input file/resource base, supplied bibliography path identities, processors nil;
 final parse-tree/input-buffer/export caches are absent. Validate each callback's
 same root, original graph topology/value/text properties, parentage, mappings,
 INFO and private buffer/configuration. Only existing nonempty citation key values
-may differ; existing citation preflight enforces grammar and dependency semantics.
+may differ; citation collection enforces Org syntax/context, then native AST
+planning resolves used keys and output-reference integration invariants.
 After filters, reuse pure owning to detach AST/INFO/mappings and remap worker
 requests before native waits; final input owning still copies parsed dependencies.
 
@@ -822,7 +827,8 @@ agree for visiting buffers; non-file buffers use captured local base.
 Own/classify/normalize/dedup paths. Explicit texts retain priority without stat/read
 and unselected data remains owned. Append missing discovered local regular UTF-8
 BibTeX <=1 MiB; reject symlink components, auto physical aliases, remote/URL/tilde/
-control paths. Validate fixed text grammar/native entry structure. Receipts observe
+control paths. Native parsing and safe consumed AST checks replace the old raw
+text grammar in Issue12; file acquisition constraints stay fixed. Receipts observe
 size/mtime/ctime/inode/device + byte SHA-256; verify around acquisition/native waits
 and final document/byte return, never replacing text or replaying discovery/filters.
 Whole source/config/filter/provided-text baseline precedes discovery; opt-in global

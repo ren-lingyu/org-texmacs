@@ -12,6 +12,31 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
+## Issue12 native bibliography ownership acceptance — uncommitted delivery
+
+User selected native parser/formatter authority, used-key-only ambiguity and no
+uncited dependency expansion; implementation and exact five-command isolated suite
+authorized. Removed raw validator/signature/fake-entry handoff and acquisition
+validator; full native AST owned before resolution, metadata/duplicate fields and
+unused keys preserved. Native output labels/references and with-bib provenance
+validated; pure lowering and snapshots/receipts/guards/lifecycle preserved.
+Locked x86_64-linux Emacs31.1/Org9.8.10/TeXmacs2.1.5.16native controls verify
+@string/#/@online/unknown types, omitted preamble, literal undefined variables
+without cross-request leak, first duplicate field, recovery, native crossref cite
+and ignored xdata.3new pre-fix regressions fail for expected old restrictions.
+Final107/107focused170.676069s;9/9fixed real extension integration12.313207s;
+464/464fullERT339.558582s/full flake exit0, strict compile/lint pass. Includes
+native .tm/PDF/reload parity, native error/reuse and schema/ownership/source/
+dependency mutations.19candidate hashes match isolation;18pre-fix inputs equal
+capture context, exact task-only patch recorded. User root flake overlay unchanged;
+ordinary index empty and implementation still uncommitted. No personal-library,
+GUI, full BibLaTeX or other-platform acceptance. Current implementation/commands/
+limits in memory/issue-12-review.md.14necessary pure-text original-byte artifacts
+separately archived/verified: archive/2026-10-16T16-37-01Z--1ee3de5/MANIFEST.md.
+Project association is capture/pre-fix context, not uncommitted delivery identity.
+After user commit verify exact reviewed delivery and remote Issue12 state; no
+GitHub writes performed and no automatic release milestone added.
+
 ## Default-on STM font-lock acceptance and committed delivery
 
 User-selected implementation: internal nil default/local override, no dedicated

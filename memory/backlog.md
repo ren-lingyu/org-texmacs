@@ -23,15 +23,15 @@ decision.
 
 ## Active next
 
-### Issue12 bibliography native ownership — read-only review selected
+### Issue12 bibliography native ownership — implementation complete, delivery pending
 
-User selects next bibliography topic and supplies guidance; read-only review
-completed in memory/issue-12-review.md. Native parser/formatter authority,
-remove parallel Emacs grammar/signatures, retain AST/source/key/label invariants.
-Worker nonentry filtering, dependency-field guard/formatter context, preflight
-ordering and error classes must join scope assessment. No implementation/native
-probe execution or new release-blocker classification authorized/adopted yet.
-
+User-adopted plan implemented and validated:107focused/464fullERT/9fixed real
+extension integration, strict compile/lint/full flake pass. Native owns BibTeX
+contents; only actual used key ambiguity fails; no automatic uncited dependency
+expansion. Exact implementation/native limits and evidence:
+memory/issue-12-review.md. Ordinary files remain unstaged/uncommitted; next user
+review/commit, then verify exact delivery and remote Issue12 status. No automatic
+v0.5.0 milestone or new work on advanced dependencies is implied.
 
 ### v0.5.0 release readiness — Issue10 and Issue11 user-committed
 

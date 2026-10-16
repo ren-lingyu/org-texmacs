@@ -1,145 +1,118 @@
-# Issue12 bibliography native ownership — read-only review
+# Issue12: native bibliography ownership
 
-User selected bibliography as next topic and supplied Issue12 development guidance,
-explicitly requesting read-only review first. No business edits, test/build/native
-execution, shell networking, ordinary-project staging, external writes or personal-library rereads.
-Development/GAW skills apply. Public web page/API fetch failed, but subsequent
-GitHub connector fetch successfully retrieved complete Issue12 body and all comments
-on 2026-10-16: state open, zero comments, no milestone. Supplied guidance matches
-the issue direction; the verified remote issue association is:
-https://github.com/ren-lingyu/org-texmacs/issues/12 .
-Nine reviewed source/test/README files equal current committed font-lock delivery;
-only unrelated preexisting user flake mirror overlay dirty, index empty.
+## Motivation, authority and delivery state
 
-## Direction and preserved boundary
+https://github.com/ren-lingyu/org-texmacs/issues/12 delegates BibTeX contents to
+native TeXmacs instead of an independent Emacs whitelist/signature model. GitHub
+connector successfully read body and all comments: open, zero comments, no
+milestone at review. Public web cache fetch failed; use dedicated connector.
+User adopted implementation plan and explicitly selected used-key-only ambiguity
+checks and no automatic uncited dependency expansion. Implementation authorized;
+this task's exact probes/baseline/focused/integration/full flake suite plus locked
+dependency access and result reading/copying subsequently authorized. No personal
+bibliography files reread, external writes or ordinary staging/commits.
 
-Guidance agrees with AST-first: native TeXmacs owns BibTeX grammar, entry/field
-interpretation and plain formatting. Elisp owns source identities/snapshots,
-finite usable native AST structure, unambiguous resolvable citation keys and
-output label consistency. Pure lowering uses already-owned AST/formatted output,
-no file/native parser calls. This adopts review scope, not implementation authority
-or a claim that TeXmacs supports any particular BibLaTeX construct.
-Preserve explicit text snapshots, opt-in collector/acquisition policy, input
-copy/ownership, guards before/after worker waits and receipts, lifecycle/cleanup,
-current citation/style/print restrictions. No new parser/type whitelist/field
-semantics model or personal library rewriting.
+The motivating user report was org-organize adding three bibliography sources;
+prior authorized inspection identified @online and bare month=MM outside the old
+whitelist/literal grammar. User reports those files work with ox-latex; do not
+label them corrupt or claim this task tested the personal library. Prior source
+inspection facts remain in memory/pdf-adjacent-checks.md.
 
-Motivation: prior user-mode comparison established org-organize expands source
-collection; Emacs whitelist rejects @online, bare month=MM also outside bounded
-literal grammar. User says same files work ox-latex. Prior authorized inspection
-facts are in memory/pdf-adjacent-checks.md; do not reuse its external read permission
-for this task or call the library corrupt. Native support still requires probes.
+Current uncommitted implementation and README/tests prepared. First105focused pass,
+final107focused pass (170.676069s),9fixed real extension tests pass (12.313207s),
+strict package compilation and package lint pass. Full464/464ERT pass in
+339.558582s, complete authorized600s flake check exits0. Root diff-check passes;
+ordinary index remains empty. Implementation complete, user review/commit pending.
+Root user flake mirror overlay unchanged;19candidate inputs match isolation hash
+manifest. Runtime isolation is tmp/issue-12-bibliography; no system Emacs used.
 
-## Static dependency map
+## Adopted implementation
 
-org-texmacs.el:379 computes ordered type/key/field signatures via validate-source;
-initializer/discovery repeats this at445. At479 deduplicates signature keys;486
-constructs fake bibliography entries with empty fields, builds citation plan and
-fake bib-list output, then structural lowering before any island request. At515
-parses STM islands,524then native bibliography parses; actual type/key/field names
-must equal raw signatures, otherwise worker is stopped. At549 rebuilds plan from
-real AST and real static STM labels, formats native plain output, then constructs
-owned input/consumer and final source check. Changes must rewire this order, not
-simply delete the first validator call.
+- Public signatures, default discovery policy, input slots and worker request
+  format unchanged. Preparation snapshots/initializes/selects/filters/owns once,
+  performs source-independent citation/declaration/link/footnote checks, parses
+  each owned bibliography text once with native parser and immediately copies
+  its full AST, resolves used keys and runs lowering preflight, parses STM
+  islands, then chooses final prefix and native-formats output. No fake entry
+  AST or raw type/key/field signatures. Temporary formatted preflight bib-list
+  never escapes in input, even when there is no print.
+- Raw validator and bibtex require removed, including acquisition validator.
+  Acquisition retains explicit text priority, opt-in collector once,1MiB UTF8
+  local regular-file/symlink/alias restrictions and receipts. Existing source/
+  configuration/dependency guards surround native waits and final consumer.
+- Worker preserves full native document, including opaque metadata. Input copy
+  checks finite safe stree/document, unique absolute source paths and shape of
+  consumed top-level bib-entry/bib-field nodes. No field-name/value whitelist,
+  repeated-field or unused-key rejection. Metadata stays opaque, not rendered
+  or reinterpreted. Effective declared source entries form a key multimap;
+  actual used keys must match exactly one candidate. Never choose a duplicate
+  winner. Unused duplicate keys remain owned; unselected source identities do
+  not make an otherwise unique used key ambiguous.
+- Remove crossref/xdata/related/entryset field blacklist. Only actually cited
+  entries are sent to native plain formatter; no parent expansion or invented
+  Elisp field semantics. Native bibliography output receives captured with-bib
+  context, and bib-list subtree STM provenance moves under that wrapper.
+  Check native cite/reference/pageref targets against actual generated labels;
+  dangling/dynamic unsupported references fail explicitly. Native ignored fields
+  do not independently fail. Prefix/keys/entries/prepared-output matching remains;
+  generated labels must match exactly, retaining duplicates during validation.
+- Native parse errors and format domain errors preserve worker. Missing/ambiguous
+  used key or valid formatted AST with unresolved native reference is a document
+  error, not worker corruption. Malformed protocol/native AST or invalid expected
+  formatted-label response stops worker. Pure input/lowering never parses, reads
+  source buffers/files or invokes native work.
 
-Three distinct placeholders: prepared STM island slots (not this repair target),
-fake bibliography entry AST derived from raw signatures (replace with real native
-AST), and temporary formatted bib-list for structural preflight (separate design
-choice, cannot accidentally conflate it with parsed source AST). Pure lowering
-print handler document.el:1418 requires prepared prefix/keys/entries/body to match
-citation plan. Native AST authoritative source does not remove the prepared-output
-ownership/staleness guard.
+## Verified pinned native behavior
 
-Validator in document.el:1566 contains standard type whitelist, line/header rules,
-no symbolic strings/concatenation/preamble, duplicate fields. Its only bibtex helper
-use is this validator; `(require 'bibtex)` at15 can go if validator removed.
-Acquisition bibliography.el:142 independently invokes validator; remove/simplify
-that entry too, preserving file identity/UTF8/size/alias and receipts policy.
-input.el:36 copies native trees and rejects duplicate fields ignoring case, beyond
-path/key/shape checks. Field-content restrictions need native-ownership review.
+Raw16controls and final rerun report Emacs31.1/Org9.8.10/TeXmacs2.1.5,
+x86_64-linux. @string substitution and # concatenation work. @preamble is omitted
+from returned document; not emitted. @online/unknown types survive parser and
+plain fallback formats title; online URL was retained as slink in field AST but
+omitted from tested plain output. Undefined variables remain literal, including
+following a defining request on the same worker (no demonstrated cross-request
+leak); each source snapshot is parsed separately, no cross-source macro model.
+Duplicate keys/fields remain in native AST; formatter uses first duplicate field.
+Incomplete braced input recovers into an entry; garbage can become metadata with
+no entries. Do not promise raw syntax-error completeness or full BibLaTeX/Biber.
+Crossref yields native cite to parent; when only child is used it fails output
+reference check, and when parent is also cited it exports. Tested xdata/related/
+entryset fields ignored by plain do not cause field-name rejection.
 
-bibliography-plan document.el:445 rejects fields crossref/xdata/related/entryset;
-455passes only cited entries to formatter. This is an additional field-semantic
-restriction outside raw validation. Don't silently retain the blacklist as if
-Issue12 removed all parallel field policy; also don't blindly delete it when
-uncited parent/dependency ASTs may be required by native processing. Native probes
-must establish whether parse resolves those relations or formatting needs owned
-full context. Pass necessary already-owned context to native facilities if needed,
-without inventing an Elisp field-resolution model. No relation-style expansion
-or claim of full BibLaTeX support is adopted by this review.
+## Verification and remaining action
 
-Worker.scm:458calls parse-bibtex-snippet; empty-string result normalized to
-(document), then filters every non-bib-entry child. Comment says source already
-validated. Once validation removed, this filter may erase native declarations,
-metadata or diagnostics. Inspect raw native result BEFORE worker filtering and
-compare formatting output; do not mistake current filtered worker result for full
-native parse semantics. Do not impose a replacement entry-type whitelist.
+Three new tests were created against owned old module/worker snapshot before
+implementation, and all three fail for expected old restrictions: construct
+whitelist, opaque metadata/repeated fields, unused duplicate keys. Initial and
+final baseline runs confirm expected failures; baseline check exit0 means the
+negative control behaved correctly, not that old implementation passes.
+Maintained coverage adds native construct/field behavior, source authority,
+used-key-only ambiguity and effective identities, metadata owning before later
+wait, native parse failure/reuse, input/schema errors, duplicate labels/native
+reference integrity, discovered inputs, .tm/PDF and independent reload parity.
+Existing filter/selection/footnotes/INCLUDE/mutation/pure ownership checks pass in
+focused suite. Native PDF crossref and unknown entry fallback agree after reload;
+no PDF-byte identity assertion. Personal libraries, GUI and other versions not
+certified.14necessary original-byte text files independently archived/verified:
+archive/2026-10-16T16-37-01Z--1ee3de5/MANIFEST.md. Logs preserve original whitespace;
+no PDF/binary/personal sources or redundant committed source copies captured.
+Current memory/model/acquisition contract coordinated. Ordinary index stays empty;
+next user review/optional manual.org interaction after loading fresh package,
+with org-organize enabled and buffer-local discovery t. User decides staging/
+message; ordinary commit remains manual. After user commit verify exact delivery and
+Issue12 state; no automatic GitHub close/comment.
 
-Worker.el:179 error replies produce parse-error and preserve worker; malformed
-transport/stree stops it. Main copy/signature failure currently converted to
-worker-error/stopped. After native ownership, distinguish invalid response/AST
-from valid AST whose keys are duplicate/missing/unresolvable; normal input/domain
-errors should not all be reclassified as worker corruption. Retain native error
-reuse and corrupted-response cleanup tests.
+## Executed isolated validation commands
 
-## Recommended order and test adjustments (not an implementation plan adoption)
-
-Capture source/config/dependencies and prepare/filter Org AST; perform native-
-independent structural/source-identity checks; parse each owned bibliography source
-once natively and immediately own/check returned AST; resolve citations against
-those trees, then complete structural preflight; parse STM islands, select final
-collision-free prefix using their actual labels, format native plain output;
-construct owned input and pure lower. Exact decomposition still to choose.
-Keep source/dependency guards around every new parser/formatter wait, including
-initializer/filter/selected/named-footnote paths. Don't reread buffers/files to
-recover lost bibliography data in pure lowering.
-
-Missing key and cross-source duplicate checks cannot promise zero native parse
-calls after raw scanning removed. Existing ERT source-validation, source-snapshot-
-preflight, citations-preflight and invalid-native-payload assertions need semantic
-migration: separate no-native-independent errors from AST-dependent key failures;
-keep no unnecessary STM/format calls after the latter. Extra/normalized/omitted
-fields are not invalid worker payload merely for differing from source; current
-wrong-key response to uncited source no longer proves malformed AST. Cited key
-missing should be a resolution failure. Keep label/prefix/key/entries prepared-
-output and encoding provenance checks.
-
-Probe @string/defined+undefined macros/#/@preamble/@online in locked native parser,
-actual raw AST, worker AST and native plain formatting, then .tm/PDF where relevant.
-Include same-file and cross-source/reused-worker macro scope to expose state leak;
-no full BibLaTeX promise. Native parser success alone may yield empty/partial AST;
-require supported reference relation/output, without rescanning raw fields to
-invent completeness. Duplicate-key guarantees are over visible owned AST; if
-native collapses duplicate raw entries, record that limitation rather than adding
-a parallel raw parser. Test structural malformed AST, duplicate/missing keys,
-valid AST but unusable reference relation, native failure/recovery, exact .tm/PDF
-labels. Preserve explicit snapshots/opt-in discovery/preprocessing, source and
-receipt changes during waits, ownership and final cleanup.
-
-## Review outcome / next
-
-Guidance is sound with explicit additions for worker filtering, dependency-field
-policy/formatter context, preflight timing and error-class boundaries. Native
-capability outcomes remain untested, no implementation chosen/executed this turn.
-Next user may request a detailed implementation plan/native probes. Any build/test
-requires fresh exact-command authorization; no system Emacs tests. No business
-files or existing tests/README changed. No archive necessary: current source is
-in Git and guidance/findings faithfully distilled here; no unique runtime raw
-artifact or personal source capture this turn.
-
-## Remote issue clarification after successful connector fetch
-
-Title: Delegate BibTeX entry interpretation to native TeXmacs. Issue acceptance
-requires missing/ambiguous actual USED citation keys to fail, not a new promise
-to reject every duplicate unused entry. Review current global duplicate policy
-against this concrete integration boundary rather than mechanically preserving
-all old strictness. Native shape/safe consumption remains necessary.
-Native owns entry selection/dependency/style semantics; advanced dependency
-semantics remain separately scoped, so investigating current crossref-family
-blacklist and selected-only input does not commit this repair to full crossref/
-xdata/related/entryset support. Existing citation/style/print/acquisition scope
-remains unchanged. No immediate v0.5.0 milestone or implementation mechanism is
-imposed by the issue. Native controls must still establish actual pinned behavior.
-Public web cache failure is a transport limitation, not unavailable remote evidence
-now that the connector succeeded. Use the dedicated read-only GitHub connector
-for later issue/status/comment checks when available.
+Working directory: ordinary project root. Every build uses --no-link,
+--no-update-lock-file, --print-build-logs, --print-out-paths:
+- timeout 120s nix build path:./tmp/issue-12-bibliography#checks.x86_64-linux.probes
+- timeout 120s same target baseline; asserts three expected old-code failures.
+- timeout 240s same target focused; initial105pass, final107pass through full check.
+- timeout 120s same target integration; fixed preexisting extension fixtures.
+- timeout 600s nix flake check path:./tmp/issue-12-bibliography
+  --no-update-lock-file --print-build-logs; final107focused/baseline/native controls,
+  464coreERT, strict compilation and lint all pass.
+Necessary result metadata/log reading and copying were included in user authority.
+A metadata query initially could not connect to Nix daemon in sandbox, then
+succeeded under already-authorized result-read scope; no broader test/dep action.
+No timeout or failed positive test; no lock update or root flake mutation.

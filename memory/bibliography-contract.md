@@ -2,6 +2,10 @@
 
 Selected by the user's review/execute request for INBOX section 13. Nodes A/B/C
 are implemented and fully validated, with independent checkpoints.
+Issue12 now replaces the old raw BibTeX grammar/pre-parse signature contract
+with native AST authority;107focused/464fullERT/9fixed extension/full flake
+checks pass, ordinary Issue12 delivery remains uncommitted.
+Current implementation/evidence: memory/issue-12-review.md.
 Public wrappers are
 `org-texmacs-document-from-buffer-discover-bibliography` and
 `org-texmacs-export-from-buffer-discover-bibliography`, in an independent module.
@@ -80,17 +84,19 @@ explicit data already; no new input slot or pure-layer I/O is required.
 
 - Initial reader admits bounded regular local UTF-8 BibTeX text. It
   uses 1 MiB/file, rejects symlink components/physical aliases between auto-read paths,
-  directories, missing/unreadable files, malformed BibTeX and invalid UTF-8. These
+  directories, missing/unreadable files and invalid UTF-8. BibTeX parsing/recovery
+  belongs to native TeXmacs; there is no independent raw grammar validator. These
   limits are covered by maintained positive/negative tests.
 - Normalize only lexical identities; do not canonicalize symlinks behind caller
   supplied identities. Physical alias detection is an acquisition observation,
   separate from bibliography source identity. Explicit text identities need not
   name an existing file and have no file receipt. Mixed explicit/auto alias conflicts
-  remain explicit key/source validation failures, not silent text replacement.
+  remain explicit used-key/source validation failures, not silent text replacement.
 - Read each auto source's bytes for acquisition, check file identity/size/mtime/ctime
-  around the read, decode/validate locally, and own text plus an internal receipt
-  (path, observed file attributes, byte digest). Use existing bounded BibTeX grammar
-  and native parser/formatter; no global BibTeX database/processor discovery.
+  around the read, decode/validate UTF-8 locally, and own text plus an internal receipt
+  (path, observed file attributes, byte digest). Use native parser/formatter and
+  owned native ASTs for citation resolution; no global BibTeX database/processor
+  discovery and no source-field signature comparison.
 - Final checks reread to verify attributes/digest, never to replace captured text
   or re-run conversion. Changed/replaced dependencies invalidate the result. There
   is no watcher, automatic retry, transactional FS/DB promise, ABA-proof guarantee,
@@ -108,13 +114,18 @@ explicit data already; no new input slot or pure-layer I/O is required.
   filter/preparation pipeline → native dependency parse/format → owning/pure lowering.
 - Keep Phase 1 validation unchanged. Filter's bibliography paths must be the fixed
   final source identities; mapped keys are checked against the acquired entry forest.
-  Missing/duplicate keys and unsupported styles/entry dependencies still fail.
+  Missing/ambiguous actually used keys and unsupported citation styles still fail.
+  Unused duplicate keys are retained. No dependency-field name blacklist or
+  automatic uncited dependency expansion; native-generated unresolved references
+  fail explicitly without implementing an Elisp field model.
 - Recheck source and dependency receipts before returning a document/bytes and,
   for any later file consumer, before its write. Wrapping export-to-file and checking
   only after it returns is too late. A minimal first wrapper may return a completed
   document or bytes; file publication/frontend policy can remain separate.
 - Cleanup private views on success/error; no source text/point/mark/narrowing edits,
-  global registration/advice leaks or worker operations before preflight. Arbitrary
+  global registration/advice leaks. Source-independent preflight precedes native
+  work; key-dependent preflight consumes actual parsed bibliography ASTs before
+  STM requests/formatting. Arbitrary
   advice/filter side effects are neither rolled back nor claimed safe to replay.
 
 ## Validation and remaining integration boundary

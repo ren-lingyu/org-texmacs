@@ -1,21 +1,27 @@
 # org-texmacs current memory
 
-## Active: Issue12 bibliography read-only review
+## Completed implementation: Issue12 bibliography — review/commit pending
 
-User selected next bibliography work and supplied Issue12 guidance, requesting
-read-only review first. Static review complete; no business edits/tests/native
-experiments or personal-source rereads. Native BibTeX ownership aligns AST-first,
-but rewire raw signatures/fake entries/preflight, acquisition validator and input
-field restrictions; inspect worker nonentry filtering and crossref-family guard/
-selected-only formatter context. Key checks now depend on native AST, so old
-zero-worker/preflight assertions must be narrowed. Distinguish parser errors,
-invalid payload and valid AST/unresolvable relation. Native construct support
-unverified; GitHub connector subsequently read Issue12 successfully: open, no
-comments. Actual used citation keys are the required resolution/ambiguity scope;
-advanced dependency semantics and a v0.5.0 milestone remain separately scoped.
-Nine source/test/README files equal committed project snapshot; only original
-user flake overlay dirty, index empty. Full review and proposed next boundaries:
-memory/issue-12-review.md. No implementation or test execution authorized yet.
+User-adopted native bibliography ownership plan implemented and validated; task
+business files remain unstaged/uncommitted. No raw BibTeX whitelist/signatures;
+owned full native AST before used-key resolution. Unused duplicates accepted,
+used ambiguous/missing keys fail, no automatic parent expansion; native output
+references/labels and with-bib context/provenance checked. Acquisition policy,
+source/config/dependency checks, worker lifecycle and pure lowering preserved.
+README/comments/tests updated. Locked x86_64-linux Emacs31.1/Org9.8.10/TeXmacs2.1.5:
+16native controls,3expected old-code failures,107/107focused170.676069s,
+9/9fixed extension integration12.313207s,464/464fullERT339.558582s;
+full authorized600s flake check exit0, strict compilation and lint pass.
+19candidate inputs equal tested snapshot;18pre-fix source/README/lock inputs equal
+committed capture context. Original user flake overlay unchanged, ordinary index
+empty. No personal-library rereads or GUI/other-platform/full BibLaTeX claim.
+Current contract/evidence/commands: memory/issue-12-review.md.14necessary original-
+byte text artifacts independently archived and verified at archive/2026-10-16T16-37-01Z--1ee3de5/MANIFEST.md.
+Next: user review and optional fresh-version interactive manual.org check with
+org-organize/discovery enabled; ordinary staging/message requires user direction,
+commit remains manual. After user commit verify exact delivery and Issue12 state
+via GitHub connector, update memory accordingly. Issue was open/no comments/no
+milestone at last remote review; no external close/comment was performed.
 
 ## Completed: supplementary PDF derived-state checks
 
