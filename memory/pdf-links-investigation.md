@@ -92,3 +92,28 @@ controls; unrelated native dictionary rewrite is outside scope. Existing archive
 records remain immutable. Working tmp is reproducible evidence, not current
 workflow authority. Next: user review/delivery; fonts postponed, font-lock and
 representative/full release-readiness work remain separate.
+
+## Read-only adjacent-risk review after acceptance
+
+User asks whether similar causes may affect other behavior. Targeted production
+search finds update-current-buffer/print-to-file only in the PDF consumer;
+serialization constructs and serializes a file tree directly, session readback
+checks installed style/initial/body. Neither claims completed layout, so absence
+of forced typesetting there is not itself a defect. No additional runtime check,
+project edit or newly reproduced defect from this review.
+
+Potential verification gaps: TOC/page-reference/citation/repeated-footnote
+clickable annotations share native link machinery; existing ERT generally
+checks their values/text/layout, while new annotation ERT directly covers an
+external hlink and described same-document jump. The common fix may cover those
+annotations too, but text/reference success alone does not prove each target.
+Historical unresolved citation markers already motivated the two-print fix, a
+similar derived-state sequencing issue rather than a newly found regression.
+Complex pagination/page references may need more convergence than fixed passes;
+no remaining failing example demonstrated. Repeated invalidation calls are not
+multiple actual layout rounds and must not be counted as convergence evidence.
+Any further work should use targeted annotation/target or long-document
+reference controls, not indiscriminate forced layout in pure/session/serializer
+APIs. These are bounded review findings, not adopted implementation backlog.
+No new raw archive needed: necessary distinctions extracted here, code/tests
+and existing immutable evidence retain the basis.
