@@ -1,0 +1,22 @@
+this derivation will be built:
+  /nix/store/gqy9fncxw4y6pfyski5mip3jvngphgz9-org-texmacs-issue11-focused.drv
+building '/nix/store/gqy9fncxw4y6pfyski5mip3jvngphgz9-org-texmacs-issue11-focused.drv'...
+org-texmacs-issue11-focused> Running 14 tests (2026-10-16 07:36:27+0000, selector `(or (tag issue11) "^org-texmacs-context-file-options-remain-snapshotted$" "^org-texmacs-document-date-worker-wait-snapshot$" "^org-texmacs-document-preformatted-native-and-provenance$" "^org-texmacs-document-real-custom-heading-settings$" "^org-texmacs-document-real-failure-repair-and-update$" "^org-texmacs-headline-native-metadata-literal$" "^org-texmacs-headline-output-settings-snapshot$")')
+org-texmacs-issue11-focused>    passed   1/14  org-texmacs-headline-native-metadata-literal (1.927589 sec)
+org-texmacs-issue11-focused>    passed   2/14  org-texmacs-headline-output-settings-snapshot (0.007448 sec)
+org-texmacs-issue11-focused>    passed   3/14  org-texmacs-document-real-failure-repair-and-update (2.351029 sec)
+org-texmacs-issue11-focused>    passed   4/14  org-texmacs-document-real-custom-heading-settings (1.867695 sec)
+org-texmacs-issue11-focused>    passed   5/14  org-texmacs-document-preformatted-native-and-provenance (1.828386 sec)
+org-texmacs-issue11-focused>    passed   6/14  org-texmacs-document-date-worker-wait-snapshot (0.002963 sec)
+org-texmacs-issue11-focused>    passed   7/14  org-texmacs-context-file-options-remain-snapshotted (0.001472 sec)
+org-texmacs-issue11-focused>    passed   8/14  org-texmacs-document-issue11-bare-identity-and-purity (0.026024 sec)
+org-texmacs-issue11-focused>    passed   9/14  org-texmacs-document-issue11-container-structure-and-paths (8.262162 sec)
+org-texmacs-issue11-focused>    passed  10/14  org-texmacs-document-issue11-display-mixtures-reject (0.002414 sec)
+org-texmacs-issue11-focused>    passed  11/14  org-texmacs-document-issue11-file-provenance-and-source-errors (1.650790 sec)
+org-texmacs-issue11-focused>    passed  12/14  org-texmacs-document-issue11-nonbare-boundaries (0.000588 sec)
+org-texmacs-issue11-focused>    passed  13/14  org-texmacs-pdf-issue11-bare-block-and-reload-consistency (57.895825 sec)
+org-texmacs-issue11-focused>    passed  14/14  org-texmacs-pdf-issue11-original-equation-layout (4.148829 sec)
+org-texmacs-issue11-focused> 
+org-texmacs-issue11-focused> Ran 14 tests, 14 results as expected, 0 unexpected (2026-10-16 07:37:47+0000, 79.974344 sec)
+org-texmacs-issue11-focused> 
+/nix/store/baq8ykiv3nwh79pm4g62wmpy3b68s731-org-texmacs-issue11-focused
