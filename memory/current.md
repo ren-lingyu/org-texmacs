@@ -37,8 +37,8 @@ archive had no inferred project parent because candidate was then uncommitted;
 recorded baseline is exact red source/capture context. Current checkpoint grounds
 actual committed delivery verification, not original runtime-test provenance.
 Local Issue10 implementation/validation/user delivery complete. No version/lock/
-INBOX/example/external writes. Remote#10 last observed open; closure not checked
-or performed. PDF links next by priority, implementation requires separate user
+INBOX/example/external writes. Remote#10 verified closed/completed on2026-10-16;
+closure timestamp/source recorded in memory/evidence.md. PDF links next by priority, implementation requires separate user
 selection; fonts postponed,font-lock later.
 v0.5.0 remains planned, not release-ready. No other implementation selected.
 
@@ -52,7 +52,8 @@ ERT/README changed. All25committed input hashes match final accepted manifest,
 complete message equals approved tmp/commit.md draft. Index empty; user flake
 mirror remains unstaged. Previous14focused/9real/430core acceptance transfers by
 exact byte identity; no rerun needed. Association records this delivery verification,
-not original runtime-test provenance. No external issue/publication check this turn.
+not original runtime-test provenance. Remote#11 subsequently verified
+closed/completed on2026-10-16; publication refs not checked.
 Bare one registered
 string island plus only other ordinary ASCII whitespace children/no Org objects
 emits complete copied island. Mixed known direct display roots explicitly reject;
@@ -77,8 +78,8 @@ Original acceptance/archive checkpoint had no inferred project parent because
 candidate was then uncommitted; baseline identifies exact red-control source.
 Current delivery verification grounds the newly inspected committed snapshot.
 No INBOX/version/lock/example edits or external writes. Local Issue11 delivery is
-complete; remote#11 last observed open, current remote closure not verified.
-#10 then PDF links follow11; Chinese fonts postponed, font-lock later. No other
+complete; remote#11 verified closed/completed, as is#10.
+PDF links follow completed11/10; Chinese fonts postponed, font-lock later. No other
 feature implementation or release operation selected.
 
 ## v0.5.0 release readiness context
@@ -119,7 +120,7 @@ No full release gate was run in that phase. Native reload harness failures
 corrected and explicitly excluded from acceptance. No ordinary staging/release/
 external writes. 37necessary original-byte text artifacts archived and verified separately at
 archive/2026-10-16T06-29-51Z--8a90b4c/MANIFEST.md; PDFs/binaries excluded.
-Issue11 repair is now implemented/validated/user-committed above; #10 and PDF links follow it;
+Issue11 and Issue10 repairs are now implemented/validated/user-committed above; PDF links follow them;
 P1 font/export configuration/edit-lifecycle gaps remain before release acceptance.
 
 ## Completed committed delivery: Issue4 remaining date repair and semantic audit

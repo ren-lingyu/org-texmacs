@@ -96,6 +96,7 @@ input hashes match final accepted manifest; complete message equals draft.
 Index empty; only existing user flake remains unstaged. Earlier acceptance
 transfers by byte identity, no new build/test or business edits. Delivery checkpoint
 association means exact committed snapshot verification, not original runtime
-provenance. Remote Issue11 last observed open; closure not rechecked, no external
-write/publication. #10 then PDF links follow by user priority. Fonts postponed;
+provenance. Remote Issue11 verified closed/completed on2026-10-16; timestamp/source
+in memory/evidence.md. No external write/publication. #10 is also delivered and
+remotely closed; PDF links follow by user priority. Fonts postponed;
 font-lock later. v0.5.0 remains planned, not release-ready.

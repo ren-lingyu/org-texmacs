@@ -71,7 +71,8 @@ definitions, request filtering and first-use/provenance boundaries verified.
 compile/lint/full checks pass. All25final inputs match worktree,5file patch
 reconstructs exactly. Delivery parent=Issue11 baseline,5changed paths/all25committed
 hashes/full approved message verified; capability now on local main. Index empty,
-only user flake unstaged. No remote closure/publication claim. Contract/evidence: memory/issue-10-plan.md.
+only user flake unstaged. Remote#10 verified closed/completed on2026-10-16;
+publication refs not checked. Contract/evidence: memory/issue-10-plan.md.
 The initial review required evidence for the equation
 block/paragraph PDF discrepancy (#11), PDF annotations and Chinese fonts; the
 previous bounded native tag audit alone did not establish these cases.
@@ -82,7 +83,7 @@ mixed rejection; list-first marker route retained, no automatic splitting.
 Final14focused/9real/430core/full compile/lint pass; source/encoding/provenance
 boundaries and matched-context native layout verified. Delivery parent/path set/
 all25input hashes/full approved message verified; repair now on local main.
-Remote closure/publication not verified. Contract/evidence:
+Remote#11 verified closed/completed on2026-10-16; publication refs not checked. Contract/evidence:
 memory/issue-11-implementation.md. Links/CJK share
 native controls and need further config evidence. Org Scheme fontification can
 fontify STM spans; editing integration still unverified. See
@@ -976,3 +977,13 @@ incremental synchronization, and broader Org document-wide resolution remain
 future consumer/document work. `memory/backlog.md` distinguishes adopted work,
 deferred candidates, and unresolved design boundaries; unsupported entries in
 this support matrix are not automatically implementation commitments.
+
+## User delivery tracking preference
+
+After verifying a user commit that references or closes an issue, also read the
+corresponding remote issue state and compare it with the last verified state.
+A closing footer alone does not prove closure. Update GAW selectively when the
+verified tracking state, unresolved follow-up or next action changes; an unchanged
+state does not require a checkpoint. If lookup fails, retain explicit uncertainty.
+Read-only verification does not authorize external issue writes. User requested
+this recurring delivery check on2026-10-16.

@@ -90,8 +90,8 @@ changed. All25committed input hashes equal final accepted manifest; full message
 equals tmp draft and preserved draft below. Index empty, only original user flake
 mirror unstaged. Prior46focused/9real/437core acceptance transfers by exact bytes;
 no new tests/business edits. Project association records exact delivery verification,
-not original uncommitted runtime provenance. Remote#10 closure not rechecked,
-last observed open; no external write/publication. PDF links next by user priority;
+not original uncommitted runtime provenance. Remote#10 verified closed/completed
+on2026-10-16; timestamp/source in memory/evidence.md. No external write/publication. PDF links next by user priority;
 fonts postponed,font-lock later. v0.5.0 remains planned, not release-ready.
 
 ## Verified delivery message

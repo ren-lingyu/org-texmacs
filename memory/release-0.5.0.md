@@ -135,12 +135,13 @@ see investigation record for evidence/limits. User now selected Issue11 final
 implementation plan, now locally implemented/validated and user-committed:
 memory/issue-11-implementation.md; priority11->10->PDF links. Final430core/14focused/
 9real/full compile/lint pass. Delivery exact parent/paths/all25input hashes/message
-verified; local delivery complete, remote Issue11 closure not rechecked.
+verified; local delivery complete, remote Issue11 verified closed/completed
+on2026-10-16.
 Issue10 final user-selected plan now implemented/accepted/user-committed:
 memory/issue-10-plan.md;46focused/9real/437core/strictcompile/lint/full gate pass.
 Delivery parent=Issue11 baseline,5changed paths/all25committed input hashes/full
-reviewed message verified; index empty, user flake unstaged. Remote#10 closure
-not rechecked. This is not full release acceptance.
+reviewed message verified; index empty, user flake unstaged. Remote#10 verified
+closed/completed on2026-10-16; timestamps/sources: memory/evidence.md. This is not full release acceptance.
 Chinese font investigation postponed; font-lock later. Original source-mapping
 fixture linkage for item3 remains distinct. Then P1 conclusions, real-document
 and complete gate, metadata/docs. No further user answer needed merely to record

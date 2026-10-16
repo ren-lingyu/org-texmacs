@@ -44,13 +44,13 @@ rejection, leading-list exception; no automatic splitting. Final14/14focused,
 checks. Seven stale expectations migrated; user committed one coherent fix with
 Closes:#11. Exact parent/three changed paths/all25input hashes/full draft message
 verified; at that delivery index was empty with only user flake mirror unstaged.
-Remote#11 closure not
-rechecked, last observed open.
+Remote#11 verified closed/completed on2026-10-16.
 Issue10 adopted contract implemented: memory/issue-10-plan.md. Final46focused/9real/
 437core/full compile/lint pass,25final identities and5file reconstruction verified.
 User committed exactly5task paths as one feat(document) delivery with Closes:#10.
 Parent=Issue11 baseline, all25committed hashes/full approved message verified.
-Index empty, existing user flake unstaged; remote#10 closure not rechecked.
+Index empty, existing user flake unstaged; remote#10 verified closed/completed
+on2026-10-16. Remote timestamps/sources: memory/evidence.md.
 No external writes. PDF links are next, no implementation selected yet.
 Adopted priority11->10->PDF links, Chinese fonts postponed, font-lock later.
 No release/version authority. #9 adopted-later after

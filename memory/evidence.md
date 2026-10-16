@@ -3006,3 +3006,25 @@ closure not rechecked, last observed open; no external writes/publication.
 No new archive needed: ordinary commit preserves implementation and message;
 existing immutable archive retains accepted harness/results/diagnostic evidence.
 Local delivery complete; PDF links next only after user selection.
+
+
+## Remote delivery tracking check: Issues10 and11 (2026-10-16)
+
+Read-only GitHub connector fetch_issue calls now report both issues closed with
+state_reason=completed:
+- https://github.com/ren-lingyu/org-texmacs/issues/10 — closed_at/updated_at
+  2026-10-16T10:37:09Z.
+- https://github.com/ren-lingyu/org-texmacs/issues/11 — closed_at/updated_at
+  2026-10-16T09:19:33Z.
+These supersede earlier last-observed-open/closure-unverified tracking claims.
+The read verifies current external state, not the mechanism that closed either
+issue, publication refs or new runtime behavior. No external writes/business
+edits/tests. No additional project parent: this checkpoint concerns remote state
+and a user working preference, not a new exact-source observation.
+
+User asks to check related issue state after issue-associated/closing commits and
+judge whether GAW needs updating; persistent convention in memory/project.md.
+Next recommendation remains bounded PDF annotation/export-path/configuration
+investigation, since prior package/native controls all lacked link annotations.
+No new implementation selected. Fonts postponed, font-lock later. Routine issue
+metadata needs extraction, not a new raw archive; existing archives stay immutable.
