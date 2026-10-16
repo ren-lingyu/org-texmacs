@@ -23,11 +23,10 @@ decision.
 
 ## Active next
 
-### v0.5.0 release readiness — Issue10 candidate accepted, Issue11 committed
+### v0.5.0 release readiness — Issue10 and Issue11 user-committed
 
-Status: Issue10 implementation/automated acceptance complete, uncommitted candidate
-pending user review/delivery; Issue11 user delivery complete. Other release
-requirements **adopted-later**.
+Status: Issue10 and Issue11 implementation/automated acceptance/user delivery
+complete. Other release requirements **adopted-later**.
 Full gate, all nine items, evidence limits and decisions:
 memory/release-0.5.0.md. Required P0: #10 inline-footnote STM, #11 equation
 block/paragraph discrepancy resolution, prior block-mapping regression (confirm
@@ -49,9 +48,10 @@ Remote#11 closure not
 rechecked, last observed open.
 Issue10 adopted contract implemented: memory/issue-10-plan.md. Final46focused/9real/
 437core/full compile/lint pass,25final identities and5file reconstruction verified.
-Exactly5task paths now staged as one feat(document) delivery, all25index hashes
-match accepted inputs; tmp/commit.md has Closes:#10, full draft in Issue10 record.
-Existing user flake remains unstaged; user review/commit/remote#10 tracking pending. No external writes.
+User committed exactly5task paths as one feat(document) delivery with Closes:#10.
+Parent=Issue11 baseline, all25committed hashes/full approved message verified.
+Index empty, existing user flake unstaged; remote#10 closure not rechecked.
+No external writes. PDF links are next, no implementation selected yet.
 Adopted priority11->10->PDF links, Chinese fonts postponed, font-lock later.
 No release/version authority. #9 adopted-later after
 0.5.0 before0.6.0; #7 deferred and not a0.5.0 blocker. Earlier native footnote

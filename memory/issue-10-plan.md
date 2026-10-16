@@ -1,4 +1,4 @@
-# Issue10 inline footnote STM accepted candidate
+# Issue10 inline footnote STM committed delivery
 
 ## Adopted contract and authorization
 
@@ -81,19 +81,22 @@ Other intermediate failures sufficiently extracted; no PDF/binary/dependency/ful
 tmp/INBOX capture. Committed baseline is exact old red source, not accepted source;
 no inferred additional project parent for uncommitted acceptance.
 
-Selected local implementation/automated acceptance complete. User authorized
-sequential staging/message with at most3minutes between groups. Five strongly
-coupled files form one commit, no split/inter-group polling needed. Exactly
-README.org,fragment/document/context modules and maintained ERT now staged; all25
-index input hashes match accepted manifest/worktree, staged diff check clean.
-Only original user flake remains unstaged. User review/commit pending; verify
-exact input blobs, parent, full message and tracking after user commit.
-Remote#10 last observed open, no current closure check or external write. Fonts
-postponed; PDF links follow #10 by priority. No release/version operation selected.
+Selected local implementation/automated acceptance/user delivery complete.
+User authorized sequential staging/message with max3minute inter-group polling;
+one coupled group, no wait. User committed exact reviewed feat(document): support
+STM fragments in inline footnotes, Closes:#10. Parent verified as committed Issue11
+baseline; exactly README.org,fragment/document/context modules,maintained ERT
+changed. All25committed input hashes equal final accepted manifest; full message
+equals tmp draft and preserved draft below. Index empty, only original user flake
+mirror unstaged. Prior46focused/9real/437core acceptance transfers by exact bytes;
+no new tests/business edits. Project association records exact delivery verification,
+not original uncommitted runtime provenance. Remote#10 closure not rechecked,
+last observed open; no external write/publication. PDF links next by user priority;
+fonts postponed,font-lock later. v0.5.0 remains planned, not release-ready.
 
-## Staged delivery message
+## Verified delivery message
 
-tmp/commit.md holds the following reviewed draft for user review.
+User commit matches the complete reviewed draft below and tmp/commit.md.
 feat classifies newly supported previously excluded inline-note STM combination.
 
 ```text

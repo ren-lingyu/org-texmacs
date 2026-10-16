@@ -2989,3 +2989,20 @@ Only existing user flake mirror unstaged. tmp/commit.md prepared as feat(documen
 support STM fragments in inline footnotes, Closes:#10. Full message extracted in
 memory/issue-10-plan.md for recovery; no new archive needed for active draft.
 No ordinary commit or external write; user review/commit verification next.
+
+
+## Issue10 user commit delivery verification (2026-10-16)
+
+User reports commit; read-only inspection verifies one-parent feat(document):
+support STM fragments in inline footnotes, Closes:#10. Parent is exact committed
+Issue11 baseline; changed paths exactly README.org,fragment/document/context,ERT.
+All25committed source SHA256 equal final accepted manifest; full message equals
+both tmp/commit.md and GAW-preserved reviewed draft. Ordinary index empty; only
+existing user flake mirror unstaged. Prior46focused/9real/437core/full compile/lint
+acceptance transfers by exact byte identity; no new tests/builds/business edits.
+Additional project parent means this exact committed delivery verification, not
+retroactive provenance for original uncommitted runtime acceptance. Remote#10
+closure not rechecked, last observed open; no external writes/publication.
+No new archive needed: ordinary commit preserves implementation and message;
+existing immutable archive retains accepted harness/results/diagnostic evidence.
+Local delivery complete; PDF links next only after user selection.

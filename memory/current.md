@@ -1,9 +1,13 @@
 # org-texmacs current memory
 
-## Completed candidate: Issue10 inline footnote STM
+## Completed committed delivery: Issue10 inline footnote STM
 
-Final user-selected contract implemented/automatically accepted, now staged as
-one coherent feat(document) commit; uncommitted. Full contract/implementation/
+Final user-selected contract implemented/automatically accepted/user-committed.
+One coherent feat(document) delivery with Closes:#10; exact parent is committed
+Issue11 baseline, exactly5task paths changed. All25committed input hashes equal
+accepted manifest; complete message equals tmp draft and GAW-preserved full draft.
+Index empty, only original user flake mirror unstaged. Previous46focused/9real/
+437core acceptance transfers by exact bytes, no new tests needed. Full contract/implementation/
 diagnostics: memory/issue-10-plan.md.
 Anonymous/named inline definitions admit configured direct-text fragments; shared
 Issue11 bare eligibility promotes complete copied island, other bodies retain
@@ -28,17 +32,14 @@ independent patch reconstructs all5task files byte-exactly, source/root lock sta
 
 12necessary original-byte text artifacts archived/verified separately:
 archive/2026-10-16T10-29-35Z--c31d3b1/MANIFEST.md.
-No PDFs/binaries/dependency tree/full tmp/INBOX capture. Uncommitted acceptance has
-no inferred additional project parent; recorded committed baseline is exact red
-source/capture context only. User authorized staging/message: exactly5task paths
-staged, all25index input hashes equal accepted snapshot/worktree; diff check clean.
-Only original user flake mirror unstaged. tmp/commit.md draft: feat(document):
-support STM fragments in inline footnotes, Closes:#10; full draft preserved in
-memory/issue-10-plan.md. One coupled group, no inter-group polling. No version/
-lock/INBOX/example/external writes. Next user reviews draft and makes project
-commit; verify exact blobs/parent/message afterward. Remote#10 last observed open;
-closure
-not checked/performed. PDF links next by priority; fonts postponed,font-lock later.
+No PDFs/binaries/dependency tree/full tmp/INBOX capture. Original acceptance and
+archive had no inferred project parent because candidate was then uncommitted;
+recorded baseline is exact red source/capture context. Current checkpoint grounds
+actual committed delivery verification, not original runtime-test provenance.
+Local Issue10 implementation/validation/user delivery complete. No version/lock/
+INBOX/example/external writes. Remote#10 last observed open; closure not checked
+or performed. PDF links next by priority, implementation requires separate user
+selection; fonts postponed,font-lock later.
 v0.5.0 remains planned, not release-ready. No other implementation selected.
 
 ## Completed committed delivery: Issue11 bare STM paragraph repair

@@ -62,16 +62,16 @@ and separate delivery status in memory/issue-4-closure.md/current.md.
 ## v0.5.0 readiness and accepted candidates
 
 Read-only INBOX review adopts release readiness priorities in
-memory/release-0.5.0.md. Issue10 now has an uncommitted accepted candidate:
+memory/release-0.5.0.md. Issue10 is now user-committed and verified:
 anonymous/named inline-note direct text shares configured discovery, owned body
 splitting/registration and pure bare/mixed lowering with paragraph. Strict
 malformed/cross-object errors, snapshot-coordinate recovery for hidden named
 definitions, request filtering and first-use/provenance boundaries verified.
 7new maintained ERT plus migrated exclusion; final46focused/9real/437core/strict
 compile/lint/full checks pass. All25final inputs match worktree,5file patch
-reconstructs exactly;5task files now staged,25index hashes match accepted inputs,
-user flake unstaged. Full delivery draft in memory/issue-10-plan.md. User commit pending,
-no main/remote closure claim. Contract/evidence: memory/issue-10-plan.md.
+reconstructs exactly. Delivery parent=Issue11 baseline,5changed paths/all25committed
+hashes/full approved message verified; capability now on local main. Index empty,
+only user flake unstaged. No remote closure/publication claim. Contract/evidence: memory/issue-10-plan.md.
 The initial review required evidence for the equation
 block/paragraph PDF discrepancy (#11), PDF annotations and Chinese fonts; the
 previous bounded native tag audit alone did not establish these cases.
@@ -261,7 +261,7 @@ Committed as the named-footnote revision; the verified diff matches.
 - References remain direct paragraph children. Separate bodies support the
   existing paragraph/list/container/static-block/table subset; normal fragment
   discovery applies to their paragraphs. At that original node, inline bodies retained
-  the inline subset without STM discovery; the current Issue10 candidate above
+  the inline subset without STM discovery; the current Issue10 delivery above
   extends that boundary. STM/file provenance composes through the body
   wrappers and is emitted once.
 - The source's `org-footnote-section` joins the copied/rechecked parser settings.
