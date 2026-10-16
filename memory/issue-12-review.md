@@ -2,10 +2,11 @@
 
 User selected bibliography as next topic and supplied Issue12 development guidance,
 explicitly requesting read-only review first. No business edits, test/build/native
-execution, shell networking, staging, external writes or personal-library rereads.
-Development/GAW skills apply. GitHub issue12 public page fetch failed (cache miss);
-search did not retrieve its body. User-pasted guidance is review input; remote
-status/comments not independently verified. URL association user-supplied:
+execution, shell networking, ordinary-project staging, external writes or personal-library rereads.
+Development/GAW skills apply. Public web page/API fetch failed, but subsequent
+GitHub connector fetch successfully retrieved complete Issue12 body and all comments
+on 2026-10-16: state open, zero comments, no milestone. Supplied guidance matches
+the issue direction; the verified remote issue association is:
 https://github.com/ren-lingyu/org-texmacs/issues/12 .
 Nine reviewed source/test/README files equal current committed font-lock delivery;
 only unrelated preexisting user flake mirror overlay dirty, index empty.
@@ -125,3 +126,20 @@ requires fresh exact-command authorization; no system Emacs tests. No business
 files or existing tests/README changed. No archive necessary: current source is
 in Git and guidance/findings faithfully distilled here; no unique runtime raw
 artifact or personal source capture this turn.
+
+## Remote issue clarification after successful connector fetch
+
+Title: Delegate BibTeX entry interpretation to native TeXmacs. Issue acceptance
+requires missing/ambiguous actual USED citation keys to fail, not a new promise
+to reject every duplicate unused entry. Review current global duplicate policy
+against this concrete integration boundary rather than mechanically preserving
+all old strictness. Native shape/safe consumption remains necessary.
+Native owns entry selection/dependency/style semantics; advanced dependency
+semantics remain separately scoped, so investigating current crossref-family
+blacklist and selected-only input does not commit this repair to full crossref/
+xdata/related/entryset support. Existing citation/style/print/acquisition scope
+remains unchanged. No immediate v0.5.0 milestone or implementation mechanism is
+imposed by the issue. Native controls must still establish actual pinned behavior.
+Public web cache failure is a transport limitation, not unavailable remote evidence
+now that the connector succeeded. Use the dedicated read-only GitHub connector
+for later issue/status/comment checks when available.

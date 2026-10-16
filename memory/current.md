@@ -10,7 +10,9 @@ field restrictions; inspect worker nonentry filtering and crossref-family guard/
 selected-only formatter context. Key checks now depend on native AST, so old
 zero-worker/preflight assertions must be narrowed. Distinguish parser errors,
 invalid payload and valid AST/unresolvable relation. Native construct support
-unverified; GitHub12page fetch failed, supplied guidance is current input.
+unverified; GitHub connector subsequently read Issue12 successfully: open, no
+comments. Actual used citation keys are the required resolution/ambiguity scope;
+advanced dependency semantics and a v0.5.0 milestone remain separately scoped.
 Nine source/test/README files equal committed project snapshot; only original
 user flake overlay dirty, index empty. Full review and proposed next boundaries:
 memory/issue-12-review.md. No implementation or test execution authorized yet.
