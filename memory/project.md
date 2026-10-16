@@ -59,11 +59,19 @@ verified by parent/path sets/all25accepted blobs/messages; no new release claim.
 Full audit/evidence/limits
 and separate delivery status in memory/issue-4-closure.md/current.md.
 
-## Planned v0.5.0 scope, not current support
+## v0.5.0 readiness and accepted candidates
 
 Read-only INBOX review adopts release readiness priorities in
-memory/release-0.5.0.md. Inline-footnote STM (#10) is a required future extension,
-not current support. The initial review required evidence for the equation
+memory/release-0.5.0.md. Issue10 now has an uncommitted accepted candidate:
+anonymous/named inline-note direct text shares configured discovery, owned body
+splitting/registration and pure bare/mixed lowering with paragraph. Strict
+malformed/cross-object errors, snapshot-coordinate recovery for hidden named
+definitions, request filtering and first-use/provenance boundaries verified.
+7new maintained ERT plus migrated exclusion; final46focused/9real/437core/strict
+compile/lint/full checks pass. All25final inputs match worktree,5file patch
+reconstructs exactly; index empty/user flake excluded. User review/commit pending,
+no main/remote closure claim. Contract/evidence: memory/issue-10-plan.md.
+The initial review required evidence for the equation
 block/paragraph PDF discrepancy (#11), PDF annotations and Chinese fonts; the
 previous bounded native tag audit alone did not establish these cases.
 Isolated probes now reproduce #10 and identify #11 wrapper-sensitive native
@@ -251,8 +259,9 @@ Committed as the named-footnote revision; the verified diff matches.
   anchors avoid static STM labels and do not assume native counter numbers.
 - References remain direct paragraph children. Separate bodies support the
   existing paragraph/list/container/static-block/table subset; normal fragment
-  discovery applies to their paragraphs. Inline bodies retain the inline
-  subset without STM discovery. STM/file provenance composes through the body
+  discovery applies to their paragraphs. At that original node, inline bodies retained
+  the inline subset without STM discovery; the current Issue10 candidate above
+  extends that boundary. STM/file provenance composes through the body
   wrappers and is emitted once.
 - The source's `org-footnote-section` joins the copied/rechecked parser settings.
   Its special headline is omitted after definitions have been collected.

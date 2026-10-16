@@ -136,6 +136,10 @@ implementation plan, now locally implemented/validated and user-committed:
 memory/issue-11-implementation.md; priority11->10->PDF links. Final430core/14focused/
 9real/full compile/lint pass. Delivery exact parent/paths/all25input hashes/message
 verified; local delivery complete, remote Issue11 closure not rechecked.
+Issue10 final user-selected plan now implemented/accepted, uncommitted candidate:
+memory/issue-10-plan.md;46focused/9real/437core/strictcompile/lint/full gate pass.
+All25final identities/source stability and5file reconstruction verified; user
+review/delivery/remote tracking pending. This is not full release acceptance.
 Chinese font investigation postponed; font-lock later. Original source-mapping
 fixture linkage for item3 remains distinct. Then P1 conclusions, real-document
 and complete gate, metadata/docs. No further user answer needed merely to record

@@ -2936,3 +2936,43 @@ acceptance was uncommitted and is not retroactively assigned commit provenance.
 Remote closure not rechecked, last observed open; no external write/publication.
 No additional archive needed: ordinary commit preserves implementation/draft
 message and existing immutable archive preserves accepted harness/raw evidence.
+
+
+## Issue10 inline footnote accepted candidate (2026-10-16)
+
+User selected final bare/strict-error contract and implementation, separately
+repeated sequential baseline120/focused240/integration120/full600 locked flake
+commands/network dependency access/results. Exactly fragment/document/context/
+README/ERT changed, no ordinary staging/commit.7new maintained ERT plus old
+negative exclusion migrated to positive support (+7net437core). Final same-input
+46/46focused93.714702s (within full gate),9/9real10.217289s,437/437core267.394606s;
+full600s command exit0,strict compile/lint/all applicable checks pass. Only locked
+x86_64-linux tested. Native4anonymous/named/forward/bare inline-versus-separate
+footnote PDF text/geometry<=1pt and independent .tm reload; no PDF byte equality.
+All11default/custom/atomic pure roots,6valid discovery/export boundary fixtures,
+5invalid candidate cases,10known display-root mixtures,5full/selected/subtree/
+region/narrowed modes with request order/dead source/file+STM paths covered.
+Existing empty-note, repeated-note,Issue11 and scope regressions retained.
+
+Initial pre-edit2expected red failures0.295610s prove zero discovery and pure
+context refusal; final gate repeats2expected red0.313889s, not candidate failures.
+Shallow org-element-context has bounds but no children: bounded full Org AST
+log demonstrates code object closing beyond candidate. Fixed by resolving parsed
+children in same private masked snapshot, checking actual object end and allowing
+foreign markup from STM quoted strings using dedicated syntax table. No worker
+in discovery or source fallback; original-note body coordinates make restored
+synthetic paragraphs preparable. Shared pure helper retains empty concat string.
+Initial docstring-width/empty-slot and guard failures extracted; intermediate full
+source snapshots not claimed. README audit found remaining old exclusion; only
+README changed after first full pass, final real/full rerun accepts final docs.
+
+All25baseline/25candidate/11foreign hashes checked, final5file patch independently
+reconstructs exactly; source/root lock stable.12necessary original-byte text
+artifacts verified in separate immutable archive-only checkpoint:
+archive/2026-10-16T10-29-35Z--c31d3b1/MANIFEST.md.
+No PDFs/binaries/dependency/full tmp/INBOX. Committed baseline is exact red source
+and capture context, not accepted uncommitted runtime provenance; no inferred
+project parent. Operational contract/diagnostics/next: memory/issue-10-plan.md.
+Candidate pending user review/authorized staging/message/user commit verification.
+Index empty;5task files plus existing user flake dirty. Remote#10 last observed
+open, no closure check/write/publication. Fonts postponed, PDF links next.

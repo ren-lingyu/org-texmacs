@@ -1,17 +1,40 @@
 # org-texmacs current memory
 
-## Selected next: Issue10 guidance review and proposed repair plan
+## Completed candidate: Issue10 inline footnote STM
 
-User selected #10 and supplied bounded inline-footnote STM guidance after Issue11
-commit verification. Read-only review confirms three coupled scanner/preparation/
-lowering gates and coordinate-less synthetic paragraph recovery for hidden named
-inline definitions. Proposed plan and two contract clarifications are in
-memory/issue-10-plan.md. Need align inline-note bare-body semantics with Issue11
-and clarify strict malformed-inline-candidate errors without changing legacy
-paragraph scanner stop behavior. No business edits/test/build run in this review;
-implementation/precise flake commands await selection/authorization. Index empty,
-only original user flake mirror dirty. No new archive needed; static knowledge
-extracted, earlier runtime evidence already archived. PDF links follow #10.
+Final user-selected contract implemented/automatically accepted, uncommitted and
+unstaged. Full contract/implementation/diagnostics: memory/issue-10-plan.md.
+Anonymous/named inline definitions admit configured direct-text fragments; shared
+Issue11 bare eligibility promotes complete copied island, other bodies retain
+concat and reject known direct display roots. Empty inline note keeps concat("").
+Strict malformed/cross-note/cross-object discovery errors consistent with public
+API/export; ordinary paragraph stop behavior unchanged. Org governs delimiters,
+no repair/general secondary support/new config/protocol/worker parsing changes.
+Context recovery retains actual source-body interval for synthetic paragraph;
+shared preparation and existing scope/reachability filtering preserve identities,
+order, first-use/repeated refs and STM/file provenance. No source fallback; pure
+lowering does not read source buffers or start a worker. Existing user flake excluded.
+
+Final same-input focused46/46:93.714702s (inside full gate),real9/9:10.217289s,
+core437/437:267.394606s; full600s command exit0,strictcompile/lint/all applicable
+flake checks pass. Locked x86_64-linux only, other platforms not tested.7new ERT,
+old exclusion migrated positive; all existing empty-note/Issue11/scopes preserved.
+Initial causal red2expected failures0.295610s; final gate red2expected0.313889s,
+not candidate failures. Empty-slot/context-shallow/docstring-width diagnostics
+extracted. Final24other input hashes stable after README-only support audit and
+final complete gate rerun.25baseline/25final/11extension identities checked;
+independent patch reconstructs all5task files byte-exactly, source/root lock stable.
+
+12necessary original-byte text artifacts archived/verified separately:
+archive/2026-10-16T10-29-35Z--c31d3b1/MANIFEST.md.
+No PDFs/binaries/dependency tree/full tmp/INBOX capture. Uncommitted acceptance has
+no inferred additional project parent; recorded committed baseline is exact red
+source/capture context only. Ordinary index empty;5task files plus original user
+flake mirror dirty. No version/lock/INBOX/example/external writes. Next user reviews
+candidate, may separately authorize staging/message, then makes project commit;
+verify exact blobs/parent/message afterward. Remote#10 last observed open, closure
+not checked/performed. PDF links next by priority; fonts postponed,font-lock later.
+v0.5.0 remains planned, not release-ready. No other implementation selected.
 
 ## Completed committed delivery: Issue11 bare STM paragraph repair
 

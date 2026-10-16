@@ -1,68 +1,87 @@
-# Issue10 inline footnote STM guidance review
+# Issue10 inline footnote STM accepted candidate
 
-User selected #10 after verified local Issue11 delivery and supplied implementation
-guidance. Current action is read-only code review and proposed plan, not business
-implementation or build authorization. Existing user flake mirror remains dirty;
-ordinary index empty. Local reviewed source is the committed Issue11 delivery.
+## Adopted contract and authorization
 
-Goal: anonymous/named inline footnote fragments through same configured discovery,
-owned preparation and native lowering; AST-first/opaque STM/source ownership and
-provenance. No public config/protocol/STM parser/general secondary-object support.
-Prior locked investigation reproduced zero inline-note islands/literal STM versus
-one separate-note island/native math; see release-0.5.0-investigation.md and its
-existing archive. No new runtime evidence in this review.
+User selected implementation after explicitly choosing shared Issue11 bare rules
+and strict candidate errors consistently across public discovery/document export.
+Anonymous/named inline definitions support direct plain-text configured fragments;
+no new public config/protocol/parser/general secondary-object support. Existing
+paragraph stop behavior unchanged. Do not repair Org footnote grammar; configured
+candidate cannot borrow footnote delimiter or adjacent real Org object closure.
+One registered identity plus ASCII-only whitespace/no other objects emits full
+copied root within existing document; other bodies keep concat and reject known
+direct display roots. No automatic splitting or recursive STM interpretation.
+Preserve first-use/repeated refs, source state, owned input and provenance.
 
-Static findings: fragment scanner scans paragraph bounds but admits candidates
-only when org-element-context is paragraph; footnote-reference contents excluded.
-Document preparation splits direct paragraph strings only and whitespace() just
-recurses inline objects. Pure inline island handler admits paragraph only.
-Named recovery synthesizes coordinate-less paragraph from inline definition
-contents; current preparation intentionally does not split these paragraphs.
-Scoped preparation collects spans by paragraph coordinates after dependency
-recovery, so changing admission alone cannot repair missing restored coordinates.
-Existing named first-use/repeated/forward resolution and reachability request
-filtering should be reused, not replaced. Existing ERT footnote-stm-exclusion must
-be migrated to positive support, with literal-object exclusion tested separately.
+User separately authorizes sequential/repeated isolated flake baseline120,
+focused240,integration120,full600 commands under tmp/issue-10-inline, locked
+network/store/cache dependency access and result reads/copies. No system Emacs,
+lock update, ordinary staging/commit, remote write or other-feature work.
 
-Proposed nodes:
-1. Isolated locked-flake red tests/probes of actual Org anonymous/named body bounds,
-   adjacent markup/literal/link exclusions, square brackets/newlines/truncation,
-   restored hidden definitions and scope filters. Scanner no worker, pure lowering
-   no buffer/worker; retain source-state checks.
-2. Bounded discovery inside Org-recognized inline footnote direct plain text;
-   reuse equal-length masking and boundary scanning. Public map/at-point and
-   document preparation must agree on spans/source order. Never widen across
-   footnote delimiter or child object, and don't repair Org grammar via masking.
-3. Shared string splitting/registration over paragraph and inline-note bodies,
-   retaining original coordinates/identities and deterministic scoped request
-   order. For restored named definitions, preserve source-body bounds or use
-   prepared owned leaves; choose minimal route after red scoped probes. Modify
-   context.el only if this recovery truly needs it. No live-source fallback,
-   reparsing STM, duplicated requests or reused consumed island.
-4. Admit footnote inline islands and compose provenance through existing native
-   footnote/label/repeated-reference structure. Keep numbering/resolution policy.
-5. Maintained positive/negative/discovery/ownership/scope tests, native .tm/readback/
-   PDF math semantics and separate-definition/Issue11 regression; README/docstrings
-   updated together. Run focused/full/real-extension/strictcompile/lint via flake
-   only after separate command authorization. No system Emacs or lock update.
+## Implementation
 
-Two proposed contract clarifications need agreement before implementation:
-- Existing public paragraph scanner stops recognition on unbalanced/unsupported
-  candidate; don't silently change that global contract. In newly supported
-  Org-recognized inline-note plain text, configured-root candidate which cannot
-  finish within valid body/object bounds should explicitly fail, consistently
-  across public discovery and document export. Unconfigured/noncandidate text
-  remains Org text; if Org does not recognize a footnote, don't invent one.
-- Inline note body is currently document(concat(...)), not an ordinary paragraph.
-  Recommend shared Issue11 bare-body eligibility: one mapped identity plus only
-  ASCII whitespace/no other Org objects promotes complete root within document;
-  otherwise known direct display roots reject and ordinary math mixtures keep
-  existing concat/whitespace. This also avoids hidden named inline definitions
-  behaving differently after recovery into synthetic paragraphs. No automatic
-  paragraph splitting or recursive inspection of authored STM. This is a proposed
-  clarification, not an already adopted user decision.
+Fragment scanner admits Org-recognized inline-note direct text and bounds STM
+scan to body. Context gives bounds but no children: for object-end validation,
+resolve note in same private masked paragraph Org AST. Reject adjacent objects
+crossing candidate end; Org markup originating inside STM quoted strings uses
+existing opacity/masking, tested with quoted tilde and following code object.
+Dedicated STM syntax table and disabled syntax properties govern string checks.
+Discovery never starts worker or modifies canonical source.
 
-No new immutable archive needed: user guidance/static conclusions are distilled
-here; code remains in ordinary history and prior runtime evidence already retained.
-Next: user reviews plan/clarifications, then implementation selection and separately
-scoped flake test authorization. Fonts postponed; PDF links follow #10.
+Document preparation shares paragraph splitting/registration with inline notes;
+context recovery adds original contents interval to synthetic paragraph's begin,
+end,contents-begin,contents-end,post-blank0. This fixes hidden scoped definitions
+without source fallback or new definition forest. Scoped traversal/reachability
+request filtering stays existing policy. Lowering shares paragraph bare helper
+with footnote context and preserves explicit concat("") for an empty inline note.
+Pack operations retain STM/file paths; input remains independent of source life.
+Exactly fragment/document/context/README/maintained ERT changed; user flake mirror
+is excluded. No package version/lock/INBOX/example or worker/protocol edits.
+
+## Completed automated acceptance
+
+Baseline exact committed Issue11 inputs:2expected red failures0.295610s before
+production edits, empty inline discovery and rejected pure footnote island.
+7new maintained regressions plus old exclusion migrated to positive support.
+Coverage: anonymous/named public APIs/no-worker/source state; all11default/custom/
+atomic bare roots; quoted brackets/newline/markup/literal/link boundaries/config;
+strict incomplete/reader/cross-note/cross-object errors;5scope modes/full/selected/
+subtree/region/narrowed with request order, restored hidden named definitions,
+unused request filtering, source-dead double pure lowering, STM/file provenance;
+all10direct known display-root mixtures;4native anonymous/named/forward/bare
+inline-versus-separate PDF geometry/text and independent native .tm reload.
+
+Final same-input acceptance:46/46focused93.714702s (in final full gate),
+9/9real-extension10.217289s,437/437core267.394606s. Full600s command exit0;
+strict compilation,lint/all applicable flake checks pass. Locked x86_64-linux
+only; no foreign-platform or GUI claim. Initial2expected red failures0.295610s,
+final repeated red2expected0.313889s (not candidate failures). Source stable and
+all25baseline/25candidate/11extension hashes verified; final patch reconstructs
+all5task files independently and byte-exactly. Ordinary index empty, user mirror
+unchanged. Prior46/46/9/9/437core pass followed by README-only audit correction;
+other24inputs stable, final real/full gate rerun includes synchronized README.
+
+Diagnostics extracted: initial strict docstring width corrected before functional
+checks; first broad45/46 in91.999517s exposed empty-note slot regression (old
+assertion preserved, production repaired). Next broad45/46 in91.357001s exposed
+shallow Org context missing object children. Full shadow Org AST diagnostic/fix
+and quoted-markup compatibility led to fast7/7 and final broad/full acceptance.
+Intermediate diagnostic snapshots not fully retained; not claimed exact final
+runtime inputs. Maintained source/ownership/boundary tests retained intact.
+
+## Retention and next
+
+Previous investigation archive remains immutable.12necessary original-byte text
+artifacts independently captured/digested/stability verified in archive-only
+checkpoint: archive/2026-10-16T10-29-35Z--c31d3b1/MANIFEST.md.
+Harness/lock/manifests/patch/initial red and final real/full logs/diagnosis retained;
+bounded Org shallow-context AST failure raw log has independent interpretive value.
+Other intermediate failures sufficiently extracted; no PDF/binary/dependency/full
+tmp/INBOX capture. Committed baseline is exact old red source, not accepted source;
+no inferred additional project parent for uncommitted acceptance.
+
+Selected local implementation/automated acceptance complete; user review/delivery
+pending. Exactly5task paths changed, not staged/committed. Next separately
+authorized staging/message then user commit; verify exact input blobs and tracking.
+Remote#10 last observed open, no current closure check or external write. Fonts
+postponed; PDF links follow #10 by priority. No release/version operation selected.
