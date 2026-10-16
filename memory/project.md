@@ -88,13 +88,15 @@ memory/issue-11-implementation.md. The subsequent PDF-link sequencing repair
 is accepted below; CJK native/configuration evidence remains incomplete.
 STM font-lock bounded investigation complete: Org Scheme lexical colors feasible,
 but naive wrapper has property/invalidation/soft-error gaps and64KiB scan~8s.
-Default-on font-lock now implemented/automatically accepted in uncommitted
+Default-on font-lock now implemented/automatically accepted/user-committed in
 org-texmacs-font-lock.el with main load/Nix fileset/ERT/README wiring. Internal
 nil default/local override, no dedicated command/Customize; Scheme properties
 inside locally recognized paragraph/block regions with Org activation suppression
 and owned old/new cleanup. Export semantics/source chars unchanged. Final11focused/
 451core/full compile/lint pass; dense1MiB local re-fontify~0.489s remains a limit.
-No user commit/GUI acceptance yet. See memory/font-lock-implementation.md. #9 post0.5.0/pre0.6.0; #7 deferred.
+Exact parent/5paths/patch/message and26committed source hashes verified; index
+empty, only preexisting user flake overlay unstaged. GUI acceptance pending.
+See memory/font-lock-implementation.md. #9 post0.5.0/pre0.6.0; #7 deferred.
 Code metadata remains0.4.0; Issue11 acceptance does not establish complete
 v0.5.0 readiness and no release publication was performed.
 

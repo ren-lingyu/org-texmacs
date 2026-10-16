@@ -12,14 +12,15 @@
 - A TeXmacs native readback establishes accepted native structure and bytes,
   not visual pagination or typesetting quality.
 
-## Default-on STM font-lock candidate acceptance
+## Default-on STM font-lock acceptance and committed delivery
 
 User-selected implementation: internal nil default/local override, no dedicated
 command/Customize, Scheme presentation with local Org/scanner ownership and
 restore/cleanup. Five task paths, no worker/export syntax changes. Original user
 flake overlay preserved; ordinary index empty.17baseline identities equal
 committed capture context,27candidate root/task hashes verified; task-only patch
-parsed as exactly5paths. Uncommitted candidate, no inferred project association.
+parsed as exactly5paths. Original runtime/archive used an uncommitted candidate;
+subsequent exact committed delivery verified below.
 Locked x86_64-linux Emacs31.1/Org9.8.10/TeXmacs2.1.5. Final11focused0.853644s;
 451core283.173420s/full strict compile/lint exit0. Causal baseline10feature
 failures/1control pass0.789412s; extra restricted-header red reproduced then
@@ -32,7 +33,15 @@ and other platforms unverified. Full contract/limits: memory/font-lock-implement
 13necessary original-byte text artifacts separately archived/verified:
 archive/2026-10-16T14-21-15Z--b970820/MANIFEST.md.
 No dependencies/binaries/full production copies; raw whitespace retained and
-explained. No ordinary stage/commit, external issue or release action performed.
+explained. User subsequently committed the exact reviewed feat(font-lock)
+delivery: expected parent/5changed paths/complete patch/exact message match;
+26committed source hashes and27root hashes verified, flake-only module addition
+committed while user overlay remains unstaged; index empty. Prior runtime
+acceptance transfers by byte identity, no new tests. Additional project parent
+grounds this committed-delivery verification only, not original uncommitted
+runtime provenance. No issue footer, remote state lookup/closure not required or
+inferred. Existing archive/current extraction sufficient; no new raw archive,
+external issue or release action.
 
 ## Bounded STM font-lock investigation
 

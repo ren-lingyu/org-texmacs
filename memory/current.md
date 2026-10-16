@@ -69,26 +69,21 @@ User says same files work in ox-latex: record support-boundary mismatch and
 all-collected-entry preflight/weak diagnostics, not corrupt bibliography or
 proven parser conflict. Full file identities/scope/findings:
 memory/pdf-adjacent-checks.md. No personal-source archive justified.
-Default-on STM font-lock implemented and automatically accepted as uncommitted
-five-file candidate (new module/main/Nix fileset/ERT/README). Internal nil default/
-local override, no dedicated command/Customize. Scheme syntax props/opacity,
-local Org/scanner bounds, old/new owner cleanup and refresh watcher; export
-semantics/source chars unchanged. Existing user flake overlay preserved; task5paths now staged by explicit
-subsequent user authorization. Final11focused0.853644s,451core283.173420s,strict compile/lint/full gate
-exit0. Red baseline10expected failures/1control pass.27candidate and17baseline
-identities verified; only5task patch paths. Dense1MiB full ensure17.4s/local
-re-fontify0.489s versus disabled0.000096s; remaining context cost explicit.
-Manual GUI/folding/navigation/third-party behavior pending, concrete fixture/
-procedure at tmp/font-lock-implementation/manual.org and MANUAL.md.13necessary
-text originals archived separately: archive/2026-10-16T14-21-15Z--b970820/MANIFEST.md.
-Full source/authorization/results/limits/next: memory/font-lock-implementation.md.
-User authorizes sequential staging/message and max3minute read-only polling.
-Exactly5task paths staged; flake index only module entry, user mirror unstaged.
-Reviewed feat(font-lock) message in tmp/commit.md and full extraction in
-memory/font-lock-implementation.md. Polling stopped within3minute cap; no new
-HEAD detected. Five paths remain staged, mirror overlay unstaged. Await manual
-user commit, then verify exact parent/paths/patch/message/source. No issue footer
-or inferred closure. GUI checks pending; no retest on unchanged source for handoff.
+Default-on STM font-lock implemented, automatically accepted and user-committed;
+exact delivery verified read-only. Five task paths/main+module+Nix+ERT+README,
+expected parent/complete patch/exact reviewed message match.26committed source/
+test hashes match accepted candidate;27root hashes include preserved user flake
+overlay. Committed flake only module entry. Index empty, only user mirror unstaged.
+11focused/451core/full compile/lint acceptance transfers by exact bytes; no retest.
+Internal nil default/local override, no dedicated command/Customize; Scheme
+properties, local Org/scanner bounds and old/new owned restoration. Dense1MiB
+full ensure17.4s/local re-fontify0.489s remains explicit cost. GUI/folding/navigation/
+third-party checks pending at tmp/font-lock-implementation/manual.org/MANUAL.md.
+Full contract/delivery/evidence: memory/font-lock-implementation.md;13text originals
+retained in archive/2026-10-16T14-21-15Z--b970820/MANIFEST.md unchanged.
+New project association grounds later committed-delivery verification only,
+not original uncommitted runtime provenance. No issue footer, so no remote
+state lookup/closure inferred. No new archive or release action needed.
 Current plan reconciliation: memory/release-0.5.0.md. Other release gates unchanged.
 
 ## Completed local repair: PDF hyperlink annotations

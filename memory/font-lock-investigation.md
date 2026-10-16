@@ -2,8 +2,8 @@
 
 Initial bounded pre0.5.0 investigation completed without production changes.
 User subsequently adopted default-on/internal-variable contract and explicitly
-requested implementation, now implemented/automatically accepted as uncommitted
-candidate. Current source/validation/limits: memory/font-lock-implementation.md.
+requested implementation, now implemented/automatically accepted/user-committed;
+exact delivery verified. Current source/validation/limits: memory/font-lock-implementation.md.
 This file retains investigation evidence and the reasoning behind the contract.
 
 ## Adopted interface direction after investigation
@@ -31,11 +31,11 @@ code. Do not require face-only transfer as a design constraint.
 Existing helper supplies lexical colors in paragraph fragments, inline notes
 and mixed-case texmacs special blocks; language mapping alone works only for
 source blocks. Tested whole-snapshot prototype remains unshipped and unsuitable.
-User explicitly authorized production implementation. Current candidate is in
+User explicitly authorized production implementation. Delivered implementation is in
 org-texmacs-font-lock.el with main/Nix/ERT/README wiring; final11focused/full451/
 strict compile/lint pass. Default-on internal variable and Scheme-property
-contract above now implemented. No ordinary staging/commit or manual GUI
-acceptance yet. Full source, final evidence and next action:
+contract above now implemented/user-committed with exact delivery verified.
+Manual GUI acceptance remains pending. Full source, final evidence and next action:
 memory/font-lock-implementation.md.
 
 Keep presentation separate from AST-first export/discovery/lowering semantics,

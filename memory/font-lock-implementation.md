@@ -1,4 +1,4 @@
-# Default-on STM font-lock — implemented, automated acceptance complete
+# Default-on STM font-lock — user-committed, exact delivery verified
 
 User explicitly requests implementation after bounded investigation. Adopted
 interface: internal defvar-local org-texmacs--font-lock-enabled defaults t,
@@ -6,12 +6,13 @@ ordinary nil default/local override, no command/Customize/public mode. STM
 editor regions use Scheme properties; Org/scanner determine ownership. No new
 export syntax/parser/worker behavior.
 
-## Candidate and ownership
+## Delivered implementation and ownership
 
 Five task paths: new org-texmacs-font-lock.el, main require, Nix fileset entry,
 maintained ERT and README. Original user flake overlay preserved; our flake
-change only adds module to fileset. User subsequently authorizes staging/message preparation; task5paths staged,
-no project commit yet.
+change only adds module to fileset. User manually committed the exact reviewed
+feat(font-lock) delivery; five paths, expected parent/message/complete patch and
+source identities verified read-only. Index empty; only original overlay unstaged.
 Install local original-fontifier wrapper via org-mode-hook and existing-buffer
 load pass. Respect normal Font Lock and org-src-fontify-natively. Use current
 Org local element context, scan only owning paragraph's private copy through
@@ -92,21 +93,27 @@ patch/report whitespace retained and explained. Zero additional project parents
 for uncommitted mixed candidate; capture HEAD establishes baseline/context only.
 Locate introducing checkpoint through manifest first-parent path history.
 
-Final source identity recheck27/27root/task matches;17/17baseline equals committed
-capture context. Git parsed patch as exactly5task paths; preexisting mirror
-excluded from patch/preserved in root. Ordinary index now contains exactly5task paths. No project commit yet,
-external issue/PR/release actions. Final full gate accepted on current platform;
-GUI manual experience/third-party modes and actual sexp navigation still pending.
-User subsequently authorized sequential staging/message preparation with at most
-3minute read-only polling for manual commit. Four complete paths staged; flake
-staged by a one-hunk cached patch, excluding original user mirror overlay.
-Accepted candidate identities match all4full-file index blobs; flake index is
-exact HEAD plus module fileset entry. Complete staged diff/check reviewed clean.
-One coherent feature, split not necessary (difficulty low, tightly coupled load/
-package/tests/docs). Staged patch/message hashes and baseline parent saved in
-tmp/font-lock-implementation/staged-review.json; draft in tmp/commit.md. No new
-archive needed: implementation evidence immutable archive plus current message
-extraction sufficient. No tests rerun; source bytes unchanged since451acceptance.
+User subsequently authorized staging/message preparation and manually committed.
+Read-only delivery verification confirms exactly one parent (the supplementary
+PDF-test baseline), exactly5task paths, complete Git patch hash and exact commit
+message bytes equal reviewed staging/draft.26committed source/test/lock hashes
+match accepted candidate; root27hashes also match, with root flake hash including
+the preserved user overlay. Committed flake is exact baseline plus one module
+fileset entry. Ordinary index empty; only original user flake overlay unstaged.
+No runtime retest:11focused/451core/full compile/lint acceptance transfers by
+exact bytes, not merely a nearby timestamp or matching subject.
+
+One coherent feature; split not necessary (difficulty low, tightly coupled load/
+package/tests/docs). Prior stage/polling details are superseded by this delivered
+state. Reviewed draft in tmp/commit.md matches committed message. No new archive
+needed: existing immutable implementation evidence and current verification
+extraction suffice. No issue association/closing footer, so no remote issue
+status query/closure required or inferred. No release/publication action.
+
+The additional project parent of this verification checkpoint grounds the exact
+committed-delivery verification only; it does not retroactively establish the
+original runtime/archive as committed-source execution. Original archive remains
+unchanged with its original uncommitted-candidate provenance.
 
 Full reviewed draft (no issue association/closing footer):
 
@@ -119,9 +126,6 @@ feat(font-lock): highlight embedded STM as Scheme by default
 - 将新模块纳入 Nix 包, 补充边界, 生命周期及独立加载回归测试, 并记录 README 使用边界.
 ```
 
-Read-only polling completed within the3minute cap (14:38:36–14:41:32UTC,
-2026-10-16); no new project HEAD observed. Polling stopped; no background watcher.
-Exactly5task paths remain staged, user flake overlay unstaged; draft unchanged.
-Next user manually commits; verify exact parent/5paths/patch/message/source hashes
-when reported/observed. No related issue footer, so no remote closure inferred.
-Manual GUI checks remain pending. Ordinary commit remains user's operation.
+Next: user manual.org/MANUAL.md checks for real GUI idle display, folding,
+sexp navigation and third-party coexistence; other release gates remain in
+memory/release-0.5.0.md. No automatic new implementation/retest/release selected.

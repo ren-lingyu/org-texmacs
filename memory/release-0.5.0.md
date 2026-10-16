@@ -24,12 +24,14 @@ committed delivery records for current local status. Still planned/not accepted.
 - Item6: bounded STM font-lock investigation complete (12/12 observational probes,
   locked Emacs31.1/Org9.8.10). Lexical highlighting feasible; naive integration
   has Org-property/stale-range/soft-error/config gaps and64KiB full scan~8s.
-  Default-on font-lock now implemented/automatically accepted as uncommitted
-  candidate: internal nil default/local override, no Customize/dedicated command;
+  Default-on font-lock now implemented/automatically accepted/user-committed:
+  internal nil default/local override, no Customize/dedicated command;
   Scheme syntax properties, local context ownership and Org restoration.
   Final11focused/451core/full compile/lint pass,27candidate inputs verified.
   Dense1MiB full ensure17.4s/local re-fontify0.489s remains a measured limitation.
-  Manual GUI/folding/third-party/navigation acceptance and user delivery pending.
+  Exact parent/5paths/patch/message and26committed source hashes verified;
+  index empty, original flake overlay unstaged. Prior acceptance transfers by
+  exact bytes. Manual GUI/folding/third-party/navigation acceptance pending.
   Contract/final evidence: memory/font-lock-implementation.md.
 - Item7: representative mathematical full-document .tm/PDF workflow acceptance
   combining supported features still pending; short combined link fixtures and
