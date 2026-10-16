@@ -665,7 +665,7 @@ third-party interaction and large-input cost remain explicit. User now separatel
 adopts texmacs-block Scheme source editing and block-local indentation, with
 org-texmacs-edit-mode public choice (scheme-mode default, optional user-installed
 scheme-ts-mode/grammar). Candidate implemented and verified:30focused/478fullERT, fixed extension
-integration, strict compile/lint/full flake pass; not staged/committed.
+integration, strict compile/lint/full flake pass; staged, awaiting user commit.
 No Babel, paragraph editing, preview UX or broader Scheme execution adopted.
 No additional release gate inferred. See memory/block-editing-implementation.md,
 memory/font-lock-implementation.md and memory/release-0.5.0.md.

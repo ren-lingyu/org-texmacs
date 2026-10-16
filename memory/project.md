@@ -106,7 +106,7 @@ org-texmacs-edit.el reuses native Org source-edit lifecycle and selected Scheme
 indentation, keeping special-block AST/export semantics. Public
 org-texmacs-edit-mode defaults to bundled scheme-mode; optional scheme-ts-mode
 and grammar require user installation. No mandatory dependency added.30focused/478fullERT, fixed extension integration,
-strict compile/lint/full flake pass; not staged/committed. Actual TS/GUI editing
+strict compile/lint/full flake pass; staged, awaiting user commit. Actual TS/GUI editing
 unverified. Details:
 memory/block-editing-implementation.md.
 

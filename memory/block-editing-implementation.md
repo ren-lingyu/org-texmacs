@@ -4,7 +4,7 @@
 
 User requests dedicated Scheme editing for texmacs special blocks and native
 Scheme indentation in original Org buffers. User subsequently requests a public
-Customize option for scheme-ts-mode. Candidate implemented and verified, not staged/committed. This is a bounded authoring addition, not
+Customize option for scheme-ts-mode. Candidate implemented and verified, staged, awaiting user commit. This is a bounded authoring addition, not
 Babel, a new STM parser, inline-fragment editing or general Scheme execution.
 
 org-texmacs-edit-mode defaults to bundled scheme-mode. Optional scheme-ts-mode
@@ -109,4 +109,27 @@ verification; do not rerun tests solely to add a project parent.
   "tests/package-lint/default.nix": "362a7e1bae443d5377a780ce8e0edcd23563728bd2d9092d78ca7f8a87eeff1d",
   "tests/package-lint/run.scm": "b87e42fffd9aaa84e2f87858cbaab460e358aaaff2d44568a38fb519b63e30d2"
 }
+```
+
+## Staging and message readiness
+
+User authorized sequential staging/message preparation, maximum3min polling.
+Exactly README.org, flake.nix, org-texmacs-edit.el, org-texmacs.el and
+tests/ert/ert.el staged. Only new module fileset line staged in flake; original
+user mirror remains unstaged. Full staged review/--check pass. Staged code, tests
+and docs byte-equal accepted candidate. No tests rerun. One coherent feat(edit)
+commit, split not necessary/low difficulty. User makes ordinary commit.
+
+Staged binary patch SHA256:
+c10531c6e48fb263860156f48beb4ee37cfb86eca9b0c961a276480197e3c797.
+tmp/commit.md SHA256:
+bfaf65598e462992cf9ded20ea3e6bb3c8a26a93ca242cf199987a5b4ff49a61.
+
+```text
+feat(edit): add Scheme editing and indentation for TeXmacs blocks
+
+- 为 `texmacs` special block 接入 Org 源码编辑流程, 支持保存, 回写, 取消及复用编辑 buffer.
+- 为块正文的 TAB, 行与区域缩进复用 Scheme 模式, 在私有 buffer 中计算后原子更新, 处理容器缩进与多行字符串.
+- 新增 `org-texmacs-edit-mode`, 默认使用 `scheme-mode`, 允许选择用户安装的 `scheme-ts-mode` 和 Scheme grammar, 缺少可选支持时明确报错.
+- 接入主模块与 Nix 打包, 补充编辑生命周期, 缩进和模式选择回归, 在 README 中说明操作方式与依赖边界.
 ```

@@ -2,7 +2,7 @@
 
 ## Ready for review: TeXmacs block editing and indentation
 
-User-authorized implementation complete and verified, not staged/committed.
+User-authorized implementation complete and verified, staged, awaiting user commit.
 New org-texmacs-edit.el plus main/Nix fileset/README/ERT wiring provides native
 Org source-edit/save/exit/abort/reuse for complete TeXmacs special blocks and
 Scheme indentation for TAB/line/region in the original Org buffer. Keep native
@@ -27,12 +27,19 @@ locked regeneration and distilled facts retain necessary evidence. User GUI
 font-lock basic acceptance is separate from unperformed new GUI editing/real TS
 acceptance. No automatic release milestone or external issue closure added.
 
-Next: user may review/try C-c ' and TAB in a fresh loaded package; optional TS
-requires their installed mode/grammar. If staging is requested, include only the
-five task paths, staging only new module fileset hunk from flake.nix and preserving
-the original user overlay. Ordinary commit remains user's action. Do not stage
-without explicit authorization. GAW checkpoint has zero added project parents:
-main is the baseline, while successful tests use an uncommitted candidate.
+User explicitly authorized sequential staging/message preparation, maximum3min
+intermediate polling. All five task paths staged; flake.nix has only new module
+fileset hunk, original mirror overlay remains unstaged. Full staged diff reviewed,
+--check passes, staged bytes match the tested candidate except intentional overlay
+exclusion. tmp/commit.md contains feat(edit) message, no issue footer. Single
+coherent feature, split not necessary (low difficulty). Real TS/GUI editing still
+unverified, no tests repeated just for staging. Next: user commit, then verify
+exact parent/5paths/patch/message and consider GAW delivery update. Ordinary
+commit remains user's action. Checkpoint has zero additional project parents:
+successful tests were against uncommitted candidate, not main baseline.
+
+Staged patch SHA256:c10531c6e48fb263860156f48beb4ee37cfb86eca9b0c961a276480197e3c797.
+Message SHA256:bfaf65598e462992cf9ded20ea3e6bb3c8a26a93ca242cf199987a5b4ff49a61.
 
 ## Completed: Issue12 bibliography delivered and closed
 

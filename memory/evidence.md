@@ -8,7 +8,9 @@ TeXmacs2.1.5 x86_64-linux: two old-code failures confirmed; final30focused,
 478full ERT (340.820181s), fixed real extension integration and strict byte/native
 compile/lint/full flake exit0. Original mirror overlay preserved; all28 final
 candidate inputs unchanged after gate,27 byte-equal isolated copies excluding
-intentional flake harness. Uncommitted candidate, no ordinary staging/commit.
+intentional flake harness. User-authorized five-path staging/message preparation complete; original mirror
+overlay excluded from index. Ordinary commit pending. Exact staged patch/message
+identities in memory/block-editing-implementation.md.
 Optional TS mode/grammar absent in locked runtime: availability and controlled
 dispatch tested, real TS/GUI editing unverified. No new mandatory dependency,
 Babel/parser/export scope or release requirement. Contract, rationale, identities,

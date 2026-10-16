@@ -35,7 +35,7 @@ committed delivery records for current local status. Still planned/not accepted.
   user-accepted; detailed folding/third-party/navigation remains unverified.
   Block source-edit/indentation separately authorized, candidate implemented with
   custom Scheme-mode selection;30focused/478fullERT, fixed extension integration,
-  strict compile/lint/full flake pass; not staged/committed. No added release gate
+  strict compile/lint/full flake pass; staged, awaiting user commit. No added release gate
   inferred. See memory/block-editing-implementation.md.
   Contract/final evidence: memory/font-lock-implementation.md.
 - Item7: representative mathematical full-document .tm/PDF workflow acceptance
