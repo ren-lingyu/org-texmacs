@@ -1,5 +1,30 @@
 # org-texmacs current memory
 
+## Active objective: v0.5.0 release readiness review
+
+User selected read-only review of new INBOX and GAW extraction on2026-10-16,
+explicitly no project-file edits. Adopted readiness scope and complete independent
+extraction: memory/release-0.5.0.md. Planned, not release-ready or implementation
+permission. Baseline main@8a90b4c confirmed, index empty/only user flake.nix dirty.
+P0: #10 anonymous/named inline-note STM with structural+native PDF regression;
+#11 standalone block/paragraph equation discrepancy diagnosis/resolution with
+mixed paragraphs and direct-PDF versus native .tm reload comparison; regression
+of prior block mapping, exact original failure identity still to confirm.
+P1: investigate PDF annotations, Chinese font consistency and bounded STM
+font-lock; fixes/configuration/justified deferral conditional on evidence.
+P2: representative combined real mathematical documents, locked-flake complete
+ERT/native/PDF/strict compile/lint gate,0.5.0 version/docs/notes and migration.
+#9 scheduled after0.5.0 before0.6.0; #7 stays deferred/nonblocking. Native footnote
+placement/page breaks not blockers absent an actionable package regression.
+No tag-list/normalization/font framework/async design chosen. Earlier423core gate
+is baseline evidence, not release acceptance. Issue #10/#11 open labels from
+INBOX only; public #10/#11/#9/#4 reads failed, no remote status claim/update.
+Next await user selection of bounded implementation/investigation; suggested
+#10 first and separate #11 diagnosis, item3 fixture linkage clarified before gate.
+No business edits/tests/builds/ordinary staging/release/external writes this turn.
+No raw archive needed: active plan fully extracted, no unique experiment/retired
+source. INBOX untouched; source size/digest/authority/limits in release record.
+
 ## Completed committed delivery: Issue4 remaining date repair and semantic audit
 
 Final user-approved plan implemented and locally accepted. Four task files changed:
@@ -805,8 +830,8 @@ direct source APIs and local scopes retain direct preparation.
 
 ## Baseline and staging
 
-- Current main is the post-Phase6 documentation/API-audit clarification revision
-  observed at the issue3 review baseline above; lock selects Org9.8.10.
+- Current main is verified Issue4 final date/audit delivery8a90b4c at the
+  v0.5.0 readiness review; lock selects Org9.8.10.
   Phase4/5 committed diffs
   verified. Index empty; unchanged user mirror remains unstaged.
   Committed Phase2c diff/message matches reviewed candidate.
@@ -887,7 +912,7 @@ direct source APIs and local scopes retain direct preparation.
   namespaced governance skill. Retired GOALS.md/REVIEW.md and eligible historical
   probes are in the archive, not normal recovery inputs. INBOX.md remains ignored,
   was cleared after verified issue1 original-byte archival, and now contains the
-  newly supplied issue3 export API/lifecycle plan. Prior adopted plans remain current knowledge;
+  v0.5.0 readiness plan extracted in memory/release-0.5.0.md. Prior adopted plans remain current knowledge;
   archived original is historical only.
 - Only pure-text files may enter GAW memory, skills or archive. Archive necessary
   unique temporary evidence selectively via the archive skill; never bytecode,

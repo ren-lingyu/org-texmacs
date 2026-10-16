@@ -23,7 +23,23 @@ decision.
 
 ## Active next
 
-### Issue #4 remaining audit; completed selected block subset and Issue #8
+### v0.5.0 release readiness — adopted priorities, implementation not started
+
+Status: **adopted-later** release requirements; current selected action is review
+and GAW extraction only. Full gate, all nine items, evidence limits and decisions:
+memory/release-0.5.0.md. Required P0: #10 inline-footnote STM, #11 equation
+block/paragraph discrepancy resolution, prior block-mapping regression (confirm
+original fixture). P1 mandatory bounded investigations: PDF annotations, Chinese
+fonts, STM font-lock; implementation conditional, configuration or evidenced
+deferral permitted. P2 representative combined documents, complete locked-flake
+tests/native/PDF/compile/lint and0.5.0 metadata/docs/migration/notes.
+No code/version/test/release authority from this review. Suggested #10 then separate
+#11 diagnosis is not an adopted implementation sequence. #9 adopted-later after
+0.5.0 before0.6.0; #7 deferred and not a0.5.0 blocker. Earlier native footnote
+placement/page-break concerns excluded absent actionable package regression.
+
+
+### Completed local Issue #4 and Issue #8 deliveries; remote tracking distinct
 
 Selected A+B implementation complete, both separately user-committed. Exact A
 three-file blobs, B parent/path set/all25final input blobs and messages verified.
@@ -600,11 +616,14 @@ or augmented live ASTs require separate evidence and adoption.
 
 ### AUTHORING-01: Editing assistance
 
-Status: **re-adoption-required**.
+Status: **re-adoption-required** for general editing assistance; narrowly scoped
+STM font-lock feasibility is now **adopted-later** P1 investigation for0.5.0.
+Implementation remains conditional on evidence/cost; no general editor adopted.
+See memory/release-0.5.0.md.
 
-Font locking, Scheme editing assistance, preview-oriented UX, and similar
-authoring conveniences appeared in early exploration but are not current
-architecture commitments. Re-adopt and scope them before implementation.
+General Scheme editing assistance, preview-oriented UX and other authoring
+conveniences remain outside current commitments. The limited font-lock
+investigation above supersedes the former blanket deferral only for that scope.
 
 ## Current unsupported cases are not automatic commitments
 

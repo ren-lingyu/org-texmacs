@@ -39,7 +39,7 @@ closed/completed; #4 excludes its feature from remaining scope. Scope, tracking
 and raw evidence: current.md and
 block-table-implementation.md. Date/metadata and remaining Issue4 work unchanged.
 
-## Validated uncommitted Issue4 date/audit candidate
+## Committed Issue4 date/audit extension
 
 Date metadata timestamps now emit complete raw-value literal strings, with Org
 brackets/spaces/time/range/repeater/warning/diary content intact and unevaluated.
@@ -54,9 +54,20 @@ metadata/headline/TOC/footnote/link/citation wrappers in pinned native environme
 Generic paragraph/subparagraph hide displayed numbers by native default while
 logical counters/TOC/refs agree; documented, no native style override. Eleven
 new regressions replace one (+10net):423core/37focused/9real/native9dates6cases/
-full strict compilation/lint pass. Candidate four files remain uncommitted; no
-release/main date capability claim until user commits. Full audit/evidence/limits
+full strict compilation/lint pass. Both date/audit deliveries user-committed and
+verified by parent/path sets/all25accepted blobs/messages; no new release claim.
+Full audit/evidence/limits
 and separate delivery status in memory/issue-4-closure.md/current.md.
+
+## Planned v0.5.0 scope, not current support
+
+Read-only INBOX review adopts release readiness priorities in
+memory/release-0.5.0.md. Inline-footnote STM (#10) is a required future extension,
+not current support. Equation block/paragraph PDF discrepancy (#11), PDF annotations
+and Chinese font observations need evidence before attribution or architecture
+changes. Existing bounded native tag audit does not establish these new cases.
+STM font-lock is feasibility investigation only. #9 post0.5.0/pre0.6.0; #7 deferred.
+Code metadata remains0.4.0; no release candidate test/publication this turn.
 
 ## Current conversion path
 

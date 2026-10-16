@@ -1,0 +1,142 @@
+# v0.5.0 release readiness
+
+## Adopted objective and authority
+
+User supplied INBOX.md "v0.5.0 Release Readiness" and selected read-only review
+and GAW extraction on2026-10-16. Status: planned, not release-ready. Aim: first
+practically usable Org-first mathematical authoring release with embedded native
+STM and complete .tm/PDF export within a documented, tested supported subset.
+Not complete Org exporter parity. Existing canonical source, AST-first, STM
+opacity, coherent ownership/snapshot/provenance and native consumer boundaries
+remain constraints. This selects release priorities, not immediate implementation.
+This turn authorizes memory maintenance only: no project/INBOX/version edits,
+staging, builds/probes/tests, dependency changes, tags/publication or external writes.
+
+Source INBOX is ignored/untracked,8020bytes, SHA256
+`a32561c1878fa48629554771ec3af1114560cb939ed228f391fd4cc9e75f2e68`.
+It names baseline main@8a90b4c; read-only HEAD confirms full revision
+`8a90b4c0f832204ffe6beab00cbea122bcf9de5e`. Ordinary index empty; only existing
+user flake.nix mirror dirty, preserve/exclude it. This is the code review context,
+not a new release candidate acceptance. Issue URLs below come from INBOX;
+public #10/#11/#9/#4 lookup failed with Cache miss this turn. Open/required labels
+for #10/#11 are user-plan reports, not independently verified remote states.
+
+## P0: required completion
+
+1. **#10 inline-footnote STM**, adopted-later required implementation.
+   https://github.com/ren-lingyu/org-texmacs/issues/10
+   Discover and lower STM inside anonymous [fn::...] and named [fn:name:...]
+   inline definitions. Preserve separate footnote definitions, repeated references,
+   source ownership, island boundaries and provenance. Reuse fragment/footnote
+   infrastructure; no unrelated object discovery. Structural regressions plus
+   native PDF verification required. Current static source shows paragraph-context
+   admission in fragment-scan-paragraph; preparation whitespace recursion handles
+   footnote objects but does not register their inline strings as islands; restored
+   synthetic inline-note paragraphs deliberately have no fragment spans. This is
+   a discovery/preparation/owned-mapping concern, not a request for pure lowering
+   to read buffers or the native worker to reinterpret Org. No runtime reproduction
+   or final implementation mechanism chosen this turn.
+2. **#11 display-equation discrepancy**, adopted-later required investigation
+   and resolution. https://github.com/ren-lingyu/org-texmacs/issues/11
+   User reports same standalone STM equation aligns/numbers differently in PDF
+   from TeXmacs special block versus paragraph fragment; serialized .tm appears
+   equivalent. That equivalence and the cause remain unverified observations.
+   Compare exact owned body/paragraph structure, STM source-semantic paths,
+   encoded native trees, style/initial and native context; compare direct PDF
+   with native load/export of saved .tm when applicable. Cover standalone display
+   environments and ordinary mixed paragraphs. Fix package lowering if confirmed;
+   if native/config dependent, establish an evidenced resolution and clear boundary.
+   No preselected display-tag list, generic tree normalization or special-case fix.
+   Production direct PDF installs fields in a private native buffer and uses
+   update/print/update/print; serialization independently wraps native fields.
+   Native .tm reload is a diagnostic comparison, not an adopted textual conversion
+   intermediary. Preserve AST-first, opaque STM, provenance and paragraph semantics.
+3. **Previously fixed block mapping**, adopted-later release regression.
+   INBOX reports fixed; identify exact original failure/fixture before declaring
+   release acceptance. Existing quotation repair and native PDF regressions are
+   available evidence, but INBOX does not explicitly equate its original failure
+   to that quote-block defect. Confirm identity, fragment/block ownership, intended
+   source->STM mapping and provenance, retain/add focused regression. No redesign
+   unless a concrete additional defect appears.
+
+## P1: bounded investigation required, implementation conditional
+
+4. **PDF hyperlinks**: earlier observation of hlink nodes without expected
+   clickable PDF annotations is reported, not reproduced here. Compare direct PDF,
+   serialized .tm native reload/export and independent native reference under
+   matched style/config. Inspect actual PDF annotations; rendered/extracted text
+   or hlink readback alone does not establish clickability. Attribute package,
+   native engine or configuration cause. Fix actionable package defects, otherwise
+   document verified native limit/configuration. No independent PDF link system.
+5. **Chinese font consistency**: reproduce reported inconsistent font selection/
+   glyph sizing in release environment. Separate style, initial environment,
+   installed fonts, native fallback and package encoding/rendering effects. Bounded
+   package fix or evidenced practical configuration; no generic CJK/font redesign.
+   Neither causality nor a universal font guarantee established by earlier tests.
+6. **STM font-lock**: feasibility investigation adopted; implementation conditional
+   on acceptable semantics/compatibility/maintenance. Paragraph STM and TeXmacs
+   special blocks; inspect Org native fontification, island boundaries, edits and
+   ordinary markup interactions. Prefer existing facilities, avoid independent
+   parser/editor framework. If infeasible/costly, record reason and defer explicitly.
+   This narrowly re-adopts investigation from former AUTHORING-01 ideas, not
+   general Scheme editing, live preview or full authoring assistance.
+
+## P2: release verification and finalization
+
+7. Representative real mathematical Org document(s) must combine supported inline
+   STM/special blocks/equations/footnotes/internal references, citations+bibliography
+   where configured, tables, metadata, style/initial and repeated .tm/PDF exports.
+   Assess practical usability, distinguish structural correctness from native
+   visual behavior. Existing tmp/realworld_test examples may be candidates, not
+   automatically sufficient coverage or permission to read large/binary outputs.
+8. Complete maintained ERT, native integration, PDF semantic regressions, strict
+   byte compilation, package-lint and full nix flake check. Isolated checks must
+   use locked flake rather than system Emacs, with separately authorized exact
+   commands/timeouts/network/store/cache/result access. Review failures/limits;
+   only claim tested Emacs/Org/TeXmacs/platform versions. Prior423core/37focused/
+   9real/strict compile/lint gate belongs to date/audit baseline, not new release
+   validation. Full minimum Org9.8 behavior and other platforms remain unproven.
+9. After scope stabilizes, update all actual package/Nix version sources to0.5.0,
+   prepare notes and README examples/support/error/migration boundaries. Current
+   read-only sources org-texmacs.el and flake.nix still declare0.4.0. Include inline
+   footnote STM and equation outcome plus hyperlinks/fonts/font-lock fixes,
+   configuration or explicit deferral. Cover since-v0.4.0 breaking API/menu and
+   preprocessing changes already recorded, not just new P0 fixes. Describe first
+   practically usable supported subset, without claiming full Org export support.
+   Metadata/tag/release operations have not been selected/executed in this review.
+
+## Outside this gate
+
+- #9 native substructure names/references, especially rows of multiline equations:
+  https://github.com/ren-lingyu/org-texmacs/issues/9
+  adopted-later between v0.5.0 and v0.6.0, separate development after this release.
+- #7 nonblocking exports remains deferred, not assigned to0.5.0. Existing synchronous
+  command blocking, size budgets and worker timeout boundaries alone do not block
+  this release. No parallel execution route or limit increase adopted.
+- GUI preview, incremental sync, complete Org semantics, general STM authoring and
+  unadopted advanced Org structures excluded. Earlier footnote-to-physical-bottom
+  placement and heading/page-break observations are not blockers unless new evidence
+  identifies an actionable package regression.
+
+## Review, readiness and next action
+
+Plan is coherent and appropriately separates mandatory fixes, investigations and
+release acceptance. #10/#11 must be resolved with regressions; block fix confirmed;
+all three P1 investigations must have evidenced outcomes; representative documents
+and complete maintained checks pass; native/unsupported limits documented.
+P1 completion may mean a fix, tested configuration, or justified deferral, not
+mandatory implementation. #11 stays a required resolution, not silently downgraded
+by that P1 flexibility. No design picked before its diagnosis.
+
+Next when user selects implementation: clarify item3's original fixture while
+starting a bounded #10 design/source+Org investigation, with #11 investigated as a
+separate native-rendering question; this suggested order is not an approved
+implementation plan or permission to run commands. Then P1 conclusions, real-document
+and complete gate, metadata/docs. No further user answer needed merely to record
+this plan. Remote issue facts can be checked when available without inventing them.
+
+Archive assessment: active plan, no retirement, unique experiment or irreplaceable
+raw failure evidence. Full operational requirements/review/limits extracted here
+and routed through current/goals/backlog/project/evidence; no original-byte archive
+needed. INBOX and existing archives unchanged. Planning checkpoint has no inferred
+project parent; explicitly named baseline is review context, not new test provenance.

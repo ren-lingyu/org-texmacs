@@ -2848,3 +2848,20 @@ candidate by byte identity, no new tests or date-only fullgate claim. No agent
 project commit/external mutation. Local delivery complete; remote publication/
 closure unverified. No new archive needed; immutable prior evidence and extracted
 memory suffice. Project parent associates inspected B, not original test provenance.
+
+
+## v0.5.0 readiness review (2026-10-16)
+
+User requested INBOX review+GAW only, explicitly no project-file changes.
+Complete scope, acceptance, source8020bytes/SHA256, review gaps and archive
+assessment extracted in memory/release-0.5.0.md. Main8a90b4c confirmed, index
+empty, only user flake.nix dirty. Source remains active/unchanged; no raw archive.
+Read-only inspection confirms paragraph-context fragment admission and synthetic
+inline-note preparation boundaries, and independent serialization/direct native
+PDF paths; these locate investigation areas, not runtime failure/cause proof.
+Current package/Nix declarations remain0.4.0. Prior423core gate is historical
+accepted baseline, not new0.5.0 release acceptance. No tests/builds/probes or
+ordinary index/project/external writes. Public #10/#11/#9/#4 pages all returned
+Cache miss; issue labels/open states from INBOX not independently verified.
+Planning checkpoint no inferred project parent. Existing immutable archives stay
+unchanged; sufficient operational extraction and current routing replace capture.

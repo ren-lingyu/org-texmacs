@@ -57,6 +57,17 @@ Org source and semantics
 - Prefer TeXmacs-native facilities for serialization and typesetting instead of
   reimplementing them in Emacs Lisp.
 
+## Adopted v0.5.0 release objective
+
+First practically usable release for Org-first mathematical writing with embedded
+native STM and complete .tm/PDF exports inside a tested supported subset. Resolve
+inline-footnote STM and display-equation blockers, verify prior block fix,
+investigate links/fonts/font-lock with bounded outcomes, then real-document/full
+checks and documentation. Detailed readiness: memory/release-0.5.0.md.
+Complete Org parity, async export, preview and general authoring assistance are
+not release requirements. #9 is scheduled after0.5.0 before0.6.0; #7 stays deferred.
+This objective does not authorize implementation, builds or release operations.
+
 ## Soft goals
 
 - Persistent workers and sessions should avoid needless startup overhead.
