@@ -38,8 +38,9 @@ Investigation results: memory/release-0.5.0-investigation.md. #10 gap confirmed,
 #11 concat/native reload cause isolated, links share native/config absence,
 CJK missing-font environment needs positive control. STM font-lock bounded
 investigation now complete: lexical colors reusable, naive integration property/
-stale-range/soft-error/config gaps and64KiB scan~8s; implementation or explicit
-deferral still pending. See memory/font-lock-investigation.md.
+stale-range/soft-error/config gaps and64KiB scan~8s. User subsequently selects
+default-on/internal-variable override interface, no public command/Customize;
+bounded implementation planning pending. See memory/font-lock-investigation.md.
 User selected final Issue11 implementation contract
 in memory/issue-11-implementation.md: bare lifting, explicit known-display mixed
 rejection, leading-list exception; no automatic splitting. Final14/14focused,
@@ -657,10 +658,12 @@ or augmented live ASTs require separate evidence and adoption.
 ### AUTHORING-01: Editing assistance
 
 Status: **re-adoption-required** for general editing assistance; narrowly scoped
-STM font-lock feasibility P1 investigation for0.5.0 is complete; bounded
-integration or explicit deferral decision pending. Lexical colors feasible,
-naive full-scan/property integration unsuitable. No feature/general editor
-adopted. See memory/font-lock-investigation.md and memory/release-0.5.0.md.
+STM font-lock feasibility P1 investigation for0.5.0 is complete. User selects
+default-on font-lock with an internal nil override, no public command/Customize.
+Embedded Scheme syntax properties acceptable. Bounded integration plan pending;
+naive full-scan/property integration unsuitable. No general editor adopted or
+font-lock feature shipped. See memory/font-lock-investigation.md and
+memory/release-0.5.0.md.
 
 General Scheme editing assistance, preview-oriented UX and other authoring
 conveniences remain outside current commitments. The limited font-lock

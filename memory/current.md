@@ -69,8 +69,14 @@ User says same files work in ox-latex: record support-boundary mismatch and
 all-collected-entry preflight/weak diagnostics, not corrupt bibliography or
 proven parser conflict. Full file identities/scope/findings:
 memory/pdf-adjacent-checks.md. No personal-source archive justified.
-User-selected pre0.5.0 STM font-lock investigation complete; implementation and
-release deferral remain unselected. Final12/12probe observations pass in locked
+User-selected pre0.5.0 STM font-lock investigation complete. Subsequent interface
+requirements: default enabled, internal ordinary variable rather than Customize
+option or dedicated command; nil override must suppress it. Proposed internal
+name org-texmacs--font-lock-enabled with buffer-local overrides. User accepts
+embedded Scheme syntax properties; face-only transfer is not a requirement.
+Org determines STM bounds, Scheme handles editor presentation; export unchanged.
+Need bounded implementation plan and explicit refresh/cleanup contract; no business
+files changed yet. Prior investigation evidence follows. Final12/12probe observations pass in locked
 Emacs31.1/Org9.8.10, controlled real JIT hook registration (no GUI).17input
 identities match committed/root/copied production bytes; business unchanged.
 Scheme lexical colors feasible, config mapping alone insufficient for special

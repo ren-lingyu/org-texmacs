@@ -30,8 +30,11 @@ Details/next decision: memory/font-lock-investigation.md.
 archive/2026-10-16T13-42-01Z--b970820/MANIFEST.md.
 No binary/cache/whole dependency or production copies; original log blank line
 retained. Zero project association for mixed uncommitted synthetic harness;
-capture context/unchanged library identities documented in manifest. No font-lock
-implementation or release deferral selected.
+capture context/unchanged library identities documented in manifest. At the end
+of the investigation no implementation/deferral had been selected. Subsequent
+user discussion adopts default-on/internal-variable nil override, no dedicated
+command or Customize; implementation is still pending. See current contract in
+memory/font-lock-investigation.md.
 
 ## Issue4 remaining date repair and bounded audit acceptance
 

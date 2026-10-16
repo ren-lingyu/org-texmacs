@@ -4,16 +4,35 @@ User selected bounded pre0.5.0 investigation, not feature implementation.
 No production edits, project staging, lock update, native worker or TeXmacs
 process. User flake overlay preserved. Development/GAW/archive skills applied.
 
-## Verified conclusion and next decision
+## Adopted interface direction after investigation
 
-Existing Org Scheme helper supplies lexical colors in paragraph fragments,
-inline notes and mixed-case texmacs special blocks. Config-only language mapping
-works for source blocks, not texmacs special blocks. Highlighting does not prove
-STM tag validity or native semantics. Production integration feasible in
-principle, but tested simple adapter is not ready to ship. Recommend bounded
-context discovery/invalidation and explicit property ownership if implementation
-is selected. Evidence also supports explicit release deferral if that added work
-is unwanted; neither implementation nor deferral has been adopted.
+User now selects font-lock as default-enabled functionality. No user-facing
+configuration item or dedicated command. Follow-up clarification explicitly
+requires an internal variable, not a command. Proposed internal spelling:
+`org-texmacs--font-lock-enabled`, default t, ordinary defvar-local rather than
+defcustom. nil forces Org-only behavior in that buffer; default binding can
+suppress automatic use globally. Exact refresh/cleanup lifecycle must be defined
+and tested before implementation acceptance; don't leave old Scheme properties
+when disabled. No public minor-mode command or Customize option selected.
+
+User questioned earlier face-only recommendation. Corrected interpretation:
+Scheme syntax properties inside STM are acceptable and potentially useful for
+parenthesis matching/sexp motion, not intrinsically a defect. Treat identified
+STM ranges as embedded Scheme for editor presentation. Existing Org links,
+emphasis and hiding inside STM string data must be suppressed within those
+ranges and restored through normal Org fontification when ownership ends.
+Use Org/scanner for boundaries, Scheme for presentation, native STM parser for
+export validity; Scheme editing does not expand accepted STM syntax or execute
+code. Do not require face-only transfer as a design constraint.
+
+Existing helper supplies lexical colors in paragraph fragments, inline notes
+and mixed-case texmacs special blocks; language mapping alone works only for
+source blocks. Tested whole-snapshot prototype remains unshipped and unsuitable.
+Next: bounded implementation plan with local old/new context invalidation,
+opaque-region property management, soft incomplete input, internal variable
+lifecycle and maintained/interactive verification. This discussion adopts the
+interface direction, not a completed implementation. No business files changed;
+new build/test commands still require task-specific authorization.
 
 Keep presentation separate from AST-first export/discovery/lowering semantics,
 STM opacity and source ownership. No worker/parser for font-lock. Reuse Org and
@@ -77,7 +96,7 @@ geometry checked against full scan. This supports bounded recognition as a
 direction, not a complete context-safe incremental algorithm. Avoid global
 copy/parse per edit. Cache alone doesn't solve invalidation cost.
 
-If selected: recognize owning paragraph/block locally, track old/new dirty
+For implementation: recognize owning paragraph/block locally, track old/new dirty
 contexts, soften incomplete editing locally, define tag/narrowing refresh and
 owned Org-property restoration. Preserve source state and object exclusions.
 Need maintained boundary/lifecycle tests, bounded cost checks and manual
@@ -95,5 +114,6 @@ Original log trailing blank line retained. Zero additional project parents:
 mixed synthetic prototype/runtime evidence is not a committed production feature;
 verified project library bytes and capture context are recorded in manifest.
 Locate introducing checkpoint through manifest first-parent path history.
-Active conclusions stay in memory; snapshots immutable. User decision on
-implementation versus explicit deferral is next, not further automatic tests.
+Active conclusions stay in memory; snapshots immutable. Original archived report
+records the earlier undecided state. Later default-on/internal-variable and
+Scheme-property decisions above supersede that proposal, not the raw evidence.
