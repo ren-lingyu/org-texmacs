@@ -29,7 +29,7 @@ User-adopted plan implemented and validated:107focused/464fullERT/9fixed real
 extension integration, strict compile/lint/full flake pass. Native owns BibTeX
 contents; only actual used key ambiguity fails; no automatic uncited dependency
 expansion. Exact implementation/native limits and evidence:
-memory/issue-12-review.md. Ordinary files remain unstaged/uncommitted; next user
+memory/issue-12-review.md. Eight task paths staged, draft Closes: #12 prepared; still uncommitted. Next user
 review/commit, then verify exact delivery and remote Issue12 status. No automatic
 v0.5.0 milestone or new work on advanced dependencies is implied.
 

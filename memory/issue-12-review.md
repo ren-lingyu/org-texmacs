@@ -22,7 +22,9 @@ Current uncommitted implementation and README/tests prepared. First105focused pa
 final107focused pass (170.676069s),9fixed real extension tests pass (12.313207s),
 strict package compilation and package lint pass. Full464/464ERT pass in
 339.558582s, complete authorized600s flake check exits0. Root diff-check passes;
-ordinary index remains empty. Implementation complete, user review/commit pending.
+ordinary index was empty at validation. User subsequently authorized sequential
+staging/message:8task paths staged, exact validated patch/blobs verified; original
+flake overlay remains unstaged. Implementation complete, manual user commit pending.
 Root user flake mirror overlay unchanged;19candidate inputs match isolation hash
 manifest. Runtime isolation is tmp/issue-12-bibliography; no system Emacs used.
 
@@ -95,10 +97,13 @@ no PDF-byte identity assertion. Personal libraries, GUI and other versions not
 certified.14necessary original-byte text files independently archived/verified:
 archive/2026-10-16T16-37-01Z--1ee3de5/MANIFEST.md. Logs preserve original whitespace;
 no PDF/binary/personal sources or redundant committed source copies captured.
-Current memory/model/acquisition contract coordinated. Ordinary index stays empty;
+Current memory/model/acquisition contract coordinated. Eight task paths now staged;
 next user review/optional manual.org interaction after loading fresh package,
-with org-organize enabled and buffer-local discovery t. User decides staging/
-message; ordinary commit remains manual. After user commit verify exact delivery and
+with org-organize enabled and buffer-local discovery t. User-authorized staging/
+message complete: tmp/commit.md subject fix(bibliography): delegate BibTeX
+interpretation to native TeXmacs, footer Closes: #12. Exact draft SHA256:
+f9780248b442723802b13cf5aaf7eda6dbc649c7708045de94636c72eb2f4989.
+Split not necessary/low: one coupled native ownership fix. Ordinary commit manual. After user commit verify exact delivery and
 Issue12 state; no automatic GitHub close/comment.
 
 ## Executed isolated validation commands
