@@ -298,6 +298,16 @@ Line breaks inside the group are supported, but a blank line would cross
 the paragraph boundary and prevent recognition of that fragment.  These
 examples describe source and AST structure, not display placement or numbering.
 
+Fragments are also recognized in direct plain text of anonymous =[fn::...]=
+and named =[fn:name:...]= inline footnote definitions.  Org determines the
+body and delimiter boundaries.  Discovery does not enter emphasis, links,
+code or verbatim objects inside a footnote; an adjacent fragment remains
+eligible.  Configured-root candidates that cannot finish within the inline
+footnote body, or use unsupported reader punctuation, signal an error rather
+than silently becoming literal text.  The ordinary paragraph stop rule above
+is unchanged.  STM strings containing brackets or newlines must still obey
+Org's footnote grammar; the exporter does not repair footnote delimiters.
+
 Source discovery returns an =org-texmacs-fragment-span=, not an Org node or a
 parsed TeXmacs tree.  Parsing that span returns a fresh pseudo tree with the
 same root tag as the source.  Its children have Org parent links, but the
@@ -431,9 +441,9 @@ The entry list is not recursive: =sqrt= above remains a child of =math=
 without needing its own entry.
 
 ** Recognition limits
-Configured roots are recognized only in paragraph text, including
-paragraphs in list items and quote blocks.  They need not occupy a whole
-paragraph.  Headline text, table cells, native objects such as emphasis,
+Configured roots are recognized in paragraph text, including paragraphs in
+list items and quote blocks, and direct text of inline footnote bodies.
+They need not occupy a whole paragraph or footnote body.  Headline text, table cells, native objects such as emphasis,
 link descriptions and code/verbatim, source blocks, and TeXmacs special-block
 bodies are excluded.
 
@@ -664,7 +674,7 @@ The supported Org subset is deliberately small:
 | Example / fixed-width / source block               | Static =code= containing a line-wise =document=               |
 | Basic rectangular Org table                       | =tabular= / =tformat= / =table= / =row= / =cell=             |
 | Named/captioned basic table                       | Private anchors and native =big-table= / =caption-detailed= |
-| Recognized paragraph fragment                     | One parsed STM subtree                                       |
+| Recognized paragraph / inline-footnote fragment   | One parsed STM subtree                                       |
 | =texmacs= special block                           | One parsed STM subtree, even for a string or =document= root |
 | COMMENT / comment block                           | Removed before structural preflight                         |
 | Task, archive and select/exclude filtering        | Org policy applied before STM worker requests                |
@@ -694,13 +704,16 @@ Such paragraphs emit the complete island directly, without an additional
 =concat=; the island's internal tree and text remain unchanged.  Recognition
 still uses =org-texmacs-fragment-tags=; no separate display-tag option is added.
 This rule applies in ordinary body text, quote/center containers, separate
-footnote definitions and later list paragraphs.  A leading list paragraph keeps
-its existing list-marker/=concat= structure and is not promoted.
+footnote definitions and later list paragraphs.  Inline footnote bodies use
+the same bare rule inside their existing body =document=, including restored
+named definitions.  A leading list paragraph keeps its existing
+list-marker/=concat= structure and is not promoted.
 
 Other paragraphs keep their existing =concat= and whitespace semantics.
 Direct fragment roots =equation=, =eqnarray=, =align=, =gather=, =eqsplit= and
-their starred forms are rejected in such paragraphs, including leading list
-paragraphs: use a standalone paragraph or a TeXmacs special block instead.
+their starred forms are rejected in such paragraphs and non-bare inline
+footnote bodies, including leading list paragraphs: use a standalone body
+or a TeXmacs special block instead.
 The exporter does not split mixed paragraphs automatically or inspect nested
 STM to infer display layout.  Ordinary =math= mixtures remain supported;
 arbitrary custom-root layout remains governed by TeXmacs.  Native STM parsing
@@ -855,9 +868,12 @@ The source's =org-footnote-section= is captured, and its special heading is
 omitted while needed definitions are retained.  Missing or ambiguous named
 definitions, nested footnotes and footnotes in headings, emphasis, table
 cells or link descriptions are rejected.
-STM syntax inside inline footnote bodies is not discovered as a TeXmacs
-island.  Paragraphs in separate definitions use normal fragment discovery;
-their STM roots and local file targets retain provenance when emitted.
+Direct text in inline definitions and paragraphs in separate definitions use
+normal configured fragment discovery.  Inline bodies follow the bare-island
+and mixed-display boundaries described above; their STM roots and local file
+targets retain provenance and are emitted only at first use.  Required inline
+definitions restored after filtering or body selection retain the same STM
+behavior; pure lowering never reads source text.
 Adjacent footnotes remain adjacent nodes without added separators or
 package-assigned footnote numbers.  Native body round trips do not establish
 rendering or numbering correctness.

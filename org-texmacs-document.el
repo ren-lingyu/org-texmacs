@@ -601,8 +601,9 @@ removed row identity or nil.  Never mutate the Org AST."
 
 AST must be an `org-data' snapshot.  ISLANDS is an identity-keyed alist
 of (NODE . STREE): NODE is a complete TeXmacs special block or a standalone
-plain-text child of a paragraph.  A preparation layer must split text at
-fragment boundaries and mask foreign markup before constructing this input.
+plain-text child of a paragraph or inline footnote body.  A preparation
+layer must split text at fragment boundaries and mask foreign markup before
+constructing this input.
 This function never discovers or parses fragments.  Every mapping must be
 consumed exactly once; each mapped root contributes one output child.
 INFO fixes metadata, headline/TOC output policies and formatter for this
@@ -639,10 +640,11 @@ boundaries.  Suppress leading whitespace at paragraph/title starts and after
 explicit breaks; a final whitespace run remains one space.  Inline code is
 literal, not preformatted.  Never normalize STM islands, merge adjacent
 strings or flatten island strees.  Reject unsupported nodes and semantics.
-An ordinary paragraph containing exactly one island and otherwise only ASCII
-prose whitespace emits that island directly.  Other paragraphs retain concat;
-known display-math roots cannot be mixed into them.  Leading list paragraphs
-retain their marker/concat and reject display roots even when otherwise bare.
+An ordinary paragraph or inline footnote body containing exactly one island
+and otherwise only ASCII prose whitespace emits that island directly.
+Other paragraphs retain concat; known display-math roots cannot be mixed
+into them.  Leading list paragraphs retain their marker/concat and reject
+display roots even when otherwise bare.
 
 Return a fresh result with STM root paths, retaining no Org properties or
 source objects.  Do not read or modify source/caller buffers, encode text,
@@ -808,8 +810,8 @@ from one snapshot."
            (let ((entry (assq node islands)))
              (cond
               (entry
-               (unless (and (stringp node) (eq context 'paragraph))
-                 (org-texmacs--document-fail node "Island outside paragraph text"))
+               (unless (and (stringp node) (memq context '(paragraph footnote)))
+                 (org-texmacs--document-fail node "Island outside paragraph or footnote text"))
                ;; An island is opaque, even if its root is an atomic string.
                (setcar space nil)
                (list (island node entry)))
@@ -867,13 +869,10 @@ from one snapshot."
                                  'document
                                  (blocks (org-element-contents definition)
                                          'footnote-definition (cons definition ancestors)))
-                              (let ((parts (inlines (org-element-contents definition) 'footnote
-                                                    (cons definition ancestors))))
-                                (org-texmacs--document-pack
-                                 'document
-                                 (list (org-texmacs--document-pack
-                                        'concat (or parts
-                                                    (list (org-texmacs--document-create :body "")))))))))
+                              (org-texmacs--document-pack
+                               'document
+                               (list (paragraph definition (cons definition ancestors)
+                                                nil 'footnote)))))
                            (labelled
                             (if anchor
                                 (org-texmacs--document-pack
@@ -997,7 +996,7 @@ from one snapshot."
             ((null parts) (org-texmacs--document-create :body ""))
             ((null (cdr parts)) (car parts))
             (t (org-texmacs--document-pack 'concat parts))))
-         (paragraph (node ancestors &optional marker)
+         (paragraph (node ancestors &optional marker context)
            (let ((contents (org-element-contents node)) bare other)
              (unless (proper-list-p contents)
                (org-texmacs--document-fail node "Invalid paragraph contents"))
@@ -1017,9 +1016,13 @@ from one snapshot."
                               (memq (cadr entry) org-texmacs--document-display-math-tags))
                      (org-texmacs--document-fail
                       node "Display STM requires a standalone paragraph or TeXmacs block"))))
-               (org-texmacs--document-pack
-                'concat (append (and marker (list marker))
-                                (inlines contents 'paragraph ancestors))))))
+               (let ((parts (inlines contents (or context 'paragraph) ancestors)))
+                 (org-texmacs--document-pack
+                  'concat (append (and marker (list marker))
+                                  (or parts
+                                      (and (eq context 'footnote)
+                                           (list (org-texmacs--document-create
+                                                  :body ""))))))))))
          (metadata-field (tag nodes context ancestors)
            (unless (proper-list-p nodes)
              (signal 'org-texmacs-document-error '("Invalid parsed document metadata")))
@@ -1710,13 +1713,16 @@ RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
                       (count (or (org-element-property :post-blank node) 0)))
                  (push (cons node (buffer-substring-no-properties (- end count) end))
                        blanks))
-               (mapc #'whitespace (org-element-contents node))))
+               (if (and (eq (org-element-type node) 'footnote-reference)
+                        (eq (org-element-property :type node) 'inline))
+                   (paragraph node)
+                 (mapc #'whitespace (org-element-contents node)))))
            (paragraph (node)
              (let ((position (org-element-property :contents-begin node))
                    (children nil))
                (if (null position)
-                   ;; Restored inline definitions have synthetic paragraphs.
-                   ;; They carry already parsed inline data, not fragment spans.
+                   ;; Coordinate-less synthetic paragraphs carry already parsed
+                   ;; inline data, not source fragment intervals.
                    (mapc #'whitespace (org-element-contents node))
                (dolist (child (org-element-contents node))
                  (if (not (stringp child))

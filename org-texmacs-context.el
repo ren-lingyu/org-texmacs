@@ -560,7 +560,14 @@ from this parsed snapshot; never fall back to a buffer or external data."
                        (progn (org-element-extract definition) definition)
                      (org-element-create
                       'footnote-definition (list :label label)
-                      (apply #'org-element-create 'paragraph nil
+                      ;; Keep the original inline body interval in this fixed
+                      ;; snapshot so fragment preparation can split its strings.
+                      (apply #'org-element-create 'paragraph
+                             (let ((begin (org-element-property :contents-begin definition))
+                                   (end (org-element-property :contents-end definition)))
+                               (and begin end
+                                    (list :begin begin :end end :contents-begin begin
+                                          :contents-end end :post-blank 0)))
                              (org-element-contents definition))))))
               (apply #'org-element-set-contents ast
                      (append (org-element-contents ast) (list restored))))))))

@@ -18,7 +18,7 @@
 (defcustom org-texmacs-fragment-tags
   '("math" "equation" "equation*" "eqnarray" "eqnarray*" "align" "align*"
     "gather" "gather*" "eqsplit" "eqsplit*")
-  "Literal root tag names recognized in Org paragraph text.
+  "Literal root tag names recognized in paragraph and inline footnote text.
 
 This is an entry list, not a TeXmacs validity or rendering specification.
 It does not restrict child tags or TeXmacs special-block contents.  Names
@@ -95,9 +95,10 @@ adjacent string quote.  Leave point just after the tag, before its boundary."
 (defun org-texmacs--fragment-end (start)
   "Return the balanced fragment end at START, or nil.
 
-The caller must narrow to the containing paragraph.  Use dedicated string
-and escape syntax, ignoring Org syntax properties.  Reject unsupported
-reader punctuation outside strings instead of returning a truncated span.
+The caller must narrow to the containing paragraph or inline footnote body.
+Use dedicated string and escape syntax, ignoring Org syntax properties.
+Reject unsupported reader punctuation outside strings instead of returning
+a truncated span.
 This only discovers boundaries; the worker validates STM data."
   (save-excursion
     (with-syntax-table org-texmacs--fragment-syntax-table
@@ -190,12 +191,52 @@ TAGS is the source configuration snapshot; REGEXP matches its prefixes."
             (stop nil))
         (while (and (not stop) (setq start (org-texmacs--fragment-next regexp)))
           (let ((tag (buffer-substring-no-properties (1+ start) (point))))
-            (when (save-excursion
-                    (goto-char start)
-                    (eq (org-element-type (org-element-context)) 'paragraph))
-              (let ((end (org-texmacs--fragment-end start)))
-                (if (not end)
-                    (setq stop t)
+            (let* ((context (save-excursion
+                              (goto-char start) (org-element-context)))
+                   (inline-note (and (eq (org-element-type context) 'footnote-reference)
+                                     (eq (org-element-property :type context) 'inline))))
+              (when (or (eq (org-element-type context) 'paragraph) inline-note)
+                (let ((end (save-restriction
+                             (when inline-note
+                               (narrow-to-region
+                                (org-element-property :contents-begin context)
+                                (org-element-property :contents-end context)))
+                             (org-texmacs--fragment-end start))))
+                  (if (not end)
+                      (if inline-note
+                          (signal 'org-texmacs-error
+                                  '("Invalid STM candidate in inline footnote"))
+                        (setq stop t))
+                  (when inline-note
+                    ;; An Org object beginning in STM string data is foreign
+                    ;; markup handled by masking.  A real adjacent object must
+                    ;; not lend its closing characters to this candidate.
+                    ;; Context gives bounds but not parsed object children.
+                    ;; Resolve this note in the current masked Org snapshot.
+                    (let ((parsed (save-excursion
+                                    (org-element-map (org-element-parse-buffer)
+                                        'footnote-reference
+                                      (lambda (node)
+                                        (and (= (org-element-property :begin node)
+                                                (org-element-property :begin context))
+                                             node)) nil t))))
+                      (unless parsed
+                        (signal 'org-texmacs-error '("Inline footnote context changed")))
+                      (dolist (child (org-element-contents parsed))
+                        (unless (stringp child)
+                          (let ((begin (org-element-property :begin child))
+                                (stop (org-element-property :end child)))
+                            (when (and begin stop (< start begin end)
+                                       (not (save-excursion
+                                              (with-syntax-table
+                                                  org-texmacs--fragment-syntax-table
+                                                (let ((parse-sexp-lookup-properties nil))
+                                                  (nth 3 (parse-partial-sexp
+                                                          start begin))))))
+                                       (> (- stop (or (org-element-property
+                                                       :post-blank child) 0)) end))
+                              (signal 'org-texmacs-error
+                                      '("STM crosses an inline footnote object"))))))))
                   (let ((source (buffer-substring-no-properties start end)))
                     (push (org-texmacs--fragment-span-create
                            :buffer buffer :tick tick
@@ -205,7 +246,7 @@ TAGS is the source configuration snapshot; REGEXP matches its prefixes."
                     (goto-char start)
                     (delete-region start end)
                     (insert (org-texmacs--fragment-mask source)))
-                  (goto-char end))))))
+                  (goto-char end)))))))
         (nreverse spans)))))
 
 (defun org-texmacs--fragment-collect (tags)
@@ -263,12 +304,16 @@ accessible buffer before filtering; region edges never truncate a formula.
 Current narrowing acts as the document boundary; do not implicitly widen.
 
 Recognize literal `org-texmacs-fragment-tags' only in paragraph text,
-including list item paragraphs.  Exclude emphasis, links and code, as well
+including list item paragraphs and direct inline footnote body text.
+Exclude emphasis, links and code, as well
 as headlines, table cells, source blocks and TeXmacs special-block bodies.
 Support nested lists, strings, escapes and newlines within a paragraph.
 Unsupported reader punctuation outside strings, including Scheme comments,
 or an unclosed candidate stops recognition for the rest of that paragraph.
-Balanced input is not necessarily valid STM; this API does not parse it.
+In inline footnote text, such a candidate signals `org-texmacs-error'
+instead; it must finish within the Org footnote body.  Footnote delimiters
+are never repaired.  Balanced input is not necessarily valid STM; this API
+does not parse it.
 
 Spans are read-only snapshots, not Org nodes.  Obtain fresh spans after any
 source edit or tag configuration change.  No worker or cache is used:
