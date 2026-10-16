@@ -1,5 +1,14 @@
 # org-texmacs current memory
 
+## Active: PDF hyperlink annotation investigation
+
+User selected PDF links next after completed/closed Issues10 and11. Investigate
+native print/export/configuration first; fix demonstrated package defects or
+document verified native/configuration limits, no independent PDF link system.
+Static review/probe preparation ongoing; no business edits or new tests run.
+Scope, evidence limits and pending exact flake commands:
+memory/pdf-links-investigation.md. Existing user flake mirror remains untouched.
+
 ## Completed committed delivery: Issue10 inline footnote STM
 
 Final user-selected contract implemented/automatically accepted/user-committed.
