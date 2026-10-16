@@ -41,8 +41,12 @@ Two early harness initialization/focus failures rejected by guards; diagnostic
 limits extracted.13necessary original-byte text artifacts archived separately:
 archive/2026-10-16T12-12-14Z--f4a194e/MANIFEST.md
 Full extraction: memory/pdf-adjacent-checks.md and task tmp/footnote-targets/REPORT.md.
-Next: report native-path narrowing; further callback instrumentation or GUI
-comparison only if selected. Chinese fonts postponed, font-lock later; no release action.
+User subsequently authorized staging/message for supplementary ERT. Only
+tests/ert/ert.el staged; all25index hashes match prior accepted manifest,
+whitespace clean, user flake excluded. tmp/commit.md test(pdf) draft prepared;
+full draft/readiness in memory/pdf-adjacent-checks.md. No ordinary commit made,
+no new test required. Next: user commit and exact delivery verification; further
+native callback instrumentation or GUI comparison only if selected. Chinese fonts postponed, font-lock later; no release action.
 
 ## Completed local repair: PDF hyperlink annotations
 

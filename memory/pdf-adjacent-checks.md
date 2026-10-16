@@ -218,3 +218,29 @@ Further diagnosis would compare runtime footnote key/anchor registration with
 PDF destination collection, or a separate native GUI export. Neither adopted
 nor executed. User can inspect complete-results/generic-atom-2.pdf as minimal
 native reproduction. Main files/index unchanged in this experiment.
+
+## Supplementary ERT staging and message readiness
+
+User requested message; index was initially empty. Per git-maintenance staged-only
+rule requested exact single-file staging; user then explicitly authorized stage
+and message. Only tests/ert/ert.el staged, user flake excluded. Initial default
+sandbox index write was read-only; identical authorized operation succeeded with
+required filesystem permission. Full staged diff reviewed; whitespace check
+clean; all25index input hashes equal accepted adjacent manifest. Prior6focused/
+440core/full acceptance transfers by byte identity, no new tests. One coherent
+test(pdf) change, split not necessary, difficulty low. Native first-note failure
+is not repaired/covered as successful here. No issue footer/association invented.
+Final tmp/commit.md contains:
+
+```text
+test(pdf): verify link destinations and TOC page numbers
+
+- 提取共用 PDF XML 检查函数, 递归读取带样式的链接文字.
+- 增加 `generic` / `article` 样式下长短文档的回归测试, 核对目录页码, 标题跳转, 组合及重复文献引用和重复脚注的目标页.
+- 验证导出前后源 buffer 状态保持一致.
+
+```
+
+No new raw archive: exact tests.patch, manifests and acceptance already archived;
+full draft retained in current memory. Ordinary commit not executed. Next user
+commit, then verify exact delivery; no issue lookup unless an association is added.
