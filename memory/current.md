@@ -2,8 +2,9 @@
 
 ## Completed: supplementary PDF derived-state checks
 
-User-requested supplementary tests/manual plan complete. Only ERT changed;
-no business code or ordinary index touched. User's flake overlay preserved.
+User-requested supplementary tests/manual plan complete and ERT user-committed.
+Exact delivery verified: one test file, reviewed message/patch/all25input hashes.
+Only ERT changed; no business code changed. User's flake overlay preserved.
 Focused6/6 (19.054185s), full440/440 (285.609164s), authorized600s full flake
 exit0 including strict compilation/lint and final12PDF probes on x86_64-linux.
 All12PDFs: TOC/heading/citation/repeated-note checked target pages correct;
@@ -21,8 +22,9 @@ User additionally reports clicking the number before footnote body returns to
 First1. Thus body-to-first-reference backlink works in this manual observation;
 first-reference-to-body forward jump has no observable effect. Distinct links
 must be diagnosed separately. No agent GUI clicks claimed.
-All24non-ERT snapshot inputs match committed production source; supplementary
-ERT uncommitted, initial/final manifests and exact patch explicit.17necessary
+All24non-ERT runtime snapshot inputs match then-committed production source;
+supplementary ERT was uncommitted during runtime, now exactly user-committed.
+Initial/final manifests and exact patch explicit.17necessary
 original-byte text artifacts archived/verified separately, no PDF/binaries:
 archive/2026-10-16T11-43-36Z--f4a194e/MANIFEST.md.
 Scope, exact commands, findings and limitations: memory/pdf-adjacent-checks.md.
@@ -41,12 +43,17 @@ Two early harness initialization/focus failures rejected by guards; diagnostic
 limits extracted.13necessary original-byte text artifacts archived separately:
 archive/2026-10-16T12-12-14Z--f4a194e/MANIFEST.md
 Full extraction: memory/pdf-adjacent-checks.md and task tmp/footnote-targets/REPORT.md.
-User subsequently authorized staging/message for supplementary ERT. Only
-tests/ert/ert.el staged; all25index hashes match prior accepted manifest,
-whitespace clean, user flake excluded. tmp/commit.md test(pdf) draft prepared;
-full draft/readiness in memory/pdf-adjacent-checks.md. No ordinary commit made,
-no new test required. Next: user commit and exact delivery verification; further
-native callback instrumentation or GUI comparison only if selected. Chinese fonts postponed, font-lock later; no release action.
+User committed the supplementary test(pdf) delivery; read-only verification
+confirms parent=PDF repair, only tests/ert/ert.el, exact reviewed message/patch
+and all25accepted input hashes. Index empty, only original user flake unstaged.
+Prior6focused/440core/full acceptance transfers by exact bytes; no retest needed.
+No issue footer/association, so no related remote issue state lookup required.
+Current project parent grounds this committed-delivery verification, not original
+uncommitted runtime or synthetic native-control provenance. Full draft and
+verification: memory/pdf-adjacent-checks.md. No new archive needed; existing
+immutable evidence retained. Native first-note gap remains unresolved/unrepaired.
+Next: user selects further native diagnosis/GUI comparison, or other release
+work. Chinese fonts postponed, font-lock later; no release action selected.
 
 ## Completed local repair: PDF hyperlink annotations
 

@@ -3137,3 +3137,15 @@ archive/2026-10-16T12-12-14Z--f4a194e/MANIFEST.md
 No PDFs/binaries/configs/full tmp capture, no inferred project parent for native
 synthetic inputs. Existing .tm control bytes trace to earlier matrix, not a
 new committed project source. Ordinary index/user flake/supplementary ERT preserved.
+
+
+## Supplementary PDF test delivery verified (2026-10-16)
+
+User commit test(pdf): verify link destinations and TOC page numbers inspected:
+only ERT, parent=PDF repair, full reviewed message and archived patch match,
+all25accepted input hashes equal committed blobs. Index empty, user flake only
+unstaged. Prior6focused/440core/full acceptance transfers by bytes, no retest.
+No issue association, no required related remote lookup. Project-parent edge
+records committed delivery verification, not original uncommitted or native-only
+runtime provenance. Existing archives unchanged; no new raw capture needed.
+Native footnote forward-target gap remains separately unresolved/unrepaired.

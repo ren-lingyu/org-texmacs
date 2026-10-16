@@ -6,8 +6,8 @@ User committed original PDF fix; exact committed delivery verified and recorded
 in memory/pdf-links-investigation.md. User now asks for supplementary tests of
 previously identified adjacent risks, and practical interactive steps where easy.
 Current source is that committed fix, not original uncommitted repair candidate.
-No business-code repair selected. Only tests/ert/ert.el modified; user flake
-remains unrelated/unstaged. No issue association or external writes.
+No business-code repair selected. Supplementary tests/ert/ert.el delivery now
+user-committed and exactly verified; user flake remains unrelated/unstaged. No issue association or external writes.
 
 ## Completed automated checks
 
@@ -244,3 +244,17 @@ test(pdf): verify link destinations and TOC page numbers
 No new raw archive: exact tests.patch, manifests and acceptance already archived;
 full draft retained in current memory. Ordinary commit not executed. Next user
 commit, then verify exact delivery; no issue lookup unless an association is added.
+
+## User commit delivery verified
+
+Read-only inspection confirms test(pdf): verify link destinations and TOC page
+numbers, one parent=committed PDF repair, exactly tests/ert/ert.el. Complete
+message matches reviewed tmp/commit.md; patch equals archived tests.patch;
+all25committed input hashes equal accepted candidate manifest. Index empty,
+only original user flake unstaged. Prior6focused/440core/full acceptance transfers
+by exact bytes; no rerun solely for commit verification. No issue association or
+closure footer, so no corresponding remote status query required. Additional
+project parent supports this exact delivery verification, not retrospective
+runtime provenance for earlier uncommitted suite or native synthetic controls.
+No new raw archive: committed patch/history and extracted verification suffice.
+Native first-note failure remains separately diagnosed, no repair selected.
