@@ -69,9 +69,14 @@ User says same files work in ox-latex: record support-boundary mismatch and
 all-collected-entry preflight/weak diagnostics, not corrupt bibliography or
 proven parser conflict. Full file identities/scope/findings:
 memory/pdf-adjacent-checks.md. No personal-source archive justified.
-Next: user may select compatibility/collection/diagnostic follow-up or native
-footnote diagnosis/upstream tracking; no repair adopted. Fonts postponed,
-font-lock later; no release action selected.
+User asks remaining pre0.5.0 work. Read-only gate reconciliation recorded atop
+memory/release-0.5.0.md:10/11/package links complete; original block fixture
+identity, Chinese font positive control/conclusion, font-lock editor-life/deferral
+decision, representative workflows/final gates and0.5.0 metadata/docs remain.
+Font postponement changes ordering, not explicit removal from release gate.
+Native first-note repair/full BibLaTeX support/new diagnostics are not automatically
+adopted blockers. No project edits/new tests/raw archive/release actions selected.
+Next: user selects remaining release work or additional scope.
 
 ## Completed local repair: PDF hyperlink annotations
 

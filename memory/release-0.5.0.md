@@ -1,5 +1,53 @@
 # v0.5.0 release readiness
 
+## Current gate summary after committed deliveries
+
+Read-only readiness reconciliation on2026-10-16; no new implementation or release
+authority. Original INBOX is unchanged and has historical Open statuses; use the
+committed delivery records for current local status. Still planned/not accepted.
+
+- Items1/2: Issue10 inline-footnote STM and Issue11 bare display rendering are
+  implemented, validated, user-committed and previously verified closed.
+- Item3: quotation/block regressions exist and pass, but identity of the original
+  INBOX block-mapping failure is still not linked explicitly to its retained test.
+  This is a remaining fixture/acceptance check, not a demonstrated unfixed bug.
+- Item4: package hyperlink sequencing repair committed; supplementary ERT delivery
+  committed and25input hashes verified. Latest6focused/440core/full strict compile/
+  lint acceptance transfers by bytes.12PDF target/pagination comparisons pass.
+  Separate first-note forward gap reproduces in20native controls and user's
+  native interactive .tm/PDF; retain/document native limitation and assess release
+  impact, no package repair adopted. Full findings: memory/pdf-adjacent-checks.md.
+- Item5: Chinese fonts only postponed in ordering, not explicitly removed from
+  pre0.5.0 gate. Missing-font baseline exists; positive native CJK configuration/
+  original inconsistency and practical conclusion still needed. Bounded fix,
+  tested configuration or evidence-based explicit deferral can close it.
+- Item6: STM font-lock initial Org-based feasibility positive; incremental edits/
+  cleanup/compatibility/cost and implement-versus-explicit-deferral decision not
+  complete. Investigation required; implementation conditional.
+- Item7: representative mathematical full-document .tm/PDF workflow acceptance
+  combining supported features still pending; short combined link fixtures and
+  isolated original math regressions are useful but not whole release acceptance.
+- Item8: latest test delivery accepted6focused/440core/full compile/lint, prior
+  production repair9real extensions. Final stabilized release candidate requires
+  complete authorized locked-flake/native/PDF gates; don't rerun merely to claim
+  a fresh timestamp before remaining changes exist. Other-version/platform limits
+  remain explicit.
+- Item9: actual package/Nix sources still0.4.0; update0.5.0 metadata, README support/
+  examples/migration and release notes after scope stabilizes. Include native PDF
+  first-note limit and current restricted BibTeX grammar/discovery behavior.
+
+New bibliography finding: org-organize-mode expands discovery from refs.bib to
+3personal sources including @online and template month=MM, rejected by current
+restricted grammar. User reports these files work in ox-latex. Compatibility,
+collection-policy and file-aware diagnostics remain unadopted follow-ups; don't
+silently make full BibLaTeX support a pre0.5.0 requirement or rewrite personal
+library. Native first-note engine repair likewise not newly adopted.
+
+#9 stays after0.5.0/before0.6.0; #7 nonblocking export stays deferred. No new raw
+archive for this reconciliation: existing implementation/test/native archives
+and current extracted release gate suffice. INBOX/project/version/user flake
+unchanged. Next implementation choice belongs to user; no task auto-selected.
+
 ## Adopted objective and authority
 
 User supplied INBOX.md "v0.5.0 Release Readiness" and selected read-only review
