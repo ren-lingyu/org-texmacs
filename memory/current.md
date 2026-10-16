@@ -1,13 +1,16 @@
 # org-texmacs current memory
 
-## Completed candidate: Issue11 bare STM paragraph repair
+## Completed committed delivery: Issue11 bare STM paragraph repair
 
 User-selected final revised plan implemented and locally accepted; contract,
 context matrix, diagnostics and full evidence in memory/issue-11-implementation.md.
-Exactly document/ERT/README changed, now staged as one coherent fix; uncommitted.
-Commit draft tmp/commit.md: fix(document): preserve native layout of standalone
-STM fragments; Closes:#11. No second group, so no inter-group polling needed.
-All3staged blobs equal accepted isolated snapshot and worktree; diff check clean.
+User committed one coherent fix(document): preserve native layout of standalone
+STM fragments, Closes:#11. Parent is inspected Issue4 baseline; exactly document/
+ERT/README changed. All25committed input hashes match final accepted manifest,
+complete message equals approved tmp/commit.md draft. Index empty; user flake
+mirror remains unstaged. Previous14focused/9real/430core acceptance transfers by
+exact byte identity; no rerun needed. Association records this delivery verification,
+not original runtime-test provenance. No external issue/publication check this turn.
 Bare one registered
 string island plus only other ordinary ASCII whitespace children/no Org objects
 emits complete copied island. Mixed known direct display roots explicitly reject;
@@ -28,11 +31,11 @@ focused7/7; final source/lock stable,25baseline/25final/11foreign hashes verifie
 
 14necessary raw text artifacts separately captured/byte-verified:
 archive/2026-10-16T07-46-35Z--8a90b4c/MANIFEST.md. No PDF/binary/dependency/full tmp.
-No inferred project parent: accepted candidate uncommitted; baseline identified
-as exact red-control source in evidence. Ordinary index contains exactly3task files; only
-user flake mirror remains unstaged, no INBOX/version/lock/example edits or external writes.
-Next user reviews draft and makes project commit; verify exact blobs, parent,
-message and tracking afterward. Remote#11 last observed open.
+Original acceptance/archive checkpoint had no inferred project parent because
+candidate was then uncommitted; baseline identifies exact red-control source.
+Current delivery verification grounds the newly inspected committed snapshot.
+No INBOX/version/lock/example edits or external writes. Local Issue11 delivery is
+complete; remote#11 last observed open, current remote closure not verified.
 #10 then PDF links follow11; Chinese fonts postponed, font-lock later. No other
 feature implementation or release operation selected.
 
@@ -74,7 +77,7 @@ No full release gate was run in that phase. Native reload harness failures
 corrected and explicitly excluded from acceptance. No ordinary staging/release/
 external writes. 37necessary original-byte text artifacts archived and verified separately at
 archive/2026-10-16T06-29-51Z--8a90b4c/MANIFEST.md; PDFs/binaries excluded.
-Issue11 candidate is now implemented/validated above; #10 and PDF links follow it;
+Issue11 repair is now implemented/validated/user-committed above; #10 and PDF links follow it;
 P1 font/export configuration/edit-lifecycle gaps remain before release acceptance.
 
 ## Completed committed delivery: Issue4 remaining date repair and semantic audit

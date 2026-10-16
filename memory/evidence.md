@@ -2920,3 +2920,19 @@ memory/issue-11-implementation.md. Root INBOX/lock/versions/user flake/examples
 unchanged. Ordinary index empty; only3task paths plus user mirror dirty. Remote#11
 last observed open, user review/delivery/tracking next. No external writes or
 other-feature implementation. Fonts postponed; priority11->10->PDF links.
+
+
+## Issue11 user commit delivery verification (2026-10-16)
+
+User reports commit; read-only inspection confirms one-parent fix(document):
+preserve native layout of standalone STM fragments with Closes:#11. Parent is
+inspected Issue4 baseline; changed paths exactly README.org,document module and
+maintained ERT. All25committed source SHA256 values equal accepted candidate
+manifest; complete message equals approved tmp/commit.md. Index empty; only user
+flake mirror remains unstaged. Prior14focused/9real/430core/full compile/lint
+acceptance transfers by exact byte identity; no new tests/builds/business edits.
+Project association grounds this exact delivery verification; original runtime
+acceptance was uncommitted and is not retroactively assigned commit provenance.
+Remote closure not rechecked, last observed open; no external write/publication.
+No additional archive needed: ordinary commit preserves implementation/draft
+message and existing immutable archive preserves accepted harness/raw evidence.

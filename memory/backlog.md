@@ -23,10 +23,10 @@ decision.
 
 ## Active next
 
-### v0.5.0 release readiness — Issue11 candidate accepted, user delivery pending
+### v0.5.0 release readiness — Issue11 implemented and user-committed
 
-Status: selected Issue11 implementation/automated acceptance complete, uncommitted
-candidate pending user review/delivery. Other release requirements **adopted-later**.
+Status: selected Issue11 implementation/automated acceptance/user delivery complete.
+Other release requirements **adopted-later**.
 Full gate, all nine items, evidence limits and decisions:
 memory/release-0.5.0.md. Required P0: #10 inline-footnote STM, #11 equation
 block/paragraph discrepancy resolution, prior block-mapping regression (confirm
@@ -41,9 +41,10 @@ but edit lifecycle unverified. User selected final Issue11 implementation contra
 in memory/issue-11-implementation.md: bare lifting, explicit known-display mixed
 rejection, leading-list exception; no automatic splitting. Final14/14focused,
 9/9real and430/430core pass, including strict compile/lint/full applicable flake
-checks. Seven stale expectations migrated;3task files staged as one coherent fix,
-message in tmp/commit.md with Closes:#11, pending user review/commit.
-Remote#11 last observed open.
+checks. Seven stale expectations migrated; user committed one coherent fix with
+Closes:#11. Exact parent/three changed paths/all25input hashes/full draft message
+verified; index empty, only user flake mirror unstaged. Remote#11 closure not
+rechecked, last observed open.
 Adopted priority11->10->PDF links, Chinese fonts postponed, font-lock later.
 No release/version authority. #9 adopted-later after
 0.5.0 before0.6.0; #7 deferred and not a0.5.0 blocker. Earlier native footnote

@@ -67,12 +67,13 @@ not current support. The initial review required evidence for the equation
 block/paragraph PDF discrepancy (#11), PDF annotations and Chinese fonts; the
 previous bounded native tag audit alone did not establish these cases.
 Isolated probes now reproduce #10 and identify #11 wrapper-sensitive native
-rendering/serialization reload difference. Uncommitted accepted Issue11 candidate
+rendering/serialization reload difference. User-committed Issue11 repair
 implements bare identity-based paragraph lifting and known direct display-root
 mixed rejection; list-first marker route retained, no automatic splitting.
 Final14focused/9real/430core/full compile/lint pass; source/encoding/provenance
-boundaries and matched-context native layout verified. No main/release claim
-until user delivery. Contract/evidence:
+boundaries and matched-context native layout verified. Delivery parent/path set/
+all25input hashes/full approved message verified; repair now on local main.
+Remote closure/publication not verified. Contract/evidence:
 memory/issue-11-implementation.md. Links/CJK share
 native controls and need further config evidence. Org Scheme fontification can
 fontify STM spans; editing integration still unverified. See

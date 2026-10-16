@@ -132,9 +132,10 @@ by that P1 flexibility. No design picked before its diagnosis.
 
 Isolated investigation now reproduces #10/#11 and establishes bounded P1 controls;
 see investigation record for evidence/limits. User now selected Issue11 final
-implementation plan, now locally implemented/validated as an uncommitted candidate:
+implementation plan, now locally implemented/validated and user-committed:
 memory/issue-11-implementation.md; priority11->10->PDF links. Final430core/14focused/
-9real/full compile/lint pass, user delivery/Issue11 tracking pending.
+9real/full compile/lint pass. Delivery exact parent/paths/all25input hashes/message
+verified; local delivery complete, remote Issue11 closure not rechecked.
 Chinese font investigation postponed; font-lock later. Original source-mapping
 fixture linkage for item3 remains distinct. Then P1 conclusions, real-document
 and complete gate, metadata/docs. No further user answer needed merely to record

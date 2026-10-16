@@ -35,10 +35,10 @@ environments as if they must share layout. Direct PDF versus native .tm reload
 comparison is a test only. All default roots' valid fixtures checked for route
 consistency, not arbitrary tags/layout correctness. No PDF byte equality required.
 
-## Completed candidate and verification
+## Completed implementation and committed delivery
 
-Exactly document module/maintained ERT/README changed, uncommitted; user has now
-authorized and received staging/message as one coherent fix.
+Exactly document module/maintained ERT/README changed; user has committed the
+approved single fix after separately authorized staging/message.
 Identity-based paragraph helper promotes full copied island result; global pack,
 source preparation/native consumers/protocol/config/API unchanged. Known direct
 mixed display roots reject, list-marker route retained. README/docstring/table
@@ -86,16 +86,16 @@ dependency tree/full tmp archived. Capture baseline is exact red source, not
 accepted candidate provenance; no inferred additional project parent for this
 uncommitted acceptance. Prior investigation archive remains immutable.
 
-Selected local Issue11 implementation/automated acceptance complete. User then
-authorized sequential staging/message with at most3minutes between groups.
-Review found one strongly coupled fix, so no split/inter-group polling. Exactly
-README.org,org-texmacs-document.el,tests/ert/ert.el staged; all3blobs equal final
-accepted isolated snapshot/worktree and diff check clean. tmp/commit.md contains
-fix(document): preserve native layout of standalone STM fragments, Closes:#11.
-Draft includes bare lifting/provenance,mixed rejection/list boundary/docs and7
-regressions/legacy migrations. Next user review/project commit, then verify.
-Only existing user flake remains unstaged. Remote
-Issue11 last observed open; no issue write/closure/publication performed. After
-commit verify exact blobs/parent/message, then tracking. #10 and PDF links follow
-Issue11 by user priority; no implementation for those yet. Fonts postponed;
+Selected local Issue11 implementation/automated acceptance and user delivery
+complete. User authorized sequential staging/message with at most3minutes between
+groups; one strongly coupled fix needed no split/inter-group polling. User then
+committed the exact approved draft (fix(document): preserve native layout of
+standalone STM fragments; Closes:#11). Parent verified as inspected Issue4 baseline,
+exactly README.org,org-texmacs-document.el,tests/ert/ert.el changed. All25committed
+input hashes match final accepted manifest; complete message equals draft.
+Index empty; only existing user flake remains unstaged. Earlier acceptance
+transfers by byte identity, no new build/test or business edits. Delivery checkpoint
+association means exact committed snapshot verification, not original runtime
+provenance. Remote Issue11 last observed open; closure not rechecked, no external
+write/publication. #10 then PDF links follow by user priority. Fonts postponed;
 font-lock later. v0.5.0 remains planned, not release-ready.
