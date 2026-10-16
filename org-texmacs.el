@@ -60,6 +60,7 @@
 (require 'org-texmacs-source)
 (require 'org-texmacs-fragment)
 (require 'org-texmacs-font-lock)
+(require 'org-texmacs-edit)
 (require 'org-texmacs-worker)
 (require 'org-texmacs-context)
 (require 'org-texmacs-document)

@@ -520,6 +520,23 @@ binding to =nil= suppresses it globally.  Changes to this override or fragment
 entry tags schedule normal refontification.  These internal interfaces may
 change; disabling presentation restores ordinary Org fontification.
 
+Inside a =texmacs= special block, =C-c '= (=org-edit-special=) opens an Org
+source-edit buffer.  =C-c C-c= writes the body back, =C-c C-k= cancels, and
+=C-x C-s= uses Org's source-edit save workflow.  Unedited body whitespace is
+preserved, including in indented containers.  In the original Org buffer,
+=TAB=, line indentation and region indentation use Scheme indentation within
+the block body.  Block delimiters remain Org syntax.  These facilities do not
+require STM fontification to be enabled and do not enable Babel execution.
+
+The user option =org-texmacs-edit-mode= selects the mode for source editing and
+indentation; it defaults to Emacs's bundled =scheme-mode=, with no extra package
+dependency.  Selecting =scheme-ts-mode= requires the user to install that mode
+and its Scheme Tree-sitter grammar.  Unavailable support produces an explicit
+error; the package does not install dependencies or silently fall back.  Existing
+edit buffers retain their mode until closed.  This option does not select the
+mode used for STM fontification.  Dedicated source editing and indentation
+apply to complete TeXmacs special blocks, not paragraph fragments.
+
 * Document conversion and native sessions
 Document conversion and native sessions were introduced in version 0.2.0.
 Version 0.2.1 requires an explicit source buffer for document conversion and
