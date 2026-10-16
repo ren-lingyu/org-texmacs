@@ -9,8 +9,10 @@ STM and complete .tm/PDF export within a documented, tested supported subset.
 Not complete Org exporter parity. Existing canonical source, AST-first, STM
 opacity, coherent ownership/snapshot/provenance and native consumer boundaries
 remain constraints. This selects release priorities, not immediate implementation.
-This turn authorizes memory maintenance only: no project/INBOX/version edits,
-staging, builds/probes/tests, dependency changes, tags/publication or external writes.
+Initial review authorized memory only. User subsequently selected issue retry and
+local isolated investigation/tests; findings in memory/release-0.5.0-investigation.md.
+No project/INBOX/version edits, ordinary staging, dependency updates, tags/release
+or external writes. Locked offline flake probes are now complete.
 
 Source INBOX is ignored/untracked,8020bytes, SHA256
 `a32561c1878fa48629554771ec3af1114560cb939ed228f391fd4cc9e75f2e68`.
@@ -18,8 +20,8 @@ It names baseline main@8a90b4c; read-only HEAD confirms full revision
 `8a90b4c0f832204ffe6beab00cbea122bcf9de5e`. Ordinary index empty; only existing
 user flake.nix mirror dirty, preserve/exclude it. This is the code review context,
 not a new release candidate acceptance. Issue URLs below come from INBOX;
-public #10/#11/#9/#4 lookup failed with Cache miss this turn. Open/required labels
-for #10/#11 are user-plan reports, not independently verified remote states.
+initial web lookups failed with Cache miss; subsequent connector reads verify
+#10/#11/#9/#7 open and#4 closed/completed, including all3 #4 scope comments.
 
 ## P0: required completion
 
@@ -128,15 +130,19 @@ P1 completion may mean a fix, tested configuration, or justified deferral, not
 mandatory implementation. #11 stays a required resolution, not silently downgraded
 by that P1 flexibility. No design picked before its diagnosis.
 
-Next when user selects implementation: clarify item3's original fixture while
+Isolated investigation now reproduces #10/#11 and establishes bounded P1 controls;
+see investigation record for evidence/limits. Next when user selects implementation:
+clarify item3's original fixture while
 starting a bounded #10 design/source+Org investigation, with #11 investigated as a
 separate native-rendering question; this suggested order is not an approved
 implementation plan or permission to run commands. Then P1 conclusions, real-document
 and complete gate, metadata/docs. No further user answer needed merely to record
 this plan. Remote issue facts can be checked when available without inventing them.
 
-Archive assessment: active plan, no retirement, unique experiment or irreplaceable
+Initial review archive assessment: active plan, no retirement, unique experiment or irreplaceable
 raw failure evidence. Full operational requirements/review/limits extracted here
 and routed through current/goals/backlog/project/evidence; no original-byte archive
 needed. INBOX and existing archives unchanged. Planning checkpoint has no inferred
 project parent; explicitly named baseline is review context, not new test provenance.
+Subsequent experiments now have independently valuable raw evidence selected
+separately, without retiring or archiving this active INBOX plan.

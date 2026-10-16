@@ -66,7 +66,11 @@ memory/release-0.5.0.md. Inline-footnote STM (#10) is a required future extensio
 not current support. Equation block/paragraph PDF discrepancy (#11), PDF annotations
 and Chinese font observations need evidence before attribution or architecture
 changes. Existing bounded native tag audit does not establish these new cases.
-STM font-lock is feasibility investigation only. #9 post0.5.0/pre0.6.0; #7 deferred.
+Isolated probes now reproduce #10 and identify #11 wrapper-sensitive native
+rendering/serialization reload difference; no production fix yet. Links/CJK share
+native controls and need further config evidence. Org Scheme fontification can
+fontify STM spans; editing integration still unverified. See
+memory/release-0.5.0-investigation.md. #9 post0.5.0/pre0.6.0; #7 deferred.
 Code metadata remains0.4.0; no release candidate test/publication this turn.
 
 ## Current conversion path

@@ -2,8 +2,9 @@
 
 ## Active objective: v0.5.0 release readiness review
 
-User selected read-only review of new INBOX and GAW extraction on2026-10-16,
-explicitly no project-file edits. Adopted readiness scope and complete independent
+User selected INBOX review/GAW extraction, then explicitly requested retrying
+issue reads and local isolated investigation tests on2026-10-16. No business
+project-file edits. Adopted readiness scope and complete independent
 extraction: memory/release-0.5.0.md. Planned, not release-ready or implementation
 permission. Baseline main@8a90b4c confirmed, index empty/only user flake.nix dirty.
 P0: #10 anonymous/named inline-note STM with structural+native PDF regression;
@@ -16,14 +17,27 @@ P2: representative combined real mathematical documents, locked-flake complete
 ERT/native/PDF/strict compile/lint gate,0.5.0 version/docs/notes and migration.
 #9 scheduled after0.5.0 before0.6.0; #7 stays deferred/nonblocking. Native footnote
 placement/page breaks not blockers absent an actionable package regression.
-No tag-list/normalization/font framework/async design chosen. Earlier423core gate
-is baseline evidence, not release acceptance. Issue #10/#11 open labels from
-INBOX only; public #10/#11/#9/#4 reads failed, no remote status claim/update.
-Next await user selection of bounded implementation/investigation; suggested
-#10 first and separate #11 diagnosis, item3 fixture linkage clarified before gate.
-No business edits/tests/builds/ordinary staging/release/external writes this turn.
-No raw archive needed: active plan fully extracted, no unique experiment/retired
-source. INBOX untouched; source size/digest/authority/limits in release record.
+No production fix chosen. Isolated investigation complete and extracted in
+memory/release-0.5.0-investigation.md. Connector verifies#10/#11/#9/#7 open,
+#4 closed/completed; all3scope comments read, no external writes. #10 reproduced:
+inline note variants0islands/literal STM versus separate definition1/native math;
+three discovery/preparation/lowering boundaries need coordinated repair.
+#11 reproduced, native wrapper-only controls isolate concat effect independent
+of trailing space; .tm reload removes wrapper and restores centered display/
+right-margin numbering. No serialize/reparse production workaround selected.
+Links absent in all4package/native/direct/reload PDF annotation controls; native
+headless/config limitation needs further attribution. Chinese missing-font fallback
+matches native control, not faithful reproduction of user's font inconsistency.
+Org Scheme fontification applies to STM spans with text/tick unchanged; editing/
+cleanup/performance integration unverified. Eight footnote boundary probes and
+3structural/native ERT+1quotation/center PDF pass under locked offline flake.
+18source inputs equal committed baseline, root lock/source/INBOX unchanged, only
+user flake mirror dirty. No full release gate. Native reload harness failures
+corrected and explicitly excluded from acceptance. No ordinary staging/release/
+external writes. 37necessary original-byte text artifacts archived and verified separately at
+archive/2026-10-16T06-29-51Z--8a90b4c/MANIFEST.md; PDFs/binaries excluded.
+Next user selects #10/#11 fix plan;
+P1 font/export configuration/edit-lifecycle gaps remain before release acceptance.
 
 ## Completed committed delivery: Issue4 remaining date repair and semantic audit
 
@@ -61,8 +75,8 @@ approved test(document)/Closes:#4 message unchanged. Ordinary index empty; only
 user flake.nix remains unstaged. tmp/commit.md is historical B draft. Prior
 423core/37focused/9real/full flake acceptance transfers by exact byte identity;
 no new tests or ordinary agent commits; date-only subset has no separate fullgate.
-Local implementation, review and both committed deliveries complete. Remote
-publication/issue closure remains unverified; check when reported/relevant.
+Local implementation, review and both committed deliveries complete. Subsequent
+connector read now confirms Issue4 closed/completed; publication refs not checked.
 No external writes. Independent A/B patches reconstruct final candidate exactly.
 No new archive needed: ordinary commits plus extracted memory and existing
 immutable evidence suffice. Project association identifies exact inspected B
@@ -85,7 +99,8 @@ blobs and Closes:#8 message equal approved draft verified. Ordinary index empty;
 only existing user flake.nix mirror remains unstaged. No new source/test changes.
 Current tmp/commit.md is historical B draft, not a new pending staged message.
 
-GitHub read confirms Issue8 closed/completed and Issue4 open. Latest scope comment:
+At the earlier quote/table checkpoint GitHub confirmed Issue8 closed/completed
+and Issue4 open; current Issue4 closure is verified above. Scope comment:
 https://github.com/ren-lingyu/org-texmacs/issues/4#issuecomment-6191090701
 supersedes earlier table-alignment proposal: completed #8 must not be implemented
 or counted again under #4. Existing table/caption semantics remain auditable;

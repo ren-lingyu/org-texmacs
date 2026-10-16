@@ -2865,3 +2865,27 @@ ordinary index/project/external writes. Public #10/#11/#9/#4 pages all returned
 Cache miss; issue labels/open states from INBOX not independently verified.
 Planning checkpoint no inferred project parent. Existing immutable archives stay
 unchanged; sufficient operational extraction and current routing replace capture.
+
+
+## v0.5.0 isolated investigation and tracking retry
+
+User selected local isolated tests after initial review; three offline locked-flake
+120s targets run without business changes.18source/ERT/README/lock inputs match
+committed baseline. #10 inline0islands versus separate1native math reproduced;
+#11 exact article-margin equation test and4native wrapper controls isolate concat
+context; native .tm reload removes wrapper and restores display geometry. All4
+corrected reload subprocesses exit0. Initial missing Lisp parenthesis and nested
+Guile module timeouts are harness failures, not package regressions/passing reloads.
+Four link controls have no PDF annotation dictionaries; CJK direct/native/reload
+missing-font fallback; no global native/config conclusion. Existing Org Scheme
+fontification works on two STM spans without source changes, not edit integration.
+Eight footnote boundary observations, explicit3/3quote/list/container and1/1native
+PDF baseline regressions pass; no full release gate. Complete extraction and
+necessary raw retention selection: memory/release-0.5.0-investigation.md.
+Connector now independently verifies#10/#11/#9/#7 open,#4 closed/completed and
+all3scope comments; prior web failures superseded for current tracking. No remote
+writes. Root INBOX/lock/source/user flake unchanged, index empty. Archive37necessary original-byte texts plus manifest separately byte-verified:
+archive/2026-10-16T06-29-51Z--8a90b4c/MANIFEST.md. No PDFs/binaries/full tmp.
+Tested snapshot association justified by18committed source identities; independent
+harness/source fixture provenance explicit. Operational findings/diagnostics
+extracted into investigation/current memory. Existing INBOX remains active.

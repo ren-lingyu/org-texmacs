@@ -26,14 +26,19 @@ decision.
 ### v0.5.0 release readiness — adopted priorities, implementation not started
 
 Status: **adopted-later** release requirements; current selected action is review
-and GAW extraction only. Full gate, all nine items, evidence limits and decisions:
+and GAW extraction, followed by selected isolated investigation (complete).
+Full gate, all nine items, evidence limits and decisions:
 memory/release-0.5.0.md. Required P0: #10 inline-footnote STM, #11 equation
 block/paragraph discrepancy resolution, prior block-mapping regression (confirm
 original fixture). P1 mandatory bounded investigations: PDF annotations, Chinese
 fonts, STM font-lock; implementation conditional, configuration or evidenced
 deferral permitted. P2 representative combined documents, complete locked-flake
 tests/native/PDF/compile/lint and0.5.0 metadata/docs/migration/notes.
-No code/version/test/release authority from this review. Suggested #10 then separate
+Investigation results: memory/release-0.5.0-investigation.md. #10 gap confirmed,
+#11 concat/native reload cause isolated, links share native/config absence,
+CJK missing-font environment needs positive control, Org fontification reusable
+but edit lifecycle unverified. No business-code/version/release authority.
+Suggested #10 then separate
 #11 diagnosis is not an adopted implementation sequence. #9 adopted-later after
 0.5.0 before0.6.0; #7 deferred and not a0.5.0 blocker. Earlier native footnote
 placement/page-break concerns excluded absent actionable package regression.
@@ -54,7 +59,8 @@ Full contract/evidence/archive in memory/block-table-implementation.md/current.m
 
 Issue4 remaining date repair/native audit now implemented and fully locally
 validated; date A and audit B separately user-committed and identity verified.
-Local delivery complete, remote closure/publication unverified. Complete
+Local delivery complete; connector now verifies Issue4 closed/completed,
+publication refs unverified. Complete
 raw timestamp literal, private captured advice helper, bounded tag audit and
 native style limits documented;423core/37focused/9real/full compile/lint pass.
 Seven date tests replace one rejection, four audit PDF tests added. See
