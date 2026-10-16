@@ -968,7 +968,7 @@
             (should (equal (org-texmacs-document-body
                             (org-texmacs-document-from-buffer (current-buffer)))
                            '(document (doc-data (doc-date "<2026-10-14>"))
-                                      (concat (math "x") " "))))
+                                      (math "x"))))
             (should (equal (cadr (org-texmacs-document-body
                                  (org-texmacs-document-from-buffer (current-buffer))))
                            '(doc-data (doc-date "ChangedDate"))))))
@@ -1101,7 +1101,7 @@
       (should
        (equal (org-texmacs-document-body
                (org-texmacs-document-from-buffer (current-buffer)))
-              '(document (section "Title") (concat (math "x") " ")))))))
+              '(document (section "Title") (math "x")))))))
 
 (ert-deftest org-texmacs-test-setup-check-passes ()
   (let ((result (org-texmacs-check-setup)))
@@ -2201,6 +2201,160 @@
                              (row (cell "") (cell "=") (cell "3"))))))
   "Representative default roots, including actual multi-row formula tables.
 These fixtures test AST preservation, not numbering or rendering semantics.")
+
+(defun org-texmacs-test--issue11-source (context payload)
+  "Wrap PAYLOAD in a supported CONTEXT, suppressing document metadata."
+  (concat "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+          (pcase context
+            ('body payload)
+            ('quote (concat "#+begin_quote\n" payload "#+end_quote\n"))
+            ('center (concat "#+begin_center\n" payload "#+end_center\n"))
+            ('footnote (concat "Text[fn:n]. Again[fn:n].\n\n[fn:n]\n"
+                               (replace-regexp-in-string "^" "  " payload)))
+            ('list (concat "- Intro\n\n" (replace-regexp-in-string "^" "  " payload))))))
+
+(ert-deftest org-texmacs-document-issue11-bare-identity-and-purity ()
+  :tags '(issue11)
+  (dolist (tree (append org-texmacs-test--fragment-strees
+                       '((with "mode" "math" "<alpha>") (concat "a" "b")
+                         "literal" " " "")))
+    (dolist (blank '("" " \t\r\n"))
+      (let* ((leaf (copy-sequence "island"))
+             (ast (org-element-create 'org-data nil
+                                      (apply #'org-element-create 'paragraph nil
+                                             (append (list (copy-sequence blank) leaf)
+                                                     (and (> (length blank) 0)
+                                                          (list (copy-sequence blank)))))))
+             (input (org-texmacs-input-create ast nil :islands (list (cons leaf tree))))
+             (before (let ((print-circle t)) (prin1-to-string (org-texmacs-input-ast input))))
+             first second)
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Pure lowering requested worker")))
+                  ((symbol-function 'buffer-substring-no-properties)
+                   (lambda (&rest _) (ert-fail "Pure lowering read buffer"))))
+          (setq first (org-texmacs-document input) second (org-texmacs-document input)))
+        (should (equal (org-texmacs-document-body first) (list 'document tree)))
+        (should (equal (org-texmacs-document-stm-paths first) '((0))))
+        (should-not (org-texmacs-document-file-paths first))
+        (unless (equal tree "")
+          (should-not (eq (cadr (org-texmacs-document-body first))
+                          (cadr (org-texmacs-document-body second)))))
+        (should (equal before (let ((print-circle t))
+                                (prin1-to-string (org-texmacs-input-ast input))))))))
+  ;; A mapped whitespace leaf is still an island, not ignorable Org whitespace.
+  (let* ((leaf (copy-sequence " "))
+         (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil leaf))))
+    (should (equal (org-texmacs-document-body
+                    (org-texmacs--document-lower ast (list (cons leaf '(math "x")))))
+                   '(document (math "x"))))))
+
+(ert-deftest org-texmacs-document-issue11-nonbare-boundaries ()
+  :tags '(issue11)
+  (dolist (other (list "Text" "\u00a0" (org-element-create 'bold nil "")
+                      (org-element-create 'line-break nil)))
+    (let* ((leaf (copy-sequence "island"))
+           (ast (org-element-create 'org-data nil
+                                    (org-element-create 'paragraph nil other leaf)))
+           (result (org-texmacs--document-lower ast (list (cons leaf '(math "x"))))))
+      (should (eq (caadr (org-texmacs-document-body result)) 'concat))
+      (should (equal (org-texmacs-document-stm-paths result) '((0 1))))))
+  (let* ((one (copy-sequence "one")) (two (copy-sequence "two"))
+         (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil one " " two)))
+         (result (org-texmacs--document-lower
+                  ast (list (cons one '(math "x")) (cons two '(math "y"))))))
+    (should (equal (org-texmacs-document-body result)
+                   '(document (concat (math "x") " " (math "y")))))
+    (should (equal (org-texmacs-document-stm-paths result) '((0 0) (0 2)))))
+  ;; An unused target can disappear from output, but still makes the source
+  ;; paragraph non-bare.  Do not decide eligibility from lowered parts alone.
+  (let* ((leaf (copy-sequence "island"))
+         (target (org-element-create 'target '(:value "unused")))
+         (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil target leaf)))
+         (result (org-texmacs--document-lower ast (list (cons leaf '(math "x"))))))
+    (should (equal (org-texmacs-document-body result) '(document (concat "" (math "x")))))
+    (should (equal (org-texmacs-document-stm-paths result) '((0 1)))))
+  (let* ((leaf (copy-sequence "one"))
+         (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil leaf leaf))))
+    (should-error (org-texmacs--document-lower ast (list (cons leaf '(math "x"))))
+                  :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-document-issue11-display-mixtures-reject ()
+  :tags '(issue11)
+  (dolist (tag '(equation equation* eqnarray eqnarray* align align* gather gather* eqsplit eqsplit*))
+    (dolist (other (list "Before " "\u00a0" (org-element-create 'bold nil "")
+                        (org-element-create 'target '(:value "unused"))))
+      (let* ((leaf (copy-sequence "island"))
+             (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil other leaf))))
+        (should-error (org-texmacs--document-lower ast (list (cons leaf (list tag "x"))))
+                      :type 'org-texmacs-document-error))))
+  (let* ((one (copy-sequence "one")) (two (copy-sequence "two"))
+         (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil one " " two))))
+    (should-error (org-texmacs--document-lower
+                   ast (list (cons one '(math "x")) (cons two '(equation "y"))))
+                  :type 'org-texmacs-document-error))
+  ;; A wrapper is authored STM, not an invitation to inspect or rewrite inside it.
+  (let* ((leaf (copy-sequence "island"))
+         (tree '(with "mode" "math" (equation "x")))
+         (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil "Before " leaf))))
+    (should (equal (org-texmacs-document-body (org-texmacs--document-lower ast (list (cons leaf tree))))
+                   `(document (concat "Before " ,tree))))))
+
+(ert-deftest org-texmacs-document-issue11-container-structure-and-paths ()
+  :tags '(issue11)
+  (org-texmacs-test--with-worker
+    (dolist (context '(body quote center footnote list))
+      (dolist (tree org-texmacs-test--fragment-strees)
+        (let ((text (prin1-to-string tree)) documents)
+          (dolist (payload (list (concat text " \t\n")
+                                 (concat "#+begin_texmacs\n" text "\n#+end_texmacs\n")))
+            (with-temp-buffer
+              (org-mode) (insert (org-texmacs-test--issue11-source context payload))
+              (let ((before (org-texmacs-test--document-buffer-state (current-buffer))))
+                (push (org-texmacs-document-from-buffer (current-buffer)) documents)
+                (should (equal before (org-texmacs-test--document-buffer-state (current-buffer)))))))
+          (should (equal (org-texmacs-document-body (car documents))
+                         (org-texmacs-document-body (cadr documents))))
+          (should (equal (org-texmacs-document-stm-paths (car documents))
+                         (org-texmacs-document-stm-paths (cadr documents)))))))
+    (dolist (prefix '("- " "1. " "- Term :: "))
+      (with-temp-buffer
+        (org-mode) (setq-local org-export-with-author nil)
+        (insert prefix "(math \"x\")\n")
+        (let ((body (org-texmacs-document-body (org-texmacs-document-from-buffer (current-buffer)))))
+          (should (memq 'concat (flatten-tree body)))
+          (should (memq (if (string-match-p "Term" prefix) 'item* 'item) (flatten-tree body)))))
+      (with-temp-buffer
+        (org-mode) (insert prefix "(equation \"x\")\n")
+        (should-error (org-texmacs-document-from-buffer (current-buffer))
+                      :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-document-issue11-file-provenance-and-source-errors ()
+  :tags '(issue11)
+  (let* ((leaf (copy-sequence "island"))
+         (link (org-element-create 'link '(:type "file" :path "asset.pdf")))
+         (ast (org-element-create 'org-data nil
+                                  (org-element-create 'quote-block nil
+                                                      (org-element-create 'paragraph nil leaf "\n")
+                                                      (org-element-create 'paragraph nil link))))
+         (input (org-texmacs-input-create ast nil :resource-base "/base/"
+                                          :islands (list (cons leaf '(math "<alpha>")))))
+         (result (org-texmacs-document input)))
+    (should (equal (org-texmacs-document-stm-paths result) '((0 0 0))))
+    (should (equal (org-texmacs-document-file-paths result) '((0 0 1 0 1))))
+    (should (string-match-p (regexp-quote "/base/asset.pdf") (org-texmacs--native-document-wire result)))
+    (should (equal (cadr (org-texmacs-document-body result))
+                   '(quotation (document (math "<alpha>") (concat (hlink "asset.pdf" "asset.pdf")))))))
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode) (insert "Before (equation \"x\") after.\n")
+      (let ((before (org-texmacs-test--document-buffer-state (current-buffer)))
+            (file (expand-file-name "should-not-exist.pdf" test-directory)))
+        (cl-letf (((symbol-function 'org-texmacs-document-pdf)
+                   (lambda (&rest _) (ert-fail "Rejected paragraph rendered PDF"))))
+          (should-error (org-texmacs-export-to-pdf-file (current-buffer) file)
+                        :type 'org-texmacs-document-error))
+        (should-not (file-exists-p file))
+        (should (equal before (org-texmacs-test--document-buffer-state (current-buffer))))))))
 
 (ert-deftest org-texmacs-test-fragment-default-tags ()
   (should (equal org-texmacs-fragment-tags
@@ -3751,17 +3905,17 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
               "#+end_src\n")
       (let* ((document (org-texmacs-document-from-buffer (current-buffer)))
              (expected
-              '(document (concat (math "x") " ")
+              '(document (math "x")
                          (code (document "中¯˙    <alpha>"))))
              (expected-native
-              '(document (concat (math "x") " ")
+              '(document (math "x")
                          (code
                           (document "<#4E2D>\t\n    <less>alpha<gtr>"))))
              (session (org-texmacs-session-open)))
         (unwind-protect
             (progn
               (should (equal (org-texmacs-document-body document) expected))
-              (should (equal (org-texmacs-document-stm-paths document) '((0 0))))
+              (should (equal (org-texmacs-document-stm-paths document) '((0))))
               (org-texmacs-session-set-document session document)
               (should (equal (org-texmacs--session-read session)
                              (org-texmacs-test--native-hex expected-native))))
@@ -6460,6 +6614,130 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
         (should (= 2 (cl-count "FirstHeading" (split-string text "[^[:alnum:]]+" t)
                                :test #'equal)))))))
 
+(defun org-texmacs-test--issue11-reload-pdf (tm pdf directory)
+  "Render saved TM to PDF in an independent native process under DIRECTORY."
+  (let* ((script (expand-file-name "reload.scm" directory))
+         (process-environment (copy-sequence process-environment))
+         process)
+    (setenv "TEXMACS_HOME_PATH" (expand-file-name "reload-config" directory))
+    (let ((coding-system-for-write 'utf-8-unix))
+      (with-temp-file script
+        (insert "(use-modules (generic document-edit))\n"
+                (format
+                 "(begin (catch #t (lambda () (load-buffer (system->url %S)) (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer)) (print-to-file (system->url %S)) (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer)) (print-to-file (system->url %S)) (display \"ISSUE11-RELOAD-OK\\n\")) (lambda args (display \"ISSUE11-RELOAD-ERROR\") (write args))) (quit-TeXmacs))\n"
+                 tm pdf pdf))))
+    (unwind-protect
+        (with-temp-buffer
+          (setq process (make-process :name "org-texmacs-test-issue11-reload"
+                                      :buffer (current-buffer) :connection-type 'pipe
+                                      :coding 'utf-8-unix :noquery t :sentinel #'ignore
+                                      :command (list org-texmacs-program "-H" "-s" "-x"
+                                                     (format "(load %S)" script))))
+          (let ((deadline (+ (float-time) 45)))
+            (while (and (process-live-p process) (< (float-time) deadline))
+              (accept-process-output process 0.1)))
+          (ert-info ((buffer-string))
+            (should-not (process-live-p process))
+            (should (= 0 (process-exit-status process)))
+            (should (string-match-p "ISSUE11-RELOAD-OK" (buffer-string))))
+          (should (file-exists-p pdf)))
+      (when (and process (process-live-p process)) (delete-process process)))))
+
+(defun org-texmacs-test--issue11-pdf-geometry (pdf)
+  "Return PDF word text and boxes, tolerating native math control characters.
+Poppler can emit XML-invalid controls in mathematical glyph text; match its
+bounded word records rather than interpreting the whole output as XML."
+  (with-temp-buffer
+    (let ((coding-system-for-read 'utf-8-unix))
+      (should (= 0 (call-process "pdftotext" nil t nil "-bbox" pdf "-"))))
+    (goto-char (point-min))
+    (let (words)
+      (while (re-search-forward
+              "<word xMin=\"\\([0-9.]+\\)\" yMin=\"\\([0-9.]+\\)\" xMax=\"\\([0-9.]+\\)\" yMax=\"\\([0-9.]+\\)\">\\([^<]*\\)</word>" nil t)
+        (push (cons (match-string-no-properties 5)
+                    (mapcar (lambda (index) (string-to-number (match-string index))) '(1 2 3 4))) words))
+      (should words)
+      (nreverse words))))
+
+(defun org-texmacs-test--issue11-compare-pdfs (actual expected)
+  "Check text and per-word geometry of ACTUAL and EXPECTED in matched contexts."
+  (should (equal (org-texmacs-test--pdf-text actual) (org-texmacs-test--pdf-text expected)))
+  (let ((words (org-texmacs-test--issue11-pdf-geometry actual))
+        (reference (org-texmacs-test--issue11-pdf-geometry expected)))
+    (should (= (length words) (length reference)))
+    (cl-mapc (lambda (a b)
+               (should (equal (car a) (car b)))
+               (cl-mapc (lambda (x y) (should (<= (abs (- x y)) 1.0))) (cdr a) (cdr b)))
+             words reference)))
+
+(ert-deftest org-texmacs-pdf-issue11-bare-block-and-reload-consistency ()
+  :tags '(issue11)
+  (org-texmacs-test--with-worker
+    ;; All default roots use their existing valid multirow/native fixtures.
+    ;; Context expansion focuses on environments with explicit display semantics.
+    (dolist (context '(body quote center footnote list))
+      (dolist (tree (if (eq context 'body) org-texmacs-test--fragment-strees
+                     (cl-remove-if-not (lambda (tree) (memq (car tree) '(equation equation* align)))
+                                       org-texmacs-test--fragment-strees)))
+        (ert-info ((format "%s in %s" (car tree) context))
+          (let* ((directory (make-temp-file (expand-file-name "native-" test-directory) t))
+                 (tm (expand-file-name "bare.tm" directory))
+                 (pdf (expand-file-name "bare.pdf" directory))
+                 (block-pdf (expand-file-name "block.pdf" directory))
+                 (reload (expand-file-name "reload.pdf" directory))
+                 (text (prin1-to-string tree)))
+            (dolist (block '(nil t))
+              (with-temp-buffer
+                (org-mode)
+                (insert (org-texmacs-test--issue11-source
+                         context (if block (concat "#+begin_texmacs\n" text "\n#+end_texmacs\n")
+                                   (concat text " \t\n"))))
+                (let ((document (org-texmacs-document-from-buffer (current-buffer))))
+                  (unless block (org-texmacs-document-save document tm))
+                  (org-texmacs-document-save-pdf document (if block block-pdf pdf)))))
+            (org-texmacs-test--issue11-compare-pdfs pdf block-pdf)
+            (org-texmacs-test--issue11-reload-pdf tm reload directory)
+            (org-texmacs-test--issue11-compare-pdfs pdf reload)))))))
+
+(ert-deftest org-texmacs-pdf-issue11-original-equation-layout ()
+  :tags '(issue11)
+  (org-texmacs-test--with-worker
+    (let* ((tree '(equation
+                  (concat "0<longrightarrow>"
+                          (math-up "ker") (around* "(" "<alpha>" ")") "<longrightarrow>"
+                          (math-up "ker") (around* "(" "<beta>" ")") "<longrightarrow>"
+                          (math-up "ker") (around* "(" "<gamma>" ")")
+                          (above "<longrightarrow>" "<delta>")
+                          (math-up "coker") (around* "(" "<alpha>" ")") "<longrightarrow>"
+                          (math-up "coker") (around* "(" "<beta>" ")") "<longrightarrow>"
+                          (math-up "coker") (around* "(" "<gamma>" ")") "<longrightarrow>0")))
+           (text (prin1-to-string tree))
+           (tm (expand-file-name "original.tm" test-directory))
+           (pdf (expand-file-name "original.pdf" test-directory))
+           (reload (expand-file-name "original-reload.pdf" test-directory))
+           (org-texmacs-document-style '("article"))
+           (org-texmacs-document-initial
+            '(("page-type" . "a4") ("page-odd" . "12.7mm") ("page-even" . "12.7mm")
+              ("page-right" . "12.7mm") ("page-top" . "12.7mm") ("page-bot" . "12.7mm"))))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n#+begin_texmacs\n"
+                text "\n#+end_texmacs\n\n" text "\n")
+        (let ((document (org-texmacs-document-from-buffer (current-buffer))))
+          (org-texmacs-document-save document tm)
+          (org-texmacs-document-save-pdf document pdf)))
+      (let* ((words (org-texmacs-test--issue11-pdf-geometry pdf))
+             (zeros (cl-remove-if-not (lambda (w) (equal (car w) "0")) words))
+             (one (cl-find "(1)" words :key #'car :test #'equal))
+             (two (cl-find "(2)" words :key #'car :test #'equal)))
+        (should (= (length zeros) 4))
+        (should one) (should two)
+        (should (<= (abs (- (cadr (nth 0 zeros)) (cadr (nth 2 zeros)))) 1.0))
+        (should (<= (abs (- (cadr one) (cadr two))) 1.0))
+        (should (> (cadr one) (+ (cadr (nth 1 zeros)) 50))))
+      (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+      (org-texmacs-test--issue11-compare-pdfs pdf reload))))
+
 (ert-deftest org-texmacs-pdf-date-literal-layout ()
   :tags '(issue4-closure)
   (org-texmacs-test--with-worker
@@ -7019,7 +7297,7 @@ Only serialize expected bytes; do not call the production encoder."
                 (org-texmacs-session-set-document session document)
                 (should (equal (org-texmacs--session-read session)
                                (org-texmacs-test--native-hex
-                                '(document (concat (math "<less>alpha<gtr> <alpha>") " ")))))))
+                                '(document (math "<less>alpha<gtr> <alpha>")))))))
             (should (eq process org-texmacs--worker-process)))
         (org-texmacs-session-close session))
       (should (equal (org-texmacs--worker-request "(frac \"1\" \"2\")") '(frac "1" "2"))))))
@@ -7088,13 +7366,13 @@ Only tests with explicit example names use this helper; do not run Babel."
         (unwind-protect
             (progn
               (should (equal (org-texmacs-document-body document)
-                             '(document (section "TODO Task") (concat (math "α") " "))))
-              (should (equal (org-texmacs-document-stm-paths document) '((1 0))))
+                             '(document (section "TODO Task") (math "α"))))
+              (should (equal (org-texmacs-document-stm-paths document) '((1))))
               (org-texmacs-session-set-document session document)
               (should (equal (org-texmacs--session-read session)
                              (org-texmacs-test--native-hex
                               '(document (section "TODO Task")
-                                         (concat (math "<alpha>") " ")))))
+                                         (math "<alpha>")))))
               (should (equal source (buffer-string)))
               (should (equal settings (org-texmacs--document-heading-settings))))
           (org-texmacs-session-close session))))))
@@ -7191,7 +7469,7 @@ Only tests with explicit example names use this helper; do not run Babel."
         (should (equal (org-texmacs-document-body (org-texmacs-document-from-buffer (current-buffer)))
                        '(document (section (concat (strong "TODO") " " "[#A]" " "
                                                     "Title" " " ":tag:"))
-                                  (concat (math "x") " "))))
+                                  (math "x"))))
         (should (equal (cadr (org-texmacs-document-body (org-texmacs-document-from-buffer (current-buffer))))
                        '(section "changed")))))))
 
@@ -7227,13 +7505,13 @@ Only tests with explicit example names use this helper; do not run Babel."
              (session (org-texmacs-session-open)))
         (unwind-protect
             (progn
-              (should (equal (org-texmacs-document-stm-paths document) '((1 0))))
+              (should (equal (org-texmacs-document-stm-paths document) '((1))))
               (org-texmacs-session-set-document session document)
               (should (equal (org-texmacs--session-read session)
                              (org-texmacs-test--native-hex
                               '(document (section (concat (strong "<less>alpha<gtr>") " "
                                                            "[#12]" " " "<#4E2D>" " " ":tag:"))
-                                         (concat (math "<alpha>") " "))))))
+                                         (math "<alpha>"))))))
           (org-texmacs-session-close session))))))
 
 (defun org-texmacs-test--ast-filter-remap (tree backend info)

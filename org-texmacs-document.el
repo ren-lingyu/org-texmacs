@@ -39,6 +39,11 @@
     (subparagraph . subparagraph*))
   "Numbered and unnumbered TeXmacs tags for sectioning levels one through five.")
 
+(defconst org-texmacs--document-display-math-tags
+  '(equation equation* eqnarray eqnarray* align align* gather gather* eqsplit eqsplit*)
+  "Known native display roots that cannot be embedded in paragraph concat.
+This is a lowering boundary, not a fragment discovery configuration.")
+
 (defconst org-texmacs--document-toc-tags
   '(toc-1 toc-2 toc-3 toc-4 toc-5)
   "Static TeXmacs table-of-contents tags for headline levels one through five.")
@@ -634,6 +639,10 @@ boundaries.  Suppress leading whitespace at paragraph/title starts and after
 explicit breaks; a final whitespace run remains one space.  Inline code is
 literal, not preformatted.  Never normalize STM islands, merge adjacent
 strings or flatten island strees.  Reject unsupported nodes and semantics.
+An ordinary paragraph containing exactly one island and otherwise only ASCII
+prose whitespace emits that island directly.  Other paragraphs retain concat;
+known display-math roots cannot be mixed into them.  Leading list paragraphs
+retain their marker/concat and reject display roots even when otherwise bare.
 
 Return a fresh result with STM root paths, retaining no Org properties or
 source objects.  Do not read or modify source/caller buffers, encode text,
@@ -988,6 +997,29 @@ from one snapshot."
             ((null parts) (org-texmacs--document-create :body ""))
             ((null (cdr parts)) (car parts))
             (t (org-texmacs--document-pack 'concat parts))))
+         (paragraph (node ancestors &optional marker)
+           (let ((contents (org-element-contents node)) bare other)
+             (unless (proper-list-p contents)
+               (org-texmacs--document-fail node "Invalid paragraph contents"))
+             ;; Test source identities before whitespace: an opaque island may
+             ;; itself lower to an empty or whitespace-only atomic string.
+             (dolist (child contents)
+               (cond
+                ((and (stringp child) (assq child islands))
+                 (if bare (setq other t) (setq bare child)))
+                ((and (stringp child) (string-match-p "\\`[ \t\r\n]*\\'" child)))
+                (t (setq other t))))
+             (if (and bare (not other) (not marker))
+                 (island bare (assq bare islands))
+               (dolist (child contents)
+                 (let ((entry (and (stringp child) (assq child islands))))
+                   (when (and entry (consp (cdr entry))
+                              (memq (cadr entry) org-texmacs--document-display-math-tags))
+                     (org-texmacs--document-fail
+                      node "Display STM requires a standalone paragraph or TeXmacs block"))))
+               (org-texmacs--document-pack
+                'concat (append (and marker (list marker))
+                                (inlines contents 'paragraph ancestors))))))
          (metadata-field (tag nodes context ancestors)
            (unless (proper-list-p nodes)
              (signal 'org-texmacs-document-error '("Invalid parsed document metadata")))
@@ -1354,11 +1386,7 @@ from one snapshot."
              (if (and first (org-element-type-p first 'paragraph))
                  (progn
                    (check-affiliated first)
-                   (cons (org-texmacs--document-pack
-                          'concat
-                          (cons marker
-                                (inlines (org-element-contents first)
-                                         'paragraph ancestors)))
+                   (cons (paragraph first ancestors marker)
                          (blocks (cdr contents) 'item ancestors)))
                (cons marker (blocks contents 'item ancestors)))))
          (block (node context ancestors)
@@ -1400,8 +1428,7 @@ from one snapshot."
                      (org-texmacs--document-fail node "Invalid prepared bibliography labels"))
                    (list (org-texmacs--document-create :body body :stm-paths '(()))))))
               ((eq type 'paragraph)
-               (list (org-texmacs--document-pack
-                      'concat (inlines (org-element-contents node) 'paragraph ancestors))))
+               (list (paragraph node ancestors)))
               ((memq type '(example-block fixed-width src-block))
                (unless (memq context
                              '(org-data section headline item quote-block center-block footnote-definition))

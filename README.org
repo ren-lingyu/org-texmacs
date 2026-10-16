@@ -645,7 +645,7 @@ The supported Org subset is deliberately small:
 | Org input                                         | TeXmacs body structure                                       |
 |---------------------------------------------------+--------------------------------------------------------------|
 | Document / section container                      | =document= / transparent contents                            |
-| Paragraph / plain text                            | One =concat= per paragraph / prose whitespace normalization  |
+| Paragraph / plain text                            | =concat=, or a bare STM island / prose whitespace normalization |
 | Bold                                              | =strong=                                                     |
 | Italic / underline / strike-through               | =em= / =underline= / =strike-through=                        |
 | Inline code / verbatim                            | =verbatim= with literal inline text                          |
@@ -686,6 +686,27 @@ Inline code/verbatim does not parse nested markup, but uses the same prose
 whitespace rule: it is not a preformatted code block.  Nonbreaking spaces
 are not collapsed.  Conversion does not merge adjacent text slots; a slot
 may become empty when its whitespace duplicates a preceding slot.
+
+A bare STM paragraph contains exactly one registered island text leaf; every
+other direct child must be an ordinary string containing only spaces, tabs,
+CR or LF (empty strings are allowed).  No other Org object is permitted.
+Such paragraphs emit the complete island directly, without an additional
+=concat=; the island's internal tree and text remain unchanged.  Recognition
+still uses =org-texmacs-fragment-tags=; no separate display-tag option is added.
+This rule applies in ordinary body text, quote/center containers, separate
+footnote definitions and later list paragraphs.  A leading list paragraph keeps
+its existing list-marker/=concat= structure and is not promoted.
+
+Other paragraphs keep their existing =concat= and whitespace semantics.
+Direct fragment roots =equation=, =eqnarray=, =align=, =gather=, =eqsplit= and
+their starred forms are rejected in such paragraphs, including leading list
+paragraphs: use a standalone paragraph or a TeXmacs special block instead.
+The exporter does not split mixed paragraphs automatically or inspect nested
+STM to infer display layout.  Ordinary =math= mixtures remain supported;
+arbitrary custom-root layout remains governed by TeXmacs.  Native STM parsing
+may precede this rejection, but serialization, PDF rendering and output-file
+writing do not.  Native tests compare the same root in matched contexts;
+different native environments need not share numbering or layout.
 
 Quote blocks use the native =quotation= environment for single paragraphs,
 multiple paragraphs and nested supported content.  Center blocks retain the
