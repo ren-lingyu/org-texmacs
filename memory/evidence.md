@@ -3109,3 +3109,10 @@ Full operational extraction: memory/pdf-adjacent-checks.md.17selected original-b
 text artifacts archived/verified separately: archive/2026-10-16T11-43-36Z--f4a194e/MANIFEST.md
 PDFs/binaries/dependencies/full tmp excluded. No inferred project parent for
 uncommitted test runtime; ordinary index untouched and user flake preserved.
+
+
+User subsequently reports interactive First superscript1click has no observable
+effect and other checklist items basically meet expectations. This agrees with
+raw dangling-target observation; viewer/exact PDF not identified, no exhaustive
+precise-entry/viewport certification or causal conclusion inferred. Full report
+extracted in memory/pdf-adjacent-checks.md; no new raw archive or tests needed.

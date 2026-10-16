@@ -120,3 +120,14 @@ repeated note, then First-versus-Again comparison. Root cause of missing first-n
 target requires a separate bounded control/investigation if selected; no native
 footnote rewrite or package semantics change is authorized here. No new release
 readiness or arbitrary-input convergence claim.
+
+## User interactive feedback (2026-10-16)
+
+User reports: clicking First's superscript1has no observable effect; other
+checks basically meet expectations. This matches the independently inspected
+first-note missing destination and strengthens the practical symptom evidence.
+It does not identify the root cause or establish native responsibility. Exact
+PDF filename/viewer not supplied; do not assert exhaustive same-page viewport
+precision or all viewer configurations. Agent did not launch GUI. No repair
+or further tests selected. User feedback extracted into memory; no new raw
+archive justified, existing snapshot stays immutable.

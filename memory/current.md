@@ -13,14 +13,17 @@ Separate confirmed gap: first-use footnote annotation has dangling /label6 in
 all12PDFs; repeated note valid. More passes/native reload do not remove it;
 root cause/native responsibility/release impact not yet established. No repair
 adopted. Concrete manual PDF and First-versus-Again procedure available under
-tmp/pdf-links-adjacent/results and MANUAL.md. No GUI clicks claimed.
+tmp/pdf-links-adjacent/results and MANUAL.md. User subsequently reports clicking
+First's superscript1has no observable effect; other checks broadly meet
+expectations. User did not identify viewer/exact PDF or certify every precise
+landing. This agrees with automated dangling target evidence, not causal proof.
+No agent GUI clicks claimed.
 All24non-ERT snapshot inputs match committed production source; supplementary
 ERT uncommitted, initial/final manifests and exact patch explicit.17necessary
 original-byte text artifacts archived/verified separately, no PDF/binaries:
 archive/2026-10-16T11-43-36Z--f4a194e/MANIFEST.md.
 Scope, exact commands, findings and limitations: memory/pdf-adjacent-checks.md.
-Next: user can perform ready click checks; investigate first-note gap only if
-selected. Chinese fonts postponed, font-lock later; no release action selected.
+Next: manual feedback received; investigate first-note gap only if selected. Chinese fonts postponed, font-lock later; no release action selected.
 
 ## Completed local repair: PDF hyperlink annotations
 
