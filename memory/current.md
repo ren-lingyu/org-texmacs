@@ -11,19 +11,38 @@ All12PDFs: TOC/heading/citation/repeated-note checked target pages correct;
 direct/reload2/reload6. Same-page exact landing remains a manual click check.
 Separate confirmed gap: first-use footnote annotation has dangling /label6 in
 all12PDFs; repeated note valid. More passes/native reload do not remove it;
-root cause/native responsibility/release impact not yet established. No repair
+exact root cause/release impact not established; native-path reproduction below. No repair
 adopted. Concrete manual PDF and First-versus-Again procedure available under
 tmp/pdf-links-adjacent/results and MANUAL.md. User subsequently reports clicking
 First's superscript1has no observable effect; other checks broadly meet
 expectations. User did not identify viewer/exact PDF or certify every precise
 landing. This agrees with automated dangling target evidence, not causal proof.
-No agent GUI clicks claimed.
+User additionally reports clicking the number before footnote body returns to
+First1. Thus body-to-first-reference backlink works in this manual observation;
+first-reference-to-body forward jump has no observable effect. Distinct links
+must be diagnosed separately. No agent GUI clicks claimed.
 All24non-ERT snapshot inputs match committed production source; supplementary
 ERT uncommitted, initial/final manifests and exact patch explicit.17necessary
 original-byte text artifacts archived/verified separately, no PDF/binaries:
 archive/2026-10-16T11-43-36Z--f4a194e/MANIFEST.md.
 Scope, exact commands, findings and limitations: memory/pdf-adjacent-checks.md.
-Next: manual feedback received; investigate first-note gap only if selected. Chinese fonts postponed, font-lock later; no release action selected.
+Subsequent user-selected native causal controls complete:20conditions,
+atom/document/document-label/surround-label/existing package .tm x2styles x2/6
+forced-print passes. All20have1missing first-use forward target; backlinks
+resolve into first-marker rectangles, explicit labelled repeats resolve.
+Even bare native footnote reproduces; package wrapper not a necessary cause.
+No org-texmacs module/Emacs executed in native-only experiment. Post-layout
+macros show forward reference footnote-<nr>, body set-binding with same literal
+prefix, separate footnr-<nr> backlink. Runtime key identity/PDF callbacks not
+traced, so exact loss/mismatch cause still unresolved. No native GUI/general
+version claim, business repair or workaround selected. Final exact240s flake
+command exits0, sampling additions leave annotation report byte-identical.
+Two early harness initialization/focus failures rejected by guards; diagnostic
+limits extracted.13necessary original-byte text artifacts archived separately:
+archive/2026-10-16T12-12-14Z--f4a194e/MANIFEST.md
+Full extraction: memory/pdf-adjacent-checks.md and task tmp/footnote-targets/REPORT.md.
+Next: report native-path narrowing; further callback instrumentation or GUI
+comparison only if selected. Chinese fonts postponed, font-lock later; no release action.
 
 ## Completed local repair: PDF hyperlink annotations
 

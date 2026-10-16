@@ -131,3 +131,90 @@ PDF filename/viewer not supplied; do not assert exhaustive same-page viewport
 precision or all viewer configurations. Agent did not launch GUI. No repair
 or further tests selected. User feedback extracted into memory; no new raw
 archive justified, existing snapshot stays immutable.
+
+User adds: clicking1before the footnote body jumps back to First1. Directional
+manual evidence therefore distinguishes a functioning body-to-first-reference
+backlink from a first-reference-to-body link with no observable effect. This
+is consistent with different destination identifiers; it does not prove their
+concrete mapping or why /label6 is absent. Next diagnosis should inspect both
+annotation destinations and their independently emitted anchors, rather than
+claiming all first-footnote navigation is missing.
+
+## Read-only mechanism narrowing after directional feedback
+
+Existing generic-short raw report identifies first-use forward annotation
+/label6 missing, body backlink /label7 present and repeated-note /label9 present.
+Project lowering (org-texmacs-document.el footnote branch) delegates first use
+to native footnote with surround(label(org-texmacs-fn-*), empty, document body);
+repeat uses rsup/with/reference to the explicit package label. Thus first-use
+native navigation and repeated explicit-reference navigation are separate routes.
+Do not infer a shared target from the displayed number1.
+
+Previously captured locked native pdf_hummus_renderer.cpp shows href allocates
+an ID with get_label_id even without a registered anchor. anchor appends to
+dests; flush_dests writes only that list. This explains how a clickable Link
+annotation can name /label6 without any corresponding PDF destination. It does
+not establish which upstream anchor was omitted or mismatched.
+
+Leading hypotheses: native footnote auto-target not emitted/registered;
+interaction between package surround/body shape and native footnote expansion;
+or native collection/serialization loses/mismatches that specific anchor.
+No native footnote macro definition inspected in this bounded read, so do not
+assign blame or exact target spelling. Stable reload2/reload6 makes a simple
+insufficient-pass explanation less likely for these fixtures. No new execution,
+source edit, archive or causal verification in this read-only diagnosis.
+
+## Native causal experiment scope and harness diagnostics
+
+User selected and authorized repeat execution of:
+timeout 240s nix build 'path:./tmp/footnote-targets#checks.x86_64-linux.probes' --no-link --no-update-lock-file --print-build-logs --print-out-paths
+with necessary locked dependency access and result reading/copying. Standalone
+flake shares prior lock and uses native TeXmacs/Poppler/pypdf, no system Emacs.
+20unique conditions: atom/document/document-label/surround-label/existing .tm
+xgeneric/article x2/6forced prints. Fresh private native config each process,
+30s subprocess timeout; no production code or public protocol changes.
+
+Two initial harness failures excluded: missing with-buffer import, then a
+body-marker guard rejected page-number-only output after printing left the
+buffer context. Added utils library cursor and moved printing inside explicit
+with-buffer. No invalid PDF accepted as product evidence. Macro read before
+layout was uninit; later valid runs sampled after first forced layout, extending
+to render-footnote and render-footnote*. Actual definitions appear in native
+stdout logs rather than nominal output-port files. Each valid run completed all
+20conditions; expanded sampling leaves annotation report byte-identical.
+
+## Native-only causal controls completed
+
+Final exact authorized240s flake command exits0.20conditions =5inputs x2styles
+x2/6forced-print passes. Native atom/document each2annotations (1missing forward,
+1valid backlink); explicit label/surround each3 (same missing forward, valid
+backlink/repeat); package .tm each19 (same directional outcome). Backlink target
+coordinates lie inside first-marker rectangle in all20. Actual First/body text
+asserted, no blank output accepted. All20run without Emacs/org-texmacs modules;
+16minimal native trees do not derive from package lowering. Package surround
+and explicit-label wrappers therefore are not necessary causes. Bare controls
+also reproduce without duplicate-destination warnings.
+
+Post-layout native footnote reference uses footnote-<nr>, separate first marker
+label footnr-<nr>. render-footnote* body emits set-binding of footnote-<nr> and
+backlink to #footnr-<nr>. Literal prefixes agree; runtime expanded key values and
+PDF anchor callbacks not instrumented. Narrowed to current native headless
+footnote binding/PDF destination path, not exact macro/C++ defect or native GUI
+failure. Extra2/6passes do not help these fixtures. No workaround/intervention,
+production change, maintained-test change or full-suite rerun in this experiment.
+
+Native write/display capture is on process stdout; selected generic/article
+atom logs retain actual initialized macros. Nominal macro files are blank,
+not evidence. Earlier pre-layout uninit capture and two initialization/focus
+failures excluded. Supplementing macros leaves raw annotation report byte-equal
+across valid runs. Task final-inputs.json identifies final5input bytes; inputs.json
+the first valid pre-diagnostic phase. .tm controls byte-identical to prior matrix.
+13necessary original-byte text artifacts verified/archived separately:
+archive/2026-10-16T12-12-14Z--f4a194e/MANIFEST.md
+No PDFs, dependency binaries/configs, full tmp or blank macro files archived.
+No project parent inferred for native-only synthetic fixtures. Project HEAD is
+capture context, not committed provenance of generated control .tm files.
+Further diagnosis would compare runtime footnote key/anchor registration with
+PDF destination collection, or a separate native GUI export. Neither adopted
+nor executed. User can inspect complete-results/generic-atom-2.pdf as minimal
+native reproduction. Main files/index unchanged in this experiment.

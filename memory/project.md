@@ -547,8 +547,10 @@ Supplementary derived-state probes on the committed PDF-link repair use2styles
 and short/flow documents across direct/reload2/reload6. All12retain correct
 checked TOC/heading/citation/repeated-note target pages; pagination and normalized
 text stable for these fixtures. Exactly1dangling first-use footnote destination
-per PDF remains unexplained; do not claim all footnote links valid or a generic
-convergence guarantee. See memory/pdf-adjacent-checks.md.
+per PDF subsequently reproduced in20native-only controls, even bare footnote;
+package wrapper not necessary. Literal native forward/body prefix agrees, but
+runtime binding/PDF destination loss/mismatch untraced. Do not claim all footnote
+links valid, GUI/other versions affected, or a generic convergence guarantee. See memory/pdf-adjacent-checks.md.
 
 ## CONSUMER-01 committed bounded ox-texmacs frontend
 

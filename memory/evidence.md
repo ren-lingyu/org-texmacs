@@ -3116,3 +3116,24 @@ effect and other checklist items basically meet expectations. This agrees with
 raw dangling-target observation; viewer/exact PDF not identified, no exhaustive
 precise-entry/viewport certification or causal conclusion inferred. Full report
 extracted in memory/pdf-adjacent-checks.md; no new raw archive or tests needed.
+
+
+## Native first-footnote directional controls (2026-10-16)
+
+User selected and authorized exact repeatable240s native-only flake command.
+20conditions:4minimal native body shapes plus previous package .tm xgeneric/
+article x2/6forced prints. All20have1missing first-forward target and backlink
+whose target falls inside first-marker rectangle; explicit labelled repeats
+resolve. Bare native footnote reproduces without package code or duplicate-label
+warnings. Package wrappers not necessary causes; exact native binding/anchor/PDF
+loss or runtime-key mismatch remains unresolved. Native initialized macros show
+footnote- prefix for forward/body set-binding, footnr- for independent backlink.
+No GUI, other native versions, intervention or production/full-suite change.
+Final command exit0; initialized macro sampling does not change raw annotation
+report bytes. Guards reject2early harness module/focus failures; pre-layout uninit
+macros not causal evidence. Full extraction: memory/pdf-adjacent-checks.md.
+13original-byte text artifacts archived separately and verified:
+archive/2026-10-16T12-12-14Z--f4a194e/MANIFEST.md
+No PDFs/binaries/configs/full tmp capture, no inferred project parent for native
+synthetic inputs. Existing .tm control bytes trace to earlier matrix, not a
+new committed project source. Ordinary index/user flake/supplementary ERT preserved.

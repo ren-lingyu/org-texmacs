@@ -62,7 +62,10 @@ repair or extra release scope adopted.
 Supplementary12PDF matrix found stable TOC/page/reference behavior and one
 separate gap: first-use footnote annotation points to absent /label6 in every
 direct/reload2/reload6 PDF; repeated-note target remains valid. Cause, native
-responsibility and release impact not yet decided. Retain bounded follow-up
+responsibility and release impact initially unestablished. Subsequent20native
+controls reproduce without package code, so package wrapper not a necessary
+cause. Exact native binding/PDF failure and release impact remain unresolved.
+Retain bounded follow-up
 candidate, not an adopted repair; memory/pdf-adjacent-checks.md.
 Adopted priority11->10->PDF links, Chinese fonts postponed, font-lock later.
 No release/version authority. #9 adopted-later after
