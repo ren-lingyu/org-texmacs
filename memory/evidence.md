@@ -3061,3 +3061,17 @@ product diff whitespace clean. Initial temporary Lisp/module failures extracted,
 not acceptance. Native duplicate-destination warnings present in both negative/
 positive controls; no unrelated native PDF rewrite. User review/delivery pending,
 no external issue write or full release claim.
+
+
+## PDF repair staging/message readiness (2026-10-16)
+
+User authorized sequential staging and message, inter-group polling at most3min.
+One coherent fix(pdf) group: README/worker/ERT, no inter-group wait. Full staged
+diff reviewed, whitespace clean, all25index input hashes equal accepted manifest,
+staged binary diff exactly equals archived candidate.patch. Only original user
+flake mirror unstaged. Prior36focused/9real/439core/full acceptance transfers by
+byte identity; no new builds/tests or ordinary commits. tmp/commit.md prepared:
+fix(pdf): restore native hyperlink annotations; full3bullet Chinese draft retained
+in memory/pdf-links-investigation.md. No issue trailer without established
+association/closure intent. User review/commit verification next. No new archive
+needed; current message retained and accepted implementation/evidence archived.

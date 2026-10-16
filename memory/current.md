@@ -12,15 +12,20 @@ fails both maintained regressions as intended. Focused36/36 (125.005432s), real
 extension9/9 (10.292105s), core439/439 (279.377034s), complete600s flake exit0,
 strict compilation/lint/all seven applicable checks pass on locked x86_64-linux.
 18baseline/25candidate/11foreign identities verified; root lock/source stable.
-Ordinary index empty, user flake unchanged and unstaged. No project staging/
-commit or external write authorized/performed; no full release acceptance.
+User authorized staging/message preparation: exactly worker, ERT and README
+staged as one coherent fix(pdf) group; no inter-group wait. All25index hashes
+match accepted manifest and complete staged diff equals archived patch. Only
+user flake remains unstaged. tmp/commit.md ready; full draft retained in
+memory/pdf-links-investigation.md. User commit verification pending; no external
+write or full release acceptance.
 
 Contract, exact commands, provenance and remaining validation limits:
 memory/pdf-links-investigation.md. Twenty necessary original-byte text artifacts
 archived separately and verified: archive/2026-10-16T11-13-53Z--847845c/MANIFEST.md.
 No PDFs/binaries/full tmp/INBOX archive. Original whitespace retained/explained;
 no candidate project parent inferred. No further test needed without changes.
-Next: user review/delivery. Chinese fonts postponed, font-lock later; no new
+Next: user review/commit, then verify exact committed delivery and any issue
+association introduced in final user message. Chinese fonts postponed, font-lock later; no new
 implementation or release operation selected.
 
 ## Completed committed delivery: Issue10 inline footnote STM

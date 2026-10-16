@@ -73,8 +73,9 @@ reading/copying. No dependency updates. No further checks needed without changes
 All18original baseline inputs match committed main source, all25final candidate
 inputs match project/isolated copies before and after final gate, all11foreign
 Elisp hashes match fixed extension manifests. Exact three-file patch remains
-identical to project diff; ordinary index empty, unrelated user flake unstaged.
-User review/staging/message/commit are pending, not authorized by test approval.
+identical to complete staged diff after explicit user staging authorization.
+All25index hashes equal accepted candidate; exactly3task paths staged, unrelated
+user flake unstaged. User review/commit are pending; no ordinary agent commit.
 No inferred project parent for the uncommitted accepted candidate.
 
 Twenty necessary original-byte text artifacts captured and byte/digest/source-
@@ -117,3 +118,36 @@ reference controls, not indiscriminate forced layout in pure/session/serializer
 APIs. These are bounded review findings, not adopted implementation backlog.
 No new raw archive needed: necessary distinctions extracted here, code/tests
 and existing immutable evidence retain the basis.
+
+## Staging and reviewed delivery message
+
+User authorized sequential staging/message preparation with at most3minutes
+inter-group polling. One coupled fix(pdf) group; no split/inter-group wait.
+Explicitly staged README.org, org-texmacs-worker.scm and tests/ert/ert.el. Full
+staged diff reviewed, whitespace check clean, all25index inputs match accepted
+manifest and archived candidate patch exactly. Prior36focused/9real/439core/full
+acceptance transfers by byte identity; no new tests. Existing user flake excluded.
+The global git-maintenance commit workflow is used for message review; staging
+authority is the user's direct request, not the skill. Initial index write was
+sandbox-blocked and same authorized paths were staged with needed permission.
+
+Split assessment: not necessary. Difficulty: low. One rendering defect, its
+regressions/reload helper and corresponding README contract form one reversible
+delivery. No closing/reference trailer: no applicable PDF-specific issue has
+been established, and closed Issue4 explicitly excludes this work. If final user
+message introduces an issue association, check that issue after commit per user
+preference. Otherwise verify delivery identity without inventing tracking.
+
+The complete draft in tmp/commit.md:
+
+```text
+fix(pdf): restore native hyperlink annotations
+
+- 在两次原生 PDF 打印前调用 `update-forced` 完成同步排版, 修复仅使排版失效时缺失的链接注释.
+- 增加 2 项 ERT, 检查实际 URI 与跨页内部跳转, 连续导出, `.tm` 重载, 源状态与所有权, 以及两个强制排版阶段的失败清理和 session 隔离恢复.
+- 同步原生重载测试辅助函数及 README 的同步排版和链接验证说明.
+```
+
+No additional raw archive warranted for current staging/draft: exact candidate
+patch and original acceptance are already immutable; this memory retains full
+message and delivery state. Next is user commit and read-only verification.
