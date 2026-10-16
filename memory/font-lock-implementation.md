@@ -10,7 +10,8 @@ export syntax/parser/worker behavior.
 
 Five task paths: new org-texmacs-font-lock.el, main require, Nix fileset entry,
 maintained ERT and README. Original user flake overlay preserved; our flake
-change only adds module to fileset. Ordinary index untouched, no project commit.
+change only adds module to fileset. User subsequently authorizes staging/message preparation; task5paths staged,
+no project commit yet.
 Install local original-fontifier wrapper via org-mode-hook and existing-buffer
 load pass. Respect normal Font Lock and org-src-fontify-natively. Use current
 Org local element context, scan only owning paragraph's private copy through
@@ -93,9 +94,34 @@ Locate introducing checkpoint through manifest first-parent path history.
 
 Final source identity recheck27/27root/task matches;17/17baseline equals committed
 capture context. Git parsed patch as exactly5task paths; preexisting mirror
-excluded from patch/preserved in root. Ordinary index empty. No project commit,
+excluded from patch/preserved in root. Ordinary index now contains exactly5task paths. No project commit yet,
 external issue/PR/release actions. Final full gate accepted on current platform;
 GUI manual experience/third-party modes and actual sexp navigation still pending.
-Next: user manual.org/MANUAL.md check; any future staging/message preparation
-requires explicit authorization, commit remains user's. Do not retest unchanged
-source merely for handoff/commit timestamp. No new business repair inferred.
+User subsequently authorized sequential staging/message preparation with at most
+3minute read-only polling for manual commit. Four complete paths staged; flake
+staged by a one-hunk cached patch, excluding original user mirror overlay.
+Accepted candidate identities match all4full-file index blobs; flake index is
+exact HEAD plus module fileset entry. Complete staged diff/check reviewed clean.
+One coherent feature, split not necessary (difficulty low, tightly coupled load/
+package/tests/docs). Staged patch/message hashes and baseline parent saved in
+tmp/font-lock-implementation/staged-review.json; draft in tmp/commit.md. No new
+archive needed: implementation evidence immutable archive plus current message
+extraction sufficient. No tests rerun; source bytes unchanged since451acceptance.
+
+Full reviewed draft (no issue association/closing footer):
+
+```text
+feat(font-lock): highlight embedded STM as Scheme by default
+
+- 默认在现有和新建 Org buffer 中为 paragraph, inline footnote 和 TeXmacs block 内的 STM 应用 Scheme 呈现.
+- 复用 Org 局部上下文和 STM 扫描边界, 清理内部 Org 属性, 并管理编辑后的旧范围失效与恢复.
+- 通过内部变量 `org-texmacs--font-lock-enabled` 支持全局默认和 buffer 局部禁用, 自动安排重新着色.
+- 将新模块纳入 Nix 包, 补充边界, 生命周期及独立加载回归测试, 并记录 README 使用边界.
+```
+
+Read-only polling completed within the3minute cap (14:38:36–14:41:32UTC,
+2026-10-16); no new project HEAD observed. Polling stopped; no background watcher.
+Exactly5task paths remain staged, user flake overlay unstaged; draft unchanged.
+Next user manually commits; verify exact parent/5paths/patch/message/source hashes
+when reported/observed. No related issue footer, so no remote closure inferred.
+Manual GUI checks remain pending. Ordinary commit remains user's operation.
