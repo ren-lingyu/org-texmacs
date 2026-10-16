@@ -664,7 +664,12 @@ STM font-lock feasibility P1 investigation for0.5.0 is complete. User selects
 default-on font-lock with an internal nil override, no public command/Customize.
 Embedded Scheme syntax properties/local ownership implemented/user-committed,
 11focused/451core/full compile/lint accepted; exact delivery verified. GUI
-acceptance pending; large-input cost remains explicit. No general editor adopted. See
+basic usability user-reported as acceptable; detailed interaction checks and
+large-input cost remain explicit. User reports missing texmacs-block source-edit
+mode and native code indentation. Static review confirms presentation-only module;
+proposed candidate is dedicated Scheme source editing and block-local indentation,
+keeping Org special-block/export ownership. No implementation or release gate
+adopted for this report. No general editor adopted. See
 memory/font-lock-implementation.md and memory/release-0.5.0.md.
 
 General Scheme editing assistance, preview-oriented UX and other authoring

@@ -57,6 +57,14 @@ owned Org props suppression/disable restore, buffer/default/narrowing/Font Lock
 and major-mode cleanup; local scanner call/size guard and no worker. GUI idle
 redisplay/folding/third-party interaction are not certified by batch JIT hooks.
 Manual fixture/procedure under task manual.org/MANUAL.md.
+User subsequently reports actual GUI font-lock feels basically usable. This is
+user-observed basic presentation acceptance, not comprehensive idle/folding/
+navigation/third-party/performance certification; exact GUI config not supplied.
+User also reports texmacs block has no source editing environment/native code
+indentation. Static source confirms current module only stages Scheme fontifier
+properties; no source-edit dispatch, Scheme major-mode binding, or indentation
+integration. Treat editing/indentation as a separate reported gap, not failed
+font-lock or new implementation/release authorization.
 
 Initial harness path and ERT brackets corrected before causal baseline. Strict
 compile required dynamic Font Lock range declarations. Initial implementation
@@ -126,6 +134,7 @@ feat(font-lock): highlight embedded STM as Scheme by default
 - 将新模块纳入 Nix 包, 补充边界, 生命周期及独立加载回归测试, 并记录 README 使用边界.
 ```
 
-Next: user manual.org/MANUAL.md checks for real GUI idle display, folding,
-sexp navigation and third-party coexistence; other release gates remain in
+Next: basic GUI presentation user-accepted; detailed idle display/folding/
+sexp navigation/third-party checks remain unverified. Source-edit/Scheme indentation
+is a newly reported separate candidate; no implementation selected. Other release gates in
 memory/release-0.5.0.md. No automatic new implementation/retest/release selected.

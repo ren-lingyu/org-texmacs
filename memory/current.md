@@ -1,5 +1,18 @@
 # org-texmacs current memory
 
+## Latest observation: GUI font-lock and block editing gap
+
+User reports GUI font-lock feels basically usable; record as basic user-observed
+presentation acceptance only. Detailed idle/folding/sexp/third-party/performance
+coverage not supplied. User reports texmacs block lacks source-code editing mode
+and native code indentation. Static review: current font-lock stages/copies Org
+Scheme helper properties; it does not install editing/indentation entrypoints.
+Candidate follow-up: dedicated Scheme source-edit environment and block-local
+indentation while retaining Org special-block AST/export and island ownership.
+No business edits/tests or implementation/release commitment authorized. Existing
+AUTHORING-01 boundary retained; findings distilled into font-lock implementation,
+release readiness and backlog. No raw artifact/archive needed for this report.
+
 ## Completed: Issue12 bibliography delivered and closed
 
 User committed the exact reviewed native bibliography ownership fix, including

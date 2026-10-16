@@ -31,7 +31,10 @@ committed delivery records for current local status. Still planned/not accepted.
   Dense1MiB full ensure17.4s/local re-fontify0.489s remains a measured limitation.
   Exact parent/5paths/patch/message and26committed source hashes verified;
   index empty, original flake overlay unstaged. Prior acceptance transfers by
-  exact bytes. Manual GUI/folding/third-party/navigation acceptance pending.
+  exact bytes. User now reports GUI font-lock basically usable: basic presentation
+  user-accepted; detailed folding/third-party/navigation remains unverified.
+  Newly reported block source-edit/indentation gap is separate, not automatically
+  an adopted release requirement or implementation authorization.
   Contract/final evidence: memory/font-lock-implementation.md.
 - Item7: representative mathematical full-document .tm/PDF workflow acceptance
   combining supported features still pending; short combined link fixtures and
