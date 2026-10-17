@@ -21,6 +21,10 @@ unchanged; root user flake preserved. Results/report at root tmp/footnote-forwar
 successful store output and all raw annotations/coordinates in report. Necessary
 11text artifacts archived separately and verified, not PDFs/full source/dependencies:
 archive/2026-10-17T18-19-25Z--aa9adbc/MANIFEST.md.
+Read-only pinned env-float.ts inspection supports a hypothesis: footnote body
+set-binding(footnote-N) fails to register exportable anchor, while explicit marker
+label footnr-N survives. Exact shared binding/typesetter/anchor fault unproven;
+not a demonstrated name spelling error or PDF-only/Ghostscript fault. No new run.
 Full extraction: memory/footnote-forward-probe.md. Runtime probes uncommitted,
 no inferred project parent. Next: user decides deeper native diagnosis, limited
 handling or explicit release limitation; other0.5.0 gates unchanged.

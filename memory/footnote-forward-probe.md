@@ -92,3 +92,22 @@ anonymous notes and both PDF pipelines. PS route does not provide a solution.
 Investigation complete; package fix not adopted. User must select deeper native
 diagnosis, bounded handling or explicit release limitation/impact decision.
 Other0.5.0 gates and Issue13 closure remain unchanged.
+
+## Read-only mechanism assessment after user asked probable cause
+
+Pinned installed packages/environment/env-float.ts lines119-127 inspected in the
+actual probe dependency /nix/store/5ri673m8kksap2p2r7gwgqjfwh410sls-texmacs-2.1.5.
+footnote macro emits label footnr-N for main-text marker, reference footnote-N;
+render-footnote* uses set-binding(footnote-N, the-label, body), plus a hard-id locus
+for backlink. Names literally agree; no obvious footnote-/footnr- spelling error.
+Hypothesis, not established exact defect: body-side named binding fails to become
+an exported named anchor when the floating footnote is typeset; shared layout/
+binding/anchor path more likely than PDF-only serialization or Ghostscript. PS
+contains ANN #footnote-N but no matching DEST, while backlink footnr-N DEST exists
+and generated hard-id anchors exist. Numeric resolution/content presence does not
+prove exportable destination registration. Extra passes/reloads previously failed
+to fix symptom, reducing simple insufficient-pass explanation without ruling out
+context/lifecycle issues. Need typesetter set-binding-to-anchor instrumentation
+or controlled native intervention to locate exact code; neither performed/adopted.
+No new runtime or original archive: installed source is locked/reproducible and
+prior macro capture plus current PS extraction already retains needed evidence.
