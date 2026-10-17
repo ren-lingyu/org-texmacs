@@ -1,6 +1,6 @@
 # org-texmacs durable evidence
 
-## Caption AST compatibility: final user decision and candidate
+## Caption AST compatibility: final decision, acceptance and delivered identity
 
 User accepts native footnote AST/content retention without GUI/PDF visibility,
 numbering/directory/page guarantees; long and short captions treated equally.
@@ -16,7 +16,11 @@ whitespace clean, ordinary index empty; x86_64-linux only.
 Current candidate identities, command authorization and failures/corrections:
 caption-inline-footnotes.md. No new archive for regenerable implementation logs;
 prior24raw native evidence archive unchanged. Original uncommitted runtime, no
-false project-parent association. AST conversion accepted; native layout limits remain, no user commit yet.
+false runtime project-parent association. User committed approved candidate; exact
+single stage3 parent, nine paths/full patch/complete message and ten blobs
+(including lock) verified. Index empty, original ELPA workaround alone unstaged.
+No tests rerun for commit; current project association grounds delivery comparison
+only. AST conversion accepted; native layout limits and stage4 remain.
 
 
 ## Caption native-first gate failed; isolated causes separated

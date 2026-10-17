@@ -69,10 +69,10 @@ single-object references, and13 does not complete9. Existing implementation and
 released-subset records below retain their historical scope. Complete adopted
 source semantics, unknowns and evidence requirements: memory/special-block-plan.md.
 
-## Caption anonymous inline-footnote compatibility candidate
+## Delivered caption anonymous inline-footnote compatibility
 
 User selected AST compatibility after native diagnosis; local context predicate
-and unprepared-citation guard implemented/accepted, uncommitted. Anonymous inline notes in long and
+and unprepared-citation guard delivered; exact user commit verified. Anonymous inline notes in long and
 short captions reuse existing native footnote lowering. Stock Org literal source
 behavior unchanged, patched parser isolated to tests. No short-caption ban,
 parser/advice/global mutation, separate note anchors, layout/counter workaround.

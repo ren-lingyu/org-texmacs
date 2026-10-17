@@ -12,7 +12,7 @@ Five task paths user-committed, delivery verified. Stage4 NAME remains later.
 User selected caption anonymous inline-footnote AST compatibility before NAME.
 After native diagnosis, adopted correct native AST/content conversion without
 GUI/PDF layout/counter/page promise; both long/short captions share rules, no
-automatic split-note/style workaround. Focused4/patched5/full flake/default build accepted; candidate uncommitted. Current status and final semantics: caption-inline-footnotes.md.
+automatic split-note/style workaround. Focused4/patched5/full flake/default build accepted; user-committed delivery verified. Current status and final semantics: caption-inline-footnotes.md.
 This extends stage3's original caption subset; stage3 delivery evidence itself
 remains bounded to its baseline. No stage4 or release completion claim.
 

@@ -8,7 +8,7 @@ revisions and actual Org note boundary limitation: memory/issue-13-stage3.md.
 No release or stage4 NAME claim.
 
 User selected caption anonymous inline-footnote AST compatibility before stage4.
-AST compatibility candidate accepted, uncommitted: focused4/patched5/full flake/
+AST compatibility delivered and exact user commit verified: focused4/patched5/full flake/
 default build pass. Stock production Org and isolated patched tests. AST conversion,
 not native caption-footnote PDF layout, is acceptance; native defects documented,
 no automatic split-anchor semantics. Current implementation/validation status:

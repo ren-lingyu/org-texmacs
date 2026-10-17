@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: caption footnote AST compatibility staged, awaiting user commit
+## Current: caption footnote AST compatibility delivered and verified
 
 User's final decision accepts correct native AST/content conversion without
 caption-footnote GUI/PDF visibility, counter/directory or page-layout guarantees.
@@ -25,17 +25,16 @@ is generated against locked9.8.10 and applied fuzz0 to deterministic test-only t
 before ELPA install. Actual loaded Org/package paths verified. Native-related
 runs use isolated flake, all five task commands authorized.
 
-User authorized both explicit staging actions. Nine paths now staged (386 additions,
-26 deletions), including user's .gitignore patch allowance. Feature-only flake
-patch applied to index; original overlay/system parameter remains sole unstaged
-change. All nine staged blobs equal reviewed input identities, with feature flake
-SHA256 5818e92e02888f8375529d8bdeb524626b8a6033a3d2170784dda8ac89223043.
-Full staged review/whitespace passed. Split not necessary: one acceptance boundary.
-Final message tmp/commit.md: feat(document): accept anonymous inline footnotes in captions,
-Refs:#13; exact message/diff hashes and handoff: caption-inline-footnotes.md.
-No tests repeated for staging, no ordinary commit/publicAPI/worker/skill changes.
-Next: user commit, then exact parent/paths/patch/message/blob delivery verification.
-Issue13 stage4 NAME and release remain unfinished.
+User committed approved nine-path candidate after explicit staging authorization.
+Exact delivery verification passed: single stage3 parent, full binary patch and
+complete approved message, nine changed blobs plus unchanged lock all match.
+Index empty; original ELPA overlay/system parameter remains sole unstaged change.
+Feature flake excludes mirror only; runtime acceptance used mirror-bearing isolated
+flake. No tests repeated for commit verification. Current GAW project association
+grounds exact delivery verification, not original uncommitted runtime acceptance.
+Full contract/identities/limits: caption-inline-footnotes.md.
+Next: separately select/plan Issue13 stage4 NAME and links. Whole13 and release
+remain unfinished; no stage4 implementation or release action authorized here.
 
 ## Completed delivery: Issue13 stage3 delivered and verified
 

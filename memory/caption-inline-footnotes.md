@@ -12,7 +12,7 @@ caption-only parser/lower/type, layout prediction or graph rewriting. Existing
 nesting/ownership/other-context rules remain. First-version anonymous-inline
 boundary remains (:type inline,label nil); no named-caption restoration added.
 Org patch remains test-only, no upstream Org proposal now. Implementation is
-accepted before stage4, now staged under explicit user authorization; awaiting user commit.
+delivered before stage4; user commit and exact equivalence verified.
 
 User reports independent TeXmacs2.1.5 GUI experiments: direct caption footnote
 shows marker but no body/edit position and extra counts; split note-ref plus
@@ -399,7 +399,7 @@ full pass before this guard is intermediate; final checks rerun and passed on co
 ## Acceptance and handoff
 
 Final AST-compatibility implementation accepted; user authorized both requested
-staging actions. Nine paths staged: eight task paths plus user's .gitignore patch
+staging actions. Nine paths delivered: eight task paths plus user's .gitignore patch
 allowance. Split not necessary, low difficulty: implementation, test dependency,
 acceptance and documentation share one capability boundary. Original ELPA overlay
 and its system parameter were excluded by reviewed feature-only index patch;
@@ -427,8 +427,12 @@ Refs: #13
 
 Staged git diff --cached --binary SHA256:
 dbccf04de9c98f9517025ae7cc5a68c3c510421b34105dc3d0deeaf61ef3c2bc.
-Next: user commit then exact delivery comparison against stage3 baseline,
-paths/patch/message and accepted blobs. No Closes:#13, NAME/stage4 remains.
+User committed; exact comparison passed: single expected stage3 parent, nine
+changed paths, complete binary patch/message and all ten recorded blobs including
+unchanged lock. Index empty; only original ELPA workaround remains unstaged.
+No tests repeated for commit. Project-parent association grounds this committed
+delivery verification only, not earlier uncommitted runtime acceptance.
+Next: separately select/plan stage4 NAME/links. No Closes:#13 or release completion.
 No GUI/physical-page support assertion, automatic split note, engine fix or release.
 
 Native pre-decision diagnostics remain historical failures; current native-layout-
@@ -437,4 +441,4 @@ complete STM readback/reload. No hidden skip/xfail, no claim typesetting repaire
 Maintained tests now reproduce implementation acceptance, so no new raw archive
 for final build logs needed. Prior native-control archive remains immutable.
 Final runtime was uncommitted isolated bytes equal worktree, zero new project
-parents; later exact committed-delivery comparison must be recorded separately.
+parents for runtime; current committed-delivery verification is separate as above.

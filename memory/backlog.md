@@ -56,7 +56,7 @@ final decision accepts correct AST/content conversion with no native PDF layout
 promise; long and short caption notes supported equally. No auto split-note,
 layout/counter/anchor workaround. Stock production Org, patched test closure only;
 patch colocated with consumer, native runs from isolated flake. Local lower and unprepared-citation guard implemented; default focused4, patched5,
-full flake/default build accepted, uncommitted. Detailed current
+full flake/default build accepted; user-committed delivery verified. Detailed current
 contract/evidence: caption-inline-footnotes.md. Stage4 follows this task.
 
 ### Issue9: independently named constituents of one native composite
