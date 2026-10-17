@@ -22,12 +22,11 @@
 
 ## Issue13: accepted stage1 and remaining adopted target
 
-Stage3 figure/table guidance is reviewed only, not implemented/native-verified.
-Full proposal, adopted user revisions and intake retention decision:
-memory/issue-13-stage3.md. Original wrapper structure must survive pruning/scope;
-caption support stays within existing subset; native table grammar is now
-explicit (nonempty rectangular table/row/cell, bounded container/format arities).
-User adopted all three revisions and six acceptance additions; no runtime proof.
+Stage3 figure/table candidate is implemented and locally accepted, uncommitted.
+Source proof survives pruning and scoped reparse; generic/article native gates
+and strengthened focused tests, full flake and default build pass.
+Current capability, limits, user-adopted Org footnote boundary and evidence:
+memory/issue-13-stage3.md. Stage4 NAME remains unimplemented.
 
 Stage1 is implemented/accepted/user-committed, exact delivery verified: ordinary
 special-block recursion, captured private handler dispatch with ownership,
@@ -46,11 +45,11 @@ NAME/[[name]]. Handler returns structured stree; core owns snapshots, STM/file
 provenance and preflight/real-island boundaries. Opaque texmacs STM retains its
 separate interpretation. Explicit table wrapper becomes preferred; current naked
 Org table numbering/caption/reference behavior remains compatibility input.
-Label scope is type-specific and native counters stay authoritative. Empty-caption
-numbering, experimental starred syntax/native roots, weak external surround for
-plain named STM and referenced-only label activation still need validation.
-Float behavior is undecided. Figure/table/NAME and weak anchors remain
-unimplemented; stage2 equation candidate is described below.
+Label scope is type-specific and native counters stay authoritative. Stage3
+empty-caption numbering and starred wrappers now have generic/article evidence
+above. NAME, weak external surround for plain named STM and referenced-only label
+activation remain unimplemented. No float-placement policy/API is added.
+Stage2 equation delivery is described below.
 
 Stage2 raw-STM equation/equation* implemented/accepted/user-committed, delivery verified:
 one original source capture/request, native parser authority (no math whitelist),

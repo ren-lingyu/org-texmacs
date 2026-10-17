@@ -25,24 +25,24 @@ decision.
 
 ### Issue13: adopted required v0.5.0 special-block subset
 
-Stage3 guidance reviewed and user revisions1/2/3 plus six acceptance additions
-adopted, not implementation authorization. No stage3 native/parser proof:
-memory/issue-13-stage3.md. Required high-level figure/table target stays adopted;
-concrete parser/native behavior awaits evidence; finite grammar/selection/caption
-contracts are now explicit in the adopted revisions.
+Stage3 figure/table candidate implemented/accepted with adopted corrections;
+no ordinary staging/commit. Native controls,44focused, full flake and no-link
+build pass. Org footnote/raw-marker boundary restriction explicitly
+adopted by user; no parser/text reconstruction. memory/issue-13-stage3.md.
+Stage4 NAME remains **adopted-later**.
 
 Status: stage1 implemented/accepted/user-committed; exact delivery verified.17focused/
 495fullERT/full flake/strict package compile/lint/build pass; generic native16
 types and PDF accepted. Stage1 delivery evidence:
-memory/issue-13-stage1.md. Figure/table/NAME nodes remain **adopted-later**.
+memory/issue-13-stage1.md. Stage3 candidate is above; NAME remains **adopted-later**.
 Stage2 equation/equation* implemented/locally accepted: focused29/29/native generic/
 article readback/PDF/reload, full flake ERT/compile/lint and no-link build pass.
 User committed the exact nine-path reviewed candidate; parent/patch/message/
-blobs verified, index empty, only original flake overlay dirty. Raw STM remains
+blobs verified; at that delivery index was empty with only flake overlay dirty. Raw STM remains
 opaque across preprocessing/bibliography/context as well as preparation/scanner;
 no math whitelist, recursive body or NAME. Full contract/acceptance/sequence and
-retention decision: memory/issue-13-stage2.md. Stage3 figure/table/starred then
-stage4 NAME/links; stage2 delivered, no remaining stage2 implementation work.
+retention decision: memory/issue-13-stage2.md. Stage3 candidate acceptance is
+above; stage4 NAME/links remains later. No remaining stage2 implementation work.
 Recursive private special-block handlers,
 statement aliases, equation/equation*, explicit figure/table and bounded
 single-object NAME/[[name]] support. Full source/label/provenance/validation

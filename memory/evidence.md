@@ -1,5 +1,20 @@
 # org-texmacs durable evidence
 
+## Issue13 stage3 accepted implementation candidate
+
+Native-first parser/generic/article gate31/31 passed38.819801s before exporter
+edits. Candidate integrated4wrappers/source-proof/scoped binding/caption/native
+normalization. Final44focused passed54.281918s after selection/dependency corrections;
+final full flake check and no-link default build exit0. Final seven-input
+manifest remains unchanged after acceptance; whitespace check passes. Earlier42
+candidate results are intermediate evidence only. Native counters/empty-caption/
+stars/graphics/independent tree/readback/direct-reference-reload text+geometry pass.
+User adopted actual Org note/raw-marker source-boundary restriction, maintained
+parser regression and README limitation. No text reconstruction/extra dependencies.
+Detailed evidence/authorization/limits: memory/issue-13-stage3.md. Runtime is an
+uncommitted candidate, no false project-parent runtime association. Maintained
+fixtures retain reproduction; no extra raw archive.
+
 ## Issue13 stage3 intake and static review
 
 First-read INBOX regular UTF-8 source17294bytes, SHA256

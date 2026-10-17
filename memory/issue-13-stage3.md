@@ -1,15 +1,15 @@
-# Issue13 stage3: reviewed figure/table guidance, implementation pending
+# Issue13 stage3: figure/table implementation candidate
 
 ## Intake, authority and retention
 
-User requested read-only review of updated project INBOX.md. This restricts the
-ordinary project worktree; normal GAW memory continues under standing authority.
-No stage3 implementation, parser/native probes, ERT/builds, dependency/network
-shell action, ordinary staging/commit, version/lock/issue/release action authorized
-or performed. Preserve existing flake.nix ELPA workaround. Stage2 delivered and
-verified; this review used its exact committed project baseline (associated
-project parent), not assumed new source implementation. INBOX's claim that remote
-Issue13 is Open was not reverified; no remote issue-state conclusion added.
+User initially requested project-read-only review, then adopted revisions1/2/3
+and six acceptance additions, requested the concrete plan and authorized its
+implementation. User separately authorized the exact three repeat commands below.
+Source/ERT/README changes active, ordinary staging/commit not authorized. Preserve
+flake.nix ELPA workaround. No worker protocol/public API/dependency/version/lock,
+issue-close/tag/release actions. Static review used delivered stage2 project
+baseline; current runtime uses an uncommitted candidate, not that committed tree.
+Original guidance's remote Issue13 Open claim was not reverified.
 
 First-read source: ignored/untracked regular UTF-8 project INBOX.md,17294bytes,
 SHA256 b160a8e6f101ac90bb460fbf80a0fe595cf8476f6181df719b54571094c8f891.
@@ -196,9 +196,9 @@ Additional required maintained acceptance:
    and naked Org table compatibility behavior remains unchanged.
 
 These tighten implementation correctness within the adopted high-level stage3
-scope. No stage3 source implementation/parser/native/tests started. Next: prepare
-an implementation plan when requested, then act within explicit task/test/Git
-permissions. No remaining adoption question for these three revisions.
+scope. All three revisions are adopted and implemented in the candidate below.
+No remaining adoption question for these revisions. Original runtime provenance
+and committed delivery must remain separate at eventual user commit.
 
 ## Public reference check and evidence limits
 
@@ -213,3 +213,116 @@ References:
 - https://www.texmacs.org/tmweb/documents/manuals/texmacs-manual.en.pdf (section18.3.4).
 - https://www.texmacs.org/tmweb/manual/webman-primitives.en.html (table primitives).
 - https://www.texmacs.org/tmdoc/main/styles/env/env-base-dtd.en.html.
+
+## Current implementation and acceptance
+
+Native-first gate31/31 passed38.819801s before exporter changes. Final44/44focused passed54.281918s including noexport and Footnotes-section
+selection/dependency cases. Final full flake check exit0 (all checks passed,
+complete ERT/strict compilation/lint); final no-link default build exit0.
+Final seven-input manifest verified unchanged after acceptance. Earlier42-test
+candidate results are intermediate evidence only.
+
+Five task files: source helper, context, document lowering, existing ERT, README.
+No input signature/worker/protocol/dependency change. Private data-only wrapper
+source-shape properties capture original direct children before context pruning.
+Metadata-free leading newline paragraph is pinned Org's syntactic blank spacing;
+trailing blank is inner block post-blank. Capture and scoped reparse rebinding use
+kind/begin/post-affiliated/semantic-end keys. Original direct-child descriptors
+include kind/parameters/ranges/affiliated keys; missing/ambiguous bindings reject
+on retained wrapper, not on excluded objects. Source adapter always captures proof;
+pure manual inputs validate their explicit AST. Generic input owning already
+copies these ordinary data properties; filter topology protection guards them.
+Preflight compares original structure even after context removes extras. Entire
+outer wrapper/caption range checks precede selection reparse and body STM requests.
+
+Built-in4type dispatch reserves normalized keys. Shared caption-text helper reuses
+long/short, markup/link/file provenance, without naked-table label/surround logic
+or new STM discovery. Org text that parser retains literally (including note-like
+spelling) remains text; actual unsupported caption note/citation/target objects
+reject. Raw figure body remains arbitrary valid stree. Org table body uses legacy
+table-block. Raw table uses adopted finite grammar and document-pack only; root
+paths for a lone object are table(0 0 0 0),tformat(0 0 0),tabular(0 0). Final
+assertions traverse those paths and compare the original raw subtree, including
+cwith/twith and raw hlink; raw hlink adds no Org file-path slot. Real caption file
+links preserve their typed provenance. No user callback during built-in preflight;
+placeholder native table root validation is skipped until actual parsed content.
+
+Fifteen maintained stage3 ERT cover real4type parser, independent native controls,
+source bodies/captions, original extras before prune with zero body requests,
+whole-wrapper scopes/clipping, bounded table grammar/provenance, caption subset/
+reserved names, bibliography distinction/native-root error recovery, INCLUDE/
+restored notes/raw keyword opacity, filter evidence/body mutation rejection,
+owned proof/repeated pure lowering/no source reads/no worker, excluded invalid
+wrappers, integrated exporter-native PDF/readback/reload and parser boundary limit.
+Prior29stage1/2 tests remain. Independent generic/article native fixtures verify
+numbered1/2/3 and interleaved stars, omitted captions retaining Figure/Table labels,
+rich caption, fixed-size graphics, native readback, exact expected exporter tree,
+direct/reference/reload PDF word geometry1pt and graphic ink bounds1pixel. Graphic
+checks require >50 non-label dark pixels, not just PDF text. Existing Poppler
+pdftoppm/pdftotext tools only; no external image assets or new dependencies.
+
+### Adopted Org boundary limitation
+
+Actual diagnostic showed no native-body block in Org AST when a footnote definition
+contains a would-be nested raw block whose multiline STM string includes a
+column-zero [fn:missing]. Org terminates the enclosing note before recognizing
+nested figure/texmacs blocks. User explicitly adopted actual Org boundaries and
+recording this source spelling as unsupported, without text reconstruction or
+parser patch. A maintained parser regression pins this limitation; README records
+it. Valid footnote restoration and top-level raw pseudo-INCLUDE/bibliography/note
+opacity are tested separately. This is a source grammar limit, not evidence of
+native parser/counter failure. Do not silently widen support in later claims.
+
+Earlier diagnostic fixture failures: one missing raster-helper parenthesis before
+test load (fixed); new docstring width strict-compilation failures (fixed); expected
+one child where Org emits leading-newline paragraph (fixed by explicit blank AST
+evidence); note-like caption spelling treated as object though Org keeps text
+(fixed to test actual unsupported AST objects); combined footnote/raw-marker case
+above (user-adopted limitation, not silently repaired). No suppressed failures or
+weakened numbering/provenance grammar checks. Maintained tests encode useful raw
+reproduction, so no extra immutable archive selected.
+
+### Authorized commands and final input identity
+
+1. timeout 300s nix develop --no-write-lock-file path:.#checks.x86_64-linux.ert --command emacs -Q --batch -L . --load tests/ert/ert.el --eval '(ert-run-tests-batch-and-exit "issue13")'
+2. timeout 600s nix flake check --no-write-lock-file path:.
+3. timeout 120s nix build --no-link --no-write-lock-file path:.#default
+
+Possible network/store/cache/log/temp tm/PDF/raster writes disclosed and authorized;
+no result link or lock change. Pinned x86_64-linux ERT environment with Poppler,
+Emacs31.1/Org9.8.10/TeXmacs2.1.5 baseline. No other style/platform/GUI guarantee.
+Candidate uncommitted, index empty; exclude original flake mirror overlay from
+ordinary delivery. Eventual commit footer Refs:#13, not Closes. Final diff
+whitespace check passed, index empty, five task paths plus unchanged user flake
+overlay are the complete ordinary diff. Next: review, separately authorized
+staging/message and user commit, then verify committed-delivery equivalence.
+Stage4 NAME/counter-scope labels/weak anchors and Issue9 remain later work.
+
+Final review correction: full-source wrapper clipping checks must honor actual
+context policy, otherwise partial noexport wrappers can block exports. Moved
+wrapper range checking into context preparation after effective options/subtree
+selection, before region reparse. It follows the same headline/select/archive
+policy and gathers referenced note labels within the region. Original dependency
+definitions are checked even under a Footnotes/excluded heading when referenced;
+unreferenced definitions do not trigger wrapper errors. Added noexport partial
+wrapper and referenced/unreferenced note wrappers in ordinary/Footnotes positions.
+Original native-body clipping policy unchanged. Earlier42candidate full flake
+pass is valid intermediate evidence only, not final candidate acceptance.
+
+### Final candidate manifest
+
+Ordered SHA256 lines below identify the candidate used by final focused/full/build.
+First five are task staging scope; flake/lock record runtime inputs only. Original
+mirror workaround must remain excluded. No project parent added for uncommitted
+runtime evidence. Manifest includes the trailing newline after each path line.
+
+```text
+e3542947fc5c57150b292159c4aefc8ef5a2e97ebbe660be49fa907809bb4593  README.org
+69ae82b4033385c0258f1c80ebfc339fb663392e9fdf973d548e232e84155572  org-texmacs-context.el
+bd486a6e9f6ccfc774be54578b862dd2fb929df31a9fc295f4bab43f09a51d36  org-texmacs-document.el
+396db5ed0941ae1a1cdea2f8c7ad7c12a1c47719d691537d6a10a97c2d8dbdb5  org-texmacs-source.el
+7f860282cb4e32f6d71395661cb7a08dc7230f9b0c1f2a3e00663f4e07244fee  tests/ert/ert.el
+a717dcfa245b1ccaee102ed8eef3a6ae229d0c86b60f674080bab5273d093a8a  flake.nix
+118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a  flake.lock
+```
+Manifest SHA256: 7cef14dcbcebf14390396e0c6458e2e84d2a4a131f423b326cae69b3dde9185e.

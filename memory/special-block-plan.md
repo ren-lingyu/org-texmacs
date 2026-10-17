@@ -2,11 +2,10 @@
 
 ## Stage3 guidance review
 
-Figure/table wrappers and experimental stars remain planned. Detailed supplied
-contract, prevalidation gates and three adopted user revisions/six extra gates:
-memory/issue-13-stage3.md. No source implementation or tests authorized/performed
-by the review/revision follow-up. Keep structure evidence before context loss, current
-caption subset and bounded native table grammar explicit.
+Figure/table plus experimental stars are implemented and locally accepted;
+44focused/full flake/default build pass, candidate uncommitted. Three adopted revisions, six extra gates, actual parser/native evidence
+and user-adopted note/raw-marker boundary limitation: memory/issue-13-stage3.md.
+No ordinary staging/commit or stage4 NAME work.
 
 ## Status, motivation and authority
 
@@ -20,7 +19,8 @@ Updated handler contract prohibits external reuse of any contents descendant con
 deep-rebuilt semantic duplication remains an unenforceable callback obligation.
 Preflight guarantees rejection before body STM requests, not before bibliography
 requests; custom handlers never receive placeholder contents. Stage2 equation
-implementation is below; no figure/table/NAME implementation or Issue9 scope. Preserve/exclude user flake workaround.
+implementation is below; stage3 figure/table candidate is above, NAME and Issue9
+composition remain unimplemented. Preserve/exclude user flake workaround.
 Implementation command authority/current findings: memory/current.md. Initial
 memory-only adoption below describes its original phase, not current authority.
 

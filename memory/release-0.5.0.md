@@ -2,15 +2,16 @@
 
 ## Current scope amendment: required Issue13, refocused later Issue9
 
-Stage3 guide reviewed, three user revisions/six acceptance additions adopted; native empty-caption/starred numbering and all stage3
-checks remain unverified. Source identity, extracted gates and revised
-contract: memory/issue-13-stage3.md. Stage2 delivery does not discharge these.
+Stage3 figure/table candidate implemented; parser/native gate,44focused,
+full flake and no-link build pass; candidate uncommitted. Adopted grammar/caption/source-proof
+revisions and actual Org note boundary limitation: memory/issue-13-stage3.md.
+No release or stage4 NAME claim.
 
 User adopted2026-10-17 a mandatory Issue13 usable mathematical special-block
 subset for0.5.0, not an optional extension. Stage1 recursion/private handlers and
 formal statements now implemented/accepted/user-committed, exact delivery verified:
 17focused/495fullERT/strict package compile/lint/full flake/build pass; generic
-native16type/PDF and theorem/proof tm reload accepted. Remaining figure/table/NAME and weak anchors still planned; no release action. Full stage1
+native16type/PDF and theorem/proof tm reload accepted. Stage3 candidate is above; remaining NAME and weak anchors still planned; no release action. Full stage1
 contract, candidate identities and limits: memory/issue-13-stage1.md.
 Full source semantics and validation boundaries: memory/special-block-plan.md.
 Stage2 equation/equation* candidate implemented with four corrections;
@@ -22,8 +23,8 @@ This adds one required scope gate, not duplicated numbered legacy items:
 private recursive handler/preparation/provenance path, formal statements,
 single-expression equation/equation*, explicit figure/table wrappers and bounded
 single-object NAME/[[name]] semantics. Native counters and object-specific label
-placement required. Empty-caption numbering, experimental starred forms and weak
-plain-STM anchors need actual native/PDF verification before supported claims.
+placement required. Stage3 empty-caption/starred native/PDF evidence is above;
+weak plain-STM anchors remain unverified and unimplemented.
 
 Issue9 remains after0.5.0/before0.6.0, now multiple independently named constituents
 inside one composite native structure, initially aligned rows with independent
