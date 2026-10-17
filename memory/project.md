@@ -45,10 +45,12 @@ NAME/[[name]]. Handler returns structured stree; core owns snapshots, STM/file
 provenance and preflight/real-island boundaries. Opaque texmacs STM retains its
 separate interpretation. Explicit table wrapper becomes preferred; current naked
 Org table numbering/caption/reference behavior remains compatibility input.
-Label scope is type-specific and native counters stay authoritative. Stage3
+Label scope is type-specific and native counters stay authoritative. New stage4
+guidance read-only review: issue-13-stage4.md; no NAME implementation yet. Stage3
 empty-caption numbering and starred wrappers now have generic/article evidence
-above. NAME, weak external surround for plain named STM and referenced-only label
-activation remain unimplemented. No float-placement policy/API is added.
+above. NAME and weak external surround for plain named STM remain unimplemented.
+Stage4 guidance supersedes provisional referenced-only activation for new blocks
+and deterministic IDs with all-named activation/Org allocation; review pending. No float-placement policy/API is added.
 Stage2 equation delivery is described below.
 
 Stage2 raw-STM equation/equation* implemented/accepted/user-committed, delivery verified:

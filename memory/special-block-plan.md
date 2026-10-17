@@ -1,5 +1,16 @@
 # v0.5.0 special-block plan and Issue9 boundary
 
+## Stage4 guidance review
+
+New user INBOX contract extracted in issue-13-stage4.md; review only, no code/tests.
+It supersedes below provisional deterministic ID/ref-only label preferences:
+Org-native search/reference allocator, frozen per-snapshot identity mappings,
+ASCII-readable slug, all newly named objects labeled even unused/unnumbered.
+Native reference text remains TeXmacs authority. Four static review tightenings
+await adoption (snapshot/copy lifecycle, semantic view, slug, metadata/regions).
+No original archive needed after sufficient extraction; source hash in that file.
+Old single-object section below is historical planning context where superseded.
+
 ## Stage3 guidance review
 
 Figure/table plus experimental stars are implemented and locally accepted;
@@ -135,7 +146,7 @@ Explicit figures and tables:
 Relax NAME rejection for admitted blocks and integrate into the existing
 identity-keyed Org name/link resolver. [[name]] uses the same allocated private
 label as its target; retain ambiguity/native-label collision checks. TeXmacs owns
-numbering, no parallel Emacs counters. Keeping org-texmacs-ref-N names is fine.
+numbering, no parallel Emacs counters. Earlier deterministic org-texmacs-ref-N preference is superseded by stage4 guidance.
 
 Insertion depends on object: equation/equation* inside formula; statement inside
 native statement scope; figure/table inside caption/counter scope even with empty
@@ -146,9 +157,9 @@ Named plain begin_texmacs weak-anchor candidate:
 (surround (label ID) "" ORIGINAL-STM), outside unchanged opaque subtree. Verify
 representative native roots/contexts/layout/links. No arbitrary STM inspection or
 rewriting to infer numbering or label position; no general numeric/PDF-target
-promise for arbitrary roots. Prefer labels only on actually referenced names,
-consistent with existing resolver; this enable condition remains to finalize
-before implementation, not an already proven mechanism.
+promise for arbitrary roots. Earlier referenced-only label preference is superseded for newly supported blocks
+by stage4 guidance: every valid named block gets label even unused. Legacy naked
+tables retain separately tested compatibility.
 
 ## Required evidence and remaining decisions
 

@@ -1,6 +1,27 @@
 # org-texmacs current memory
 
-## Current: caption footnote AST compatibility delivered and verified
+## Current: Issue13 stage4 guidance reviewed, implementation not started
+
+User requested read-only review of new INBOX stage4 NAME/single-object reference
+contract. Source18366bytes SHA256 fb77dc04b8b4cb5aa14c7b8249f782ef80bb597d2e1df7b5be9719b2f9d51fcb;
+full extraction, retention decision and static review: issue-13-stage4.md.
+No raw archive: sufficient semantic extraction, no independent original evidence.
+Ordinary project files/index untouched; only original ELPA workaround remains.
+Intended design replaces provisional deterministic/ref-only names with Org random
+reference allocation and labels for all newly named objects, including unused and
+unnumbered; native display value remains TeXmacs authority. Custom handlers and
+Issue9 composites stay excluded; source/AST/provenance/consumer boundaries remain.
+Four recommended tightenings await user adoption: one snapshot allocation plus
+copy-key remapping and late static collision validation; semantic candidate view
+preserving raw opacity/reachable notes/secondary AST; ambient-independent ASCII
+slug; pre-cleanup NAME evidence and full owner/NAME region completeness for all
+newly admitted types, with excluded-invalid owners ignored. PDF link checks must
+not imply meaningful visible numeric references for unnumbered objects.
+Read-only source review plus upstream main ox.el corroboration only, no pinned
+Org/native runtime validation. No build/test/implementation authorization inferred.
+Next: adopt review corrections, then separately plan/authorize stage4 4A/4B/4C.
+
+## Completed delivery: caption footnote AST compatibility delivered and verified
 
 User's final decision accepts correct native AST/content conversion without
 caption-footnote GUI/PDF visibility, counter/directory or page-layout guarantees.

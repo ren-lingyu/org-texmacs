@@ -1,5 +1,17 @@
 # org-texmacs durable evidence
 
+## Issue13 stage4 guidance: static read-only review
+
+INBOX18366bytes SHA256 fb77dc04b8b4cb5aa14c7b8249f782ef80bb597d2e1df7b5be9719b2f9d51fcb,
+source baseline matches delivered caption task. Full extraction and first-read
+retention rationale in issue-13-stage4.md, no raw archive. Static current-source
+inspection identified repeated resolution calls, input AST copying, explicit
+island/unused-note exclusions and source metadata evidence boundaries. Proposed
+corrections are not adopted fixes or runtime findings. Upstream main ox.el API
+source corroboration is not pinned9.8.10 proof; no tests/build/native sessions.
+Project association grounds only inspected code baseline, not source authorship,
+Org version validation or native placement acceptance. Project/index unchanged.
+
 ## Caption AST compatibility: final decision, acceptance and delivered identity
 
 User accepts native footnote AST/content retention without GUI/PDF visibility,
