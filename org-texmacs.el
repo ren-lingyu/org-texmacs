@@ -305,7 +305,12 @@ see the restricted context contract in the README.  Their configuration is
 rechecked across waits; arbitrary user callback side effects are not sandboxed.
 Synchronously parse each island with the shared worker.  Do not cache
 the result.  Invoke headline formatters outside private parser bindings,
-both during structural preflight and final lowering.  Do not modify
+both during structural preflight and final lowering.
+Formal statement blocks recursively lower supported
+Org bodies.  Private custom block handlers run only during final lowering,
+with actual STM trees; their captured functions must preserve contents and
+provenance.  Bibliography native requests may precede structural preflight.
+Reject detectable block source errors before body STM requests.  Do not modify
 source/live Org nodes.  Reject source, mode, narrowing
 or tag/heading/link-setting changes while waiting.  Parser and worker errors
 propagate unchanged.
@@ -500,7 +505,10 @@ separate from that read-only temporary input before filling native results."
                                                                   (list 'label (concat (plist-get plan :prefix) "-" key))))
                                                           (plist-get plan :keys))))))))
         (org-texmacs--document-lower (nth 0 prepared) (nth 1 prepared)
-                                     (nth 3 prepared) info style initial
+                                     (nth 3 prepared)
+                                     (plist-put (copy-sequence info)
+                                                :texmacs-special-block-preflight t)
+                                     style initial
                                      source-file resource-base
                                      bibliography)
         ;; No preflight-only body may escape through a prepared input.

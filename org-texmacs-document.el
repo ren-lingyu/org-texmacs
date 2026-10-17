@@ -56,6 +56,64 @@ This is a lowering boundary, not a fragment discovery configuration.")
 (defconst org-texmacs--document-footnote-label-prefix "org-texmacs-fn-"
   "Private prefix for named footnote reference targets.")
 
+(defconst org-texmacs--document-statement-tags
+  '(theorem proposition lemma corollary axiom definition notation conjecture
+    remark example note warning convention exercise problem proof)
+  "Explicit native formal-statement tags; availability depends on style.")
+
+(defvar org-texmacs--document-special-block-handlers nil
+  "Private alist mapping ordinary block types to pure handler functions.
+Handlers receive BLOCK, lowered CONTENTS and captured INFO, all read-only.
+Return a stree containing CONTENTS exactly once, without modifying it or
+sharing any descendant outside it.  Do not duplicate source-semantic content
+by copying or rebuilding it either; this last rule cannot be fully checked.
+No stable extension API is promised.  Captured closure state is not frozen.")
+
+(defun org-texmacs--document-copy-handlers (handlers)
+  "Validate, resolve and own the private HANDLERS registry."
+  (unless (proper-list-p handlers)
+    (signal 'org-texmacs-document-error '("Invalid special-block handlers")))
+  (let (seen)
+    (mapcar
+     (lambda (entry)
+       (unless (and (consp entry) (stringp (car entry))
+                    (string-match-p "\\`[^ \t\r\n]+\\'" (car entry)))
+         (signal 'org-texmacs-document-error '("Invalid special-block handler entry")))
+       (let* ((key (downcase (car entry)))
+              (function (condition-case nil (indirect-function (cdr entry))
+                          (error nil))))
+         (when (or (member key seen) (member key '("texmacs" "statement"))
+                   (string-prefix-p "statement_" key)
+                   (member key (mapcar #'symbol-name org-texmacs--document-statement-tags))
+                   (not (functionp function)))
+           (signal 'org-texmacs-document-error '("Invalid or reserved special-block handler")))
+         (push key seen)
+         (cons (substring-no-properties key) function)))
+     handlers)))
+
+(defun org-texmacs--document-statement-tag (node)
+  "Resolve NODE's statement syntax; return nil for an ordinary custom type."
+  (let* ((raw (org-element-property :type node))
+         (parameters (org-element-property :parameters node)))
+    (unless (and (stringp raw) (> (length raw) 0)
+                 (or (null parameters) (stringp parameters)))
+      (org-texmacs--document-fail node "Invalid special-block type or parameters"))
+    (let* ((type (downcase raw))
+           (tokens (split-string (or parameters "") "[ \t\r\n]+" t))
+           (name (cond ((equal type "statement")
+                        (unless (= (length tokens) 1)
+                          (org-texmacs--document-fail node "Statement requires exactly one type"))
+                        (downcase (car tokens)))
+                       ((string-prefix-p "statement_" type) (substring type 10))
+                       ((member type (mapcar #'symbol-name
+                                              org-texmacs--document-statement-tags)) type))))
+      (when name
+        (unless (and (member name (mapcar #'symbol-name
+                                         org-texmacs--document-statement-tags))
+                     (or (equal type "statement") (null tokens)))
+          (org-texmacs--document-fail node "Unsupported statement type or parameters"))
+        (intern name)))))
+
 (defcustom org-texmacs-document-style '("generic")
   "TeXmacs style names captured by buffer document preparation.
 Each conversion copies this list into its prepared input and result.  These
@@ -123,6 +181,9 @@ so later redefinition affects only new calls."
                  (functionp formatter) (functionp date-formatter))
       (signal 'org-texmacs-document-error '("Invalid headline presentation options")))
     (setq info (plist-put info :texmacs-format-headline-function formatter))
+    (setq info (plist-put info :texmacs-special-block-handlers
+                         (org-texmacs--document-copy-handlers
+                          org-texmacs--document-special-block-handlers)))
     (plist-put info :texmacs-date-timestamp-text-function date-formatter)))
 
 (cl-defstruct (org-texmacs-document
@@ -652,6 +713,54 @@ removed row identity or nil.  Never mutate the Org AST."
      :body (cons tag (nreverse children)) :stm-paths (nreverse paths)
      :file-paths (nreverse file-paths))))
 
+(defun org-texmacs--document-handle-special (handler node contents info)
+  "Call HANDLER for NODE with CONTENTS and INFO, preserving provenance."
+  (let* ((body (org-texmacs-document-body contents))
+         (owned (make-hash-table :test #'eq)) checks found prefix)
+    ;; Remember original edges, not just equal values.  A callback can replace
+    ;; equal children, or introduce cycles; checks must not traverse that graph.
+    (cl-labels
+        ((remember (value)
+           (unless (gethash value owned)
+             (when (or (consp value) (stringp value))
+               (puthash value t owned)
+               (if (stringp value)
+                   (let ((saved (copy-sequence value)))
+                     (push (lambda () (equal-including-properties value saved)) checks))
+                 (let ((left (car value)) (right (cdr value)))
+                   (push (lambda () (and (eq left (car value))
+                                        (eq right (cdr value)))) checks)
+                   (remember left) (remember right))))))
+         (visit (value path ancestors)
+           (cond
+            ((eq value body)
+             (setq found (1+ (or found 0)) prefix path))
+            ((gethash value owned)
+             (org-texmacs--document-fail node "Handler shares a contents descendant"))
+            ((stringp value))
+            ((and (consp value) (car value) (symbolp (car value))
+                  (proper-list-p value) (not (memq value ancestors)))
+             (let ((tail (cdr value)) (index 0))
+               (while tail
+                 (when (gethash tail owned)
+                   (org-texmacs--document-fail node "Handler shares contents list structure"))
+                 (visit (car tail) (append path (list index)) (cons value ancestors))
+                 (setq tail (cdr tail) index (1+ index)))))
+            (t (org-texmacs--document-fail node "Invalid or cyclic handler stree")))))
+      (remember body)
+      (let ((output (funcall handler node body info)))
+        (unless (cl-every #'funcall checks)
+          (org-texmacs--document-fail node "Handler modified contents"))
+        (visit output nil nil)
+        (unless (eq found 1)
+          (org-texmacs--document-fail node "Handler must retain contents exactly once"))
+        (org-texmacs--document-create
+         :body (org-texmacs--document-copy-stree output)
+         :stm-paths (mapcar (lambda (path) (append prefix path))
+                            (org-texmacs-document-stm-paths contents))
+         :file-paths (mapcar (lambda (path) (append prefix path))
+                             (org-texmacs-document-file-paths contents)))))))
+
 (defun org-texmacs--document-lower
     (ast &optional islands post-blanks info style initial source-file resource-base bibliography)
   "Lower prepared Org AST and ISLANDS to a structural document result.
@@ -706,7 +815,12 @@ display roots even when otherwise bare.
 Return a fresh result with STM root paths, retaining no Org properties or
 source objects.  Do not read or modify source/caller buffers, encode text,
 start a worker, or change AST/ISLANDS.  The caller must prepare all inputs
-from one snapshot."
+from one snapshot.
+Ordinary special blocks recursively lower into a body document and an explicit
+statement environment or captured private handler.  INFO's handler registry
+defaults to empty, never the dynamic registry.  Custom handlers are skipped
+when private preflight INFO is set; that temporary result is not a document
+for consumers.  Final handlers must preserve contents identity and provenance."
   (unless (and (consp ast) (eq (org-element-type ast) 'org-data))
     (signal 'org-texmacs-document-error '("Expected an Org document AST")))
   (dolist (mapping (list islands post-blanks))
@@ -734,6 +848,7 @@ from one snapshot."
         (preformatted-tab-width nil)
         (headline-formatter nil)
         (date-formatter nil)
+        (special-handlers nil)
         (static-labels (org-texmacs--document-static-labels islands))
         (info (or info '(:with-todo-keywords t :with-priority nil :with-tags t
                         :texmacs-format-headline-function
@@ -743,6 +858,9 @@ from one snapshot."
         (citation-plan nil))
     (setq citation-plan (org-texmacs--bibliography-plan
                          ast islands info bibliography resolution static-labels))
+    (setq special-handlers
+          (org-texmacs--document-copy-handlers
+           (plist-get info :texmacs-special-block-handlers)))
     (setq headline-limit
           (if (memq :headline-levels info) (plist-get info :headline-levels) 3)
           preformatted-tab-width
@@ -1491,15 +1609,30 @@ from one snapshot."
                           :stm-paths '((1)))))))
               ((eq type 'paragraph)
                (list (paragraph node ancestors)))
+              ((eq type 'special-block)
+               (let* ((tag (org-texmacs--document-statement-tag node))
+                      (handler (and (not tag)
+                                    (cdr (assoc (downcase (org-element-property :type node))
+                                                special-handlers)))))
+                 (unless (or tag handler)
+                   (org-texmacs--document-fail node "Unsupported special-block type"))
+                 (let ((contents (org-texmacs--document-pack
+                                  'document
+                                  (blocks (org-element-contents node) 'special-block ancestors))))
+                   (list
+                    (cond
+                     (tag (org-texmacs--document-pack tag (list contents)))
+                     ((plist-get info :texmacs-special-block-preflight) contents)
+                     (t (org-texmacs--document-handle-special handler node contents info)))))))
               ((memq type '(example-block fixed-width src-block))
                (unless (memq context
-                             '(org-data section headline item quote-block center-block footnote-definition))
+                             '(org-data section headline item quote-block center-block footnote-definition special-block))
                  (org-texmacs--document-fail node "Unexpected preformatted block"))
                (list (org-texmacs--document-preformatted
                       node preformatted-tab-width)))
               ((eq type 'table)
                (unless (memq context
-                             '(org-data section headline item quote-block center-block footnote-definition))
+                             '(org-data section headline item quote-block center-block footnote-definition special-block))
                  (org-texmacs--document-fail node "Unexpected Org table"))
                (let ((body (table-block node ancestors))
                      (label (cdr (assq node (org-texmacs-resolution-labels resolution)))))
@@ -1516,7 +1649,7 @@ from one snapshot."
                       body)))))
               ((eq type 'plain-list)
                (unless (memq context
-                             '(org-data section headline item quote-block center-block footnote-definition))
+                             '(org-data section headline item quote-block center-block footnote-definition special-block))
                  (org-texmacs--document-fail node "Unexpected Org plain list"))
                (let* ((kind (org-element-property :type node))
                       (tag (cdr (assq kind org-texmacs--document-list-tags)))
@@ -1534,7 +1667,7 @@ from one snapshot."
                      'document (blocks items kind ancestors)))))))
               ((memq type '(quote-block center-block))
                (unless (memq context
-                             '(org-data section headline item quote-block center-block footnote-definition))
+                             '(org-data section headline item quote-block center-block footnote-definition special-block))
                  (org-texmacs--document-fail node "Unexpected Org container block"))
                (list
                 (org-texmacs--document-pack
@@ -1780,7 +1913,7 @@ RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
                  (mapc #'whitespace (cdr line))))
               ((memq (org-element-type node)
                      '(org-data section headline plain-list item footnote-definition
-                       quote-block center-block))
+                       quote-block center-block special-block))
                (when (eq (org-element-type node) 'headline)
                  (mapc #'whitespace (org-element-property :title node)))
                (when (eq (org-element-type node) 'item)

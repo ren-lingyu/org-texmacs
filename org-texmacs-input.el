@@ -103,8 +103,9 @@ owned AST nodes, detached/duplicate mapping keys, deferred values and opaque
 objects.
 Discard Org's source buffer and parent bookkeeping.  INFO must be a plist
 with unique keyword keys; nil selects fixed lowering defaults.  A supplied
-headline formatter and the private date timestamp converter are resolved now
-and retained as opaque functions;
+headline formatter, private date timestamp converter and private special-block
+handlers are resolved now and retained as opaque functions.  Handler registry
+strings and list structure are independently owned;
 mutable state captured by a user closure is not frozen.  Never mutate the
 returned input, its accessors' values, or arguments from a formatter."
   (unless (and (consp ast) (eq (car ast) 'org-data))
@@ -215,6 +216,8 @@ returned input, its accessors' values, or arguments from a formatter."
                                 (cond
                                  ((memq key '(:texmacs-format-headline-function
                                                :texmacs-date-timestamp-text-function)) value)
+                                 ((eq key :texmacs-special-block-handlers)
+                                  (org-texmacs--document-copy-handlers value))
                                  ((memq key '(:title :author :date)) (secondary value))
                                  (t (data value))))))))
         ;; INFO secondary strings create their nodes after the AST copy.  Apply

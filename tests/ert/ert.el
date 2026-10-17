@@ -68,6 +68,329 @@
     (should (equal (file-name-directory (symbol-file function 'defun))
                    (file-name-directory (locate-library "org-texmacs"))))))
 
+(defun org-texmacs-test--issue13-input (handler &optional islands)
+  "Build an owned custom-block input using HANDLER and optional ISLANDS."
+  (let* ((paragraph (org-element-create 'paragraph nil "Text"))
+         (block (org-element-create 'special-block '(:type "custom") paragraph))
+         (ast (org-element-create 'org-data nil block)))
+    (org-texmacs-input-create
+     ast (list :texmacs-special-block-handlers (list (cons "custom" handler)))
+     :islands (and islands (list (cons (car (org-element-contents paragraph)) islands))))))
+
+(ert-deftest org-texmacs-issue13-handler-provenance-and-ownership ()
+  (let* ((input (org-texmacs-test--issue13-input
+                 (lambda (_block body _info) (list 'custom "title" body))
+                 '(math "<alpha>")))
+         (document (org-texmacs-document input)))
+    (should (equal (org-texmacs-document-body document)
+                   '(document (custom "title" (document (math "<alpha>"))))))
+    (should (equal (org-texmacs-document-stm-paths document) '((0 1 0))))
+    (should (equal (org-texmacs-document input) document)))
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+begin_custom\n[[file:relative.pdf][File]]\n#+end_custom\n")
+    (let* ((org-texmacs--document-special-block-handlers
+            (list (cons "custom" (lambda (_block body _info) (list 'custom body)))))
+           (document (org-texmacs-document-from-buffer (current-buffer))))
+      (should (equal (org-texmacs-document-file-paths document) '((0 0 0 0 1)))))))
+
+(ert-deftest org-texmacs-issue13-handler-rejects-invalid-output ()
+  (dolist (handler
+           (list (lambda (_b _c _i) '(custom "dropped"))
+                 (lambda (_b c _i) (list 'custom c c))
+                 (lambda (_b c _i) (list 'custom c (cadr c)))
+                 (lambda (_b c _i) (list 'custom c (cadr (cadr c))))
+                 (lambda (_b c _i) (cons 'custom (cdr c)))
+                 (lambda (_b c _i) (setcar c 'changed) (list 'custom c))
+                 (lambda (_b c _i) (aset (cadr (cadr c)) 0 ?X) (list 'custom c))
+                 (lambda (_b c _i) (setcdr c c) (list 'custom c))
+                 (lambda (_b c _i) (list 'custom c 42))
+                 (lambda (_b c _i)
+                   (let ((cycle (list 'custom c)))
+                     (setcdr (cdr cycle) (list cycle)) cycle))))
+    (should-error
+     (org-texmacs-document (org-texmacs-test--issue13-input handler))
+     :type 'org-texmacs-document-error))
+  ;; An equal, independently allocated wrapper string is not borrowed content.
+  (should (org-texmacs-document
+           (org-texmacs-test--issue13-input
+            (lambda (_b c _i) (list 'custom (copy-sequence "Text") c))))))
+
+(ert-deftest org-texmacs-issue13-rejects-file-leaf-sharing ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+begin_custom\n[[file:relative.pdf][File]]\n#+end_custom\n")
+    (let ((org-texmacs--document-special-block-handlers
+           (list (cons "custom"
+                       (lambda (_b c _i)
+                         (list 'custom c (nth 2 (cadr (cadr c)))))))))
+      (should-error (org-texmacs-document-from-buffer (current-buffer))
+                    :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-issue13-handler-registry-validation ()
+  (dolist (registry (list 'invalid '(("" . ignore)) '(("a b" . ignore))
+                         '(("A" . ignore) ("a" . ignore))
+                         '(("theorem" . ignore)) '(("statement_unknown" . ignore))
+                         '(("texmacs" . ignore)) '(("custom" . no-such-handler))))
+    (should-error (org-texmacs--document-copy-handlers registry)
+                  :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-issue13-deep-island-sharing-and-equal-replacement ()
+  (dolist (handler
+           (list (lambda (_b c _i) (list 'custom c (cadr (cadr (cadr c)))))
+                 (lambda (_b c _i)
+                   (setcar (cdr c) (copy-tree (cadr c))) (list 'custom c))))
+    (should-error
+     (org-texmacs-document
+      (org-texmacs-test--issue13-input handler '(math (frac "1" "2"))))
+     :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-issue13-source-handler-snapshot-through-filter-and-wait ()
+  (dolist (filtered '(nil t))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+begin_custom\n(math \"x\")\n#+end_custom\n")
+      (let* ((org-export-filter-parse-tree-functions
+              (and filtered (list (lambda (&rest _) nil))))
+             (registry (list (cons "custom" (lambda (_b c _i) (list 'initial c)))))
+             (org-texmacs--document-special-block-handlers registry))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _)
+                     (setcdr (car registry) (lambda (_b c _i) (list 'next c)))
+                     '(math "x"))))
+          (should (eq (car (cadr (org-texmacs-document-body
+                                  (org-texmacs-document-from-buffer (current-buffer)))))
+                      'initial)))))))
+
+(ert-deftest org-texmacs-issue13-pure-interface-and-manual-statements ()
+  (dolist (type '("theorem" "statement_theorem" "statement"))
+    (let* ((block (org-element-create
+                   'special-block (list :type type :parameters
+                                        (and (equal type "statement") "theorem"))
+                   (org-element-create 'paragraph nil "Manual")))
+           (ast (org-element-create 'org-data nil block))
+           (input (org-texmacs-input-create ast nil)))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Pure lowering requested native work")))
+                ((symbol-function 'buffer-substring-no-properties)
+                 (lambda (&rest _) (ert-fail "Pure lowering read a source buffer")))
+                ((symbol-function 'org-texmacs--document-options)
+                 (lambda () (ert-fail "Pure lowering captured dynamic options"))))
+        (should (equal (org-texmacs-document-body (org-texmacs-document input))
+                       '(document (theorem (document (concat "Manual"))))))
+        (should (equal (org-element-property :type block) type))))))
+
+(ert-deftest org-texmacs-issue13-prepared-input-without-stm ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+begin_custom\nOnly prose.\n#+end_custom\n")
+    (let ((calls 0) (org-texmacs--document-special-block-handlers nil))
+      (setq org-texmacs--document-special-block-handlers
+            (list (cons "custom" (lambda (_b c _i) (setq calls (1+ calls)) (list 'custom c)))))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Prose-only block started a worker"))))
+        (let ((input (org-texmacs-prepare-buffer (current-buffer))))
+          (should (= calls 0))
+          (should-not (plist-member (org-texmacs-input-info input)
+                                   :texmacs-special-block-preflight))
+          (should (equal (org-texmacs-document-body (org-texmacs-document input))
+                         '(document (custom (document (concat "Only prose. "))))))
+          (should (= calls 1)))))))
+
+(ert-deftest org-texmacs-issue13-native-final-handler-error-and-recovery ()
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+begin_custom\n#+begin_texmacs\n(math \"α\")\n#+end_texmacs\n#+end_custom\n")
+      (let ((org-texmacs--document-special-block-handlers
+             (list (cons "custom" (lambda (_b c _i)
+                                    (should (equal (cadr c) '(math "α")))
+                                    (list 'custom c (cadr c)))))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer))
+                      :type 'org-texmacs-document-error)
+        (should (org-texmacs--worker-live-p))
+        (let ((process org-texmacs--worker-process))
+          (setq org-texmacs--document-special-block-handlers
+                (list (cons "custom" (lambda (_b c _i) (list 'custom c)))))
+          (should (equal (org-texmacs-document-stm-paths
+                          (org-texmacs-document-from-buffer (current-buffer))) '((0 0 0))))
+          (should (eq process org-texmacs--worker-process)))))))
+
+(ert-deftest org-texmacs-issue13-scoped-islands-and-footnotes ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* Kept\n#+begin_theorem\nFirst (math \"one\")[fn:n].\n\n"
+            "#+begin_texmacs\n(math \"two\")\n#+end_texmacs\n#+end_theorem\n"
+            "* Omitted\n#+begin_theorem\n(math \"omitted\")\n#+end_theorem\n"
+            "[fn:n] #+begin_statement remark\nNote (math \"note\").\n#+end_statement\n")
+    ;; A separate note may contain an ordinary recursive block, but the block
+    ;; marker must start its own line rather than follow [fn:n] as text.
+    (goto-char (point-min))
+    (search-forward "[fn:n] #+")
+    (replace-match "[fn:n]\n#+" t t)
+    (dolist (scope '(subtree region narrow))
+      (save-restriction
+        (goto-char (point-min))
+        (let ((start (point)) (end (save-excursion (outline-next-heading) (point))) requests)
+          (when (eq scope 'narrow) (narrow-to-region start end))
+          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                     (lambda (source &rest _)
+                       (push source requests)
+                       (read source))))
+            (let ((document (org-texmacs-document-from-buffer
+                             (current-buffer) nil
+                             (and (eq scope 'subtree) start)
+                             (and (eq scope 'region) (cons start end)))))
+              (should document)
+              (should (= (length (org-texmacs-document-stm-paths document)) 3))
+              (should (= (length requests) 3))
+              (should-not (cl-some (lambda (request) (string-match-p "omitted" request)) requests)))))))))
+
+(ert-deftest org-texmacs-issue13-source-change-during-wait ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+begin_theorem\n(math \"x\")\n#+end_theorem\n")
+    (let ((source (current-buffer)))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _)
+                   (with-current-buffer source (goto-char (point-max)) (insert "changed"))
+                   '(math "x"))))
+        (should-error (org-texmacs-document-from-buffer source)
+                      :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-issue13-handler-snapshot-and-pure-defaults ()
+  (cl-letf (((symbol-function 'org-texmacs-test--issue13-handler)
+             (lambda (_b c _i) (list 'initial c))))
+    (let* ((key (copy-sequence "CUSTOM"))
+           (registry (list (cons key 'org-texmacs-test--issue13-handler)))
+           (org-texmacs--document-special-block-handlers registry)
+           (info (org-texmacs--document-options))
+           (ast (org-element-create
+                 'org-data nil (org-element-create 'special-block '(:type "custom")
+                                                   (org-element-create 'paragraph nil "Text")))))
+      (aset key 0 ?X)
+      (setcdr (car registry) #'ignore)
+      (cl-letf (((symbol-function 'org-texmacs-test--issue13-handler)
+                 (lambda (_b c _i) (list 'next c))))
+        (let ((input (org-texmacs-input-create ast info)))
+          (should (member '(initial (document (concat "Text")))
+                          (cdr (org-texmacs-document-body (org-texmacs-document input)))))
+          (should-error (org-texmacs--document-lower ast)
+                        :type 'org-texmacs-document-error))))))
+
+(ert-deftest org-texmacs-issue13-source-syntax-and-recursion ()
+  (dolist (syntax '("statement theorem" "statement_theorem" "theorem" "STATEMENT THEOREM"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+begin_" syntax "\nFirst *bold*.\n\n"
+              "#+begin_quote\nQuote.\n#+end_quote\n\n"
+              "- Item\n\n| A | B |\n\n"
+              "#+begin_example\nLiteral\n#+end_example\n\n"
+              "#+begin_center\nCenter.\n#+end_center\n\nLast.\n#+end_"
+              (car (split-string syntax)) "\n")
+      (let* ((state (org-texmacs-test--document-buffer-state (current-buffer)))
+             (document (org-texmacs-document-from-buffer (current-buffer)))
+             (statement (cadr (org-texmacs-document-body document))))
+        (should (eq (car statement) 'theorem))
+        (should (eq (caadr statement) 'document))
+        (should (= (length (cdadr statement)) 7))
+        (should (equal state (org-texmacs-test--document-buffer-state (current-buffer)))))))
+  (dolist (syntax '("statement example" "statement_example"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+begin_" syntax "\nExample.\n#+end_" (car (split-string syntax)) "\n")
+      (should (eq (car (cadr (org-texmacs-document-body
+                              (org-texmacs-document-from-buffer (current-buffer))))) 'example)))))
+
+(ert-deftest org-texmacs-issue13-source-errors-before-body-worker ()
+  (dolist (syntax '("statement" "statement unknown" "statement theorem extra"
+                    "statement_unknown" "statement_theorem extra" "theorem extra" "unknown"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+begin_" syntax "\n(math \"x\")\n#+end_" (car (split-string syntax)) "\n")
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Invalid block submitted native request"))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer))
+                      :type 'org-texmacs-document-error))))
+  (dolist (metadata '("#+NAME: name\n" "#+CAPTION: caption\n" "#+ATTR_TEXMACS: x\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert metadata "#+begin_theorem\nBody.\n#+end_theorem\n")
+      (should-error (org-texmacs-document-from-buffer (current-buffer))
+                    :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-issue13-preflight-bibliography-boundary ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+BIBLIOGRAPHY: refs.bib\n#+begin_unknown\n(math \"body\")\n#+end_unknown\n")
+    (let (requests)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (_source &optional operation)
+                   (push operation requests)
+                   (unless (eq operation 'bibliography) (ert-fail "Body request escaped preflight"))
+                   '(document))))
+        (should-error
+         (org-texmacs-document-from-buffer
+          (current-buffer) '(("refs.bib" . "")))
+         :type 'org-texmacs-document-error)
+        (should (equal requests '(bibliography)))))))
+
+(ert-deftest org-texmacs-issue13-preflight-skips-handler-and-final-errors ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+begin_custom\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n#+end_custom\n")
+    (let ((calls 0) (parsed nil)
+          (org-texmacs--document-special-block-handlers nil))
+      (setq org-texmacs--document-special-block-handlers
+            (list (cons "custom" (lambda (_b c info)
+                                   (should parsed)
+                                   (should-not (plist-get info :texmacs-special-block-preflight))
+                                   (setq calls (1+ calls)) (list 'custom c)))))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (setq parsed t) '(math "x"))))
+        (should (org-texmacs-document-from-buffer (current-buffer)))
+        (should (= calls 1))))))
+
+(ert-deftest org-texmacs-issue13-source-real-islands-and-native-statements ()
+  (require 'ucs-normalize)
+  (org-texmacs-test--with-worker
+    (should (executable-find "pdftotext"))
+    (dolist (tag org-texmacs--document-statement-tags)
+      (ert-info ((symbol-name tag))
+        (with-temp-buffer
+          (org-mode)
+          (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n#+begin_statement "
+                  (symbol-name tag) "\nStatementFirst.\n\n#+begin_texmacs\n"
+                  "(equation* (concat \"x=\" (frac \"1\" \"2\")))\n#+end_texmacs\n\n"
+                  "StatementLast.\n#+end_statement\n")
+          (let* ((document (org-texmacs-document-from-buffer (current-buffer)))
+                 (expected `(document (,tag (document (concat "StatementFirst. ")
+                                                      (equation* (concat "x=" (frac "1" "2")))
+                                                      (concat "StatementLast. ")))))
+                 (pdf (expand-file-name (concat (symbol-name tag) ".pdf") test-directory))
+                 (tm (expand-file-name (concat (symbol-name tag) ".tm") test-directory))
+                 (reference (expand-file-name (concat (symbol-name tag) "-reference.pdf")
+                                              test-directory)))
+            (should (equal (org-texmacs-document-body document) expected))
+            (should (equal (org-texmacs-document-stm-paths document) '((0 0 1))))
+            (org-texmacs-document-save document tm)
+            (org-texmacs-document-save-pdf document pdf)
+            (org-texmacs-document-save-pdf
+             (org-texmacs--document-create :body expected :stm-paths '((0 0 1))) reference)
+            (org-texmacs-test--issue11-compare-pdfs pdf reference)
+            (let ((case-fold-search t))
+              ;; PDF text may retain font ligatures (Deﬁnition).  Require the
+              ;; native title/counter, not merely acceptance of an unknown tag.
+              (should (string-match-p
+                       (concat "\\b" (symbol-name tag)
+                               (if (eq tag 'proof) "\\." " [0-9]+\\."))
+                       (ucs-normalize-NFKC-string (org-texmacs-test--pdf-text pdf)))))
+            (when (memq tag '(theorem proof))
+              (let ((reload (expand-file-name (concat (symbol-name tag) "-reload.pdf")
+                                              test-directory)))
+                (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+                (org-texmacs-test--issue11-compare-pdfs pdf reload)))))))))
+
 (ert-deftest org-texmacs-test-input-pure-core ()
   (let* ((ast (org-element-create
                'org-data nil (org-element-create 'paragraph nil "Hello")))

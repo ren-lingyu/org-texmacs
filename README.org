@@ -712,6 +712,7 @@ The supported Org subset is deliberately small:
 | Named/captioned basic table                       | Private anchors and native =big-table= / =caption-detailed= |
 | Recognized paragraph / inline-footnote fragment   | One parsed STM subtree                                       |
 | =texmacs= special block                           | One parsed STM subtree, even for a string or =document= root |
+| Formal statement special block                   | Native statement environment with recursive body =document= |
 | COMMENT / comment block                           | Removed before structural preflight                         |
 | Task, archive and select/exclude filtering        | Org policy applied before STM worker requests                |
 
@@ -723,6 +724,48 @@ table names/captions described below are rejected.
 Empty and deeper headings are also rejected rather than silently discarded.
 Fragment discovery can support
 contexts that this whole-document conversion does not support.
+
+Formal statements use Org special blocks with recursively converted Org bodies:
+
+#+begin_example
+  #+begin_statement theorem
+  First paragraph with *markup* and (math "x").
+
+  #+begin_texmacs
+  (equation* (concat "x=" (frac "1" "2")))
+  #+end_texmacs
+
+  Last paragraph.
+  #+end_statement
+#+end_example
+
+The canonical =statement TYPE= form requires exactly one type token.
+=statement_TYPE= and direct =TYPE= block names are aliases and accept no
+parameters.  Types are case-insensitive and explicitly limited to =theorem=,
+=proposition=, =lemma=, =corollary=, =axiom=, =definition=, =notation=,
+=conjecture=, =remark=, =example=, =note=, =warning=, =convention=, =exercise=,
+=problem= and =proof=.  =begin_example= remains Org's literal example block;
+use =begin_statement example= or =begin_statement_example= for a formal example.
+The body may contain the existing supported Org elements and opaque native STM
+blocks; paragraph, whitespace and display-math rules are unchanged.
+
+Statement presentation and numbering belong to the native style; the supported
+native validation baseline is =generic=.  Arbitrary installed styles are not
+guaranteed to define these environments.  Statement =NAME=, =CAPTION= and
+=ATTR_*= metadata are rejected.  New equation/figure/table block syntax and
+automatic single-object references are not part of this implementation.
+
+The ordinary special-block dispatch is private, with no stable handler API or
+registration command.  Its captured handlers must preserve the entire lowered
+body exactly once and must not mutate or reuse its descendants elsewhere, or
+duplicate source-semantic content by rebuilding it.  The latter obligation is
+a callback contract, not a complete runtime sandbox.  Handler functions are
+captured per conversion; mutable closure state is not frozen.  Unknown blocks
+and invalid handler outputs fail explicitly.  Structural preflight never calls
+custom handlers with placeholder STM.  Detectable source-level block errors
+are rejected before body STM parse requests; bibliography native requests may
+already have occurred.  Content-dependent handler errors are detected during
+final lowering.
 
 Ordinary spaces, tabs and soft newlines collapse to one space across Org
 inline text boundaries.  Leading whitespace at paragraph/title starts and
@@ -739,7 +782,7 @@ CR or LF (empty strings are allowed).  No other Org object is permitted.
 Such paragraphs emit the complete island directly, without an additional
 =concat=; the island's internal tree and text remain unchanged.  Recognition
 still uses =org-texmacs-fragment-tags=; no separate display-tag option is added.
-This rule applies in ordinary body text, quote/center containers, separate
+This rule applies in ordinary body text, statement and quote/center containers, separate
 footnote definitions and later list paragraphs.  Inline footnote bodies use
 the same bare rule inside their existing body =document=, including restored
 named definitions.  A leading list paragraph keeps its existing
