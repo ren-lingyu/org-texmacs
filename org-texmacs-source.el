@@ -141,6 +141,95 @@ Compare its wrapper name without case, preserving NODE and its STM contents."
            (buffer-substring-no-properties begin end))
           (t (signal 'org-texmacs-error '("Invalid native-body contents bounds"))))))
 
+(defun org-texmacs--figure-table-kind (node)
+  "Return the structural figure/table kind of NODE, or nil."
+  (when (and (consp node) (eq (org-element-type node) 'special-block))
+    (let ((type (org-element-property :type node)))
+      (when (stringp type)
+        (cdr (assoc (downcase type)
+                    '(("figure" . figure) ("figure*" . figure*)
+                      ("table" . table) ("table*" . table*))))))))
+
+(defun org-texmacs--figure-table-blank-p (node)
+  "Recognize metadata-free whitespace paragraphs used for spacing."
+  (and (eq (org-element-type node) 'paragraph)
+       (not (org-element-property :name node))
+       (not (org-element-property :caption node))
+       (not (org-element-property :texmacs-affiliated-keywords node))
+       (let (attribute)
+         (org-element-properties-mapc
+          (lambda (key value _owner)
+            (when (and value (string-prefix-p ":attr_" (symbol-name key)))
+              (setq attribute t))) node)
+         (not attribute))
+       (let ((begin (org-element-property :begin node))
+             (post (org-element-property :post-affiliated node)))
+         (or (null post) (equal begin post)))
+       (org-element-contents node)
+       (cl-every (lambda (text)
+                   (and (stringp text) (string-match-p "\\`[ \t\r\n]*\\'" text)))
+                 (org-element-contents node))))
+
+(defun org-texmacs--source-affiliated-keys (node)
+  "Capture NODE's affiliated keyword names from the current private source."
+  (let ((begin (org-element-property :begin node))
+        (post (org-element-property :post-affiliated node)) keys)
+    (when (and (integerp begin) (integerp post))
+      (save-excursion
+        (goto-char begin)
+        (while (< (point) post)
+          (push (if (looking-at "[ \t]*#\\+\\([[:alnum:]_]+\\)\\(?:\\[[^\n]*\\]\\)?:")
+                    (upcase (match-string-no-properties 1)) "INVALID") keys)
+          (forward-line 1))))
+    (nreverse keys)))
+
+(defun org-texmacs--figure-table-node-shape (node)
+  "Describe NODE using owned data, without source reads or node references."
+  (list (org-element-type node) (org-element-property :type node)
+        (org-element-property :parameters node)
+        (org-element-property :begin node) (org-element-property :post-affiliated node)
+        (org-element-property :contents-begin node) (org-element-property :contents-end node)
+        (org-element-property :texmacs-source-end node)
+        (org-element-property :texmacs-affiliated-keywords node)))
+
+(defun org-texmacs--figure-table-source-shapes (ast &optional originals rebind)
+  "Capture wrapper evidence in AST, or REBIND ORIGINALS after reparse.
+Read the fixed private source.
+Defer errors until retained wrappers are lowered.
+Return an alist keyed by complete semantic source ranges."
+  (let (result)
+    (cl-labels
+        ((describe (node)
+           (org-element-put-property node :texmacs-affiliated-keywords
+                                     (org-texmacs--source-affiliated-keys node))
+           (org-element-put-property
+            node :texmacs-source-end
+            (save-excursion
+              (goto-char (org-element-property :end node))
+              (forward-line (- (or (org-element-property :post-blank node) 0)))
+              (point))))
+         (walk (node)
+           (when (and (consp node) (not (org-texmacs--native-body-kind node)))
+             (when-let* ((kind (org-texmacs--figure-table-kind node)))
+               (describe node)
+               (dolist (child (org-element-contents node)) (describe child))
+               (let* ((key (list kind (org-element-property :begin node)
+                                 (org-element-property :post-affiliated node)
+                                 (org-element-property :texmacs-source-end node)))
+                      (matches (and originals
+                                    (cl-remove-if-not (lambda (entry) (equal (car entry) key))
+                                                      originals)))
+                      (shape (if rebind
+                                 (if (= (length matches) 1) (cdar matches) '(missing))
+                               (list key (mapcar #'org-texmacs--figure-table-node-shape
+                                                (cl-remove-if #'org-texmacs--figure-table-blank-p
+                                                              (org-element-contents node)))))))
+                 (org-element-put-property node :texmacs-figure-table-source shape)
+                 (push (cons key shape) result)))
+             (mapc #'walk (org-element-contents node)))))
+      (walk ast))
+    (nreverse result)))
+
 (defun org-texmacs--block-source (block)
   "Return the raw STM source of TeXmacs special BLOCK as a string.
 

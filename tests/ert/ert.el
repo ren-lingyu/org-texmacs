@@ -651,6 +651,409 @@
                       (org-texmacs-document-from-buffer (current-buffer)))
                      '(document (equation "recovered")))))))
 
+(ert-deftest org-texmacs-issue13-stage3-real-parser-contract ()
+  (dolist (type '("figure" "figure*" "TABLE" "TABLE*"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+CAPTION[Short]: Long *bold*\n#+begin_" type "\n\n"
+              "#+begin_texmacs\n\"body\"\n#+end_texmacs\n\n#+end_" type "\n")
+      (let* ((ast (org-element-parse-buffer))
+             (wrapper (org-element-map ast 'special-block #'identity nil t))
+             (children (org-element-contents wrapper)))
+        (should (equal (downcase (org-element-property :type wrapper)) (downcase type)))
+        (should-not (org-element-property :parameters wrapper))
+        (should (integerp (org-element-property :contents-begin wrapper)))
+        (should (< (org-element-property :begin wrapper)
+                   (org-element-property :post-affiliated wrapper)))
+        ;; Pinned Org represents a leading blank line as a paragraph containing
+        ;; exactly a newline; the trailing blank is the inner block's post-blank.
+        (should (= (length children) 2))
+        (should (eq (org-element-type (car children)) 'paragraph))
+        (should (equal (mapcar #'substring-no-properties
+                               (org-element-contents (car children))) '("\n")))
+        (setq children (cdr children))
+        (should (org-texmacs--block-p (car children)))
+        (should (eq (org-element-parent (car children)) wrapper))
+        (should (equal (cdr (car (org-element-property :caption wrapper))) '("Short")))))))
+
+(defconst org-texmacs-test--issue13-stage3-graphic
+  '(with "gr-geometry" (tuple "geometry" "4cm" "2cm" "center")
+         "gr-frame" (tuple "scale" "1cm" (tuple "2cm" "1cm"))
+         (graphics "" (line (point "-1" "-0.5") (point "1" "-0.5")
+                            (point "1" "0.5") (point "-1" "0.5") (point "-1" "-0.5"))
+                   (text-at "Diagram" (point "-0.5" "0"))))
+  "Independent fixed-size native graphical fixture for stage3.")
+
+(defun org-texmacs-test--issue13-stage3-graphic-ink (pdf)
+  "Find non-text graphic ink near the first Diagram label in PDF.
+Rasterize using existing Poppler, excluding the label's word box."
+  (let* ((word (cl-find "Diagram" (org-texmacs-test--issue11-pdf-geometry pdf)
+                        :key #'car :test #'equal))
+         (box (cdr word))
+         (center (/ (+ (nth 1 box) (nth 3 box)) 2.0))
+         (count 0) xs ys)
+    (should word)
+    (with-temp-buffer
+      (set-buffer-multibyte nil)
+      (should (= 0 (call-process "pdftoppm" nil t nil "-f" "1" "-singlefile"
+                                "-gray" "-r" "72" pdf)))
+      (goto-char (point-min))
+      (should (looking-at "P5\n\\([0-9]+\\) \\([0-9]+\\)\n255\n"))
+      (let ((width (string-to-number (match-string 1)))
+            (height (string-to-number (match-string 2)))
+            (start (match-end 0)))
+        (cl-loop for y from (max 0 (floor (- center 20)))
+                 below (min height (ceiling (+ center 20))) do
+                 (cl-loop for x from (max 0 (floor (- (car box) 35)))
+                          below (min width (ceiling (+ (nth 2 box) 35))) do
+                          (when (and (not (and (<= (- (car box) 2) x (+ (nth 2 box) 2))
+                                               (<= (- (nth 1 box) 2) y (+ (nth 3 box) 2))))
+                                     (< (char-after (+ start (* y width) x)) 128))
+                            (cl-incf count) (push x xs) (push y ys))))))
+    (should (> count 50))
+    (list (apply #'min xs) (apply #'min ys) (apply #'max xs) (apply #'max ys))))
+
+(ert-deftest org-texmacs-issue13-stage3-native-prevalidation ()
+  (org-texmacs-test--with-worker
+    (should (executable-find "pdftotext"))
+    (dolist (style '("generic" "article"))
+      (let* ((table '(tabular (tformat (table (row (cell "A") (cell "B"))
+                                             (row (cell "1") (cell "2"))))))
+             (body `(document
+                     (big-figure ,org-texmacs-test--issue13-stage3-graphic "FirstFigure")
+                     (big-table ,table "FirstTable")
+                     (big-figure* ,org-texmacs-test--issue13-stage3-graphic "StarFigure")
+                     (big-table* ,table "StarTable")
+                     (big-figure ,org-texmacs-test--issue13-stage3-graphic "")
+                     (big-table ,table "")
+                     (big-figure ,org-texmacs-test--issue13-stage3-graphic
+                                 (caption-detailed (concat "Long " (strong "Caption")) "Short"))
+                     (big-table ,table (caption-detailed "LongTable" "ShortTable"))))
+             (document (org-texmacs--document-create :body body :style (list style)))
+             (pdf (expand-file-name (concat style "-float.pdf") test-directory))
+             (tm (expand-file-name (concat style "-float.tm") test-directory))
+             (reload (expand-file-name (concat style "-float-reload.pdf") test-directory))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (org-texmacs-session-set-document session document)
+              (should (equal (org-texmacs--session-read session)
+                             (org-texmacs-test--native-hex body))))
+          (org-texmacs-session-close session))
+        (org-texmacs-document-save document tm)
+        (org-texmacs-document-save-pdf document pdf)
+        (let ((text (org-texmacs-test--pdf-text pdf)))
+          (dolist (pattern '("Figure 1\\. FirstFigure" "Table 1\\. FirstTable"
+                             "Figure 2\\." "Table 2\\." "Figure 3\\." "Table 3\\."
+                             "StarFigure" "StarTable" "Diagram" "Long Caption" "LongTable"))
+            (ert-info ((format "%s: %s: %s" style pattern text))
+              (should (string-match-p pattern text))))
+          (should-not (string-match-p "Figure 4\\.\\|Table 4\\." text)))
+        (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+        (org-texmacs-test--issue11-compare-pdfs pdf reload)
+        (cl-mapc (lambda (a b) (should (<= (abs (- a b)) 1)))
+                 (org-texmacs-test--issue13-stage3-graphic-ink pdf)
+                 (org-texmacs-test--issue13-stage3-graphic-ink reload))))))
+
+(ert-deftest org-texmacs-issue13-stage3-source-bodies-and-caption ()
+  (dolist (kind '("figure" "figure*" "table" "table*"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+              "#+CAPTION[Short]: Long *bold* [[file:caption.pdf][File]] (math \"literal\")\n"
+              "#+begin_" kind "\n\n#+begin_texmacs\n"
+              (if (string-prefix-p "table" kind) "(table (row (cell \"A\")))" "(math \"x\")")
+              "\n#+end_texmacs\n\n#+end_" kind "\n")
+      (let (requests)
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (source &rest _) (push source requests) (read source))))
+          (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
+                 (before (org-texmacs-document input))
+                 (body (org-texmacs-document-body before)))
+            (should (eq (car (cadr body)) (intern (concat "big-" kind))))
+            (should (= (length requests) 1))
+            (should (equal (org-texmacs-document-stm-paths before)
+                           (if (string-prefix-p "table" kind) '((0 0 0 0)) '((0 0)))))
+            (should (org-texmacs-document-file-paths before))
+            (should (equal before (org-texmacs-document input)))))))))
+
+(ert-deftest org-texmacs-issue13-stage3-original-body-errors-before-worker ()
+  (dolist (extra '("# Comment\n" "#+TITLE: Hidden\n" "[fn:n] Unused\n"
+                   "Prose\n" "| Extra |\n"))
+    (dolist (scope '(full region))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+begin_table\n| A |\n\n" extra "#+end_table\n")
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Invalid source body reached worker"))))
+          (should-error (org-texmacs-document-from-buffer
+                         (current-buffer) nil nil
+                         (and (eq scope 'region) (cons (point-min) (point-max))))
+                        :type 'org-texmacs-document-error)))))
+  (dolist (extra '("# Comment\n" "#+TITLE: Hidden\n" "[fn:n] Unused\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+begin_figure\n#+begin_texmacs\n\"x\"\n#+end_texmacs\n\n"
+              extra "#+end_figure\n")
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Invalid original wrapper submitted body STM"))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer))
+                      :type 'org-texmacs-document-error))))
+  (dolist (source '("#+begin_figure\n#+end_figure\n"
+                    "#+begin_figure\n| A |\n#+end_figure\n"
+                    "#+begin_table bad\n| A |\n#+end_table\n"
+                    "#+NAME: outer\n#+begin_table\n| A |\n#+end_table\n"
+                    "#+CAPTION:\n#+begin_table\n| A |\n#+end_table\n"
+                    "#+begin_table\n#+CAPTION: inner\n| A |\n#+end_table\n"
+                    "#+begin_table\n#+NAME: inner\n| A |\n#+end_table\n"
+                    "#+begin_figure\n#+begin_texmacs bad\n\"x\"\n#+end_texmacs\n#+end_figure\n"))
+    (with-temp-buffer
+      (org-mode) (insert source)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Invalid metadata reached worker"))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer))
+                      :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-issue13-stage3-scope-and-complete-wrapper ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* Kept\n#+CAPTION: Caption\n#+begin_table\n| A |\n#+end_table\n"
+            "* Omitted\n#+begin_figure\nIllegal\n#+end_figure\n")
+    (dolist (scope '(subtree region narrow))
+      (save-restriction
+        (goto-char (point-min))
+        (let ((start (point)) (end (save-excursion (outline-next-heading) (point))))
+          (when (eq scope 'narrow) (narrow-to-region start end))
+          (should (org-texmacs-document-from-buffer
+                   (current-buffer) nil (and (eq scope 'subtree) start)
+                   (and (eq scope 'region) (cons start end)))))))
+    (dolist (clip '(caption body end))
+      (goto-char (point-min))
+      (let* ((start (if (eq clip 'caption)
+                        (progn (search-forward "Caption") (point))
+                      (point-min)))
+             (end (progn (search-forward (if (eq clip 'end) "end_table" "| A |"))
+                         (point))))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Incomplete wrapper reached worker"))))
+          (should-error (org-texmacs-document-from-buffer (current-buffer) nil nil
+                                                        (cons start end))
+                        :type 'org-texmacs-document-error))))))
+
+(ert-deftest org-texmacs-issue13-stage3-excluded-partial-wrapper ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* Visible\nKept.\n* Hidden :noexport:\n#+CAPTION: Hidden\n"
+            "#+begin_table\n| A |\n\n# extra\n#+end_table\n")
+    (goto-char (point-min)) (search-forward "| A |")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _) (ert-fail "Excluded wrapper reached worker"))))
+      (should (org-texmacs-document-from-buffer (current-buffer) nil nil
+                                              (cons (point-min) (point)))))))
+
+(ert-deftest org-texmacs-issue13-stage3-region-restored-wrapper-completeness ()
+  (dolist (section '("" "* Footnotes\n"))
+    (dolist (reference '(nil t))
+      (with-temp-buffer
+        (org-mode)
+        (insert (if reference "Text[fn:n].\n\n" "Text.\n\n") section
+                "[fn:n]\n#+begin_table\n| A |\n#+end_table\n")
+        (goto-char (point-min)) (search-forward "| A |")
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Incomplete dependency reached worker"))))
+          (if reference
+              (should-error (org-texmacs-document-from-buffer
+                             (current-buffer) nil nil (cons (point-min) (point)))
+                            :type 'org-texmacs-document-error)
+            (should (org-texmacs-document-from-buffer
+                     (current-buffer) nil nil (cons (point-min) (point))))))))))
+
+(ert-deftest org-texmacs-issue13-stage3-native-table-grammar-and-provenance ()
+  (let* ((table '(table (row (cell (frac "1" "2")))
+                        (row (cell (hlink "Native" "relative.pdf")))))
+         (format `(tformat (twith "arbitrary-variable" "arbitrary-value")
+                           (cwith "1" "-1" "1" "-1" "cell-halign" "c") ,table)))
+    (cl-mapc
+     (lambda (raw path)
+       (let* ((block (org-element-create 'special-block '(:type "texmacs")))
+              (wrapper (org-element-create 'special-block '(:type "table") block))
+              (ast (org-element-create 'org-data nil wrapper))
+              (input (org-texmacs-input-create ast nil :islands (list (cons block raw))))
+              (document (org-texmacs-document input)))
+         (should (equal (org-texmacs-document-stm-paths document) (list path)))
+         (let ((root (org-texmacs-document-body document)))
+           (dolist (index path) (setq root (nth (1+ index) root)))
+           (should (equal root raw)))
+         (should-not (org-texmacs-document-file-paths document))
+         (should (equal document (org-texmacs-document input)))))
+     (list table format `(tabular ,format)) '((0 0 0 0) (0 0 0) (0 0))))
+  (dolist (raw '("not-table" (table) (table (row)) (table (row (cell)))
+                 (table (row (cell "a" "b"))) (table (cell "a"))
+                 (table (row (cell "a")) (row (cell "a") (cell "b")))
+                 (tformat) (tformat (table (row (cell "a"))) (twith "x" "y"))
+                 (tformat (twith "x") (table (row (cell "a"))))
+                 (tformat (cwith "1" "2") (table (row (cell "a"))))
+                 (tabular (table (row (cell "a"))))
+                 (tabular (tformat (table (row (cell "a")))) "extra")
+                 (tformat (unknown "x") (table (row (cell "a"))))))
+    (should-error (org-texmacs--document-normalize-table
+                   (org-texmacs--document-create :body raw :stm-paths '(nil)))
+                  :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-issue13-stage3-caption-subset-and-registry ()
+  ;; Test actual unsupported objects, not spellings the caption parser keeps as
+  ;; literal text (Org's caption restriction excludes footnotes and targets).
+  (dolist (object (list (org-element-create 'footnote-reference '(:type standard :label "n"))
+                        (org-element-create 'citation '(:style nil))
+                        (org-element-create 'target '(:value "target"))))
+    (let* ((table (org-element-create 'table '(:type org)
+                                      (org-element-create 'table-row '(:type standard)
+                                                          (org-element-create 'table-cell nil "A"))))
+           (wrapper (org-element-create 'special-block
+                                        (list :type "table" :caption (list (cons (list object) nil))) table))
+           (ast (org-element-create 'org-data nil wrapper)))
+      (should-error (org-texmacs-document (org-texmacs-input-create ast nil))
+                    :type 'org-texmacs-document-error)))
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+CAPTION: [cite:@k]\n#+begin_table\n| A |\n#+end_table\n")
+    (should-error (org-texmacs-document-from-buffer (current-buffer))
+                  :type 'org-texmacs-document-error))
+  (dolist (key '("figure" "FIGURE*" "table" "TABLE*"))
+    (should-error (org-texmacs--document-copy-handlers (list (cons key #'ignore)))
+                  :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-issue13-stage3-preflight-bibliography-and-native-recovery ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+BIBLIOGRAPHY: refs.bib\n#+begin_figure\nIllegal\n#+end_figure\n")
+    (let (operations)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (_source &optional operation)
+                   (push operation operations) (should (eq operation 'bibliography)) '(document))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer) '(("refs.bib" . "")))
+                      :type 'org-texmacs-document-error)
+        (should (equal operations '(bibliography))))))
+  (org-texmacs-test--with-worker
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+begin_table\n#+begin_texmacs\n(math \"bad-root\")\n#+end_texmacs\n#+end_table\n")
+      (should-error (org-texmacs-document-from-buffer (current-buffer))
+                    :type 'org-texmacs-document-error)
+      (erase-buffer)
+      (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+              "#+begin_table\n#+begin_texmacs\n(table (row (cell \"ok\")))\n#+end_texmacs\n#+end_table\n")
+      (should (equal (org-texmacs-document-body
+                      (org-texmacs-document-from-buffer (current-buffer)))
+                     '(document (big-table (tabular (tformat (table (row (cell "ok"))))) "")))))))
+
+(ert-deftest org-texmacs-issue13-stage3-include-restored-notes-and-opaque-body ()
+  (org-texmacs-test--with-worker
+    (org-texmacs-test--with-bibliography-files
+      (write-region "#+begin_table*\n| Included |\n#+end_table*\n" nil "part.org" nil 'silent)
+      (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+              "#+INCLUDE: \"part.org\"\n"
+              "#+begin_figure\n#+begin_texmacs\n"
+              "(concat \"\n#+INCLUDE: missing.org\n#+BIBLIOGRAPHY: missing.bib\n[fn:missing]\n\")\n"
+              "#+end_texmacs\n#+end_figure\n"
+              "Text[fn:n].\n\n[fn:n]\n#+begin_figure\n#+begin_texmacs\n"
+              "\"Restored\"\n#+end_texmacs\n#+end_figure\n")
+      (let* ((source (buffer-string))
+             (document (org-texmacs-document-from-buffer-preprocessed (current-buffer))))
+        (should (string-match-p "big-table\\*" (prin1-to-string (org-texmacs-document-body document))))
+        (should (= (length (org-texmacs-document-stm-paths document)) 2))
+        (should (equal source (buffer-string)))))))
+
+(ert-deftest org-texmacs-issue13-stage3-org-footnote-boundary-limit ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "Text[fn:n].\n\n[fn:n]\n#+begin_figure\n#+begin_texmacs\n"
+            "(concat \"\n#+INCLUDE: missing.org\n#+BIBLIOGRAPHY: missing.bib\n[fn:missing]\n\")\n"
+            "#+end_texmacs\n#+end_figure\n")
+    ;; Org's footnote parser terminates n at the next column-zero definition,
+    ;; even inside a would-be raw block.  Never reconstruct lost Org elements.
+    (should-not (org-texmacs--native-body-blocks (org-element-parse-buffer)))
+    (should-not (org-element-map (org-element-parse-buffer) 'special-block
+                  #'org-texmacs--figure-table-kind))))
+
+(ert-deftest org-texmacs-issue13-stage3-filter-cannot-replace-source-evidence ()
+  (dolist (mutation '(proof child duplicate))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+begin_figure\n#+begin_texmacs\n\"x\"\n#+end_texmacs\n#+end_figure\n")
+      (let ((org-export-filter-parse-tree-functions
+             (list (lambda (ast _backend _info)
+                     (let* ((wrapper (org-element-map ast 'special-block #'identity nil t))
+                            (child (car (org-element-contents wrapper))))
+                       (pcase mutation
+                         ('proof (org-element-put-property wrapper :texmacs-figure-table-source nil))
+                         ('child (org-element-extract child))
+                         ('duplicate (org-element-set-contents wrapper child child))))
+                     ast))))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Mutated wrapper reached worker"))))
+          (should-error (org-texmacs-document-from-buffer (current-buffer))
+                        :type 'org-texmacs-document-error))))))
+
+(ert-deftest org-texmacs-issue13-stage3-owned-proof-pure-and-excluded-wrapper ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+            "#+CAPTION: (math \"text\") [[https://example.org][Link]]\n"
+            "#+begin_table\n| A |\n#+end_table\n"
+            "* Hidden :noexport:\n#+begin_figure\nWrong\n#+end_figure\n")
+    (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
+           (wrapper (org-element-map (org-texmacs-input-ast input) 'special-block #'identity nil t))
+           (proof (copy-tree (org-element-property :texmacs-figure-table-source wrapper))))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Pure lower started worker")))
+                ((symbol-function 'buffer-substring-no-properties)
+                 (lambda (&rest _) (ert-fail "Pure lower read source"))))
+        (let ((first (org-texmacs-document input)))
+          (should (equal first (org-texmacs-document input)))
+          (should-not (org-texmacs-document-stm-paths first))))
+      (should (equal proof (org-element-property :texmacs-figure-table-source wrapper))))))
+
+(ert-deftest org-texmacs-issue13-stage3-exporter-native-pdf-and-reload ()
+  (org-texmacs-test--with-worker
+    (dolist (style '("generic" "article"))
+      (with-temp-buffer
+        (org-mode)
+        (setq-local org-texmacs-document-style (list style))
+        (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+                "#+CAPTION: FigureCaption\n#+begin_figure\n#+begin_texmacs\n"
+                (prin1-to-string org-texmacs-test--issue13-stage3-graphic)
+                "\n#+end_texmacs\n#+end_figure\n"
+                "#+CAPTION[Short]: Long *Table*\n#+begin_table\n| A | B |\n| 1 | 2 |\n#+end_table\n"
+                "#+begin_figure*\n#+begin_texmacs\n\"StarFigureBody\"\n#+end_texmacs\n#+end_figure*\n"
+                "#+begin_table*\n#+begin_texmacs\n(tformat (twith \"table-halign\" \"c\")"
+                " (table (row (cell \"Raw\"))))\n#+end_texmacs\n#+end_table*\n")
+        (let* ((document (org-texmacs-document-from-buffer (current-buffer)))
+               (expected `(document
+                           (big-figure ,org-texmacs-test--issue13-stage3-graphic "FigureCaption")
+                           (big-table (tabular (tformat (table (row (cell "A") (cell "B"))
+                                                              (row (cell "1") (cell "2")))))
+                                      (caption-detailed (concat "Long " (strong "Table")) "Short"))
+                           (big-figure* "StarFigureBody" "")
+                           (big-table* (tabular (tformat (twith "table-halign" "c")
+                                                         (table (row (cell "Raw"))))) "")))
+               (paths '((0 0) (2 0) (3 0 0)))
+               (pdf (expand-file-name (concat style "-export.pdf") test-directory))
+               (reference (expand-file-name (concat style "-reference.pdf") test-directory))
+               (tm (expand-file-name (concat style "-export.tm") test-directory))
+               (reload (expand-file-name (concat style "-export-reload.pdf") test-directory)))
+          (should (equal (org-texmacs-document-body document) expected))
+          (should (equal (org-texmacs-document-stm-paths document) paths))
+          (org-texmacs-document-save document tm)
+          (org-texmacs-document-save-pdf document pdf)
+          (org-texmacs-document-save-pdf
+           (org-texmacs--document-create :body expected :stm-paths paths :style (list style)) reference)
+          (org-texmacs-test--issue11-compare-pdfs pdf reference)
+          (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+          (org-texmacs-test--issue11-compare-pdfs pdf reload)
+          (should (equal (org-texmacs-test--issue13-stage3-graphic-ink pdf)
+                         (org-texmacs-test--issue13-stage3-graphic-ink reference))))))))
+
 (ert-deftest org-texmacs-test-input-pure-core ()
   (let* ((ast (org-element-create
                'org-data nil (org-element-create 'paragraph nil "Hello")))

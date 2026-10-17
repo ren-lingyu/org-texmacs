@@ -673,6 +673,49 @@ otherwise intersect subtree body with RESTRICTION.  Empty bodies are allowed."
               (cons begin (max begin (min (cdr restriction)
                                          (org-element-property :end root))))))))))
 
+(defun org-texmacs--context-check-wrapper-region (ast islands info region definitions)
+  "Reject REGION cuts through wrappers retained by AST's headline policy.
+ISLANDS stay opaque; INFO supplies the selection policy.
+DEFINITIONS supplies original footnote dependencies before body selection."
+  (let* ((org-tag-groups-alist
+          (org-texmacs--context-copy (plist-get info :texmacs-tag-groups-alist)))
+         (org-tag-groups-alist-for-agenda
+          (org-texmacs--context-copy (plist-get info :texmacs-tag-groups-alist-for-agenda)))
+         (selected (org-texmacs--context-selected-trees ast islands info))
+         (excluded (cl-mapcan (lambda (tag) (org-tags-expand tag t))
+                              (plist-get info :exclude-tags)))
+         needed)
+    (cl-labels
+        ((walk (node &optional collect)
+           (let ((type (org-element-type node)))
+             (unless (or (assq node islands) (org-texmacs--native-body-kind node)
+                         (and (eq type 'footnote-definition)
+                              (or collect (not (member (org-element-property :label node) needed))))
+                         (and selected (eq type 'section)
+                              (eq node (car (org-element-contents ast))))
+                         (and (eq type 'headline)
+                              (or (org-element-property :footnote-section-p node)
+                                  (org-export--skip-p node info selected excluded)
+                                  (and (eq (plist-get info :with-archived-trees) 'headline)
+                                       (org-element-property :archivedp node)))))
+               (when (and collect (eq type 'footnote-reference)
+                          (integerp (org-element-property :begin node))
+                          (<= (car region) (org-element-property :begin node))
+                          (< (org-element-property :begin node) (cdr region)))
+                 (cl-pushnew (org-element-property :label node) needed :test #'equal))
+               (when (and (not collect) (org-texmacs--figure-table-kind node))
+                 (let ((begin (org-element-property :begin node))
+                       (end (org-element-property :texmacs-source-end node)))
+                   (when (and (< begin (cdr region)) (< (car region) end)
+                              (not (<= (car region) begin end (cdr region))))
+                     (signal 'org-texmacs-document-error '("Region truncates a figure/table wrapper")))))
+               (mapc (lambda (child) (walk child collect)) (org-element-contents node))))))
+      (walk ast t)
+      (walk ast)
+      (dolist (definition definitions)
+        (when (member (org-element-property :label definition) needed)
+          (walk definition))))))
+
 (defun org-texmacs--context-prepare
     (ast islands requests post-blanks base-info &optional subtree-position region)
   "Apply restricted context to prepared AST and associated mappings.
@@ -716,15 +759,18 @@ while retaining any subtree configuration.  Parse only the private snapshot."
                                      (lambda (id) (member id (mapcar #'cdr bibliography-declarations)))
                                      (plist-get view :sources)))))))
          (_ (setq info (plist-put info :texmacs-bibliography-declarations bibliography-declarations)))
+         (wrapper-shapes (org-texmacs--figure-table-source-shapes ast))
          (definitions (org-texmacs--context-footnote-definitions ast islands))
          (_ (when subtree-position
               (setq info (org-texmacs--context-select-subtree ast subtree-position info))))
          (_ (when region
+              (org-texmacs--context-check-wrapper-region ast islands info region definitions)
               (let* ((selected (save-restriction
                                  (narrow-to-region (car region) (cdr region))
                                  (org-element-parse-buffer)))
                      (local-definitions
                       (org-texmacs--context-footnote-definitions selected nil)))
+                (org-texmacs--figure-table-source-shapes selected wrapper-shapes t)
                 ;; A second Org parse gives partial ordinary text its normal
                 ;; narrowed-buffer semantics, without rebuilding source text.
                 ;; Replace matching definitions so retained ones have the same

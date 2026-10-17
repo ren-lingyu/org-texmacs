@@ -753,8 +753,8 @@ blocks; paragraph, whitespace and display-math rules are unchanged.
 Statement presentation and numbering belong to the native style; the supported
 native validation baseline is =generic=.  Arbitrary installed styles are not
 guaranteed to define these environments.  Statement =NAME=, =CAPTION= and
-=ATTR_*= metadata are rejected.  Figure/table wrapper syntax and automatic
-single-object references are not part of this implementation.
+=ATTR_*= metadata are rejected.  Automatic single-object block references are
+not part of this implementation.
 
 Raw STM equations use =begin_equation= (numbered) or =begin_equation*= (unnumbered):
 
@@ -782,6 +782,58 @@ Empty or whitespace-only source is rejected before body parsing.  Multiple datum
 and malformed STM are rejected by the native reader.  Region or narrowing exports
 must contain the complete selected formula block.  These wrappers do not change
 the existing =texmacs= block, inline fragment or editing syntax.
+
+Explicit =figure= / =table= wrappers produce native =big-figure= / =big-table=
+environments.  Experimental =figure*= / =table*= wrappers select their native
+unnumbered variants; they do not mean LaTeX double-column floats.
+
+#+begin_example
+  #+CAPTION[Short]: A *formatted* table caption
+  #+begin_table
+  | A | B |
+  | 1 | 2 |
+  #+end_table
+
+  #+CAPTION: A native figure
+  #+begin_figure
+  #+begin_texmacs
+  (graphics "" (line (point "0" "0") (point "1" "1")))
+  #+end_texmacs
+  #+end_figure
+#+end_example
+
+A figure requires exactly one direct =texmacs= block.  A table requires exactly
+one direct Org table or =texmacs= block.  Only metadata-free syntactic blank
+spacing is ignored: extra prose, comments, keywords, footnote definitions and
+additional bodies are rejected using the original structure before context
+cleanup.  Excluded wrappers do not cause unrelated structural errors.  Region
+and narrowing selections must include the complete wrapper and its affiliated
+caption.  The wrappers are Org structure; only the inner STM body is opaque.
+
+Caption belongs to the outer wrapper.  It supports the existing long/short,
+markup and link subset, including file-link provenance.  Caption text resembling
+STM remains ordinary Org text and does not create native parse requests.
+Footnotes, citations and targets in captions remain unsupported.  Omitted caption
+passes =""= to the native environment; numbered variants still show their native
+Figure/Table number.  Explicit empty =#+CAPTION:=, outer =NAME= / =ATTR_*=,
+parameters and inner-body affiliated metadata are rejected.  Native =generic=
+and =article= checks cover empty-caption numbering, interleaved starred counters,
+real graphics, table layout and saved-document reloads.
+
+Raw STM table bodies accept =table=, =tformat= ending in =table=, or a complete
+=tabular= with one =tformat= operand.  Normalization only adds missing outer
+=tabular= / =tformat= layers and keeps the original STM root provenance.
+=tformat= permits only preceding =twith= (two arguments) and =cwith= (six
+arguments), followed by exactly one =table=.  Tables must have nonempty,
+rectangular rows of nonempty cells, each cell with exactly one body argument.
+Org's actual block boundaries remain authoritative.  In a footnote definition,
+a column-zero =[fn:...]= inside a multiline STM string can terminate that
+footnote before Org recognizes the nested blocks.  This spelling is unsupported;
+no extra text parser reconstructs the missing figure or TeXmacs block.
+
+Cell contents and formatting values are not reinterpreted.  A naked Org table
+retains its existing caption, numbering and reference behavior.  These wrappers
+do not add image imports, float placement or new block references.
 
 The ordinary special-block dispatch is private, with no stable handler API or
 registration command.  Its captured handlers must preserve the entire lowered
