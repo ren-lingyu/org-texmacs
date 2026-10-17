@@ -4,8 +4,9 @@
 
 User authorized implementation of the reviewed stage2 plan and repeated focused
 300s ERT-derivation shell, 600s flake check, 120s no-link default build commands.
-Implementation and all three acceptance commands completed successfully. Ordinary staging and
-commit are not authorized. Preserve/exclude flake.nix ELPA workaround.
+Implementation and all three acceptance commands completed successfully. User
+subsequently authorized explicit staging of the nine task paths; completed.
+Ordinary commit remains the user's action. Preserve/exclude flake.nix ELPA workaround.
 
 Source: ordinary project root INBOX.md, ignored/untracked regular UTF-8 file,
 23584bytes, SHA256
@@ -149,7 +150,7 @@ B full preparation/context/preflight/reserved names/lowering/provenance;
 C native tm/PDF/direct-reload verification, docs and final checks/delivery review.
 These are not mandated separate commits; any intermediate committed state must
 be coherent/recoverable. Source implementation and checks are authorized and complete; ordinary staging
-requires a later explicit path-specific authorization. Ordinary commit remains the user's action; eventual footer Refs:#13,
+has now been explicitly authorized and completed. Ordinary commit remains the user's action; eventual footer Refs:#13,
 not Closes. No issue/version/release action. Skill updates use separate checkpoints
 from memory/archive; archive captures, if independently warranted, remain separate.
 
@@ -205,7 +206,7 @@ TeXmacs2.1.5 baseline), not default devShell. No arbitrary native-style coverage
 
 Accepted runtime candidate is uncommitted atop the delivered stage1 baseline,
 not the ordinary committed HEAD tree. No new project-parent edge is warranted
-for runtime claims. Ordinary staging/commit remain unexecuted; future delivery
+for runtime claims. Ordinary staging is now completed; commit remains unexecuted; future delivery
 review must compare exact task blobs/diff against this candidate. Nine task paths
 are listed below; flake overlay/lock hashes record test inputs, not staging scope.
 Manifest SHA256 is computed over these ordered lines (including trailing newline):
@@ -224,3 +225,23 @@ a717dcfa245b1ccaee102ed8eef3a6ae229d0c86b60f674080bab5273d093a8a  flake.nix
 118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a  flake.lock
 ```
 Manifest SHA256: ff5d5e825705f600ec94039f63e02de15228664e84a5157c6c718628a92e8368.
+
+## Staged delivery candidate
+
+Split assessment: not necessary; difficulty medium. Source capture/classification,
+all opacity consumers, lowering, tests and README serve one coupled capability.
+Splitting the nine paths would separate required producers/consumers or feature
+acceptance/documentation. One feat(document) commit; no inter-commit polling.
+User explicitly authorized staging following review of the exact nine-path scope.
+Complete staged diff reviewed; staged blobs match accepted candidate and only
+flake.nix overlay remains unstaged. No new tests needed solely for staging.
+Message at project tmp/commit.md (ignored temporary convenience, exact content
+also identified by SHA256) has subject:
+feat(document): support raw STM equation blocks
+Footer Refs:#13; no closure. Agent executed no ordinary commit.
+Staged binary/full-index patch SHA256:
+cea944ee2c17a94470a959c31db85f2c8b98624c24efffe30e18694f16f2300c.
+UTF-8 message SHA256:
+47b59220501cc440e67dc6822307aeb49dc0e97b44c2e0a91de65394df75907c.
+After user commit, verify exact parent/path/blob/patch/message equality before
+transferring acceptance; do not rerun tests merely to ground a commit edge.

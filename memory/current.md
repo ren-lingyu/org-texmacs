@@ -18,10 +18,12 @@ on final selected requests, distinct from a valid empty-string datum. No math
 whitelist, recursive Org formula body, extra concat/document, custom callback,
 NAME or protocol addition. Transport/session and partial-write limits unchanged.
 
-Nine task paths remain unstaged; index empty. User flake.nix ELPA mirror overlay
+Nine task paths explicitly authorized and staged; staged blobs match accepted
+candidate, complete staged diff/check reviewed. User flake.nix ELPA mirror overlay
 preserved/excluded, lock/version/INBOX unchanged. No ordinary commit or external
-issue/release action. Next: user review and separately authorized explicit staging/
-commit; use Refs:#13, not Closes. Stage3 figure/table and stage4 NAME remain later;
+issue/release action. Single commit recommended (strongly coupled feature/tests/docs); message in
+project tmp/commit.md uses Refs:#13. Next: user performs ordinary commit, then
+verify exact delivery against issue-13-stage2.md patch/message identities. Stage3 figure/table and stage4 NAME remain later;
 Issue9 composite-row identity and all other release gates remain separate.
 No feature-related skill change or raw archive; memory-only checkpoint records
 uncommitted runtime candidate, not a falsely associated committed HEAD snapshot.
