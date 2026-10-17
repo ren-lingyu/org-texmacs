@@ -752,9 +752,8 @@ blocks; paragraph, whitespace and display-math rules are unchanged.
 
 Statement presentation and numbering belong to the native style; the supported
 native validation baseline is =generic=.  Arbitrary installed styles are not
-guaranteed to define these environments.  Statement =NAME=, =CAPTION= and
-=ATTR_*= metadata are rejected.  Automatic single-object block references are
-not part of this implementation.
+guaranteed to define these environments.  Statements accept one =NAME= under
+the reference rules below; =CAPTION= and =ATTR_*= remain rejected.
 
 Raw STM equations use =begin_equation= (numbered) or =begin_equation*= (unnumbered):
 
@@ -777,7 +776,8 @@ appear in supported recursive containers, including statements.
 
 The raw body is opaque to Org preprocessing, fragment discovery, bibliography,
 citations and footnotes.  Whitespace and escapes are preserved.  Block names are
-case-insensitive; parameters, =NAME=, =CAPTION= and =ATTR_*= are unsupported.
+case-insensitive; one =NAME= is supported.  Parameters, =CAPTION= and =ATTR_*=
+are unsupported.
 Empty or whitespace-only source is rejected before body parsing.  Multiple datums
 and malformed STM are rejected by the native reader.  Region or narrowing exports
 must contain the complete selected formula block.  These wrappers do not change
@@ -816,7 +816,7 @@ STM remains ordinary Org text and does not create native parse requests.
 Anonymous inline footnote ASTs use the caption compatibility rules below;
 citations and targets remain unsupported.  Omitted caption
 passes =""= to the native environment; numbered variants still show their native
-Figure/Table number.  Explicit empty =#+CAPTION:=, outer =NAME= / =ATTR_*=,
+Figure/Table number.  One outer =NAME= is accepted.  Explicit empty =#+CAPTION:=, =ATTR_*=,
 parameters and inner-body affiliated metadata are rejected.  Native =generic=
 and =article= checks cover empty-caption numbering, interleaved starred counters,
 real graphics, table layout and saved-document reloads.
@@ -1003,14 +1003,51 @@ Same-document =[[#CUSTOM_ID]]=, =[[id:ID]]=, =[[*Headline]]= and fuzzy
 headings in the prepared AST.  Fuzzy links also resolve =<<dedicated targets>>=
 directly in paragraphs, which take precedence over same-named headings.
 Explicit descriptions become internal =hlink= bodies;
-links without descriptions become TeXmacs =reference= nodes.  Referenced
-headings and dedicated targets receive deterministic =org-texmacs-ref-N=
-labels.  Resolution uses the owned document snapshot and does not query the
-source buffer or Org's global ID database.  Missing or ambiguous targets fail
-explicitly.  Named basic tables follow the caption rules above; other named
-elements, cross-file IDs, plain-text search
-fallback and other protocols remain unsupported.  Headline matching uses the
-exact raw title from the prepared AST.
+links without descriptions become TeXmacs =reference= nodes.  Resolution uses
+Org search-cell matching and priorities within the owned effective document.
+Named objects and dedicated targets take precedence over headline titles;
+multiple distinct matches at the effective priority are errors for used links.
+Missing targets fail explicitly.  No source buffer or global Org ID database is
+queried.  Named basic tables retain the caption rules above; cross-file IDs,
+plain-text search fallback and other protocols remain unsupported.
+
+Statements (including =proof=), =equation= / =equation*=, the four figure/table
+wrappers and ordinary =texmacs= blocks accept exactly one nonempty =#+NAME=.
+Every such named block gets a label, including unreferenced and unnumbered
+objects.  Custom handlers do not acquire NAME support.  Figure/table identity
+belongs to the outer wrapper; affiliated metadata on its inner body is rejected.
+Repeated NAME declarations on one object are errors; separate objects may share
+an unused name, but a link matching both is ambiguous.  Region/narrowing exports
+must include the NAME and the complete block, and excluded objects do not supply
+targets or cause unrelated metadata errors.
+
+#+begin_example
+  See [[eq:main]] or [[eq:main][the main equation]].
+
+  #+NAME: eq:main
+  #+begin_equation
+  (frac "1" "2")
+  #+end_equation
+#+end_example
+
+Org allocates internal references once during preparation.  Named labels use
+=org-texmacs-SLUG-ORGREFERENCE=; unnamed targets omit the slug.  Slugs lowercase
+ASCII capitals, retain ASCII letters/digits and replace each other character
+with one underscore; underscores are neither compressed nor trimmed.  Slugs
+are readable decoration, not matching keys.  Known static label collisions are
+avoided before freezing; unresolved or later collisions are explicit errors.
+IDs are consistent within a prepared snapshot and its repeated lowering, but
+independent exports need not produce identical IDs or file bytes.
+
+Labels are placed inside equation/statement scope and inside figure/table
+caption scope, including absent captions.  A named ordinary STM block instead
+uses an external =surround= weak anchor for the whole block.  Its contents stay
+opaque; the anchor does not identify or promise the number of an internal native
+object.  TeXmacs determines all reference text, including unnumbered environments:
+the exporter accepts structural references without judging their displayed value.
+Native placement/readback/PDF-link checks cover the pinned =generic= and =article=
+styles; arbitrary STM roots and other installed styles have no universal layout
+guarantee.  No counter, float-layout or caption-footnote workaround is inserted.
 Internal links in document metadata and =ALT_TITLE= remain outside this node.
 
 Plain local file links, including implicit =[[./notes.org]]= and absolute

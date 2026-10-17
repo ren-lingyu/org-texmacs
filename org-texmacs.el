@@ -170,7 +170,8 @@ preparation and conversion together, use `org-texmacs-document-from-buffer'."
    (org-texmacs-input-post-blanks input) (org-texmacs-input-info input)
    (org-texmacs-input-style input) (org-texmacs-input-initial input)
    (org-texmacs-input-source-file input) (org-texmacs-input-resource-base input)
-   (org-texmacs-input-bibliography input)))
+   (org-texmacs-input-bibliography input)
+   (org-texmacs-input-resolution input)))
 
 (defun org-texmacs--bibliography-format (plan)
   "Prepare native plain bibliography output for fixed PLAN using the worker."
@@ -323,7 +324,7 @@ it does not provide export, native buffer updates or rendering."
   "Detach PREPARED from AST and INFO references retained by user filters.
 Reuse the pure owning constructor.  Keep adapter-owned mapping/INFO shells
 separate from that read-only temporary input before filling native results."
-  (let* ((input (org-texmacs-input-create
+  (let* ((input (org-texmacs--input-own
                  (car prepared) (nth 4 prepared)
                  :islands (nth 1 prepared) :post-blanks (nth 3 prepared)))
          (islands (mapcar (lambda (entry) (cons (car entry) (cdr entry)))
@@ -524,27 +525,27 @@ separate from that read-only temporary input before filling native results."
                                     (equal tag (symbol-name (car stree))))))
               (signal 'org-texmacs-parse-error '("TeXmacs root differs from fragment tag")))
             (setcdr (car request) stree)))
-        (let* ((static (org-texmacs--document-static-labels (nth 1 prepared)))
-               (resolution (org-texmacs--document-resolve (nth 0 prepared) (nth 1 prepared) static resource-base))
-               (plan (org-texmacs--bibliography-plan
-                      (nth 0 prepared) (nth 1 prepared) info bibliography resolution static)))
-          (when (plist-get plan :prints)
+        (let* ((input (org-texmacs-input-create
+                       (nth 0 prepared) info :islands (nth 1 prepared)
+                       :post-blanks (nth 3 prepared) :style style :initial initial
+                       :source-file source-file :resource-base resource-base
+                       :bibliography bibliography))
+               (resolution (org-texmacs-input-resolution input))
+               (static (org-texmacs--document-static-labels (org-texmacs-input-islands input)))
+               (owned-info (org-texmacs-input-info input)))
+          (when (org-texmacs-resolution-failure resolution)
+            (signal 'org-texmacs-document-error (org-texmacs-resolution-failure resolution)))
+          (let ((plan (org-texmacs--bibliography-plan
+                       (org-texmacs-input-ast input) (org-texmacs-input-islands input)
+                       owned-info (org-texmacs-input-bibliography input) resolution static)))
+            (when (plist-get plan :prints)
+              (check)
+              (setq owned-info (plist-put (copy-sequence owned-info) :texmacs-bibliography-output
+                                          (org-texmacs--bibliography-format plan)))
+              (check)))
+          (let ((result (funcall consumer (org-texmacs--input-with-info input owned-info))))
             (check)
-            (setq info (plist-put info :texmacs-bibliography-output
-                                  (org-texmacs--bibliography-format plan)))
-            (check)))
-        (let ((result (funcall consumer
-                               (org-texmacs-input-create
-                                (nth 0 prepared) info
-                                :islands (nth 1 prepared)
-                                :post-blanks (nth 3 prepared)
-                                :style style :initial initial
-                                :source-file source-file
-                                :resource-base resource-base
-                                :bibliography bibliography))))
-          ;; The constructor owns a separate copy of parsed dependency data.
-          (check)
-          result)))))
+            result))))))
 
 ;;;###autoload
 (defun org-texmacs-export-texmacs-from-buffer

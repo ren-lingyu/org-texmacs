@@ -230,6 +230,37 @@ Return an alist keyed by complete semantic source ranges."
       (walk ast))
     (nreverse result)))
 
+(defun org-texmacs--name-source-shapes (ast &optional originals rebind)
+  "Capture affiliated NAME evidence on AST, or REBIND ORIGINALS after reparse.
+Read only the private preparation buffer.
+Defer validation to retained nodes."
+  (let (result)
+    (cl-labels
+        ((walk (node)
+           (when (consp node)
+             (when (eq (org-element-type node) 'special-block)
+               (let* ((begin (org-element-property :begin node))
+                      (post (org-element-property :post-affiliated node))
+                      (end (save-excursion
+                             (goto-char (org-element-property :end node))
+                             (forward-line (- (or (org-element-property :post-blank node) 0)))
+                             (point)))
+                      (key (list (org-element-property :type node) begin post end))
+                      (keys (org-texmacs--source-affiliated-keys node))
+                      (matching (and rebind (cl-remove-if-not
+                                            (lambda (entry) (equal key (car entry))) originals)))
+                      (proof (if rebind
+                                 (if (= (length matching) 1) (cdar matching) '(missing))
+                               (list key (org-element-property :name node) keys))))
+                 (org-element-put-property node :texmacs-affiliated-keywords keys)
+                 (org-element-put-property node :texmacs-source-end end)
+                 (org-element-put-property node :texmacs-name-source (copy-tree proof t))
+                 (push (cons key proof) result)))
+             (unless (org-texmacs--native-body-kind node)
+               (mapc #'walk (org-element-contents node))))))
+      (walk ast))
+    (nreverse result)))
+
 (defun org-texmacs--block-source (block)
   "Return the raw STM source of TeXmacs special BLOCK as a string.
 

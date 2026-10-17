@@ -688,8 +688,7 @@ DEFINITIONS supplies original footnote dependencies before body selection."
     (cl-labels
         ((walk (node &optional collect)
            (let ((type (org-element-type node)))
-             (unless (or (assq node islands) (org-texmacs--native-body-kind node)
-                         (and (eq type 'footnote-definition)
+             (unless (or (and (eq type 'footnote-definition)
                               (or collect (not (member (org-element-property :label node) needed))))
                          (and selected (eq type 'section)
                               (eq node (car (org-element-contents ast))))
@@ -703,13 +702,18 @@ DEFINITIONS supplies original footnote dependencies before body selection."
                           (<= (car region) (org-element-property :begin node))
                           (< (org-element-property :begin node) (cdr region)))
                  (cl-pushnew (org-element-property :label node) needed :test #'equal))
-               (when (and (not collect) (org-texmacs--figure-table-kind node))
+               (when (and (not collect)
+                          (or (org-texmacs--figure-table-kind node)
+                              (org-texmacs--native-body-kind node)
+                              (and (eq type 'special-block)
+                                   (org-element-property :texmacs-affiliated-keywords node))))
                  (let ((begin (org-element-property :begin node))
                        (end (org-element-property :texmacs-source-end node)))
                    (when (and (< begin (cdr region)) (< (car region) end)
                               (not (<= (car region) begin end (cdr region))))
                      (signal 'org-texmacs-document-error '("Region truncates a figure/table wrapper")))))
-               (mapc (lambda (child) (walk child collect)) (org-element-contents node))))))
+               (unless (or (assq node islands) (org-texmacs--native-body-kind node))
+                 (mapc (lambda (child) (walk child collect)) (org-element-contents node)))))))
       (walk ast t)
       (walk ast)
       (dolist (definition definitions)
@@ -759,6 +763,7 @@ while retaining any subtree configuration.  Parse only the private snapshot."
                                      (lambda (id) (member id (mapcar #'cdr bibliography-declarations)))
                                      (plist-get view :sources)))))))
          (_ (setq info (plist-put info :texmacs-bibliography-declarations bibliography-declarations)))
+         (name-shapes (org-texmacs--name-source-shapes ast))
          (wrapper-shapes (org-texmacs--figure-table-source-shapes ast))
          (definitions (org-texmacs--context-footnote-definitions ast islands))
          (_ (when subtree-position
@@ -771,6 +776,7 @@ while retaining any subtree configuration.  Parse only the private snapshot."
                      (local-definitions
                       (org-texmacs--context-footnote-definitions selected nil)))
                 (org-texmacs--figure-table-source-shapes selected wrapper-shapes t)
+                (org-texmacs--name-source-shapes selected name-shapes t)
                 ;; A second Org parse gives partial ordinary text its normal
                 ;; narrowed-buffer semantics, without rebuilding source text.
                 ;; Replace matching definitions so retained ones have the same

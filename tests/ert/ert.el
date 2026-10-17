@@ -24,6 +24,48 @@
                         (file-name-directory (or load-file-name buffer-file-name))))
   "README under test, explicitly supplied by the Nix test driver.")
 
+(defun org-texmacs-test--lower (ast &optional islands blanks info style initial source-file resource-base bibliography)
+  "Own AST and allocate references before exercising the pure lowering kernel."
+  (org-texmacs-document
+   (org-texmacs-input-create ast info :islands islands :post-blanks blanks
+                             :style (or style '("generic")) :initial initial
+                             :source-file source-file :resource-base resource-base
+                             :bibliography bibliography)))
+
+
+(defun org-texmacs-test--reference-map (body)
+  "Map BODY's random labels to structural fixture names, preserving static IDs."
+  (let* ((labels (org-texmacs--document-output-labels body))
+         (reserved (cl-remove-if-not (lambda (id) (string-match-p "\\`org-texmacs-ref-[0-9]+\\'" id)) labels))
+         (next 0) result)
+    (dolist (id labels)
+      (when (string-match-p "\\`org-texmacs-.*org[0-9a-f]+\\'" id)
+        (let (canonical)
+          (while (progn (setq canonical (format "org-texmacs-ref-%d" (cl-incf next)))
+                        (member canonical reserved)))
+          (push (cons id canonical) result))))
+    (nreverse result)))
+
+(defun org-texmacs-test--rewrite-references (tree mapping)
+  "Copy TREE, replacing complete label/reference strings using MAPPING."
+  (cond ((stringp tree) (or (cdr (assoc tree mapping))
+                           (and (string-prefix-p "#" tree)
+                                (when-let* ((id (cdr (assoc (substring tree 1) mapping))))
+                                  (concat "#" id))) tree))
+        ((consp tree) (mapcar (lambda (child) (org-texmacs-test--rewrite-references child mapping)) tree))
+        (t tree)))
+
+(defun org-texmacs-test--stable-reference-body (document)
+  "Return DOCUMENT body with random references renamed for structural comparison."
+  (let ((body (org-texmacs-document-body document)))
+    (org-texmacs-test--rewrite-references body (org-texmacs-test--reference-map body))))
+
+(defun org-texmacs-test--expand-references (tree document)
+  "Expand TREE's fixture labels to DOCUMENT's actual IDs before native encoding."
+  (org-texmacs-test--rewrite-references
+   tree (mapcar (lambda (entry) (cons (cdr entry) (car entry)))
+                (org-texmacs-test--reference-map (org-texmacs-document-body document)))))
+
 (ert-deftest org-texmacs-test-package-loads ()
   (should-not org-texmacs-test--worker-loaded-document)
   (should (equal (file-name-base
@@ -67,6 +109,384 @@
     (should (fboundp function))
     (should (equal (file-name-directory (symbol-file function 'defun))
                    (file-name-directory (locate-library "org-texmacs"))))))
+
+
+(ert-deftest org-texmacs-issue13-stage4-org-native-api ()
+  (should (equal (org-version) "9.8.10"))
+  (with-temp-buffer
+    (org-mode)
+    (insert "* Alpha title\n#+NAME: Named--Object\n| A |\n\n"
+            "<<dedicated spot>>\n[[Named--Object]] [[*alpha   title]] [[dedicated   spot]]\n")
+    (let* ((ast (org-element-parse-buffer))
+           (info (list :parse-tree ast :internal-references nil :crossrefs nil))
+           (links (org-element-map ast 'link #'identity))
+           (table (org-element-map ast 'table #'identity nil t))
+           (headline (org-element-map ast 'headline #'identity nil t))
+           (target (org-element-map ast 'target #'identity nil t))
+           (a (org-export-get-reference table info))
+           (b (org-export-get-reference headline info)))
+      (should (eq table (org-export-resolve-fuzzy-link (nth 0 links) info)))
+      (should (eq headline (org-export-resolve-fuzzy-link (nth 1 links) info)))
+      (should (eq target (org-export-resolve-fuzzy-link (nth 2 links) info)))
+      (should (equal a (org-export-get-reference table info)))
+      (should-not (equal a b))
+      (should (string-match-p "\\`org[0-9a-f]+\\'" a))
+      (message "Stage4 Org API origin: %s" (symbol-file 'org-export-get-reference 'defun)))))
+
+(ert-deftest org-texmacs-issue13-stage4-native-label-placements ()
+  ;; Independent native controls: no Org preparation or document lowering.
+  (org-texmacs-test--with-worker
+    (dolist (style '("generic" "article"))
+      (let* ((roots '("x" (frac "1" "2") (concat "x+" "y")
+                      (with "color" "red" "x")))
+             (table '(tabular (tformat (table (row (cell "CellBody"))))))
+             (index 0) targets links)
+        (cl-labels ((add (builder)
+                      (let* ((id (format "stage4-native-%d" (cl-incf index)))
+                             (text (format "Jump%d" index)))
+                        (push (funcall builder id) targets)
+                        (push `(hlink ,text ,(concat "#" id)) links)
+                        (push " " links)
+                        (push `(reference ,id) links)
+                        (push " " links))))
+          (dolist (root roots)
+            (dolist (tag '(equation equation*))
+              (add (lambda (id) `(,tag (concat (label ,id) ,root))))))
+          (dolist (tag org-texmacs--document-statement-tags)
+            (add (lambda (id) `(,tag (document (label ,id) "StatementBody")))))
+          (add (lambda (id) `(theorem (document (label ,id)
+                                                (lemma (document (label "nested-lemma") "NestedBody"))))))
+          (dolist (tag '(big-table big-table* big-figure big-figure*))
+            (dolist (caption '("" "CaptionBody" (caption-detailed "LongCaption" "ShortCaption")))
+              (add (lambda (id)
+                     `(,tag ,(if (memq tag '(big-table big-table*)) table
+                                org-texmacs-test--issue13-stage3-graphic)
+                            (surround (label ,id) "" ,caption))))))
+          (dolist (root '("RawBody" (math "x") (document "RawDocument")
+                          (with "color" "red" "RawWith")))
+            (add (lambda (id) `(surround (label ,id) "" ,root)))))
+        (let* ((body `(document (concat ,@(nreverse links)) (new-page) ,@(nreverse targets)))
+               (document (org-texmacs--document-create :body body :style (list style)))
+               (tm (expand-file-name (concat style "-stage4-native.tm") test-directory))
+               (pdf (expand-file-name (concat style "-stage4-native.pdf") test-directory))
+               (reload (expand-file-name (concat style "-stage4-reload.pdf") test-directory))
+               (session (org-texmacs-session-open)))
+          (unwind-protect
+              (progn
+                (org-texmacs-session-set-document session document)
+                (should (equal (org-texmacs--session-read session)
+                               (org-texmacs-test--native-hex body))))
+            (org-texmacs-session-close session))
+          (org-texmacs-document-save document tm)
+          (org-texmacs-document-save-pdf document pdf)
+          (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+          (dolist (file (list pdf reload))
+            ;; Only the first, numbered equation has a required numeric value.
+            (should (string-match-p "Jump1 1" (org-texmacs-test--pdf-text file))))
+          (dolist (file (list pdf reload))
+            (let* ((tree (org-texmacs-test--pdf-link-tree file))
+                   (pages (mapcar (lambda (page) (dom-attr page 'number)) (dom-by-tag tree 'page)))
+                   (actual (org-texmacs-test--pdf-links file)))
+              (dotimes (i index)
+                (let* ((text (format "Jump%d" (1+ i)))
+                       (destination (cdr (cl-find-if
+                                          (lambda (entry)
+                                            (string-match-p (concat "\\b" text "\\b") (car entry)))
+                                          actual))))
+                  (ert-info ((format "%s %s: %S" style text actual))
+                    (should destination)
+                    (should (string-match "\\.html#\\([0-9]+\\)\\'" destination))
+                    (should (member (match-string 1 destination) pages)))))))
+          (org-texmacs-test--issue11-compare-pdfs pdf reload))))))
+
+(defun org-texmacs-test--stage4-block (kind name &optional caption)
+  "Return one named KIND block, with optional CAPTION."
+  (let* ((syntax (if (string-prefix-p "statement " kind) "statement" kind))
+         (body (cond ((member kind '("equation" "equation*" "texmacs")) "(frac \"1\" \"2\")\n")
+                     ((string-prefix-p "figure" kind)
+                      "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
+                     ((string-prefix-p "table" kind) "| A |\n")
+                     (t "Statement body.\n"))))
+    (concat "#+NAME: " name "\n" (and caption (concat "#+CAPTION[Short]: " caption "\n"))
+            "#+begin_" kind "\n" body "#+end_" syntax "\n")))
+
+(ert-deftest org-texmacs-issue13-stage4-names-and-frozen-ownership ()
+  (dolist (kind (append '("equation" "equation*" "texmacs" "figure" "figure*" "table" "table*")
+                        (cl-mapcan (lambda (tag)
+                                     (let ((name (symbol-name tag)))
+                                       (append (list (concat "statement " name) (concat "statement_" name))
+                                               (unless (eq tag 'example) (list name)))))
+                                   org-texmacs--document-statement-tags)))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+              "[[Object--A]] [[Object--A][Describe]].\n"
+              (org-texmacs-test--stage4-block kind "Object--A"))
+      (let ((source (buffer-string)) input)
+        (cl-letf (((symbol-function 'org-texmacs--worker-request) (lambda (raw &rest _) (read raw))))
+          (setq input (org-texmacs-prepare-buffer (current-buffer))))
+        (should (equal source (buffer-string)))
+        (let* ((resolution (org-texmacs-input-resolution input))
+               (id (cdar (org-texmacs-resolution-labels resolution)))
+               (document (org-texmacs-document input))
+               (body (org-texmacs-document-body document)))
+          (should (string-match-p "\\`org-texmacs-object__a-org[0-9a-f]+\\'" id))
+          (should (= 1 (cl-count id (org-texmacs--document-output-labels body) :test #'equal)))
+          (should (equal (mapcar #'cdr (org-texmacs-resolution-links resolution)) (list id id)))
+          (should (string-match-p (regexp-quote (concat "#" id)) (prin1-to-string body)))
+          (cl-letf (((symbol-function 'org-export-get-reference) (lambda (&rest _) (ert-fail "Lower allocated")))
+                    ((symbol-function 'org-export-resolve-fuzzy-link) (lambda (&rest _) (ert-fail "Lower resolved")))
+                    ((symbol-function 'org-texmacs--worker-request) (lambda (&rest _) (ert-fail "Lower parsed")))
+                    ((symbol-function 'buffer-substring-no-properties) (lambda (&rest _) (ert-fail "Lower read source"))))
+            (should (equal document (org-texmacs-document input))))
+          (should (= (length (org-texmacs-document-stm-paths document))
+                     (if (or (member kind '("equation" "equation*" "texmacs"))
+                             (string-prefix-p "figure" kind)) 1 0))))))))
+
+(ert-deftest org-texmacs-issue13-stage4-unused-duplicates-and-ambiguity ()
+  (dolist (link '("" "[[Same]]" "[[Same][Describe]]"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil\n" link "\n"
+              (org-texmacs-test--stage4-block "theorem" "Same")
+              (org-texmacs-test--stage4-block "lemma" "Same"))
+      (if (equal link "")
+          (let ((ids (org-texmacs--document-output-labels
+                      (org-texmacs-document-body (org-texmacs-document-from-buffer (current-buffer))))))
+            (should (= 2 (length ids)))
+            (should-not (equal (car ids) (cadr ids))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer)) :type 'org-texmacs-document-error))))
+  (with-temp-buffer
+    (org-mode)
+    (insert (org-texmacs-test--stage4-block "theorem" "Spot") "<<Spot>> [[Spot]]\n")
+    (should-error (org-texmacs-document-from-buffer (current-buffer)) :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-issue13-stage4-slug-and-allocation-collision ()
+  (dolist (case-fold-search '(nil t))
+    (dolist (pair '(("Thm--Main" . "thm__main") ("A+B=C" . "a_b_c")
+                    ("_X_" . "_x_") ("张量范畴" . "____") ("Kİ１２" . "____")))
+      (should (equal (org-texmacs--reference-slug (car pair)) (cdr pair)))))
+  (let* ((block (org-element-create 'special-block (list :type "theorem" :name "A")))
+         (island (org-element-create 'special-block (list :type "texmacs")))
+         (ast (org-element-create 'org-data nil block island))
+         (calls 0) input)
+    (cl-letf (((symbol-function 'org-export-new-reference)
+               (lambda (_cache) (cl-incf calls))))
+      (setq input (org-texmacs-input-create
+                   ast nil :islands (list (cons island '(label "org-texmacs-a-org0000001"))))))
+    (should (= calls 2))
+    (should (equal (cdar (org-texmacs-resolution-labels (org-texmacs-input-resolution input)))
+                   "org-texmacs-a-org0000002"))
+    (should (org-texmacs-document input)))
+  ;; A custom handler can introduce a conflicting static label only at final lower.
+  (with-temp-buffer
+    (org-mode)
+    (insert (org-texmacs-test--stage4-block "theorem" "A") "#+begin_custom\nText\n#+end_custom\n")
+    (let (id)
+      (let* ((org-texmacs--document-special-block-handlers
+              (list (cons "custom" (lambda (_node body _info) (list 'custom (list 'label id) body)))))
+             (input (org-texmacs-prepare-buffer (current-buffer))))
+        (setq id (cdar (org-texmacs-resolution-labels (org-texmacs-input-resolution input))))
+        (should-error (org-texmacs-document input) :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-issue13-stage4-scope-opacity-and-name-evidence ()
+  (dolist (kind '("theorem" "equation" "texmacs" "figure" "table"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "* Kept\n" (org-texmacs-test--stage4-block kind "Kept")
+              "[[Kept][Self]]\n* Hidden :noexport:\n#+NAME: X\n"
+              (org-texmacs-test--stage4-block kind "Bad"))
+      (goto-char (point-min))
+      (let ((end (save-excursion (outline-next-heading) (point))))
+        (dolist (scope '(full subtree region narrow))
+          (save-restriction
+            (when (eq scope 'narrow) (narrow-to-region 1 end))
+            (cl-letf (((symbol-function 'org-texmacs--worker-request) (lambda (raw &rest _) (read raw))))
+              (should (org-texmacs-document-from-buffer
+                       (current-buffer) nil (and (eq scope 'subtree) 1)
+                       (and (eq scope 'region) (cons 1 end)))))))))
+    (dolist (prefix '("#+NAME: First\n" "#+ATTR_TEXMACS: unsupported\n"))
+      (with-temp-buffer
+        (org-mode) (insert prefix (org-texmacs-test--stage4-block kind "Second"))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request) (lambda (&rest _) (ert-fail "Invalid NAME requested STM"))))
+          (should-error (org-texmacs-document-from-buffer (current-buffer)) :type 'org-texmacs-document-error))))
+    (with-temp-buffer
+      (org-mode) (insert (org-texmacs-test--stage4-block kind "Cut"))
+      (goto-char (point-min)) (forward-line 1)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request) (lambda (&rest _) (ert-fail "Truncated NAME requested STM"))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer) nil nil (cons (point) (point-max)))
+                      :type 'org-texmacs-document-error))))
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+NAME: Raw\n#+begin_texmacs\n(document \"<<Fake>>\")\n#+end_texmacs\n[[Fake]]\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request) (lambda (&rest _) (ert-fail "Fake target escaped opacity"))))
+      (should-error (org-texmacs-document-from-buffer (current-buffer)) :type 'org-texmacs-document-error)))
+  (with-temp-buffer
+    (org-mode)
+    (insert (org-texmacs-test--stage4-block "theorem" "Spot")
+            "[[Spot]]\n\n[fn:unused] <<Spot>>\n")
+    (should (org-texmacs-document-from-buffer (current-buffer)))))
+
+
+(ert-deftest org-texmacs-issue13-stage4-exporter-native-links-and-provenance ()
+  (org-texmacs-test--with-worker
+    (dolist (style '("generic" "article"))
+      (let (input document)
+        (with-temp-buffer
+          (org-mode)
+          (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+                  "[[Eq][JumpEquation]] [[Proof][JumpProof]] [[Figure][JumpFigure]] "
+                  "[[Table][JumpTable]] [[Raw][JumpRaw]]\n\n"
+                  "#+begin_texmacs\n(new-page)\n#+end_texmacs\n"
+                  (org-texmacs-test--stage4-block "equation" "Eq")
+                  (org-texmacs-test--stage4-block "proof" "Proof")
+                  (org-texmacs-test--stage4-block "figure" "Figure" "FigureCaption")
+                  (org-texmacs-test--stage4-block "table" "Table" "TableCaption [[Eq][CaptionLink]] [[file:asset.pdf][File]]")
+                  (org-texmacs-test--stage4-block "texmacs" "Raw")
+                  "Body[fn::Note [[Eq][NoteLink]]].\n")
+          (let ((org-texmacs-document-style (list style)) (source (buffer-string)))
+            (setq input (org-texmacs-prepare-buffer (current-buffer))
+                  document (org-texmacs-document input))
+            (should (equal source (buffer-string)))))
+        (should (equal document (org-texmacs-document input)))
+        (let* ((body (org-texmacs-document-body document))
+               (tm (expand-file-name (concat style "-stage4-export.tm") test-directory))
+               (pdf (expand-file-name (concat style "-stage4-export.pdf") test-directory))
+               (reload (expand-file-name (concat style "-stage4-export-reload.pdf") test-directory))
+               (session (org-texmacs-session-open)))
+          (should (= 4 (length (org-texmacs-document-stm-paths document))))
+          (should (= 1 (length (org-texmacs-document-file-paths document))))
+          (unwind-protect
+              (progn
+                (org-texmacs-session-set-document session document)
+                (let* ((expected (copy-tree body))
+                       (file (cl-find-if (lambda (link) (equal (cadr link) "File"))
+                                         (org-texmacs-test--caption-inline-footnote-nodes expected 'hlink))))
+                  (setcar (cddr file) (expand-file-name "asset.pdf" test-directory))
+                  (should (equal (org-texmacs--session-read session)
+                                 (org-texmacs-test--native-hex expected)))))
+            (org-texmacs-session-close session))
+          (org-texmacs-document-save document tm)
+          (org-texmacs-document-save-pdf document pdf)
+          (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+          (dolist (file (list pdf reload))
+            (let ((links (org-texmacs-test--pdf-links file)))
+              (dolist (token '("JumpEquation" "JumpProof" "JumpFigure" "JumpTable" "JumpRaw"))
+                (let ((entry (cl-find-if (lambda (link) (string-match-p token (car link))) links)))
+                  (should entry)
+                  (should (string-match-p "\\.html#2\\'" (cdr entry)))))))
+          (org-texmacs-test--issue11-compare-pdfs pdf reload))))))
+
+(ert-deftest org-texmacs-issue13-stage4-synthetic-identity-and-nested-provenance ()
+  (let* ((name (copy-sequence "Same"))
+         (a (org-element-create 'special-block (list :type "theorem" :name name)))
+         (b (org-element-create 'special-block (list :type "theorem" :name "Same")))
+         (link (org-element-create 'link (list :type "fuzzy" :path "Same")))
+         (ast (org-element-create 'org-data nil a b (org-element-create 'paragraph nil link)))
+         (input (org-texmacs-input-create ast nil)))
+    ;; Structurally equal, distinct targets must remain ambiguous.
+    (should-error (org-texmacs-document input) :type 'org-texmacs-document-error)
+    (org-element-set-contents ast a (org-element-create 'paragraph nil link))
+    (setq input (org-texmacs-input-create ast nil))
+    (should-not (eq a (caar (org-texmacs-resolution-labels (org-texmacs-input-resolution input)))))
+    (aset name 0 ?X)
+    (should (org-texmacs-document input)))
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+NAME: Outer\n#+begin_theorem\nSee [[Inner]].\n\n"
+            "#+NAME: Inner\n#+begin_lemma\n[[file:note.pdf][File]] (math \"x\")\n"
+            "#+end_lemma\n#+end_theorem\n[[Outer][Back]]\n")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request) (lambda (raw &rest _) (read raw))))
+      (let* ((document (org-texmacs-document-from-buffer (current-buffer)))
+             (root (org-texmacs-document-body document)))
+        (should (= 2 (length (org-texmacs--document-output-labels root))))
+        (should (= 1 (length (org-texmacs-document-file-paths document))))
+        (dolist (path (org-texmacs-document-stm-paths document))
+          (let ((node root))
+            (dolist (index path) (setq node (nth (1+ index) node)))
+            (should (equal node '(math "x")))))))))
+
+(ert-deftest org-texmacs-issue13-stage4-excluded-truncated-native-owner ()
+  (dolist (kind '("equation" "equation*" "texmacs"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "* Kept\nVisible.\n* Hidden :noexport:\n#+NAME: First\n"
+              (org-texmacs-test--stage4-block kind "Duplicate"))
+      (goto-char (point-min)) (search-forward "frac")
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Excluded native owner requested body"))))
+        (let ((document (org-texmacs-document-from-buffer
+                         (current-buffer) nil nil (cons 1 (point)))))
+          (should-not (string-match-p "Duplicate\\|Hidden" (prin1-to-string document))))))))
+
+(ert-deftest org-texmacs-issue13-stage4-invalid-name-and-bounded-allocation ()
+  (dolist (name '("" "   " 42))
+    (let* ((block (org-element-create 'special-block (list :type "theorem" :name name)))
+           (input (org-texmacs-input-create (org-element-create 'org-data nil block) nil)))
+      (should-error (org-texmacs-document input) :type 'org-texmacs-document-error)))
+  (let* ((block (org-element-create 'special-block (list :type "theorem" :name "A")))
+         (island (org-element-create 'special-block (list :type "texmacs")))
+         (ast (org-element-create 'org-data nil block island))
+         (calls 0) input)
+    (cl-letf (((symbol-function 'org-export-new-reference)
+               (lambda (_cache) (cl-incf calls) 1)))
+      (setq input (org-texmacs-input-create
+                   ast nil :islands (list (cons island '(label "org-texmacs-a-org0000001"))))))
+    (should (= calls 64))
+    (should-error (org-texmacs-document input) :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-issue13-stage4-allocation-after-filter-and-body ()
+  (dolist (filtered '(nil t))
+    (with-temp-buffer
+      (org-mode)
+      (insert (org-texmacs-test--stage4-block "equation" "A") "[[A]] [[A][Again]]\n")
+      (let* ((org-export-filter-parse-tree-functions (and filtered (list (lambda (&rest _) nil))))
+             (allocate (symbol-function 'org-export-get-reference))
+             parsed (calls 0) input)
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (raw &rest _) (setq parsed t) (read raw)))
+                  ((symbol-function 'org-export-get-reference)
+                   (lambda (&rest args)
+                     (should parsed) (cl-incf calls) (apply allocate args))))
+          (setq input (org-texmacs-prepare-buffer (current-buffer))))
+        (should (= 1 calls))
+        (should (equal (org-texmacs-document input) (org-texmacs-document input)))))))
+
+(ert-deftest org-texmacs-issue13-stage4-original-name-matching-and-slug-collisions ()
+  (dolist (name '("eq:main" "Thm--Main" "A+B=C" "张量范畴" "_X_" "a b"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil\n" (org-texmacs-test--stage4-block "theorem" name)
+              "[[" name "][Describe]]\n")
+      (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
+             (mapping (org-texmacs-input-resolution input))
+             (id (cdar (org-texmacs-resolution-labels mapping))))
+        (should (string-prefix-p (concat "org-texmacs-" (org-texmacs--reference-slug name) "-org") id))
+        (should (equal (mapcar #'cdr (org-texmacs-resolution-links mapping)) (list id)))
+        (should (org-texmacs-document input)))))
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+OPTIONS: toc:nil\n* A+B\n"
+            (org-texmacs-test--stage4-block "theorem" "A+B")
+            (org-texmacs-test--stage4-block "lemma" "A-B")
+            "[[A+B]] [[A-B]]\n")
+    (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
+           (mapping (org-texmacs-input-resolution input))
+           (ids (mapcar #'cdr (org-texmacs-resolution-labels mapping))))
+      (should (= 2 (length ids)))
+      (should-not (equal (car ids) (cadr ids)))
+      (dolist (id ids) (should (string-prefix-p "org-texmacs-a_b-org" id)))
+      (should (equal ids (mapcar #'cdr (org-texmacs-resolution-links mapping)))))))
+
+(ert-deftest org-texmacs-issue13-stage4-rejects-custom-handler-name ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+NAME: Custom\n#+begin_custom\n(math \"x\")\n#+end_custom\n")
+    (let ((org-texmacs--document-special-block-handlers
+           (list (cons "custom" (lambda (&rest _) (ert-fail "Named custom handler ran"))))))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Named custom block requested STM"))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer)) :type 'org-texmacs-document-error)))))
 
 (defun org-texmacs-test--issue13-input (handler &optional islands)
   "Build an owned custom-block input using HANDLER and optional ISLANDS."
@@ -275,7 +695,7 @@
         (let ((input (org-texmacs-input-create ast info)))
           (should (member '(initial (document (concat "Text")))
                           (cdr (org-texmacs-document-body (org-texmacs-document input)))))
-          (should-error (org-texmacs--document-lower ast)
+          (should-error (org-texmacs-test--lower ast)
                         :type 'org-texmacs-document-error))))))
 
 (ert-deftest org-texmacs-issue13-source-syntax-and-recursion ()
@@ -312,7 +732,7 @@
                  (lambda (&rest _) (ert-fail "Invalid block submitted native request"))))
         (should-error (org-texmacs-document-from-buffer (current-buffer))
                       :type 'org-texmacs-document-error))))
-  (dolist (metadata '("#+NAME: name\n" "#+CAPTION: caption\n" "#+ATTR_TEXMACS: x\n"))
+  (dolist (metadata '("#+CAPTION: caption\n" "#+ATTR_TEXMACS: x\n"))
     (with-temp-buffer
       (org-mode)
       (insert metadata "#+begin_theorem\nBody.\n#+end_theorem\n")
@@ -453,7 +873,7 @@
   (dolist (type '("equation" "equation*"))
     (dolist (fixture '("#+begin_%s bad\n\"x\"\n#+end_%s\n"
                        "#+begin_%s\n \t\n#+end_%s\n"
-                       "#+NAME: named\n#+begin_%s\n\"x\"\n#+end_%s\n"
+                       "#+NAME: first\n#+NAME: named\n#+begin_%s\n\"x\"\n#+end_%s\n"
                        "#+CAPTION: caption\n#+begin_%s\n\"x\"\n#+end_%s\n"
                        "#+ATTR_TEXMACS: bad\n#+begin_%s\n\"x\"\n#+end_%s\n"))
       (with-temp-buffer
@@ -464,7 +884,7 @@
                         :type 'org-texmacs-document-error)))))
   (with-temp-buffer
     (org-mode)
-    (insert "#+BIBLIOGRAPHY: refs.bib\n#+NAME: named\n#+begin_equation\n\"x\"\n#+end_equation\n")
+    (insert "#+BIBLIOGRAPHY: refs.bib\n#+NAME: first\n#+NAME: named\n#+begin_equation\n\"x\"\n#+end_equation\n")
     (let (requests)
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (_raw &optional operation)
@@ -802,7 +1222,7 @@ Rasterize using existing Poppler, excluding the label's word box."
   (dolist (source '("#+begin_figure\n#+end_figure\n"
                     "#+begin_figure\n| A |\n#+end_figure\n"
                     "#+begin_table bad\n| A |\n#+end_table\n"
-                    "#+NAME: outer\n#+begin_table\n| A |\n#+end_table\n"
+                    "#+NAME: first\n#+NAME: outer\n#+begin_table\n| A |\n#+end_table\n"
                     "#+CAPTION:\n#+begin_table\n| A |\n#+end_table\n"
                     "#+begin_table\n#+CAPTION: inner\n| A |\n#+end_table\n"
                     "#+begin_table\n#+NAME: inner\n| A |\n#+end_table\n"
@@ -3383,7 +3803,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
   (let* ((leaf (copy-sequence " "))
          (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil leaf))))
     (should (equal (org-texmacs-document-body
-                    (org-texmacs--document-lower ast (list (cons leaf '(math "x")))))
+                    (org-texmacs-test--lower ast (list (cons leaf '(math "x")))))
                    '(document (math "x"))))))
 
 (ert-deftest org-texmacs-document-issue11-nonbare-boundaries ()
@@ -3393,12 +3813,12 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (let* ((leaf (copy-sequence "island"))
            (ast (org-element-create 'org-data nil
                                     (org-element-create 'paragraph nil other leaf)))
-           (result (org-texmacs--document-lower ast (list (cons leaf '(math "x"))))))
+           (result (org-texmacs-test--lower ast (list (cons leaf '(math "x"))))))
       (should (eq (caadr (org-texmacs-document-body result)) 'concat))
       (should (equal (org-texmacs-document-stm-paths result) '((0 1))))))
   (let* ((one (copy-sequence "one")) (two (copy-sequence "two"))
          (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil one " " two)))
-         (result (org-texmacs--document-lower
+         (result (org-texmacs-test--lower
                   ast (list (cons one '(math "x")) (cons two '(math "y"))))))
     (should (equal (org-texmacs-document-body result)
                    '(document (concat (math "x") " " (math "y")))))
@@ -3408,12 +3828,12 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
   (let* ((leaf (copy-sequence "island"))
          (target (org-element-create 'target '(:value "unused")))
          (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil target leaf)))
-         (result (org-texmacs--document-lower ast (list (cons leaf '(math "x"))))))
+         (result (org-texmacs-test--lower ast (list (cons leaf '(math "x"))))))
     (should (equal (org-texmacs-document-body result) '(document (concat "" (math "x")))))
     (should (equal (org-texmacs-document-stm-paths result) '((0 1)))))
   (let* ((leaf (copy-sequence "one"))
          (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil leaf leaf))))
-    (should-error (org-texmacs--document-lower ast (list (cons leaf '(math "x"))))
+    (should-error (org-texmacs-test--lower ast (list (cons leaf '(math "x"))))
                   :type 'org-texmacs-document-error)))
 
 (ert-deftest org-texmacs-document-issue11-display-mixtures-reject ()
@@ -3423,18 +3843,18 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                         (org-element-create 'target '(:value "unused"))))
       (let* ((leaf (copy-sequence "island"))
              (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil other leaf))))
-        (should-error (org-texmacs--document-lower ast (list (cons leaf (list tag "x"))))
+        (should-error (org-texmacs-test--lower ast (list (cons leaf (list tag "x"))))
                       :type 'org-texmacs-document-error))))
   (let* ((one (copy-sequence "one")) (two (copy-sequence "two"))
          (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil one " " two))))
-    (should-error (org-texmacs--document-lower
+    (should-error (org-texmacs-test--lower
                    ast (list (cons one '(math "x")) (cons two '(equation "y"))))
                   :type 'org-texmacs-document-error))
   ;; A wrapper is authored STM, not an invitation to inspect or rewrite inside it.
   (let* ((leaf (copy-sequence "island"))
          (tree '(with "mode" "math" (equation "x")))
          (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil "Before " leaf))))
-    (should (equal (org-texmacs-document-body (org-texmacs--document-lower ast (list (cons leaf tree))))
+    (should (equal (org-texmacs-document-body (org-texmacs-test--lower ast (list (cons leaf tree))))
                    `(document (concat "Before " ,tree))))))
 
 (ert-deftest org-texmacs-document-issue11-container-structure-and-paths ()
@@ -3805,7 +4225,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
             (should (= org-texmacs--worker-request-id 2))))))))
 
 (ert-deftest org-texmacs-document-empty ()
-  (let ((result (org-texmacs--document-lower
+  (let ((result (org-texmacs-test--lower
                  (org-element-create 'org-data nil))))
     (should (org-texmacs-document-p result))
     (should (equal (org-texmacs-document-body result) '(document)))
@@ -3821,13 +4241,13 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                 'section nil
                 (org-element-create 'paragraph nil "Before " bold "after.\n")
                 (org-element-create 'paragraph nil "Next.\n"))))
-         (result (org-texmacs--document-lower ast)))
+         (result (org-texmacs-test--lower ast)))
     (should (equal (org-texmacs-document-body result)
                    '(document (concat "Before " (strong "bold") " " "after. ")
                               (concat "Next. "))))
     (should-not (org-texmacs-document-stm-paths result))
     (should (equal (org-texmacs-document-body
-                    (org-texmacs--document-lower ast nil (list (cons bold "\t "))))
+                    (org-texmacs-test--lower ast nil (list (cons bold "\t "))))
                    '(document (concat "Before " (strong "bold") " " "after. ")
                               (concat "Next. "))))))
 
@@ -3839,7 +4259,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                (org-element-create 'paragraph nil " \ta  " bold "\n c\r\n")
                (org-element-create 'paragraph nil "\tsecond\n")))
          (before (substring-no-properties value))
-         (result (org-texmacs--document-lower ast)))
+         (result (org-texmacs-test--lower ast)))
     ;; State crosses Org object boundaries, but not paragraph boundaries.
     ;; Empty text slots remain rather than shifting island child indices.
     (should (equal (org-texmacs-document-body result)
@@ -3867,10 +4287,10 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
          (bold (org-element-create 'bold nil "b " italic))
          (ast (org-element-create 'org-data nil
                                   (org-element-create 'paragraph nil bold))))
-    (should (equal (org-texmacs-document-body (org-texmacs--document-lower ast))
+    (should (equal (org-texmacs-document-body (org-texmacs-test--lower ast))
                    '(document (concat (strong (concat "b " (em "i")))))))
     (org-element-set-contents italic bold)
-    (should-error (org-texmacs--document-lower ast) :type 'org-texmacs-document-error)))
+    (should-error (org-texmacs-test--lower ast) :type 'org-texmacs-document-error)))
 
 (ert-deftest org-texmacs-document-markup-single-body ()
   (dolist (mapping '((bold . strong) (italic . em) (underline . underline)
@@ -3879,7 +4299,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (let* ((node (apply #'org-element-create (car mapping) nil parts))
              (ast (org-element-create 'org-data nil
                                       (org-element-create 'paragraph nil node)))
-             (body (org-texmacs-document-body (org-texmacs--document-lower ast)))
+             (body (org-texmacs-document-body (org-texmacs-test--lower ast)))
              (markup (cadr (cadr body))))
         (should (= (length markup) 2))
         (should (equal markup
@@ -3921,13 +4341,13 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
            (node (org-element-create type (list :value value)))
            (ast (org-element-create 'org-data nil
                                     (org-element-create 'paragraph nil node)))
-           (result (org-texmacs--document-lower ast)))
+           (result (org-texmacs-test--lower ast)))
       (should (equal (org-texmacs-document-body result)
                      '(document (concat (verbatim "*not bold* (math \"x\") <alpha> ¯˙")))))
       (should-not (org-texmacs-document-stm-paths result))
       (should (equal value "*not bold*\t (math \"x\")\n<alpha> ¯˙"))
       (org-element-set-contents node "unexpected")
-      (should-error (org-texmacs--document-lower ast) :type 'org-texmacs-document-error))))
+      (should-error (org-texmacs-test--lower ast) :type 'org-texmacs-document-error))))
 
 (ert-deftest org-texmacs-document-line-break-contexts ()
   (with-temp-buffer
@@ -3940,11 +4360,11 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
          (headline (org-element-create 'headline
                                        (list :level 1 :raw-value "title" :title (list italic))))
          (ast (org-element-create 'org-data nil headline)))
-    (should-error (org-texmacs--document-lower ast) :type 'org-texmacs-document-error))
+    (should-error (org-texmacs-test--lower ast) :type 'org-texmacs-document-error))
   (let* ((break (org-element-create 'line-break nil))
          (ast (org-element-create 'org-data nil
                                   (org-element-create 'paragraph nil "a " break " \tb"))))
-    (should (equal (org-texmacs-document-body (org-texmacs--document-lower ast))
+    (should (equal (org-texmacs-document-body (org-texmacs-test--lower ast))
                    '(document (concat "a " (next-line) "b"))))))
 
 (ert-deftest org-texmacs-document-whitespace-island-boundary ()
@@ -3953,7 +4373,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
          (ast (org-element-create 'org-data nil
                                   (org-element-create 'paragraph nil
                                                       "A\t " foreign "\n B C\n")))
-         (result (org-texmacs--document-lower ast (list (cons foreign native)))))
+         (result (org-texmacs-test--lower ast (list (cons foreign native)))))
     ;; NBSP is not ordinary prose whitespace; STM content is never inspected.
     (should (equal (org-texmacs-document-body result)
                    '(document (concat "A " (concat " \tSTM\n" (em "  untouched  ")) " B C "))))
@@ -4158,7 +4578,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
           (setq prepared (org-texmacs-prepare-buffer (current-buffer))))
         (should (equal source (buffer-string)))))
     (should
-     (equal (org-texmacs-document-body (org-texmacs-document prepared))
+     (equal (org-texmacs-test--stable-reference-body (org-texmacs-document prepared))
             '(document
               (section "Alpha")
               (label "org-texmacs-ref-1")
@@ -4172,7 +4592,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
   (with-temp-buffer
     (org-mode)
     (insert "#+OPTIONS: toc:nil\nSee [[spot][there]].\nHere <<spot>> later.\n")
-    (let* ((body (org-texmacs-document-body
+    (let* ((body (org-texmacs-test--stable-reference-body
                   (org-texmacs-document-from-buffer (current-buffer))))
            (paragraph (cadr body))
            (link '(hlink "there" "#org-texmacs-ref-1"))
@@ -4206,8 +4626,8 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                     (org-element-create 'section nil
                                         (org-element-create 'paragraph nil link))))
          (ast (org-element-create 'org-data nil island headline))
-         (body (org-texmacs-document-body
-                (org-texmacs--document-lower
+         (body (org-texmacs-test--stable-reference-body
+                (org-texmacs-test--lower
                  ast (list (cons island '(label "org-texmacs-ref-1")))))))
     (should (equal (nth 2 body) '(section "Alpha")))
     (should (equal (nth 3 body) '(label "org-texmacs-ref-2")))
@@ -4226,11 +4646,11 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
             (progn
               (org-texmacs-session-set-document session document)
               (should (equal (org-texmacs--session-read session)
-                             (org-texmacs-test--native-hex
+                             (org-texmacs-test--native-hex (org-texmacs-test--expand-references
                               '(document
                                 (section "Alpha")
                                 (label "org-texmacs-ref-1")
-                                (concat (reference "org-texmacs-ref-1") " "))))))
+                                (concat (reference "org-texmacs-ref-1") " ")) document)))))
           (org-texmacs-session-close session))))))
 
 (ert-deftest org-texmacs-document-reference-preflight-before-island-request ()
@@ -4250,7 +4670,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (org-mode)
     (insert "#+OPTIONS: H:1 toc:nil\n* Top\n** spot\n"
             "[[spot][there]] <<spot>>\n[[*spot][heading]]\n")
-    (let* ((body (org-texmacs-document-body
+    (let* ((body (org-texmacs-test--stable-reference-body
                   (org-texmacs-document-from-buffer (current-buffer))))
            (items (cadr (nth 2 body)))
            (paragraph (nth 3 items)))
@@ -4266,7 +4686,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                                    (list :type "HTTPS" :path path :raw-link "file:wrong")))
          (ast (org-element-create 'org-data nil
                                   (org-element-create 'paragraph nil link)))
-         (body (org-texmacs-document-body (org-texmacs--document-lower ast))))
+         (body (org-texmacs-document-body (org-texmacs-test--lower ast))))
     (should (equal body '(document (concat (hlink "HTTPS://example.org/<alpha>\t%20"
                                                 "HTTPS://example.org/<alpha>\t%20")))))
     (should-not (eq path (nth 2 (nth 1 (nth 1 body)))))
@@ -4278,7 +4698,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                                     (org-element-create 'link
                                                         (list :type type :path "x"
                                                               :raw-link "https://example.org"))))))
-      (should-error (org-texmacs--document-lower ast) :type 'org-texmacs-document-error))))
+      (should-error (org-texmacs-test--lower ast) :type 'org-texmacs-document-error))))
 
 (ert-deftest org-texmacs-document-uri-private-syntax-restoration ()
   (dolist (suffix '("" "\n[[file:unsupported.org::#target][link]]\n"))
@@ -4360,7 +4780,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
          (ast (org-element-create 'org-data nil
                                   (org-element-create 'paragraph nil "a " note " b " empty)))
          (before (substring-no-properties (car (org-element-contents note))))
-         (result (org-texmacs--document-lower ast)))
+         (result (org-texmacs-test--lower ast)))
     (should (equal (org-texmacs-document-body result)
                    '(document (concat "a " (footnote (document (concat "note " (next-line) "end ")))
                                       " " "b " (footnote (document (concat "")))))))
@@ -4381,7 +4801,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
               ('footnote (org-element-create
                           'paragraph nil (org-element-create 'footnote-reference '(:type inline) note)))))
            (ast (org-element-create 'org-data nil container)))
-      (should-error (org-texmacs--document-lower ast) :type 'org-texmacs-document-error)))
+      (should-error (org-texmacs-test--lower ast) :type 'org-texmacs-document-error)))
   (dolist (source '("A[fn:name]\n" "A[fn:name:outer [fn::inner]]\n"
                     "* Title[fn::note]\n" "[fn::outer [fn::inner]]\n"))
     (with-temp-buffer
@@ -4536,14 +4956,14 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (with-temp-buffer
       (org-mode)
       (insert "A[fn:n].\n\n[fn:n] Body.\n\n" (car entry))
-      (let* ((body (org-texmacs-document-body
+      (let* ((body (org-texmacs-test--stable-reference-body
                     (org-texmacs-document-from-buffer (current-buffer))))
              (definition (nth 3 (cadr (nth 2 (cadr body))))))
         (should (eq (car (nth 2 definition)) (cdr entry))))))
   (with-temp-buffer
     (org-mode)
     (insert "A[fn:n] [[inside][Link]].\n\n[fn:n] <<inside>> Body.\n")
-    (let ((body (org-texmacs-document-body
+    (let ((body (org-texmacs-test--stable-reference-body
                  (org-texmacs-document-from-buffer (current-buffer)))))
       (should (equal (nth 4 (cadr body)) '(hlink "Link" "#org-texmacs-ref-1")))
       (should (equal (cadr (cadr (nth 3 (cadr (nth 2 (cadr body))))))
@@ -4697,7 +5117,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
              (note (org-element-create 'footnote-reference (list :type 'inline :label label)
                                        "Before " leaf))
              (ast (org-element-create 'org-data nil (org-element-create 'paragraph nil note))))
-        (should-error (org-texmacs--document-lower ast (list (cons leaf (list tag "x"))))
+        (should-error (org-texmacs-test--lower ast (list (cons leaf (list tag "x"))))
                       :type 'org-texmacs-document-error)))))
 
 (ert-deftest org-texmacs-pdf-issue10-inline-and-separate ()
@@ -4782,7 +5202,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (org-mode)
     (insert "* First\nBody.\n*** Third\n")
     (should (equal (org-texmacs-document-body
-                    (org-texmacs--document-lower (org-element-parse-buffer)))
+                    (org-texmacs-test--lower (org-element-parse-buffer)))
                    '(document (section "First") (concat "Body. ")
                               (subsubsection "Third"))))))
 
@@ -4964,7 +5384,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
          (ast (org-element-create 'org-data nil
                                   (org-element-create 'section nil paragraph block)))
          (stree (list 'document (copy-sequence "中")))
-         (result (org-texmacs--document-lower
+         (result (org-texmacs-test--lower
                   ast (list (cons foreign '(math "<alpha>")) (cons block stree))))
          (body (org-texmacs-document-body result)))
     (should (equal body '(document (concat "<alpha>" (math "<alpha>") " ")
@@ -4985,7 +5405,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (insert "** A *bold* title\n")
       (let ((source (buffer-string)))
         (should (equal (org-texmacs-document-body
-                        (org-texmacs--document-lower (org-element-parse-buffer)))
+                        (org-texmacs-test--lower (org-element-parse-buffer)))
                        '(document (section
                                    (concat "A " (strong "bold") " " "title")))))
         (should (equal source (buffer-string)))))))
@@ -4995,13 +5415,13 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
          (ast (org-element-create 'org-data nil
                                   (org-element-create 'paragraph nil bold))))
     (dolist (value '("\n" "text" 1))
-      (should-error (org-texmacs--document-lower ast nil (list (cons bold value)))
+      (should-error (org-texmacs-test--lower ast nil (list (cons bold value)))
                     :type 'org-texmacs-document-error))))
 
 (ert-deftest org-texmacs-document-atomic-island ()
   (let* ((block (org-element-create 'special-block '(:type "texmacs")))
          (ast (org-element-create 'org-data nil block))
-         (result (org-texmacs--document-lower ast (list (cons block "literal")))))
+         (result (org-texmacs-test--lower ast (list (cons block "literal")))))
     (should (equal (org-texmacs-document-body result) '(document "literal")))
     (should (equal (org-texmacs-document-stm-paths result) '((0))))))
 
@@ -5352,7 +5772,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                   "\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
           (push (org-texmacs-document-from-buffer (current-buffer)) documents)))
       (let* ((aligned (car documents)) (plain (cadr documents))
-             (body (copy-tree (org-texmacs-document-body aligned))))
+             (body (copy-tree (org-texmacs-test--stable-reference-body aligned))))
         (cl-labels ((strip (node)
                       (when (consp node)
                         (when (eq (car node) 'tformat)
@@ -5364,12 +5784,12 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                                    (cdr node))))
                         (mapc #'strip (cdr node)))))
           (strip body))
-        (should (equal body (org-texmacs-document-body plain)))
+        (should (equal body (org-texmacs-test--stable-reference-body plain)))
         (should (equal (org-texmacs-document-stm-paths aligned)
                        (org-texmacs-document-stm-paths plain)))
         (should (= (length (org-texmacs-document-file-paths aligned)) 2))
         (dolist (path (org-texmacs-document-file-paths aligned))
-          (let ((leaf (org-texmacs-document-body aligned)))
+          (let ((leaf (org-texmacs-test--stable-reference-body aligned)))
             (dolist (index path) (setq leaf (nth (1+ index) leaf)))
             (should (member leaf '("./caption.org" "./asset.org")))))
         (should (consp (org-texmacs--native-encode-document aligned)))))))
@@ -5415,7 +5835,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
          (row (org-element-create 'table-row '(:type standard) cell))
          (table (org-element-create 'table '(:type table.el) row))
          (ast (org-element-create 'org-data nil table)))
-    (should-error (org-texmacs--document-lower ast)
+    (should-error (org-texmacs-test--lower ast)
                   :type 'org-texmacs-document-error)))
 
 (ert-deftest org-texmacs-document-named-table-captions-and-links ()
@@ -5424,7 +5844,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (insert "[[t]] [[t][Table]].\n\n"
             "#+name: t\n#+caption[Short *S*]: Long [[t][self]]\n"
             "#+caption: Second <alpha>\n| a | b |\n")
-    (let ((body (org-texmacs-document-body
+    (let ((body (org-texmacs-test--stable-reference-body
                  (org-texmacs-document-from-buffer (current-buffer)))))
       (should
        (equal body
@@ -5445,7 +5865,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (org-mode)
     (insert "#+OPTIONS: toc:nil\n[[same][Table]]\n\n"
             "#+name: same\n| x |\n\n* same\n")
-    (let ((body (org-texmacs-document-body
+    (let ((body (org-texmacs-test--stable-reference-body
                  (org-texmacs-document-from-buffer (current-buffer)))))
       (should (equal (cadr body) '(concat (hlink "Table" "#org-texmacs-ref-1") " ")))
       (should (equal (nth 2 body)
@@ -5454,7 +5874,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
   (with-temp-buffer
     (org-mode)
     (insert "#+name: unused\n| x |\n")
-    (should (equal (org-texmacs-document-body
+    (should (equal (org-texmacs-test--stable-reference-body
                     (org-texmacs-document-from-buffer (current-buffer)))
                    '(document (tabular (tformat (table (row (cell "x"))))))))))
 
@@ -5534,7 +5954,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
               (org-texmacs-session-set-document session document)
               (should
                (equal (org-texmacs--session-read session)
-                      (org-texmacs-test--native-hex
+                      (org-texmacs-test--native-hex (org-texmacs-test--expand-references
                        '(document
                          (concat (reference "org-texmacs-ref-2") " ")
                          (big-table
@@ -5545,7 +5965,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                             (concat "<#4E2D> <less>alpha<gtr> "
                                     (hlink "File" "/tmp/caption.org"))
                             "Short")))
-                         (label "org-texmacs-ref-1"))))))
+                         (label "org-texmacs-ref-1")) document)))))
           (org-texmacs-session-close session))))))
 
 (ert-deftest org-texmacs-document-table-native-and-provenance ()
@@ -5596,7 +6016,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (with-temp-buffer
       (org-mode)
       (insert source)
-      (should-error (org-texmacs--document-lower (org-element-parse-buffer))
+      (should-error (org-texmacs-test--lower (org-element-parse-buffer))
                     :type 'org-texmacs-document-error))))
 
 (ert-deftest org-texmacs-document-rejects-invalid-mappings ()
@@ -5607,9 +6027,9 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                           (list (cons (copy-sequence "missing") "x"))
                           (list (cons leaf '(math 1)))
                           (list (cons leaf '(nil "x")))))
-      (should-error (org-texmacs--document-lower ast mapping)
+      (should-error (org-texmacs-test--lower ast mapping)
                     :type 'org-texmacs-document-error))
-    (should-error (org-texmacs--document-lower ast nil (list (cons leaf " ")))
+    (should-error (org-texmacs-test--lower ast nil (list (cons leaf " ")))
                   :type 'org-texmacs-document-error)))
 
 (ert-deftest org-texmacs-document-rejects-cycles ()
@@ -5617,7 +6037,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
          (ast (org-element-create 'org-data nil
                                   (org-element-create 'paragraph nil bold))))
     (org-element-set-contents bold bold)
-    (should-error (org-texmacs--document-lower ast)
+    (should-error (org-texmacs-test--lower ast)
                   :type 'org-texmacs-document-error))
   (let ((stree (list 'math "x")))
     (setcar (cdr stree) stree)
@@ -5903,7 +6323,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                  (lambda (&rest _) (ert-fail "Lowering requested worker")))
                 ((symbol-function 'org-texmacs--document-options)
                  (lambda (&rest _) (ert-fail "Lowering captured editor options"))))
-        (should (equal (org-texmacs-document-body (org-texmacs--document-lower ast))
+        (should (equal (org-texmacs-document-body (org-texmacs-test--lower ast))
                        '(document (concat "Text"))))))))
 
 (ert-deftest org-texmacs-document-source-cache-remains-observable ()
@@ -6391,7 +6811,9 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
         (dolist (tag '("big-table" "footnote" "with-bib" "bib-list"))
           (should (or (string-match-p (regexp-quote (concat "<" tag)) bytes)
                       (string-match-p (regexp-quote (concat "<\\" tag)) bytes))))
-        (dolist (marker '("<reference|org-texmacs-ref-1>" "/tmp/file.org"))
+        (dolist (marker (list (format "<reference|%s>"
+                                      (cadar (org-texmacs-test--caption-inline-footnote-nodes
+                                              (org-texmacs-document-body document) 'reference))) "/tmp/file.org"))
           (should (string-match-p (regexp-quote marker) bytes)))
         (should (equal body (org-texmacs-document-body document)))
         (should (equal stm (org-texmacs-document-stm-paths document)))

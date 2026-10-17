@@ -229,6 +229,13 @@ ANCESTORS detects cycles; repeated, non-cyclic subtrees are copied separately."
                   (cdr node))))
    (t (signal 'org-texmacs-document-error '("Invalid island stree")))))
 
+(defun org-texmacs--document-output-labels (body)
+  "Collect only static label strings in validated BODY, retaining duplicates."
+  (when (consp body)
+    (append (and (eq (car body) 'label) (= (length body) 2)
+                 (stringp (cadr body)) (list (cadr body)))
+            (cl-mapcan #'org-texmacs--document-output-labels (cdr body)))))
+
 (defun org-texmacs--document-static-labels (islands)
   "Return copied static TeXmacs label names visible in ISLANDS.
 Only a `(label STRING)' has a statically knowable name.  Validate traversed
@@ -255,7 +262,10 @@ strees and reject cycles instead of guessing through dynamic label bodies."
   (links nil :read-only t)
   (labels nil :read-only t)
   (files nil :read-only t)
-  (footnotes nil :read-only t))
+  (footnotes nil :read-only t)
+  (targets nil :read-only t)
+  (nodes nil :read-only t)
+  (failure nil :read-only t))
 
 (defun org-texmacs--document-local-file-path-p (path)
   "Return non-nil for a plain local file PATH with explicit source semantics.
@@ -281,19 +291,68 @@ No source buffer is consulted."
       (org-texmacs--document-fail node "Invalid parsed caption"))
     caption))
 
+
+(defun org-texmacs--document-named-block-p (node)
+  "Return non-nil when NODE admits a Stage4 NAME identity."
+  (and (eq (org-element-type node) 'special-block)
+       (or (org-texmacs--native-body-kind node)
+           (org-texmacs--figure-table-kind node)
+           (org-texmacs--document-statement-tag node))))
+
+(defun org-texmacs--reference-slug (name)
+  "Return NAME's per-character ASCII slug independently of case folding."
+  (let ((case-fold-search nil))
+    (downcase (replace-regexp-in-string "[^A-Za-z0-9]" "_" name))))
+
+(defun org-texmacs--document-allocate (ast analysis static)
+  "Freeze AST's ANALYSIS with Org-allocated references, reserving STATIC labels.
+The mutable Org cache remains local and is never returned."
+  (let ((info (list :parse-tree ast :internal-references nil :crossrefs nil))
+        (reserved (append static (mapcar (lambda (entry) (nth 2 (cdr entry)))
+                                        (org-texmacs-resolution-footnotes analysis))))
+        (selected (mapcar #'cdr (org-texmacs-resolution-targets analysis))) labels)
+    (dolist (node (org-texmacs-resolution-nodes analysis))
+      (when (or (memq node selected)
+                (and (org-texmacs--document-named-block-p node)
+                     (org-element-property :name node)))
+        (let ((name (org-element-property :name node)) candidate (attempt 0))
+          (while (and (< attempt 64) (or (null candidate) (member candidate reserved)))
+            (setq attempt (1+ attempt))
+            (when candidate
+              ;; Keep numeric search-cell reservations, but drop this target's
+              ;; rejected direct binding so Org allocates another reference.
+              (plist-put info :internal-references
+                         (cl-remove-if (lambda (entry) (eq (cdr entry) node))
+                                       (plist-get info :internal-references))))
+            (setq candidate (concat "org-texmacs-"
+                                    (and name (concat (org-texmacs--reference-slug name) "-"))
+                                    (org-export-get-reference node info))))
+          (when (member candidate reserved)
+            (org-texmacs--document-fail node "Unable to allocate a unique label"))
+          (push candidate reserved)
+          (push (cons node candidate) labels))))
+    (setq labels (nreverse labels))
+    (org-texmacs--resolution-create
+     :labels labels
+     :links (mapcar (lambda (entry) (cons (car entry) (cdr (assq (cdr entry) labels))))
+                    (org-texmacs-resolution-targets analysis))
+     :targets (org-texmacs-resolution-targets analysis)
+     :nodes (org-texmacs-resolution-nodes analysis)
+     :files (org-texmacs-resolution-files analysis)
+     :footnotes (org-texmacs-resolution-footnotes analysis))))
+
 (defun org-texmacs--document-resolve (ast islands static-labels resource-base)
-  "Resolve local Org links in AST before structural lowering.
+  "Validate local Org links in AST without allocating final references.
 ISLANDS are opaque.  STATIC-LABELS reserves user-authored STM labels.
 Return node-identity mappings only; never
 read a source buffer, query an ID database or invoke an export consumer."
   (let ((definitions (org-texmacs--context-footnote-definitions ast islands))
-        custom-ids ids targets names headlines links order resolved selected labels files
+        custom-ids ids links order resolved files
         footnote-references notes footnotes)
     (cl-labels
         ((scan (node ancestors)
-           (unless (or (assq node islands)
-                       (and (consp node)
-                            (eq (org-element-type node) 'footnote-definition)))
+           (unless (and (consp node)
+                        (eq (org-element-type node) 'footnote-definition))
              (when (consp node)
                (when (memq node ancestors)
                  (org-texmacs--document-fail node "Cyclic Org AST"))
@@ -308,18 +367,12 @@ read a source buffer, query an ID database or invoke an export consumer."
                        (push (cons custom node) custom-ids))
                      (when (and (stringp id) (> (length id) 0))
                        (push (cons id node) ids))
-                     (when (and (stringp raw) (> (length raw) 0))
-                       (push (cons raw node) headlines))))
+                     (unless (stringp raw)
+                       (org-texmacs--document-fail node "Invalid headline title"))))
                   ((eq type 'target)
                    (let ((value (org-element-property :value node)))
                      (unless (and (stringp value) (> (length value) 0))
-                       (org-texmacs--document-fail node "Invalid dedicated target"))
-                     (push (cons value node) targets)))
-                  ((eq type 'table)
-                   (when-let* ((name (org-element-property :name node)))
-                     (unless (and (stringp name) (> (length name) 0))
-                       (org-texmacs--document-fail node "Invalid table name"))
-                     (push (cons name node) names)))
+                       (org-texmacs--document-fail node "Invalid dedicated target"))))
                   ((eq type 'link) (push node links))
                   ((eq type 'footnote-reference)
                    (when (cl-some
@@ -338,12 +391,14 @@ read a source buffer, query an ID database or invoke an export consumer."
                      (dolist (line (org-texmacs--document-caption-lines node))
                        (mapc (lambda (part) (scan part ancestors)) (car line))
                        (mapc (lambda (part) (scan part ancestors)) (cdr line))))
-                   (unless (and (eq type 'footnote-reference)
-                                (org-element-property :label node))
+                   (unless (or (assq node islands)
+                               (org-texmacs--native-body-kind node)
+                               (and (eq type 'footnote-reference)
+                                    (org-element-property :label node)))
                      (mapc (lambda (child) (scan child ancestors))
                            (org-element-contents node))))))))
          (choose (node candidates)
-           (let ((matches (delete-dups (mapcar #'cdr candidates))))
+           (let ((matches (cl-delete-duplicates (mapcar #'cdr candidates) :test #'eq)))
              (cond
               ((null matches)
                (org-texmacs--document-fail node "Unresolved internal link"))
@@ -384,60 +439,60 @@ read a source buffer, query an ID database or invoke an export consumer."
                         (org-element-contents (car matching)))))
               (push (cons reference note) footnotes)))))
       (setq links (nreverse links) order (nreverse order))
-      (dolist (link links)
-        (let* ((type (org-element-property :type link))
-               (path (org-element-property :path link))
-               (kind (and (stringp type) (downcase type)))
-               (target
-                (when (member kind '("custom-id" "id" "fuzzy"))
-                  (unless (and (stringp path) (> (length path) 0))
-                    (org-texmacs--document-fail link "Invalid internal link path"))
-                  (pcase kind
-                    ("custom-id" (choose link (lookup path custom-ids)))
-                    ("id" (choose link (lookup path ids)))
-                    ("fuzzy"
-                     (if (string-prefix-p "*" path)
-                         (choose link (lookup (substring path 1) headlines))
-                       (choose link (or (append (lookup path targets) (lookup path names))
-                                        (lookup path headlines)))))))))
-          (when target
-            (when (and (eq (org-element-type target) 'table)
-                       (null (org-element-property :caption target))
-                       (null (org-element-contents link)))
-              (org-texmacs--document-fail
-               link "Uncaptioned table reference requires a description"))
-            (push (cons link target) resolved)
-            (cl-pushnew target selected :test #'eq))
-          (when (equal kind "file")
-            (unless (and (org-texmacs--document-local-file-path-p path)
-                         (null (org-element-property :search-option link))
-                         (null (org-element-property :application link))
-                         (or (null resource-base)
-                             (org-texmacs--document-local-file-path-p resource-base)))
-              (org-texmacs--document-fail link "Unsupported file link or resource context"))
-            (let ((file-name-handler-alist nil))
-              (unless (or (file-name-absolute-p path) resource-base)
-                (org-texmacs--document-fail link "Relative file link requires a resource base")))
-            (push (cons link (substring-no-properties path)) files))))
-      (let ((reserved (copy-sequence static-labels)) (next 1))
+      (let ((cells (make-hash-table :test #'equal)))
         (dolist (node order)
-          (when (memq node selected)
-            (let (candidate)
-              (while
-                  (progn
-                    (setq candidate
-                          (concat org-texmacs--document-reference-label-prefix
-                                  (number-to-string next))
-                          next (1+ next))
-                    (member candidate reserved)))
-              (push candidate reserved)
-              (push (cons node candidate) labels)))))
-      (setq labels (nreverse labels))
+          (when (or (memq (org-element-type node) '(headline target table))
+                    (org-texmacs--document-named-block-p node))
+            (when-let* ((name (org-element-property :name node)))
+              (unless (and (stringp name) (not (string-blank-p name)))
+                (org-texmacs--document-fail node "Invalid object NAME")))
+            (dolist (cell (org-export-search-cells node))
+              (push node (gethash cell cells)))))
+        (let ((org-info (list :parse-tree ast :resolve-fuzzy-link-cache
+                              (copy-hash-table cells))))
+          (dolist (link links)
+            (let* ((type (org-element-property :type link))
+                   (path (org-element-property :path link))
+                   (kind (and (stringp type) (downcase type)))
+                   (target
+                    (when (member kind '("custom-id" "id" "fuzzy"))
+                      (unless (and (stringp path) (> (length path) 0))
+                        (org-texmacs--document-fail link "Invalid internal link path"))
+                      (pcase kind
+                        ("custom-id" (choose link (lookup path custom-ids)))
+                        ("id" (choose link (lookup path ids)))
+                        ("fuzzy"
+                         (let* ((search (org-export-string-to-search-cell path))
+                                (matches (cl-mapcan (lambda (cell) (copy-sequence (gethash cell cells))) search))
+                                (preferred (cl-remove-if
+                                            (lambda (node) (eq (org-element-type node) 'headline)) matches))
+                                (chosen (choose link (mapcar (lambda (node) (cons nil node))
+                                                            (or preferred matches)))))
+                           (unless (eq chosen (org-export-resolve-fuzzy-link link org-info))
+                             (org-texmacs--document-fail link "Inconsistent Org link resolution"))
+                           chosen))))))
+              (when target
+                (when (and (eq (org-element-type target) 'table)
+                           (null (org-element-property :caption target))
+                           (null (org-element-contents link)))
+                  (org-texmacs--document-fail
+                   link "Uncaptioned table reference requires a description"))
+                (push (cons link target) resolved))
+              (when (equal kind "file")
+                (unless (and (org-texmacs--document-local-file-path-p path)
+                             (null (org-element-property :search-option link))
+                             (null (org-element-property :application link))
+                             (or (null resource-base)
+                                 (org-texmacs--document-local-file-path-p resource-base)))
+                  (org-texmacs--document-fail link "Unsupported file link or resource context"))
+                (let ((file-name-handler-alist nil))
+                  (unless (or (file-name-absolute-p path) resource-base)
+                    (org-texmacs--document-fail link "Relative file link requires a resource base")))
+                (push (cons link (substring-no-properties path)) files))))))
       (org-texmacs--resolution-create
-       :links (mapcar (lambda (entry)
-                        (cons (car entry) (cdr (assq (cdr entry) labels))))
-                      (nreverse resolved))
-       :labels labels :files (nreverse files) :footnotes (nreverse footnotes)))))
+       :links (mapcar (lambda (entry) (cons (car entry) "")) (nreverse (copy-sequence resolved)))
+       :targets (nreverse resolved) :nodes order
+       :files (nreverse files) :footnotes (nreverse footnotes)))))
 
 (defun org-texmacs--bibliography-collect (ast islands info sources resolution)
   "Collect actual citation usage from owned Org structures, without BibTeX parsing.
@@ -762,8 +817,18 @@ removed row identity or nil.  Never mutate the Org AST."
          :file-paths (mapcar (lambda (path) (append prefix path))
                              (org-texmacs-document-file-paths contents)))))))
 
+(defun org-texmacs--document-prepend-label (contents label)
+  "Prepend LABEL to packed document CONTENTS while preserving provenance."
+  (org-texmacs--document-create
+   :body (cons 'document (cons (org-texmacs-document-body label)
+                               (cdr (org-texmacs-document-body contents))))
+   :stm-paths (mapcar (lambda (path) (cons (1+ (car path)) (cdr path)))
+                      (org-texmacs-document-stm-paths contents))
+   :file-paths (mapcar (lambda (path) (cons (1+ (car path)) (cdr path)))
+                       (org-texmacs-document-file-paths contents))))
+
 (defun org-texmacs--document-lower
-    (ast &optional islands post-blanks info style initial source-file resource-base bibliography)
+    (ast &optional islands post-blanks info style initial source-file resource-base bibliography frozen-resolution)
   "Lower prepared Org AST and ISLANDS to a structural document result.
 
 AST must be an `org-data' snapshot.  ISLANDS is an identity-keyed alist
@@ -854,9 +919,13 @@ for consumers.  Final handlers must preserve contents identity and provenance."
         (info (or info '(:with-todo-keywords t :with-priority nil :with-tags t
                         :texmacs-format-headline-function
                         org-texmacs-format-headline-default-function)))
-        (resolution (org-texmacs--document-resolve
-                     ast islands static-labels resource-base))
+        (resolution (or frozen-resolution
+                        (and (plist-get info :texmacs-special-block-preflight)
+                             (org-texmacs--document-resolve ast islands static-labels resource-base))
+                        (signal 'org-texmacs-document-error '("Missing frozen resolution"))))
         (citation-plan nil))
+    (when (org-texmacs-resolution-failure resolution)
+      (signal 'org-texmacs-document-error (org-texmacs-resolution-failure resolution)))
     (setq citation-plan (org-texmacs--bibliography-plan
                          ast islands info bibliography resolution static-labels))
     (setq special-handlers
@@ -1390,14 +1459,25 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                  (post (org-element-property :post-affiliated node))
                  (keys (org-element-property :texmacs-affiliated-keywords node))
                  (table (and (not inner) (eq (org-element-type node) 'table)))
-                 (wrapper (and (not inner) (org-texmacs--figure-table-kind node))))
+                 (wrapper (and (not inner) (org-texmacs--figure-table-kind node)))
+                 (named (and (not inner) (org-texmacs--document-named-block-p node))))
              (when (and (integerp begin) (integerp post) (> post begin)
-                        (not (and (or table wrapper) keys)))
+                        (not (and (or table named) keys)))
                (org-texmacs--document-fail node "Unsupported affiliated metadata"))
+             (when-let* ((proof (org-element-property :texmacs-name-source node)))
+               (unless (equal proof
+                              (list (list (org-element-property :type node) begin post
+                                          (org-element-property :texmacs-source-end node))
+                                    (org-element-property :name node) keys))
+                 (org-texmacs--document-fail node "Original NAME evidence differs")))
+             (when (org-element-property :name node)
+               (unless (and (stringp (org-element-property :name node))
+                            (not (string-blank-p (org-element-property :name node))))
+                 (org-texmacs--document-fail node "Invalid object NAME")))
              (when keys
-               (unless (and (or table wrapper) (proper-list-p keys)
-                            (cl-every (lambda (key) (member key (if table '("NAME" "CAPTION")
-                                                                '("CAPTION")))) keys)
+               (unless (and (or table named) (proper-list-p keys)
+                            (cl-every (lambda (key) (member key (if (or table wrapper)
+                                                                 '("NAME" "CAPTION") '("NAME")))) keys)
                             (<= (cl-count "NAME" keys :test #'equal) 1)
                             (or (not (member "NAME" keys))
                                 (let ((name (org-element-property :name node)))
@@ -1411,7 +1491,7 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                            (or (string-prefix-p ":attr_" (symbol-name key))
                                (and (eq (org-element-type node) 'table)
                                     (memq key '(:header :headers :results :resname :plot :label :data)))
-                               (and (not table) (eq key :name))
+                               (and (not (or table named)) (eq key :name))
                                (and (not (or table wrapper)) (eq key :caption))))
                   (org-texmacs--document-fail node "Unsupported affiliated metadata")))
               node)))
@@ -1482,7 +1562,7 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                               (org-texmacs--document-normalize-table body) body)))
                (org-texmacs--document-pack
                 (intern (concat "big-" (symbol-name kind)))
-                (list body (caption-text node ancestors))))))
+                (list body (table-caption node ancestors))))))
          (table-cell (node ancestors)
            (unless (and (consp node) (eq (org-element-type node) 'table-cell)
                         (not (memq node ancestors))
@@ -1635,8 +1715,16 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                  (unless kind
                    (org-texmacs--document-fail node "Island key is not a native-body block"))
                  (org-texmacs--native-body-check node)
-                 (list (if (eq kind 'texmacs) (island node entry)
-                         (org-texmacs--document-pack kind (list (island node entry)))))))
+                 (let* ((body (island node entry))
+                        (labels (target-labels node)))
+                   (list (if (eq kind 'texmacs)
+                             (if labels
+                                 (org-texmacs--document-pack
+                                  'surround (list (car labels) (org-texmacs--document-create :body "") body))
+                               body)
+                           (org-texmacs--document-pack
+                            kind (list (if labels (org-texmacs--document-pack 'concat (append labels (list body)))
+                                         body))))))))
               ((org-texmacs--native-body-kind node)
                (org-texmacs--document-fail node "Missing native-body island"))
               ((eq type 'section)
@@ -1683,7 +1771,10 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                                   (blocks (org-element-contents node) 'special-block ancestors))))
                    (list
                     (cond
-                     (tag (org-texmacs--document-pack tag (list contents)))
+                     (tag (org-texmacs--document-pack
+                           tag (list (if (target-labels node)
+                                         (org-texmacs--document-prepend-label contents (car (target-labels node)))
+                                       contents))))
                      ((plist-get info :texmacs-special-block-preflight) contents)
                      (t (org-texmacs--document-handle-special handler node contents info)))))))
               ((memq type '(example-block fixed-width src-block))
@@ -1767,6 +1858,11 @@ for consumers.  Final handlers must preserve contents identity and provenance."
         (unless (and (= (length used-islands) (length islands))
                      (= (length used-blanks) (length post-blanks)))
           (signal 'org-texmacs-document-error '("Unused preparation mappings")))
+        (when frozen-resolution
+          (let ((labels (org-texmacs--document-output-labels (org-texmacs-document-body result))))
+            (dolist (entry (org-texmacs-resolution-labels frozen-resolution))
+              (unless (= 1 (cl-count (cdr entry) labels :test #'equal))
+                (org-texmacs--document-fail (car entry) "Missing or conflicting frozen label")))))
         (org-texmacs--document-create
          :body (org-texmacs-document-body result)
          :stm-paths (org-texmacs-document-stm-paths result)
@@ -1974,6 +2070,7 @@ RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
                  (mapc #'whitespace (org-element-property :tag node)))
                (mapc #'walk (org-element-contents node))))))
         (let ((ast (org-element-parse-buffer)))
+          (org-texmacs--name-source-shapes ast)
           (org-texmacs--figure-table-source-shapes ast)
           (setq region (org-texmacs--context-body-region
                         ast subtree-position region restriction))
@@ -1985,14 +2082,7 @@ RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
                                     '("Region truncates a TeXmacs island")))))
               (dolist (span spans)
                 (complete (org-texmacs-fragment-span-begin span)
-                          (org-texmacs-fragment-span-end span)))
-              (dolist (node (org-texmacs--native-body-blocks ast))
-                (complete
-                 (org-element-property :begin node)
-                 (save-excursion
-                   (goto-char (org-element-property :end node))
-                   (forward-line (- (or (org-element-property :post-blank node) 0)))
-                   (point))))))
+                          (org-texmacs-fragment-span-end span)))))
           (when (or subtree-position region)
             ;; Prune owned full-source structure before walking/validating body.
             ;; Block placeholders make STM opaque while collecting dependencies.

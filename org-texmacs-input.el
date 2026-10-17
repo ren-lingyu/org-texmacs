@@ -31,7 +31,8 @@ these native source-semantic trees are separate from the Org AST and islands."
   (initial nil :read-only t)
   (source-file nil :read-only t)
   (resource-base nil :read-only t)
-  (bibliography nil :read-only t))
+  (bibliography nil :read-only t)
+  (resolution nil :read-only t))
 
 (defun org-texmacs--bibliography-copy (bibliography)
   "Validate and own prepared BIBLIOGRAPHY without parsing or file access.
@@ -65,49 +66,11 @@ checks ambiguity only for keys actually used by the document."
         (push (cons path tree) result)))
     (nreverse result)))
 
-;;;###autoload
-(cl-defun org-texmacs-input-create
+(cl-defun org-texmacs--input-own
     (ast info &key islands post-blanks (style '("generic")) initial
          source-file resource-base bibliography)
-  "Copy AST, INFO, mappings and explicit document context into an owned input.
-AST must be a fully parsed `org-data' tree, not Org's live cache.  Do not
-resolve deferred properties, read buffers, discover STM or run a formatter.
-ISLANDS maps AST node identities to already parsed text strees; POST-BLANKS
-maps inline node identities to trailing spaces/tabs.  See the preparation
-contract of `org-texmacs--document-lower'.  Unsupported lowering is diagnosed
-by `org-texmacs-document', not by invoking it during this copy.
-
-STYLE is a nonempty list of TeXmacs style identifier strings and defaults to
-`(\"generic\")'.  INITIAL is an alist of unique nonempty environment identifier
-strings to source-semantic text strees and defaults to nil.  Neither setting
-is inferred from INFO or ambient Custom values.
-
-SOURCE-FILE and RESOURCE-BASE are optional explicit absolute path strings,
-copied without filesystem access or path expansion.  RESOURCE-BASE fixes
-the source-relative resource base; SOURCE-FILE does not override it.  Omitted
-values remain nil and are never inferred from the current buffer.
-
-BIBLIOGRAPHY is an alist from explicit absolute source paths to already parsed
-BibTeX document strees.  Copy its text trees and reject duplicate source paths,
-keys or fields.  Never read those paths or parse source text here.  This slot
-establishes prepared data ownership.  Citation lowering also requires fixed
-INFO declaration identities and a prepared output view for bibliography print.
-The view binds prefix, key order, selected entry trees and source-semantic body;
-pure lowering verifies that it matches the current resolution plan.
-
-Copy strings, lists and vectors, rebuild parent links, and remap references
-to AST nodes in INFO and the mappings.  Copy parsed title, author and date
-secondary strings as separately owned Org objects, and table captions as
-owned pairs of long/short secondary strings.  Reject cyclic or multiply
-owned AST nodes, detached/duplicate mapping keys, deferred values and opaque
-objects.
-Discard Org's source buffer and parent bookkeeping.  INFO must be a plist
-with unique keyword keys; nil selects fixed lowering defaults.  A supplied
-headline formatter, private date timestamp converter and private special-block
-handlers are resolved now and retained as opaque functions.  Handler registry
-strings and list structure are independently owned;
-mutable state captured by a user closure is not frozen.  Never mutate the
-returned input, its accessors' values, or arguments from a formatter."
+  "Copy AST, INFO and context without allocating reference identities.
+Internal intermediate ownership boundary; see `org-texmacs-input-create'."
   (unless (and (consp ast) (eq (car ast) 'org-data))
     (signal 'org-texmacs-document-error '("Expected a prepared Org document AST")))
   (unless (and (proper-list-p info) (zerop (% (length info) 2)))
@@ -239,6 +202,85 @@ returned input, its accessors' values, or arguments from a formatter."
                                  (string-match-p "\\`[ \t]*\\'" value))
                       (fail "Expected trailing spaces or tabs"))
                     (substring-no-properties value))))))))
+
+(defun org-texmacs--input-finalize (input)
+  "Return INPUT with one owned, frozen reference resolution.
+Unsupported semantic inputs retain their error until document lowering."
+  (let* ((ast (org-texmacs-input-ast input))
+         (static (org-texmacs--document-static-labels (org-texmacs-input-islands input)))
+         (resolution
+          (condition-case err
+              (org-texmacs--document-allocate
+               ast (org-texmacs--document-resolve
+                    ast (org-texmacs-input-islands input) static
+                    (org-texmacs-input-resource-base input)) static)
+            (org-texmacs-document-error
+             (org-texmacs--resolution-create :failure (cdr err))))))
+    (org-texmacs--input-with-info input (org-texmacs-input-info input) resolution)))
+
+(defun org-texmacs--input-with-info (input info &optional resolution)
+  "Finish private INPUT with owned INFO and optional frozen RESOLUTION.
+Reuse owned AST identities; callers must not expose unfinished inputs."
+  (org-texmacs--input-create
+   :ast (org-texmacs-input-ast input) :info info
+   :islands (org-texmacs-input-islands input)
+   :post-blanks (org-texmacs-input-post-blanks input)
+   :style (org-texmacs-input-style input) :initial (org-texmacs-input-initial input)
+   :source-file (org-texmacs-input-source-file input)
+   :resource-base (org-texmacs-input-resource-base input)
+   :bibliography (org-texmacs-input-bibliography input)
+   :resolution (or resolution (org-texmacs-input-resolution input))))
+
+;;;###autoload
+(cl-defun org-texmacs-input-create
+    (ast info &key islands post-blanks (style '("generic")) initial
+         source-file resource-base bibliography)
+  "Own AST, INFO, mappings and context, then freeze reference identities.
+AST must be a fully parsed `org-data' tree, not Org's live cache.  Do not
+resolve deferred properties, read buffers, discover STM or run a formatter.
+ISLANDS maps AST node identities to already parsed text strees; POST-BLANKS
+maps inline node identities to trailing spaces/tabs.  See the preparation
+contract of `org-texmacs--document-lower'.  Unsupported lowering is diagnosed
+by `org-texmacs-document', not by invoking it during this copy.
+
+STYLE is a nonempty list of TeXmacs style identifier strings and defaults to
+`(\"generic\")'.  INITIAL is an alist of unique nonempty environment identifier
+strings to source-semantic text strees and defaults to nil.  Neither setting
+is inferred from INFO or ambient Custom values.
+
+SOURCE-FILE and RESOURCE-BASE are optional explicit absolute path strings,
+copied without filesystem access or path expansion.  RESOURCE-BASE fixes
+the source-relative resource base; SOURCE-FILE does not override it.  Omitted
+values remain nil and are never inferred from the current buffer.
+
+BIBLIOGRAPHY is an alist from explicit absolute source paths to already parsed
+BibTeX document strees.  Copy its text trees and reject duplicate source paths,
+keys or fields.  Never read those paths or parse source text here.  This slot
+establishes prepared data ownership.  Citation lowering also requires fixed
+INFO declaration identities and a prepared output view for bibliography print.
+The view binds prefix, key order, selected entry trees and source-semantic body;
+pure lowering verifies that it matches the current resolution plan.
+
+Copy strings, lists and vectors, rebuild parent links, and remap references
+to AST nodes in INFO and the mappings.  Copy parsed title, author and date
+secondary strings as separately owned Org objects, and table captions as
+owned pairs of long/short secondary strings.  Reject cyclic or multiply
+owned AST nodes, detached/duplicate mapping keys, deferred values and opaque
+objects.
+Discard Org's source buffer and parent bookkeeping.  INFO must be a plist
+with unique keyword keys; nil selects fixed lowering defaults.  A supplied
+headline formatter, private date timestamp converter and private special-block
+handlers are resolved now and retained as opaque functions.  Handler registry
+strings and list structure are independently owned;
+mutable state captured by a user closure is not frozen.  Never mutate the
+returned input, its accessors' values, or arguments from a formatter.
+Org reference allocation occurs once after copying into this owned snapshot.
+Mutable Org export caches are not retained.  Repeated document lowering uses
+its fixed identities without further allocation or source access."
+  (org-texmacs--input-finalize
+   (org-texmacs--input-own
+    ast info :islands islands :post-blanks post-blanks :style style :initial initial
+    :source-file source-file :resource-base resource-base :bibliography bibliography)))
 
 (provide 'org-texmacs-input)
 ;;; org-texmacs-input.el ends here
