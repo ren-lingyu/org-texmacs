@@ -2,9 +2,9 @@
 
 ## Current scope amendment: required Issue13, refocused later Issue9
 
-Stage3 guide reviewed only; native empty-caption/starred numbering and all stage3
-checks remain unverified. Source identity, extracted gates and pending review
-corrections: memory/issue-13-stage3.md. Stage2 delivery does not discharge these.
+Stage3 guide reviewed, three user revisions/six acceptance additions adopted; native empty-caption/starred numbering and all stage3
+checks remain unverified. Source identity, extracted gates and revised
+contract: memory/issue-13-stage3.md. Stage2 delivery does not discharge these.
 
 User adopted2026-10-17 a mandatory Issue13 usable mathematical special-block
 subset for0.5.0, not an optional extension. Stage1 recursion/private handlers and

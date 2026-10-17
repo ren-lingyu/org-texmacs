@@ -23,10 +23,11 @@
 ## Issue13: accepted stage1 and remaining adopted target
 
 Stage3 figure/table guidance is reviewed only, not implemented/native-verified.
-Full proposal, static review corrections and intake retention decision:
+Full proposal, adopted user revisions and intake retention decision:
 memory/issue-13-stage3.md. Original wrapper structure must survive pruning/scope;
-caption support must stay within existing subset; native container grammar needs
-explicit limits. Recommendations are not yet user-adopted.
+caption support stays within existing subset; native table grammar is now
+explicit (nonempty rectangular table/row/cell, bounded container/format arities).
+User adopted all three revisions and six acceptance additions; no runtime proof.
 
 Stage1 is implemented/accepted/user-committed, exact delivery verified: ordinary
 special-block recursion, captured private handler dispatch with ownership,

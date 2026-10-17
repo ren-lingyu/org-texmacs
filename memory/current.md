@@ -1,22 +1,25 @@
 # org-texmacs current memory
 
-## Current: Issue13 stage3 guidance reviewed, no implementation authority
+## Current: Issue13 stage3 guidance revised/adopted, implementation pending
 
 User requested project-read-only review of updated INBOX. First-read identity:
 17294bytes, SHA256 b160a8e6f101ac90bb460fbf80a0fe595cf8476f6181df719b54571094c8f891.
-Full extracted semantics/test gates/provenance and three review recommendations:
-memory/issue-13-stage3.md. Recommend original-child/completeness evidence before
-context pruning and region reparse; existing caption inline subset without implied
-STM fragments/notes/citations; explicit finite native table-container grammar.
-Recommendations await user adoption; no code/parser/native/tests/build performed.
-Four structural figure/table wrappers retain native-body classifier unchanged;
-missing caption numbering and starred behavior require new independent native
-proof. Stage4 NAME and Issue9 remain separate. No raw archive needed after sufficient
-extraction; no independent raw experimental evidence, no skill/archive change.
-Only existing flake workaround dirty; ordinary index empty. Next: resolve review
-recommendations, then separately plan/authorize stage3. Stage2 delivery below remains
-verified and its tests do not certify stage3. This memory checkpoint's project
-association grounds static review of delivered source, not stage3 runtime proof.
+Full extracted guidance, adopted user revisions1/2/3 and six added acceptance
+requirements: memory/issue-13-stage3.md. Capture original direct-child evidence
+before cleanup, validate only selected/retained wrappers, use verified ranges and
+owned mappings across reparse instead of relying solely on eq. Region completeness
+includes entire wrapper and affiliated caption. Pure lowering uses saved ownership.
+Caption retains existing inline/long-short/markup/link subset: no caption STM
+fragment parsing; STM-looking plain text remains text; unsupported note/citation/
+target rejects. Native table grammar is explicit: tabular one tformat; zero or more
+leading twith(2)/cwith(6), one terminal table; nonempty rectangular rows/cells,
+cell one body; preserve raw root/provenance without serialize/reparse/rewrites.
+Revisions are adopted, not pending suggestions. Native empty-caption/starred/
+counter evidence and all stage3 tests still pending; no implementation authority
+in this follow-up. Next: separately requested stage3 implementation plan/actions.
+No source/tests/build, skill/archive/config or ordinary index changes. No raw
+archive needed after adequate extraction; source of revisions is user's message,
+not an assumed reread/new INBOX version. Stage2 delivery remains verified below.
 
 ## Completed delivery: Issue13 stage2
 

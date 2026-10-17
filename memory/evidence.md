@@ -7,7 +7,9 @@ b160a8e6f101ac90bb460fbf80a0fe595cf8476f6181df719b54571094c8f891.
 No original archive: useful semantics/test gates fully extracted, no unique raw
 runtime evidence. Static committed-source review identifies pre-prune singleton/
 scope evidence, caption subset and finite table grammar as contract tightenings;
-not yet adopted. Official float/primitives docs support interface shape only,
+subsequently adopted with user-explicit finite grammar and six extra acceptance
+requirements (full distillation in stage3 memory). Official float/primitives docs
+support interface shape only,
 not pinned native empty-caption/star/counter behavior. No new parser/native/ERT/
 builds or remote issue-state lookup. Full record: memory/issue-13-stage3.md.
 Associated project snapshot grounds current static source review only.

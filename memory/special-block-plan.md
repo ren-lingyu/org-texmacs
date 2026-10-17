@@ -3,9 +3,9 @@
 ## Stage3 guidance review
 
 Figure/table wrappers and experimental stars remain planned. Detailed supplied
-contract, prevalidation gates and three pending review corrections:
+contract, prevalidation gates and three adopted user revisions/six extra gates:
 memory/issue-13-stage3.md. No source implementation or tests authorized/performed
-by the read-only review. Keep structure evidence before context loss, current
+by the review/revision follow-up. Keep structure evidence before context loss, current
 caption subset and bounded native table grammar explicit.
 
 ## Status, motivation and authority

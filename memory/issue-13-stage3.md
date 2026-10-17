@@ -121,47 +121,84 @@ mentions preferred commands, but this review grants no new test execution.
 No close13 or release0.5.0. Stage4 owns single-object NAME/labels in counter/caption
 scope and weak raw anchors; Issue9 owns named composite constituents later.
 
-## Static review findings: recommendations, not yet user-adopted
+## Adopted revisions from user's follow-up (normative stage3 contract)
 
-1. Preserve original wrapper body identity BEFORE lossy context processing.
-   Current context-prune extracts comment/comment-block, source keywords and
-   unreferenced footnote definitions; current scoped document-prepare invokes
-   context-prepare before walking, and ordinary preparation also prunes before
-   lowering/preflight. Checking only final prepared child list can accept an
-   originally invalid wrapper containing one table plus a removed comment/keyword/
-   definition. Capture/check source singleton evidence before such removal, but
-   enforce errors only for selected/reachable wrappers; do not reject invalid
-   excluded objects during full-source bibliography discovery. Scope completeness
-   should use original wrapper interval INCLUDING affiliated captions, excluding
-   syntactic post-blank as appropriate, before region reparse can discard outer
-   structure. Keep restored/INCLUDE node ownership coherent. Recommend choosing
-   explicit complete-wrapper selection rather than leaving a loose 'or' fallback;
-   do not broaden raw-body classification to obtain this behavior.
-2. Tighten caption boundary to EXISTING supported inline subset. Guidance5.1 says
-   secondary whitespace/fragment preparation, but current fragment-collect scans
-   paragraphs/direct inline-note text, and pure inline permits island mappings
-   only in paragraph/footnote contexts. Caption footnotes/citations/targets also
-   reject under current contextual rules; existing named-table test rejects
-   caption citations. Reusing caption whitespace capture does not add STM fragment
-   support. Recommend remove the fragment-support implication, keep literal STM-
-   looking caption text as existing text semantics and explicitly reject unsupported
-   caption objects. Newly supporting caption STM/notes/citations would expand scope
-   and require distinct discovery/mapping/ownership/PDF work; not inferred here.
-3. Define finite native table-container validation grammar before implementation.
-   'legal terminal table'/'allowed format items' is underspecified for preflight,
-   final errors and tests. State exactly one terminal table, preceding cwith/twith
-   tags with their arities (6/2), tabular one tformat operand, and bounded table/
-   row/cell skeleton checks; decide nonempty/rectangular edge cases from pinned
-   native evidence. Do not make value vocabularies, mathematical cell semantics,
-   general native evaluator or arbitrary format schema an Elisp responsibility.
-   Original raw root/value/provenance must survive wrappers. Keep invalid-real-
-   root checks out of placeholder preflight. Official primitives supports the
-   basic format-container/row/cell constraints but does not certify runtime cases.
+The user supplied concrete revisions1/2/3 and six acceptance additions after the
+review. These supersede the earlier pending recommendations, without authorizing
+implementation or new test execution. Source is the user's message, not a claimed
+new INBOX byte version; first-read INBOX identity above remains intake provenance.
+No raw message/file archive needed: all operative detail is distilled here.
 
-These are implementation-contract tightenings, not discovered regressions in
-current supported exporter or changes to accepted stage3 high-level design.
-Stage3 code/tests/native experiments have NOT started. Next: user assesses these
-recommendations, then separately requests a concrete implementation plan/actions.
+1. Original structure and scope completeness:
+   - Capture direct-child structure evidence for figure/table wrappers during
+     preparation BEFORE context-prune or any equivalent lossy cleanup.
+   - Removed comments, keywords or unreferenced footnote definitions must not
+     turn an originally non-singleton wrapper into a valid one.
+   - Apply this evidence only to wrappers finally selected and retained; malformed
+     excluded wrappers must not prevent unrelated exports (including discovery).
+   - Region/subtree reparse can create new node identities. Do not rely solely on
+     eq across ASTs: where needed use verified source intervals and owned mappings
+     to associate original evidence with final nodes. Preserve snapshot/origin and
+     parent/identity constraints across ownership, INCLUDE and restored notes.
+   - Region completeness covers the ENTIRE outer wrapper, including affiliated
+     CAPTION/metadata, not merely its inner native island. Detect truncation before
+     body STM requests. Keep structural wrappers out of native-body-kind.
+   - Pure lowering consumes owned saved structural information, never rereads the
+     source buffer or reconstructs missing Org AST from text.
+   Static motivation: current context-prune removes comment/comment-block and
+   source keywords; note recovery removes unreferenced definitions. Scoped
+   document-prepare invokes context processing before walk, and ordinary
+   preparation also prunes before final lowering. Final child-list-only checks
+   would lose the evidence required by the strict original singleton contract.
+2. Caption subset (no syntax expansion):
+   - Reuse copying of existing :caption secondary AST, whitespace preparation and
+     inline lowering, plus outer caption preparation/reference resolution with
+     current structural ownership and STM/file provenance constraints.
+   - Do NOT extend fragment discovery into caption or issue new native STM parsing
+     requests for caption text.
+   - Continue rejecting unsupported caption footnote/citation/target objects.
+   - STM-looking plain text such as (math "x") stays ordinary Org text. Do not
+     auto-detect it as STM and do not reject it merely for that literal spelling.
+   - Reuse existing long/short caption, markup and link subset; no new DSL.
+   Static motivation: fragment-collect scans paragraph/direct inline-note text;
+   pure inline island mappings allow paragraph/footnote contexts only. Existing
+   table caption rejection tests already reject citation objects. Shared caption
+   whitespace preparation is not authorization for new caption fragment semantics.
+3. Finite native table-container grammar:
+   - Allowed original roots remain table, tformat ending in table, or tabular with
+     the full tformat/table shape. Normalize to a single tabular root; never wrap
+     an already complete tabular again.
+   - tabular has exactly one child, a tformat node.
+   - tformat has zero or more preceding twith/cwith nodes and exactly one terminal
+     table. twith has exactly2 arguments, cwith exactly6.
+   - table has a NONEMPTY sequence of row nodes; each row a NONEMPTY sequence of
+     cell nodes; each cell exactly one body argument. Require necessary rectangular
+     row/column shape. These edge policies are now adopted, not unresolved options.
+   - Do not reinterpret cell bodies, validate formatting-variable values, or create
+     a TeXmacs mathematical/layout semantics checker.
+   - Preserve original STM subtree and its stm-paths through structural wrapping;
+     no serialize/reparse or arbitrary internal rewrites to normalize it.
+   - Real parsed-table checks belong after STM parsing, not on preflight placeholder.
+     Native empty-caption/numbered/starred/counter behavior still requires actual
+     locked-native proof; grammar validation alone cannot establish rendering.
+
+Additional required maintained acceptance:
+1. Original direct Org table+comment, Org table+keyword and Org table+footnote-
+   definition (and equivalent extra nodes) cannot become valid after cleanup.
+2. Invalid wrappers in finally unselected regions cause no unrelated rejection.
+3. Region truncating outer wrapper or affiliated caption rejects before body STM.
+4. Supported caption markup/links lower normally; STM-looking text creates no extra
+   native parse; unsupported footnote/citation/target explicitly reject.
+5. Three legal native roots normalize correctly; malformed tabular/tformat/twith/
+   cwith/table/row/cell structures explicitly reject, including empty/nonrectangular
+   shapes under the adopted finite grammar.
+6. Original-root STM provenance remains correct, prepared inputs remain unchanged,
+   and naked Org table compatibility behavior remains unchanged.
+
+These tighten implementation correctness within the adopted high-level stage3
+scope. No stage3 source implementation/parser/native/tests started. Next: prepare
+an implementation plan when requested, then act within explicit task/test/Git
+permissions. No remaining adoption question for these three revisions.
 
 ## Public reference check and evidence limits
 
