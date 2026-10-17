@@ -1,0 +1,13 @@
+(use-modules (utils library cursor) (generic document-edit) (generic document-style))
+(begin (catch #t (lambda () (font-database-extend-local (system->url "/nix/store/ri29jyxixak8y78jzgfb3zdcyl8i244h-noto-fonts-cjk-sans-2.004/share/fonts/opentype/noto-cjk/NotoSansCJK-VF.otf.ttc"))
+(font-database-extend-local (system->url "/nix/store/m14mca8zk4qipp804wzykjn6h5fjglqf-noto-fonts-cjk-serif-2.003/share/fonts/opentype/noto-cjk/NotoSerifCJK-VF.otf.ttc"))
+(call-with-output-file (getenv "PROBE_FONT_DB") (lambda (p) (write (font-database-families) p)))
+(let ((b (buffer-new))) (view-new b) (with-buffer b (set-style-list (list "generic")) (init-env-tree "font" (stree->tree "Noto Serif CJK SC")) (init-env-tree "language" (stree->tree "chinese")) (buffer-set-body b (stree->tree '(document (section "<#6807><#9898><#4E2D><#6587>") (concat "Body <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123. ") (concat "Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123. ") (concat "Strong " (strong "<#4E2D><#6587><#6D4B><#8BD5>") " End. ") (concat "Italic " (em "<#4E2D><#6587><#6D4B><#8BD5>") " End. ") (concat "Inline " (math "<#4E2D><#6587>") " End. ") (quotation (document (concat "Quote <#4E2D><#6587><#6D4B><#8BD5>. "))))))
+  (do ((pass 0 (+ pass 1))) ((= pass 2))
+    (do ((i 0 (+ i 1))) ((= i 3)) (update-current-buffer))
+    (update-forced) (print-to-file (system->url "/nix/store/ddby3q00p2l0szwsdm8b5bn79cscljyq-org-texmacs-block-font-probe/generic-cjk-serif-native.pdf")))
+  (call-with-output-file "/nix/store/ddby3q00p2l0szwsdm8b5bn79cscljyq-org-texmacs-block-font-probe/generic-cjk-serif-native-native-state.sexp"
+   (lambda (p) (write (list (tree->stree (buffer-get-body (current-buffer)))
+    (tree->stree (get-env-tree "font")) (tree->stree (get-env-tree "language"))) p)))
+  )) (display "BLOCK-FONT-NATIVE-OK\n"))
+  (lambda args (display "BLOCK-FONT-NATIVE-ERROR ") (write args))) (quit-TeXmacs))

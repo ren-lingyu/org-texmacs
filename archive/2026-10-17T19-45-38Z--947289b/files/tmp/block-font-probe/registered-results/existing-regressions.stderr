@@ -1,0 +1,18 @@
+Running 14 tests (2026-10-17 19:35:20+0000, selector ‘(member org-texmacs-document-quote-uniform-quotation org-texmacs-document-quote-and-center-containers org-texmacs-document-list-containers-native org-texmacs-pdf-block-quotation-and-center-layout org-texmacs-document-real-chinese-end-to-end org-texmacs-pdf-preformatted-lines-and-indent org-texmacs-document-preformatted-native-and-provenance org-texmacs-pdf-list-multiparagraph-native-layout org-texmacs-pdf-table-alignment-frontend-and-native-layout org-texmacs-issue13-source-real-islands-and-native-statements org-texmacs-issue13-stage2-native-layout-counter-and-reload org-texmacs-issue13-stage3-native-prevalidation org-texmacs-issue13-stage3-exporter-native-pdf-and-reload org-texmacs-issue13-stage4-native-label-placements)’)
+   passed   1/14  org-texmacs-document-quote-uniform-quotation (0.130139 sec)
+   passed   2/14  org-texmacs-document-quote-and-center-containers (0.001524 sec)
+   passed   3/14  org-texmacs-document-list-containers-native (2.300061 sec)
+   passed   4/14  org-texmacs-pdf-block-quotation-and-center-layout (2.195017 sec)
+   passed   5/14  org-texmacs-document-real-chinese-end-to-end (1.913694 sec)
+   passed   6/14  org-texmacs-pdf-preformatted-lines-and-indent (2.095271 sec)
+   passed   7/14  org-texmacs-document-preformatted-native-and-provenance (1.876286 sec)
+   passed   8/14  org-texmacs-pdf-list-multiparagraph-native-layout (2.182326 sec)
+   passed   9/14  org-texmacs-pdf-table-alignment-frontend-and-native-layout (2.031266 sec)
+   passed  10/14  org-texmacs-issue13-source-real-islands-and-native-statements (14.727159 sec)
+   passed  11/14  org-texmacs-issue13-stage2-native-layout-counter-and-reload (7.357141 sec)
+   passed  12/14  org-texmacs-issue13-stage3-native-prevalidation (6.834882 sec)
+   passed  13/14  org-texmacs-issue13-stage3-exporter-native-pdf-and-reload (7.126780 sec)
+   passed  14/14  org-texmacs-issue13-stage4-native-label-placements (7.703060 sec)
+
+Ran 14 tests, 14 results as expected, 0 unexpected (2026-10-17 19:36:18+0000, 58.475623 sec)
+

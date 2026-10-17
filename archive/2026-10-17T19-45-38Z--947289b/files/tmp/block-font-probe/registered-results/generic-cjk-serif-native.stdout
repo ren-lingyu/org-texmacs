@@ -1,0 +1,1370 @@
+warning: guile hooks are not available
+Welcome to TeXmacs 2.1.5
+------------------------------------------------------------------------------
+kpsepath works with your TeX distribution
+kpsewhich works with your TeX distribution
+mktextfm works with your TeX distribution
+mktexpk works with your TeX distribution
+texhash works with your TeX distribution
+------------------------------------------------------------------------------
+Installation completed successfully !
+I will now start up the editor
+------------------------------------------------------------------------------
+Process /nix/store/ri29jyxixak8y78jzgfb3zdcyl8i244h-noto-fonts-cjk-sans-2.004/share/fonts/opentype/noto-cjk/NotoSansCJK-VF.otf.ttc
+Analyzing Linux Libertine Italic
+Analyzing TeXmacs Euler Regular
+Analyzing TeX Gyre Bonum Regular
+Analyzing TeXmacs Courier Bold Italic
+Analyzing TeXmacs Palatino SmallCaps
+Analyzing Fira Sans Bold Italic
+Analyzing TeXmacs Courier Regular
+Analyzing Fira Sans Regular
+Analyzing TeXmacs Computer Modern Mono Proportional
+Analyzing TeX Gyre Cursor Bold Italic
+Analyzing TeXmacs Computer Modern Bold Condensed
+Analyzing TeX Gyre Bonum Bold Italic
+Analyzing Fira Mono Bold
+Analyzing TeXmacs Bookman Bold
+Analyzing TeX Calligraphic Capitals Regular
+Analyzing TeXmacs Concrete Italic
+Analyzing TeXmacs New Century Schoolbook Bold Italic
+Analyzing TeXmacs Computer Modern Oblique
+Analyzing TeX Gyre Heros Cn Regular
+Analyzing TeXmacs New Century Schoolbook Regular
+Analyzing TeXmacs Palatino Bold
+Analyzing TeX Gyre Schola Math Regular
+Analyzing TeXmacs Concrete Sans Bold
+Analyzing TeX Gyre Heros Cn Bold Italic
+Analyzing TeX Gyre Schola Bold Italic
+Analyzing TeXmacs Computer Modern Sans Bold
+Analyzing TeXmacs Palatino Bold Oblique
+Analyzing TeX Gyre Schola Regular
+Analyzing Noto Sans CJK KR Regular
+| Processing NotoSansCJK-VF.otf.ttc, 1
+[ Ascii, Latin, Greek, CJK, Hangul, MathSymbols, mono=no, sans=yes, slant=0, italic=no, case=mixed, regular=yes, ex=88, em=145, lvw=6, lhw=5, uvw=7, uhw=6, fillp=21, vcnt=17, lasprat=93, pasprat=72, loasc=153, lodes=148, dides=103 ] NotoSansCJK-VF.otf.1
+NotoSansCJK-VF.otf.1 ~> [ Ascii, Latin, Greek, CJK, Hangul, MathSymbols, mono=no, sans=yes, slant=0, italic=no, case=mixed, regular=yes, ex=88, em=145, lvw=6, lhw=5, uvw=7, uhw=6, fillp=21, vcnt=17, lasprat=93, pasprat=72, loasc=153, lodes=148, dides=103 ]
+Analyzing Noto Sans CJK JP Regular
+| Processing NotoSansCJK-VF.otf.ttc, 0
+[ Ascii, Latin, Greek, CJK, Hangul, MathSymbols, mono=no, sans=yes, slant=0, italic=no, case=mixed, regular=yes, ex=88, em=145, lvw=6, lhw=5, uvw=7, uhw=6, fillp=21, vcnt=17, lasprat=93, pasprat=72, loasc=153, lodes=148, dides=103 ] NotoSansCJK-VF.otf.0
+NotoSansCJK-VF.otf.0 ~> [ Ascii, Latin, Greek, CJK, Hangul, MathSymbols, mono=no, sans=yes, slant=0, italic=no, case=mixed, regular=yes, ex=88, em=145, lvw=6, lhw=5, uvw=7, uhw=6, fillp=21, vcnt=17, lasprat=93, pasprat=72, loasc=153, lodes=148, dides=103 ]
+Analyzing TeX Gyre Cursor Italic
+Analyzing Linux Biolinum Regular
+Analyzing TeXmacs Times Regular
+Analyzing TeXmacs Euler New Roman Bold
+Analyzing TeX Gyre Heros Bold
+Analyzing Linux Libertine O Bold
+Analyzing Linux Libertine Bold
+Analyzing TeXmacs Computer Modern Sans Bold Oblique
+Analyzing TeX Gyre Bonum Italic
+Analyzing Stix Regular
+Analyzing TeX Gyre Bonum Math Regular
+Analyzing TeXmacs Courier Italic
+Analyzing TeXmacs Computer Modern Mono SmallCaps
+Analyzing Fira Sans Italic
+Analyzing TeX Blackboard Bold Bold
+Analyzing TeXmacs Times Bold Italic
+Analyzing TeXmacs Concrete SmallCaps
+Analyzing Stix Math Regular
+Analyzing Stix Bold Italic
+Analyzing TeXmacs Concrete Bold
+Analyzing TeX Gyre Heros Cn Italic
+Analyzing TeXmacs Helvetica Bold Italic
+Analyzing TeX Blackboard Bold Sans Regular
+Analyzing Linux Biolinum O Regular
+Analyzing TeXmacs New Century Schoolbook Italic
+Analyzing TeXmacs Palatino Oblique
+Analyzing TeXmacs Helvetica Regular
+Analyzing TeX Gyre Pagella Regular
+Analyzing TeXmacs Concrete Mono Proportional
+Analyzing TeXmacs Computer Modern Sans Oblique
+Analyzing TeXmacs Computer Modern Bold Italic
+Analyzing TeX Gyre Schola Italic
+Analyzing TeXmacs Computer Modern Regular
+Analyzing TeXmacs Times Bold SmallCaps
+Analyzing TeX Gyre Cursor Bold
+Analyzing Linux Biolinum Italic
+Analyzing TeX Gyre Termes Regular
+Analyzing TeXmacs Concrete Bold Oblique
+Analyzing TeXmacs Times Italic
+Analyzing TeXmacs Computer Modern Bold Oblique SmallCaps
+Analyzing TeXmacs Avant Garde Regular
+Analyzing TeX Gyre Adventor Bold Italic
+Analyzing TeX Ralph Smith Regular
+Analyzing TeX Gyre Adventor Regular
+Analyzing TeX Gyre Pagella Bold Italic
+Analyzing TeXmacs Computer Modern Bold SmallCaps
+Analyzing TeXmacs Euler Bold
+Analyzing TeXmacs Avant Garde Bold Italic
+Analyzing TeX Gyre Bonum Bold
+Analyzing Stix Italic
+Analyzing TeXmacs Courier Bold
+Analyzing Fira Sans Bold
+Analyzing TeXmacs Concrete Bold Condensed
+Analyzing TeX Blackboard Bold Oblique
+Analyzing TeXmacs Computer Modern Mono Oblique
+Analyzing TeX Gyre Termes Bold Italic
+Analyzing TeX Gyre Chorus Regular
+Analyzing TeX Gyre Termes Math Regular
+Analyzing Fira Mono Regular
+Analyzing TeXmacs Concrete Oblique
+Analyzing TeX Calligraphic Capitals Bold
+Analyzing TeXmacs Bookman Regular
+Analyzing TeX Gyre Heros Cn Bold
+Analyzing Linux Biolinum O Italic
+Analyzing TeXmacs New Century Schoolbook Bold
+Analyzing TeXmacs Helvetica Italic
+Analyzing TeXmacs Palatino Regular
+Analyzing TeXmacs Concrete Sans Regular
+Analyzing TeXmacs Concrete Mono SmallCaps
+Analyzing TeX AMS Blackboard Bold Regular
+Analyzing TeXmacs Bookman Bold Italic
+Analyzing TeX Gyre Pagella Italic
+Analyzing TeXmacs Computer Modern Sans Regular
+Analyzing TeX Gyre Schola Bold
+Analyzing TeXmacs Palatino Bold Italic
+Analyzing TeXmacs Computer Modern Italic
+Analyzing Noto Sans CJK HK Regular
+| Processing NotoSansCJK-VF.otf.ttc, 4
+[ Ascii, Latin, Greek, CJK, Hangul, MathSymbols, mono=no, sans=yes, slant=0, italic=no, case=mixed, regular=yes, ex=88, em=145, lvw=6, lhw=5, uvw=7, uhw=6, fillp=21, vcnt=17, lasprat=93, pasprat=72, loasc=153, lodes=148, dides=103 ] NotoSansCJK-VF.otf.4
+NotoSansCJK-VF.otf.4 ~> [ Ascii, Latin, Greek, CJK, Hangul, MathSymbols, mono=no, sans=yes, slant=0, italic=no, case=mixed, regular=yes, ex=88, em=145, lvw=6, lhw=5, uvw=7, uhw=6, fillp=21, vcnt=17, lasprat=93, pasprat=72, loasc=153, lodes=148, dides=103 ]
+Analyzing Noto Sans CJK TC Regular
+| Processing NotoSansCJK-VF.otf.ttc, 3
+[ Ascii, Latin, Greek, CJK, Hangul, MathSymbols, mono=no, sans=yes, slant=0, italic=no, case=mixed, regular=yes, ex=88, em=145, lvw=6, lhw=5, uvw=7, uhw=6, fillp=21, vcnt=17, lasprat=93, pasprat=72, loasc=153, lodes=148, dides=103 ] NotoSansCJK-VF.otf.3
+NotoSansCJK-VF.otf.3 ~> [ Ascii, Latin, Greek, CJK, Hangul, MathSymbols, mono=no, sans=yes, slant=0, italic=no, case=mixed, regular=yes, ex=88, em=145, lvw=6, lhw=5, uvw=7, uhw=6, fillp=21, vcnt=17, lasprat=93, pasprat=72, loasc=153, lodes=148, dides=103 ]
+Analyzing Noto Sans CJK SC Regular
+| Processing NotoSansCJK-VF.otf.ttc, 2
+[ Ascii, Latin, Greek, CJK, Hangul, MathSymbols, mono=no, sans=yes, slant=0, italic=no, case=mixed, regular=yes, ex=88, em=145, lvw=6, lhw=5, uvw=7, uhw=6, fillp=21, vcnt=17, lasprat=93, pasprat=72, loasc=153, lodes=148, dides=103 ] NotoSansCJK-VF.otf.2
+NotoSansCJK-VF.otf.2 ~> [ Ascii, Latin, Greek, CJK, Hangul, MathSymbols, mono=no, sans=yes, slant=0, italic=no, case=mixed, regular=yes, ex=88, em=145, lvw=6, lhw=5, uvw=7, uhw=6, fillp=21, vcnt=17, lasprat=93, pasprat=72, loasc=153, lodes=148, dides=103 ]
+Analyzing TeX Gyre Termes Italic
+Analyzing Linux Biolinum Bold
+Analyzing TeXmacs Times Bold
+Analyzing TeXmacs Palatino Bold SmallCaps
+Analyzing TeXmacs Computer Modern Mono Italic Proportional
+Analyzing TeXmacs Avant Garde Italic
+Analyzing TeX Gyre Adventor Italic
+Analyzing TeXmacs Euler New Roman Regular
+Analyzing TeX Gyre Heros Regular
+Analyzing TeXmacs Times SmallCaps
+Analyzing Linux Libertine O Regular
+Analyzing TeX Blackboard Bold Variant Regular
+Analyzing Linux Libertine Regular
+Analyzing TeX Double Stroke Sans Regular
+Analyzing Stix Bold
+Analyzing TeX Gyre Heros Bold Italic
+Analyzing TeX Blackboard Bold Regular
+Analyzing TeXmacs Computer Modern Mono Regular
+Analyzing TeXmacs Computer Modern SmallCaps
+Analyzing TeXmacs Bookman Italic
+Analyzing TeX Euler Calligraphic Regular
+Analyzing TeXmacs Computer Modern Long
+Analyzing TeXmacs Concrete Regular
+Analyzing TeXmacs Helvetica Bold
+Analyzing TeXmacs Palatino Italic
+Analyzing TeXmacs Times Bold Oblique
+Analyzing Linux Libertine Bold Italic
+Analyzing TeX Gyre Pagella Bold
+Analyzing TeXmacs Concrete Bold Italic
+Analyzing TeXmacs Concrete Mono Oblique
+Analyzing TeXmacs Computer Modern Bold
+Analyzing TeX Double Stroke Regular
+Analyzing TeX Gyre Termes Bold
+Analyzing TeXmacs Times Oblique
+Analyzing TeX Gyre Cursor Regular
+Analyzing TeXmacs Computer Modern Bold Oblique
+Analyzing TeXmacs Avant Garde Bold
+Analyzing TeX Gyre Pagella Math Regular
+Analyzing TeX Gyre Adventor Bold
+Analyzing TeX Gyre Heros Italic
+TeXmacs] missing 'Noto Sans CJK HK' family
+TeXmacs] warning, missing font, loading global substitution list
+TeXmacs] missing 'Noto Sans CJK HK' family
+TeXmacs] missing 'Noto Sans CJK JP' family
+TeXmacs] missing 'Noto Sans CJK JP' family
+TeXmacs] missing 'Noto Sans CJK KR' family
+TeXmacs] missing 'Noto Sans CJK KR' family
+TeXmacs] missing 'Noto Sans CJK SC' family
+TeXmacs] missing 'Noto Sans CJK SC' family
+TeXmacs] missing 'Noto Sans CJK TC' family
+TeXmacs] missing 'Noto Sans CJK TC' family
+Process /nix/store/m14mca8zk4qipp804wzykjn6h5fjglqf-noto-fonts-cjk-serif-2.003/share/fonts/opentype/noto-cjk/NotoSerifCJK-VF.otf.ttc
+Analyzing Linux Libertine Italic
+Analyzing TeXmacs Euler Regular
+Analyzing TeX Gyre Bonum Regular
+Analyzing TeXmacs Courier Bold Italic
+Analyzing TeXmacs Palatino SmallCaps
+Analyzing Fira Sans Bold Italic
+Analyzing TeXmacs Courier Regular
+Analyzing Fira Sans Regular
+Analyzing TeXmacs Computer Modern Mono Proportional
+Analyzing TeX Gyre Cursor Bold Italic
+Analyzing TeXmacs Computer Modern Bold Condensed
+Analyzing TeX Gyre Bonum Bold Italic
+Analyzing Fira Mono Bold
+Analyzing TeXmacs Bookman Bold
+Analyzing TeX Calligraphic Capitals Regular
+Analyzing TeXmacs Concrete Italic
+Analyzing TeXmacs New Century Schoolbook Bold Italic
+Analyzing TeXmacs Computer Modern Oblique
+Analyzing Noto Serif CJK HK Regular
+| Processing NotoSerifCJK-VF.otf.ttc, 4
+[ Ascii, Latin, Greek, Cyrillic, CJK, Hangul, MathSymbols, mono=no, sans=no, slant=0, italic=no, case=mixed, regular=yes, ex=85, em=189, lvw=12, lhw=5, uvw=14, uhw=7, fillp=25, vcnt=25, lasprat=107, pasprat=95, loasc=160, lodes=154, dides=104 ] NotoSerifCJK-VF.otf.4
+NotoSerifCJK-VF.otf.4 ~> [ Ascii, Latin, Greek, Cyrillic, CJK, Hangul, MathSymbols, mono=no, sans=no, slant=0, italic=no, case=mixed, regular=yes, ex=85, em=189, lvw=12, lhw=5, uvw=14, uhw=7, fillp=25, vcnt=25, lasprat=107, pasprat=95, loasc=160, lodes=154, dides=104 ]
+Analyzing Noto Serif CJK TC Regular
+| Processing NotoSerifCJK-VF.otf.ttc, 3
+[ Ascii, Latin, Greek, Cyrillic, CJK, Hangul, MathSymbols, mono=no, sans=no, slant=0, italic=no, case=mixed, regular=yes, ex=85, em=189, lvw=12, lhw=5, uvw=14, uhw=7, fillp=25, vcnt=25, lasprat=107, pasprat=95, loasc=160, lodes=154, dides=104 ] NotoSerifCJK-VF.otf.3
+NotoSerifCJK-VF.otf.3 ~> [ Ascii, Latin, Greek, Cyrillic, CJK, Hangul, MathSymbols, mono=no, sans=no, slant=0, italic=no, case=mixed, regular=yes, ex=85, em=189, lvw=12, lhw=5, uvw=14, uhw=7, fillp=25, vcnt=25, lasprat=107, pasprat=95, loasc=160, lodes=154, dides=104 ]
+Analyzing Noto Serif CJK SC Regular
+| Processing NotoSerifCJK-VF.otf.ttc, 2
+[ Ascii, Latin, Greek, Cyrillic, CJK, Hangul, MathSymbols, mono=no, sans=no, slant=0, italic=no, case=mixed, regular=yes, ex=85, em=189, lvw=12, lhw=5, uvw=14, uhw=7, fillp=25, vcnt=25, lasprat=107, pasprat=95, loasc=160, lodes=154, dides=104 ] NotoSerifCJK-VF.otf.2
+NotoSerifCJK-VF.otf.2 ~> [ Ascii, Latin, Greek, Cyrillic, CJK, Hangul, MathSymbols, mono=no, sans=no, slant=0, italic=no, case=mixed, regular=yes, ex=85, em=189, lvw=12, lhw=5, uvw=14, uhw=7, fillp=25, vcnt=25, lasprat=107, pasprat=95, loasc=160, lodes=154, dides=104 ]
+Analyzing TeX Gyre Heros Cn Regular
+Analyzing TeXmacs New Century Schoolbook Regular
+Analyzing TeXmacs Palatino Bold
+Analyzing TeX Gyre Schola Math Regular
+Analyzing TeXmacs Concrete Sans Bold
+Analyzing TeX Gyre Heros Cn Bold Italic
+Analyzing TeX Gyre Schola Bold Italic
+Analyzing TeXmacs Computer Modern Sans Bold
+Analyzing TeXmacs Palatino Bold Oblique
+Analyzing TeX Gyre Schola Regular
+Analyzing Noto Sans CJK KR Regular
+Analyzing Noto Sans CJK JP Regular
+Analyzing TeX Gyre Cursor Italic
+Analyzing Linux Biolinum Regular
+Analyzing TeXmacs Times Regular
+Analyzing TeXmacs Euler New Roman Bold
+Analyzing TeX Gyre Heros Bold
+Analyzing Linux Libertine O Bold
+Analyzing Linux Libertine Bold
+Analyzing TeXmacs Computer Modern Sans Bold Oblique
+Analyzing TeX Gyre Bonum Italic
+Analyzing Stix Regular
+Analyzing TeX Gyre Bonum Math Regular
+Analyzing TeXmacs Courier Italic
+Analyzing TeXmacs Computer Modern Mono SmallCaps
+Analyzing Fira Sans Italic
+Analyzing TeX Blackboard Bold Bold
+Analyzing TeXmacs Times Bold Italic
+Analyzing TeXmacs Concrete SmallCaps
+Analyzing Stix Math Regular
+Analyzing Stix Bold Italic
+Analyzing TeXmacs Concrete Bold
+Analyzing TeX Gyre Heros Cn Italic
+Analyzing TeXmacs Helvetica Bold Italic
+Analyzing TeX Blackboard Bold Sans Regular
+Analyzing Linux Biolinum O Regular
+Analyzing TeXmacs New Century Schoolbook Italic
+Analyzing TeXmacs Palatino Oblique
+Analyzing TeXmacs Helvetica Regular
+Analyzing TeX Gyre Pagella Regular
+Analyzing TeXmacs Concrete Mono Proportional
+Analyzing TeXmacs Computer Modern Sans Oblique
+Analyzing TeXmacs Computer Modern Bold Italic
+Analyzing TeX Gyre Schola Italic
+Analyzing TeXmacs Computer Modern Regular
+Analyzing TeXmacs Times Bold SmallCaps
+Analyzing TeX Gyre Cursor Bold
+Analyzing Linux Biolinum Italic
+Analyzing TeX Gyre Termes Regular
+Analyzing TeXmacs Concrete Bold Oblique
+Analyzing TeXmacs Times Italic
+Analyzing TeXmacs Computer Modern Bold Oblique SmallCaps
+Analyzing TeXmacs Avant Garde Regular
+Analyzing TeX Gyre Adventor Bold Italic
+Analyzing TeX Ralph Smith Regular
+Analyzing TeX Gyre Adventor Regular
+Analyzing TeX Gyre Pagella Bold Italic
+Analyzing TeXmacs Computer Modern Bold SmallCaps
+Analyzing TeXmacs Euler Bold
+Analyzing TeXmacs Avant Garde Bold Italic
+Analyzing TeX Gyre Bonum Bold
+Analyzing Stix Italic
+Analyzing TeXmacs Courier Bold
+Analyzing Fira Sans Bold
+Analyzing TeXmacs Concrete Bold Condensed
+Analyzing TeX Blackboard Bold Oblique
+Analyzing TeXmacs Computer Modern Mono Oblique
+Analyzing TeX Gyre Termes Bold Italic
+Analyzing TeX Gyre Chorus Regular
+Analyzing TeX Gyre Termes Math Regular
+Analyzing Fira Mono Regular
+Analyzing TeXmacs Concrete Oblique
+Analyzing TeX Calligraphic Capitals Bold
+Analyzing TeXmacs Bookman Regular
+Analyzing TeX Gyre Heros Cn Bold
+Analyzing Noto Serif CJK KR Regular
+| Processing NotoSerifCJK-VF.otf.ttc, 1
+[ Ascii, Latin, Greek, Cyrillic, CJK, Hangul, MathSymbols, mono=no, sans=no, slant=0, italic=no, case=mixed, regular=yes, ex=85, em=189, lvw=12, lhw=5, uvw=14, uhw=7, fillp=25, vcnt=25, lasprat=107, pasprat=95, loasc=160, lodes=154, dides=104 ] NotoSerifCJK-VF.otf.1
+NotoSerifCJK-VF.otf.1 ~> [ Ascii, Latin, Greek, Cyrillic, CJK, Hangul, MathSymbols, mono=no, sans=no, slant=0, italic=no, case=mixed, regular=yes, ex=85, em=189, lvw=12, lhw=5, uvw=14, uhw=7, fillp=25, vcnt=25, lasprat=107, pasprat=95, loasc=160, lodes=154, dides=104 ]
+Analyzing Noto Serif CJK JP Regular
+| Processing NotoSerifCJK-VF.otf.ttc, 0
+[ Ascii, Latin, Greek, Cyrillic, CJK, Hangul, MathSymbols, mono=no, sans=no, slant=0, italic=no, case=mixed, regular=yes, ex=85, em=189, lvw=12, lhw=5, uvw=14, uhw=7, fillp=25, vcnt=25, lasprat=107, pasprat=95, loasc=160, lodes=154, dides=104 ] NotoSerifCJK-VF.otf.0
+NotoSerifCJK-VF.otf.0 ~> [ Ascii, Latin, Greek, Cyrillic, CJK, Hangul, MathSymbols, mono=no, sans=no, slant=0, italic=no, case=mixed, regular=yes, ex=85, em=189, lvw=12, lhw=5, uvw=14, uhw=7, fillp=25, vcnt=25, lasprat=107, pasprat=95, loasc=160, lodes=154, dides=104 ]
+Analyzing Linux Biolinum O Italic
+Analyzing TeXmacs New Century Schoolbook Bold
+Analyzing TeXmacs Helvetica Italic
+Analyzing TeXmacs Palatino Regular
+Analyzing TeXmacs Concrete Sans Regular
+Analyzing TeXmacs Concrete Mono SmallCaps
+Analyzing TeX AMS Blackboard Bold Regular
+Analyzing TeXmacs Bookman Bold Italic
+Analyzing TeX Gyre Pagella Italic
+Analyzing TeXmacs Computer Modern Sans Regular
+Analyzing TeX Gyre Schola Bold
+Analyzing TeXmacs Palatino Bold Italic
+Analyzing TeXmacs Computer Modern Italic
+Analyzing Noto Sans CJK HK Regular
+Analyzing Noto Sans CJK TC Regular
+Analyzing Noto Sans CJK SC Regular
+Analyzing TeX Gyre Termes Italic
+Analyzing Linux Biolinum Bold
+Analyzing TeXmacs Times Bold
+Analyzing TeXmacs Palatino Bold SmallCaps
+Analyzing TeXmacs Computer Modern Mono Italic Proportional
+Analyzing TeXmacs Avant Garde Italic
+Analyzing TeX Gyre Adventor Italic
+Analyzing TeXmacs Euler New Roman Regular
+Analyzing TeX Gyre Heros Regular
+Analyzing TeXmacs Times SmallCaps
+Analyzing Linux Libertine O Regular
+Analyzing TeX Blackboard Bold Variant Regular
+Analyzing Linux Libertine Regular
+Analyzing TeX Double Stroke Sans Regular
+Analyzing Stix Bold
+Analyzing TeX Gyre Heros Bold Italic
+Analyzing TeX Blackboard Bold Regular
+Analyzing TeXmacs Computer Modern Mono Regular
+Analyzing TeXmacs Computer Modern SmallCaps
+Analyzing TeXmacs Bookman Italic
+Analyzing TeX Euler Calligraphic Regular
+Analyzing TeXmacs Computer Modern Long
+Analyzing TeXmacs Concrete Regular
+Analyzing TeXmacs Helvetica Bold
+Analyzing TeXmacs Palatino Italic
+Analyzing TeXmacs Times Bold Oblique
+Analyzing Linux Libertine Bold Italic
+Analyzing TeX Gyre Pagella Bold
+Analyzing TeXmacs Concrete Bold Italic
+Analyzing TeXmacs Concrete Mono Oblique
+Analyzing TeXmacs Computer Modern Bold
+Analyzing TeX Double Stroke Regular
+Analyzing TeX Gyre Termes Bold
+Analyzing TeXmacs Times Oblique
+Analyzing TeX Gyre Cursor Regular
+Analyzing TeXmacs Computer Modern Bold Oblique
+Analyzing TeXmacs Avant Garde Bold
+Analyzing TeX Gyre Pagella Math Regular
+Analyzing TeX Gyre Adventor Bold
+Analyzing TeX Gyre Heros Italic
+TeXmacs] missing 'Noto Serif CJK HK' family
+TeXmacs] missing 'Noto Serif CJK HK' family
+TeXmacs] missing 'Noto Serif CJK JP' family
+TeXmacs] missing 'Noto Serif CJK JP' family
+TeXmacs] missing 'Noto Serif CJK KR' family
+TeXmacs] missing 'Noto Serif CJK KR' family
+TeXmacs] missing 'Noto Serif CJK SC' family
+TeXmacs] missing 'Noto Serif CJK SC' family
+TeXmacs] missing 'Noto Serif CJK TC' family
+TeXmacs] missing 'Noto Serif CJK TC' family
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK HK' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto CJK KR' master
+TeXmacs] missing 'Noto CJK TC' master
+TeXmacs] missing 'Noto CJK JP' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto CJK JP' family
+TeXmacs] missing 'Noto CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+TeXmacs] missing 'Noto Serif CJK SC' master
+BLOCK-FONT-NATIVE-OK

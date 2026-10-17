@@ -1,0 +1,5474 @@
+{
+  "generic-baseline-org": {
+    "style": "generic",
+    "mode": "baseline",
+    "font": "",
+    "origin": "org",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "193",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "221",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "249",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "249",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "277",
+            "left": "170",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "277",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "generic-baseline-native": {
+    "style": "generic",
+    "mode": "baseline",
+    "font": "",
+    "origin": "native",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "193",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "221",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "249",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "249",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "277",
+            "left": "170",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "277",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "generic-baseline-reload": {
+    "style": "generic",
+    "mode": "baseline",
+    "font": "",
+    "origin": "reload",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "193",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "221",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "249",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "249",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "277",
+            "left": "170",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "277",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "generic-cjk-default-org": {
+    "style": "generic",
+    "mode": "cjk-default",
+    "font": "",
+    "origin": "org",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "193",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "221",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "249",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "249",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "277",
+            "left": "170",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "277",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "generic-cjk-default-native": {
+    "style": "generic",
+    "mode": "cjk-default",
+    "font": "",
+    "origin": "native",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "193",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "221",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "249",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "249",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "277",
+            "left": "170",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "277",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "generic-cjk-default-reload": {
+    "style": "generic",
+    "mode": "cjk-default",
+    "font": "",
+    "origin": "reload",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "193",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "221",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "249",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "249",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "277",
+            "left": "170",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "277",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "generic-cjk-serif-org": {
+    "style": "generic",
+    "mode": "cjk-serif",
+    "font": "Noto Serif CJK SC",
+    "origin": "org",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "193",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "221",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "249",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "249",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "277",
+            "left": "170",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "277",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "generic-cjk-serif-native": {
+    "style": "generic",
+    "mode": "cjk-serif",
+    "font": "Noto Serif CJK SC",
+    "origin": "native",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "193",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "221",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "249",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "249",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "277",
+            "left": "170",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "277",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "generic-cjk-serif-reload": {
+    "style": "generic",
+    "mode": "cjk-serif",
+    "font": "Noto Serif CJK SC",
+    "origin": "reload",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "193",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "221",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "249",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "249",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "277",
+            "left": "170",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "277",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "generic-cjk-sans-org": {
+    "style": "generic",
+    "mode": "cjk-sans",
+    "font": "Noto Sans CJK SC",
+    "origin": "org",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+TeXGyreAdventor-Bold          Type 1C           WinAnsi          yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+CMR10                         Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+TeXGyreAdventor",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+CMR10",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "128",
+            "left": "128",
+            "width": "12",
+            "height": "19",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "151",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "166",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "194",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "222",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "248",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "250",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "248",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "276",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "278",
+            "left": "170",
+            "width": "137",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "276",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1166",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "generic-cjk-sans-native": {
+    "style": "generic",
+    "mode": "cjk-sans",
+    "font": "Noto Sans CJK SC",
+    "origin": "native",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+TeXGyreAdventor-Bold          Type 1C           WinAnsi          yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+CMR10                         Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+TeXGyreAdventor",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+CMR10",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "128",
+            "left": "128",
+            "width": "12",
+            "height": "19",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "151",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "166",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "194",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "222",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "248",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "250",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "248",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "276",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "278",
+            "left": "170",
+            "width": "137",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "276",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1166",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "generic-cjk-sans-reload": {
+    "style": "generic",
+    "mode": "cjk-sans",
+    "font": "Noto Sans CJK SC",
+    "origin": "reload",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+TeXGyreAdventor-Bold          Type 1C           WinAnsi          yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+CMR10                         Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+TeXGyreAdventor",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+CMR10",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "128",
+            "left": "128",
+            "width": "12",
+            "height": "19",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "151",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "166",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "194",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "222",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "248",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "250",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "248",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "276",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "278",
+            "left": "170",
+            "width": "137",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "276",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1166",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-baseline-org": {
+    "style": "article",
+    "mode": "baseline",
+    "font": "",
+    "origin": "org",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "201",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "260",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "260",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-baseline-native": {
+    "style": "article",
+    "mode": "baseline",
+    "font": "",
+    "origin": "native",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "201",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "260",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "260",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-baseline-reload": {
+    "style": "article",
+    "mode": "baseline",
+    "font": "",
+    "origin": "reload",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "201",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "260",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "260",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-cjk-default-org": {
+    "style": "article",
+    "mode": "cjk-default",
+    "font": "",
+    "origin": "org",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "201",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "260",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "260",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-cjk-default-native": {
+    "style": "article",
+    "mode": "cjk-default",
+    "font": "",
+    "origin": "native",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "201",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "260",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "260",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-cjk-default-reload": {
+    "style": "article",
+    "mode": "cjk-default",
+    "font": "",
+    "origin": "reload",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "201",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "260",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "260",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-cjk-serif-org": {
+    "style": "article",
+    "mode": "cjk-serif",
+    "font": "Noto Serif CJK SC",
+    "origin": "org",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "201",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "260",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "260",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-cjk-serif-native": {
+    "style": "article",
+    "mode": "cjk-serif",
+    "font": "Noto Serif CJK SC",
+    "origin": "native",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "201",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "260",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "260",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-cjk-serif-reload": {
+    "style": "article",
+    "mode": "cjk-serif",
+    "font": "Noto Serif CJK SC",
+    "origin": "reload",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "201",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "260",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "260",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-cjk-sans-org": {
+    "style": "article",
+    "mode": "cjk-sans",
+    "font": "Noto Sans CJK SC",
+    "origin": "org",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+TeXGyreAdventor-Bold          Type 1C           WinAnsi          yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+CMR10                         Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+CMR8                          Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+TeXGyreAdventor",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+CMR10",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+CMR8",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "128",
+            "left": "128",
+            "width": "12",
+            "height": "19",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "151",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "202",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "137",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "259",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "261",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "259",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "81",
+            "left": "759",
+            "width": "6",
+            "height": "12",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-cjk-sans-native": {
+    "style": "article",
+    "mode": "cjk-sans",
+    "font": "Noto Sans CJK SC",
+    "origin": "native",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+TeXGyreAdventor-Bold          Type 1C           WinAnsi          yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+CMR10                         Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+CMR8                          Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+TeXGyreAdventor",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+CMR10",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+CMR8",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "128",
+            "left": "128",
+            "width": "12",
+            "height": "19",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "151",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "202",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "137",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "259",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "261",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "259",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "81",
+            "left": "759",
+            "width": "6",
+            "height": "12",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-cjk-sans-reload": {
+    "style": "article",
+    "mode": "cjk-sans",
+    "font": "Noto Sans CJK SC",
+    "origin": "reload",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+TeXGyreAdventor-Bold          Type 1C           WinAnsi          yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+CMR10                         Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+CMR8                          Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+TeXGyreAdventor",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+CMR10",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+CMR8",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "128",
+            "left": "128",
+            "width": "12",
+            "height": "19",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "151",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "202",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "137",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "259",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "261",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "259",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "81",
+            "left": "759",
+            "width": "6",
+            "height": "12",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  }
+}

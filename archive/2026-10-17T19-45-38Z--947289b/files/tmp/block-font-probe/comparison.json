@@ -1,0 +1,50 @@
+{
+  "generic-baseline": {
+    "text_same": true,
+    "geometry_font_same": true,
+    "real_chinese": false,
+    "fallback": true
+  },
+  "generic-cjk-default": {
+    "text_same": true,
+    "geometry_font_same": true,
+    "real_chinese": true,
+    "fallback": false
+  },
+  "generic-cjk-serif": {
+    "text_same": true,
+    "geometry_font_same": true,
+    "real_chinese": true,
+    "fallback": false
+  },
+  "generic-cjk-sans": {
+    "text_same": true,
+    "geometry_font_same": true,
+    "real_chinese": true,
+    "fallback": false
+  },
+  "article-baseline": {
+    "text_same": true,
+    "geometry_font_same": true,
+    "real_chinese": false,
+    "fallback": true
+  },
+  "article-cjk-default": {
+    "text_same": true,
+    "geometry_font_same": true,
+    "real_chinese": true,
+    "fallback": false
+  },
+  "article-cjk-serif": {
+    "text_same": true,
+    "geometry_font_same": true,
+    "real_chinese": true,
+    "fallback": false
+  },
+  "article-cjk-sans": {
+    "text_same": true,
+    "geometry_font_same": true,
+    "real_chinese": true,
+    "fallback": false
+  }
+}

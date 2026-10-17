@@ -1,0 +1,4514 @@
+{
+  "generic-baseline-org": {
+    "style": "generic",
+    "mode": "baseline",
+    "font": "",
+    "origin": "org",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "193",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "221",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "249",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "249",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "277",
+            "left": "170",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "277",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "generic-baseline-native": {
+    "style": "generic",
+    "mode": "baseline",
+    "font": "",
+    "origin": "native",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "193",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "221",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "249",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "249",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "277",
+            "left": "170",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "277",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "generic-baseline-reload": {
+    "style": "generic",
+    "mode": "baseline",
+    "font": "",
+    "origin": "reload",
+    "text": "1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nRepeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\nStrong <#4E2D><#6587><#6D4B><#8BD5> End.\nItalic <#4E2D><#6587><#6D4B><#8BD5> End.\nInline <#4E2D><#6587> End.\n\n     Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\n\n\n\n                                    1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAE+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "165",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "193",
+            "left": "179",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "193",
+            "left": "464",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "221",
+            "left": "176",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "221",
+            "left": "461",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "249",
+            "left": "166",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "249",
+            "left": "451",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "277",
+            "left": "170",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "277",
+            "left": "311",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "312",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "313",
+            "left": "218",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "312",
+            "left": "497",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "generic-cjk-default-org": {
+    "style": "generic",
+    "mode": "cjk-default",
+    "font": "",
+    "origin": "org",
+    "text": "1 标题中文\nBody 中文测试 ABC xyz 123.\nRepeat 中文测试 ABC xyz 123.\nStrong 中文测试 End.\nItalic 中文测试 End.\nInline 中文 End.\n\n     Quote 中文测试.\n\n\n\n\n                           1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAE+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAC+FandolSong-Bold               CID Type 0C       Identity-H       yes yes yes      6  0\nAAAAAF+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+FandolSong-Regular            CID Type 0C       Identity-H       yes yes yes      8  0\nAAAAAB+FandolKai-Regular             CID Type 0C       Identity-H       yes yes yes      9  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAF+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "4",
+            "size": "15",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "5",
+            "size": "16",
+            "family": "AAAAAB+FandolKai",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "125",
+            "left": "155",
+            "width": "84",
+            "height": "21",
+            "font": "1",
+            "text": "标题中文"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "167",
+            "left": "167",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "165",
+            "left": "232",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "195",
+            "left": "179",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "193",
+            "left": "244",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "222",
+            "left": "176",
+            "width": "60",
+            "height": "15",
+            "font": "4",
+            "text": "中文测试"
+          },
+          {
+            "top": "221",
+            "left": "241",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "250",
+            "left": "166",
+            "width": "62",
+            "height": "16",
+            "font": "5",
+            "text": "中文测试"
+          },
+          {
+            "top": "249",
+            "left": "233",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "279",
+            "left": "170",
+            "width": "30",
+            "height": "15",
+            "font": "3",
+            "text": "中文"
+          },
+          {
+            "top": "277",
+            "left": "204",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "313",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "315",
+            "left": "218",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "313",
+            "left": "277",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "generic-cjk-default-native": {
+    "style": "generic",
+    "mode": "cjk-default",
+    "font": "",
+    "origin": "native",
+    "text": "1 标题中文\nBody 中文测试 ABC xyz 123.\nRepeat 中文测试 ABC xyz 123.\nStrong 中文测试 End.\nItalic 中文测试 End.\nInline 中文 End.\n\n     Quote 中文测试.\n\n\n\n\n                           1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAE+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAC+FandolSong-Bold               CID Type 0C       Identity-H       yes yes yes      6  0\nAAAAAF+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+FandolSong-Regular            CID Type 0C       Identity-H       yes yes yes      8  0\nAAAAAB+FandolKai-Regular             CID Type 0C       Identity-H       yes yes yes      9  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAF+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "4",
+            "size": "15",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "5",
+            "size": "16",
+            "family": "AAAAAB+FandolKai",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "125",
+            "left": "155",
+            "width": "84",
+            "height": "21",
+            "font": "1",
+            "text": "标题中文"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "167",
+            "left": "167",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "165",
+            "left": "232",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "195",
+            "left": "179",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "193",
+            "left": "244",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "222",
+            "left": "176",
+            "width": "60",
+            "height": "15",
+            "font": "4",
+            "text": "中文测试"
+          },
+          {
+            "top": "221",
+            "left": "241",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "250",
+            "left": "166",
+            "width": "62",
+            "height": "16",
+            "font": "5",
+            "text": "中文测试"
+          },
+          {
+            "top": "249",
+            "left": "233",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "279",
+            "left": "170",
+            "width": "30",
+            "height": "15",
+            "font": "3",
+            "text": "中文"
+          },
+          {
+            "top": "277",
+            "left": "204",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "313",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "315",
+            "left": "218",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "313",
+            "left": "277",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "generic-cjk-default-reload": {
+    "style": "generic",
+    "mode": "cjk-default",
+    "font": "",
+    "origin": "reload",
+    "text": "1 标题中文\nBody 中文测试 ABC xyz 123.\nRepeat 中文测试 ABC xyz 123.\nStrong 中文测试 End.\nItalic 中文测试 End.\nInline 中文 End.\n\n     Quote 中文测试.\n\n\n\n\n                           1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAE+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAC+FandolSong-Bold               CID Type 0C       Identity-H       yes yes yes      6  0\nAAAAAF+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+FandolSong-Regular            CID Type 0C       Identity-H       yes yes yes      8  0\nAAAAAB+FandolKai-Regular             CID Type 0C       Identity-H       yes yes yes      9  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAF+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "4",
+            "size": "15",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "5",
+            "size": "16",
+            "family": "AAAAAB+FandolKai",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "125",
+            "left": "155",
+            "width": "84",
+            "height": "21",
+            "font": "1",
+            "text": "标题中文"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "167",
+            "left": "167",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "165",
+            "left": "232",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "193",
+            "left": "128",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "195",
+            "left": "179",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "193",
+            "left": "244",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "221",
+            "left": "128",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "222",
+            "left": "176",
+            "width": "60",
+            "height": "15",
+            "font": "4",
+            "text": "中文测试"
+          },
+          {
+            "top": "221",
+            "left": "241",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "249",
+            "left": "128",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "250",
+            "left": "166",
+            "width": "62",
+            "height": "16",
+            "font": "5",
+            "text": "中文测试"
+          },
+          {
+            "top": "249",
+            "left": "233",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "277",
+            "left": "128",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "279",
+            "left": "170",
+            "width": "30",
+            "height": "15",
+            "font": "3",
+            "text": "中文"
+          },
+          {
+            "top": "277",
+            "left": "204",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "313",
+            "left": "173",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "315",
+            "left": "218",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "313",
+            "left": "277",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "18",
+            "font": "2",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "generic-cjk-serif-org": {
+    "style": "generic",
+    "mode": "cjk-serif",
+    "font": "FandolSong",
+    "origin": "org",
+    "text": "1 标题中文\nBody 中文测试 ABC xyz 123.\nRepeat 中文测试 ABC xyz 123.\nStrong 中文测试 End.\nItalic 中文测试 End.\nInline 中文 End.\n\n     Quote 中文测试.\n\n\n\n\n                           1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAC+FandolSong-Bold               CID Type 0C       Identity-H       yes yes yes      5  0\nAAAAAD+FandolSong-Regular            CID Type 0C       Identity-H       yes yes yes      6  0\nAAAAAB+FandolKai-Regular             CID Type 0C       Identity-H       yes yes yes      7  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "15",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAB+FandolKai",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "125",
+            "left": "128",
+            "width": "109",
+            "height": "21",
+            "font": "0",
+            "text": "1 标题中文"
+          },
+          {
+            "top": "167",
+            "left": "128",
+            "width": "196",
+            "height": "15",
+            "font": "1",
+            "text": "Body 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "195",
+            "left": "128",
+            "width": "208",
+            "height": "15",
+            "font": "1",
+            "text": "Repeat 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "223",
+            "left": "128",
+            "width": "43",
+            "height": "15",
+            "font": "1",
+            "text": "Strong"
+          },
+          {
+            "top": "222",
+            "left": "176",
+            "width": "60",
+            "height": "15",
+            "font": "2",
+            "text": "中文测试"
+          },
+          {
+            "top": "223",
+            "left": "241",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "251",
+            "left": "128",
+            "width": "34",
+            "height": "15",
+            "font": "1",
+            "text": "Italic"
+          },
+          {
+            "top": "250",
+            "left": "166",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "251",
+            "left": "231",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "279",
+            "left": "128",
+            "width": "108",
+            "height": "15",
+            "font": "1",
+            "text": "Inline 中文 End."
+          },
+          {
+            "top": "315",
+            "left": "173",
+            "width": "109",
+            "height": "15",
+            "font": "1",
+            "text": "Quote 中文测试."
+          },
+          {
+            "top": "1168",
+            "left": "453",
+            "width": "8",
+            "height": "15",
+            "font": "1",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "generic-cjk-serif-native": {
+    "style": "generic",
+    "mode": "cjk-serif",
+    "font": "FandolSong",
+    "origin": "native",
+    "text": "1 标题中文\nBody 中文测试 ABC xyz 123.\nRepeat 中文测试 ABC xyz 123.\nStrong 中文测试 End.\nItalic 中文测试 End.\nInline 中文 End.\n\n     Quote 中文测试.\n\n\n\n\n                           1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAC+FandolSong-Bold               CID Type 0C       Identity-H       yes yes yes      5  0\nAAAAAD+FandolSong-Regular            CID Type 0C       Identity-H       yes yes yes      6  0\nAAAAAB+FandolKai-Regular             CID Type 0C       Identity-H       yes yes yes      7  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "15",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAB+FandolKai",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "125",
+            "left": "128",
+            "width": "109",
+            "height": "21",
+            "font": "0",
+            "text": "1 标题中文"
+          },
+          {
+            "top": "167",
+            "left": "128",
+            "width": "196",
+            "height": "15",
+            "font": "1",
+            "text": "Body 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "195",
+            "left": "128",
+            "width": "208",
+            "height": "15",
+            "font": "1",
+            "text": "Repeat 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "223",
+            "left": "128",
+            "width": "43",
+            "height": "15",
+            "font": "1",
+            "text": "Strong"
+          },
+          {
+            "top": "222",
+            "left": "176",
+            "width": "60",
+            "height": "15",
+            "font": "2",
+            "text": "中文测试"
+          },
+          {
+            "top": "223",
+            "left": "241",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "251",
+            "left": "128",
+            "width": "34",
+            "height": "15",
+            "font": "1",
+            "text": "Italic"
+          },
+          {
+            "top": "250",
+            "left": "166",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "251",
+            "left": "231",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "279",
+            "left": "128",
+            "width": "108",
+            "height": "15",
+            "font": "1",
+            "text": "Inline 中文 End."
+          },
+          {
+            "top": "315",
+            "left": "173",
+            "width": "109",
+            "height": "15",
+            "font": "1",
+            "text": "Quote 中文测试."
+          },
+          {
+            "top": "1168",
+            "left": "453",
+            "width": "8",
+            "height": "15",
+            "font": "1",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "generic-cjk-serif-reload": {
+    "style": "generic",
+    "mode": "cjk-serif",
+    "font": "FandolSong",
+    "origin": "reload",
+    "text": "1 标题中文\nBody 中文测试 ABC xyz 123.\nRepeat 中文测试 ABC xyz 123.\nStrong 中文测试 End.\nItalic 中文测试 End.\nInline 中文 End.\n\n     Quote 中文测试.\n\n\n\n\n                           1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAC+FandolSong-Bold               CID Type 0C       Identity-H       yes yes yes      5  0\nAAAAAD+FandolSong-Regular            CID Type 0C       Identity-H       yes yes yes      6  0\nAAAAAB+FandolKai-Regular             CID Type 0C       Identity-H       yes yes yes      7  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "15",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAB+FandolKai",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "125",
+            "left": "128",
+            "width": "109",
+            "height": "21",
+            "font": "0",
+            "text": "1 标题中文"
+          },
+          {
+            "top": "167",
+            "left": "128",
+            "width": "196",
+            "height": "15",
+            "font": "1",
+            "text": "Body 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "195",
+            "left": "128",
+            "width": "208",
+            "height": "15",
+            "font": "1",
+            "text": "Repeat 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "223",
+            "left": "128",
+            "width": "43",
+            "height": "15",
+            "font": "1",
+            "text": "Strong"
+          },
+          {
+            "top": "222",
+            "left": "176",
+            "width": "60",
+            "height": "15",
+            "font": "2",
+            "text": "中文测试"
+          },
+          {
+            "top": "223",
+            "left": "241",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "251",
+            "left": "128",
+            "width": "34",
+            "height": "15",
+            "font": "1",
+            "text": "Italic"
+          },
+          {
+            "top": "250",
+            "left": "166",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "251",
+            "left": "231",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "279",
+            "left": "128",
+            "width": "108",
+            "height": "15",
+            "font": "1",
+            "text": "Inline 中文 End."
+          },
+          {
+            "top": "315",
+            "left": "173",
+            "width": "109",
+            "height": "15",
+            "font": "1",
+            "text": "Quote 中文测试."
+          },
+          {
+            "top": "1168",
+            "left": "453",
+            "width": "8",
+            "height": "15",
+            "font": "1",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "generic-cjk-sans-org": {
+    "style": "generic",
+    "mode": "cjk-sans",
+    "font": "FandolHei",
+    "origin": "org",
+    "text": "1 标题中文\nBody 中文测试 ABC xyz 123.\nRepeat 中文测试 ABC xyz 123.\nStrong 中文测试 End.\nItalic 中文测试 End.\nInline 中文 End.\n\n      Quote 中文测试.\n\n\n\n\n                           1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+FandolHei-Regular             CID Type 0C       Identity-H       yes yes yes      5  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "15",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "13",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "125",
+            "left": "128",
+            "width": "109",
+            "height": "21",
+            "font": "0",
+            "text": "1 标题中文"
+          },
+          {
+            "top": "167",
+            "left": "128",
+            "width": "189",
+            "height": "15",
+            "font": "1",
+            "text": "Body 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "195",
+            "left": "128",
+            "width": "200",
+            "height": "15",
+            "font": "1",
+            "text": "Repeat 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "223",
+            "left": "128",
+            "width": "140",
+            "height": "15",
+            "font": "1",
+            "text": "Strong 中文测试 End."
+          },
+          {
+            "top": "251",
+            "left": "128",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "Italic"
+          },
+          {
+            "top": "253",
+            "left": "164",
+            "width": "50",
+            "height": "13",
+            "font": "2",
+            "text": "中文测试"
+          },
+          {
+            "top": "251",
+            "left": "222",
+            "width": "29",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "279",
+            "left": "128",
+            "width": "102",
+            "height": "15",
+            "font": "1",
+            "text": "Inline 中文 End."
+          },
+          {
+            "top": "314",
+            "left": "173",
+            "width": "107",
+            "height": "15",
+            "font": "1",
+            "text": "Quote 中文测试."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "15",
+            "font": "1",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "generic-cjk-sans-native": {
+    "style": "generic",
+    "mode": "cjk-sans",
+    "font": "FandolHei",
+    "origin": "native",
+    "text": "1 标题中文\nBody 中文测试 ABC xyz 123.\nRepeat 中文测试 ABC xyz 123.\nStrong 中文测试 End.\nItalic 中文测试 End.\nInline 中文 End.\n\n      Quote 中文测试.\n\n\n\n\n                           1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+FandolHei-Regular             CID Type 0C       Identity-H       yes yes yes      5  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "15",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "13",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "125",
+            "left": "128",
+            "width": "109",
+            "height": "21",
+            "font": "0",
+            "text": "1 标题中文"
+          },
+          {
+            "top": "167",
+            "left": "128",
+            "width": "189",
+            "height": "15",
+            "font": "1",
+            "text": "Body 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "195",
+            "left": "128",
+            "width": "200",
+            "height": "15",
+            "font": "1",
+            "text": "Repeat 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "223",
+            "left": "128",
+            "width": "140",
+            "height": "15",
+            "font": "1",
+            "text": "Strong 中文测试 End."
+          },
+          {
+            "top": "251",
+            "left": "128",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "Italic"
+          },
+          {
+            "top": "253",
+            "left": "164",
+            "width": "50",
+            "height": "13",
+            "font": "2",
+            "text": "中文测试"
+          },
+          {
+            "top": "251",
+            "left": "222",
+            "width": "29",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "279",
+            "left": "128",
+            "width": "102",
+            "height": "15",
+            "font": "1",
+            "text": "Inline 中文 End."
+          },
+          {
+            "top": "314",
+            "left": "173",
+            "width": "107",
+            "height": "15",
+            "font": "1",
+            "text": "Quote 中文测试."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "15",
+            "font": "1",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "generic-cjk-sans-reload": {
+    "style": "generic",
+    "mode": "cjk-sans",
+    "font": "FandolHei",
+    "origin": "reload",
+    "text": "1 标题中文\nBody 中文测试 ABC xyz 123.\nRepeat 中文测试 ABC xyz 123.\nStrong 中文测试 End.\nItalic 中文测试 End.\nInline 中文 End.\n\n      Quote 中文测试.\n\n\n\n\n                           1\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+FandolHei-Regular             CID Type 0C       Identity-H       yes yes yes      5  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "15",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "13",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "125",
+            "left": "128",
+            "width": "109",
+            "height": "21",
+            "font": "0",
+            "text": "1 标题中文"
+          },
+          {
+            "top": "167",
+            "left": "128",
+            "width": "189",
+            "height": "15",
+            "font": "1",
+            "text": "Body 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "195",
+            "left": "128",
+            "width": "200",
+            "height": "15",
+            "font": "1",
+            "text": "Repeat 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "223",
+            "left": "128",
+            "width": "140",
+            "height": "15",
+            "font": "1",
+            "text": "Strong 中文测试 End."
+          },
+          {
+            "top": "251",
+            "left": "128",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "Italic"
+          },
+          {
+            "top": "253",
+            "left": "164",
+            "width": "50",
+            "height": "13",
+            "font": "2",
+            "text": "中文测试"
+          },
+          {
+            "top": "251",
+            "left": "222",
+            "width": "29",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "279",
+            "left": "128",
+            "width": "102",
+            "height": "15",
+            "font": "1",
+            "text": "Inline 中文 End."
+          },
+          {
+            "top": "314",
+            "left": "173",
+            "width": "107",
+            "height": "15",
+            "font": "1",
+            "text": "Quote 中文测试."
+          },
+          {
+            "top": "1167",
+            "left": "453",
+            "width": "8",
+            "height": "15",
+            "font": "1",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "article-baseline-org": {
+    "style": "article",
+    "mode": "baseline",
+    "font": "",
+    "origin": "org",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "201",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "260",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "260",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-baseline-native": {
+    "style": "article",
+    "mode": "baseline",
+    "font": "",
+    "origin": "native",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "201",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "260",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "260",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-baseline-reload": {
+    "style": "article",
+    "mode": "baseline",
+    "font": "",
+    "origin": "reload",
+    "text": "<#6807><#9898><#4E2D><#6587>                         1\n\n\n\n1 <#6807><#9898><#4E2D><#6587>\nBody <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Repeat <#4E2D><#6587><#6D4B><#8BD5> ABC xyz 123.\n  Strong <#4E2D><#6587><#6D4B><#8BD5> End.\n  Italic <#4E2D><#6587><#6D4B><#8BD5> End.\n  Inline <#4E2D><#6587> End.\n        Quote <#4E2D><#6587><#6D4B><#8BD5>.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAF+EuropeanComputerModernSans-Regular12pt Type 1C           Custom           yes yes yes      6  0\nAAAAAC+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAE+EuropeanComputerModernSans-Regular10pt Type 1C           Custom           yes yes yes      8  0\nAAAAAG+EuropeanComputerModernSans-Regular7pt Type 1C           Custom           yes yes yes      9  0\nAAAAAD+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAF+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAE+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModernSans",
+            "color": "#ff0000"
+          },
+          {
+            "id": "5",
+            "size": "12",
+            "family": "AAAAAD+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "124",
+            "left": "155",
+            "width": "368",
+            "height": "24",
+            "font": "1",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "162",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "163",
+            "left": "167",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "162",
+            "left": "452",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "180",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "181",
+            "left": "201",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "180",
+            "left": "486",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "198",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "199",
+            "left": "198",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "198",
+            "left": "483",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "216",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "216",
+            "left": "473",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "234",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "235",
+            "left": "192",
+            "width": "136",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587>"
+          },
+          {
+            "top": "234",
+            "left": "334",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "260",
+            "left": "240",
+            "width": "280",
+            "height": "17",
+            "font": "3",
+            "text": "<#4E2D><#6587><#6D4B><#8BD5>"
+          },
+          {
+            "top": "260",
+            "left": "520",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "79",
+            "left": "128",
+            "width": "228",
+            "height": "15",
+            "font": "4",
+            "text": "<#6807><#9898><#4E2D><#6587>"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "5",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": false,
+    "literal_fallback": true
+  },
+  "article-cjk-default-org": {
+    "style": "article",
+    "mode": "cjk-default",
+    "font": "",
+    "origin": "org",
+    "text": "标题中文                         1\n\n\n\n1 标题中文\nBody 中文测试 ABC xyz 123.\n  Repeat 中文测试 ABC xyz 123.\n  Strong 中文测试 End.\n  Italic 中文测试 End.\n  Inline 中文 End.\n       Quote 中文测试.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAE+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAC+FandolSong-Bold               CID Type 0C       Identity-H       yes yes yes      6  0\nAAAAAF+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+FandolSong-Regular            CID Type 0C       Identity-H       yes yes yes      8  0\nAAAAAB+FandolKai-Regular             CID Type 0C       Identity-H       yes yes yes      9  0\nAAAAAG+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAF+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "4",
+            "size": "15",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "5",
+            "size": "16",
+            "family": "AAAAAB+FandolKai",
+            "color": "#000000"
+          },
+          {
+            "id": "6",
+            "size": "14",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "7",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "125",
+            "left": "155",
+            "width": "84",
+            "height": "21",
+            "font": "1",
+            "text": "标题中文"
+          },
+          {
+            "top": "163",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "163",
+            "left": "232",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "181",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "183",
+            "left": "201",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "181",
+            "left": "266",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "199",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "200",
+            "left": "198",
+            "width": "60",
+            "height": "15",
+            "font": "4",
+            "text": "中文测试"
+          },
+          {
+            "top": "199",
+            "left": "263",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "217",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "62",
+            "height": "16",
+            "font": "5",
+            "text": "中文测试"
+          },
+          {
+            "top": "217",
+            "left": "256",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "235",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "237",
+            "left": "192",
+            "width": "30",
+            "height": "15",
+            "font": "3",
+            "text": "中文"
+          },
+          {
+            "top": "235",
+            "left": "227",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "262",
+            "left": "240",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "260",
+            "left": "300",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "78",
+            "left": "128",
+            "width": "58",
+            "height": "14",
+            "font": "6",
+            "text": "标题中文"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "7",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "article-cjk-default-native": {
+    "style": "article",
+    "mode": "cjk-default",
+    "font": "",
+    "origin": "native",
+    "text": "标题中文                         1\n\n\n\n1 标题中文\nBody 中文测试 ABC xyz 123.\n  Repeat 中文测试 ABC xyz 123.\n  Strong 中文测试 End.\n  Italic 中文测试 End.\n  Inline 中文 End.\n       Quote 中文测试.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAE+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAC+FandolSong-Bold               CID Type 0C       Identity-H       yes yes yes      6  0\nAAAAAF+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+FandolSong-Regular            CID Type 0C       Identity-H       yes yes yes      8  0\nAAAAAB+FandolKai-Regular             CID Type 0C       Identity-H       yes yes yes      9  0\nAAAAAG+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAF+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "4",
+            "size": "15",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "5",
+            "size": "16",
+            "family": "AAAAAB+FandolKai",
+            "color": "#000000"
+          },
+          {
+            "id": "6",
+            "size": "14",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "7",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "125",
+            "left": "155",
+            "width": "84",
+            "height": "21",
+            "font": "1",
+            "text": "标题中文"
+          },
+          {
+            "top": "163",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "163",
+            "left": "232",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "181",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "183",
+            "left": "201",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "181",
+            "left": "266",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "199",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "200",
+            "left": "198",
+            "width": "60",
+            "height": "15",
+            "font": "4",
+            "text": "中文测试"
+          },
+          {
+            "top": "199",
+            "left": "263",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "217",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "62",
+            "height": "16",
+            "font": "5",
+            "text": "中文测试"
+          },
+          {
+            "top": "217",
+            "left": "256",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "235",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "237",
+            "left": "192",
+            "width": "30",
+            "height": "15",
+            "font": "3",
+            "text": "中文"
+          },
+          {
+            "top": "235",
+            "left": "227",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "262",
+            "left": "240",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "260",
+            "left": "300",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "78",
+            "left": "128",
+            "width": "58",
+            "height": "14",
+            "font": "6",
+            "text": "标题中文"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "7",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "article-cjk-default-reload": {
+    "style": "article",
+    "mode": "cjk-default",
+    "font": "",
+    "origin": "reload",
+    "text": "标题中文                         1\n\n\n\n1 标题中文\nBody 中文测试 ABC xyz 123.\n  Repeat 中文测试 ABC xyz 123.\n  Strong 中文测试 End.\n  Italic 中文测试 End.\n  Inline 中文 End.\n       Quote 中文测试.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAE+EuropeanComputerModern-BoldExtended12pt Type 1C           Custom           yes yes yes      5  0\nAAAAAC+FandolSong-Bold               CID Type 0C       Identity-H       yes yes yes      6  0\nAAAAAF+EuropeanComputerModern-RomanRegular10pt Type 1C           Custom           yes yes yes      7  0\nAAAAAD+FandolSong-Regular            CID Type 0C       Identity-H       yes yes yes      8  0\nAAAAAB+FandolKai-Regular             CID Type 0C       Identity-H       yes yes yes      9  0\nAAAAAG+EuropeanComputerModern-RomanRegular7pt Type 1C           Custom           yes yes yes     10  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAE+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "21",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAF+EuropeanComputerModern",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "4",
+            "size": "15",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "5",
+            "size": "16",
+            "family": "AAAAAB+FandolKai",
+            "color": "#000000"
+          },
+          {
+            "id": "6",
+            "size": "14",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "7",
+            "size": "12",
+            "family": "AAAAAG+EuropeanComputerModern",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "124",
+            "left": "128",
+            "width": "12",
+            "height": "26",
+            "font": "0",
+            "text": "1"
+          },
+          {
+            "top": "125",
+            "left": "155",
+            "width": "84",
+            "height": "21",
+            "font": "1",
+            "text": "标题中文"
+          },
+          {
+            "top": "163",
+            "left": "128",
+            "width": "35",
+            "height": "18",
+            "font": "2",
+            "text": "Body"
+          },
+          {
+            "top": "165",
+            "left": "167",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "163",
+            "left": "232",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "181",
+            "left": "150",
+            "width": "46",
+            "height": "18",
+            "font": "2",
+            "text": "Repeat"
+          },
+          {
+            "top": "183",
+            "left": "201",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "181",
+            "left": "266",
+            "width": "92",
+            "height": "18",
+            "font": "2",
+            "text": "ABC xyz 123."
+          },
+          {
+            "top": "199",
+            "left": "150",
+            "width": "43",
+            "height": "18",
+            "font": "2",
+            "text": "Strong"
+          },
+          {
+            "top": "200",
+            "left": "198",
+            "width": "60",
+            "height": "15",
+            "font": "4",
+            "text": "中文测试"
+          },
+          {
+            "top": "199",
+            "left": "263",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "217",
+            "left": "150",
+            "width": "34",
+            "height": "18",
+            "font": "2",
+            "text": "Italic"
+          },
+          {
+            "top": "217",
+            "left": "189",
+            "width": "62",
+            "height": "16",
+            "font": "5",
+            "text": "中文测试"
+          },
+          {
+            "top": "217",
+            "left": "256",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "235",
+            "left": "150",
+            "width": "37",
+            "height": "18",
+            "font": "2",
+            "text": "Inline"
+          },
+          {
+            "top": "237",
+            "left": "192",
+            "width": "30",
+            "height": "15",
+            "font": "3",
+            "text": "中文"
+          },
+          {
+            "top": "235",
+            "left": "227",
+            "width": "31",
+            "height": "18",
+            "font": "2",
+            "text": "End."
+          },
+          {
+            "top": "260",
+            "left": "195",
+            "width": "40",
+            "height": "18",
+            "font": "2",
+            "text": "Quote"
+          },
+          {
+            "top": "262",
+            "left": "240",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "260",
+            "left": "300",
+            "width": "4",
+            "height": "18",
+            "font": "2",
+            "text": "."
+          },
+          {
+            "top": "78",
+            "left": "128",
+            "width": "58",
+            "height": "14",
+            "font": "6",
+            "text": "标题中文"
+          },
+          {
+            "top": "79",
+            "left": "759",
+            "width": "7",
+            "height": "15",
+            "font": "7",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "article-cjk-serif-org": {
+    "style": "article",
+    "mode": "cjk-serif",
+    "font": "FandolSong",
+    "origin": "org",
+    "text": "标题中文                          1\n\n\n\n1 标题中文\nBody 中文测试 ABC xyz 123.\n   Repeat 中文测试 ABC xyz 123.\n   Strong 中文测试 End.\n   Italic 中文测试 End.\n   Inline 中文 End.\n       Quote 中文测试.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAC+FandolSong-Bold               CID Type 0C       Identity-H       yes yes yes      5  0\nAAAAAD+FandolSong-Regular            CID Type 0C       Identity-H       yes yes yes      6  0\nAAAAAB+FandolKai-Regular             CID Type 0C       Identity-H       yes yes yes      7  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "15",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAB+FandolKai",
+            "color": "#000000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "125",
+            "left": "128",
+            "width": "109",
+            "height": "21",
+            "font": "0",
+            "text": "1 标题中文"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "196",
+            "height": "15",
+            "font": "1",
+            "text": "Body 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "183",
+            "left": "150",
+            "width": "208",
+            "height": "15",
+            "font": "1",
+            "text": "Repeat 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "201",
+            "left": "150",
+            "width": "43",
+            "height": "15",
+            "font": "1",
+            "text": "Strong"
+          },
+          {
+            "top": "200",
+            "left": "198",
+            "width": "60",
+            "height": "15",
+            "font": "2",
+            "text": "中文测试"
+          },
+          {
+            "top": "201",
+            "left": "263",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "219",
+            "left": "150",
+            "width": "34",
+            "height": "15",
+            "font": "1",
+            "text": "Italic"
+          },
+          {
+            "top": "218",
+            "left": "189",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "219",
+            "left": "254",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "237",
+            "left": "150",
+            "width": "108",
+            "height": "15",
+            "font": "1",
+            "text": "Inline 中文 End."
+          },
+          {
+            "top": "262",
+            "left": "195",
+            "width": "109",
+            "height": "15",
+            "font": "1",
+            "text": "Quote 中文测试."
+          },
+          {
+            "top": "81",
+            "left": "128",
+            "width": "48",
+            "height": "12",
+            "font": "4",
+            "text": "标题中文"
+          },
+          {
+            "top": "81",
+            "left": "759",
+            "width": "6",
+            "height": "12",
+            "font": "4",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "article-cjk-serif-native": {
+    "style": "article",
+    "mode": "cjk-serif",
+    "font": "FandolSong",
+    "origin": "native",
+    "text": "标题中文                          1\n\n\n\n1 标题中文\nBody 中文测试 ABC xyz 123.\n   Repeat 中文测试 ABC xyz 123.\n   Strong 中文测试 End.\n   Italic 中文测试 End.\n   Inline 中文 End.\n       Quote 中文测试.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAC+FandolSong-Bold               CID Type 0C       Identity-H       yes yes yes      5  0\nAAAAAD+FandolSong-Regular            CID Type 0C       Identity-H       yes yes yes      6  0\nAAAAAB+FandolKai-Regular             CID Type 0C       Identity-H       yes yes yes      7  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "15",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAB+FandolKai",
+            "color": "#000000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "125",
+            "left": "128",
+            "width": "109",
+            "height": "21",
+            "font": "0",
+            "text": "1 标题中文"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "196",
+            "height": "15",
+            "font": "1",
+            "text": "Body 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "183",
+            "left": "150",
+            "width": "208",
+            "height": "15",
+            "font": "1",
+            "text": "Repeat 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "201",
+            "left": "150",
+            "width": "43",
+            "height": "15",
+            "font": "1",
+            "text": "Strong"
+          },
+          {
+            "top": "200",
+            "left": "198",
+            "width": "60",
+            "height": "15",
+            "font": "2",
+            "text": "中文测试"
+          },
+          {
+            "top": "201",
+            "left": "263",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "219",
+            "left": "150",
+            "width": "34",
+            "height": "15",
+            "font": "1",
+            "text": "Italic"
+          },
+          {
+            "top": "218",
+            "left": "189",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "219",
+            "left": "254",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "237",
+            "left": "150",
+            "width": "108",
+            "height": "15",
+            "font": "1",
+            "text": "Inline 中文 End."
+          },
+          {
+            "top": "262",
+            "left": "195",
+            "width": "109",
+            "height": "15",
+            "font": "1",
+            "text": "Quote 中文测试."
+          },
+          {
+            "top": "81",
+            "left": "128",
+            "width": "48",
+            "height": "12",
+            "font": "4",
+            "text": "标题中文"
+          },
+          {
+            "top": "81",
+            "left": "759",
+            "width": "6",
+            "height": "12",
+            "font": "4",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "article-cjk-serif-reload": {
+    "style": "article",
+    "mode": "cjk-serif",
+    "font": "FandolSong",
+    "origin": "reload",
+    "text": "标题中文                          1\n\n\n\n1 标题中文\nBody 中文测试 ABC xyz 123.\n   Repeat 中文测试 ABC xyz 123.\n   Strong 中文测试 End.\n   Italic 中文测试 End.\n   Inline 中文 End.\n       Quote 中文测试.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAC+FandolSong-Bold               CID Type 0C       Identity-H       yes yes yes      5  0\nAAAAAD+FandolSong-Regular            CID Type 0C       Identity-H       yes yes yes      6  0\nAAAAAB+FandolKai-Regular             CID Type 0C       Identity-H       yes yes yes      7  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "15",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "15",
+            "family": "AAAAAC+FandolSong",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "15",
+            "family": "AAAAAB+FandolKai",
+            "color": "#000000"
+          },
+          {
+            "id": "4",
+            "size": "12",
+            "family": "AAAAAD+FandolSong",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "125",
+            "left": "128",
+            "width": "109",
+            "height": "21",
+            "font": "0",
+            "text": "1 标题中文"
+          },
+          {
+            "top": "165",
+            "left": "128",
+            "width": "196",
+            "height": "15",
+            "font": "1",
+            "text": "Body 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "183",
+            "left": "150",
+            "width": "208",
+            "height": "15",
+            "font": "1",
+            "text": "Repeat 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "201",
+            "left": "150",
+            "width": "43",
+            "height": "15",
+            "font": "1",
+            "text": "Strong"
+          },
+          {
+            "top": "200",
+            "left": "198",
+            "width": "60",
+            "height": "15",
+            "font": "2",
+            "text": "中文测试"
+          },
+          {
+            "top": "201",
+            "left": "263",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "219",
+            "left": "150",
+            "width": "34",
+            "height": "15",
+            "font": "1",
+            "text": "Italic"
+          },
+          {
+            "top": "218",
+            "left": "189",
+            "width": "60",
+            "height": "15",
+            "font": "3",
+            "text": "中文测试"
+          },
+          {
+            "top": "219",
+            "left": "254",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "237",
+            "left": "150",
+            "width": "108",
+            "height": "15",
+            "font": "1",
+            "text": "Inline 中文 End."
+          },
+          {
+            "top": "262",
+            "left": "195",
+            "width": "109",
+            "height": "15",
+            "font": "1",
+            "text": "Quote 中文测试."
+          },
+          {
+            "top": "81",
+            "left": "128",
+            "width": "48",
+            "height": "12",
+            "font": "4",
+            "text": "标题中文"
+          },
+          {
+            "top": "81",
+            "left": "759",
+            "width": "6",
+            "height": "12",
+            "font": "4",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "article-cjk-sans-org": {
+    "style": "article",
+    "mode": "cjk-sans",
+    "font": "FandolHei",
+    "origin": "org",
+    "text": "标题中文                          1\n\n\n\n1 标题中文\nBody 中文测试 ABC xyz 123.\n   Repeat 中文测试 ABC xyz 123.\n   Strong 中文测试 End.\n   Italic 中文测试 End.\n   Inline 中文 End.\n        Quote 中文测试.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+FandolHei-Regular             CID Type 0C       Identity-H       yes yes yes      5  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "15",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "13",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "12",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "125",
+            "left": "128",
+            "width": "109",
+            "height": "21",
+            "font": "0",
+            "text": "1 标题中文"
+          },
+          {
+            "top": "164",
+            "left": "128",
+            "width": "189",
+            "height": "15",
+            "font": "1",
+            "text": "Body 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "182",
+            "left": "150",
+            "width": "200",
+            "height": "15",
+            "font": "1",
+            "text": "Repeat 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "200",
+            "left": "150",
+            "width": "140",
+            "height": "15",
+            "font": "1",
+            "text": "Strong 中文测试 End."
+          },
+          {
+            "top": "218",
+            "left": "150",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "Italic"
+          },
+          {
+            "top": "220",
+            "left": "186",
+            "width": "50",
+            "height": "13",
+            "font": "2",
+            "text": "中文测试"
+          },
+          {
+            "top": "218",
+            "left": "244",
+            "width": "29",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "236",
+            "left": "150",
+            "width": "102",
+            "height": "15",
+            "font": "1",
+            "text": "Inline 中文 End."
+          },
+          {
+            "top": "262",
+            "left": "195",
+            "width": "107",
+            "height": "15",
+            "font": "1",
+            "text": "Quote 中文测试."
+          },
+          {
+            "top": "80",
+            "left": "128",
+            "width": "48",
+            "height": "12",
+            "font": "3",
+            "text": "标题中文"
+          },
+          {
+            "top": "80",
+            "left": "759",
+            "width": "6",
+            "height": "12",
+            "font": "3",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "article-cjk-sans-native": {
+    "style": "article",
+    "mode": "cjk-sans",
+    "font": "FandolHei",
+    "origin": "native",
+    "text": "标题中文                          1\n\n\n\n1 标题中文\nBody 中文测试 ABC xyz 123.\n   Repeat 中文测试 ABC xyz 123.\n   Strong 中文测试 End.\n   Italic 中文测试 End.\n   Inline 中文 End.\n        Quote 中文测试.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+FandolHei-Regular             CID Type 0C       Identity-H       yes yes yes      5  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "15",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "13",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "12",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "125",
+            "left": "128",
+            "width": "109",
+            "height": "21",
+            "font": "0",
+            "text": "1 标题中文"
+          },
+          {
+            "top": "164",
+            "left": "128",
+            "width": "189",
+            "height": "15",
+            "font": "1",
+            "text": "Body 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "182",
+            "left": "150",
+            "width": "200",
+            "height": "15",
+            "font": "1",
+            "text": "Repeat 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "200",
+            "left": "150",
+            "width": "140",
+            "height": "15",
+            "font": "1",
+            "text": "Strong 中文测试 End."
+          },
+          {
+            "top": "218",
+            "left": "150",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "Italic"
+          },
+          {
+            "top": "220",
+            "left": "186",
+            "width": "50",
+            "height": "13",
+            "font": "2",
+            "text": "中文测试"
+          },
+          {
+            "top": "218",
+            "left": "244",
+            "width": "29",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "236",
+            "left": "150",
+            "width": "102",
+            "height": "15",
+            "font": "1",
+            "text": "Inline 中文 End."
+          },
+          {
+            "top": "262",
+            "left": "195",
+            "width": "107",
+            "height": "15",
+            "font": "1",
+            "text": "Quote 中文测试."
+          },
+          {
+            "top": "80",
+            "left": "128",
+            "width": "48",
+            "height": "12",
+            "font": "3",
+            "text": "标题中文"
+          },
+          {
+            "top": "80",
+            "left": "759",
+            "width": "6",
+            "height": "12",
+            "font": "3",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  },
+  "article-cjk-sans-reload": {
+    "style": "article",
+    "mode": "cjk-sans",
+    "font": "FandolHei",
+    "origin": "reload",
+    "text": "标题中文                          1\n\n\n\n1 标题中文\nBody 中文测试 ABC xyz 123.\n   Repeat 中文测试 ABC xyz 123.\n   Strong 中文测试 End.\n   Italic 中文测试 End.\n   Inline 中文 End.\n        Quote 中文测试.\n\f",
+    "pdf_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nAAAAAB+FandolHei-Regular             CID Type 0C       Identity-H       yes yes yes      5  0\n",
+    "pages": [
+      {
+        "page": {
+          "number": "1",
+          "position": "absolute",
+          "top": "0",
+          "left": "0",
+          "height": "1262",
+          "width": "892"
+        },
+        "fonts": [
+          {
+            "id": "0",
+            "size": "21",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "1",
+            "size": "15",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "2",
+            "size": "13",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          },
+          {
+            "id": "3",
+            "size": "12",
+            "family": "AAAAAB+FandolHei",
+            "color": "#000000"
+          }
+        ],
+        "runs": [
+          {
+            "top": "125",
+            "left": "128",
+            "width": "109",
+            "height": "21",
+            "font": "0",
+            "text": "1 标题中文"
+          },
+          {
+            "top": "164",
+            "left": "128",
+            "width": "189",
+            "height": "15",
+            "font": "1",
+            "text": "Body 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "182",
+            "left": "150",
+            "width": "200",
+            "height": "15",
+            "font": "1",
+            "text": "Repeat 中文测试 ABC xyz 123."
+          },
+          {
+            "top": "200",
+            "left": "150",
+            "width": "140",
+            "height": "15",
+            "font": "1",
+            "text": "Strong 中文测试 End."
+          },
+          {
+            "top": "218",
+            "left": "150",
+            "width": "31",
+            "height": "15",
+            "font": "1",
+            "text": "Italic"
+          },
+          {
+            "top": "220",
+            "left": "186",
+            "width": "50",
+            "height": "13",
+            "font": "2",
+            "text": "中文测试"
+          },
+          {
+            "top": "218",
+            "left": "244",
+            "width": "29",
+            "height": "15",
+            "font": "1",
+            "text": "End."
+          },
+          {
+            "top": "236",
+            "left": "150",
+            "width": "102",
+            "height": "15",
+            "font": "1",
+            "text": "Inline 中文 End."
+          },
+          {
+            "top": "262",
+            "left": "195",
+            "width": "107",
+            "height": "15",
+            "font": "1",
+            "text": "Quote 中文测试."
+          },
+          {
+            "top": "80",
+            "left": "128",
+            "width": "48",
+            "height": "12",
+            "font": "3",
+            "text": "标题中文"
+          },
+          {
+            "top": "80",
+            "left": "759",
+            "width": "6",
+            "height": "12",
+            "font": "3",
+            "text": "1"
+          }
+        ]
+      }
+    ],
+    "has_chinese": true,
+    "literal_fallback": false
+  }
+}
