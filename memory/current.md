@@ -1,26 +1,23 @@
 # org-texmacs current memory
 
-## Current: Issue13 stage4 supplemented guidance reviewed, implementation not started
+## Current: Issue13 stage4 implementation selected, 4A preparation
 
-User appended line550 section adopting all four review concerns. Current INBOX
-21282bytes SHA256 09ed92d403ffb88a0bc3fa77a05a35a619b7b75054eb40ad80c01bf595bba5cc;
-original18366byte prefix verified unchanged. Full contract, retention and adopted
-supplement: issue-13-stage4.md. No raw archive needed after sufficient extraction.
-All four addressed: semantic candidate scope, original NAME evidence/scoped owner
-completeness, ambient-independent slug, and allocation lifecycle. Current lifecycle
-is repeatable validation without final IDs, then Org allocation once after owned
-AST/static native labels are known, frozen through copying and repeated pure lower.
-This supersedes earlier suggested before-preflight allocation; preflight/final
-share target relationships, not a requirement for final IDs during validation.
-Raw internals stay opaque, effective/reachable scope only; no excluded invalid
-owner blocking. No structural redesign, custom handler/composite scope expansion
-or TeXmacs display/layout policy. Native/locked Org runtime remains to validate.
-4A includes placements/Org API comparisons/lifecycle design;4B implementation;
-4C scopes/ownership/provenance/native acceptance. No further static objection.
-Ordinary project files/index unchanged, only original ELPA workaround remains.
-No tests/builds/implementation authorized by review. Next: separately requested
-stage4 implementation plan/authorization. Whole13 and release remain unfinished.
-
+User requested implementing the reviewed plan. This authorizes stage4 source,
+tests/README changes; ordinary staging/commit still separate. Contract and intake:
+issue-13-stage4.md. Plan adopts validation-only preflight, one Org allocation after
+real STM/static labels known, frozen owned resolution, raw opacity, source NAME
+proof and scoped completeness, ASCII slug, object-specific native placements.
+User selected before-freeze collision avoidance through Org allocator; bounded64
+candidates then error, frozen mappings never locally reallocated. Naked tables
+retain referenced-only anchors. Public signatures/protocol/dependencies unchanged.
+Important discovered integration: filter-own-preparation calls input-create with
+placeholders. Separate pure ownership copy from final reference allocation so
+this intermediate step never allocates. Complete source adapter and direct input
+construction both finalize owned mappings before formal pure lowering.
+4A native/Org comparison fixtures being prepared before production edits.
+Three exact repeated isolated-flake focused/full/build commands requested; pending
+user authorization, no test execution yet. Original ELPA overlay preserved, index
+untouched. Runtime evidence pending; no stage4 completion/Issue13 closure claim.
 ## Completed delivery: caption footnote AST compatibility delivered and verified
 
 User's final decision accepts correct native AST/content conversion without

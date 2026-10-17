@@ -242,3 +242,16 @@ acceptance work, not completed evidence. No shell network or tests run.
 
 Current adoption and next action are in the supplement section above. Keep
 ordinary workspace read-only until separately requested implementation.
+
+## Implementation selected
+
+User requested implementing the final proposed plan. Scope includes stage4 code,
+maintained tests and README, not ordinary index/history changes. User selected
+pre-freeze collision avoidance via Org allocator; retain rejected-reference
+reservations, max64attempts, then document error. Frozen conflicts reject.
+Private ownership-only constructor is required for filter-own-preparation's
+placeholder data. Direct input-create finalizes; source path finalizes after body
+parse and preserves frozen mapping while adding native bibliography output.
+Three exact repeated validation commands requested in current conversation;
+await authorization before execution. Tests/native via isolated flake under root
+tmp/issue13-stage4. No production edits or runtime findings yet at selection.
