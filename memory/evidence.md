@@ -1,6 +1,6 @@
 # org-texmacs durable evidence
 
-## Issue13 stage2 implementation candidate
+## Issue13 stage2 accepted implementation and verified delivery
 
 Twelve new maintained ERT plus seventeen stage1 tests pass focused29/29
 (29.580234s), including real Org stars/nesting/scope, raw opacity through actual
@@ -10,8 +10,9 @@ numbering, independent native readback, exact reference PDF and saved tm reload
 text/coordinate comparison (existing1pt tolerance). No-link package build exit0;
 full flake check exit0, including complete ERT/strict compilation/lint. Complete commands, candidate input manifest, retained
 limits and archive assessment: memory/issue-13-stage2.md. Runtime used uncommitted
-candidate; no ordinary project-parent association falsely identifies its HEAD as
-accepted code. Maintained fixtures reproduce evidence; no raw archive needed.
+candidate. Subsequent read-only exact parent/path/patch/message/blob comparison
+verifies user-committed delivery and transfers acceptance by bytes. Associated
+project parent grounds delivery inspection, not original runtime provenance. Maintained fixtures reproduce evidence; no raw archive needed.
 
 ## Stage2 INBOX review, adopted corrections and retention decision
 

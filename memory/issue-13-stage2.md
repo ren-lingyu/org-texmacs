@@ -1,4 +1,4 @@
-# Issue13 stage2: accepted raw-STM equation candidate
+# Issue13 stage2: delivered raw-STM equations
 
 ## State, source and authority
 
@@ -6,7 +6,8 @@ User authorized implementation of the reviewed stage2 plan and repeated focused
 300s ERT-derivation shell, 600s flake check, 120s no-link default build commands.
 Implementation and all three acceptance commands completed successfully. User
 subsequently authorized explicit staging of the nine task paths; completed.
-Ordinary commit remains the user's action. Preserve/exclude flake.nix ELPA workaround.
+User subsequently committed the exact reviewed candidate; read-only delivery
+verification passed. Preserve/exclude flake.nix ELPA workaround.
 
 Source: ordinary project root INBOX.md, ignored/untracked regular UTF-8 file,
 23584bytes, SHA256
@@ -150,7 +151,7 @@ B full preparation/context/preflight/reserved names/lowering/provenance;
 C native tm/PDF/direct-reload verification, docs and final checks/delivery review.
 These are not mandated separate commits; any intermediate committed state must
 be coherent/recoverable. Source implementation and checks are authorized and complete; ordinary staging
-has now been explicitly authorized and completed. Ordinary commit remains the user's action; eventual footer Refs:#13,
+has now been explicitly authorized and completed. User committed with Refs:#13,
 not Closes. No issue/version/release action. Skill updates use separate checkpoints
 from memory/archive; archive captures, if independently warranted, remain separate.
 
@@ -204,10 +205,10 @@ temporary tm/PDF/native homes. No result link or lockfile change. Environment is
 existing locked x86_64-linux ERT derivation with Poppler (Emacs31.1/Org9.8.10/
 TeXmacs2.1.5 baseline), not default devShell. No arbitrary native-style coverage.
 
-Accepted runtime candidate is uncommitted atop the delivered stage1 baseline,
+Accepted runtime used an uncommitted candidate atop the delivered stage1 baseline,
 not the ordinary committed HEAD tree. No new project-parent edge is warranted
-for runtime claims. Ordinary staging is now completed; commit remains unexecuted; future delivery
-review must compare exact task blobs/diff against this candidate. Nine task paths
+for original runtime claims. User staging/commit are completed; exact committed
+delivery has now been verified against this candidate. Nine task paths
 are listed below; flake overlay/lock hashes record test inputs, not staging scope.
 Manifest SHA256 is computed over these ordered lines (including trailing newline):
 
@@ -233,8 +234,8 @@ all opacity consumers, lowering, tests and README serve one coupled capability.
 Splitting the nine paths would separate required producers/consumers or feature
 acceptance/documentation. One feat(document) commit; no inter-commit polling.
 User explicitly authorized staging following review of the exact nine-path scope.
-Complete staged diff reviewed; staged blobs match accepted candidate and only
-flake.nix overlay remains unstaged. No new tests needed solely for staging.
+Before commit, complete staged diff reviewed and staged blobs matched accepted
+candidate. After user commit, index empty and only flake.nix overlay unstaged. No new tests needed solely for staging.
 Message at project tmp/commit.md (ignored temporary convenience, exact content
 also identified by SHA256) has subject:
 feat(document): support raw STM equation blocks
@@ -243,5 +244,10 @@ Staged binary/full-index patch SHA256:
 cea944ee2c17a94470a959c31db85f2c8b98624c24efffe30e18694f16f2300c.
 UTF-8 message SHA256:
 47b59220501cc440e67dc6822307aeb49dc0e97b44c2e0a91de65394df75907c.
-After user commit, verify exact parent/path/blob/patch/message equality before
-transferring acceptance; do not rerun tests merely to ground a commit edge.
+Read-only user-delivery verification now confirms exactly one expected stage1
+parent, nine changed paths, exact full-index/binary patch SHA256, exact raw commit
+message SHA256, and task blobs equal accepted worktree bytes. Ordinary index empty;
+flake overlay SHA256 unchanged and unstaged. Acceptance transfers by exact bytes;
+no tests repeated merely for commit. Associated project parent records this exact
+committed-delivery inspection, not retroactive original runtime provenance.
+Issue13 remains partial; no issue-close/version/tag/remote/release action.

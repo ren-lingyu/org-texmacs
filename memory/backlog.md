@@ -31,12 +31,12 @@ types and PDF accepted. Stage1 delivery evidence:
 memory/issue-13-stage1.md. Figure/table/NAME nodes remain **adopted-later**.
 Stage2 equation/equation* implemented/locally accepted: focused29/29/native generic/
 article readback/PDF/reload, full flake ERT/compile/lint and no-link build pass.
-Nine task paths explicitly authorized/staged; one coherent feature commit
-message prepared in project tmp/commit.md; ordinary commit is user action. Raw STM remains
+User committed the exact nine-path reviewed candidate; parent/patch/message/
+blobs verified, index empty, only original flake overlay dirty. Raw STM remains
 opaque across preprocessing/bibliography/context as well as preparation/scanner;
 no math whitelist, recursive body or NAME. Full contract/acceptance/sequence and
 retention decision: memory/issue-13-stage2.md. Stage3 figure/table/starred then
-stage4 NAME/links; stage2 staging completed; ordinary commit remains user action.
+stage4 NAME/links; stage2 delivered, no remaining stage2 implementation work.
 Recursive private special-block handlers,
 statement aliases, equation/equation*, explicit figure/table and bounded
 single-object NAME/[[name]] support. Full source/label/provenance/validation

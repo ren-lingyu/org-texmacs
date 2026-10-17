@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: Issue13 stage2 implemented and accepted, uncommitted
+## Current: Issue13 stage2 delivered and verified
 
 User authorized the reviewed stage2 plan and repeated focused/full/build commands.
 Raw-STM equation/equation* wrappers implemented; twelve new maintained ERT added.
@@ -18,15 +18,16 @@ on final selected requests, distinct from a valid empty-string datum. No math
 whitelist, recursive Org formula body, extra concat/document, custom callback,
 NAME or protocol addition. Transport/session and partial-write limits unchanged.
 
-Nine task paths explicitly authorized and staged; staged blobs match accepted
-candidate, complete staged diff/check reviewed. User flake.nix ELPA mirror overlay
-preserved/excluded, lock/version/INBOX unchanged. No ordinary commit or external
-issue/release action. Single commit recommended (strongly coupled feature/tests/docs); message in
-project tmp/commit.md uses Refs:#13. Next: user performs ordinary commit, then
-verify exact delivery against issue-13-stage2.md patch/message identities. Stage3 figure/table and stage4 NAME remain later;
-Issue9 composite-row identity and all other release gates remain separate.
-No feature-related skill change or raw archive; memory-only checkpoint records
-uncommitted runtime candidate, not a falsely associated committed HEAD snapshot.
+User committed the exact reviewed nine-path candidate. Read-only verification
+confirms the expected single stage1 parent, complete task paths/patch/blobs and
+exact message equality. Index empty; only preserved flake.nix mirror overlay
+remains unstaged. Refs:#13, no closure or release action. No tests repeated solely
+for commit verification. Original runtime used the uncommitted candidate; current
+project association grounds exact committed-delivery verification instead.
+Detailed patch/message identities: memory/issue-13-stage2.md.
+Next: separately select/plan stage3 figure/table wrappers; stage4 NAME and Issue9
+composite-row identity remain later. Whole Issue13 and release gates are incomplete.
+No source/skill/archive changes in this delivery verification.
 
 Intake source INBOX:23584bytes,SHA256
 71c40dd0686b702f2f87dbbc4ba9b5a1c752c3e9ff8f88be073976498a2ec85c,
@@ -81,7 +82,7 @@ Exact patch/message hashes: memory/issue-13-stage1.md. No tests rerun just for
 commit verification. No further stage1
 implementation/testing remains. Whole13 and v0.5.0 are not complete;
 figure/table/NAME and weak anchors remain separately selected later work. Issue9
-remains post0.5.0. Stage2 is locally implemented/accepted above; ordinary delivery remains pending.
+remains post0.5.0. Stage2 is delivered/verified above.
 
 ## Adopted full scope: v0.5.0 Issue13 and Issue9 refocus
 

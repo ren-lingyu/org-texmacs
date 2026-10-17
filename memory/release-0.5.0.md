@@ -11,7 +11,7 @@ contract, candidate identities and limits: memory/issue-13-stage1.md.
 Full source semantics and validation boundaries: memory/special-block-plan.md.
 Stage2 equation/equation* candidate implemented with four corrections;
 focused29/29/native generic/article/PDF/readback/reload, full flake ERT/compile/
-lint and no-link build pass; ordinary candidate uncommitted. memory/issue-13-stage2.md holds the
+lint and no-link build pass; exact user-committed delivery verified. memory/issue-13-stage2.md holds the
 complete extracted contract and requirements, without relying on mutable INBOX.
 Stage1's495ERT is not stage2 or final release evidence. All other gates unchanged.
 This adds one required scope gate, not duplicated numbered legacy items:

@@ -45,7 +45,7 @@ plain named STM and referenced-only label activation still need validation.
 Float behavior is undecided. Figure/table/NAME and weak anchors remain
 unimplemented; stage2 equation candidate is described below.
 
-Stage2 raw-STM equation/equation* implemented/accepted uncommitted candidate:
+Stage2 raw-STM equation/equation* implemented/accepted/user-committed, delivery verified:
 one original source capture/request, native parser authority (no math whitelist),
 single environment wrapper via pack, provenance intact. Classifier must cover
 preprocessing protection, bibliography discovery and region reparse/footnote
@@ -54,7 +54,7 @@ block/edit APIs. Pure lower distinguishes structure validation from source-empty
 checks. Failure promises retain existing transport/session and partial-write
 limits. Focused29/29, generic/article native counter/PDF/readback/reload checks
 and no-link package build pass. Full flake check including ERT/strict compilation/
-lint exited0; candidate remains uncommitted.
+lint exited0; exact committed delivery matches accepted patch/message/blobs.
 Review decisions/full contract: memory/issue-13-stage2.md.
 
 Issue9 is later multi-object-to-one-composite identity/composition work, initially

@@ -17,8 +17,8 @@ Implementation command authority/current findings: memory/current.md. Initial
 memory-only adoption below describes its original phase, not current authority.
 
 Stage2 equation candidate implemented, focused29/29/native checks, full flake
-ERT/compile/lint and no-link build pass; nine paths explicitly staged,
-single feat(document) message prepared, no ordinary commit.
+ERT/compile/lint and no-link build pass; user committed the exact nine-path
+feat(document) candidate, read-only delivery verification passed.
 Full extracted source contract, four accepted corrections and test boundaries:
 memory/issue-13-stage2.md. Accept native parser's structurally valid string/stree
 datums without a mathematical root whitelist; source is raw, single-capture and
