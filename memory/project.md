@@ -69,18 +69,17 @@ single-object references, and13 does not complete9. Existing implementation and
 released-subset records below retain their historical scope. Complete adopted
 source semantics, unknowns and evidence requirements: memory/special-block-plan.md.
 
-## Caption anonymous inline-footnote compatibility proposal
+## Caption anonymous inline-footnote compatibility candidate
 
-Supplied guidance reviewed, no capability change yet. Existing caption footnotes
-remain unsupported by current lower; proposed long-caption anonymous inline AST
-support reuses footnote lowering, with test-only patched Org and stock production
-parser. Short/named/nested and other unsupported contexts remain excluded.
-Current prepared caption walker already visits inline note bodies; test source
-coordinates/ownership/no new STM discovery explicitly. Full proposed contract and
-native-first FAILED PDF gate and isolated native controls:
-memory/caption-inline-footnotes.md. Caption table cells suppress footnote bodies;
-list-caption independently adds counter consumption. No exporter/native workaround
-adopted; semantic direction pending. Current production behavior remains unchanged.
+User selected AST compatibility after native diagnosis; local context predicate
+and unprepared-citation guard implemented/accepted, uncommitted. Anonymous inline notes in long and
+short captions reuse existing native footnote lowering. Stock Org literal source
+behavior unchanged, patched parser isolated to tests. No short-caption ban,
+parser/advice/global mutation, separate note anchors, layout/counter workaround.
+Native caption table suppresses note bodies and list-caption affects counters;
+user accepts documenting these limitations without PDF correctness guarantee.
+Focused4/patched5/full flake/default build pass on fixed isolated inputs equal
+worktree. Detailed contract/identity/limits: memory/caption-inline-footnotes.md.
 
 ## Committed block/table extension
 

@@ -1,27 +1,36 @@
 # org-texmacs current memory
 
-## Current: native caption-footnote investigation before Issue13 stage4
+## Current: caption footnote AST compatibility accepted, uncommitted
 
-User selected caption anonymous inline-footnote implementation before stage4 and
-explicitly authorized five repeated validation commands (recorded in guidance).
-Native-first gate FAILED: generic/article exact STM readback/save/reload succeeded,
-but all four caption note bodies absent from PDF word/geometry output; caption
-markers 3/5/7/9, adjacent ordinary notes1/10 present. No production lower or parser
-patch changed. One new maintained diagnostic ERT currently fails by design of its
-positive acceptance assertion; default suite not green, no full/build run.
-User chose investigate native causes before deciding semantics. Subsequent user
-requests native tests through isolated directory flake: next runs now use fixed
-source/lock snapshot tmp/caption-inline-footnotes-native, same authorized focused
-command from that directory. Twenty isolated controls completed: table cell suppresses note body, independent
-list-caption write adds counter consumption. Diagnostic unboxed/no-list combination
-restores body and1/2/3 numbering but changes native layout/directory behavior, not
-an adopted fix. Awaiting user semantic choice (evaluate separate TeXmacs repair,
-defer feature, or AST-only with explicit PDF limit). No implementation acceptance.
-Full contracts, limits, findings and next actions: caption-inline-footnotes.md.
-Existing user .gitignore and flake overlay preserved; no ordinary index changes.
-Evidence archived separately: archive/2026-10-17T15-01-35Z--92f782c/MANIFEST.md.
-Next: user semantic choice after native diagnosis. Do not continue production
-lowering/Org patch until that decision; do not call the failing gate acceptance.
+User's final decision accepts correct native AST/content conversion without
+caption-footnote GUI/PDF visibility, counter/directory or page-layout guarantees.
+Both long and short captions use the same anonymous inline boundary (:type inline,
+:label nil). Prior short ban/PDF blocker superseded. No automatic note-ref split,
+style/layout/counter/anchor workaround; no general secondary-AST note expansion.
+User's split-note GUI/page-anchor evidence is attributed, not agent GUI testing.
+
+Production changes are a local footnote context predicate plus generic rejection
+of citations missing their captured resolution mapping. The latter prevents a
+newly reachable caption-note citation from silently emitting empty(cite), without
+adding caption bibliography support. Copy/preparation/context paths unchanged.
+Native regression records exact readback/reload and known PDF body loss, not a
+layout repair. README distinguishes stock syntax from structured compatibility.
+
+Default focused4/4passed10.027854s; isolated patched parser integration5/5passed.
+Final full flake (stock ERT, strict package compile/lint, patched check) and no-link
+default package build exit0. Final29inputs unchanged/equal root and isolated
+snapshot; whitespace clean, ordinary index empty, lock/version unchanged.
+Nix shared buildPackage takes Org; default still stock Org. Neighboring test patch
+is generated against locked9.8.10 and applied fuzz0 to deterministic test-only tar
+before ELPA install. Actual loaded Org/package paths verified. Native-related
+runs use isolated flake, all five task commands authorized.
+
+Preserve user .gitignore patch allowance and original flake ELPA mirror overlay;
+flake now also contains task wiring, so future staging must separate its hunks.
+No ordinary staging/commit/publicAPI/worker/skill changes. Full contract, evidence,
+archive rationale and final hashes: caption-inline-footnotes.md.
+Next: user review, separately authorized staging/message and user commit, then
+exact delivery verification. Issue13 stage4 NAME and release remain unfinished.
 
 ## Completed delivery: Issue13 stage3 delivered and verified
 

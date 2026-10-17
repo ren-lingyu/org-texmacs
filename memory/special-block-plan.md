@@ -7,6 +7,15 @@ Figure/table plus experimental stars are implemented and locally accepted;
 and user-adopted note/raw-marker boundary limitation: memory/issue-13-stage3.md.
 Five task paths user-committed, delivery verified. Stage4 NAME remains later.
 
+## Selected work before stage4
+
+User selected caption anonymous inline-footnote AST compatibility before NAME.
+After native diagnosis, adopted correct native AST/content conversion without
+GUI/PDF layout/counter/page promise; both long/short captions share rules, no
+automatic split-note/style workaround. Focused4/patched5/full flake/default build accepted; candidate uncommitted. Current status and final semantics: caption-inline-footnotes.md.
+This extends stage3's original caption subset; stage3 delivery evidence itself
+remains bounded to its baseline. No stage4 or release completion claim.
+
 ## Status, motivation and authority
 
 Stage1 now user-selected for implementation: foundation (recursion, captured

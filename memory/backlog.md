@@ -49,18 +49,15 @@ single-object NAME/[[name]] support. Full source/label/provenance/validation
 contract: memory/special-block-plan.md. Existing release gates are retained;
 prior delivered editing/font-lock/bibliography do not establish this capability.
 
-### Caption anonymous inline-footnote compatibility guidance
+### Caption anonymous inline-footnote compatibility implementation
 
-User selected this concrete guidance for implementation before Issue13 stage4;
-native-first gate failed, tests authorized; user selected native-cause investigation
-before a support-semantic decision.20isolated controls now separate native
-table-cell body suppression and directory-write counter effects; post-investigation
-semantic choice pending. No production compatibility implementation accepted.
-Only anonymous inline AST in long captions of naked tables/four wrappers; stock
-Org stays unchanged, patched parser isolated to tests with patch adjacent to its
-consumer. Native-first PDF gate precedes exporter; no unconditional native support
-claim or new release gate. Full boundary/tests/review: caption-inline-footnotes.md.
-Stage4 NAME remains adopted-later, following this selected task.
+User selected implementation before Issue13 stage4. After native investigation,
+final decision accepts correct AST/content conversion with no native PDF layout
+promise; long and short caption notes supported equally. No auto split-note,
+layout/counter/anchor workaround. Stock production Org, patched test closure only;
+patch colocated with consumer, native runs from isolated flake. Local lower and unprepared-citation guard implemented; default focused4, patched5,
+full flake/default build accepted, uncommitted. Detailed current
+contract/evidence: caption-inline-footnotes.md. Stage4 follows this task.
 
 ### Issue9: independently named constituents of one native composite
 

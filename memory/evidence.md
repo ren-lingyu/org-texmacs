@@ -1,5 +1,24 @@
 # org-texmacs durable evidence
 
+## Caption AST compatibility: final user decision and candidate
+
+User accepts native footnote AST/content retention without GUI/PDF visibility,
+numbering/directory/page guarantees; long and short captions treated equally.
+Prior short ban and PDF semantic blocker superseded, no auto split-note/layout
+workaround. User GUI split-note/page-anchor report remains attributed evidence.
+Local production predicate plus unprepared-citation guard: final stock
+AST/literal/native-limit4tests pass10.027854s; patched actual libraries/parser/
+private snapshot/native readback5tests pass. Negative test proved newly reachable
+caption-note citations silently lost keys; mapping guard now rejects explicitly.
+Earlier full/build pass predates guard; final full flake and default build exit0
+on fixed29inputs. Final hashes/root-snapshot equality verified after all gates,
+whitespace clean, ordinary index empty; x86_64-linux only.
+Current candidate identities, command authorization and failures/corrections:
+caption-inline-footnotes.md. No new archive for regenerable implementation logs;
+prior24raw native evidence archive unchanged. Original uncommitted runtime, no
+false project-parent association. AST conversion accepted; native layout limits remain, no user commit yet.
+
+
 ## Caption native-first gate failed; isolated causes separated
 
 User authorized native focused commands, then selected native-cause investigation

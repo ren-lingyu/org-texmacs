@@ -1,4 +1,26 @@
-# Caption anonymous inline footnotes: supplied development guidance and review
+# Caption anonymous inline footnotes: implemented AST compatibility, native limits
+
+## Current adopted semantic decision
+
+User's final development decision supersedes the initial PDF correctness gate and
+short-caption ban below. This task accepts correct supported Org AST to native
+footnote(document...) conversion with content retained. Native caption layout,
+body visibility, counters/directory/page placement are documented TeXmacs limits,
+not failures of structural conversion. Long AND short captions follow the same
+AST principle. No note-ref/note-footnote auto split, special anchors/counters,
+caption-only parser/lower/type, layout prediction or graph rewriting. Existing
+nesting/ownership/other-context rules remain. First-version anonymous-inline
+boundary remains (:type inline,label nil); no named-caption restoration added.
+Org patch remains test-only, no upstream Org proposal now. Implementation is
+accepted before stage4, pending user review and separately authorized delivery.
+
+User reports independent TeXmacs2.1.5 GUI experiments: direct caption footnote
+shows marker but no body/edit position and extra counts; split note-ref plus
+note-footnote displays both but anchoring note-footnote on page2 moves body there
+without moving caption reference. This is user-attributed GUI evidence only.
+The native diagnostic archive supports agent text/geometry conclusions separately.
+No raw archive for final in-conversation decision needed after sufficient semantic
+extraction; new GUI report is distilled, not an original-byte experiment artifact.
 
 ## Intake, authority and retention
 
@@ -8,7 +30,7 @@ stage3 delivery baseline. Follow-up user explicitly revises patch placement:
 keep each patch adjacent to the test configuration that consumes it; do not
 create a central tests/patches directory. If tests/ert/default.nix consumes it,
 use an adjacent org-caption-inline-footnote.patch; if an isolated integration
-check directory consumes it, place the patch there. Proposed integration topology is tests/caption-inline-footnotes (not yet created).
+check directory consumes it, place the patch there. Final integration topology is tests/caption-inline-footnotes, implemented below.
 User additionally requests native tests via an isolated directory flake; adopted
 for subsequent runs at tmp/caption-inline-footnotes-native.
 
@@ -16,7 +38,8 @@ Initial intake was static review/memory only. User subsequently selected this
 implementation before Issue13 stage4. Native-first ERT fixture is now prepared;
 user authorized five exact repeated validation commands below. Independent
 native gate now failed; user chose native-cause investigation before semantics.
-No parser patch generation or production lowering edit; no ordinary staging.
+At that investigation phase no parser patch or production lower edit existed.
+Current implementation follows the final decision above; still no ordinary staging.
 Earlier stage3 command permissions are not permissions for new patched builds.
 Ordinary project state now includes user .gitignore and original flake.nix changes;
 preserve both. No version/lock/API/worker/parser-global/skill changes.
@@ -28,7 +51,7 @@ independent reproduction of the user's experiments.
 ## Intended capability and strict boundaries
 
 Org owns syntax parsing, org-texmacs owns AST conversion, TeXmacs owns layout.
-Accept a legitimate anonymous inline footnote-reference AST in LONG caption,
+Accept a legitimate anonymous inline footnote-reference AST in LONG or SHORT caption,
 reusing existing footnote lowering: :type inline, :label nil. Example source:
 #+CAPTION: Results[fn::Additional explanation.]
 Target local structure is (concat "Results" (footnote (document
@@ -37,8 +60,8 @@ Applicable to legacy naked Org tables and figure/figure*/table/table* wrappers.
 Existing text/markup/links, multi-line and long/short captions, native numbering,
 STM/file provenance and naked table compatibility remain in force.
 
-Reject actual standard [fn:name] references, named inline [fn:name:body], all
-footnotes in SHORT captions, nested footnotes, unsupported other contexts,
+Reject actual standard [fn:name] references, named inline [fn:name:body],
+nested footnotes and unsupported other contexts,
 citation/target and other unsupported caption objects. Retain paragraph rules.
 Do not enable notes in all secondary ASTs, introduce caption STM fragments,
 footnote numbering policy, float semantics, worker operation, public API or new
@@ -61,12 +84,10 @@ shape/type/nesting/identity checks and native footnote(document...) construction
 Caption-text sends both long and short parts through caption context.
 
 Extend only caption footnote acceptance to anonymous inline while preserving
-paragraph behavior and nesting/structure checks. Validate short-part descendants
-explicitly and recursively before lowering (including notes hidden under markup
-or links), with a clear document-structure error. Do not rely solely on the local
-caption context: markup/link recursion can change the immediate context.
-This is review guidance, not a claim arbitrary footnote placement inside markup
-is newly supported; preserve existing context rules outside the selected case.
+paragraph behavior and nesting/structure checks. Both caption parts use caption
+context and the same existing footnote lower. Do not add a short-caption refusal
+merely to avoid native directory effects. Other nested markup/link contexts keep
+their existing restrictions; this is not general secondary-AST footnote support.
 
 Preparation whitespace walker already descends caption objects and invokes
 paragraph preparation for inline note bodies. Verify true parser coordinates,
@@ -115,14 +136,14 @@ implementation time; it was not independently inspected/generated in this review
    anonymous inline note in caption for naked table and all four wrappers;
    text/body markup, long with short, repeated/multiline captions, paragraph
    anonymous/named note coexistence, copied ownership, unchanged original AST,
-   repeated pure lower. Reject standard/named inline/short/nested/malformed and
+   repeated pure lower. Reject standard/named inline/nested/malformed and
    unsupported context/citation/target/island inputs. Update stage3 caption-subset
    regression to discriminate legitimate anonymous notes instead of rejecting all.
 2. Patched parser integration: real source #+CAPTION: test[fn::test] with a real
    table; assert actual footnote-reference/type inline/label nil/body test and
    surrounding table/caption shape. Invoke official document-from-buffer and
    related adapters THROUGH private snapshot parsing, not only parser+pure lower.
-   Include wrapper variants, short-caption rejection and body-note coexistence.
+   Include wrapper variants, short-caption acceptance and body-note coexistence.
    Keep these cases in isolated patched suite; do not pass by skip/xfail or remove
    standard-literal expectations merely to accommodate patched parser behavior.
 3. Stock parser regressions: same note-looking source remains ordinary text;
@@ -141,8 +162,8 @@ PDF generation, visible caption note marker, body text actually in PDF, no
 loss/duplication, marker/body position and counter interaction. Text presence or
 STM equality alone does not prove intended page-footnote layout. Use layout/
 geometry/rendered evidence adequate to locate marker/body. Existing stage3 native
-checks did NOT test caption footnotes. If native semantics fail, stop to record
-limits and obtain a semantic decision rather than invent parser workarounds.
+checks did NOT test caption footnotes. Native failure was investigated and user adopted AST-only acceptance above;
+record limitations without blocking this compatibility implementation.
 
 User reports runtime restriction relaxation lets ox-latex output
 \caption{test\footnote{test}}. This is user-supplied experimental evidence only;
@@ -172,7 +193,8 @@ line/patch application or any exporter/native runtime. Public pages read only:
 - https://orgmode.org/worg/org-syntax.html (keywords, affiliated keywords, footnotes).
 - https://orgmode.org/manual/Captions.html.
 - https://orgmode.org/worg/dev/org-export-reference.html (org-export-get-caption).
-No build/probe/parser/exporter/native experiment run in this review.
+No runtime experiments occurred during that initial reference review; subsequent
+native investigation and implementation validation are recorded below.
 
 ## Authorized commands and native investigation state
 
@@ -194,8 +216,9 @@ NoteA/B/C/D bodies absent from PDF text and word-coordinate output. BodyNoteOne/
 BodyNoteTwo present once with markers1/10. This does not meet intended native
 caption-note semantics. No raster/GUI inspection yet; do not claim broader visual
 proof than extracted text/geometry. No native engine patch/exporter workaround.
-One new org-texmacs-caption-inline-footnote-native ERT in tests/ert/ert.el holds
-positive acceptance assertions and currently FAILS; not xfail/skipped/accepted.
+The initial org-texmacs-caption-inline-footnote-native ERT held positive layout
+assertions and failed at this investigation phase. Final user decision later
+replaced it with native-layout-limit regression; no xfail/skip.
 After run only indentation adjusted, no behavior change; final file SHA256
 b7d893e5f93bdd64bb5de188835119cc765dc9694beffc9a9e8c5d57d18962b1;
 patch SHA2562bf8b3b3045f3699be62793941d1135f6a42285494077092470d1cce5d21946f.
@@ -279,9 +302,116 @@ No PDF/binary/cache archived. Full executed ERT code not duplicated: standalone
 identity distinction documented in manifest. Capture project HEAD is context,
 not original runtime-tree provenance; zero new project parents.
 
-User was asked for post-investigation semantic direction, reply pending:
-1 evaluate separate TeXmacs repair before deciding exporter;
-2 defer caption-note feature and retain native reproduction;
-3 AST-only compatibility with explicit unsupported default PDF semantics.
-No option selected by elapsed time. Keep stage4 separately planned until user
-steers this active task. Original task remains incomplete, not accepted/delivered.
+Post-investigation user supplied explicit final AST-compatibility decision above,
+including short-caption acceptance and no default split-note strategy. No semantic
+question remains pending. Implementation now accepted by final automated gates below; not yet user-committed.
+
+## Implementation candidate and current validation
+
+Production changes are the inline footnote context predicate and a generic
+unprepared-citation check: paragraph rules
+unchanged; caption accepts anonymous inline:type inline,label nil. Both caption
+parts already use caption context; no caption-specific lower, AST type, worker,
+anchor, splitter or Org-global mutation. No preparation/input/context changes
+needed after real parser tests. Citation lower now requires its identity in the
+computed plan, preventing silent empty(cite) output when a caption note contains
+an unsupported citation; no caption bibliography traversal/support added. Existing stage3 rejection fixture remains named
+standard note/citation/target and comment now distinguishes anonymous coverage.
+
+Eight task paths: README.org, org-texmacs-document.el, flake.nix, tests/default.nix,
+tests/ert/ert.el, tests/caption-inline-footnotes/{default.nix,ert.el,
+org-caption-inline-footnote.patch}. User .gitignore patch allowlist preserved;
+flake ELPA workaround byte-equal original overlay and must be excluded from
+feature staging. Shared buildPackage takes Org dependency to avoid mixing closures;
+formal default still emacsPackages.org. Tests/patch never enter package fileset.
+Org version asserted9.8.10; unified diff generated from locked tar org-element.el
+line438. Test source tar rebuilt deterministically after patch --batch --fuzz=0;
+actual org-mode/org-element-parse-buffer/org-export-as paths and package path
+asserted inside patched Emacs. No default package dependency override.
+
+Four default focused tests: all5targets pure long+short+multiline notes, body rich
+markup/filelink and ordinary anonymous/named note coexistence; independent copy,
+source unchanged/repeated pure lower/no worker/source reads, provenance; invalid
+standard/named/nested/type/other-context rejection; stock literal source for both
+caption parts/alltargets; independent native generic/article readback/PDF/reload
+records pinned missing-body limit. No xfail/skip or promised native layout repair.
+Five isolated patched tests: exact loaded versions/paths, actual parser AST shape,
+private snapshot prepare+document-from-buffer for alltargets and long/short/
+multiline rich notes/body-note coexisting; no extra STM requests from caption or
+note-body STM-looking text; file provenance and expected native resolved path;
+exact native readback including footnote bodies, no note-ref/note-footnote added;
+full/subtree/region/narrow and excluded invalid nodes; unsupported note variants.
+README distinguishes stock syntax, prepared/extended-parser AST acceptance and
+known native GUI/PDF visibility/number/directory/page limits; no default patch.
+
+Intermediate corrections: derivation has no override, so minimal shared package
+construction used. ELPA dontUnpack means patchPhase cannot find source; test-only
+patched tar fed to original Org derivation instead of patching installed store.
+One extra parenthesis in new test helper fixed. Mutable quoted Org property lists
+and source strings polluted repeated fixture iterations; fixed by fresh per-case
+lists/strings, no ownership validation weakened. Native readback expectation now
+accounts for existing relative file-link resolution to captured absolute base.
+No suppressed errors or broadened production semantic rules for these fixes.
+
+Final focused4/4passed10.027854s and patched integration5/5passed, including
+caption-note citation rejection. Earlier full/build pass predates this guard and
+is intermediate evidence only.
+Final no-link default package build exit0; final full flake check exit0 (all checks
+passed: complete stock ERT/strict package compilation/lint and isolated patched Org
+integration). After all gates,29input
+hashes and isolated/root bytes unchanged, whitespace check clean, index empty and
+lock unchanged. Only pinned x86_64-linux validated; other systems omitted by Nix. All from isolated implementation flake
+tmp/caption-inline-footnotes-implementation per user's native invocation preference.
+29snapshot input bytes equal current root, no source edits during final checks.
+Original runtime uncommitted; zero new project parents for implementation evidence.
+
+### Final current candidate input identity
+
+Ordered29-input SHA256 manifest (each `digest  path` line with trailing newline):
+4573d1cc22bd8955baf12ac14025720535367959540c933e10b84e4a562398ec.
+source-inputs.json SHA256:
+cebb4b4580716b19983e03ea4a0f1db108b81ca77be877c2d1d89b1924e157f9.
+Hashes below identify task/runtime inputs; flake includes preserved mirror overlay,
+.gitignore is user change. Neither whole-file staging is automatically authorized.
+
+```text
+212fb71cec5bebdbedfebfa57516894a85e85f7ea132940dd37bb8fa04dfc8c1  README.org
+54effce5b08cfe75c4a32de982ce81f31ed07afd77c7a944598175ca88538cb7  flake.nix
+6f1dff0d015d313660de98cf8cdca743452d9c90a1d108ae666d6c9406dd528b  org-texmacs-document.el
+decf713b8aaf88fde0e322db16b5a219df3071f7f3499a9a85ab9b775e5b1794  tests/default.nix
+f02ef1986bf52d61c5bde0dc71d107f3259fea49a2e9aefa60453100bd71f131  tests/ert/ert.el
+643c242a5ea32758071fe1f714989b31f47919bfc073eb9b55862897ed8278e4  tests/caption-inline-footnotes/default.nix
+e90bfd7c96b544fe34d8a26140c23ee4aaf053566bc6a1b6a9d767d59dede9e8  tests/caption-inline-footnotes/ert.el
+b19cc830d4436c423b33ae1a4f25b7807daeac1045a62772427a70ec3cdb7a8c  tests/caption-inline-footnotes/org-caption-inline-footnote.patch
+118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a  flake.lock
+94c2c01decd65462d606952a518764a3205071bbf361d366ea7ea42d8a7a4ab3  .gitignore
+```
+
+Final review additionally found a newly reachable unsupported composition:
+caption anonymous note -> citation. Bibliography collection omits caption secondary
+AST, yet inline citation previously could emit (cite) without captured keys.
+A new default negative test in separate isolated citation flake reproduced this
+(3/4pass10.135043s). Generic citation lowering now explicitly rejects missing
+identity mapping. Default synthetic long/short note-citation and patched real
+long/short source regressions pass; no bibliography semantics broadened. First
+full pass before this guard is intermediate; final checks rerun and passed on corrected candidate.
+
+## Acceptance and handoff
+
+Final AST-compatibility implementation accepted, uncommitted. Eight task paths
+and exact manifest above identify candidate. .gitignore patch allowlist was user's
+preexisting change; preserved, no agent edit. flake.nix combines feature wiring
+with original user ELPA workaround; preserve overlay and exclude its system
+parameter/overlay hunk from eventual feature commit. Do not stage whole flake
+blindly. No ordinary index authorization yet, no commit-message draft for this
+new task. Next: requested review/staging/message/user commit and exact equivalence
+verification. Refs:#13 may be appropriate, no Closes because NAME/stage4 remains.
+No GUI/physical-page support assertion, automatic split note, engine fix or release.
+
+Native pre-decision diagnostics remain historical failures; current native-layout-
+limit regression deliberately documents pinned PDF body loss while asserting
+complete STM readback/reload. No hidden skip/xfail, no claim typesetting repaired.
+Maintained tests now reproduce implementation acceptance, so no new raw archive
+for final build logs needed. Prior native-control archive remains immutable.
+Final runtime was uncommitted isolated bytes equal worktree, zero new project
+parents; later exact committed-delivery comparison must be recorded separately.

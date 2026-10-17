@@ -7,6 +7,13 @@ full flake and no-link build pass; exact user-committed delivery verified. Adopt
 revisions and actual Org note boundary limitation: memory/issue-13-stage3.md.
 No release or stage4 NAME claim.
 
+User selected caption anonymous inline-footnote AST compatibility before stage4.
+AST compatibility candidate accepted, uncommitted: focused4/patched5/full flake/
+default build pass. Stock production Org and isolated patched tests. AST conversion,
+not native caption-footnote PDF layout, is acceptance; native defects documented,
+no automatic split-anchor semantics. Current implementation/validation status:
+caption-inline-footnotes.md. No additional mandatory release gate inferred.
+
 User adopted2026-10-17 a mandatory Issue13 usable mathematical special-block
 subset for0.5.0, not an optional extension. Stage1 recursion/private handlers and
 formal statements now implemented/accepted/user-committed, exact delivery verified:
