@@ -11,12 +11,13 @@ counters/PDFs and representative tm reload. Details: memory/issue-13-stage1.md.
 Updated handler contract prohibits external reuse of any contents descendant cons/string;
 deep-rebuilt semantic duplication remains an unenforceable callback obligation.
 Preflight guarantees rejection before body STM requests, not before bibliography
-requests; custom handlers never receive placeholder contents. No equation/figure/
-table/NAME implementation or Issue9 scope. Preserve/exclude user flake workaround.
+requests; custom handlers never receive placeholder contents. Stage2 equation
+implementation is below; no figure/table/NAME implementation or Issue9 scope. Preserve/exclude user flake workaround.
 Implementation command authority/current findings: memory/current.md. Initial
 memory-only adoption below describes its original phase, not current authority.
 
-Stage2 equation guidance now reviewed/adopted, implementation/checks not started.
+Stage2 equation candidate implemented, focused29/29/native checks, full flake
+ERT/compile/lint and no-link build pass; no ordinary staging/commit.
 Full extracted source contract, four accepted corrections and test boundaries:
 memory/issue-13-stage2.md. Accept native parser's structurally valid string/stree
 datums without a mathematical root whitelist; source is raw, single-capture and

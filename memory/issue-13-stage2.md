@@ -1,14 +1,11 @@
-# Issue13 stage2: adopted raw-STM equation guidance
+# Issue13 stage2: accepted raw-STM equation candidate
 
 ## State, source and authority
 
-User supplied updated INBOX, requested review, then adopted all four review
-corrections and requested GAW updates. This turn is memory/governance work,
-not source implementation, testing or release authorization. Stage1 delivery
-and its17focused/495full acceptance remain distinct; none validates stage2.
-No implementation node has started. No ordinary project/INBOX/version/lock,
-index, dependency, GitHub issue, tag or release changes authorized here.
-Preserve/exclude existing flake.nix ELPA mirror workaround.
+User authorized implementation of the reviewed stage2 plan and repeated focused
+300s ERT-derivation shell, 600s flake check, 120s no-link default build commands.
+Implementation and all three acceptance commands completed successfully. Ordinary staging and
+commit are not authorized. Preserve/exclude flake.nix ELPA workaround.
 
 Source: ordinary project root INBOX.md, ignored/untracked regular UTF-8 file,
 23584bytes, SHA256
@@ -104,8 +101,10 @@ block/inline-fragment and statement/custom-handler semantics unchanged.
 
 These incorporate the user's four accepted review tightenings: complete opacity
 coverage, empty-source versus datum distinction, bounded failure guarantees and
-timely memory updates. The classifier/helper API details remain for the separately
-authorized implementation plan; no runtime/native design claim has been verified.
+timely memory updates. Implemented private helpers are native-body-kind,
+native-body-blocks, native-body-source and native-body-check, with
+document-check-native-requests called after final selected preparation.
+Runtime evidence is recorded below.
 
 ## Investigation and maintained acceptance
 
@@ -140,7 +139,8 @@ authorized implementation plan; no runtime/native design claim has been verified
   includes Poppler; ordinary devShell lacked it during stage1. Do not alter flake
   just to compensate or silently change lock/config/dependencies. Future command
   authorization must state exact commands, writes/network/cost/timeouts; stage1
-  grants do not authorize new stage2 runs in this memory-only task.
+  grants alone did not authorize stage2; user has now explicitly authorized the
+  three stage2 commands below.
 
 ## Sequence and next action
 
@@ -148,11 +148,79 @@ Logical steps: A parser evidence/classifier/raw capture/fragment exclusion;
 B full preparation/context/preflight/reserved names/lowering/provenance;
 C native tm/PDF/direct-reload verification, docs and final checks/delivery review.
 These are not mandated separate commits; any intermediate committed state must
-be coherent/recoverable. Source implementation, staging and checks await separate
-authorization. Ordinary commit remains the user's action; eventual footer Refs:#13,
+be coherent/recoverable. Source implementation and checks are authorized and complete; ordinary staging
+requires a later explicit path-specific authorization. Ordinary commit remains the user's action; eventual footer Refs:#13,
 not Closes. No issue/version/release action. Skill updates use separate checkpoints
 from memory/archive; archive captures, if independently warranted, remain separate.
 
 Next after stage2: stage3 figure/table plus experimental starred wrappers;
 stage4 single-object NAME/[[name]]. Independently named composite formula rows
 remain Issue9 after0.5.0/before0.6.0. This sequencing does not expand this phase.
+
+## Implemented behavior and maintained evidence
+
+Source changes now introduce native-body classification and outermost collection,
+shared bounded raw capture (legacy texmacs block/edit contract retained), opaque
+fragment/preprocess/bibliography/context paths, selected-request empty-source
+checks in the adapter, pure built-in wrapping and reserved handler names.
+No Scheme/protocol/lock/version/flake change. README describes exact support.
+Raw-source checks run only after actual scope/filter preparation, not during the
+full-source bibliography discovery callback; otherwise excluded malformed blocks
+would spuriously reject selected exports. Pure lowering never reads source.
+
+Maintained twelve new stage2 tests cover pure strings/strees/provenance/repeated
+ownership, reserved/missing/duplicate mappings, parameters/metadata/preflight,
+real parser stars/case/nesting/list/bounds/mismatched ends, outermost capture,
+opaque Org-looking content, scoped clipping and omitted invalid equations,
+restored-note equations, filter raw-citation rejection and source wait guards.
+Native generic/article fixtures compare an independent exact target body/PDF,
+numbered1/2 with interleaved star and nested theorem star, Unicode/fraction,
+saved tm reload geometry (Issue11 tolerance1pt), strings including empty datum,
+escapes and parser recovery. Final strengthened focused29/29 passed29.580234s, including actual preprocessing
+entry and native session readback with independently specified native alpha token.
+Earlier failed fixtures used a style string instead of required list, selected
+headline 'Kept' instead of body 'kept' for clipping, and expected Unicode
+transcoding at parse instead of consumption; corrected tests, no weakened policy.
+No-link default build and full flake check exited0. Full check includes all ERT,
+strict compilation and package lint; only current x86_64-linux evaluated, other
+incompatible systems omitted by Nix. Full ERT transcript/count/timing was not
+separately extracted from the successful Nix build log. Native evidence scoped to pinned x86_64-linux stack;
+no arbitrary-style/GUI/platform or new failure-atomicity claim. No unique raw
+artifact archive needed: maintained tests encode independent reproduction.
+
+## Acceptance command and candidate identity
+
+User authorized repeated execution in this task:
+1. timeout 300s nix develop --no-write-lock-file path:.#checks.x86_64-linux.ert --command emacs -Q --batch -L . --load tests/ert/ert.el --eval '(ert-run-tests-batch-and-exit "issue13")'
+2. timeout 600s nix flake check --no-write-lock-file path:.
+3. timeout 120s nix build --no-link --no-write-lock-file path:.#default
+
+Focused exit0:29/29,29.580234s. Full check exit0 (all checks passed); build exit0.
+Final manifest recheck after acceptance matches exactly; no task source edits
+after final focused run or during full check.
+Nix may access network and write store/cache/logs; ERT fixtures create and retire
+temporary tm/PDF/native homes. No result link or lockfile change. Environment is
+existing locked x86_64-linux ERT derivation with Poppler (Emacs31.1/Org9.8.10/
+TeXmacs2.1.5 baseline), not default devShell. No arbitrary native-style coverage.
+
+Accepted runtime candidate is uncommitted atop the delivered stage1 baseline,
+not the ordinary committed HEAD tree. No new project-parent edge is warranted
+for runtime claims. Ordinary staging/commit remain unexecuted; future delivery
+review must compare exact task blobs/diff against this candidate. Nine task paths
+are listed below; flake overlay/lock hashes record test inputs, not staging scope.
+Manifest SHA256 is computed over these ordered lines (including trailing newline):
+
+```text
+7a47c8404026db363a9929e1898d4239457a5ba0dc72196156243f4348a36d67  README.org
+9799943545eb4f32719606a6358645ee3533261e3b883e2f94480dda517a1de0  org-texmacs-bibliography.el
+3e854783c4ccdd5f3640ea5a3b8ffd489ebfdb5c731adc31a7943deef320ce56  org-texmacs-context.el
+564a36d4fef04afefb5c924c9ba5e9b94305df41e367625ef83310599c283503  org-texmacs-document.el
+ee817ea45d6eb1747ceed9a5a07dfedf763f10351834c9f6f9b488fdf88ed216  org-texmacs-fragment.el
+82470132a46317e3e1bd12f6dd43b79fcfe60e07bbe4ea9a9260bb95d577a6f8  org-texmacs-preprocess.el
+7e7ca8b10be0a68ce06c412a99b73747e7e1ec7afe080f22ecc71a698ab25de5  org-texmacs-source.el
+67d0a4eb4176879092ed5775fae2cbed1f0d36947851d6ef306047030591aa30  org-texmacs.el
+591d5a95204c23ec3e2a30fa0c6e0a51ef4624cc82e4c9068e80adfba9455a49  tests/ert/ert.el
+a717dcfa245b1ccaee102ed8eef3a6ae229d0c86b60f674080bab5273d093a8a  flake.nix
+118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a  flake.lock
+```
+Manifest SHA256: ff5d5e825705f600ec94039f63e02de15228664e84a5157c6c718628a92e8368.

@@ -67,7 +67,9 @@ Issue13 is required for v0.5.0: private recursive special-block extension point,
 formal statements, single-expression equation/equation*, explicit figure/table
 wrappers and bounded single-object NAME/[[name]] semantics. Stage1 recursive
 handlers/formal statements are locally implemented and accepted; remaining
-equation/figure/table/NAME work is adopted planning, not implemented support.
+figure/table/NAME work is adopted planning. Stage2 equation candidate is
+implemented and locally accepted including full flake/build; ordinary delivery
+pending (issue-13-stage2.md).
 Stage1 evidence: memory/issue-13-stage1.md. Full design and verification
 boundaries: memory/special-block-plan.md.
 

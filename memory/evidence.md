@@ -1,13 +1,27 @@
 # org-texmacs durable evidence
 
+## Issue13 stage2 implementation candidate
+
+Twelve new maintained ERT plus seventeen stage1 tests pass focused29/29
+(29.580234s), including real Org stars/nesting/scope, raw opacity through actual
+preprocessing and bibliography masking, pure wrapping/provenance/ownership,
+source/preflight errors, native strings/parser recovery, generic/article
+numbering, independent native readback, exact reference PDF and saved tm reload
+text/coordinate comparison (existing1pt tolerance). No-link package build exit0;
+full flake check exit0, including complete ERT/strict compilation/lint. Complete commands, candidate input manifest, retained
+limits and archive assessment: memory/issue-13-stage2.md. Runtime used uncommitted
+candidate; no ordinary project-parent association falsely identifies its HEAD as
+accepted code. Maintained fixtures reproduce evidence; no raw archive needed.
+
 ## Stage2 INBOX review, adopted corrections and retention decision
 
 User supplied stage2 guidance; first review recorded23584bytes and SHA256
 71c40dd0686b702f2f87dbbc4ba9b5a1c752c3e9ff8f88be073976498a2ec85c.
 Recheck matches; ignored/untracked regular file, not a tracked project blob.
 Static code review used delivered stage1 source, current project snapshot
-associated with this memory checkpoint (non-first parent). No stage2 runtime,
-Org-starred parsing/native/PDF proof or remote lookup. Exact source semantics,
+associated with the earlier intake checkpoint (non-first parent). That review
+performed no stage2 runtime, Org-starred parsing/native/PDF proof or remote lookup;
+subsequent implementation evidence is above. Exact source semantics,
 test requirements, limits and four user-adopted review corrections fully
 distilled in memory/issue-13-stage2.md. No original archive: after extraction,
 this active guidance supplies no remaining independent raw evidence; mutability

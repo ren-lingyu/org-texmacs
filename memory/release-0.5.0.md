@@ -6,12 +6,12 @@ User adopted2026-10-17 a mandatory Issue13 usable mathematical special-block
 subset for0.5.0, not an optional extension. Stage1 recursion/private handlers and
 formal statements now implemented/accepted/user-committed, exact delivery verified:
 17focused/495fullERT/strict package compile/lint/full flake/build pass; generic
-native16type/PDF and theorem/proof tm reload accepted. Remaining equation,
-figure/table/NAME and weak anchors still planned; no release action. Full stage1
+native16type/PDF and theorem/proof tm reload accepted. Remaining figure/table/NAME and weak anchors still planned; no release action. Full stage1
 contract, candidate identities and limits: memory/issue-13-stage1.md.
 Full source semantics and validation boundaries: memory/special-block-plan.md.
-Stage2 equation/equation* guidance reviewed/adopted with four corrections;
-no implementation/native/test acceptance. memory/issue-13-stage2.md holds the
+Stage2 equation/equation* candidate implemented with four corrections;
+focused29/29/native generic/article/PDF/readback/reload, full flake ERT/compile/
+lint and no-link build pass; ordinary candidate uncommitted. memory/issue-13-stage2.md holds the
 complete extracted contract and requirements, without relying on mutable INBOX.
 Stage1's495ERT is not stage2 or final release evidence. All other gates unchanged.
 This adds one required scope gate, not duplicated numbered legacy items:
@@ -37,7 +37,8 @@ bibliography behavior (see memory/issue-12-review.md).
 Prior readiness/investigation sections below retain their historical scope and
 observations; current scope uses this amendment and the concentrated design.
 New INBOX replaces the old working handoff, not the preserved historical evidence.
-Memory-only update; original INBOX/project worktree and existing archives unchanged.
+Initial scope adoption was memory-only; current stage2 source implementation is
+accepted locally as above. INBOX and existing archives remain unchanged.
 No archive/config/skill mutation needed; design and source provenance fully
 extracted in memory/special-block-plan.md. No project-parent inferred from main.
 

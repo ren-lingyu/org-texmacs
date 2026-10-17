@@ -42,17 +42,20 @@ Org table numbering/caption/reference behavior remains compatibility input.
 Label scope is type-specific and native counters stay authoritative. Empty-caption
 numbering, experimental starred syntax/native roots, weak external surround for
 plain named STM and referenced-only label activation still need validation.
-Float behavior is undecided. Equation/figure/table/NAME and weak anchors remain
-unimplemented; stage1 acceptance does not establish these later capabilities.
+Float behavior is undecided. Figure/table/NAME and weak anchors remain
+unimplemented; stage2 equation candidate is described below.
 
-Stage2 raw-STM equation/equation* guidance adopted but unimplemented/unverified:
+Stage2 raw-STM equation/equation* implemented/accepted uncommitted candidate:
 one original source capture/request, native parser authority (no math whitelist),
 single environment wrapper via pack, provenance intact. Classifier must cover
 preprocessing protection, bibliography discovery and region reparse/footnote
 recovery as well as fragment/document paths, without widening texmacs-specific
 block/edit APIs. Pure lower distinguishes structure validation from source-empty
 checks. Failure promises retain existing transport/session and partial-write
-limits. Review decisions/full contract: memory/issue-13-stage2.md.
+limits. Focused29/29, generic/article native counter/PDF/readback/reload checks
+and no-link package build pass. Full flake check including ERT/strict compilation/
+lint exited0; candidate remains uncommitted.
+Review decisions/full contract: memory/issue-13-stage2.md.
 
 Issue9 is later multi-object-to-one-composite identity/composition work, initially
 independently numbered/referenced aligned rows. It is not a prerequisite for13's

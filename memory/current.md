@@ -1,19 +1,30 @@
 # org-texmacs current memory
 
-## Current: Issue13 stage2 guidance reviewed and adopted
+## Current: Issue13 stage2 implemented and accepted, uncommitted
 
-User accepted four review tightenings and requested memory-only GAW update.
-Stage2 adds raw-STM equation/equation* wrappers only; not implemented or tested.
-Full distilled contract, implementation/test boundaries and sequence:
-memory/issue-13-stage2.md. Ensure opacity in preprocessing, bibliography and
-context region/dependency recovery too; distinguish empty source from valid
-empty-string datum; retain existing transport/session and partial-write limits;
-maintain memory during work instead of waiting for final commit. No mathematical
-root whitelist, recursive Org equation body, extra concat/document, handler callback,
-NAME or new protocol. Stage3 figures/tables and stage4 names remain later; Issue9
-keeps composite-row identity. Stage1 delivered results below remain valid only
-for their tested capability. Next: separately authorize stage2 implementation/
-checks; none run or source files modified in this turn.
+User authorized the reviewed stage2 plan and repeated focused/full/build commands.
+Raw-STM equation/equation* wrappers implemented; twelve new maintained ERT added.
+Final focused29/29 passed29.580234s; full flake check (complete ERT, strict package
+compilation and lint) exit0; no-link default package build exit0. Native generic/
+article numbering1/2 with interleaved star and theorem-nested star, independent
+readback, Unicode/fraction PDFs and saved tm reload geometry pass. Input manifest
+unchanged after acceptance. Full commands, source hashes and limits:
+memory/issue-13-stage2.md. Pinned x86_64-linux only; other systems not certified.
+
+Native-body classifier shields preprocessing/bibliography/context/dependency and
+fragment paths without broadening texmacs-only editing/block APIs. Pure lower
+packs exactly one wrapper and preserves STM paths; source emptiness is checked
+on final selected requests, distinct from a valid empty-string datum. No math
+whitelist, recursive Org formula body, extra concat/document, custom callback,
+NAME or protocol addition. Transport/session and partial-write limits unchanged.
+
+Nine task paths remain unstaged; index empty. User flake.nix ELPA mirror overlay
+preserved/excluded, lock/version/INBOX unchanged. No ordinary commit or external
+issue/release action. Next: user review and separately authorized explicit staging/
+commit; use Refs:#13, not Closes. Stage3 figure/table and stage4 NAME remain later;
+Issue9 composite-row identity and all other release gates remain separate.
+No feature-related skill change or raw archive; memory-only checkpoint records
+uncommitted runtime candidate, not a falsely associated committed HEAD snapshot.
 
 Intake source INBOX:23584bytes,SHA256
 71c40dd0686b702f2f87dbbc4ba9b5a1c752c3e9ff8f88be073976498a2ec85c,
@@ -66,9 +77,9 @@ unchanged and unstaged. Index empty. Refs:#13, no closing footer or issue-close
 action; no remote issue-state lookup required for this bounded delivery.
 Exact patch/message hashes: memory/issue-13-stage1.md. No tests rerun just for
 commit verification. No further stage1
-implementation/testing remains. Whole13 and v0.5.0 are not complete; equation,
+implementation/testing remains. Whole13 and v0.5.0 are not complete;
 figure/table/NAME and weak anchors remain separately selected later work. Issue9
-remains post0.5.0. Stage2 guidance is adopted above; implementation not started.
+remains post0.5.0. Stage2 is locally implemented/accepted above; ordinary delivery remains pending.
 
 ## Adopted full scope: v0.5.0 Issue13 and Issue9 refocus
 
