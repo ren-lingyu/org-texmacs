@@ -68,7 +68,7 @@ formal statements, single-expression equation/equation*, explicit figure/table
 wrappers and bounded single-object NAME/[[name]] semantics. Stage1 recursive
 handlers/formal statements are locally implemented and accepted; remaining
 NAME work is adopted planning. Stage3 figure/table candidate is implemented,
-focused/full flake/build accepted, uncommitted; see issue-13-stage3.md. Stage2 equation candidate is
+focused/full flake/build accepted, user-committed and delivery verified; see issue-13-stage3.md. Stage2 equation candidate is
 implemented/accepted/user-committed including full flake/build; exact delivery
 verified (issue-13-stage2.md).
 Stage1 evidence: memory/issue-13-stage1.md. Full design and verification

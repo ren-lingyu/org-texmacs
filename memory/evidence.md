@@ -1,6 +1,6 @@
 # org-texmacs durable evidence
 
-## Issue13 stage3 accepted implementation candidate
+## Issue13 stage3 accepted implementation and verified delivery
 
 Native-first parser/generic/article gate31/31 passed38.819801s before exporter
 edits. Candidate integrated4wrappers/source-proof/scoped binding/caption/native
@@ -11,9 +11,13 @@ candidate results are intermediate evidence only. Native counters/empty-caption/
 stars/graphics/independent tree/readback/direct-reference-reload text+geometry pass.
 User adopted actual Org note/raw-marker source-boundary restriction, maintained
 parser regression and README limitation. No text reconstruction/extra dependencies.
-Detailed evidence/authorization/limits: memory/issue-13-stage3.md. Runtime is an
-uncommitted candidate, no false project-parent runtime association. Maintained
+Detailed evidence/authorization/limits: memory/issue-13-stage3.md. Original runtime
+used an uncommitted candidate, no false project-parent runtime association. Maintained
 fixtures retain reproduction; no extra raw archive.
+User-committed exact delivery verified: expected single stage2 parent, five paths,
+full patch/message and all task/lock blobs match acceptance handoff. Index empty;
+original flake overlay unchanged/unstaged. No tests rerun solely for commit.
+Project association grounds delivery inspection, not original runtime provenance.
 
 ## Issue13 stage3 intake and static review
 

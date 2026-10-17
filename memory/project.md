@@ -22,7 +22,7 @@
 
 ## Issue13: accepted stage1 and remaining adopted target
 
-Stage3 figure/table candidate is implemented and locally accepted, uncommitted.
+Stage3 figure/table implementation accepted, user-committed and delivery verified.
 Source proof survives pruning and scoped reparse; generic/article native gates
 and strengthened focused tests, full flake and default build pass.
 Current capability, limits, user-adopted Org footnote boundary and evidence:

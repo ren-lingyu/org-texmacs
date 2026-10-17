@@ -3,9 +3,9 @@
 ## Stage3 guidance review
 
 Figure/table plus experimental stars are implemented and locally accepted;
-44focused/full flake/default build pass, candidate uncommitted. Three adopted revisions, six extra gates, actual parser/native evidence
+44focused/full flake/default build pass; exact user-committed delivery verified. Three adopted revisions, six extra gates, actual parser/native evidence
 and user-adopted note/raw-marker boundary limitation: memory/issue-13-stage3.md.
-Five task paths staged by user authorization; no ordinary commit or stage4 NAME work.
+Five task paths user-committed, delivery verified. Stage4 NAME remains later.
 
 ## Status, motivation and authority
 

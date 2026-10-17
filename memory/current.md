@@ -1,13 +1,13 @@
 # org-texmacs current memory
 
-## Current: Issue13 stage3 candidate implemented and accepted
+## Current: Issue13 stage3 delivered and verified
 
 User authorized implementing reviewed plan plus adopted revisions1/2/3 and six
 acceptance additions. Independent parser/native gate31/31 passed before exporter
 edits. Candidate now covers4figure/table wrappers, private pre-prune owned source
 proof, range-rebound scoped AST, legacy caption subset and finite raw-table
-normalization with original-root STM/file provenance. Five task files modified;
-all five task paths staged by explicit user authorization; flake overlay excluded. No protocol/API/version/
+normalization with original-root STM/file provenance. User committed exact five
+task paths; delivery verified, index empty, only original flake overlay dirty. No protocol/API/version/
 lock/skill/archive/release change. Detailed contract/evidence/commands:
 memory/issue-13-stage3.md. Final44/44focused passed54.281918s including context selection/dependency
 completeness correction. Final full flake check and no-link default build exit0 on the fixed candidate.
@@ -19,10 +19,10 @@ from AST. Unsupported spelling documented/tested, no textual reconstruction;
 legal note restoration and top-level raw directives remain separately tested.
 Generic/article native counters, missing-caption numbers, stars, real graphics,
 readback/direct-reference-reload PDFs/geometry passed. Locked x86_64-linux only.
-One coherent feat(document) commit recommended; full staged diff reviewed and
-all five index blobs match accepted candidate. Message prepared at tmp/commit.md
-(exact message and patch digests in stage3 memory). Next: user commit, then
-exact committed-delivery verification. Whole13/release and stage4 NAME unfinished.
+Read-only verification confirms single expected stage2 parent, exact five paths,
+full patch/message and all accepted task/lock blobs. Runtime originally used an
+uncommitted candidate; project association now grounds delivery verification.
+No tests repeated solely for commit. Next: separately plan stage4 NAME/links. Whole13/release and stage4 NAME unfinished.
 
 ## Completed delivery: Issue13 stage2
 

@@ -3,7 +3,7 @@
 ## Current scope amendment: required Issue13, refocused later Issue9
 
 Stage3 figure/table candidate implemented; parser/native gate,44focused,
-full flake and no-link build pass; candidate uncommitted. Adopted grammar/caption/source-proof
+full flake and no-link build pass; exact user-committed delivery verified. Adopted grammar/caption/source-proof
 revisions and actual Org note boundary limitation: memory/issue-13-stage3.md.
 No release or stage4 NAME claim.
 

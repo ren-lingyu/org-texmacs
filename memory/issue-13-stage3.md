@@ -1,4 +1,4 @@
-# Issue13 stage3: figure/table implementation candidate
+# Issue13 stage3: accepted figure/table implementation and verified delivery
 
 ## Intake, authority and retention
 
@@ -9,7 +9,7 @@ Source/ERT/README implemented; user subsequently authorized five-path staging.
 Agent does not execute ordinary project commits. Preserve
 flake.nix ELPA workaround. No worker protocol/public API/dependency/version/lock,
 issue-close/tag/release actions. Static review used delivered stage2 project
-baseline; current runtime uses an uncommitted candidate, not that committed tree.
+baseline; original runtime used an uncommitted candidate, not that committed tree.
 Original guidance's remote Issue13 Open claim was not reverified.
 
 First-read source: ignored/untracked regular UTF-8 project INBOX.md,17294bytes,
@@ -292,10 +292,10 @@ reproduction, so no extra immutable archive selected.
 Possible network/store/cache/log/temp tm/PDF/raster writes disclosed and authorized;
 no result link or lock change. Pinned x86_64-linux ERT environment with Poppler,
 Emacs31.1/Org9.8.10/TeXmacs2.1.5 baseline. No other style/platform/GUI guarantee.
-Candidate uncommitted, all five task paths staged; exclude flake mirror overlay from
-ordinary delivery. Eventual commit footer Refs:#13, not Closes. Final diff
-whitespace check passed; five task paths staged with only unchanged user flake
-overlay unstaged. Next: user commit, then verify committed-delivery equivalence.
+User committed the exact five-path candidate; original flake mirror overlay remains
+uncommitted and excluded from delivery. Verified commit footer Refs:#13, not Closes. Final diff
+whitespace check passed; delivery verified below, index empty and only original
+flake overlay unstaged. Next: separately plan stage4 NAME/links.
 Stage4 NAME/counter-scope labels/weak anchors and Issue9 remain later work.
 
 Final review correction: full-source wrapper clipping checks must honor actual
@@ -344,3 +344,15 @@ c7605e29b0292f48b32239ed2ec7d2e96ce5b29ef99050aa808e0a78870b87ba.
 Title: feat(document): support explicit figure and table blocks. Footer Refs:#13.
 Temporary message may change; compare actual full commit bytes/parent/patch/blobs
 after user commit before transferring acceptance or adding project association.
+
+### Verified user-committed delivery
+
+User reported commit (initial typo clarified). Read-only verification confirms
+exact expected single stage2 parent, exactly the five reviewed paths, complete
+binary patch SHA256 and full message SHA256 equal staging handoff above. All five
+committed task blobs and lock match accepted candidate/worktree; original flake
+overlay SHA256 unchanged. Index empty, only flake.nix unstaged. No tests repeated
+solely for delivery. Refs:#13, no issue closure or release action.
+Project association grounds this exact committed-delivery inspection, not original
+runtime provenance: native/focused/full/build originally ran uncommitted bytes.
+No remaining stage3 implementation/staging work. Whole13/stage4/release incomplete.
