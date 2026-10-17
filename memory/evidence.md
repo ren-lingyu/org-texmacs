@@ -1,5 +1,28 @@
 # org-texmacs durable evidence
 
+## Issue13 stage1 local acceptance, delivery pending
+
+2026-10-17 user-selected recursive ordinary special blocks, captured private
+handler snapshots/ownership, descendant-sharing/provenance guards, preflight and
+formal statements implemented in five task paths, still unstaged/uncommitted.
+Same locked x86_64-linux flake inputs (lock unchanged) as preceding accepted
+Emacs31.1/Org9.8.10/TeXmacs2.1.5 baseline. Focused ERT environment explicitly
+includes Poppler:17/17in19.993503s. Final full495/495in326.837943s, completed
+2026-10-17T09:18:57Z; full flake and no-link package build exit0, strict package
+compilation/package-lint accepted. All final task input hashes unchanged.
+All16statement candidates have native generic-style title/counter/PDF comparisons
+against independently constructed native trees; theorem/proof saved-tm reload
+passes existing1pt geometry checks. Root/descendant/string/spine sharing, cyclic
+output/mutation, scoped requests/notes, function rebinding/filter ownership, pure
+interfaces/source wait guards and actual final-handler error/worker recovery
+covered. No unsupported type presumed native solely because parser accepts it.
+Default devShell missing Poppler and intermediate fixture-only failures are
+extracted in memory/issue-13-stage1.md, with exact commands/candidate identities.
+No unique raw archive needed; maintained tests preserve sufficient reproduction.
+No project parent attached to uncommitted runtime provenance. No GUI/other-style/
+other-platform or full Issue13/release acceptance claim. User flake workaround
+preserved/excluded; no ordinary staging/commit/issue/release writes.
+
 ## TeXmacs special-block editing/indentation acceptance and delivery
 
 User separately adopted native Org source editing and Scheme indentation, then

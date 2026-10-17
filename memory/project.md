@@ -20,7 +20,17 @@
 - The implementation does not require physical grafting of all TeXmacs pseudo
   nodes into one live Org element cache.
 
-## Adopted special-block target (Issue13), not implemented capability
+## Issue13: accepted stage1 and remaining adopted target
+
+Stage1 is locally implemented/accepted, not yet staged/user-committed: ordinary
+special-block recursion, captured private handler dispatch with ownership,
+preflight/identity/provenance checks, all16formal statement types. Canonical
+statement TYPE, statement_TYPE and direct TYPE aliases; Org example-block stays
+literal. Native generic title/counter/PDF comparisons and theorem/proof reload
+pass;17focused/495fullERT/strict package compile/lint/full flake/build accepted.
+Other styles/GUI/platforms unverified. Contract/input identities:
+memory/issue-13-stage1.md. NAME/CAPTION/ATTR remains rejected for these blocks.
+No stable public handler API or new dependency/protocol.
 
 Issue13 is required for v0.5.0: ordinary recursive preparation/lowering with a
 minimal private handler dispatch, native formal statements, raw single-expression
@@ -32,7 +42,8 @@ Org table numbering/caption/reference behavior remains compatibility input.
 Label scope is type-specific and native counters stay authoritative. Empty-caption
 numbering, experimental starred syntax/native roots, weak external surround for
 plain named STM and referenced-only label activation still need validation.
-Float behavior is undecided. No new code/native/PDF result supports13 yet.
+Float behavior is undecided. Equation/figure/table/NAME and weak anchors remain
+unimplemented; stage1 acceptance does not establish these later capabilities.
 
 Issue9 is later multi-object-to-one-composite identity/composition work, initially
 independently numbered/referenced aligned rows. It is not a prerequisite for13's

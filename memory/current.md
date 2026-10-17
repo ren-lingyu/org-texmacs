@@ -1,8 +1,38 @@
 # org-texmacs current memory
 
-## Current adopted planning: v0.5.0 Issue13 and Issue9 refocus
+## Completed locally: Issue13 stage 1, awaiting delivery review
 
-User's new INBOX.md explicitly requests memory-only scope reconciliation.
+User-selected recursive ordinary special-block foundation and formal statements
+implemented and automatically accepted, still unstaged/uncommitted. Five task
+paths: document/input/source adapter, ERT and README. Original flake.nix mirror
+workaround preserved/excluded; lock/version/INBOX unchanged. No ordinary Git or
+external write. Final focused17/17 (19.993503s), full495/495 (326.837943s), full
+flake including strict package compilation/lint, and no-link package build exit0.
+Final input hashes unchanged after acceptance. All16statement candidates have
+real generic-style native title/counter/PDF evidence; theorem/proof tm reload
+also passes. Other styles/GUI/platforms are not certified by this gate.
+
+Private captured handlers retain contents exactly once, unchanged; reject all
+external descendant cons/string sharing before output copy. Deep-rebuilt semantic
+duplication remains a callback contract, not a complete runtime check. Preflight
+rejects detectable source errors before BODY STM requests; bibliography requests
+may precede it, custom handlers never receive placeholders. Scoped requests,
+ownership/symbol snapshots, pure interfaces, file/STM provenance, source guards,
+final error/recovery and legacy regressions pass. No public handler API added.
+Full contract, exact authorized commands, intermediate fixture diagnostics and
+candidate identities: memory/issue-13-stage1.md. No raw archive needed; maintained
+fixtures retain sufficient native/structural reproduction. No added project parent
+inferred from main: runtime candidate is uncommitted.
+
+Next: user reviews the five-path delivery; ordinary staging requires explicit
+path authorization and ordinary commit is the user's action. No further stage1
+implementation/testing remains. Whole13 and v0.5.0 are not complete; equation,
+figure/table/NAME and weak anchors remain separately selected later work. Issue9
+remains post0.5.0. No next implementation node auto-selected.
+
+## Adopted full scope: v0.5.0 Issue13 and Issue9 refocus
+
+The preceding INBOX scope reconciliation was memory-only.
 Issue13 is now required v0.5.0 usable special-block subset: private recursive
 handler boundary, statement/type aliases, raw-expression equation/equation*,
 explicit numbered figure/table wrappers (empty caption still numbered),
@@ -16,12 +46,10 @@ Complete design/limits: memory/special-block-plan.md.
 Issue9 remains post0.5.0/pre0.6.0, now multiple independently named constituents
 assembled into one composite native AST, initially separately numbered/referenced
 rows of an aligned formula. It no longer owns all general NAME/block references.
-Current issue bodies verified open and consistent with INBOX (updated2026-10-17
-08:11:44Z/08:11:46Z for13/9). No external writes. No implementation, tests/probes,
-ordinary source/README/flake/version/INBOX edits or release action this turn.
-Other release gates remain open as recorded; latest editing/bibliography delivery
-acceptance below does not validate13. Next: await separately authorized development
-planning/implementation; no active implementation node auto-selected.
+Issue bodies last verified open/consistent during the preceding reconciliation
+(updated2026-10-17 08:11:44Z/08:11:46Z for13/9). No external writes. Other release
+gates remain open as recorded; stage1 evidence above does not validate later13
+nodes or constitute full release acceptance. No stage2 implementation selected.
 
 GAW goals/current/backlog/project/release synchronized with concentrated plan;
 older implementation/experimental evidence preserved as historical context.

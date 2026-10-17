@@ -2,13 +2,25 @@
 
 ## Status, motivation and authority
 
-Adopted development planning from user INBOX dated2026-10-17, not active
-implementation or a tested capability. Issue13 is now required for v0.5.0's first
+Stage1 now user-selected for implementation: foundation (recursion, captured
+private registry, input ownership, preflight and provenance) followed by formal
+statements. Stage1 locally implemented/accepted, not staged/user-committed;
+17focused/495fullERT/full flake/strict package compile/lint/build pass. All16
+candidate types now verified under native generic style, including real titles/
+counters/PDFs and representative tm reload. Details: memory/issue-13-stage1.md.
+Updated handler contract prohibits external reuse of any contents descendant cons/string;
+deep-rebuilt semantic duplication remains an unenforceable callback obligation.
+Preflight guarantees rejection before body STM requests, not before bibliography
+requests; custom handlers never receive placeholder contents. No equation/figure/
+table/NAME implementation or Issue9 scope. Preserve/exclude user flake workaround.
+Implementation command authority/current findings: memory/current.md. Initial
+memory-only adoption below describes its original phase, not current authority.
+
+Original scope adopted from user INBOX dated2026-10-17. Issue13 is required for v0.5.0's first
 usable Org-first mathematical writing subset. Earlier release scope omitted this
 work and deferred broader names/references; the new split assigns single objects
-to13 and composite constituents to9. No implementation node selected this turn.
-Memory-only authorization: no ordinary source/test/README/flake/version/INBOX
-edits, build/test/probe, dependency operation, publication or GitHub writes.
+to13 and composite constituents to9. That initial adoption was memory-only;
+stage1 was subsequently selected/implemented/accepted as recorded above.
 
 Sources read at2026-10-17T08:22:29Z:
 - User INBOX.md,12736bytes,SHA256

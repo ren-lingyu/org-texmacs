@@ -3,8 +3,12 @@
 ## Current scope amendment: required Issue13, refocused later Issue9
 
 User adopted2026-10-17 a mandatory Issue13 usable mathematical special-block
-subset for0.5.0, not an optional extension. Status: adopted development planning;
-no implementation node selected, code/test/native/PDF acceptance or release action.
+subset for0.5.0, not an optional extension. Stage1 recursion/private handlers and
+formal statements now locally implemented/accepted, unstaged/uncommitted:
+17focused/495fullERT/strict package compile/lint/full flake/build pass; generic
+native16type/PDF and theorem/proof tm reload accepted. Remaining equation,
+figure/table/NAME and weak anchors still planned; no release action. Full stage1
+contract, candidate identities and limits: memory/issue-13-stage1.md.
 Full source semantics and validation boundaries: memory/special-block-plan.md.
 This adds one required scope gate, not duplicated numbered legacy items:
 private recursive handler/preparation/provenance path, formal statements,
@@ -22,7 +26,7 @@ All other existing gates retain their status: original block-fixture linkage,
 bounded Chinese-font outcome, native first-note limit/release-impact assessment,
 representative mathematical documents, final stabilized flake/native/PDF gate,
 version/README/migration/notes. Existing font-lock/editing/Issue12 delivery records
-remain valid; new planning does not make13 tested or v0.5.0 ready. In particular
+remain valid; stage1 does not complete13 or make v0.5.0 ready. In particular
 old restricted-BibTeX notes below describe the pre-Issue12 review, not current
 bibliography behavior (see memory/issue-12-review.md).
 

@@ -65,8 +65,10 @@ First practically usable release for Org-first mathematical writing with embedde
 native STM and complete .tm/PDF exports inside a tested supported subset.
 Issue13 is required for v0.5.0: private recursive special-block extension point,
 formal statements, single-expression equation/equation*, explicit figure/table
-wrappers and bounded single-object NAME/[[name]] semantics. This is adopted
-planning, not implemented/native-verified support. Full design and verification
+wrappers and bounded single-object NAME/[[name]] semantics. Stage1 recursive
+handlers/formal statements are locally implemented and accepted; remaining
+equation/figure/table/NAME work is adopted planning, not implemented support.
+Stage1 evidence: memory/issue-13-stage1.md. Full design and verification
 boundaries: memory/special-block-plan.md.
 
 Existing inline-footnote/display-equation fixes, prior block-fixture confirmation,

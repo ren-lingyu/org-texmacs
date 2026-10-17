@@ -25,8 +25,12 @@ decision.
 
 ### Issue13: adopted required v0.5.0 special-block subset
 
-Status: **adopted-later**, mandatory release scope, implementation not selected
-or started in this memory-only turn. Recursive private special-block handlers,
+Status: stage1 locally implemented/accepted, delivery review pending.17focused/
+495fullERT/full flake/strict package compile/lint/build pass; generic native16
+types and PDF accepted. Source remains unstaged/uncommitted; see
+memory/issue-13-stage1.md. Remaining equation/figure/table/NAME nodes remain
+**adopted-later**; no next implementation node selected.
+Recursive private special-block handlers,
 statement aliases, equation/equation*, explicit figure/table and bounded
 single-object NAME/[[name]] support. Full source/label/provenance/validation
 contract: memory/special-block-plan.md. Existing release gates are retained;
