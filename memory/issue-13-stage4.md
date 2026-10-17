@@ -396,8 +396,13 @@ Only original user flake overlay remains unstaged. Split not necessary, difficul
 medium: allocation/freezing, lowering consumers, fixture migration/native tests
 and README are one strongly coupled capability. No multi-round polling needed.
 Final staged-only message root tmp/commit.md, subject "feat(document): support named
-blocks and Org reference resolution", footer Refs:#13, SHA256
-a8386557119cf05fea90885b4ccb28612b1c36549dbcb8c7106327771ae0619a.
+blocks and Org reference resolution", footer Closes:#13, SHA256
+c82f96b76189d4b2d2db3ee587a6347d2f44bcec70c3e14d1c75c244ab0df6cd.
 No ordinary commit, new source edits or repeated runtime gates. Next: user commits,
 then compare parent/path set/full patch/message/accepted blobs. Stage4 acceptance
 alone is not release or Issue13 remote closure. Issue9 remains independent later work.
+
+User adopted Closes:#13 after explicit overall closure assessment against the
+current public issue body. Its bounded requirements are covered by stages1-4;
+Issue9 and remaining release gates do not block13 closure. Message updated only,
+no external closure or project index change.

@@ -30,8 +30,14 @@ binary diff exactly equals accepted feature hash76907fc1... (860insertions/231de
 no whitespace errors or unstaged feature changes. Only original user flake overlay
 remains unstaged. One coherent feature commit, split not necessary (medium difficulty).
 Staged-only message at root tmp/commit.md, subject "feat(document): support named
-blocks and Org reference resolution", footer Refs:#13, SHA256
-a8386557119cf05fea90885b4ccb28612b1c36549dbcb8c7106327771ae0619a.
+blocks and Org reference resolution", footer Closes:#13, SHA256
+c82f96b76189d4b2d2db3ee587a6347d2f44bcec70c3e14d1c75c244ab0df6cd.
+Closure assessment after user queried the trailer: re-read current public Issue13
+body (open, updated2026-10-17T08:11:44Z); its bounded single-object requirements
+are covered by delivered stages1-3 plus accepted staged stage4. Recommend
+Closes:#13 for this final implementation commit; Issue9 and release gates do not
+block13 closure. User adopted the closing trailer and authorized updating tmp/commit.md;
+footer now Closes:#13, no index or external issue change.
 No ordinary commit or repeated runtime gates. Next: user commits, then verify
 parent/path set/full binary patch/message/accepted blobs before delivery association.
 Stage4 functional acceptance does not close Issue13
