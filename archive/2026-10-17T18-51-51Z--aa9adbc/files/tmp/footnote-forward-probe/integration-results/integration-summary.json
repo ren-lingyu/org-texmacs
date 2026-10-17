@@ -1,0 +1,13 @@
+{
+  "pdfs": 44,
+  "event_counts": {
+    "patched": 38,
+    "disabled": 6,
+    "explicit-macro-preserved": 2,
+    "buffer-closed": 46,
+    "file-removed": 46,
+    "session-intact": 46
+  },
+  "failure_cleanup": 2,
+  "status": "passed"
+}
