@@ -1,6 +1,36 @@
 # org-texmacs current memory
 
-## Current: minimal footnote forward-link investigation completed
+## Current: native binding/anchor intervention completed
+
+User-selected hypothesis experiment completed in same authorized isolated flake,
+no production/index/installed-style change. Initial24PDF gate and final36PDF
+superset both exit0: generic/article x9native variants xdirect/PS->PDF. Matching
+footnote-body labels restore forward targets; wrong-name labels do not; labels
+placed outside notes point to that wrong location. Ordinary-flow set-binding
+renders reference1 but lacks destination; label alone creates target but value?;
+label THEN binding gives both1 and target, opposite order resets value?. This
+narrows prior floating-only hypothesis: binding value and exported anchor are
+distinct, normal-flow binding has same gap; primitive contract not proven wrong.
+
+Document-local render-footnote* intervention inserts label with existing dynamic
+key BEFORE existing set-binding, no hardcoded number or input-tree rewrite.
+Both notes forward targets restored in both styles/routes. Direct native PDF
+coordinates land in correct Body1/2 text boxes; all visible text/positions/1-2
+numbering exactly equal baseline. PS gains matching #footnote-N DEST entries;
+PS exact landing remains unverified. No GUI click, C++ trace, generalized style/
+counter/macro contract or adopted repair. Explicit-label controls emit duplicate
+native destination warnings, not ignored; macro intervention meets target checks.
+
+Results/report root tmp/footnote-forward-probe/anchor-final-results and
+ANCHOR-REPORT.md. Eleven necessary text artifacts byte-verified and separately
+archived: archive/2026-10-17T18-30-27Z--aa9adbc/MANIFEST.md. Earlier archives intact,
+31root inputs unchanged; no native/source failure retries, repeated same600s gate.
+Detail: memory/footnote-forward-probe.md. Runtime native-only temporary controls,
+no inferred project parent. Next: user chooses native macro/bottom-layer diagnosis,
+formal repair direction or explicit release limitation; production repair not
+selected and remaining0.5.0 gates unchanged.
+
+## Completed: minimal footnote forward-link investigation
 
 User-selected isolated flake experiment completed, no production/index changes.
 Exact minimal Org `1[fn::1]\n2[fn::2]` and blank-line variant, generic/article;

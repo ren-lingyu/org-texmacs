@@ -111,3 +111,60 @@ context/lifecycle issues. Need typesetter set-binding-to-anchor instrumentation
 or controlled native intervention to locate exact code; neither performed/adopted.
 No new runtime or original archive: installed source is locked/reproducible and
 prior macro capture plus current PS extraction already retains needed evidence.
+
+## Completed native causal intervention, superseding tentative floating-only explanation
+
+User explicitly requested continuing the hypothesis. Same authorized exact600s
+flake build; probe.nix now selects anchor-probe.py, previous run.py/report/results
+and immutable archive untouched. Independent native runtime only (no Emacs/Org/
+exporter executed), copied package inputs unchanged. Fresh native config each
+process, generic/article; initial6variants/24PDF exit0, final9variants/36PDF exit0.
+Final check is the earlier matrix plus order/dynamic-macro controls; not claimed
+as60distinct scenarios. Successful output:
+/nix/store/63100r4j20ilichfzwzf38l0vns6nj1r-org-texmacs-footnote-anchor-probe
+Copied to root tmp/footnote-forward-probe/anchor-final-results. Final annotations
+SHA2564b2132310c3897ca37e078f3d1fc7fe43c16e300721e9f5e257ccae530ff6c4e.
+
+Nine variants in2styles x2routes (native PDF/export-postscript then Ghostscript):
+- Baseline2notes:2missing forward destinations.
+- Matching label footnote-1/2 inside body: targets restored.
+- Unrelated label inside body:2missing unchanged.
+- Matching label at main-text marker: targets exist but wrong location, proving
+  name existence alone insufficient.
+- Ordinary cross-page set-binding only: reference text1, destination missing.
+- Ordinary label only: destination page2, reference text?.
+- Ordinary label then binding: destination page2 and reference1.
+- Ordinary binding then label: destination page2 but reference resets to?.
+- Dynamic document-local render-footnote* patch: targets restored.
+
+Macro intervention obtains actual post-layout native macro, asserts exactly one
+set-binding, replaces it with concat(label SAME-KEY, ORIGINAL-SET-BINDING), then
+init-env-tree on current temporary document. Key remains merge(footnote-, arg nr),
+not hardcoded numeric names. Actual original/modified macros logged in both styles;
+body native tree byte-identical baseline. No installed style or source mutation.
+For body-label and dynamic-macro interventions in both styles direct native PDFs,
+all visible texts and text rectangles exactly equal baseline, including numbered
+markers1/2. Forward destination coordinates inside corresponding Body1/2 text
+rectangles (Poppler1.5scale converted to PDF coordinates), not merely same page.
+PS has new matching footnote-N DEST entries. PS destination position correctness
+still unaccepted (preexisting coordinate concerns), no GUI clicks. Explicit-label
+variants emit duplicate native destination warnings, report retains them; not
+interpreted as harmless universally or evidence of formal repair readiness.
+
+Conclusion now supported by controlled intervention: original binding provides
+reference value without a matching exportable named anchor; explicit matching
+anchor in correct scope is sufficient for these native examples. This is not
+specific to floating footnotes. Do not assert set-binding violates its intended
+primitive contract; native stylesheet may require a matching label or shared
+export handling may need to recognize this binding. Exact C++ cause/design owner
+not traced. Avoid adopting exporter hardcoded footnote-N labels or automatic
+workaround. Need separate repair/contract tests before any production change.
+
+New causal evidence not in earlier archives/history: selected11text artifacts,
+byte-verified separate archive-only checkpoint:
+archive/2026-10-17T18-30-27Z--aa9adbc/MANIFEST.md.
+Final probe/flake/lock/input identities, report/summary/annotation JSON, PS destination
+extraction and two original/modified macro logs retained; no PDFs/dependencies/full
+source copy. Earlier snapshot immutable. ROOT31input hashes unchanged, only user
+flake overlay unstaged. Native-only temporary runtime, no project parent inferred.
+Next: user selects native repair location/continued diagnosis or release limitation.

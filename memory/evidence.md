@@ -1,5 +1,18 @@
 # org-texmacs durable evidence
 
+## Native footnote anchor intervention: controlled support for missing-anchor mechanism
+
+Final36PDF native-only matrix (generic/article,9variants,direct/PS) passes. Matching
+body label restores forward targets, unrelated label does not; misplaced label
+lands outside body. Ordinary set-binding yields reference1 but no destination;
+label then binding supplies both, reverse order resets value?. Document-local
+render-footnote* adding dynamic same-key label BEFORE original binding restores
+both note targets with direct-PDF coordinates inside correct body text and exact
+baseline visible layout/numbering. PS target names restored, exact PS landing
+unverified. Supports binding-value/export-anchor distinction beyond floats; exact
+native C++ contract/cause and formal repair unproven. No production fix selected.
+Full evidence, warnings, authorization and selective archive: footnote-forward-probe.md.
+
 ## Minimal footnote forward-link investigation: completed
 
 User-selected isolated locked flake confirms both main-text anonymous footnote
