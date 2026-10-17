@@ -29,9 +29,9 @@ Stage3 figure/table candidate implemented/accepted with adopted corrections;
 user committed exact five paths, delivery verified; index empty, only flake overlay dirty. Native controls,44focused, full flake and no-link
 build pass. Org footnote/raw-marker boundary restriction explicitly
 adopted by user; no parser/text reconstruction. memory/issue-13-stage3.md.
-Stage4 NAME remains **adopted-later**; new contract read-only reviewed in
-issue-13-stage4.md. User supplement adopts all four concerns; validation-first/
-allocation-later lifecycle accepted on static review; no implementation selected.
+Stage4 NAME is **active-next**, user selected implementing supplemented plan.
+4A native/API gate passed; 4B candidate implemented with focused55passed, final
+full acceptance pending. Contract/lifecycle/progress: issue-13-stage4.md.
 
 Status: stage1 implemented/accepted/user-committed; exact delivery verified.17focused/
 495fullERT/full flake/strict package compile/lint/build pass; generic native16

@@ -20,6 +20,15 @@
 - The implementation does not require physical grafting of all TeXmacs pseudo
   nodes into one live Org element cache.
 
+## Stage4 candidate under validation
+
+User selected supplemented NAME/reference plan. Native/Org4A gate passed before
+production edits. Local candidate adds private frozen resolution, Org matching/
+allocation, selected-owner NAME evidence and object-specific labels, source adapter
+and direct AST construction; pure kernel consumes prepared identities. Focused55
+passes; full acceptance pending (current.md/issue-13-stage4.md). Descriptions below
+of unimplemented NAME refer to committed capability until candidate delivery.
+
 ## Issue13: accepted stage1 and remaining adopted target
 
 Stage3 figure/table implementation accepted, user-committed and delivery verified.

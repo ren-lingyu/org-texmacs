@@ -255,3 +255,56 @@ parse and preserves frozen mapping while adding native bibliography output.
 Three exact repeated validation commands requested in current conversation;
 await authorization before execution. Tests/native via isolated flake under root
 tmp/issue13-stage4. No production edits or runtime findings yet at selection.
+
+### 4A runtime acceptance and 4B progress
+
+User authorized requested three commands for repeated use in this task, all runs
+in tmp/issue13-stage4. Independent controls precede production edits. Focused
+46/46pass76.975155s, including2new native/API tests; generic/article41targets each
+cover all statement types, varied equation roots/stars, nested statement,12figure/
+table caption variants and4raw roots. Exact native readback, first numbered
+reference, native PDF annotation destinations/page existence and tm reload/PDF
+comparison passed. Org9.8.10 actual library origin reported; own reference cache,
+fuzzy named/headline/target and whitespace behavior verified. No general native
+numbering interpretation beyond numbered first-equation control.
+Initial harness EOF fixed; Poppler merges adjacent same-page annotations, so token
+membership rather than exact annotation-text association used, destinations still
+checked. Existing44focused cases passed. No raw archive selected yet: maintained
+controls preserve reproduction; no unique investigation output to retain.
+
+4B production edits then started: private ownership-only constructor for filter
+isolation, post-copy frozen resolution slot, finalization through Org allocator;
+invalid semantic input caches its document-error until pure lowering (existing
+constructor error boundary). Source adapter appends bibliography output without
+AST identity change/reallocation. Generic NAME source counts/owner evidence and
+scoped rebinding/region checks; object-specific labels/provenance packing.
+Pure kernel no allocator or fuzzy resolver, direct internal tests route through
+prepared input. Static candidate index excludes opaque internals/unused notes,
+Org API resolves only bounded preindexed candidates. Strict build caught an extra
+closing paren and docstring widths, corrected. Functional focused run underway;
+no final implementation acceptance or full build claim.
+
+### Functional candidate review
+
+Focused55/55passed83.587464s with independent41native targets/style and real
+exporter generic/article tm/readback/PDF/reload. Real exporter verifies labels,
+long/short caption internal/file links, note-body links and STM/file provenance.
+All statement variants including proof, unused names, same-used-name ambiguity,
+original metadata/scopes, frozen repeated lower/no worker/buffer/random/fuzzy calls,
+64attempt allocation bounds and late custom-generated collision are covered.
+Additional static review corrected candidate identity dedup to eq and moved raw
+native region completeness from unfiltered source walk to selection-aware context;
+new excluded-truncated-native regression passes. Added synthetic equal-target
+ambiguity and nested named statements/path checks. Direct constructor invalid
+semantics retained until document by frozen failure data, no mutable cache escape.
+
+Intermediate full check533ERT:527pass6fail. Four direct private kernel tests had
+newline calls missed by migration; one aligned/plain independent export comparison
+assumed identical random IDs; serializer's dynamic expected marker incorrectly
+picked first label, which was a footnote. Fixture entrypoints/structural comparison/
+actual-reference marker corrected. New candidate adds Unicode/slugsame-identity
+and custom-handler NAME boundaries. Strict package compilation/lint passed;
+final focused/full running, no completion claim. No runtime raw archive needed:
+maintained controls plus this causal extraction sufficient; no unique original
+artifacts needed for interpretation. Final input manifest will be refreshed after
+all source changes; initial inputs.json was preparation-only, not final identity.

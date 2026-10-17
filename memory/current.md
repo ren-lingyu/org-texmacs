@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: Issue13 stage4 implementation selected, 4A preparation
+## Current: Issue13 stage4 4A passed, 4B implementation in progress
 
 User requested implementing the reviewed plan. This authorizes stage4 source,
 tests/README changes; ordinary staging/commit still separate. Contract and intake:
@@ -14,10 +14,26 @@ Important discovered integration: filter-own-preparation calls input-create with
 placeholders. Separate pure ownership copy from final reference allocation so
 this intermediate step never allocates. Complete source adapter and direct input
 construction both finalize owned mappings before formal pure lowering.
-4A native/Org comparison fixtures being prepared before production edits.
-Three exact repeated isolated-flake focused/full/build commands requested; pending
-user authorization, no test execution yet. Original ELPA overlay preserved, index
-untouched. Runtime evidence pending; no stage4 completion/Issue13 closure claim.
+User authorized all three exact repeated isolated-flake commands. Before production
+edits46/46focused passed76.975155s: generic/article native placement/readback/PDF/
+reload and locked Org9.8.10 APIs. Fixture-only bracket and merged-Poppler-annotation
+assumption corrected first. Production implementation now separates ownership from
+finalization; validation-only preflight, frozen mapping and deferred invalid-input
+errors preserve public constructor semantics. NAME source evidence, bounded
+candidate indexing, allocation/placements and new functional tests added.
+Strict compile/lint now pass. Current focused55/55passed83.587464s, including
+real exporter/native file-link/readback/PDF/reload, frozen map, aliases, collisions,
+metadata/selection, nested provenance and allocation-after-filter/body assertions.
+Static review fixed identity dedup (eq rather than structural equality) and moved
+native region completeness into selection-aware context; excluded truncated
+native owners now regressions. Added Unicode/slug collision/custom NAME cases.
+Intermediate full533ERT had6failures:4private test calls missed newline migration,
+1cross-export raw-ID comparison,1serialization selected first label (footnote)
+instead of actual reference. Tests corrected, final focused/full running on fixed
+candidate. Source adapter/public kernel behavior not weakened for these fixtures.
+Original ELPA overlay preserved, ordinary index untouched. No final stage4/full/
+build acceptance or Issue13 closure claim yet.
+
 ## Completed delivery: caption footnote AST compatibility delivered and verified
 
 User's final decision accepts correct native AST/content conversion without
