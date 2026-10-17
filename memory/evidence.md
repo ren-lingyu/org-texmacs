@@ -1,5 +1,18 @@
 # org-texmacs durable evidence
 
+## Issue13 stage4 accepted implementation, uncommitted runtime
+
+Pre-production native/API gate46/46passed76.975155s, final focused57/57passed
+84.812325s. Final full flake exit0:539/539stockERT402.926507s and patched5/5
+2.951475s, strict compilation/lint; no-link default build exit0. Native independent
+41targets/style plus real exporter readback/direct PDF/reload under generic/article,
+pinned Org9.8.10/TeXmacs2.1.5/x86_64-linux. Final31inputs/root-isolation equality
+and whitespace checked after all gates, source/lock/INBOX/user overlay stable,
+index empty. Contract, causal corrections, exact seven-task-path hashes/feature
+patch and validation authorization: issue-13-stage4.md. Runtime uncommitted; no
+inferred project-parent association. No new archive (maintained reproduction and
+sufficient extraction); no GUI/other style/platform/Issue13 closure/release claim.
+
 ## Issue13 stage4 guidance: static read-only review
 
 INBOX18366bytes SHA256 fb77dc04b8b4cb5aa14c7b8249f782ef80bb597d2e1df7b5be9719b2f9d51fcb,

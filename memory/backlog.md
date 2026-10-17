@@ -30,13 +30,14 @@ user committed exact five paths, delivery verified; index empty, only flake over
 build pass. Org footnote/raw-marker boundary restriction explicitly
 adopted by user; no parser/text reconstruction. memory/issue-13-stage3.md.
 Stage4 NAME is **active-next**, user selected implementing supplemented plan.
-4A native/API gate passed; 4B candidate implemented with focused55passed, final
-full acceptance pending. Contract/lifecycle/progress: issue-13-stage4.md.
+4A/4B/4C candidate accepted:57focused/539fullERT/patched5/strict compile/lint/
+full flake/default build pass. Seven-file candidate awaits user delivery; no remote
+Issue13 closure. Contract/identity: issue-13-stage4.md.
 
 Status: stage1 implemented/accepted/user-committed; exact delivery verified.17focused/
 495fullERT/full flake/strict package compile/lint/build pass; generic native16
 types and PDF accepted. Stage1 delivery evidence:
-memory/issue-13-stage1.md. Stage3 candidate is above; NAME remains **adopted-later**.
+memory/issue-13-stage1.md. Stage3 delivery is above; NAME candidate accepted as described above.
 Stage2 equation/equation* implemented/locally accepted: focused29/29/native generic/
 article readback/PDF/reload, full flake ERT/compile/lint and no-link build pass.
 User committed the exact nine-path reviewed candidate; parent/patch/message/
@@ -44,7 +45,7 @@ blobs verified; at that delivery index was empty with only flake overlay dirty. 
 opaque across preprocessing/bibliography/context as well as preparation/scanner;
 no math whitelist, recursive body or NAME. Full contract/acceptance/sequence and
 retention decision: memory/issue-13-stage2.md. Stage3 candidate acceptance is
-above; stage4 NAME/links remains later. No remaining stage2 implementation work.
+above; stage4 NAME/links candidate accepted, user delivery pending. No remaining stage2 implementation work.
 Recursive private special-block handlers,
 statement aliases, equation/equation*, explicit figure/table and bounded
 single-object NAME/[[name]] support. Full source/label/provenance/validation

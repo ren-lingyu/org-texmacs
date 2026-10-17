@@ -20,14 +20,19 @@
 - The implementation does not require physical grafting of all TeXmacs pseudo
   nodes into one live Org element cache.
 
-## Stage4 candidate under validation
+## Stage4 candidate accepted, pending user delivery
 
-User selected supplemented NAME/reference plan. Native/Org4A gate passed before
-production edits. Local candidate adds private frozen resolution, Org matching/
-allocation, selected-owner NAME evidence and object-specific labels, source adapter
-and direct AST construction; pure kernel consumes prepared identities. Focused55
-passes; full acceptance pending (current.md/issue-13-stage4.md). Descriptions below
-of unimplemented NAME refer to committed capability until candidate delivery.
+Single-object NAME/reference implementation accepted on fixed isolated inputs:
+57focused/539fullERT/patched5/strict compile/lint/full flake/default build pass.
+Private ownership/validation/final allocation split freezes Org-native identities;
+strict semantic candidate view, original NAME evidence/scopes and type-specific
+labels preserve STM/file provenance. All newly named blocks label even unused,
+bare table referenced-only behavior retained. Native generic/article links and
+readback/reload accepted, no reference-text interpretation or global ID lookup.
+Seven-file candidate uncommitted, user overlay excluded; full contract/identity:
+issue-13-stage4.md. No Issue13 closure/release claim; original caption native
+footnote layout limits remain unchanged. Below older stage descriptions retain
+baseline semantics where superseded by this candidate.
 
 ## Issue13: accepted stage1 and remaining adopted target
 
@@ -35,7 +40,7 @@ Stage3 figure/table implementation accepted, user-committed and delivery verifie
 Source proof survives pruning and scoped reparse; generic/article native gates
 and strengthened focused tests, full flake and default build pass.
 Current capability, limits, user-adopted Org footnote boundary and evidence:
-memory/issue-13-stage3.md. Stage4 NAME remains unimplemented.
+memory/issue-13-stage3.md. Stage4 NAME candidate is accepted above; user delivery pending.
 
 Stage1 is implemented/accepted/user-committed, exact delivery verified: ordinary
 special-block recursion, captured private handler dispatch with ownership,
@@ -55,14 +60,15 @@ provenance and preflight/real-island boundaries. Opaque texmacs STM retains its
 separate interpretation. Explicit table wrapper becomes preferred; current naked
 Org table numbering/caption/reference behavior remains compatibility input.
 Label scope is type-specific and native counters stay authoritative. New stage4
-guidance read-only review: issue-13-stage4.md; no NAME implementation yet. Stage3
+guidance, implementation and acceptance: issue-13-stage4.md. Stage3
 empty-caption numbering and starred wrappers now have generic/article evidence
-above. NAME and weak external surround for plain named STM remain unimplemented.
+above. NAME and weak external surround for plain named STM are accepted in the
+uncommitted stage4 candidate above.
 Stage4 guidance supersedes provisional referenced-only activation for new blocks
 and deterministic IDs with all-named activation/Org allocation. User supplement
 adopts review corrections: validate without IDs, allocate/freeze after effective
-AST/static labels known, remap on ownership copies. Static review complete;
-implementation/native tests pending. No float-placement policy/API is added.
+AST/static labels known, remap on ownership copies. Candidate native/full
+acceptance passed; user delivery pending. No float-placement policy/API is added.
 Stage2 equation delivery is described below.
 
 Stage2 raw-STM equation/equation* implemented/accepted/user-committed, delivery verified:

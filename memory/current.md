@@ -1,38 +1,33 @@
 # org-texmacs current memory
 
-## Current: Issue13 stage4 4A passed, 4B implementation in progress
+## Current: Issue13 stage4 implemented and accepted, uncommitted
 
-User requested implementing the reviewed plan. This authorizes stage4 source,
-tests/README changes; ordinary staging/commit still separate. Contract and intake:
-issue-13-stage4.md. Plan adopts validation-only preflight, one Org allocation after
-real STM/static labels known, frozen owned resolution, raw opacity, source NAME
-proof and scoped completeness, ASCII slug, object-specific native placements.
-User selected before-freeze collision avoidance through Org allocator; bounded64
-candidates then error, frozen mappings never locally reallocated. Naked tables
-retain referenced-only anchors. Public signatures/protocol/dependencies unchanged.
-Important discovered integration: filter-own-preparation calls input-create with
-placeholders. Separate pure ownership copy from final reference allocation so
-this intermediate step never allocates. Complete source adapter and direct input
-construction both finalize owned mappings before formal pure lowering.
-User authorized all three exact repeated isolated-flake commands. Before production
-edits46/46focused passed76.975155s: generic/article native placement/readback/PDF/
-reload and locked Org9.8.10 APIs. Fixture-only bracket and merged-Poppler-annotation
-assumption corrected first. Production implementation now separates ownership from
-finalization; validation-only preflight, frozen mapping and deferred invalid-input
-errors preserve public constructor semantics. NAME source evidence, bounded
-candidate indexing, allocation/placements and new functional tests added.
-Strict compile/lint now pass. Current focused55/55passed83.587464s, including
-real exporter/native file-link/readback/PDF/reload, frozen map, aliases, collisions,
-metadata/selection, nested provenance and allocation-after-filter/body assertions.
-Static review fixed identity dedup (eq rather than structural equality) and moved
-native region completeness into selection-aware context; excluded truncated
-native owners now regressions. Added Unicode/slug collision/custom NAME cases.
-Intermediate full533ERT had6failures:4private test calls missed newline migration,
-1cross-export raw-ID comparison,1serialization selected first label (footnote)
-instead of actual reference. Tests corrected, final focused/full running on fixed
-candidate. Source adapter/public kernel behavior not weakened for these fixtures.
-Original ELPA overlay preserved, ordinary index untouched. No final stage4/full/
-build acceptance or Issue13 closure claim yet.
+User authorized implementing the reviewed NAME/reference plan plus adopted
+line550 supplement and repeated isolated-flake focused/full/default-build gates.
+All fourth-stage changes now accepted on fixed inputs:57/57focused84.812325s;
+539/539fullERT402.926507s, patched Org5/5, strict compilation/lint/full flake exit0,
+no-link default build exit0. Only pinned x86_64-linux/Org9.8.10/TeXmacs2.1.5,
+generic/article validated. Native GUI/other styles/platforms unverified.
+
+Private validation-only resolver uses bounded Org search-cell index, strict
+identity ambiguity, raw opacity, reachable notes/caption/title links. After real
+STM and ownership copying, Org allocates once, ASCII slug formats IDs, frozen
+resolution drives repeated pure lower. Up to64pre-freeze collision attempts;
+post-freeze conflicts error. Intermediate filter copies never allocate; constructor
+invalid semantic errors remain deferred to document. NAME source count/ownership
+proof survives scoped reparse, all named block kinds get labels even unused;
+naked tables retain referenced-only behavior. Native label placements, original
+STM/file provenance and metadata/excluded-region boundaries accepted. README
+updated. Full contract/evidence/commands/final identities: issue-13-stage4.md.
+
+Seven task paths modified; no staging/ordinary commit. Original ELPA flake overlay
+unchanged, lock/INBOX/version unchanged. All31inputs match isolated flake after
+all gates; final manifest SHA2561f4794c387806e5cfea147fcb3aa59ac61895cae5bba0e64aee134a35cb36265.
+Runtime used uncommitted candidate; no inferred project parent. Maintained controls
+plus causal memory sufficient, no new raw archive or skill updates.
+Next: user review, separately authorized staging/message and user commit, then
+exact delivered comparison. Stage4 functional acceptance does not close Issue13
+externally or establish release readiness; Issue9 composite scope remains later.
 
 ## Completed delivery: caption footnote AST compatibility delivered and verified
 

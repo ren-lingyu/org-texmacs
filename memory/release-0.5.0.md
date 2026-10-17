@@ -1,5 +1,13 @@
 # v0.5.0 release readiness
 
+## Issue13 stage4 candidate accepted, delivery pending
+
+Seven-file NAME/reference candidate passes57focused/539fullERT/patched5/strict
+compile/lint/full flake/default build under pinned isolated environment. This
+completes local fourth-stage functional acceptance, not ordinary user delivery,
+Issue13 external closure or release readiness. Preserve remaining independent
+release gates below. Exact scope/identities: memory/issue-13-stage4.md.
+
 ## Current scope amendment: required Issue13, refocused later Issue9
 
 Stage3 figure/table candidate implemented; parser/native gate,44focused,
@@ -18,7 +26,7 @@ User adopted2026-10-17 a mandatory Issue13 usable mathematical special-block
 subset for0.5.0, not an optional extension. Stage1 recursion/private handlers and
 formal statements now implemented/accepted/user-committed, exact delivery verified:
 17focused/495fullERT/strict package compile/lint/full flake/build pass; generic
-native16type/PDF and theorem/proof tm reload accepted. Stage3 candidate is above; remaining NAME and weak anchors still planned; no release action. Full stage1
+native16type/PDF and theorem/proof tm reload accepted. Stage3 delivery and accepted stage4 NAME/weak-anchor candidate are above; no release action. Full stage1
 contract, candidate identities and limits: memory/issue-13-stage1.md.
 Full source semantics and validation boundaries: memory/special-block-plan.md.
 Stage2 equation/equation* candidate implemented with four corrections;

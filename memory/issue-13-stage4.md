@@ -308,3 +308,88 @@ final focused/full running, no completion claim. No runtime raw archive needed:
 maintained controls plus this causal extraction sufficient; no unique original
 artifacts needed for interpretation. Final input manifest will be refreshed after
 all source changes; initial inputs.json was preparation-only, not final identity.
+
+## Final accepted candidate and handoff
+
+Fourth-stage implementation now accepted, not staged/committed. Final focused
+57/57pass84.812325s. Final full flake exit0, stock539/539ERT402.926507s,
+patched Org5/5pass2.951475s, strict compilation and package-lint pass; no-link
+default package build exit0. Native independent controls and real source exporter
+cover generic/article readback, direct PDF/native annotations and tm reload.
+Pinned x86_64-linux/Org9.8.10/TeXmacs2.1.5 only; no GUI/other systems/style claim.
+Earlier533ERT6fail outcome is intermediate, not final status. Corrections were
+fixture entrypoints/random-ID assumptions, not lowered correctness checks.
+
+Final inspection: candidate uniqueness deduplicates by eq; same-structure synthetic
+targets remain ambiguous. Native region completeness now occurs under effective
+selection rather than unfiltered initial native scan. Truncated noexport native
+owners do not block; selected NAME/whole-block cuts reject before body worker.
+Explicit early name type/nonblank guard avoids calling Org string operations on
+invalid prepared AST. Public input constructor retains ownership validation and
+caches semantic document-error until document, preserving existing error boundary.
+Final formal kernel consumes frozen mappings; preflight is validation-only.
+Direct callers construct/own before allocation; internal filter detachment uses
+ownership-only path. No new public args/options/dependencies/worker operations.
+
+Org matching/cache integration uses canonical owned AST in private INFO and
+preseeded candidate search-cell cache, preventing Org's generic traversal from
+entering raw internals/unused definitions. Native allocator owns randomness and
+same-node binding. Pre-freeze collisions remove rejected direct target binding
+while retaining numeric reservations, call Org again, max64attempts. Frozen map
+contains only node/link IDs, target relationships, file and footnote context;
+mutable Org INFO/hash caches are discarded. AST is copied before final allocation,
+so no stale identity keys cross that copy. Finishing bibliography INFO reuses the
+owned AST/frozen map without allocating or exposing unfinished intermediates.
+
+Output labels must appear exactly once in final native body, including static
+source/custom-handler conflicts detected after freeze; no local reallocation.
+Stage4 source objects all label even unused/unnumbered; bare Org table optimization
+retained. Caption/counter scope, native equation concat and statement internal
+label preserve STM/file paths. Reference text remains native authority. Existing
+caption anonymous footnote/native layout limitations remain unchanged.
+
+### Commands, scope and retention
+
+All runs from root tmp/issue13-stage4 isolated flake. User authorized repeated:
+```sh
+timeout 300s nix develop --no-write-lock-file path:.#checks.x86_64-linux.ert --command emacs -Q --batch -L . --load tests/ert/ert.el --eval '(ert-run-tests-batch-and-exit "issue13")'
+timeout 600s nix flake check --no-write-lock-file path:.
+timeout 120s nix build --no-link --no-write-lock-file path:.#default
+```
+No timeout failure in final acceptance. Relevant failed/successful Nix logs read
+locally/offline for diagnostics/counts; no extra runtime scope. Source and isolated
+31-input bytes rechecked after gates; no further source edits. Original user ELPA
+mirror overlay stays root/isolated only and must be excluded from feature commit.
+INBOX unchanged09ed92d4...; lock/version unchanged, index empty. No GAW skill,
+archive, config, ordinary staging/history or external issue/release writes.
+No new raw archive: maintained test controls, exact accepted identities and causal
+extraction are sufficient; temp build logs/regenerable source copies lack unique
+retention value. Runtime uncommitted, so checkpoint uses no project parent;
+later delivered equivalence must be recorded separately, not retroactive runtime
+provenance. Source baseline remains caption compatibility commit for comparison.
+
+### Final identity
+
+31-input manifest root tmp/issue13-stage4/final-inputs.json SHA256:
+1f4794c387806e5cfea147fcb3aa59ac61895cae5bba0e64aee134a35cb36265.
+Seven-path feature diff --binary against caption compatibility baseline SHA256:
+76907fc1b5a1c7070911b26d5fe0e4b21c4de4e35cf167a9c71b3a3200915d6b.
+Seven paths860insertions/231deletions, all tracked. Other task runtime inputs are
+unchanged baseline files; original user flake excluded from feature diff.
+
+```text
+d4467aa45d6c6a322ddc70a5287f9b080fe074957a7b5cf647e844d51e43d1b6  README.org
+4fb892b8d94d5d5a0a68ef1f8387c68df76e89bd7b354c297d6ddd3f9c6eae2f  org-texmacs-context.el
+2bd82dc1852c2208d7bd5096959b2e9c2bd999ef6aabf18aa9f63702c623c476  org-texmacs-document.el
+5d187a47eab6810c4c2151433c3878fce2a8eb60b7fbba83216d1bb9c61dd694  org-texmacs-input.el
+9ee47eeaefc79b2469e618ebb545346bb273f8b64091ccad9351088f1d118851  org-texmacs-source.el
+d6f177a02d963ea6547ee066bc7ca07bb5967e50227bad5c86aad5b193af8477  org-texmacs.el
+46c66a57dab6555f3ee0d9e858d0e2c093aee4a886c3ea58863f67f523164e21  tests/ert/ert.el
+54effce5b08cfe75c4a32de982ce81f31ed07afd77c7a944598175ca88538cb7  flake.nix (unchanged user mirror)
+118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a  flake.lock
+```
+
+Next: user reviews accepted seven-file candidate, requests/authorizes explicit
+staging, staged-only message via git-maintenance; user commits. Then compare
+parent/path set/full patch/message/accepted blobs. Stage4 acceptance alone is not
+release or Issue13 remote closure. Issue9 remains independent later work.

@@ -1,8 +1,18 @@
 # v0.5.0 special-block plan and Issue9 boundary
 
+## Stage4 implementation accepted, pending user delivery
+
+Supplemented NAME/reference plan implemented;57focused/539fullERT/patched5/
+strict compile/lint/full flake/default build pass on fixed isolated31inputs.
+All scope/Org allocation/frozen-map/source-proof/native placement boundaries and
+seven task-file identities: issue-13-stage4.md. Original ELPA overlay unchanged,
+index empty; no user commit yet, Issue13 closure/release assessed separately.
+Old stage planning below is superseded where this candidate supplies behavior.
+
 ## Stage4 guidance review
 
-New user INBOX contract extracted in issue-13-stage4.md; review only, no code/tests.
+Initial user INBOX contract review was read-only, extracted in issue-13-stage4.md.
+Implementation was subsequently selected and accepted as recorded above.
 It supersedes below provisional deterministic ID/ref-only label preferences:
 Org-native search/reference allocator, frozen per-snapshot identity mappings,
 ASCII-readable slug, all newly named objects labeled even unused/unnumbered.
@@ -11,7 +21,8 @@ all four review concerns (lifecycle, semantic view, slug, metadata/regions).
 Repeatable validation allocates no final IDs; allocate once after effective AST/
 static labels known, freeze/remap into prepared input; pure lower never allocates.
 Earlier suggestion to allocate before preflight is superseded. Static review
-accepts supplemented guidance; runtime/implementation still pending.
+accepted supplemented guidance; subsequent implementation/runtime acceptance is
+recorded above and in issue-13-stage4.md.
 No original archive needed after sufficient extraction; source hash in that file.
 Old single-object section below is historical planning context where superseded.
 
@@ -20,7 +31,8 @@ Old single-object section below is historical planning context where superseded.
 Figure/table plus experimental stars are implemented and locally accepted;
 44focused/full flake/default build pass; exact user-committed delivery verified. Three adopted revisions, six extra gates, actual parser/native evidence
 and user-adopted note/raw-marker boundary limitation: memory/issue-13-stage3.md.
-Five task paths user-committed, delivery verified. Stage4 NAME remains later.
+Five stage3 task paths user-committed, delivery verified. Stage4 accepted candidate
+is above, user delivery pending.
 
 ## Selected work before stage4
 
@@ -43,8 +55,8 @@ Updated handler contract prohibits external reuse of any contents descendant con
 deep-rebuilt semantic duplication remains an unenforceable callback obligation.
 Preflight guarantees rejection before body STM requests, not before bibliography
 requests; custom handlers never receive placeholder contents. Stage2 equation
-implementation is below; stage3 figure/table candidate is above, NAME and Issue9
-composition remain unimplemented. Preserve/exclude user flake workaround.
+implementation is below; stage3 figure/table delivery and stage4 NAME candidate
+acceptance are above, Issue9 composition remains later. Preserve/exclude user flake workaround.
 Implementation command authority/current findings: memory/current.md. Initial
 memory-only adoption below describes its original phase, not current authority.
 
