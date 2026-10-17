@@ -1,6 +1,20 @@
 # org-texmacs current memory
 
-## Current: Issue13 stage3 delivered and verified
+## Current: caption anonymous inline-footnote guidance reviewed
+
+User supplied detailed development guidance and corrected patch placement: keep
+patch beside its consuming test configuration, no central tests/patches directory.
+Static review/extracted contract, three test layers, native-first gate, test-only
+Org9.8.10 isolation and no-production-parser-change boundary:
+memory/caption-inline-footnotes.md. No implementation or new tests/builds run.
+Native caption-footnote PDF behavior remains unverified; user ox-latex report is
+not independent runtime evidence. Short-caption descendant rejection and no STM
+discovery in caption/note body need explicit gates. No raw archive needed after
+sufficient extraction of in-conversation material. Next: user selects concrete
+implementation plan/actions; stage4 NAME remains separately adopted.
+Project .gitignore now also dirty (user change), preserve alongside flake overlay.
+
+## Completed delivery: Issue13 stage3 delivered and verified
 
 User authorized implementing reviewed plan plus adopted revisions1/2/3 and six
 acceptance additions. Independent parser/native gate31/31 passed before exporter

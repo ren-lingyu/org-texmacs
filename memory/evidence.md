@@ -1,5 +1,16 @@
 # org-texmacs durable evidence
 
+## Caption anonymous inline-footnote guidance: static review only
+
+User-supplied guide on stage3 baseline and explicit adjacent-test patch placement
+extracted to memory/caption-inline-footnotes.md. Checked existing resolver/caption
+owner/paragraph-only lower/preparation and Nix closure wiring. Live official Org
+syntax/export reference corroborate default exclusion and secondary AST model.
+No locked-source patch/build/parser/native/exporter experiment performed; user
+ox-latex output remains attributed, TeXmacs caption-note PDF behavior unverified.
+No raw archive: sufficient extraction, no unique experiment artifact supplied.
+Associated project snapshot grounds static source review only.
+
 ## Issue13 stage3 accepted implementation and verified delivery
 
 Native-first parser/generic/article gate31/31 passed38.819801s before exporter

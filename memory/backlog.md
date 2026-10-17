@@ -49,6 +49,15 @@ single-object NAME/[[name]] support. Full source/label/provenance/validation
 contract: memory/special-block-plan.md. Existing release gates are retained;
 prior delivered editing/font-lock/bibliography do not establish this capability.
 
+### Caption anonymous inline-footnote compatibility guidance
+
+Concrete user guidance supplied and statically reviewed, implementation not begun.
+Only anonymous inline AST in long captions of naked tables/four wrappers; stock
+Org stays unchanged, patched parser isolated to tests with patch adjacent to its
+consumer. Native-first PDF gate precedes exporter; no unconditional native support
+claim or new release gate. Full boundary/tests/review: caption-inline-footnotes.md.
+Stage4 NAME remains adopted-later; ordering not inferred from this intake.
+
 ### Issue9: independently named constituents of one native composite
 
 Status: **adopted-later**, after0.5.0/before0.6.0. Initial aligned multiline

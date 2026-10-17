@@ -69,6 +69,16 @@ single-object references, and13 does not complete9. Existing implementation and
 released-subset records below retain their historical scope. Complete adopted
 source semantics, unknowns and evidence requirements: memory/special-block-plan.md.
 
+## Caption anonymous inline-footnote compatibility proposal
+
+Supplied guidance reviewed, no capability change yet. Existing caption footnotes
+remain unsupported by current lower; proposed long-caption anonymous inline AST
+support reuses footnote lowering, with test-only patched Org and stock production
+parser. Short/named/nested and other unsupported contexts remain excluded.
+Current prepared caption walker already visits inline note bodies; test source
+coordinates/ownership/no new STM discovery explicitly. Full proposed contract and
+native-first/unverified PDF gate: memory/caption-inline-footnotes.md.
+
 ## Committed block/table extension
 
 Selected Issue4 subset uniformly maps Org quote blocks to native quotation with
