@@ -25,6 +25,11 @@ decision.
 
 ### Issue13: adopted required v0.5.0 special-block subset
 
+Stage3 guidance received/reviewed, not implementation authorization. Three
+recommended tightenings pending adoption and no stage3 native/parser proof:
+memory/issue-13-stage3.md. Required high-level figure/table target stays adopted;
+concrete syntax/container/selection gates await evidence.
+
 Status: stage1 implemented/accepted/user-committed; exact delivery verified.17focused/
 495fullERT/full flake/strict package compile/lint/build pass; generic native16
 types and PDF accepted. Stage1 delivery evidence:

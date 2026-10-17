@@ -1,6 +1,24 @@
 # org-texmacs current memory
 
-## Current: Issue13 stage2 delivered and verified
+## Current: Issue13 stage3 guidance reviewed, no implementation authority
+
+User requested project-read-only review of updated INBOX. First-read identity:
+17294bytes, SHA256 b160a8e6f101ac90bb460fbf80a0fe595cf8476f6181df719b54571094c8f891.
+Full extracted semantics/test gates/provenance and three review recommendations:
+memory/issue-13-stage3.md. Recommend original-child/completeness evidence before
+context pruning and region reparse; existing caption inline subset without implied
+STM fragments/notes/citations; explicit finite native table-container grammar.
+Recommendations await user adoption; no code/parser/native/tests/build performed.
+Four structural figure/table wrappers retain native-body classifier unchanged;
+missing caption numbering and starred behavior require new independent native
+proof. Stage4 NAME and Issue9 remain separate. No raw archive needed after sufficient
+extraction; no independent raw experimental evidence, no skill/archive change.
+Only existing flake workaround dirty; ordinary index empty. Next: resolve review
+recommendations, then separately plan/authorize stage3. Stage2 delivery below remains
+verified and its tests do not certify stage3. This memory checkpoint's project
+association grounds static review of delivered source, not stage3 runtime proof.
+
+## Completed delivery: Issue13 stage2
 
 User authorized the reviewed stage2 plan and repeated focused/full/build commands.
 Raw-STM equation/equation* wrappers implemented; twelve new maintained ERT added.
@@ -29,9 +47,9 @@ Next: separately select/plan stage3 figure/table wrappers; stage4 NAME and Issue
 composite-row identity remain later. Whole Issue13 and release gates are incomplete.
 No source/skill/archive changes in this delivery verification.
 
-Intake source INBOX:23584bytes,SHA256
+Stage2 intake source INBOX (superseded):23584bytes,SHA256
 71c40dd0686b702f2f87dbbc4ba9b5a1c752c3e9ff8f88be073976498a2ec85c,
-same as first review. Retention re-assessed: no raw archive, since adequate current
+matched its first review then; current source is stage3 above. Retention was: no raw archive, since adequate current
 memory captures relevant guidance/corrections and no independent raw evidence
 remains. No archive files created. Do not assume future INBOX bytes remain equal.
 User clarified read-only defaults to ordinary project worktree; normal GAW loop

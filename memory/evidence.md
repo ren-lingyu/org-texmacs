@@ -1,5 +1,17 @@
 # org-texmacs durable evidence
 
+## Issue13 stage3 intake and static review
+
+First-read INBOX regular UTF-8 source17294bytes, SHA256
+b160a8e6f101ac90bb460fbf80a0fe595cf8476f6181df719b54571094c8f891.
+No original archive: useful semantics/test gates fully extracted, no unique raw
+runtime evidence. Static committed-source review identifies pre-prune singleton/
+scope evidence, caption subset and finite table grammar as contract tightenings;
+not yet adopted. Official float/primitives docs support interface shape only,
+not pinned native empty-caption/star/counter behavior. No new parser/native/ERT/
+builds or remote issue-state lookup. Full record: memory/issue-13-stage3.md.
+Associated project snapshot grounds current static source review only.
+
 ## Issue13 stage2 accepted implementation and verified delivery
 
 Twelve new maintained ERT plus seventeen stage1 tests pass focused29/29

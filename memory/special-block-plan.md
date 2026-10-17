@@ -1,5 +1,13 @@
 # v0.5.0 special-block plan and Issue9 boundary
 
+## Stage3 guidance review
+
+Figure/table wrappers and experimental stars remain planned. Detailed supplied
+contract, prevalidation gates and three pending review corrections:
+memory/issue-13-stage3.md. No source implementation or tests authorized/performed
+by the read-only review. Keep structure evidence before context loss, current
+caption subset and bounded native table grammar explicit.
+
 ## Status, motivation and authority
 
 Stage1 now user-selected for implementation: foundation (recursion, captured
