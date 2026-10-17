@@ -1,6 +1,31 @@
 # org-texmacs current memory
 
-## Current: Issue13 delivered, verified and closed
+## Current: minimal footnote forward-link investigation completed
+
+User-selected isolated flake experiment completed, no production/index changes.
+Exact minimal Org `1[fn::1]\n2[fn::2]` and blank-line variant, generic/article;
+public org-texmacs PDF plus saved-tree native print, independent native footnote,
+export-postscript and print-to-file(.ps) each followed by Ghostscript.34PDFs:
+28footnote PDFs each4Link annotations, BOTH main-text forward destinations absent,
+body-to-marker backlink targets exist;6ordinary-link controls retain destination
+page2. Clarify prior "first-note" wording: not only document's first note; both
+anonymous notes' first-use forward links fail. PS already lacks #footnote-1/2
+DEST definitions despite forward ANN references; loss predates Ghostscript.
+Native controls reproduce, exporter not necessary cause. No exact native binding
+root cause, GUI clicks or correct PS target landing-position claim. No workaround
+or business repair adopted. This investigation does not close release impact.
+
+Final authorized600s build exit0; initial mixed Poppler stderr/XML harness failure
+excluded, then stdout/stderr separated and same command rerun.31source inputs
+unchanged; root user flake preserved. Results/report at root tmp/footnote-forward-probe,
+successful store output and all raw annotations/coordinates in report. Necessary
+11text artifacts archived separately and verified, not PDFs/full source/dependencies:
+archive/2026-10-17T18-19-25Z--aa9adbc/MANIFEST.md.
+Full extraction: memory/footnote-forward-probe.md. Runtime probes uncommitted,
+no inferred project parent. Next: user decides deeper native diagnosis, limited
+handling or explicit release limitation; other0.5.0 gates unchanged.
+
+## Completed: Issue13 delivered, verified and closed
 
 User authorized implementing the reviewed NAME/reference plan plus adopted
 line550 supplement and repeated isolated-flake focused/full/default-build gates.

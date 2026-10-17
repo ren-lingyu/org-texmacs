@@ -1,5 +1,16 @@
 # v0.5.0 release readiness
 
+## Minimal footnote forward-link investigation: completed
+
+User-selected isolated locked flake confirms both main-text anonymous footnote
+markers fail with `1[fn::1]\n2[fn::2]`, not only document's first note.34PDFs:
+28footnote cases each2missing forward destinations,6ordinary-link controls retain
+target page2. Org public API and independent native, generic/article, direct PDF
+and both PostScript -> Ghostscript paths. PS already lacks #footnote-1/2 DEST
+entries despite ANN references. No exporter/native fix or GUI/PS landing guarantee;
+release impact/explicit limitation decision still needed. No production/index
+change. Contract/authorization/diagnostics/selected archive: footnote-forward-probe.md.
+
 ## Issue13 stage4 delivered; issue closed
 
 Seven-file NAME/reference candidate passes57focused/539fullERT/patched5/strict
