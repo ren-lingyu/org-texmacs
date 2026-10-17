@@ -26,7 +26,7 @@ decision.
 ### Issue13: adopted required v0.5.0 special-block subset
 
 Stage3 figure/table candidate implemented/accepted with adopted corrections;
-no ordinary staging/commit. Native controls,44focused, full flake and no-link
+five task paths staged by user authorization; no ordinary commit. Native controls,44focused, full flake and no-link
 build pass. Org footnote/raw-marker boundary restriction explicitly
 adopted by user; no parser/text reconstruction. memory/issue-13-stage3.md.
 Stage4 NAME remains **adopted-later**.

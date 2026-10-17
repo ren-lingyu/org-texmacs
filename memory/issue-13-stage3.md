@@ -5,7 +5,8 @@
 User initially requested project-read-only review, then adopted revisions1/2/3
 and six acceptance additions, requested the concrete plan and authorized its
 implementation. User separately authorized the exact three repeat commands below.
-Source/ERT/README changes active, ordinary staging/commit not authorized. Preserve
+Source/ERT/README implemented; user subsequently authorized five-path staging.
+Agent does not execute ordinary project commits. Preserve
 flake.nix ELPA workaround. No worker protocol/public API/dependency/version/lock,
 issue-close/tag/release actions. Static review used delivered stage2 project
 baseline; current runtime uses an uncommitted candidate, not that committed tree.
@@ -291,11 +292,10 @@ reproduction, so no extra immutable archive selected.
 Possible network/store/cache/log/temp tm/PDF/raster writes disclosed and authorized;
 no result link or lock change. Pinned x86_64-linux ERT environment with Poppler,
 Emacs31.1/Org9.8.10/TeXmacs2.1.5 baseline. No other style/platform/GUI guarantee.
-Candidate uncommitted, index empty; exclude original flake mirror overlay from
+Candidate uncommitted, all five task paths staged; exclude flake mirror overlay from
 ordinary delivery. Eventual commit footer Refs:#13, not Closes. Final diff
-whitespace check passed, index empty, five task paths plus unchanged user flake
-overlay are the complete ordinary diff. Next: review, separately authorized
-staging/message and user commit, then verify committed-delivery equivalence.
+whitespace check passed; five task paths staged with only unchanged user flake
+overlay unstaged. Next: user commit, then verify committed-delivery equivalence.
 Stage4 NAME/counter-scope labels/weak anchors and Issue9 remain later work.
 
 Final review correction: full-source wrapper clipping checks must honor actual
@@ -326,3 +326,21 @@ a717dcfa245b1ccaee102ed8eef3a6ae229d0c86b60f674080bab5273d093a8a  flake.nix
 118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a  flake.lock
 ```
 Manifest SHA256: 7cef14dcbcebf14390396e0c6458e2e84d2a4a131f423b326cae69b3dde9185e.
+
+### Staging and commit-message handoff
+
+User authorized exact five-path staging after not-necessary split assessment.
+Source evidence producer/context consumer/lowering/native normalization/tests/README
+form one coherent feat(document) change. Default sandbox blocked index.lock
+creation read-only; same command succeeded under escalation, no scope expansion.
+Entire staged diff reviewed, whitespace check clean; all five index blobs equal
+accepted input manifest and worktree. Only unchanged flake overlay remains unstaged.
+No tests repeated solely for staging. No ordinary commit executed.
+
+Staged binary patch SHA256:
+20da4cf0e9d829737a3bd9b1418cfa016c726c681d907659f751f73d2b4bd6f2.
+Message tmp/commit.md SHA256:
+c7605e29b0292f48b32239ed2ec7d2e96ce5b29ef99050aa808e0a78870b87ba.
+Title: feat(document): support explicit figure and table blocks. Footer Refs:#13.
+Temporary message may change; compare actual full commit bytes/parent/patch/blobs
+after user commit before transferring acceptance or adding project association.
