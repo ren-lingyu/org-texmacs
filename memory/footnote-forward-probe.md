@@ -183,3 +183,11 @@ native-only intervention does not itself verify production integration. This
 clarification adopts acceptance scope, not an instruction to modify production
 files or assertion that integration is complete. Exact tm output semantics remain
 subject to normal exporter contract; no new GUI compatibility guarantee inferred.
+
+## Follow-on actual private export integration
+
+User selected isolated integration after exporter-only acceptance clarification.
+Actual package PDF paths now accepted44PDF/46attempts,54correct forward targets,
+repeats/session/explicit macro/error cleanup/no-global-leak/source invariance.
+Production code unchanged; formal repair still unselected. Dedicated current
+contract/coordinate caveats and new selective archive: footnote-private-integration.md.

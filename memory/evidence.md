@@ -1,5 +1,18 @@
 # org-texmacs durable evidence
 
+## Private PDF footnote compatibility candidate: isolated integration accepted
+
+Actual package document/source/frontend PDF paths pass44PDF/46attempt matrix,
+30patched note PDFs/54valid main-text forward links, generic/article. Anonymous,
+named-repeat,markup,cross-page and recovery exports stable in text/layout/targets;
+source/prepared/serialized input unchanged. Existing session/explicit macro/same
+worker preserved;46buffer closures/file removals/session checks include2injected
+errors, disabled-after again reproduces original failure (no global leak).
+Named first-use anchor near correct body line end, not necessarily glyph box;
+repeat target exactly baseline. Only tmp copied worker changed. Formal production
+implementation/maintained regressions not yet selected; no GUI/PS/caption/all-style
+claim. Full scope, rejected harness assumptions and archive: footnote-private-integration.md.
+
 ## Native footnote anchor intervention: controlled support for missing-anchor mechanism
 
 Final36PDF native-only matrix (generic/article,9variants,direct/PS) passes. Matching

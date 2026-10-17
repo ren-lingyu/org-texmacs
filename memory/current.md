@@ -1,6 +1,36 @@
 # org-texmacs current memory
 
-## Current: native binding/anchor intervention completed
+## Current: private org-texmacs PDF integration experiment accepted
+
+User-selected isolated package integration completed: final44PDF/46render attempts
+exit0, generic/article, actual document-save/source-file/frontend PDF entrypoints
+and same shared worker.30patched note PDFs contain54valid main-text forward links,
+inline/named-repeat/markup/cross-page; three repeats have identical text/layout/
+target geometry. Minimal/after-failure/named visible layout/numbering equals
+unpatched baseline.46private buffers closed/files removed/session-intact checks,
+including2forced errors after override; subsequent export recovers, no published
+failed file, same worker retained. Existing guard session body/style/inits/macro
+unchanged; explicit user initial macro skipped; disabling after enabled exports
+restores original missing targets, no global override leak. Source/prepared body/
+serialization unchanged. Only copied tmp worker modified, production/index intact.
+
+Candidate inserts dynamic same-key label before existing native set-binding after
+first print, before final layout/print, current private buffer init only. Test
+control/event/failure hooks not proposed public API. Named first-use anchor can
+sit near body line end (about5px outside glyph run), not strictly in text rectangle;
+verify correct body line, at most one line-height x adjacency; existing repeat
+anchor exactly baseline. Same-line font y-order and markup text-run grouping fixed
+in inspector; frontend default-directory fixture corrected, product guards kept.
+All diagnostics distilled, final acceptance only on fixed final inputs.
+
+Report/results root tmp/footnote-forward-probe/INTEGRATION-REPORT.md and
+integration-results, successful locked build output recorded there. Selected14text artifacts byte-verified/archived separately:
+archive/2026-10-17T18-51-51Z--aa9adbc/MANIFEST.md.
+Full evidence/authorization/limits: memory/footnote-private-integration.md. No GUI/PS exact landing,
+caption/custom-macro guarantee or production repair acceptance. Next: user selects
+formal integration/regression plan; no extra release readiness implied.
+
+## Completed: native binding/anchor intervention
 
 User-selected hypothesis experiment completed in same authorized isolated flake,
 no production/index/installed-style change. Initial24PDF gate and final36PDF
