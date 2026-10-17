@@ -88,6 +88,18 @@ and must not alter Git state or access the network. After a write, rerun
 
 ## Maintain GAW memory
 
+Treat the first user-requested read/review of supplied material as an intake
+boundary, not just preparation for later work. In that turn, assess original
+retention under `org-texmacs-gaw-archive` and distill recovery-relevant content
+into memory. Record the retention decision/reason and identify the observed
+source version with supported byte count/digest/provenance when applicable.
+Assume a later read can return changed bytes or no file; do not postpone this
+work to implementation, replacement, cleanup or handoff. Archive only material
+with independent original-byte value, without treating active inputs as retired.
+A later file is not the first-read original unless equality is established.
+If writes are explicitly prohibited, give the assessment and distilled content
+in the reply, explain what remains unpreserved, and respect the restriction.
+
 Update current memory when a verified finding, adopted decision, objective,
 blocker, state, or next action materially changes recovery. Do not create a
 checkpoint for every wording edit. Before any checkpoint, inspect the entire

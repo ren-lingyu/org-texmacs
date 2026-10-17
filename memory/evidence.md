@@ -1,5 +1,18 @@
 # org-texmacs durable evidence
 
+## First-read material retention boundary
+
+User requires supplied material's first read/review to include retention
+assessment and appropriate memory extraction, assuming subsequent file reads
+may differ/disappear. Stage1 INBOX was read in full during its initial review,
+but no contemporaneous raw-retention assessment/digest was recorded. Adopted
+guidance and review corrections were later distilled in issue-13-stage1.md;
+this does not establish an original-byte snapshot of that first read. No current
+INBOX reread/copy is claimed as the earlier original. Existing older INBOX source
+observations and immutable archives retain their own provenance. The stable
+workflow is now explicit in project development/governance/archive skills; this
+clarification does not retire active material or require indiscriminate capture.
+
 ## Issue13 stage1 acceptance and verified user delivery
 
 2026-10-17 user-selected recursive ordinary special blocks, captured private

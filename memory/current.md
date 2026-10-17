@@ -2,6 +2,16 @@
 
 ## Completed delivery: Issue13 stage 1
 
+User clarified material intake: first requested read/review must assess original
+archive need and distill relevant memory then, assuming the file may change or
+disappear before the next read. This reusable procedure is now in development,
+governance and archive skills. Stage1 INBOX's first review did not synchronously
+record a raw-retention decision/digest; later adopted implementation memory is
+not contemporaneous original capture. Its useful guidance/review decisions are
+distilled in issue-13-stage1.md; no verified first-read raw snapshot claimed.
+Current INBOX was not reread/substituted to conceal this gap. No source/archive/
+bootstrap/history rewrite is part of this governance clarification.
+
 User-selected recursive ordinary special-block foundation and formal statements
 implemented, automatically accepted and user-committed. Five task
 paths: document/input/source adapter, ERT and README. Original flake.nix mirror

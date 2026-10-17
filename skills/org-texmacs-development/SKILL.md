@@ -37,6 +37,17 @@ holds; recheck material claims when necessary.
 
 ## Classify the change before acting
 
+When the user first asks to read or review supplied material such as INBOX.md,
+assess original-byte retention with `org-texmacs-gaw-archive` and distill relevant
+goals, decisions, review findings and open questions into memory in that same
+turn. Do not wait for implementation or handoff: assume the next file read may
+see different bytes or no file. Record whether an original is needed and why;
+not every input needs an archive. Keep active material distinct from retired
+documents. Bind source observations to the version actually read; a later copy
+is not evidence of the earlier original without verified equality. If writes
+are explicitly prohibited, report the assessment, extraction and retention gap
+in the reply rather than silently deferring or overriding that restriction.
+
 Identify the layer that owns the requested semantics:
 
 - Org source and source-span discovery;

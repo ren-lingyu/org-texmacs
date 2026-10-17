@@ -28,6 +28,16 @@ the active authorization and sensitive-content rules.
 
 ## Select historical evidence
 
+Make the retention assessment on the first user-requested read/review of supplied
+material, including mutable INBOX files. Assume the next read may differ or be
+unavailable. If original bytes have independent retention value, capture and
+verify the version actually inspected within the authorized scope then, rather
+than waiting for retirement or implementation. Otherwise distill the useful
+content and record why raw capture is unnecessary. An active input need not be
+obsolete to justify a selected evidence snapshot. If the original version was
+not preserved, state the gap; do not substitute a later file without verified
+equality. Explicit read-only restrictions still govern writes.
+
 Root agent documents named by the user are primary candidates. A temporary
 file is eligible when all of these conditions hold:
 
