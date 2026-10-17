@@ -16,6 +16,16 @@ table/NAME implementation or Issue9 scope. Preserve/exclude user flake workaroun
 Implementation command authority/current findings: memory/current.md. Initial
 memory-only adoption below describes its original phase, not current authority.
 
+Stage2 equation guidance now reviewed/adopted, implementation/checks not started.
+Full extracted source contract, four accepted corrections and test boundaries:
+memory/issue-13-stage2.md. Accept native parser's structurally valid string/stree
+datums without a mathematical root whitelist; source is raw, single-capture and
+single-request, opaque throughout preprocessing/discovery/context. Pack exactly
+one equation/equation* wrapper, preserve provenance, reserve names; no labels or
+custom handler. Empty raw source is distinct from parsed empty-string datum.
+Existing transport/session invalidation and partial-write limits remain intact.
+Stage3 figure/table, stage4 NAME, Issue9 composite constituents remain distinct.
+
 Original scope adopted from user INBOX dated2026-10-17. Issue13 is required for v0.5.0's first
 usable Org-first mathematical writing subset. Earlier release scope omitted this
 work and deferred broader names/references; the new split assigns single objects

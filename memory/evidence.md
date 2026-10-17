@@ -1,5 +1,27 @@
 # org-texmacs durable evidence
 
+## Stage2 INBOX review, adopted corrections and retention decision
+
+User supplied stage2 guidance; first review recorded23584bytes and SHA256
+71c40dd0686b702f2f87dbbc4ba9b5a1c752c3e9ff8f88be073976498a2ec85c.
+Recheck matches; ignored/untracked regular file, not a tracked project blob.
+Static code review used delivered stage1 source, current project snapshot
+associated with this memory checkpoint (non-first parent). No stage2 runtime,
+Org-starred parsing/native/PDF proof or remote lookup. Exact source semantics,
+test requirements, limits and four user-adopted review corrections fully
+distilled in memory/issue-13-stage2.md. No original archive: after extraction,
+this active guidance supplies no remaining independent raw evidence; mutability
+and preserving every reviewed wording alone are insufficient. No archive files
+were created. This does not restore a first-read original from an unverified
+later version or claim a raw snapshot. Stage1's separate intake gap below remains.
+
+User clarified normal read-only review restricts ordinary project writes, not
+the authorized GAW loop, unless GAW updates are expressly forbidden. Skill-only
+checkpoint precedes this memory-only checkpoint; no mixed skill/memory/archive
+commit. Current INBOX/project/workaround unchanged; no test/build/staging/release
+or external action performed. Earlier recommendation to capture raw guidance
+was withdrawn after applying the sufficiency criterion, before any archive existed.
+
 ## First-read material retention boundary
 
 User requires supplied material's first read/review to include retention

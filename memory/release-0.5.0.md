@@ -10,6 +10,10 @@ native16type/PDF and theorem/proof tm reload accepted. Remaining equation,
 figure/table/NAME and weak anchors still planned; no release action. Full stage1
 contract, candidate identities and limits: memory/issue-13-stage1.md.
 Full source semantics and validation boundaries: memory/special-block-plan.md.
+Stage2 equation/equation* guidance reviewed/adopted with four corrections;
+no implementation/native/test acceptance. memory/issue-13-stage2.md holds the
+complete extracted contract and requirements, without relying on mutable INBOX.
+Stage1's495ERT is not stage2 or final release evidence. All other gates unchanged.
 This adds one required scope gate, not duplicated numbered legacy items:
 private recursive handler/preparation/provenance path, formal statements,
 single-expression equation/equation*, explicit figure/table wrappers and bounded

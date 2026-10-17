@@ -29,7 +29,12 @@ Status: stage1 implemented/accepted/user-committed; exact delivery verified.17fo
 495fullERT/full flake/strict package compile/lint/build pass; generic native16
 types and PDF accepted. Index empty, only original user flake overlay dirty; see
 memory/issue-13-stage1.md. Remaining equation/figure/table/NAME nodes remain
-**adopted-later**; no next implementation node selected.
+**adopted-later**. Stage2 equation/equation* guidance and four review corrections
+now adopted; implementation/checks await separate authorization. Raw STM remains
+opaque across preprocessing/bibliography/context as well as preparation/scanner;
+no math whitelist, recursive body or NAME. Full contract/acceptance/sequence and
+retention decision: memory/issue-13-stage2.md. Stage3 figure/table/starred then
+stage4 NAME/links; no stage2 implementation or tests yet.
 Recursive private special-block handlers,
 statement aliases, equation/equation*, explicit figure/table and bounded
 single-object NAME/[[name]] support. Full source/label/provenance/validation

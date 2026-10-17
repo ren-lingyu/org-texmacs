@@ -1,5 +1,29 @@
 # org-texmacs current memory
 
+## Current: Issue13 stage2 guidance reviewed and adopted
+
+User accepted four review tightenings and requested memory-only GAW update.
+Stage2 adds raw-STM equation/equation* wrappers only; not implemented or tested.
+Full distilled contract, implementation/test boundaries and sequence:
+memory/issue-13-stage2.md. Ensure opacity in preprocessing, bibliography and
+context region/dependency recovery too; distinguish empty source from valid
+empty-string datum; retain existing transport/session and partial-write limits;
+maintain memory during work instead of waiting for final commit. No mathematical
+root whitelist, recursive Org equation body, extra concat/document, handler callback,
+NAME or new protocol. Stage3 figures/tables and stage4 names remain later; Issue9
+keeps composite-row identity. Stage1 delivered results below remain valid only
+for their tested capability. Next: separately authorize stage2 implementation/
+checks; none run or source files modified in this turn.
+
+Intake source INBOX:23584bytes,SHA256
+71c40dd0686b702f2f87dbbc4ba9b5a1c752c3e9ff8f88be073976498a2ec85c,
+same as first review. Retention re-assessed: no raw archive, since adequate current
+memory captures relevant guidance/corrections and no independent raw evidence
+remains. No archive files created. Do not assume future INBOX bytes remain equal.
+User clarified read-only defaults to ordinary project worktree; normal GAW loop
+continues unless expressly forbidden. Skill changes were checkpointed separately;
+do not mix skills with memory/archive. No .gaw/protocol/bootstrap/history rewrite.
+
 ## Completed delivery: Issue13 stage 1
 
 User clarified material intake: first requested read/review must assess original
@@ -44,7 +68,7 @@ Exact patch/message hashes: memory/issue-13-stage1.md. No tests rerun just for
 commit verification. No further stage1
 implementation/testing remains. Whole13 and v0.5.0 are not complete; equation,
 figure/table/NAME and weak anchors remain separately selected later work. Issue9
-remains post0.5.0. No next implementation node auto-selected.
+remains post0.5.0. Stage2 guidance is adopted above; implementation not started.
 
 ## Adopted full scope: v0.5.0 Issue13 and Issue9 refocus
 
@@ -65,7 +89,7 @@ rows of an aligned formula. It no longer owns all general NAME/block references.
 Issue bodies last verified open/consistent during the preceding reconciliation
 (updated2026-10-17 08:11:44Z/08:11:46Z for13/9). No external writes. Other release
 gates remain open as recorded; stage1 evidence above does not validate later13
-nodes or constitute full release acceptance. No stage2 implementation selected.
+nodes or constitute full release acceptance. Stage2 guidance now adopted above.
 
 GAW goals/current/backlog/project/release synchronized with concentrated plan;
 older implementation/experimental evidence preserved as historical context.
