@@ -97,8 +97,12 @@ Assume a later read can return changed bytes or no file; do not postpone this
 work to implementation, replacement, cleanup or handoff. Archive only material
 with independent original-byte value, without treating active inputs as retired.
 A later file is not the first-read original unless equality is established.
-If writes are explicitly prohibited, give the assessment and distilled content
-in the reply, explain what remains unpreserved, and respect the restriction.
+If sufficient information is accurately extracted into memory, do not archive
+the raw file without a remaining independent evidence need. Mutability or exact
+wording alone does not establish that need. Read-only review requests restrict
+the ordinary project worktree by default; continue the authorized GAW memory
+loop unless the user expressly says not to update GAW. For an explicit GAW-write
+ban, give the assessment/extraction and unsaved retention limits in the reply.
 
 Update current memory when a verified finding, adopted decision, objective,
 blocker, state, or next action materially changes recovery. Do not create a
@@ -118,6 +122,10 @@ Separate all changed `.gaw/` paths from workspace changes when forming checkpoin
 including additions, deletions, content, modes and cross-boundary moves. Compare
 with the first-parent tree; `git gaw check` validates candidate readiness but does
 not replace this transition review. Keep each intentional intermediate state valid.
+
+Keep changed skill paths in checkpoints separate from memory or archive paths.
+Archive-only checkpoints remain required by the archive skill. Inspect the entire
+index before each checkpoint; do not let earlier staged paths mix these groups.
 
 When the user explicitly authorizes a `.gaw/config` update, create a dedicated
 checkpoint containing only `.gaw/config`. Keep related memory and skill changes

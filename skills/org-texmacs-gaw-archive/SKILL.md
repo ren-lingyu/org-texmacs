@@ -36,7 +36,12 @@ than waiting for retirement or implementation. Otherwise distill the useful
 content and record why raw capture is unnecessary. An active input need not be
 obsolete to justify a selected evidence snapshot. If the original version was
 not preserved, state the gap; do not substitute a later file without verified
-equality. Explicit read-only restrictions still govern writes.
+equality. Read-only review restricts the ordinary project worktree by default;
+the authorized GAW loop continues unless the user expressly forbids GAW updates.
+Complete accurate memory extraction takes precedence over redundant raw capture.
+Archive only if losing original bytes would still impair evidence/reproduction
+or interpretation after extraction; mutability or preserving every reviewed
+wording alone is insufficient. Keep skill changes out of archive checkpoints.
 
 Root agent documents named by the user are primary candidates. A temporary
 file is eligible when all of these conditions hold:

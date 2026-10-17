@@ -43,10 +43,15 @@ goals, decisions, review findings and open questions into memory in that same
 turn. Do not wait for implementation or handoff: assume the next file read may
 see different bytes or no file. Record whether an original is needed and why;
 not every input needs an archive. Keep active material distinct from retired
-documents. Bind source observations to the version actually read; a later copy
-is not evidence of the earlier original without verified equality. If writes
-are explicitly prohibited, report the assessment, extraction and retention gap
-in the reply rather than silently deferring or overriding that restriction.
+documents. Accurate, sufficient memory extraction makes raw capture unnecessary
+unless original bytes still have independent evidence value; mutability alone
+does not justify archiving. Bind observations to the version actually read; a
+later copy is not the earlier original without verified equality. A request for
+read-only review restricts ordinary project-worktree changes by default, not
+the authorized GAW memory loop. Continue appropriate memory/retention work unless
+the user expressly forbids GAW updates; only then report the unsaved extraction
+and retention limits in the reply. Keep skill updates in separate checkpoints
+from memory or archive updates.
 
 Identify the layer that owns the requested semantics:
 
