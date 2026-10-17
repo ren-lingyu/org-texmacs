@@ -1677,6 +1677,15 @@ printing.  Invalidation alone does not populate the native link information
 needed for PDF annotations.  A first native PDF print establishes typeset
 reference bindings; another invalidation and forced typesetting resolve their
 uses before the final print to the same temporary file.
+For ordinary body footnotes, the PDF consumer locally supplies a missing native
+destination in compatible TeXmacs =render-footnote*= macros.  The reference value
+and numbering stay native.  This applies only to the disposable PDF buffer:
+serialized =.tm= documents and existing sessions are unchanged.  Explicit initial
+overrides of =footnote=, =render-footnote= or =render-footnote*=, foreign macro
+shapes and macros already containing the destination are left alone.  Native
+=generic= / =article= tests cover anonymous, named and repeated notes, both link
+directions, cross-page references and rendering-error recovery.  This does not
+repair the caption-footnote layout limitations described above.
 It does not serialize and reparse a =.tm= intermediary.
 An existing public session remains unchanged.  The temporary buffer and PDF
 are cleaned up; transport failure removes the worker's private directory.
@@ -1695,7 +1704,9 @@ no separate PDF link layer is added.  PDF semantic regressions also check
 anonymous/named/repeated footnote markers and unique bodies, citation groups/
 repeated citations, and selected bibliography entries.  They normalize
 extracted whitespace and use short fixtures in isolated native configurations;
-they do not assert PDF bytes, pixel snapshots, coordinates or fixed pagination.
+they do not assert PDF bytes, pixel snapshots or fixed pagination.  Footnote tests
+also use test-only =pypdf= to resolve actual destinations and compare their
+positions with the corresponding text lines, including nearby zero-width anchors.
 The bounded update/print sequence does not guarantee convergence for every
 native layout.  GUI preview and visual layout
 coverage remain future work.

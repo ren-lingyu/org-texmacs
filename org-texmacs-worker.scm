@@ -208,6 +208,55 @@
 (define org-texmacs-render-directory #f)
 (define org-texmacs-render-counter 0)
 
+(define (org-texmacs-pdf-has-footnote? body)
+  (and (pair? body)
+       (or (eq? (car body) 'footnote)
+           (let loop ((children (cdr body)))
+             (and (pair? children)
+                  (or (org-texmacs-pdf-has-footnote? (car children))
+                      (loop (cdr children))))))))
+
+(define (org-texmacs-pdf-footnote-anchor-macro macro)
+  ;; TeXmacs 2.1.5 binds the reference value, but does not export its named
+  ;; destination.  Recognize the native scope/key, not arbitrary bindings.
+  ;; Leave foreign and already corrected macros alone; never mutate MACRO.
+  (and (list? macro) (= (length macro) 5) (eq? (car macro) 'macro)
+       (equal? (list (cadr macro) (caddr macro) (cadddr macro))
+               '("sym" "nr" "body"))
+       (list? (list-ref macro 4)) (>= (length (list-ref macro 4)) 4)
+       (eq? (car (list-ref macro 4)) 'float)
+       (equal? (cadr (list-ref macro 4)) "footnote")
+       (let* ((key '(merge "footnote-" (arg "nr")))
+              (binding (list 'set-binding key '(value "the-label") "body"))
+              (count 0) (labelled #f)
+              (patched
+               (letrec ((walk
+                         (lambda (node)
+                           (cond
+                            ((equal? node (list 'label key))
+                             (set! labelled #t) node)
+                            ((equal? node binding)
+                             (set! count (+ count 1))
+                             ;; Keep the original binding after LABEL so its
+                             ;; reference value is not replaced by LABEL's.
+                             (list 'concat (list 'label key) node))
+                            ((pair? node) (map walk node))
+                            (else node)))))
+                 (walk macro))))
+         (and (= count 1) (not labelled) patched))))
+
+(define (org-texmacs-pdf-install-footnote-anchors native)
+  ;; Only the disposable PDF buffer acquires this initial value.  Explicit
+  ;; caller overrides, serialization and persistent sessions remain untouched.
+  (and (org-texmacs-pdf-has-footnote? (tree->stree (list-ref native 2)))
+       (not (let loop ((keys '("footnote" "render-footnote" "render-footnote*")))
+              (and (pair? keys)
+                   (or (assoc (car keys) (list-ref native 1)) (loop (cdr keys))))))
+       (let ((patched (org-texmacs-pdf-footnote-anchor-macro
+                       (tree->stree (get-env-tree "render-footnote*")))))
+         (and patched
+              (begin (init-env-tree "render-footnote*" (stree->tree patched)) #t)))))
+
 (define (org-texmacs-render-native-pdf native)
   (for-each
    (lambda (name)
@@ -246,6 +295,7 @@
                   ;; Update references after that pass before final printing.
                   ;; Both prints use the same owned temporary file.
                   (print-to-file file)
+                  (org-texmacs-pdf-install-footnote-anchors native)
                   (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer))
                   (update-forced)
                   (print-to-file file)

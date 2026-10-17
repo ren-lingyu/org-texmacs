@@ -24,6 +24,12 @@
                         (file-name-directory (or load-file-name buffer-file-name))))
   "README under test, explicitly supplied by the Nix test driver.")
 
+(defconst org-texmacs-test--pdf-inspector
+  (or (getenv "ORG_TEXMACS_TEST_PDF_LINKS")
+      (expand-file-name "pdf-links.py"
+                        (file-name-directory (or load-file-name buffer-file-name))))
+  "Test-only PDF destination inspector, supplied by the Nix test driver.")
+
 (defun org-texmacs-test--lower (ast &optional islands blanks info style initial source-file resource-base bibliography)
   "Own AST and allocate references before exercising the pure lowering kernel."
   (org-texmacs-document
@@ -8827,6 +8833,242 @@ bounded word records rather than interpreting the whole output as XML."
                (current-buffer) file `(("refs.bib" . ,org-texmacs-test--adjacent-bib)))
               (should (equal state (org-texmacs-test--document-buffer-state (current-buffer))))))
           (org-texmacs-test--adjacent-pdf-targets file))))))
+
+(defun org-texmacs-test--pdf-note-inspect (file)
+  "Inspect actual link targets and text rectangles in FILE."
+  (let ((python (executable-find "python3")))
+    (when (getenv "ORG_TEXMACS_TEST_README") (should python))
+    (unless python (ert-skip "Footnote destination inspection requires Python/pypdf"))
+    (with-temp-buffer
+      (should (= 0 (call-process python nil '(t nil) nil org-texmacs-test--pdf-inspector file)))
+      (goto-char (point-min))
+      (json-parse-buffer :object-type 'alist :array-type 'list :null-object nil :false-object nil))))
+
+(defun org-texmacs-test--pdf-note-text (inspection word)
+  "Find the unique text run containing WORD in INSPECTION."
+  (let ((matches (cl-remove-if-not
+                  (lambda (text) (string-match-p (regexp-quote word) (alist-get 'text text)))
+                  (alist-get 'texts inspection))))
+    (should (= 1 (length matches)))
+    (car matches)))
+
+(defun org-texmacs-test--pdf-note-edge (inspection from to)
+  "Assert a real link FROM text to TO's footnote line in INSPECTION."
+  (let* ((source (org-texmacs-test--pdf-note-text inspection from))
+         (target (org-texmacs-test--pdf-note-text inspection to))
+         (box (alist-get 'rect source))
+         (links (cl-remove-if-not
+                 (lambda (link)
+                   (let* ((rect (alist-get 'rect link))
+                          (y (/ (+ (nth 1 rect) (nth 3 rect)) 2)))
+                     (and (= (alist-get 'page source) (alist-get 'page link))
+                          (<= (- (nth 1 box) 3) y (+ (nth 3 box) 3)))))
+                 (alist-get 'links inspection)))
+         (distance (lambda (link)
+                     (let* ((rect (alist-get 'rect link))
+                            (x (/ (+ (car rect) (nth 2 rect)) 2)))
+                       (max 0 (- (car box) x) (- x (nth 2 box)))))))
+    (should links)
+    (let* ((link (car (sort (copy-sequence links)
+                            (lambda (a b) (< (funcall distance a) (funcall distance b))))))
+           (point (alist-get 'target link))
+           (target-box (alist-get 'rect target))
+           (line (cl-remove-if-not
+                  (lambda (text)
+                    (and (= (alist-get 'page target) (alist-get 'page text))
+                         (< (abs (- (nth 1 (alist-get 'rect text)) (nth 1 target-box))) 3)))
+                  (alist-get 'texts inspection)))
+           (left (apply #'min (mapcar (lambda (text) (car (alist-get 'rect text))) line)))
+           (right (apply #'max (mapcar (lambda (text) (nth 2 (alist-get 'rect text))) line)))
+           (top (apply #'min (mapcar (lambda (text) (nth 1 (alist-get 'rect text))) line)))
+           (bottom (apply #'max (mapcar (lambda (text) (nth 3 (alist-get 'rect text))) line)))
+           (em (- bottom top)))
+      (should (<= (funcall distance link) (* 2 (- (nth 3 box) (nth 1 box)))))
+      (should point)
+      (should (= (alist-get 'page point) (alist-get 'page target)))
+      ;; Native zero-width anchors can adjoin a run's end.  Check the correct
+      ;; body line, including all markup runs, rather than a hard-coded point.
+      (should (<= (- left em) (alist-get 'x point) (+ right em)))
+      (should (<= (- top 2) (alist-get 'y point) (+ bottom 2)))
+      link)))
+
+(ert-deftest org-texmacs-pdf-footnote-forward-backward-and-repeats ()
+  (org-texmacs-test--with-worker
+    (dolist (style '("generic" "article"))
+      (dolist (fixture
+               '(("anonymous" "FirstAnon[fn::AnonBodyA] SecondAnon[fn::AnonBodyB]\n"
+                  (("FirstAnon" . "AnonBodyA") ("SecondAnon" . "AnonBodyB")
+                   ("AnonBodyA" . "FirstAnon") ("AnonBodyB" . "SecondAnon")))
+                 ("named-cross-page"
+                  "FirstNamed[fn:a].\n\n#+begin_texmacs\n(new-page)\n#+end_texmacs\n\nAgainNamed[fn:a].\n\nSecondPage[fn::CrossBody].\n\n[fn:a] NamedBody.\n"
+                  (("FirstNamed" . "NamedBody") ("AgainNamed" . "NamedBody")
+                   ("NamedBody" . "FirstNamed") ("SecondPage" . "CrossBody")
+                   ("CrossBody" . "SecondPage")))
+                 ("markup" "MarkupFirst[fn::MarkupBody *BoldNote* and /ItalicNote/].\n"
+                  (("MarkupFirst" . "MarkupBody") ("MarkupBody" . "MarkupFirst")))))
+        (with-temp-buffer
+          (org-mode)
+          (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n" (nth 1 fixture))
+          (let* ((org-texmacs-document-style (list style))
+                 (state (org-texmacs-test--document-buffer-state (current-buffer)))
+                 (input (org-texmacs-prepare-buffer (current-buffer)))
+                 (document (org-texmacs-document input))
+                 (before (org-texmacs-document-serialize document))
+                 inspections)
+            (dotimes (repeat 3)
+              (let ((file (expand-file-name (format "%s-%s-%d.pdf" style (car fixture) repeat)
+                                            test-directory)))
+                (cond ((= repeat 1) (org-texmacs-export-to-pdf-file (current-buffer) file))
+                      ((and (= repeat 2) (equal (car fixture) "anonymous"))
+                       (let ((buffer-file-name (concat (file-name-sans-extension file) ".org")))
+                         (org-texmacs-export-to-pdf)))
+                      (t (org-texmacs-document-save-pdf document file)))
+                (let ((inspection (org-texmacs-test--pdf-note-inspect file)))
+                  (should (= (length (nth 2 fixture)) (length (alist-get 'links inspection))))
+                  (dolist (edge (nth 2 fixture))
+                    (org-texmacs-test--pdf-note-edge inspection (car edge) (cdr edge)))
+                  (when (equal (car fixture) "named-cross-page")
+                    (should (< (alist-get 'page (org-texmacs-test--pdf-note-text inspection "NamedBody"))
+                               (alist-get 'page (org-texmacs-test--pdf-note-text inspection "AgainNamed")))))
+                  (push inspection inspections)))
+              (should (equal state (org-texmacs-test--document-buffer-state (current-buffer))))
+              (should (equal before (org-texmacs-document-serialize document)))
+              (should (equal document (org-texmacs-document input)))
+              (should-not (directory-files org-texmacs--worker-directory nil "\\`render-.*\\.pdf\\'")))
+            (should (cl-every (lambda (item) (equal item (car inspections))) inspections))))))))
+
+(ert-deftest org-texmacs-pdf-footnote-macro-matching ()
+  (org-texmacs-test--with-worker
+    (let ((script (expand-file-name "footnote-macros.scm" test-directory)))
+      (with-temp-file script
+        (insert (format "(load %s)\n" (org-texmacs--scheme-string org-texmacs--worker-scheme-file))
+                "(let* ((binding '(set-binding (merge \"footnote-\" (arg \"nr\")) (value \"the-label\") \"body\"))\n"
+                "       (m (list 'macro \"sym\" \"nr\" \"body\" (list 'float \"footnote\" \"\" binding)))\n"
+                "       (copy (read (open-input-string (object->string m))))\n"
+                "       (fixed (org-texmacs-pdf-footnote-anchor-macro m)))\n"
+                " (if (not (and fixed (equal? m copy)\n"
+                "  (equal? fixed (list 'macro \"sym\" \"nr\" \"body\"\n"
+                "   (list 'float \"footnote\" \"\" (list 'concat (list 'label (cadr binding)) binding))))\n"
+                "  (not (org-texmacs-pdf-footnote-anchor-macro fixed))\n"
+                "  (not (org-texmacs-pdf-footnote-anchor-macro '(macro \"body\" \"Foreign\")))\n"
+                "  (not (org-texmacs-pdf-footnote-anchor-macro\n"
+                "   (list 'macro \"sym\" \"nr\" \"body\" (list 'float \"footnote\" \"\" binding binding))))\n"
+                "  (not (org-texmacs-pdf-footnote-anchor-macro\n"
+                "   '(macro \"sym\" \"nr\" \"body\" (float \"other\" \"\" \"Body\"))))))\n"
+                " (error \"Footnote macro recognition/copy/idempotence failed\")))\n"
+                "(define original-get-env get-env-tree)\n"
+                "(set! get-env-tree (lambda args (error \"Unnecessary macro lookup\")))\n"
+                "(if (org-texmacs-pdf-install-footnote-anchors\n"
+                " (list '(\"generic\") '() (stree->tree '(document \"No notes\"))))\n"
+                " (error \"No-note input changed\"))\n"
+                "(for-each (lambda (key)\n"
+                " (if (org-texmacs-pdf-install-footnote-anchors\n"
+                "  (list '(\"generic\") (list (cons key (stree->tree \"Override\")))\n"
+                "   (stree->tree '(document (footnote \"Body\")))))\n"
+                "  (error \"Explicit macro override changed\")))\n"
+                " '(\"footnote\" \"render-footnote\" \"render-footnote*\"))\n"
+                "(set! get-env-tree original-get-env)\n"))
+      (let ((org-texmacs--worker-scheme-file script))
+        (should (equal (org-texmacs--worker-request "(math \"x\")") '(math "x")))))))
+
+(ert-deftest org-texmacs-pdf-footnote-private-state-and-error-cleanup ()
+  (org-texmacs-test--with-worker
+    (let ((script (expand-file-name "footnote-isolation.scm" test-directory))
+          (closed (expand-file-name "closed" test-directory))
+          (guard-pdf (expand-file-name "guard.pdf" test-directory)))
+      (with-temp-file script
+        (insert (format "(load %s)\n" (org-texmacs--scheme-string org-texmacs--worker-scheme-file))
+                "(define original-install org-texmacs-pdf-install-footnote-anchors)\n"
+                "(define installs 0)\n"
+                "(set! org-texmacs-pdf-install-footnote-anchors (lambda (native)\n"
+                " (set! installs (+ installs 1))\n"
+                " (if (= installs 3) #f\n"
+                "  (let ((changed (original-install native)))\n"
+                "   (if (not changed) (error \"Expected private macro override\"))\n"
+                "   (if (= installs 1) (error \"Injected after macro override\")) changed))))\n"
+                "(define original-close buffer-close)\n(define closed-count 0)\n"
+                "(set! buffer-close (lambda (b) (original-close b)\n"
+                " (set! closed-count (+ closed-count 1))\n"
+                (format " (string-save (number->string closed-count) (system->url %s))))\n"
+                        (org-texmacs--scheme-string closed))
+                "(define (guard-state)\n (org-texmacs-with-session-buffer (lambda ()\n"
+                " (do ((i 0 (+ i 1))) ((= i 3)) (update-current-buffer)) (update-forced)\n"
+                (format " (print-to-file (system->url %s))\n" (org-texmacs--scheme-string guard-pdf))
+                " (list (org-texmacs-native-readback) (tree->stree (get-env-tree \"render-footnote*\"))))))\n"
+                "(define original-render org-texmacs-render-native-pdf)\n"
+                "(set! org-texmacs-render-native-pdf (lambda (native)\n"
+                " (let ((before (guard-state)) (result #f) (failure #f))\n"
+                "  (catch #t (lambda () (set! result (original-render native)))\n"
+                "   (lambda args (set! failure args)))\n"
+                "  (if (not (equal? before (guard-state))) (error \"Session/macro leak\"))\n"
+                "  (if failure (apply throw failure)) result)))\n"))
+      (let* ((org-texmacs--worker-scheme-file script)
+             (guard (org-texmacs--document-create
+                     :body '(document "GuardSentinel") :style '("article")
+                     :initial '(("render-footnote*" . (macro "sym" "nr" "body" "GuardMacro")))))
+             (session (org-texmacs-session-open)))
+        (unwind-protect
+            (progn
+              (org-texmacs-session-set-document session guard)
+              (let ((state (org-texmacs--session-read session))
+                    (process org-texmacs--worker-process)
+                    (failed (expand-file-name "failed.pdf" test-directory))
+                    document)
+                (with-temp-buffer
+                  (org-mode) (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\nFirstSafe[fn::SafeBody].\n")
+                  (setq document (org-texmacs-document-from-buffer (current-buffer))))
+                (should-error (org-texmacs-document-save-pdf document failed) :type 'org-texmacs-rendering-error)
+                (should-not (file-exists-p failed))
+                (should (equal state (org-texmacs--session-read session)))
+                (should-not (directory-files org-texmacs--worker-directory nil "\\`render-.*\\.pdf\\'"))
+                (let ((file (expand-file-name "recovered.pdf" test-directory)))
+                  (org-texmacs-document-save-pdf document file)
+                  (let ((inspection (org-texmacs-test--pdf-note-inspect file)))
+                    (org-texmacs-test--pdf-note-edge inspection "FirstSafe" "SafeBody")
+                    (org-texmacs-test--pdf-note-edge inspection "SafeBody" "FirstSafe")))
+                ;; The third request bypasses the installer in this test process.
+                ;; Missing targets again prove that no global macro was modified.
+                (let ((file (expand-file-name "unpatched.pdf" test-directory)))
+                  (org-texmacs-document-save-pdf document file)
+                  (should (cl-some (lambda (link) (null (alist-get 'target link)))
+                                   (alist-get 'links (org-texmacs-test--pdf-note-inspect file)))))
+                (should (equal state (org-texmacs--session-read session)))
+                (should (eq process org-texmacs--worker-process))
+                (should-not (directory-files org-texmacs--worker-directory nil "\\`render-.*\\.pdf\\'"))
+                (should (equal (with-temp-buffer (insert-file-contents closed) (buffer-string)) "3"))))
+          (org-texmacs-session-close session))))))
+
+(ert-deftest org-texmacs-pdf-footnote-cleanup-failure-stops-worker ()
+  (org-texmacs-test--with-worker
+    (let ((script (expand-file-name "footnote-cleanup-failure.scm" test-directory)))
+      (with-temp-file script
+        (insert (format "(load %s)\n" (org-texmacs--scheme-string org-texmacs--worker-scheme-file))
+                "(define original-install org-texmacs-pdf-install-footnote-anchors)\n"
+                "(set! org-texmacs-pdf-install-footnote-anchors (lambda (native)\n"
+                " (if (not (original-install native)) (error \"No override before cleanup test\"))))\n"
+                "(set! buffer-close (lambda args (error \"Injected close failure\")))\n"))
+      (let ((org-texmacs--worker-scheme-file script))
+        (with-temp-buffer
+          (org-mode) (insert "CleanupFirst[fn::CleanupBody].\n")
+          (let ((document (org-texmacs-document-from-buffer (current-buffer))))
+            (should-error (org-texmacs-document-pdf document) :type 'org-texmacs-worker-error)
+            (should-not (org-texmacs--worker-live-p))
+            (should-not org-texmacs--worker-directory)))))))
+
+(ert-deftest org-texmacs-pdf-footnote-explicit-macro-preserved ()
+  (org-texmacs-test--with-worker
+    (dolist (entry '(("footnote" . (macro "body" (concat "OverrideBody " (arg "body"))))
+                     ("render-footnote" . (macro "nr" "body" (concat "OverrideBody " (arg "body"))))
+                     ("render-footnote*" . (macro "sym" "nr" "body" (concat "OverrideBody " (arg "body"))))))
+      (with-temp-buffer
+        (org-mode) (insert "CustomFirst[fn::CustomNote].\n")
+        (let* ((org-texmacs-document-initial (list entry))
+               (document (org-texmacs-document-from-buffer (current-buffer)))
+               (before (org-texmacs-document-serialize document))
+               (file (expand-file-name (concat (car entry) ".pdf") test-directory)))
+          (org-texmacs-document-save-pdf document file)
+          (should (string-match-p "OverrideBody" (org-texmacs-test--pdf-text file)))
+          (should (equal before (org-texmacs-document-serialize document))))))))
 
 (ert-deftest org-texmacs-pdf-typeset-error-recovery ()
   :tags '(pdf-links)

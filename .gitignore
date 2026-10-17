@@ -23,6 +23,7 @@
 !tests/**/*.nix
 !tests/**/*.patch
 !tests/**/*.scm
+!tests/ert/pdf-links.py
 
 !docs/
 !docs/**/
