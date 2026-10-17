@@ -1,5 +1,16 @@
 # org-texmacs durable evidence
 
+## Issue13 stage4 delivered equivalence and external closure
+
+Read-only verification of user commit: single expected caption-task parent,
+seven exact task paths, full binary patch76907fc1..., exact approved message
+c82f96b7... with Closes:#13 and accepted blobs all match; lock unchanged, index
+empty, original flake overlay sole unstaged change. Full hashes and verification
+limits in issue-13-stage4.md. No runtime retest; project-parent association grounds
+delivered equivalence, not original uncommitted runtime acceptance.
+GitHub Issue13 is closed/completed, closed_at2026-10-17T18:01:20Z, independently read through the connector; no external write by agent.
+No agent external write, new archive or release-readiness claim.
+
 ## Issue13 stage4 accepted implementation, uncommitted runtime
 
 Pre-production native/API gate46/46passed76.975155s, final focused57/57passed

@@ -67,7 +67,8 @@ Issue13 is required for v0.5.0: private recursive special-block extension point,
 formal statements, single-expression equation/equation*, explicit figure/table
 wrappers and bounded single-object NAME/[[name]] semantics. Stage1 recursive
 handlers/formal statements are locally implemented and accepted. Stage4 NAME/reference
-candidate is now implemented/accepted, user delivery pending;57focused/539fullERT/
+implementation is now accepted/user-committed, exact delivery verified;
+Issue13 independently confirmed closed/completed;57focused/539fullERT/
 full flake/build pass (issue-13-stage4.md). Stage3 figure/table candidate is implemented,
 focused/full flake/build accepted, user-committed and delivery verified; see issue-13-stage3.md. Stage2 equation candidate is
 implemented/accepted/user-committed including full flake/build; exact delivery

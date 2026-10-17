@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: Issue13 stage4 implemented and accepted, uncommitted
+## Current: Issue13 delivered, verified and closed
 
 User authorized implementing the reviewed NAME/reference plan plus adopted
 line550 supplement and repeated isolated-flake focused/full/default-build gates.
@@ -20,28 +20,18 @@ naked tables retain referenced-only behavior. Native label placements, original
 STM/file provenance and metadata/excluded-region boundaries accepted. README
 updated. Full contract/evidence/commands/final identities: issue-13-stage4.md.
 
-Seven task paths modified; no staging/ordinary commit. Original ELPA flake overlay
-unchanged, lock/INBOX/version unchanged. All31inputs match isolated flake after
-all gates; final manifest SHA2561f4794c387806e5cfea147fcb3aa59ac61895cae5bba0e64aee134a35cb36265.
-Runtime used uncommitted candidate; no inferred project parent. Maintained controls
-plus causal memory sufficient, no new raw archive or skill updates.
-Commit preparation complete: user authorized explicit seven-path staging; staged
-binary diff exactly equals accepted feature hash76907fc1... (860insertions/231deletions),
-no whitespace errors or unstaged feature changes. Only original user flake overlay
-remains unstaged. One coherent feature commit, split not necessary (medium difficulty).
-Staged-only message at root tmp/commit.md, subject "feat(document): support named
-blocks and Org reference resolution", footer Closes:#13, SHA256
-c82f96b76189d4b2d2db3ee587a6347d2f44bcec70c3e14d1c75c244ab0df6cd.
-Closure assessment after user queried the trailer: re-read current public Issue13
-body (open, updated2026-10-17T08:11:44Z); its bounded single-object requirements
-are covered by delivered stages1-3 plus accepted staged stage4. Recommend
-Closes:#13 for this final implementation commit; Issue9 and release gates do not
-block13 closure. User adopted the closing trailer and authorized updating tmp/commit.md;
-footer now Closes:#13, no index or external issue change.
-No ordinary commit or repeated runtime gates. Next: user commits, then verify
-parent/path set/full binary patch/message/accepted blobs before delivery association.
-Stage4 functional acceptance does not close Issue13
-externally or establish release readiness; Issue9 composite scope remains later.
+User committed the approved seven-path fourth-stage candidate. Read-only delivery
+verification passes: exactly one expected caption-task parent; exact seven paths,
+full binary patch76907fc1..., approved message c82f96b7... with Closes:#13 and all
+accepted blobs match. Lock unchanged; index empty; only original ELPA flake overlay
+remains unstaged, unchanged. All31runtime inputs previously matched isolated flake;
+no tests repeated solely for commit verification. Runtime was uncommitted; current
+project-parent association grounds delivered-equivalence verification only.
+GitHub Issue13 is closed/completed, closed_at2026-10-17T18:01:20Z, independently read through the connector; no external write by agent.
+All four stages of bounded Issue13 are delivered/accepted. No new archive or skill
+update needed. Next: user selects remaining v0.5.0 readiness work; existing release
+gates and native limitations remain, Issue9 composite scope remains later. No
+release-ready, tag or publication claim.
 
 ## Completed delivery: caption footnote AST compatibility delivered and verified
 

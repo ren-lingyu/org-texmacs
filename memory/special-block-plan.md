@@ -1,12 +1,13 @@
 # v0.5.0 special-block plan and Issue9 boundary
 
-## Stage4 implementation accepted, pending user delivery
+## Stage4 delivered and verified
 
 Supplemented NAME/reference plan implemented;57focused/539fullERT/patched5/
 strict compile/lint/full flake/default build pass on fixed isolated31inputs.
 All scope/Org allocation/frozen-map/source-proof/native placement boundaries and
 seven task-file identities: issue-13-stage4.md. Original ELPA overlay unchanged,
-index empty; no user commit yet, Issue13 closure/release assessed separately.
+index empty; exact user delivery verified and Issue13 closed/completed. Release
+gates remain independent.
 Old stage planning below is superseded where this candidate supplies behavior.
 
 ## Stage4 guidance review
@@ -31,8 +32,8 @@ Old single-object section below is historical planning context where superseded.
 Figure/table plus experimental stars are implemented and locally accepted;
 44focused/full flake/default build pass; exact user-committed delivery verified. Three adopted revisions, six extra gates, actual parser/native evidence
 and user-adopted note/raw-marker boundary limitation: memory/issue-13-stage3.md.
-Five stage3 task paths user-committed, delivery verified. Stage4 accepted candidate
-is above, user delivery pending.
+Five stage3 task paths user-committed, delivery verified. Stage4 verified delivery
+is above; Issue13 closed/completed.
 
 ## Selected work before stage4
 

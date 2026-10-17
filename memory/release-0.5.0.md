@@ -1,11 +1,11 @@
 # v0.5.0 release readiness
 
-## Issue13 stage4 candidate accepted, delivery pending
+## Issue13 stage4 delivered; issue closed
 
 Seven-file NAME/reference candidate passes57focused/539fullERT/patched5/strict
 compile/lint/full flake/default build under pinned isolated environment. This
-completes local fourth-stage functional acceptance, not ordinary user delivery,
-Issue13 external closure or release readiness. Preserve remaining independent
+completes fourth-stage functional acceptance; exact user delivery verified.
+Issue13 independently confirmed closed/completed. This is not release readiness. Preserve remaining independent
 release gates below. Exact scope/identities: memory/issue-13-stage4.md.
 
 ## Current scope amendment: required Issue13, refocused later Issue9

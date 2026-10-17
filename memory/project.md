@@ -20,7 +20,7 @@
 - The implementation does not require physical grafting of all TeXmacs pseudo
   nodes into one live Org element cache.
 
-## Stage4 candidate accepted, pending user delivery
+## Stage4 delivered and verified
 
 Single-object NAME/reference implementation accepted on fixed isolated inputs:
 57focused/539fullERT/patched5/strict compile/lint/full flake/default build pass.
@@ -29,8 +29,8 @@ strict semantic candidate view, original NAME evidence/scopes and type-specific
 labels preserve STM/file provenance. All newly named blocks label even unused,
 bare table referenced-only behavior retained. Native generic/article links and
 readback/reload accepted, no reference-text interpretation or global ID lookup.
-Seven-file candidate uncommitted, user overlay excluded; full contract/identity:
-issue-13-stage4.md. No Issue13 closure/release claim; original caption native
+Seven-file user delivery exactly verified, user overlay excluded; full contract/identity:
+issue-13-stage4.md. Issue13 independently confirmed closed/completed; no release claim; original caption native
 footnote layout limits remain unchanged. Below older stage descriptions retain
 baseline semantics where superseded by this candidate.
 

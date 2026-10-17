@@ -1,4 +1,4 @@
-# Issue13 stage4: NAME and single-object references, read-only guidance review
+# Issue13 stage4: NAME and single-object references, delivered
 
 ## Intake, state and retention
 
@@ -406,3 +406,21 @@ User adopted Closes:#13 after explicit overall closure assessment against the
 current public issue body. Its bounded requirements are covered by stages1-4;
 Issue9 and remaining release gates do not block13 closure. Message updated only,
 no external closure or project index change.
+
+## Delivered-equivalence verification
+
+User reported commit, independently verified single parent equals the caption
+compatibility baseline; exactly seven feature paths, full binary patch SHA256
+76907fc1b5a1c7070911b26d5fe0e4b21c4de4e35cf167a9c71b3a3200915d6b,
+exact approved message SHA256c82f96b76189d4b2d2db3ee587a6347d2f44bcec70c3e14d1c75c244ab0df6cd
+with Closes:#13 and all accepted blobs match. Lock unchanged; index empty;
+only original flake workaround remains unstaged, matching accepted overlay hash.
+Prior acceptance transfers by exact byte identity; no runtime commands repeated.
+Project-parent association records this delivery verification, not retrospective
+runtime provenance for the originally uncommitted candidate.
+GitHub Issue13 is closed/completed, closed_at2026-10-17T18:01:20Z, independently read through the connector; no external write by agent.
+Four stages complete the adopted bounded issue scope. No release/tag/publication
+performed; remaining release gates and Issue9 boundary stay independently scoped.
+No new original archive needed: committed code/message plus extracted identities
+preserve delivery evidence. Implementation and runtime sections above describe
+supported development-time states; pending staging/commit instructions are retired.
