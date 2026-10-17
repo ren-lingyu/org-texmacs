@@ -82,7 +82,7 @@ No stable extension API is promised.  Captured closure state is not frozen.")
        (let* ((key (downcase (car entry)))
               (function (condition-case nil (indirect-function (cdr entry))
                           (error nil))))
-         (when (or (member key seen) (member key '("texmacs" "statement"))
+         (when (or (member key seen) (member key '("texmacs" "statement" "equation" "equation*"))
                    (string-prefix-p "statement_" key)
                    (member key (mapcar #'symbol-name org-texmacs--document-statement-tags))
                    (not (functionp function)))
@@ -1576,9 +1576,14 @@ for consumers.  Final handlers must preserve contents identity and provenance."
              (check-affiliated node)
              (cond
               (entry
-               (unless (org-texmacs--block-p node)
-                 (org-texmacs--document-fail node "Island key is not a TeXmacs block"))
-               (list (island node entry)))
+               (let ((kind (org-texmacs--native-body-kind node)))
+                 (unless kind
+                   (org-texmacs--document-fail node "Island key is not a native-body block"))
+                 (org-texmacs--native-body-check node)
+                 (list (if (eq kind 'texmacs) (island node entry)
+                         (org-texmacs--document-pack kind (list (island node entry)))))))
+              ((org-texmacs--native-body-kind node)
+               (org-texmacs--document-fail node "Missing native-body island"))
               ((eq type 'section)
                (unless (memq context '(org-data headline))
                  (org-texmacs--document-fail node "Unexpected Org section"))
@@ -1891,8 +1896,8 @@ RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
                (apply #'org-element-set-contents node (nreverse children)))))
            (walk (node)
              (cond
-              ((org-texmacs--block-p node)
-               (register node (org-texmacs--block-source node) nil))
+              ((org-texmacs--native-body-kind node)
+               (register node (org-texmacs--native-body-source node) nil))
               ((eq (org-element-type node) 'paragraph) (paragraph node))
               ((eq (org-element-type node) 'table)
                ;; Capture every affiliated keyword from the private snapshot;
@@ -1931,26 +1936,23 @@ RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
               (dolist (span spans)
                 (complete (org-texmacs-fragment-span-begin span)
                           (org-texmacs-fragment-span-end span)))
-              (org-element-map ast 'special-block
-                (lambda (node)
-                  (when (org-texmacs--block-p node)
-                    (complete
-                     (org-element-property :begin node)
-                     (save-excursion
-                       (goto-char (org-element-property :end node))
-                       (forward-line (- (or (org-element-property :post-blank node) 0)))
-                       (point))))))))
+              (dolist (node (org-texmacs--native-body-blocks ast))
+                (complete
+                 (org-element-property :begin node)
+                 (save-excursion
+                   (goto-char (org-element-property :end node))
+                   (forward-line (- (or (org-element-property :post-blank node) 0)))
+                   (point))))))
           (when (or subtree-position region)
             ;; Prune owned full-source structure before walking/validating body.
             ;; Block placeholders make STM opaque while collecting dependencies.
-            (let* ((opaque (org-element-map ast 'special-block
-                             (lambda (node) (and (org-texmacs--block-p node)
-                                                 (cons node '(concat ""))))))
+            (let* ((opaque (mapcar (lambda (node) (cons node '(concat "")))
+                                   (org-texmacs--native-body-blocks ast)))
                    (scoped (org-texmacs--context-prepare
                             ast opaque nil nil info subtree-position region))
                    paragraphs)
               (cl-labels ((collect (node)
-                            (unless (org-texmacs--block-p node)
+                            (unless (org-texmacs--native-body-kind node)
                               (when (org-element-type-p node 'paragraph)
                                 (push node paragraphs))
                               (mapc #'collect (org-element-contents node)))))
@@ -1979,6 +1981,15 @@ RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
                      (list ast islands requests blanks info)
                    (org-texmacs--context-prepare ast islands requests blanks info))))
             (if filter (funcall filter prepared) prepared)))))))
+
+(defun org-texmacs--document-check-native-requests (prepared)
+  "Validate selected raw equation requests in PREPARED before native parsing."
+  (dolist (request (nth 2 prepared))
+    (let ((node (caar request)))
+      (when (memq (org-texmacs--native-body-kind node) '(equation equation*))
+        (org-texmacs--native-body-check node)
+        (when (string-match-p "\\`[ \t\r\n]*\\'" (nth 1 request))
+          (org-texmacs--document-fail node "Empty equation source"))))))
 
 (provide 'org-texmacs-document)
 

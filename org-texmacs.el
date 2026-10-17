@@ -471,6 +471,7 @@ separate from that read-only temporary input before filling native results."
                            prepared filter-state source-file resource-base
                            bibliography-source-snapshot)
                           (org-texmacs--filter-own-preparation prepared)))))
+        (org-texmacs--document-check-native-requests prepared)
         (setq info (nth 4 prepared))
         (check)
         ;; Reject source-independent citation contracts before native work.

@@ -100,6 +100,47 @@ Compare its wrapper name without case, preserving NODE and its STM contents."
        (let ((type (org-element-property :type node)))
          (and (stringp type) (equal (downcase type) "texmacs")))))
 
+(defun org-texmacs--native-body-kind (node)
+  "Return the native raw-body kind of NODE, or nil."
+  (when (and (consp node) (eq (org-element-type node) 'special-block))
+    (let ((type (org-element-property :type node)))
+      (when (stringp type)
+        (cdr (assoc (downcase type)
+                    '(("texmacs" . texmacs) ("equation" . equation)
+                      ("equation*" . equation*))))))))
+
+(defun org-texmacs--native-body-blocks (ast)
+  "Collect outermost native-body blocks in AST order without entering them."
+  (let (blocks)
+    (cl-labels ((walk (node)
+                  (when (consp node)
+                    (if (org-texmacs--native-body-kind node)
+                        (push node blocks)
+                      (mapc #'walk (org-element-contents node))))))
+      (walk ast))
+    (nreverse blocks)))
+
+(defun org-texmacs--native-body-check (node)
+  "Validate equation NODE parameters without reading its source."
+  (when (memq (org-texmacs--native-body-kind node) '(equation equation*))
+    (let ((parameters (org-element-property :parameters node)))
+      (unless (or (null parameters)
+                  (and (stringp parameters)
+                       (string-match-p "\\`[ \t\r\n]*\\'" parameters)))
+        (signal 'org-texmacs-document-error '("Equation parameters are unsupported"))))))
+
+(defun org-texmacs--native-body-source (block)
+  "Read raw native BLOCK contents in the accessible source buffer."
+  (unless (org-texmacs--native-body-kind block)
+    (signal 'org-texmacs-error '("Expected a native-body block")))
+  (let ((begin (org-element-property :contents-begin block))
+        (end (org-element-property :contents-end block)))
+    (cond ((and (null begin) (null end)) "")
+          ((and (integerp begin) (integerp end)
+                (<= (point-min) begin end (point-max)))
+           (buffer-substring-no-properties begin end))
+          (t (signal 'org-texmacs-error '("Invalid native-body contents bounds"))))))
+
 (defun org-texmacs--block-source (block)
   "Return the raw STM source of TeXmacs special BLOCK as a string.
 
@@ -115,18 +156,7 @@ the caller is responsible for supplying the correct element."
   (unless (org-texmacs--block-p block)
     (signal 'org-texmacs-error
             '("Expected a TeXmacs special block")))
-  (let ((begin (org-element-property :contents-begin block))
-        (end (org-element-property :contents-end block)))
-    (cond
-     ((and (null begin) (null end))
-      "")
-     ((and (integerp begin)
-           (integerp end)
-           (<= (point-min) begin end (point-max)))
-      (buffer-substring-no-properties begin end))
-     (t
-      (signal 'org-texmacs-error
-              '("TeXmacs block contents are outside the accessible buffer or invalid"))))))
+  (org-texmacs--native-body-source block))
 
 (provide 'org-texmacs-source)
 

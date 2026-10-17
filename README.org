@@ -713,6 +713,7 @@ The supported Org subset is deliberately small:
 | Recognized paragraph / inline-footnote fragment   | One parsed STM subtree                                       |
 | =texmacs= special block                           | One parsed STM subtree, even for a string or =document= root |
 | Formal statement special block                   | Native statement environment with recursive body =document= |
+| =equation= / =equation*= special block             | One raw STM datum in a numbered / unnumbered native formula |
 | COMMENT / comment block                           | Removed before structural preflight                         |
 | Task, archive and select/exclude filtering        | Org policy applied before STM worker requests                |
 
@@ -752,8 +753,35 @@ blocks; paragraph, whitespace and display-math rules are unchanged.
 Statement presentation and numbering belong to the native style; the supported
 native validation baseline is =generic=.  Arbitrary installed styles are not
 guaranteed to define these environments.  Statement =NAME=, =CAPTION= and
-=ATTR_*= metadata are rejected.  New equation/figure/table block syntax and
-automatic single-object references are not part of this implementation.
+=ATTR_*= metadata are rejected.  Figure/table wrapper syntax and automatic
+single-object references are not part of this implementation.
+
+Raw STM equations use =begin_equation= (numbered) or =begin_equation*= (unnumbered):
+
+#+begin_example
+  #+begin_equation
+  (concat "a=" (frac "1" "2"))
+  #+end_equation
+
+  #+begin_equation*
+  "x"
+  #+end_equation*
+#+end_example
+
+Each body is exactly one complete STM datum, parsed by TeXmacs and wrapped as
+=(equation BODY)= or =(equation* BODY)=.  Strings (including the STM datum =""=)
+and any valid stree are accepted; there is no additional mathematical type check
+or automatic =math= wrapper.  Native styles own display layout and numbering;
+maintained equation PDF checks cover =generic= and =article=.  Formula blocks may
+appear in supported recursive containers, including statements.
+
+The raw body is opaque to Org preprocessing, fragment discovery, bibliography,
+citations and footnotes.  Whitespace and escapes are preserved.  Block names are
+case-insensitive; parameters, =NAME=, =CAPTION= and =ATTR_*= are unsupported.
+Empty or whitespace-only source is rejected before body parsing.  Multiple datums
+and malformed STM are rejected by the native reader.  Region or narrowing exports
+must contain the complete selected formula block.  These wrappers do not change
+the existing =texmacs= block, inline fragment or editing syntax.
 
 The ordinary special-block dispatch is private, with no stable handler API or
 registration command.  Its captured handlers must preserve the entire lowered

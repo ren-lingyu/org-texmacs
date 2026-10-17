@@ -238,7 +238,11 @@ read-only view.  Do not run preprocessing, discovery or citation processors."
                        :bibliography (mapcar (lambda (entry) (copy-sequence (car entry)))
                                              bibliography)))
            (keys (make-hash-table :test #'eq))
-           (citations (org-element-map ast 'citation-reference #'identity))
+           (citations (org-element-map ast 'citation-reference
+                        (lambda (node)
+                          (unless (cl-some #'org-texmacs--native-body-kind
+                                           (org-element-lineage node))
+                            node))))
            (buffer (current-buffer))
            (tick (buffer-modified-tick))
            (mode major-mode)
@@ -335,7 +339,7 @@ standard collector result shape for completeness."
                  (push key order)
                  (push (cons key (if (member key unique) value (list value))) alist)))))
          (walk (node)
-           (unless (assq node islands)
+           (unless (or (assq node islands) (org-texmacs--native-body-kind node))
              (when (consp node)
                (if (eq (org-element-type node) 'keyword)
                    (let ((key (upcase (org-element-property :key node)))
@@ -424,7 +428,7 @@ Return AST after in-place pruning."
         (org-element-extract (car (org-element-contents ast))))
       (cl-labels
           ((walk (node)
-             (unless (assq node islands)
+             (unless (or (assq node islands) (org-texmacs--native-body-kind node))
                (let ((type (org-element-type node)))
                  (cond
                   ((memq type '(comment comment-block))
@@ -492,7 +496,7 @@ Follow Org's select-tag genealogy and descendant policy under fixed INFO."
         (let (selected)
           (cl-labels
               ((walk (node genealogy)
-                 (unless (assq node islands)
+                 (unless (or (assq node islands) (org-texmacs--native-body-kind node))
                    (when (consp node)
                      (if (eq (org-element-type node) 'headline)
                          (if (cl-some (lambda (tag) (member tag select))
@@ -512,7 +516,8 @@ Follow Org's select-tag genealogy and descendant policy under fixed INFO."
 Keep parsed nodes, including inline definitions, rather than source spans."
   (let (definitions)
     (cl-labels ((walk (node ancestors)
-                  (when (and (consp node) (not (assq node islands)))
+                  (when (and (consp node) (not (assq node islands))
+                             (not (org-texmacs--native-body-kind node)))
                     (when (memq node ancestors)
                       (signal 'org-texmacs-document-error '("Cyclic footnote definition tree")))
                     (when (and (or (eq (org-element-type node) 'footnote-definition)
@@ -536,6 +541,7 @@ from this parsed snapshot; never fall back to a buffer or external data."
   (let ((reachable (org-texmacs--context-reachable ast islands)) labels)
     (cl-labels ((walk (node)
                   (when (and (consp node) (not (assq node islands))
+                             (not (org-texmacs--native-body-kind node))
                              (not (eq (org-element-type node) 'footnote-definition)))
                     (when (eq (org-element-type node) 'footnote-reference)
                       (when-let* ((label (org-element-property :label node)))
@@ -581,7 +587,8 @@ from this parsed snapshot; never fall back to a buffer or external data."
         ((walk (node)
            (unless (gethash node table)
              (puthash node t table)
-             (when (and (consp node) (not (assq node islands)))
+             (when (and (consp node) (not (assq node islands))
+                             (not (org-texmacs--native-body-kind node)))
                (mapc #'walk (org-element-contents node))
                ;; Captions are affiliated pairs of secondary strings, rather
                ;; than entries in `org-element-secondary-value-alist'.
@@ -738,10 +745,8 @@ while retaining any subtree configuration.  Parse only the private snapshot."
                 (dolist (child (org-element-contents ast))
                   (org-element-put-property child :parent ast))
                 (setq islands
-                      (append (org-element-map ast 'special-block
-                                (lambda (node)
-                                  (and (org-texmacs--block-p node)
-                                       (cons node '(concat "")))))
+                      (append (mapcar (lambda (node) (cons node '(concat "")))
+                                      (org-texmacs--native-body-blocks ast))
                               islands)))))
          (_ (org-texmacs--context-prune ast islands info t))
          (_ (org-texmacs--context-preserve-footnotes ast islands definitions info))

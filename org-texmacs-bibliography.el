@@ -56,15 +56,15 @@ SOURCE-FILE and RESOURCE-BASE must agree.  GLOBALS is an owned list."
                  (setq-local default-directory (copy-sequence resource-base))
                  (setq-local buffer-file-name (and source-file (copy-sequence source-file)))
                  (setq-local org-cite-global-bibliography (mapcar #'copy-sequence globals))
-                 (org-element-map (org-element-parse-buffer) 'special-block
-                   (lambda (block)
-                     (when (org-texmacs--block-p block)
-                       (let ((begin (org-element-property :contents-begin block))
-                             (end (org-element-property :contents-end block)))
-                         (when begin
-                           (let ((mask (org-texmacs--fragment-mask
-                                        (buffer-substring-no-properties begin end))))
-                             (goto-char begin) (delete-region begin end) (insert mask)))))))
+                 (dolist (block (org-texmacs--native-body-blocks (org-element-parse-buffer)))
+                   (let ((begin (org-element-property :contents-begin block))
+                         (end (org-element-property :contents-end block)))
+                     (when begin
+                       (let ((mask (buffer-substring-no-properties begin end)))
+                         ;; Preserve offsets and lines, including zero/one-byte bodies.
+                         (dotimes (i (length mask))
+                           (unless (eq (aref mask i) ?\n) (aset mask i ?x)))
+                         (goto-char begin) (delete-region begin end) (insert mask)))))
                  (let* ((buffer (current-buffer)) (text (buffer-string))
                         (paths (org-cite-list-bibliography-files)))
                    (unless (and (eq buffer (current-buffer))

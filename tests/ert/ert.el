@@ -391,6 +391,266 @@
                 (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
                 (org-texmacs-test--issue11-compare-pdfs pdf reload)))))))))
 
+(ert-deftest org-texmacs-issue13-stage2-pure-wrappers-and-provenance ()
+  (dolist (type '("equation" "EQUATION*"))
+    (dolist (body '("" "x" (frac "1" "2") (document "x")
+                   (hlink "file" "relative.pdf")))
+      (let* ((block (org-element-create 'special-block (list :type type)))
+             (ast (org-element-create 'org-data nil block))
+             (input (org-texmacs-input-create ast nil :islands (list (cons block body))))
+             (before (copy-tree (org-texmacs-input-islands input)))
+             (expected `(document (,(intern (downcase type)) ,body))))
+        (cl-letf (((symbol-function 'buffer-substring-no-properties)
+                   (lambda (&rest _) (ert-fail "Pure lowering read source")))
+                  ((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Pure lowering started worker"))))
+          (dotimes (_ 2)
+            (let ((document (org-texmacs-document input)))
+              (should (equal (org-texmacs-document-body document) expected))
+              (should (equal (org-texmacs-document-stm-paths document) '((0 0))))
+              (should-not (org-texmacs-document-file-paths document)))))
+        (should (equal before (org-texmacs-input-islands input)))))))
+
+(ert-deftest org-texmacs-issue13-stage2-pure-errors-and-reserved-names ()
+  (dolist (type '("equation" "equation*"))
+    (let* ((block (org-element-create 'special-block (list :type type)))
+           (ast (org-element-create 'org-data nil block)))
+      (should-error (org-texmacs-document (org-texmacs-input-create ast nil))
+                    :type 'org-texmacs-document-error)
+      (should-error
+       (org-texmacs-document
+        (org-texmacs-input-create ast nil :islands (list (cons block "x") (cons block "y"))))
+       :type 'org-texmacs-document-error)
+      (org-element-put-property block :parameters "bad")
+      (should-error
+       (org-texmacs-document
+        (org-texmacs-input-create ast nil :islands (list (cons block "x"))))
+       :type 'org-texmacs-document-error))
+    (dolist (key (list type (upcase type)))
+      (should-error (org-texmacs--document-copy-handlers (list (cons key #'ignore)))
+                    :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-issue13-stage2-source-capture-and-nesting ()
+  (dolist (type '("equation" "EQUATION*"))
+    (dolist (wrapper '(nil "statement theorem" "quote" "center"))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n")
+        (when wrapper (insert "#+begin_" wrapper "\n"))
+        (insert "#+begin_" type "\n  (concat \"α=\" (frac \"1\" \"2\"))  \n#+end_" type "\n")
+        (when wrapper (insert "#+end_" (car (split-string wrapper)) "\n"))
+        (let ((source (buffer-string)) requests)
+          (should (= (length (org-texmacs--native-body-blocks (org-element-parse-buffer))) 1))
+          (should-not (org-texmacs--fragment-collect org-texmacs-fragment-tags))
+          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                     (lambda (raw &rest _) (push raw requests) '(concat "α=" (frac "1" "2")))))
+            (let ((document (org-texmacs-document-from-buffer (current-buffer))))
+              (should (= (length (org-texmacs-document-stm-paths document)) 1))))
+          (should (equal requests '("  (concat \"α=\" (frac \"1\" \"2\"))  \n")))
+          (should (equal source (buffer-string))))))))
+
+(ert-deftest org-texmacs-issue13-stage2-preflight-source-errors ()
+  (dolist (type '("equation" "equation*"))
+    (dolist (fixture '("#+begin_%s bad\n\"x\"\n#+end_%s\n"
+                       "#+begin_%s\n \t\n#+end_%s\n"
+                       "#+NAME: named\n#+begin_%s\n\"x\"\n#+end_%s\n"
+                       "#+CAPTION: caption\n#+begin_%s\n\"x\"\n#+end_%s\n"
+                       "#+ATTR_TEXMACS: bad\n#+begin_%s\n\"x\"\n#+end_%s\n"))
+      (with-temp-buffer
+        (org-mode) (insert (format fixture type type))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _) (ert-fail "Invalid equation reached worker"))))
+          (should-error (org-texmacs-document-from-buffer (current-buffer))
+                        :type 'org-texmacs-document-error)))))
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+BIBLIOGRAPHY: refs.bib\n#+NAME: named\n#+begin_equation\n\"x\"\n#+end_equation\n")
+    (let (requests)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (_raw &optional operation)
+                   (push operation requests)
+                   (should (eq operation 'bibliography)) '(document))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer) '(("refs.bib" . "")))
+                      :type 'org-texmacs-document-error)
+        (should (equal requests '(bibliography)))))))
+
+(ert-deftest org-texmacs-issue13-stage2-opaque-preprocessing-and-dependencies ()
+  (dolist (type '("equation" "equation*"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+              "Before (math \"before\").\n\n#+begin_" type "\n"
+              "(concat \"raw\"\n; raw STM comment\n"
+              "; (math \"inside\")\n"
+              "\"\n#+INCLUDE: \"missing-file.org\"\n"
+              "#+BIBLIOGRAPHY: missing.bib\n#+TITLE: Hidden\n"
+              "[cite:@hidden] [fn:missing]\n[fn:hidden] Ghost\n\")\n"
+              "#+end_" type "\n\nAfter (math \"after\").\n")
+      (let (requests)
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (raw &optional operation)
+                     (should-not operation)
+                     (push raw requests)
+                     (if (string-prefix-p "(math" raw) (read raw) "opaque"))))
+          (dolist (convert '(org-texmacs-document-from-buffer
+                             org-texmacs-document-from-buffer-preprocessed))
+            (setq requests nil)
+            (let ((document (funcall convert (current-buffer))))
+              (should (= (length (org-texmacs-document-stm-paths document)) 3))
+              (should (= (length requests) 3))
+              (should (cl-find-if (lambda (raw) (string-match-p "INCLUDE" raw)) requests)))))))))
+
+(ert-deftest org-texmacs-issue13-stage2-scoped-selection-and-clipping ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* Kept\n#+begin_equation*\n\"kept\"\n#+end_equation*\n"
+            "* Omitted\n#+begin_equation bad\n\n#+end_equation\n")
+    (dolist (scope '(subtree region narrow))
+      (save-restriction
+        (goto-char (point-min))
+        (let ((start (point)) (end (save-excursion (outline-next-heading) (point))) requests)
+          (when (eq scope 'narrow) (narrow-to-region start end))
+          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                     (lambda (raw &rest _) (push raw requests) "kept")))
+            (should (org-texmacs-document-from-buffer
+                     (current-buffer) nil (and (eq scope 'subtree) start)
+                     (and (eq scope 'region) (cons start end))))
+            (should (equal requests '("\"kept\"\n")))))))
+    (goto-char (point-min)) (search-forward "\"kept")
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _) (ert-fail "Clipped equation reached worker"))))
+      (should-error (org-texmacs-document-from-buffer (current-buffer) nil nil
+                                                    (cons (point-min) (point)))
+                    :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-issue13-stage2-parser-boundaries-and-outermost ()
+  (dolist (end '("" "#+end_equation*\n"))
+    (with-temp-buffer
+      (org-mode) (insert "#+begin_equation\n\"x\"\n" end)
+      ;; Unclosed/mismatched wrappers are ordinary Org source, not native blocks.
+      (should-not (org-texmacs--native-body-blocks (org-element-parse-buffer)))))
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+begin_equation\n(concat \"\n#+begin_equation*\n"
+            "(math \"inner\")\n#+end_equation*\n\")\n#+end_equation\n")
+    (should (= (length (org-texmacs--native-body-blocks (org-element-parse-buffer))) 1))
+    (should-not (org-texmacs--fragment-collect org-texmacs-fragment-tags))
+    (let (requests)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (raw &rest _) (push raw requests) "outer")))
+        (should (org-texmacs-document-from-buffer (current-buffer)))
+        (should (= (length requests) 1)))))
+  (with-temp-buffer
+    (org-mode)
+    (insert "- Item\n\n  #+begin_equation*\n  \"list\"\n  #+end_equation*\n")
+    (let (requests)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (raw &rest _) (push raw requests) "list")))
+        (let ((document (org-texmacs-document-from-buffer (current-buffer))))
+          (should (= (length (org-texmacs-document-stm-paths document)) 1))
+          (should (= (length requests) 1)))))))
+
+(ert-deftest org-texmacs-issue13-stage2-restored-notes-and-excluded-errors ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* Kept\nText[fn:n].\n* Hidden :noexport:\n"
+            "#+begin_equation bad\n\n#+end_equation\n"
+            "[fn:n]\n#+begin_equation*\n\"note\"\n#+end_equation*\n")
+    (goto-char (point-min))
+    (let (requests)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (raw &rest _) (push raw requests) "note")))
+        (let ((document (org-texmacs-document-from-buffer (current-buffer) nil (point))))
+          (should (= (length (org-texmacs-document-stm-paths document)) 1))
+          (should (equal requests '("\"note\"\n"))))))))
+
+(ert-deftest org-texmacs-issue13-stage2-filter-cannot-edit-raw-citation ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+begin_equation\n\"[cite:@raw]\"\n#+end_equation\n")
+    (let ((org-export-filter-parse-tree-functions
+           (list (lambda (ast _backend _info)
+                   (org-element-map ast 'citation-reference
+                     (lambda (node) (org-element-put-property node :key "changed")))
+                   ast))))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Mutated raw AST reached worker"))))
+        (should-error (org-texmacs-document-from-buffer (current-buffer))
+                      :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-issue13-stage2-wait-source-guard ()
+  (with-temp-buffer
+    (org-mode) (insert "#+begin_equation\n\"x\"\n#+end_equation\n")
+    (let ((source (current-buffer)))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _)
+                   (with-current-buffer source (goto-char (point-max)) (insert "changed"))
+                   "x")))
+        (should-error (org-texmacs-document-from-buffer source)
+                      :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-issue13-stage2-native-layout-counter-and-reload ()
+  (org-texmacs-test--with-worker
+    (should (executable-find "pdftotext"))
+    (dolist (style '("generic" "article"))
+      (with-temp-buffer
+        (org-mode)
+        (setq-local org-texmacs-document-style (list style))
+        (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+                "#+begin_equation\n(concat \"α=\" (frac \"1\" \"2\"))\n#+end_equation\n"
+                "#+begin_equation*\n\"y\"\n#+end_equation*\n"
+                "#+begin_equation\n\"z\"\n#+end_equation\n"
+                "#+begin_theorem\n#+begin_equation*\n\"nested\"\n#+end_equation*\n#+end_theorem\n")
+        (let* ((document (org-texmacs-document-from-buffer (current-buffer)))
+               (expected '(document (equation (concat "α=" (frac "1" "2")))
+                                    (equation* "y") (equation "z")
+                                    (theorem (document (equation* "nested")))))
+               (pdf (expand-file-name (concat style ".pdf") test-directory))
+               (reference (expand-file-name (concat style "-expected.pdf") test-directory))
+               (tm (expand-file-name (concat style ".tm") test-directory))
+               (reload (expand-file-name (concat style "-reload.pdf") test-directory)))
+          (should (equal (org-texmacs-document-body document) expected))
+          (should (equal (org-texmacs-document-stm-paths document) '((0 0) (1 0) (2 0) (3 0 0 0))))
+          (let ((session (org-texmacs-session-open)))
+            (unwind-protect
+                (progn
+                  (org-texmacs-session-set-document session document)
+                  (should
+                   (equal (org-texmacs--session-read session)
+                          (org-texmacs-test--native-hex
+                           '(document (equation (concat "<alpha>=" (frac "1" "2")))
+                                      (equation* "y") (equation "z")
+                                      (theorem (document (equation* "nested"))))))))
+              (org-texmacs-session-close session)))
+          (org-texmacs-document-save document tm)
+          (org-texmacs-document-save-pdf document pdf)
+          (org-texmacs-document-save-pdf
+           (org-texmacs--document-create :body expected :style (list style)
+                                        :stm-paths '((0 0) (1 0) (2 0) (3 0 0 0))) reference)
+          (org-texmacs-test--issue11-compare-pdfs pdf reference)
+          (let ((text (org-texmacs-test--pdf-text pdf)))
+            (should (string-match-p "(1)" text))
+            (should (string-match-p "(2)" text))
+            (should-not (string-match-p "(3)" text)))
+          (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+          (org-texmacs-test--issue11-compare-pdfs pdf reload))))))
+
+(ert-deftest org-texmacs-issue13-stage2-native-string-reader-and-recovery ()
+  (org-texmacs-test--with-worker
+    (dolist (raw '("\"\"" "\"a\\\"b\\\\c\"" "(sqrt \"x\")"))
+      (with-temp-buffer
+        (org-mode) (insert "#+begin_equation*\n" raw "\n#+end_equation*\n")
+        (let ((document (org-texmacs-document-from-buffer (current-buffer))))
+          (should (eq (car (cadr (org-texmacs-document-body document))) 'equation*)))))
+    (with-temp-buffer
+      (org-mode) (insert "#+begin_equation\n\"a\" \"b\"\n#+end_equation\n")
+      (should-error (org-texmacs-document-from-buffer (current-buffer))
+                    :type 'org-texmacs-parse-error)
+      (erase-buffer) (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n#+begin_equation\n\"recovered\"\n#+end_equation\n")
+      (should (equal (org-texmacs-document-body
+                      (org-texmacs-document-from-buffer (current-buffer)))
+                     '(document (equation "recovered")))))))
+
 (ert-deftest org-texmacs-test-input-pure-core ()
   (let* ((ast (org-element-create
                'org-data nil (org-element-create 'paragraph nil "Hello")))
