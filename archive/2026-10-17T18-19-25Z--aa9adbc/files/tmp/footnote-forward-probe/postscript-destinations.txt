@@ -1,0 +1,172 @@
+control-article-links-export.ps:3319:[ /Dest(#probe-control) cvn /Rect [ 462 385 1433 218 ]
+control-article-links-export.ps:3326:[ /Dest(#probe-control) cvn /View [/XYZ 467 343 null] /DEST pdfmark
+control-article-links-export.ps:3327:[ /Dest(#probe-control) cvn /View [/XYZ 467 343 null] /DEST pdfmark
+control-article-links-print.ps:3318:[ /Dest(#probe-control) cvn /Rect [ 462 385 1433 218 ]
+control-article-links-print.ps:3325:[ /Dest(#probe-control) cvn /View [/XYZ 467 343 null] /DEST pdfmark
+control-article-links-print.ps:3326:[ /Dest(#probe-control) cvn /View [/XYZ 467 343 null] /DEST pdfmark
+control-generic-links-export.ps:3319:[ /Dest(#probe-control) cvn /Rect [ 212 385 1183 218 ]
+control-generic-links-export.ps:3327:[ /Dest(#probe-control) cvn /View [/XYZ 217 343 null] /DEST pdfmark
+control-generic-links-export.ps:3328:[ /Dest(#probe-control) cvn /View [/XYZ 217 343 null] /DEST pdfmark
+control-generic-links-print.ps:3318:[ /Dest(#probe-control) cvn /Rect [ 212 385 1183 218 ]
+control-generic-links-print.ps:3326:[ /Dest(#probe-control) cvn /View [/XYZ 217 343 null] /DEST pdfmark
+control-generic-links-print.ps:3327:[ /Dest(#probe-control) cvn /View [/XYZ 217 343 null] /DEST pdfmark
+native-article-minimal-export.ps:6298:[ /Dest(#footnr-1) cvn /View [/XYZ 550 343 null] /DEST pdfmark
+native-article-minimal-export.ps:6300:[ /Dest(#footnote-1) cvn /Rect [ 545 305 622 209 ]
+native-article-minimal-export.ps:6302:[ /Dest(%557980098-5577A0C20--32255729) cvn /View [/XYZ 550 295
+native-article-minimal-export.ps:6305:[ /Dest(#footnr-2) cvn /View [/XYZ 755 343 null] /DEST pdfmark
+native-article-minimal-export.ps:6307:[ /Dest(#footnote-2) cvn /Rect [ 750 305 827 209 ]
+native-article-minimal-export.ps:6309:[ /Dest(%557980098-55786BC10--32255729) cvn /View [/XYZ 755 295
+native-article-minimal-export.ps:6312:[ /Dest(#footnr-1) cvn /Rect [ 462 719 543 613 ]
+native-article-minimal-export.ps:6314:[ /Dest(%557980098-55779AA28) cvn /View [/XYZ 467 709 null] /DEST pdfmark
+native-article-minimal-export.ps:6316:[ /Dest(#footnr-2) cvn /Rect [ 462 919 543 813 ]
+native-article-minimal-export.ps:6318:[ /Dest(%557980098-556CE4CC8) cvn /View [/XYZ 467 909 null] /DEST pdfmark
+native-article-minimal-print.ps:6297:[ /Dest(#footnr-1) cvn /View [/XYZ 550 343 null] /DEST pdfmark
+native-article-minimal-print.ps:6299:[ /Dest(#footnote-1) cvn /Rect [ 545 305 622 209 ]
+native-article-minimal-print.ps:6301:[ /Dest(%557980098-557EA51D8--32255729) cvn /View [/XYZ 550 295
+native-article-minimal-print.ps:6304:[ /Dest(#footnr-2) cvn /View [/XYZ 755 343 null] /DEST pdfmark
+native-article-minimal-print.ps:6306:[ /Dest(#footnote-2) cvn /Rect [ 750 305 827 209 ]
+native-article-minimal-print.ps:6308:[ /Dest(%557980098-557828390--32255729) cvn /View [/XYZ 755 295
+native-article-minimal-print.ps:6311:[ /Dest(#footnr-1) cvn /Rect [ 462 719 543 613 ]
+native-article-minimal-print.ps:6313:[ /Dest(%557980098-55779AA28) cvn /View [/XYZ 467 709 null] /DEST pdfmark
+native-article-minimal-print.ps:6315:[ /Dest(#footnr-2) cvn /Rect [ 462 919 543 813 ]
+native-article-minimal-print.ps:6317:[ /Dest(%557980098-556CE4CC8) cvn /View [/XYZ 467 909 null] /DEST pdfmark
+native-article-paragraphs-export.ps:6298:[ /Dest(#footnr-1) cvn /View [/XYZ 550 343 null] /DEST pdfmark
+native-article-paragraphs-export.ps:6300:[ /Dest(#footnote-1) cvn /Rect [ 545 305 622 209 ]
+native-article-paragraphs-export.ps:6302:[ /Dest(%557698A68-558056998--32255729) cvn /View [/XYZ 550 295
+native-article-paragraphs-export.ps:6305:[ /Dest(#footnr-2) cvn /View [/XYZ 550 543 null] /DEST pdfmark
+native-article-paragraphs-export.ps:6307:[ /Dest(#footnote-2) cvn /Rect [ 545 505 622 409 ]
+native-article-paragraphs-export.ps:6309:[ /Dest(%557698A68-556DA6C50--32255729) cvn /View [/XYZ 550 495
+native-article-paragraphs-export.ps:6312:[ /Dest(#footnr-1) cvn /Rect [ 462 919 543 813 ]
+native-article-paragraphs-export.ps:6314:[ /Dest(%557698A68-55779AD78) cvn /View [/XYZ 467 909 null] /DEST pdfmark
+native-article-paragraphs-export.ps:6316:[ /Dest(#footnr-2) cvn /Rect [ 462 1119 543 1013 ]
+native-article-paragraphs-export.ps:6318:[ /Dest(%557698A68-5578A4250) cvn /View [/XYZ 467 1109 null] /DEST pdfmark
+native-article-paragraphs-print.ps:6297:[ /Dest(#footnr-1) cvn /View [/XYZ 550 343 null] /DEST pdfmark
+native-article-paragraphs-print.ps:6299:[ /Dest(#footnote-1) cvn /Rect [ 545 305 622 209 ]
+native-article-paragraphs-print.ps:6301:[ /Dest(%557698A68-5578D37F8--32255729) cvn /View [/XYZ 550 295
+native-article-paragraphs-print.ps:6304:[ /Dest(#footnr-2) cvn /View [/XYZ 550 543 null] /DEST pdfmark
+native-article-paragraphs-print.ps:6306:[ /Dest(#footnote-2) cvn /Rect [ 545 505 622 409 ]
+native-article-paragraphs-print.ps:6308:[ /Dest(%557698A68-5580967D0--32255729) cvn /View [/XYZ 550 495
+native-article-paragraphs-print.ps:6311:[ /Dest(#footnr-1) cvn /Rect [ 462 919 543 813 ]
+native-article-paragraphs-print.ps:6313:[ /Dest(%557698A68-55779AD78) cvn /View [/XYZ 467 909 null] /DEST pdfmark
+native-article-paragraphs-print.ps:6315:[ /Dest(#footnr-2) cvn /Rect [ 462 1119 543 1013 ]
+native-article-paragraphs-print.ps:6317:[ /Dest(%557698A68-5578A4250) cvn /View [/XYZ 467 1109 null] /DEST pdfmark
+native-generic-minimal-export.ps:6298:[ /Dest(#footnr-1) cvn /View [/XYZ 300 343 null] /DEST pdfmark
+native-generic-minimal-export.ps:6300:[ /Dest(#footnote-1) cvn /Rect [ 295 305 372 209 ]
+native-generic-minimal-export.ps:6302:[ /Dest(%557980098-55757E380--32255729) cvn /View [/XYZ 300 295
+native-generic-minimal-export.ps:6305:[ /Dest(#footnr-2) cvn /View [/XYZ 505 343 null] /DEST pdfmark
+native-generic-minimal-export.ps:6307:[ /Dest(#footnote-2) cvn /Rect [ 500 305 577 209 ]
+native-generic-minimal-export.ps:6309:[ /Dest(%557980098-5576EA308--32255729) cvn /View [/XYZ 505 295
+native-generic-minimal-export.ps:6312:[ /Dest(#footnr-1) cvn /Rect [ 212 719 293 613 ]
+native-generic-minimal-export.ps:6314:[ /Dest(%557980098-557802C40) cvn /View [/XYZ 217 709 null] /DEST pdfmark
+native-generic-minimal-export.ps:6316:[ /Dest(#footnr-2) cvn /Rect [ 212 919 293 813 ]
+native-generic-minimal-export.ps:6318:[ /Dest(%557980098-55715B700) cvn /View [/XYZ 217 909 null] /DEST pdfmark
+native-generic-minimal-print.ps:6297:[ /Dest(#footnr-1) cvn /View [/XYZ 300 343 null] /DEST pdfmark
+native-generic-minimal-print.ps:6299:[ /Dest(#footnote-1) cvn /Rect [ 295 305 372 209 ]
+native-generic-minimal-print.ps:6301:[ /Dest(%557980098-557A8B140--32255729) cvn /View [/XYZ 300 295
+native-generic-minimal-print.ps:6304:[ /Dest(#footnr-2) cvn /View [/XYZ 505 343 null] /DEST pdfmark
+native-generic-minimal-print.ps:6306:[ /Dest(#footnote-2) cvn /Rect [ 500 305 577 209 ]
+native-generic-minimal-print.ps:6308:[ /Dest(%557980098-5574DCE10--32255729) cvn /View [/XYZ 505 295
+native-generic-minimal-print.ps:6311:[ /Dest(#footnr-1) cvn /Rect [ 212 719 293 613 ]
+native-generic-minimal-print.ps:6313:[ /Dest(%557980098-557802C40) cvn /View [/XYZ 217 709 null] /DEST pdfmark
+native-generic-minimal-print.ps:6315:[ /Dest(#footnr-2) cvn /Rect [ 212 919 293 813 ]
+native-generic-minimal-print.ps:6317:[ /Dest(%557980098-55715B700) cvn /View [/XYZ 217 909 null] /DEST pdfmark
+native-generic-paragraphs-export.ps:6298:[ /Dest(#footnr-1) cvn /View [/XYZ 300 343 null] /DEST pdfmark
+native-generic-paragraphs-export.ps:6300:[ /Dest(#footnote-1) cvn /Rect [ 295 305 372 209 ]
+native-generic-paragraphs-export.ps:6302:[ /Dest(%557698A68-556D28D10--32255729) cvn /View [/XYZ 300 295
+native-generic-paragraphs-export.ps:6305:[ /Dest(#footnr-2) cvn /View [/XYZ 300 654 null] /DEST pdfmark
+native-generic-paragraphs-export.ps:6307:[ /Dest(#footnote-2) cvn /Rect [ 295 616 372 521 ]
+native-generic-paragraphs-export.ps:6309:[ /Dest(%557698A68-5577F7CC0--32255729) cvn /View [/XYZ 300 606
+native-generic-paragraphs-export.ps:6312:[ /Dest(#footnr-1) cvn /Rect [ 212 1031 293 925 ]
+native-generic-paragraphs-export.ps:6314:[ /Dest(%557698A68-557802FB8) cvn /View [/XYZ 217 1021 null] /DEST pdfmark
+native-generic-paragraphs-export.ps:6316:[ /Dest(#footnr-2) cvn /Rect [ 212 1231 293 1125 ]
+native-generic-paragraphs-export.ps:6318:[ /Dest(%557698A68-5577F4660) cvn /View [/XYZ 217 1221 null] /DEST pdfmark
+native-generic-paragraphs-print.ps:6297:[ /Dest(#footnr-1) cvn /View [/XYZ 300 343 null] /DEST pdfmark
+native-generic-paragraphs-print.ps:6299:[ /Dest(#footnote-1) cvn /Rect [ 295 305 372 209 ]
+native-generic-paragraphs-print.ps:6301:[ /Dest(%557698A68-5578AE108--32255729) cvn /View [/XYZ 300 295
+native-generic-paragraphs-print.ps:6304:[ /Dest(#footnr-2) cvn /View [/XYZ 300 654 null] /DEST pdfmark
+native-generic-paragraphs-print.ps:6306:[ /Dest(#footnote-2) cvn /Rect [ 295 616 372 521 ]
+native-generic-paragraphs-print.ps:6308:[ /Dest(%557698A68-55751D120--32255729) cvn /View [/XYZ 300 606
+native-generic-paragraphs-print.ps:6311:[ /Dest(#footnr-1) cvn /Rect [ 212 1031 293 925 ]
+native-generic-paragraphs-print.ps:6313:[ /Dest(%557698A68-557802FB8) cvn /View [/XYZ 217 1021 null] /DEST pdfmark
+native-generic-paragraphs-print.ps:6315:[ /Dest(#footnr-2) cvn /Rect [ 212 1231 293 1125 ]
+native-generic-paragraphs-print.ps:6317:[ /Dest(%557698A68-5577F4660) cvn /View [/XYZ 217 1221 null] /DEST pdfmark
+org-article-minimal-export.ps:6298:[ /Dest(#footnr-1) cvn /View [/XYZ 550 343 null] /DEST pdfmark
+org-article-minimal-export.ps:6300:[ /Dest(#footnote-1) cvn /Rect [ 545 305 622 209 ]
+org-article-minimal-export.ps:6302:[ /Dest(%55793A448-557EB2028--32255729) cvn /View [/XYZ 550 295
+org-article-minimal-export.ps:6305:[ /Dest(#footnr-2) cvn /View [/XYZ 755 343 null] /DEST pdfmark
+org-article-minimal-export.ps:6307:[ /Dest(#footnote-2) cvn /Rect [ 750 305 827 209 ]
+org-article-minimal-export.ps:6309:[ /Dest(%55793A448-557EAC110--32255729) cvn /View [/XYZ 755 295
+org-article-minimal-export.ps:6312:[ /Dest(#footnr-1) cvn /Rect [ 462 719 543 613 ]
+org-article-minimal-export.ps:6314:[ /Dest(%55793A448-5576805A0) cvn /View [/XYZ 467 709 null] /DEST pdfmark
+org-article-minimal-export.ps:6316:[ /Dest(#footnr-2) cvn /Rect [ 462 919 543 813 ]
+org-article-minimal-export.ps:6318:[ /Dest(%55793A448-55782D760) cvn /View [/XYZ 467 909 null] /DEST pdfmark
+org-article-minimal-print.ps:6297:[ /Dest(#footnr-1) cvn /View [/XYZ 550 343 null] /DEST pdfmark
+org-article-minimal-print.ps:6299:[ /Dest(#footnote-1) cvn /Rect [ 545 305 622 209 ]
+org-article-minimal-print.ps:6301:[ /Dest(%55793A448-5580747E8--32255729) cvn /View [/XYZ 550 295
+org-article-minimal-print.ps:6304:[ /Dest(#footnr-2) cvn /View [/XYZ 755 343 null] /DEST pdfmark
+org-article-minimal-print.ps:6306:[ /Dest(#footnote-2) cvn /Rect [ 750 305 827 209 ]
+org-article-minimal-print.ps:6308:[ /Dest(%55793A448-55740E528--32255729) cvn /View [/XYZ 755 295
+org-article-minimal-print.ps:6311:[ /Dest(#footnr-1) cvn /Rect [ 462 719 543 613 ]
+org-article-minimal-print.ps:6313:[ /Dest(%55793A448-5576805A0) cvn /View [/XYZ 467 709 null] /DEST pdfmark
+org-article-minimal-print.ps:6315:[ /Dest(#footnr-2) cvn /Rect [ 462 919 543 813 ]
+org-article-minimal-print.ps:6317:[ /Dest(%55793A448-55782D760) cvn /View [/XYZ 467 909 null] /DEST pdfmark
+org-article-paragraphs-export.ps:6298:[ /Dest(#footnr-1) cvn /View [/XYZ 550 343 null] /DEST pdfmark
+org-article-paragraphs-export.ps:6300:[ /Dest(#footnote-1) cvn /Rect [ 545 305 622 209 ]
+org-article-paragraphs-export.ps:6302:[ /Dest(%557698858-558101360--32255729) cvn /View [/XYZ 550 295
+org-article-paragraphs-export.ps:6305:[ /Dest(#footnr-2) cvn /View [/XYZ 550 543 null] /DEST pdfmark
+org-article-paragraphs-export.ps:6307:[ /Dest(#footnote-2) cvn /Rect [ 545 505 622 409 ]
+org-article-paragraphs-export.ps:6309:[ /Dest(%557698858-5580CAD78--32255729) cvn /View [/XYZ 550 495
+org-article-paragraphs-export.ps:6312:[ /Dest(#footnr-1) cvn /Rect [ 462 919 543 813 ]
+org-article-paragraphs-export.ps:6314:[ /Dest(%557698858-556C19C88) cvn /View [/XYZ 467 909 null] /DEST pdfmark
+org-article-paragraphs-export.ps:6316:[ /Dest(#footnr-2) cvn /Rect [ 462 1119 543 1013 ]
+org-article-paragraphs-export.ps:6318:[ /Dest(%557698858-556E92C60) cvn /View [/XYZ 467 1109 null] /DEST pdfmark
+org-article-paragraphs-print.ps:6297:[ /Dest(#footnr-1) cvn /View [/XYZ 550 343 null] /DEST pdfmark
+org-article-paragraphs-print.ps:6299:[ /Dest(#footnote-1) cvn /Rect [ 545 305 622 209 ]
+org-article-paragraphs-print.ps:6301:[ /Dest(%557698858-557880CA0--32255729) cvn /View [/XYZ 550 295
+org-article-paragraphs-print.ps:6304:[ /Dest(#footnr-2) cvn /View [/XYZ 550 543 null] /DEST pdfmark
+org-article-paragraphs-print.ps:6306:[ /Dest(#footnote-2) cvn /Rect [ 545 505 622 409 ]
+org-article-paragraphs-print.ps:6308:[ /Dest(%557698858-557EB9268--32255729) cvn /View [/XYZ 550 495
+org-article-paragraphs-print.ps:6311:[ /Dest(#footnr-1) cvn /Rect [ 462 919 543 813 ]
+org-article-paragraphs-print.ps:6313:[ /Dest(%557698858-556C19C88) cvn /View [/XYZ 467 909 null] /DEST pdfmark
+org-article-paragraphs-print.ps:6315:[ /Dest(#footnr-2) cvn /Rect [ 462 1119 543 1013 ]
+org-article-paragraphs-print.ps:6317:[ /Dest(%557698858-556E92C60) cvn /View [/XYZ 467 1109 null] /DEST pdfmark
+org-generic-minimal-export.ps:6298:[ /Dest(#footnr-1) cvn /View [/XYZ 300 343 null] /DEST pdfmark
+org-generic-minimal-export.ps:6300:[ /Dest(#footnote-1) cvn /Rect [ 295 305 372 209 ]
+org-generic-minimal-export.ps:6302:[ /Dest(%556CF7EA8-557469A80--32255729) cvn /View [/XYZ 300 295
+org-generic-minimal-export.ps:6305:[ /Dest(#footnr-2) cvn /View [/XYZ 505 343 null] /DEST pdfmark
+org-generic-minimal-export.ps:6307:[ /Dest(#footnote-2) cvn /Rect [ 500 305 577 209 ]
+org-generic-minimal-export.ps:6309:[ /Dest(%556CF7EA8-5578050A0--32255729) cvn /View [/XYZ 505 295
+org-generic-minimal-export.ps:6312:[ /Dest(#footnr-1) cvn /Rect [ 212 719 293 613 ]
+org-generic-minimal-export.ps:6314:[ /Dest(%556CF7EA8-557680460) cvn /View [/XYZ 217 709 null] /DEST pdfmark
+org-generic-minimal-export.ps:6316:[ /Dest(#footnr-2) cvn /Rect [ 212 919 293 813 ]
+org-generic-minimal-export.ps:6318:[ /Dest(%556CF7EA8-55782D5F8) cvn /View [/XYZ 217 909 null] /DEST pdfmark
+org-generic-minimal-print.ps:6297:[ /Dest(#footnr-1) cvn /View [/XYZ 300 343 null] /DEST pdfmark
+org-generic-minimal-print.ps:6299:[ /Dest(#footnote-1) cvn /Rect [ 295 305 372 209 ]
+org-generic-minimal-print.ps:6301:[ /Dest(%556CF7EA8-55755E760--32255729) cvn /View [/XYZ 300 295
+org-generic-minimal-print.ps:6304:[ /Dest(#footnr-2) cvn /View [/XYZ 505 343 null] /DEST pdfmark
+org-generic-minimal-print.ps:6306:[ /Dest(#footnote-2) cvn /Rect [ 500 305 577 209 ]
+org-generic-minimal-print.ps:6308:[ /Dest(%556CF7EA8-557232C70--32255729) cvn /View [/XYZ 505 295
+org-generic-minimal-print.ps:6311:[ /Dest(#footnr-1) cvn /Rect [ 212 719 293 613 ]
+org-generic-minimal-print.ps:6313:[ /Dest(%556CF7EA8-557680460) cvn /View [/XYZ 217 709 null] /DEST pdfmark
+org-generic-minimal-print.ps:6315:[ /Dest(#footnr-2) cvn /Rect [ 212 919 293 813 ]
+org-generic-minimal-print.ps:6317:[ /Dest(%556CF7EA8-55782D5F8) cvn /View [/XYZ 217 909 null] /DEST pdfmark
+org-generic-paragraphs-export.ps:6298:[ /Dest(#footnr-1) cvn /View [/XYZ 300 343 null] /DEST pdfmark
+org-generic-paragraphs-export.ps:6300:[ /Dest(#footnote-1) cvn /Rect [ 295 305 372 209 ]
+org-generic-paragraphs-export.ps:6302:[ /Dest(%557980098-5573E8B80--32255729) cvn /View [/XYZ 300 295
+org-generic-paragraphs-export.ps:6305:[ /Dest(#footnr-2) cvn /View [/XYZ 300 654 null] /DEST pdfmark
+org-generic-paragraphs-export.ps:6307:[ /Dest(#footnote-2) cvn /Rect [ 295 616 372 521 ]
+org-generic-paragraphs-export.ps:6309:[ /Dest(%557980098-556F36FA8--32255729) cvn /View [/XYZ 300 606
+org-generic-paragraphs-export.ps:6312:[ /Dest(#footnr-1) cvn /Rect [ 212 1031 293 925 ]
+org-generic-paragraphs-export.ps:6314:[ /Dest(%557980098-556C19C88) cvn /View [/XYZ 217 1021 null] /DEST pdfmark
+org-generic-paragraphs-export.ps:6316:[ /Dest(#footnr-2) cvn /Rect [ 212 1231 293 1125 ]
+org-generic-paragraphs-export.ps:6318:[ /Dest(%557980098-556E95E30) cvn /View [/XYZ 217 1221 null] /DEST pdfmark
+org-generic-paragraphs-print.ps:6297:[ /Dest(#footnr-1) cvn /View [/XYZ 300 343 null] /DEST pdfmark
+org-generic-paragraphs-print.ps:6299:[ /Dest(#footnote-1) cvn /Rect [ 295 305 372 209 ]
+org-generic-paragraphs-print.ps:6301:[ /Dest(%557980098-55761AD60--32255729) cvn /View [/XYZ 300 295
+org-generic-paragraphs-print.ps:6304:[ /Dest(#footnr-2) cvn /View [/XYZ 300 654 null] /DEST pdfmark
+org-generic-paragraphs-print.ps:6306:[ /Dest(#footnote-2) cvn /Rect [ 295 616 372 521 ]
+org-generic-paragraphs-print.ps:6308:[ /Dest(%557980098-556D07910--32255729) cvn /View [/XYZ 300 606
+org-generic-paragraphs-print.ps:6311:[ /Dest(#footnr-1) cvn /Rect [ 212 1031 293 925 ]
+org-generic-paragraphs-print.ps:6313:[ /Dest(%557980098-556C19C88) cvn /View [/XYZ 217 1021 null] /DEST pdfmark
+org-generic-paragraphs-print.ps:6315:[ /Dest(#footnr-2) cvn /Rect [ 212 1231 293 1125 ]
+org-generic-paragraphs-print.ps:6317:[ /Dest(%557980098-556E95E30) cvn /View [/XYZ 217 1221 null] /DEST pdfmark
