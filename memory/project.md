@@ -22,7 +22,7 @@
 
 ## Issue13: accepted stage1 and remaining adopted target
 
-Stage1 is locally implemented/accepted, not yet staged/user-committed: ordinary
+Stage1 is locally implemented/accepted, user-authorized staged but uncommitted: ordinary
 special-block recursion, captured private handler dispatch with ownership,
 preflight/identity/provenance checks, all16formal statement types. Canonical
 statement TYPE, statement_TYPE and direct TYPE aliases; Org example-block stays

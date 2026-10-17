@@ -3,9 +3,9 @@
 ## Completed locally: Issue13 stage 1, awaiting delivery review
 
 User-selected recursive ordinary special-block foundation and formal statements
-implemented and automatically accepted, still unstaged/uncommitted. Five task
+implemented and automatically accepted, now user-authorized staged/uncommitted. Five task
 paths: document/input/source adapter, ERT and README. Original flake.nix mirror
-workaround preserved/excluded; lock/version/INBOX unchanged. No ordinary Git or
+workaround preserved/excluded; lock/version/INBOX unchanged. No ordinary commit or
 external write. Final focused17/17 (19.993503s), full495/495 (326.837943s), full
 flake including strict package compilation/lint, and no-link package build exit0.
 Final input hashes unchanged after acceptance. All16statement candidates have
@@ -24,8 +24,12 @@ candidate identities: memory/issue-13-stage1.md. No raw archive needed; maintain
 fixtures retain sufficient native/structural reproduction. No added project parent
 inferred from main: runtime candidate is uncommitted.
 
-Next: user reviews the five-path delivery; ordinary staging requires explicit
-path authorization and ordinary commit is the user's action. No further stage1
+User authorized staging the five task paths; complete staged diff reviewed,
+diff check passed, no task-path unstaged differences, exact accepted bytes retained.
+Formal message prepared in valid ignored tmp/commit.md: feat(document): lower
+recursive special blocks and formal statements, Refs:#13 (no closing footer).
+Exact patch/message hashes: memory/issue-13-stage1.md. No split necessary.
+Next: user reviews the message and performs ordinary commit. No further stage1
 implementation/testing remains. Whole13 and v0.5.0 are not complete; equation,
 figure/table/NAME and weak anchors remain separately selected later work. Issue9
 remains post0.5.0. No next implementation node auto-selected.

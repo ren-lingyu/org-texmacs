@@ -5,13 +5,13 @@
 User selected the reviewed plan for implementation on2026-10-17. Ordinary
 candidate modifies exactly document lowering, input ownership, source adapter,
 ERT and README. HEAD remains82d7aa131043d2683c6e303413ee95ccf51da7de; candidate
-is uncommitted/unstaged. Preserve user flake.nix ELPA mirror workaround, exclude
+is uncommitted, now explicitly user-authorized staged. Preserve user flake.nix ELPA mirror workaround, exclude
 it from delivery; no lock/version/INBOX or external issue changes. Full Issue13
 remains open work: equation/figure/table/NAME and weak anchors are later nodes;
 Issue9 independently named composite constituents stays post0.5.0.
 
 Foundation A/B is one reviewable node, with statement as the second logical
-node; code is not staged or user-committed as either node. No stable public
+node; staged as one coherent delivery, not user-committed. No stable public
 handler API, defcustom, module, dependency or worker protocol added.
 
 ## Implemented contract
@@ -94,7 +94,7 @@ not just visible body text. Runtime artifacts isolated/cleaned by maintained
 fixtures; no permanent PDF archive needed. Public package build exits0.
 Final full495/495pass326.837943s,completed2026-10-17T09:18:57Z; full flake
 exit0 (strict package compilation/lint included). Final no-link package build
-exit0. Stage1 locally complete/accepted, still unstaged/uncommitted. Same locked
+exit0. Stage1 locally complete/accepted, then unstaged/uncommitted. Same locked
 x86_64-linux inputs as preceding Emacs31.1/Org9.8.10/TeXmacs2.1.5 baseline;
 other platforms not checked. Interim495run before metadata assertion repair:
 494passed/1fixture failure327.522964s, not final acceptance. Final all7below
@@ -119,8 +119,19 @@ pure interfaces/source preservation, scoped/narrowed requests/notes and source
 mutation during wait. Preflight bibliography/no-bibliography cases are distinct.
 No weakening of existing ERT assertions or business repair of unrelated gaps.
 
-Current next action: user reviews five-path unstaged delivery; explicit ordinary
-staging authorization still needed, ordinary commit remains user's action. No
+User subsequently authorized explicit staging of all five task files. Complete
+staged diff reviewed, check passed; no task-path unstaged changes, only original
+flake workaround unstaged. Staged candidate equals accepted input bytes. No
+split necessary; formal message written to validated ignored tmp/commit.md:
+feat(document): lower recursive special blocks and formal statements; Refs:#13,
+not a closing footer. Parent remains82d7aa131043d2683c6e303413ee95ccf51da7de.
+Full git diff --cached --binary SHA256:
+138625722cafa0600de3b5722371765a9838e73d53d8124266e2dce8b8ac8e5c.
+Exact message SHA256:
+7dd10562fe006810ced5622c1ab97444dff3c8259a02102f0b2e2386ac93e663.
+No tests rerun merely for staging: tested bytes and worktree remain identical.
+
+Current next action: user reviews staged delivery/message and commits. No
 stage1 code/check work remains. Memory coordinated across current/project/goals/
 backlog/release/evidence. No project parent inferred for uncommitted provenance.
 No automatic next Issue13 node or release action selected.

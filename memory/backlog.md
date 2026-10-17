@@ -27,7 +27,7 @@ decision.
 
 Status: stage1 locally implemented/accepted, delivery review pending.17focused/
 495fullERT/full flake/strict package compile/lint/build pass; generic native16
-types and PDF accepted. Source remains unstaged/uncommitted; see
+types and PDF accepted. Source now user-authorized staged/uncommitted; see
 memory/issue-13-stage1.md. Remaining equation/figure/table/NAME nodes remain
 **adopted-later**; no next implementation node selected.
 Recursive private special-block handlers,
