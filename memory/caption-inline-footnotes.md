@@ -12,7 +12,7 @@ caption-only parser/lower/type, layout prediction or graph rewriting. Existing
 nesting/ownership/other-context rules remain. First-version anonymous-inline
 boundary remains (:type inline,label nil); no named-caption restoration added.
 Org patch remains test-only, no upstream Org proposal now. Implementation is
-accepted before stage4, pending user review and separately authorized delivery.
+accepted before stage4, now staged under explicit user authorization; awaiting user commit.
 
 User reports independent TeXmacs2.1.5 GUI experiments: direct caption footnote
 shows marker but no body/edit position and extra counts; split note-ref plus
@@ -39,7 +39,7 @@ implementation before Issue13 stage4. Native-first ERT fixture is now prepared;
 user authorized five exact repeated validation commands below. Independent
 native gate now failed; user chose native-cause investigation before semantics.
 At that investigation phase no parser patch or production lower edit existed.
-Current implementation follows the final decision above; still no ordinary staging.
+Current implementation follows the final decision above; current staging handoff is below.
 Earlier stage3 command permissions are not permissions for new patched builds.
 Ordinary project state now includes user .gitignore and original flake.nix changes;
 preserve both. No version/lock/API/worker/parser-global/skill changes.
@@ -398,14 +398,37 @@ full pass before this guard is intermediate; final checks rerun and passed on co
 
 ## Acceptance and handoff
 
-Final AST-compatibility implementation accepted, uncommitted. Eight task paths
-and exact manifest above identify candidate. .gitignore patch allowlist was user's
-preexisting change; preserved, no agent edit. flake.nix combines feature wiring
-with original user ELPA workaround; preserve overlay and exclude its system
-parameter/overlay hunk from eventual feature commit. Do not stage whole flake
-blindly. No ordinary index authorization yet, no commit-message draft for this
-new task. Next: requested review/staging/message/user commit and exact equivalence
-verification. Refs:#13 may be appropriate, no Closes because NAME/stage4 remains.
+Final AST-compatibility implementation accepted; user authorized both requested
+staging actions. Nine paths staged: eight task paths plus user's .gitignore patch
+allowance. Split not necessary, low difficulty: implementation, test dependency,
+acceptance and documentation share one capability boundary. Original ELPA overlay
+and its system parameter were excluded by reviewed feature-only index patch;
+worktree flake unchanged and remains sole unstaged path. All nine staged blobs
+match accepted identities above except intentionally mirror-free feature flake:
+SHA256 5818e92e02888f8375529d8bdeb524626b8a6033a3d2170784dda8ac89223043.
+Full staged diff reviewed, whitespace clean, 386 additions/26 deletions. No new
+build/test execution for staging. Runtime acceptance used mirror-bearing isolated
+flake; staged flake differs only by excluded fetch workaround, not feature wiring.
+
+Final reviewed tmp/commit.md message (SHA256
+7bed9e04cf0b94f0b2935e2ddc54d4100152e583e504ff2ec58dc297828c55f8):
+
+```text
+feat(document): accept anonymous inline footnotes in captions
+
+- 接纳长短 caption 中匿名内联 `footnote-reference` AST, 复用原有 `(footnote (document ...))` 转换路径.
+- 拒绝缺少 preparation 映射的 citation, 避免 caption 脚注中的引用被转换为空 `cite`.
+- 添加直接 AST, 标准 Org 文本行为, ownership, scoped export 和原生 readback/PDF 限制回归.
+- 提取可指定 Org 依赖的私有 Nix 构建函数, 添加独立 patched Org 集成检查, 将最小 parser patch 与消费它的测试并置并纳入 Git 跟踪.
+- 在 README 中区分标准 Org 语法和 AST 兼容范围, 记录 TeXmacs 2.1.5 浮动 caption 脚注的原生排版限制.
+
+Refs: #13
+```
+
+Staged git diff --cached --binary SHA256:
+dbccf04de9c98f9517025ae7cc5a68c3c510421b34105dc3d0deeaf61ef3c2bc.
+Next: user commit then exact delivery comparison against stage3 baseline,
+paths/patch/message and accepted blobs. No Closes:#13, NAME/stage4 remains.
 No GUI/physical-page support assertion, automatic split note, engine fix or release.
 
 Native pre-decision diagnostics remain historical failures; current native-layout-

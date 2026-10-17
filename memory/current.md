@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: caption footnote AST compatibility accepted, uncommitted
+## Current: caption footnote AST compatibility staged, awaiting user commit
 
 User's final decision accepts correct native AST/content conversion without
 caption-footnote GUI/PDF visibility, counter/directory or page-layout guarantees.
@@ -19,18 +19,23 @@ layout repair. README distinguishes stock syntax from structured compatibility.
 Default focused4/4passed10.027854s; isolated patched parser integration5/5passed.
 Final full flake (stock ERT, strict package compile/lint, patched check) and no-link
 default package build exit0. Final29inputs unchanged/equal root and isolated
-snapshot; whitespace clean, ordinary index empty, lock/version unchanged.
+snapshot; whitespace clean; index was empty at runtime acceptance, lock/version unchanged.
 Nix shared buildPackage takes Org; default still stock Org. Neighboring test patch
 is generated against locked9.8.10 and applied fuzz0 to deterministic test-only tar
 before ELPA install. Actual loaded Org/package paths verified. Native-related
 runs use isolated flake, all five task commands authorized.
 
-Preserve user .gitignore patch allowance and original flake ELPA mirror overlay;
-flake now also contains task wiring, so future staging must separate its hunks.
-No ordinary staging/commit/publicAPI/worker/skill changes. Full contract, evidence,
-archive rationale and final hashes: caption-inline-footnotes.md.
-Next: user review, separately authorized staging/message and user commit, then
-exact delivery verification. Issue13 stage4 NAME and release remain unfinished.
+User authorized both explicit staging actions. Nine paths now staged (386 additions,
+26 deletions), including user's .gitignore patch allowance. Feature-only flake
+patch applied to index; original overlay/system parameter remains sole unstaged
+change. All nine staged blobs equal reviewed input identities, with feature flake
+SHA256 5818e92e02888f8375529d8bdeb524626b8a6033a3d2170784dda8ac89223043.
+Full staged review/whitespace passed. Split not necessary: one acceptance boundary.
+Final message tmp/commit.md: feat(document): accept anonymous inline footnotes in captions,
+Refs:#13; exact message/diff hashes and handoff: caption-inline-footnotes.md.
+No tests repeated for staging, no ordinary commit/publicAPI/worker/skill changes.
+Next: user commit, then exact parent/paths/patch/message/blob delivery verification.
+Issue13 stage4 NAME and release remain unfinished.
 
 ## Completed delivery: Issue13 stage3 delivered and verified
 
