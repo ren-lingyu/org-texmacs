@@ -1,0 +1,524 @@
+[
+  {
+    "style": "generic",
+    "variant": "baseline",
+    "route": "native",
+    "dangling": 2,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2",
+      "1"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "baseline",
+    "route": "export-ps",
+    "dangling": 2,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2",
+      "1"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "matching-body-label",
+    "route": "native",
+    "dangling": 0,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2",
+      "1"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "matching-body-label",
+    "route": "export-ps",
+    "dangling": 0,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2",
+      "1"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "wrong-body-label",
+    "route": "native",
+    "dangling": 2,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2",
+      "1"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "wrong-body-label",
+    "route": "export-ps",
+    "dangling": 2,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2",
+      "1"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "matching-outside-label",
+    "route": "native",
+    "dangling": 0,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2",
+      "1"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "matching-outside-label",
+    "route": "export-ps",
+    "dangling": 0,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2",
+      "1"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "flow-binding",
+    "route": "native",
+    "dangling": 1,
+    "texts": [
+      "MainFlow",
+      "1",
+      "1",
+      "BodyFlow",
+      "2"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "flow-binding",
+    "route": "export-ps",
+    "dangling": 1,
+    "texts": [
+      "MainFlow",
+      "1",
+      "1",
+      "BodyFlow",
+      "2"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "flow-label",
+    "route": "native",
+    "dangling": 0,
+    "texts": [
+      "MainFlow",
+      "?",
+      "1",
+      "BodyFlow",
+      "2"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "flow-label",
+    "route": "export-ps",
+    "dangling": 0,
+    "texts": [
+      "MainFlow",
+      "?",
+      "1",
+      "BodyFlow",
+      "2"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "flow-label-binding",
+    "route": "native",
+    "dangling": 0,
+    "texts": [
+      "MainFlow",
+      "1",
+      "1",
+      "BodyFlow",
+      "2"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "flow-label-binding",
+    "route": "export-ps",
+    "dangling": 0,
+    "texts": [
+      "MainFlow",
+      "1",
+      "1",
+      "BodyFlow",
+      "2"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "flow-binding-label",
+    "route": "native",
+    "dangling": 0,
+    "texts": [
+      "MainFlow",
+      "?",
+      "1",
+      "BodyFlow",
+      "2"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "flow-binding-label",
+    "route": "export-ps",
+    "dangling": 0,
+    "texts": [
+      "MainFlow",
+      "?",
+      "1",
+      "BodyFlow",
+      "2"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "macro-body-label",
+    "route": "native",
+    "dangling": 0,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2",
+      "1"
+    ]
+  },
+  {
+    "style": "generic",
+    "variant": "macro-body-label",
+    "route": "export-ps",
+    "dangling": 0,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2",
+      "1"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "baseline",
+    "route": "native",
+    "dangling": 2,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "baseline",
+    "route": "export-ps",
+    "dangling": 2,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "matching-body-label",
+    "route": "native",
+    "dangling": 0,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "matching-body-label",
+    "route": "export-ps",
+    "dangling": 0,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "wrong-body-label",
+    "route": "native",
+    "dangling": 2,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "wrong-body-label",
+    "route": "export-ps",
+    "dangling": 2,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "matching-outside-label",
+    "route": "native",
+    "dangling": 0,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "matching-outside-label",
+    "route": "export-ps",
+    "dangling": 0,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "flow-binding",
+    "route": "native",
+    "dangling": 1,
+    "texts": [
+      "MainFlow",
+      "1",
+      "BodyFlow"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "flow-binding",
+    "route": "export-ps",
+    "dangling": 1,
+    "texts": [
+      "MainFlow",
+      "1",
+      "BodyFlow"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "flow-label",
+    "route": "native",
+    "dangling": 0,
+    "texts": [
+      "MainFlow",
+      "?",
+      "BodyFlow"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "flow-label",
+    "route": "export-ps",
+    "dangling": 0,
+    "texts": [
+      "MainFlow",
+      "?",
+      "BodyFlow"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "flow-label-binding",
+    "route": "native",
+    "dangling": 0,
+    "texts": [
+      "MainFlow",
+      "1",
+      "BodyFlow"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "flow-label-binding",
+    "route": "export-ps",
+    "dangling": 0,
+    "texts": [
+      "MainFlow",
+      "1",
+      "BodyFlow"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "flow-binding-label",
+    "route": "native",
+    "dangling": 0,
+    "texts": [
+      "MainFlow",
+      "?",
+      "BodyFlow"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "flow-binding-label",
+    "route": "export-ps",
+    "dangling": 0,
+    "texts": [
+      "MainFlow",
+      "?",
+      "BodyFlow"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "macro-body-label",
+    "route": "native",
+    "dangling": 0,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2"
+    ]
+  },
+  {
+    "style": "article",
+    "variant": "macro-body-label",
+    "route": "export-ps",
+    "dangling": 0,
+    "texts": [
+      "Main1",
+      "1",
+      "Main2",
+      "2",
+      "1",
+      ". Body1",
+      "2",
+      ". Body2"
+    ]
+  }
+]

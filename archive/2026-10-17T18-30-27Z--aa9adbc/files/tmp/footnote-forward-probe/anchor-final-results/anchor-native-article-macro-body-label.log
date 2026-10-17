@@ -1,0 +1,16 @@
+warning: guile hooks are not available
+Welcome to TeXmacs 2.1.5
+------------------------------------------------------------------------------
+kpsepath works with your TeX distribution
+kpsewhich works with your TeX distribution
+mktextfm works with your TeX distribution
+mktexpk works with your TeX distribution
+texhash works with your TeX distribution
+------------------------------------------------------------------------------
+Installation completed successfully !
+I will now start up the editor
+------------------------------------------------------------------------------
+("MACRO-INTERVENTION" (macro "sym" "nr" "body" (float "footnote" "" (document (document (smaller (with "par-mode" "justify" "par-left" "0cm" "par-right" "0cm" "font-shape" "right" "dummy" (value "page-fnote-sep") "dummy" (value "page-fnote-barlen") (surround (concat (locus (id (hard-id (arg "body"))) (link "hyperlink" (id (hard-id (arg "body"))) (url (merge "#footnr-" (arg "nr")))) (arg "sym")) (footnote-sep)) (concat (set-binding (merge "footnote-" (arg "nr")) (value "the-label") "body") (right-flush)) (arg "body")))))))) (macro "sym" "nr" "body" (float "footnote" "" (document (document (smaller (with "par-mode" "justify" "par-left" "0cm" "par-right" "0cm" "font-shape" "right" "dummy" (value "page-fnote-sep") "dummy" (value "page-fnote-barlen") (surround (concat (locus (id (hard-id (arg "body"))) (link "hyperlink" (id (hard-id (arg "body"))) (url (merge "#footnr-" (arg "nr")))) (arg "sym")) (footnote-sep)) (concat (concat (label (merge "footnote-" (arg "nr"))) (set-binding (merge "footnote-" (arg "nr")) (value "the-label") "body")) (right-flush)) (arg "body")))))))))FORWARD-PROBE-OK
+
+
+--- stderr ---
