@@ -1,5 +1,23 @@
 # org-texmacs durable evidence
 
+## Block mapping / CJK bounded investigation completed
+
+User recalls original fixed blocks primarily quote/center; archive red/green
+quote reports and retained center positive controls now map to current regressions.
+Fresh14/14block/native ERT58.636359s cover other current supported blocks too;
+no further mapping defect established. Exact lost original source not recovered.
+72font diagnostic PDFs:two Noto variable TTC matrices total48cases still
+fallback (families listed but missing native masters); final24Fandol gives18real-
+Chinese positives and6missing-font baselines. All8final configurations match text,
+font specs/full names and geometry exactly across package/native/saved-tm reload. Full native
+Fandol font setup plus FandolSong/chinese or FandolHei is a practical tested config;
+font availability/registration required, native bold/italic/size differences remain.
+User original environment/symptom not fully reproduced, no exporter patch justified.
+No production/index/lock/user-flake change, no full release gate. Detailed scope,
+authorization/diagnostics/limits and23text archive: block-font-investigation.md.
+Next user may select persistent font/config documentation or remaining release
+readiness work; do not claim global font correctness or0.5.0 readiness.
+
 ## PDF footnote destination repair: delivered and verified
 
 User-selected production repair is accepted on fixed isolated inputs. Worker
