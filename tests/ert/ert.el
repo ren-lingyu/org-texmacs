@@ -901,8 +901,8 @@ Rasterize using existing Poppler, excluding the label's word box."
                   :type 'org-texmacs-document-error)))
 
 (ert-deftest org-texmacs-issue13-stage3-caption-subset-and-registry ()
-  ;; Test actual unsupported objects, not spellings the caption parser keeps as
-  ;; literal text (Org's caption restriction excludes footnotes and targets).
+  ;; Named notes, citations and targets remain unsupported caption objects.
+  ;; Anonymous inline notes have separate long/short AST compatibility coverage.
   (dolist (object (list (org-element-create 'footnote-reference '(:type standard :label "n"))
                         (org-element-create 'citation '(:style nil))
                         (org-element-create 'target '(:value "target"))))
@@ -1053,6 +1053,169 @@ Rasterize using existing Poppler, excluding the label's word box."
           (org-texmacs-test--issue11-compare-pdfs pdf reload)
           (should (equal (org-texmacs-test--issue13-stage3-graphic-ink pdf)
                          (org-texmacs-test--issue13-stage3-graphic-ink reference))))))))
+
+(defun org-texmacs-test--caption-inline-footnote (text)
+  "Create an anonymous inline note with TEXT."
+  (org-element-create 'footnote-reference (list :type 'inline) text))
+
+(defun org-texmacs-test--caption-inline-footnote-input-args (kind caption &rest extra)
+  "Build input constructor arguments for KIND, CAPTION and EXTRA blocks."
+  (let* ((native (string-prefix-p "figure" kind))
+         (body (if native
+                   (org-element-create 'special-block (list :type "texmacs"))
+                 (org-element-create 'table (list :type 'org)
+                                     (org-element-create 'table-row (list :type 'standard)
+                                                         (org-element-create 'table-cell nil "A")))))
+         (node (if (equal kind "plain") body
+                 (org-element-create 'special-block (list :type kind) body))))
+    (org-element-put-property node :caption caption)
+    (list (apply #'org-element-create 'org-data nil node extra) nil
+          :islands (and native (list (cons body '(math "x")))))))
+
+(defun org-texmacs-test--caption-inline-footnote-nodes (tree tag)
+  "Collect native TAG nodes from TREE."
+  (when (consp tree)
+    (append (and (eq (car tree) tag) (list tree))
+            (cl-mapcan (lambda (child)
+                         (org-texmacs-test--caption-inline-footnote-nodes child tag))
+                       (cdr tree)))))
+
+(ert-deftest org-texmacs-caption-inline-footnote-owned-ast ()
+  (dolist (kind '("plain" "figure" "figure*" "table" "table*"))
+    (let* ((link (org-element-create 'link (list :type "file" :path "/tmp/caption-note.pdf") "File"))
+           (note (org-element-create 'footnote-reference (list :type 'inline)
+                                     "Explanation" (org-element-create 'bold nil "bold") link))
+           (caption (list (cons (list (copy-sequence "Long") note)
+                               (list "Short" (org-texmacs-test--caption-inline-footnote "ShortNote")))
+                          (cons (list "Second" (org-element-create 'bold nil "Caption")) nil)))
+           (body (org-element-create
+                  'paragraph nil "Body" (org-texmacs-test--caption-inline-footnote "BodyNote")
+                  (org-element-create 'footnote-reference (list :type 'standard :label "n"))))
+           (definition (org-element-create 'footnote-definition (list :label "n")
+                                           (org-element-create 'paragraph nil "NamedNote")))
+           (args (org-texmacs-test--caption-inline-footnote-input-args kind caption body definition))
+           (source (let ((print-circle t)) (prin1-to-string (car args))))
+           (input (apply #'org-texmacs-input-create args))
+           document)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _) (ert-fail "Pure caption lower invoked worker")))
+                ((symbol-function 'buffer-substring-no-properties)
+                 (lambda (&rest _) (ert-fail "Pure caption lower read source"))))
+        (setq document (org-texmacs-document input))
+        (should (equal document (org-texmacs-document input))))
+      (should (equal source (let ((print-circle t)) (prin1-to-string (car args)))))
+      (should (equal
+               (caddr (cadr (org-texmacs-document-body document)))
+               '(caption-detailed
+                 (concat (concat "Long" (footnote (document
+                                                  (concat "Explanation" (strong "bold")
+                                                          (hlink "File" "/tmp/caption-note.pdf")))))
+                         " " (concat "Second" (strong "Caption")))
+                 (concat "Short" (footnote (document (concat "ShortNote")))))))
+      (should (= 4 (length (org-texmacs-test--caption-inline-footnote-nodes
+                            (org-texmacs-document-body document) 'footnote))))
+      (should (org-texmacs-document-file-paths document))
+      (should (equal (org-texmacs-document-stm-paths document)
+                     (and (string-prefix-p "figure" kind) '((0 0)))))
+      ;; Prepared input owns all caption descendants independently of its source.
+      (org-element-put-property note :type 'standard)
+      (aset (car (car (car caption))) 0 ?X)
+      (should (equal document (org-texmacs-document input))))))
+
+(ert-deftest org-texmacs-caption-inline-footnote-invalid-ast ()
+  (dolist (short '(nil t))
+    (dolist (note (list
+                   (org-element-create 'footnote-reference (list :type 'standard :label "n"))
+                   (org-element-create 'footnote-reference (list :type 'inline :label "n") "Named")
+                   (org-element-create 'footnote-reference (list :type 'invalid) "Wrong")
+                   (org-element-create
+                    'footnote-reference (list :type 'inline)
+                    (org-element-create 'citation nil
+                                        (org-element-create 'citation-reference (list :key "k"))))
+                   (org-element-create 'footnote-reference (list :type 'inline)
+                                       (org-texmacs-test--caption-inline-footnote "Nested"))))
+      (let* ((caption (list (if short (cons '("Long") (list note)) (cons (list note) nil))))
+             (definition (org-element-create 'footnote-definition (list :label "n")
+                                             (org-element-create 'paragraph nil "Definition")))
+             (input (apply #'org-texmacs-input-create
+                           (org-texmacs-test--caption-inline-footnote-input-args
+                            "table" caption definition))))
+        (should-error (org-texmacs-document input) :type 'org-texmacs-document-error))))
+  (let* ((note (org-texmacs-test--caption-inline-footnote "WrongContext"))
+         (paragraph (org-element-create 'paragraph nil (org-element-create 'bold nil note)))
+         (input (org-texmacs-input-create (org-element-create 'org-data nil paragraph) nil)))
+    (should-error (org-texmacs-document input) :type 'org-texmacs-document-error)))
+
+(ert-deftest org-texmacs-caption-inline-footnote-stock-parser ()
+  (should-not (memq 'footnote-reference (cdr (assq 'keyword org-element-object-restrictions))))
+  (dolist (kind '("plain" "figure" "figure*" "table" "table*"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+              "#+CAPTION[Short[fn::ShortNote]]: Long[fn::LongNote] (math \"literal\")\n")
+      (unless (equal kind "plain") (insert "#+begin_" kind "\n"))
+      (insert (if (string-prefix-p "figure" kind)
+                  "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n" "| A |\n"))
+      (unless (equal kind "plain") (insert "#+end_" kind "\n"))
+      (insert "\nBody[fn::BodyNote].\n")
+      (let ((source (buffer-string)) requests)
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (raw &rest _) (push raw requests) (read raw))))
+          (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
+                 (document (org-texmacs-document input))
+                 (body (org-texmacs-document-body document)))
+            (should (= 1 (length (org-texmacs-test--caption-inline-footnote-nodes body 'footnote))))
+            (should (string-match-p "\\[fn::LongNote\\]" (prin1-to-string body)))
+            (should (string-match-p "\\[fn::ShortNote\\]" (prin1-to-string body)))
+            (should (= (length requests) (if (string-prefix-p "figure" kind) 1 0)))
+            (should (equal document (org-texmacs-document input)))))
+        (should (equal source (buffer-string)))))))
+
+(ert-deftest org-texmacs-caption-inline-footnote-native-layout-limit ()
+  (let (missing)
+    (org-texmacs-test--with-worker
+      (dolist (style '("generic" "article"))
+        (let* ((table '(tabular (tformat (table (row (cell "A"))))))
+               (body `(document
+                       (concat "Before" (footnote (document "BodyNoteOne")))
+                       (big-table ,table (concat "CapA" (footnote (document "NoteA"))))
+                       (big-figure ,org-texmacs-test--issue13-stage3-graphic
+                                   (concat "CapB" (footnote (document "NoteB"))))
+                       (big-table* ,table (concat "CapC" (footnote (document "NoteC"))))
+                       (big-figure* ,org-texmacs-test--issue13-stage3-graphic
+                                    (concat "CapD" (footnote (document "NoteD"))))
+                       (concat "After" (footnote (document "BodyNoteTwo")))))
+               (document (org-texmacs--document-create :body body :style (list style)))
+               (pdf (expand-file-name (concat style "-caption-note.pdf") test-directory))
+               (tm (expand-file-name (concat style "-caption-note.tm") test-directory))
+               (reload (expand-file-name (concat style "-caption-note-reload.pdf") test-directory))
+               (session (org-texmacs-session-open)))
+          (unwind-protect
+              (progn
+                (org-texmacs-session-set-document session document)
+                (should (equal (org-texmacs--session-read session)
+                               (org-texmacs-test--native-hex body))))
+            (org-texmacs-session-close session))
+          (org-texmacs-document-save document tm)
+          (org-texmacs-document-save-pdf document pdf)
+          (let ((text (org-texmacs-test--pdf-text pdf))
+                (geometry (org-texmacs-test--issue11-pdf-geometry pdf)))
+            (message "Known native caption-footnote layout limit (%s): %s" style text)
+            (dolist (token '("CapA" "CapB" "CapC" "CapD" "NoteA" "NoteB" "NoteC" "NoteD"
+                             "BodyNoteOne" "BodyNoteTwo"))
+              (unless (= 1 (cl-count token geometry :key #'car :test #'equal))
+                (push (list style token) missing)))
+            (should (string-match-p "Table 1\\. CapA" text))
+            (should (string-match-p "Figure 1\\. CapB" text)))
+          (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+          (org-texmacs-test--issue11-compare-pdfs pdf reload))))
+    ;; Pinned native layout loses these bodies despite exact STM readback.
+    ;; This records the native limit, not exporter acceptance of data loss.
+    (should (equal (nreverse missing)
+                   '(("generic" "NoteA") ("generic" "NoteB")
+                     ("generic" "NoteC") ("generic" "NoteD")
+                     ("article" "NoteA") ("article" "NoteB")
+                     ("article" "NoteC") ("article" "NoteD"))))))
 
 (ert-deftest org-texmacs-test-input-pure-core ()
   (let* ((ast (org-element-create

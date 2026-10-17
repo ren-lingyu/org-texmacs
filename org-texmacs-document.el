@@ -1009,7 +1009,10 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                         (list body))
                        (blank node space))))
               ((and (consp node) (eq (org-element-type node) 'footnote-reference))
-               (unless (and (eq context 'paragraph)
+               (unless (and (or (eq context 'paragraph)
+                                (and (eq context 'caption)
+                                     (eq (org-element-property :type node) 'inline)
+                                     (null (org-element-property :label node))))
                             (memq (org-element-property :type node) '(inline standard))
                             (not (cl-some
                                   (lambda (ancestor)
@@ -1062,6 +1065,8 @@ for consumers.  Final handlers must preserve contents identity and provenance."
               ((and (consp node) (eq (org-element-type node) 'citation))
                (unless (memq context '(paragraph footnote))
                  (org-texmacs--document-fail node "Unsupported citation context"))
+               (unless (assq node (plist-get citation-plan :citations))
+                 (org-texmacs--document-fail node "Unprepared citation"))
                (setcar space nil)
                (cons (org-texmacs--document-pack
                       'with-bib

@@ -1,0 +1,11 @@
+--- a/org-element.el
++++ b/org-element.el
+@@ -436,7 +436,7 @@
+       (inlinetask ,@standard-set-no-line-break)
+       (italic ,@standard-set)
+       (item ,@standard-set-no-line-break)
+-      (keyword ,@(remq 'footnote-reference standard-set))
++      (keyword ,@standard-set)
+       ;; Ignore all links in a link description.  Also ignore
+       ;; radio-targets and line breaks.
+       (link export-snippet inline-babel-call inline-src-block macro

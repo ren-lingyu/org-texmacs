@@ -813,7 +813,8 @@ caption.  The wrappers are Org structure; only the inner STM body is opaque.
 Caption belongs to the outer wrapper.  It supports the existing long/short,
 markup and link subset, including file-link provenance.  Caption text resembling
 STM remains ordinary Org text and does not create native parse requests.
-Footnotes, citations and targets in captions remain unsupported.  Omitted caption
+Anonymous inline footnote ASTs use the caption compatibility rules below;
+citations and targets remain unsupported.  Omitted caption
 passes =""= to the native environment; numbered variants still show their native
 Figure/Table number.  Explicit empty =#+CAPTION:=, outer =NAME= / =ATTR_*=,
 parameters and inner-body affiliated metadata are rejected.  Native =generic=
@@ -941,9 +942,28 @@ Basic tables accept =#+NAME:= and =#+CAPTION:=.  A captioned table becomes
 layout.  Multiple caption lines are joined with spaces.  Optional short
 captions use =caption-detailed= with long and short bodies.  Captions retain
 the supported inline text/markup and URI/internal/file links; STM fragment
-discovery, citations and footnotes do not enter captions.  Their literal text
+discovery and citations do not enter captions.  Their literal text
 uses ordinary Org encoding.  Other affiliated keywords, repeated names and
 empty captions are explicit errors.
+
+Standard Org 9.8.10 does not parse =[fn::...]= in captions as a footnote;
+it remains ordinary caption text.  If prepared input or an external Org parser
+supplies an anonymous inline =footnote-reference= AST, both long and short
+captions can convert it using the existing =(footnote (document ...))= mapping.
+This applies to naked Org tables and all four figure/table wrappers.  Named
+references, named inline definitions and nested notes remain unsupported there.
+Caption text and note bodies do not acquire STM fragment discovery.
+
+This is AST compatibility, not complete caption footnote typesetting support.
+TeXmacs 2.1.5 =generic= / =article= checks show caption markers while footnote
+bodies disappear in the native table layout, and caption directory writes can
+consume extra footnote numbers.  GUI/PDF visibility, numbering, directory entries
+and page placement are not guaranteed.  The exporter preserves the native AST;
+it does not split notes into separate references/anchors or predict float layout.
+The test-only Org patch and isolated check live together in
+=tests/caption-inline-footnotes/=.  They exercise real private-snapshot parsing;
+the default package, default ERT and normal installation still use stock Org and
+neither include nor activate the patch.
 
 Fuzzy links resolve named tables before headline titles.  Referenced captioned
 tables place their private label inside the caption, after the native table
@@ -1011,8 +1031,9 @@ navigation also rejects targets containing =#=, =?=, =*=, =$=, =|=, backslash,
 or square brackets, because these may be interpreted as navigation or URL
 syntax.  Such paths can remain in a structural result but fail native preflight.
 
-Anonymous inline footnotes such as =[fn::A note]= are supported only as
-direct paragraph children.  Their bodies support ordinary inline markup,
+Anonymous inline footnotes such as =[fn::A note]= are supported as
+direct paragraph children and in the caption AST subset described above.
+Their bodies support ordinary inline markup,
 URI/internal/file links and explicit line breaks, with independent prose whitespace
 normalization.  Empty bodies are represented by an empty text slot.
 Named references such as =[fn:note]= accept either =[fn:note:Inline body]=
@@ -1027,7 +1048,7 @@ The source's =org-footnote-section= is captured, and its special heading is
 omitted while needed definitions are retained.  Missing or ambiguous named
 definitions, nested footnotes and footnotes in headings, emphasis, table
 cells or link descriptions are rejected.
-Direct text in inline definitions and paragraphs in separate definitions use
+Outside captions, direct text in inline definitions and paragraphs in separate definitions use
 normal configured fragment discovery.  Inline bodies follow the bare-island
 and mixed-display boundaries described above; their STM roots and local file
 targets retain provenance and are emitted only at first use.  Required inline

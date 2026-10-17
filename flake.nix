@@ -43,6 +43,23 @@
 
       emacsPackages = pkgs.emacsPackagesFor pkgs.emacs31;
 
+      buildPackage = org : emacsPackages.trivialBuild {
+        pname = "org-texmacs";
+        version = "0.4.0";
+        src = source;
+        packageRequires = [
+          org
+        ];
+        turnCompilationWarningToError = true;
+        postPatch = builtins.concatStringsSep " " [
+          "substituteInPlace org-texmacs-core.el"
+          "--replace-fail"
+          "'(defcustom org-texmacs-program \"texmacs\"'"
+          "'(defcustom org-texmacs-program \"${pkgs.lib.getExe' pkgs.texmacs "texmacs"}\"'"
+        ];
+        postInstall = "install -m644 org-texmacs-worker.scm \"$out/share/emacs/site-lisp/\"";
+      };
+
       emacs = emacsPackages.emacsWithPackages (ps_ : (builtins.concatLists [
         (with ps_; [
           package-lint
@@ -53,26 +70,11 @@
     in {
 
       packages = {
-        default = emacsPackages.trivialBuild {
-          pname = "org-texmacs";
-          version = "0.4.0";
-          src = source;
-          packageRequires = [
-            emacsPackages.org
-          ];
-          turnCompilationWarningToError = true;
-          postPatch = builtins.concatStringsSep " " [
-            "substituteInPlace org-texmacs-core.el"
-            "--replace-fail"
-            "'(defcustom org-texmacs-program \"texmacs\"'"
-            "'(defcustom org-texmacs-program \"${pkgs.lib.getExe' pkgs.texmacs "texmacs"}\"'"
-          ];
-          postInstall = "install -m644 org-texmacs-worker.scm \"$out/share/emacs/site-lisp/\"";
-        };
+        default = buildPackage emacsPackages.org;
       };
 
       checks = import ./tests {
-        inherit pkgs source emacs;
+        inherit pkgs source emacs emacsPackages buildPackage;
       };
 
       devShells = {
