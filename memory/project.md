@@ -77,7 +77,10 @@ support reuses footnote lowering, with test-only patched Org and stock productio
 parser. Short/named/nested and other unsupported contexts remain excluded.
 Current prepared caption walker already visits inline note bodies; test source
 coordinates/ownership/no new STM discovery explicitly. Full proposed contract and
-native-first/unverified PDF gate: memory/caption-inline-footnotes.md.
+native-first FAILED PDF gate and isolated native controls:
+memory/caption-inline-footnotes.md. Caption table cells suppress footnote bodies;
+list-caption independently adds counter consumption. No exporter/native workaround
+adopted; semantic direction pending. Current production behavior remains unchanged.
 
 ## Committed block/table extension
 

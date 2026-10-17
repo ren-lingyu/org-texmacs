@@ -8,12 +8,15 @@ stage3 delivery baseline. Follow-up user explicitly revises patch placement:
 keep each patch adjacent to the test configuration that consumes it; do not
 create a central tests/patches directory. If tests/ert/default.nix consumes it,
 use an adjacent org-caption-inline-footnote.patch; if an isolated integration
-check directory consumes it, place the patch there. Final topology is not chosen.
+check directory consumes it, place the patch there. Proposed integration topology is tests/caption-inline-footnotes (not yet created).
+User additionally requests native tests via an isolated directory flake; adopted
+for subsequent runs at tmp/caption-inline-footnotes-native.
 
 Initial intake was static review/memory only. User subsequently selected this
 implementation before Issue13 stage4. Native-first ERT fixture is now prepared;
-no runtime/build/patch generation or production lowering edit yet. New exact
-validation command authorization requested and pending; no ordinary staging.
+user authorized five exact repeated validation commands below. Independent
+native gate now failed; user chose native-cause investigation before semantics.
+No parser patch generation or production lowering edit; no ordinary staging.
 Earlier stage3 command permissions are not permissions for new patched builds.
 Ordinary project state now includes user .gitignore and original flake.nix changes;
 preserve both. No version/lock/API/worker/parser-global/skill changes.
@@ -170,3 +173,115 @@ line/patch application or any exporter/native runtime. Public pages read only:
 - https://orgmode.org/manual/Captions.html.
 - https://orgmode.org/worg/dev/org-export-reference.html (org-export-get-caption).
 No build/probe/parser/exporter/native experiment run in this review.
+
+## Authorized commands and native investigation state
+
+User authorized repeated current-task commands1-5:
+1. timeout 300s nix develop --no-write-lock-file path:.#checks.x86_64-linux.ert --command emacs -Q --batch -L . --load tests/ert/ert.el --eval '(ert-run-tests-batch-and-exit "caption-inline-footnote")'
+2. timeout 600s nix build --no-link --no-write-lock-file path:.#checks.x86_64-linux.caption-inline-footnotes
+3. timeout 600s nix flake check --no-write-lock-file path:.
+4. timeout 120s nix build --no-link --no-write-lock-file path:.#default
+5. timeout 60s nix eval --no-write-lock-file --raw path:.#packages.x86_64-linux.default.packageRequires --apply 'xs: (builtins.head xs).src.outPath'
+Network/store/cache/log/temp tm/PDF/raster/build writes disclosed; no lock/result.
+Command5 exit0 identifies /nix/store/41g0k913cg4zr0lbhaqfs1r2dqnwspma-org-9.8.10.tar.
+Archive metadata shows org-element.el371675bytes; no extraction/patch yet.
+
+First native fixture runs from project root, focused command exit1: initial generic
+only3.218021s; second aggregates both styles9.479397s (9.541650s suite). Exact native
+readback, tm save, direct PDF, reloaded PDF text/geometry equality pass for both.
+Four big-table/big-figure/star captions have CapA/B/C/D and superscript3/5/7/9,
+NoteA/B/C/D bodies absent from PDF text and word-coordinate output. BodyNoteOne/
+BodyNoteTwo present once with markers1/10. This does not meet intended native
+caption-note semantics. No raster/GUI inspection yet; do not claim broader visual
+proof than extracted text/geometry. No native engine patch/exporter workaround.
+One new org-texmacs-caption-inline-footnote-native ERT in tests/ert/ert.el holds
+positive acceptance assertions and currently FAILS; not xfail/skipped/accepted.
+After run only indentation adjusted, no behavior change; final file SHA256
+b7d893e5f93bdd64bb5de188835119cc765dc9694beffc9a9e8c5d57d18962b1;
+patch SHA2562bf8b3b3045f3699be62793941d1135f6a42285494077092470d1cce5d21946f.
+
+User explicitly chose investigate native causes before deciding support semantics.
+Then adopted isolated flake for TeXmacs tests. tmp boundary verified ignored,
+no tracked files/symlink, target within root. Fixed copies of package source,
+README/LICENSE, ERT/lint Nix drivers and lock at tmp/caption-inline-footnotes-native;
+source-inputs.json records hashes. Exact same command1 runs FROM that directory.
+It retains original failing acceptance fixture and appends independent native
+controls, with native-evidence/*.tm/*.pdf/reports.el for inspection. Production
+package sources in snapshot remain unchanged. Do not conflate isolated test edits
+with root candidate or stage3 accepted baseline.
+
+Native store package identified through generated ERT driver derivation:
+/nix/store/5ri673m8kksap2p2r7gwgqjfwh410sls-texmacs-2.1.5.
+Read only relevant packages/environment/env-float.ts/env-base.ts and standard
+counter definitions. env-float render-big-figure places body and caption inside
+three-row tabular*; caption cell has cell-hyphen=t. render-caption includes
+list-caption(type,cap) in surround plus actual cap display. list-caption invokes
+write with cap; footnote expands next-footnote+render-footnote, whose body uses a
+float of type footnote. Initially these were hypotheses; completed paired controls below distinguish
+table-cell note-body suppression from list-caption extra counter consumption.
+Do not claim confirmed C++ cause or patch TeXmacs based on style inspection alone.
+Controls compare plain/cell/cell-hyphen, standalone render-caption with/without
+list-caption, big-table default/short-caption/no-list, and diagnostic unboxed
+render-big-figure with/without list write, generic/article. These are diagnostic
+style overrides only, not adopted export policy. Isolated run completed; full results and limits below.
+
+## Isolated native controls: completed findings and semantic gate
+
+Exact command1 FROM isolated flake exits1, suite17.503438s: original positive
+acceptance fixture fails9.364730s; separate diagnostic controls pass8.092252s.
+20native cases,10each generic/article. Both styles have the SAME outcomes:
+
+| Control | Note body count | Caption marker / after-body marker |
+|---|---:|---|
+| plain paragraph | 1 | 2 / 3 |
+| single table cell | 0 | 2 / 3 |
+| single cell with cell-hyphen=t | 0 | 2 / 3 |
+| standalone render-caption | 1 | 3 / 4 |
+| render-caption, list-caption overridden empty | 1 | 2 / 3 |
+| big-table default | 0 | 3 / 4 |
+| big-table, list-caption empty | 0 | 2 / 3 |
+| big-table, caption-detailed with literal Short | 0 | 2 / 3 |
+| big-table, diagnostic unboxed render-big-figure | 1 | 3 / 4 |
+| unboxed plus empty list-caption | 1 | 2 / 3 |
+
+Every document has Before footnote1, one experimental note and After footnote;
+ordinary before/after bodies appear exactly once in all20cases. Plain expected
+2/3 baseline is independently asserted. Native render-big-figure's outer table
+is sufficient to reproduce body suppression: removing it restores body, while
+single-cell note fails even without caption/list operations. cell-hyphen is not
+the deciding difference. These establish a native table/float boundary, not an
+identified C++ line or a generally proven engine repair.
+Separately, render-caption without any table reproduces extra count; disabling
+list-caption removes it. caption-detailed's literal short caption avoids note
+evaluation during list write, restoring count but not body in big-table. Thus
+short-caption restriction alone cannot solve the missing-footnote problem.
+Unboxed/no-list is ONLY a diagnostic: it changes layout and removes native list
+writing, violating the unchanged figure/table semantics goal. Do not ship it as
+an unrequested exporter/style workaround or call native gate passed.
+
+Root production source unchanged. Only root ERT has the positive failing fixture;
+no default/patched Org integration/lowering/README/package work yet. No full checks
+or package builds run after gate failure. First root-run gate predates user's
+isolation guidance; subsequent native command uses fixed isolated flake as asked.
+Raw PDFs available under tmp/caption-inline-footnotes-native/native-evidence for
+user inspection; no raster/GUI claim. Text/geometry establishes the reported
+absence and counter behavior, not complete visual fidelity across pages/styles.
+
+Archive selection after diagnosis: unlike guide wording, raw original control
+inputs and report have independent reproduction/audit value not yet covered by
+maintained passing tests. Twenty generated standalone native .tm inputs encode
+all controls, raw reports.el includes actual text/word boxes, isolated flake/lock
+and copied source hash map establish environment.24original-byte text artifacts
+plus manifest copied and verified before separate archive-only checkpoint:
+archive/2026-10-17T15-01-35Z--92f782c/MANIFEST.md.
+No PDF/binary/cache archived. Full executed ERT code not duplicated: standalone
+.tm inputs retain controls; harness digest and pre-append vs executed-test input
+identity distinction documented in manifest. Capture project HEAD is context,
+not original runtime-tree provenance; zero new project parents.
+
+User was asked for post-investigation semantic direction, reply pending:
+1 evaluate separate TeXmacs repair before deciding exporter;
+2 defer caption-note feature and retain native reproduction;
+3 AST-only compatibility with explicit unsupported default PDF semantics.
+No option selected by elapsed time. Keep stage4 separately planned until user
+steers this active task. Original task remains incomplete, not accepted/delivered.

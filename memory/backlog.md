@@ -52,7 +52,10 @@ prior delivered editing/font-lock/bibliography do not establish this capability.
 ### Caption anonymous inline-footnote compatibility guidance
 
 User selected this concrete guidance for implementation before Issue13 stage4;
-native-first fixture prepared, new test authorization pending.
+native-first gate failed, tests authorized; user selected native-cause investigation
+before a support-semantic decision.20isolated controls now separate native
+table-cell body suppression and directory-write counter effects; post-investigation
+semantic choice pending. No production compatibility implementation accepted.
 Only anonymous inline AST in long captions of naked tables/four wrappers; stock
 Org stays unchanged, patched parser isolated to tests with patch adjacent to its
 consumer. Native-first PDF gate precedes exporter; no unconditional native support

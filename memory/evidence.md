@@ -1,5 +1,22 @@
 # org-texmacs durable evidence
 
+## Caption native-first gate failed; isolated causes separated
+
+User authorized native focused commands, then selected native-cause investigation
+and requested isolated flake for subsequent TeXmacs tests.20controls in locked
+x86_64-linux generic/article separate native table-cell footnote body suppression
+from list-caption extra counter consumption. Literal short caption fixes count
+only; unboxed+no-list diagnostic restores body/count but changes native semantics,
+not adopted. Original four-float exact readback/save/reload equality pass while
+all caption note bodies absent. Ordinary body notes positive controls pass.
+Isolated suite1pass/1fail17.503438s (diagnostics8.092252s, acceptance9.364730s);
+not feature acceptance. No production lower/parser patch/full build/check changes.
+Details, exact controls and pending semantic decision: caption-inline-footnotes.md.
+Necessary24raw original-byte text artifacts plus manifest verified and archived
+separately: archive/2026-10-17T15-01-35Z--92f782c/MANIFEST.md. No binary/PDF/cache.
+Original runtime uses uncommitted diagnostic isolated source, zero project parents.
+
+
 ## Caption anonymous inline-footnote guidance: static review only
 
 User-supplied guide on stage3 baseline and explicit adjacent-test patch placement
