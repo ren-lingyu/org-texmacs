@@ -1,17 +1,21 @@
 # org-texmacs current memory
 
-## Current: caption anonymous inline-footnote guidance reviewed
+## Current: caption anonymous inline-footnotes selected before Issue13 stage4
 
 User supplied detailed development guidance and corrected patch placement: keep
 patch beside its consuming test configuration, no central tests/patches directory.
 Static review/extracted contract, three test layers, native-first gate, test-only
 Org9.8.10 isolation and no-production-parser-change boundary:
-memory/caption-inline-footnotes.md. No implementation or new tests/builds run.
+memory/caption-inline-footnotes.md. User now explicitly selected implementing this
+work before Issue13 stage4. Native-first maintained fixture added to ERT; not yet
+run. Production lowering unchanged pending native gate.
 Native caption-footnote PDF behavior remains unverified; user ox-latex report is
 not independent runtime evidence. Short-caption descendant rejection and no STM
 discovery in caption/note body need explicit gates. No raw archive needed after
-sufficient extraction of in-conversation material. Next: user selects concrete
-implementation plan/actions; stage4 NAME remains separately adopted.
+sufficient extraction of in-conversation material. Exact new focused/patched-check/
+full/default-build/Org-source-eval command authorization requested, awaiting reply.
+Next: run independent native gate, then narrow AST/lowering and isolated patched
+Org check. Stage4 NAME remains separately adopted, after this task.
 Project .gitignore now also dirty (user change), preserve alongside flake overlay.
 
 ## Completed delivery: Issue13 stage3 delivered and verified

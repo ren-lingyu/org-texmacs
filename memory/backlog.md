@@ -51,12 +51,13 @@ prior delivered editing/font-lock/bibliography do not establish this capability.
 
 ### Caption anonymous inline-footnote compatibility guidance
 
-Concrete user guidance supplied and statically reviewed, implementation not begun.
+User selected this concrete guidance for implementation before Issue13 stage4;
+native-first fixture prepared, new test authorization pending.
 Only anonymous inline AST in long captions of naked tables/four wrappers; stock
 Org stays unchanged, patched parser isolated to tests with patch adjacent to its
 consumer. Native-first PDF gate precedes exporter; no unconditional native support
 claim or new release gate. Full boundary/tests/review: caption-inline-footnotes.md.
-Stage4 NAME remains adopted-later; ordering not inferred from this intake.
+Stage4 NAME remains adopted-later, following this selected task.
 
 ### Issue9: independently named constituents of one native composite
 

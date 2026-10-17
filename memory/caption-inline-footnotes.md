@@ -10,8 +10,10 @@ create a central tests/patches directory. If tests/ert/default.nix consumes it,
 use an adjacent org-caption-inline-footnote.patch; if an isolated integration
 check directory consumes it, place the patch there. Final topology is not chosen.
 
-This intake is static review/memory work only. No implementation, build/probe,
-Org patch generation/application, ordinary staging or remote write performed.
+Initial intake was static review/memory only. User subsequently selected this
+implementation before Issue13 stage4. Native-first ERT fixture is now prepared;
+no runtime/build/patch generation or production lowering edit yet. New exact
+validation command authorization requested and pending; no ordinary staging.
 Earlier stage3 command permissions are not permissions for new patched builds.
 Ordinary project state now includes user .gitignore and original flake.nix changes;
 preserve both. No version/lock/API/worker/parser-global/skill changes.
@@ -155,8 +157,8 @@ exercise default checks and isolated patched check when implementation is select
 Order: native gate, default synthetic AST tests, narrow lowering/preparation edit,
 minimal parser patch and isolated build/load, real snapshot integration, stock+
 full checks, README. All side-effecting commands require this task's own precise
-permission. Supplied guidance does not itself start implementation or add a new
-mandatory v0.5.0 release gate; stage4 NAME remains a separate adopted requirement.
+permission. Subsequent user instruction selects implementation before stage4; no additional
+mandatory v0.5.0 release gate inferred. Stage4 NAME remains a separate requirement.
 
 ## Reference review and evidence limits
 
