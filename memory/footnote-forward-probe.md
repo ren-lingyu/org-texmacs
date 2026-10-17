@@ -168,3 +168,18 @@ extraction and two original/modified macro logs retained; no PDFs/dependencies/f
 source copy. Earlier snapshot immutable. ROOT31input hashes unchanged, only user
 flake overlay unstaged. Native-only temporary runtime, no project parent inferred.
 Next: user selects native repair location/continued diagnosis or release limitation.
+
+## User-adopted acceptance boundary for a possible internal compatibility repair
+
+User clarified org-texmacs only needs to guarantee its own exports are stable.
+Do not make independently opening saved tm in TeXmacs GUI and re-exporting there
+an acceptance prerequisite for this item. A document-local native macro workaround
+inside org-texmacs private export consumption is an admissible candidate; do not
+require a system TeXmacs patch or upstream resolution first. Keep ordinary Org
+lowering as native footnote, no exporter-side native number prediction. Relevant
+future acceptance: actual public export path, repeated exports, correct targets/
+numbering/content, private-buffer/config isolation and no leaked state. Current
+native-only intervention does not itself verify production integration. This
+clarification adopts acceptance scope, not an instruction to modify production
+files or assertion that integration is complete. Exact tm output semantics remain
+subject to normal exporter contract; no new GUI compatibility guarantee inferred.

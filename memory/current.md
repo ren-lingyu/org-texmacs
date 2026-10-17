@@ -26,9 +26,13 @@ ANCHOR-REPORT.md. Eleven necessary text artifacts byte-verified and separately
 archived: archive/2026-10-17T18-30-27Z--aa9adbc/MANIFEST.md. Earlier archives intact,
 31root inputs unchanged; no native/source failure retries, repeated same600s gate.
 Detail: memory/footnote-forward-probe.md. Runtime native-only temporary controls,
-no inferred project parent. Next: user chooses native macro/bottom-layer diagnosis,
-formal repair direction or explicit release limitation; production repair not
-selected and remaining0.5.0 gates unchanged.
+no inferred project parent. User clarified acceptance requires stable org-texmacs
+own exports; independent saved-tm GUI re-export is not a prerequisite. A private
+export-buffer native macro compatibility layer is admissible without system/upstream
+patch. Public-path integration/repeats/targets/numbering/isolation still unverified;
+production modification not yet selected. Normal tm export contract remains.
+Next: scope/implement and verify internal export compatibility when selected;
+remaining0.5.0 gates unchanged.
 
 ## Completed: minimal footnote forward-link investigation
 
