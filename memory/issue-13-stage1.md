@@ -4,14 +4,14 @@
 
 User selected the reviewed plan for implementation on2026-10-17. Ordinary
 candidate modifies exactly document lowering, input ownership, source adapter,
-ERT and README. HEAD remains82d7aa131043d2683c6e303413ee95ccf51da7de; candidate
-is uncommitted, now explicitly user-authorized staged. Preserve user flake.nix ELPA mirror workaround, exclude
+ERT and README. User has committed the exact reviewed candidate, with single
+expected parent82d7aa131043d2683c6e303413ee95ccf51da7de. Preserve user flake.nix ELPA mirror workaround, exclude
 it from delivery; no lock/version/INBOX or external issue changes. Full Issue13
 remains open work: equation/figure/table/NAME and weak anchors are later nodes;
 Issue9 independently named composite constituents stays post0.5.0.
 
 Foundation A/B is one reviewable node, with statement as the second logical
-node; staged as one coherent delivery, not user-committed. No stable public
+node; user-committed as one coherent delivery, exact verification complete. No stable public
 handler API, defcustom, module, dependency or worker protocol added.
 
 ## Implemented contract
@@ -131,7 +131,18 @@ Exact message SHA256:
 7dd10562fe006810ced5622c1ab97444dff3c8259a02102f0b2e2386ac93e663.
 No tests rerun merely for staging: tested bytes and worktree remain identical.
 
-Current next action: user reviews staged delivery/message and commits. No
+Read-only committed-delivery verification: one expected parent, exact five changed
+paths, complete binary patch SHA256 and exact message SHA256 match above. Git's
+format:%B (no extra formatter newline) equals draft bytes; ordinary %B adds a
+formatting newline and is not the raw-message hash. Committed task/lock blobs equal
+accepted worktree bytes (no task/lock diff from HEAD); all7input hashes unchanged.
+Index empty, only original flake overlay unstaged. Earlier focused17/full495/build/
+lint acceptance transfers by byte equality; no tests rerun merely for commit.
+Refs:#13 is non-closing, so no issue closure/update or remote-state check needed.
+Current GAW project association grounds this committed-delivery observation,
+not the earlier uncommitted runtime. No extra archive required.
+
+Current next action: choose separately authorized next Issue13/release node. No
 stage1 code/check work remains. Memory coordinated across current/project/goals/
-backlog/release/evidence. No project parent inferred for uncommitted provenance.
+backlog/release/evidence. Original uncommitted runtime provenance remains distinct.
 No automatic next Issue13 node or release action selected.

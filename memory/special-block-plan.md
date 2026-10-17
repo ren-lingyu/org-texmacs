@@ -4,7 +4,7 @@
 
 Stage1 now user-selected for implementation: foundation (recursion, captured
 private registry, input ownership, preflight and provenance) followed by formal
-statements. Stage1 locally implemented/accepted, user-authorized staged but uncommitted;
+statements. Stage1 implemented/accepted/user-committed, exact delivery verified;
 17focused/495fullERT/full flake/strict package compile/lint/build pass. All16
 candidate types now verified under native generic style, including real titles/
 counters/PDFs and representative tm reload. Details: memory/issue-13-stage1.md.

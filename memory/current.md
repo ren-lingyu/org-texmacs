@@ -1,12 +1,12 @@
 # org-texmacs current memory
 
-## Completed locally: Issue13 stage 1, awaiting delivery review
+## Completed delivery: Issue13 stage 1
 
 User-selected recursive ordinary special-block foundation and formal statements
-implemented and automatically accepted, now user-authorized staged/uncommitted. Five task
+implemented, automatically accepted and user-committed. Five task
 paths: document/input/source adapter, ERT and README. Original flake.nix mirror
-workaround preserved/excluded; lock/version/INBOX unchanged. No ordinary commit or
-external write. Final focused17/17 (19.993503s), full495/495 (326.837943s), full
+workaround preserved/excluded; lock/version/INBOX unchanged. Agent did not execute
+ordinary commit or external writes. Final focused17/17 (19.993503s), full495/495 (326.837943s), full
 flake including strict package compilation/lint, and no-link package build exit0.
 Final input hashes unchanged after acceptance. All16statement candidates have
 real generic-style native title/counter/PDF evidence; theorem/proof tm reload
@@ -21,15 +21,17 @@ ownership/symbol snapshots, pure interfaces, file/STM provenance, source guards,
 final error/recovery and legacy regressions pass. No public handler API added.
 Full contract, exact authorized commands, intermediate fixture diagnostics and
 candidate identities: memory/issue-13-stage1.md. No raw archive needed; maintained
-fixtures retain sufficient native/structural reproduction. No added project parent
-inferred from main: runtime candidate is uncommitted.
+fixtures retain sufficient native/structural reproduction. Original runtime used
+an uncommitted candidate; current project association grounds later exact
+committed-delivery verification, not retroactive runtime provenance.
 
-User authorized staging the five task paths; complete staged diff reviewed,
-diff check passed, no task-path unstaged differences, exact accepted bytes retained.
-Formal message prepared in valid ignored tmp/commit.md: feat(document): lower
-recursive special blocks and formal statements, Refs:#13 (no closing footer).
-Exact patch/message hashes: memory/issue-13-stage1.md. No split necessary.
-Next: user reviews the message and performs ordinary commit. No further stage1
+Read-only delivery verification confirms expected single parent, exactly five
+paths, complete patch and exact commit message match reviewed staged candidate.
+Committed task/lock inputs equal accepted worktree bytes; original flake overlay
+unchanged and unstaged. Index empty. Refs:#13, no closing footer or issue-close
+action; no remote issue-state lookup required for this bounded delivery.
+Exact patch/message hashes: memory/issue-13-stage1.md. No tests rerun just for
+commit verification. No further stage1
 implementation/testing remains. Whole13 and v0.5.0 are not complete; equation,
 figure/table/NAME and weak anchors remain separately selected later work. Issue9
 remains post0.5.0. No next implementation node auto-selected.

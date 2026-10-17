@@ -4,7 +4,7 @@
 
 User adopted2026-10-17 a mandatory Issue13 usable mathematical special-block
 subset for0.5.0, not an optional extension. Stage1 recursion/private handlers and
-formal statements now locally implemented/accepted, user-authorized staged/uncommitted:
+formal statements now implemented/accepted/user-committed, exact delivery verified:
 17focused/495fullERT/strict package compile/lint/full flake/build pass; generic
 native16type/PDF and theorem/proof tm reload accepted. Remaining equation,
 figure/table/NAME and weak anchors still planned; no release action. Full stage1

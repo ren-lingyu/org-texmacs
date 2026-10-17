@@ -1,10 +1,15 @@
 # org-texmacs durable evidence
 
-## Issue13 stage1 local acceptance, delivery pending
+## Issue13 stage1 acceptance and verified user delivery
 
 2026-10-17 user-selected recursive ordinary special blocks, captured private
 handler snapshots/ownership, descendant-sharing/provenance guards, preflight and
-formal statements implemented in five task paths, still unstaged/uncommitted.
+formal statements implemented in five task paths, subsequently user-committed.
+Read-only verification confirms expected single parent, exact five paths, full
+patch and raw message hashes match reviewed staged candidate. Committed task/
+lock inputs equal accepted worktree bytes; original user flake overlay unchanged,
+index empty. No tests rerun merely for delivery. Current project association
+grounds this committed-equivalence observation, not original runtime provenance.
 Same locked x86_64-linux flake inputs (lock unchanged) as preceding accepted
 Emacs31.1/Org9.8.10/TeXmacs2.1.5 baseline. Focused ERT environment explicitly
 includes Poppler:17/17in19.993503s. Final full495/495in326.837943s, completed
@@ -19,9 +24,10 @@ covered. No unsupported type presumed native solely because parser accepts it.
 Default devShell missing Poppler and intermediate fixture-only failures are
 extracted in memory/issue-13-stage1.md, with exact commands/candidate identities.
 No unique raw archive needed; maintained tests preserve sufficient reproduction.
-No project parent attached to uncommitted runtime provenance. No GUI/other-style/
+Original runtime was uncommitted, with no retrospectively inferred parent. No GUI/other-style/
 other-platform or full Issue13/release acceptance claim. User flake workaround
-preserved/excluded; no ordinary staging/commit/issue/release writes.
+preserved/excluded; staging later user-authorized, commit user-executed. No
+agent ordinary commit/issue/release writes; Refs:#13 does not close the issue.
 
 ## TeXmacs special-block editing/indentation acceptance and delivery
 

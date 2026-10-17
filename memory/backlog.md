@@ -25,9 +25,9 @@ decision.
 
 ### Issue13: adopted required v0.5.0 special-block subset
 
-Status: stage1 locally implemented/accepted, delivery review pending.17focused/
+Status: stage1 implemented/accepted/user-committed; exact delivery verified.17focused/
 495fullERT/full flake/strict package compile/lint/build pass; generic native16
-types and PDF accepted. Source now user-authorized staged/uncommitted; see
+types and PDF accepted. Index empty, only original user flake overlay dirty; see
 memory/issue-13-stage1.md. Remaining equation/figure/table/NAME nodes remain
 **adopted-later**; no next implementation node selected.
 Recursive private special-block handlers,
