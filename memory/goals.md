@@ -62,13 +62,23 @@ Org source and semantics
 ## Adopted v0.5.0 release objective
 
 First practically usable release for Org-first mathematical writing with embedded
-native STM and complete .tm/PDF exports inside a tested supported subset. Resolve
-inline-footnote STM and display-equation blockers, verify prior block fix,
-investigate links/fonts/font-lock with bounded outcomes, then real-document/full
-checks and documentation. Detailed readiness: memory/release-0.5.0.md.
+native STM and complete .tm/PDF exports inside a tested supported subset.
+Issue13 is required for v0.5.0: private recursive special-block extension point,
+formal statements, single-expression equation/equation*, explicit figure/table
+wrappers and bounded single-object NAME/[[name]] semantics. This is adopted
+planning, not implemented/native-verified support. Full design and verification
+boundaries: memory/special-block-plan.md.
+
+Existing inline-footnote/display-equation fixes, prior block-fixture confirmation,
+bounded links/fonts/font-lock outcomes, representative documents, final checks
+and metadata/docs retain their established statuses; no existing gate completed
+by this scope update. Detailed readiness: memory/release-0.5.0.md.
 Complete Org parity, async export, preview and general authoring assistance are
-not release requirements. #9 is scheduled after0.5.0 before0.6.0; #7 stays deferred.
-This objective does not authorize implementation, builds or release operations.
+not release requirements. Issue9 now owns independently named constituents inside
+one composite native structure, initially separately numbered/referenced aligned
+formula rows, after0.5.0/before0.6.0. Issue13 does not close9;9 does not gate
+single-object names in13. Issue7 stays deferred. This objective does not authorize
+implementation, builds, tests, next-node selection or release operations.
 
 ## Soft goals
 

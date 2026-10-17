@@ -1,5 +1,33 @@
 # org-texmacs current memory
 
+## Current adopted planning: v0.5.0 Issue13 and Issue9 refocus
+
+User's new INBOX.md explicitly requests memory-only scope reconciliation.
+Issue13 is now required v0.5.0 usable special-block subset: private recursive
+handler boundary, statement/type aliases, raw-expression equation/equation*,
+explicit numbered figure/table wrappers (empty caption still numbered),
+experimental starred unnumbered wrappers, and identity-based single-object
+NAME/[[name]] with native per-category label placement. Opaque texmacs STM stays
+unchanged internally; naked Org tables retain legacy compatibility behavior.
+No public handler API/parameter DSL or selected float strategy. Weak surround
+anchors and referenced-only label enablement remain candidates needing evidence.
+Complete design/limits: memory/special-block-plan.md.
+
+Issue9 remains post0.5.0/pre0.6.0, now multiple independently named constituents
+assembled into one composite native AST, initially separately numbered/referenced
+rows of an aligned formula. It no longer owns all general NAME/block references.
+Current issue bodies verified open and consistent with INBOX (updated2026-10-17
+08:11:44Z/08:11:46Z for13/9). No external writes. No implementation, tests/probes,
+ordinary source/README/flake/version/INBOX edits or release action this turn.
+Other release gates remain open as recorded; latest editing/bibliography delivery
+acceptance below does not validate13. Next: await separately authorized development
+planning/implementation; no active implementation node auto-selected.
+
+GAW goals/current/backlog/project/release synchronized with concentrated plan;
+older implementation/experimental evidence preserved as historical context.
+No skills/config/archive changes needed; active plan fully distilled, no unique
+raw experiment to archive. Zero added project parents for this planning update.
+
 ## Completed: TeXmacs block editing and indentation delivered
 
 User committed the exact reviewed feat(edit) candidate. Read-only verification
@@ -245,7 +273,10 @@ complete; remote#11 verified closed/completed, as is#10.
 Subsequent PDF link repair is accepted above; Chinese fonts postponed, font-lock later. No other
 feature implementation or release operation selected.
 
-## v0.5.0 release readiness context
+## Earlier v0.5.0 readiness investigation context
+
+Historical initial scope below; current scope additionally requires Issue13 and
+uses the revised Issue9 boundary in memory/special-block-plan.md.
 
 User selected INBOX review/GAW extraction, then explicitly requested retrying
 issue reads and local isolated investigation tests on2026-10-16. That initial

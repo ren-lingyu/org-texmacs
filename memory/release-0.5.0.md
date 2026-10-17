@@ -1,9 +1,42 @@
 # v0.5.0 release readiness
 
-## Current gate summary after committed deliveries
+## Current scope amendment: required Issue13, refocused later Issue9
+
+User adopted2026-10-17 a mandatory Issue13 usable mathematical special-block
+subset for0.5.0, not an optional extension. Status: adopted development planning;
+no implementation node selected, code/test/native/PDF acceptance or release action.
+Full source semantics and validation boundaries: memory/special-block-plan.md.
+This adds one required scope gate, not duplicated numbered legacy items:
+private recursive handler/preparation/provenance path, formal statements,
+single-expression equation/equation*, explicit figure/table wrappers and bounded
+single-object NAME/[[name]] semantics. Native counters and object-specific label
+placement required. Empty-caption numbering, experimental starred forms and weak
+plain-STM anchors need actual native/PDF verification before supported claims.
+
+Issue9 remains after0.5.0/before0.6.0, now multiple independently named constituents
+inside one composite native structure, initially aligned rows with independent
+numbering/references. It does not gate general single-object references in13;
+shipping13 does not close9. No float/configuration/public handler API selected.
+
+All other existing gates retain their status: original block-fixture linkage,
+bounded Chinese-font outcome, native first-note limit/release-impact assessment,
+representative mathematical documents, final stabilized flake/native/PDF gate,
+version/README/migration/notes. Existing font-lock/editing/Issue12 delivery records
+remain valid; new planning does not make13 tested or v0.5.0 ready. In particular
+old restricted-BibTeX notes below describe the pre-Issue12 review, not current
+bibliography behavior (see memory/issue-12-review.md).
+
+Prior readiness/investigation sections below retain their historical scope and
+observations; current scope uses this amendment and the concentrated design.
+New INBOX replaces the old working handoff, not the preserved historical evidence.
+Memory-only update; original INBOX/project worktree and existing archives unchanged.
+No archive/config/skill mutation needed; design and source provenance fully
+extracted in memory/special-block-plan.md. No project-parent inferred from main.
+
+## Earlier gate summary after committed deliveries (before Issue13 adoption)
 
 Read-only readiness reconciliation on2026-10-16; no new implementation or release
-authority. Original INBOX is unchanged and has historical Open statuses; use the
+authority. Then-current INBOX had historical Open statuses; use the
 committed delivery records for current local status. Still planned/not accepted.
 
 - Items1/2: Issue10 inline-footnote STM and Issue11 bare display rendering are
@@ -171,7 +204,8 @@ initial web lookups failed with Cache miss; subsequent connector reads verify
 
 ## Outside this gate
 
-- #9 native substructure names/references, especially rows of multiline equations:
+- #9 independently named constituents within one composite native structure,
+  initially separately numbered/referenced aligned rows (single objects belong to13):
   https://github.com/ren-lingyu/org-texmacs/issues/9
   adopted-later between v0.5.0 and v0.6.0, separate development after this release.
 - #7 nonblocking exports remains deferred, not assigned to0.5.0. Existing synchronous

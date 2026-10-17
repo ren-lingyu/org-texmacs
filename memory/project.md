@@ -20,6 +20,26 @@
 - The implementation does not require physical grafting of all TeXmacs pseudo
   nodes into one live Org element cache.
 
+## Adopted special-block target (Issue13), not implemented capability
+
+Issue13 is required for v0.5.0: ordinary recursive preparation/lowering with a
+minimal private handler dispatch, native formal statements, raw single-expression
+equation/equation*, explicit figure/table wrappers and bounded single-object
+NAME/[[name]]. Handler returns structured stree; core owns snapshots, STM/file
+provenance and preflight/real-island boundaries. Opaque texmacs STM retains its
+separate interpretation. Explicit table wrapper becomes preferred; current naked
+Org table numbering/caption/reference behavior remains compatibility input.
+Label scope is type-specific and native counters stay authoritative. Empty-caption
+numbering, experimental starred syntax/native roots, weak external surround for
+plain named STM and referenced-only label activation still need validation.
+Float behavior is undecided. No new code/native/PDF result supports13 yet.
+
+Issue9 is later multi-object-to-one-composite identity/composition work, initially
+independently numbered/referenced aligned rows. It is not a prerequisite for13's
+single-object references, and13 does not complete9. Existing implementation and
+released-subset records below retain their historical scope. Complete adopted
+source semantics, unknowns and evidence requirements: memory/special-block-plan.md.
+
 ## Committed block/table extension
 
 Selected Issue4 subset uniformly maps Org quote blocks to native quotation with

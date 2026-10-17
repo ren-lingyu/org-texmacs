@@ -23,11 +23,29 @@ decision.
 
 ## Active next
 
+### Issue13: adopted required v0.5.0 special-block subset
+
+Status: **adopted-later**, mandatory release scope, implementation not selected
+or started in this memory-only turn. Recursive private special-block handlers,
+statement aliases, equation/equation*, explicit figure/table and bounded
+single-object NAME/[[name]] support. Full source/label/provenance/validation
+contract: memory/special-block-plan.md. Existing release gates are retained;
+prior delivered editing/font-lock/bibliography do not establish this capability.
+
+### Issue9: independently named constituents of one native composite
+
+Status: **adopted-later**, after0.5.0/before0.6.0. Initial aligned multiline
+formula with independently named/numbered/referenced rows in one native subtree.
+No composition syntax/algorithm chosen; subfigures/subtables future candidates.
+Single-object block NAME references now belong to13;13 does not close9.
+https://github.com/ren-lingyu/org-texmacs/issues/9
+https://github.com/ren-lingyu/org-texmacs/issues/13
+
 ### v0.5.0 release readiness — Issue10 and Issue11 user-committed
 
 Status: Issue10 and Issue11 implementation/automated acceptance/user delivery
 complete. Other release requirements **adopted-later**.
-Full gate, all nine items, evidence limits and decisions:
+Earlier nine-item readiness plus the new required Issue13 gate, limits/decisions:
 memory/release-0.5.0.md. Required P0: #10 inline-footnote STM, #11 equation
 block/paragraph discrepancy resolution, prior block-mapping regression (confirm
 original fixture). P1 mandatory bounded investigations: PDF annotations, Chinese
@@ -77,7 +95,8 @@ Retain bounded follow-up
 candidate, not an adopted repair; memory/pdf-adjacent-checks.md.
 Adopted priority11->10->PDF links, Chinese fonts postponed, font-lock later.
 No release/version authority. #9 adopted-later after
-0.5.0 before0.6.0; #7 deferred and not a0.5.0 blocker. Earlier native footnote
+0.5.0 before0.6.0 for composite constituents only;13 owns single-object names.
+#7 deferred and not a0.5.0 blocker. Earlier native footnote
 placement/page-break concerns excluded absent actionable package regression.
 
 
