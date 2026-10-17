@@ -389,7 +389,15 @@ d6f177a02d963ea6547ee066bc7ca07bb5967e50227bad5c86aad5b193af8477  org-texmacs.el
 118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a  flake.lock
 ```
 
-Next: user reviews accepted seven-file candidate, requests/authorizes explicit
-staging, staged-only message via git-maintenance; user commits. Then compare
-parent/path set/full patch/message/accepted blobs. Stage4 acceptance alone is not
-release or Issue13 remote closure. Issue9 remains independent later work.
+Commit preparation: user authorized staging the seven accepted paths, excluding
+flake.nix. Complete staged review confirms binary diff SHA25676907fc1b5a1c7070911b26d5fe0e4b21c4de4e35cf167a9c71b3a3200915d6b,
+860insertions/231deletions, whitespace clean, no unstaged feature differences.
+Only original user flake overlay remains unstaged. Split not necessary, difficulty
+medium: allocation/freezing, lowering consumers, fixture migration/native tests
+and README are one strongly coupled capability. No multi-round polling needed.
+Final staged-only message root tmp/commit.md, subject "feat(document): support named
+blocks and Org reference resolution", footer Refs:#13, SHA256
+a8386557119cf05fea90885b4ccb28612b1c36549dbcb8c7106327771ae0619a.
+No ordinary commit, new source edits or repeated runtime gates. Next: user commits,
+then compare parent/path set/full patch/message/accepted blobs. Stage4 acceptance
+alone is not release or Issue13 remote closure. Issue9 remains independent later work.

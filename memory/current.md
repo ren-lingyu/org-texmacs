@@ -25,8 +25,16 @@ unchanged, lock/INBOX/version unchanged. All31inputs match isolated flake after
 all gates; final manifest SHA2561f4794c387806e5cfea147fcb3aa59ac61895cae5bba0e64aee134a35cb36265.
 Runtime used uncommitted candidate; no inferred project parent. Maintained controls
 plus causal memory sufficient, no new raw archive or skill updates.
-Next: user review, separately authorized staging/message and user commit, then
-exact delivered comparison. Stage4 functional acceptance does not close Issue13
+Commit preparation complete: user authorized explicit seven-path staging; staged
+binary diff exactly equals accepted feature hash76907fc1... (860insertions/231deletions),
+no whitespace errors or unstaged feature changes. Only original user flake overlay
+remains unstaged. One coherent feature commit, split not necessary (medium difficulty).
+Staged-only message at root tmp/commit.md, subject "feat(document): support named
+blocks and Org reference resolution", footer Refs:#13, SHA256
+a8386557119cf05fea90885b4ccb28612b1c36549dbcb8c7106327771ae0619a.
+No ordinary commit or repeated runtime gates. Next: user commits, then verify
+parent/path set/full binary patch/message/accepted blobs before delivery association.
+Stage4 functional acceptance does not close Issue13
 externally or establish release readiness; Issue9 composite scope remains later.
 
 ## Completed delivery: caption footnote AST compatibility delivered and verified
