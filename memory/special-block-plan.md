@@ -6,8 +6,12 @@ New user INBOX contract extracted in issue-13-stage4.md; review only, no code/te
 It supersedes below provisional deterministic ID/ref-only label preferences:
 Org-native search/reference allocator, frozen per-snapshot identity mappings,
 ASCII-readable slug, all newly named objects labeled even unused/unnumbered.
-Native reference text remains TeXmacs authority. Four static review tightenings
-await adoption (snapshot/copy lifecycle, semantic view, slug, metadata/regions).
+Native reference text remains TeXmacs authority. User appended supplement adopting
+all four review concerns (lifecycle, semantic view, slug, metadata/regions).
+Repeatable validation allocates no final IDs; allocate once after effective AST/
+static labels known, freeze/remap into prepared input; pure lower never allocates.
+Earlier suggestion to allocate before preflight is superseded. Static review
+accepts supplemented guidance; runtime/implementation still pending.
 No original archive needed after sufficient extraction; source hash in that file.
 Old single-object section below is historical planning context where superseded.
 

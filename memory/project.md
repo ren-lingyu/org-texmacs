@@ -50,7 +50,10 @@ guidance read-only review: issue-13-stage4.md; no NAME implementation yet. Stage
 empty-caption numbering and starred wrappers now have generic/article evidence
 above. NAME and weak external surround for plain named STM remain unimplemented.
 Stage4 guidance supersedes provisional referenced-only activation for new blocks
-and deterministic IDs with all-named activation/Org allocation; review pending. No float-placement policy/API is added.
+and deterministic IDs with all-named activation/Org allocation. User supplement
+adopts review corrections: validate without IDs, allocate/freeze after effective
+AST/static labels known, remap on ownership copies. Static review complete;
+implementation/native tests pending. No float-placement policy/API is added.
 Stage2 equation delivery is described below.
 
 Stage2 raw-STM equation/equation* implemented/accepted/user-committed, delivery verified:

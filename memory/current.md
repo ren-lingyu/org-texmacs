@@ -1,25 +1,25 @@
 # org-texmacs current memory
 
-## Current: Issue13 stage4 guidance reviewed, implementation not started
+## Current: Issue13 stage4 supplemented guidance reviewed, implementation not started
 
-User requested read-only review of new INBOX stage4 NAME/single-object reference
-contract. Source18366bytes SHA256 fb77dc04b8b4cb5aa14c7b8249f782ef80bb597d2e1df7b5be9719b2f9d51fcb;
-full extraction, retention decision and static review: issue-13-stage4.md.
-No raw archive: sufficient semantic extraction, no independent original evidence.
-Ordinary project files/index untouched; only original ELPA workaround remains.
-Intended design replaces provisional deterministic/ref-only names with Org random
-reference allocation and labels for all newly named objects, including unused and
-unnumbered; native display value remains TeXmacs authority. Custom handlers and
-Issue9 composites stay excluded; source/AST/provenance/consumer boundaries remain.
-Four recommended tightenings await user adoption: one snapshot allocation plus
-copy-key remapping and late static collision validation; semantic candidate view
-preserving raw opacity/reachable notes/secondary AST; ambient-independent ASCII
-slug; pre-cleanup NAME evidence and full owner/NAME region completeness for all
-newly admitted types, with excluded-invalid owners ignored. PDF link checks must
-not imply meaningful visible numeric references for unnumbered objects.
-Read-only source review plus upstream main ox.el corroboration only, no pinned
-Org/native runtime validation. No build/test/implementation authorization inferred.
-Next: adopt review corrections, then separately plan/authorize stage4 4A/4B/4C.
+User appended line550 section adopting all four review concerns. Current INBOX
+21282bytes SHA256 09ed92d403ffb88a0bc3fa77a05a35a619b7b75054eb40ad80c01bf595bba5cc;
+original18366byte prefix verified unchanged. Full contract, retention and adopted
+supplement: issue-13-stage4.md. No raw archive needed after sufficient extraction.
+All four addressed: semantic candidate scope, original NAME evidence/scoped owner
+completeness, ambient-independent slug, and allocation lifecycle. Current lifecycle
+is repeatable validation without final IDs, then Org allocation once after owned
+AST/static native labels are known, frozen through copying and repeated pure lower.
+This supersedes earlier suggested before-preflight allocation; preflight/final
+share target relationships, not a requirement for final IDs during validation.
+Raw internals stay opaque, effective/reachable scope only; no excluded invalid
+owner blocking. No structural redesign, custom handler/composite scope expansion
+or TeXmacs display/layout policy. Native/locked Org runtime remains to validate.
+4A includes placements/Org API comparisons/lifecycle design;4B implementation;
+4C scopes/ownership/provenance/native acceptance. No further static objection.
+Ordinary project files/index unchanged, only original ELPA workaround remains.
+No tests/builds/implementation authorized by review. Next: separately requested
+stage4 implementation plan/authorization. Whole13 and release remain unfinished.
 
 ## Completed delivery: caption footnote AST compatibility delivered and verified
 

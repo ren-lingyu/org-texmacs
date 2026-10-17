@@ -3,7 +3,7 @@
 ## Intake, state and retention
 
 User requested read-only review of updated project INBOX.md before implementation.
-Read source: 18366 bytes, SHA256
+Initial reviewed source: 18366 bytes, SHA256
 fb77dc04b8b4cb5aa14c7b8249f782ef80bb597d2e1df7b5be9719b2f9d51fcb.
 Title: Issue #13 Stage 4: Org NAME 与单对象交叉引用. Source declares design
 complete/pending implementation, baseline main@fae32879 and _agents@ebe3bad9.
@@ -20,6 +20,51 @@ reproduction/interpretation after extraction. Mutability alone is insufficient.
 Input hash binds this extraction to reviewed bytes; do not treat a later INBOX as
 this version without equality. Project INBOX/source/index unchanged; original
 ELPA overlay remains sole ordinary worktree change. No builds/tests/native runs.
+
+## Adopted review supplement, current lifecycle
+
+User appended section at INBOX.md line550, stating all four recommendations
+adopted; original preceding18366bytes verified byte-identical by SHA256 above.
+Updated source21282bytes SHA256
+09ed92d403ffb88a0bc3fa77a05a35a619b7b75054eb40ad80c01bf595bba5cc.
+No raw archive: supplement is fully distilled here with original-prefix identity;
+no independent raw experimental evidence. Project/source/index unchanged.
+
+All four concerns are addressed, no further architectural objection from static
+review. Supplement takes precedence for lifecycle detail: split repeatable
+validation (resolve effective targets/check ambiguity/validity, NO final random
+IDs) from allocation (after effective owned AST and static native-label set are
+known, use Org API once and freeze). This supersedes the earlier review's proposed
+before-preflight final allocation, which was not a necessary design constraint.
+Interpret earlier preflight/final identity consistency as same semantic target
+relationships, not demanding final IDs during validation-only preflight. After
+allocation every formal/repeated pure lower consumes the same frozen mapping.
+No provisional final-ID allocation hidden in bibliography/preflight calls, no
+post-freeze local reallocation; copying remaps node and link identities and direct
+prepared-AST constructor obeys same lifecycle. Source-detectable rejection still
+precedes body STM requests; final static collisions require real parsed islands.
+
+Candidate collection is bounded to effective export objects: raw outer NAME only,
+opaque internals, wrapper owns identity, inner body not independent, unused notes/
+filtered/excluded objects omitted; caption/title/reachable-note links retained.
+Strict ambiguity precedes Org target selection. Added raw fake-target, unused-note
+name, filtering and nested-object regressions required.
+
+Original NAME declaration counts/ownership evidence extends stage3 capture to
+statements/equations/plain texmacs; reject duplicate/invalid metadata and truncated
+NAME/owner regions, preserve scoped-reparse correspondence, ignore invalid
+excluded owners. No generic source-provenance framework.
+Slug explicitly binds case-fold-search nil; same per-character ASCII rule, no
+underscore compression/trimming. Test nil/t ambient case and Unicode letters,
+digits/confusables. Suggested implementation now meets reviewed static boundary.
+
+Updated order:4A native placements plus Org API candidate comparisons and allocation
+lifecycle design;4B validation/allocation separation, frozen map, NAME evidence,
+object label lower;4C scopes/ownership/provenance/identity/native PDF regressions.
+Review accepts this supplemented guidance as planning foundation. No tests,
+implementation or new ordinary writes authorized. Native/pinned Org behavior
+remains unverified by this static review; no further tightening proposed now.
+Next: user request to plan/implement stage4 under these adopted constraints.
 
 ## Supplied intended contract
 
@@ -140,7 +185,7 @@ Not this stage: generalized custom-handler label protocol, raw internal identity
 inference, cross-document lookup, stable cross-export IDs, label-format config,
 numbering/display/layout reinterpretation or caption-footnote repair.
 
-## Read-only findings and recommended tightening (not yet user-adopted)
+## Original read-only findings (now addressed by adopted supplement)
 
 Overall design is coherent with goals. Org allocator/random suffix and labels on
 all newly named objects supersede earlier provisional deterministic/ref-only
@@ -151,7 +196,8 @@ preferences in special-block-plan.md; no larger architecture redesign needed.
    bibliography plan (~498), preflight lowering (~508), post-body plan (~528),
    and pure lowering (document.el~857). input-create (~227) copies AST again.
    Replacing allocator only inside resolver would allocate repeatedly or leave
-   mappings keyed to old nodes. Explicitly allocate once before preflight, carry
+   mappings keyed to old nodes. Originally suggested allocating once before preflight (superseded by the
+   adopted validation-first/allocation-later supplement), carry
    frozen assignments through relevant consumers, remap all owned node/link keys
    on copy; direct AST input-create must establish same contract before pure
    document. Late parsed-island label conflicts must reject or use a coherent
@@ -194,5 +240,5 @@ to enumerate candidates first. Requested pinned raw release URL unavailable via
 browser. Exact locked-version API behavior and source/native tests remain 4A/4B
 acceptance work, not completed evidence. No shell network or tests run.
 
-Next: user review/adoption of these tightenings, then separately requested stage4
-implementation plan/authorization. Keep ordinary workspace read-only meanwhile.
+Current adoption and next action are in the supplement section above. Keep
+ordinary workspace read-only until separately requested implementation.

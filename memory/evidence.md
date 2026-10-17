@@ -3,11 +3,15 @@
 ## Issue13 stage4 guidance: static read-only review
 
 INBOX18366bytes SHA256 fb77dc04b8b4cb5aa14c7b8249f782ef80bb597d2e1df7b5be9719b2f9d51fcb,
-source baseline matches delivered caption task. Full extraction and first-read
+source baseline matches delivered caption task. Supplement at line550 now adopted:
+updated21282bytes SHA256 09ed92d403ffb88a0bc3fa77a05a35a619b7b75054eb40ad80c01bf595bba5cc;
+original18366byte prefix digest identical. All four concerns addressed on static
+review. Validation-without-ID/allocation-after-static-set supersedes earlier
+proposed before-preflight allocation. No runtime evidence added. Full extraction and first-read
 retention rationale in issue-13-stage4.md, no raw archive. Static current-source
 inspection identified repeated resolution calls, input AST copying, explicit
 island/unused-note exclusions and source metadata evidence boundaries. Proposed
-corrections are not adopted fixes or runtime findings. Upstream main ox.el API
+corrections were design recommendations, now adopted in supplement; no runtime fixes claimed. Upstream main ox.el API
 source corroboration is not pinned9.8.10 proof; no tests/build/native sessions.
 Project association grounds only inspected code baseline, not source authorship,
 Org version validation or native placement acceptance. Project/index unchanged.

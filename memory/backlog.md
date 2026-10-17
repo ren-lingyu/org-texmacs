@@ -30,7 +30,8 @@ user committed exact five paths, delivery verified; index empty, only flake over
 build pass. Org footnote/raw-marker boundary restriction explicitly
 adopted by user; no parser/text reconstruction. memory/issue-13-stage3.md.
 Stage4 NAME remains **adopted-later**; new contract read-only reviewed in
-issue-13-stage4.md. Four review tightenings await adoption; no implementation selected.
+issue-13-stage4.md. User supplement adopts all four concerns; validation-first/
+allocation-later lifecycle accepted on static review; no implementation selected.
 
 Status: stage1 implemented/accepted/user-committed; exact delivery verified.17focused/
 495fullERT/full flake/strict package compile/lint/build pass; generic native16
