@@ -57,7 +57,7 @@ to valid ignored nonsymlink tmp, source-inputs.json binds their SHA256. Root/cop
 identity rechecked after focused gate. Pinned x86_64-linux, Emacs31.1/Org9.8.10/
 TeXmacs2.1.5, generic/article. Focused6/6 passed29.555130s, default build exit0;
 full flake exit0 (all checks passed: stock ERT, patched Org, strict compilation/lint).
-Final32inputs unchanged and root=snapshot after all gates. Candidate uncommitted, now user-authorized seven paths staged; no project-parent association
+Final32inputs unchanged and root=snapshot after all gates. Runtime candidate was uncommitted; user delivery is now verified below. No project-parent association
 for runtime against modified candidate. Root flake SHA256 remains54effce5b08cfe75c4a32de982ce81f31ed07afd77c7a944598175ca88538cb7,
 lock118fef565c931d48ea082daeea2b28e50aa0957035948d4adb3912b2e3c7505a.
 
@@ -80,7 +80,7 @@ fc1cf94bcdecc007f682276848e43fc4942bf3b0e8d0481823eedc16e4292c68  tests/ert/run.
 ```
 
 Runtime32input manifest SHA256: 1376d2801614af9616c48017ea253245f8bedffef4fb95b4f96dca991cdcd9fe.
-No new raw archive: maintained tests plus this extraction suffice. Staging/delivery preparation is recorded below; no ordinary commit executed.
+No new raw archive: maintained tests plus this extraction suffice. Staging/delivery verification is recorded below; no ordinary commit by agent.
 
 ## Prepared delivery
 
@@ -91,4 +91,12 @@ message in root tmp/commit.md has subject fix(pdf): restore forward links to
 footnotes, no issue footer. Full staged binary patch SHA256:
 45df05959bf5a538e3088cb7d37af5550ea59cbee9f70d2f4fa02042c061081c.
 Message SHA256: a536e1dee06c8c55843ab72ed1a8e376b113c23954270b60de69fa9dafd78ef0.
-No ordinary commit executed. User delivery verification remains next action.
+User committed the candidate; read-only delivery verification completed. Exact
+single parent is the delivered Issue13 stage4 state. Seven changed paths/blobs,
+full binary diff and approved message hashes above all match. Index empty;
+original ELPA flake overlay alone unstaged, root flake hash unchanged, committed
+lock matches accepted hash. No tests repeated solely for user commit verification.
+The associated project parent grounds this delivery-equivalence inspection only;
+it does not retroactively identify the original uncommitted runtime as a commit.
+No external issue action required/undertaken, no archive or skill change. Next:
+user chooses remaining0.5.0 readiness work; no release-ready claim.
