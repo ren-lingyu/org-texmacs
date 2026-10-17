@@ -1,41 +1,26 @@
 # org-texmacs current project model
 
-## Private PDF footnote compatibility candidate: isolated integration accepted
+## PDF footnote destination repair: accepted, uncommitted
 
-Actual package document/source/frontend PDF paths pass44PDF/46attempt matrix,
-30patched note PDFs/54valid main-text forward links, generic/article. Anonymous,
-named-repeat,markup,cross-page and recovery exports stable in text/layout/targets;
-source/prepared/serialized input unchanged. Existing session/explicit macro/same
-worker preserved;46buffer closures/file removals/session checks include2injected
-errors, disabled-after again reproduces original failure (no global leak).
-Named first-use anchor near correct body line end, not necessarily glyph box;
-repeat target exactly baseline. Only tmp copied worker changed. Formal production
-implementation/maintained regressions not yet selected; no GUI/PS/caption/all-style
-claim. Full scope, rejected harness assumptions and archive: footnote-private-integration.md.
+User-selected production repair is accepted on fixed isolated inputs. Worker
+installs a same-key label before the original recognized render-footnote* binding
+only in its disposable PDF buffer after first print. Native numbering is retained;
+explicit footnote/render-footnote/render-footnote* inits and incompatible/already-
+labelled macros are preserved. Source/prepared/serialized trees and sessions stay
+unchanged. No API, protocol, global style/config or Org dependency change.
 
-## Native footnote anchor intervention: controlled support for missing-anchor mechanism
-
-Final36PDF native-only matrix (generic/article,9variants,direct/PS) passes. Matching
-body label restores forward targets, unrelated label does not; misplaced label
-lands outside body. Ordinary set-binding yields reference1 but no destination;
-label then binding supplies both, reverse order resets value?. Document-local
-render-footnote* adding dynamic same-key label BEFORE original binding restores
-both note targets with direct-PDF coordinates inside correct body text and exact
-baseline visible layout/numbering. PS target names restored, exact PS landing
-unverified. Supports binding-value/export-anchor distinction beyond floats; exact
-native C++ contract/cause and formal repair unproven. No production fix selected.
-Full evidence, warnings, authorization and selective archive: footnote-forward-probe.md.
-
-## Minimal footnote forward-link investigation: completed
-
-User-selected isolated locked flake confirms both main-text anonymous footnote
-markers fail with `1[fn::1]\n2[fn::2]`, not only document's first note.34PDFs:
-28footnote cases each2missing forward destinations,6ordinary-link controls retain
-target page2. Org public API and independent native, generic/article, direct PDF
-and both PostScript -> Ghostscript paths. PS already lacks #footnote-1/2 DEST
-entries despite ANN references. No exporter/native fix or GUI/PS landing guarantee;
-release impact/explicit limitation decision still needed. No production/index
-change. Contract/authorization/diagnostics/selected archive: footnote-forward-probe.md.
+Focused pdf-footnote6/6 passed29.555130s, including five new maintained regressions.
+Full nix flake check exit0 (all checks passed: full stock ERT, patched Org, strict
+compilation and lint); no-link default build exit0.32runtime inputs equal root and
+isolated tmp/footnote-fix before/after all gates; original ELPA workaround and lock
+unchanged. Seven task paths uncommitted/unstaged. Coverage: generic/article,
+anonymous/named-repeat/markup/cross-page, actual forward/back targets, repeated
+exports, explicit macros, error cleanup/recovery, shared session/worker isolation
+and cleanup-fatal shutdown. No GUI, PS exact landing, arbitrary-style or caption
+layout guarantee. Full contract/commands/identities: footnote-pdf-fix.md. Earlier
+causal evidence and archived originals: footnote-forward-probe.md and
+footnote-private-integration.md. Next: user reviews/delivers candidate; remaining
+release gates are separate. No ordinary Git write or new external tracking action.
 
 ## Source and representation
 

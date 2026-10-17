@@ -1,97 +1,26 @@
 # org-texmacs current memory
 
-## Current: private org-texmacs PDF integration experiment accepted
+## Current: PDF footnote destination repair accepted, uncommitted
 
-User-selected isolated package integration completed: final44PDF/46render attempts
-exit0, generic/article, actual document-save/source-file/frontend PDF entrypoints
-and same shared worker.30patched note PDFs contain54valid main-text forward links,
-inline/named-repeat/markup/cross-page; three repeats have identical text/layout/
-target geometry. Minimal/after-failure/named visible layout/numbering equals
-unpatched baseline.46private buffers closed/files removed/session-intact checks,
-including2forced errors after override; subsequent export recovers, no published
-failed file, same worker retained. Existing guard session body/style/inits/macro
-unchanged; explicit user initial macro skipped; disabling after enabled exports
-restores original missing targets, no global override leak. Source/prepared body/
-serialization unchanged. Only copied tmp worker modified, production/index intact.
+User-selected production repair is accepted on fixed isolated inputs. Worker
+installs a same-key label before the original recognized render-footnote* binding
+only in its disposable PDF buffer after first print. Native numbering is retained;
+explicit footnote/render-footnote/render-footnote* inits and incompatible/already-
+labelled macros are preserved. Source/prepared/serialized trees and sessions stay
+unchanged. No API, protocol, global style/config or Org dependency change.
 
-Candidate inserts dynamic same-key label before existing native set-binding after
-first print, before final layout/print, current private buffer init only. Test
-control/event/failure hooks not proposed public API. Named first-use anchor can
-sit near body line end (about5px outside glyph run), not strictly in text rectangle;
-verify correct body line, at most one line-height x adjacency; existing repeat
-anchor exactly baseline. Same-line font y-order and markup text-run grouping fixed
-in inspector; frontend default-directory fixture corrected, product guards kept.
-All diagnostics distilled, final acceptance only on fixed final inputs.
-
-Report/results root tmp/footnote-forward-probe/INTEGRATION-REPORT.md and
-integration-results, successful locked build output recorded there. Selected14text artifacts byte-verified/archived separately:
-archive/2026-10-17T18-51-51Z--aa9adbc/MANIFEST.md.
-Full evidence/authorization/limits: memory/footnote-private-integration.md. No GUI/PS exact landing,
-caption/custom-macro guarantee or production repair acceptance. Next: user selects
-formal integration/regression plan; no extra release readiness implied.
-
-## Completed: native binding/anchor intervention
-
-User-selected hypothesis experiment completed in same authorized isolated flake,
-no production/index/installed-style change. Initial24PDF gate and final36PDF
-superset both exit0: generic/article x9native variants xdirect/PS->PDF. Matching
-footnote-body labels restore forward targets; wrong-name labels do not; labels
-placed outside notes point to that wrong location. Ordinary-flow set-binding
-renders reference1 but lacks destination; label alone creates target but value?;
-label THEN binding gives both1 and target, opposite order resets value?. This
-narrows prior floating-only hypothesis: binding value and exported anchor are
-distinct, normal-flow binding has same gap; primitive contract not proven wrong.
-
-Document-local render-footnote* intervention inserts label with existing dynamic
-key BEFORE existing set-binding, no hardcoded number or input-tree rewrite.
-Both notes forward targets restored in both styles/routes. Direct native PDF
-coordinates land in correct Body1/2 text boxes; all visible text/positions/1-2
-numbering exactly equal baseline. PS gains matching #footnote-N DEST entries;
-PS exact landing remains unverified. No GUI click, C++ trace, generalized style/
-counter/macro contract or adopted repair. Explicit-label controls emit duplicate
-native destination warnings, not ignored; macro intervention meets target checks.
-
-Results/report root tmp/footnote-forward-probe/anchor-final-results and
-ANCHOR-REPORT.md. Eleven necessary text artifacts byte-verified and separately
-archived: archive/2026-10-17T18-30-27Z--aa9adbc/MANIFEST.md. Earlier archives intact,
-31root inputs unchanged; no native/source failure retries, repeated same600s gate.
-Detail: memory/footnote-forward-probe.md. Runtime native-only temporary controls,
-no inferred project parent. User clarified acceptance requires stable org-texmacs
-own exports; independent saved-tm GUI re-export is not a prerequisite. A private
-export-buffer native macro compatibility layer is admissible without system/upstream
-patch. Public-path integration/repeats/targets/numbering/isolation still unverified;
-production modification not yet selected. Normal tm export contract remains.
-Next: scope/implement and verify internal export compatibility when selected;
-remaining0.5.0 gates unchanged.
-
-## Completed: minimal footnote forward-link investigation
-
-User-selected isolated flake experiment completed, no production/index changes.
-Exact minimal Org `1[fn::1]\n2[fn::2]` and blank-line variant, generic/article;
-public org-texmacs PDF plus saved-tree native print, independent native footnote,
-export-postscript and print-to-file(.ps) each followed by Ghostscript.34PDFs:
-28footnote PDFs each4Link annotations, BOTH main-text forward destinations absent,
-body-to-marker backlink targets exist;6ordinary-link controls retain destination
-page2. Clarify prior "first-note" wording: not only document's first note; both
-anonymous notes' first-use forward links fail. PS already lacks #footnote-1/2
-DEST definitions despite forward ANN references; loss predates Ghostscript.
-Native controls reproduce, exporter not necessary cause. No exact native binding
-root cause, GUI clicks or correct PS target landing-position claim. No workaround
-or business repair adopted. This investigation does not close release impact.
-
-Final authorized600s build exit0; initial mixed Poppler stderr/XML harness failure
-excluded, then stdout/stderr separated and same command rerun.31source inputs
-unchanged; root user flake preserved. Results/report at root tmp/footnote-forward-probe,
-successful store output and all raw annotations/coordinates in report. Necessary
-11text artifacts archived separately and verified, not PDFs/full source/dependencies:
-archive/2026-10-17T18-19-25Z--aa9adbc/MANIFEST.md.
-Read-only pinned env-float.ts inspection supports a hypothesis: footnote body
-set-binding(footnote-N) fails to register exportable anchor, while explicit marker
-label footnr-N survives. Exact shared binding/typesetter/anchor fault unproven;
-not a demonstrated name spelling error or PDF-only/Ghostscript fault. No new run.
-Full extraction: memory/footnote-forward-probe.md. Runtime probes uncommitted,
-no inferred project parent. Next: user decides deeper native diagnosis, limited
-handling or explicit release limitation; other0.5.0 gates unchanged.
+Focused pdf-footnote6/6 passed29.555130s, including five new maintained regressions.
+Full nix flake check exit0 (all checks passed: full stock ERT, patched Org, strict
+compilation and lint); no-link default build exit0.32runtime inputs equal root and
+isolated tmp/footnote-fix before/after all gates; original ELPA workaround and lock
+unchanged. Seven task paths uncommitted/unstaged. Coverage: generic/article,
+anonymous/named-repeat/markup/cross-page, actual forward/back targets, repeated
+exports, explicit macros, error cleanup/recovery, shared session/worker isolation
+and cleanup-fatal shutdown. No GUI, PS exact landing, arbitrary-style or caption
+layout guarantee. Full contract/commands/identities: footnote-pdf-fix.md. Earlier
+causal evidence and archived originals: footnote-forward-probe.md and
+footnote-private-integration.md. Next: user reviews/delivers candidate; remaining
+release gates are separate. No ordinary Git write or new external tracking action.
 
 ## Completed: Issue13 delivered, verified and closed
 
