@@ -13,14 +13,24 @@ Focused pdf-footnote6/6 passed29.555130s, including five new maintained regressi
 Full nix flake check exit0 (all checks passed: full stock ERT, patched Org, strict
 compilation and lint); no-link default build exit0.32runtime inputs equal root and
 isolated tmp/footnote-fix before/after all gates; original ELPA workaround and lock
-unchanged. Seven task paths uncommitted/unstaged. Coverage: generic/article,
+unchanged. Seven task paths staged under explicit user approval, uncommitted. Coverage: generic/article,
 anonymous/named-repeat/markup/cross-page, actual forward/back targets, repeated
 exports, explicit macros, error cleanup/recovery, shared session/worker isolation
 and cleanup-fatal shutdown. No GUI, PS exact landing, arbitrary-style or caption
 layout guarantee. Full contract/commands/identities: footnote-pdf-fix.md. Earlier
 causal evidence and archived originals: footnote-forward-probe.md and
 footnote-private-integration.md. Next: user reviews/delivers candidate; remaining
-release gates are separate. No ordinary Git write or new external tracking action.
+release gates are separate. No ordinary commit or new external tracking action.
+
+Delivery preparation: user authorized staging the seven task paths, now staged.
+All seven staged blobs match accepted hashes; cached whitespace check passes;
+only original flake.nix workaround remains unstaged. Default add hit sandbox
+read-only index; same exact authorized seven-path command succeeded with sandbox
+permission, no scope expansion. One cohesive fix commit, no split/polling needed.
+Reviewed staged diff drives tmp/commit.md: fix(pdf): restore forward links to footnotes.
+No Closes/Refs footer: this separate repair does not close Issue13 again. No test
+rerun solely for staging/message. Next user manually commits, then verify exact
+parent/patch/message/seven blobs without repeating already accepted runtime.
 
 ## Completed: Issue13 delivered, verified and closed
 

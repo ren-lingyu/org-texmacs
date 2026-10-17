@@ -13,14 +13,14 @@ Focused pdf-footnote6/6 passed29.555130s, including five new maintained regressi
 Full nix flake check exit0 (all checks passed: full stock ERT, patched Org, strict
 compilation and lint); no-link default build exit0.32runtime inputs equal root and
 isolated tmp/footnote-fix before/after all gates; original ELPA workaround and lock
-unchanged. Seven task paths uncommitted/unstaged. Coverage: generic/article,
+unchanged. Seven task paths staged under explicit user approval, uncommitted. Coverage: generic/article,
 anonymous/named-repeat/markup/cross-page, actual forward/back targets, repeated
 exports, explicit macros, error cleanup/recovery, shared session/worker isolation
 and cleanup-fatal shutdown. No GUI, PS exact landing, arbitrary-style or caption
 layout guarantee. Full contract/commands/identities: footnote-pdf-fix.md. Earlier
 causal evidence and archived originals: footnote-forward-probe.md and
 footnote-private-integration.md. Next: user reviews/delivers candidate; remaining
-release gates are separate. No ordinary Git write or new external tracking action.
+release gates are separate. No ordinary commit or new external tracking action.
 
 ## Purpose and status model
 
