@@ -80,6 +80,11 @@ Existing inline-footnote/display-equation fixes, prior block-fixture confirmatio
 bounded links/fonts/font-lock outcomes, representative documents, final checks
 and metadata/docs retain their established statuses; no existing gate completed
 by this scope update. Detailed readiness: memory/release-0.5.0.md.
+User now prioritizes0.5.0 version metadata and documentation/comments finalization.
+Full nix flake check is already routine per commit, not an additional release-only
+blocking gate. Representative combined documents are a final optional user decision
+(whether and format, possibly flake check/nix run), not an adopted prerequisite.
+Chinese font issue and PS route have been removed from blocking scope.
 Complete Org parity, async export, preview and general authoring assistance are
 not release requirements. Issue9 now owns independently named constituents inside
 one composite native structure, initially separately numbered/referenced aligned

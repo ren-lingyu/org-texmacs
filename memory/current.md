@@ -1,18 +1,22 @@
 # org-texmacs current memory
 
-## Current: v0.5.0 remaining checklist reconciled
+## Current: v0.5.0 version, documentation and comments finalization
 
-User requested remaining pre-release items from GAW. Consolidated current scope:
-1.representative full mathematical-document combined .tm/PDF/native acceptance;
-2.actual0.5.0 version metadata, README/support/examples, release notes and since
-0.4.0 migration finalization;3.final stabilized candidate locked ERT/native/PDF/
-compile/lint/full flake/default build as warranted by final changes. Latest accepted
-feature baseline553ERT/6patched/full checks remains valid, not final release proof.
-Detailed authoritative checklist: release-0.5.0.md top; backlog release section
-updated to distinguish historical P0/P1 adoption from remaining work. Native font
-issue and PS route removed; implemented/committed feature work not reopened.
-No new feature implementation/tests/tag/publication selected. Next user chooses
-which release-finalization node to execute; no overall0.5.0 readiness claim.
+User narrows current release work to version metadata and documentation/comments.
+Full nix flake check already accompanies each commit; do not list a separate
+release-only complete-check gate or demand another run merely for publication.
+Normal change-specific/commit validation continues under its applicable authority.
+Representative documents are a final optional decision: whether to do them and
+format/entrypoint (e.g.nix flake check or nix run) remain undecided. Do not treat
+them as a mandatory prerequisite or preselect new fixtures/Nix interfaces.
+
+Current focus: synchronize actual version declarations to0.5.0; consolidate README,
+support/examples/release notes/since0.4.0 migration; audit relevant source comments/
+docstrings against delivered behavior and known native limits. Detailed authority:
+release-0.5.0.md top; backlog and goals agree. Completed feature work stays closed;
+Chinese fonts and PS route stay removed. Scope decision only, not a new source edit,
+build command, tag or publication action. Next scope concrete version/docs/comment
+review and edits as user requests; no extra standalone final-test blocker.
 
 ## Completed: release scope narrowed; PS route is completed diagnostics
 

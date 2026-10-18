@@ -138,18 +138,19 @@ Single-object block NAME references now belong to13;13 does not close9.
 https://github.com/ren-lingyu/org-texmacs/issues/9
 https://github.com/ren-lingyu/org-texmacs/issues/13
 
-### v0.5.0 release readiness — three remaining finalization gates
+### v0.5.0 release readiness — version and documentation/comments
 
-Current remaining work: (1) representative combined mathematical-document .tm/PDF
-acceptance, (2)0.5.0 version/README/release notes/since0.4.0 migration finalization,
-(3)final stabilized candidate locked ERT/native/PDF/compile/lint/flake/default build.
-See authoritative consolidated checklist at top of memory/release-0.5.0.md.
-Issue10/11/13 and later captions/footnote links/block audit/font-lock/editing are
-completed; Chinese fonts and PS route are explicitly removed/nonblocking.
-Issue9/7 remain later/deferred. No new implementation/validation/release authority.
+Current primary goal:0.5.0 version declarations plus README/support/examples,
+release notes/since0.4.0 migration and relevant source comments/docstrings.
+Per-commit full nix flake check is normal workflow, not an independent release
+blocking item. Representative combined documents deferred to final optional user
+decision (whether/format/integration, e.g.flake check or nix run), no mandatory
+fixture/check/app work adopted. Authoritative scope: memory/release-0.5.0.md top.
+Completed features stay complete; native Chinese fonts and PS route stay removed.
+Issue9/7 remain later/deferred; no new source edit/test/tag/publication authority.
 
 Earlier adoption/delivery progression below is historical, not additional pending
-P0/P1 work; current remaining checklist above takes precedence.
+P0/P1/P2 work; current scope above takes precedence.
 
 
 Status: Issue10 and Issue11 implementation/automated acceptance/user delivery

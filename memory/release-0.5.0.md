@@ -1,38 +1,34 @@
 # v0.5.0 release readiness
 
-## Current remaining release gates (consolidated after scope closure)
+## Current release work: version, documentation and comments
 
-Authoritative remaining checklist below supersedes earlier P0/P1 pending wording
-and intermediate counts/claims later in this file. No new feature scope or runtime
-commands selected by this reconciliation.
+User supersedes the earlier three-gate reconciliation. Current primary goal is
+version metadata and documentation/comments finalization:
 
-1. Representative full mathematical Org document(s): combine supported statements/
-   captions, equations/inline STM, normal and repeated named notes, names/internal
-   links, figures/tables, configured citations+bibliography, metadata/style/initial.
-   Exercise repeated formal .tm/PDF exports and native readback/reload plus usable
-   visual output. Existing component/short fixtures do not yet record full-release
-   real-document acceptance. Fix only concrete package regressions found.
-2. Release metadata/docs/notes/migration after scope stabilizes: recorded package/
-   Nix sources were0.4.0, no completed0.5.0 version bump recorded. Synchronize actual
-   version declarations, support/examples and since0.4.0 migration (public API/
-   dispatcher menu/preprocessing changes) and release notes. Distinguish supported
-   subset from full Org parity, stock vs patched parser caption notes, and known
-   native caption-note layout/tested-environment boundaries. Existing per-feature
-   README updates do not by themselves finish release documentation.
-3. Final stabilized release candidate validation: maintained ERT/native/PDF
-   regressions, strict compilation/lint, full locked flake check and default build
-   against final candidate. Latest feature baseline553stock/6patched/full gate is
-   accepted; don't repeat only to refresh time. Final new document/metadata changes
-   determine appropriate reruns. Record actual tested versions/platforms/limits.
+- Synchronize actual package/Nix/version declarations to0.5.0; no completed version
+  bump is yet recorded. Review actual sources before editing.
+- Consolidate README usage/examples/support and release notes; since0.4.0 migration
+  includes public API, dispatcher menu and preprocessing changes. State supported
+  subset, stock vs patched caption-note AST input and known native layout limits.
+- Review relevant source commentary/docstrings for agreement with delivered code,
+  ownership/reference/export contracts, options and current supported behavior.
 
-Already completed/excluded, not remaining blockers: Issue10/11/13, native BibTeX
-work, statement long captions, normal PDF/footnote link repair, quote/center and
-bounded block audit, STM font-lock/basic GUI acceptance and block editing.
-User removes native Chinese-font issue and PS->PDF product/acceptance route.
-Issue9 after0.5.0/before0.6.0, Issue7 deferred; no new native caption-footnote layout,
-preview/async/general authoring feature implied. Publication/tag actions are later
-release operations, not permission granted by this checklist. No overall readiness
-claim before the three remaining gates have evidence.
+Full nix flake check is already part of each commit workflow. It is not a separate
+pre-release blocking task and must not be repeated solely to satisfy a second
+release gate. Appropriate checks for actual edits and normal commit readiness
+still apply; this decision does not waive failing tests or authorize commands.
+Latest accepted553stock/6patched/full checks retain their actual baseline scope.
+
+Representative combined mathematical documents are postponed to a final optional
+decision: user will decide whether to do them and their format/integration, e.g.
+nix flake check or nix run. No mandatory representative-document gate, fixed input
+format, example fixture layout or new check/app has been adopted. Do not begin
+that work as an implicit dependency of version/docs finalization.
+
+Completed feature deliveries remain complete; native Chinese-font issue and
+PS->PDF route remain removed/nonblocking. Issue9 stays after0.5.0/before0.6.0,
+Issue7 deferred. Tag/publication remains a later explicit release action. Older
+P0/P1/P2 adoption wording below is historical where superseded by this section.
 
 ## Chinese font issue removed from release blockers
 
@@ -211,14 +207,11 @@ committed delivery records for current local status. Still planned/not accepted.
   strict compile/lint/full flake pass; user-committed; exact delivery verified. No added release gate
   inferred. See memory/block-editing-implementation.md.
   Contract/final evidence: memory/font-lock-implementation.md.
-- Item7: representative mathematical full-document .tm/PDF workflow acceptance
-  combining supported features still pending; short combined link fixtures and
-  isolated original math regressions are useful but not whole release acceptance.
-- Item8: latest test delivery accepted6focused/440core/full compile/lint, prior
-  production repair9real extensions. Final stabilized release candidate requires
-  complete authorized locked-flake/native/PDF gates; don't rerun merely to claim
-  a fresh timestamp before remaining changes exist. Other-version/platform limits
-  remain explicit.
+- Former Item7: representative combined documents are now a final optional user
+  decision (whether/format, possibly flake check/nix run), not a release blocker.
+- Former Item8: normal per-commit full nix flake check continues; user explicitly
+  removes a separate release-only complete-check blocker. Existing test evidence
+  retains its tested baseline/environment scope, no timestamp-only rerun required.
 - Item9: actual package/Nix sources still0.4.0; update0.5.0 metadata, README support/
   examples/migration and release notes after scope stabilizes. Include native PDF
   first-note limit and current restricted BibTeX grammar/discovery behavior.
@@ -313,7 +306,7 @@ initial web lookups failed with Cache miss; subsequent connector reads verify
    This narrowly re-adopts investigation from former AUTHORING-01 ideas, not
    general Scheme editing, live preview or full authoring assistance.
 
-## P2: release verification and finalization
+## Earlier P2 proposal (superseded by current user scope above)
 
 7. Representative real mathematical Org document(s) must combine supported inline
    STM/special blocks/equations/footnotes/internal references, citations+bibliography
