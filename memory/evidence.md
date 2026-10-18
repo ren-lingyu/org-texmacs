@@ -13,8 +13,8 @@ Necessary exact text evidence: archive/2026-10-18T02-10-34Z--947289b/MANIFEST.md
 Six-path candidate locally accepted on copied32runtime inputs:75focused114.762178s,
 6patched2.922588s,553stock430.785335s, all7isolated flake checks/strict compile/lint,
 default package exit0.31non-flake copied bytes equal root; copied flake only adds
-native gate. Root ELPA workaround/lock unchanged, ordinary index empty, no delivery
-or release claim. Full contract/authorized commands/test corrections and limits:
+native gate. Root ELPA workaround/lock unchanged. Subsequent user-authorized
+six-path staging matches validated bytes; message ready, no delivery/release claim. Full contract/authorized commands/test corrections and limits:
 statement-caption-implementation.md. No project-parent inference for uncommitted
 candidate; underlying baseline is not the candidate snapshot.
 

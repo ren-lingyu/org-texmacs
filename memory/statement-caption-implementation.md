@@ -6,8 +6,8 @@ User selected implementation of the adopted statement guidance before v0.5.0.
 Original guidance identity, complete extraction and no-raw-INBOX-retention judgment:
 statement-caption-review.md. No new tags, public API/worker protocol, custom
 handler caption support, caption STM discovery, parser patch production dependency,
-version/lock or generic testing-layout refactor. Ordinary staging/commit not
-requested. Root ELPA workaround must remain unchanged/uncommitted.
+version/lock or generic testing-layout refactor. User subsequently authorized exact six-path ordinary staging; no ordinary
+commit execution authorized/performed. Root ELPA workaround must remain unchanged/uncommitted.
 
 ## Native structure decision
 
@@ -85,7 +85,8 @@ Only pinned x86_64-linux validated; other systems omitted. Final root/copy
 comparison passes for all32recorded runtime input hashes,31non-flake copies
 byte-equal, copied flake exactly root plus native-check declaration. Root
 flake/lock hashes unchanged and ordinary index empty. Six-path candidate locally
-accepted, not staged/committed/delivered; no release or external issue action.
+accepted; subsequently staged by user authorization, not committed/delivered.
+No release or external issue action.
 
 ## Selected immutable native evidence
 
@@ -99,3 +100,23 @@ selected output copies verified against native store inputs/output. Manifest
 records capture context separately from untracked experiment provenance; no
 additional project parent inferred. Skill files unchanged, archive checkpoint
 separate from current memory. Faithful source trailing blank retained.
+
+## Submission readiness
+
+User requested split assessment, staging permission and commit message. One commit
+recommended (split not necessary, difficulty low): source proof/preparation/resolver/
+lowering plus errors, maintained tests and README are one coupled capability.
+User authorized staging exact six task paths; complete staged diff reviewed, check
+clean, each staged blob equals validated candidate bytes. Only original root
+flake workaround remains unstaged. No test rerun: unchanged accepted bytes.
+Message tmp/commit.md is feat(document): support captions on formal statements,
+four Chinese bullets, Refs:#13 (already closed), no Closes footer. No ordinary
+commit executed; await manual user commit. Candidate delivery verification:
+parent947289b5ec4c223e498b4d6e180c0a9abbbeded5, exact six paths listed above;
+SHA256 of git diff --cached --binary --full-index:
+c5d6796cd3778cd053dbf6e0564aad957abc4f5626f75656692493894d6af2ca.
+Message byte SHA256:
+5bc4cfba51a2bd161cae821ea40c0f20d91b4b335c881b82a5985e1e9622ba31.
+No additional project parent inferred for an uncommitted staged tree. After user
+commit, verify actual message/diff/blobs and associated issue state per project
+preference; footer is a relation, not a fresh closure request.

@@ -1,13 +1,14 @@
 # org-texmacs current memory
 
-## Current: statement caption completion locally accepted, not staged
+## Current: statement caption completion staged, commit message ready
 
 User-selected statement NAME/CAPTION completion is implemented in six project
 paths, verified on isolated copied inputs: focused75/75(114.762178s), patched Org
 6/6(2.922588s), stock553/553(430.785335s), full flake all7checks/strict compile/lint
 and default build exit0. Root/copy32input hashes verified,31non-flake bytes equal;
 copied flake only adds independent native gate. Root ELPA workaround/lock unchanged,
-ordinary index empty. No staging/ordinary commit/external tracking/release action.
+User authorized staging the exact six task files; index matches validated bytes.
+Only root flake remains unstaged. No ordinary commit/external tracking/release action.
 
 All16statement types gain long caption->dueto with existing inline/ref ownership,
 strict reject explicit short incl erased []/empty long before caption link scan,
@@ -25,9 +26,11 @@ Full implementation/authorization/results/initial test mistakes/limits:
 statement-caption-implementation.md. Adopted design/INBOX first-read identity and
 no redundant raw capture: statement-caption-review.md. Necessary independent
 native evidence only: archive/2026-10-18T02-10-34Z--947289b/MANIFEST.md. Archive and
-memory checkpoints separate; skill files unchanged. Next user reviews candidate
-and may request commit assessment/staging. Do not stage without authorization or
-claim delivery/version0.5.0 readiness. GUI/other styles/platforms not newly tested.
+memory checkpoints separate; skill files unchanged. Split unnecessary: implementation,
+regressions and README form one coherent capability. tmp/commit.md ready with
+feat(document): support captions on formal statements; Refs:#13, no Closes.
+Next user manually commits; verify exact six paths/parent/patch/message afterward.
+No delivery/version0.5.0 readiness claim. GUI/other styles/platforms not newly tested.
 
 ## Completed: block mapping / CJK bounded investigation
 

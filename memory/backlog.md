@@ -10,10 +10,11 @@ checks. Use one surround prefix, original STM roots indivisible; nonconcat/empty
 separate prefix. All16types have long-only caption->dueto with existing inline,
 reference/frozen ID/source-proof rules; short incl empty syntax and empty long
 rejected. Example Org syntax exception retained. Root workaround/lock unchanged,
-index empty. Not yet staged/committed/delivered; no release readiness claim.
+six paths now user-authorized/staged; single commit message ready at tmp/commit.md.
+Not yet committed/delivered; no release readiness claim.
 Contract/results/native distinctions: statement-caption-implementation.md.
 Adopted guidance: statement-caption-review.md. Necessary raw native evidence:
-archive/2026-10-18T02-10-34Z--947289b/MANIFEST.md. Next candidate review/delivery,
+archive/2026-10-18T02-10-34Z--947289b/MANIFEST.md. Next manual user commit and delivery verification,
 remaining release gates unchanged.
 
 ## Block mapping / CJK bounded investigation completed

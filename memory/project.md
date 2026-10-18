@@ -12,8 +12,9 @@ opaque STM roots indivisible; nonconcat/empty separate prefix. Paths remap;
 same-prepared consumers reuse IDs. Native generic/article36cases/direct control/
 readback/PDF/reload passed before production; legacy NAME-only paragraph break
 removed, target coords and numbers retained.75focused/6patched/553stock/full
-flake/compile/lint/default build pass. Not staged/delivered; root workaround/lock
-unchanged. Current contract/evidence: statement-caption-implementation.md.
+flake/compile/lint/default build pass. Exact six paths now user-authorized/staged,
+message ready; not committed/delivered. Root workaround/lock unchanged.
+Contract: statement-caption-implementation.md.
 
 ## Block mapping / CJK bounded investigation completed
 
