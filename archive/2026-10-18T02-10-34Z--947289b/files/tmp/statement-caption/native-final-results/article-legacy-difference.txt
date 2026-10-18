@@ -1,0 +1,1 @@
+(('article: previous NAME-only placement', 'text layout differs', {'page': 7, 'rect': [100.0, 95.33333333333333, 206.0, 107.33333333333333], 'text': 'TheoremNameonly Body'}, {'page': 7, 'rect': [148.0, 83.33333333333333, 254.0, 95.33333333333333], 'text': 'TheoremNameonly Body'}),)
