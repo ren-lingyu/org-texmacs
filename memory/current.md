@@ -1,6 +1,26 @@
 # org-texmacs current memory
 
-## Current: block mapping / CJK bounded investigation completed
+## Current: statement caption/label guidance reviewed, no implementation
+
+User requested read-only review of updated INBOX (14447bytes, SHA2564b1d4d81...).
+Full design/first-read retention judgment and findings: statement-caption-review.md.
+No new raw archive: sufficient operational extraction; original source identity
+recorded, later INBOX may change. Main proposed addition: built-in statement long
+CAPTION->dueto with existing caption inline/frozen-reference/source-proof rules,
+strict reject explicit short incl empty, label+dueto prefix and owned provenance.
+NAME allocation already exists. No production files/tests/build/index touched.
+
+Review found first-concat may itself be original STM root; unconditional prefix
+merging violates original-root/provenance boundary. User asks about accepting
+restricted rewrite or using surround; recommended surround PREFIX "" FIRST-CONCAT
+candidate preserves root but changes section5 shape and needs native gate before
+adoption/implementation. Two further corrections: literal begin_example exception,
+and same-prepared repeated lowering versus fresh export allocation distinction.
+Clarify repeated ordinary CAPTION accepted, and bibliography-native exception to
+body-STM preflight guarantee. Recommendations pending user decision; no native
+or GUI proof of dueto/placement claimed, no implementation plan executed.
+
+## Completed: block mapping / CJK bounded investigation
 
 User recalls original fixed blocks primarily quote/center; archive red/green
 quote reports and retained center positive controls now map to current regressions.

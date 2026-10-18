@@ -1,5 +1,16 @@
 # v0.5.0 release readiness
 
+## Statement caption guidance: reviewed, implementation not selected
+
+User supplied v0.5.0 guidance and requested review only. Built-in long caption ->
+dueto, strict explicit-short rejection, existing frozen Org identities and source
+proof; NAME already supported. Findings/captured design: statement-caption-review.md.
+First-concat may be an opaque STM root; user suggests surround, recommended native
+candidate preserving whole root. Also retain literal begin_example exception and
+separate same-prepared ID reuse from fresh export allocation. Clarify multiline
+CAPTION and bibliography/preflight guarantees. Proposed tree/wording tightening
+pending user decision; no production, testing, API or release action selected.
+
 ## Block mapping / CJK bounded investigation completed
 
 User recalls original fixed blocks primarily quote/center; archive red/green
