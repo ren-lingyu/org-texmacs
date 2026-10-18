@@ -2,11 +2,12 @@
 
 ## Version/documentation candidate for0.5.0
 
-Uncommitted package header and Nix package now declare0.5.0. README adds release
+Committed package header and Nix package now declare0.5.0. README adds release
 overview/since0.4.0 API migration and reconciles support/options/native limits;
 relevant source commentary/docstrings corrected without runtime logic changes.
 Six-path candidate passes isolated full flake:553stock/6patched ERT, strict compile/
-lint and default build;32inputs match root. Now user-authorized staged, not committed/tagged/published. Full scope,
+lint and default build;32inputs match root. User committed exact candidate; parent/patch/message/all32inputs verified.
+Project index/worktree clean; not tagged/published. Full scope,
 commands/results and final optional representative-doc decision: release-0.5.0.md.
 
 ## Chinese font follow-up: reproduced using user's bundled-font override

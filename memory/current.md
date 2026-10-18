@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: v0.5.0 version/documentation candidate accepted and staged
+## Current: v0.5.0 version/documentation delivery committed and verified
 
 User narrows current release work to version metadata and documentation/comments.
 Full nix flake check already accompanies each commit; do not list a separate
@@ -17,9 +17,13 @@ test changes. Full isolated flake check exit0:553stock ERT(379.866632s),6patched
 Org(2.836266s), strict compilation/lint; default no-link package build exit0.
 32root/copy input hashes match before/after acceptance; diff whitespace clean.
 First check found an84-column added docstring, rewrapped before final acceptance.
-Exact commands/authority and scope: release-0.5.0.md top. Candidate is now explicitly user-authorized and staged, not committed; no tag/
-publication. tmp/commit.md contains the reviewed draft. User may commit or
-choose final optional representative-document work. No new archive/skill change:
+Exact commands/authority and scope: release-0.5.0.md top. User committed the
+reviewed candidate; single expected parent, full six-path binary patch, complete
+message and all32accepted input blobs match. Project index/worktree clean.
+No runtime rerun for identical committed bytes. Current project association
+grounds delivery verification, not original uncommitted runtime acceptance.
+No tag/publication. Version/documentation work is complete; next user may choose
+final optional representative-document work or explicit release actions. No new archive/skill change:
 ordinary Git preserves docs and existing evidence suffices. Completed feature work,
 Chinese fonts and PS scope remain unchanged; no new release-only test blocker.
 

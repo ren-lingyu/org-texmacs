@@ -1,12 +1,12 @@
 # v0.5.0 release readiness
 
-## Current release work: version, documentation and comments
+## Version, documentation and comments: committed and verified
 
 User supersedes the earlier three-gate reconciliation. Current primary goal is
 version metadata and documentation/comments finalization:
 
-- Package header and Nix package declarations now both read0.5.0 in the uncommitted
-  candidate; no tag/publication. Both were0.4.0 at clean main75762b0 task baseline.
+- Package header and Nix package declarations now both read0.5.0 in the delivered
+  commit; no tag/publication. Both were0.4.0 at clean main75762b0 task baseline.
 - README usage/examples/support and release notes consolidated; since0.4.0 migration
   includes public API, dispatcher menu and preprocessing changes. State supported
   subset, stock vs patched caption-note AST input and known native layout limits.
@@ -35,16 +35,22 @@ compilation/package-lint. Default no-link package build exit0. All32root/copy in
 hashes still match accepted manifest; whitespace clean. Subsequent user-authorized staging includes exactly these six
 paths; every staged blob matches the validated32input manifest.
 Validated only current x86_64-linux locked environment, no wider platform claim.
-No source commit or new representative document/check/app. This is actual-change validation, not an added release gate.
+No new representative document/check/app. This is actual-change validation, not an added release gate.
 No new original archive needed: ordinary project history will preserve the authored
-docs and prior native evidence is already retained; no skill changes. Next user
-may commit the six-path candidate or choose final optional work.
+docs and prior native evidence is already retained; no skill changes. User has committed the exact candidate. Read-only verification confirms
+one expected statement-caption parent, exact six-path full-index binary patch,
+complete approved message and all32accepted input blobs (including unchanged lock).
+Project index/worktree clean. No runtime rerun solely for commit verification.
+Current project-parent association establishes delivery equivalence, not original
+uncommitted runtime acceptance. Version/docs work complete; next user selects
+final optional representative documents or explicit tag/publication actions.
 Split unnecessary: versions, release/migration docs and corrected contracts form
 one release-preparation change. Draft tmp/commit.md: chore(release): prepare
 0.5.0 metadata and documentation; no issue-closing/breaking footer. Exact staged
 full-index binary patch SHA2565e318864a1cd1537b423f96682a1aab421141985b57dfdfd1316a9b416bbf729;
 message SHA25669f4fc65e9b3f59c49e6f1511faab608fd609f7ea478d5d20ae4980fda61f827.
-No unstaged project changes. Runtime tests not repeated for staging alone.
+The patch/message hashes above identify both staged and delivered bytes.
+No unstaged project changes. Runtime tests not repeated for staging or commit alone.
 
 Full nix flake check is already part of each commit workflow. It is not a separate
 pre-release blocking task and must not be repeated solely to satisfy a second

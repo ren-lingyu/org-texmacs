@@ -82,7 +82,8 @@ and metadata/docs retain their established statuses; no existing gate completed
 by this scope update. Detailed readiness: memory/release-0.5.0.md.
 User now prioritizes0.5.0 version metadata and documentation/comments finalization.
 The selected six-path candidate is now locally accepted by isolated full flake
-(553stock/6patched/strict compile/lint) and default build, now user-authorized staged and not yet committed.
+(553stock/6patched/strict compile/lint) and default build. User committed exact candidate; delivery verification confirms
+parent/patch/message/all32inputs, project index/worktree clean. Version/docs complete.
 Details: release-0.5.0.md. This does not select tag/publication.
 Full nix flake check is already routine per commit, not an additional release-only
 blocking gate. Representative combined documents are a final optional user decision
