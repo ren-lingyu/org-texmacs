@@ -5,13 +5,40 @@
 User supersedes the earlier three-gate reconciliation. Current primary goal is
 version metadata and documentation/comments finalization:
 
-- Synchronize actual package/Nix/version declarations to0.5.0; no completed version
-  bump is yet recorded. Review actual sources before editing.
-- Consolidate README usage/examples/support and release notes; since0.4.0 migration
+- Package header and Nix package declarations now both read0.5.0 in the uncommitted
+  candidate; no tag/publication. Both were0.4.0 at clean main75762b0 task baseline.
+- README usage/examples/support and release notes consolidated; since0.4.0 migration
   includes public API, dispatcher menu and preprocessing changes. State supported
   subset, stock vs patched caption-note AST input and known native layout limits.
-- Review relevant source commentary/docstrings for agreement with delivered code,
+- Relevant source commentary/docstrings reviewed and corrected against delivered code,
   ownership/reference/export contracts, options and current supported behavior.
+
+User explicitly selected this work. Six-path candidate: README.org, flake.nix,
+org-texmacs.el, org-texmacs-input.el, org-texmacs-document.el and org-texmacs-session.el.
+README adds version overview/since0.4.0 API migration, menu/preprocessing defaults,
+stock-vs-test-patched Org and native caption-note limits. Correct stale introductory
+fontification exclusion, eight core options/edit-mode example, wrapper/name support,
+region bibliography discovery and missing serialization/rendering errors. Source
+edits are version metadata and commentary/docstrings only: bibliography native
+duplicates, supported captions/blocks/notes/alignment, body-STM preflight guarantee,
+and disposable-buffer PDF destination repair. No runtime branch/API/lock/test change.
+
+32tracked inputs copied byte-identically to ignored tmp/release-0.5.0; no root
+flake workaround remains at this task's clean baseline. User authorizes repeated
+root commands `timeout 600s nix flake check --no-write-lock-file path:./tmp/release-0.5.0`
+and `timeout 120s nix build --no-link --no-write-lock-file path:./tmp/release-0.5.0#default`,
+plus reading results; network/store/cache/isolated logs/tests effects disclosed.
+First full check stopped on a newly added84-column docstring. Rewrapped locally,
+synchronized all32inputs and reran the same authorized command. Final full flake
+check exit0:553/553stock ERT(379.866632s),6/6patched Org(2.836266s), strict
+compilation/package-lint. Default no-link package build exit0. All32root/copy input
+hashes still match accepted manifest; whitespace clean and ordinary index empty.
+Validated only current x86_64-linux locked environment, no wider platform claim.
+No source staging/commit or new representative
+document/check/app. This is actual-change validation, not an added release gate.
+No new original archive needed: ordinary project history will preserve the authored
+docs and prior native evidence is already retained; no skill changes. Next user
+may review/stage/commit the six-path candidate or choose final optional work.
 
 Full nix flake check is already part of each commit workflow. It is not a separate
 pre-release blocking task and must not be repeated solely to satisfy a second

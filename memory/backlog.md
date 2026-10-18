@@ -1,5 +1,14 @@
 # org-texmacs active backlog
 
+## Version/documentation finalization locally accepted
+
+User-selected six-path0.5.0 metadata/README/commentary candidate passes full isolated
+flake(553stock/6patched/strict compile/lint) and default build. Unstaged/uncommitted;
+next user selects review/staging/commit or final optional representative documents.
+No separate release-only complete-check gate or mandatory document/check/app.
+Native fonts/PS route remain removed; no tag/publication. release-0.5.0.md holds
+current scope/evidence; older pending-version wording is superseded by this state.
+
 ## Statement caption completion committed and verified
 
 User selected adopted design; six-path candidate now passes focused75/75,

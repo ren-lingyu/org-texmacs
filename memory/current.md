@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: v0.5.0 version, documentation and comments finalization
+## Current: v0.5.0 version/documentation candidate accepted, not yet staged
 
 User narrows current release work to version metadata and documentation/comments.
 Full nix flake check already accompanies each commit; do not list a separate
@@ -10,13 +10,18 @@ Representative documents are a final optional decision: whether to do them and
 format/entrypoint (e.g.nix flake check or nix run) remain undecided. Do not treat
 them as a mandatory prerequisite or preselect new fixtures/Nix interfaces.
 
-Current focus: synchronize actual version declarations to0.5.0; consolidate README,
-support/examples/release notes/since0.4.0 migration; audit relevant source comments/
-docstrings against delivered behavior and known native limits. Detailed authority:
-release-0.5.0.md top; backlog and goals agree. Completed feature work stays closed;
-Chinese fonts and PS route stay removed. Scope decision only, not a new source edit,
-build command, tag or publication action. Next scope concrete version/docs/comment
-review and edits as user requests; no extra standalone final-test blocker.
+User selected version/docs implementation against clean main75762b0. Six ordinary
+files now contain0.5.0 package/Nix declarations, README overview/migration/support
+corrections and relevant commentary/docstring updates. No runtime logic/API/lock/
+test changes. Full isolated flake check exit0:553stock ERT(379.866632s),6patched
+Org(2.836266s), strict compilation/lint; default no-link package build exit0.
+32root/copy input hashes match before/after acceptance; diff whitespace clean.
+First check found an84-column added docstring, rewrapped before final acceptance.
+Exact commands/authority and scope: release-0.5.0.md top. Candidate remains
+unstaged/uncommitted; no tag/publication. User may next review/stage/commit or
+choose final optional representative-document work. No new archive/skill change:
+ordinary Git preserves docs and existing evidence suffices. Completed feature work,
+Chinese fonts and PS scope remain unchanged; no new release-only test blocker.
 
 ## Completed: release scope narrowed; PS route is completed diagnostics
 
