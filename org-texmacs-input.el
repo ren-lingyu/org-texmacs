@@ -254,8 +254,10 @@ the source-relative resource base; SOURCE-FILE does not override it.  Omitted
 values remain nil and are never inferred from the current buffer.
 
 BIBLIOGRAPHY is an alist from explicit absolute source paths to already parsed
-BibTeX document strees.  Copy its text trees and reject duplicate source paths,
-keys or fields.  Never read those paths or parse source text here.  This slot
+BibTeX document strees.  Copy its text trees and reject duplicate source paths
+and malformed consumed entry/field structures.  Preserve native duplicate
+entries and fields; resolution requires uniqueness only for used keys.
+Never read those paths or parse source text here.  This slot
 establishes prepared data ownership.  Citation lowering also requires fixed
 INFO declaration identities and a prepared output view for bibliography print.
 The view binds prefix, key order, selected entry trees and source-semantic body;
@@ -263,7 +265,7 @@ pure lowering verifies that it matches the current resolution plan.
 
 Copy strings, lists and vectors, rebuild parent links, and remap references
 to AST nodes in INFO and the mappings.  Copy parsed title, author and date
-secondary strings as separately owned Org objects, and table captions as
+secondary strings as separately owned Org objects, and supported captions as
 owned pairs of long/short secondary strings.  Reject cyclic or multiply
 owned AST nodes, detached/duplicate mapping keys, deferred values and opaque
 objects.

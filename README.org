@@ -19,13 +19,83 @@ footnotes, bare default citations with explicit bibliography text snapshots,
 native plain bibliographies, list/container structures, rich metadata,
 relative headline sectioning, a static filtered TOC, static preformatted
 blocks, named/captioned basic rectangular tables and TeXmacs islands, as specified below.
+Formal statements, raw STM equations and explicit figure/table wrappers support
+bounded caption and same-document reference semantics.  Embedded STM has Scheme
+fontification and source editing through Org's existing edit workflow.
 Independent consumers provide native =.tm= serialization, new-file saving and
 PDF rendering.  The optional =ox-texmacs= frontend connects these consumers to
 Org's export dispatcher, with local output naming/reexports, subtree/region/
-narrowing scopes and restricted external configuration.  GUI preview, cross-file reference resolution,
-fontification, an editing minor mode and a combined live Org/TeXmacs AST are
-outside the current support boundary.
+narrowing scopes and restricted external configuration.  GUI preview, cross-file
+reference resolution and a combined live Org/TeXmacs AST are outside the current
+support boundary.
 Org's source buffer and live AST remain unchanged.
+
+* Version 0.5.0
+This version extends the supported Org-first mathematical authoring subset;
+it does not provide complete Org exporter parity.  Changes since =0.4.0= include:
+
+- Recursive formal statements with long captions, raw STM equations, explicit
+  figure/table wrappers and single-object =NAME= / =[[name]]= references.
+- STM fragments in inline footnote bodies and native display layout for bare
+  STM paragraphs.  Mixed paragraphs containing known display-math roots now fail
+  explicitly; ordinary inline =math= remains supported.
+- Native PDF hyperlink annotations and forward footnote destinations, with
+  maintained anonymous, named/repeated and cross-page link regressions.
+- Scheme fontification of embedded STM, plus source editing and indentation
+  for TeXmacs blocks through =org-texmacs-edit-mode=.
+- Opt-in bibliography discovery, restricted citation-key AST filters and
+  native TeXmacs interpretation of BibTeX, without a second entry/field whitelist.
+- Bounded Org preprocessing and native INCLUDE for full frontend exports,
+  explicit dispatcher key configuration and separate frontend/Lisp export APIs.
+- Native quotation mapping, explicit table column alignment and literal raw
+  timestamp preservation in date metadata.
+
+** Upgrading from 0.4.0
+The frontend/API and preprocessing changes are breaking changes.  No compatibility
+aliases are provided.  Update callers before reloading; a fresh Emacs session
+avoids retaining removed definitions or an already registered dispatcher menu.
+
+| Previous call or command | Replacement |
+|--------------------------+-------------|
+| =org-texmacs-export-from-buffer= | =org-texmacs-export-texmacs-from-buffer= |
+| =org-texmacs-export-to-file= | =org-texmacs-export-to-texmacs-file= |
+| =org-texmacs-export-to-pdf SOURCE-BUFFER FILE= | =org-texmacs-export-to-pdf-file SOURCE-BUFFER FILE= |
+| Frontend =org-texmacs-export-to-texmacs-pdf= | =org-texmacs-export-to-pdf= from =ox-texmacs= |
+
+The main package's explicit-source exports are noninteractive Lisp APIs.
+Load =ox-texmacs= for its three interactive commands, which take Org's five
+optional export arguments.  In particular, the new frontend
+=org-texmacs-export-to-pdf= does not accept the old source-buffer/file arguments.
+See [[*Explicit-source native byte buffers][Explicit-source native byte buffers]] and [[*Org export dispatcher][Org export dispatcher]].
+
+The dispatcher has no menu by default.  To restore the former keys, set the
+complete option before the first frontend load:
+
+#+begin_src emacs-lisp
+  (setq org-texmacs-export-menu-keys
+        '(:prefix ?T :buffer ?T :file ?t :pdf ?p))
+  (require 'ox-texmacs)
+#+end_src
+
+Full unnarrowed frontend exports now run captured preprocessing hooks and native
+INCLUDE within the documented limits, including the 256 KiB source/final-text
+budget even without INCLUDE.  Subtree, region and narrowed exports keep direct
+preparation.  Explicit-source APIs do not automatically preprocess; callers may
+use the separate =-preprocessed= adapters.  Bibliography discovery remains opt-in
+and defaults to nil in the frontend.  See [[*Opt-in native preprocessing and INCLUDE][Opt-in native preprocessing and INCLUDE]].
+
+Embedded STM fontification is enabled on load.  The public
+=org-texmacs-edit-mode= option selects a major mode for block editing; it is not
+a minor-mode toggle.  It defaults to bundled =scheme-mode= and does not install
+Tree-sitter support.  See [[*Embedded STM editing][Embedded STM editing]].
+
+The default Org dependency is unchanged.  Stock Org treats caption =[fn::...]=
+as text; anonymous inline footnote ASTs supplied by a prepared input or an external
+parser can be converted.  The parser patch is a test dependency only.  TeXmacs
+2.1.5 floating captions still have known footnote body/numbering/layout limitations;
+AST compatibility does not promise correct caption-footnote PDF typesetting.
+The private PDF footnote destination repair does not change serialized =.tm= files
+or existing sessions.  See [[*Preparing a document result][Preparing a document result]] and [[*Native PDF rendering][Native PDF rendering]].
 
 * Requirements
 - Emacs 31.1 or later and Org 9.8 or later, as declared by the package.
@@ -153,7 +223,7 @@ defers loading.  It does not start TeXmacs.  The first block cache miss or
 fragment tree request starts the worker, as does document island parsing
 or opening a native session; source discovery alone does not.
 
-The core exposes seven customizable variables, shown in this example.  The
+The core exposes eight customizable variables, shown in this example.  The
 optional =ox-texmacs= frontend adds =org-texmacs-export-discover-bibliography= and
 =org-texmacs-export-menu-keys=, described under [[*Org export dispatcher][Org export dispatcher]].
 The example assumes the package is already on =load-path= and explicitly sets
@@ -178,6 +248,7 @@ that default and requires the executable to be found through =exec-path=.
      #'org-texmacs-format-headline-default-function)
     (org-texmacs-document-style '("generic"))
     (org-texmacs-document-initial nil)
+    (org-texmacs-edit-mode 'scheme-mode)
     (org-texmacs-fragment-tags
      '("math" "equation" "equation*" "eqnarray" "eqnarray*"
        "align" "align*" "gather" "gather*" "eqsplit" "eqsplit*")))
@@ -568,7 +639,7 @@ now export their accessible body; restriction changes during prompts/native wait
 reject results.  Existing APIs use explicit bibliography text snapshots.
 The opt-in discovery APIs below can acquire missing local =.bib= files.
 
-This version does not implement generic =org-export-as=/publishing, =visible-only=,
+The current release does not implement generic =org-export-as=/publishing, =visible-only=,
 =body-only= fragments, async export or unrestricted preprocessing.  Native PDF
 regression checks structure/text/reference semantics; it does not establish GUI
 layout or general pagination convergence.  Detailed supported and rejected
@@ -714,14 +785,15 @@ The supported Org subset is deliberately small:
 | =texmacs= special block                           | One parsed STM subtree, even for a string or =document= root |
 | Formal statement special block                   | Native statement environment with recursive body =document= |
 | =equation= / =equation*= special block             | One raw STM datum in a numbered / unnumbered native formula |
+| Explicit =figure= / =table= special block (including starred forms) | Native =big-figure= / =big-table=, with outer caption and name |
 | COMMENT / comment block                           | Removed before structural preflight                         |
 | Task, archive and select/exclude filtering        | Org policy applied before STM worker requests                |
 
 Heading text may contain supported emphasis and literal inline code, but not
 explicit line breaks.  This is not a general Org
 exporter: unsupported links and footnotes, advanced table semantics, other
-blocks, unrecognized keywords, drawers and affiliated metadata other than the
-table names/captions described below are rejected.
+blocks, unrecognized keywords, drawers and affiliated metadata outside the
+object-specific NAME/CAPTION rules below are rejected.
 Empty and deeper headings are also rejected rather than silently discarded.
 Fragment discovery can support
 contexts that this whole-document conversion does not support.
@@ -761,7 +833,7 @@ caption, including =#+CAPTION[]:=, are rejected; =ATTR_*= remains unsupported.
 These rules apply to all sixteen statement tags, including formal =example=.
 Custom special-block handlers do not gain caption support.
 
-The generated label and =dueto= prefix surrounds a first =concat= paragraph;
+The generated label and =dueto= prefix surround a first =concat= paragraph;
 original STM subtrees remain intact.  An empty body or a first block node uses a
 separate prefix paragraph.  A prepared input freezes reference identities once;
 repeated consumers reuse them, while a new preparation may allocate different
@@ -848,7 +920,8 @@ no extra text parser reconstructs the missing figure or TeXmacs block.
 
 Cell contents and formatting values are not reinterpreted.  A naked Org table
 retains its existing caption, numbering and reference behavior.  These wrappers
-do not add image imports, float placement or new block references.
+do not add image imports or float-placement controls.  Their names and references
+follow the object-specific rules below.
 
 The ordinary special-block dispatch is private, with no stable handler API or
 registration command.  Its captured handlers must preserve the entire lowered
@@ -1125,7 +1198,7 @@ retained headline, so a lone three-star heading becomes =section=.
 The source's tag-group definitions are also snapshotted for filtering.  Org's
 standard COMMENT and ARCHIVE markers retain their native parser semantics.
 Arbitrary Org parser customization is not supported.
-There is no INCLUDE/SETUPFILE expansion, BIND or macro processing, Babel
+Direct preparation performs no INCLUDE/SETUPFILE expansion, BIND or macro processing, Babel
 execution or buffer-level export hook.  The corresponding source directives are
 rejected before lowering and never cause an external file read.
 This is structural conversion, not a byte-for-byte Org round trip.
@@ -1967,8 +2040,9 @@ The source's supported file/global configuration and bibliography declarations
 remain available outside the selected body.  Used named footnotes are restored
 from the same snapshot; unused out-of-region body and islands are not converted.
 Internal links must resolve to targets in the emitted body/dependencies.
-Citations still require explicit BibTeX text snapshots and one bibliography print
-inside the selected region.  No dependency file is opened.
+Citations require supplied bibliography data and one bibliography print inside
+the selected region.  Direct APIs use explicit text snapshots without opening
+dependency files; frontend discovery can acquire missing bibliography when enabled.
 
 If =subtreep= is also non-nil, its heading supplies the supported =EXPORT_*=
 configuration and output name, while the active region supplies the body.  A
@@ -2146,6 +2220,8 @@ explicitly; this is an internal function, not a stable public command.
 | =org-texmacs-document-error= | Unsupported document input or changed source/configuration                 |
 | =org-texmacs-encoding-error= | Invalid native encoding input                                              |
 | =org-texmacs-session-error=  | Invalid/stale session or native body operation failure                     |
+| =org-texmacs-serialization-error= | Native document serialization failure                                 |
+| =org-texmacs-rendering-error= | Native PDF rendering failure                                              |
 
 All these conditions inherit from =org-texmacs-error=.  Parse errors leave
 the worker available for the next request.  Transport failures and request
@@ -2175,6 +2251,13 @@ and the adjacent Scheme service file.
 Nix checks the current system by default.  These commands may download
 dependencies and write Nix store/cache data; they do not update the lockfile,
 and the build command does not create a =result= link.
+
+The default ERT check uses stock Org and includes direct-AST caption-footnote
+tests.  The separate =caption-inline-footnotes= check builds the locked Org
+9.8.10 with the adjacent test-only patch and exercises the public export pipeline.
+It does not change =packages.default= or the ordinary development environment.
+The real extension runner described above requires separately supplied pinned
+extension sources and is not part of the default flake checks.
 
 Git flake inputs omit untracked files.  When checking new files before staging,
 use an explicit =path:.= flake input, such as

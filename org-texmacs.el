@@ -4,7 +4,7 @@
 
 ;; Author: aRenCoco
 ;; Maintainer: aRenCoco
-;; Version: 0.4.0
+;; Version: 0.5.0
 ;; Package-Requires: ((emacs "31.1") (org "9.8"))
 ;; Keywords: outlines, tex
 ;; URL: https://github.com/ren-lingyu/org-texmacs
@@ -40,6 +40,9 @@
 ;; `org-texmacs-fragment-map', using `org-texmacs-fragment-tags' as entry names.
 ;; Use `org-texmacs-fragment-tree' to parse a fragment source span on demand,
 ;; without caching or changing Org's native object parser.
+;; Loading enables Scheme fontification of embedded STM in Org buffers.
+;; Use Org's source-edit workflow for TeXmacs blocks; `org-texmacs-edit-mode'
+;; selects the editing/indentation major mode, defaulting to `scheme-mode'.
 ;; Use `org-texmacs-document' to lower an explicit prepared input, or
 ;; `org-texmacs-document-from-buffer' for source-buffer structural conversion
 ;; to a text TeXmacs document result with body, style, initial environment and
@@ -237,7 +240,8 @@ Optional SUBTREE-POSITION selects its containing subtree instead of the full
 body.  REGION, a (BEGIN . END) integer pair, takes precedence for body
 selection while keeping subtree options.  Configuration and referenced
 footnotes come from the same full snapshot.  Partial ordinary text uses Org
-narrowed parsing semantics; truncated STM islands fail before worker calls.
+narrowed parsing semantics; truncated STM islands fail before body STM requests.
+Bibliography-related native requests may precede structural preflight.
 EXT-PLIST supplies the restricted overrides of `org-texmacs-prepare-buffer'.
 
 SOURCE-BUFFER must be a live Org buffer object, not a name
@@ -257,12 +261,18 @@ Support paragraphs, plain text, bold/italic/underline/strike-through,
 inline code/verbatim, explicit paragraph line breaks, five sectioning levels
 and lower-level headline lists, the three Org list types, and quote/center
 containers, static example/fixed-width/source blocks, and basic rectangular
-Org tables with rule rows,
+Org tables with rule rows and optional column alignment,
 plus http/https/mailto/ftp/ftps URI links with optional inline descriptions,
 same-document headline/ID and dedicated-target links,
 plain local body file links with raw paths and target provenance,
-anonymous inline footnotes directly in paragraphs,
-plus complete TeXmacs special blocks and discovered paragraph fragments.
+anonymous and named inline/separate footnotes directly in paragraphs,
+plus complete TeXmacs special blocks and discovered fragments in paragraphs
+and inline footnote bodies.
+Support formal statements, raw STM equation/equation* blocks and explicit
+figure/table wrappers, including starred forms.  Named blocks use frozen Org
+references; captions follow each object's supported metadata rules.
+Caption footnote ASTs accept anonymous inline notes only; stock Org does not
+parse that caption syntax.  Native caption-note layout is not guaranteed.
 Normalize ordinary spaces, tabs and soft newlines in Org inline text,
 including literal inline code; do not normalize STM subtree contents.
 Use SOURCE-BUFFER's `org-texmacs-fragment-tags'.  Other Org nodes and metadata
@@ -296,7 +306,7 @@ subset, then apply Org's task/archive/select/exclude/comment filtering before
 worker requests.  Reject unsupported options and preprocessing directives.
 Capture SOURCE-BUFFER's `tab-width' for preformatted text.  Do not execute
 source blocks, process coderefs/noweb, or apply syntax highlighting.
-Reject table formulas, layout/control rows and columns, and non-rectangular
+Reject table formulas, unsupported control rows/columns, and non-rectangular
 tables.  Table cells use the existing inline subset without STM discovery.
 
 Prepare a private snapshot without mode hooks or export preprocessing,

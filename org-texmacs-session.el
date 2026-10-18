@@ -311,6 +311,10 @@ invalid response payloads stop it.  No source buffer or resource file is read."
   "Render completed DOCUMENT to native PDF bytes with the shared worker.
 Encode explicit fields once and typeset in an owned temporary native buffer.
 Return an unibyte string; no .tm intermediary or public session is created.
+Force typesetting before each of two native prints.  In compatible native
+footnote macros, supply a missing destination only in the disposable PDF buffer;
+preserve explicit overrides, serialized documents and existing sessions.
+This does not repair native caption-footnote layout or guarantee pagination.
 Existing sessions remain unchanged.  Encoding/rendering errors preserve healthy
 transport; invalid output or cleanup failure stops it.  Native printing writes
 an owned temporary PDF and may populate native font caches.  Remove the

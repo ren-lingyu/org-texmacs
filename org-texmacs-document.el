@@ -914,6 +914,8 @@ emit a static table of contents with generated internal targets.
 Link admission uses Org type, not raw source.  Accept paragraph footnote
 references with anonymous inline or named inline/separate definitions.
 Emit named bodies once at first use and share labels for repeated references.
+Caption contexts also accept anonymous inline footnote ASTs, including their
+existing native layout limitations; no caption STM discovery is performed.
 Reject nested footnotes, list checkboxes and
 explicit counters; description terms use the existing inline subset.
 Collapse ordinary spaces, tabs and soft newlines across Org inline text
@@ -932,7 +934,9 @@ source objects.  Do not read or modify source/caller buffers, encode text,
 start a worker, or change AST/ISLANDS.  The caller must prepare all inputs
 from one snapshot.
 Ordinary special blocks recursively lower into a body document and an explicit
-statement environment or captured private handler.  INFO's handler registry
+statement environment or captured private handler.  Built-in dispatch also
+handles raw equations and explicit figure/table wrappers.  Object-specific
+NAME/CAPTION rules retain original STM subtrees.  INFO's custom handler registry
 defaults to empty, never the dynamic registry.  Custom handlers are skipped
 when private preflight INFO is set; that temporary result is not a document
 for consumers.  Final handlers must preserve contents identity and provenance."
