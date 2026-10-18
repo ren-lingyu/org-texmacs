@@ -101,3 +101,75 @@ README/config guidance or a font default policy would need separate selection.
 Do not mark whole0.5.0 release ready; representative documents/final gate/version/
 release documentation remain separate. No full flake or default-build repeated
 for this bounded investigation, no ordinary staging/commit/external action.
+
+## Follow-up selected: user's bundled-font override
+
+User reports their TeXmacs test binary comes from ~/emarccs/flake.nix override,
+requests same method without requiring its locked nixpkgs revision. Authorized
+relevant external source reads; flake11378bytes SHA256
+f0bdd26bb23af4bdab5b044d2f0018007d2e5b1d8cbbc13e392cd1c61fbb82c7
+contains no texmacs literal; relevant import is pkgs/org-texmacs/override.nix,
+282bytes SHA25677996aca172435858af4c50f68b820d74d7ab2a4f6499e100e168bd866ef21ec.
+Its scope.executablePackages uses pkgs.texmacs.override with extraFonts=true,
+chineseFonts=true,japaneseFonts=true,koreanFonts=true. No other font configuration
+read or inferred. Retention judgment at first read: sufficient exact method,
+wiring/source identity extracted; no independent raw-original value after this
+extraction, so don't archive whole foreign source. Foreign files may change later.
+
+New isolated tmp/font-override-probe32input snapshot on statement-caption delivered
+baseline; root production/flake/lock unchanged, copied flake only adds probe check.
+Both programs explicit in environment and org-texmacs-program binding; same current
+package for both, independent native hand-built matching tree and tm reload.
+Two styles x two language modes x two binaries x three routes=24PDFs. Inspect
+text, normalized font assignments/full font names/geometry, native initial/font
+database and selected package env; preview4override PDFs. No Fandol font import,
+manual native DB registration or host-font configuration to mask override effect.
+FONTCONFIG_FILE is an empty isolated fontconfig, native bundled fonts remain.
+
+User authorized repeat command plus related locked TeXmacs/derivation/font reads
+and output reading/copying:
+```
+timeout 1200s nix build path:./tmp/font-override-probe#checks.x86_64-linux.font-override --no-link --no-write-lock-file --print-build-logs --print-out-paths
+```
+May download font assets/rebuild native, write store/cache/isolated HOME/logs/tm/
+PDF/XML/PNG;20min cap. No foreign files/root code/lock/index writes. Execution
+completed with findings below. Previous72PDF results remain earlier baseline,
+not evidence for this newly specified override environment.
+
+### Follow-up result: matching symptom reproduced
+
+Authorized build exit0,24PDFs/8groups, source output
+/nix/store/bp90n93w3bschsa90jlqs8bhwhr0q88x-org-texmacs-font-override-probe;
+actual program paths plain5ri673m... vs overridden dgg3ahc... (both2.1.5), distinct
+verified via native derivation. Project-pinned nixpkgs supports extraFonts=true
+by default and CJK flags=false; override unpacks Chinese/Japanese/Korean bundles.
+Native fonts include fireflysung and unbatang. No Fandol/manual DB registration.
+Default and language=chinese initial modes tested, readback roman/rm10pt confirmed.
+
+12override PDFs have actual Chinese,12plain PDFs show literal missing-glyph
+fallback. All8three-route groups exactly match text, normalized font assignments/
+geometry and complete emitted face names after only subset-prefix normalization.
+Within same unstyled body phrase 中文测试, 中文=UnBatang (Korean), 测试=AR-PL-New-Sung;
+XML size13 vs14 at1.5scale, top differs1XMLunit. Repeat/body/quote same split;
+heading 标题 uses NewSung and 中文 UnBatang; strong mixes UnBatang-Bold/NewSung
+synthetic repeats; italic also mixed. Both styles and both language modes reproduce.
+Thus real within-word font inconsistency, not just intended role-specific bold/
+size. Independent native input and tm reload reproduce identically: current evidence
+points to native CJK font selection/fallback with overlapping glyph coverage,
+not exporter changes. Exact fallback selection priority/root implementation cause
+not yet traced. Two override previews viewed generic/default and article/chinese.
+No GUI/exact user's lock/cache/host-font reproduction claim. This supersedes prior
+font baseline conclusion of not-yet-reproduced with user's now-supplied method.
+
+All32root runtime input hashes unchanged,31non-flake snapshot files equal root,
+copy flake only adds check; root workaround/lock unchanged, index empty. User goal
+of attempted reproduction handled, no production/font policy/worker/parser patch.
+No full package release gate rerun necessary for diagnostic scope. REPORT.md,
+analysis.json and native result copies under tmp/font-override-probe. Necessary12raw pure-text originals preserved separately at
+archive/2026-10-18T13-47-27Z--75762b0/MANIFEST.md. Harness and Emacs fixture verified
+against actual native derivation, selected result copies match immutable store,
+archive source/copy/index hashes verified. No binaries or raw foreign originals.
+No additional project parent inferred for configured untracked experiment. No reason
+to capture full foreign originals after
+accurate method/source identity extraction. Next native fallback configuration
+investigation or mitigation requires user selection.

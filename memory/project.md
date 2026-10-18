@@ -1,5 +1,19 @@
 # org-texmacs current project model
 
+## Chinese font follow-up: reproduced using user's bundled-font override
+
+User's ~/emarccs actual override sets extraFonts/chineseFonts/japaneseFonts/
+koreanFonts all true; project lock allowed. Isolated24PDF comparison,8groups:
+12override real Chinese vs12plain fallback; generic/article, default/chinese
+language, org-texmacs/native/saved-tm reload exactly match text/font faces/layout.
+Same unstyled 中文测试 splits 中文=UnBatang, 测试=AR-PL-New-Sung with size/baseline
+differences, also headings/bold/italic/quote. Native reproduces, no exporter fault
+shown; language=chinese alone insufficient. No host font/manual Fandol setup,
+GUI/exact user's lock claim, default-font policy or production changes.32root inputs
+unchanged, index empty. Supersedes earlier not-yet-reproduced conclusion under the
+newly specified override. Full source/authority/evidence/next action:
+block-font-investigation.md. No general font fix or release readiness claim.
+
 ## Statement long caption completion: committed and verified
 
 Six-path candidate adds long statement CAPTION->dueto for all16tags, preserving

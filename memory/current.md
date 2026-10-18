@@ -1,6 +1,30 @@
 # org-texmacs current memory
 
-## Current: statement caption completion committed; delivery verified
+## Current: user's Chinese font inconsistency reproduced in native override
+
+User supplied ~/emarccs TeXmacs override method (same lock not required). Actual
+pkgs/org-texmacs/override.nix sets extraFonts/chineseFonts/japaneseFonts/koreanFonts
+all true. Exact scoped source identity/method extracted, no raw foreign archive.
+Isolated tmp/font-override-probe completed exit0:24PDFs,8groups, generic/article,
+default/chinese language x plain/override x package/native/tm reload. All routes
+match exactly in text, normalized fonts/layout and full font-face names. Override
+12PDFs real Chinese, plain12fallback. No manual fonts/host config/native font import.
+
+Matching symptom reproduced: even ordinary 中文测试 splits 中文 into UnBatang
+and 测试 into AR-PL-New-Sung, with size/baseline differences; heading/strong/italic/
+quotation also mixed. Chinese language alone does not fix. Native identical, no
+exporter-specific font repair justified. Two previews visually inspected. Exact
+native fallback priority not yet traced; not user's exact GUI/config/lock. Current
+conclusion supersedes earlier inability to reproduce without supplied override.
+32root input hashes unchanged; root production/workaround/lock/index untouched.
+Detailed sources/command authority/results/limits: block-font-investigation.md;
+report/results: tmp/font-override-probe. Necessary12text originals archived at
+archive/2026-10-18T13-47-27Z--75762b0/MANIFEST.md, separately from memory.
+Next user selects native font/fallback
+configuration investigation or mitigation; no implementation/default-font policy
+or broad font-correctness claim. Reproduction task complete; no repair selected.
+
+## Completed: statement caption completion committed; delivery verified
 
 User-selected statement NAME/CAPTION completion is implemented in six project
 paths, verified on isolated copied inputs: focused75/75(114.762178s), patched Org
