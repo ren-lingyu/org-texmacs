@@ -1,19 +1,5 @@
 # org-texmacs active backlog
 
-## Chinese font follow-up: reproduced using user's bundled-font override
-
-User's ~/emarccs actual override sets extraFonts/chineseFonts/japaneseFonts/
-koreanFonts all true; project lock allowed. Isolated24PDF comparison,8groups:
-12override real Chinese vs12plain fallback; generic/article, default/chinese
-language, org-texmacs/native/saved-tm reload exactly match text/font faces/layout.
-Same unstyled 中文测试 splits 中文=UnBatang, 测试=AR-PL-New-Sung with size/baseline
-differences, also headings/bold/italic/quote. Native reproduces, no exporter fault
-shown; language=chinese alone insufficient. No host font/manual Fandol setup,
-GUI/exact user's lock claim, default-font policy or production changes.32root inputs
-unchanged, index empty. Supersedes earlier not-yet-reproduced conclusion under the
-newly specified override. Full source/authority/evidence/next action:
-block-font-investigation.md. No general font fix or release readiness claim.
-
 ## Statement caption completion committed and verified
 
 User selected adopted design; six-path candidate now passes focused75/75,
@@ -47,8 +33,9 @@ font availability/registration required, native bold/italic/size differences rem
 User original environment/symptom not fully reproduced, no exporter patch justified.
 No production/index/lock/user-flake change, no full release gate. Detailed scope,
 authorization/diagnostics/limits and23text archive: block-font-investigation.md.
-Next user may select persistent font/config documentation or remaining release
-readiness work; do not claim global font correctness or0.5.0 readiness.
+Native font follow-up was subsequently reproduced and removed from active
+project scope by user decision. No font configuration/docs/fix task is pending.
+Do not claim global font correctness or0.5.0 readiness.
 
 ## PDF footnote destination repair: delivered and verified
 
@@ -155,13 +142,15 @@ complete. Other release requirements **adopted-later**.
 Earlier nine-item readiness plus the new required Issue13 gate, limits/decisions:
 memory/release-0.5.0.md. Required P0: #10 inline-footnote STM, #11 equation
 block/paragraph discrepancy resolution, prior block-mapping regression (confirm
-original fixture). P1 mandatory bounded investigations: PDF annotations, Chinese
-fonts, STM font-lock; implementation conditional, configuration or evidenced
-deferral permitted. P2 representative combined documents, complete locked-flake
+original fixture). P1 originally included PDF annotations, Chinese fonts and
+STM font-lock; user now removes the reproduced native Chinese-font issue from
+active backlog/pre0.5.0 blockers. No native-font fix/configuration task remains.
+Other implementation remains conditional, configuration or evidenced deferral permitted. P2 representative combined documents, complete locked-flake
 tests/native/PDF/compile/lint and0.5.0 metadata/docs/migration/notes.
 Investigation results: memory/release-0.5.0-investigation.md. #10 gap confirmed,
 #11 concat/native reload cause isolated, links share native/config absence,
-CJK missing-font environment needs positive control. STM font-lock bounded
+Earlier CJK missing-font control is superseded by native override reproduction;
+user has removed this external issue from project backlog. STM font-lock bounded
 investigation now complete: lexical colors reusable, naive integration property/
 stale-range/soft-error/config gaps and64KiB scan~8s in the original prototype.
 User-selected default-on/internal-variable Scheme presentation now implemented
@@ -200,7 +189,8 @@ inspection now corroborate this beyond headless controls. Exact native
 binding/PDF failure and release impact remain unresolved.
 Retain bounded follow-up
 candidate, not an adopted repair; memory/pdf-adjacent-checks.md.
-Adopted priority11->10->PDF links, Chinese fonts postponed, font-lock later.
+Adopted priority11->10->PDF links; Chinese fonts were postponed and are now
+removed as an external native issue by user decision; font-lock later.
 No release/version authority. #9 adopted-later after
 0.5.0 before0.6.0 for composite constituents only;13 owns single-object names.
 #7 deferred and not a0.5.0 blocker. Earlier native footnote

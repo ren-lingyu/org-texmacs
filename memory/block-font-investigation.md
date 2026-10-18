@@ -171,5 +171,15 @@ against actual native derivation, selected result copies match immutable store,
 archive source/copy/index hashes verified. No binaries or raw foreign originals.
 No additional project parent inferred for configured untracked experiment. No reason
 to capture full foreign originals after
-accurate method/source identity extraction. Next native fallback configuration
-investigation or mitigation requires user selection.
+accurate method/source identity extraction.
+
+## Final user decision: external issue, removed from project backlog
+
+User accepts that the reported font inconsistency is reproducible and is not
+org-texmacs responsibility. Explicitly remove it from active backlog and pre0.5.0
+blocking requirements. No further native-font investigation, mitigation, default
+font policy or font configuration/documentation is a pending project task.
+Retain native reproduction/evidence and ownership boundary above; do not relabel
+native behavior as repaired or infer universal font correctness. Other release
+gates unchanged. Memory-only decision, no production edits/tests/new archive or
+external tracking action required.

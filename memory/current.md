@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: user's Chinese font inconsistency reproduced in native override
+## Current: Chinese font issue closed as external; no project blocker
 
 User supplied ~/emarccs TeXmacs override method (same lock not required). Actual
 pkgs/org-texmacs/override.nix sets extraFonts/chineseFonts/japaneseFonts/koreanFonts
@@ -20,9 +20,11 @@ conclusion supersedes earlier inability to reproduce without supplied override.
 Detailed sources/command authority/results/limits: block-font-investigation.md;
 report/results: tmp/font-override-probe. Necessary12text originals archived at
 archive/2026-10-18T13-47-27Z--75762b0/MANIFEST.md, separately from memory.
-Next user selects native font/fallback
-configuration investigation or mitigation; no implementation/default-font policy
-or broad font-correctness claim. Reproduction task complete; no repair selected.
+User accepts this issue is outside org-texmacs responsibility and explicitly
+removes it from active backlog/pre0.5.0 blockers. No native-font fix/mitigation,
+font configuration/docs or default-font policy task remains. Evidence retained;
+this does not assert native fonts are fixed. Next user selects other release work.
+Ordinary project files/index unchanged; no new runtime checks needed.
 
 ## Completed: statement caption completion committed; delivery verified
 
@@ -75,8 +77,8 @@ font availability/registration required, native bold/italic/size differences rem
 User original environment/symptom not fully reproduced, no exporter patch justified.
 No production/index/lock/user-flake change, no full release gate. Detailed scope,
 authorization/diagnostics/limits and23text archive: block-font-investigation.md.
-Next user may select persistent font/config documentation or remaining release
-readiness work; do not claim global font correctness or0.5.0 readiness.
+Later native override reproduction is complete; user removes font issue from
+project backlog/blockers. No font follow-up pending. Other release work remains.
 
 ## Completed: PDF footnote destination repair delivered and verified
 
@@ -469,7 +471,8 @@ archived separately and verified: archive/2026-10-16T11-13-53Z--847845c/MANIFEST
 No PDFs/binaries/full tmp/INBOX archive. Original whitespace retained/explained;
 no candidate project parent inferred. No further test needed without changes.
 Supplementary tests and manual plan now completed above.
-Chinese fonts postponed, font-lock later; no new business repair/release selected.
+Chinese fonts were then postponed; later native reproduction led user to remove
+them from backlog/blockers. No font work or release action selected.
 
 ## Completed committed delivery: Issue10 inline footnote STM
 
@@ -550,8 +553,8 @@ candidate was then uncommitted; baseline identifies exact red-control source.
 Current delivery verification grounds the newly inspected committed snapshot.
 No INBOX/version/lock/example edits or external writes. Local Issue11 delivery is
 complete; remote#11 verified closed/completed, as is#10.
-Subsequent PDF link repair is accepted above; Chinese fonts postponed, font-lock later. No other
-feature implementation or release operation selected.
+Subsequent PDF link repair is accepted above; Chinese fonts later removed by user
+as an external native issue. No new font work or release operation selected.
 
 ## Earlier v0.5.0 readiness investigation context
 
@@ -568,8 +571,9 @@ P0: #10 anonymous/named inline-note STM with structural+native PDF regression;
 #11 standalone block/paragraph equation discrepancy diagnosis/resolution with
 mixed paragraphs and direct-PDF versus native .tm reload comparison; regression
 of prior block mapping, exact original failure identity still to confirm.
-P1: investigate PDF annotations, Chinese font consistency and bounded STM
-font-lock; fixes/configuration/justified deferral conditional on evidence.
+Original P1 included PDF annotations, Chinese font consistency and bounded STM
+font-lock; Chinese font gate is now explicitly removed by user after native
+reproduction. Other fixes/configuration/deferral depend on their own evidence.
 P2: representative combined real mathematical documents, locked-flake complete
 ERT/native/PDF/strict compile/lint gate,0.5.0 version/docs/notes and migration.
 #9 scheduled after0.5.0 before0.6.0; #7 stays deferred/nonblocking. Native footnote

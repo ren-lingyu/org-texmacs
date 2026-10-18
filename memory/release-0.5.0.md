@@ -1,18 +1,14 @@
 # v0.5.0 release readiness
 
-## Chinese font follow-up: reproduced using user's bundled-font override
+## Chinese font issue removed from release blockers
 
-User's ~/emarccs actual override sets extraFonts/chineseFonts/japaneseFonts/
-koreanFonts all true; project lock allowed. Isolated24PDF comparison,8groups:
-12override real Chinese vs12plain fallback; generic/article, default/chinese
-language, org-texmacs/native/saved-tm reload exactly match text/font faces/layout.
-Same unstyled 中文测试 splits 中文=UnBatang, 测试=AR-PL-New-Sung with size/baseline
-differences, also headings/bold/italic/quote. Native reproduces, no exporter fault
-shown; language=chinese alone insufficient. No host font/manual Fandol setup,
-GUI/exact user's lock claim, default-font policy or production changes.32root inputs
-unchanged, index empty. Supersedes earlier not-yet-reproduced conclusion under the
-newly specified override. Full source/authority/evidence/next action:
-block-font-investigation.md. No general font fix or release readiness claim.
+User accepts reproduced font mixing as native TeXmacs behavior outside
+org-texmacs responsibility, and explicitly removes it from active backlog and
+pre0.5.0 blocking requirements. No font fix, mitigation, default policy or font
+configuration/documentation is required to close this gate. This is scope closure,
+not a claim that native font mixing is fixed or all Chinese fonts are correct.
+Evidence retained in block-font-investigation.md and
+archive/2026-10-18T13-47-27Z--75762b0/MANIFEST.md. Remaining release gates unchanged.
 
 ## Statement caption completion committed and verified
 
@@ -47,8 +43,9 @@ font availability/registration required, native bold/italic/size differences rem
 User original environment/symptom not fully reproduced, no exporter patch justified.
 No production/index/lock/user-flake change, no full release gate. Detailed scope,
 authorization/diagnostics/limits and23text archive: block-font-investigation.md.
-Next user may select persistent font/config documentation or remaining release
-readiness work; do not claim global font correctness or0.5.0 readiness.
+Native font follow-up was subsequently reproduced and removed from project
+blockers by user. No font fix/configuration/docs requirement remains. Do not claim
+global font correctness or0.5.0 readiness.
 
 ## PDF footnote destination repair: delivered and verified
 
@@ -124,7 +121,8 @@ numbering/references. It does not gate general single-object references in13;
 shipping13 does not close9. No float/configuration/public handler API selected.
 
 All other existing gates retain their status: original block-fixture linkage,
-bounded Chinese-font outcome, native first-note limit/release-impact assessment,
+native first-note limit/release-impact assessment (Chinese fonts explicitly removed
+by later user decision),
 representative mathematical documents, final stabilized flake/native/PDF gate,
 version/README/migration/notes. Existing font-lock/editing/Issue12 delivery records
 remain valid; stage1 does not complete13 or make v0.5.0 ready. In particular
@@ -156,10 +154,9 @@ committed delivery records for current local status. Still planned/not accepted.
   Separate first-note forward gap reproduces in20native controls and user's
   native interactive .tm/PDF; retain/document native limitation and assess release
   impact, no package repair adopted. Full findings: memory/pdf-adjacent-checks.md.
-- Item5: Chinese fonts only postponed in ordering, not explicitly removed from
-  pre0.5.0 gate. Missing-font baseline exists; positive native CJK configuration/
-  original inconsistency and practical conclusion still needed. Bounded fix,
-  tested configuration or evidence-based explicit deferral can close it.
+- Former Item5: user removed the reproduced native Chinese-font issue from
+  project backlog/pre0.5.0 blockers. No package repair or further font task required;
+  retained evidence: block-font-investigation.md. Earlier pending status is superseded.
 - Item6: bounded STM font-lock investigation complete (12/12 observational probes,
   locked Emacs31.1/Org9.8.10). Lexical highlighting feasible; naive integration
   has Org-property/stale-range/soft-error/config gaps and64KiB full scan~8s.
@@ -271,11 +268,6 @@ initial web lookups failed with Cache miss; subsequent connector reads verify
    or hlink readback alone does not establish clickability. Attribute package,
    native engine or configuration cause. Fix actionable package defects, otherwise
    document verified native limit/configuration. No independent PDF link system.
-5. **Chinese font consistency**: reproduce reported inconsistent font selection/
-   glyph sizing in release environment. Separate style, initial environment,
-   installed fonts, native fallback and package encoding/rendering effects. Bounded
-   package fix or evidenced practical configuration; no generic CJK/font redesign.
-   Neither causality nor a universal font guarantee established by earlier tests.
 6. **STM font-lock**: feasibility investigation adopted; implementation conditional
    on acceptable semantics/compatibility/maintenance. Paragraph STM and TeXmacs
    special blocks; inspect Org native fontification, island boundaries, edits and
@@ -344,7 +336,8 @@ memory/issue-10-plan.md;46focused/9real/437core/strictcompile/lint/full gate pas
 Delivery parent=Issue11 baseline,5changed paths/all25committed input hashes/full
 reviewed message verified; index empty, user flake unstaged. Remote#10 verified
 closed/completed on2026-10-16; timestamps/sources: memory/evidence.md. This is not full release acceptance.
-Chinese font investigation postponed; font-lock later. Original source-mapping
+Chinese font investigation was postponed, then reproduced natively and removed
+from project backlog/blockers by user; font-lock later. Original source-mapping
 fixture linkage for item3 remains distinct. Then P1 conclusions, real-document
 and complete gate, metadata/docs. No further user answer needed merely to record
 this plan. Remote issue facts can be checked when available without inventing them.
@@ -371,5 +364,6 @@ Three-file delivery user-committed and exact inputs/diff/message verified; no
 issue association or release write. Full contract
 and immutable text evidence: memory/pdf-links-investigation.md. Item4 package
 repair/automatic verification is complete; this is not complete release readiness.
-Chinese fonts remain postponed, font-lock and representative combined workflows
-and release metadata/docs/notes remain separately selected work.
+Chinese font issue is now removed from project backlog/release blockers by user;
+font-lock and representative combined workflows and release metadata/docs/notes
+retain their separately recorded statuses.

@@ -12,7 +12,10 @@ shown; language=chinese alone insufficient. No host font/manual Fandol setup,
 GUI/exact user's lock claim, default-font policy or production changes.32root inputs
 unchanged, index empty. Supersedes earlier not-yet-reproduced conclusion under the
 newly specified override. Full source/authority/evidence/next action:
-block-font-investigation.md. No general font fix or release readiness claim.
+block-font-investigation.md. User now classifies this observed native issue as
+outside org-texmacs responsibility, removes it from backlog/pre0.5.0 blockers.
+No font fix/configuration/docs/default-policy work remains. Native behavior is
+not repaired and no general font/release-readiness claim follows.
 
 ## Statement long caption completion: committed and verified
 
