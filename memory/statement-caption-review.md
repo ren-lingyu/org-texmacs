@@ -122,8 +122,8 @@ prefix-in-concat with surround(PREFIX,"",ORIGINAL-FIRST-CONCAT), including nativ
 readback, PDF and saved-tm reload. Validate dueto after native statement title and
 before body; whitespace/newlines/font; label counter binding; internal references
 and actual PDF destination positions; generic/article; first paragraph containing
-STM/math and multi-paragraph bodies. Prefer surround if equivalent; proposed
-fallback is original direct concat insertion if native semantics/layout differ.
+STM/math and multi-paragraph bodies. Prefer surround if equivalent; the later
+user-adopted fallback boundary below qualifies any direct insertion alternative.
 First non-concat/empty body retains separate prefix-only concat unless native
 evidence supports unification. Always remap both STM/file path prefixes; no
 runtime selector between two implementations. Native behavior still unverified.
@@ -142,11 +142,15 @@ allocator -> prefix lowering/provenance -> ERT/native/PDF/full build gates.
 All other original design semantics retained; no immediate production/test action
 or new runtime config authorized by the supplement alone.
 
-Remaining review recommendation: fallback cannot automatically rewrite an opaque
-original STM concat root while the original guidance still requires preserving
-that subtree. Direct insertion into an Org-generated non-STM concat is compatible;
-for original STM roots retain a structure-preserving alternative or stop and
-resolve native evidence/contract, rather than silently weakening provenance.
-This fallback qualification has not yet been explicitly adopted by user.
+User explicitly adopted the remaining fallback constraint in the next message:
+direct insertion is permitted only in concat constructed by org-texmacs lowering.
+Original STM root and every internal structure must remain unchanged; even an
+original concat root is indivisible. If surround fails native verification,
+first use that evidence to determine a new structure; never automatically fall
+back to rewriting an original STM concat internally. This supersedes the earlier
+unqualified fallback wording, and resolves the pending provenance qualification.
+It does not claim native equivalence, select a proven alternative or authorize
+implementation/testing. No additional raw archive needed: exact operative
+constraint faithfully extracted here; no project/source file was changed.
 Multiline CAPTION acceptance and bibliography/body-STM preflight precision remain
 original review clarifications, not asserted new user changes.

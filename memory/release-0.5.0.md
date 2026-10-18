@@ -9,8 +9,10 @@ User supplement now adopts native surround/direct-concat comparison before any
 production implementation, preference for equivalent surround, example parser
 exception and frozen IDs reused within one prepared input versus fresh export.
 Non-concat/empty keeps prefix-only concat, provenance prefix remapping and no
-runtime selector. Remaining recommendation: direct-insertion fallback must not
-silently rewrite opaque original STM concat root. Native comparison/test execution
+runtime selector. User now adopts direct insertion only into lowering-constructed
+concat; original STM root/internal structure remains indivisible, including concat.
+If surround fails, reassess structure from evidence, no automatic STM rewrite.
+Native comparison/test execution
 not yet selected/authorized; no implementation or native behavior proven.
 
 ## Block mapping / CJK bounded investigation completed

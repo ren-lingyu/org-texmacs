@@ -14,12 +14,14 @@ User supplied subsequent explicit supplement (conversation text, not new INBOX
 read): independently compare surround vs direct concat before production, using
 native readback/PDF/tm reload, title/dueto/body position/spacing/font, counters,
 actual destinations, generic/article, STM/math/multiple paragraphs. Prefer surround
-on equivalence; proposed direct-insertion fallback needs remaining qualification
-for opaque STM roots. First non-concat/empty retains separate prefix concat;
+on equivalence. User now explicitly adopts fallback boundary: direct insertion
+only into lowering-constructed concat; original STM root/contents indivisible,
+even concat. If surround fails, determine a new structure from native evidence,
+never automatically rewrite original STM internally. First non-concat/empty retains separate prefix concat;
 path prefixes still remap; no runtime choice config. Example parser exception
 and same-prepared reuse versus fresh-export allocation distinction now adopted.
 Ordered design/native gate is adopted, but no implementation/test executed or
-new command authorized. Full supplement/remaining fallback finding recorded in
+new command authorized. Full supplement/adopted fallback constraint recorded in
 statement-caption-review.md. Next scope isolated native gate when user selects
 execution; do not claim surround equivalence or auto-relax original STM contract.
 
