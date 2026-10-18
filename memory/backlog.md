@@ -138,7 +138,19 @@ Single-object block NAME references now belong to13;13 does not close9.
 https://github.com/ren-lingyu/org-texmacs/issues/9
 https://github.com/ren-lingyu/org-texmacs/issues/13
 
-### v0.5.0 release readiness — Issue10 and Issue11 user-committed
+### v0.5.0 release readiness — three remaining finalization gates
+
+Current remaining work: (1) representative combined mathematical-document .tm/PDF
+acceptance, (2)0.5.0 version/README/release notes/since0.4.0 migration finalization,
+(3)final stabilized candidate locked ERT/native/PDF/compile/lint/flake/default build.
+See authoritative consolidated checklist at top of memory/release-0.5.0.md.
+Issue10/11/13 and later captions/footnote links/block audit/font-lock/editing are
+completed; Chinese fonts and PS route are explicitly removed/nonblocking.
+Issue9/7 remain later/deferred. No new implementation/validation/release authority.
+
+Earlier adoption/delivery progression below is historical, not additional pending
+P0/P1 work; current remaining checklist above takes precedence.
+
 
 Status: Issue10 and Issue11 implementation/automated acceptance/user delivery
 complete. Other release requirements **adopted-later**.

@@ -1,5 +1,39 @@
 # v0.5.0 release readiness
 
+## Current remaining release gates (consolidated after scope closure)
+
+Authoritative remaining checklist below supersedes earlier P0/P1 pending wording
+and intermediate counts/claims later in this file. No new feature scope or runtime
+commands selected by this reconciliation.
+
+1. Representative full mathematical Org document(s): combine supported statements/
+   captions, equations/inline STM, normal and repeated named notes, names/internal
+   links, figures/tables, configured citations+bibliography, metadata/style/initial.
+   Exercise repeated formal .tm/PDF exports and native readback/reload plus usable
+   visual output. Existing component/short fixtures do not yet record full-release
+   real-document acceptance. Fix only concrete package regressions found.
+2. Release metadata/docs/notes/migration after scope stabilizes: recorded package/
+   Nix sources were0.4.0, no completed0.5.0 version bump recorded. Synchronize actual
+   version declarations, support/examples and since0.4.0 migration (public API/
+   dispatcher menu/preprocessing changes) and release notes. Distinguish supported
+   subset from full Org parity, stock vs patched parser caption notes, and known
+   native caption-note layout/tested-environment boundaries. Existing per-feature
+   README updates do not by themselves finish release documentation.
+3. Final stabilized release candidate validation: maintained ERT/native/PDF
+   regressions, strict compilation/lint, full locked flake check and default build
+   against final candidate. Latest feature baseline553stock/6patched/full gate is
+   accepted; don't repeat only to refresh time. Final new document/metadata changes
+   determine appropriate reruns. Record actual tested versions/platforms/limits.
+
+Already completed/excluded, not remaining blockers: Issue10/11/13, native BibTeX
+work, statement long captions, normal PDF/footnote link repair, quote/center and
+bounded block audit, STM font-lock/basic GUI acceptance and block editing.
+User removes native Chinese-font issue and PS->PDF product/acceptance route.
+Issue9 after0.5.0/before0.6.0, Issue7 deferred; no new native caption-footnote layout,
+preview/async/general authoring feature implied. Publication/tag actions are later
+release operations, not permission granted by this checklist. No overall readiness
+claim before the three remaining gates have evidence.
+
 ## Chinese font issue removed from release blockers
 
 User accepts reproduced font mixing as native TeXmacs behavior outside

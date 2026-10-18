@@ -1,6 +1,20 @@
 # org-texmacs current memory
 
-## Current: release scope narrowed; PS route is completed diagnostics
+## Current: v0.5.0 remaining checklist reconciled
+
+User requested remaining pre-release items from GAW. Consolidated current scope:
+1.representative full mathematical-document combined .tm/PDF/native acceptance;
+2.actual0.5.0 version metadata, README/support/examples, release notes and since
+0.4.0 migration finalization;3.final stabilized candidate locked ERT/native/PDF/
+compile/lint/full flake/default build as warranted by final changes. Latest accepted
+feature baseline553ERT/6patched/full checks remains valid, not final release proof.
+Detailed authoritative checklist: release-0.5.0.md top; backlog release section
+updated to distinguish historical P0/P1 adoption from remaining work. Native font
+issue and PS route removed; implemented/committed feature work not reopened.
+No new feature implementation/tests/tag/publication selected. Next user chooses
+which release-finalization node to execute; no overall0.5.0 readiness claim.
+
+## Completed: release scope narrowed; PS route is completed diagnostics
 
 User adopts recommendation to stop pursuing tree->PostScript->PDF as a feature,
 workaround, maintained acceptance route or release condition. Original goal was
