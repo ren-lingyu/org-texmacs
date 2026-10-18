@@ -10,15 +10,18 @@ CAPTION->dueto with existing caption inline/frozen-reference/source-proof rules,
 strict reject explicit short incl empty, label+dueto prefix and owned provenance.
 NAME allocation already exists. No production files/tests/build/index touched.
 
-Review found first-concat may itself be original STM root; unconditional prefix
-merging violates original-root/provenance boundary. User asks about accepting
-restricted rewrite or using surround; recommended surround PREFIX "" FIRST-CONCAT
-candidate preserves root but changes section5 shape and needs native gate before
-adoption/implementation. Two further corrections: literal begin_example exception,
-and same-prepared repeated lowering versus fresh export allocation distinction.
-Clarify repeated ordinary CAPTION accepted, and bibliography-native exception to
-body-STM preflight guarantee. Recommendations pending user decision; no native
-or GUI proof of dueto/placement claimed, no implementation plan executed.
+User supplied subsequent explicit supplement (conversation text, not new INBOX
+read): independently compare surround vs direct concat before production, using
+native readback/PDF/tm reload, title/dueto/body position/spacing/font, counters,
+actual destinations, generic/article, STM/math/multiple paragraphs. Prefer surround
+on equivalence; proposed direct-insertion fallback needs remaining qualification
+for opaque STM roots. First non-concat/empty retains separate prefix concat;
+path prefixes still remap; no runtime choice config. Example parser exception
+and same-prepared reuse versus fresh-export allocation distinction now adopted.
+Ordered design/native gate is adopted, but no implementation/test executed or
+new command authorized. Full supplement/remaining fallback finding recorded in
+statement-caption-review.md. Next scope isolated native gate when user selects
+execution; do not claim surround equivalence or auto-relax original STM contract.
 
 ## Completed: block mapping / CJK bounded investigation
 

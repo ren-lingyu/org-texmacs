@@ -5,11 +5,13 @@
 User supplied v0.5.0 guidance and requested review only. Built-in long caption ->
 dueto, strict explicit-short rejection, existing frozen Org identities and source
 proof; NAME already supported. Findings/captured design: statement-caption-review.md.
-First-concat may be an opaque STM root; user suggests surround, recommended native
-candidate preserving whole root. Also retain literal begin_example exception and
-separate same-prepared ID reuse from fresh export allocation. Clarify multiline
-CAPTION and bibliography/preflight guarantees. Proposed tree/wording tightening
-pending user decision; no production, testing, API or release action selected.
+User supplement now adopts native surround/direct-concat comparison before any
+production implementation, preference for equivalent surround, example parser
+exception and frozen IDs reused within one prepared input versus fresh export.
+Non-concat/empty keeps prefix-only concat, provenance prefix remapping and no
+runtime selector. Remaining recommendation: direct-insertion fallback must not
+silently rewrite opaque original STM concat root. Native comparison/test execution
+not yet selected/authorized; no implementation or native behavior proven.
 
 ## Block mapping / CJK bounded investigation completed
 

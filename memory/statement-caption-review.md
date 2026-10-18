@@ -110,10 +110,43 @@ not all repeated CAPTION. Body-STM-before-error guarantee must retain Stage1
 bibliography exception: native bibliography may already run, body STM not
 submitted; do not turn section8.3 into zero-native-request assertion with bib.
 
-Review disposition: architecture suitable after tightening; NAME generation is
-already implemented, main new support is statement caption/dueto and prefix
-placement. No native dueto validation performed this turn; validate primitive/
-placement candidate before exporter modifications. Pending user acceptance of
-surround/native-concat exception and wording corrections, then implementation
-planning/authorization separately. Do not infer new implementation/build/staging
-or full v0.5.0 readiness from supplied design's status field.
+## Adopted user supplement after review
+
+Source is the user's next conversation message headed Statement caption 开发计划
+补充修订, not a later read/claimed replacement of INBOX bytes. It adopts the
+following corrections and ordering; no implementation/test execution requested.
+No raw archive needed: full operative supplement and unresolved boundary extracted.
+
+Independent native gate MUST precede production implementation: compare direct
+prefix-in-concat with surround(PREFIX,"",ORIGINAL-FIRST-CONCAT), including native
+readback, PDF and saved-tm reload. Validate dueto after native statement title and
+before body; whitespace/newlines/font; label counter binding; internal references
+and actual PDF destination positions; generic/article; first paragraph containing
+STM/math and multi-paragraph bodies. Prefer surround if equivalent; proposed
+fallback is original direct concat insertion if native semantics/layout differ.
+First non-concat/empty body retains separate prefix-only concat unless native
+evidence supports unification. Always remap both STM/file path prefixes; no
+runtime selector between two implementations. Native behavior still unverified.
+
+Example exception now adopted: all16tags share NAME/CAPTION semantics, but formal
+example only statement example/statement_example; Org literal begin_example
+unchanged. No16x3syntax assertion. Identity correction adopted: same prepared input
+reuses frozen IDs across repeated lowering/consumers; fresh preparation may
+allocate new references once and produce different bytes, preserve internal
+identity relationships; slug/label format/collision64/unused NAME/post-freeze
+integrity unchanged. Tests compare relationships, not random IDs across exports.
+
+Adopted implementation order: native comparison -> select one structure -> extend
+caption evidence/strict-short rejection/inline prep -> extend resolver/reuse frozen
+allocator -> prefix lowering/provenance -> ERT/native/PDF/full build gates.
+All other original design semantics retained; no immediate production/test action
+or new runtime config authorized by the supplement alone.
+
+Remaining review recommendation: fallback cannot automatically rewrite an opaque
+original STM concat root while the original guidance still requires preserving
+that subtree. Direct insertion into an Org-generated non-STM concat is compatible;
+for original STM roots retain a structure-preserving alternative or stop and
+resolve native evidence/contract, rather than silently weakening provenance.
+This fallback qualification has not yet been explicitly adopted by user.
+Multiline CAPTION acceptance and bibliography/body-STM preflight precision remain
+original review clarifications, not asserted new user changes.
