@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.09.0">
+<page number="1" position="absolute" top="0" left="0" height="1262" width="892">
+	<fontspec id="0" size="21" family="AAAAAE+EuropeanComputerModern" color="#000000"/>
+	<fontspec id="1" size="20" family="AAAAAB+AR-PL-New-Sung" color="#000000"/>
+	<fontspec id="2" size="19" family="AAAAAD+UnBatang" color="#000000"/>
+	<fontspec id="3" size="15" family="AAAAAF+EuropeanComputerModern" color="#000000"/>
+	<fontspec id="4" size="13" family="AAAAAC+UnBatang" color="#000000"/>
+	<fontspec id="5" size="14" family="AAAAAB+AR-PL-New-Sung" color="#000000"/>
+	<fontspec id="6" size="14" family="AAAAAD+UnBatang" color="#000000"/>
+	<fontspec id="7" size="12" family="AAAAAC+UnBatang" color="#000000"/>
+	<fontspec id="8" size="12" family="AAAAAB+AR-PL-New-Sung" color="#000000"/>
+<text top="125" left="128" width="12" height="26" font="0"><b>1</b></text>
+<text top="127" left="155" width="20" height="21" font="1">标</text>
+<text top="127" left="155" width="20" height="21" font="1">标</text>
+<text top="127" left="156" width="20" height="21" font="1">标</text>
+<text top="127" left="156" width="20" height="21" font="1">标</text>
+<text top="127" left="156" width="20" height="21" font="1">标</text>
+<text top="127" left="156" width="20" height="21" font="1">标</text>
+<text top="127" left="156" width="20" height="21" font="1">标</text>
+<text top="127" left="156" width="20" height="21" font="1">标</text>
+<text top="127" left="156" width="40" height="21" font="1">标题</text>
+<text top="127" left="177" width="20" height="21" font="1">题</text>
+<text top="127" left="177" width="20" height="21" font="1">题</text>
+<text top="127" left="177" width="20" height="21" font="1">题</text>
+<text top="127" left="177" width="20" height="21" font="1">题</text>
+<text top="127" left="177" width="20" height="21" font="1">题</text>
+<text top="127" left="177" width="20" height="21" font="1">题</text>
+<text top="127" left="177" width="20" height="21" font="1">题</text>
+<text top="127" left="178" width="20" height="21" font="1">题</text>
+<text top="126" left="198" width="38" height="23" font="2"><b>中文</b></text>
+<text top="166" left="128" width="35" height="18" font="3">Body</text>
+<text top="167" left="167" width="26" height="16" font="4">中文</text>
+<text top="168" left="194" width="28" height="15" font="5">测试</text>
+<text top="166" left="226" width="92" height="18" font="3">ABC xyz 123.</text>
+<text top="194" left="128" width="46" height="18" font="3">Repeat</text>
+<text top="195" left="179" width="26" height="16" font="4">中文</text>
+<text top="196" left="205" width="28" height="15" font="5">测试</text>
+<text top="194" left="238" width="92" height="18" font="3">ABC xyz 123.</text>
+<text top="222" left="128" width="43" height="18" font="3">Strong</text>
+<text top="223" left="176" width="27" height="17" font="6"><b>中文</b></text>
+<text top="224" left="203" width="14" height="15" font="5">测</text>
+<text top="224" left="203" width="14" height="15" font="5">测</text>
+<text top="224" left="203" width="14" height="15" font="5">测</text>
+<text top="224" left="203" width="14" height="15" font="5">测</text>
+<text top="224" left="203" width="14" height="15" font="5">测</text>
+<text top="224" left="203" width="14" height="15" font="5">测</text>
+<text top="224" left="203" width="14" height="15" font="5">测</text>
+<text top="224" left="204" width="14" height="15" font="5">测</text>
+<text top="224" left="204" width="28" height="15" font="5">测试</text>
+<text top="224" left="218" width="14" height="15" font="5">试</text>
+<text top="224" left="218" width="14" height="15" font="5">试</text>
+<text top="224" left="218" width="14" height="15" font="5">试</text>
+<text top="224" left="218" width="14" height="15" font="5">试</text>
+<text top="224" left="218" width="14" height="15" font="5">试</text>
+<text top="224" left="219" width="14" height="15" font="5">试</text>
+<text top="224" left="219" width="14" height="15" font="5">试</text>
+<text top="224" left="219" width="14" height="15" font="5">试</text>
+<text top="222" left="238" width="31" height="18" font="3">End.</text>
+<text top="250" left="128" width="34" height="18" font="3">Italic</text>
+<text top="253" left="167" width="23" height="14" font="7">中文</text>
+<text top="253" left="190" width="24" height="13" font="8">测试</text>
+<text top="250" left="222" width="31" height="18" font="3">End.</text>
+<text top="278" left="128" width="37" height="18" font="3">Inline</text>
+<text top="279" left="170" width="26" height="16" font="4">中文</text>
+<text top="278" left="201" width="31" height="18" font="3">End.</text>
+<text top="314" left="173" width="40" height="18" font="3">Quote</text>
+<text top="315" left="218" width="26" height="16" font="4">中文</text>
+<text top="315" left="244" width="28" height="15" font="5">测试</text>
+<text top="314" left="271" width="4" height="18" font="3">.</text>
+<text top="1167" left="453" width="8" height="18" font="3">1</text>
+</page>
+<outline>
+<item page="1">1 标题中文</item>
+</outline>
+</pdf2xml>

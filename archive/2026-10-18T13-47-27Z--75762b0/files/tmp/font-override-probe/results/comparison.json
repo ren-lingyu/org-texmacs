@@ -1,0 +1,50 @@
+{
+  "plain-generic-default": {
+    "text_same": true,
+    "font_layout_same": true,
+    "has_chinese": false,
+    "fallback": true
+  },
+  "plain-generic-chinese": {
+    "text_same": true,
+    "font_layout_same": true,
+    "has_chinese": false,
+    "fallback": true
+  },
+  "plain-article-default": {
+    "text_same": true,
+    "font_layout_same": true,
+    "has_chinese": false,
+    "fallback": true
+  },
+  "plain-article-chinese": {
+    "text_same": true,
+    "font_layout_same": true,
+    "has_chinese": false,
+    "fallback": true
+  },
+  "override-generic-default": {
+    "text_same": true,
+    "font_layout_same": true,
+    "has_chinese": true,
+    "fallback": false
+  },
+  "override-generic-chinese": {
+    "text_same": true,
+    "font_layout_same": true,
+    "has_chinese": true,
+    "fallback": false
+  },
+  "override-article-default": {
+    "text_same": true,
+    "font_layout_same": true,
+    "has_chinese": true,
+    "fallback": false
+  },
+  "override-article-chinese": {
+    "text_same": true,
+    "font_layout_same": true,
+    "has_chinese": true,
+    "fallback": false
+  }
+}

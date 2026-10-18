@@ -1,0 +1,330 @@
+{
+  "groups": {
+    "plain-generic-default": {
+      "text_same": true,
+      "font_layout_same": true,
+      "has_chinese": false,
+      "fallback": true
+    },
+    "plain-generic-chinese": {
+      "text_same": true,
+      "font_layout_same": true,
+      "has_chinese": false,
+      "fallback": true
+    },
+    "plain-article-default": {
+      "text_same": true,
+      "font_layout_same": true,
+      "has_chinese": false,
+      "fallback": true
+    },
+    "plain-article-chinese": {
+      "text_same": true,
+      "font_layout_same": true,
+      "has_chinese": false,
+      "fallback": true
+    },
+    "override-generic-default": {
+      "text_same": true,
+      "font_layout_same": true,
+      "has_chinese": true,
+      "fallback": false
+    },
+    "override-generic-chinese": {
+      "text_same": true,
+      "font_layout_same": true,
+      "has_chinese": true,
+      "fallback": false
+    },
+    "override-article-default": {
+      "text_same": true,
+      "font_layout_same": true,
+      "has_chinese": true,
+      "fallback": false
+    },
+    "override-article-chinese": {
+      "text_same": true,
+      "font_layout_same": true,
+      "has_chinese": true,
+      "fallback": false
+    }
+  },
+  "full_face_names_match": true,
+  "cjk_runs": {
+    "override-generic-default-org": {
+      "中文": [
+        {
+          "family": "UnBatang",
+          "xml_size": "19",
+          "top": "126"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "167"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "195"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "14",
+          "top": "223"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "12",
+          "top": "253"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "279"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "315"
+        }
+      ],
+      "测试": [
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "168"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "196"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "224"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "12",
+          "top": "253"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "315"
+        }
+      ]
+    },
+    "override-generic-chinese-org": {
+      "中文": [
+        {
+          "family": "UnBatang",
+          "xml_size": "19",
+          "top": "126"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "167"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "195"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "14",
+          "top": "223"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "12",
+          "top": "253"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "279"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "315"
+        }
+      ],
+      "测试": [
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "168"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "196"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "224"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "12",
+          "top": "253"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "315"
+        }
+      ]
+    },
+    "override-article-default-org": {
+      "中文": [
+        {
+          "family": "UnBatang",
+          "xml_size": "19",
+          "top": "126"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "165"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "183"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "14",
+          "top": "200"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "12",
+          "top": "220"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "237"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "262"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "78"
+        }
+      ],
+      "测试": [
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "166"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "184"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "201"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "12",
+          "top": "221"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "263"
+        }
+      ]
+    },
+    "override-article-chinese-org": {
+      "中文": [
+        {
+          "family": "UnBatang",
+          "xml_size": "19",
+          "top": "126"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "165"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "183"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "14",
+          "top": "200"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "12",
+          "top": "220"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "237"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "262"
+        },
+        {
+          "family": "UnBatang",
+          "xml_size": "13",
+          "top": "78"
+        }
+      ],
+      "测试": [
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "166"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "184"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "201"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "12",
+          "top": "221"
+        },
+        {
+          "family": "AR-PL-New-Sung",
+          "xml_size": "14",
+          "top": "263"
+        }
+      ]
+    }
+  },
+  "root_inputs_unchanged": true
+}
