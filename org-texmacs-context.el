@@ -711,7 +711,7 @@ DEFINITIONS supplies original footnote dependencies before body selection."
                        (end (org-element-property :texmacs-source-end node)))
                    (when (and (< begin (cdr region)) (< (car region) end)
                               (not (<= (car region) begin end (cdr region))))
-                     (signal 'org-texmacs-document-error '("Region truncates a figure/table wrapper")))))
+                     (signal 'org-texmacs-document-error '("Region truncates a special-block wrapper")))))
                (unless (or (assq node islands) (org-texmacs--native-body-kind node))
                  (mapc (lambda (child) (walk child collect)) (org-element-contents node)))))))
       (walk ast t)

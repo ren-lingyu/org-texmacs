@@ -751,9 +751,23 @@ The body may contain the existing supported Org elements and opaque native STM
 blocks; paragraph, whitespace and display-math rules are unchanged.
 
 Statement presentation and numbering belong to the native style; the supported
-native validation baseline is =generic=.  Arbitrary installed styles are not
-guaranteed to define these environments.  Statements accept one =NAME= under
-the reference rules below; =CAPTION= and =ATTR_*= remain rejected.
+native validation baselines are =generic= and =article=.  Arbitrary installed
+styles are not guaranteed to define these environments.  Statements accept one
+=NAME= under the reference rules below and a long =CAPTION=, rendered through
+native =dueto= after the statement title and before its body.  Repeated caption
+lines are joined with spaces and use the existing caption inline subset
+(including markup and links).  Explicit empty captions and every explicit short
+caption, including =#+CAPTION[]:=, are rejected; =ATTR_*= remains unsupported.
+These rules apply to all sixteen statement tags, including formal =example=.
+Custom special-block handlers do not gain caption support.
+
+The generated label and =dueto= prefix surrounds a first =concat= paragraph;
+original STM subtrees remain intact.  An empty body or a first block node uses a
+separate prefix paragraph.  A prepared input freezes reference identities once;
+repeated consumers reuse them, while a new preparation may allocate different
+Org references.  Caption text resembling STM is ordinary text.  Standard Org
+does not parse caption inline footnotes; supported anonymous inline footnote AST
+objects use the existing native conversion and its documented layout limits.
 
 Raw STM equations use =begin_equation= (numbered) or =begin_equation*= (unnumbered):
 

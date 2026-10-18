@@ -19,6 +19,29 @@
                              (file-truename (locate-library "org-texmacs-document")))))
   (should (memq 'footnote-reference (cdr (assq 'keyword org-element-object-restrictions)))))
 
+(ert-deftest org-texmacs-caption-patched-statement-private-snapshot ()
+  (dolist (syntax '("theorem" "statement example" "statement_proof"))
+    (with-temp-buffer
+      (org-mode)
+      (insert "#+CAPTION: Title[fn::Note *bold*] [[file:note.pdf][File]]\n"
+              "#+begin_" syntax "\nBody[fn::BodyNote]\n#+end_" (car (split-string syntax)) "\n")
+      (let ((source-buffer (current-buffer))
+            (parser (symbol-function 'org-element-parse-buffer))
+            private)
+        (cl-letf (((symbol-function 'org-element-parse-buffer)
+                   (lambda (&rest args)
+                     (unless (eq (current-buffer) source-buffer) (setq private t))
+                     (apply parser args))))
+          (let* ((input (org-texmacs-prepare-buffer source-buffer))
+                 (document (org-texmacs-document input))
+                 (body (org-texmacs-document-body document)))
+            (should private)
+            (should (= 2 (length (org-texmacs-test--caption-inline-footnote-nodes body 'footnote))))
+            (should (= 1 (length (org-texmacs-test--caption-inline-footnote-nodes body 'dueto))))
+            (should (string-match-p "Note" (prin1-to-string body)))
+            (should (org-texmacs-document-file-paths document))
+            (should (equal document (org-texmacs-document input)))))))))
+
 (ert-deftest org-texmacs-caption-patched-parser ()
   (with-temp-buffer
     (org-mode)

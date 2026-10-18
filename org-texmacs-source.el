@@ -192,6 +192,23 @@ Compare its wrapper name without case, preserving NODE and its STM contents."
         (org-element-property :texmacs-source-end node)
         (org-element-property :texmacs-affiliated-keywords node)))
 
+(defun org-texmacs--source-caption-declarations (node)
+  "Capture NODE's Org-recognized affiliated caption declaration evidence.
+Each entry is (EXPLICIT-SHORT LONG-TEXT).  Only inspect the affiliated range
+provided by Org; do not parse inline caption syntax."
+  (let ((begin (org-element-property :begin node))
+        (post (org-element-property :post-affiliated node)) rows
+        (case-fold-search t))
+    (when (and (integerp begin) (integerp post))
+      (save-excursion
+        (goto-char begin)
+        (while (< (point) post)
+          (when (looking-at "[ \t]*#\\+CAPTION\\(\\[[^\n]*\\]\\)?:[ \t]*\\(.*\\)$")
+            (push (list (and (match-beginning 1) t)
+                        (match-string-no-properties 2)) rows))
+          (forward-line 1))))
+    (nreverse rows)))
+
 (defun org-texmacs--figure-table-source-shapes (ast &optional originals rebind)
   "Capture wrapper evidence in AST, or REBIND ORIGINALS after reparse.
 Read the fixed private source.
@@ -231,7 +248,7 @@ Return an alist keyed by complete semantic source ranges."
     (nreverse result)))
 
 (defun org-texmacs--name-source-shapes (ast &optional originals rebind)
-  "Capture affiliated NAME evidence on AST, or REBIND ORIGINALS after reparse.
+  "Capture affiliated NAME/caption evidence, or REBIND ORIGINALS after reparse.
 Read only the private preparation buffer.
 Defer validation to retained nodes."
   (let (result)
@@ -251,7 +268,8 @@ Defer validation to retained nodes."
                                             (lambda (entry) (equal key (car entry))) originals)))
                       (proof (if rebind
                                  (if (= (length matching) 1) (cdar matching) '(missing))
-                               (list key (org-element-property :name node) keys))))
+                               (list key (org-element-property :name node) keys
+                                     (org-texmacs--source-caption-declarations node)))))
                  (org-element-put-property node :texmacs-affiliated-keywords keys)
                  (org-element-put-property node :texmacs-source-end end)
                  (org-element-put-property node :texmacs-name-source (copy-tree proof t))

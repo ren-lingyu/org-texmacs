@@ -299,6 +299,38 @@ No source buffer is consulted."
            (org-texmacs--figure-table-kind node)
            (org-texmacs--document-statement-tag node))))
 
+(defun org-texmacs--document-statement-caption (node)
+  "Validate NODE's statement caption before scanning any secondary links.
+Consume owned source evidence when present; never consult the source buffer.
+Return the long-only caption pairs."
+  (let* ((lines (org-texmacs--document-caption-lines node))
+         (proof (org-element-property :texmacs-name-source node))
+         (rows (and (proper-list-p proof) (nth 3 proof))))
+    (when proof
+      (unless (and (proper-list-p proof) (= (length proof) 4)
+                   (equal (car proof)
+                          (list (org-element-property :type node)
+                                (org-element-property :begin node)
+                                (org-element-property :post-affiliated node)
+                                (org-element-property :texmacs-source-end node)))
+                   (proper-list-p rows)
+                   (cl-every (lambda (row)
+                               (and (proper-list-p row) (= (length row) 2)
+                                    (memq (car row) '(nil t)) (stringp (cadr row)))) rows))
+        (org-texmacs--document-fail node "Original statement caption evidence differs")))
+    ;; Syntax evidence catches CAPTION[] even when Org erases its empty short AST.
+    ;; Reject it before traversing either long or short links.
+    (when (or (cl-some #'car rows) (cl-some #'cdr lines))
+      (org-texmacs--document-fail node "Statement short captions are unsupported"))
+    (when (or (cl-some (lambda (row) (string-blank-p (cadr row))) rows)
+              (cl-some (lambda (line)
+                         (cl-every (lambda (part) (and (stringp part) (string-blank-p part)))
+                                   (car line))) lines))
+      (org-texmacs--document-fail node "Empty statement caption"))
+    (when (and proof (/= (length rows) (length lines)))
+      (org-texmacs--document-fail node "Original statement caption evidence differs"))
+    lines))
+
 (defun org-texmacs--reference-slug (name)
   "Return NAME's per-character ASCII slug independently of case folding."
   (let ((case-fold-search nil))
@@ -387,8 +419,13 @@ read a source buffer, query an ID database or invoke an export consumer."
                    (when (eq type 'headline)
                      (mapc (lambda (part) (scan part ancestors))
                            (org-element-property :title node)))
-                   (when (or (eq type 'table) (org-texmacs--figure-table-kind node))
-                     (dolist (line (org-texmacs--document-caption-lines node))
+                   (when (or (eq type 'table) (org-texmacs--figure-table-kind node)
+                             (and (eq type 'special-block)
+                                  (org-texmacs--document-statement-tag node)))
+                     (dolist (line (if (and (eq type 'special-block)
+                                           (org-texmacs--document-statement-tag node))
+                                      (org-texmacs--document-statement-caption node)
+                                    (org-texmacs--document-caption-lines node)))
                        (mapc (lambda (part) (scan part ancestors)) (car line))
                        (mapc (lambda (part) (scan part ancestors)) (cdr line))))
                    (unless (or (assq node islands)
@@ -817,15 +854,27 @@ removed row identity or nil.  Never mutate the Org AST."
          :file-paths (mapcar (lambda (path) (append prefix path))
                              (org-texmacs-document-file-paths contents)))))))
 
-(defun org-texmacs--document-prepend-label (contents label)
-  "Prepend LABEL to packed document CONTENTS while preserving provenance."
-  (org-texmacs--document-create
-   :body (cons 'document (cons (org-texmacs-document-body label)
-                               (cdr (org-texmacs-document-body contents))))
-   :stm-paths (mapcar (lambda (path) (cons (1+ (car path)) (cdr path)))
-                      (org-texmacs-document-stm-paths contents))
-   :file-paths (mapcar (lambda (path) (cons (1+ (car path)) (cdr path)))
-                       (org-texmacs-document-file-paths contents))))
+(defun org-texmacs--document-statement-prefix (contents prefix)
+  "Insert packed PREFIX into document CONTENTS without rewriting STM roots.
+Wrap a first concat with surround.  Otherwise prepend a separate paragraph."
+  (let* ((body (org-texmacs-document-body contents))
+         (first (cadr body))
+         (wrap (and (consp first) (eq (car first) 'concat)))
+         (prefix-body (org-texmacs-document-body prefix)))
+    (org-texmacs--document-create
+     :body (if wrap (cons 'document (cons (list 'surround prefix-body "" first) (cddr body)))
+             (cons 'document (cons prefix-body (cdr body))))
+     :stm-paths (mapcar (lambda (path)
+                         (if wrap (if (zerop (car path)) (append '(0 2) (cdr path)) path)
+                           (cons (1+ (car path)) (cdr path))))
+                       (org-texmacs-document-stm-paths contents))
+     :file-paths (append
+                  (mapcar (lambda (path) (append (if wrap '(0 0) '(0)) path))
+                          (org-texmacs-document-file-paths prefix))
+                  (mapcar (lambda (path)
+                            (if wrap (if (zerop (car path)) (append '(0 2) (cdr path)) path)
+                              (cons (1+ (car path)) (cdr path))))
+                          (org-texmacs-document-file-paths contents))))))
 
 (defun org-texmacs--document-lower
     (ast &optional islands post-blanks info style initial source-file resource-base bibliography frozen-resolution)
@@ -1460,7 +1509,10 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                  (keys (org-element-property :texmacs-affiliated-keywords node))
                  (table (and (not inner) (eq (org-element-type node) 'table)))
                  (wrapper (and (not inner) (org-texmacs--figure-table-kind node)))
-                 (named (and (not inner) (org-texmacs--document-named-block-p node))))
+                 (named (and (not inner) (org-texmacs--document-named-block-p node)))
+                 (statement (and (not inner) (eq (org-element-type node) 'special-block)
+                                 (org-texmacs--document-statement-tag node))))
+             (when statement (org-texmacs--document-statement-caption node))
              (when (and (integerp begin) (integerp post) (> post begin)
                         (not (and (or table named) keys)))
                (org-texmacs--document-fail node "Unsupported affiliated metadata"))
@@ -1468,7 +1520,7 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                (unless (equal proof
                               (list (list (org-element-property :type node) begin post
                                           (org-element-property :texmacs-source-end node))
-                                    (org-element-property :name node) keys))
+                                    (org-element-property :name node) keys (nth 3 proof)))
                  (org-texmacs--document-fail node "Original NAME evidence differs")))
              (when (org-element-property :name node)
                (unless (and (stringp (org-element-property :name node))
@@ -1476,7 +1528,7 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                  (org-texmacs--document-fail node "Invalid object NAME")))
              (when keys
                (unless (and (or table named) (proper-list-p keys)
-                            (cl-every (lambda (key) (member key (if (or table wrapper)
+                            (cl-every (lambda (key) (member key (if (or table wrapper statement)
                                                                  '("NAME" "CAPTION") '("NAME")))) keys)
                             (<= (cl-count "NAME" keys :test #'equal) 1)
                             (or (not (member "NAME" keys))
@@ -1492,22 +1544,26 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                                (and (eq (org-element-type node) 'table)
                                     (memq key '(:header :headers :results :resname :plot :label :data)))
                                (and (not (or table named)) (eq key :name))
-                               (and (not (or table wrapper)) (eq key :caption))))
+                               (and (not (or table wrapper statement)) (eq key :caption))))
                   (org-texmacs--document-fail node "Unsupported affiliated metadata")))
               node)))
-         (caption-text (node ancestors)
-           (let (long short)
+         (caption-long (node ancestors)
+           (let (long)
              (dolist (line (org-texmacs--document-caption-lines node))
                (when long (push (org-texmacs--document-create :body " ") long))
-               (push (one-body (inlines (car line) 'caption ancestors)) long)
+               (push (one-body (inlines (car line) 'caption ancestors)) long))
+             (one-body (nreverse long))))
+         (caption-text (node ancestors)
+           (let ((long (caption-long node ancestors)) short)
+             (dolist (line (org-texmacs--document-caption-lines node))
                (when (cdr line)
                  (when short (push (org-texmacs--document-create :body " ") short))
                  (push (one-body (inlines (cdr line) 'caption ancestors)) short)))
              (if short
                  (org-texmacs--document-pack
-                  'caption-detailed (list (one-body (nreverse long))
+                  'caption-detailed (list long
                                           (one-body (nreverse short))))
-               (one-body (nreverse long)))))
+               long)))
          (table-caption (node ancestors)
            (let ((caption (caption-text node ancestors))
                  (label (cdr (assq node (org-texmacs-resolution-labels resolution)))))
@@ -1771,10 +1827,18 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                                   (blocks (org-element-contents node) 'special-block ancestors))))
                    (list
                     (cond
-                     (tag (org-texmacs--document-pack
-                           tag (list (if (target-labels node)
-                                         (org-texmacs--document-prepend-label contents (car (target-labels node)))
-                                       contents))))
+                     (tag
+                      (let* ((labels (target-labels node))
+                             (caption (org-texmacs--document-statement-caption node))
+                             (parts (append labels
+                                            (when caption
+                                              (list (org-texmacs--document-pack
+                                                     'dueto (list (caption-long node ancestors))))))))
+                        (org-texmacs--document-pack
+                         tag (list (if parts
+                                       (org-texmacs--document-statement-prefix
+                                        contents (org-texmacs--document-pack 'concat parts))
+                                     contents)))))
                      ((plist-get info :texmacs-special-block-preflight) contents)
                      (t (org-texmacs--document-handle-special handler node contents info)))))))
               ((memq type '(example-block fixed-width src-block))
@@ -2053,13 +2117,15 @@ RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
                (register node (org-texmacs--native-body-source node) nil))
               ((eq (org-element-type node) 'paragraph) (paragraph node))
               ((or (eq (org-element-type node) 'table)
-                   (org-texmacs--figure-table-kind node))
+                   (org-texmacs--figure-table-kind node)
+                   (and (eq (org-element-type node) 'special-block)
+                        (ignore-errors (org-texmacs--document-statement-tag node))))
                (org-element-put-property node :texmacs-affiliated-keywords
                                          (org-texmacs--source-affiliated-keys node))
                (dolist (line (org-texmacs--document-caption-lines node))
                  (mapc #'whitespace (car line))
                  (mapc #'whitespace (cdr line)))
-               (when (org-texmacs--figure-table-kind node)
+               (when (eq (org-element-type node) 'special-block)
                  (mapc #'walk (org-element-contents node))))
               ((memq (org-element-type node)
                      '(org-data section headline plain-list item footnote-definition
