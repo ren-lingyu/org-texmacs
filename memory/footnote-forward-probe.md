@@ -85,13 +85,21 @@ Old archives immutable. Source project HEAD is capture context, not exact runtim
 source for all uncommitted probes, so no project parent inferred. Active memory
 and skills excluded from archive checkpoint; no skill changes needed.
 
-## Release implication and next action
+## Current disposition: completed diagnostic, no PS product route
 
-Native forward-link limitation remains real and now reproduced with two simplest
-anonymous notes and both PDF pipelines. PS route does not provide a solution.
-Investigation complete; package fix not adopted. User must select deeper native
-diagnosis, bounded handling or explicit release limitation/impact decision.
-Other0.5.0 gates and Issue13 closure remain unchanged.
+PS controls did not solve the footnote forward-link gap: raw PostScript already
+lacked matching DEST anchors before Ghostscript. Subsequent native mechanism
+work and delivered direct-PDF repair supersede the earlier pending diagnosis/
+release-impact question; current maintained behavior: footnote-pdf-fix.md.
+
+User now explicitly adopts recommendation to treat tree->PS->PDF as completed
+historical diagnostics only. Do not pursue it as a feature, fallback workaround,
+maintained acceptance path or release condition; no new Ghostscript dependency,
+second export backend/API or PS correctness gate. No residual PS task. Retain
+original experiment/evidence and immutable archives, not proof of current PS
+support. Future reconsideration requires a concrete unmet need/user selection.
+This decision does not claim PS output correctness or discard the native controls.
+Other0.5.0 gates and Issue13 closure unchanged. No new tests/code/archives needed.
 
 ## Read-only mechanism assessment after user asked probable cause
 

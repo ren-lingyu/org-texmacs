@@ -69,7 +69,10 @@ unchanged. User committed all seven approved task paths; exact delivery verified
 anonymous/named-repeat/markup/cross-page, actual forward/back targets, repeated
 exports, explicit macros, error cleanup/recovery, shared session/worker isolation
 and cleanup-fatal shutdown. No GUI, PS exact landing, arbitrary-style or caption
-layout guarantee. Full contract/commands/identities: footnote-pdf-fix.md. Earlier
+layout guarantee. User adopts PS->PDF as completed diagnostic only,
+not a feature/fallback/maintained acceptance path/release condition. No PS task
+or added Ghostscript runtime dependency; preserve historical evidence only. See
+footnote-forward-probe.md for disposition. Full contract/commands/identities: footnote-pdf-fix.md. Earlier
 causal evidence and archived originals: footnote-forward-probe.md and
 footnote-private-integration.md. Read-only verification confirms the exact single expected Issue13 stage4 parent,
 seven paths/blobs, full binary patch and approved message; index empty, original

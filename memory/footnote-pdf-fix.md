@@ -1,5 +1,15 @@
 # PDF footnote destination repair
 
+## Export-path scope decision
+
+User adopts direct native PDF as the maintained solution for original footnote/
+link gaps; tree->PS->PDF remains completed diagnostic evidence, not a feature,
+fallback path, maintained acceptance requirement or release gate. Earlier PS
+controls also lacked anchors before Ghostscript. Keep their records/archive in
+footnote-forward-probe.md; do not add runtime Ghostscript or another exporter
+backend solely for these already addressed gaps. Reopen only for a concrete
+future unmet requirement selected by user. No new production/tests/archival work.
+
 ## Motivation and selected behavior
 
 After native binding/anchor diagnosis and accepted isolated integration, user

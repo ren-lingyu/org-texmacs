@@ -1,6 +1,21 @@
 # org-texmacs current memory
 
-## Current: Chinese font issue closed as external; no project blocker
+## Current: release scope narrowed; PS route is completed diagnostics
+
+User adopts recommendation to stop pursuing tree->PostScript->PDF as a feature,
+workaround, maintained acceptance route or release condition. Original goal was
+footnote/link export gaps. Independent native PS controls also lacked footnote
+DEST anchors, so PS did not solve it; direct PDF repair is delivered with maintained
+anonymous/named/repeat/forward-back/cross-page/cleanup/worker isolation ERT.
+Keep historical PS evidence/temporary probes and immutable archives; do not add
+Ghostscript/runtime backend dependencies or a second public export path. No
+outstanding PS investigation or release gate. Reconsider only if user later
+selects a concrete unmet need. Full decision/evidence: footnote-forward-probe.md
+and footnote-pdf-fix.md. Chinese font issue also removed from backlog/blockers
+by prior user decision. Other release work unchanged; next user selects work.
+This turn is memory-only, no ordinary code/index/archive/skill changes or runtime reruns.
+
+## Completed: Chinese font issue closed as external; no project blocker
 
 User supplied ~/emarccs TeXmacs override method (same lock not required). Actual
 pkgs/org-texmacs/override.nix sets extraFonts/chineseFonts/japaneseFonts/koreanFonts
