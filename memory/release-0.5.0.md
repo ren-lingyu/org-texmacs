@@ -32,13 +32,19 @@ First full check stopped on a newly added84-column docstring. Rewrapped locally,
 synchronized all32inputs and reran the same authorized command. Final full flake
 check exit0:553/553stock ERT(379.866632s),6/6patched Org(2.836266s), strict
 compilation/package-lint. Default no-link package build exit0. All32root/copy input
-hashes still match accepted manifest; whitespace clean and ordinary index empty.
+hashes still match accepted manifest; whitespace clean. Subsequent user-authorized staging includes exactly these six
+paths; every staged blob matches the validated32input manifest.
 Validated only current x86_64-linux locked environment, no wider platform claim.
-No source staging/commit or new representative
-document/check/app. This is actual-change validation, not an added release gate.
+No source commit or new representative document/check/app. This is actual-change validation, not an added release gate.
 No new original archive needed: ordinary project history will preserve the authored
 docs and prior native evidence is already retained; no skill changes. Next user
-may review/stage/commit the six-path candidate or choose final optional work.
+may commit the six-path candidate or choose final optional work.
+Split unnecessary: versions, release/migration docs and corrected contracts form
+one release-preparation change. Draft tmp/commit.md: chore(release): prepare
+0.5.0 metadata and documentation; no issue-closing/breaking footer. Exact staged
+full-index binary patch SHA2565e318864a1cd1537b423f96682a1aab421141985b57dfdfd1316a9b416bbf729;
+message SHA25669f4fc65e9b3f59c49e6f1511faab608fd609f7ea478d5d20ae4980fda61f827.
+No unstaged project changes. Runtime tests not repeated for staging alone.
 
 Full nix flake check is already part of each commit workflow. It is not a separate
 pre-release blocking task and must not be repeated solely to satisfy a second

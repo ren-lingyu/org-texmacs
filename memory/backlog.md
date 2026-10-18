@@ -3,8 +3,8 @@
 ## Version/documentation finalization locally accepted
 
 User-selected six-path0.5.0 metadata/README/commentary candidate passes full isolated
-flake(553stock/6patched/strict compile/lint) and default build. Unstaged/uncommitted;
-next user selects review/staging/commit or final optional representative documents.
+flake(553stock/6patched/strict compile/lint) and default build. User-authorized staged, uncommitted;
+next user commits or selects final optional representative documents.
 No separate release-only complete-check gate or mandatory document/check/app.
 Native fonts/PS route remain removed; no tag/publication. release-0.5.0.md holds
 current scope/evidence; older pending-version wording is superseded by this state.
