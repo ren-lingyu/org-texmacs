@@ -1,19 +1,20 @@
 # v0.5.0 release readiness
 
-## Statement caption guidance: reviewed, implementation not selected
+## Statement caption completion locally accepted, delivery pending
 
-User supplied v0.5.0 guidance and requested review only. Built-in long caption ->
-dueto, strict explicit-short rejection, existing frozen Org identities and source
-proof; NAME already supported. Findings/captured design: statement-caption-review.md.
-User supplement now adopts native surround/direct-concat comparison before any
-production implementation, preference for equivalent surround, example parser
-exception and frozen IDs reused within one prepared input versus fresh export.
-Non-concat/empty keeps prefix-only concat, provenance prefix remapping and no
-runtime selector. User now adopts direct insertion only into lowering-constructed
-concat; original STM root/internal structure remains indivisible, including concat.
-If surround fails, reassess structure from evidence, no automatic STM rewrite.
-Native comparison/test execution
-not yet selected/authorized; no implementation or native behavior proven.
+User selected adopted design; six-path candidate now passes focused75/75,
+patched Org6/6, stock553/553, all7isolated flake checks/strict compilation/lint
+and default build. Independent native direct/surround36cases per generic/article
+passed before production, with readback/tm reload/font/layout/PDF destination
+checks. Use one surround prefix, original STM roots indivisible; nonconcat/empty
+separate prefix. All16types have long-only caption->dueto with existing inline,
+reference/frozen ID/source-proof rules; short incl empty syntax and empty long
+rejected. Example Org syntax exception retained. Root workaround/lock unchanged,
+index empty. Not yet staged/committed/delivered; no release readiness claim.
+Contract/results/native distinctions: statement-caption-implementation.md.
+Adopted guidance: statement-caption-review.md. Necessary raw native evidence:
+archive/2026-10-18T02-10-34Z--947289b/MANIFEST.md. Next candidate review/delivery,
+remaining release gates unchanged.
 
 ## Block mapping / CJK bounded investigation completed
 

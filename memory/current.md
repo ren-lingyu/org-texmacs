@@ -1,29 +1,33 @@
 # org-texmacs current memory
 
-## Current: statement caption/label guidance reviewed, no implementation
+## Current: statement caption completion locally accepted, not staged
 
-User requested read-only review of updated INBOX (14447bytes, SHA2564b1d4d81...).
-Full design/first-read retention judgment and findings: statement-caption-review.md.
-No new raw archive: sufficient operational extraction; original source identity
-recorded, later INBOX may change. Main proposed addition: built-in statement long
-CAPTION->dueto with existing caption inline/frozen-reference/source-proof rules,
-strict reject explicit short incl empty, label+dueto prefix and owned provenance.
-NAME allocation already exists. No production files/tests/build/index touched.
+User-selected statement NAME/CAPTION completion is implemented in six project
+paths, verified on isolated copied inputs: focused75/75(114.762178s), patched Org
+6/6(2.922588s), stock553/553(430.785335s), full flake all7checks/strict compile/lint
+and default build exit0. Root/copy32input hashes verified,31non-flake bytes equal;
+copied flake only adds independent native gate. Root ELPA workaround/lock unchanged,
+ordinary index empty. No staging/ordinary commit/external tracking/release action.
 
-User supplied subsequent explicit supplement (conversation text, not new INBOX
-read): independently compare surround vs direct concat before production, using
-native readback/PDF/tm reload, title/dueto/body position/spacing/font, counters,
-actual destinations, generic/article, STM/math/multiple paragraphs. Prefer surround
-on equivalence. User now explicitly adopts fallback boundary: direct insertion
-only into lowering-constructed concat; original STM root/contents indivisible,
-even concat. If surround fails, determine a new structure from native evidence,
-never automatically rewrite original STM internally. First non-concat/empty retains separate prefix concat;
-path prefixes still remap; no runtime choice config. Example parser exception
-and same-prepared reuse versus fresh-export allocation distinction now adopted.
-Ordered design/native gate is adopted, but no implementation/test executed or
-new command authorized. Full supplement/adopted fallback constraint recorded in
-statement-caption-review.md. Next scope isolated native gate when user selects
-execution; do not claim surround equivalence or auto-relax original STM contract.
+All16statement types gain long caption->dueto with existing inline/ref ownership,
+strict reject explicit short incl erased []/empty long before caption link scan,
+pre-prune source evidence and validated scoped rebind; excluded owners do not fail.
+Use label then dueto prefix; first concat surrounded without changing original STM
+root or internals, nonconcat/empty separate prefix, no metadata no body change.
+Preserve STM/file paths and same-prepared frozen IDs. Native gate passed BEFORE
+production: generic/article36cases/style/direct vs surround/readback/saved tm
+reload/text/counters/fonts/layout/actual PDF targets. Legacy NAME-only separate
+body paragraph disappears; text/counters/target coordinates unchanged. Corrected
+legacy body-line assertion does not establish broken old references. Duplicate
+native destination-key diagnostics recorded, actual target checks pass.
+
+Full implementation/authorization/results/initial test mistakes/limits:
+statement-caption-implementation.md. Adopted design/INBOX first-read identity and
+no redundant raw capture: statement-caption-review.md. Necessary independent
+native evidence only: archive/2026-10-18T02-10-34Z--947289b/MANIFEST.md. Archive and
+memory checkpoints separate; skill files unchanged. Next user reviews candidate
+and may request commit assessment/staging. Do not stage without authorization or
+claim delivery/version0.5.0 readiness. GUI/other styles/platforms not newly tested.
 
 ## Completed: block mapping / CJK bounded investigation
 

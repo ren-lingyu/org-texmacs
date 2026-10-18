@@ -1,5 +1,20 @@
 # org-texmacs current project model
 
+## Statement long caption completion: locally accepted candidate
+
+Six-path candidate adds long statement CAPTION->dueto for all16tags, preserving
+existing inline/NAME/frozen references and literal example parser exception.
+Source evidence captures explicit short incl erased [] and empty declarations
+before prune, scoped range rebind and retained-only validation. Shared pure
+validator runs before caption links; no caption STM discovery or custom-handler
+caption support. First concat uses surround(label/dueto prefix,empty,original),
+opaque STM roots indivisible; nonconcat/empty separate prefix. Paths remap;
+same-prepared consumers reuse IDs. Native generic/article36cases/direct control/
+readback/PDF/reload passed before production; legacy NAME-only paragraph break
+removed, target coords and numbers retained.75focused/6patched/553stock/full
+flake/compile/lint/default build pass. Not staged/delivered; root workaround/lock
+unchanged. Current contract/evidence: statement-caption-implementation.md.
+
 ## Block mapping / CJK bounded investigation completed
 
 User recalls original fixed blocks primarily quote/center; archive red/green
@@ -94,7 +109,8 @@ statement TYPE, statement_TYPE and direct TYPE aliases; Org example-block stays
 literal. Native generic title/counter/PDF comparisons and theorem/proof reload
 pass;17focused/495fullERT/strict package compile/lint/full flake/build accepted.
 Other styles/GUI/platforms unverified. Contract/input identities:
-memory/issue-13-stage1.md. NAME/CAPTION/ATTR remains rejected for these blocks.
+memory/issue-13-stage1.md. Stage1 rejected NAME/CAPTION/ATTR; Stage4 adds NAME,
+and current statement candidate adds long-only CAPTION as described above.
 No stable public handler API or new dependency/protocol.
 
 Issue13 is required for v0.5.0: ordinary recursive preparation/lowering with a

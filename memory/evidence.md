@@ -1,5 +1,23 @@
 # org-texmacs durable evidence
 
+## Statement caption local acceptance
+
+Independent native direct/surround control passed before production; generic/
+article36cases/style, exact native readback and saved-tm reload, font/run/text/
+counter/layout and actual PDF targets within1pt. Legacy NAME-only body paragraph
+break is removed; all ref target coordinates and text/counters unchanged. Initial
+legacy body-line assertion overlooked native title; no claim of broken old links.
+Native duplicate destination-key diagnostics recorded for both structures.
+Necessary exact text evidence: archive/2026-10-18T02-10-34Z--947289b/MANIFEST.md.
+
+Six-path candidate locally accepted on copied32runtime inputs:75focused114.762178s,
+6patched2.922588s,553stock430.785335s, all7isolated flake checks/strict compile/lint,
+default package exit0.31non-flake copied bytes equal root; copied flake only adds
+native gate. Root ELPA workaround/lock unchanged, ordinary index empty, no delivery
+or release claim. Full contract/authorized commands/test corrections and limits:
+statement-caption-implementation.md. No project-parent inference for uncommitted
+candidate; underlying baseline is not the candidate snapshot.
+
 ## Block mapping / CJK bounded investigation completed
 
 User recalls original fixed blocks primarily quote/center; archive red/green
