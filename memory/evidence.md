@@ -16,7 +16,7 @@ default package exit0.31non-flake copied bytes equal root; copied flake only add
 native gate. Root ELPA workaround/lock unchanged. Subsequent user-authorized
 six-path user commit matches accepted parent/full binary diff/blobs/message.
 Index empty, only original flake workaround unstaged. No runtime rerun or release
-claim. Remote issue13 fetch failed; last-known closed state retained.
+claim. User-authorized remote retry freshly confirms issue13 CLOSED/COMPLETED via public HTML.
 Full contract/authorized commands/test corrections and limits:
 statement-caption-implementation.md. Exact committed delivery may be associated
 by GAW project-parent edge as delivery equivalence, not original runtime context.

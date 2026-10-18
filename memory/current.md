@@ -31,8 +31,9 @@ memory checkpoints separate; skill files unchanged. Split unnecessary: implement
 regressions and README form one coherent capability. tmp/commit.md ready with
 feat(document): support captions on formal statements; Refs:#13, no Closes.
 Delivery verification complete, without runtime rerun of unchanged bytes.
-Associated issue13 page lookup failed(cache miss); last verified closed/completed
-status retained, no fresh remote-state claim. Next user selects remaining release
+User authorized another remote read. Public issue13 HTML now confirms
+state CLOSED, stateReason COMPLETED, agreeing with earlier verified status.
+Next user selects remaining release
 work; this does not establish0.5.0 readiness. GUI/other styles/platforms not newly tested.
 
 ## Completed: block mapping / CJK bounded investigation

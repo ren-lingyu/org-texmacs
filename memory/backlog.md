@@ -12,7 +12,7 @@ reference/frozen ID/source-proof rules; short incl empty syntax and empty long
 rejected. Example Org syntax exception retained. Root workaround/lock unchanged,
 user committed exact six-path candidate; parent/diff/blobs/message verification
 passes. Index empty, original flake workaround remains unstaged; no release
-readiness claim. Remote issue13 lookup failed, last-known closed state retained.
+readiness claim. Remote issue13 public HTML freshly confirms CLOSED/COMPLETED after user-authorized retry.
 Contract/results/native distinctions: statement-caption-implementation.md.
 Adopted guidance: statement-caption-review.md. Necessary raw native evidence:
 archive/2026-10-18T02-10-34Z--947289b/MANIFEST.md. Next user selects remaining release work,

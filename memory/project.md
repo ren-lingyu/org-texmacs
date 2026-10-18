@@ -14,7 +14,7 @@ readback/PDF/reload passed before production; legacy NAME-only paragraph break
 removed, target coords and numbers retained.75focused/6patched/553stock/full
 flake/compile/lint/default build pass. User committed exact six paths; complete
 parent/diff/blobs/message verification passes, ordinary index empty. Root
-workaround/lock unchanged. Remote issue13 lookup failed, last-known closed retained.
+workaround/lock unchanged. Remote issue13 freshly confirmed CLOSED/COMPLETED through public HTML.
 Contract: statement-caption-implementation.md.
 
 ## Block mapping / CJK bounded investigation completed

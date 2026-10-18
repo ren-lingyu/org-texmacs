@@ -132,7 +132,14 @@ unchanged. User commit subject: feat(document): support captions on formal state
 Refs:#13, no new closing request. No runtime rerun solely for delivery verification.
 Current GAW checkpoint may associate the exact newly verified committed snapshot
 as delivery-equivalence evidence, not original precommit runtime provenance.
-Associated public issue13 lookup attempted but web fetch failed Cache miss;
-previously verified closed/completed remains last-known, current remote state
-not independently re-confirmed. No external write. Next user selects remaining
+User authorized another remote read. Browser still failed Cache miss and API
+browser read unavailable. Unauthenticated API shell request initially failed sandbox
+DNS, then elevated same request returned HTTP403. Final public HTML read succeeded
+(341096bytes, response capped1MiB,30s timeout), extracting exactly one state field
+CLOSED and stateReason COMPLETED. Remote status now freshly confirmed unchanged
+from earlier verified closed/completed. URL:
+https://github.com/ren-lingyu/org-texmacs/issues/13.
+Only status fields inspected, no claim about full issue body/comments or closure
+cause from remote event history. No credentials, downloaded files, dependency or
+remote writes. Next user selects remaining
 release work; feature delivery alone does not establish0.5.0 readiness.
