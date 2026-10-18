@@ -1,6 +1,6 @@
 # v0.5.0 release readiness
 
-## Statement caption completion locally accepted, delivery pending
+## Statement caption completion committed and verified
 
 User selected adopted design; six-path candidate now passes focused75/75,
 patched Org6/6, stock553/553, all7isolated flake checks/strict compilation/lint
@@ -10,11 +10,12 @@ checks. Use one surround prefix, original STM roots indivisible; nonconcat/empty
 separate prefix. All16types have long-only caption->dueto with existing inline,
 reference/frozen ID/source-proof rules; short incl empty syntax and empty long
 rejected. Example Org syntax exception retained. Root workaround/lock unchanged,
-six paths now user-authorized/staged; single commit message ready at tmp/commit.md.
-Not yet committed/delivered; no release readiness claim.
+user committed exact six-path candidate; parent/diff/blobs/message verification
+passes. Index empty, original flake workaround remains unstaged; no release
+readiness claim. Remote issue13 lookup failed, last-known closed state retained.
 Contract/results/native distinctions: statement-caption-implementation.md.
 Adopted guidance: statement-caption-review.md. Necessary raw native evidence:
-archive/2026-10-18T02-10-34Z--947289b/MANIFEST.md. Next manual user commit and delivery verification,
+archive/2026-10-18T02-10-34Z--947289b/MANIFEST.md. Next user selects remaining release work,
 remaining release gates unchanged.
 
 ## Block mapping / CJK bounded investigation completed

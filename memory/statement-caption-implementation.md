@@ -85,7 +85,7 @@ Only pinned x86_64-linux validated; other systems omitted. Final root/copy
 comparison passes for all32recorded runtime input hashes,31non-flake copies
 byte-equal, copied flake exactly root plus native-check declaration. Root
 flake/lock hashes unchanged and ordinary index empty. Six-path candidate locally
-accepted; subsequently staged by user authorization, not committed/delivered.
+accepted; subsequently user-staged/committed, exact delivery verified below.
 No release or external issue action.
 
 ## Selected immutable native evidence
@@ -120,3 +120,19 @@ Message byte SHA256:
 No additional project parent inferred for an uncommitted staged tree. After user
 commit, verify actual message/diff/blobs and associated issue state per project
 preference; footer is a relation, not a fresh closure request.
+
+## User commit delivery verified
+
+Read-only post-commit verification confirms one expected parent (the recorded
+footnote repair baseline), exact six task paths, all six blobs equal accepted
+runtime-input hashes and current worktree, complete binary/full-index patch SHA256
+and full commit-message SHA256 equal staged candidate/draft above. Index empty;
+only root user ELPA flake workaround remains unstaged with original hash, lock
+unchanged. User commit subject: feat(document): support captions on formal statements;
+Refs:#13, no new closing request. No runtime rerun solely for delivery verification.
+Current GAW checkpoint may associate the exact newly verified committed snapshot
+as delivery-equivalence evidence, not original precommit runtime provenance.
+Associated public issue13 lookup attempted but web fetch failed Cache miss;
+previously verified closed/completed remains last-known, current remote state
+not independently re-confirmed. No external write. Next user selects remaining
+release work; feature delivery alone does not establish0.5.0 readiness.

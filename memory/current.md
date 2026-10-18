@@ -1,14 +1,15 @@
 # org-texmacs current memory
 
-## Current: statement caption completion staged, commit message ready
+## Current: statement caption completion committed; delivery verified
 
 User-selected statement NAME/CAPTION completion is implemented in six project
 paths, verified on isolated copied inputs: focused75/75(114.762178s), patched Org
 6/6(2.922588s), stock553/553(430.785335s), full flake all7checks/strict compile/lint
 and default build exit0. Root/copy32input hashes verified,31non-flake bytes equal;
 copied flake only adds independent native gate. Root ELPA workaround/lock unchanged,
-User authorized staging the exact six task files; index matches validated bytes.
-Only root flake remains unstaged. No ordinary commit/external tracking/release action.
+User committed the exact six-path candidate; parent, full binary diff, all six
+validated blobs and complete drafted message verified. Index empty; only original
+root flake remains unstaged. No agent ordinary commit/external write/release action.
 
 All16statement types gain long caption->dueto with existing inline/ref ownership,
 strict reject explicit short incl erased []/empty long before caption link scan,
@@ -29,8 +30,10 @@ native evidence only: archive/2026-10-18T02-10-34Z--947289b/MANIFEST.md. Archive
 memory checkpoints separate; skill files unchanged. Split unnecessary: implementation,
 regressions and README form one coherent capability. tmp/commit.md ready with
 feat(document): support captions on formal statements; Refs:#13, no Closes.
-Next user manually commits; verify exact six paths/parent/patch/message afterward.
-No delivery/version0.5.0 readiness claim. GUI/other styles/platforms not newly tested.
+Delivery verification complete, without runtime rerun of unchanged bytes.
+Associated issue13 page lookup failed(cache miss); last verified closed/completed
+status retained, no fresh remote-state claim. Next user selects remaining release
+work; this does not establish0.5.0 readiness. GUI/other styles/platforms not newly tested.
 
 ## Completed: block mapping / CJK bounded investigation
 

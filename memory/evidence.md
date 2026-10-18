@@ -1,6 +1,6 @@
 # org-texmacs durable evidence
 
-## Statement caption local acceptance
+## Statement caption acceptance and verified user delivery
 
 Independent native direct/surround control passed before production; generic/
 article36cases/style, exact native readback and saved-tm reload, font/run/text/
@@ -14,9 +14,12 @@ Six-path candidate locally accepted on copied32runtime inputs:75focused114.76217
 6patched2.922588s,553stock430.785335s, all7isolated flake checks/strict compile/lint,
 default package exit0.31non-flake copied bytes equal root; copied flake only adds
 native gate. Root ELPA workaround/lock unchanged. Subsequent user-authorized
-six-path staging matches validated bytes; message ready, no delivery/release claim. Full contract/authorized commands/test corrections and limits:
-statement-caption-implementation.md. No project-parent inference for uncommitted
-candidate; underlying baseline is not the candidate snapshot.
+six-path user commit matches accepted parent/full binary diff/blobs/message.
+Index empty, only original flake workaround unstaged. No runtime rerun or release
+claim. Remote issue13 fetch failed; last-known closed state retained.
+Full contract/authorized commands/test corrections and limits:
+statement-caption-implementation.md. Exact committed delivery may be associated
+by GAW project-parent edge as delivery equivalence, not original runtime context.
 
 ## Block mapping / CJK bounded investigation completed
 
