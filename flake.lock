@@ -22,10 +22,10 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1791487292,
-        "narHash": "sha256-tqM7xDEsaeK1p6VvRygeZ9LkQRpUUkbRT02BHv6hnTM=",
+        "lastModified": 1792506237,
+        "narHash": "sha256-Q/8KLB6jNfpaUN1HAedE/u/Et9feE/zYSsutBLKrCFk=",
         "ref": "refs/heads/nixpkgs-unstable",
-        "rev": "8edc0c72e3a38faf5434e40d1f19431125fe4b30",
+        "rev": "5adc50831c259f87faeb09ddf930d43597197473",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/NixOS/nixpkgs.git"
@@ -52,10 +52,62 @@
         "type": "github"
       }
     },
+    "personal-nixpkgs": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792762694,
+        "narHash": "sha256-SDLOUSqlap9PGNFbsB+vPrgEYo/GvPKToQImTtWZhSc=",
+        "ref": "refs/heads/main",
+        "rev": "06a8fa43a112c4b1f0f9576eceee466b6b730f38",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/ren-lingyu/nixpkgs"
+      },
+      "original": {
+        "ref": "refs/heads/main",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/ren-lingyu/nixpkgs"
+      }
+    },
     "root": {
       "inputs": {
         "flake-parts": "flake-parts",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "personal-nixpkgs": "personal-nixpkgs",
+        "treefmt-nix": "treefmt-nix"
+      }
+    },
+    "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791885023,
+        "narHash": "sha256-C3alQ2MEt0zVrUSho5NUDo3jmhbff72++bfwoqT9Omo=",
+        "ref": "refs/heads/main",
+        "rev": "0d6d739a833ba9a9c93034862e4a7b061a062a1c",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/numtide/treefmt-nix.git"
+      },
+      "original": {
+        "ref": "refs/heads/main",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/numtide/treefmt-nix.git"
       }
     }
   },
