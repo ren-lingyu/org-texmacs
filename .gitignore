@@ -8,15 +8,20 @@
 !flake.nix
 !flake.lock
 
+!.github/
+!.github/**/
+!.github/**/*.yaml
+
 !lisp/
 !lisp/org-texmacs.el
 !lisp/ox-texmacs.el
 !lisp/org-texmacs-*.el
 !lisp/org-texmacs-worker.scm
 
-!.github/
-!.github/**/
-!.github/**/*.yaml
+!pkgs/
+!pkgs/**/
+!pkgs/**/*.nix
+!pkgs/**/*.el
 
 !tests/
 !tests/**/
