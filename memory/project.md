@@ -4,18 +4,23 @@
 
 All15 production Elisp modules and org-texmacs-worker.scm now reside together
 under lisp/. Worker service lookup remains relative to its own library directory.
-Root flake retains a source fileset containing lisp/, root README.org and LICENSE,
-and builds
-from ${source}/lisp; patching, compilation and Scheme installation therefore run
+User subsequently sets the source fileset root to lisp/ and builds directly
+from source; patching, compilation and Scheme installation therefore run
 inside lisp without changing the installed flat site-lisp layout. Package-lint
-uses ${source}/lisp as working/load directory. README checkout paths and straight
+uses source as working/load directory. Tests reference root README.org separately.
+README checkout paths and straight
 globs point into lisp; root .gitignore now allows those source files.
-User migration and flake fileset were staged at intake; adaptation edits are
-unstaged and lisp files untracked. Ordinary index/history must remain untouched.
-Isolated full flake check passes on pinned x86_64-linux:553stock/6patched ERT,
-strict compilation/installation and package-lint;32inputs equal current project.
-All16 moved source files equal their prior root HEAD bytes. Other systems,
-straight installation and GUI not newly tested; current.md records exact commands.
+User has staged relocation, initial adaptations and both subsequent test-path
+fixes (final inspection has no unstaged diff). Agent must not change the ordinary
+index/history. User selected
+preserving current test semantics first; broader test cleanup and removing direct
+README dependence are deferred. Earlier isolated full flake check passed with
+the preceding root-source layout. New full root flake check for lisp-root source
+also passes:553/553 stock ERT (382.099933s), strict package compilation/install,
+package-lint and patched-caption check. Existing README examples and all test
+assertions retained; only package-lint/README acquisition paths changed.
+Other systems, straight installation and GUI not newly tested; current.md records
+exact commands and current validation results.
 
 ## Version/documentation candidate for0.5.0
 

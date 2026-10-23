@@ -1,6 +1,35 @@
 # org-texmacs current memory
 
-## Current: lisp/ relocation adaptation implemented and validated
+## Current: adapt checks to user's lisp-root source
+
+After the initial layout gate below, user changed flake source root to ./lisp
+and buildPackage src back to source, and staged the relocation/adaptations.
+User requests minimal test adaptation preserving original semantics; broader
+test cleanup is explicitly deferred. README examples and the existing mandatory
+tool checks remain; do not remove READMEs or replace examples with fixtures now.
+Two one-line corrections: package-lint uses @source@ directly instead
+of @source@/lisp; patched-caption driver supplies root ../../README.org directly
+instead of ${source}/README.org. No assertion/runtime/source/flake changes.
+User authorized one timeout600s nix flake check -L --no-write-lock-file from root,
+including locked-dependency network and store/cache/log/products. Initial sandbox
+attempt failed opening the Nix fetcher-cache SQLite database, before testing;
+approved escalation completed exit0, all flake checks passed. Stock553/553 ERT
+(382.099933s), including both README examples and package-load/worker colocation,
+strict compilation/installation, package-lint and patched-caption check accepted.
+Pinned x86_64-linux only; incompatible systems omitted. No weaker assertion,
+removed/renamed case or new fixture; only two test-path lines changed. No runtime,
+README, flake, lock or ordinary index mutation by agent. Earlier gate below
+validates the preceding source-root configuration only.
+User also requires git-maintenance for future GAW checkpoint messages; do not
+rewrite existing history. Ordinary project staging/commit remains unselected.
+Test-path adaptation is complete. Initially unstaged, both fixes are now staged
+by the user during validation; final readonly inspection finds no unstaged diff.
+Agent did not stage any ordinary project path. Broader test cleanup,
+README fixture extraction and explicit test-environment flag are deferred, not
+part of this completed node. No new archive needed; existing tests and extracted
+gate result are sufficient. Next: user delivery or separately select cleanup.
+
+## Completed: initial lisp/ relocation adaptation implemented and validated
 
 User moved all 15 Elisp modules and the Scheme worker from root into lisp/ and
 requested corresponding adaptations. At intake root deletions and flake fileset
