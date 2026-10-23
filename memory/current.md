@@ -1,6 +1,46 @@
 # org-texmacs current memory
 
-## Current: adapt checks to user's lisp-root source
+## Current: tests migration/refactor implemented and accepted
+
+User approved the conversational plan and now requests implementation. Changes
+authorized in tests/ plus existing README test instructions; no production code,
+lock/dependency-version/ignore/index/history changes. No parent-directory lookup
+or inferred repository root; external files enter Nix functions as arguments,
+then may reach Lisp through environment. Tests must never access/pass README.
+Use callPackage, common helper files without ERT registration, explicit bootstrap
+ordering, native fixtures replacing two README cases, direct Nix->Emacs drivers,
+three disjoint ert-core/native/pdf derivations plus a non-running ert aggregate.
+Preserve all553 main cases (two example-name mappings),6patched/9optional real
+integration cases, assertions/matrices/isolation/failure behavior. No shared worker
+or deleted coverage for speed. Optional integration stays outside default checks.
+User authorized repeated exact command for this task: timeout 600s nix flake check
+-L --no-write-lock-file path:/home/lingyu/Projects/org-texmacs/tmp/tests-refactor,
+including isolated preparation, existing pinned extension copies, dependency
+network/store/cache/log/products. Project clean at intake; implemented direct
+drivers/support/bootstrap and split cases into176core,
+318native,59PDF. Static normalized case-body comparison passes for all553
+(only two example-call/name substitutions and strict-tools marker replacement),
+patched6/integration9 unchanged. Shared helper files register no tests; runtime
+runner rejects empty/duplicate cases and writes actual names. Removed two Guile
+wrappers and all test README access; Python inspector moved byte-identically.
+Prepared tmp/tests-refactor with byte-equal project inputs except copied flake
+adds optional integration (existing11extension modules) and a dependency-only
+568-name inventory check; root flake/lock/production/index untouched. Both exact
+authorized full checks exit0. First:176core/318native/59PDF/6patched/9integration,
+package-lint, strict package build and inventory all accepted. Second reuses
+identical successful suites and adds five deliberate runner failure probes plus
+a positive fixture, all accepted. Final65project+11extension input equality and
+normalized case-body preservation verified; whitespace clean, ordinary index
+empty. Core1.033395s/native177.056561s/PDF209.939116s; no general speed guarantee.
+Complete interfaces, command/evidence boundaries and results: tests-refactor.md.
+README test instructions synchronized; tests have no README reference/access,
+no parent lookup (only three synthetic normalization strings retain ../), and no
+Guile wrapper. Root candidate remains unstaged; no ordinary commit/external write.
+No raw archive needed: maintained cases/runner plus extracted evidence suffice.
+Next: user review/staging/delivery. Do not rerun passed suites absent new changes
+or unresolved concern. GAW checkpoint messages must use git-maintenance.
+
+## Completed: adapt checks to user's lisp-root source
 
 After the initial layout gate below, user changed flake source root to ./lisp
 and buildPackage src back to source, and staged the relocation/adaptations.

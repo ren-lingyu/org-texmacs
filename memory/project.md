@@ -7,20 +7,32 @@ under lisp/. Worker service lookup remains relative to its own library directory
 User subsequently sets the source fileset root to lisp/ and builds directly
 from source; patching, compilation and Scheme installation therefore run
 inside lisp without changing the installed flat site-lisp layout. Package-lint
-uses source as working/load directory. Tests reference root README.org separately.
-README checkout paths and straight
-globs point into lisp; root .gitignore now allows those source files.
-User has staged relocation, initial adaptations and both subsequent test-path
-fixes (final inspection has no unstaged diff). Agent must not change the ordinary
-index/history. User selected
-preserving current test semantics first; broader test cleanup and removing direct
-README dependence are deferred. Earlier isolated full flake check passed with
-the preceding root-source layout. New full root flake check for lisp-root source
-also passes:553/553 stock ERT (382.099933s), strict package compilation/install,
-package-lint and patched-caption check. Existing README examples and all test
-assertions retained; only package-lint/README acquisition paths changed.
-Other systems, straight installation and GUI not newly tested; current.md records
-exact commands and current validation results.
+uses source as working/load directory. README checkout/straight paths point into
+lisp. User committed the relocation; tests refactor below starts from a clean
+source-layout baseline. Earlier lisp-root full check passed553/553 stock ERT
+(382.099933s), strict package build/lint and patched-caption check.
+
+## Test organization and explicit dependency boundaries
+
+Accepted uncommitted refactor uses tests/default.nix callPackage composition:
+ert-core176, ert-native318 and ert-pdf59; ert is a dependency-only aggregate,
+not a second execution. Children receive project-specific runtime/source and
+testSupport file attributes explicitly; no parent traversal or repository-root
+discovery. Shared bootstrap preserves worker-only/document loading observation,
+then common/native/PDF helpers register no cases. Runner rejects missing inputs,
+tools, empty suites and duplicate registrations, and records actual case names.
+Direct Nix->Emacs drivers replace two Guile wrappers. Default ERT uses stock Org;
+caption-inline-footnotes retains the test-only Org patch and six original cases.
+Optional integration retains nine real package/SQLite/HTML/blog cases, supplied
+Emacs+Org-roam, pinned extensionSources and explicit testSupport; no default
+extension dependency added. Tests never read/pass README; two fixed native
+fixtures retain example business assertions, documentation synchronization is no
+longer an automated check. Python/pypdf inspector remains test-only/PDF-local.
+Existing isolation/error/cleanup semantics and assertion matrices preserved;
+no shared worker or deleted case. Nix ERT limits600s, lint120s. All568cases,
+inventory and five negative runner controls/positive control accepted on pinned
+x86_64-linux; final65project+11extension inputs match. Other systems/GUI not new
+claims. Full interfaces, exact authority/results/limits: tests-refactor.md.
 
 ## Version/documentation candidate for0.5.0
 
