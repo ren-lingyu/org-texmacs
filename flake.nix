@@ -18,26 +18,9 @@
     perSystem = { config, pkgs, ... } : let
 
       source = pkgs.lib.fileset.toSource {
-        root = ./.;
+        root = ./lisp;
         fileset = pkgs.lib.fileset.unions [
-          ./org-texmacs.el
-          ./ox-texmacs.el
-          ./org-texmacs-core.el
-          ./org-texmacs-bibliography.el
-          ./org-texmacs-preprocess.el
-          ./org-texmacs-context.el
-          ./org-texmacs-ast.el
-          ./org-texmacs-document.el
-          ./org-texmacs-input.el
-          ./org-texmacs-session.el
-          ./org-texmacs-source.el
-          ./org-texmacs-fragment.el
-          ./org-texmacs-font-lock.el
-          ./org-texmacs-edit.el
-          ./org-texmacs-worker.el
-          ./org-texmacs-worker.scm
-          ./README.org
-          ./LICENSE
+          ./lisp
         ];
       };
 

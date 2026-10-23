@@ -22,7 +22,8 @@
               (not (member name '("." "..")))))))
 
 (define home (string-append (getenv "TMPDIR") "/home"))
-(define elisp-files (find-elisp-files "@source@"))
+(define elisp-directory "@source@")
+(define elisp-files (find-elisp-files elisp-directory))
 
 (unless (file-exists? home)
   (mkdir home))
@@ -38,9 +39,9 @@
                      "-Q"
                      "--batch"
                      "-chdir"
-                     "@source@"
+                     elisp-directory
                      "-L"
-                     "@source@"
+                     elisp-directory
                      "--load"
                      "package-lint"
                      "--eval"

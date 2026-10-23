@@ -22,7 +22,7 @@ in pkgs.runCommand "org-texmacs-caption-inline-footnotes" {
   ORG_TEXMACS_TEST_PATCHED_ORG = "${org}";
   ORG_TEXMACS_TEST_PATCHED_PACKAGE = "${testPackage}";
   ORG_TEXMACS_TEST_PROGRAM = pkgs.lib.getExe' pkgs.texmacs "texmacs";
-  ORG_TEXMACS_TEST_README = "${source}/README.org";
+  ORG_TEXMACS_TEST_README = "${../../README.org}";
 } ''
   emacs -Q --batch --load ${../ert/ert.el} --load ${./ert.el} \
     --eval '(ert-run-tests-batch-and-exit "^org-texmacs-caption-patched-")'

@@ -121,12 +121,12 @@ Nix checks is for their test driver scripts.
 * Loading the package
 ** From a source checkout
 Keep all =org-texmacs*.el= files, =ox-texmacs.el= and
-=org-texmacs-worker.scm= together in the
-checkout directory.  Add that directory to Emacs's =load-path=, replacing
+=org-texmacs-worker.scm= together in the checkout's =lisp/= directory.
+Add that directory to Emacs's =load-path=, replacing
 the example path below:
 
 #+begin_src emacs-lisp
-  (add-to-list 'load-path "/path/to/org-texmacs/")
+  (add-to-list 'load-path "/path/to/org-texmacs/lisp/")
   (require 'org-texmacs)
 #+end_src
 
@@ -168,7 +168,7 @@ For a source checkout, replace the directory below with its absolute path:
 #+name: example-use-package-local
 #+begin_src emacs-lisp
   (use-package org-texmacs
-    :load-path "/path/to/org-texmacs/"
+    :load-path "/path/to/org-texmacs/lisp/"
     :ensure nil
     :demand t)
 #+end_src
@@ -199,9 +199,9 @@ explicit recipe instead of the local or already-installed declaration:
     :straight
     (org-texmacs :type git :host github
                  :repo "ren-lingyu/org-texmacs"
-                :files ("org-texmacs*.el"
-                        "ox-texmacs.el"
-                        "org-texmacs-worker.scm"))
+                :files ("lisp/org-texmacs*.el"
+                        "lisp/ox-texmacs.el"
+                        "lisp/org-texmacs-worker.scm"))
     :ensure nil
     :demand t)
 #+end_src

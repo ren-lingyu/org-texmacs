@@ -8,10 +8,11 @@
 !flake.nix
 !flake.lock
 
-!org-texmacs.el
-!ox-texmacs.el
-!org-texmacs-*.el
-!org-texmacs-worker.scm
+!lisp/
+!lisp/org-texmacs.el
+!lisp/ox-texmacs.el
+!lisp/org-texmacs-*.el
+!lisp/org-texmacs-worker.scm
 
 !.github/
 !.github/**/
