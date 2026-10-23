@@ -1,15 +1,18 @@
 # org-texmacs active backlog
 
-## Tests migration/refactor implemented and accepted
+## Tests migration/refactor committed and verified
 
-User-selected cleanup is complete as an unstaged candidate: callPackage/explicit
+User-selected cleanup is complete and user-committed: callPackage/explicit
 dependencies, no README or parent-directory discovery, direct Emacs drivers,
 isolated core/native/PDF groups plus ert aggregate and shared support. All553
 main/6patched/9optional integration cases retain business assertions and matrices;
 two example names/calls change to fixed test-owned fixtures. Two authorized full
 checks pass, including runtime inventories and runner rejection controls.
 Core ~1s; native ~177s and PDF ~210s can run independently/concurrently. No new
-worker-sharing/deletion/benchmark task adopted. Next user reviews/stages/delivers;
+worker-sharing/deletion/benchmark task adopted. Delivery verification matches
+single expected parent,48changed paths, full patch/message and all65accepted input
+blobs; project index/worktree clean. No rerun for identical committed bytes.
+No remaining implementation/delivery/tracking action; next user selects work;
 details and evidence limits: memory/tests-refactor.md. No production/lock/ignore
 or ordinary Git mutation; README running instructions synchronized.
 

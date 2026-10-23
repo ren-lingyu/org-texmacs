@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: tests migration/refactor implemented and accepted
+## Current: tests migration/refactor committed and delivery verified
 
 User approved the conversational plan and now requests implementation. Changes
 authorized in tests/ plus existing README test instructions; no production code,
@@ -31,13 +31,27 @@ package-lint, strict package build and inventory all accepted. Second reuses
 identical successful suites and adds five deliberate runner failure probes plus
 a positive fixture, all accepted. Final65project+11extension input equality and
 normalized case-body preservation verified; whitespace clean, ordinary index
-empty. Core1.033395s/native177.056561s/PDF209.939116s; no general speed guarantee.
+empty at runtime acceptance. Core1.033395s/native177.056561s/PDF209.939116s;
+no general speed guarantee.
 Complete interfaces, command/evidence boundaries and results: tests-refactor.md.
 README test instructions synchronized; tests have no README reference/access,
 no parent lookup (only three synthetic normalization strings retain ../), and no
-Guile wrapper. Root candidate remains unstaged; no ordinary commit/external write.
+Guile wrapper. User subsequently staged all48changed paths. Commit-message review
+confirms all65staged inputs equal accepted manifest, no unstaged changes and clean
+staged whitespace. Complete binary patch1431662bytes, SHA256
+ff2b139e3f687dd7361a284fb022b1f4791d6570c1fc812f452d829f1e4e1f82.
+git-maintenance reviewed as one coupled refactor; tmp/commit.md now contains
+refactor(tests): split ERT suites and isolate dependencies, five Chinese bullets,
+no issue/breaking footer. No rerun solely for matching staged bytes and no ordinary
+agent Git write/commit/external write. User committed the exact reviewed candidate.
+Readonly verification confirms the expected single Python-allowlist parent,
+48changed paths, complete binary patch hash above, all65accepted committed input
+blobs and full drafted message (normalizing only terminal newlines). Ordinary
+project index/worktree clean. This project association grounds committed-delivery
+equivalence, not the original uncommitted runtime acceptance. No issue footer or
+linked external tracking; no remote lookup/write needed.
 No raw archive needed: maintained cases/runner plus extracted evidence suffice.
-Next: user review/staging/delivery. Do not rerun passed suites absent new changes
+Tests migration and delivery complete; next user selects work. Do not rerun passed suites absent new changes
 or unresolved concern. GAW checkpoint messages must use git-maintenance.
 
 ## Completed: adapt checks to user's lisp-root source

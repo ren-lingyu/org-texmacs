@@ -92,6 +92,19 @@ prior382.099933s monolithic ERT cautiously, without cross-machine or warm/cold
 benchmark guarantee. GUI/other systems not newly tested. No raw archive needed:
 maintained assertions/runner and these extracted boundaries preserve useful facts.
 
-Candidate complete, ordinary index empty and all edits unstaged at final review;
-user review/staging/commit remains next. Use git-maintenance for checkpoint/message
-review, never ordinary agent commits or history rewrite.
+At runtime acceptance the ordinary index was empty and all edits unstaged. User
+subsequently staged all48changed paths; all65staged inputs match accepted manifest
+and no unstaged diff remains. Complete binary staged patch1431662bytes, SHA256
+ff2b139e3f687dd7361a284fb022b1f4791d6570c1fc812f452d829f1e4e1f82.
+git-maintenance review accepts one coupled refactor, no split needed (medium
+difficulty). tmp/commit.md holds refactor(tests): split ERT suites and isolate
+dependencies, five Chinese bullets, no issue/breaking footer. User subsequently
+committed the exact candidate. Readonly delivery verification confirms one expected
+Python-allowlist parent, all48changed paths, complete binary patch hash above and
+all65accepted committed input hashes. Full message matches draft after normalizing
+only terminal newlines. Project index/worktree clean. No new tests solely for
+identical staging/committed bytes and no ordinary agent Git mutation. Current
+project-parent association grounds delivered-equivalence verification, not earlier
+uncommitted runtime acceptance. No issue/footer/tracking lookup needed; no new raw
+archive. Implementation and delivery complete; next user selects work.
+Use git-maintenance for checkpoint/message review.

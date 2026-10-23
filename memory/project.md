@@ -14,7 +14,7 @@ source-layout baseline. Earlier lisp-root full check passed553/553 stock ERT
 
 ## Test organization and explicit dependency boundaries
 
-Accepted uncommitted refactor uses tests/default.nix callPackage composition:
+User-committed and verified refactor uses tests/default.nix callPackage composition:
 ert-core176, ert-native318 and ert-pdf59; ert is a dependency-only aggregate,
 not a second execution. Children receive project-specific runtime/source and
 testSupport file attributes explicitly; no parent traversal or repository-root
@@ -32,7 +32,9 @@ Existing isolation/error/cleanup semantics and assertion matrices preserved;
 no shared worker or deleted case. Nix ERT limits600s, lint120s. All568cases,
 inventory and five negative runner controls/positive control accepted on pinned
 x86_64-linux; final65project+11extension inputs match. Other systems/GUI not new
-claims. Full interfaces, exact authority/results/limits: tests-refactor.md.
+claims. Complete48path patch/message and65committed input blobs match acceptance;
+ordinary index/worktree clean, no runtime rerun solely for delivery identity.
+Full interfaces, exact authority/results/limits: tests-refactor.md.
 
 ## Version/documentation candidate for0.5.0
 
