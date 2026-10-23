@@ -1,6 +1,43 @@
 # org-texmacs current memory
 
-## Current: tests migration/refactor committed and delivery verified
+## Complete: migrate test composition to personal-nixpkgs
+
+User introduced personal-nixpkgs, pkgs/ overlays and legacyPackages, then requested
+tests/ organization using llib.tests, referencing ~/emarccs/tests/, and explicitly
+requested flake checks wiring. Preserve their staged and unstaged package/flake
+changes. Existing checks are commented out and tests still depend on the removed
+buildPackage interface. Reference uses mkChecks with test-overlay.nix factories
+and test.nix drivers. Preserve all cases, explicit dependency injection, no README
+access/ancestor discovery, independent ERT leaves and non-running aggregate;
+optional integration remains caller-supplied. Implemented six test overlays and
+test.nix drivers; root entry calls mkChecks with explicit tools/runtime/support,
+flake checks enabled. Patched-caption now overrides the real scoped package's
+Org argument instead of removed buildPackage; lint explicitly receives its lint
+library to avoid assuming the normal runtime bundles it. Lint library uses a
+distinct scope name to avoid recursion with the package-lint check itself.
+No Lisp/Python/support changes; four ERT/aggregate drivers moved byte-identically.
+User authorized reading ~/nixpkgs; its HEAD matches the locked personal-nixpkgs
+revision and relevant library files have no working changes. Read mkChecks and
+overlay-tree implementation: args enter a fixed-point scope, overlay factories
+are discovered and only matching derivations become checks. No extra wrapper or
+enumerated check list needed. Static whitespace/path scan passes (three ../
+strings are existing synthetic path-normalization data).
+User authorized repeated exact command for this task:
+timeout 600s nix flake check -L --no-write-lock-file path:/home/lingyu/Projects/org-texmacs
+Network/store/cache/log/products possible, no lock/index/result writes. Initial
+sandbox call failed before testing at daemon socket; approved escalation exits0,
+all checks passed. Core176/176 (1.073053s), native318/318 (186.464979s),
+PDF59/59 (224.216406s), patched6/6 (2.871502s), package-lint and aggregate
+accepted; patched real package strict byte/native compilation accepted. Only
+x86_64-linux checked; optional nine-case integration unchanged and not rerun.
+No runtime rerun needed after this acceptance without new relevant changes.
+No ordinary Git writes or package implementation changes
+authorized beyond test/check integration. Previous validation below describes
+the committed prior architecture. New construction passes the gate above.
+Implementation complete; user may review/stage delivery. No new raw archive
+needed: maintained drivers/cases and extracted validation suffice.
+
+## Previous baseline: tests migration/refactor committed and delivery verified
 
 User approved the conversational plan and now requests implementation. Changes
 authorized in tests/ plus existing README test instructions; no production code,

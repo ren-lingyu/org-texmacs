@@ -1,5 +1,47 @@
 # Tests migration and refactor
 
+## Follow-up: personal-nixpkgs composition and checks
+
+User introduced personal-nixpkgs, moved package construction to pkgs/ overlays
+and requested using llib.tests plus restoring flake checks. Intake already had
+staged/unstaged package/flake changes and two staged test parameter adaptations;
+preserve those. Authorized reference ~/emarccs/tests uses mkChecks, test-overlay.nix
+factories and test.nix drivers. User also authorized reading ~/nixpkgs; local HEAD
+matches locked personal-nixpkgs06a8fa43a112c4b1f0f9576eceee466b6b730f38,
+and read relevant library files have no working changes. mkChecks discovers
+overlays, supplies args through a fixed-point callPackage scope and collects
+only corresponding derivations. No copied library or new dependency/version.
+
+tests/default.nix now calls that interface, injecting tools, installed
+pkgs.emacs-with-org-texmacs, its Emacs package scope/source, separately named lint
+library and testSupport. Six default check folders have test-overlay.nix and
+test.nix; four main ERT/aggregate drivers moved byte-identically. Aggregate still
+consumes the same leaf scope values. Patched-caption overrides org on the actual
+scoped org-texmacs package rather than the removed buildPackage callback; loaded
+library identity tests remain. Lint explicitly adds its injected package-lint
+library path; distinct emacsPackagesPackageLint prevents check self-recursion.
+integration/default.nix stays optional without an overlay. Root flake checks
+invokes tests with pkgs/llib. No Lisp/Python/shared-support/production/package/
+lock/README/ignore/index change by agent; no new ancestor discovery or README
+test access. Three existing ../ strings remain synthetic normalization data.
+
+User authorized repeated exact command for this task:
+
+    timeout 600s nix flake check -L --no-write-lock-file path:/home/lingyu/Projects/org-texmacs
+
+Explicit path includes untracked test files; potential network/store/cache/log/
+products disclosed, no lock/index/result writes. First sandbox invocation cannot
+connect to daemon before testing; approved escalation exits0, all checks passed.
+Core176/176 in1.073053s, native318/318 in186.464979s, PDF59/59 in224.216406s,
+patched6/6 in2.871502s; lint, aggregate and strict patched package byte/native
+compilation accepted. Pinned Emacs31.1/Org9.8.10 and x86_64-linux only; other
+systems omitted. Optional9integration cases unchanged but not rerun this task;
+no new runtime inventory/negative-runner probes needed for unchanged cases.
+Static whitespace and unchanged case/helper/production/lock checks pass.
+Implementation complete, user review/staging next. No ordinary agent Git writes
+or new raw archive. Prior evidence below is historical acceptance of the former
+package construction, not a claim those broader probes reran in this gate.
+
 ## Adopted scope and authority
 
 User approved the conversational migration plan after readonly investigation of

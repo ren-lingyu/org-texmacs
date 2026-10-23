@@ -1,5 +1,24 @@
 # org-texmacs current project model
 
+## personal-nixpkgs test composition migration
+
+The user replaced inline package construction with pkgs/ overlays and an
+emacs-with-org-texmacs runtime. Tests now use llib.tests.mkChecks, root tests/,
+test-overlay.nix discovery and test.nix leaf drivers, matching the authorized
+~/emarccs/tests reference. Explicit args provide tools, installed runtime,
+the runtime's Emacs package scope/source, lint library and testSupport.
+All six existing check names remain; the aggregate resolves its leaves through
+the fixed point and does not rerun ERT. Optional integration/default.nix has no
+overlay and remains caller-supplied. flake perSystem.checks invokes this entry.
+Patched-caption overrides org on the actual scoped org-texmacs package; it no
+longer needs the removed buildPackage callback. Lint receives its library through
+a separate scope name, avoiding self-reference with the package-lint check.
+Existing Lisp/Python/helpers/isolation unchanged. Authorized current-project
+path flake check exits0: core176/native318/PDF59/patched6, lint and aggregate
+accepted on x86_64-linux, with strict patched package compilation. Optional
+integration was not rerun. Earlier acceptance below describes prior package
+architecture and its broader inventory/runner controls.
+
 ## Source layout adaptation to lisp/
 
 All15 production Elisp modules and org-texmacs-worker.scm now reside together

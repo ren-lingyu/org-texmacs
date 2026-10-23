@@ -1,5 +1,17 @@
 # org-texmacs active backlog
 
+## personal-nixpkgs test/check migration implemented and accepted
+
+User-selected follow-up to the delivered test split replaces manual root
+callPackage composition with llib.tests.mkChecks, six test-overlay.nix factories
+and test.nix drivers; flake checks restored against the user's new package scope.
+Patched-caption uses the real package override and lint receives an explicit
+library. Existing cases/helpers and optional integration unchanged. Authorized
+full path flake check passes553main+6patched cases, lint/aggregate/strict build on
+x86_64-linux. No speed/coverage change or new future work adopted; no ordinary
+index/history modification. User may review/stage delivery. Current interfaces
+and acceptance limits: tests-refactor.md latest section.
+
 ## Tests migration/refactor committed and verified
 
 User-selected cleanup is complete and user-committed: callPackage/explicit
