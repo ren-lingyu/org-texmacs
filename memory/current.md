@@ -1,6 +1,38 @@
 # org-texmacs current memory
 
-## Current: v0.5.0 version/documentation delivery committed and verified
+## Current: lisp/ relocation adaptation implemented and validated
+
+User moved all 15 Elisp modules and the Scheme worker from root into lisp/ and
+requested corresponding adaptations. At intake root deletions and flake fileset
+change to ./lisp were already staged; lisp/ was ignored by the root allowlist.
+Preserve that index; no ordinary staging or commit authorized.
+Selected adaptations: allow lisp sources in .gitignore, build the package from
+${source}/lisp, run package-lint with that source/load directory, and update README
+checkout/use-package/straight paths. Worker uses its own library directory and
+needs no runtime change. Existing package-load ERT checks worker colocation.
+User authorized one isolated command: timeout 120s nix flake check -L
+--no-write-lock-file path:/home/lingyu/Projects/org-texmacs/tmp/lisp-layout-check,
+including snapshot preparation, locked-dependency network/store/cache/log writes.
+First command timed out (exit124) after strict package compilation/installation,
+patched Org6/6 and stock228/553 passed with no observed failures. User separately
+authorized the same command once with timeout600s. Initial sandbox invocation
+could not access daemon socket; approved escalation then completed exit0:
+553/553 stock ERT (402.301644s), all flake checks passed, reusing successful strict
+compilation/default+patched installation/package-lint/patched Org6/6 outputs.
+Pinned x86_64-linux only; incompatible systems omitted by Nix, no straight runtime
+installation or GUI test. Straight's official recipe docs confirm plain globs
+flatten matching lisp files into the package build directory:
+https://github.com/radian-software/straight.el#the-recipe-format.
+Final verification: all16 moved sources still match prior root HEAD bytes, all32
+isolated inputs match current project, whitespace clean, staged path/status set
+unchanged. Four ordinary adaptation paths (.gitignore, flake.nix, README.org,
+tests/package-lint/run.scm) remain unstaged; lisp/ is untracked rather than ignored.
+No runtime edits/new tests/lock/version/index/history/external writes. No raw
+archive needed: maintained source/tests and extracted results suffice. User can
+review/stage the relocation and adaptation; no further implementation/check
+remains. Check snapshot retained under tmp/lisp-layout-check, not durable authority.
+
+## Completed: v0.5.0 version/documentation delivery committed and verified
 
 User narrows current release work to version metadata and documentation/comments.
 Full nix flake check already accompanies each commit; do not list a separate

@@ -1,5 +1,22 @@
 # org-texmacs current project model
 
+## Source layout adaptation to lisp/
+
+All15 production Elisp modules and org-texmacs-worker.scm now reside together
+under lisp/. Worker service lookup remains relative to its own library directory.
+Root flake retains a source fileset containing lisp/, root README.org and LICENSE,
+and builds
+from ${source}/lisp; patching, compilation and Scheme installation therefore run
+inside lisp without changing the installed flat site-lisp layout. Package-lint
+uses ${source}/lisp as working/load directory. README checkout paths and straight
+globs point into lisp; root .gitignore now allows those source files.
+User migration and flake fileset were staged at intake; adaptation edits are
+unstaged and lisp files untracked. Ordinary index/history must remain untouched.
+Isolated full flake check passes on pinned x86_64-linux:553stock/6patched ERT,
+strict compilation/installation and package-lint;32inputs equal current project.
+All16 moved source files equal their prior root HEAD bytes. Other systems,
+straight installation and GUI not newly tested; current.md records exact commands.
+
 ## Version/documentation candidate for0.5.0
 
 Committed package header and Nix package now declare0.5.0. README adds release
