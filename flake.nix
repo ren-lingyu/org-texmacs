@@ -74,6 +74,11 @@
 
                 legacyPackages = lpkgs.mkLegacyPackages pkgs;
 
+                packages = {
+                  org-texmacs = pkgs.emacsPackages.org-texmacs;
+                  emacs = pkgs.emacs-with-org-texmacs;
+                };
+
                 checks = import ./tests {
                   inherit src pkgs llib;
                   emacs = pkgs.emacs-with-org-texmacs;
