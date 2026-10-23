@@ -1,5 +1,4 @@
-;;; phase4.el --- Actual Org extension fixtures -*- lexical-binding: t; -*-
-;; Load project tests/ert/ert.el first for the isolated native-worker helpers.
+;;; extensions.el --- Actual Org extension fixtures -*- lexical-binding: t; -*-
 (require 'org-roam)
 (require 'org-roam-include)
 (require 'org-roam-organize)
@@ -293,4 +292,4 @@
         (should-error (org-texmacs-export-as-texmacs nil t) :type 'org-texmacs-document-error)
         (should-not org-roam-include--export-buffer-p)))))
 
-;;; phase4.el ends here
+;;; extensions.el ends here

@@ -1,4 +1,4 @@
-;;; ert.el --- Caption tests with patched Org -*- lexical-binding: t; -*-
+;;; captions.el --- Caption tests with patched Org -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -143,4 +143,4 @@
       (should-error (org-texmacs-document-from-buffer (current-buffer))
                     :type 'org-texmacs-document-error))))
 
-;;; ert.el ends here
+;;; captions.el ends here

@@ -1467,8 +1467,9 @@ rediscovery or filter replay.  Observations are not filesystem/database atomicit
 an ABA guarantee or a security sandbox.  No output file is published by this adapter.
 
 ** Optional real Org extension integration
-=tests/integration/default.nix= provides a separate ERT check.  Its caller supplies
-=pkgs=, an =emacs= containing this package and Org-roam, and =extensionSources=
+=tests/integration/default.nix= provides a separate ERT check.  Call it with
+=pkgs.callPackage= and explicitly supply an =emacs= containing this package
+and Org-roam, =testSupport= obtained with =import ./tests/support=, and =extensionSources=
 with pinned Elisp source directories named =include=, =organize= and =blog=.
 The normal core checks do not install these extensions.  The fixture creates its
 own Org files, SQLite database, ID locations and publication directories, runs
@@ -2235,6 +2236,8 @@ Run from the repository root:
 #+begin_src sh
   nix flake check --no-write-lock-file
   nix build --no-link --no-write-lock-file .#default
+  # Run one ERT group, or use checks.x86_64-linux.ert for all three.
+  nix build --no-link --no-write-lock-file .#checks.x86_64-linux.ert-core
 #+end_src
 
 Checks include byte compilation, package-lint and ERT, including real headless
@@ -2245,9 +2248,13 @@ check AST preservation and parent links, not numbering or rendered output.  A mi
 TeXmacs executable fails the integration tests instead of skipping them.
 Document tests cover structural lowering, source-dependent native encoding,
 session updates and failure recovery, with independent native readback
-expectations.  The document/session README examples run under ERT, including
-against the installed package in Nix; loading checks require every module
-and the adjacent Scheme service file.
+expectations.  Fixed document/session fixtures run against the installed package;
+tests do not read or parse this README.  Loading checks require every module
+and the adjacent Scheme service file.  The =ert-core= check covers cases without
+native execution, =ert-native= covers worker/session/serialization behavior,
+and =ert-pdf= covers native PDF rendering and inspection.  =ert= aggregates the
+three results without running their cases again.  Each group can be built
+separately; complete flake checks include every group.
 Nix checks the current system by default.  These commands may download
 dependencies and write Nix store/cache data; they do not update the lockfile,
 and the build command does not create a =result= link.
@@ -2258,6 +2265,13 @@ tests.  The separate =caption-inline-footnotes= check builds the locked Org
 It does not change =packages.default= or the ordinary development environment.
 The real extension runner described above requires separately supplied pinned
 extension sources and is not part of the default flake checks.
+
+Checks are composed with =callPackage=.  Project-specific runtimes, source files
+and shared test support enter through explicit Nix arguments; Lisp runners use
+the supplied paths without searching parent directories.  Required test tools
+must be present in the Nix check environment.  Each ERT check has a 600-second
+outer timeout; package-lint has 120 seconds.  Existing per-operation failure and
+cleanup checks retain their own bounds.
 
 Git flake inputs omit untracked files.  When checking new files before staging,
 use an explicit =path:.= flake input, such as

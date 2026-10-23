@@ -1,30 +1,41 @@
-{ pkgs, source, emacsPackages, buildPackage } : let
-
-  # ELPA's installer unpacks its input during installPhase, not unpackPhase.
-  patchedSource = assert pkgs.lib.getVersion emacsPackages.org == "9.8.10";
-    pkgs.runCommand "org-9.8.10.tar" {
-      nativeBuildInputs = [ pkgs.gnutar pkgs.patch ];
+{ runCommand, coreutils, lib, gnutar, patch, texmacs,
+  emacsPackages, buildPackage, testSupport }:
+let
+  # ELPA unpacks its input during installPhase, not unpackPhase.
+  patchedSource = assert lib.getVersion emacsPackages.org == "9.8.10";
+    runCommand "org-9.8.10.tar" {
+      nativeBuildInputs = [ gnutar patch ];
     } ''
       tar -xf ${emacsPackages.org.src}
       patch --batch --fuzz=0 -d org-9.8.10 -p1 < ${./org-caption-inline-footnote.patch}
       tar --sort=name --mtime=@1 --owner=0 --group=0 --numeric-owner \
         -cf "$out" org-9.8.10
     '';
-
-  org = emacsPackages.org.overrideAttrs (_ : { src = patchedSource; });
-
+  org = emacsPackages.org.overrideAttrs (_: { src = patchedSource; });
   testPackage = buildPackage org;
-
-  emacs = emacsPackages.emacsWithPackages (_ : [ testPackage ]);
-
-in pkgs.runCommand "org-texmacs-caption-inline-footnotes" {
-  nativeBuildInputs = [ emacs pkgs.texmacs pkgs.poppler-utils ];
-  ORG_TEXMACS_TEST_PATCHED_ORG = "${org}";
-  ORG_TEXMACS_TEST_PATCHED_PACKAGE = "${testPackage}";
-  ORG_TEXMACS_TEST_PROGRAM = pkgs.lib.getExe' pkgs.texmacs "texmacs";
-  ORG_TEXMACS_TEST_README = "${../../README.org}";
+  emacs = emacsPackages.emacsWithPackages (_: [ testPackage ]);
+  testFiles = [
+    ./lisp/captions.el
+  ];
+in runCommand "org-texmacs-caption-inline-footnotes" {
+  nativeBuildInputs = [ coreutils texmacs ];
+  ORG_TEXMACS_TEST_BOOTSTRAP = testSupport.bootstrap;
+  ORG_TEXMACS_TEST_HELPERS = builtins.toJSON [ testSupport.common testSupport.native ];
+  ORG_TEXMACS_TEST_FILES = builtins.toJSON testFiles;
+  ORG_TEXMACS_TEST_TOOLS = builtins.toJSON [ "texmacs" ];
+  ORG_TEXMACS_TEST_STRICT_TOOLS = "1";
+  ORG_TEXMACS_TEST_PROGRAM = lib.getExe' texmacs "texmacs";
+  ORG_TEXMACS_TEST_PATCHED_ORG = org;
+  ORG_TEXMACS_TEST_PATCHED_PACKAGE = testPackage;
 } ''
-  emacs -Q --batch --load ${../ert/ert.el} --load ${./ert.el} \
-    --eval '(ert-run-tests-batch-and-exit "^org-texmacs-caption-patched-")'
-  touch "$out"
+  export HOME="$TMPDIR/home"
+  mkdir -p "$HOME" "$out"
+  export ORG_TEXMACS_TEST_NAMES_FILE="$out/test-names.txt"
+  set +e
+  timeout --kill-after=10s 600s ${lib.getExe' emacs "emacs"} -Q --batch \
+    --load ${testSupport.runner} > "$out/ert.log" 2>&1
+  status=$?
+  set -e
+  cat "$out/ert.log"
+  exit "$status"
 ''
