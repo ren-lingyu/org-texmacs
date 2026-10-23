@@ -25,6 +25,8 @@
 
   outputs = { self, ... }@inputs : inputs.flake-parts.lib.mkFlake { inherit inputs; } {
 
+    imports = [ inputs.treefmt-nix.flakeModule ];
+
     systems = inputs.nixpkgs.lib.systems.flakeExposed;
 
     perSystem = { config, pkgs, ... } : let
@@ -78,6 +80,28 @@
             emacs
             pkgs.texmacs
           ];
+        };
+      };
+
+      treefmt = {
+        flakeFormatter = true;
+        flakeCheck = false;
+        enableDefaultExcludes = false;
+        projectRootFile = builtins.baseNameOf __curPos.file;
+        settings.excludes = [
+          ".gitignore"
+          "LICENSE"
+          "README.org"
+          "flake.lock"
+        ];
+        programs = {
+          nixfmt = {
+            enable = true;
+            package = pkgs.nixfmt;
+            width = 100;
+            indent = 2;
+            strict = true;
+          };
         };
       };
 
