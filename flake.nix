@@ -24,94 +24,93 @@
 
   outputs =
     { self, ... }@inputs:
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ inputs.treefmt-nix.flakeModule ];
+    inputs.flake-parts.lib.mkFlake
+      {
+        inherit inputs;
 
-      config = {
-
-        systems = inputs.nixpkgs.lib.systems.flakeExposed;
-
-        perSystem =
-          { config, pkgs, ... }:
+        specialArgs =
           let
-            source = pkgs.lib.fileset.toSource {
-              root = ./lisp;
-              fileset = pkgs.lib.fileset.unions [ ./lisp ];
-            };
-
-            emacsPackages = pkgs.emacsPackagesFor pkgs.emacs31;
-
-            buildPackage =
-              org:
-              emacsPackages.trivialBuild {
-                pname = "org-texmacs";
-                version = "0.5.0";
-                src = source;
-                packageRequires = [ org ];
-                turnCompilationWarningToError = true;
-                postPatch = builtins.concatStringsSep " " [
-                  "substituteInPlace org-texmacs-core.el"
-                  "--replace-fail"
-                  "'(defcustom org-texmacs-program \"texmacs\"'"
-                  "'(defcustom org-texmacs-program \"${pkgs.lib.getExe' pkgs.texmacs "texmacs"}\"'"
-                ];
-                postInstall = "install -m644 org-texmacs-worker.scm \"$out/share/emacs/site-lisp/\"";
-              };
-
-            emacs = emacsPackages.emacsWithPackages (
-              ps_:
-              (builtins.concatLists [
-                (with ps_; [ package-lint ])
-                [ config.packages.default ]
-              ])
-            );
+            lib = inputs.nixpkgs.lib;
           in
-          {
-            packages = {
-              default = buildPackage emacsPackages.org;
+          rec {
+            llib = inputs.personal-nixpkgs.lib.mergeAttrsRecursive { allowOverrides = false; } [
+              { inherit (inputs.personal-nixpkgs.lib) tests packages; }
+            ];
+            src = lib.fileset.toSource {
+              root = ./lisp;
+              fileset = lib.fileset.unions [ ./lisp ];
             };
+            lpkgs = import ./pkgs { inherit lib llib src; };
+          };
+      }
+      (
+        {
+          src,
+          llib,
+          lpkgs,
+          config,
+          lib,
+          ...
+        }:
+        {
+          imports = [ inputs.treefmt-nix.flakeModule ];
 
-            checks = import ./tests {
-              inherit
-                pkgs
-                source
-                emacs
-                emacsPackages
-                buildPackage
-                ;
-            };
+          config = {
+            systems = inputs.nixpkgs.lib.systems.flakeExposed;
 
-            devShells = {
-              default = pkgs.mkShell {
-                packages = [
-                  emacs
-                  pkgs.texmacs
-                ];
-              };
-            };
+            perSystem =
+              {
+                system,
+                config,
+                pkgs,
+                lib,
+                ...
+              }:
+              {
+                _module.args.pkgs = import inputs.nixpkgs {
+                  inherit system;
+                  overlays = [ lpkgs.overlays.default ];
+                };
 
-            treefmt = {
-              flakeFormatter = true;
-              flakeCheck = false;
-              enableDefaultExcludes = false;
-              projectRootFile = builtins.baseNameOf __curPos.file;
-              settings.excludes = [
-                ".gitignore"
-                "LICENSE"
-                "README.org"
-                "flake.lock"
-              ];
-              programs = {
-                nixfmt = {
-                  enable = true;
-                  package = pkgs.nixfmt;
-                  width = 100;
-                  indent = 2;
-                  strict = true;
+                legacyPackages = lpkgs.mkLegacyPackages pkgs;
+
+                checks = import ./tests {
+                  inherit src pkgs llib;
+                  emacs = pkgs.emacs-with-org-texmacs;
+                };
+
+                devShells = {
+                  default = pkgs.mkShell {
+                    packages = [
+                      pkgs.emacs-with-org-texmacs
+                      pkgs.texmacs
+                    ];
+                  };
+                };
+
+                treefmt = {
+                  flakeFormatter = true;
+                  flakeCheck = false;
+                  enableDefaultExcludes = false;
+                  projectRootFile = builtins.baseNameOf __curPos.file;
+                  settings.excludes = [
+                    ".gitignore"
+                    "LICENSE"
+                    "README.org"
+                    "flake.lock"
+                  ];
+                  programs = {
+                    nixfmt = {
+                      enable = true;
+                      package = pkgs.nixfmt;
+                      width = 100;
+                      indent = 2;
+                      strict = true;
+                    };
+                  };
                 };
               };
-            };
           };
-      };
-    };
+        }
+      );
 }

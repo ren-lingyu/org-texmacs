@@ -6,7 +6,6 @@
   patch,
   texmacs,
   emacsPackages,
-  buildPackage,
   testSupport,
 }:
 let
@@ -29,7 +28,7 @@ let
   org = emacsPackages.org.overrideAttrs (_: {
     src = patchedSource;
   });
-  testPackage = buildPackage org;
+  testPackage = emacsPackages.org-texmacs.override { inherit org; };
   emacs = emacsPackages.emacsWithPackages (_: [ testPackage ]);
   testFiles = [ ./lisp/captions.el ];
 in

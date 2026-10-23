@@ -1,24 +1,29 @@
 {
-  pkgs,
-  source,
+  src,
   emacs,
-  emacsPackages,
-  buildPackage,
+  pkgs,
+  llib,
 }:
-let
-  testSupport = import ./support;
-  ert-core = pkgs.callPackage ./ert-core { inherit emacs testSupport; };
-  ert-native = pkgs.callPackage ./ert-native { inherit emacs testSupport; };
-  ert-pdf = pkgs.callPackage ./ert-pdf { inherit emacs testSupport; };
-in
-{
-  inherit ert-core ert-native ert-pdf;
+llib.tests.mkChecks {
+  root = ./.;
+  overlayFile = "test-overlay.nix";
+  separator = "-";
 
-  ert = pkgs.callPackage ./ert { inherit ert-core ert-native ert-pdf; };
-
-  caption-inline-footnotes = pkgs.callPackage ./caption-inline-footnotes {
-    inherit emacsPackages buildPackage testSupport;
+  # Only directories with a test overlay enter the default checks. Integration
+  # remains a separate entry requiring caller-supplied extension sources.
+  args = {
+    inherit (pkgs)
+      lib
+      runCommand
+      coreutils
+      gnutar
+      patch
+      texmacs
+      poppler-utils
+      python3
+      emacsPackages
+      ;
+    inherit emacs src;
+    testSupport = import ./support;
   };
-
-  package-lint = pkgs.callPackage ./package-lint { inherit source emacs; };
 }
