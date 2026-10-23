@@ -1,4 +1,9 @@
-{ runCommand, ert-core, ert-native, ert-pdf }:
+{
+  runCommand,
+  ert-core,
+  ert-native,
+  ert-pdf,
+}:
 
 # Dependency-only aggregate: each leaf runs ERT once.
 runCommand "org-texmacs-ert" { } ''
