@@ -24,7 +24,7 @@
 !tests/**/*.nix
 !tests/**/*.patch
 !tests/**/*.scm
-!tests/ert/pdf-links.py
+!tests/**/*.py
 
 !docs/
 !docs/**/
