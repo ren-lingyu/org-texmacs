@@ -5,44 +5,33 @@
     nixpkgs = {
       url = "git+https://github.com/NixOS/nixpkgs.git?ref=refs/heads/nixpkgs-unstable&shallow=1";
     };
-    flake-parts = {
-      url = "git+https://github.com/hercules-ci/flake-parts.git?ref=refs/heads/main&shallow=1";
-    };
-    treefmt-nix = {
-      url = "git+https://github.com/numtide/treefmt-nix.git?ref=refs/heads/main&shallow=1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     personal-nixpkgs = {
       url = "git+https://github.com/ren-lingyu/nixpkgs?ref=refs/heads/main&shallow=1";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
-        treefmt-nix.follows = "treefmt-nix";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   outputs =
     { self, ... }@inputs:
-    inputs.flake-parts.lib.mkFlake
-      {
+    inputs.personal-nixpkgs.lib.mkFlake inputs.nixpkgs
+      ({ lib }: rec {
         inherit inputs;
+        moduleLocation = __curPos.file;
+        llib = inputs.personal-nixpkgs.lib.mergeAttrsRecursive { allowOverrides = false; } [
+          { inherit (inputs.personal-nixpkgs.lib) tests packages; }
+        ];
+        lpkgs = import ./pkgs {
+          inherit llib;
+          inherit (specialArgs) src;
+        };
 
-        specialArgs =
-          let
-            lib = inputs.nixpkgs.lib;
-          in
-          rec {
-            llib = inputs.personal-nixpkgs.lib.mergeAttrsRecursive { allowOverrides = false; } [
-              { inherit (inputs.personal-nixpkgs.lib) tests packages; }
-            ];
-            src = lib.fileset.toSource {
-              root = ./lisp;
-              fileset = lib.fileset.unions [ ./lisp ];
-            };
-            lpkgs = import ./pkgs { inherit lib llib src; };
+        specialArgs = {
+          src = lib.fileset.toSource {
+            root = ./lisp;
+            fileset = lib.fileset.unions [ ./lisp ];
           };
-      }
+        };
+      })
       (
         {
           src,
@@ -53,8 +42,6 @@
           ...
         }:
         {
-          imports = [ inputs.treefmt-nix.flakeModule ];
-
           config = {
             systems = inputs.nixpkgs.lib.systems.flakeExposed;
 
@@ -67,12 +54,9 @@
                 ...
               }:
               {
-                _module.args.pkgs = import inputs.nixpkgs {
-                  inherit system;
-                  overlays = [ lpkgs.overlays.default ];
-                };
+                nixpkgs.overlays = [ lpkgs.overlays.legacy ];
 
-                legacyPackages = lpkgs.mkLegacyPackages pkgs;
+                legacyPackages = pkgs.legacyPackages;
 
                 packages = {
                   org-texmacs = pkgs.emacsPackages.org-texmacs;
@@ -94,25 +78,14 @@
                 };
 
                 treefmt = {
-                  flakeFormatter = true;
                   flakeCheck = false;
-                  enableDefaultExcludes = false;
-                  projectRootFile = builtins.baseNameOf __curPos.file;
                   settings.excludes = [
+                    "*.patch"
                     ".gitignore"
                     "LICENSE"
                     "README.org"
                     "flake.lock"
                   ];
-                  programs = {
-                    nixfmt = {
-                      enable = true;
-                      package = pkgs.nixfmt;
-                      width = 100;
-                      indent = 2;
-                      strict = true;
-                    };
-                  };
                 };
               };
           };
