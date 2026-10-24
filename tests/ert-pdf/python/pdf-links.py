@@ -14,8 +14,11 @@ def inspect(filename):
     def point(page, x, y):
         if page is None or x is None or y is None:
             return None
-        return {"page": page + 1, "x": float(x),
-                "y": float(reader.pages[page].mediabox.height) - float(y)}
+        return {
+            "page": page + 1,
+            "x": float(x),
+            "y": float(reader.pages[page].mediabox.height) - float(y),
+        }
 
     named = {
         str(key): point(reader.get_destination_page_number(dest), dest.left, dest.top)
@@ -27,8 +30,9 @@ def inspect(filename):
             key = dest.decode() if isinstance(dest, bytes) else str(dest)
             return named.get(key) or named.get(key.lstrip("/")) or named.get("/" + key)
         if isinstance(dest, list) and len(dest) >= 5 and str(dest[1]) == "/XYZ":
-            page = next((i for i, p in enumerate(reader.pages)
-                         if p.indirect_reference == dest[0]), None)
+            page = next(
+                (i for i, p in enumerate(reader.pages) if p.indirect_reference == dest[0]), None
+            )
             return point(page, dest[2], dest[3])
         return None
 
@@ -42,19 +46,33 @@ def inspect(filename):
             action = annotation.get("/A", {})
             dest = annotation.get("/Dest", action.get("/D"))
             x1, y1, x2, y2 = map(float, annotation["/Rect"])
-            links.append({"page": page_number, "rect": [x1, height-y2, x2, height-y1],
-                          "target": resolve(dest)})
+            links.append(
+                {
+                    "page": page_number,
+                    "rect": [x1, height - y2, x2, height - y1],
+                    "target": resolve(dest),
+                }
+            )
 
-    xml = subprocess.run(["pdftohtml", "-xml", "-i", "-hidden", "-stdout", filename],
-                         check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    xml = subprocess.run(
+        ["pdftohtml", "-xml", "-i", "-hidden", "-stdout", filename],
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
     texts = []
     for page in ET.fromstring(xml.stdout).findall("page"):
         for text in page.findall("text"):
-            x, y, width, height = (float(text.attrib[key]) / 1.5
-                                   for key in ("left", "top", "width", "height"))
-            texts.append({"page": int(page.attrib["number"]),
-                          "rect": [x, y, x+width, y+height],
-                          "text": "".join(text.itertext())})
+            x, y, width, height = (
+                float(text.attrib[key]) / 1.5 for key in ("left", "top", "width", "height")
+            )
+            texts.append(
+                {
+                    "page": int(page.attrib["number"]),
+                    "rect": [x, y, x + width, y + height],
+                    "text": "".join(text.itertext()),
+                }
+            )
     return {"links": links, "texts": texts}
 
 

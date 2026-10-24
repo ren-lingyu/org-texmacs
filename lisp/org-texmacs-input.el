@@ -12,10 +12,10 @@
 
 (require 'org-texmacs-document)
 
-(cl-defstruct (org-texmacs-input
-               (:constructor org-texmacs--input-create)
-               (:copier nil))
-  "Prepared structural input.  Treat all slots and nested data as read-only.
+(cl-defstruct
+ (org-texmacs-input
+  (:constructor org-texmacs--input-create) (:copier nil))
+ "Prepared structural input.  Treat all slots and nested data as read-only.
 AST and its identity-keyed ISLANDS and POST-BLANKS belong to this snapshot.
 INFO contains fixed context and prepared views, not a request to collect source configuration.
 STYLE and INITIAL are copied TeXmacs document settings.
@@ -23,16 +23,16 @@ SOURCE-FILE is optional source identity; RESOURCE-BASE is the optional
 fixed base for source-relative resources.  Neither is inferred from the other.
 BIBLIOGRAPHY owns parsed BibTeX dependency trees keyed by source identity;
 these native source-semantic trees are separate from the Org AST and islands."
-  (ast nil :read-only t)
-  (info nil :read-only t)
-  (islands nil :read-only t)
-  (post-blanks nil :read-only t)
-  (style nil :read-only t)
-  (initial nil :read-only t)
-  (source-file nil :read-only t)
-  (resource-base nil :read-only t)
-  (bibliography nil :read-only t)
-  (resolution nil :read-only t))
+ (ast nil :read-only t)
+ (info nil :read-only t)
+ (islands nil :read-only t)
+ (post-blanks nil :read-only t)
+ (style nil :read-only t)
+ (initial nil :read-only t)
+ (source-file nil :read-only t)
+ (resource-base nil :read-only t)
+ (bibliography nil :read-only t)
+ (resolution nil :read-only t))
 
 (defun org-texmacs--bibliography-copy (bibliography)
   "Validate and own prepared BIBLIOGRAPHY without parsing or file access.
@@ -40,202 +40,304 @@ Each unique absolute source path maps to a native bibliography document stree.
 Preserve opaque native metadata and duplicate entries/fields.  Citation planning
 checks ambiguity only for keys actually used by the document."
   (unless (proper-list-p bibliography)
-    (signal 'org-texmacs-document-error '("Expected a bibliography alist")))
-  (let (paths result)
+    (signal 'org-texmacs-document-error
+            '("Expected a bibliography alist")))
+  (let (paths
+        result)
     (dolist (source bibliography)
       (unless (and (consp source) (stringp (car source)))
-        (signal 'org-texmacs-document-error '("Invalid bibliography source")))
+        (signal 'org-texmacs-document-error
+                '("Invalid bibliography source")))
       (let ((path (org-texmacs--source-copy-path (car source)))
             (tree (org-texmacs--document-copy-stree (cdr source))))
         (when (member path paths)
-          (signal 'org-texmacs-document-error '("Duplicate bibliography path")))
+          (signal 'org-texmacs-document-error
+                  '("Duplicate bibliography path")))
         (push path paths)
         (unless (and (consp tree) (eq (car tree) 'document))
-          (signal 'org-texmacs-document-error '("Expected a parsed bibliography document")))
+          (signal 'org-texmacs-document-error
+                  '("Expected a parsed bibliography document")))
         (dolist (entry (cdr tree))
           (when (and (consp entry) (eq (car entry) 'bib-entry))
             (unless (and (= (length entry) 4)
-                         (stringp (nth 1 entry)) (> (length (nth 1 entry)) 0)
-                         (stringp (nth 2 entry)) (> (length (nth 2 entry)) 0)
-                         (consp (nth 3 entry)) (eq (car (nth 3 entry)) 'document))
-              (signal 'org-texmacs-document-error '("Invalid parsed bibliography entry")))
+                         (stringp (nth 1 entry))
+                         (> (length (nth 1 entry)) 0)
+                         (stringp (nth 2 entry))
+                         (> (length (nth 2 entry)) 0)
+                         (consp (nth 3 entry))
+                         (eq (car (nth 3 entry)) 'document))
+              (signal 'org-texmacs-document-error
+                      '("Invalid parsed bibliography entry")))
             (dolist (field (cdr (nth 3 entry)))
-              (unless (and (consp field) (eq (car field) 'bib-field) (= (length field) 3)
-                           (stringp (nth 1 field)) (> (length (nth 1 field)) 0))
-                (signal 'org-texmacs-document-error '("Invalid parsed bibliography field"))))))
+              (unless (and (consp field)
+                           (eq (car field) 'bib-field)
+                           (= (length field) 3)
+                           (stringp (nth 1 field))
+                           (> (length (nth 1 field)) 0))
+                (signal 'org-texmacs-document-error
+                        '("Invalid parsed bibliography field"))))))
         (push (cons path tree) result)))
     (nreverse result)))
 
-(cl-defun org-texmacs--input-own
-    (ast info &key islands post-blanks (style '("generic")) initial
-         source-file resource-base bibliography)
-  "Copy AST, INFO and context without allocating reference identities.
+(cl-defun
+ org-texmacs--input-own
+ (ast
+  info
+  &key
+  islands
+  post-blanks
+  (style '("generic"))
+  initial
+  source-file
+  resource-base
+  bibliography)
+ "Copy AST, INFO and context without allocating reference identities.
 Internal intermediate ownership boundary; see `org-texmacs-input-create'."
-  (unless (and (consp ast) (eq (car ast) 'org-data))
-    (signal 'org-texmacs-document-error '("Expected a prepared Org document AST")))
-  (unless (and (proper-list-p info) (zerop (% (length info) 2)))
-    (signal 'org-texmacs-document-error '("Expected an options plist")))
-  (let ((nodes (make-hash-table :test #'eq)) pending)
-    (cl-labels
-        ((fail (message)
-           (signal 'org-texmacs-document-error (list message)))
-         (data (value &optional ancestors)
-           (cond
-            ((gethash value nodes))
-            ((stringp value) (substring-no-properties value))
-            ((or (null value) (symbolp value) (numberp value)) value)
-            ((memq value ancestors) (fail "Cyclic snapshot data"))
-            ((consp value)
-             (cons (data (car value) (cons value ancestors))
-                   (data (cdr value) (cons value ancestors))))
-            ((vectorp value)
-             (apply #'vector
-                    (mapcar (lambda (item) (data item (cons value ancestors))) value)))
-            (t (fail "Opaque or deferred snapshot value"))))
-         (node (old parent)
-           (when (gethash old nodes) (fail "Cyclic or multiply owned AST node"))
-           (cond
-            ((stringp old)
-             (let ((new (substring-no-properties old)))
-               (puthash old new nodes)
-               (org-element-put-property new :parent parent)
-               new))
-            ((and (consp old) (car old) (symbolp (car old))
-                  (proper-list-p old) (cdr old)
-                  (proper-list-p (cadr old))
-                  (zerop (% (length (cadr old)) 2)))
-             (when (org-element-property-raw :deferred old)
-               (fail "Expected fully resolved Org properties"))
-             (let* ((new (org-element-create (car old) nil))
-                    (secondary (org-element-property-raw :secondary old))
-                    (keys (cdr (assq (car old) org-element-secondary-value-alist))))
-               (unless (and (proper-list-p secondary)
-                            (cl-every #'keywordp secondary))
-                 (fail "Invalid secondary property list"))
-               (setq keys (delete-dups (append secondary keys nil)))
-               (puthash old new nodes)
-               (org-element-put-property new :parent parent)
-               (org-element-properties-mapc
-                (lambda (key value _owner)
+ (unless (and (consp ast) (eq (car ast) 'org-data))
+   (signal 'org-texmacs-document-error
+           '("Expected a prepared Org document AST")))
+ (unless (and (proper-list-p info) (zerop (% (length info) 2)))
+   (signal 'org-texmacs-document-error
+           '("Expected an options plist")))
+ (let ((nodes (make-hash-table :test #'eq))
+       pending)
+   (cl-labels
+    ((fail
+      (message) (signal 'org-texmacs-document-error (list message)))
+     (data
+      (value &optional ancestors)
+      (cond
+       ((gethash value nodes))
+       ((stringp value)
+        (substring-no-properties value))
+       ((or (null value) (symbolp value) (numberp value))
+        value)
+       ((memq value ancestors)
+        (fail "Cyclic snapshot data"))
+       ((consp value)
+        (cons
+         (data (car value) (cons value ancestors))
+         (data (cdr value) (cons value ancestors))))
+       ((vectorp value)
+        (apply #'vector
+               (mapcar
+                (lambda (item)
+                  (data item (cons value ancestors)))
+                value)))
+       (t
+        (fail "Opaque or deferred snapshot value"))))
+     (node
+      (old parent)
+      (when (gethash old nodes)
+        (fail "Cyclic or multiply owned AST node"))
+      (cond
+       ((stringp old)
+        (let ((new (substring-no-properties old)))
+          (puthash old new nodes)
+          (org-element-put-property new :parent parent)
+          new))
+       ((and (consp old)
+             (car old)
+             (symbolp (car old))
+             (proper-list-p old)
+             (cdr old)
+             (proper-list-p (cadr old))
+             (zerop (% (length (cadr old)) 2)))
+        (when (org-element-property-raw :deferred old)
+          (fail "Expected fully resolved Org properties"))
+        (let* ((new (org-element-create (car old) nil))
+               (secondary (org-element-property-raw :secondary old))
+               (keys
+                (cdr
+                 (assq (car old) org-element-secondary-value-alist))))
+          (unless (and (proper-list-p secondary)
+                       (cl-every #'keywordp secondary))
+            (fail "Invalid secondary property list"))
+          (setq keys (delete-dups (append secondary keys nil)))
+          (puthash old new nodes)
+          (org-element-put-property new :parent parent)
+          (org-element-properties-mapc
+           (lambda (key value _owner)
+             (cond
+              ((memq key '(:parent :buffer :deferred :secondary)))
+              ((eq key :caption)
+               (org-element-put-property
+                new key
+                (mapcar
+                 (lambda (line)
+                   (cons
+                    (mapcar
+                     (lambda (child) (node child new)) (car line))
+                    (mapcar
+                     (lambda (child) (node child new)) (cdr line))))
+                 (org-texmacs--document-caption-lines old))))
+              ((memq key keys)
+               (unless (proper-list-p value)
+                 (fail "Expected parsed secondary objects"))
+               (org-element-put-property
+                new
+                key
+                (mapcar (lambda (child) (node child new)) value)))
+              (t
+               (push (list new key value) pending))))
+           old)
+          (when keys
+            (org-element-put-property new :secondary keys))
+          (apply #'org-element-set-contents
+                 new
+                 (mapcar
+                  (lambda (child) (node child new)) (cddr old)))
+          new))
+       (t
+        (fail "Invalid Org AST node"))))
+     (mapping
+      (entries copy-value)
+      (unless (proper-list-p entries)
+        (fail "Expected an identity-keyed alist"))
+      (let (seen)
+        (mapcar
+         (lambda (entry)
+           (unless (and (consp entry)
+                        (gethash (car entry) nodes)
+                        (not (memq (car entry) seen)))
+             (fail "Detached or duplicate mapping key"))
+           (push (car entry) seen)
+           (cons
+            (gethash (car entry) nodes)
+            (funcall copy-value (cdr entry))))
+         entries)))
+     (secondary
+      (value)
+      (unless (proper-list-p value)
+        (fail "Expected parsed metadata objects"))
+      (let ((copy (mapcar (lambda (child) (node child nil)) value)))
+        (dolist (child copy)
+          (org-element-put-property child :parent copy))
+        copy)))
+    (let ((new-ast (node ast nil))
+          new-info
+          seen)
+      (setq
+       info
+       (or
+        info
+        '(:with-todo-keywords
+          t
+          :with-priority nil
+          :with-tags t
+          :texmacs-format-headline-function org-texmacs-format-headline-default-function)))
+      (unless (memq :texmacs-date-timestamp-text-function info)
+        (setq
+         info
+         (append
+          info
+          (list
+           :texmacs-date-timestamp-text-function 'org-texmacs--document-date-timestamp-text))))
+      (while info
+        (let ((key (pop info))
+              (value (pop info)))
+          (unless (and (keywordp key) (not (memq key seen)))
+            (fail "Invalid or duplicate options key"))
+          (push key seen)
+          (when (memq
+                 key
+                 '(:texmacs-format-headline-function
+                   :texmacs-date-timestamp-text-function))
+            (setq value (indirect-function value))
+            (unless (functionp value)
+              (fail "Invalid presentation function")))
+          (setq new-info
+                (append
+                 new-info
+                 (list
+                  key
                   (cond
-                   ((memq key '(:parent :buffer :deferred :secondary)))
-                   ((eq key :caption)
-                    (org-element-put-property
-                     new key
-                     (mapcar (lambda (line)
-                               (cons (mapcar (lambda (child) (node child new)) (car line))
-                                     (mapcar (lambda (child) (node child new)) (cdr line))))
-                             (org-texmacs--document-caption-lines old))))
-                   ((memq key keys)
-                    (unless (proper-list-p value)
-                      (fail "Expected parsed secondary objects"))
-                    (org-element-put-property
-                     new key (mapcar (lambda (child) (node child new)) value)))
-                   (t (push (list new key value) pending))))
-                old)
-               (when keys (org-element-put-property new :secondary keys))
-               (apply #'org-element-set-contents
-                      new (mapcar (lambda (child) (node child new)) (cddr old)))
-               new))
-            (t (fail "Invalid Org AST node"))))
-         (mapping (entries copy-value)
-           (unless (proper-list-p entries) (fail "Expected an identity-keyed alist"))
-           (let (seen)
-             (mapcar
-              (lambda (entry)
-                (unless (and (consp entry) (gethash (car entry) nodes)
-                             (not (memq (car entry) seen)))
-                  (fail "Detached or duplicate mapping key"))
-                (push (car entry) seen)
-                (cons (gethash (car entry) nodes) (funcall copy-value (cdr entry))))
-              entries)))
-         (secondary (value)
-           (unless (proper-list-p value)
-             (fail "Expected parsed metadata objects"))
-           (let ((copy (mapcar (lambda (child) (node child nil)) value)))
-             (dolist (child copy)
-               (org-element-put-property child :parent copy))
-             copy)))
-      (let ((new-ast (node ast nil)) new-info seen)
-        (setq info (or info '(:with-todo-keywords t :with-priority nil :with-tags t
-                             :texmacs-format-headline-function
-                             org-texmacs-format-headline-default-function)))
-        (unless (memq :texmacs-date-timestamp-text-function info)
-          (setq info (append info
-                             (list :texmacs-date-timestamp-text-function
-                                   'org-texmacs--document-date-timestamp-text))))
-        (while info
-          (let ((key (pop info)) (value (pop info)))
-            (unless (and (keywordp key) (not (memq key seen)))
-              (fail "Invalid or duplicate options key"))
-            (push key seen)
-            (when (memq key '(:texmacs-format-headline-function
-                              :texmacs-date-timestamp-text-function))
-              (setq value (indirect-function value))
-              (unless (functionp value) (fail "Invalid presentation function")))
-            (setq new-info
-                  (append new-info
-                          (list key
-                                (cond
-                                 ((memq key '(:texmacs-format-headline-function
-                                               :texmacs-date-timestamp-text-function)) value)
-                                 ((eq key :texmacs-special-block-handlers)
-                                  (org-texmacs--document-copy-handlers value))
-                                 ((memq key '(:title :author :date)) (secondary value))
-                                 (t (data value))))))))
-        ;; INFO secondary strings create their nodes after the AST copy.  Apply
-        ;; pending properties only after both ownership domains are complete.
-        (dolist (entry pending)
-          (org-element-put-property (nth 0 entry) (nth 1 entry) (data (nth 2 entry))))
-        (org-texmacs--input-create
-         :ast new-ast :info new-info
-         :islands (mapping islands #'org-texmacs--document-copy-stree)
-         :style (org-texmacs--document-copy-style style)
-         :initial (org-texmacs--document-copy-initial initial)
-         :source-file (org-texmacs--source-copy-path source-file)
-         :resource-base (org-texmacs--source-copy-path resource-base)
-         :bibliography (org-texmacs--bibliography-copy bibliography)
-         :post-blanks
-         (mapping post-blanks
-                  (lambda (value)
-                    (unless (and (stringp value)
-                                 (string-match-p "\\`[ \t]*\\'" value))
-                      (fail "Expected trailing spaces or tabs"))
-                    (substring-no-properties value))))))))
+                   ((memq
+                     key
+                     '(:texmacs-format-headline-function
+                       :texmacs-date-timestamp-text-function))
+                    value)
+                   ((eq key :texmacs-special-block-handlers)
+                    (org-texmacs--document-copy-handlers value))
+                   ((memq key '(:title :author :date))
+                    (secondary value))
+                   (t
+                    (data value))))))))
+      ;; INFO secondary strings create their nodes after the AST copy.  Apply
+      ;; pending properties only after both ownership domains are complete.
+      (dolist (entry pending)
+        (org-element-put-property
+         (nth 0 entry) (nth 1 entry) (data (nth 2 entry))))
+      (org-texmacs--input-create
+       :ast new-ast
+       :info new-info
+       :islands (mapping islands #'org-texmacs--document-copy-stree)
+       :style (org-texmacs--document-copy-style style)
+       :initial (org-texmacs--document-copy-initial initial)
+       :source-file (org-texmacs--source-copy-path source-file)
+       :resource-base (org-texmacs--source-copy-path resource-base)
+       :bibliography (org-texmacs--bibliography-copy bibliography)
+       :post-blanks
+       (mapping
+        post-blanks
+        (lambda (value)
+          (unless (and (stringp value)
+                       (string-match-p "\\`[ \t]*\\'" value))
+            (fail "Expected trailing spaces or tabs"))
+          (substring-no-properties value))))))))
 
 (defun org-texmacs--input-finalize (input)
   "Return INPUT with one owned, frozen reference resolution.
 Unsupported semantic inputs retain their error until document lowering."
   (let* ((ast (org-texmacs-input-ast input))
-         (static (org-texmacs--document-static-labels (org-texmacs-input-islands input)))
+         (static
+          (org-texmacs--document-static-labels
+           (org-texmacs-input-islands input)))
          (resolution
           (condition-case err
               (org-texmacs--document-allocate
-               ast (org-texmacs--document-resolve
-                    ast (org-texmacs-input-islands input) static
-                    (org-texmacs-input-resource-base input)) static)
+               ast
+               (org-texmacs--document-resolve
+                ast
+                (org-texmacs-input-islands input)
+                static
+                (org-texmacs-input-resource-base input))
+               static)
             (org-texmacs-document-error
              (org-texmacs--resolution-create :failure (cdr err))))))
-    (org-texmacs--input-with-info input (org-texmacs-input-info input) resolution)))
+    (org-texmacs--input-with-info input (org-texmacs-input-info input)
+                                  resolution)))
 
 (defun org-texmacs--input-with-info (input info &optional resolution)
   "Finish private INPUT with owned INFO and optional frozen RESOLUTION.
 Reuse owned AST identities; callers must not expose unfinished inputs."
   (org-texmacs--input-create
-   :ast (org-texmacs-input-ast input) :info info
+   :ast (org-texmacs-input-ast input)
+   :info info
    :islands (org-texmacs-input-islands input)
    :post-blanks (org-texmacs-input-post-blanks input)
-   :style (org-texmacs-input-style input) :initial (org-texmacs-input-initial input)
+   :style (org-texmacs-input-style input)
+   :initial (org-texmacs-input-initial input)
    :source-file (org-texmacs-input-source-file input)
    :resource-base (org-texmacs-input-resource-base input)
    :bibliography (org-texmacs-input-bibliography input)
-   :resolution (or resolution (org-texmacs-input-resolution input))))
+   :resolution
+   (or resolution (org-texmacs-input-resolution input))))
 
 ;;;###autoload
-(cl-defun org-texmacs-input-create
-    (ast info &key islands post-blanks (style '("generic")) initial
-         source-file resource-base bibliography)
-  "Own AST, INFO, mappings and context, then freeze reference identities.
+(cl-defun
+ org-texmacs-input-create
+ (ast
+  info
+  &key
+  islands
+  post-blanks
+  (style '("generic"))
+  initial
+  source-file
+  resource-base
+  bibliography)
+ "Own AST, INFO, mappings and context, then freeze reference identities.
 AST must be a fully parsed `org-data' tree, not Org's live cache.  Do not
 resolve deferred properties, read buffers, discover STM or run a formatter.
 ISLANDS maps AST node identities to already parsed text strees; POST-BLANKS
@@ -279,10 +381,17 @@ returned input, its accessors' values, or arguments from a formatter.
 Org reference allocation occurs once after copying into this owned snapshot.
 Mutable Org export caches are not retained.  Repeated document lowering uses
 its fixed identities without further allocation or source access."
-  (org-texmacs--input-finalize
-   (org-texmacs--input-own
-    ast info :islands islands :post-blanks post-blanks :style style :initial initial
-    :source-file source-file :resource-base resource-base :bibliography bibliography)))
+ (org-texmacs--input-finalize
+  (org-texmacs--input-own
+   ast
+   info
+   :islands islands
+   :post-blanks post-blanks
+   :style style
+   :initial initial
+   :source-file source-file
+   :resource-base resource-base
+   :bibliography bibliography)))
 
 (provide 'org-texmacs-input)
 ;;; org-texmacs-input.el ends here

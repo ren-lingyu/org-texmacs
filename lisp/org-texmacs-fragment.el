@@ -16,8 +16,17 @@
 (require 'org)
 
 (defcustom org-texmacs-fragment-tags
-  '("math" "equation" "equation*" "eqnarray" "eqnarray*" "align" "align*"
-    "gather" "gather*" "eqsplit" "eqsplit*")
+  '("math"
+    "equation"
+    "equation*"
+    "eqnarray"
+    "eqnarray*"
+    "align"
+    "align*"
+    "gather"
+    "gather*"
+    "eqsplit"
+    "eqsplit*")
   "Literal root tag names recognized in paragraph and inline footnote text.
 
 This is an entry list, not a TeXmacs validity or rendering specification.
@@ -32,22 +41,22 @@ the whole list by value, including order, without tracking change history."
   :type '(repeat string)
   :group 'org-texmacs)
 
-(cl-defstruct (org-texmacs-fragment-span
-               (:constructor org-texmacs--fragment-span-create)
-               (:copier nil))
-  "Read-only fragment source snapshot; obtain another after editing.
+(cl-defstruct
+ (org-texmacs-fragment-span
+  (:constructor org-texmacs--fragment-span-create) (:copier nil))
+ "Read-only fragment source snapshot; obtain another after editing.
 
 BUFFER and TICK identify the source buffer and its character modification
 count.  BEGIN and END delimit the half-open source range.  SOURCE is raw
 unpropertized source, TAG is its root name, and TAGS is the configuration
 snapshot.  Callers must not modify these strings or the TAGS list."
-  (buffer nil :read-only t)
-  (tick nil :read-only t)
-  (begin nil :read-only t)
-  (end nil :read-only t)
-  (source nil :read-only t)
-  (tag nil :read-only t)
-  (tags nil :read-only t))
+ (buffer nil :read-only t)
+ (tick nil :read-only t)
+ (begin nil :read-only t)
+ (end nil :read-only t)
+ (source nil :read-only t)
+ (tag nil :read-only t)
+ (tags nil :read-only t))
 
 (defun org-texmacs--fragment-tags ()
   "Validate and copy the current fragment tag configuration.
@@ -56,17 +65,20 @@ Copy both the list and its strings, without retaining text properties."
     (unless (and (proper-list-p org-texmacs-fragment-tags)
                  (cl-every
                   (lambda (tag)
-                    (and (stringp tag)
-                         (string-match-p
-                          "\\`[A-Za-z][A-Za-z0-9_.*+?!:/<>=-]*\\'" tag)))
+                    (and
+                     (stringp tag)
+                     (string-match-p
+                      "\\`[A-Za-z][A-Za-z0-9_.*+?!:/<>=-]*\\'" tag)))
                   org-texmacs-fragment-tags))
-      (signal 'org-texmacs-error '("Invalid fragment tag configuration"))))
+      (signal 'org-texmacs-error
+              '("Invalid fragment tag configuration"))))
   (mapcar #'substring-no-properties org-texmacs-fragment-tags))
 
 (defun org-texmacs--fragment-check-tags (tags)
   "Signal an error if the current configuration differs from snapshot TAGS."
   (unless (equal (org-texmacs--fragment-tags) tags)
-    (signal 'org-texmacs-error '("Fragment tags changed; obtain a fresh span"))))
+    (signal 'org-texmacs-error
+            '("Fragment tags changed; obtain a fresh span"))))
 
 (defconst org-texmacs--fragment-syntax-table
   (let ((table (make-syntax-table)))
@@ -104,25 +116,32 @@ This only discovers boundaries; the worker validates STM data."
     (with-syntax-table org-texmacs--fragment-syntax-table
       (let* ((parse-sexp-lookup-properties nil)
              (parse-sexp-ignore-comments nil)
-             (end (condition-case nil
-                      (scan-sexps start 1)
-                    (scan-error nil)))
+             (end
+              (condition-case nil
+                  (scan-sexps start 1)
+                (scan-error
+                 nil)))
              (unsupported nil))
         (goto-char start)
-        (while (and end (not unsupported)
+        (while (and end
+                    (not unsupported)
                     (re-search-forward "[;#'`,|\\\\]" end t))
           (unless (save-excursion
-                    (nth 3 (parse-partial-sexp start (match-beginning 0))))
+                    (nth
+                     3
+                     (parse-partial-sexp start (match-beginning 0))))
             (setq unsupported t)))
         (and (not unsupported) end)))))
 
 (defun org-texmacs--fragment-check-region (begin end)
   "Check that BEGIN and END delimit an accessible region in an Org buffer."
   (unless (and (derived-mode-p 'org-mode)
-               (integerp begin) (integerp end)
+               (integerp begin)
+               (integerp end)
                (<= (point-min) begin end (point-max)))
-    (signal 'org-texmacs-error
-            '("Expected an accessible integer range in an Org buffer"))))
+    (signal
+     'org-texmacs-error
+     '("Expected an accessible integer range in an Org buffer"))))
 
 (defun org-texmacs--fragment-check-source (buffer tick)
   "Signal an error unless BUFFER is current and its source still has TICK."
@@ -131,7 +150,9 @@ This only discovers boundaries; the worker validates STM data."
                (derived-mode-p 'org-mode)
                (integerp tick)
                (= tick (buffer-chars-modified-tick)))
-    (signal 'org-texmacs-error '("Fragment source buffer changed or is no longer current"))))
+    (signal
+     'org-texmacs-error
+     '("Fragment source buffer changed or is no longer current"))))
 
 (defun org-texmacs--fragment-source (span)
   "Return current raw source for fragment SPAN, rejecting stale snapshots.
@@ -142,10 +163,13 @@ Reject configuration changes and a root name inconsistent with raw source.
 Text property changes alone do not invalidate a snapshot.  Do not widen,
 rescan Org context, or change point.  Signal `org-texmacs-error' on failure."
   (unless (org-texmacs-fragment-span-p span)
-    (signal 'org-texmacs-error '("Expected a fragment TeXmacs source span")))
-  (org-texmacs--fragment-check-source (org-texmacs-fragment-span-buffer span)
-                                     (org-texmacs-fragment-span-tick span))
-  (org-texmacs--fragment-check-tags (org-texmacs-fragment-span-tags span))
+    (signal 'org-texmacs-error
+            '("Expected a fragment TeXmacs source span")))
+  (org-texmacs--fragment-check-source
+   (org-texmacs-fragment-span-buffer span)
+   (org-texmacs-fragment-span-tick span))
+  (org-texmacs--fragment-check-tags
+   (org-texmacs-fragment-span-tags span))
   (let ((begin (org-texmacs-fragment-span-begin span))
         (end (org-texmacs-fragment-span-end span)))
     (org-texmacs--fragment-check-region begin end)
@@ -153,17 +177,23 @@ rescan Org context, or change point.  Signal `org-texmacs-error' on failure."
           (tag (org-texmacs-fragment-span-tag span))
           (case-fold-search nil))
       (unless (and (< begin end)
-                   (equal source (org-texmacs-fragment-span-source span))
+                   (equal
+                    source (org-texmacs-fragment-span-source span))
                    (stringp tag)
                    (member tag (org-texmacs-fragment-span-tags span))
                    (string-match-p
-                    (concat "\\`(" (regexp-quote tag) "[ \t\r\n()]") source))
-        (signal 'org-texmacs-error '("Fragment span source no longer matches the buffer")))
+                    (concat
+                     "\\`(" (regexp-quote tag) "[ \t\r\n()]")
+                    source))
+        (signal
+         'org-texmacs-error
+         '("Fragment span source no longer matches the buffer")))
       source)))
 
 (defun org-texmacs--fragment-texmacs-ancestor-p (paragraph)
   "Return non-nil if PARAGRAPH is inside a native raw-body block."
-  (cl-some #'org-texmacs--native-body-kind (org-element-lineage paragraph)))
+  (cl-some
+   #'org-texmacs--native-body-kind (org-element-lineage paragraph)))
 
 (defun org-texmacs--fragment-mask (source)
   "Return an inert, equal-length replacement for complete fragment SOURCE.
@@ -171,11 +201,14 @@ rescan Org context, or change point.  Signal `org-texmacs-error' on failure."
 Keep the outer parentheses and internal whitespace.  Replace other interior
 characters with ordinary letters, removing foreign markup without changing
 adjacent Org delimiter boundaries or creating blank lines."
-  (concat "("
-          (replace-regexp-in-string "[^ \t\r\n]" "x" (substring source 1 -1))
-          ")"))
+  (concat
+   "("
+   (replace-regexp-in-string
+    "[^ \t\r\n]" "x" (substring source 1 -1))
+   ")"))
 
-(defun org-texmacs--fragment-scan-paragraph (paragraph buffer tick offset tags regexp)
+(defun org-texmacs--fragment-scan-paragraph
+    (paragraph buffer tick offset tags regexp)
   "Collect spans in shadow PARAGRAPH for source BUFFER at TICK.
 
 OFFSET translates shadow positions to source positions.  Mask accepted spans
@@ -183,70 +216,119 @@ in the shadow buffer so their Org markup cannot hide later candidates.
 TAGS is the source configuration snapshot; REGEXP matches its prefixes."
   (unless (org-texmacs--fragment-texmacs-ancestor-p paragraph)
     (save-restriction
-      (narrow-to-region (org-element-property :contents-begin paragraph)
-                        (org-element-property :contents-end paragraph))
+      (narrow-to-region
+       (org-element-property :contents-begin paragraph)
+       (org-element-property :contents-end paragraph))
       (goto-char (point-min))
       (let ((spans nil)
             (start nil)
             (stop nil))
-        (while (and (not stop) (setq start (org-texmacs--fragment-next regexp)))
-          (let ((tag (buffer-substring-no-properties (1+ start) (point))))
-            (let* ((context (save-excursion
-                              (goto-char start) (org-element-context)))
-                   (inline-note (and (eq (org-element-type context) 'footnote-reference)
-                                     (eq (org-element-property :type context) 'inline))))
-              (when (or (eq (org-element-type context) 'paragraph) inline-note)
-                (let ((end (save-restriction
-                             (when inline-note
-                               (narrow-to-region
-                                (org-element-property :contents-begin context)
-                                (org-element-property :contents-end context)))
-                             (org-texmacs--fragment-end start))))
+        (while (and (not stop)
+                    (setq start (org-texmacs--fragment-next regexp)))
+          (let ((tag
+                 (buffer-substring-no-properties (1+ start) (point))))
+            (let* ((context
+                    (save-excursion
+                      (goto-char start)
+                      (org-element-context)))
+                   (inline-note
+                    (and (eq
+                          (org-element-type context)
+                          'footnote-reference)
+                         (eq
+                          (org-element-property
+                           :type context)
+                          'inline))))
+              (when (or (eq (org-element-type context) 'paragraph)
+                        inline-note)
+                (let ((end
+                       (save-restriction
+                         (when inline-note
+                           (narrow-to-region
+                            (org-element-property
+                             :contents-begin context)
+                            (org-element-property
+                             :contents-end context)))
+                         (org-texmacs--fragment-end start))))
                   (if (not end)
                       (if inline-note
-                          (signal 'org-texmacs-error
-                                  '("Invalid STM candidate in inline footnote"))
+                          (signal
+                           'org-texmacs-error
+                           '("Invalid STM candidate in inline footnote"))
                         (setq stop t))
-                  (when inline-note
-                    ;; An Org object beginning in STM string data is foreign
-                    ;; markup handled by masking.  A real adjacent object must
-                    ;; not lend its closing characters to this candidate.
-                    ;; Context gives bounds but not parsed object children.
-                    ;; Resolve this note in the current masked Org snapshot.
-                    (let ((parsed (save-excursion
-                                    (org-element-map (org-element-parse-buffer)
-                                        'footnote-reference
-                                      (lambda (node)
-                                        (and (= (org-element-property :begin node)
-                                                (org-element-property :begin context))
-                                             node)) nil t))))
-                      (unless parsed
-                        (signal 'org-texmacs-error '("Inline footnote context changed")))
-                      (dolist (child (org-element-contents parsed))
-                        (unless (stringp child)
-                          (let ((begin (org-element-property :begin child))
-                                (stop (org-element-property :end child)))
-                            (when (and begin stop (< start begin end)
-                                       (not (save-excursion
-                                              (with-syntax-table
-                                                  org-texmacs--fragment-syntax-table
-                                                (let ((parse-sexp-lookup-properties nil))
-                                                  (nth 3 (parse-partial-sexp
-                                                          start begin))))))
-                                       (> (- stop (or (org-element-property
-                                                       :post-blank child) 0)) end))
-                              (signal 'org-texmacs-error
-                                      '("STM crosses an inline footnote object"))))))))
-                  (let ((source (buffer-substring-no-properties start end)))
-                    (push (org-texmacs--fragment-span-create
-                           :buffer buffer :tick tick
-                           :begin (+ offset start) :end (+ offset end)
-                           :source source :tag tag :tags tags)
-                          spans)
-                    (goto-char start)
-                    (delete-region start end)
-                    (insert (org-texmacs--fragment-mask source)))
-                  (goto-char end)))))))
+                    (when inline-note
+                      ;; An Org object beginning in STM string data is foreign
+                      ;; markup handled by masking.  A real adjacent object must
+                      ;; not lend its closing characters to this candidate.
+                      ;; Context gives bounds but not parsed object children.
+                      ;; Resolve this note in the current masked Org snapshot.
+                      (let ((parsed
+                             (save-excursion
+                               (org-element-map
+                                (org-element-parse-buffer)
+                                'footnote-reference
+                                (lambda (node)
+                                  (and
+                                   (=
+                                    (org-element-property :begin node)
+                                    (org-element-property
+                                     :begin context))
+                                   node))
+                                nil
+                                t))))
+                        (unless parsed
+                          (signal
+                           'org-texmacs-error
+                           '("Inline footnote context changed")))
+                        (dolist (child (org-element-contents parsed))
+                          (unless (stringp child)
+                            (let ((begin
+                                   (org-element-property
+                                    :begin child))
+                                  (stop
+                                   (org-element-property :end child)))
+                              (when
+                                  (and
+                                   begin
+                                   stop
+                                   (< start begin end)
+                                   (not
+                                    (save-excursion
+                                      (with-syntax-table
+                                          org-texmacs--fragment-syntax-table
+                                        (let
+                                            ((parse-sexp-lookup-properties
+                                              nil))
+                                          (nth
+                                           3
+                                           (parse-partial-sexp
+                                            start begin))))))
+                                   (> (- stop
+                                         (or (org-element-property
+                                              :post-blank child)
+                                             0))
+                                      end))
+                                (signal
+                                 'org-texmacs-error
+                                 '("STM crosses an inline footnote object"))))))))
+                    (let ((source
+                           (buffer-substring-no-properties
+                            start end)))
+                      (push (org-texmacs--fragment-span-create
+                             :buffer buffer
+                             :tick tick
+                             :begin
+                             (+ offset start)
+                             :end
+                             (+ offset end)
+                             :source source
+                             :tag tag
+                             :tags tags)
+                            spans)
+                      (goto-char start)
+                      (delete-region start end)
+                      (insert (org-texmacs--fragment-mask source)))
+                    (goto-char end)))))))
         (nreverse spans)))))
 
 (defun org-texmacs--fragment-collect (tags)
@@ -259,7 +341,8 @@ TAGS is a validated copy of the source buffer's configuration."
   (let ((buffer (current-buffer))
         (tick (buffer-chars-modified-tick))
         (offset (1- (point-min)))
-        (source (buffer-substring-no-properties (point-min) (point-max)))
+        (source
+         (buffer-substring-no-properties (point-min) (point-max)))
         (regexp (and tags (concat "(" (regexp-opt tags))))
         (spans nil))
     (save-match-data
@@ -267,14 +350,25 @@ TAGS is a validated copy of the source buffer's configuration."
         (with-temp-buffer
           (let ((org-element-use-cache nil)
                 (org-inhibit-startup t))
-            (delay-mode-hooks (org-mode))
+            (delay-mode-hooks
+              (org-mode))
             (insert source)
-            (let ((paragraphs (org-element-map (org-element-parse-buffer 'element)
-                                 'paragraph #'identity)))
+            (let ((paragraphs
+                   (org-element-map
+                    (org-element-parse-buffer 'element)
+                    'paragraph
+                    #'identity)))
               (dolist (paragraph paragraphs)
                 (setq spans
-                      (nconc spans (org-texmacs--fragment-scan-paragraph
-                                    paragraph buffer tick offset tags regexp)))))))))
+                      (nconc
+                       spans
+                       (org-texmacs--fragment-scan-paragraph
+                        paragraph
+                        buffer
+                        tick
+                        offset
+                        tags
+                        regexp)))))))))
     (org-texmacs--fragment-check-source buffer tick)
     (org-texmacs--fragment-check-tags tags)
     spans))
@@ -289,10 +383,12 @@ See `org-texmacs-fragment-map' for the source recognition and lifetime contract.
 Leave source text, point and narrowing unchanged; do not start TeXmacs."
   (let ((position (or position (point))))
     (org-texmacs--fragment-check-region position position)
-    (cl-find-if (lambda (span)
-                  (<= (org-texmacs-fragment-span-begin span) position
-                      (1- (org-texmacs-fragment-span-end span))))
-                (org-texmacs--fragment-collect (org-texmacs--fragment-tags)))))
+    (cl-find-if
+     (lambda (span)
+       (<= (org-texmacs-fragment-span-begin span)
+           position
+           (1- (org-texmacs-fragment-span-end span))))
+     (org-texmacs--fragment-collect (org-texmacs--fragment-tags)))))
 
 ;;;###autoload
 (defun org-texmacs-fragment-map (begin end function)
@@ -327,24 +423,28 @@ bounds, configuration or source changes; callback effects are not rolled back.
 TeXmacs special blocks and their cache are unaffected by tag configuration."
   (org-texmacs--fragment-check-region begin end)
   (unless (functionp function)
-    (signal 'org-texmacs-error '("Expected a fragment span callback")))
+    (signal 'org-texmacs-error
+            '("Expected a fragment span callback")))
   (let* ((buffer (current-buffer))
          (tick (buffer-chars-modified-tick))
          (tags (org-texmacs--fragment-tags))
          (spans (org-texmacs--fragment-collect tags)))
-    (mapcar (lambda (span)
-              (org-texmacs--fragment-check-source buffer tick)
-              (org-texmacs--fragment-check-tags tags)
-              (save-excursion
-                (save-restriction
-                  (prog1 (funcall function span)
-                    (org-texmacs--fragment-check-source buffer tick)
-                    (org-texmacs--fragment-check-tags tags)))))
-            (cl-remove-if-not
-             (lambda (span)
-               (<= begin (org-texmacs-fragment-span-begin span)
-                   (org-texmacs-fragment-span-end span) end))
-             spans))))
+    (mapcar
+     (lambda (span)
+       (org-texmacs--fragment-check-source buffer tick)
+       (org-texmacs--fragment-check-tags tags)
+       (save-excursion
+         (save-restriction
+           (prog1 (funcall function span)
+             (org-texmacs--fragment-check-source buffer tick)
+             (org-texmacs--fragment-check-tags tags)))))
+     (cl-remove-if-not
+      (lambda (span)
+        (<= begin
+            (org-texmacs-fragment-span-begin span)
+            (org-texmacs-fragment-span-end span)
+            end))
+      spans))))
 
 (provide 'org-texmacs-fragment)
 

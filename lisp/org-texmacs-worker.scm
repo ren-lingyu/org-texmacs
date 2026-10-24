@@ -16,7 +16,7 @@
   (if (string? tree)
       (apply string-append
              (map (lambda (c) (if (> (char->integer c) 127)
-                                 (cork->utf8 (string c)) (string c)))
+                                  (cork->utf8 (string c)) (string c)))
                   (string->list tree)))
       (cons (car tree) (map org-texmacs-bibliography-source-tree (cdr tree)))))
 
@@ -151,14 +151,14 @@
 (define (org-texmacs-encode-reply request)
   (let ((id (cadr request)))
     (catch #t
-      (lambda ()
-        (let ((native (org-texmacs-native-document
-                       (list-ref request 2) (list-ref request 3)
-                       (list-ref request 4) (list-ref request 5))))
-          (list 'ok id (list 'native-body
-                             (org-texmacs-hex-tree
-                              (tree->stree (list-ref native 2)))))))
-      (lambda args (list 'encoding-error id "Invalid document encoding request")))))
+           (lambda ()
+             (let ((native (org-texmacs-native-document
+                            (list-ref request 2) (list-ref request 3)
+                            (list-ref request 4) (list-ref request 5))))
+               (list 'ok id (list 'native-body
+                                  (org-texmacs-hex-tree
+                                   (tree->stree (list-ref native 2)))))))
+           (lambda args (list 'encoding-error id "Invalid document encoding request")))))
 
 (define (org-texmacs-file-document native)
   ;; Construct known structure directly from encoded fields.  This does not
@@ -185,25 +185,25 @@
   (let ((id (cadr request)))
     ;; Keep encoding errors distinct from serializer/capability errors.
     (catch #t
-      (lambda ()
-        (let ((native (org-texmacs-native-document
-                       (list-ref request 2) (list-ref request 3)
-                       (list-ref request 4) (list-ref request 5))))
-          (catch #t
-            (lambda ()
-              (for-each
-               (lambda (name)
-                 (if (not (defined? name)) (error "Missing serialization capability" name)))
-               '(texmacs-version serialize-texmacs))
-              (let* ((file (org-texmacs-file-document native))
-                     (bytes (serialize-texmacs file)))
-                (if (not (and (string? bytes) (> (string-length bytes) 0)))
-                    (error "Empty serialized document"))
-                (list 'ok id
-                      (list 'serialized-document (texmacs-version)
-                            (org-texmacs-hex-tree bytes)))))
-            (lambda args (list 'serialization-error id "Native document serialization failed")))))
-      (lambda args (list 'encoding-error id "Invalid document encoding request")))))
+           (lambda ()
+             (let ((native (org-texmacs-native-document
+                            (list-ref request 2) (list-ref request 3)
+                            (list-ref request 4) (list-ref request 5))))
+               (catch #t
+                      (lambda ()
+                        (for-each
+                         (lambda (name)
+                           (if (not (defined? name)) (error "Missing serialization capability" name)))
+                         '(texmacs-version serialize-texmacs))
+                        (let* ((file (org-texmacs-file-document native))
+                               (bytes (serialize-texmacs file)))
+                          (if (not (and (string? bytes) (> (string-length bytes) 0)))
+                              (error "Empty serialized document"))
+                          (list 'ok id
+                                (list 'serialized-document (texmacs-version)
+                                      (org-texmacs-hex-tree bytes)))))
+                      (lambda args (list 'serialization-error id "Native document serialization failed")))))
+           (lambda args (list 'encoding-error id "Invalid document encoding request")))))
 
 (define org-texmacs-render-directory #f)
 (define org-texmacs-render-counter 0)
@@ -262,55 +262,55 @@
    (lambda (name)
      (if (not (defined? name)) (error "Missing PDF capability" name)))
    '(supports-native-pdf? print-to-file update-current-buffer update-forced string-load
-     url-append system-remove buffer-new view-new buffer-close))
+                          url-append system-remove buffer-new view-new buffer-close))
   (if (not (supports-native-pdf?)) (error "Native PDF unsupported"))
   (if (not org-texmacs-render-directory) (error "Missing private PDF directory"))
   (let ((buffer #f) (file #f) (failure #f) (result #f) (fatal #f))
     (dynamic-wind
-      (lambda () #t)
-      (lambda ()
-        (catch #t
-          (lambda ()
-            (set! org-texmacs-render-counter (+ org-texmacs-render-counter 1))
-            (set! file (url-append org-texmacs-render-directory
-                                  (string-append "render-"
-                                                 (number->string org-texmacs-render-counter) ".pdf")))
-            (set! buffer (buffer-new))
-            (view-new buffer)
-            ;; Catch inside with-buffer so focus restoration runs normally.
-            (with-buffer buffer
-              (catch #t
-                (lambda ()
-                  (set-style-list (list-ref native 0))
-                  (org-texmacs-clear-initial)
-                  (for-each (lambda (entry) (init-env-tree (car entry) (cdr entry)))
-                            (list-ref native 1))
-                  (buffer-set-body buffer (list-ref native 2))
-                  ;; Invalidation alone does not populate the persistent link
-                  ;; repository used while native PDF boxes are rendered.
-                  ;; Force layout without deferred generate-all-aux/file APIs.
-                  (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer))
-                  (update-forced)
-                  ;; Native printing establishes typeset bibliography bindings.
-                  ;; Update references after that pass before final printing.
-                  ;; Both prints use the same owned temporary file.
-                  (print-to-file file)
-                  (org-texmacs-pdf-install-footnote-anchors native)
-                  (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer))
-                  (update-forced)
-                  (print-to-file file)
-                  (set! result (string-load file)))
-                (lambda args (set! failure args))))
-            (if failure (apply throw failure))
-            (if (not (and (string? result) (> (string-length result) 0)))
-                (error "Empty native PDF")))
-          (lambda args (set! failure args))))
-      (lambda ()
-        (for-each
-         (lambda (cleanup)
-           (catch #t cleanup (lambda args (set! fatal #t))))
-         (list (lambda () (if buffer (buffer-close buffer)))
-               (lambda () (if file (system-remove file)))))))
+        (lambda () #t)
+        (lambda ()
+          (catch #t
+                 (lambda ()
+                   (set! org-texmacs-render-counter (+ org-texmacs-render-counter 1))
+                   (set! file (url-append org-texmacs-render-directory
+                                          (string-append "render-"
+                                                         (number->string org-texmacs-render-counter) ".pdf")))
+                   (set! buffer (buffer-new))
+                   (view-new buffer)
+                   ;; Catch inside with-buffer so focus restoration runs normally.
+                   (with-buffer buffer
+                                (catch #t
+                                       (lambda ()
+                                         (set-style-list (list-ref native 0))
+                                         (org-texmacs-clear-initial)
+                                         (for-each (lambda (entry) (init-env-tree (car entry) (cdr entry)))
+                                                   (list-ref native 1))
+                                         (buffer-set-body buffer (list-ref native 2))
+                                         ;; Invalidation alone does not populate the persistent link
+                                         ;; repository used while native PDF boxes are rendered.
+                                         ;; Force layout without deferred generate-all-aux/file APIs.
+                                         (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer))
+                                         (update-forced)
+                                         ;; Native printing establishes typeset bibliography bindings.
+                                         ;; Update references after that pass before final printing.
+                                         ;; Both prints use the same owned temporary file.
+                                         (print-to-file file)
+                                         (org-texmacs-pdf-install-footnote-anchors native)
+                                         (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer))
+                                         (update-forced)
+                                         (print-to-file file)
+                                         (set! result (string-load file)))
+                                       (lambda args (set! failure args))))
+                   (if failure (apply throw failure))
+                   (if (not (and (string? result) (> (string-length result) 0)))
+                       (error "Empty native PDF")))
+                 (lambda args (set! failure args))))
+        (lambda ()
+          (for-each
+           (lambda (cleanup)
+             (catch #t cleanup (lambda args (set! fatal #t))))
+           (list (lambda () (if buffer (buffer-close buffer)))
+                 (lambda () (if file (system-remove file)))))))
     (if fatal (throw 'org-texmacs-render-fatal))
     (if failure (apply throw failure))
     result))
@@ -318,19 +318,19 @@
 (define (org-texmacs-pdf-reply request)
   (let ((id (cadr request)))
     (catch #t
-      (lambda ()
-        (let ((native (org-texmacs-native-document
-                       (list-ref request 2) (list-ref request 3)
-                       (list-ref request 4) (list-ref request 5))))
-          (catch #t
-            (lambda ()
-              (list 'ok id (list 'rendered-pdf
-                                (org-texmacs-hex-tree (org-texmacs-render-native-pdf native)))))
-            (lambda (key . args)
-              (if (eq? key 'org-texmacs-render-fatal)
-                  (list 'rendering-fatal id "Native PDF cleanup failed")
-                  (list 'rendering-error id "Native PDF rendering failed"))))))
-      (lambda args (list 'encoding-error id "Invalid document encoding request")))))
+           (lambda ()
+             (let ((native (org-texmacs-native-document
+                            (list-ref request 2) (list-ref request 3)
+                            (list-ref request 4) (list-ref request 5))))
+               (catch #t
+                      (lambda ()
+                        (list 'ok id (list 'rendered-pdf
+                                           (org-texmacs-hex-tree (org-texmacs-render-native-pdf native)))))
+                      (lambda (key . args)
+                        (if (eq? key 'org-texmacs-render-fatal)
+                            (list 'rendering-fatal id "Native PDF cleanup failed")
+                            (list 'rendering-error id "Native PDF rendering failed"))))))
+           (lambda args (list 'encoding-error id "Invalid document encoding request")))))
 
 (define org-texmacs-session-buffer #f)
 (define org-texmacs-session-key #f)
@@ -342,7 +342,7 @@
     (set! org-texmacs-session-key #f)
     (if buffer
         (catch #t (lambda () (buffer-close buffer))
-          (lambda args (throw 'org-texmacs-session-fatal))))))
+               (lambda args (throw 'org-texmacs-session-fatal))))))
 
 (define (org-texmacs-current-initial)
   (let ((all (tree->stree (get-all-inits))))
@@ -397,90 +397,90 @@
 (define (org-texmacs-session-reply request)
   (let ((operation (car request)) (id (cadr request)))
     (catch 'org-texmacs-session-fatal
-      (lambda ()
-        (catch #t
-          (lambda ()
-            (for-each
-             (lambda (name)
-               (if (not (defined? name)) (error "Missing session capability" name)))
-             '(buffer-new buffer-set-body buffer-get-body buffer-close
-               view-new get-style-list set-style-list get-all-inits
-               init-default-one init-env-tree get-init-tree
-               stree->tree tree->stree))
-            (cond
-             ((eq? operation 'session-open)
-              (if org-texmacs-session-buffer (error "Session already open"))
-              (set! org-texmacs-session-buffer (buffer-new))
-              (catch #t
-                (lambda ()
-                  ;; TeXmacs document style and initial APIs require focusable
-                  ;; buffer state.  This internal headless view opens no GUI.
-                  (view-new org-texmacs-session-buffer)
-                  (buffer-set-body org-texmacs-session-buffer (stree->tree '(document "")))
-                  (set! org-texmacs-session-counter (+ org-texmacs-session-counter 1))
-                  (set! org-texmacs-session-key (number->string org-texmacs-session-counter))
-                  (list 'ok id (list 'session org-texmacs-session-key)))
-                (lambda args (org-texmacs-drop-session) (error "Session initialization failed"))))
-             (else
-              (if (not (and org-texmacs-session-buffer
-                            (equal? (caddr request) org-texmacs-session-key)))
-                  (error "Unknown session"))
-              (cond
-               ((eq? operation 'session-close)
-                (let ((key org-texmacs-session-key))
-                  (org-texmacs-drop-session)
-                  (list 'ok id (list 'closed key))))
-               ((eq? operation 'session-read)
-                (catch #t
-                  (lambda ()
-                    (list 'ok id
-                          (org-texmacs-with-session-buffer
-                           (lambda () (org-texmacs-native-readback)))))
-                  (lambda args (org-texmacs-drop-session) (error "Document read failed"))))
-               ((eq? operation 'session-set)
-                ;; Encoding errors precede mutation and preserve old state.
-                (let ((native (catch #t
-                                (lambda ()
-                                  (org-texmacs-native-document
-                                   (list-ref request 3) (list-ref request 4)
-                                   (list-ref request 5) (list-ref request 6)))
-                                (lambda args #f))))
-                  (if (not native)
-                      (list 'encoding-error id "Invalid document encoding request")
-                      (catch #t
-                        (lambda ()
-                          (let ((style (list-ref native 0))
-                                (initial (list-ref native 1))
-                                (body (list-ref native 2)))
-                            (org-texmacs-with-session-buffer
-                             (lambda ()
-                               (set-style-list style)
-                               (org-texmacs-clear-initial)
-                               (for-each
-                                (lambda (entry)
-                                  (init-env-tree (car entry) (cdr entry)))
-                                initial)
-                               (buffer-set-body org-texmacs-session-buffer body)
-                               (if (not (org-texmacs-style? (get-style-list)))
-                                   (error "Style readback mismatch"))
-                               (if (not (org-texmacs-initial=?
-                                         initial (org-texmacs-current-initial)))
-                                   (error "Initial readback mismatch"))
-                               (if (not (equal? (tree->stree body)
-                                                (tree->stree
-                                                 (buffer-get-body
-                                                  org-texmacs-session-buffer))))
-                                   (error "Body readback mismatch"))
-                               #t))
-                            (list 'ok id (list 'updated org-texmacs-session-key))))
-                        (lambda args
-                          (org-texmacs-drop-session)
-                          (error "Document update failed; session discarded"))))))))))
-          (lambda (key . args)
-            (if (eq? key 'org-texmacs-session-fatal) (throw key))
-            (list 'session-error id "Invalid session operation"))))
-      ;; Elisp treats this unknown status as transport failure and stops worker.
-      (lambda args (list 'session-fatal id "Session cleanup failed")))))
+           (lambda ()
+             (catch #t
+                    (lambda ()
+                      (for-each
+                       (lambda (name)
+                         (if (not (defined? name)) (error "Missing session capability" name)))
+                       '(buffer-new buffer-set-body buffer-get-body buffer-close
+                                    view-new get-style-list set-style-list get-all-inits
+                                    init-default-one init-env-tree get-init-tree
+                                    stree->tree tree->stree))
+                      (cond
+                       ((eq? operation 'session-open)
+                        (if org-texmacs-session-buffer (error "Session already open"))
+                        (set! org-texmacs-session-buffer (buffer-new))
+                        (catch #t
+                               (lambda ()
+                                 ;; TeXmacs document style and initial APIs require focusable
+                                 ;; buffer state.  This internal headless view opens no GUI.
+                                 (view-new org-texmacs-session-buffer)
+                                 (buffer-set-body org-texmacs-session-buffer (stree->tree '(document "")))
+                                 (set! org-texmacs-session-counter (+ org-texmacs-session-counter 1))
+                                 (set! org-texmacs-session-key (number->string org-texmacs-session-counter))
+                                 (list 'ok id (list 'session org-texmacs-session-key)))
+                               (lambda args (org-texmacs-drop-session) (error "Session initialization failed"))))
+                       (else
+                        (if (not (and org-texmacs-session-buffer
+                                      (equal? (caddr request) org-texmacs-session-key)))
+                            (error "Unknown session"))
+                        (cond
+                         ((eq? operation 'session-close)
+                          (let ((key org-texmacs-session-key))
+                            (org-texmacs-drop-session)
+                            (list 'ok id (list 'closed key))))
+                         ((eq? operation 'session-read)
+                          (catch #t
+                                 (lambda ()
+                                   (list 'ok id
+                                         (org-texmacs-with-session-buffer
+                                          (lambda () (org-texmacs-native-readback)))))
+                                 (lambda args (org-texmacs-drop-session) (error "Document read failed"))))
+                         ((eq? operation 'session-set)
+                          ;; Encoding errors precede mutation and preserve old state.
+                          (let ((native (catch #t
+                                               (lambda ()
+                                                 (org-texmacs-native-document
+                                                  (list-ref request 3) (list-ref request 4)
+                                                  (list-ref request 5) (list-ref request 6)))
+                                               (lambda args #f))))
+                            (if (not native)
+                                (list 'encoding-error id "Invalid document encoding request")
+                                (catch #t
+                                       (lambda ()
+                                         (let ((style (list-ref native 0))
+                                               (initial (list-ref native 1))
+                                               (body (list-ref native 2)))
+                                           (org-texmacs-with-session-buffer
+                                            (lambda ()
+                                              (set-style-list style)
+                                              (org-texmacs-clear-initial)
+                                              (for-each
+                                               (lambda (entry)
+                                                 (init-env-tree (car entry) (cdr entry)))
+                                               initial)
+                                              (buffer-set-body org-texmacs-session-buffer body)
+                                              (if (not (org-texmacs-style? (get-style-list)))
+                                                  (error "Style readback mismatch"))
+                                              (if (not (org-texmacs-initial=?
+                                                        initial (org-texmacs-current-initial)))
+                                                  (error "Initial readback mismatch"))
+                                              (if (not (equal? (tree->stree body)
+                                                               (tree->stree
+                                                                (buffer-get-body
+                                                                 org-texmacs-session-buffer))))
+                                                  (error "Body readback mismatch"))
+                                              #t))
+                                           (list 'ok id (list 'updated org-texmacs-session-key))))
+                                       (lambda args
+                                         (org-texmacs-drop-session)
+                                         (error "Document update failed; session discarded"))))))))))
+                    (lambda (key . args)
+                      (if (eq? key 'org-texmacs-session-fatal) (throw key))
+                      (list 'session-error id "Invalid session operation"))))
+           ;; Elisp treats this unknown status as transport failure and stops worker.
+           (lambda args (list 'session-fatal id "Session cleanup failed")))))
 
 (define (org-texmacs-reply request)
   (cond
@@ -489,35 +489,35 @@
          (integer? (cadr request)) (> (cadr request) 0) (string? (caddr request)))
     (let ((id (cadr request)))
       (catch #t
-        (lambda ()
-          (let ((old-prefix bib-current-prefix) (old-style bib-style)
-                (old-default bib-default-style))
-            (dynamic-wind
-              (lambda () #t)
-              (lambda ()
-                (module-provide '(bibtex plain))
-                (let ((body (bib-process
-                             (caddr request) "plain"
-                             (org-texmacs-encode-body
-                              (org-texmacs-wire-tree (list-ref request 3)) '(())))))
-                  (list 'ok id (org-texmacs-bibliography-source-tree body))))
-              (lambda () (set! bib-current-prefix old-prefix) (set! bib-style old-style)
-                (set! bib-default-style old-default)))))
-        (lambda args (list 'error id "Invalid bibliography formatting request")))))
+             (lambda ()
+               (let ((old-prefix bib-current-prefix) (old-style bib-style)
+                     (old-default bib-default-style))
+                 (dynamic-wind
+                     (lambda () #t)
+                     (lambda ()
+                       (module-provide '(bibtex plain))
+                       (let ((body (bib-process
+                                    (caddr request) "plain"
+                                    (org-texmacs-encode-body
+                                     (org-texmacs-wire-tree (list-ref request 3)) '(())))))
+                         (list 'ok id (org-texmacs-bibliography-source-tree body))))
+                     (lambda () (set! bib-current-prefix old-prefix) (set! bib-style old-style)
+                             (set! bib-default-style old-default)))))
+             (lambda args (list 'error id "Invalid bibliography formatting request")))))
    ((and (list? request) (= (length request) 3)
          (eq? (car request) 'parse-bibliography)
          (integer? (cadr request)) (> (cadr request) 0)
          (string? (caddr request)))
     (let ((id (cadr request)))
       (catch #t
-        (lambda ()
-          (let ((parsed (parse-bibtex-snippet (caddr request))))
-            (if (equal? parsed "") (set! parsed '(document)))
-            ;; Native parsing owns declarations, normalization and recovery.
-            ;; Preserve its full document; Elisp indexes only native entries.
-            (if (not (func? parsed 'document)) (error "Invalid bibliography tree"))
-            (list 'ok id (org-texmacs-bibliography-source-tree parsed))))
-        (lambda args (list 'error id "Invalid bibliography source")))))
+             (lambda ()
+               (let ((parsed (parse-bibtex-snippet (caddr request))))
+                 (if (equal? parsed "") (set! parsed '(document)))
+                 ;; Native parsing owns declarations, normalization and recovery.
+                 ;; Preserve its full document; Elisp indexes only native entries.
+                 (if (not (func? parsed 'document)) (error "Invalid bibliography tree"))
+                 (list 'ok id (org-texmacs-bibliography-source-tree parsed))))
+             (lambda args (list 'error id "Invalid bibliography source")))))
    ((and (list? request) (>= (length request) 2)
          (integer? (cadr request)) (> (cadr request) 0)
          (or (and (eq? (car request) 'session-open) (= (length request) 2))
@@ -527,16 +527,16 @@
                   (string? (caddr request)))))
     (org-texmacs-session-reply request))
    ((and (list? request) (= (length request) 6)
-           (eq? (car request) 'render-pdf)
-           (integer? (cadr request)) (> (cadr request) 0))
+         (eq? (car request) 'render-pdf)
+         (integer? (cadr request)) (> (cadr request) 0))
     (org-texmacs-pdf-reply request))
    ((and (list? request) (= (length request) 6)
-           (eq? (car request) 'serialize)
-           (integer? (cadr request)) (> (cadr request) 0))
+         (eq? (car request) 'serialize)
+         (integer? (cadr request)) (> (cadr request) 0))
     (org-texmacs-serialize-reply request))
    ((and (list? request) (= (length request) 6)
-           (eq? (car request) 'encode)
-           (integer? (cadr request)) (> (cadr request) 0))
+         (eq? (car request) 'encode)
+         (integer? (cadr request)) (> (cadr request) 0))
     (org-texmacs-encode-reply request))
    (else (org-texmacs-parse-reply request))))
 
@@ -547,8 +547,8 @@
            (string? (caddr request)))
       (let ((id (cadr request)))
         (catch #t
-          (lambda () (list 'ok id (org-texmacs-parse (caddr request))))
-          (lambda args (list 'error id "Invalid STM source"))))
+               (lambda () (list 'ok id (org-texmacs-parse (caddr request))))
+               (lambda args (list 'error id "Invalid STM source"))))
       '(error 0 "Invalid request")))
 
 (define (org-texmacs-write-elisp datum port)
@@ -592,7 +592,7 @@
    (lambda (name)
      (if (not (defined? name)) (error "Missing worker capability" name)))
    '(socket bind listen accept close-port force-output AF_UNIX SOCK_STREAM
-     stm-snippet->texmacs tree->stree))
+            stm-snippet->texmacs tree->stree))
   (set! org-texmacs-render-directory (url-head (system->url socket-path)))
   (let ((server (socket AF_UNIX SOCK_STREAM 0)))
     (bind server AF_UNIX socket-path)
@@ -603,10 +603,10 @@
       (let ((client (car (accept server))))
         ;; Includes read/write failures and a client disconnecting early.
         (catch #t
-          (lambda ()
-            (org-texmacs-write-elisp (org-texmacs-reply (read client)) client)
-            (newline client)
-            (force-output client))
-          (lambda args #f))
+               (lambda ()
+                 (org-texmacs-write-elisp (org-texmacs-reply (read client)) client)
+                 (newline client)
+                 (force-output client))
+               (lambda args #f))
         (catch #t (lambda () (close-port client)) (lambda args #f)))
       (loop))))

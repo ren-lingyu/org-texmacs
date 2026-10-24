@@ -19,9 +19,11 @@
          (process-environment (copy-sequence process-environment))
          (test-directory (make-temp-file "org-texmacs-ert-" t)))
      (unwind-protect
-         (let ((default-directory (file-name-as-directory test-directory)))
+         (let ((default-directory
+                (file-name-as-directory test-directory)))
            (setenv "HOME" test-directory)
-           (setenv "TEXMACS_HOME_PATH" (expand-file-name "config" test-directory))
+           (setenv "TEXMACS_HOME_PATH"
+                   (expand-file-name "config" test-directory))
            ,@body)
        (org-texmacs--worker-stop)
        (delete-directory test-directory t))))
@@ -35,6 +37,7 @@
 Only serialize expected bytes; do not call the production encoder."
   (if (stringp tree)
       (org-texmacs-test--ascii-hex tree)
-    (cons (car tree) (mapcar #'org-texmacs-test--native-hex (cdr tree)))))
+    (cons
+     (car tree) (mapcar #'org-texmacs-test--native-hex (cdr tree)))))
 
 ;;; native.el ends here

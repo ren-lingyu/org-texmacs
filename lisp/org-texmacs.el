@@ -70,16 +70,24 @@
 (require 'org-texmacs-input)
 (require 'org-texmacs-session)
 
-(autoload 'org-texmacs-document-from-buffer-discover-bibliography
+(autoload
+  'org-texmacs-document-from-buffer-discover-bibliography
   "org-texmacs-bibliography")
-(autoload 'org-texmacs-export-from-buffer-discover-bibliography
+(autoload
+  'org-texmacs-export-from-buffer-discover-bibliography
   "org-texmacs-bibliography")
 
-(autoload 'org-texmacs-prepare-buffer-preprocessed "org-texmacs-preprocess")
-(autoload 'org-texmacs-document-from-buffer-preprocessed "org-texmacs-preprocess")
-(autoload 'org-texmacs-export-from-buffer-preprocessed "org-texmacs-preprocess")
+(autoload
+  'org-texmacs-prepare-buffer-preprocessed "org-texmacs-preprocess")
+(autoload
+  'org-texmacs-document-from-buffer-preprocessed
+  "org-texmacs-preprocess")
+(autoload
+  'org-texmacs-export-from-buffer-preprocessed
+  "org-texmacs-preprocess")
 
-(defconst org-texmacs--cache-miss (make-symbol "org-texmacs-cache-miss")
+(defconst org-texmacs--cache-miss
+  (make-symbol "org-texmacs-cache-miss")
   "Sentinel distinguishing an absent cached tree from a stored value.")
 
 ;;;###autoload
@@ -106,8 +114,9 @@ Signal `org-texmacs-error' for invalid input or text changed during parsing,
 worker failures.  Failed parses are never cached."
   (unless (org-texmacs--block-p block)
     (signal 'org-texmacs-error '("Expected a TeXmacs special block")))
-  (let ((cached (org-element-cache-get-key
-                 block 'org-texmacs-tree org-texmacs--cache-miss)))
+  (let ((cached
+         (org-element-cache-get-key
+          block 'org-texmacs-tree org-texmacs--cache-miss)))
     (if (not (eq cached org-texmacs--cache-miss))
         cached
       (let* ((buffer (current-buffer))
@@ -119,7 +128,8 @@ worker failures.  Failed parses are never cached."
         (unless (and (buffer-live-p buffer)
                      (eq (current-buffer) buffer)
                      (= tick (buffer-chars-modified-tick)))
-          (signal 'org-texmacs-error '("Org source changed during TeXmacs parsing")))
+          (signal 'org-texmacs-error
+                  '("Org source changed during TeXmacs parsing")))
         (let ((tree (org-texmacs--stree-to-org stree)))
           (org-element-cache-store-key block 'org-texmacs-tree tree)
           tree)))))
@@ -151,9 +161,13 @@ root tag mismatch, and `org-texmacs-worker-error' for worker failures."
          (stree (org-texmacs--worker-request source)))
     ;; Waiting may run timers that edit/kill the buffer or change narrowing.
     (org-texmacs--fragment-source span)
-    (unless (and (consp stree) (symbolp (car stree))
-                 (equal (symbol-name (car stree)) (org-texmacs-fragment-span-tag span)))
-      (signal 'org-texmacs-parse-error '("TeXmacs root differs from fragment tag")))
+    (unless (and (consp stree)
+                 (symbolp (car stree))
+                 (equal
+                  (symbol-name (car stree))
+                  (org-texmacs-fragment-span-tag span)))
+      (signal 'org-texmacs-parse-error
+              '("TeXmacs root differs from fragment tag")))
     (org-texmacs--stree-to-org stree)))
 
 ;;;###autoload
@@ -167,48 +181,79 @@ Treat INPUT and the returned result, including nested data, as read-only.
 Unsupported structures signal `org-texmacs-document-error'.  For source
 preparation and conversion together, use `org-texmacs-document-from-buffer'."
   (unless (org-texmacs-input-p input)
-    (signal 'org-texmacs-document-error '("Expected an org-texmacs-input")))
+    (signal 'org-texmacs-document-error
+            '("Expected an org-texmacs-input")))
   (org-texmacs--document-lower
-   (org-texmacs-input-ast input) (org-texmacs-input-islands input)
-   (org-texmacs-input-post-blanks input) (org-texmacs-input-info input)
-   (org-texmacs-input-style input) (org-texmacs-input-initial input)
-   (org-texmacs-input-source-file input) (org-texmacs-input-resource-base input)
+   (org-texmacs-input-ast input)
+   (org-texmacs-input-islands input)
+   (org-texmacs-input-post-blanks input)
+   (org-texmacs-input-info input)
+   (org-texmacs-input-style input)
+   (org-texmacs-input-initial input)
+   (org-texmacs-input-source-file input)
+   (org-texmacs-input-resource-base input)
    (org-texmacs-input-bibliography input)
    (org-texmacs-input-resolution input)))
 
 (defun org-texmacs--bibliography-format (plan)
   "Prepare native plain bibliography output for fixed PLAN using the worker."
-  (let* ((prefix (plist-get plan :prefix)) (keys (plist-get plan :keys))
-         (entries (plist-get plan :entries)) body)
-    (cl-labels ((wire (node)
-                  (if (stringp node) (org-texmacs--scheme-string node)
-                    (concat "(" (org-texmacs--scheme-string (symbol-name (car node)))
-                            (mapconcat (lambda (child) (concat " " (wire child))) (cdr node) "") ")"))))
-      (let ((response (org-texmacs--worker-call
-                       (lambda (id)
-                         (format "(format-bibliography %d %s %s)\n" id
-                                 (org-texmacs--scheme-string prefix) (wire entries))))))
-        (when (and (eq (car response) 'error) (stringp (nth 2 response)))
-          (signal 'org-texmacs-document-error (list (nth 2 response))))
-        (condition-case err
-            (progn
-              (unless (eq (car response) 'ok)
-                (signal 'org-texmacs-worker-error '("Invalid bibliography response status")))
-              (setq body (org-texmacs--document-copy-stree (nth 2 response)))
-              (unless (and (consp body) (eq (car body) 'bib-list) (= (length body) 3)
-                           (equal (sort (org-texmacs--bibliography-labels body) #'string-lessp)
-                                  (sort (mapcar (lambda (key) (concat prefix "-" key)) keys)
-                                        #'string-lessp)))
-                (signal 'org-texmacs-worker-error '("Invalid formatted bibliography payload"))))
-          (org-texmacs-error
-           (org-texmacs--worker-stop)
-           (signal 'org-texmacs-worker-error (cdr err))))))
+  (let* ((prefix (plist-get plan :prefix))
+         (keys (plist-get plan :keys))
+         (entries (plist-get plan :entries))
+         body)
+    (cl-labels
+     ((wire
+       (node)
+       (if (stringp node)
+           (org-texmacs--scheme-string node)
+         (concat
+          "(" (org-texmacs--scheme-string (symbol-name (car node)))
+          (mapconcat
+           (lambda (child) (concat " " (wire child))) (cdr node)
+           "")
+          ")"))))
+     (let ((response
+            (org-texmacs--worker-call
+             (lambda (id)
+               (format "(format-bibliography %d %s %s)\n"
+                       id
+                       (org-texmacs--scheme-string prefix)
+                       (wire entries))))))
+       (when (and (eq (car response) 'error)
+                  (stringp (nth 2 response)))
+         (signal 'org-texmacs-document-error (list (nth 2 response))))
+       (condition-case err
+           (progn
+             (unless (eq (car response) 'ok)
+               (signal 'org-texmacs-worker-error
+                       '("Invalid bibliography response status")))
+             (setq body
+                   (org-texmacs--document-copy-stree
+                    (nth 2 response)))
+             (unless (and (consp body)
+                          (eq (car body) 'bib-list)
+                          (= (length body) 3)
+                          (equal
+                           (sort
+                            (org-texmacs--bibliography-labels body)
+                            #'string-lessp)
+                           (sort (mapcar
+                                  (lambda (key)
+                                    (concat prefix "-" key))
+                                  keys)
+                                 #'string-lessp)))
+               (signal 'org-texmacs-worker-error
+                       '("Invalid formatted bibliography payload"))))
+         (org-texmacs-error
+          (org-texmacs--worker-stop)
+          (signal 'org-texmacs-worker-error (cdr err))))))
     (org-texmacs--bibliography-check-references body prefix)
     (list prefix keys entries body)))
 
 ;;;###autoload
 (defun org-texmacs-prepare-buffer
-    (source-buffer &optional bibliography-sources subtree-position region ext-plist)
+    (source-buffer
+     &optional bibliography-sources subtree-position region ext-plist)
   "Prepare a buffer-independent structural input from SOURCE-BUFFER.
 Optional SUBTREE-POSITION selects its containing subtree in the full snapshot;
 nil prepares the accessible buffer.  It must be an integer source position.
@@ -230,11 +275,16 @@ TeXmacs, and own the returned bibliography ASTs in the input's BIBLIOGRAPHY.
 Never open these paths or query a bibliography database.  Resolve document
 bibliography declarations, bare default citations and one bibliography print,
 then prepare native plain output in the fixed INFO context."
-  (org-texmacs--prepare-buffer source-buffer #'identity bibliography-sources subtree-position region ext-plist))
+  (org-texmacs--prepare-buffer source-buffer #'identity
+                               bibliography-sources
+                               subtree-position
+                               region
+                               ext-plist))
 
 ;;;###autoload
 (defun org-texmacs-document-from-buffer
-    (source-buffer &optional bibliography-sources subtree-position region ext-plist)
+    (source-buffer
+     &optional bibliography-sources subtree-position region ext-plist)
   "Convert explicit Org SOURCE-BUFFER to a text document result.
 Optional SUBTREE-POSITION selects its containing subtree instead of the full
 body.  REGION, a (BEGIN . END) integer pair, takes precedence for body
@@ -328,238 +378,397 @@ propagate unchanged.
 The result preserves source-dependent text semantics for later encoding;
 it does not provide export, native buffer updates or rendering."
   (org-texmacs--prepare-buffer source-buffer #'org-texmacs-document
-                               bibliography-sources subtree-position region ext-plist))
+                               bibliography-sources
+                               subtree-position
+                               region
+                               ext-plist))
 
 (defun org-texmacs--filter-own-preparation (prepared)
   "Detach PREPARED from AST and INFO references retained by user filters.
 Reuse the pure owning constructor.  Keep adapter-owned mapping/INFO shells
 separate from that read-only temporary input before filling native results."
-  (let* ((input (org-texmacs--input-own
-                 (car prepared) (nth 4 prepared)
-                 :islands (nth 1 prepared) :post-blanks (nth 3 prepared)))
-         (islands (mapcar (lambda (entry) (cons (car entry) (cdr entry)))
-                          (org-texmacs-input-islands input)))
+  (let* ((input
+          (org-texmacs--input-own
+           (car prepared)
+           (nth 4 prepared)
+           :islands (nth 1 prepared)
+           :post-blanks (nth 3 prepared)))
+         (islands
+          (mapcar
+           (lambda (entry)
+             (cons (car entry) (cdr entry)))
+           (org-texmacs-input-islands input)))
          (entries (make-hash-table :test #'eq)))
-    (cl-mapc (lambda (old new) (puthash old new entries)) (nth 1 prepared) islands)
-    (list (org-texmacs-input-ast input) islands
-          (mapcar (lambda (request)
-                    (list (gethash (car request) entries)
-                          (copy-sequence (nth 1 request))
-                          (and (nth 2 request) (copy-sequence (nth 2 request)))))
-                  (nth 2 prepared))
-          (org-texmacs-input-post-blanks input)
-          (copy-sequence (org-texmacs-input-info input)))))
+    (cl-mapc
+     (lambda (old new) (puthash old new entries))
+     (nth 1 prepared)
+     islands)
+    (list
+     (org-texmacs-input-ast input)
+     islands
+     (mapcar
+      (lambda (request)
+        (list
+         (gethash (car request) entries)
+         (copy-sequence (nth 1 request))
+         (and (nth 2 request) (copy-sequence (nth 2 request)))))
+      (nth 2 prepared))
+     (org-texmacs-input-post-blanks input)
+     (copy-sequence (org-texmacs-input-info input)))))
 
 (defun org-texmacs--prepare-buffer
-    (source-buffer consumer &optional bibliography-sources subtree-position region
-                   ext-plist effective-bibliography initializer)
+    (source-buffer
+     consumer
+     &optional
+     bibliography-sources
+     subtree-position
+     region
+     ext-plist
+     effective-bibliography
+     initializer)
   "Prepare SOURCE-BUFFER and call CONSUMER before the final source check."
   (unless (and (bufferp source-buffer) (buffer-live-p source-buffer))
-    (signal 'org-texmacs-document-error '("Expected a live Org buffer object")))
+    (signal 'org-texmacs-document-error
+            '("Expected a live Org buffer object")))
   (with-current-buffer source-buffer
     (unless (derived-mode-p 'org-mode)
-      (signal 'org-texmacs-document-error '("Expected an Org buffer")))
+      (signal 'org-texmacs-document-error
+              '("Expected an Org buffer")))
     (when (and subtree-position
-               (not (and (integerp subtree-position)
-                         (<= (point-min) subtree-position (point-max)))))
-      (signal 'org-texmacs-document-error '("Invalid subtree source position")))
+               (not
+                (and (integerp subtree-position)
+                     (<= (point-min) subtree-position (point-max)))))
+      (signal 'org-texmacs-document-error
+              '("Invalid subtree source position")))
     (when region
-      (unless (and (consp region) (integerp (car region)) (integerp (cdr region))
-                   (<= (point-min) (car region)) (< (car region) (cdr region))
+      (unless (and (consp region)
+                   (integerp (car region))
+                   (integerp (cdr region))
+                   (<= (point-min) (car region))
+                   (< (car region) (cdr region))
                    (<= (cdr region) (point-max)))
-        (signal 'org-texmacs-document-error '("Invalid source region")))
+        (signal 'org-texmacs-document-error
+                '("Invalid source region")))
       ;; Own the caller's pair: mutating it during a native wait cannot redirect
       ;; the body selection captured in this conversion.
       (setq region (cons (car region) (cdr region))))
     (setq ext-plist (org-texmacs--context-external-options ext-plist))
     (setq effective-bibliography
-          (org-texmacs--bibliography-view-copy effective-bibliography))
-    (let* ((buffer source-buffer)
-           (bounds (cons (point-min) (point-max)))
-           (restriction (and (buffer-narrowed-p) bounds))
-           (mode major-mode)
-           (tick (buffer-chars-modified-tick))
-           (source-file-value
-            (when-let* ((file (buffer-file-name (buffer-base-buffer))))
-              (substring-no-properties file)))
-           (source-directory-value
-            (and default-directory (substring-no-properties default-directory)))
-           (source-file (org-texmacs--source-capture-path source-file-value))
-           (resource-base (org-texmacs--source-capture-path source-directory-value))
-           (bibliography-source-snapshot
-            (org-texmacs--bibliography-source-snapshot bibliography-sources resource-base))
-           (bibliography-original-snapshot
-            (mapcar (lambda (entry)
-                      (cons (substring-no-properties (car entry))
-                            (substring-no-properties (cdr entry))))
-                    bibliography-sources))
-           (bibliography nil)
-           (tags (org-texmacs--fragment-tags))
-           (heading-settings (org-texmacs--document-heading-settings))
-           (link-settings (org-texmacs--document-link-settings))
-           (base-info (plist-put (org-texmacs--document-options) :texmacs-resource-base resource-base))
-           (_ (setq base-info (plist-put base-info :texmacs-external-options ext-plist)))
-           (_ (when effective-bibliography
-                (setq base-info (plist-put base-info :texmacs-effective-bibliography
-                                          effective-bibliography))))
-           (subtree-settings (and subtree-position (org-texmacs--context-subtree-settings)))
-           (_ (when subtree-position
-                (setq base-info (plist-put base-info :texmacs-subtree-settings subtree-settings))))
-           (style (org-texmacs--document-copy-style org-texmacs-document-style))
-           (initial (org-texmacs--document-copy-initial org-texmacs-document-initial))
-           (source (org-texmacs--source-buffer-text))
-           (filter-state (org-texmacs--context-filter-state))
-           (prepared nil) (info nil) (dependency-check nil)
-           (working-source source) (annotation nil))
-      (cl-labels ((check ()
-                   (unless (buffer-live-p buffer)
-                     (signal 'org-texmacs-document-error '("Source buffer was killed")))
-                   (with-current-buffer buffer
-                     (unless (and (eq major-mode mode) (derived-mode-p 'org-mode)
-                                  (= tick (buffer-chars-modified-tick)))
-                       (signal 'org-texmacs-document-error '("Source buffer changed")))
-                     (org-texmacs--fragment-check-tags tags)
-                     (let ((current (org-texmacs--context-filter-state)))
-                       (unless (and (equal (car filter-state) (car current))
-                                    (= (length (cadr filter-state)) (length (cadr current)))
-                                    (cl-every #'eq (cadr filter-state) (cadr current)))
-                         (signal 'org-texmacs-document-error
-                                 '("Org AST filter configuration changed during conversion"))))
-                     (unless (equal bibliography-original-snapshot bibliography-sources)
-                       (signal 'org-texmacs-document-error
-                               '("Bibliography source texts changed during preparation")))
-                     (unless (and (equal source-file-value
-                                         (buffer-file-name (buffer-base-buffer)))
-                                  (equal source-directory-value default-directory))
-                       (signal 'org-texmacs-document-error
-                               '("Source location changed during conversion")))
-                     (unless (equal heading-settings (org-texmacs--document-heading-settings))
-                       (signal 'org-texmacs-document-error
-                               '("Org heading settings changed during conversion")))
-                     (unless (equal link-settings (org-texmacs--document-link-settings))
-                       (signal 'org-texmacs-document-error
-                               '("Org link settings changed during conversion")))
-                     (when (and subtree-position
-                                (not (equal subtree-settings (org-texmacs--context-subtree-settings))))
-                       (signal 'org-texmacs-document-error
-                               '("Org property settings changed during conversion")))
-                     (unless (equal bounds (cons (point-min) (point-max)))
-                       (signal 'org-texmacs-document-error
-                               '("Source restriction changed during conversion")))
-                     (when dependency-check (funcall dependency-check)))))
-        (check)
-        (when initializer
-          (let ((setup (funcall initializer source tags heading-settings link-settings
-                                base-info source-file resource-base
-                                bibliography-source-snapshot #'check)))
-            (setq bibliography-source-snapshot
-                  (org-texmacs--bibliography-source-snapshot
-                   (plist-get setup :sources) resource-base)
-                  effective-bibliography
-                  (org-texmacs--bibliography-view-copy (plist-get setup :view))
-                  dependency-check (plist-get setup :check)
-                  annotation (plist-get setup :annotate)
-                  base-info (org-combine-plists
-                             base-info
-                             (org-texmacs--context-copy (plist-get setup :context))
-                             (list :texmacs-effective-bibliography
-                                   effective-bibliography)))
-            (when (plist-member setup :source)
-              (unless (stringp (plist-get setup :source))
-                (signal 'org-texmacs-document-error '("Invalid working source snapshot")))
-              (setq working-source (substring-no-properties (plist-get setup :source))))))
-        (check)
-        (setq prepared (org-texmacs--document-prepare-source
-                      working-source tags heading-settings link-settings base-info
-                      subtree-position region restriction
-                      (when (or annotation (cadr filter-state))
-                        (lambda (prepared)
-                          (when annotation (funcall annotation prepared))
-                          (setq-local default-directory resource-base)
-                          (setq-local org-texmacs-fragment-tags
-                                      (mapcar #'copy-sequence tags))
-                          (org-texmacs--context-filter-apply
-                           prepared filter-state source-file resource-base
-                           bibliography-source-snapshot)
-                          (org-texmacs--filter-own-preparation prepared)))))
-        (org-texmacs--document-check-native-requests prepared)
-        (setq info (nth 4 prepared))
-        (check)
-        ;; Reject source-independent citation contracts before native work.
-        ;; Entry identities come exclusively from owned native parser results.
-        (org-texmacs--bibliography-collect
-         (nth 0 prepared) (nth 1 prepared) info
-         (mapcar #'car bibliography-source-snapshot)
-         (org-texmacs--document-resolve (nth 0 prepared) (nth 1 prepared) nil resource-base))
-        (dolist (entry bibliography-source-snapshot)
-          (check)
-          (let ((tree (org-texmacs--worker-request (cdr entry) 'bibliography)))
-            (check)
-            (condition-case err
-                (push (car (org-texmacs--bibliography-copy (list (cons (car entry) tree))))
-                      bibliography)
-              (org-texmacs-document-error
-               (org-texmacs--worker-stop)
-               (signal 'org-texmacs-worker-error (cdr err))))))
-        (setq bibliography (nreverse bibliography))
-        ;; Run user formatters after private parser bindings have unwound.
-        ;; Only the formatted body is temporary; entries are real owned ASTs.
-        (let* ((plan (org-texmacs--bibliography-plan
-                      (nth 0 prepared) (nth 1 prepared) info bibliography
-                      (org-texmacs--document-resolve (nth 0 prepared) (nth 1 prepared) nil resource-base) nil)))
-          (setq info (plist-put info :texmacs-bibliography-output
-                                (list (plist-get plan :prefix) (plist-get plan :keys)
-                                      (plist-get plan :entries)
-                                      (list 'bib-list (number-to-string (length (plist-get plan :keys)))
-                                            (cons 'document
-                                                  (mapcar (lambda (key)
-                                                            (list 'concat '(bibitem* "0")
-                                                                  (list 'label (concat (plist-get plan :prefix) "-" key))))
-                                                          (plist-get plan :keys))))))))
-        (org-texmacs--document-lower (nth 0 prepared) (nth 1 prepared)
-                                     (nth 3 prepared)
-                                     (plist-put (copy-sequence info)
-                                                :texmacs-special-block-preflight t)
-                                     style initial
-                                     source-file resource-base
-                                     bibliography)
-        ;; No preflight-only body may escape through a prepared input.
-        (setq info (plist-put info :texmacs-bibliography-output nil))
-        (check)
-        (dolist (request (nth 2 prepared))
-          (check)
-          (let ((stree (org-texmacs--worker-request (nth 1 request)))
-                (tag (nth 2 request)))
-            (check)
-            (when (and tag (not (and (consp stree) (symbolp (car stree))
-                                    (equal tag (symbol-name (car stree))))))
-              (signal 'org-texmacs-parse-error '("TeXmacs root differs from fragment tag")))
-            (setcdr (car request) stree)))
-        (let* ((input (org-texmacs-input-create
-                       (nth 0 prepared) info :islands (nth 1 prepared)
-                       :post-blanks (nth 3 prepared) :style style :initial initial
-                       :source-file source-file :resource-base resource-base
-                       :bibliography bibliography))
-               (resolution (org-texmacs-input-resolution input))
-               (static (org-texmacs--document-static-labels (org-texmacs-input-islands input)))
-               (owned-info (org-texmacs-input-info input)))
-          (when (org-texmacs-resolution-failure resolution)
-            (signal 'org-texmacs-document-error (org-texmacs-resolution-failure resolution)))
-          (let ((plan (org-texmacs--bibliography-plan
-                       (org-texmacs-input-ast input) (org-texmacs-input-islands input)
-                       owned-info (org-texmacs-input-bibliography input) resolution static)))
-            (when (plist-get plan :prints)
-              (check)
-              (setq owned-info (plist-put (copy-sequence owned-info) :texmacs-bibliography-output
-                                          (org-texmacs--bibliography-format plan)))
-              (check)))
-          (let ((result (funcall consumer (org-texmacs--input-with-info input owned-info))))
-            (check)
-            result))))))
+          (org-texmacs--bibliography-view-copy
+           effective-bibliography))
+    (let*
+        ((buffer source-buffer)
+         (bounds (cons (point-min) (point-max)))
+         (restriction (and (buffer-narrowed-p) bounds))
+         (mode major-mode)
+         (tick (buffer-chars-modified-tick))
+         (source-file-value
+          (when-let* ((file (buffer-file-name (buffer-base-buffer))))
+            (substring-no-properties file)))
+         (source-directory-value
+          (and default-directory
+               (substring-no-properties default-directory)))
+         (source-file
+          (org-texmacs--source-capture-path source-file-value))
+         (resource-base
+          (org-texmacs--source-capture-path source-directory-value))
+         (bibliography-source-snapshot
+          (org-texmacs--bibliography-source-snapshot
+           bibliography-sources resource-base))
+         (bibliography-original-snapshot
+          (mapcar
+           (lambda (entry)
+             (cons
+              (substring-no-properties (car entry))
+              (substring-no-properties (cdr entry))))
+           bibliography-sources))
+         (bibliography nil)
+         (tags (org-texmacs--fragment-tags))
+         (heading-settings (org-texmacs--document-heading-settings))
+         (link-settings (org-texmacs--document-link-settings))
+         (base-info
+          (plist-put
+           (org-texmacs--document-options)
+           :texmacs-resource-base resource-base))
+         (_
+          (setq base-info
+                (plist-put
+                 base-info
+                 :texmacs-external-options ext-plist)))
+         (_
+          (when effective-bibliography
+            (setq
+             base-info
+             (plist-put
+              base-info
+              :texmacs-effective-bibliography effective-bibliography))))
+         (subtree-settings
+          (and subtree-position
+               (org-texmacs--context-subtree-settings)))
+         (_
+          (when subtree-position
+            (setq base-info
+                  (plist-put
+                   base-info
+                   :texmacs-subtree-settings subtree-settings))))
+         (style
+          (org-texmacs--document-copy-style
+           org-texmacs-document-style))
+         (initial
+          (org-texmacs--document-copy-initial
+           org-texmacs-document-initial))
+         (source (org-texmacs--source-buffer-text))
+         (filter-state (org-texmacs--context-filter-state))
+         (prepared nil)
+         (info nil)
+         (dependency-check nil)
+         (working-source source)
+         (annotation nil))
+      (cl-labels
+       ((check
+         ()
+         (unless (buffer-live-p buffer)
+           (signal 'org-texmacs-document-error
+                   '("Source buffer was killed")))
+         (with-current-buffer buffer
+           (unless (and (eq major-mode mode)
+                        (derived-mode-p 'org-mode)
+                        (= tick (buffer-chars-modified-tick)))
+             (signal 'org-texmacs-document-error
+                     '("Source buffer changed")))
+           (org-texmacs--fragment-check-tags tags)
+           (let ((current (org-texmacs--context-filter-state)))
+             (unless (and (equal (car filter-state) (car current))
+                          (= (length (cadr filter-state))
+                             (length (cadr current)))
+                          (cl-every
+                           #'eq (cadr filter-state) (cadr current)))
+               (signal
+                'org-texmacs-document-error
+                '("Org AST filter configuration changed during conversion"))))
+           (unless (equal
+                    bibliography-original-snapshot
+                    bibliography-sources)
+             (signal
+              'org-texmacs-document-error
+              '("Bibliography source texts changed during preparation")))
+           (unless (and (equal
+                         source-file-value
+                         (buffer-file-name (buffer-base-buffer)))
+                        (equal
+                         source-directory-value default-directory))
+             (signal 'org-texmacs-document-error
+                     '("Source location changed during conversion")))
+           (unless (equal
+                    heading-settings
+                    (org-texmacs--document-heading-settings))
+             (signal
+              'org-texmacs-document-error
+              '("Org heading settings changed during conversion")))
+           (unless (equal
+                    link-settings
+                    (org-texmacs--document-link-settings))
+             (signal
+              'org-texmacs-document-error
+              '("Org link settings changed during conversion")))
+           (when (and subtree-position
+                      (not
+                       (equal
+                        subtree-settings
+                        (org-texmacs--context-subtree-settings))))
+             (signal
+              'org-texmacs-document-error
+              '("Org property settings changed during conversion")))
+           (unless (equal bounds (cons (point-min) (point-max)))
+             (signal
+              'org-texmacs-document-error
+              '("Source restriction changed during conversion")))
+           (when dependency-check
+             (funcall dependency-check)))))
+       (check)
+       (when initializer
+         (let ((setup
+                (funcall initializer
+                         source
+                         tags
+                         heading-settings
+                         link-settings
+                         base-info
+                         source-file
+                         resource-base
+                         bibliography-source-snapshot
+                         #'check)))
+           (setq
+            bibliography-source-snapshot
+            (org-texmacs--bibliography-source-snapshot
+             (plist-get setup :sources) resource-base)
+            effective-bibliography
+            (org-texmacs--bibliography-view-copy
+             (plist-get setup :view))
+            dependency-check (plist-get setup :check)
+            annotation (plist-get setup :annotate)
+            base-info
+            (org-combine-plists
+             base-info
+             (org-texmacs--context-copy (plist-get setup :context))
+             (list
+              :texmacs-effective-bibliography effective-bibliography)))
+           (when (plist-member setup :source)
+             (unless (stringp (plist-get setup :source))
+               (signal 'org-texmacs-document-error
+                       '("Invalid working source snapshot")))
+             (setq working-source
+                   (substring-no-properties
+                    (plist-get setup :source))))))
+       (check)
+       (setq prepared
+             (org-texmacs--document-prepare-source
+              working-source
+              tags
+              heading-settings
+              link-settings
+              base-info
+              subtree-position
+              region
+              restriction
+              (when (or annotation (cadr filter-state))
+                (lambda (prepared)
+                  (when annotation
+                    (funcall annotation prepared))
+                  (setq-local default-directory resource-base)
+                  (setq-local org-texmacs-fragment-tags
+                              (mapcar #'copy-sequence tags))
+                  (org-texmacs--context-filter-apply
+                   prepared
+                   filter-state
+                   source-file
+                   resource-base
+                   bibliography-source-snapshot)
+                  (org-texmacs--filter-own-preparation prepared)))))
+       (org-texmacs--document-check-native-requests prepared)
+       (setq info (nth 4 prepared))
+       (check)
+       ;; Reject source-independent citation contracts before native work.
+       ;; Entry identities come exclusively from owned native parser results.
+       (org-texmacs--bibliography-collect
+        (nth 0 prepared)
+        (nth 1 prepared)
+        info
+        (mapcar #'car bibliography-source-snapshot)
+        (org-texmacs--document-resolve
+         (nth 0 prepared) (nth 1 prepared) nil resource-base))
+       (dolist (entry bibliography-source-snapshot)
+         (check)
+         (let ((tree
+                (org-texmacs--worker-request
+                 (cdr entry) 'bibliography)))
+           (check)
+           (condition-case err
+               (push (car
+                      (org-texmacs--bibliography-copy
+                       (list (cons (car entry) tree))))
+                     bibliography)
+             (org-texmacs-document-error
+              (org-texmacs--worker-stop)
+              (signal 'org-texmacs-worker-error (cdr err))))))
+       (setq bibliography (nreverse bibliography))
+       ;; Run user formatters after private parser bindings have unwound.
+       ;; Only the formatted body is temporary; entries are real owned ASTs.
+       (let* ((plan
+               (org-texmacs--bibliography-plan
+                (nth 0 prepared) (nth 1 prepared) info bibliography
+                (org-texmacs--document-resolve
+                 (nth 0 prepared) (nth 1 prepared) nil resource-base)
+                nil)))
+         (setq info
+               (plist-put
+                info
+                :texmacs-bibliography-output
+                (list
+                 (plist-get plan :prefix)
+                 (plist-get plan :keys)
+                 (plist-get plan :entries)
+                 (list
+                  'bib-list
+                  (number-to-string (length (plist-get plan :keys)))
+                  (cons
+                   'document
+                   (mapcar
+                    (lambda (key)
+                      (list
+                       'concat '(bibitem* "0")
+                       (list
+                        'label
+                        (concat (plist-get plan :prefix) "-" key))))
+                    (plist-get plan :keys))))))))
+       (org-texmacs--document-lower
+        (nth 0 prepared) (nth 1 prepared) (nth 3 prepared)
+        (plist-put
+         (copy-sequence info)
+         :texmacs-special-block-preflight t)
+        style initial source-file resource-base bibliography)
+       ;; No preflight-only body may escape through a prepared input.
+       (setq info (plist-put info :texmacs-bibliography-output nil))
+       (check)
+       (dolist (request (nth 2 prepared))
+         (check)
+         (let ((stree (org-texmacs--worker-request (nth 1 request)))
+               (tag (nth 2 request)))
+           (check)
+           (when (and tag
+                      (not
+                       (and (consp stree)
+                            (symbolp (car stree))
+                            (equal tag (symbol-name (car stree))))))
+             (signal 'org-texmacs-parse-error
+                     '("TeXmacs root differs from fragment tag")))
+           (setcdr (car request) stree)))
+       (let* ((input
+               (org-texmacs-input-create
+                (nth 0 prepared)
+                info
+                :islands (nth 1 prepared)
+                :post-blanks (nth 3 prepared)
+                :style style
+                :initial initial
+                :source-file source-file
+                :resource-base resource-base
+                :bibliography bibliography))
+              (resolution (org-texmacs-input-resolution input))
+              (static
+               (org-texmacs--document-static-labels
+                (org-texmacs-input-islands input)))
+              (owned-info (org-texmacs-input-info input)))
+         (when (org-texmacs-resolution-failure resolution)
+           (signal 'org-texmacs-document-error
+                   (org-texmacs-resolution-failure resolution)))
+         (let ((plan
+                (org-texmacs--bibliography-plan
+                 (org-texmacs-input-ast input)
+                 (org-texmacs-input-islands input)
+                 owned-info
+                 (org-texmacs-input-bibliography input)
+                 resolution
+                 static)))
+           (when (plist-get plan :prints)
+             (check)
+             (setq owned-info
+                   (plist-put
+                    (copy-sequence owned-info)
+                    :texmacs-bibliography-output
+                    (org-texmacs--bibliography-format plan)))
+             (check)))
+         (let ((result
+                (funcall consumer
+                         (org-texmacs--input-with-info
+                          input owned-info))))
+           (check)
+           result))))))
 
 ;;;###autoload
 (defun org-texmacs-export-texmacs-from-buffer
-    (source-buffer &optional bibliography-sources subtree-position region ext-plist)
+    (source-buffer
+     &optional bibliography-sources subtree-position region ext-plist)
   "Export explicit Org SOURCE-BUFFER to a complete native .tm byte string.
 Optional SUBTREE-POSITION selects the containing subtree in owned preparation.
 REGION is an optional (BEGIN . END) body range with priority over subtree body
@@ -572,14 +781,19 @@ source, parser or dependency changes during native waits reject the export.
 Preserve SOURCE-BUFFER and return an unibyte string.  No output file, live
 session, export hook or generic Org export backend is created or invoked.
 Unsupported directives retain the existing explicit preparation errors."
-  (org-texmacs--prepare-buffer
-   source-buffer
-   (lambda (input) (org-texmacs-document-serialize (org-texmacs-document input)))
-   bibliography-sources subtree-position region ext-plist))
+  (org-texmacs--prepare-buffer source-buffer
+                               (lambda (input)
+                                 (org-texmacs-document-serialize
+                                  (org-texmacs-document input)))
+                               bibliography-sources
+                               subtree-position
+                               region
+                               ext-plist))
 
 ;;;###autoload
 (defun org-texmacs-export-pdf-from-buffer
-    (source-buffer &optional bibliography-sources subtree-position region ext-plist)
+    (source-buffer
+     &optional bibliography-sources subtree-position region ext-plist)
   "Render explicit Org SOURCE-BUFFER to native PDF bytes.
 Optional SUBTREE-POSITION selects the containing subtree in owned preparation.
 REGION is an optional (BEGIN . END) body range with priority over subtree body
@@ -588,13 +802,18 @@ configuration overrides.  See `org-texmacs-prepare-buffer'.
 Use explicit BIBLIOGRAPHY-SOURCES snapshots and the restricted preparation.
 Keep lowering and native printing inside the final source/dependency check.
 Return unibyte PDF data; no final output file or GUI preview is created."
-  (org-texmacs--prepare-buffer
-   source-buffer
-   (lambda (input) (org-texmacs-document-pdf (org-texmacs-document input)))
-   bibliography-sources subtree-position region ext-plist))
+  (org-texmacs--prepare-buffer source-buffer
+                               (lambda (input)
+                                 (org-texmacs-document-pdf
+                                  (org-texmacs-document input)))
+                               bibliography-sources
+                               subtree-position
+                               region
+                               ext-plist))
 
 ;;;###autoload
-(defun org-texmacs-export-to-pdf-file (source-buffer file &optional bibliography-sources)
+(defun org-texmacs-export-to-pdf-file
+    (source-buffer file &optional bibliography-sources)
   "Render explicit Org SOURCE-BUFFER to a new local PDF at absolute FILE.
 Capture the destination before preparation, then render with explicit
 BIBLIOGRAPHY-SOURCES and check source/dependencies before writing PDF bytes.
@@ -602,7 +821,9 @@ Use the existing exclusive creation and partial-write file-error boundary.
 This is a noninteractive explicit-source API.  No GUI preview opens."
   (let ((target (org-texmacs--native-save-target file)))
     (org-texmacs--native-save-bytes
-     (org-texmacs-export-pdf-from-buffer source-buffer bibliography-sources) target)
+     (org-texmacs-export-pdf-from-buffer source-buffer
+                                         bibliography-sources)
+     target)
     target))
 
 (defun org-texmacs--export-interactive-source ()
@@ -622,31 +843,40 @@ Do not parse, invoke callbacks or wait while widened for this read."
   "Call FUNCTION in a private full copy of SOURCE for heading/output metadata.
 Retain file/directory and heading/property context without live source widening
 during Org parsing or prompts.  Do not run mode hooks or export preprocessing."
-  (let (text file directory headings settings)
+  (let (text
+        file
+        directory
+        headings
+        settings)
     (with-current-buffer source
-      (setq text (org-texmacs--source-buffer-text)
-            file (buffer-file-name (buffer-base-buffer))
-            directory default-directory
-            headings (org-texmacs--document-heading-settings)
-            settings (org-texmacs--context-subtree-settings)))
+      (setq
+       text (org-texmacs--source-buffer-text)
+       file (buffer-file-name (buffer-base-buffer))
+       directory default-directory
+       headings (org-texmacs--document-heading-settings)
+       settings (org-texmacs--context-subtree-settings)))
     (with-temp-buffer
-      (let ((org-element-use-cache nil) (org-inhibit-startup t)
+      (let ((org-element-use-cache nil)
+            (org-inhibit-startup t)
             (org-use-property-inheritance (nth 0 settings))
             (org-property-separators (nth 1 settings))
             (org-global-properties (nth 2 settings))
             (org-global-properties-fixed (nth 3 settings))
             (org-entry-property-inherited-from (make-marker)))
-        (delay-mode-hooks (org-mode))
+        (delay-mode-hooks
+          (org-mode))
         (org-texmacs--document-use-heading-settings headings)
         (setq-local default-directory directory)
         (insert text)
         ;; Provide filename metadata only during lookup, without making the
         ;; private buffer a visiting source when it is disposed.
-        (let ((buffer-file-name file)) (funcall function))))))
+        (let ((buffer-file-name file))
+          (funcall function))))))
 
 ;;;###autoload
 (defun org-texmacs-export-to-buffer
-    (source-buffer &optional bibliography-sources subtree-position region ext-plist)
+    (source-buffer
+     &optional bibliography-sources subtree-position region ext-plist)
   "Export explicit Org SOURCE-BUFFER into a fresh readonly native byte buffer.
 Optional SUBTREE-POSITION selects the containing subtree in owned preparation.
 REGION is an optional (BEGIN . END) body range with priority over subtree body
@@ -662,20 +892,26 @@ Return the new buffer without displaying it.  The Lisp caller owns its lifetime.
 This is a native source view, not rendered TeXmacs output."
   (org-texmacs--export-byte-buffer
    (org-texmacs-export-texmacs-from-buffer
-    source-buffer bibliography-sources subtree-position region ext-plist)))
+    source-buffer
+    bibliography-sources subtree-position region ext-plist)))
 
 (defun org-texmacs--export-byte-buffer (bytes &optional name)
   "Create a fresh readonly native view of checked unibyte BYTES.
 Optional NAME overrides the explicit-source result name prefix."
-  (let* ((output (generate-new-buffer (or name "*Org TeXmacs Source Export*")))
+  (let* ((output
+          (generate-new-buffer
+           (or name "*Org TeXmacs Source Export*")))
          complete)
     (unwind-protect
         (progn
           (with-current-buffer output
-            (let ((change-major-mode-hook nil) (after-change-major-mode-hook nil))
-              (delay-mode-hooks (special-mode)))
+            (let ((change-major-mode-hook nil)
+                  (after-change-major-mode-hook nil))
+              (delay-mode-hooks
+                (special-mode)))
             (set-buffer-multibyte nil)
-            (let ((inhibit-read-only t) (inhibit-modification-hooks t))
+            (let ((inhibit-read-only t)
+                  (inhibit-modification-hooks t))
               (insert bytes))
             (setq-local buffer-file-coding-system 'no-conversion)
             (setq-local buffer-file-format nil)
@@ -687,10 +923,12 @@ Optional NAME overrides the explicit-source result name prefix."
           output)
       (unless complete
         (let ((kill-buffer-query-functions nil))
-          (when (buffer-live-p output) (kill-buffer output)))))))
+          (when (buffer-live-p output)
+            (kill-buffer output)))))))
 
 ;;;###autoload
-(defun org-texmacs-export-to-texmacs-file (source-buffer file &optional bibliography-sources)
+(defun org-texmacs-export-to-texmacs-file
+    (source-buffer file &optional bibliography-sources)
   "Export explicit Org SOURCE-BUFFER to a new local native file at FILE.
 Validate and copy the absolute destination before preparation.  Export with
 `org-texmacs-export-texmacs-from-buffer' and BIBLIOGRAPHY-SOURCES, checking
@@ -703,14 +941,18 @@ changed, and no generic Org export preprocessing or session update runs.
 This is a noninteractive explicit-source API."
   (let ((target (org-texmacs--native-save-target file)))
     (org-texmacs--native-save-bytes
-     (org-texmacs-export-texmacs-from-buffer source-buffer bibliography-sources) target)
+     (org-texmacs-export-texmacs-from-buffer source-buffer
+                                             bibliography-sources)
+     target)
     target))
 
 ;;;###autoload
-(defun org-texmacs-document-current-buffer (&optional bibliography-sources)
+(defun org-texmacs-document-current-buffer
+    (&optional bibliography-sources)
   "Convert the current Org buffer using `org-texmacs-document-from-buffer'.
 Pass explicit BIBLIOGRAPHY-SOURCES text snapshots to its preparation adapter."
-  (org-texmacs-document-from-buffer (current-buffer) bibliography-sources))
+  (org-texmacs-document-from-buffer (current-buffer)
+                                    bibliography-sources))
 
 ;;;###autoload
 (defun org-texmacs-check-setup ()

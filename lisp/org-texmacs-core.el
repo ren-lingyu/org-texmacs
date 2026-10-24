@@ -23,29 +23,31 @@ Changing this option takes effect after the current worker is stopped."
   :type 'string
   :group 'org-texmacs)
 
-(define-error 'org-texmacs-error
-              "Org TeXmacs error")
+(define-error 'org-texmacs-error "Org TeXmacs error")
 
-(define-error 'org-texmacs-document-error
-              "Org TeXmacs document conversion failed" 'org-texmacs-error)
+(define-error
+ 'org-texmacs-document-error "Org TeXmacs document conversion failed"
+ 'org-texmacs-error)
 
-(define-error 'org-texmacs-worker-error
-              "TeXmacs worker failure" 'org-texmacs-error)
+(define-error 'org-texmacs-worker-error "TeXmacs worker failure"
+              'org-texmacs-error)
 
-(define-error 'org-texmacs-parse-error
-              "Invalid STM source" 'org-texmacs-error)
+(define-error 'org-texmacs-parse-error "Invalid STM source"
+              'org-texmacs-error)
 
-(define-error 'org-texmacs-encoding-error
-              "Invalid document encoding" 'org-texmacs-error)
+(define-error 'org-texmacs-encoding-error "Invalid document encoding"
+              'org-texmacs-error)
 
-(define-error 'org-texmacs-session-error
-              "Invalid TeXmacs session" 'org-texmacs-error)
+(define-error 'org-texmacs-session-error "Invalid TeXmacs session"
+              'org-texmacs-error)
 
 (define-error 'org-texmacs-serialization-error
-              "TeXmacs document serialization failed" 'org-texmacs-error)
+              "TeXmacs document serialization failed"
+              'org-texmacs-error)
 
-(define-error 'org-texmacs-rendering-error
-              "TeXmacs document rendering failed" 'org-texmacs-error)
+(define-error
+ 'org-texmacs-rendering-error "TeXmacs document rendering failed"
+ 'org-texmacs-error)
 
 (defconst org-texmacs--capability-alist
   '((org-element-cache-store-key . function)
@@ -71,7 +73,9 @@ Changing this option takes effect after the current worker is stopped."
     (derived-mode-p . function)
     (bufferp . function)
     (buffer-live-p . function)
-    (delay-mode-hooks . function)
+    (delay-mode-hooks
+      .
+      function)
     (org-element-use-cache . variable)
     (org-inhibit-startup . variable)
     (org-todo-regexp . variable)
@@ -150,16 +154,16 @@ than inferring compatibility from package version numbers alone.")
 TYPE may be `function', `variable', or `executable'.  Return nil for malformed
 or unsupported capability entries."
   (pcase type
-    ('function
-     (and (symbolp name) (fboundp name)))
-    ('variable
-     (and (symbolp name) (boundp name)))
+    ('function (and (symbolp name) (fboundp name)))
+    ('variable (and (symbolp name) (boundp name)))
     ('executable
      (and (or (stringp name) (symbolp name))
-          (executable-find (if (symbolp name) (symbol-name name) name))
+          (executable-find
+           (if (symbolp name)
+               (symbol-name name)
+             name))
           t))
-    (_
-     nil)))
+    (_ nil)))
 
 (defun org-texmacs--check-capabilities (alist)
   "Check Org TeXmacs capabilities in ALIST.
@@ -179,21 +183,24 @@ the first failure."
                  (present
                   (and (consp entry)
                        (memq type '(function variable executable))
-                       (org-texmacs--capability-present-p name type))))
+                       (org-texmacs--capability-present-p
+                        name type))))
             (unless present
               (setq result nil))
             (push (format "- %s (%s): %s"
-                          name
-                          type
-                          (if present "available" "missing"))
+                          name type
+                          (if present
+                              "available"
+                            "missing"))
                   lines)))
-        (cons result
-              (concat
-               "Org TeXmacs capabilities:\n"
-               (mapconcat #'identity (nreverse lines) "\n")
-               "\n")))
-    (cons nil
-          "Org TeXmacs capability specification is malformed.\n")))
+        (cons
+         result
+         (concat
+          "Org TeXmacs capabilities:\n"
+          (mapconcat #'identity (nreverse lines) "\n")
+          "\n")))
+    (cons
+     nil "Org TeXmacs capability specification is malformed.\n")))
 
 (defun org-texmacs--setup-check ()
   "Check whether Org TeXmacs capabilities are available.
@@ -201,15 +208,15 @@ the first failure."
 Return a cons cell whose car is the boolean result and whose cdr is a
 human-readable report."
   (org-texmacs--check-capabilities
-   (append org-texmacs--capability-alist
-           (list (cons org-texmacs-program 'executable)))))
+   (append
+    org-texmacs--capability-alist
+    (list (cons org-texmacs-program 'executable)))))
 
 (defun org-texmacs--ensure-setup ()
   "Signal `org-texmacs-error' unless setup checks pass."
   (let ((result (org-texmacs--setup-check)))
     (unless (car result)
-      (signal 'org-texmacs-error
-              (list (cdr result))))))
+      (signal 'org-texmacs-error (list (cdr result))))))
 
 (provide 'org-texmacs-core)
 

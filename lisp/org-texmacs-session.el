@@ -21,40 +21,59 @@
       (and (zerop (% (length node) 2))
            (let ((case-fold-search nil))
              (string-match-p "\\`[0-9a-f]*\\'" node)))
-    (and (consp node) (car node) (symbolp (car node))
+    (and (consp node)
+         (car node)
+         (symbolp (car node))
          (proper-list-p node)
          (cl-every #'org-texmacs--native-hex-stree-p (cdr node)))))
 
 (defun org-texmacs--native-document-p (node)
   "Return non-nil for a complete native session diagnostic NODE."
-  (and (consp node) (eq (car node) 'native-document) (= (length node) 4)
-       (let ((style (nth 1 node)) (initial (nth 2 node))
-             (body (nth 3 node)) keys)
-         (and (consp style) (eq (car style) 'style) (cdr style)
-              (cl-every (lambda (name)
-                          (and (stringp name) (> (length name) 0)))
-                        (cdr style))
-              (consp initial) (eq (car initial) 'initial)
+  (and (consp node)
+       (eq (car node) 'native-document) (= (length node) 4)
+       (let ((style (nth 1 node))
+             (initial (nth 2 node))
+             (body (nth 3 node))
+             keys)
+         (and (consp style)
+              (eq (car style) 'style)
+              (cdr style)
+              (cl-every
+               (lambda (name)
+                 (and (stringp name) (> (length name) 0)))
+               (cdr style))
+              (consp initial)
+              (eq (car initial) 'initial)
               (cl-every
                (lambda (entry)
-                 (and (consp entry) (eq (car entry) 'associate)
+                 (and (consp entry)
+                      (eq (car entry) 'associate)
                       (= (length entry) 3)
-                      (stringp (cadr entry)) (> (length (cadr entry)) 0)
+                      (stringp (cadr entry))
+                      (> (length (cadr entry)) 0)
                       (not (member (cadr entry) keys))
-                      (prog1 (org-texmacs--native-hex-stree-p (caddr entry))
+                      (prog1 (org-texmacs--native-hex-stree-p
+                              (caddr entry))
                         (push (cadr entry) keys))))
                (cdr initial))
-              (consp body) (eq (car body) 'body) (= (length body) 2)
-              (consp (cadr body)) (eq (caadr body) 'document)
+              (consp body)
+              (eq (car body) 'body)
+              (= (length body) 2)
+              (consp (cadr body))
+              (eq (caadr body) 'document)
               (org-texmacs--native-hex-stree-p (cadr body))))))
 
 (defun org-texmacs--native-unhex (hex)
   "Validate ASCII HEX and return its exact native bytes as a unibyte string."
   (unless (and (stringp hex) (org-texmacs--native-hex-stree-p hex))
-    (signal 'org-texmacs-worker-error '("Invalid native byte payload")))
+    (signal 'org-texmacs-worker-error
+            '("Invalid native byte payload")))
   (let ((bytes (make-string (/ (length hex) 2) 0)))
     (dotimes (index (length bytes))
-      (aset bytes index (string-to-number (substring hex (* index 2) (+ (* index 2) 2)) 16)))
+      (aset
+       bytes index
+       (string-to-number (substring hex (* index 2) (+ (* index 2) 2))
+                         16)))
     bytes))
 
 (defun org-texmacs--native-decode-datum (datum operation)
@@ -66,72 +85,104 @@
      (let ((payload (nth 2 datum)))
        (cond
         ((memq operation '(session-open session-set session-close))
-         (unless (and (consp payload) (= (length payload) 2)
-                      (eq (car payload) (pcase operation
-                                          ('session-open 'session)
-                                          ('session-set 'updated)
-                                          ('session-close 'closed)))
+         (unless (and (consp payload)
+                      (= (length payload) 2)
+                      (eq
+                       (car payload)
+                       (pcase operation
+                         ('session-open 'session)
+                         ('session-set 'updated)
+                         ('session-close 'closed)))
                       (stringp (cadr payload))
-                      (string-match-p "\\`[1-9][0-9]*\\'" (cadr payload)))
-           (signal 'org-texmacs-worker-error '("Invalid session response")))
+                      (string-match-p
+                       "\\`[1-9][0-9]*\\'" (cadr payload)))
+           (signal 'org-texmacs-worker-error
+                   '("Invalid session response")))
          (cadr payload))
         ((eq operation 'encode)
-         (unless (and (consp payload) (eq (car payload) 'native-body)
+         (unless (and (consp payload)
+                      (eq (car payload) 'native-body)
                       (= (length payload) 2)
-                      (consp (cadr payload)) (eq (caadr payload) 'document)
-                      (org-texmacs--native-hex-stree-p (cadr payload)))
-           (signal 'org-texmacs-worker-error '("Invalid encoded body response")))
+                      (consp (cadr payload))
+                      (eq (caadr payload) 'document)
+                      (org-texmacs--native-hex-stree-p
+                       (cadr payload)))
+           (signal 'org-texmacs-worker-error
+                   '("Invalid encoded body response")))
          (cadr payload))
         ((eq operation 'session-read)
          (unless (org-texmacs--native-document-p payload)
-           (signal 'org-texmacs-worker-error '("Invalid native document response")))
+           (signal 'org-texmacs-worker-error
+                   '("Invalid native document response")))
          payload)
         ((eq operation 'serialize)
-         (unless (and (consp payload) (eq (car payload) 'serialized-document)
+         (unless (and (consp payload)
+                      (eq (car payload) 'serialized-document)
                       (= (length payload) 3)
                       (stringp (cadr payload))
-                      (string-match-p "\\`[0-9][[:alnum:].+-]*\\'" (cadr payload))
+                      (string-match-p
+                       "\\`[0-9][[:alnum:].+-]*\\'" (cadr payload))
                       (stringp (caddr payload))
-                      (org-texmacs--native-hex-stree-p (caddr payload)))
-           (signal 'org-texmacs-worker-error '("Invalid serialized document response")))
+                      (org-texmacs--native-hex-stree-p
+                       (caddr payload)))
+           (signal 'org-texmacs-worker-error
+                   '("Invalid serialized document response")))
          (let* ((bytes (org-texmacs--native-unhex (caddr payload)))
                 (header (concat "<TeXmacs|" (cadr payload) ">")))
            (unless (string-prefix-p header bytes)
-             (signal 'org-texmacs-worker-error '("Serialized document header mismatch")))
+             (signal 'org-texmacs-worker-error
+                     '("Serialized document header mismatch")))
            bytes))
         ((eq operation 'render-pdf)
-         (unless (and (consp payload) (eq (car payload) 'rendered-pdf)
+         (unless (and (consp payload)
+                      (eq (car payload) 'rendered-pdf)
                       (= (length payload) 2))
-           (signal 'org-texmacs-worker-error '("Invalid PDF response")))
+           (signal 'org-texmacs-worker-error
+                   '("Invalid PDF response")))
          (let ((bytes (org-texmacs--native-unhex (cadr payload))))
            (unless (and (string-prefix-p "%PDF-" bytes)
                         (string-match-p "%%EOF[ \t\r\n]*\\'" bytes))
-             (signal 'org-texmacs-worker-error '("Invalid PDF output envelope")))
+             (signal 'org-texmacs-worker-error
+                     '("Invalid PDF output envelope")))
            bytes))
-        (t (signal 'org-texmacs-worker-error '("Unknown native operation"))))))
+        (t
+         (signal 'org-texmacs-worker-error
+                 '("Unknown native operation"))))))
     ('session-error
-     (unless (and (memq operation '(session-open session-set session-close session-read))
+     (unless (and (memq
+                   operation
+                   '(session-open
+                     session-set session-close session-read))
                   (stringp (nth 2 datum)))
-       (signal 'org-texmacs-worker-error '("Unexpected session error response")))
+       (signal 'org-texmacs-worker-error
+               '("Unexpected session error response")))
      (signal 'org-texmacs-session-error (list (nth 2 datum))))
     ('encoding-error
-     (unless (and (memq operation '(encode session-set serialize render-pdf))
+     (unless (and (memq
+                   operation
+                   '(encode session-set serialize render-pdf))
                   (stringp (nth 2 datum)))
-       (signal 'org-texmacs-worker-error '("Unexpected encoding error response")))
+       (signal 'org-texmacs-worker-error
+               '("Unexpected encoding error response")))
      (signal 'org-texmacs-encoding-error (list (nth 2 datum))))
     ('serialization-error
      (unless (and (eq operation 'serialize) (stringp (nth 2 datum)))
-       (signal 'org-texmacs-worker-error '("Unexpected serialization error response")))
+       (signal 'org-texmacs-worker-error
+               '("Unexpected serialization error response")))
      (signal 'org-texmacs-serialization-error (list (nth 2 datum))))
     ('rendering-error
      (unless (and (eq operation 'render-pdf) (stringp (nth 2 datum)))
-       (signal 'org-texmacs-worker-error '("Unexpected rendering error response")))
+       (signal 'org-texmacs-worker-error
+               '("Unexpected rendering error response")))
      (signal 'org-texmacs-rendering-error (list (nth 2 datum))))
     ('rendering-fatal
      (unless (and (eq operation 'render-pdf) (stringp (nth 2 datum)))
-       (signal 'org-texmacs-worker-error '("Unexpected rendering cleanup failure")))
+       (signal 'org-texmacs-worker-error
+               '("Unexpected rendering cleanup failure")))
      (signal 'org-texmacs-worker-error (list (nth 2 datum))))
-    (_ (signal 'org-texmacs-worker-error '("Unknown response status")))))
+    (_
+     (signal 'org-texmacs-worker-error
+             '("Unknown response status")))))
 
 (defun org-texmacs--native-decode (response id operation)
   "Read and decode native RESPONSE for request ID and OPERATION.
@@ -146,8 +197,10 @@ stop it so a later call cannot reuse a semantically inconsistent peer."
   (let ((datum (org-texmacs--worker-call make-request)))
     (condition-case err
         (org-texmacs--native-decode-datum datum operation)
-      ((org-texmacs-encoding-error org-texmacs-session-error
-        org-texmacs-serialization-error org-texmacs-rendering-error)
+      ((org-texmacs-encoding-error
+        org-texmacs-session-error
+        org-texmacs-serialization-error
+        org-texmacs-rendering-error)
        (signal (car err) (cdr err)))
       (org-texmacs-worker-error
        (org-texmacs--worker-stop)
@@ -158,8 +211,10 @@ stop it so a later call cannot reuse a semantically inconsistent peer."
 Return an absolute system path for TeXmacs's native URL handler.  Never read
 files, expand a home abbreviation or infer a base from the current buffer."
   (unless (and (org-texmacs--document-local-file-path-p path)
-               (or (null base) (org-texmacs--document-local-file-path-p base)))
-    (signal 'org-texmacs-encoding-error '("Unsupported native file target")))
+               (or (null base)
+                   (org-texmacs--document-local-file-path-p base)))
+    (signal 'org-texmacs-encoding-error
+            '("Unsupported native file target")))
   (let ((file-name-handler-alist nil))
     (when base
       (condition-case err
@@ -167,65 +222,95 @@ files, expand a home abbreviation or infer a base from the current buffer."
         (org-texmacs-document-error
          (signal 'org-texmacs-encoding-error (cdr err)))))
     (unless (or (file-name-absolute-p path) base)
-      (signal 'org-texmacs-encoding-error '("Relative native file target requires a resource base")))
+      (signal
+       'org-texmacs-encoding-error
+       '("Relative native file target requires a resource base")))
     (let ((absolute (expand-file-name path (or base "/"))))
       ;; TeXmacs navigation interprets query/anchor and URL expression syntax.
       ;; Preserve these filenames structurally, but reject this native subset.
-      (when (cl-some (lambda (character)
-                       (string-match-p (regexp-quote character) absolute))
-                     '("#" "?" "*" "$" "|" "\\" "[" "]"))
-        (signal 'org-texmacs-encoding-error '("Unsupported character in native file target")))
+      (when (cl-some
+             (lambda (character)
+               (string-match-p (regexp-quote character) absolute))
+             '("#" "?" "*" "$" "|" "\\" "[" "]"))
+        (signal 'org-texmacs-encoding-error
+                '("Unsupported character in native file target")))
       absolute)))
 
-(defun org-texmacs--native-resolve-file-paths (body files stm-paths base)
+(defun org-texmacs--native-resolve-file-paths
+    (body files stm-paths base)
   "Replace file target leaves in copied BODY using FILES and BASE.
 Validate target roles and separation from STM-PATHS before serializing."
   (unless (proper-list-p files)
-    (signal 'org-texmacs-encoding-error '("Expected proper file target paths")))
+    (signal 'org-texmacs-encoding-error
+            '("Expected proper file target paths")))
   (let (seen)
     (dolist (path files)
-      (unless (and (proper-list-p path) path
-                   (not (member path seen))
-                   (cl-every (lambda (index) (and (integerp index) (>= index 0))) path))
-        (signal 'org-texmacs-encoding-error '("Invalid or duplicate file target path")))
+      (unless (and (proper-list-p path)
+                   path (not (member path seen))
+                   (cl-every
+                    (lambda (index)
+                      (and (integerp index) (>= index 0)))
+                    path))
+        (signal 'org-texmacs-encoding-error
+                '("Invalid or duplicate file target path")))
       (push path seen)
       (dolist (stm stm-paths)
-        (let ((a path) (b stm))
+        (let ((a path)
+              (b stm))
           (while (and a b (= (car a) (car b)))
-            (setq a (cdr a) b (cdr b)))
+            (setq
+             a (cdr a)
+             b (cdr b)))
           (when (or (null a) (null b))
-            (signal 'org-texmacs-encoding-error '("File target overlaps STM provenance")))))
-      (let ((parent body) (steps path))
+            (signal 'org-texmacs-encoding-error
+                    '("File target overlaps STM provenance")))))
+      (let ((parent body)
+            (steps path))
         (while (cdr steps)
           (let ((index (pop steps)))
-            (unless (and (consp parent) (< index (length (cdr parent))))
-              (signal 'org-texmacs-encoding-error '("File target path is out of bounds")))
+            (unless (and (consp parent)
+                         (< index (length (cdr parent))))
+              (signal 'org-texmacs-encoding-error
+                      '("File target path is out of bounds")))
             (setq parent (nth (1+ index) parent))))
-        (unless (and (= (car steps) 1) (consp parent)
-                     (eq (car parent) 'hlink) (= (length parent) 3)
+        (unless (and (= (car steps) 1)
+                     (consp parent)
+                     (eq (car parent) 'hlink)
+                     (= (length parent) 3)
                      (stringp (nth 2 parent)))
-          (signal 'org-texmacs-encoding-error '("File target path does not name an hlink target")))
-        (setcar (cddr parent)
-                (org-texmacs--native-file-target (nth 2 parent) base))))))
+          (signal
+           'org-texmacs-encoding-error
+           '("File target path does not name an hlink target")))
+        (setcar
+         (cddr parent)
+         (org-texmacs--native-file-target (nth 2 parent) base))))))
 
 (defun org-texmacs--native-document-wire (document)
   "Validate DOCUMENT and serialize its native fields as Scheme data.
 Translate marked local file targets on a body copy using the captured resource
 base.  Return style, initial, body and STM-path arguments without a process."
   (unless (org-texmacs-document-p document)
-    (signal 'org-texmacs-encoding-error '("Expected a document result")))
-  (let ((body nil) (style nil) (initial nil)
+    (signal 'org-texmacs-encoding-error
+            '("Expected a document result")))
+  (let ((body nil)
+        (style nil)
+        (initial nil)
         (paths (org-texmacs-document-stm-paths document)))
     (condition-case err
-        (setq body (org-texmacs--document-copy-stree
-                    (org-texmacs-document-body document))
-              style (org-texmacs--document-copy-style
-                     (org-texmacs-document-style document))
-              initial (org-texmacs--document-copy-initial
-                       (org-texmacs-document-initial document)))
+        (setq body
+              (org-texmacs--document-copy-stree
+               (org-texmacs-document-body document))
+              style
+              (org-texmacs--document-copy-style
+               (org-texmacs-document-style document))
+              initial
+              (org-texmacs--document-copy-initial
+               (org-texmacs-document-initial document)))
       (org-texmacs-document-error
        (signal 'org-texmacs-encoding-error (cdr err))))
-    (unless (and (consp body) (eq (car body) 'document) (proper-list-p paths))
+    (unless (and (consp body)
+                 (eq (car body) 'document)
+                 (proper-list-p paths))
       (signal 'org-texmacs-encoding-error
               '("Expected document body and proper STM paths")))
     (dolist (path paths)
@@ -233,55 +318,78 @@ base.  Return style, initial, body and STM-path arguments without a process."
         (signal 'org-texmacs-encoding-error '("Invalid STM path")))
       (let ((node body))
         (dolist (index path)
-          (unless (and (integerp index) (>= index 0) (consp node)
+          (unless (and (integerp index)
+                       (>= index 0)
+                       (consp node)
                        (< index (length (cdr node))))
-            (signal 'org-texmacs-encoding-error '("STM path is out of bounds")))
+            (signal 'org-texmacs-encoding-error
+                    '("STM path is out of bounds")))
           (setq node (nth (1+ index) node)))))
     (let ((rest paths))
       (while rest
         (dolist (other (cdr rest))
-          (let ((a (car rest)) (b other))
+          (let ((a (car rest))
+                (b other))
             (while (and a b (= (car a) (car b)))
-              (setq a (cdr a) b (cdr b)))
+              (setq
+               a (cdr a)
+               b (cdr b)))
             (when (or (null a) (null b))
-              (signal 'org-texmacs-encoding-error '("Overlapping STM paths")))))
+              (signal 'org-texmacs-encoding-error
+                      '("Overlapping STM paths")))))
         (setq rest (cdr rest))))
     (org-texmacs--native-resolve-file-paths
-     body (org-texmacs-document-file-paths document) paths
+     body
+     (org-texmacs-document-file-paths document)
+     paths
      (org-texmacs-document-resource-base document))
     (cl-labels
-        ((wire
-          (node)
-          (if (stringp node)
-              (org-texmacs--scheme-string node)
-            (when (eq (car node) 'raw-data)
-              (signal 'org-texmacs-encoding-error '("raw-data is not supported")))
-            (concat "(" (org-texmacs--scheme-string (symbol-name (car node)))
-                    (mapconcat (lambda (child) (concat " " (wire child)))
-                               (cdr node) "")
-                    ")"))))
-      ;; Serialize before starting the worker: invalid input has no process effects.
-      (let ((style-wire
-             (concat "(" (mapconcat #'org-texmacs--scheme-string style " ") ")"))
-            (initial-wire
-             (concat
-              "("
-              (mapconcat
-               (lambda (entry)
-                 (concat "(" (org-texmacs--scheme-string (car entry)) " "
-                         (wire (cdr entry)) ")"))
-               initial " ")
-              ")"))
-            (tree-wire (wire body))
-            (paths-wire
-             (concat "("
-                     (mapconcat
-                      (lambda (path)
-                        (concat "(" (mapconcat #'number-to-string path " ") ")"))
-                      paths " ")
-                     ")")))
-        (mapconcat #'identity
-                   (list style-wire initial-wire tree-wire paths-wire) " ")))))
+     ((wire
+       (node)
+       (if (stringp node)
+           (org-texmacs--scheme-string node)
+         (when (eq (car node) 'raw-data)
+           (signal 'org-texmacs-encoding-error
+                   '("raw-data is not supported")))
+         (concat
+          "(" (org-texmacs--scheme-string (symbol-name (car node)))
+          (mapconcat
+           (lambda (child) (concat " " (wire child))) (cdr node)
+           "")
+          ")"))))
+     ;; Serialize before starting the worker: invalid input has no process effects.
+     (let ((style-wire
+            (concat
+             "("
+             (mapconcat #'org-texmacs--scheme-string style " ") ")"))
+           (initial-wire
+            (concat
+             "("
+             (mapconcat (lambda (entry)
+                          (concat
+                           "("
+                           (org-texmacs--scheme-string (car entry))
+                           " "
+                           (wire (cdr entry))
+                           ")"))
+                        initial
+                        " ")
+             ")"))
+           (tree-wire (wire body))
+           (paths-wire
+            (concat
+             "("
+             (mapconcat (lambda (path)
+                          (concat
+                           "("
+                           (mapconcat #'number-to-string path " ")
+                           ")"))
+                        paths
+                        " ")
+             ")")))
+       (mapconcat
+        #'identity (list style-wire initial-wire tree-wire paths-wire)
+        " ")))))
 
 (defun org-texmacs--native-encode-document (document)
   "Encode text DOCUMENT and return a diagnostic hex-leaf body stree.
@@ -305,7 +413,9 @@ Preflight, encoding and serialization errors preserve a healthy worker;
 invalid response payloads stop it.  No source buffer or resource file is read."
   (let ((wire (org-texmacs--native-document-wire document)))
     (org-texmacs--native-call
-     (lambda (id) (format "(serialize %d %s)\n" id wire)) 'serialize)))
+     (lambda (id)
+       (format "(serialize %d %s)\n" id wire))
+     'serialize)))
 
 (defun org-texmacs-document-pdf (document)
   "Render completed DOCUMENT to native PDF bytes with the shared worker.
@@ -320,16 +430,24 @@ transport; invalid output or cleanup failure stops it.  Native printing writes
 an owned temporary PDF and may populate native font caches.  Remove the
 temporary PDF/buffer before returning; font caches follow TeXmacs's lifetime."
   (let ((wire (org-texmacs--native-document-wire document)))
-    (cl-labels ((check (tree)
-                 (when (consp tree)
-                   (when (memq (car tree) '(image include extern script action eval raw-data))
-                     (signal 'org-texmacs-rendering-error
-                             '("Native resource/executable nodes are outside the PDF subset")))
-                   (mapc #'check (cdr tree)))))
-      (check (org-texmacs-document-body document))
-      (dolist (entry (org-texmacs-document-initial document)) (check (cdr entry))))
+    (cl-labels
+     ((check
+       (tree)
+       (when (consp tree)
+         (when (memq
+                (car tree)
+                '(image include extern script action eval raw-data))
+           (signal
+            'org-texmacs-rendering-error
+            '("Native resource/executable nodes are outside the PDF subset")))
+         (mapc #'check (cdr tree)))))
+     (check (org-texmacs-document-body document))
+     (dolist (entry (org-texmacs-document-initial document))
+       (check (cdr entry))))
     (org-texmacs--native-call
-     (lambda (id) (format "(render-pdf %d %s)\n" id wire)) 'render-pdf)))
+     (lambda (id)
+       (format "(render-pdf %d %s)\n" id wire))
+     'render-pdf)))
 
 (defun org-texmacs-document-save-pdf (document file)
   "Render completed DOCUMENT and save PDF bytes to explicit new local FILE.
@@ -337,7 +455,8 @@ Use the same destination ownership and exclusive write policy as
 `org-texmacs-document-save'.  Rendering finishes before opening FILE.
 Existing targets are never overwritten; write errors can leave partial output."
   (let ((target (org-texmacs--native-save-target file)))
-    (org-texmacs--native-save-bytes (org-texmacs-document-pdf document) target)))
+    (org-texmacs--native-save-bytes
+     (org-texmacs-document-pdf document) target)))
 
 (defun org-texmacs--native-save-target (file)
   "Validate and own explicit local output FILE before conversion waits.
@@ -347,15 +466,19 @@ Require an existing parent and reject all existing targets without handlers."
                  (file-name-absolute-p file)
                  (not (string-match-p "\0" file))
                  (> (length (file-name-nondirectory file)) 0))
-      (signal 'org-texmacs-error '("Expected an explicit absolute local output file")))
+      (signal 'org-texmacs-error
+              '("Expected an explicit absolute local output file")))
     (let ((target (substring-no-properties file)))
       (when (or (file-exists-p target) (file-symlink-p target))
-        (signal 'file-already-exists (list "Output already exists" target)))
+        (signal 'file-already-exists
+                (list "Output already exists" target)))
       (unless (file-directory-p (file-name-directory target))
-        (signal 'file-missing (list "Output directory does not exist" target)))
+        (signal 'file-missing
+                (list "Output directory does not exist" target)))
       target)))
 
-(defun org-texmacs--native-save-bytes (bytes target &optional overwrite)
+(defun org-texmacs--native-save-bytes
+    (bytes target &optional overwrite)
   "Write native unibyte BYTES to an already owned and validated TARGET.
 Exclusive open rejects collisions after preflight; file errors propagate.
 Non-nil OVERWRITE permits ordinary replacement for the Org export frontend.
@@ -371,8 +494,10 @@ Public new-file consumers omit it and retain exclusive creation."
       (set-buffer-multibyte nil)
       (setq buffer-file-format nil)
       (insert bytes)
-      (write-region (point-min) (point-max) target nil 'silent nil
-                    (unless overwrite 'excl)))
+      (write-region (point-min) (point-max) target
+                    nil 'silent nil
+                    (unless overwrite
+                      'excl)))
     target))
 
 (defun org-texmacs-document-save (document file)
@@ -388,46 +513,56 @@ Serialization errors create no output.  Filesystem errors propagate normally;
 a write failure can leave a newly created partial file for the caller to
 inspect.  This is exclusive creation, not atomic replacement or publication."
   (let ((target (org-texmacs--native-save-target file)))
-    (org-texmacs--native-save-bytes (org-texmacs-document-serialize document) target)))
+    (org-texmacs--native-save-bytes
+     (org-texmacs-document-serialize document) target)))
 
-(cl-defstruct (org-texmacs-session
-               (:constructor org-texmacs--session-create)
-               (:copier nil))
-  "Opaque native buffer handle.  Callers must not mutate its slots."
-  (key nil :read-only t)
-  (process nil :read-only t)
-  (closed nil))
+(cl-defstruct
+ (org-texmacs-session
+  (:constructor org-texmacs--session-create) (:copier nil))
+ "Opaque native buffer handle.  Callers must not mutate its slots."
+ (key nil :read-only t)
+ (process nil :read-only t)
+ (closed nil))
 
 (defun org-texmacs--session-live-p (session)
   "Return non-nil if SESSION still belongs to the current live worker."
   (and (org-texmacs-session-p session)
        (not (org-texmacs-session-closed session))
-       (eq (org-texmacs-session-process session) org-texmacs--worker-process)
+       (eq
+        (org-texmacs-session-process session)
+        org-texmacs--worker-process)
        (org-texmacs--worker-live-p)))
 
 (defun org-texmacs--session-check (session)
   "Reject closed, stale or invalid SESSION without starting a worker."
   (unless (org-texmacs--session-live-p session)
-    (signal 'org-texmacs-session-error '("Session is closed, stale or invalid"))))
+    (signal 'org-texmacs-session-error
+            '("Session is closed, stale or invalid"))))
 
 (defun org-texmacs--session-command (session operation &optional wire)
   "Run fixed session OPERATION on SESSION, optionally with document WIRE.
 WIRE must already be validated by `org-texmacs--native-document-wire'."
   (org-texmacs--session-check session)
   (condition-case err
-      (let ((result
-             (org-texmacs--native-call
-              (lambda (id)
-                ;; Check again after worker startup, before sending a handle.
-                (org-texmacs--session-check session)
-                (format "(%s %d %s%s)\n" operation id
-                        (org-texmacs--scheme-string (org-texmacs-session-key session))
-                        (if wire (concat " " wire) "")))
-              operation)))
+      (let
+          ((result
+            (org-texmacs--native-call
+             (lambda (id)
+               ;; Check again after worker startup, before sending a handle.
+               (org-texmacs--session-check session)
+               (format "(%s %d %s%s)\n"
+                       operation id
+                       (org-texmacs--scheme-string
+                        (org-texmacs-session-key session))
+                       (if wire
+                           (concat " " wire)
+                         "")))
+             operation)))
         (unless (or (eq operation 'session-read)
                     (equal result (org-texmacs-session-key session)))
           (org-texmacs--worker-stop)
-          (signal 'org-texmacs-worker-error '("Mismatched session response")))
+          (signal 'org-texmacs-worker-error
+                  '("Mismatched session response")))
         result)
     (org-texmacs-session-error
      (setf (org-texmacs-session-closed session) t)
@@ -442,13 +577,16 @@ Create an internal headless view required by TeXmacs document APIs, but no GUI
 window or external document file.  The caller must explicitly close the
 session.  Worker termination releases it and makes its handle stale."
   (let ((owner nil))
-    (let ((key (org-texmacs--native-call
-                (lambda (id)
-                  (setq owner org-texmacs--worker-process)
-                  (format "(session-open %d)\n" id))
-                'session-open)))
-      (unless (and (eq owner org-texmacs--worker-process) (org-texmacs--worker-live-p))
-        (signal 'org-texmacs-session-error '("Worker exited while opening session")))
+    (let ((key
+           (org-texmacs--native-call
+            (lambda (id)
+              (setq owner org-texmacs--worker-process)
+              (format "(session-open %d)\n" id))
+            'session-open)))
+      (unless (and (eq owner org-texmacs--worker-process)
+                   (org-texmacs--worker-live-p))
+        (signal 'org-texmacs-session-error
+                '("Worker exited while opening session")))
       (org-texmacs--session-create :key key :process owner))))
 
 ;;;###autoload
@@ -475,7 +613,8 @@ Do not update incrementally or promise rendering or pagination."
 Repeated close, or close after worker termination, is a local no-op.  Never
 restart a worker to close a stale handle or close a new worker's buffer."
   (unless (org-texmacs-session-p session)
-    (signal 'org-texmacs-session-error '("Expected a session handle")))
+    (signal 'org-texmacs-session-error
+            '("Expected a session handle")))
   (when (org-texmacs--session-live-p session)
     (org-texmacs--session-command session 'session-close))
   (setf (org-texmacs-session-closed session) t)

@@ -24,8 +24,7 @@ text properties, including parent links, out of the source stree."
     (apply #'org-element-create
            (car node)
            nil
-           (mapcar #'org-texmacs--stree-to-org
-                   (cdr node))))
+           (mapcar #'org-texmacs--stree-to-org (cdr node))))
    (t
     node)))
 
@@ -37,11 +36,11 @@ nodes."
   (cond
    ((stringp node)
     (substring-no-properties node))
-   ((and (consp node)
-         (symbolp (car node)))
-    (cons (car node)
-          (mapcar #'org-texmacs--org-to-stree
-                  (org-element-contents node))))
+   ((and (consp node) (symbolp (car node)))
+    (cons
+     (car node)
+     (mapcar
+      #'org-texmacs--org-to-stree (org-element-contents node))))
    (t
     node)))
 
