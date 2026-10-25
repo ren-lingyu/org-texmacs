@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: optimization delivered; silence test mark notifications
+## Current: test optimization and quieter mark notifications delivered
 
 User selects implementation of the first two proposed nodes: shared Nix ERT
 execution constructor and two PDF leaves under the existing ert-pdf aggregate.
@@ -48,8 +48,16 @@ semantics unchanged. Limit changes to these two Lisp files; no new runtime test
 authority. This suppresses ordinary "Mark set" notifications, not diagnostics.
 Implemented exactly four nil-to-t NOMSG substitutions in the two frontend files.
 Readonly diff/whitespace review passes; third argument remains t, assertions and
-all other bytes unchanged. No build/test run, no ordinary staging. Follow-up is
-locally complete, uncommitted; prior runtime acceptance predates these four edits.
+all other bytes unchanged. User reports a prior manual nix flake check passed for this
+change and no "Mark set" messages appeared. Supplied subsequent command exits0
+in1.4771s with "running 0 flake checks" and "all checks passed": consistent with
+already realized outputs, not a fresh execution of ERT in that invocation.
+User's manual validation is accepted as reported evidence; agent did not rerun.
+User committed the exact two-file/four-substitution patch and drafted message as
+test: silence mark notifications in frontend tests. Readonly delivery review
+confirms clean ordinary worktree/index. Follow-up delivered; no further work or
+output suppression selected, no agent runtime rerun. Retain manual validation
+as user-reported evidence rather than an agent-observed fresh ERT execution.
 
 ## Previous: live-log delivery and optimization planning
 

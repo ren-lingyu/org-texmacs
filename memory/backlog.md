@@ -16,9 +16,11 @@ and resource caveats: tests-refactor.md optimization section.
 User confirms the optimization project commit and now authorizes this follow-up:
 set push-mark NOMSG to t at four frontend test calls (two native, two PDF) to
 suppress ordinary "Mark set" messages without changing region behavior. Do not
-mix it into the delivered Nix-only change. No runtime check selected for this edit.
-The four substitutions are now implemented locally, uncommitted and statically
-reviewed; no runtime rerun. No further output suppression selected.
+mix it into the delivered Nix-only change. Four substitutions delivered in the
+separate test commit; exact patch/message and clean project state verified.
+User reports manual flake check passed with no "Mark set" output; supplied
+subsequent exit0 invocation reuses realized outputs (0checks run). No agent rerun.
+Delivery complete; no further output suppression selected.
 
 ## personal-nixpkgs test/check migration implemented and accepted
 
