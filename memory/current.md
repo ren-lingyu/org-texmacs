@@ -1,10 +1,17 @@
 # org-texmacs current memory
 
-## Current: post-refactor v0.5.0 readiness reconciliation
+## Current: README synchronized to committed implementation, unstaged
 
-User requests read-only structure/release-backlog review. Ordinary project clean
-at reviewed main baff8f7. No builds/tests/network, project edits or staging in
-this review; prior tests retain their recorded baseline and attribution limits.
+After the read-only structure/release review, user explicitly authorizes updating
+README only to reflect HEAD, with no extra release-plan narrative. Implementation
+baseline remains main baff8f7; clean at intake. README-only candidate now updates
+named package outputs/build commands, direct Emacs drivers, package/test composition,
+parallel PDF leaves/aggregates, streamed logs/names/error boundaries and treefmt.
+Accurate existing lisp checkout/straight paths and feature contracts retained.
+Complete diff and changed claims reviewed against source/manifests/lock/check
+entrypoints; diff whitespace clean. No tests/builds/formatting/network or ordinary
+staging; previous runtime evidence retains its actual baseline/attribution.
+Current source and docs candidate differ only in README; user may review/stage it.
 Current local source is lisp/ (15Elisp modules plus adjacent Scheme worker),
 pkgs/ supplies melpaBuild and the Emacs wrapper through explicit overlays, and
 flake uses personal-nixpkgs.lib.mkFlake with explicit source arguments. Named
@@ -21,16 +28,16 @@ subsequent mark-notification-only change has user-reported validation. This revi
 is structural reconciliation, not fresh runtime acceptance or a complete code audit.
 
 Old mandatory functionality and version work have no newly identified unfinished
-item. README was finalized earlier but has since fallen behind package/test
-interfaces (e.g.packages.default/#default); user explicitly defers synchronization
-to before publication. Do not edit README now. Representative documents remain a
+item. README had fallen behind package/test interfaces (packages.default/#default);
+user subsequently selected the current HEAD-only sync described above. No extra
+release-plan text added. Representative documents remain a
 final optional whether/format decision. No separate release-only complete-check
 gate; Chinese fonts and PS intermediary stay removed. Issues9/7 keep later/deferred
 scope. User now explicitly TENTATIVELY excludes Issue14 from0.5.0 blockers; keep
 this revisable, not a permanent deferral or implementation approval. Its independent
 Org/native experiments remain complete and production design/implementation pending.
-Next user selects documentation timing, optional document decision or explicit
-release actions. No new raw archive: current source/history and distilled scope
+Next user may review/stage the README candidate, decide optional documents or
+select explicit release actions. No new raw archive: current source/history and distilled scope
 suffice; no skill changes.
 
 ## Previous: revised Issue14 Org/native behavior established; design pending

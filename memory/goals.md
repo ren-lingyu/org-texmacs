@@ -89,9 +89,10 @@ Full nix flake check is already routine per commit, not an additional release-on
 blocking gate. Representative combined documents are a final optional user decision
 (whether and format, possibly flake check/nix run), not an adopted prerequisite.
 Chinese font issue and PS route have been removed from blocking scope.
-After the source/package/test refactors, README synchronization is again pending
-before publication, explicitly deferred by user. Existing version declarations
-remain0.5.0. User tentatively excludes Issue14 from0.5.0 blocking scope; this is
+After the source/package/test refactors, user selected README-only synchronization
+to HEAD without extra release-plan narrative; local candidate is reviewed and
+unstaged, no runtime validation selected. Existing version declarations remain0.5.0.
+User tentatively excludes Issue14 from0.5.0 blocking scope; this is
 revisable and does not select implementation or permanent deferral.
 Complete Org parity, async export, preview and general authoring assistance are
 not release requirements. Issue9 now owns independently named constituents inside

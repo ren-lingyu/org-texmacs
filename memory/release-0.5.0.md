@@ -6,20 +6,24 @@ Read-only review finds old mandatory feature work still delivered, with retained
 regressions in split suites and all actual versions0.5.0 (header plus package
 version/melpaVersion). No new functional release blocker identified; this is not
 fresh runtime validation. Current source/package/test wiring is summarized in
-current.md; ordinary project stays clean. Previous documentation completion was
-valid at its delivered baseline, but README must be synchronized again before
-publication after subsequent refactors. User acknowledges old descriptions and
-reserves that edit for later. Examples to revisit: packages.default/#default are
-removed in favor of named org-texmacs/emacs outputs; test composition/PDF leaves.
+current.md; ordinary project was clean at review intake. Previous documentation completion was
+valid at its delivered baseline. User subsequently selects README synchronization
+strictly against HEAD, without extra release-plan descriptions. README-only local
+candidate replaces packages.default/#default with named org-texmacs/emacs outputs,
+removes Guile-driver claim, documents explicit package/test composition, two PDF
+leaves/aggregates, logs/name output/failure checks and treefmt. Existing correct
+source/straight lisp paths retained. Source/manifests/lock/drivers and complete
+README diff reviewed; whitespace clean. No runtime tests/builds/formatting/network,
+project staging/commit or extra release-plan edits. Candidate pending review/staging.
 
 User explicitly TENTATIVELY decides Issue14 does not block0.5.0; revisable scope,
 not permanent deferral or implementation authorization. Metadata experiments are
 not production support. Representative combined documents remain optional at the
 final decision, and no additional release-only full-check gate is added. Fonts,
 PS route and Issues9/7 retain removed/later scope. Next remaining preparation:
-README/current-interface synchronization and optional document decision; tag/
+review/staging of the README sync candidate and optional document decision; tag/
 publication are separate user-controlled actions, not agent-selected mutations.
-No builds/tests/network/project edits in this reconciliation.
+No builds/tests/network; subsequent ordinary edits are limited to README.
 
 ## Version, documentation and comments: committed and verified
 
