@@ -1,39 +1,39 @@
 *
 */
 
-!README.org
-!.gitignore
-!.gitsubmodules
-!LICENSE
-!flake.nix
-!flake.lock
+!/README.org
+!/.gitignore
+!/.gitsubmodules
+!/LICENSE
+!/flake.nix
+!/flake.lock
 
-!.github/
-!.github/**/
-!.github/**/*.yaml
+!/.github/
+!/.github/**/
+!/.github/**/*.yaml
 
-!lisp/
-!lisp/org-texmacs.el
-!lisp/ox-texmacs.el
-!lisp/org-texmacs-*.el
-!lisp/org-texmacs-worker.scm
+!/lisp/
+!/lisp/org-texmacs.el
+!/lisp/ox-texmacs.el
+!/lisp/org-texmacs-*.el
+!/lisp/org-texmacs-worker.scm
 
-!pkgs/
-!pkgs/**/
-!pkgs/**/*.nix
-!pkgs/**/*.el
+!/pkgs/
+!/pkgs/**/
+!/pkgs/**/*.nix
+!/pkgs/**/*.el
 
-!tests/
-!tests/**/
-!tests/**/*.el
-!tests/**/*.nix
-!tests/**/*.patch
-!tests/**/*.scm
-!tests/**/*.py
+!/tests/
+!/tests/**/
+!/tests/**/*.el
+!/tests/**/*.nix
+!/tests/**/*.patch
+!/tests/**/*.scm
+!/tests/**/*.py
 
-!docs/
-!docs/**/
-!docs/**/*.org
+!/docs/
+!/docs/**/
+!/docs/**/*.org
 
 *~
 *#
