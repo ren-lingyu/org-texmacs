@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: README synchronized to committed implementation, staged
+## Current: README synchronization committed and verified
 
 After the read-only structure/release review, user explicitly authorizes updating
 README only to reflect HEAD, with no extra release-plan narrative. Implementation
@@ -11,11 +11,12 @@ Accurate existing lisp checkout/straight paths and feature contracts retained.
 Complete diff and changed claims reviewed against source/manifests/lock/check
 entrypoints; diff whitespace clean. No tests/builds/formatting/network or ordinary
 staging; previous runtime evidence retains its actual baseline/attribution.
-User has staged exactly README; complete index review confirms the same candidate
-and no unstaged project changes. tmp/commit.md now contains docs(readme): describe
-current Nix packages and test layout. Split unnecessary, difficulty low: one
-coherent documentation sync. No runtime checks selected; diff whitespace clean.
-Next user may commit; do not execute an ordinary project commit.
+User committed exactly the reviewed README-only candidate. Read-only verification
+matches the expected refactor baseline parent, full binary patch and complete
+approved message. Project worktree/index clean; no runtime rerun for delivery
+verification. No extra release-plan narrative or source changes. README sync is
+complete; optional representative-document decision and explicit release actions
+remain user choices. Issue14 remains tentatively nonblocking, revisable.
 Current local source is lisp/ (15Elisp modules plus adjacent Scheme worker),
 pkgs/ supplies melpaBuild and the Emacs wrapper through explicit overlays, and
 flake uses personal-nixpkgs.lib.mkFlake with explicit source arguments. Named
@@ -40,7 +41,7 @@ gate; Chinese fonts and PS intermediary stay removed. Issues9/7 keep later/defer
 scope. User now explicitly TENTATIVELY excludes Issue14 from0.5.0 blockers; keep
 this revisable, not a permanent deferral or implementation approval. Its independent
 Org/native experiments remain complete and production design/implementation pending.
-Next user may review/stage the README candidate, decide optional documents or
+Next user may decide optional documents or
 select explicit release actions. No new raw archive: current source/history and distilled scope
 suffice; no skill changes.
 

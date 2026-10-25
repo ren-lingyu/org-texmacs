@@ -90,8 +90,8 @@ blocking gate. Representative combined documents are a final optional user decis
 (whether and format, possibly flake check/nix run), not an adopted prerequisite.
 Chinese font issue and PS route have been removed from blocking scope.
 After the source/package/test refactors, user selected README-only synchronization
-to HEAD without extra release-plan narrative; local candidate is reviewed and
-staged by user, no runtime validation selected. Existing version declarations remain0.5.0.
+to HEAD without extra release-plan narrative; user committed the reviewed README-only
+change; exact parent/patch/message verified and project clean, no runtime rerun. Existing version declarations remain0.5.0.
 User tentatively excludes Issue14 from0.5.0 blocking scope; this is
 revisable and does not select implementation or permanent deferral.
 Complete Org parity, async export, preview and general authoring assistance are

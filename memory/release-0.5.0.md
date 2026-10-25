@@ -8,25 +8,27 @@ version/melpaVersion). No new functional release blocker identified; this is not
 fresh runtime validation. Current source/package/test wiring is summarized in
 current.md; ordinary project was clean at review intake. Previous documentation completion was
 valid at its delivered baseline. User subsequently selects README synchronization
-strictly against HEAD, without extra release-plan descriptions. README-only local
-candidate replaces packages.default/#default with named org-texmacs/emacs outputs,
+strictly against HEAD, without extra release-plan descriptions. Delivered README-only
+change replaces packages.default/#default with named org-texmacs/emacs outputs,
 removes Guile-driver claim, documents explicit package/test composition, two PDF
 leaves/aggregates, logs/name output/failure checks and treefmt. Existing correct
 source/straight lisp paths retained. Source/manifests/lock/drivers and complete
 README diff reviewed; whitespace clean. No runtime tests/builds/formatting/network,
-project staging/commit or extra release-plan edits. User staged exactly README, no unstaged changes; complete staged diff reviewed.
-Single-commit draft tmp/commit.md: docs(readme): describe current Nix packages and
+agent project staging/commit or extra release-plan edits. User staged and committed
+exactly README; delivery verification matches expected parent, complete patch and
+message below. Project index/worktree clean. Documentation sync complete.
+Delivered message, also in tmp/commit.md: docs(readme): describe current Nix packages and
 test layout. Full-index binary patch SHA256
 23549812382c7c3519a5573066fad266ded887c26915073987bc2e127eceafa2; message SHA256
 ef50036b272cf9a193a773889c218fea2bc1387309830a767c8aa6d63d7edf10.
-No ordinary project commit executed; no extra runtime check required for drafting.
+No project commit executed by agent; no runtime rerun for delivery verification.
 
 User explicitly TENTATIVELY decides Issue14 does not block0.5.0; revisable scope,
 not permanent deferral or implementation authorization. Metadata experiments are
 not production support. Representative combined documents remain optional at the
 final decision, and no additional release-only full-check gate is added. Fonts,
 PS route and Issues9/7 retain removed/later scope. Next remaining preparation:
-user commit of the README sync candidate and optional document decision; tag/
+optional document decision; tag/
 publication are separate user-controlled actions, not agent-selected mutations.
 No builds/tests/network; subsequent ordinary edits are limited to README.
 
