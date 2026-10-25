@@ -1,5 +1,26 @@
 # org-texmacs current project model
 
+## Issue14 document information locally accepted
+
+User-selected uncommitted implementation extends the restricted Org context to
+nine native metadata fields and independent abstract blocks. Rich subtitle joins
+existing title/author/date secondary AST ownership; email/language/keywords/
+description/creator remain literal text. Visibility reuses Org options. Native
+title fields, email-only author data and creator:t doc-note are supported.
+Whole-document keyword nodes retain order; subtree/region uses one effective
+inherited value, with EXPORT_KEYWORDS replacing file declarations.
+
+Org LANGUAGE/DESCRIPTION override corresponding initial defaults, using explicit
+language mapping and hidden global-subject. Result initial-literal-keys carries
+Org provenance to native encoding; unmarked explicit initial values keep native
+source semantics. Internal initial wire supports the optional org-literal tag.
+Pure conversion still owns/fixes all inputs and performs no encoding or I/O.
+Tests add16core/3native/1PDF cases in existing checks; isolated full gate passes
+579default cases, strict compile/lint/aggregates on85unchanged input hashes.
+Candidate remains uncommitted. Native PDF Creator/Keywords limits and font
+exclusion are explicit; optional9integration cases were not rerun.
+Contract and verification: memory/issue14-implementation.md.
+
 ## Shared ERT driver and parallel PDF checks
 
 Current delivered tests/ implementation exports
@@ -500,8 +521,9 @@ buffer or start a worker.
   meaning; literal angle brackets must be represented by STM source notation.
 - Body-relative source-semantic paths retain authored STM and generated native
   bibliography provenance until encoding is complete.
-- style names and initial keys use identifier semantics. Structured initial
-  values use TeXmacs source semantics.
+- Style names and initial keys use identifier semantics. Explicit native initial
+  values use TeXmacs source semantics; Org-derived entries have literal provenance
+  in the document's initial-literal-keys until native encoding.
 
 ## Original released subset in v0.3.0 and v0.3.1
 

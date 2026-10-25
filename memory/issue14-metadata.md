@@ -1,5 +1,10 @@
 # Issue14 metadata experiments
 
+The subsequent user-selected implementation is locally accepted by full checks;
+current production contract, test coverage and uncommitted delivery state are in
+memory/issue14-implementation.md. The experiments below retain their original
+feasibility scope, not the later implementation's acceptance provenance.
+
 ## Latest: Org semantics and native hidden DESCRIPTION established
 
 User authorizes further isolated experiments for revised Issue14, identifies

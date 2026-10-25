@@ -1,5 +1,20 @@
 # org-texmacs durable evidence
 
+## Issue14 document information candidate accepted
+
+User-selected implementation follows independent Org/native probes. Authorized
+timeout600s isolated flake check (max-jobs2) exits0, all checks passed on pinned
+x86_64-linux Emacs31.1/Org9.8.10/TeXmacs2.1.5. Main573 plus6patched =579default
+ERT cases, strict compile, lint and aggregates accepted. New20cases supplement
+the old inventory. Generic/article native trees and saved-.tm reload/PDF confirm
+ordered summaries/keywords, visible creator note, hidden literal DESCRIPTION
+as PDF Subject and native PDF Creator/Keywords limits. All29language codes map
+to the pinned native registry's27identifiers; font capability is not tested.
+All85root/copy input hashes unchanged after final gate; root flake/lock/index
+unchanged, uncommitted candidate. Optional9extension cases not rerun, no external
+issue update or font claim. Detailed authority, corrections and provenance:
+memory/issue14-implementation.md. Distilled evidence suffices; no raw archive.
+
 ## Chinese font follow-up: reproduced using user's bundled-font override
 
 User's ~/emarccs actual override sets extraFonts/chineseFonts/japaneseFonts/

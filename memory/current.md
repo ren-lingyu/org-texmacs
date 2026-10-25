@@ -1,6 +1,26 @@
 # org-texmacs current memory
 
-## Current: README synchronization committed and verified
+## Current: Issue14 implementation locally accepted, uncommitted
+
+User selects the reviewed Issue14 plan for implementation in lisp/, tests/ and
+README. Source mapping follows memory/issue14-metadata.md probes: rich subtitle,
+independent email, ordered abstract/keyword nodes, hidden DESCRIPTION as
+global-subject, explicit language mapping, creator:t as a labelled doc-note.
+Org file/subtree declarations override global initial defaults. Whole-document
+keywords retain positions; subtree/region uses one effective inherited value,
+with EXPORT_KEYWORDS replacing file declarations. Initial literal provenance
+must survive pure lowering until native encoding. Fonts remain excluded.
+Implementation candidate and README are written; new maintained16core/3native/
+1PDF cases use existing suites. User authorizes repeated exact600s isolated flake
+command with max-jobs2. Final full gate passes573stock+6patched=579default cases,
+strict compile/lint/aggregates, including two-style .tm save/reload/PDF metadata.
+All85root and copy hashes match before/after. Earlier iterations corrected blank
+collection, two legacy default-language assertions and a font-dependent registry
+predicate. Optional9integration cases not rerun. Root lock/flake/index unchanged;
+candidate is uncommitted. User may review/stage/commit; no external issue write.
+Contract and evidence: memory/issue14-implementation.md.
+
+## Previous: README synchronization committed and verified
 
 After the read-only structure/release review, user explicitly authorizes updating
 README only to reflect HEAD, with no extra release-plan narrative. Implementation

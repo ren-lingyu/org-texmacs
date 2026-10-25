@@ -1,26 +1,23 @@
 # org-texmacs active backlog
 
-## Issue14 metadata audit: experiments accepted, implementation unselected
+## Issue14 document information locally accepted; user delivery pending
 
 User tentatively excludes Issue14 from0.5.0 release blockers. Revisit if user
-changes scope; this does not select production implementation or permanent deferral.
+changes scope; release-blocking classification is independent of the
+subsequently selected implementation below.
 
-https://github.com/ren-lingyu/org-texmacs/issues/14 requests coherent support for
-native document semantics, now TITLE/SUBTITLE/AUTHOR/EMAIL/DATE/LANGUAGE/
-DESCRIPTION/KEYWORDS/CREATOR plus abstract blocks and permitted repetitions.
-Keep abstracts independent/in source order, define repeated metadata behavior
-without nearby-block ownership, distinguish DESCRIPTION from abstract, and
-document/test native target limits. Readonly review finds title/author/date
-already supported; others require capture/ownership/lowering/native-target audit.
-Native Chinese font problem remains outside exporter responsibility; metadata
-language support must not claim to repair it. User-authorized isolated flake gate
-passes72assertions/10PDFs. Subtitle/keywords native candidates work; keywords do
-not require an empty abstract container. Language persistence is not identifier
-validity. Follow-up Org103/native112assertions/8PDFs confirm field-specific repeat
-rules and DESCRIPTION as hidden initial global-subject -> PDF Subject, following
-ox-html's metadata distinction. Native PDF Creator is fixed; creator rendering,
-rich/plain capture, explicit initial priority and keyword placement remain design.
-No production implementation selected. Details: memory/issue14-metadata.md.
+User now selects the reviewed plan for
+https://github.com/ren-lingyu/org-texmacs/issues/14. Nine metadata fields, ordered
+abstract/keyword structures, initial literal provenance and README are implemented
+locally, with16core/3native/1PDF maintained cases. Org declarations override
+global initial defaults. Whole-file keywords retain positions; partial export
+uses one effective inherited/overridden value. creator:t is a labelled native
+note, distinct from fixed PDF Creator. Native language-registry membership is
+validated without testing font availability. Final full gate passes579default
+cases, strict compilation/lint/aggregates;85root/copy inputs unchanged afterward.
+No ordinary staging/project commit or external tracking action. Font work remains
+excluded. Contract/evidence: issue14-implementation.md; preceding feasibility
+evidence: issue14-metadata.md.
 
 ## Tests optimization review after live-log delivery
 
