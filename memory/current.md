@@ -1,6 +1,25 @@
 # org-texmacs current memory
 
-## Current: post-Issue14 HEAD reviewed and README delivery verified
+## Current: isolated configuration/documentation package reviewed
+
+User selects review of a new example package exposed through flake packages,
+with PDF in out and preferably full public configuration coverage. Complete
+isolation is required at package level: ordinary sandboxed Nix builder with
+explicit dependencies and fresh runtime state, no generic worker change or
+additional isolation framework. Reproducibility means equal PDF content/layout;
+timestamp metadata may differ, byte identity is not required.
+
+Static review inventories ten Custom settings,24context keys and13subtree
+properties; interactive/load-time settings require examples and explanation,
+not visual PDF proof. Existing worker inherits its caller environment, so the
+new builder owns isolation. Recommend an independent package-owned corpus and
+driver using public document/PDF APIs, explicit packages export, no README/test
+dependency. Names/layout/variant count remain proposed. No automatic default
+check or release blocker; font repair stays excluded. Review and GAW only:
+project/index clean, no implementation, build or dependency resolution.
+Next: select a concrete implementation plan. Details: memory/example-package.md.
+
+## Previous: post-Issue14 HEAD reviewed and README delivery verified
 
 User commits formatting, enables treefmt.flakeCheck=true and refreshes the two
 existing direct flake inputs nixpkgs/personal-nixpkgs. Intake project/index clean.

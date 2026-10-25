@@ -86,8 +86,11 @@ The selected six-path candidate is now locally accepted by isolated full flake
 parent/patch/message/all32inputs, project index/worktree clean. Version/docs complete.
 Details: release-0.5.0.md. This does not select tag/publication.
 Full nix flake check is already routine per commit, not an additional release-only
-blocking gate. Representative combined documents are a final optional user decision
-(whether and format, possibly flake check/nix run), not an adopted prerequisite.
+blocking gate. User now selects review of a standalone configuration/documentation
+example package exposed through packages, with PDFs in out. Package-level complete
+isolation and content/layout reproducibility are required; byte identity is not.
+This does not adopt a release prerequisite, default check or implementation task.
+Details and pending design choices: memory/example-package.md.
 Chinese font issue and PS route have been removed from blocking scope.
 After the source/package/test refactors, user selected README-only synchronization
 to HEAD without extra release-plan narrative; user committed the reviewed README-only

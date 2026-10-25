@@ -90,11 +90,13 @@ release gate. Appropriate checks for actual edits and normal commit readiness
 still apply; this decision does not waive failing tests or authorize commands.
 Latest accepted553stock/6patched/full checks retain their actual baseline scope.
 
-Representative combined mathematical documents are postponed to a final optional
-decision: user will decide whether to do them and their format/integration, e.g.
-nix flake check or nix run. No mandatory representative-document gate, fixed input
-format, example fixture layout or new check/app has been adopted. Do not begin
-that work as an implicit dependency of version/docs finalization.
+User now selects review of a standalone configuration/documentation example
+package exposed through packages with PDF in out. Package-level complete
+isolation is required; equal PDF content/layout suffices without byte identity.
+Review/design findings: memory/example-package.md. No mandatory representative-
+document release gate, fixed fixture layout or new default check/app is adopted.
+Implementation is not authorized by the review request and is not an implicit
+dependency of version/docs finalization.
 
 Completed feature deliveries remain complete; native Chinese-font issue and
 PS->PDF route remain removed/nonblocking. Issue9 stays after0.5.0/before0.6.0,
