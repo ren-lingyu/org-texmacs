@@ -91,7 +91,7 @@ blocking gate. Representative combined documents are a final optional user decis
 Chinese font issue and PS route have been removed from blocking scope.
 After the source/package/test refactors, user selected README-only synchronization
 to HEAD without extra release-plan narrative; local candidate is reviewed and
-unstaged, no runtime validation selected. Existing version declarations remain0.5.0.
+staged by user, no runtime validation selected. Existing version declarations remain0.5.0.
 User tentatively excludes Issue14 from0.5.0 blocking scope; this is
 revisable and does not select implementation or permanent deferral.
 Complete Org parity, async export, preview and general authoring assistance are

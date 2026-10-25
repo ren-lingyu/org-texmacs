@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: README synchronized to committed implementation, unstaged
+## Current: README synchronized to committed implementation, staged
 
 After the read-only structure/release review, user explicitly authorizes updating
 README only to reflect HEAD, with no extra release-plan narrative. Implementation
@@ -11,7 +11,11 @@ Accurate existing lisp checkout/straight paths and feature contracts retained.
 Complete diff and changed claims reviewed against source/manifests/lock/check
 entrypoints; diff whitespace clean. No tests/builds/formatting/network or ordinary
 staging; previous runtime evidence retains its actual baseline/attribution.
-Current source and docs candidate differ only in README; user may review/stage it.
+User has staged exactly README; complete index review confirms the same candidate
+and no unstaged project changes. tmp/commit.md now contains docs(readme): describe
+current Nix packages and test layout. Split unnecessary, difficulty low: one
+coherent documentation sync. No runtime checks selected; diff whitespace clean.
+Next user may commit; do not execute an ordinary project commit.
 Current local source is lisp/ (15Elisp modules plus adjacent Scheme worker),
 pkgs/ supplies melpaBuild and the Emacs wrapper through explicit overlays, and
 flake uses personal-nixpkgs.lib.mkFlake with explicit source arguments. Named
