@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: post-Issue14 HEAD reviewed; README synchronization pending delivery
+## Current: post-Issue14 HEAD reviewed and README delivery verified
 
 User commits formatting, enables treefmt.flakeCheck=true and refreshes the two
 existing direct flake inputs nixpkgs/personal-nixpkgs. Intake project/index clean.
@@ -9,13 +9,16 @@ formatting only. Full manifest/lock read confirms follows/transitive graph stays
 No runtime/evaluation/formatting check performed at these new inputs;579-case
 Issue14 acceptance remains scoped to its original fixed candidate.
 
-Authorized README-only patch corrects the disabled treefmt-check statement and
+Authorized README-only change corrects the disabled treefmt-check statement and
 describes prior runtime versions as recorded regressions rather than new-pin
 acceptance. README remains excluded from formatting. Two-hunk diff/claims checked
-against HEAD; whitespace clean, README is the only unstaged ordinary change.
-No ordinary index/history writes, tests, dependency resolution or source edits.
-Earlier15staged paths are now committed/reviewed formatting, no pending index.
-User may review/commit README or select further work; no automatic test task.
+against the input-refresh HEAD; whitespace clean. User stages README and requests
+git-maintenance draft plus HEAD polling. Poll detects the documentation commit;
+expected single parent, complete patch, approved message and README blob all
+match. Project index/worktree clean. Delivery association grounds this review,
+not runtime acceptance at the refreshed inputs. No tests/dependency resolution
+or agent ordinary index/history writes. Polling objective complete; user selects
+further work, no automatic test task.
 Details and provenance: memory/post-issue14-flake.md.
 
 ## Previous: Issue14 delivered and independently confirmed closed

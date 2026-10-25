@@ -35,12 +35,28 @@ statement; replace it with the enabled formatting-check relationship and retain
 the README exclusion. Requirements now describe Emacs31.1/Org9.8.10/TeXmacs2.1.5
 as recorded regression versions, rather than implying a refreshed lockfile has
 already received those tests. No dependency-hash churn or historical release
-narrative added to README. README is the only ordinary project edit, unstaged.
+narrative added to README. At preparation README was the only ordinary project
+edit, unstaged; later user delivery is verified below.
 Complete two-hunk diff reviewed against HEAD; diff whitespace clean.
 
 No build/evaluation/test/formatter/dependency resolution/network shell command
 run in this review; no Git project writes or lock changes. The579-case Issue14
 gate remains evidence for its original fixed inputs, not automatic acceptance
 of the formatted/new-input/current-formatting-check state. No new gate is
-silently scheduled or adopted as a release-only blocker. User may review/commit
-README or select subsequent work. No raw archive or skill change needed.
+silently scheduled or adopted as a release-only blocker. No raw archive or skill
+change needed.
+
+## README draft, polling and verified user delivery
+
+User stages only README and explicitly requests a commit draft, HEAD polling,
+and GAW update after HEAD moves. git-maintenance reviews the complete staged
+two-hunk README diff against the input-refresh HEAD: one coherent docs change,
+no split needed, no unstaged project changes. Draft tmp/commit.md subject:
+docs(readme): clarify formatting checks and regression versions.
+
+Authorized read-only polling detects the subsequent README documentation
+commit. Verification matches expected single input-refresh parent, exact binary
+patch, complete approved message and README blob. Project worktree/index clean;
+no agent project Git mutation or runtime rerun. The associated delivered project
+snapshot grounds this equivalence, not old or new dependency runtime acceptance.
+Polling objective and README delivery complete; user selects subsequent work.

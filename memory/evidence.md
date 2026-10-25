@@ -8,7 +8,9 @@ all7Nix diffs are formatting layout. Complete manifest/lock review shows only
 nixpkgs/personal-nixpkgs revision/hash/time changes; follows and transitive nodes
 unchanged. No code evaluation, formatter, build or test run at this new HEAD.
 README-only authorized patch corrects enabled formatting checks and scopes
-recorded runtime versions historically. Prior579-case evidence remains bound
+recorded runtime versions historically. User commits the exact draft; single
+parent/patch/message/README blob verification matches and project is clean.
+No runtime rerun for this documentation delivery. Prior579-case evidence remains bound
 to original Issue14 inputs. Details: memory/post-issue14-flake.md.
 
 ## Issue14 document information accepted and user delivery verified

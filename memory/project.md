@@ -8,7 +8,8 @@ inputs. Current full flake checks include formatting verification; nix fmt
 applies formatters and README.org stays excluded. Other input graph/follows
 relationships are unchanged. Static review establishes formatting-only project
 changes, not runtime acceptance at the new dependency revisions. README-only
-synchronization is written/unstaged. Details: memory/post-issue14-flake.md.
+synchronization is user-committed and exact delivery verified; project clean.
+Details: memory/post-issue14-flake.md.
 
 ## Issue14 document information delivered
 
