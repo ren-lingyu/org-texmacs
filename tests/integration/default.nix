@@ -37,11 +37,11 @@ runCommand "org-texmacs-integration"
     export HOME="$TMPDIR/home"
     mkdir -p "$HOME" "$out"
     export ORG_TEXMACS_TEST_NAMES_FILE="$out/test-names.txt"
+    set -o pipefail
     set +e
     timeout --kill-after=10s 600s ${lib.getExe' emacs "emacs"} -Q --batch -L ${extensionSources.include} -L ${extensionSources.organize} -L ${extensionSources.blog} \
-      --load ${testSupport.runner} > "$out/ert.log" 2>&1
+      --load ${testSupport.runner} 2>&1 | tee "$out/ert.log"
     status=$?
     set -e
-    cat "$out/ert.log"
     exit "$status"
   ''
