@@ -1188,7 +1188,7 @@
            (source (current-buffer))
            (original (buffer-string))
            (position (point)))
-      (push-mark (point-max) nil t)
+      (push-mark (point-max) t t)
       (let ((mark (mark))
             (active mark-active))
         (cl-letf (((symbol-function 'org-texmacs--worker-request)
@@ -1402,7 +1402,7 @@
                     (setcar region 1)
                     (with-current-buffer source
                       (goto-char (point-max))
-                      (push-mark 1 nil t))
+                      (push-mark 1 t t))
                     (funcall serialize document))))
          (let ((bytes
                 (org-texmacs-export-texmacs-from-buffer

@@ -761,7 +761,7 @@
               "*ExternalTitleSentinel*"
               :author nil
               :with-toc nil)))
-       (push-mark end nil t)
+       (push-mark end t t)
        (let ((output
               (org-texmacs-export-as-texmacs
                nil nil nil nil options)))
@@ -817,7 +817,7 @@
            (org-export-dispatch-last-action nil)
            (org-export-dispatch-last-position (make-marker)))
        (goto-char begin)
-       (push-mark end nil t)
+       (push-mark end t t)
        (dolist (subtreep '(nil t))
          (let ((output (org-texmacs-export-as-texmacs nil subtreep)))
            (unwind-protect
