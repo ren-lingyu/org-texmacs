@@ -1,6 +1,25 @@
 # org-texmacs current project model
 
-## Live ERT build logs
+## Shared ERT driver and parallel PDF checks
+
+Current locally accepted, uncommitted tests/ candidate exports
+testSupport.mkErtCheck from support/default.nix. Explicit runtime/file/helper/tool/
+environment/Emacs args feed common timeout, isolated HOME, tee+pipefail logging
+and actual case-name output. Core/native/patched-caption/optional integration and
+two PDF leaves use it; optional integration keeps its public required arguments.
+tests/default.nix passes PDF suite paths and inspector explicitly from suites.nix
+through mkPdfCheck. Sibling ert-pdf-render27 and ert-pdf-document32 checks are
+discoverable by llib.tests; ert-pdf aggregates their logs/names and rejects
+duplicate names, and ert still consumes ert-pdf. Existing public checks retained;
+two new leaf checks added. No case/helper/production bytes changed, parent lookup
+or README dependency introduced. No workers/print passes/assertions removed.
+Authorized isolated x86_64-linux gates exit0:559default cases, exact inventory,
+lint/build/aggregates accepted. PDF leaves start together and pass in128.667668s
+and80.958658s; native318 passes in173.494314s. Single observed PDF execution
+phase~129s versus prior231s serial, dependent on available slots/resources.
+Optional9integration cases not rerun. Details: memory/tests-refactor.md.
+
+## Previous live ERT build logs
 
 User committed the reviewed five-driver change; exact patch/message/expected
 parent and clean ordinary index/worktree verified. This delivery association

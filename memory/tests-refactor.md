@@ -1,6 +1,39 @@
 # Tests migration and refactor
 
-## Current follow-up: dependency refinement and live ERT logs
+## Current: shared execution constructor and parallel PDF leaves accepted locally
+
+User selects first two optimization nodes and authorizes tests/ implementation.
+testSupport.mkErtCheck centralizes the five old drivers' duplicated execution,
+including explicit file/helper/tool/env/Emacs args, strict tools, isolated HOME,
+600s timeout, live tee+pipefail logs, names and original failure handling.
+Optional integration keeps its existing required parameters and extension load
+paths; its9cases are byte-preserved but runtime not rerun this task.
+PDF suites.nix lists existing pdf.el27cases as render and six other files32cases
+as document, plus the existing inspector. Parent tests/default.nix passes these
+through mkPdfCheck to sibling discovery directories. Public ert-pdf aggregates
+the two leaves without rerunning ERT, keeps ert.log/test-names.txt and adds leaf
+links plus duplicate-name rejection. Existing ert aggregate unchanged. All case
+bodies/helpers/production/lock remain byte-equal; no README or ancestor lookup.
+
+User authorizes repeated exact commands for this task, each executed once:
+1. timeout 600s nix build --no-link --no-write-lock-file --max-jobs 2 --print-out-paths path:/home/lingyu/Projects/org-texmacs/tmp/tests-opt-20261025#checks.x86_64-linux.ert-pdf -L
+2. timeout 600s nix flake check -L --no-write-lock-file --max-jobs 2 path:/home/lingyu/Projects/org-texmacs/tmp/tests-opt-20261025
+Network/store/cache/log/products disclosed; root lock/index/result untouched.
+Both exit0 on pinned x86_64-linux. PDF leaves both start09:30:45UTC2026-10-25:
+document32/32 in80.958658s, render27/27 in128.667668s. Aggregate passes; full
+gate reuses those same successful outputs, core176/176 in0.900527s,
+native318/318 in173.494314s, patched6/6 in2.813273s, lint/strict package build
+and aggregates accepted. Temporary dependency-only inventory confirms exactly
+559default names, all original59PDF names, no duplicates, same ert PDF link.
+81root input hashes and copied bytes match final candidate (copied flake alone
+adds inventory);53non-Nix baseline inputs plus root flake.nix unchanged, all568case
+bodies retained. Source manifests and copy remain tmp, not durable interfaces.
+PDF execution phase~129s versus previous serial231.327348s is a single observed
+comparison, not a repeatable benchmark guarantee; native can dominate full gate.
+Uncommitted14Nix files only under tests/, no ordinary staging/history changes.
+Further matrix profiling and local inspection reuse remain unselected.
+
+## Previous follow-up: dependency refinement and live ERT logs
 
 User committed the exact reviewed five-driver log patch and full drafted message.
 Readonly verification confirms the expected formatting parent and clean ordinary
@@ -35,7 +68,7 @@ are potential follow-ups, not adopted optimizations. No speedup, coverage remova
 or shared-worker change. Long single cases still lack internal progress. No raw
 archive needed; source and these extracted results suffice.
 
-## Optimization proposal: planning only
+## Earlier optimization proposal (first two nodes now completed above)
 
 User requests consideration after log delivery, not implementation or new tests.
 Readonly mapping of all59captured timings to current test declarations gives:

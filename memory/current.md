@@ -1,6 +1,52 @@
 # org-texmacs current memory
 
-## Current: live ERT logs delivered; test optimization planning
+## Current: shared ERT driver and two PDF checks ready for project commit
+
+User selects implementation of the first two proposed nodes: shared Nix ERT
+execution constructor and two PDF leaves under the existing ert-pdf aggregate.
+Ordinary project clean at intake. Authorized tests/ implementation; no production,
+lock/index/history/README changes. Runtime checks separately authorized below. Preserve all case
+bodies and per-test worker/config isolation; source/file dependencies enter by
+explicit function args, no parent traversal or README. Optional integration
+call interface remains compatible. Concrete changes and static verification
+precede a separately scoped runtime authorization request. Prior planning and
+delivery evidence below remain historical context, not this candidate's gate.
+
+Implemented shared testSupport.mkErtCheck constructor, preserving optional
+integration's existing required arguments. PDF inputs live in suites.nix and are
+explicitly passed from tests/default.nix to sibling render/document checks;
+existing ert-pdf now aggregates their names/logs and rejects cross-leaf duplicate
+names. Original ert aggregate still consumes the same public ert-pdf entry.
+Static baseline:53non-Nix inputs plus root flake.nix byte-equal; PDF disjoint27+32=59,
+all568existing case bodies remain unchanged, no new README/parent lookup.
+Prepared tmp/tests-opt-20261025 from81source inputs; only copied flake adds a
+dependency-only559default-name/59PDF-name inventory check. Optional integration
+runtime is not part of that gate. Source baseline/snapshot manifests remain tmp.
+
+User authorized this task's repeated exact commands against that isolated copy:
+1. timeout 600s nix build --no-link --no-write-lock-file --max-jobs 2 --print-out-paths path:/home/lingyu/Projects/org-texmacs/tmp/tests-opt-20261025#checks.x86_64-linux.ert-pdf -L
+2. timeout 600s nix flake check -L --no-write-lock-file --max-jobs 2 path:/home/lingyu/Projects/org-texmacs/tmp/tests-opt-20261025
+Potential dependency network/store/cache/log/products disclosed, no root lock/
+index/result writes; copy refresh authorized for same-scope fixes.
+Both commands completed once with exit0 on x86_64-linux. PDF leaves started
+together: render27/27 in128.667668s, document32/32 in80.958658s; aggregate passed.
+Full default gate passes core176/176 in0.900527s, native318/318 in173.494314s,
+patched6/6 in2.813273s, lint/strict package build and both aggregates. Temporary
+inventory verifies exactly559default names and original59PDF names, no repeats.
+Final81root input hashes match the accepted snapshot; copied inputs byte-equal
+except intentionally instrumented flake. No ordinary staging/history changes.
+PDF execution phase observed~129s versus prior serial231.327348s; single runs,
+different resource contention, not a general speed guarantee. Native remains a
+full-gate bottleneck. Optional9integration cases preserved but not run this task.
+Selected two nodes complete locally, uncommitted; no further optimization chosen.
+User has staged all14Nix paths. All81staged input hashes match the accepted
+snapshot manifest; no ordinary unstaged changes. Suitable as one test commit.
+Create a selective memory checkpoint for implementation/acceptance, without an
+additional project parent: runtime candidate remains uncommitted. User prefers
+setting push-mark NOMSG to t at four frontend test calls, but explicitly defers
+that edit until this project change has been committed. No Lisp changes now.
+
+## Previous: live-log delivery and optimization planning
 
 User reports the log change committed and requests GAW update, then tests/
 optimization proposals. Readonly verification confirms the exact five-path patch
@@ -71,10 +117,8 @@ memory/tests-refactor.md. Optional integration remains caller-supplied.
 README references to removed packages.default/#default were previously reported;
 documentation synchronization remains unselected.
 
-Current work is readonly optimization design, preserving tests' semantic effect
-and explicit dependency/isolation boundaries. No ordinary edits/staging/history,
-new runtime validation or external writes selected. Evidence and implementation
-proposals must remain distinct.
+The following proposal describes the earlier planning phase; its first two nodes
+are now implemented and accepted above. Further profiling/reuse is unselected.
 
 Planning result: shared Nix ERT constructor for maintenance, then two PDF leaves
 by existing file ownership (pdf.el27cases141.684156s, six other files32cases
@@ -85,7 +129,7 @@ native ERT's historical~186s. Further matrix stage timing should precede local
 reuse of unchanged inspections; no global path-only cache or reduced print
 passes/coverage/isolation. Acceptance requires disjoint actual59-case union and
 unchanged semantics. Detailed proposal: memory/tests-refactor.md optimization
-section. Implementation/testing awaits separate selection and authorization.
+section. This earlier estimate is superseded by the observed candidate gate above.
 
 ## Previous baseline: tests migration/refactor committed and delivery verified
 
