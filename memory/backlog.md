@@ -2,6 +2,9 @@
 
 ## Issue14 metadata audit: experiments accepted, implementation unselected
 
+User tentatively excludes Issue14 from0.5.0 release blockers. Revisit if user
+changes scope; this does not select production implementation or permanent deferral.
+
 https://github.com/ren-lingyu/org-texmacs/issues/14 requests coherent support for
 native document semantics, now TITLE/SUBTITLE/AUTHOR/EMAIL/DATE/LANGUAGE/
 DESCRIPTION/KEYWORDS/CREATOR plus abstract blocks and permitted repetitions.
