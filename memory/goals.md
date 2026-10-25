@@ -94,8 +94,9 @@ to HEAD without extra release-plan narrative; user committed the reviewed README
 change; exact parent/patch/message verified and project clean, no runtime rerun. Existing version declarations remain0.5.0.
 User tentatively excludes Issue14 from0.5.0 blocking scope; this is
 revisable, not permanent deferral. User subsequently selects its independent
-implementation, now locally accepted but uncommitted (issue14-implementation.md);
-that selection does not change this release-blocking classification.
+implementation, now user-committed/delivery-verified with Issue14 independently
+confirmed CLOSED/COMPLETED (issue14-implementation.md). No Issue14 work remains;
+that selection did not change release policy or include font work.
 Complete Org parity, async export, preview and general authoring assistance are
 not release requirements. Issue9 now owns independently named constituents inside
 one composite native structure, initially separately numbered/referenced aligned

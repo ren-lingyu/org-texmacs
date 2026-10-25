@@ -1,6 +1,6 @@
 # org-texmacs active backlog
 
-## Issue14 document information locally accepted; user delivery pending
+## Issue14 document information delivered; issue completed
 
 User tentatively excludes Issue14 from0.5.0 release blockers. Revisit if user
 changes scope; release-blocking classification is independent of the
@@ -15,9 +15,12 @@ uses one effective inherited/overridden value. creator:t is a labelled native
 note, distinct from fixed PDF Creator. Native language-registry membership is
 validated without testing font availability. Final full gate passes579default
 cases, strict compilation/lint/aggregates;85root/copy inputs unchanged afterward.
-No ordinary staging/project commit or external tracking action. Font work remains
-excluded. Contract/evidence: issue14-implementation.md; preceding feasibility
-evidence: issue14-metadata.md.
+User commits the exact reviewed15path candidate; expected parent/patch/message/
+85inputs match. GitHub independently confirms CLOSED/COMPLETED at
+2026-10-25T17:29:52Z. No agent project commit or external write. Additional15
+staged follow-up paths are unreviewed and excluded from this accepted delivery.
+Font work remains excluded. Contract/evidence: issue14-implementation.md;
+preceding feasibility evidence: issue14-metadata.md.
 
 ## Tests optimization review after live-log delivery
 

@@ -1,6 +1,6 @@
 # org-texmacs durable evidence
 
-## Issue14 document information candidate accepted
+## Issue14 document information accepted and user delivery verified
 
 User-selected implementation follows independent Org/native probes. Authorized
 timeout600s isolated flake check (max-jobs2) exits0, all checks passed on pinned
@@ -11,8 +11,12 @@ ordered summaries/keywords, visible creator note, hidden literal DESCRIPTION
 as PDF Subject and native PDF Creator/Keywords limits. All29language codes map
 to the pinned native registry's27identifiers; font capability is not tested.
 All85root/copy input hashes unchanged after final gate; root flake/lock/index
-unchanged, uncommitted candidate. Optional9extension cases not rerun, no external
-issue update or font claim. Detailed authority, corrections and provenance:
+unchanged at the gate. User subsequently commits the exact15path candidate;
+expected parent/patch/message and85committed inputs match. GitHub independently
+confirms Issue14 CLOSED/COMPLETED at2026-10-25T17:29:52Z. No agent remote write
+or runtime rerun. Additional15staged paths are unreviewed and not part of this
+accepted delivery. Optional9extension cases not rerun, no font claim.
+Detailed authority, corrections and provenance:
 memory/issue14-implementation.md. Distilled evidence suffices; no raw archive.
 
 ## Chinese font follow-up: reproduced using user's bundled-font override

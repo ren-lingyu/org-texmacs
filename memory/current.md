@@ -1,24 +1,27 @@
 # org-texmacs current memory
 
-## Current: Issue14 implementation locally accepted, uncommitted
+## Current: Issue14 delivered and independently confirmed closed
 
-User selects the reviewed Issue14 plan for implementation in lisp/, tests/ and
-README. Source mapping follows memory/issue14-metadata.md probes: rich subtitle,
-independent email, ordered abstract/keyword nodes, hidden DESCRIPTION as
-global-subject, explicit language mapping, creator:t as a labelled doc-note.
-Org file/subtree declarations override global initial defaults. Whole-document
-keywords retain positions; subtree/region uses one effective inherited value,
-with EXPORT_KEYWORDS replacing file declarations. Initial literal provenance
-must survive pure lowering until native encoding. Fonts remain excluded.
-Implementation candidate and README are written; new maintained16core/3native/
-1PDF cases use existing suites. User authorizes repeated exact600s isolated flake
-command with max-jobs2. Final full gate passes573stock+6patched=579default cases,
-strict compile/lint/aggregates, including two-style .tm save/reload/PDF metadata.
-All85root and copy hashes match before/after. Earlier iterations corrected blank
-collection, two legacy default-language assertions and a font-dependent registry
-predicate. Optional9integration cases not rerun. Root lock/flake/index unchanged;
-candidate is uncommitted. User may review/stage/commit; no external issue write.
-Contract and evidence: memory/issue14-implementation.md.
+User commits the exact reviewed15path Issue14 candidate. Read-only verification
+matches the expected single parent, complete binary patch, approved feat(document)
+message/Closes:#14 and all85accepted committed input hashes. The delivery
+association grounds this equivalence, not original uncommitted runtime provenance.
+GitHub connector confirms Issue14 CLOSED/COMPLETED at2026-10-25T17:29:52Z.
+No agent external write or runtime rerun for identical committed bytes.
+
+Implemented nine-field context/ownership, rich subtitle, independent email,
+explicit language mapping, hidden DESCRIPTION/global-subject, creator:t note and
+ordered independent abstracts/keywords. Org file/subtree declarations override
+initial defaults; partial exports use one effective inherited/overridden keyword
+value. Org literal initial provenance survives to native encoding. Full isolated
+gate passes573stock+6patched=579default cases, strict compile/lint/aggregates,
+including two-style .tm reload/PDF inspection. Optional9integration cases not
+rerun; native PDF Creator/Keywords and font exclusions remain explicit.
+
+Project index currently contains15additional staged Lisp/test/Nix paths, with no
+unstaged project changes. They are unreviewed/unvalidated follow-up state here,
+excluded from the delivered acceptance claim and preserved untouched. User
+selects next work. Contract/evidence: memory/issue14-implementation.md.
 
 ## Previous: README synchronization committed and verified
 

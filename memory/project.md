@@ -1,8 +1,8 @@
 # org-texmacs current project model
 
-## Issue14 document information locally accepted
+## Issue14 document information delivered
 
-User-selected uncommitted implementation extends the restricted Org context to
+User-committed and delivery-verified implementation extends the restricted Org context to
 nine native metadata fields and independent abstract blocks. Rich subtitle joins
 existing title/author/date secondary AST ownership; email/language/keywords/
 description/creator remain literal text. Visibility reuses Org options. Native
@@ -17,7 +17,9 @@ source semantics. Internal initial wire supports the optional org-literal tag.
 Pure conversion still owns/fixes all inputs and performs no encoding or I/O.
 Tests add16core/3native/1PDF cases in existing checks; isolated full gate passes
 579default cases, strict compile/lint/aggregates on85unchanged input hashes.
-Candidate remains uncommitted. Native PDF Creator/Keywords limits and font
+Delivery matches the exact accepted candidate and85input hashes; Issue14 is
+independently confirmed CLOSED/COMPLETED. Additional15staged follow-up paths
+are outside this acceptance claim. Native PDF Creator/Keywords limits and font
 exclusion are explicit; optional9integration cases were not rerun.
 Contract and verification: memory/issue14-implementation.md.
 

@@ -1,7 +1,8 @@
 # Issue14 metadata experiments
 
-The subsequent user-selected implementation is locally accepted by full checks;
-current production contract, test coverage and uncommitted delivery state are in
+The subsequent user-selected implementation is accepted, user-committed and
+delivery-verified; Issue14 is independently confirmed completed. Current
+production contract, test coverage and delivery state are in
 memory/issue14-implementation.md. The experiments below retain their original
 feasibility scope, not the later implementation's acceptance provenance.
 

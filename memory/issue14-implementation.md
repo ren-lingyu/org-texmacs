@@ -4,8 +4,9 @@
 
 User selected the reviewed plan after the isolated experiments documented in
 issue14-metadata.md. No font work, release-policy change, ordinary staging,
-project commit or remote issue mutation is selected. Candidate is currently
-uncommitted and locally accepted by the complete isolated default gate below.
+agent project commit or remote issue mutation is selected. User subsequently
+committed the exact accepted candidate; delivery and external closure are
+independently verified below.
 
 Nine Org fields are captured through the existing restricted context adapter,
 external plist validation and EXPORT_* subtree properties. TITLE/SUBTITLE/
@@ -89,5 +90,40 @@ Subject/title/author and ordered visible markers. No font acceptance claim.
 New maintained cases are16core/3native/1PDF in existing suites, not extra checks;
 no prior case deleted. Optional9extension cases were not rerun this task.
 Root lock/flake/index unchanged, no result link or ordinary staging/commit.
-User may review/stage/commit candidate; no external tracking action performed.
+At gate completion the candidate was uncommitted; later user delivery is
+verified below. No agent external tracking action performed.
 No raw archive needed: distilled contract/evidence and current source suffice.
+
+## Staged delivery review and draft
+
+User stages all15paths; all85accepted input blobs match index, no unstaged project
+changes, cached diff whitespace clean. Fresh issue reread has unchanged scope
+and acceptance. Candidate resolves14 including explicit tested native limits;
+user requests Closes footer when resolved. git-maintenance drafts tmp/commit.md:
+feat(document): map Org metadata and abstracts to TeXmacs, with Closes:#14.
+Single coherent feature, no split needed. No runtime rerun for identical inputs.
+Expected project parent:8a2cf380d9f496c592b312b863a70f45f4afbd7b.
+Message SHA256:78eddf61c737213cd20d59e55a33ee2f71f718dba3f9e833e2e3736b8034c9b2.
+Binary full-index staged patch SHA256:
+560e8df5be8cf40e1bc34e73b0dfee32bb988afd973ae524b1bd1de11cdf0cb3.
+These fingerprints support subsequent delivery verification, not GAW semantic IDs.
+
+## Verified user delivery and issue closure
+
+User commits the reviewed15path candidate. Read-only verification establishes
+the expected single parent, exact full-index binary patch, exact approved
+message with Closes:#14, and all85accepted committed input hashes. Delivered
+snapshot is the Issue14 feature commit, associated as a project parent of the
+delivery checkpoint. This association grounds delivery equivalence, not the
+original uncommitted runtime test provenance. No runtime rerun for identical
+bytes. The new commit's reviewed delta is within the established source-history
+retention boundary; its predecessor was already associated by prior memory.
+
+GitHub connector independently confirms Issue14 CLOSED/COMPLETED,
+closed_at/updated_at2026-10-25T17:29:52Z. No agent remote write. Implementation,
+validation, user delivery and external closure are complete.
+
+At delivery review the project index contains15additional staged paths including
+Lisp, tests and Nix composition. No unstaged project changes. These later changes
+are unreviewed/unvalidated here and excluded from the delivered acceptance claim;
+agent did not modify or unstage them. User selects any follow-up task.
