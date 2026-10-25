@@ -1,12 +1,13 @@
-# Configuration and documentation example package review
+# Configuration and documentation example package
 
 ## Selected objective and authority
 
 User requests a buildable configuration/documentation example package, exposed
 through flake packages, with compiled PDFs in out and preferably complete public
-configuration coverage. Current authorization is review and GAW maintenance only:
-no ordinary project edits, implementation, dependency resolution or builds.
-Interpret out as the Nix output directory; exact name/layout remains proposed.
+configuration coverage. Following the review, user explicitly authorizes writing
+the package files only, including separate English/Chinese documents and multiple
+mathematical/figure/table cases. No evaluation, formatting, builds, tests or
+dependency resolution is authorized. Output is the Nix output directory.
 
 User requires complete build isolation, explicitly scoped to the example package
 level. Use ordinary Nix sandboxing and a builder-owned isolated environment;
@@ -103,11 +104,74 @@ Public references:
 https://nix.dev/manual/nix/2.34/command-ref/conf-file.html#conf-sandbox
 https://github.com/texmacs/texmacs/blob/svn_mirror/src/Plugins/Pdf/pdf_hummus_renderer.cpp
 
-## Next design work
+## Files-only implementation, not runtime accepted
 
-Review complete; no ordinary project files changed or commands tested. Next
-implementation plan should select package name, source layout, main document
-versus a small variant set, and a coverage matrix. A single package producing
-a main explanatory PDF plus only necessary variant PDFs is a recommendation,
-not an adopted file count. Implementation and validation need their own user
-authorization. Existing release evidence retains its original input scope.
+User clarifies that the requested graphical functionality means figure/table
+wrappers. Added pkgs/org-texmacs-examples and the explicit flake packages export.
+Added narrowly scoped .gitignore allowances for its Org/BibTeX/README inputs;
+the existing whitelist otherwise hides them from ordinary staging/flake source.
+User requests the package-local explanation use README.org rather than README.md;
+converted the file to Org syntax and updated its installation/ignore paths.
+The overlay uses the matching emacs-with-org-texmacs wrapper. Six independent
+runCommand leaves cover en/zh crossed with guide/mathematics/figures-tables;
+one aggregate copies artifacts under out/<language>/<topic>.
+Each leaf owns fresh HOME/TeXmacs/XDG state and uses packaged executables with
+batch Emacs, no user initialization or default-check/CI wiring. No host font
+import or generic worker changes. Actual sandbox enforcement remains the Nix
+build environment's responsibility.
+
+common.el fixes page settings and extends the request timeout. The guide retains
+generic defaults; article.el changes style, supplies a section-marker headline
+formatter and selects math-only paragraph roots. Both actual configuration
+files are displayed through literal INCLUDE in each document. Build driver
+uses the public preprocessed document provider with explicit BibTeX snapshots,
+then saves .tm and PDF from that same completed document. Each leaf streams
+progress/errors with tee/pipefail and a600second timeout, requires nonempty
+artifacts, and runs pdfinfo during a future authorized build. Inputs/logs/PDF
+metadata inspection are installed beside both artifacts. No such build has run.
+
+Guides cover rich metadata, two ordered abstracts/keywords, citations/footnotes,
+configuration precedence, subtree property illustration, interactive config
+shown without execution and scope limitations. Mathematical notebooks cover
+fractions/radicals/powers/indices/Greek symbols, sums/products/integrals/limits,
+matrices/multiline equations and named definition/theorem/proof/lemma/remark/
+exercise. Figure/table documents cover actual native vector graphics, numbered
+and starred wrappers, Org versus native tables, mathematical native cells,
+captions/references and subsequent counters. Ordinary Org cells intentionally
+contain numbers, since paragraph STM discovery does not enter those cells.
+
+Only source inspection and Git diff/whitespace review performed. Nix/Elisp/native
+syntax, PDF output, Chinese glyphs, typesetting and formatter acceptance remain
+unverified. No generated artifacts, lockfile/index/history changes or changes to
+existing tests/production Lisp. Next: user review of files, then separately
+authorized evaluation/build and visual inspection. Existing release evidence
+retains its original input scope.
+
+## Review of supplied guidance, preceding files-only implementation
+
+User supplies a draft naming org-texmacs-examples and nix build as the sole
+entrypoint (no nix run). Draft requests retained source/config inputs and
+generated .tm/PDF artifacts, no generated artifacts committed; multiple practical
+configuration examples instead of mechanically setting all options or overriding
+package defaults; actual build configuration displayed in the document with
+minimal duplication; non-build mechanisms explained but not executed; readable
+representative mathematics/statements/references/metadata/abstracts; same local
+and CI package entrypoint, limited supplementary integration acceptance and
+useful failure output. It excludes a generic configuration framework, export API
+refactor and mixing example logic into production package builds.
+
+The supplied draft alone was not implementation authorization or acceptance of
+every proposed clause; the later user request explicitly authorizes writing
+files as recorded above. It narrows the earlier exhaustive-coverage
+aspiration to useful representative configuration coverage. Suggested clarifications:
+restore explicit package-level isolation/content-layout reproducibility; define
+out installation layout; derive .tm and PDF from the same completed document
+snapshot without imposing .tm reload as the PDF route; distinguish automated
+artifact checks from visual review and package availability from CI integration.
+Configuration snippets can show the real config file as literal source rather
+than maintain a second copy or execute documentation code blocks.
+
+Source is the user's supplied chat draft, not an inspected repository file.
+Distillation preserves the requirements and review issues; original-byte archival
+has no independent reproduction/evidence value and is unnecessary. No project
+edits, builds or tests performed for this review.

@@ -1,15 +1,18 @@
 # org-texmacs active backlog
 
-## Configuration/documentation example package selected for review
+## Bilingual configuration/documentation example package written
 
 User requests an exported packages example with PDF in out and broad public
 configuration coverage. Package-level complete isolation is mandatory; content
 and layout equivalence suffice, non-body timestamp differences are allowed.
-Static review complete; no implementation or build authorization. Proposed
-independent package sources/driver and configuration coverage matrix are in
-memory/example-package.md. Package name and document/variant layout remain
-design choices. Do not turn this into a default check or release gate, change
-generic worker behavior, or reintroduce font repair.
+User subsequently authorizes files-only implementation, not validation.
+org-texmacs-examples and flake export now written, with six independent bilingual
+guide/math/figure-table builds and .tm/PDF/input/log artifacts. Actual config
+is included as literal document content; practical coverage replaces mechanical
+option enumeration. No evaluation/build/formatter/test run; syntax, rendering,
+Chinese glyphs/layout and formatting remain unverified. Details and next review/
+validation step: memory/example-package.md. Do not turn this into a default check
+or release gate, change generic worker behavior, or reintroduce font repair.
 
 ## Issue14 document information delivered; issue completed
 

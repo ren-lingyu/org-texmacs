@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: isolated configuration/documentation package reviewed
+## Current: bilingual example package written, validation unselected
 
 User selects review of a new example package exposed through flake packages,
 with PDF in out and preferably full public configuration coverage. Complete
@@ -9,15 +9,25 @@ explicit dependencies and fresh runtime state, no generic worker change or
 additional isolation framework. Reproducibility means equal PDF content/layout;
 timestamp metadata may differ, byte identity is not required.
 
-Static review inventories ten Custom settings,24context keys and13subtree
-properties; interactive/load-time settings require examples and explanation,
-not visual PDF proof. Existing worker inherits its caller environment, so the
-new builder owns isolation. Recommend an independent package-owned corpus and
-driver using public document/PDF APIs, explicit packages export, no README/test
-dependency. Names/layout/variant count remain proposed. No automatic default
-check or release blocker; font repair stays excluded. Review and GAW only:
-project/index clean, no implementation, build or dependency resolution.
-Next: select a concrete implementation plan. Details: memory/example-package.md.
+After guidance review, user authorizes writing files only, asking for separate
+English/Chinese documents and multiple math/figure/table cases. Clarifies graphical
+feature means figure/table wrappers. New org-texmacs-examples package and flake
+export written: six independent leaves, en/zh guide/mathematics/figures-tables,
+with shared actual configuration included literally in each document and one
+public document snapshot saved as .tm/PDF. Artifacts/logs/inputs go under
+out/<language>/<topic>. Fresh per-leaf HOME/TeXmacs/XDG state, normal sandbox
+dependency boundary, no generic worker change or host font import. Package's
+future build includes streamed diagnostics, timeout and basic artifact/pdfinfo
+checks. No default-check/app/CI wiring or font repair.
+
+Narrow .gitignore allowances make the new Org/BibTeX/README inputs visible.
+Static source/diff review only; no Nix evaluation, build, formatting, tests or
+dependency resolution. New files remain untracked, flake change unstaged; no
+agent project index/history writes. Native syntax/rendering, Chinese glyphs,
+layout and formatter acceptance await authorized validation. Useful representative
+configuration coverage supersedes mechanical exhaustive settings. No raw archive
+needed; distilled guidance suffices. Next: review files, then separately authorize
+validation. Details: memory/example-package.md.
 
 ## Previous: post-Issue14 HEAD reviewed and README delivery verified
 

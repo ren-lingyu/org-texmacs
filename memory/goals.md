@@ -89,8 +89,10 @@ Full nix flake check is already routine per commit, not an additional release-on
 blocking gate. User now selects review of a standalone configuration/documentation
 example package exposed through packages, with PDFs in out. Package-level complete
 isolation and content/layout reproducibility are required; byte identity is not.
-This does not adopt a release prerequisite, default check or implementation task.
-Details and pending design choices: memory/example-package.md.
+User subsequently authorizes files-only implementation: bilingual multi-document
+org-texmacs-examples package now written, not evaluated/built or accepted. This
+does not adopt a release prerequisite or default check. Validation needs separate
+authorization. Details: memory/example-package.md.
 Chinese font issue and PS route have been removed from blocking scope.
 After the source/package/test refactors, user selected README-only synchronization
 to HEAD without extra release-plan narrative; user committed the reviewed README-only

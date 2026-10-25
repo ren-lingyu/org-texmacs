@@ -95,8 +95,9 @@ package exposed through packages with PDF in out. Package-level complete
 isolation is required; equal PDF content/layout suffices without byte identity.
 Review/design findings: memory/example-package.md. No mandatory representative-
 document release gate, fixed fixture layout or new default check/app is adopted.
-Implementation is not authorized by the review request and is not an implicit
-dependency of version/docs finalization.
+User subsequently authorizes files-only implementation of a bilingual multi-
+document package; files are written without evaluation/build/formatting/tests.
+This work is not an implicit dependency of version/docs finalization.
 
 Completed feature deliveries remain complete; native Chinese-font issue and
 PS->PDF route remain removed/nonblocking. Issue9 stays after0.5.0/before0.6.0,
