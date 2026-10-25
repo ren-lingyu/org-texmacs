@@ -12,36 +12,25 @@
 let
   testFiles = [ ./lisp/extensions.el ];
 in
-runCommand "org-texmacs-integration"
-  {
-    nativeBuildInputs = [
-      coreutils
-      texmacs
-      poppler-utils
-    ];
-    ORG_TEXMACS_TEST_BOOTSTRAP = testSupport.bootstrap;
-    ORG_TEXMACS_TEST_HELPERS = builtins.toJSON [
-      testSupport.common
-      testSupport.native
-      testSupport.pdf
-    ];
-    ORG_TEXMACS_TEST_FILES = builtins.toJSON testFiles;
-    ORG_TEXMACS_TEST_TOOLS = builtins.toJSON [
-      "texmacs"
-      "pdftotext"
-    ];
-    ORG_TEXMACS_TEST_STRICT_TOOLS = "1";
+testSupport.mkErtCheck {
+  inherit runCommand coreutils lib emacs testSupport testFiles;
+  name = "org-texmacs-integration";
+  nativeBuildInputs = [ texmacs poppler-utils ];
+  helpers = [
+    testSupport.common
+    testSupport.native
+    testSupport.pdf
+  ];
+  tools = [ "texmacs" "pdftotext" ];
+  emacsArgs = [
+    "-L"
+    extensionSources.include
+    "-L"
+    extensionSources.organize
+    "-L"
+    extensionSources.blog
+  ];
+  environment = {
     ORG_TEXMACS_TEST_PROGRAM = lib.getExe' texmacs "texmacs";
-  }
-  ''
-    export HOME="$TMPDIR/home"
-    mkdir -p "$HOME" "$out"
-    export ORG_TEXMACS_TEST_NAMES_FILE="$out/test-names.txt"
-    set -o pipefail
-    set +e
-    timeout --kill-after=10s 600s ${lib.getExe' emacs "emacs"} -Q --batch -L ${extensionSources.include} -L ${extensionSources.organize} -L ${extensionSources.blog} \
-      --load ${testSupport.runner} 2>&1 | tee "$out/ert.log"
-    status=$?
-    set -e
-    exit "$status"
-  ''
+  };
+}

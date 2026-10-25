@@ -4,6 +4,14 @@
   pkgs,
   llib,
 }:
+let
+  testSupport = import ./support;
+  pdfSuites = import ./ert-pdf/suites.nix;
+  mkPdfCheck = pkgs.callPackage ./ert-pdf/mk-check.nix {
+    inherit emacs testSupport;
+    pdfInspector = pdfSuites.inspector;
+  };
+in
 llib.tests.mkChecks {
   root = ./.;
   overlayFile = "test-overlay.nix";
@@ -23,7 +31,6 @@ llib.tests.mkChecks {
       python3
       emacsPackages
       ;
-    inherit emacs src;
-    testSupport = import ./support;
+    inherit emacs src testSupport pdfSuites mkPdfCheck;
   };
 }
