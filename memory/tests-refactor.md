@@ -2,6 +2,11 @@
 
 ## Current follow-up: dependency refinement and live ERT logs
 
+User committed the exact reviewed five-driver log patch and full drafted message.
+Readonly verification confirms the expected formatting parent and clean ordinary
+index/worktree. Delivery complete; no runtime rerun for identical bytes. A project
+association grounds this delivery/source review, not original uncommitted testing.
+
 Flake supplies src and the installed Emacs wrapper explicitly; tests obtain
 emacsPackages from pkgs, with the current overlay guaranteeing the match. Lint
 overlay passes final_.emacsPackages.package-lint directly as a test-only library;
@@ -29,6 +34,43 @@ purpose; waits aren't fixed timeout sleeps. Inspection reuse/independent shardin
 are potential follow-ups, not adopted optimizations. No speedup, coverage removal
 or shared-worker change. Long single cases still lack internal progress. No raw
 archive needed; source and these extracted results suffice.
+
+## Optimization proposal: planning only
+
+User requests consideration after log delivery, not implementation or new tests.
+Readonly mapping of all59captured timings to current test declarations gives:
+pdf.el27cases/141.684156s; other six files32cases/89.638816s (document8.238505,
+frontend23.229204, special-blocks56.555332, preprocess1.607353,
+serialization0.000258, worker0.008164). Static scan finds no top-level helper
+definitions in those case files; helpers already live in support. These are one
+run's per-case sums, not measured parallel runtimes.
+
+Recommended small nodes, subject to user selection and new runtime authority:
+1. Extract duplicated Nix ERT execution/logging into a shared constructor with
+   explicit runtime, files, tools, helpers, timeout and suite-specific arguments.
+   Keep patched Org identity vars and optional extension paths; avoid passing the
+   entire support directory into every derivation. This simplifies maintenance,
+   not execution time by itself.
+2. Split PDF execution into two independent leaf checks by the existing file
+   boundary above, retaining ert-pdf as a dependency-only public aggregate.
+   Pass all shared file paths from the parent function; no ../ or inferred roots.
+   Leave case bodies and per-test worker/config isolation intact. Under two
+   available build slots the ideal time lower bound is ~142s versus231s, not an
+   achieved speedup; CPU/memory contention may reduce benefit. Full flake checks
+   could then be limited by native ERT (historical~186s), not PDF alone.
+3. Instrument the longest matrix's generation/reload/inspection stages before
+   optimizing further. Consider explicit local reuse of text/geometry snapshots
+   only while that PDF is unchanged. No global path-only cache: several tests
+   rewrite the same output path. Preserve every comparison/assertion and the
+   native reference/footnote print passes.
+
+Migration acceptance must show all59actual names form the disjoint union of the
+two leaf outputs, with no case lost/repeated, unchanged assertions/fixtures and
+same isolation/failure/timeout semantics. Preserve existing ert/ert-pdf commands,
+live leaf logs and saved name/log outputs. Compare repeated runs under matched
+versions/resources before making performance claims. No permanent duplicate name
+manifest, reduced coverage, shared workers or machine-specific dependency lookup.
+No ordinary files changed or extra runtime commands executed for this plan.
 
 ## Earlier follow-up: personal-nixpkgs composition and checks
 

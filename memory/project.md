@@ -2,6 +2,10 @@
 
 ## Live ERT build logs
 
+User committed the reviewed five-driver change; exact patch/message/expected
+parent and clean ordinary index/worktree verified. This delivery association
+does not turn earlier uncommitted runtime evidence into a committed-state rerun.
+
 All five ERT drivers (core/native/PDF/patched-caption/optional integration) now
 stream combined Emacs stdout/stderr through tee to the Nix log and saved ert.log.
 Explicit pipefail retains pipeline failure and timeout handling. Lint already

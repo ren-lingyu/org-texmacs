@@ -1,5 +1,18 @@
 # org-texmacs active backlog
 
+## Tests optimization review after live-log delivery
+
+User-selected planning is complete; implementation is not selected/authorized.
+Live logs are user-committed and exact delivery verified, ordinary worktree clean.
+Deferred candidates: shared Nix ERT execution constructor; two PDF leaves split
+by existing file ownership (27cases~142s and32cases~90s) under the existing
+ert-pdf aggregate; further matrix phase timing and local unchanged-PDF inspection
+reuse. Two-slot timing is an ideal estimate, not measured performance. Preserve
+all59PDF names/assertions and worker/config/error isolation, explicit dependency
+arguments and no README/ancestor discovery. No shared workers, deleted cases or
+removed native print passes. User may select the next node; details, acceptance
+and resource caveats: tests-refactor.md optimization section.
+
 ## personal-nixpkgs test/check migration implemented and accepted
 
 User-selected follow-up to the delivered test split replaces manual root

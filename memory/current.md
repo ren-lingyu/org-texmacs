@@ -1,13 +1,15 @@
 # org-texmacs current memory
 
-## Current: live ERT logs ready for project delivery
+## Current: live ERT logs delivered; test optimization planning
 
-User requests one GAW checkpoint, then a project commit-message draft. The five
-logging drivers are staged in the ordinary project, no unstaged changes. Do not
-stage or commit ordinary project files. Use git-maintenance for both messages;
-memory checkpoints use chore(memory), not docs by format. Runtime acceptance
-used an uncommitted logging candidate; do not attach a project HEAD merely
-because it is the current base.
+User reports the log change committed and requests GAW update, then tests/
+optimization proposals. Readonly verification confirms the exact five-path patch
+and complete drafted test: stream ERT logs during Nix checks message, expected
+formatting parent and clean ordinary index/worktree. Delivery complete; no rerun
+for identical bytes. A delivery association may ground this verification and
+current source review, not retroactively ground original uncommitted runtime
+acceptance. User authorizes planning, no new implementation/build/test. Use
+git-maintenance for checkpoint messages; chore(memory), not docs by format.
 
 All five ERT drivers (core/native/PDF/patched-caption/optional integration) now
 stream combined stdout/stderr through tee and retain ert.log. Explicit pipefail
@@ -69,9 +71,21 @@ memory/tests-refactor.md. Optional integration remains caller-supplied.
 README references to removed packages.default/#default were previously reported;
 documentation synchronization remains unselected.
 
-Next user action is project review/delivery. Draft from the staged five drivers
-should describe live logs and pipefail, not faster tests or broader validation.
-No ordinary staging/history/external writes selected.
+Current work is readonly optimization design, preserving tests' semantic effect
+and explicit dependency/isolation boundaries. No ordinary edits/staging/history,
+new runtime validation or external writes selected. Evidence and implementation
+proposals must remain distinct.
+
+Planning result: shared Nix ERT constructor for maintenance, then two PDF leaves
+by existing file ownership (pdf.el27cases141.684156s, six other files32cases
+89.638816s), with ert-pdf retained as a non-running aggregate. Existing case
+files contain no top-level helper definitions. The two-slot ideal lower bound
+is~142s versus231s, not a measured speedup; full flake may still be limited by
+native ERT's historical~186s. Further matrix stage timing should precede local
+reuse of unchanged inspections; no global path-only cache or reduced print
+passes/coverage/isolation. Acceptance requires disjoint actual59-case union and
+unchanged semantics. Detailed proposal: memory/tests-refactor.md optimization
+section. Implementation/testing awaits separate selection and authorization.
 
 ## Previous baseline: tests migration/refactor committed and delivery verified
 
