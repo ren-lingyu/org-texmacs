@@ -115,8 +115,7 @@ Org-roam and the three extensions described under [[*Optional real Org extension
 are optional test dependencies, not package runtime requirements.
 
 The Scheme service runs inside TeXmacs; a separate =guile= executable is
-not required to use the package.  The standalone Guile dependency in the
-Nix checks is for their test driver scripts.
+not required to use the package.  Nix test drivers invoke Emacs directly.
 
 * Loading the package
 ** From a source checkout
@@ -152,11 +151,22 @@ This Emacs includes the package and its Lisp dependencies.  The development
 environment also includes TeXmacs.  Evaluate =(require 'org-texmacs)= before
 using the API.
 
-The flake's =packages.default= builds the Lisp package, installs its Scheme
-server file, and sets the default =org-texmacs-program= to TeXmacs's absolute
-Nix store path.  TeXmacs is therefore part of the package's runtime closure;
-the installed package does not depend on finding it in =exec-path=.
-Building this output alone does not configure an existing Emacs installation.
+The flake exposes two named package outputs:
+
+| Output | Contents |
+|--------+----------|
+| =packages.org-texmacs= | Lisp package with the adjacent Scheme service |
+| =packages.emacs= | Emacs with Org TeXmacs and its Lisp dependencies |
+
+The Lisp package sets the default =org-texmacs-program= to TeXmacs's absolute
+Nix store path.  TeXmacs is therefore part of its runtime closure; the installed
+package does not depend on finding it in =exec-path=.  Building
+=packages.org-texmacs= alone does not configure an existing Emacs installation.
+The development shell uses the same Emacs wrapper as =packages.emacs=.
+
+Package definitions live under =pkgs/=, with the Lisp source supplied explicitly
+from =lisp/=.  The flake uses =personal-nixpkgs= for flake, package-overlay and
+test-check composition; its =nixpkgs= input follows the project's =nixpkgs=.
 
 ** With use-package
 Choose one of the following installation paths.  Configure the required Org
@@ -2235,8 +2245,10 @@ Run from the repository root:
 
 #+begin_src sh
   nix flake check --no-write-lock-file
-  nix build --no-link --no-write-lock-file .#default
-  # Run one ERT group, or use checks.x86_64-linux.ert for all three.
+  nix build --no-link --no-write-lock-file .#org-texmacs
+  # Build Emacs with the package and its Lisp dependencies.
+  nix build --no-link --no-write-lock-file .#emacs
+  # Run one ERT group, or use checks.x86_64-linux.ert for all groups.
   nix build --no-link --no-write-lock-file .#checks.x86_64-linux.ert-core
 #+end_src
 
@@ -2252,9 +2264,14 @@ expectations.  Fixed document/session fixtures run against the installed package
 tests do not read or parse this README.  Loading checks require every module
 and the adjacent Scheme service file.  The =ert-core= check covers cases without
 native execution, =ert-native= covers worker/session/serialization behavior,
-and =ert-pdf= covers native PDF rendering and inspection.  =ert= aggregates the
-three results without running their cases again.  Each group can be built
-separately; complete flake checks include every group.
+and PDF cases run in two independent checks: =ert-pdf-render= for the PDF
+rendering suite and =ert-pdf-document= for document, frontend, preprocessing,
+serialization, special-block and worker PDF suites.  Both use the shared native
+PDF helpers and inspection tools.  =ert-pdf= aggregates their logs and test names,
+rejecting duplicate names across the two groups.  =ert= aggregates =ert-core=,
+=ert-native= and =ert-pdf= without running their cases again.  Each group can be
+built separately; complete flake checks include every group.  Nix may schedule
+independent groups concurrently, subject to its build limits.
 Nix checks the current system by default.  These commands may download
 dependencies and write Nix store/cache data; they do not update the lockfile,
 and the build command does not create a =result= link.
@@ -2262,16 +2279,29 @@ and the build command does not create a =result= link.
 The default ERT check uses stock Org and includes direct-AST caption-footnote
 tests.  The separate =caption-inline-footnotes= check builds the locked Org
 9.8.10 with the adjacent test-only patch and exercises the public export pipeline.
-It does not change =packages.default= or the ordinary development environment.
+It does not change =packages.org-texmacs=, =packages.emacs= or the ordinary
+development environment.
 The real extension runner described above requires separately supplied pinned
 extension sources and is not part of the default flake checks.
 
-Checks are composed with =callPackage=.  Project-specific runtimes, source files
-and shared test support enter through explicit Nix arguments; Lisp runners use
-the supplied paths without searching parent directories.  Required test tools
-must be present in the Nix check environment.  Each ERT check has a 600-second
-outer timeout; package-lint has 120 seconds.  Existing per-operation failure and
-cleanup checks retain their own bounds.
+The =tests/default.nix= entry uses =personal-nixpkgs='s =tests.mkChecks= to
+discover =test-overlay.nix= files and compose their =test.nix= drivers through
+=callPackage=.  The optional integration runner has no test overlay and remains
+outside that discovery.  Project-specific runtimes, source files and shared test
+support enter through explicit Nix arguments; Lisp runners use the supplied
+paths without searching parent directories.
+
+The shared =tests/support/mk-ert-check.nix= driver runs ERT in an isolated HOME,
+streams combined output to the Nix build log and saves =ert.log= and
+=test-names.txt= in each ERT result.  Pipeline failure remains a failed check.
+Required test tools must be present in the Nix check environment; missing inputs,
+empty suites and duplicate case registrations are errors.  Each executing ERT
+check has a 600-second outer timeout; package-lint has 120 seconds.  Existing
+per-operation failure and cleanup checks retain their own bounds.
+
+The flake also provides =nix fmt= through treefmt.  Formatting is separate from
+=nix flake check=; the treefmt flake check is disabled.  =README.org= is excluded
+from formatting.
 
 Git flake inputs omit untracked files.  When checking new files before staging,
 use an explicit =path:.= flake input, such as
