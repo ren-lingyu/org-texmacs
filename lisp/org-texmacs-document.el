@@ -301,23 +301,43 @@ or nested list/string.  No source buffer is retained."
  (file-paths nil :read-only t))
 
 (defconst org-texmacs--document-languages
-  '(("en" . "english") ("en-us" . "english") ("en-gb" . "british")
-    ("zh" . "chinese") ("zh-cn" . "chinese") ("zh-tw" . "taiwanese")
-    ("bg" . "bulgarian") ("hr" . "croatian") ("cs" . "czech")
-    ("da" . "danish") ("nl" . "dutch") ("eo" . "esperanto")
-    ("fi" . "finnish") ("fr" . "french") ("de" . "german")
-    ("el" . "greek") ("hu" . "hungarian") ("it" . "italian")
-    ("ja" . "japanese") ("ko" . "korean") ("pl" . "polish")
-    ("pt" . "portuguese") ("ro" . "romanian") ("ru" . "russian")
-    ("sk" . "slovak") ("sl" . "slovene") ("es" . "spanish")
-    ("sv" . "swedish") ("uk" . "ukrainian"))
+  '(("en" . "english")
+    ("en-us" . "english")
+    ("en-gb" . "british")
+    ("zh" . "chinese")
+    ("zh-cn" . "chinese")
+    ("zh-tw" . "taiwanese")
+    ("bg" . "bulgarian")
+    ("hr" . "croatian")
+    ("cs" . "czech")
+    ("da" . "danish")
+    ("nl" . "dutch")
+    ("eo" . "esperanto")
+    ("fi" . "finnish")
+    ("fr" . "french")
+    ("de" . "german")
+    ("el" . "greek")
+    ("hu" . "hungarian")
+    ("it" . "italian")
+    ("ja" . "japanese")
+    ("ko" . "korean")
+    ("pl" . "polish")
+    ("pt" . "portuguese")
+    ("ro" . "romanian")
+    ("ru" . "russian")
+    ("sk" . "slovak")
+    ("sl" . "slovene")
+    ("es" . "spanish")
+    ("sv" . "swedish")
+    ("uk" . "ukrainian"))
   "Explicit Org language codes to TeXmacs 2.1.5 language identifiers.")
 
 (defun org-texmacs--document-metadata-present-p (info key)
   "Return whether INFO explicitly supplies metadata KEY."
   (if (plist-member info :texmacs-metadata-present)
-      (member (org-texmacs--context-metadata-name key)
-              (plist-get info :texmacs-metadata-present))
+      (member
+       (org-texmacs--context-metadata-name key)
+       (plist-get info :texmacs-metadata-present))
     (plist-member info key)))
 
 (defun org-texmacs--document-initial-metadata (initial info)
@@ -325,23 +345,35 @@ or nested list/string.  No source buffer is retained."
 Return (INITIAL LITERAL-KEYS).  Preserve native defaults when no explicit Org
 value exists; explicit nil/empty removes its corresponding default."
   (let (literal)
-    (dolist (field '((:language . "language") (:description . "global-subject")))
-      (let* ((key (car field)) (native (cdr field))
-             (explicit (org-texmacs--document-metadata-present-p info key))
+    (dolist (field
+             '((:language . "language")
+               (:description . "global-subject")))
+      (let* ((key (car field))
+             (native (cdr field))
+             (explicit
+              (org-texmacs--document-metadata-present-p info key))
              (value (plist-get info key)))
         (when (or explicit (and value (not (assoc native initial))))
           (unless (or (null value) (stringp value))
-            (signal 'org-texmacs-document-error (list "Invalid plain metadata" key)))
+            (signal 'org-texmacs-document-error
+                    (list "Invalid plain metadata" key)))
           (setq initial (assoc-delete-all native initial))
           (when (and value (org-string-nw-p value))
             (when (eq key :language)
-              (setq value (cdr (assoc (downcase (string-trim value))
-                                      org-texmacs--document-languages)))
+              (setq value
+                    (cdr
+                     (assoc
+                      (downcase (string-trim value))
+                      org-texmacs--document-languages)))
               (unless value
                 (signal 'org-texmacs-document-error
-                        (list "Unsupported Org language" (plist-get info key)))))
-            (push (cons (substring-no-properties native)
-                        (substring-no-properties value)) initial)
+                        (list
+                         "Unsupported Org language"
+                         (plist-get info key)))))
+            (push (cons
+                   (substring-no-properties native)
+                   (substring-no-properties value))
+                  initial)
             (push (substring-no-properties native) literal)))))
     (list initial literal)))
 
@@ -1470,12 +1502,17 @@ for consumers.  Final handlers must preserve contents identity and provenance."
        (keyword-positions
         (if (plist-member info :texmacs-keywords-positional)
             (plist-get info :texmacs-keywords-positional)
-          (org-element-map ast 'keyword
-            (lambda (node) (equal (org-element-property :key node) "KEYWORDS"))
-            nil t)))
+          (org-element-map
+           ast 'keyword
+           (lambda (node)
+             (equal (org-element-property :key node) "KEYWORDS"))
+           nil t)))
        (citation-plan nil))
-    (let ((merged (org-texmacs--document-initial-metadata initial info)))
-      (setq initial (car merged) initial-literal-keys (cadr merged)))
+    (let ((merged
+           (org-texmacs--document-initial-metadata initial info)))
+      (setq
+       initial (car merged)
+       initial-literal-keys (cadr merged)))
     (when (org-texmacs-resolution-failure resolution)
       (signal 'org-texmacs-document-error
               (org-texmacs-resolution-failure resolution)))
@@ -2059,57 +2096,96 @@ for consumers.  Final handlers must preserve contents identity and provenance."
        (key)
        (let ((value (plist-get info key)))
          (unless (or (null value) (stringp value))
-           (signal 'org-texmacs-document-error (list "Invalid plain metadata" key)))
-         (and value (org-string-nw-p value) (substring-no-properties value))))
+           (signal 'org-texmacs-document-error
+                   (list "Invalid plain metadata" key)))
+         (and value
+              (org-string-nw-p value)
+              (substring-no-properties value))))
       (visible
        (key default)
-       (let ((value (if (plist-member info key) (plist-get info key) default)))
+       (let ((value
+              (if (plist-member info key)
+                  (plist-get info key)
+                default)))
          (unless (memq value '(nil t))
-           (signal 'org-texmacs-document-error (list "Invalid metadata visibility" key)))
+           (signal 'org-texmacs-document-error
+                   (list "Invalid metadata visibility" key)))
          value))
       (metadata
        (ancestors)
        (let ((present
-              (cl-some (lambda (key)
-                         (org-texmacs--document-metadata-present-p info key))
-                       org-texmacs--context-rich-metadata))
-             parts author)
+              (cl-some
+               (lambda (key)
+                 (org-texmacs--document-metadata-present-p info key))
+               org-texmacs--context-rich-metadata))
+             parts
+             author)
          (when (and present (visible :with-title t))
-           (dolist (field '((:title . doc-title) (:subtitle . doc-subtitle)))
+           (dolist (field
+                    '((:title . doc-title)
+                      (:subtitle . doc-subtitle)))
              (when (plist-get info (car field))
-               (push (metadata-field (cdr field) (plist-get info (car field))
-                                     'title ancestors) parts))))
-         (when (and present (visible :with-author t) (plist-get info :author))
-           (push (metadata-field 'author-name (plist-get info :author)
-                                 'author ancestors) author))
+               (push (metadata-field
+                      (cdr field)
+                      (plist-get info (car field))
+                      'title
+                      ancestors)
+                     parts))))
+         (when (and present
+                    (visible :with-author t)
+                    (plist-get info :author))
+           (push (metadata-field
+                  'author-name
+                  (plist-get info :author)
+                  'author
+                  ancestors)
+                 author))
          (when (and (visible :with-email nil) (plain-metadata :email))
            (push (org-texmacs--document-pack
                   'author-email
-                  (list (org-texmacs--document-create :body (plain-metadata :email))))
+                  (list
+                   (org-texmacs--document-create
+                    :body (plain-metadata :email))))
                  author))
          (when author
            (push (org-texmacs--document-pack
                   'doc-author
-                  (list (org-texmacs--document-pack 'author-data (nreverse author))))
+                  (list
+                   (org-texmacs--document-pack
+                    'author-data (nreverse author))))
                  parts))
-         (when (and present (visible :with-date t) (plist-get info :date))
-           (push (metadata-field 'doc-date (plist-get info :date) 'date ancestors) parts))
-         (when (and (visible :with-creator nil) (plain-metadata :creator))
+         (when (and present
+                    (visible :with-date t)
+                    (plist-get info :date))
+           (push (metadata-field
+                  'doc-date (plist-get info :date) 'date ancestors)
+                 parts))
+         (when (and (visible :with-creator nil)
+                    (plain-metadata :creator))
            (push (org-texmacs--document-pack
                   'doc-note
-                  (list (org-texmacs--document-create
-                         :body (concat "Created by: " (plain-metadata :creator)))))
+                  (list
+                   (org-texmacs--document-create
+                    :body
+                    (concat
+                     "Created by: " (plain-metadata :creator)))))
                  parts))
-         (and parts (list (org-texmacs--document-pack 'doc-data (nreverse parts))))))
+         (and parts
+              (list
+               (org-texmacs--document-pack
+                'doc-data (nreverse parts))))))
       (keyword-value
        (value)
        (unless (or (null value) (stringp value))
-         (signal 'org-texmacs-document-error '("Invalid keyword text")))
+         (signal 'org-texmacs-document-error
+                 '("Invalid keyword text")))
        (when (and value (org-string-nw-p value))
-         (list (org-texmacs--document-pack
-                'abstract-keywords
-                (list (org-texmacs--document-create
-                       :body (substring-no-properties value)))))))
+         (list
+          (org-texmacs--document-pack
+           'abstract-keywords
+           (list
+            (org-texmacs--document-create
+             :body (substring-no-properties value)))))))
       (relative-level
        (node)
        (let ((level (org-element-property :level node)))
@@ -2812,20 +2888,33 @@ for consumers.  Final handlers must preserve contents identity and provenance."
            (when keyword-positions
              (keyword-value (org-element-property :value node))))
           ((and (eq type 'special-block)
-                (equal (downcase (org-element-property :type node)) "abstract"))
+                (equal
+                 (downcase (org-element-property :type node))
+                 "abstract"))
            (let ((parameters (org-element-property :parameters node)))
              (unless (or (null parameters)
-                         (and (stringp parameters) (not (org-string-nw-p parameters))))
-               (org-texmacs--document-fail node "Abstract parameters are unsupported")))
-           (let ((contents (blocks (org-element-contents node) 'special-block ancestors)))
-             (list (org-texmacs--document-pack
-                    'abstract-data
-                    (list (org-texmacs--document-pack
-                           'abstract
-                           (list (org-texmacs--document-pack
-                                  'document
-                                  (or contents
-                                      (list (org-texmacs--document-create :body "")))))))))))
+                         (and (stringp parameters)
+                              (not (org-string-nw-p parameters))))
+               (org-texmacs--document-fail
+                node "Abstract parameters are unsupported")))
+           (let ((contents
+                  (blocks
+                   (org-element-contents node)
+                   'special-block
+                   ancestors)))
+             (list
+              (org-texmacs--document-pack
+               'abstract-data
+               (list
+                (org-texmacs--document-pack
+                 'abstract
+                 (list
+                  (org-texmacs--document-pack
+                   'document
+                   (or
+                    contents
+                    (list
+                     (org-texmacs--document-create :body "")))))))))))
           ((eq type 'special-block)
            (let* ((tag (org-texmacs--document-statement-tag node))
                   (handler

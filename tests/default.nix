@@ -31,6 +31,12 @@ llib.tests.mkChecks {
       python3
       emacsPackages
       ;
-    inherit emacs src testSupport pdfSuites mkPdfCheck;
+    inherit
+      emacs
+      src
+      testSupport
+      pdfSuites
+      mkPdfCheck
+      ;
   };
 }

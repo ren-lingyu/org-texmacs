@@ -13,15 +13,28 @@ let
   testFiles = [ ./lisp/extensions.el ];
 in
 testSupport.mkErtCheck {
-  inherit runCommand coreutils lib emacs testSupport testFiles;
+  inherit
+    runCommand
+    coreutils
+    lib
+    emacs
+    testSupport
+    testFiles
+    ;
   name = "org-texmacs-integration";
-  nativeBuildInputs = [ texmacs poppler-utils ];
+  nativeBuildInputs = [
+    texmacs
+    poppler-utils
+  ];
   helpers = [
     testSupport.common
     testSupport.native
     testSupport.pdf
   ];
-  tools = [ "texmacs" "pdftotext" ];
+  tools = [
+    "texmacs"
+    "pdftotext"
+  ];
   emacsArgs = [
     "-L"
     extensionSources.include

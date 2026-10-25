@@ -33,7 +33,14 @@ let
   testFiles = [ ./lisp/captions.el ];
 in
 testSupport.mkErtCheck {
-  inherit runCommand coreutils lib emacs testSupport testFiles;
+  inherit
+    runCommand
+    coreutils
+    lib
+    emacs
+    testSupport
+    testFiles
+    ;
   name = "org-texmacs-caption-inline-footnotes";
   nativeBuildInputs = [ texmacs ];
   helpers = [

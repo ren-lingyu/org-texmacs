@@ -19,7 +19,14 @@ let
   ];
 in
 testSupport.mkErtCheck {
-  inherit runCommand coreutils lib emacs testSupport testFiles;
+  inherit
+    runCommand
+    coreutils
+    lib
+    emacs
+    testSupport
+    testFiles
+    ;
   name = "org-texmacs-ert-core";
   helpers = [
     testSupport.common

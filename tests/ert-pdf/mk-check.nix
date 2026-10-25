@@ -11,7 +11,15 @@
 }:
 { name, testFiles }:
 testSupport.mkErtCheck {
-  inherit runCommand coreutils lib name emacs testSupport testFiles;
+  inherit
+    runCommand
+    coreutils
+    lib
+    name
+    emacs
+    testSupport
+    testFiles
+    ;
   nativeBuildInputs = [
     texmacs
     poppler-utils

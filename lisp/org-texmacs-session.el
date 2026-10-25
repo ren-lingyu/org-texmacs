@@ -295,7 +295,8 @@ base.  Return style, initial, body and STM-path arguments without a process."
   (let ((body nil)
         (style nil)
         (initial nil)
-        (literal-keys (org-texmacs-document-initial-literal-keys document))
+        (literal-keys
+         (org-texmacs-document-initial-literal-keys document))
         (paths (org-texmacs-document-stm-paths document)))
     (condition-case err
         (setq body
@@ -310,11 +311,15 @@ base.  Return style, initial, body and STM-path arguments without a process."
       (org-texmacs-document-error
        (signal 'org-texmacs-encoding-error (cdr err))))
     (unless (and (proper-list-p literal-keys)
-                 (cl-every (lambda (key) (and (stringp key) (assoc key initial)))
-                           literal-keys)
+                 (cl-every
+                  (lambda (key)
+                    (and (stringp key) (assoc key initial)))
+                  literal-keys)
                  (= (length literal-keys)
-                    (length (delete-dups (copy-sequence literal-keys)))))
-      (signal 'org-texmacs-encoding-error '("Invalid initial literal provenance")))
+                    (length
+                     (delete-dups (copy-sequence literal-keys)))))
+      (signal 'org-texmacs-encoding-error
+              '("Invalid initial literal provenance")))
     (unless (and (consp body)
                  (eq (car body) 'document)
                  (proper-list-p paths))
@@ -378,7 +383,9 @@ base.  Return style, initial, body and STM-path arguments without a process."
                            (org-texmacs--scheme-string (car entry))
                            " "
                            (wire (cdr entry))
-                           (if (member (car entry) literal-keys) " org-literal" "")
+                           (if (member (car entry) literal-keys)
+                               " org-literal"
+                             "")
                            ")"))
                         initial
                         " ")

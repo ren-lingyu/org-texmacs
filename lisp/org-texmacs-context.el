@@ -15,7 +15,8 @@
 (require 'org-texmacs-source)
 (require 'ox)
 
-(defconst org-texmacs--context-rich-metadata '(:title :subtitle :author :date)
+(defconst org-texmacs--context-rich-metadata
+  '(:title :subtitle :author :date)
   "Fields owned as parsed Org secondary strings.")
 
 (defconst org-texmacs--context-plain-metadata
@@ -24,8 +25,9 @@
 
 (defun org-texmacs--context-metadata-keys ()
   "Return all supported metadata keys."
-  (append org-texmacs--context-rich-metadata
-          org-texmacs--context-plain-metadata))
+  (append
+   org-texmacs--context-rich-metadata
+   org-texmacs--context-plain-metadata))
 
 (defun org-texmacs--context-metadata-name (key)
   "Return the source keyword for metadata KEY."
@@ -499,8 +501,11 @@ standard collector result shape for completeness."
      ((add
        (key value)
        (when (or (member key unique)
-                 (member key (mapcar #'org-texmacs--context-metadata-name
-                                     (org-texmacs--context-metadata-keys)))
+                 (member
+                  key
+                  (mapcar
+                   #'org-texmacs--context-metadata-name
+                   (org-texmacs--context-metadata-keys)))
                  (org-string-nw-p value))
          (let ((entry (assoc-string key alist t))
                (value
@@ -612,8 +617,10 @@ away.  Do not discover TeXmacs fragments in this document-wide metadata."
     (signal 'org-texmacs-document-error
             '("Invalid supported Org document options")))
   (dolist (key org-texmacs--context-plain-metadata)
-    (unless (or (null (plist-get info key)) (stringp (plist-get info key)))
-      (signal 'org-texmacs-document-error (list "Invalid plain metadata" key))))
+    (unless (or (null (plist-get info key))
+                (stringp (plist-get info key)))
+      (signal 'org-texmacs-document-error
+              (list "Invalid plain metadata" key))))
   info)
 
 (defun org-texmacs--context-prune
@@ -954,8 +961,10 @@ Keep global declarations in INFO; body dependencies are restored separately."
              (plist-get info :texmacs-metadata-present))))
       (dolist (key (org-texmacs--context-metadata-keys))
         (when (plist-member overrides key)
-          (cl-pushnew (org-texmacs--context-metadata-name key)
-                      metadata :test #'equal)))
+          (cl-pushnew
+           (org-texmacs--context-metadata-name key)
+           metadata
+           :test #'equal)))
       (setq info
             (org-combine-plists
              info
@@ -1114,8 +1123,10 @@ while retaining any subtree configuration.  Parse only the private snapshot."
          (mapcar
           #'car
           (org-texmacs--context-keywords
-           ast islands (mapcar #'org-texmacs--context-metadata-name
-                              (org-texmacs--context-metadata-keys))))))
+           ast islands
+           (mapcar
+            #'org-texmacs--context-metadata-name
+            (org-texmacs--context-metadata-keys))))))
        (info
         (plist-put
          (plist-put
@@ -1226,14 +1237,19 @@ while retaining any subtree configuration.  Parse only the private snapshot."
                     (org-texmacs--native-body-blocks ast))
                    islands)))))
        (_ (org-texmacs--context-prune ast islands info t))
-       (_ (setq info
-                (plist-put info :texmacs-keywords-positional
-                           (and (not subtree-position) (not region)
-                                (org-element-map ast 'keyword
-                                  (lambda (node)
-                                    (equal (org-element-property :key node)
-                                           "KEYWORDS"))
-                                  nil t)))))
+       (_
+        (setq
+         info
+         (plist-put
+          info
+          :texmacs-keywords-positional
+          (and (not subtree-position)
+               (not region)
+               (org-element-map
+                ast 'keyword
+                (lambda (node)
+                  (equal (org-element-property :key node) "KEYWORDS"))
+                nil t)))))
        (_
         (org-texmacs--context-preserve-footnotes
          ast islands definitions info))

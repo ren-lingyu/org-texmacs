@@ -649,7 +649,8 @@
 (ert-deftest
     org-texmacs-file-links-preserve-raw-targets-and-frozen-base
     ()
-  (let ((org-export-default-language "en") input)
+  (let ((org-export-default-language "en")
+        input)
     (with-temp-buffer
       (org-mode)
       (setq default-directory "/source/resources/")

@@ -23,7 +23,14 @@ let
   ];
 in
 testSupport.mkErtCheck {
-  inherit runCommand coreutils lib emacs testSupport testFiles;
+  inherit
+    runCommand
+    coreutils
+    lib
+    emacs
+    testSupport
+    testFiles
+    ;
   name = "org-texmacs-ert-native";
   nativeBuildInputs = [ texmacs ];
   helpers = [
