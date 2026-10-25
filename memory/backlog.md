@@ -1,5 +1,19 @@
 # org-texmacs active backlog
 
+## Issue14 metadata audit: experiments accepted, implementation unselected
+
+https://github.com/ren-lingyu/org-texmacs/issues/14 requests coherent support for
+TITLE/SUBTITLE/AUTHOR/DATE/LANGUAGE/DESCRIPTION/KEYWORDS, native representations,
+precedence with external options/style/initial, explicit language mapping and
+unsupported-value tests/documentation. Readonly review finds title/author/date
+already supported; others require capture/ownership/lowering/native-target audit.
+Native Chinese font problem remains outside exporter responsibility; metadata
+language support must not claim to repair it. User-authorized isolated flake gate
+passes72assertions/10PDFs. Subtitle/keywords native candidates work; keywords do
+not require an empty abstract container. Language persistence is not identifier
+validity; DESCRIPTION target remains unresolved. No production implementation
+selected. Details and retention assessment: memory/issue14-metadata.md.
+
 ## Tests optimization review after live-log delivery
 
 First two user-selected nodes are implemented, accepted and delivery-verified:
