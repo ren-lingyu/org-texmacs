@@ -1,17 +1,19 @@
 # org-texmacs active backlog
 
-## Bilingual configuration/documentation example package written
+## Literate bilingual documentation package written, not validated
 
 User requests an exported packages example with PDF in out and broad public
 configuration coverage. Package-level complete isolation is mandatory; content
 and layout equivalence suffice, non-body timestamp differences are allowed.
 User subsequently authorizes files-only implementation, not validation.
-org-texmacs-examples and flake export now written, with six independent bilingual
-guide/math/figure-table builds and .tm/PDF/input/log artifacts. Actual config
-is included as literal document content; practical coverage replaces mechanical
-option enumeration. No evaluation/build/formatter/test run; syntax, rendering,
-Chinese glyphs/layout and formatting remain unverified. Details and next review/
-validation step: memory/example-package.md. Do not turn this into a default check
+User renames this to org-texmacs-documents: canonical docs/ input passes explicitly
+as docs from flake fileset through the package overlay. Six bilingual guide/math/
+figure-table builds use real INCLUDE chapters and Org-derived configuration/
+bibliography; driver stays in pkgs, no separate README. Practical coverage replaces
+mechanical option enumeration; native BibTeX type/concat/crossref behavior is shown.
+No evaluation/tangle/build/formatter/test run; syntax, rendering, Chinese glyphs/
+layout and formatting remain unverified. Details and next review/validation step:
+memory/documents-package.md. Do not turn this into a default check
 or release gate, change generic worker behavior, or reintroduce font repair.
 
 ## Issue14 document information delivered; issue completed

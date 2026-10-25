@@ -89,10 +89,13 @@ Full nix flake check is already routine per commit, not an additional release-on
 blocking gate. User now selects review of a standalone configuration/documentation
 example package exposed through packages, with PDFs in out. Package-level complete
 isolation and content/layout reproducibility are required; byte identity is not.
-User subsequently authorizes files-only implementation: bilingual multi-document
-org-texmacs-examples package now written, not evaluated/built or accepted. This
+User authorizes files-only implementation of bilingual documentation and
+subsequently selects org-texmacs-documents, explicit docs parameter and
+literate Org configuration/bibliography with real INCLUDE chapter composition.
+Package files are written, not evaluated/tangled/built or accepted. This
 does not adopt a release prerequisite or default check. Validation needs separate
-authorization. Details: memory/example-package.md.
+authorization. Details: memory/documents-package.md. New prose uses ASCII
+punctuation per user preference, including commas instead of ideographic commas.
 Chinese font issue and PS route have been removed from blocking scope.
 After the source/package/test refactors, user selected README-only synchronization
 to HEAD without extra release-plan narrative; user committed the reviewed README-only

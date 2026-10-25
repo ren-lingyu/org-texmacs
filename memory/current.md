@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: bilingual example package written, validation unselected
+## Current: literate bilingual documentation package written, not validated
 
 User selects review of a new example package exposed through flake packages,
 with PDF in out and preferably full public configuration coverage. Complete
@@ -9,25 +9,29 @@ explicit dependencies and fresh runtime state, no generic worker change or
 additional isolation framework. Reproducibility means equal PDF content/layout;
 timestamp metadata may differ, byte identity is not required.
 
-After guidance review, user authorizes writing files only, asking for separate
-English/Chinese documents and multiple math/figure/table cases. Clarifies graphical
-feature means figure/table wrappers. New org-texmacs-examples package and flake
-export written: six independent leaves, en/zh guide/mathematics/figures-tables,
-with shared actual configuration included literally in each document and one
-public document snapshot saved as .tm/PDF. Artifacts/logs/inputs go under
-out/<language>/<topic>. Fresh per-leaf HOME/TeXmacs/XDG state, normal sandbox
-dependency boundary, no generic worker change or host font import. Package's
-future build includes streamed diagnostics, timeout and basic artifact/pdfinfo
-checks. No default-check/app/CI wiring or font repair.
+User authorizes files-only implementation, then selects org-texmacs-documents
+as real documentation rather than a separate example package. docs/ holds
+bilingual guide/math/figure-table Org sources and composable guide chapters.
+Configuration .el and bibliography .bib derive from canonical Org by tangling;
+only explicit build configuration is loaded, interactive snippets stay inert.
+Driver stays in pkgs/org-texmacs-documents, not docs. No package README; build
+instructions live in the guides. User explicitly selects docs argument through
+flake fileset -> pkgs extraArgs -> overlay -> package. No parent traversal or
+source-location inference; driver receives paths/work directory explicitly.
 
-Narrow .gitignore allowances make the new Org/BibTeX/README inputs visible.
-Static source/diff review only; no Nix evaluation, build, formatting, tests or
-dependency resolution. New files remain untracked, flake change unstaged; no
-agent project index/history writes. Native syntax/rendering, Chinese glyphs,
-layout and formatter acceptance await authorized validation. Useful representative
-configuration coverage supersedes mechanical exhaustive settings. No raw archive
-needed; distilled guidance suffices. Next: review files, then separately authorize
-validation. Details: memory/example-package.md.
+Six isolated leaf builds retain one public completed document for both .tm/PDF;
+outputs/Org inputs/derived files/logs go under out/<language>/<topic>. Bibliography
+includes previously supported string concatenation, @online fallback and explicit
+crossref parent; native limitations are documented. Existing source ignore rules
+suffice; all newly added exemptions removed. User prefers ASCII punctuation in
+all new prose, Chinese enumeration commas become commas; documents converted.
+
+Static source/diff/search review only, no evaluation/tangle/build/format/tests or
+dependency resolution. New docs/package files untracked; flake and pkgs/default
+unstaged; no agent project index/history writes. Syntax, tangle, native rendering,
+Chinese glyphs, layout and formatting unverified. No default checks/apps/CI
+changes or font repair. No raw archive need. Next: user file review, then separate
+validation authorization. Details: memory/documents-package.md.
 
 ## Previous: post-Issue14 HEAD reviewed and README delivery verified
 

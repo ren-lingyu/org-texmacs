@@ -93,8 +93,9 @@ Latest accepted553stock/6patched/full checks retain their actual baseline scope.
 User now selects review of a standalone configuration/documentation example
 package exposed through packages with PDF in out. Package-level complete
 isolation is required; equal PDF content/layout suffices without byte identity.
-Review/design findings: memory/example-package.md. No mandatory representative-
-document release gate, fixed fixture layout or new default check/app is adopted.
+Current design: memory/documents-package.md, org-texmacs-documents with explicit
+docs source and literate configuration/bibliography. No mandatory representative-
+document release gate or new default check/app is adopted.
 User subsequently authorizes files-only implementation of a bilingual multi-
 document package; files are written without evaluation/build/formatting/tests.
 This work is not an implicit dependency of version/docs finalization.
