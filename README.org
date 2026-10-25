@@ -102,10 +102,9 @@ or existing sessions.  See [[*Preparing a document result][Preparing a document 
 - TeXmacs with headless mode (=-H=) and its embedded Scheme runtime.
 - Unix-domain socket support in both Emacs and TeXmacs.
 
-The implementation has been tested on =x86_64-linux= with Emacs 31.1,
-Org 9.8.10 and TeXmacs 2.1.5 from the project flake and lockfile.  This locked
-environment is the development and regression baseline; an existing local Org
-installation does not select the project's dependency versions.  The package's
+Recorded regressions on =x86_64-linux= used Emacs 31.1, Org 9.8.10 and
+TeXmacs 2.1.5.  Nix selects dependency revisions from the project's =flake.lock=;
+an existing local Org installation does not select those versions.  The package's
 Org 9.8 minimum has passed a separate API existence/signature check and strict
 compilation of all production Lisp modules with Emacs 31.1.  Complete ERT and
 native behavior regressions remain validated on Org 9.8.10; they have not been
@@ -2385,9 +2384,9 @@ empty suites and duplicate case registrations are errors.  Each executing ERT
 check has a 600-second outer timeout; package-lint has 120 seconds.  Existing
 per-operation failure and cleanup checks retain their own bounds.
 
-The flake also provides =nix fmt= through treefmt.  Formatting is separate from
-=nix flake check=; the treefmt flake check is disabled.  =README.org= is excluded
-from formatting.
+The flake provides =nix fmt= through treefmt to apply the configured formatters.
+=nix flake check= also includes the treefmt formatting check.  =README.org= is
+excluded from formatting.
 
 Git flake inputs omit untracked files.  When checking new files before staging,
 use an explicit =path:.= flake input, such as
