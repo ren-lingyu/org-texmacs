@@ -17,8 +17,9 @@ validated without testing font availability. Final full gate passes579default
 cases, strict compilation/lint/aggregates;85root/copy inputs unchanged afterward.
 User commits the exact reviewed15path candidate; expected parent/patch/message/
 85inputs match. GitHub independently confirms CLOSED/COMPLETED at
-2026-10-25T17:29:52Z. No agent project commit or external write. Additional15
-staged follow-up paths are unreviewed and excluded from this accepted delivery.
+2026-10-25T17:29:52Z. No agent project commit or external write. Subsequent
+committed formatting and flake-input/check updates are separately reviewed in
+post-issue14-flake.md and excluded from this original runtime acceptance.
 Font work remains excluded. Contract/evidence: issue14-implementation.md;
 preceding feasibility evidence: issue14-metadata.md.
 

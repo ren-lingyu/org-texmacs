@@ -1,6 +1,24 @@
 # org-texmacs current memory
 
-## Current: Issue14 delivered and independently confirmed closed
+## Current: post-Issue14 HEAD reviewed; README synchronization pending delivery
+
+User commits formatting, enables treefmt.flakeCheck=true and refreshes the two
+existing direct flake inputs nixpkgs/personal-nixpkgs. Intake project/index clean.
+Read-only8Lisp token comparisons preserve code/string tokens;7Nix diffs show
+formatting only. Full manifest/lock read confirms follows/transitive graph stays.
+No runtime/evaluation/formatting check performed at these new inputs;579-case
+Issue14 acceptance remains scoped to its original fixed candidate.
+
+Authorized README-only patch corrects the disabled treefmt-check statement and
+describes prior runtime versions as recorded regressions rather than new-pin
+acceptance. README remains excluded from formatting. Two-hunk diff/claims checked
+against HEAD; whitespace clean, README is the only unstaged ordinary change.
+No ordinary index/history writes, tests, dependency resolution or source edits.
+Earlier15staged paths are now committed/reviewed formatting, no pending index.
+User may review/commit README or select further work; no automatic test task.
+Details and provenance: memory/post-issue14-flake.md.
+
+## Previous: Issue14 delivered and independently confirmed closed
 
 User commits the exact reviewed15path Issue14 candidate. Read-only verification
 matches the expected single parent, complete binary patch, approved feat(document)
@@ -18,10 +36,10 @@ gate passes573stock+6patched=579default cases, strict compile/lint/aggregates,
 including two-style .tm reload/PDF inspection. Optional9integration cases not
 rerun; native PDF Creator/Keywords and font exclusions remain explicit.
 
-Project index currently contains15additional staged Lisp/test/Nix paths, with no
-unstaged project changes. They are unreviewed/unvalidated follow-up state here,
-excluded from the delivered acceptance claim and preserved untouched. User
-selects next work. Contract/evidence: memory/issue14-implementation.md.
+At that delivery review the project index contained15additional staged paths,
+excluded from the delivered acceptance claim. User subsequently commits those
+as formatting, reviewed in memory/post-issue14-flake.md. Issue14 contract and
+original runtime evidence remain in memory/issue14-implementation.md.
 
 ## Previous: README synchronization committed and verified
 

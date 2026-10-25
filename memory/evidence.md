@@ -1,5 +1,16 @@
 # org-texmacs durable evidence
 
+## Post-Issue14 HEAD review, no new runtime gate
+
+User commits15formatting paths, enables treefmt flake check and updates the two
+direct locked inputs. Bounded8Lisp code/string token comparisons match;
+all7Nix diffs are formatting layout. Complete manifest/lock review shows only
+nixpkgs/personal-nixpkgs revision/hash/time changes; follows and transitive nodes
+unchanged. No code evaluation, formatter, build or test run at this new HEAD.
+README-only authorized patch corrects enabled formatting checks and scopes
+recorded runtime versions historically. Prior579-case evidence remains bound
+to original Issue14 inputs. Details: memory/post-issue14-flake.md.
+
 ## Issue14 document information accepted and user delivery verified
 
 User-selected implementation follows independent Org/native probes. Authorized
@@ -14,8 +25,9 @@ All85root/copy input hashes unchanged after final gate; root flake/lock/index
 unchanged at the gate. User subsequently commits the exact15path candidate;
 expected parent/patch/message and85committed inputs match. GitHub independently
 confirms Issue14 CLOSED/COMPLETED at2026-10-25T17:29:52Z. No agent remote write
-or runtime rerun. Additional15staged paths are unreviewed and not part of this
-accepted delivery. Optional9extension cases not rerun, no font claim.
+or runtime rerun. At delivery review15additional staged paths were outside this
+acceptance; later committed formatting/flake updates are separately reviewed
+above. Optional9extension cases not rerun, no font claim.
 Detailed authority, corrections and provenance:
 memory/issue14-implementation.md. Distilled evidence suffices; no raw archive.
 

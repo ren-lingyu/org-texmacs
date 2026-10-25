@@ -123,7 +123,10 @@ GitHub connector independently confirms Issue14 CLOSED/COMPLETED,
 closed_at/updated_at2026-10-25T17:29:52Z. No agent remote write. Implementation,
 validation, user delivery and external closure are complete.
 
-At delivery review the project index contains15additional staged paths including
+At delivery review the project index contained15additional staged paths including
 Lisp, tests and Nix composition. No unstaged project changes. These later changes
 are unreviewed/unvalidated here and excluded from the delivered acceptance claim;
-agent did not modify or unstage them. User selects any follow-up task.
+agent did not modify or unstage them. User subsequently commits the formatting,
+enables the formatting flake check and updates inputs; that distinct review and
+README-only synchronization are recorded in post-issue14-flake.md. Original
+Issue14 runtime evidence remains bound to its actual fixed inputs.

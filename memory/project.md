@@ -1,5 +1,15 @@
 # org-texmacs current project model
 
+## Current flake and formatting-check state
+
+Following the delivered Issue14 feature, user commits Lisp/Nix formatting,
+enables treefmt.flakeCheck=true and refreshes nixpkgs/personal-nixpkgs direct
+inputs. Current full flake checks include formatting verification; nix fmt
+applies formatters and README.org stays excluded. Other input graph/follows
+relationships are unchanged. Static review establishes formatting-only project
+changes, not runtime acceptance at the new dependency revisions. README-only
+synchronization is written/unstaged. Details: memory/post-issue14-flake.md.
+
 ## Issue14 document information delivered
 
 User-committed and delivery-verified implementation extends the restricted Org context to
@@ -18,8 +28,8 @@ Pure conversion still owns/fixes all inputs and performs no encoding or I/O.
 Tests add16core/3native/1PDF cases in existing checks; isolated full gate passes
 579default cases, strict compile/lint/aggregates on85unchanged input hashes.
 Delivery matches the exact accepted candidate and85input hashes; Issue14 is
-independently confirmed CLOSED/COMPLETED. Additional15staged follow-up paths
-are outside this acceptance claim. Native PDF Creator/Keywords limits and font
+independently confirmed CLOSED/COMPLETED. Later formatting/input updates remain
+outside this original runtime acceptance claim. Native PDF Creator/Keywords limits and font
 exclusion are explicit; optional9integration cases were not rerun.
 Contract and verification: memory/issue14-implementation.md.
 
