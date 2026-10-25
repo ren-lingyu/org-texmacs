@@ -3,16 +3,21 @@
 ## Issue14 metadata audit: experiments accepted, implementation unselected
 
 https://github.com/ren-lingyu/org-texmacs/issues/14 requests coherent support for
-TITLE/SUBTITLE/AUTHOR/DATE/LANGUAGE/DESCRIPTION/KEYWORDS, native representations,
-precedence with external options/style/initial, explicit language mapping and
-unsupported-value tests/documentation. Readonly review finds title/author/date
+native document semantics, now TITLE/SUBTITLE/AUTHOR/EMAIL/DATE/LANGUAGE/
+DESCRIPTION/KEYWORDS/CREATOR plus abstract blocks and permitted repetitions.
+Keep abstracts independent/in source order, define repeated metadata behavior
+without nearby-block ownership, distinguish DESCRIPTION from abstract, and
+document/test native target limits. Readonly review finds title/author/date
 already supported; others require capture/ownership/lowering/native-target audit.
 Native Chinese font problem remains outside exporter responsibility; metadata
 language support must not claim to repair it. User-authorized isolated flake gate
 passes72assertions/10PDFs. Subtitle/keywords native candidates work; keywords do
 not require an empty abstract container. Language persistence is not identifier
-validity; DESCRIPTION target remains unresolved. No production implementation
-selected. Details and retention assessment: memory/issue14-metadata.md.
+validity. Follow-up Org103/native112assertions/8PDFs confirm field-specific repeat
+rules and DESCRIPTION as hidden initial global-subject -> PDF Subject, following
+ox-html's metadata distinction. Native PDF Creator is fixed; creator rendering,
+rich/plain capture, explicit initial priority and keyword placement remain design.
+No production implementation selected. Details: memory/issue14-metadata.md.
 
 ## Tests optimization review after live-log delivery
 

@@ -1,45 +1,50 @@
 # org-texmacs current memory
 
-## Current: Issue14 isolated metadata experiments complete
+## Current: revised Issue14 Org/native behavior established; design pending
 
-User requests readonly review of https://github.com/ren-lingyu/org-texmacs/issues/14,
-"Support Org document metadata in TeXmacs export". Fetched issue open with no
-comments, updated2026-10-25T11:11:34Z. Initial requested audit covers TITLE,
-SUBTITLE, AUTHOR, DATE, LANGUAGE, DESCRIPTION and KEYWORDS equally, native target
-representations, existing precedence/external options and explicit style/initial
-interaction, deliberate language identifier mapping, unsupported values/tests/
-documentation. OPTIONS/PROPERTY/SETUPFILE are outside scope except interactions.
-Initial review did not authorize implementation/build/test or remote writes.
-Static source review: context option/source/subtree allowlists and prepared INFO
-ownership treat only title/author/date as metadata; document metadata lowering
-emits doc-data/doc-title/doc-author(author-data/author-name)/doc-date. Explicit
-style and initial already exist, but no Org LANGUAGE-to-initial mapping found.
-Extending only lowering would miss capture/validation/ownership/subtree paths.
-Native subtitle/keywords candidates are now experimentally established below;
-DESCRIPTION target and complete language mapping remain unresolved.
-Prior Chinese font finding remains separate: language=chinese alone did not fix
-the reproduced native font issue, so Issue14 is no promise of a font/layout fix.
-Raw issue archive unnecessary: semantic scope, locator, retrieval state and source
-findings distilled here suffice; no independent original-byte evidence needed.
-User now selects isolated flake experiments without a special test framework;
-font problems explicitly remain outside project backlog. Prepared23tracked source
-inputs in tmp/issue14-metadata-probe, same lock and production/package bytes,
-copied flake replaces default checks with one simple diagnostic runCommand.
-Probe surveys pinned native metadata/language definitions and exercises current
-metadata/precedence plus native language session/serialization behavior. Command
-timeout120s nix flake check -L --no-write-lock-file on its explicit path completed;
-network/store/cache/log/products disclosed, no root source/lock/index mutation.
-Next possible implementation still requires selection; native readback alone must
-not be mistaken for language identifier validity or full metadata semantics.
-Final gate passes72assertions/10PDFs on pinned x86_64-linux;23root input hashes
-unchanged. Two earlier probe assumption failures corrected; intermediate52pass.
-All four new file keywords explicitly error today. Native doc-subtitle works
-without title; direct abstract-keywords renders without the unwanted Abstract
-heading caused by abstract-data. Native stores even invalid language values;
-registry uses english (also American), british, chinese, taiwanese. DESCRIPTION
-target unresolved; limited scan is not absence proof. No new-field mapping or
-precedence implementation accepted. Evidence/limits: memory/issue14-metadata.md.
-Ordinary project unchanged, no font work. Next step is mapping/precedence design.
+Issue https://github.com/ren-lingyu/org-texmacs/issues/14 now covers native Org
+document-level semantics: TITLE/SUBTITLE/AUTHOR/EMAIL/DATE/LANGUAGE/KEYWORDS/
+DESCRIPTION/CREATOR, independent ordered abstract blocks, permitted repeated
+declarations and explicit target limitations. Title: "Map Org document-level
+semantics to native TeXmacs structures"; open/no comments when reread, updated
+2026-10-25T15:31:47Z. Do not infer keyword ownership from nearby abstracts.
+User mainly needs KEYWORDS repetition and positional presentation, not new
+repetition mechanisms for every field. DESCRIPTION must not become an abstract.
+
+Authorized work is isolated experiments without a special framework; production
+implementation remains unselected. No font work/backlog. Existing context/INFO
+ownership/pure lowering, explicit-source and configuration precedence constraints
+remain. Current metadata implementation still supports only title/author/date;
+native feasibility probes do not add Org support.
+
+tmp/issue14-metadata-probe copies23tracked source/package/flake/lock inputs;
+root hashes unchanged, copy byte-equal except copied flake diagnostic checks.
+Disclosed command: timeout 120s nix flake check -L --no-write-lock-file
+path:/home/lingyu/Projects/org-texmacs/tmp/issue14-metadata-probe.
+Potential dependency network/store/cache/log/products, no root lock/index edits.
+Earlier accepted gates:72assertions/10PDFs metadata baseline/candidates,
+58assertions/4PDFs native taxonomy and64assertions/4PDFs interleaving.
+Latest gate:Org103 + native112assertions/8PDFs, exit0 on pinned x86_64-linux
+Emacs31.1/Org9.8.10/TeXmacs2.1.5; earlier checks reused, not rerun regressions.
+
+Key findings: native independent abstract containers/keyword nodes preserve order.
+Standard Org HTML/LaTeX collect KEYWORDS as metadata while preserving abstract
+body order; source positions do not imply binding. Field repeat rules differ,
+including HTML raw/newline DESCRIPTION vs parsed LaTeX values. Nine fields tested
+for external<file<subtree, nil/absent distinction and separate visibility flags.
+DESCRIPTION target now confirmed: initial global-subject -> PDF Subject, serialized
+and hidden from body/abstract. Ordinary description text needs literal encoding of
+native angle-character notation. global-title/global-author override PDF fields
+without changing visible title/author. Email-only author-data renders. Native PDF
+Creator stays TeXmacs despite global-creator; no automatic PDF Keywords from
+global-keywords or visible keyword nodes. Full language mapping, rich/plain
+capture, explicit initial precedence and CREATOR rendering policy remain design.
+
+Evidence, upstream locators, probe fixes and limits: memory/issue14-metadata.md.
+Human-readable temporary report: tmp/issue14-metadata-probe/ORG-NATIVE-SEMANTICS.md.
+No .tm disk reload or full maintained-suite gate, production edits or remote
+writes. Results distilled; no raw archive needed. Next action is explicit design
+for revised Issue14, subject to user selection.
 
 ## Previous: test optimization and quieter mark notifications delivered
 
