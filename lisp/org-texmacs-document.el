@@ -123,6 +123,7 @@ No stable extension API is promised.  Captured closure state is not frozen.")
                    (member
                     key
                     '("texmacs"
+                      "abstract"
                       "statement"
                       "equation"
                       "equation*"
@@ -190,7 +191,8 @@ strings are TeXmacs identifiers, not ordinary Org text leaves."
   "TeXmacs initial environment captured by buffer document preparation.
 The value is an alist of unique nonempty string keys to text strees.  Keys are
 TeXmacs identifiers.  Entire values have TeXmacs source semantics, including
-native notation such as <alpha>; use <less> and <gtr> for literal brackets."
+native notation such as <alpha>; use <less> and <gtr> for literal brackets.
+Explicit Org language and description override their corresponding defaults."
   :type '(alist :key-type string :value-type sexp)
   :group 'org-texmacs)
 
@@ -279,7 +281,8 @@ so later redefinition affects only new calls."
   (:constructor org-texmacs--document-create) (:copier nil))
  "Read-only structural result, before native encoding.
 BODY is a text stree; STYLE is a list of TeXmacs style identifiers; INITIAL
-is an alist of environment identifiers to source-semantic text strees.
+is an alist of environment identifiers to text strees.  INITIAL-LITERAL-KEYS
+marks Org-derived literal entries; other entries have native source semantics.
 STM-PATHS locate source-semantic roots within BODY, including native bibliography
 output and authored STM islands.  Each path contains
 zero-based child indices, excluding tags.  SOURCE-FILE and RESOURCE-BASE
@@ -292,9 +295,55 @@ or nested list/string.  No source buffer is retained."
  (stm-paths nil :read-only t)
  (style (list "generic") :read-only t)
  (initial nil :read-only t)
+ (initial-literal-keys nil :read-only t)
  (source-file nil :read-only t)
  (resource-base nil :read-only t)
  (file-paths nil :read-only t))
+
+(defconst org-texmacs--document-languages
+  '(("en" . "english") ("en-us" . "english") ("en-gb" . "british")
+    ("zh" . "chinese") ("zh-cn" . "chinese") ("zh-tw" . "taiwanese")
+    ("bg" . "bulgarian") ("hr" . "croatian") ("cs" . "czech")
+    ("da" . "danish") ("nl" . "dutch") ("eo" . "esperanto")
+    ("fi" . "finnish") ("fr" . "french") ("de" . "german")
+    ("el" . "greek") ("hu" . "hungarian") ("it" . "italian")
+    ("ja" . "japanese") ("ko" . "korean") ("pl" . "polish")
+    ("pt" . "portuguese") ("ro" . "romanian") ("ru" . "russian")
+    ("sk" . "slovak") ("sl" . "slovene") ("es" . "spanish")
+    ("sv" . "swedish") ("uk" . "ukrainian"))
+  "Explicit Org language codes to TeXmacs 2.1.5 language identifiers.")
+
+(defun org-texmacs--document-metadata-present-p (info key)
+  "Return whether INFO explicitly supplies metadata KEY."
+  (if (plist-member info :texmacs-metadata-present)
+      (member (org-texmacs--context-metadata-name key)
+              (plist-get info :texmacs-metadata-present))
+    (plist-member info key)))
+
+(defun org-texmacs--document-initial-metadata (initial info)
+  "Merge owned INITIAL defaults with effective Org INFO.
+Return (INITIAL LITERAL-KEYS).  Preserve native defaults when no explicit Org
+value exists; explicit nil/empty removes its corresponding default."
+  (let (literal)
+    (dolist (field '((:language . "language") (:description . "global-subject")))
+      (let* ((key (car field)) (native (cdr field))
+             (explicit (org-texmacs--document-metadata-present-p info key))
+             (value (plist-get info key)))
+        (when (or explicit (and value (not (assoc native initial))))
+          (unless (or (null value) (stringp value))
+            (signal 'org-texmacs-document-error (list "Invalid plain metadata" key)))
+          (setq initial (assoc-delete-all native initial))
+          (when (and value (org-string-nw-p value))
+            (when (eq key :language)
+              (setq value (cdr (assoc (downcase (string-trim value))
+                                      org-texmacs--document-languages)))
+              (unless value
+                (signal 'org-texmacs-document-error
+                        (list "Unsupported Org language" (plist-get info key)))))
+            (push (cons (substring-no-properties native)
+                        (substring-no-properties value)) initial)
+            (push (substring-no-properties native) literal)))))
+    (list initial literal)))
 
 (defun org-texmacs--document-fail (node message)
   "Signal a conversion error for NODE with MESSAGE and source context."
@@ -1317,8 +1366,9 @@ When omitted, use fixed default policies and the default formatter, without
 reading dynamic export settings.  Custom formatters should be side-effect-free.
 STYLE is a nonempty list of TeXmacs style identifiers, defaulting to
 `(\"generic\")'.  INITIAL is an alist of TeXmacs environment identifiers to
-source-semantic text strees.  They are copied into the returned result and do
-not affect BODY lowering or its STM paths.
+source-semantic text strees.  Explicit Org language and description override
+corresponding INITIAL defaults;
+Org-derived entries retain literal provenance until native encoding.
 SOURCE-FILE and RESOURCE-BASE are explicit source location strings, or nil.
 Copy them into the result without expanding paths or accessing the filesystem.
 
@@ -1333,7 +1383,8 @@ plain local body file links with raw target paths and file provenance,
 relative headline levels one through five, lower-level headline lists, all
 three Org plain-list types, quote/center blocks, and static example,
 fixed-width and source blocks, plus basic rectangular Org tables.  Emit
-supported title, author and date metadata as body `doc-data'.  When enabled,
+supported title, subtitle, author, email, date and creator as body `doc-data'.
+When enabled,
 emit a static table of contents with generated internal targets.
 Link admission uses Org type, not raw source.  Accept paragraph footnote
 references with anonymous inline or named inline/separate definitions.
@@ -1385,6 +1436,7 @@ for consumers.  Final handlers must preserve contents identity and provenance."
        (style
         (org-texmacs--document-copy-style (or style '("generic"))))
        (initial (org-texmacs--document-copy-initial initial))
+       (initial-literal-keys nil)
        (source-file (org-texmacs--source-copy-path source-file))
        (resource-base (org-texmacs--source-copy-path resource-base))
        (headline-minimum nil)
@@ -1415,7 +1467,15 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                   ast islands static-labels resource-base))
             (signal 'org-texmacs-document-error
                     '("Missing frozen resolution"))))
+       (keyword-positions
+        (if (plist-member info :texmacs-keywords-positional)
+            (plist-get info :texmacs-keywords-positional)
+          (org-element-map ast 'keyword
+            (lambda (node) (equal (org-element-property :key node) "KEYWORDS"))
+            nil t)))
        (citation-plan nil))
+    (let ((merged (org-texmacs--document-initial-metadata initial info)))
+      (setq initial (car merged) initial-literal-keys (cadr merged)))
     (when (org-texmacs-resolution-failure resolution)
       (signal 'org-texmacs-document-error
               (org-texmacs-resolution-failure resolution)))
@@ -1995,53 +2055,61 @@ for consumers.  Final handlers must preserve contents identity and provenance."
            (signal 'org-texmacs-document-error
                    '("Empty document metadata")))
          (org-texmacs--document-pack tag (list (one-body parts)))))
+      (plain-metadata
+       (key)
+       (let ((value (plist-get info key)))
+         (unless (or (null value) (stringp value))
+           (signal 'org-texmacs-document-error (list "Invalid plain metadata" key)))
+         (and value (org-string-nw-p value) (substring-no-properties value))))
+      (visible
+       (key default)
+       (let ((value (if (plist-member info key) (plist-get info key) default)))
+         (unless (memq value '(nil t))
+           (signal 'org-texmacs-document-error (list "Invalid metadata visibility" key)))
+         value))
       (metadata
        (ancestors)
        (let ((present
-              (if (memq :texmacs-metadata-present info)
-                  (plist-get info :texmacs-metadata-present)
-                (or (plist-get info :title)
-                    (plist-get info :author)
-                    (plist-get info :date))))
-             parts)
-         (when present
-           (when (and (if (memq :with-title info)
-                          (plist-get info :with-title)
-                        t)
-                      (plist-get info :title))
-             (push (metadata-field
-                    'doc-title
-                    (plist-get info :title)
-                    'title
-                    ancestors)
-                   parts))
-           (when (and (if (memq :with-author info)
-                          (plist-get info :with-author)
-                        t)
-                      (plist-get info :author))
-             (push (org-texmacs--document-pack
-                    'doc-author
-                    (list
-                     (org-texmacs--document-pack
-                      'author-data
-                      (list
-                       (metadata-field
-                        'author-name
-                        (plist-get info :author)
-                        'author
-                        ancestors)))))
-                   parts))
-           (when (and (if (memq :with-date info)
-                          (plist-get info :with-date)
-                        t)
-                      (plist-get info :date))
-             (push (metadata-field
-                    'doc-date (plist-get info :date) 'date ancestors)
-                   parts)))
-         (and parts
-              (list
-               (org-texmacs--document-pack
-                'doc-data (nreverse parts))))))
+              (cl-some (lambda (key)
+                         (org-texmacs--document-metadata-present-p info key))
+                       org-texmacs--context-rich-metadata))
+             parts author)
+         (when (and present (visible :with-title t))
+           (dolist (field '((:title . doc-title) (:subtitle . doc-subtitle)))
+             (when (plist-get info (car field))
+               (push (metadata-field (cdr field) (plist-get info (car field))
+                                     'title ancestors) parts))))
+         (when (and present (visible :with-author t) (plist-get info :author))
+           (push (metadata-field 'author-name (plist-get info :author)
+                                 'author ancestors) author))
+         (when (and (visible :with-email nil) (plain-metadata :email))
+           (push (org-texmacs--document-pack
+                  'author-email
+                  (list (org-texmacs--document-create :body (plain-metadata :email))))
+                 author))
+         (when author
+           (push (org-texmacs--document-pack
+                  'doc-author
+                  (list (org-texmacs--document-pack 'author-data (nreverse author))))
+                 parts))
+         (when (and present (visible :with-date t) (plist-get info :date))
+           (push (metadata-field 'doc-date (plist-get info :date) 'date ancestors) parts))
+         (when (and (visible :with-creator nil) (plain-metadata :creator))
+           (push (org-texmacs--document-pack
+                  'doc-note
+                  (list (org-texmacs--document-create
+                         :body (concat "Created by: " (plain-metadata :creator)))))
+                 parts))
+         (and parts (list (org-texmacs--document-pack 'doc-data (nreverse parts))))))
+      (keyword-value
+       (value)
+       (unless (or (null value) (stringp value))
+         (signal 'org-texmacs-document-error '("Invalid keyword text")))
+       (when (and value (org-string-nw-p value))
+         (list (org-texmacs--document-pack
+                'abstract-keywords
+                (list (org-texmacs--document-create
+                       :body (substring-no-properties value)))))))
       (relative-level
        (node)
        (let ((level (org-element-property :level node)))
@@ -2739,6 +2807,25 @@ for consumers.  Final handlers must preserve contents identity and provenance."
            (list (paragraph node ancestors)))
           ((org-texmacs--figure-table-kind node)
            (list (figure-table node ancestors)))
+          ((and (eq type 'keyword)
+                (equal (org-element-property :key node) "KEYWORDS"))
+           (when keyword-positions
+             (keyword-value (org-element-property :value node))))
+          ((and (eq type 'special-block)
+                (equal (downcase (org-element-property :type node)) "abstract"))
+           (let ((parameters (org-element-property :parameters node)))
+             (unless (or (null parameters)
+                         (and (stringp parameters) (not (org-string-nw-p parameters))))
+               (org-texmacs--document-fail node "Abstract parameters are unsupported")))
+           (let ((contents (blocks (org-element-contents node) 'special-block ancestors)))
+             (list (org-texmacs--document-pack
+                    'abstract-data
+                    (list (org-texmacs--document-pack
+                           'abstract
+                           (list (org-texmacs--document-pack
+                                  'document
+                                  (or contents
+                                      (list (org-texmacs--document-create :body "")))))))))))
           ((eq type 'special-block)
            (let* ((tag (org-texmacs--document-statement-tag node))
                   (handler
@@ -2927,6 +3014,8 @@ for consumers.  Final handlers must preserve contents identity and provenance."
              'document
              (append
               (metadata (list ast)) (toc (list ast))
+              (when (not keyword-positions)
+                (keyword-value (plain-metadata :keywords)))
               (blocks
                (org-element-contents ast) 'org-data (list ast))))))
        (unless (and (= (length used-islands) (length islands))
@@ -2951,6 +3040,7 @@ for consumers.  Final handlers must preserve contents identity and provenance."
         (org-texmacs-document-file-paths result)
         :style style
         :initial initial
+        :initial-literal-keys initial-literal-keys
         :source-file source-file
         :resource-base resource-base)))))
 

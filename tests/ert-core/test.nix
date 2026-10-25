@@ -8,6 +8,7 @@
 let
   testFiles = [
     ./lisp/bibliography.el
+    ./lisp/metadata.el
     ./lisp/document.el
     ./lisp/editing.el
     ./lisp/frontend.el

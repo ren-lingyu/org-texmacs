@@ -259,7 +259,7 @@ Internal intermediate ownership boundary; see `org-texmacs-input-create'."
                     value)
                    ((eq key :texmacs-special-block-handlers)
                     (org-texmacs--document-copy-handlers value))
-                   ((memq key '(:title :author :date))
+                   ((memq key org-texmacs--context-rich-metadata)
                     (secondary value))
                    (t
                     (data value))))))))
@@ -348,7 +348,8 @@ by `org-texmacs-document', not by invoking it during this copy.
 STYLE is a nonempty list of TeXmacs style identifier strings and defaults to
 `(\"generic\")'.  INITIAL is an alist of unique nonempty environment identifier
 strings to source-semantic text strees and defaults to nil.  Neither setting
-is inferred from INFO or ambient Custom values.
+is inferred from ambient Custom values.  Effective Org language and description
+in INFO may override INITIAL defaults during pure document lowering.
 
 SOURCE-FILE and RESOURCE-BASE are optional explicit absolute path strings,
 copied without filesystem access or path expansion.  RESOURCE-BASE fixes
@@ -366,11 +367,10 @@ The view binds prefix, key order, selected entry trees and source-semantic body;
 pure lowering verifies that it matches the current resolution plan.
 
 Copy strings, lists and vectors, rebuild parent links, and remap references
-to AST nodes in INFO and the mappings.  Copy parsed title, author and date
-secondary strings as separately owned Org objects, and supported captions as
-owned pairs of long/short secondary strings.  Reject cyclic or multiply
-owned AST nodes, detached/duplicate mapping keys, deferred values and opaque
-objects.
+to AST nodes in INFO and the mappings.  Copy parsed title, subtitle, author
+and date as separately owned Org objects.  Copy supported captions as pairs
+of long/short secondary strings.  Reject cyclic or multiply owned AST nodes,
+detached/duplicate mapping keys, deferred values and opaque objects.
 Discard Org's source buffer and parent bookkeeping.  INFO must be a plist
 with unique keyword keys; nil selects fixed lowering defaults.  A supplied
 headline formatter, private date timestamp converter and private special-block

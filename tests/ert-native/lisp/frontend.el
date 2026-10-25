@@ -649,7 +649,7 @@
 (ert-deftest
     org-texmacs-file-links-preserve-raw-targets-and-frozen-base
     ()
-  (let (input)
+  (let ((org-export-default-language "en") input)
     (with-temp-buffer
       (org-mode)
       (setq default-directory "/source/resources/")
@@ -682,7 +682,7 @@
         (should
          (equal
           (org-texmacs--native-document-wire document)
-          "(\"generic\") () (\"document\" (\"concat\" (\"hlink\" \"Figure\" \"/source/resources/figures/a.pdf\") \" \") (\"concat\" (\"hlink\" \"./notes.org\" \"/source/resources/notes.org\") \" \")) ()")))
+          "(\"generic\") ((\"language\" \"english\" org-literal)) (\"document\" (\"concat\" (\"hlink\" \"Figure\" \"/source/resources/figures/a.pdf\") \" \") (\"concat\" (\"hlink\" \"./notes.org\" \"/source/resources/notes.org\") \" \")) ()")))
       (should (equal before (org-texmacs-document-body document))))))
 
 (ert-deftest

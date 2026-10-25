@@ -15,8 +15,30 @@
 (require 'org-texmacs-source)
 (require 'ox)
 
+(defconst org-texmacs--context-rich-metadata '(:title :subtitle :author :date)
+  "Fields owned as parsed Org secondary strings.")
+
+(defconst org-texmacs--context-plain-metadata
+  '(:email :language :keywords :description :creator)
+  "Fields owned as literal text, without STM or inline discovery.")
+
+(defun org-texmacs--context-metadata-keys ()
+  "Return all supported metadata keys."
+  (append org-texmacs--context-rich-metadata
+          org-texmacs--context-plain-metadata))
+
+(defun org-texmacs--context-metadata-name (key)
+  "Return the source keyword for metadata KEY."
+  (upcase (substring (symbol-name key) 1)))
+
 (defconst org-texmacs--context-option-alist
   '((:title "TITLE" nil nil parse)
+    (:subtitle "SUBTITLE" nil nil parse)
+    (:email "EMAIL" nil user-mail-address t)
+    (:language "LANGUAGE" nil org-export-default-language t)
+    (:keywords "KEYWORDS" nil nil space)
+    (:description "DESCRIPTION" nil nil newline)
+    (:creator "CREATOR" nil org-export-creator-string)
     (:date "DATE" nil nil parse)
     (:author "AUTHOR" nil user-full-name parse)
     (:select-tags "SELECT_TAGS" nil org-export-select-tags split)
@@ -26,6 +48,8 @@
     (:with-archived-trees nil "arch" org-export-with-archived-trees)
     (:with-author nil "author" org-export-with-author)
     (:with-date nil "date" org-export-with-date)
+    (:with-email nil "email" org-export-with-email)
+    (:with-creator nil "creator" org-export-with-creator)
     (:with-priority nil "pri" org-export-with-priority)
     (:with-toc nil "toc" org-export-with-toc)
     (:with-tags nil "tags" org-export-with-tags)
@@ -38,12 +62,18 @@
   '("OPTIONS"
     "FILETAGS"
     "TITLE"
+    "SUBTITLE"
+    "EMAIL"
+    "LANGUAGE"
+    "DESCRIPTION"
+    "CREATOR"
     "DATE"
     "AUTHOR"
     "SELECT_TAGS"
     "EXCLUDE_TAGS"
     "EXPORT_FILE_NAME")
-  "Org keywords consumed by the restricted context adapter.")
+  "Org keywords removed after restricted context capture.
+KEYWORDS stays in the AST for independent positional presentation.")
 
 (defconst org-texmacs--context-rejected-keywords
   '("SETUPFILE" "INCLUDE" "ROAM_INCLUDE" "BIND" "MACRO" "CITE_EXPORT")
@@ -51,6 +81,12 @@
 
 (defconst org-texmacs--context-export-properties
   '("EXPORT_TITLE"
+    "EXPORT_SUBTITLE"
+    "EXPORT_EMAIL"
+    "EXPORT_LANGUAGE"
+    "EXPORT_KEYWORDS"
+    "EXPORT_DESCRIPTION"
+    "EXPORT_CREATOR"
     "EXPORT_AUTHOR"
     "EXPORT_DATE"
     "EXPORT_OPTIONS"
@@ -83,6 +119,8 @@
     ((or :select-tags :exclude-tags)
      (and (proper-list-p value) (cl-every #'stringp value)))
     ((or :with-author
+         :with-email
+         :with-creator
          :with-date
          :with-priority
          :with-title
@@ -107,7 +145,7 @@ policy values use the existing typed INFO contract, not OPTIONS token strings."
           (signal 'org-texmacs-document-error
                   (list
                    "Unsupported or duplicate external option" key)))
-        (unless (if (memq key '(:title :author :date))
+        (unless (if (memq key (org-texmacs--context-metadata-keys))
                     (or (null value) (stringp value))
                   (org-texmacs--context-option-value-p key value))
           (signal 'org-texmacs-document-error
@@ -127,8 +165,9 @@ Parse raw metadata with private Org syntax; never discover STM in metadata."
     (while options
       (let ((key (pop options))
             (value (pop options)))
-        (when (memq key '(:title :author :date))
-          (push (upcase (substring (symbol-name key) 1)) metadata)
+        (when (memq key (org-texmacs--context-metadata-keys))
+          (push (org-texmacs--context-metadata-name key) metadata))
+        (when (memq key org-texmacs--context-rich-metadata)
           (setq value
                 (org-element-parse-secondary-string
                  value (org-element-restriction 'keyword))))
@@ -459,7 +498,10 @@ standard collector result shape for completeness."
     (cl-labels
      ((add
        (key value)
-       (when (or (member key unique) (org-string-nw-p value))
+       (when (or (member key unique)
+                 (member key (mapcar #'org-texmacs--context-metadata-name
+                                     (org-texmacs--context-metadata-keys)))
+                 (org-string-nw-p value))
          (let ((entry (assoc-string key alist t))
                (value
                 (if directory
@@ -564,10 +606,14 @@ away.  Do not discover TeXmacs fragments in this document-wide metadata."
            (cons
             :texmacs-tab-width
             (cl-remove-if
-             (lambda (key) (memq key '(:title :author :date)))
+             (lambda (key)
+               (memq key (org-texmacs--context-metadata-keys)))
              (mapcar #'car org-texmacs--context-option-alist))))
     (signal 'org-texmacs-document-error
             '("Invalid supported Org document options")))
+  (dolist (key org-texmacs--context-plain-metadata)
+    (unless (or (null (plist-get info key)) (stringp (plist-get info key)))
+      (signal 'org-texmacs-document-error (list "Invalid plain metadata" key))))
   info)
 
 (defun org-texmacs--context-prune
@@ -906,12 +952,10 @@ Keep global declarations in INFO; body dependencies are restored separately."
            (metadata
             (copy-sequence
              (plist-get info :texmacs-metadata-present))))
-      (dolist (entry
-               '((:title . "TITLE")
-                 (:author . "AUTHOR")
-                 (:date . "DATE")))
-        (when (plist-member overrides (car entry))
-          (cl-pushnew (cdr entry) metadata :test #'equal)))
+      (dolist (key (org-texmacs--context-metadata-keys))
+        (when (plist-member overrides key)
+          (cl-pushnew (org-texmacs--context-metadata-name key)
+                      metadata :test #'equal)))
       (setq info
             (org-combine-plists
              info
@@ -1070,7 +1114,8 @@ while retaining any subtree configuration.  Parse only the private snapshot."
          (mapcar
           #'car
           (org-texmacs--context-keywords
-           ast islands '("TITLE" "AUTHOR" "DATE")))))
+           ast islands (mapcar #'org-texmacs--context-metadata-name
+                              (org-texmacs--context-metadata-keys))))))
        (info
         (plist-put
          (plist-put
@@ -1181,6 +1226,14 @@ while retaining any subtree configuration.  Parse only the private snapshot."
                     (org-texmacs--native-body-blocks ast))
                    islands)))))
        (_ (org-texmacs--context-prune ast islands info t))
+       (_ (setq info
+                (plist-put info :texmacs-keywords-positional
+                           (and (not subtree-position) (not region)
+                                (org-element-map ast 'keyword
+                                  (lambda (node)
+                                    (equal (org-element-property :key node)
+                                           "KEYWORDS"))
+                                  nil t)))))
        (_
         (org-texmacs--context-preserve-footnotes
          ast islands definitions info))

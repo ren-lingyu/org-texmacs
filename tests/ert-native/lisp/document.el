@@ -257,12 +257,14 @@
   (with-temp-buffer
     (org-mode)
     (insert "(math \"x\")\n")
-    (let ((org-texmacs-document-style '("article"))
+    (let ((org-export-default-language "en")
+          (org-texmacs-document-style '("article"))
           (org-texmacs-document-initial '(("par-first" . "2fn"))))
       (cl-letf
           (((symbol-function 'org-texmacs--worker-request)
             (lambda (_source)
               (setq
+               org-export-default-language "fr"
                org-texmacs-document-style '("generic")
                org-texmacs-document-initial '(("par-first" tuple "中" "<alpha>")))
               '(math "x"))))
@@ -273,7 +275,7 @@
           (should
            (equal
             (org-texmacs-document-initial first)
-            '(("par-first" . "2fn"))))))
+            '(("language" . "english") ("par-first" . "2fn"))))))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (_source) '(math "x"))))
         (let ((second
@@ -283,7 +285,8 @@
           (should
            (equal
             (org-texmacs-document-initial second)
-            '(("par-first" tuple "中" "<alpha>")))))))))
+            '(("language" . "french")
+              ("par-first" tuple "中" "<alpha>")))))))))
 
 (ert-deftest org-texmacs-document-metadata-native-encoding ()
   (org-texmacs-test--with-worker

@@ -587,4 +587,16 @@ FAILURE injects an error after modification in root, include or bibliography."
              (set-buffer-modified-p nil))
            (kill-buffer source))))))
 
+(defconst org-texmacs-test--metadata-source
+  (concat "#+TITLE: TitleSentinel\n#+SUBTITLE: /SubtitleSentinel/\n"
+          "#+AUTHOR: AuthorSentinel\n#+EMAIL: email@example.test\n#+DATE: DateSentinel\n"
+          "#+DESCRIPTION: HiddenSubject <alpha> & \"quoted\"\n"
+          "#+CREATOR: GeneratorSentinel\n#+LANGUAGE: en-US\n"
+          "#+OPTIONS: toc:nil num:nil author:t email:t date:t creator:t\n"
+          "#+begin_abstract\nFirstSummary\n#+end_abstract\n"
+          "#+KEYWORDS: FirstKeywords\nMiddleSentinel\n"
+          "#+begin_abstract\nSecondSummary\n#+end_abstract\n"
+          "#+KEYWORDS: SecondKeywords\n* BodyHeading\nBodySentinel\n")
+  "Test-owned document covering metadata and interleaved summaries.")
+
 ;;; common.el ends here

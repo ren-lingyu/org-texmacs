@@ -695,8 +695,9 @@ parses STM islands with the shared worker, and returns a document result:
 |----------------------------------+------------------------------------------------------------------|
 | =org-texmacs-document-body=      | Text stree rooted at =document=, before native encoding          |
 | =org-texmacs-document-style=     | Copied list of TeXmacs style identifiers                         |
-| =org-texmacs-document-initial=   | Copied alist of environment identifiers to source-semantic stree |
+| =org-texmacs-document-initial=   | Copied initial trees; literal provenance distinguishes Org text |
 | =org-texmacs-document-stm-paths= | Paths to source-semantic roots (STM and prepared bibliography)    |
+| =org-texmacs-document-initial-literal-keys= | Keys of Org-derived literal initial entries              |
 | =org-texmacs-document-source-file= | Optional copied absolute source file name                      |
 | =org-texmacs-document-resource-base= | Optional copied base for source-relative resources         |
 | =org-texmacs-document-file-paths= | Paths to Org file-link target leaves in the body                |
@@ -785,7 +786,9 @@ The supported Org subset is deliberately small:
 | Relative headline levels 1 through 5              | Five numbered or starred TeXmacs sectioning tags              |
 | Headlines below the configured =H= depth          | Nested =itemize= structures without discarding body content   |
 | Filtered headline table of contents               | Static =table-of-contents= with =toc-N=/links/page references |
-| Title / author / date metadata                     | =doc-data= at the start of the body =document=                 |
+| Title / subtitle / author / email / date / creator | Native fields in a leading =doc-data=                          |
+| Language / description                             | Initial =language= / hidden =global-subject=                  |
+| Abstract blocks / keyword declarations              | Independent =abstract-data= / =abstract-keywords= in order     |
 | Unordered / ordered / description list            | =itemize= / =enumerate= / =description= with body =document= |
 | Quote / center block                               | =quotation= / =center= with body =document=                  |
 | Example / fixed-width / source block               | Static =code= containing a line-wise =document=               |
@@ -1528,6 +1531,8 @@ parallel TeXmacs display switches:
 | =org-export-with-section-numbers=   | =num=       | Select the deepest numbered section level           |
 | =org-export-with-toc=               | =toc=       | Build a static TOC to the selected depth            |
 | =org-export-with-title/author/date= | =title/author/date= | Control rich document metadata output          |
+| =org-export-with-email=             | =email=      | Show email independently of the author name           |
+| =org-export-with-creator=           | =creator=    | Show a labelled generator note; nil by default        |
 
 Native section counters and their presentation are distinct.  The pinned
 =generic= style hides displayed =paragraph=/=subparagraph= numbers by default
@@ -1555,11 +1560,85 @@ normalized or evaluated.  A missing date is not replaced with today.  This is
 literal display, not native calendar semantics or additional structured metadata.
 Malformed timestamp data and native encoding failures remain explicit errors.
 Their =title=, =author= and =date= options independently suppress output.
-Metadata is not scanned for STM fragments.  In a source document without any
-of these three keywords, default author data alone does not create =doc-data=.
+Metadata is not scanned for STM fragments.  Without an explicit rich metadata field (title, subtitle, author or date),
+default author data alone does not create =doc-data=.
 Unsupported =#+OPTIONS= keys and preprocessing directives are errors instead
 of silently invoking a broader export pipeline.  Loading =ox= supplies Org's
 option conversion and filtering policies but does not run an exporter.
+
+*** Document information and abstracts
+Document preparation accepts =TITLE=, =SUBTITLE=, =AUTHOR=, =EMAIL=, =DATE=,
+=LANGUAGE=, =KEYWORDS=, =DESCRIPTION= and =CREATOR=, including their external
+plist keys and subtree =EXPORT_*= properties.  Title, subtitle, author and date
+are parsed Org inline objects; other fields are ordinary text, without inline
+markup or STM discovery.  Subtitle uses =doc-subtitle= and shares the =title=
+visibility option.  Email uses =author-email=, with an independent =email=
+option; it can appear without a name.  Hidden information alone does not create
+a title block.  Enabling =creator:t= adds =doc-note= with a =Created by:= label
+and the effective creator string, using Org's plain generator default.
+
+Repeated title/subtitle/author/date declarations use Org's parsed, space-joined
+values, without guessing separate authors.  EMAIL and LANGUAGE use the last
+value; CREATOR uses the first.  DESCRIPTION follows ox-html's plain-text
+newline joining.  KEYWORDS uses plain space joining for its effective value,
+without token splitting, deduplication or inferred commas.  Empty declarations
+follow the corresponding Org collection rule, rather than uniformly clearing a
+field; explicit nil external values remain distinct from omitted keys.
+
+Each =abstract= block lowers recursively into its own
+=abstract-data(abstract(document ...))=, including an empty block.  Multiple
+abstracts, ordinary paragraphs and keyword declarations retain source order.
+Abstract parameters and NAME/CAPTION metadata are unsupported; an abstract is
+not a mathematical statement environment or a named reference target.
+
+In whole-document export, each =#+KEYWORDS= declaration produces an independent
+=abstract-keywords= at its source position.  No nearby-abstract ownership is
+inferred, and no empty abstract wrapper is fabricated.  In subtree or region
+export, the effective keywords appear once before the selected body, after the
+title and TOC.  =EXPORT_KEYWORDS= replaces the file values completely; without
+that property, the file values are inherited and space-joined.  When selection
+filtering removes every declaration position, the effective value also appears
+once before the body.  External keywords are a fallback when no file value
+exists.  This positional whole-document presentation differs from HTML/LaTeX's
+metadata-only keyword presentation.
+
+DESCRIPTION becomes hidden initial =global-subject=, retained in the serialized
+=.tm= document and exported as PDF Subject.  It never becomes an abstract or a
+visible paragraph.  Its text, including =<alpha>=, quotes and ampersands, is
+encoded literally at the native boundary.  The document result records these
+Org-derived initial entries in read-only =initial-literal-keys=; unmarked,
+explicit native initial values retain their existing source notation semantics.
+
+Explicit Org language/description values override the corresponding defaults in
+=org-texmacs-document-initial=; file values override external values and subtree
+properties override file values.  Explicit nil/empty effective values remove
+that default instead of restoring it.  Other initial entries remain unchanged.
+Without an explicit Org language, an existing initial =language= is preserved;
+otherwise the captured =org-export-default-language= is mapped.
+
+Language codes are trimmed and matched without case sensitivity:
+
+| Org code        | Native language |
+|-----------------+-----------------|
+| en, en-US       | english         |
+| en-GB           | british         |
+| zh, zh-CN       | chinese         |
+| zh-TW           | taiwanese       |
+| bg / hr / cs    | bulgarian / croatian / czech |
+| da / nl / eo    | danish / dutch / esperanto |
+| fi / fr / de    | finnish / french / german |
+| el / hu / it    | greek / hungarian / italian |
+| ja / ko / pl    | japanese / korean / polish |
+| pt / ro / ru    | portuguese / romanian / russian |
+| sk / sl / es    | slovak / slovene / spanish |
+| sv / uk         | swedish / ukrainian |
+
+Unknown nonempty effective codes are errors; unlisted regional variants are not
+silently guessed.  Language selection does not install or repair fonts.
+
+The pinned native PDF renderer owns Creator/Producer: a visible CREATOR note
+does not replace PDF Creator.  Visible keywords do not automatically populate
+PDF Keywords.  These limits are not hidden by inventing equivalent PDF fields.
 
 The private =org-texmacs--document-date-timestamp-text= function accepts one
 owned raw timestamp string and returns a string, unchanged by default.  Advanced
@@ -1960,20 +2039,21 @@ The frontend's =ext-plist= argument accepts these existing configuration fields:
 
 | Keys                                                       | Value type                                      |
 |------------------------------------------------------------+-------------------------------------------------|
-| =:title=, =:author=, =:date=                                 | Raw Org string or nil                           |
+| =:title=, =:subtitle=, =:author=, =:date=                    | Raw rich Org string or nil                           |
+| =:email=, =:language=, =:keywords=, =:description=, =:creator= | Plain string or nil                             |
 | =:headline-levels=                                         | Integer from 0 through 5                         |
 | =:section-numbers=, =:with-toc=                             | nil, t or a nonnegative integer                  |
 | =:with-archived-trees=                                      | nil, t or =headline=                             |
-| =:with-author=, =:with-date=, =:with-priority=, =:with-title=, =:with-todo-keywords= | nil or t                       |
+| =:with-author=, =:with-date=, =:with-email=, =:with-creator=, =:with-priority=, =:with-title=, =:with-todo-keywords= | nil or t                       |
 | =:with-tags=                                               | nil, t or =not-in-toc=                            |
 | =:with-tasks=                                              | nil, t, =todo=, =done= or a list of TODO strings   |
 | =:select-tags=, =:exclude-tags=                             | List of strings                                 |
 
 Precedence follows Org: captured global/buffer-local defaults < =ext-plist= <
 supported file keywords/options < supported subtree =EXPORT_*= properties.
-Explicit nil values override lower defaults.  Metadata strings are parsed with
-Org's keyword object grammar in the private snapshot, without STM discovery.
-The resulting document still uses the existing supported metadata subset.
+Explicit nil values override lower defaults.  Rich metadata strings are parsed
+with Org's keyword object grammar in the private snapshot; plain fields remain
+literal text.  Neither is scanned for STM.
 
 The plist must have unique supported keys and valid values, even when a later
 file or subtree setting overrides them.  Unknown keys, duplicate keys, improper
@@ -2089,6 +2169,12 @@ Supported subtree properties override the captured file/global configuration:
 | Property               | Meaning                                      |
 |------------------------+----------------------------------------------|
 | =EXPORT_TITLE=         | Rich title; otherwise the selected heading   |
+| =EXPORT_SUBTITLE=      | Rich subtitle metadata                       |
+| =EXPORT_EMAIL=         | Literal email                                |
+| =EXPORT_LANGUAGE=      | Mapped document language                     |
+| =EXPORT_KEYWORDS=      | Effective keywords replacing file values     |
+| =EXPORT_DESCRIPTION=   | Hidden document description                  |
+| =EXPORT_CREATOR=       | Generator text                               |
 | =EXPORT_AUTHOR=        | Rich author metadata                         |
 | =EXPORT_DATE=          | Date metadata                                |
 | =EXPORT_OPTIONS=       | The existing restricted =OPTIONS= subset     |
