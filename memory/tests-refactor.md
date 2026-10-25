@@ -30,7 +30,9 @@ adds inventory);53non-Nix baseline inputs plus root flake.nix unchanged, all568c
 bodies retained. Source manifests and copy remain tmp, not durable interfaces.
 PDF execution phase~129s versus previous serial231.327348s is a single observed
 comparison, not a repeatable benchmark guarantee; native can dominate full gate.
-Uncommitted14Nix files only under tests/, no ordinary staging/history changes.
+Delivered14Nix files only under tests/. Exact patch/message and all81committed
+input hashes verified against accepted candidate, clean ordinary index/worktree
+at delivery intake. This is delivery verification, not a runtime rerun.
 Further matrix profiling and local inspection reuse remain unselected.
 
 ## Previous follow-up: dependency refinement and live ERT logs

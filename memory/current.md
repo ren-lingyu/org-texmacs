@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: shared ERT driver and two PDF checks ready for project commit
+## Current: optimization delivered; silence test mark notifications
 
 User selects implementation of the first two proposed nodes: shared Nix ERT
 execution constructor and two PDF leaves under the existing ert-pdf aggregate.
@@ -38,13 +38,18 @@ except intentionally instrumented flake. No ordinary staging/history changes.
 PDF execution phase observed~129s versus prior serial231.327348s; single runs,
 different resource contention, not a general speed guarantee. Native remains a
 full-gate bottleneck. Optional9integration cases preserved but not run this task.
-Selected two nodes complete locally, uncommitted; no further optimization chosen.
-User has staged all14Nix paths. All81staged input hashes match the accepted
-snapshot manifest; no ordinary unstaged changes. Suitable as one test commit.
-Create a selective memory checkpoint for implementation/acceptance, without an
-additional project parent: runtime candidate remains uncommitted. User prefers
-setting push-mark NOMSG to t at four frontend test calls, but explicitly defers
-that edit until this project change has been committed. No Lisp changes now.
+User committed the exact14Nix-path candidate and drafted message. All81committed
+input hashes match the accepted manifest, ordinary worktree/index clean at
+delivery review. Delivery association grounds this exact-source verification,
+not a retrospective committed-state runtime rerun. Optimization delivered.
+User now authorizes the previously deferred follow-up: set push-mark NOMSG to t
+at four frontend test calls (two native, two PDF), leaving activation and region
+semantics unchanged. Limit changes to these two Lisp files; no new runtime test
+authority. This suppresses ordinary "Mark set" notifications, not diagnostics.
+Implemented exactly four nil-to-t NOMSG substitutions in the two frontend files.
+Readonly diff/whitespace review passes; third argument remains t, assertions and
+all other bytes unchanged. No build/test run, no ordinary staging. Follow-up is
+locally complete, uncommitted; prior runtime acceptance predates these four edits.
 
 ## Previous: live-log delivery and optimization planning
 

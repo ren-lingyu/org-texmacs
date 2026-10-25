@@ -2,7 +2,7 @@
 
 ## Shared ERT driver and parallel PDF checks
 
-Current locally accepted, uncommitted tests/ candidate exports
+Current delivered tests/ implementation exports
 testSupport.mkErtCheck from support/default.nix. Explicit runtime/file/helper/tool/
 environment/Emacs args feed common timeout, isolated HOME, tee+pipefail logging
 and actual case-name output. Core/native/patched-caption/optional integration and
@@ -18,6 +18,8 @@ lint/build/aggregates accepted. PDF leaves start together and pass in128.667668s
 and80.958658s; native318 passes in173.494314s. Single observed PDF execution
 phase~129s versus prior231s serial, dependent on available slots/resources.
 Optional9integration cases not rerun. Details: memory/tests-refactor.md.
+Delivery review confirms all81committed inputs equal the accepted candidate and
+the exact drafted message; clean ordinary worktree/index at intake. No rerun.
 
 ## Previous live ERT build logs
 

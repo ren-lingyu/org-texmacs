@@ -2,7 +2,7 @@
 
 ## Tests optimization review after live-log delivery
 
-First two user-selected nodes are implemented and locally accepted, uncommitted:
+First two user-selected nodes are implemented, accepted and delivery-verified:
 shared testSupport.mkErtCheck and two PDF leaves27+32 under retained ert-pdf.
 Authorized isolated gates pass all559default cases and exact-name inventory;
 observed parallel PDF phase~129s versus prior serial231s, single-run comparison.
@@ -13,10 +13,12 @@ arguments and no README/ancestor discovery. No shared workers, deleted cases or
 removed native print passes. Further optimization unselected; details, acceptance
 and resource caveats: tests-refactor.md optimization section.
 
-User selects a separate follow-up after the current optimization project commit:
+User confirms the optimization project commit and now authorizes this follow-up:
 set push-mark NOMSG to t at four frontend test calls (two native, two PDF) to
 suppress ordinary "Mark set" messages without changing region behavior. Do not
-include it in the currently staged Nix-only change; wait for commit confirmation.
+mix it into the delivered Nix-only change. No runtime check selected for this edit.
+The four substitutions are now implemented locally, uncommitted and statically
+reviewed; no runtime rerun. No further output suppression selected.
 
 ## personal-nixpkgs test/check migration implemented and accepted
 
