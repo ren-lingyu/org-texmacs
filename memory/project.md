@@ -1,18 +1,50 @@
 # org-texmacs current project model
 
+## Live ERT build logs
+
+All five ERT drivers (core/native/PDF/patched-caption/optional integration) now
+stream combined Emacs stdout/stderr through tee to the Nix log and saved ert.log.
+Explicit pipefail retains pipeline failure and timeout handling. Lint already
+streams and aggregate has no ERT execution. No case/helper/production change.
+User-authorized targeted PDF gate passes59/59in231.327348s; progress observed
+before completion. Four other logging drivers statically checked only. Longest
+case issue11-bare-block-and-reload-consistency57.909601s covers23combinations,
+69PDFrenders and23independent native reload processes; no per-phase cost
+breakdown, shared workers, removed passes/cases or speed claim. Potential local
+inspection reuse and independent parallel sharding require further design and
+measurements. Single long cases still only report their result on completion.
+
+## Latest flake foundation API adaptation
+
+Current user-selected migration calls personal-nixpkgs.lib.mkFlake and uses its
+perSystem.nixpkgs.overlays option. Updated project pkgs/default.nix calls
+packages.mkOverlays with default and legacy groups, explicit extraArgs.src, and
+legacy.export=true. Flake applies the legacy group and exports pkgs.legacyPackages;
+the removed library mkLegacyPackages callback is no longer referenced. Source,
+testSupport, package overlay factories and tests.mkChecks parameters remain
+compatible. Local library and emarccs reference inspected with explicit authority;
+API matches the project lock revision. Adaptation passes authorized timeout120s
+nix flake check --no-build --no-write-lock-file on the explicit project path:
+named packages, six checks, devShell and formatter derivations evaluate on
+x86_64-linux. That gate did not run compilation/ERT/formatting. The later targeted
+PDF gate above validates59cases after the user's50-file formatting change;
+other suites have no fresh runtime gate for those changes.
+
 ## personal-nixpkgs test composition migration
 
 The user replaced inline package construction with pkgs/ overlays and an
 emacs-with-org-texmacs runtime. Tests now use llib.tests.mkChecks, root tests/,
 test-overlay.nix discovery and test.nix leaf drivers, matching the authorized
-~/emarccs/tests reference. Explicit args provide tools, installed runtime,
-the runtime's Emacs package scope/source, lint library and testSupport.
+~/emarccs/tests reference. Flake supplies src and the installed runtime explicitly;
+tests inject tools, pkgs.emacsPackages and testSupport. The current overlay
+guarantees this package scope matches the runtime's base Emacs.
 All six existing check names remain; the aggregate resolves its leaves through
 the fixed point and does not rerun ERT. Optional integration/default.nix has no
 overlay and remains caller-supplied. flake perSystem.checks invokes this entry.
 Patched-caption overrides org on the actual scoped org-texmacs package; it no
-longer needs the removed buildPackage callback. Lint receives its library through
-a separate scope name, avoiding self-reference with the package-lint check.
+longer needs the removed buildPackage callback. Lint explicitly receives
+final_.emacsPackages.package-lint, avoiding self-reference with the package-lint
+check and keeping lint out of the ordinary runtime wrapper.
 Existing Lisp/Python/helpers/isolation unchanged. Authorized current-project
 path flake check exits0: core176/native318/PDF59/patched6, lint and aggregate
 accepted on x86_64-linux, with strict patched package compilation. Optional

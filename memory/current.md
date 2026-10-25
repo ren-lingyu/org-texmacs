@@ -1,41 +1,77 @@
 # org-texmacs current memory
 
-## Complete: migrate test composition to personal-nixpkgs
+## Current: live ERT logs ready for project delivery
 
-User introduced personal-nixpkgs, pkgs/ overlays and legacyPackages, then requested
-tests/ organization using llib.tests, referencing ~/emarccs/tests/, and explicitly
-requested flake checks wiring. Preserve their staged and unstaged package/flake
-changes. Existing checks are commented out and tests still depend on the removed
-buildPackage interface. Reference uses mkChecks with test-overlay.nix factories
-and test.nix drivers. Preserve all cases, explicit dependency injection, no README
-access/ancestor discovery, independent ERT leaves and non-running aggregate;
-optional integration remains caller-supplied. Implemented six test overlays and
-test.nix drivers; root entry calls mkChecks with explicit tools/runtime/support,
-flake checks enabled. Patched-caption now overrides the real scoped package's
-Org argument instead of removed buildPackage; lint explicitly receives its lint
-library to avoid assuming the normal runtime bundles it. Lint library uses a
-distinct scope name to avoid recursion with the package-lint check itself.
-No Lisp/Python/support changes; four ERT/aggregate drivers moved byte-identically.
-User authorized reading ~/nixpkgs; its HEAD matches the locked personal-nixpkgs
-revision and relevant library files have no working changes. Read mkChecks and
-overlay-tree implementation: args enter a fixed-point scope, overlay factories
-are discovered and only matching derivations become checks. No extra wrapper or
-enumerated check list needed. Static whitespace/path scan passes (three ../
-strings are existing synthetic path-normalization data).
-User authorized repeated exact command for this task:
-timeout 600s nix flake check -L --no-write-lock-file path:/home/lingyu/Projects/org-texmacs
-Network/store/cache/log/products possible, no lock/index/result writes. Initial
-sandbox call failed before testing at daemon socket; approved escalation exits0,
-all checks passed. Core176/176 (1.073053s), native318/318 (186.464979s),
-PDF59/59 (224.216406s), patched6/6 (2.871502s), package-lint and aggregate
-accepted; patched real package strict byte/native compilation accepted. Only
-x86_64-linux checked; optional nine-case integration unchanged and not rerun.
-No runtime rerun needed after this acceptance without new relevant changes.
-No ordinary Git writes or package implementation changes
-authorized beyond test/check integration. Previous validation below describes
-the committed prior architecture. New construction passes the gate above.
-Implementation complete; user may review/stage delivery. No new raw archive
-needed: maintained drivers/cases and extracted validation suffice.
+User requests one GAW checkpoint, then a project commit-message draft. The five
+logging drivers are staged in the ordinary project, no unstaged changes. Do not
+stage or commit ordinary project files. Use git-maintenance for both messages;
+memory checkpoints use chore(memory), not docs by format. Runtime acceptance
+used an uncommitted logging candidate; do not attach a project HEAD merely
+because it is the current base.
+
+All five ERT drivers (core/native/PDF/patched-caption/optional integration) now
+stream combined stdout/stderr through tee and retain ert.log. Explicit pipefail
+preserves pipeline failure/timeout handling; deferred cat removed. Lint already
+streams, aggregate does not execute ERT. Only five Nix drivers changed (10 lines
+added/removed); cases, helpers, production code and isolation unchanged. No speed
+optimization implemented. Individual long cases still report only on completion.
+
+User authorized applying the PDF driver patch and running once:
+
+    timeout 600s nix build --no-link --no-write-lock-file .#checks.x86_64-linux.ert-pdf -v -L
+
+Dependency network/store/cache/log/products were disclosed; no lock/index/result
+writes. Approved daemon escalation exits0:59/59pass in231.327348s, all59timing
+records captured and streaming observed before completion. User separately
+authorized the other four driver edits, without additional runtime validation.
+All-five static diff/whitespace/pattern checks pass; other suites not rerun.
+No remaining test-run authority; do not repeat gates for staging/checkpointing.
+
+Slowest cases:
+- org-texmacs-pdf-issue11-bare-block-and-reload-consistency:57.909601s (~25%).
+- org-texmacs-issue13-source-real-islands-and-native-statements:14.020948s.
+- org-texmacs-pdf-issue10-inline-and-separate:11.898667s.
+- org-texmacs-pdf-footnote-forward-backward-and-repeats:8.775450s.
+
+Issue11 covers23combinations/69PDF generations/23independent reload processes.
+Native double print passes serve reference/footnote semantics; waits poll early,
+not fixed sleeps. Per-stage profiling, local reuse of unchanged PDF inspections
+and independent sharding remain candidates, not adopted implementation. No
+measured speedup or permission to remove coverage, print passes or isolation/
+share workers. No raw archive needed: source and extracted evidence suffice.
+
+## Recent infrastructure and formatting state
+
+Current wiring uses personal-nixpkgs.lib.mkFlake, perSystem.nixpkgs.overlays and
+packages.mkOverlays groups.default/legacy, with legacy.export=true providing
+pkgs.legacyPackages. Removed mkLegacyPackages callback no longer referenced.
+Source enters through explicit extraArgs.src. Authorized local library/emarccs
+inspection matches locked personal-nixpkgs81ec8b6ea5cad6d3d9456daae714ffacf3a612a0.
+Authorized timeout120s no-build flake check on the explicit project path exits0:
+named packages, six checks, devShell and formatter evaluate on x86_64-linux;
+that gate did not run compilation or ERT.
+
+Flake supplies src and installed emacs; tests use pkgs.emacsPackages. The current
+overlay guarantees the match; do not raise hypothetical alternate-Emacs callers
+as a current design concern. Lint directly receives emacsPackages.package-lint,
+test-only and without recursion. Named org-texmacs/emacs outputs were correctly
+classified feat and their five-line delivery/message verified. Later package API
+migration and formatting subjects appear in ordinary history; no complete
+delivery-equivalence audit for those later commits. Formatting's50-file candidate
+had49equal Lisp/Scheme token streams (whitespace/comments ignored, strings kept)
+and an equal Python PDF-inspector AST excluding positions. This was static,
+not runtime acceptance; the fresh PDF gate above is the latest runtime evidence.
+
+Keep explicit external function-argument dependencies, no ancestor discovery or
+test README access, all553main+6patched+9optional cases and worker/error/cleanup
+isolation. Earlier full composition gate and distinct validation scopes:
+memory/tests-refactor.md. Optional integration remains caller-supplied.
+README references to removed packages.default/#default were previously reported;
+documentation synchronization remains unselected.
+
+Next user action is project review/delivery. Draft from the staged five drivers
+should describe live logs and pipefail, not faster tests or broader validation.
+No ordinary staging/history/external writes selected.
 
 ## Previous baseline: tests migration/refactor committed and delivery verified
 

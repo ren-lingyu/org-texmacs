@@ -1,6 +1,36 @@
 # Tests migration and refactor
 
-## Follow-up: personal-nixpkgs composition and checks
+## Current follow-up: dependency refinement and live ERT logs
+
+Flake supplies src and the installed Emacs wrapper explicitly; tests obtain
+emacsPackages from pkgs, with the current overlay guaranteeing the match. Lint
+overlay passes final_.emacsPackages.package-lint directly as a test-only library;
+the earlier extra alias is gone. Shared mkFlake and grouped package overlays
+replace manual package composition; no-build evaluation passed. The50-file
+formatting-only candidate had equal Lisp/Scheme token streams and Python AST,
+not a fresh full runtime gate. Historical evidence below predates those changes.
+
+User requested PDF cost investigation and visible logs, then separately approved
+the same log change for all other ERT drivers. Five driver files now use
+tee+pipefail, keeping saved ert.log, failure/timeout handling and all cases.
+Package-lint already streams; aggregate does not run tests. No helper/production
+change. User-authorized single command:
+
+    timeout 600s nix build --no-link --no-write-lock-file .#checks.x86_64-linux.ert-pdf -v -L
+
+Approved daemon escalation exits0:59/59pass in231.327348s on pinned x86_64-linux,
+progress observed before completion. Other four drivers statically reviewed only.
+No repeat/additional gate authority. Slowest case issue11-bare-block-and-reload-
+consistency57.909601s covers23combinations/69PDFs/23independent reload processes.
+Next cases:issue13-source-real-islands-and-native-statements14.020948s,
+issue10-inline-and-separate11.898667s, footnote-forward-backward-and-repeats
+8.775450s. Per-phase costs unmeasured. Native double print passes retain semantic
+purpose; waits aren't fixed timeout sleeps. Inspection reuse/independent sharding
+are potential follow-ups, not adopted optimizations. No speedup, coverage removal
+or shared-worker change. Long single cases still lack internal progress. No raw
+archive needed; source and these extracted results suffice.
+
+## Earlier follow-up: personal-nixpkgs composition and checks
 
 User introduced personal-nixpkgs, moved package construction to pkgs/ overlays
 and requested using llib.tests plus restoring flake checks. Intake already had
