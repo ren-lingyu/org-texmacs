@@ -64,6 +64,7 @@
                   texmacs-fandol = pkgs.texmacs-fandol;
                   texmacs-with-gotor-support = pkgs.texmacs-with-gotor-support;
                   texmacs-fandol-with-gotor-support = pkgs.texmacs-fandol-with-gotor-support;
+                  org-texmacs-examples = pkgs.org-texmacs-examples;
                 };
 
                 checks = import ./tests {
@@ -86,7 +87,7 @@
                     "*.patch"
                     ".gitignore"
                     "LICENSE"
-                    "README.org"
+                    "*.org"
                     "flake.lock"
                   ];
                 };

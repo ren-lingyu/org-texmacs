@@ -1,0 +1,73 @@
+* A numbered native figure
+#+NAME: rectangle
+#+CAPTION[Rectangle]: A *native* rectangle with a text label
+#+begin_figure
+#+begin_texmacs
+(with "gr-geometry" (tuple "geometry" "4cm" "2cm" "center") "gr-frame" (tuple "scale" "1cm" (tuple "2cm" "1cm")) (graphics "" (line (point "-1" "-0.5") (point "1" "-0.5") (point "1" "0.5") (point "-1" "0.5") (point "-1" "-0.5")) (text-at "Diagram" (point "-0.5" "0"))))
+#+end_texmacs
+#+end_figure
+
+Figure [[rectangle]] is a native graphics tree. There is exactly one TeXmacs
+block inside the wrapper; explanatory prose stays outside it.
+
+* Two ways to supply table contents
+#+NAME: org-values
+#+CAPTION[Values]: A rectangular Org table of numerical values
+#+begin_table
+| Variable | Value | Square |
+|----------+-------+--------|
+| x | 2 | 4 |
+| y | 3 | 9 |
+#+end_table
+
+Table [[org-values]] uses an ordinary Org table as its single body. A second
+table uses explicit native table data instead:
+
+#+NAME: native-values
+#+CAPTION: A table supplied as native STM
+#+begin_table
+#+begin_texmacs
+(tformat
+  (cwith "1" "1" "1" "-1" "cell-background" "yellow")
+  (table
+    (row (cell "Expression") (cell "Value"))
+    (row (cell (math (sqrt "4"))) (cell "2"))
+    (row (cell (math (frac "1" "2"))) (cell "0.5"))))
+#+end_texmacs
+#+end_table
+
+The exporter supplies the outer native table wrappers around the table data.
+The cell formatting and mathematical cell contents in Table [[native-values]]
+stay native. Paragraph fragment discovery does not scan ordinary Org table cells.
+
+* Unnumbered variants and subsequent counters
+The starred forms select native unnumbered environments; they do not request
+double-column floats.
+
+#+CAPTION: An unnumbered comparison figure
+#+begin_figure*
+#+begin_texmacs
+(with "gr-geometry" (tuple "geometry" "4cm" "2cm" "center") "gr-frame" (tuple "scale" "1cm" (tuple "2cm" "1cm")) (graphics "" (line (point "-1" "-0.5") (point "1" "0.5")) (line (point "-1" "0.5") (point "1" "-0.5"))))
+#+end_texmacs
+#+end_figure*
+
+#+CAPTION: An unnumbered summary table
+#+begin_table*
+| Environment | Body |
+|-------------+------|
+| figure | One native block |
+| table | One Org table or native block |
+#+end_table*
+
+#+NAME: last-table
+#+CAPTION: Another numbered table after the starred examples
+#+begin_table
+| Item | Meaning |
+|------+---------|
+| NAME | Object identity |
+| CAPTION | Displayed title |
+#+end_table
+
+Table [[last-table]] allows the reader to inspect numbering after starred
+environments. References identify complete objects, not individual cells or
+graphics primitives. No external image import or float placement is requested.

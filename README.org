@@ -150,12 +150,16 @@ This Emacs includes the package and its Lisp dependencies.  The development
 environment also includes TeXmacs.  Evaluate =(require 'org-texmacs)= before
 using the API.
 
-The flake exposes two named package outputs:
+The flake exposes six named package outputs:
 
 | Output | Contents |
 |--------+----------|
 | =packages.org-texmacs= | Lisp package with the adjacent Scheme service |
 | =packages.emacs= | Emacs with Org TeXmacs and its Lisp dependencies |
+| =packages.texmacs-fandol= | TeXmacs with explicit Fandol Chinese fonts |
+| =packages.texmacs-with-gotor-support= | TeXmacs with native GoToR actions for local PDF file links |
+| =packages.texmacs-fandol-with-gotor-support= | TeXmacs with both Fandol fonts and GoToR support |
+| =packages.org-texmacs-examples= | English and Chinese examples as native TeXmacs files and PDFs |
 
 The Lisp package sets the default =org-texmacs-program= to TeXmacs's absolute
 Nix store path.  TeXmacs is therefore part of its runtime closure; the installed
@@ -163,9 +167,40 @@ package does not depend on finding it in =exec-path=.  Building
 =packages.org-texmacs= alone does not configure an existing Emacs installation.
 The development shell uses the same Emacs wrapper as =packages.emacs=.
 
-Package definitions live under =pkgs/=, with the Lisp source supplied explicitly
-from =lisp/=.  The flake uses =personal-nixpkgs= for flake, package-overlay and
-test-check composition; its =nixpkgs= input follows the project's =nixpkgs=.
+Package definitions live under =pkgs/=, with Lisp supplied explicitly from
+=lisp/= and example sources collected from =pkgs/org-texmacs-examples/sources/=
+using =lib.fileset.toSource=.  The flake uses =personal-nixpkgs=
+for flake, package-overlay and test-check composition; its =nixpkgs= input follows
+the project's =nixpkgs=.
+
+*** Compiled examples
+On Linux, build the English and Chinese examples with:
+
+#+begin_src sh
+  nix build .#org-texmacs-examples
+#+end_src
+
+The =result/= link groups PDFs under =pdf/en/= and =pdf/zh/=, with native
+documents under =texmacs/en/= and =texmacs/zh/=.  File names match the Org
+entries: =index.org= uses the generic profile, and =article.org= uses the
+article profile for mathematics, statements, figures and tables.  Their PDFs
+link to each other through relative targets in the same language directory.
+The =.tm= files retain native source-based absolute file targets.  Org inputs
+and derived configuration/bibliography remain under
+=sources/<language>/<entry>/=.  Progress and PDF inspection information go to
+the Nix build log; log files are not installed.  Every document builds with
+fresh Emacs, TeXmacs and HOME state inside its Nix derivation; use a
+sandbox-enabled builder.  The example build uses its own Emacs package
+set with org-texmacs's =texmacs= dependency overridden to
+=texmacs-fandol-with-gotor-support=, which supplies explicit Fandol Chinese fonts
+through =TEXMACS_FONT_PATH= and native GoToR actions for local PDF file links.
+Reader support can depend on the backend: the user confirmed navigation works
+with Zathura's pdf-poppler backend after failure with pdf-mupdf.
+
+Configuration and bibliography derive from canonical Org sources.  Read
+[[file:pkgs/org-texmacs-examples/sources/en/index.org][the English entry]]
+or [[file:pkgs/org-texmacs-examples/sources/zh/index.org][the Chinese entry]]
+for the configuration examples and build details.
 
 ** With use-package
 Choose one of the following installation paths.  Configure the required Org
@@ -2430,8 +2465,8 @@ check has a 600-second outer timeout; package-lint has 120 seconds.  Existing
 per-operation failure and cleanup checks retain their own bounds.
 
 The flake provides =nix fmt= through treefmt to apply the configured formatters.
-=nix flake check= also includes the treefmt formatting check.  =README.org= is
-excluded from formatting.
+=nix flake check= also includes the treefmt formatting check.  =README.org= and
+the Org sources under =pkgs/org-texmacs-examples/sources/= are excluded from formatting.
 
 Git flake inputs omit untracked files.  When checking new files before staging,
 use an explicit =path:.= flake input, such as

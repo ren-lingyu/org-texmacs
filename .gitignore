@@ -11,10 +11,6 @@
 
 !/README.org
 
-!/docs/
-!/docs/**/
-!/docs/**/*.org
-
 !/flake.lock
 !/flake.nix
 
@@ -29,6 +25,7 @@
 !/pkgs/**/*.el
 !/pkgs/**/*.nix
 !/pkgs/**/*.patch
+!/pkgs/org-texmacs-examples/sources/**/*.org
 
 !/tests/
 !/tests/**/

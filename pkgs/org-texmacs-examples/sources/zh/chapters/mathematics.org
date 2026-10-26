@@ -1,0 +1,92 @@
+* 标量与初等表达式
+行内公式可以包含下标 (math (concat "a" (rsub "n"))), 幂次
+(math (concat "x" (rsup "2"))) 和希腊字母 (math "<alpha>+<beta>").
+
+#+NAME: quadratic
+#+begin_equation
+(concat "x=" (frac (concat "-b<pm>" (sqrt (concat "b" (rsup "2") "-4ac"))) "2a"))
+#+end_equation
+
+公式 [[quadratic]] 展示了分式内部的根式. 括号也可以随内容伸展:
+
+#+begin_equation*
+(around* "(" (frac (concat "1+" (sqrt "5")) "2") ")")
+#+end_equation*
+
+* 求和, 乘积与积分
+#+begin_equation
+(concat (big "sum") (rsub "k=1") (rsup "n") "k=" (frac (concat "n" (around* "(" "n+1" ")")) "2"))
+#+end_equation
+
+#+begin_equation*
+(concat (big "prod") (rsub "k=1") (rsup "n") "k=n!")
+#+end_equation*
+
+#+begin_equation
+(concat (big "int") (rsub "0") (rsup "1") "x" (rsup "2") " d x=" (frac "1" "3"))
+#+end_equation
+
+利用原生下标和分式, 还可以写出极限与导数的定义:
+
+#+begin_equation*
+(concat "lim" (rsub "h<rightarrow>0") (frac (concat "f" (around* "(" "x+h" ")") "-f" (around* "(" "x" ")")) "h") "=f'" (around* "(" "x" ")"))
+#+end_equation*
+
+* 矩阵与多行公式
+#+begin_equation
+(concat "A=" (matrix (tformat (table (row (cell "1") (cell "2")) (row (cell "3") (cell "4"))))))
+#+end_equation
+
+显式 texmacs 块可以承载多行公式. article 配置只限制普通段落的片段入口,
+不会阻止该块内部的原生结构被解析.
+
+#+begin_texmacs
+(eqnarray*
+  (tformat
+    (table
+      (row
+        (cell (concat (around* "(" "a+b" ")") (rsup "2")))
+        (cell "=")
+        (cell (concat "a" (rsup "2") "+2ab+b" (rsup "2"))))
+      (row
+        (cell (concat (around* "(" "a-b" ")") (rsup "2")))
+        (cell "=")
+        (cell (concat "a" (rsup "2") "-2ab+b" (rsup "2")))))))
+#+end_texmacs
+
+* 一个简短的论证
+#+NAME: norm-definition
+#+CAPTION: 欧几里得范数
+#+begin_statement definition
+对向量 (math (concat "v=" (around* "(" "x,y" ")"))), 定义
+(math (concat "N" (around* "(" "v" ")") "=" (sqrt (concat "x" (rsup "2") "+y" (rsup "2"))))).
+#+end_statement
+
+#+NAME: norm-positive
+#+CAPTION: 非负性
+#+begin_statement theorem
+定义 [[norm-definition]] 中的量非负, 并且仅在零向量处取零.
+#+end_statement
+
+#+begin_statement proof
+每个平方项均非负, 因此平方和为零当且仅当两个坐标都为零.
+取非负平方根不会改变这一条件.
+
+#+begin_equation*
+(concat "x" (rsup "2") "+y" (rsup "2") "=0 <Longleftrightarrow> x=y=0")
+#+end_equation*
+#+end_statement
+
+#+begin_statement lemma
+对任意实数 (math "c"), 范数满足齐次性:
+(math (concat "N" (around* "(" "cv" ")") "=|c|N" (around* "(" "v" ")"))).
+#+end_statement
+
+#+begin_statement remark
+定理 [[norm-positive]] 的引用标识属于整条陈述. 题注和正文保留为不同的原生结构.
+本案例不为一个公式阵列内部的各行引入独立编号.
+#+end_statement
+
+#+begin_statement exercise
+计算向量 (math (around* "(" "3,4" ")")) 的范数, 并解释负数倍下的齐次性.
+#+end_statement

@@ -1,0 +1,44 @@
+* Building and inspecting the examples
+#+begin_src sh
+nix build .#org-texmacs-examples
+#+end_src
+
+On Linux, this package builds two entries per language: index.org uses the
+generic profile, and article.org uses the article profile. The command creates
+a result link to the package output, with PDFs under pdf/en/ and pdf/zh/, and
+native documents under texmacs/en/ and texmacs/zh/. Each directory contains
+index.pdf and article.pdf, or their corresponding .tm files. Both PDFs remain
+siblings so their relative links continue to work when the directory is moved.
+
+Org inputs and derived .el/.bib files are retained under
+sources/<language>/<entry>/, preserving the relative paths used by INCLUDE.
+Generated files are build products, not Git inputs. The .tm files retain native
+source-based absolute file targets; the relocatable links described above apply
+to the direct PDF outputs.
+
+Both entries compose files in chapters/ with ordinary Org INCLUDE. Mathematics
+and figure/table chapters are included by article.org, not compiled separately.
+The package collects its sources/ directory with lib.fileset.toSource. Shared
+configuration and bibliography live in shared/; the builder copies them to
+chapters/configuration-source.org and chapters/references.org, then tangles their
+.el/.bib files beside them. Configuration listings include these local files.
+Source listings and interactive examples are not evaluated during export.
+
+The package uses Nix sandboxing and fresh HOME, TeXmacs and XDG state for every
+document. No user database, host font directory or user init file is imported.
+Use a sandbox-enabled Nix builder. Declared dependencies may be fetched before
+the offline rendering phase. No extra isolation framework is needed.
+
+Each document's Emacs build has a 600-second timeout, covering tangling,
+conversion and PDF rendering. Progress and errors stream to the Nix log.
+Poppler PDF inspection information also goes to the Nix log; no log files are
+installed. Failed builds publish no output directory. Artifact checks supplement ERT. Inspect pages
+for mathematical notation, reference values, layout and Chinese glyphs.
+The example build overrides org-texmacs's TeXmacs dependency with
+texmacs-fandol-with-gotor-support, which provides Fandol Chinese fonts through
+=TEXMACS_FONT_PATH= and emits native GoToR actions for local PDF file links.
+The font wrapper is composed with texmacs-with-gotor-support through override.
+Reader support can depend on the backend: navigation worked with Zathura's
+pdf-poppler backend after failure with pdf-mupdf in the user's environment.
+Language selection alone does not provide fonts. Equal content and layout
+are the reproducibility goal; creation timestamps and PDF bytes may differ.

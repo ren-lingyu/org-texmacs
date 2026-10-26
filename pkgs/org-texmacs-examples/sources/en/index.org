@@ -1,0 +1,46 @@
+#+TITLE: org-texmacs examples
+#+SUBTITLE: Actual settings and native document information
+#+AUTHOR: org-texmacs contributors
+#+EMAIL: examples@example.invalid
+#+DATE: <2026-10-27 Tue +0800>
+#+LANGUAGE: en
+#+DESCRIPTION: Configuration, metadata and build examples for org-texmacs.
+#+CREATOR: org-texmacs examples
+#+OPTIONS: toc:1 num:t author:t email:t date:t creator:t tags:not-in-toc
+#+BIBLIOGRAPHY: chapters/references.bib
+
+#+begin_abstract
+This example is a real build input. Its prose, metadata, configuration listings,
+citations and notes become one native document. A companion article brings
+mathematics, statements, figures and tables together under an article profile.
+#+end_abstract
+#+KEYWORDS: Org, TeXmacs, reproducible examples
+
+#+begin_abstract
+A second abstract remains an independent block. The following keyword declaration
+also retains its position; proximity does not bind it to this abstract.
+#+end_abstract
+#+KEYWORDS: configuration, native PDF
+
+* Reading the collection
+Org is the canonical source. Ordinary *strong text*, /emphasis/, =literal code=
+and inline mathematics such as (math (concat "x=" (frac "1" "2"))) can share
+a paragraph. A named note can be cited twice[fn:source][fn:source]. An anonymous
+note can contain mathematics[fn::For instance, (math (sqrt "2")) is irrational.].
+
+Read about TeXmacs at [[https://www.texmacs.org][the TeXmacs project]].
+
+* Companion article
+[[file:article.org][article.pdf - Mathematics, figures and tables]]
+
+Open the companion article for mathematical statements, native figures and
+tables. This entry uses the generic profile; the companion uses article.
+The source link points to article.org. In the PDF, it targets article.pdf in
+the same directory.
+
+#+INCLUDE: "chapters/configuration.org"
+#+INCLUDE: "chapters/metadata.org"
+#+INCLUDE: "chapters/bibliography.org"
+#+INCLUDE: "chapters/building.org"
+
+[fn:source] Source and actual configuration files are retained under sources/en/index/ in the package output.

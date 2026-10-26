@@ -1,0 +1,67 @@
+#+TITLE: Configuration sources
+
+These blocks are the canonical configuration for the compiled examples.
+The builder tangles them in its writable temporary directory, loads common.el
+and the selected profile, then displays those same files through literal Org
+INCLUDE directives. Tangling does not evaluate source blocks. Only the explicit
+configuration files are loaded; interactive snippets elsewhere are never run.
+
+* Shared configuration
+#+begin_src emacs-lisp :tangle common.el
+;;; common.el --- Example build configuration -*- lexical-binding: t; -*-
+
+;; SPDX-License-Identifier: GPL-3.0-or-later
+
+(require 'org-texmacs)
+
+;; Full documents can take longer than interactive parse requests.
+(setq org-texmacs-worker-request-timeout 120)
+
+;; Keep page geometry explicit; retain the packaged executable and edit mode.
+(setq org-texmacs-document-initial
+      '(("page-type" . "a4")
+        ("font-base-size" . "10")
+        ("par-first" . "0fn")))
+
+;; Keep sibling PDF links relocatable and map authored .org targets to .pdf.
+;; These preparation-time settings apply to both compiled profiles.
+(setq org-texmacs-pdf-file-links-as-absolute nil
+      org-texmacs-link-org-files-as-pdf t)
+
+;; Bibliography input is explicit; never discover a user's global database.
+(setq org-cite-global-bibliography nil)
+
+;;; common.el ends here
+#+end_src
+
+* Default presentation
+#+begin_src emacs-lisp :tangle generic.el
+;;; generic.el --- Retain the default presentation -*- lexical-binding: t; -*-
+
+;; SPDX-License-Identifier: GPL-3.0-or-later
+
+;; common.el is loaded first. The index retains the generic style,
+;; headline formatter and fragment discovery defaults.
+
+;;; generic.el ends here
+#+end_src
+
+* Article presentation
+#+begin_src emacs-lisp :tangle article.el
+;;; article.el --- Article presentation -*- lexical-binding: t; -*-
+
+;; SPDX-License-Identifier: GPL-3.0-or-later
+
+;; Explicit equation/texmacs blocks remain independent of paragraph discovery.
+(setq org-texmacs-document-style '("article")
+      org-texmacs-fragment-tags '("math"))
+
+(defun org-texmacs-examples-headline
+    (_todo _todo-type _priority title-parts _tags _info)
+  "Present TITLE-PARTS with a test prefix and without task metadata."
+  (cons 'concat (cons "(Test prefix) " (copy-tree title-parts))))
+
+(setq org-texmacs-format-headline-function #'org-texmacs-examples-headline)
+
+;;; article.el ends here
+#+end_src

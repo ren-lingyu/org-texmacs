@@ -1,0 +1,24 @@
+* Org 选项与文档信息
+标题, 副标题, 作者, 邮箱和日期形成原生文档信息. LANGUAGE 选择原生语言;
+DESCRIPTION 成为隐藏主题, 不会变成摘要. creator:t 请求可见的生成器说明,
+不替换原生 PDF renderer 身份. 可见关键词不保证填入 PDF Keywords,
+独立的摘要与关键词声明则保持源文件顺序.
+
+| 配置层 | 例子 | 用途 |
+|--------+------+------|
+| 全局 Lisp | 样式与 initial | 默认值 |
+| 显式 API 参数 | :with-toc nil | 单次转换 |
+| 文件声明 | OPTIONS 与 LANGUAGE | 文档策略 |
+| 子树属性 | =EXPORT_TITLE= | 所选子树的覆盖值 |
+
+受支持的文件声明优先于外部默认值, 子树 EXPORT 属性又优先于文件声明.
+显式 nil 不同于未提供选项. 下面的属性用于子树导出, 不改写当前完整文件的文档信息.
+
+** 可以独立导出的章节
+:PROPERTIES:
+:EXPORT_TITLE: 单独选择的章节
+:EXPORT_OPTIONS: toc:nil num:nil
+:END:
+
+选择该子树导出时, 它具有独立的标题和选项.
+生成的 .tm 与 PDF 消费同一份捕获后的文档配置.

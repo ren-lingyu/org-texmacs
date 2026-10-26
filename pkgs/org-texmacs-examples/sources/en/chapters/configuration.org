@@ -1,0 +1,59 @@
+* Configuration actually used
+The canonical configuration lives in shared/configuration.org. The example builder
+tangles its source blocks into .el files, loads the selected configuration,
+then includes those exact files below. Tangling copies code; it does not execute
+blocks. Loading the selected configuration is an explicit separate build step.
+
+** Shared page and worker settings
+#+INCLUDE: "common.el" src emacs-lisp
+
+The Nix package supplies the executable path. Complete documents receive a
+longer request timeout; worker startup retains its default. Page settings are
+captured as native initial values. File language and description declarations
+override matching global initial defaults.
+
+** This document's profile
+#+INCLUDE: "profile.el" src emacs-lisp
+
+The index retains the default generic style. The companion article uses article,
+a test-prefix headline formatter and math-only paragraph fragment discovery.
+Explicit equation and TeXmacs blocks still work.
+
+** File links between the compiled documents
+The shared configuration keeps PDF file links relative and maps a terminal .org
+suffix to .pdf. Both settings are captured during document preparation. The
+index's article.org link becomes article.pdf, and the article's index.org link
+becomes index.pdf. These are links to sibling artifacts, not requests to compile
+them; the package explicitly builds both entries.
+
+The suffix setting also applies to saved .tm files and native sessions. Those
+consumers still resolve file links against the source directory. A PDF rendered
+later from a saved .tm therefore has absolute targets, unlike the direct PDF
+output here. Web links and authored STM links are unaffected.
+
+The following alternative is shown only, not loaded by the builder. Use it when
+PDF file links should resolve against the source directory and retain .org:
+
+#+begin_src emacs-lisp
+(setq org-texmacs-pdf-file-links-as-absolute t
+      org-texmacs-link-org-files-as-pdf nil)
+#+end_src
+
+** Interactive settings, shown without execution
+Editing mode and export-menu keys configure a session; PDF pages cannot prove
+their interactive behavior. This optional init-file snippet is not tangled or
+loaded by the example builder:
+
+#+begin_src emacs-lisp
+(require 'org-texmacs)
+(setq org-texmacs-edit-mode 'scheme-mode)
+;; Set before the first require of ox-texmacs; use available menu keys.
+(setq org-texmacs-export-menu-keys
+      '(:prefix ?T :buffer ?b :file ?f :pdf ?p))
+(require 'ox-texmacs)
+(setq org-texmacs-export-discover-bibliography t)
+#+end_src
+
+The build supplies explicit bibliography snapshots instead of discovering a
+user's database. Fragment tags select paragraph roots, not the contents of
+explicit TeXmacs blocks. Private extensions are outside this configuration guide.

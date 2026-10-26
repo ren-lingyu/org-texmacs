@@ -1,0 +1,17 @@
+* 从 Org 派生文献库
+数学记号与结构清晰的源文件相辅相成[cite:@knuth1984],
+也可以组合引用排版资料与古典数学著作[cite:@knuth1984; @euclid1956].
+BibTeX 源码保存在 references.org 的代码块中, 不单独维护 .bib. 下面以字面源码展示原始文件:
+
+#+INCLUDE: "references.org" src org
+
+最后几条演示记录使用字符串声明与拼接, @online 类型, 以及指向显式引用父条目的 crossref
+[cite:@native-child; @native-parent; @native-online]. 这些是文档演示数据, 不是外部出版物声明.
+TeXmacs 负责解析与原生 plain 排版; 未知类型采用原生回退格式, @online 的 URL 等字段可能被忽略.
+这不等于完整 BibLaTeX/Biber 兼容, 也不会自动补入未引用的 crossref 父条目.
+
+* 参考文献
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
+#+print_bibliography:

@@ -1,0 +1,50 @@
+* 实际参与构建的配置
+规范配置保存在 shared/configuration.org 中. 构建驱动从源码块派生 .el, 加载所选配置,
+再把这些实际文件收录到下面. tangle 只复制源码, 不执行代码块; 加载指定配置是单独且明确的构建步骤.
+
+** 公共页面和 worker 设置
+#+INCLUDE: "common.el" src emacs-lisp
+
+可执行程序路径由 Nix package 提供. 完整文档使用较长的请求超时, worker 启动超时保留默认值.
+页面设置作为原生 initial 捕获; 文件中的语言和描述覆盖 initial 中对应的全局默认值.
+
+** 当前文档的配置
+#+INCLUDE: "profile.el" src emacs-lisp
+
+入口保留默认 generic 样式. 配套文章使用 article, 测试用标题前缀和 math-only 段落发现.
+显式 equation 与 texmacs 块仍然可以使用.
+
+** 两份编译文档之间的文件链接
+公共配置保留 PDF 文件链接的相对路径, 并将末尾 .org 扩展名转换为 .pdf.
+两个设置均在准备文档时捕获. 入口的 article.org 链接变成 article.pdf,
+文章的 index.org 链接变成 index.pdf. 它们指向同目录的产物, 不会触发编译;
+package 显式构建这两个入口.
+
+扩展名设置同样作用于保存的 .tm 和原生会话, 但这两个消费者仍按源目录解析为绝对路径.
+因此, 之后从 .tm 再渲染的 PDF 会使用绝对目标, 与这里直接导出的 PDF 不同.
+网页链接和手写 STM 链接不受影响.
+
+下面的替代配置只展示, 构建时不加载. 如需将 PDF 文件链接按源目录解析为绝对路径,
+同时保留 .org 扩展名, 可以使用:
+
+#+begin_src emacs-lisp
+(setq org-texmacs-pdf-file-links-as-absolute t
+      org-texmacs-link-org-files-as-pdf nil)
+#+end_src
+
+** 只展示, 不执行的交互设置
+编辑模式与导出菜单用于编辑会话, 无法仅凭 PDF 验证交互行为.
+以下可选初始化代码不会被本构建 tangle 或加载:
+
+#+begin_src emacs-lisp
+(require 'org-texmacs)
+(setq org-texmacs-edit-mode 'scheme-mode)
+;; 在首次加载 ox-texmacs 前设置, 并选择当前会话中可用的菜单键.
+(setq org-texmacs-export-menu-keys
+      '(:prefix ?T :buffer ?b :file ?f :pdf ?p))
+(require 'ox-texmacs)
+(setq org-texmacs-export-discover-bibliography t)
+#+end_src
+
+文档构建使用显式文献快照, 不发现用户的全局数据库.
+fragment-tags 控制段落入口, 不限制显式 TeXmacs 块内部结构. 本指南不承诺私有扩展 API.

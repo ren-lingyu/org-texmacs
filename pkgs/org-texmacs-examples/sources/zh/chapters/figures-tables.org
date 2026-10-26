@@ -1,0 +1,69 @@
+* 有编号的原生图形
+#+NAME: rectangle
+#+CAPTION[矩形]: 带有文字标记的 *原生* 矩形
+#+begin_figure
+#+begin_texmacs
+(with "gr-geometry" (tuple "geometry" "4cm" "2cm" "center") "gr-frame" (tuple "scale" "1cm" (tuple "2cm" "1cm")) (graphics "" (line (point "-1" "-0.5") (point "1" "-0.5") (point "1" "0.5") (point "-1" "0.5") (point "-1" "-0.5")) (text-at "Diagram" (point "-0.5" "0"))))
+#+end_texmacs
+#+end_figure
+
+图 [[rectangle]] 的内容是一棵原生 graphics 树. figure 内部只有一个 texmacs 块,
+解释文字放在外层封装之外. 图中保留英文标记, 中文题注属于 Org 正文.
+
+* 两种表格内容来源
+#+NAME: org-values
+#+CAPTION[数值]: 展示数值的矩形 Org 表格
+#+begin_table
+| 变量 | 数值 | 平方 |
+|------+------+------|
+| x | 2 | 4 |
+| y | 3 | 9 |
+#+end_table
+
+表 [[org-values]] 使用普通 Org 表格作为唯一主体. 另一种方式是直接提供原生表格数据:
+
+#+NAME: native-values
+#+CAPTION: 由 STM 提供内容的表格
+#+begin_table
+#+begin_texmacs
+(tformat
+  (cwith "1" "1" "1" "-1" "cell-background" "yellow")
+  (table
+    (row (cell "Expression") (cell "Value"))
+    (row (cell (math (sqrt "4"))) (cell "2"))
+    (row (cell (math (frac "1" "2"))) (cell "0.5"))))
+#+end_texmacs
+#+end_table
+
+导出器在原生表格数据外补齐表格封装. 表 [[native-values]] 的单元格格式与数学内容仍由 TeXmacs 解释.
+普通 Org 表格单元格不参与段落数学片段发现.
+
+* 无编号形式与后续计数
+带星号的形式选择原生无编号环境, 不表示双栏浮动体.
+
+#+CAPTION: 用于比较的无编号图形
+#+begin_figure*
+#+begin_texmacs
+(with "gr-geometry" (tuple "geometry" "4cm" "2cm" "center") "gr-frame" (tuple "scale" "1cm" (tuple "2cm" "1cm")) (graphics "" (line (point "-1" "-0.5") (point "1" "0.5")) (line (point "-1" "0.5") (point "1" "-0.5"))))
+#+end_texmacs
+#+end_figure*
+
+#+CAPTION: 无编号的封装摘要
+#+begin_table*
+| 环境 | 主体 |
+|------+------|
+| figure | 一个原生块 |
+| table | 一个 Org 表格或原生块 |
+#+end_table*
+
+#+NAME: last-table
+#+CAPTION: 无编号案例之后的另一张编号表格
+#+begin_table
+| 项目 | 含义 |
+|------+------|
+| NAME | 对象标识 |
+| CAPTION | 可见题注 |
+#+end_table
+
+表 [[last-table]] 便于检查无编号环境之后的计数行为.
+引用目标是完整图表, 不是单个单元格或图元. 本案例不请求外部图片导入或浮动位置控制.

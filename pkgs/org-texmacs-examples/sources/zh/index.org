@@ -1,0 +1,43 @@
+#+TITLE: org-texmacs 案例入口
+#+SUBTITLE: 配置与文档信息案例
+#+AUTHOR: org-texmacs 贡献者
+#+EMAIL: examples@example.invalid
+#+DATE: <2026-10-26 Mon +0800>
+#+LANGUAGE: zh-CN
+#+DESCRIPTION: org-texmacs 的中文配置, 文档信息与构建案例.
+#+CREATOR: org-texmacs 案例
+#+OPTIONS: toc:1 num:t author:t email:t date:t creator:t tags:not-in-toc
+#+BIBLIOGRAPHY: chapters/references.bib
+
+#+begin_abstract
+这份案例本身就是构建输入. 正文, 文档信息, 配置代码, 文献与脚注共同生成一份原生文档.
+配套 article 文档把数学, statement, 图形与表格组织在同一份文章中.
+#+end_abstract
+#+KEYWORDS: Org, TeXmacs, 可复现案例
+
+#+begin_abstract
+第二个摘要仍然是独立的块. 其后的关键词声明也保留自己的位置, 二者不会因为相邻而形成绑定.
+#+end_abstract
+#+KEYWORDS: 配置, 原生 PDF
+
+* 阅读这组案例
+Org 是唯一的规范源文件. 普通正文可以包含 *强调*, /斜体/, =代码=, 以及
+(math (concat "x=" (frac "1" "2"))) 这样的行内公式.
+同一个具名脚注可以重复引用[fn:source][fn:source], 匿名脚注也能包含数学表达式
+[fn::例如, (math (sqrt "2")) 是无理数.].
+
+可以访问 [[https://www.texmacs.org][TeXmacs 项目网站]] 了解原生排版工具.
+
+* 配套文章
+[[file:article.org][article.pdf - 数学与图表案例]]
+
+打开配套文章查看数学陈述, 原生绘图, 题注和表格引用.
+当前入口采用 generic 配置, 配套文章采用 article 配置.
+源码链接指向 article.org, 导出后指向同目录下的 article.pdf.
+
+#+INCLUDE: "chapters/configuration.org"
+#+INCLUDE: "chapters/metadata.org"
+#+INCLUDE: "chapters/bibliography.org"
+#+INCLUDE: "chapters/building.org"
+
+[fn:source] package 输出的 sources/zh/index/ 中保留 Org 源文件和实际配置文件.

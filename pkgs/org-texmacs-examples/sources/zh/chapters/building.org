@@ -1,0 +1,36 @@
+* 构建与查看案例
+#+begin_src sh
+nix build .#org-texmacs-examples
+#+end_src
+
+此 package 在 Linux 上为每种语言构建两个入口: index.org 使用 generic 配置,
+article.org 使用 article 配置. 命令创建指向 package 输出的 result 链接.
+PDF 集中放在 pdf/en/ 和 pdf/zh/, 原生文档放在 texmacs/en/ 和 texmacs/zh/.
+每个目录都包含 index.pdf 与 article.pdf, 或者对应的 .tm 文件.
+两份 PDF 位于同一目录, 一起移动目录时可以保留它们之间的相对链接.
+
+Org 输入和派生的 .el/.bib 放在 sources/<language>/<entry>/,
+保留 INCLUDE 使用的相对路径. 生成文件属于构建产物, 不提交到 Git.
+.tm 仍采用原生的源目录绝对链接目标; 上述可移动链接针对直接导出的 PDF.
+
+两个入口均通过普通 Org INCLUDE 组合 chapters/ 中的章节.
+数学与图表章节由 article.org 包含, 不再单独编译.
+package 使用 lib.fileset.toSource 收集自身 sources/ 下的输入.
+shared/ 保存公共配置和文献, 构建时分别复制到 chapters/configuration-source.org 和
+chapters/references.org, 再将 .el/.bib 派生到同一目录. 配置展示直接包含这些局部文件.
+导出不执行源码展示或交互演示.
+
+每份文档使用 Nix sandbox 和独立 HOME, TeXmacs, XDG 状态.
+不导入用户文献库, 宿主字体目录或初始化文件. 请使用启用 sandbox 的 Nix builder.
+声明的依赖可以在构建前获取, 渲染阶段离线; 无须额外的隔离框架.
+
+每份文档的 Emacs 构建超时为 600 秒, 包括 tangle, 转换与 PDF 渲染.
+进度与错误实时进入 Nix 日志.
+Poppler PDF 检查信息也输出到 Nix 日志, 不安装日志文件; 失败构建不发布输出目录.
+这些检查补充而不替代 ERT. 请查看数学记号, 引用值, 版式和中文字形.
+案例构建单独将 org-texmacs 的 TeXmacs 依赖覆盖为 texmacs-fandol-with-gotor-support,
+通过 =TEXMACS_FONT_PATH= 提供 Fandol 中文字体, 并为本地 PDF 文件链接生成原生 GoToR 动作.
+字体包装通过 override 与 texmacs-with-gotor-support 组合.
+阅读器支持可能取决于后端: 用户环境中 Zathura 的 pdf-mupdf 后端跳转失败,
+更换为 pdf-poppler 后链接正常.
+仅设置语言并不会提供字体. 可复现要求是内容与版式一致, 允许创建时间及 PDF 字节不同.

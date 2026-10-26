@@ -1,0 +1,26 @@
+* Org options and metadata
+Title, subtitle, author, email and date become native document information.
+LANGUAGE selects the native language; DESCRIPTION becomes the hidden subject,
+not an abstract. creator:t requests a visible generator note, without replacing
+the native PDF renderer identification. Visible keywords need not populate PDF
+Keywords. Independent abstracts and keyword declarations retain source order.
+
+| Configuration layer | Example | Purpose |
+|---------------------+---------+---------|
+| Global Lisp | Style and initial values | Defaults |
+| Explicit API options | :with-toc nil | One conversion |
+| File declaration | OPTIONS and LANGUAGE | Document policy |
+| Subtree property | =EXPORT_TITLE= | Selected-subtree override |
+
+Supported file declarations override external defaults; selected-subtree EXPORT
+properties override file values. Explicit nil differs from an absent option.
+The following properties matter for a subtree export, not this complete file.
+
+** A reusable section
+:PROPERTIES:
+:EXPORT_TITLE: An independently selected section
+:EXPORT_OPTIONS: toc:nil num:nil
+:END:
+
+Selecting this subtree gives it independent title/options without changing the
+whole-file document. Captured configuration is shared by its .tm and PDF consumers.
