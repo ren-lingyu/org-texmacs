@@ -9,7 +9,9 @@ Six corrected isolated documents build, independently reload saved .tm and
 match normalized PDF text including configuration listings. Docs stash itself
 remains unchanged and has two draft errors corrected only in four temporary
 Org files. No optional extension suite, other platforms, visual/glyph quality
-or PDF byte identity claim. Uncommitted candidate hashes and authority:
+or PDF byte identity claim. Subsequent user delivery matches expected parent,
+full five-file binary diff,85committed inputs and drafted feat(preprocess) message.
+Project clean; no runtime rerun or external tracking change. Candidate hashes and authority:
 memory/include-view-implementation.md.
 
 ## Isolated INCLUDE semantics investigation

@@ -3,7 +3,8 @@
 ## Literate bilingual documentation remains stashed; INCLUDE repair accepted
 
 User keeps docs in [wip] docs stash; no stash application authorized. Unified
-INCLUDE snapshot/view repair is implemented in five ordinary files, unstaged.
+INCLUDE snapshot/view repair is delivered in five ordinary files; complete
+diff/message/85committed-input verification matches the accepted candidate.
 Final focused26/26and full592ERT/all default checks pass. Details:
 memory/include-view-implementation.md. Prior review/probes remain separate
 evidence, not additional unfinished implementation phases.

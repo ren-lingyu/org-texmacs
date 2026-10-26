@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: INCLUDE snapshot/view repair accepted locally, not staged
+## Current: INCLUDE snapshot/view repair delivered and verified
 
 User adopts and requests unified repair. Five ordinary paths now separate raw
 snapshots from mode-specific views, admit literal and ordinary/native wrappers,
@@ -19,9 +19,12 @@ Four temporary Org corrections are in tmp/include-view-documents/draft-fixes.pat
 Temporary driver logging/reload verification is not a production package change.
 No font or visual-layout acceptance, optional extension-suite rerun or release.
 
-Ordinary index remains empty, HEAD/lock and both stashes unchanged. No project
-commit performed. Exact test/formatter authorizations apply only this round.
-Next: user reviews/stages repair; handle docs corrections only when separately
+User commits the exact five-file repair with the drafted feat(preprocess) message.
+Expected single parent, complete binary diff and85committed inputs match the
+accepted candidate. Ordinary worktree/index clean; no agent project Git writes
+or runtime rerun for identical bytes. Lock/stashes unchanged. Delivery association
+grounds this verification, not a test run against the new commit. No issue footer
+or external tracking change. Next: handle docs corrections only when separately
 selected. Details, hashes and validation limits: memory/include-view-implementation.md.
 
 ## Previous: isolated INCLUDE semantics probes complete

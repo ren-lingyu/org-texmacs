@@ -5,7 +5,8 @@
 User adopts the unified repair after isolated probes, then requests implementation.
 Five ordinary project paths change: preprocess/source Lisp modules, core/native
 preprocess regressions and README. No public signature, worker protocol or pure
-lowering change. No ordinary staging/commit or stash application.
+lowering change. Agent performs no ordinary staging/commit or stash application.
+User subsequently commits the exact repair; delivery verification is below.
 
 Capture now owns only validated local UTF8 raw text and receipts. A separate
 view cache keys normalized file and interpretation mode. Literal src/example/export
@@ -44,8 +45,12 @@ inputs.sha256 is retained under tmp/include-view-implementation. Manifest SHA256
 7954bfdda7d671d782ac4a7202d05ef1b76d499ba381dbea1a114e69c876c6cc.
 Complete five-path binary diff SHA256:
 97e04a3040c907a49b36277ca633e2e3b45e75f4a50899f49748755e10142587.
-These identify an uncommitted candidate, not a tested project commit. The memory
-checkpoint needs no new project parent for that uncommitted state. Temporary helper
+These identify the originally uncommitted tested candidate. User delivery now
+matches the expected single parent, full five-file binary diff, all85committed
+inputs and exact drafted feat(preprocess) message. Worktree/index clean and lock/
+stashes unchanged. Delivery project association grounds that read-only equivalence,
+not a committed-state test rerun or reconstructed original test provenance.
+The message has no issue footer; no tracking lookup/write is needed. Temporary helper
 scripts are ignored and not package/test inputs. Full gate uses timeout600s and
 `nix flake check -L --no-write-lock-file --max-jobs 2` against that explicit path.
 User authorizes repeated exact focused/full/docs commands for this round only.
