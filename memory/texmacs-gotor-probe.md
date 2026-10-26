@@ -1,5 +1,15 @@
 # Native GoToR probe and delivered packages
 
+Delivered follow-up3ccf195, explicitly requested by user: whole-renderer
+before/after hash guards replaced with reviewed href action-dispatch check plus
+patch --batch --forward --fuzz=0, retaining version2.1.5. Shared generated guard
+and exact patch supplied through passthru to maintained tests. Unrelated renderer
+edits allowed; changed dispatch/missing href/double patch rejected. Default
+tests/texmacs-with-gotor-support regression directly compares base/patched runtime,
+without Org/font wrappers. Focused build passes; output/limits in current.md.
+This supersedes full-file hash policy below, which describes original experiment
+and first delivery. Patch C++ bytes unchanged. No full ERT/flake rerun.
+
 Latest user correction: switching Zathura to pdf-poppler makes previous links
 work. Supplied version output: Zathura2026.10.4, girara2026.07.18,
 pdf-poppler2026.07.18. Prior failure used pdf-mupdf. Thus generic Zathura
@@ -11,8 +21,8 @@ pkgs/texmacs-with-gotor-support and pkgs/texmacs-fandol-with-gotor-support.
 Flake outputs/devShell/overlays agree. The font variant calls
 texmacs-fandol.override { texmacs = texmacs-with-gotor-support; }.
 Both named flake outputs are delivered; devShell and examples use final wrapper.
-Renderer guard runs after upstream patches/postPatch, asserting version2.1.5,
-original hash, zero-fuzz patch application and exact result hash. Patch is byte-
+Renderer guard runs after upstream patches/postPatch, asserting version2.1.5
+and original action dispatch before zero-fuzz patch application. Patch is byte-
 identical to accepted experiment, including probe helper names. Formal package
 build later succeeds through examples; see documents-package.md/evidence.md.
 
@@ -64,6 +74,6 @@ User requested experiment checkpoint before packaging; sequence honored. Origina
 texmacs-fandol implementation unchanged. Examples restored/adapted/delivered,
 stash cleanup performed by user; latest stash list empty. No standalone package
 README tracked; README and compiled example build chapters document composition.
-External named destinations and maintained behavioral check wiring were not
-added. Isolated experiment evidence remains distinct from later formal examples
+External named destinations were not added; maintained behavior check now exists
+as described above. Isolated experiment evidence remains distinct from later formal examples
 build acceptance and from final prose/navigation changes not rebuilt.

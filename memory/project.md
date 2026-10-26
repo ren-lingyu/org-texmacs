@@ -1,5 +1,11 @@
 # org-texmacs current project model
 
+Delivered user-requested package follow-up3ccf195: targeted href dispatch guard replaces
+full renderer hashes; version2.1.5 and zero-fuzz patching remain. Maintained native
+GoToR regression auto-discovered through tests overlay, original/patched runtime
+comparison without Org/Fandol. Focused check and formatter pass; full flake not
+rerun. Public default overlay remains uncommitted; details in current.md.
+
 ## Delivered file-link policies and bilingual examples
 
 File-link feature delivered: org-texmacs-pdf-file-links-as-absolute=nil (PDF-only)
@@ -17,7 +23,7 @@ Outputs pdf/texmacs/sources; explicit navigation links retain sibling PDF paths.
 Private matching Emacs override selects texmacs-fandol-with-gotor-support; ordinary
 Lisp/Emacs dependency remains plain TeXmacs. Standalone final wrapper composes
 texmacs-fandol.override with texmacs-with-gotor-support; reviewed2.1.5renderer
-hash guards and zero-fuzz patching follow upstream postPatch. Named packages and
+action-dispatch guard and zero-fuzz patching follow upstream postPatch. Named packages and
 devShell wired. No automatic examples check or app. README/allowlists agree.
 Four-doc build accepted, later prose/navigation edits static only; user accepts
 Zathura pdf-poppler after pdf-mupdf failure. No universal-reader claim. No extra

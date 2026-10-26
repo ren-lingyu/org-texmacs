@@ -1,8 +1,51 @@
 # org-texmacs current memory
 
+## Current: targeted GoToR guard and maintained regression delivered
+
+User committed3ccf195116a929d994556ae8cfea96f86b6f5f03 with reviewed fix message;
+7intended paths,297additions/5deletions, commit whitespace check passes. Ordinary
+index empty; only user-authored public-overlay edits remain unstaged in
+flake.nix and pkgs/default.nix. Do not stage/include those implicitly.
+
+Full renderer SHA256 guards replaced with original href action-dispatch check
+(leading indentation normalized) after upstream postPatch, then
+patch --batch --forward --fuzz=0. Version2.1.5 restriction retained; C++ patch
+unchanged. Unrelated source changes accepted; changed dispatch, missing href or
+already patched input rejected. Guard/patch supplied through passthru to tests.
+Maintained tests/texmacs-with-gotor-support auto-discovers through mkChecks;
+explicit texmacsWithGotorSupport argument avoids test-scope name recursion.
+Native baseline/patched test requires neither Org nor Fandol; README updated.
+
+Exact authorized focused build exits0:
+timeout 1200s nix build --no-link --no-write-lock-file --max-jobs 2 --cores 2 --print-out-paths path:/home/lingyu/Projects/org-texmacs#checks.x86_64-linux.texmacs-with-gotor-support -L.
+Output /nix/store/f0b0y0acxzwl5qgidfj3ffm7zwj8svin-texmacs-gotor-regression.
+Formal package recompiled. Nine path forms produce18GoToR/14URI/2internal versus
+32URI/2internal baseline. Page0/Fit, relative/absolute form, Unicode, URI/query/
+anchor/scheme/nonPDF controls, exact internal list preservation, text equality,
+MuPDF interpretation and relocation pass. Unrelated-source comment/zero-fuzz
+relocation and rejected guard mutations pass. Six-file authorized formatter and
+static diff checks pass. First run corrected a test assumption of single internal
+annotation (actual duplicate identical annotations); baseline URI backslash
+escaping is outside tested nine-path contract and no fix selected. No full
+flake/ERT rerun, GUI/Fandol test or post-commit test. Original build was before
+commit with public-overlay worktree edits present; internal check uses legacy
+scope, not public default overlay.
+
+## Pending: user-authored public default overlay
+
+Worktree exports lpkgs.overlays.default and excludes emacs-with-org-texmacs,
+org-texmacs-examples, texmacs-fandol and texmacs-fandol-with-gotor-support.
+Retained additions are emacsPackages.org-texmacs and texmacs-with-gotor-support;
+both rely on ordinary nixpkgs plus captured Lisp src. Static review appropriate,
+previous dependency gap was fixed by user. Independent downstream default-overlay
+application not evaluated. These two ordinary files remain unstaged/uncommitted;
+no further implementation/staging authorized. Prefer explicit include list if
+future public API stability becomes a selected change. Do not restore the old
+wrapper-exposing selection. Main perSystem still uses full legacy overlay.
+
 ## Current: native GoToR packages and bilingual examples delivered
 
-Project HEAD is the delivered examples change0559700e78b2b30e54a7c8ca7a268f6b32926027,
+Examples delivery baseline is0559700e78b2b30e54a7c8ca7a268f6b32926027,
 following native GoToR package delivery ecbe6cb53cfcca203ba3e12e41e52266d897fee8.
 Examples commit contains24intended paths and reviewed feat message. Ordinary
 worktree/index clean, commit whitespace checks pass. Latest read-only inspection
@@ -14,8 +57,8 @@ Delivered packages: texmacs-with-gotor-support and
 texmacs-fandol-with-gotor-support, latter composed through
 texmacs-fandol.override { texmacs = texmacs-with-gotor-support; }.
 Original Fandol method stays independent; ordinary org-texmacs keeps plain
-TeXmacs. Reviewed2.1.5renderer hash checks run before/after zero-fuzz patching
-following upstream postPatch. Both named outputs and final wrapper in devShell.
+TeXmacs. Current targeted source-guard policy is described above. Both named
+outputs and final wrapper in devShell.
 Native probe contract/hashes/guards: memory/texmacs-gotor-probe.md.
 
 Examples are package-local sources/shared+en/zh, two entries per language:

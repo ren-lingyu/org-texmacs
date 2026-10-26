@@ -1,5 +1,19 @@
 # org-texmacs durable evidence
 
+## Targeted GoToR guard and maintained native regression acceptance
+
+User-authorized exact check-only build exits0; output
+/nix/store/f0b0y0acxzwl5qgidfj3ffm7zwj8svin-texmacs-gotor-regression.
+Package recompiled with targeted dispatch check instead of full-file hashes.
+Guard mutations/unrelated-source zero-fuzz relocation pass. Nine file-path forms,
+URI/query/anchor/scheme/nonPDF/internal controls, page0/Fit, text equality and
+MuPDF semantic relocation pass. Baseline32URI/2internal; candidate18GoToR/
+14URI/2internal. Six-file authorized formatter exits0, diff check passes.
+No Org/font wrapper or GUI test, no new full flake/ERT gate. User delivered
+3ccf195116a929d994556ae8cfea96f86b6f5f03:7intended paths,297additions/5deletions,
+reviewed message and clean commit whitespace check. Only public overlay wiring
+remains unstaged in ordinary worktree; no post-commit test rerun claimed.
+
 Delivery confirmation: examples commit0559700e78b2b30e54a7c8ca7a268f6b32926027
 contains24intended paths,1126additions/11deletions and reviewed feat message.
 Commit whitespace check passes, ordinary tree/index clean. Final prose/index
