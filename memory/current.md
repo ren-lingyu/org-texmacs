@@ -1,11 +1,27 @@
 # org-texmacs current memory
 
+## Latest delivery: downstream nested-input compatibility
+
+User committed13e3ca7264cbce9f8157006e6c8282069466378c, changing flake.nix and
+flake.lock (22additions/13deletions). Motivation explicitly supplied by user:
+avoid downstream Nix flake misresolution of path-type inputs. Nested
+personal-nixpkgs.inputs.local-nixpkgs is overridden from upstream path:./pkgs to
+git+https://github.com/ren-lingyu/nixpkgs.git?ref=refs/heads/main&shallow=1&dir=pkgs.
+This is an override of a nested dependency, not a new root input. Root
+personal-nixpkgs manifest URL also gains .git suffix; nixpkgs still follows root.
+Complete current lock read: local-nixpkgs type=git/dir=pkgs, no relative path/
+parent entry; local and personal inputs lock same6c339e0d535f093b6934d8e9ff598f165bcee50b.
+Root nixpkgs advances674a202... to d3b13ad75cc492690728f9307e443dec9ef9a20e.
+Ordinary worktree/index clean, commit whitespace check passes. No Nix evaluation,
+downstream reproduction or native regression run after this input update. Prior
+runtime evidence uses earlier locked inputs; do not claim refreshed-lock acceptance.
+
 ## Current: targeted GoToR guard and maintained regression delivered
 
 User committed3ccf195116a929d994556ae8cfea96f86b6f5f03 with reviewed fix message;
-7intended paths,297additions/5deletions, commit whitespace check passes. Ordinary
-index empty; only user-authored public-overlay edits remain unstaged in
-flake.nix and pkgs/default.nix. Do not stage/include those implicitly.
+7intended paths,297additions/5deletions, commit whitespace check passes.
+Subsequent public-overlay delivery is recorded below; ordinary worktree/index
+are now clean. No new build or post-commit regression run.
 
 Full renderer SHA256 guards replaced with original href action-dispatch check
 (leading indentation normalized) after upstream postPatch, then
@@ -31,16 +47,20 @@ flake/ERT rerun, GUI/Fandol test or post-commit test. Original build was before
 commit with public-overlay worktree edits present; internal check uses legacy
 scope, not public default overlay.
 
-## Pending: user-authored public default overlay
+## Delivered: public default overlay
 
-Worktree exports lpkgs.overlays.default and excludes emacs-with-org-texmacs,
+User delivered a0b224c2847e5efe3e982bd7834f76ad6c132f3b with reviewed feat(flake)
+message: flake.nix and pkgs/default.nix only,12additions/1deletion. Commit
+whitespace check passes, ordinary worktree/index clean. Independent downstream
+application not evaluated; static composition review only. No new tests/build.
+
+Flake exports lpkgs.overlays.default and excludes emacs-with-org-texmacs,
 org-texmacs-examples, texmacs-fandol and texmacs-fandol-with-gotor-support.
 Retained additions are emacsPackages.org-texmacs and texmacs-with-gotor-support;
 both rely on ordinary nixpkgs plus captured Lisp src. Static review appropriate,
 previous dependency gap was fixed by user. Independent downstream default-overlay
-application not evaluated. These two ordinary files remain unstaged/uncommitted;
-no further implementation/staging authorized. Prefer explicit include list if
-future public API stability becomes a selected change. Do not restore the old
+application not evaluated. No further implementation selected. Prefer explicit
+include list if future public API stability becomes a selected change. Do not restore the old
 wrapper-exposing selection. Main perSystem still uses full legacy overlay.
 
 ## Current: native GoToR packages and bilingual examples delivered

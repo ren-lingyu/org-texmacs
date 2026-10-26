@@ -1,10 +1,19 @@
 # org-texmacs current project model
 
+Latest flake input wiring delivered13e3ca7: explicitly overrides personal-nixpkgs's
+nested local-nixpkgs from relative path input to remote Git input with dir=pkgs,
+per user's downstream path-resolution compatibility motivation. Remains nested,
+not an added root dependency; personal nixpkgs still follows root nixpkgs.
+local/personal lock revisions equal6c339e0; root nixpkgs updated to d3b13ad.
+No new evaluation/build acceptance on refreshed lock; details current.md.
+
 Delivered user-requested package follow-up3ccf195: targeted href dispatch guard replaces
 full renderer hashes; version2.1.5 and zero-fuzz patching remain. Maintained native
 GoToR regression auto-discovered through tests overlay, original/patched runtime
 comparison without Org/Fandol. Focused check and formatter pass; full flake not
-rerun. Public default overlay remains uncommitted; details in current.md.
+rerun. Public default overlay subsequently delivered as a0b224c: exposes
+emacsPackages.org-texmacs and texmacs-with-gotor-support; internal legacy group
+remains full. Independent downstream use statically reviewed, not evaluated.
 
 ## Delivered file-link policies and bilingual examples
 
