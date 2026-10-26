@@ -29,8 +29,11 @@ llib.tests.mkChecks {
       texmacs
       poppler-utils
       python3
+      gzip
+      makeFontsConf
       emacsPackages
       ;
+    texmacsWithGotorSupport = pkgs.texmacs-with-gotor-support;
     inherit
       emacs
       src

@@ -161,6 +161,10 @@ The flake exposes six named package outputs:
 | =packages.texmacs-fandol-with-gotor-support= | TeXmacs with both Fandol fonts and GoToR support |
 | =packages.org-texmacs-examples= | English and Chinese examples as native TeXmacs files and PDFs |
 
+The GoToR package currently requires TeXmacs 2.1.5.  Its build checks the reviewed
+link-action branch before applying a zero-fuzz patch.  Unrelated renderer changes
+are allowed; changed link dispatch requires review.
+
 The Lisp package sets the default =org-texmacs-program= to TeXmacs's absolute
 Nix store path.  TeXmacs is therefore part of its runtime closure; the installed
 package does not depend on finding it in =exec-path=.  Building
@@ -2415,6 +2419,8 @@ Run from the repository root:
   nix build --no-link --no-write-lock-file .#emacs
   # Run one ERT group, or use checks.x86_64-linux.ert for all groups.
   nix build --no-link --no-write-lock-file .#checks.x86_64-linux.ert-core
+  # Test the native GoToR renderer independently of Org and font wrappers.
+  nix build --no-link --no-write-lock-file .#checks.x86_64-linux.texmacs-with-gotor-support
 #+end_src
 
 Checks include byte compilation, package-lint and ERT, including real headless
@@ -2440,6 +2446,12 @@ independent groups concurrently, subject to its build limits.
 Nix checks the current system by default.  These commands may download
 dependencies and write Nix store/cache data; they do not update the lockfile,
 and the build command does not create a =result= link.
+
+The =texmacs-with-gotor-support= check compares original and patched native PDF
+actions, including relative/absolute paths, Unicode filenames, URI/internal-link
+controls and relocation.  It also checks that the source guard accepts unrelated
+renderer changes and rejects changed link dispatch or repeated patching.  It
+uses neither org-texmacs nor a font wrapper and does not test GUI navigation.
 
 The default ERT check uses stock Org and includes direct-AST caption-footnote
 tests.  The separate =caption-inline-footnotes= check builds the locked Org
