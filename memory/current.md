@@ -1,6 +1,46 @@
 # org-texmacs current memory
 
-## Current: INCLUDE snapshot/view repair delivered and verified
+## Current: documentation package cleanup accepted; staging remains stale
+
+User now explicitly requests worktree cleanup, including whitespace, formatting
+and outdated descriptions. Four known metadata/matrix corrections are applied
+to ordinary docs, en/zh guide EOF blanks removed, Chinese metadata punctuation
+fixed. Bilingual build instructions now describe result paths and the whole Emacs
+build's600second timeout. README's two-package statement becomes three outputs
+with compiled-docs build/source links. No ordinary index writes; original partial
+staging remains. User authorizes repeated exact five-file nix fmt, root explicit-
+path full flake check and root documents build commands for this cleanup round,
+timeouts120/600/600seconds. Five-file formatting completes, two files change.
+Actual root documents build exits0, all six native/PDF outputs succeed without
+the temporary diagnostic/reload driver. Root path flake check encounters copied
+Git metadata invoking git-gaw hook unavailable inside builder; no hooks bypassed
+or governance changed. Separately authorized metadata-free tmp/documents-cleanup
+full check passes, all106inputs equal root. ERT/lint/build outputs reuse accepted
+cache; treefmt newly runs. New Org files have no configured formatter, so flake
+excludes *.org (superseding README-only exclusion); README explains this.
+Combined worktree diff --check passes, ASCII punctuation and explicit paths
+checked. Exact original19staged blobs remain unchanged, including old draft
+errors. Next: user reviews/restages updated docs/package/wiring/README before
+requesting a commit draft. No font work, new default package check or promotion
+of temporary reload verification. Details: memory/documents-package.md.
+
+## Previous: documentation stash restored; read-only review complete
+
+User reapplies documentation stash and asks to inspect the worktree, not modify
+files or run builds. All21restored paths byte-match the reviewed docs stash.
+19new docs/package paths are staged; flake.nix and pkgs/default.nix wiring remain
+unstaged. Current source is the delivered INCLUDE repair, so its former wrapper
+refusal is resolved; unchanged docs still contain both previously reproduced
+draft failures: bare EXPORT_TITLE in the two metadata tables and an unclosed
+matrix expression in the two mathematics files. The isolated four-file patch
+remains available; it is not applied to this worktree. Staged diff --check also
+reports trailing blank lines in en/zh guide files. No parent traversal or host
+path hardcoding found in docs/package source. No new runtime verification.
+
+This restoration review precedes the selected cleanup and acceptance above.
+Earlier corrected-copy six-document acceptance remains scoped to that copy.
+
+## Previous: INCLUDE snapshot/view repair delivered and verified
 
 User adopts and requests unified repair. Five ordinary paths now separate raw
 snapshots from mode-specific views, admit literal and ordinary/native wrappers,

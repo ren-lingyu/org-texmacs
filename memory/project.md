@@ -1,5 +1,19 @@
 # org-texmacs current project model
 
+## Accepted working documentation package
+
+Uncommitted org-texmacs-documents package receives explicit docs fileset alongside
+Lisp src and builds six en/zh guide/math/figure-table documents. Org configuration/
+bibliography tangle before bounded INCLUDE conversion. Each leaf has fresh runtime
+state; .tm/PDF/sources/derived config/logs/pdf-info aggregate under language/topic
+directories in out. No app/default check or generic worker change. README lists
+three outputs and guide links. Manual Org cleanup and Lisp/Nix formatting complete;
+treefmt excludes *.org because no Org formatter is configured. Actual documents
+build succeeds;106equal-file metadata-free full gate passes with runtime caches.
+Root explicit path treefmt Git-hook failure remains a source-metadata caveat.
+Ordinary partial index is intentionally unchanged/stale. Details and verification
+limits: memory/documents-package.md.
+
 ## Delivered INCLUDE snapshot/view repair
 
 Delivered and verified implementation separates raw source/receipt capture from

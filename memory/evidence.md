@@ -1,5 +1,17 @@
 # org-texmacs durable evidence
 
+## Restored documentation cleanup accepted
+
+Actual working-tree org-texmacs-documents build exits0, all six .tm/PDF outputs
+with pdf-info/log checks. Formatter applies to five explicit Lisp/Nix paths;
+only package.nix/build.el change. Metadata/matrix/EOF/punctuation and README/
+build-description fixes complete. Root explicit path treefmt fails on imported
+Git metadata's unavailable git-gaw hook. Separately authorized106equal-file
+metadata-free copy passes all default flake checks; runtime/lint/package outputs
+cached, new treefmt check executed with *.org excluded. Ordinary index remains
+the original19staged blobs. No new native reload, visual/glyph/byte-identity or
+other-system claim. Hashes, paths and authority: memory/documents-package.md.
+
 ## INCLUDE snapshot/view repair accepted in isolated copies
 
 Final full locked check exits0:203core+323native+27PDF-render+33PDF-document+

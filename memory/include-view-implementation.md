@@ -74,7 +74,11 @@ mathematics and figures-tables leaves pass and aggregate build exits0. Final out
 /nix/store/96fryj9mpj8pcaqkyzb19gw1xdbd9d64-org-texmacs-documents.
 
 This accepts the corrected isolated draft, not unchanged stash package readiness.
-No production docs/package edits, default checks/apps/CI additions or font work.
+Subsequent user restoration, ordinary-file cleanup and actual package acceptance
+are recorded in memory/documents-package.md; its four Org fixes are no longer
+pending in the working docs. The original stash itself remains unchanged.
+In that isolated phase no production docs/package edits, default checks/apps/CI
+additions or font work were performed.
 No visual layout/glyph coverage, PDF byte identity, cross-platform or optional
 extension-integration acceptance. Native reload equality is extracted text,
 not a page-geometry comparison. No independent raw archival need.

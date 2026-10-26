@@ -1,20 +1,24 @@
 # org-texmacs active backlog
 
-## Literate bilingual documentation remains stashed; INCLUDE repair accepted
+## Literate bilingual documentation cleanup accepted; restaging pending
 
-User keeps docs in [wip] docs stash; no stash application authorized. Unified
+User reapplies docs stash then selects cleanup. Known metadata/matrix errors,
+guide EOF blanks and punctuation are corrected; package Lisp/Nix formatted,
+README package list/build links and bilingual output/timeout descriptions updated.
+Org has no formatter, so treefmt excludes *.org. Actual six-document package
+build and106file-identical metadata-free full flake check pass. Root explicit
+path check hits copied Git metadata's unavailable GAW hook; no bypass performed.
+Original19staged blobs remain unchanged/stale, so restaging is still the user's
+next step. Details and acceptance limits: memory/documents-package.md. Unified
 INCLUDE snapshot/view repair is delivered in five ordinary files; complete
 diff/message/85committed-input verification matches the accepted candidate.
 Final focused26/26and full592ERT/all default checks pass. Details:
 memory/include-view-implementation.md. Prior review/probes remain separate
 evidence, not additional unfinished implementation phases.
 
-Docs draft is extracted read-only into a temporary copy. All six corrected
-documents build and saved-.tm reload/PDF text agree with direct rendering.
-Raw stash still needs two types of source corrections in four Org files:
-mark EXPORT_TITLE as verbatim in metadata tables and close matrix STM properly.
-Temporary draft-fixes.patch records them; production/stash unchanged. Do not
-equate corrected-copy acceptance with unchanged stash readiness.
+Earlier corrected-copy saved-.tm reload/PDF text acceptance remains its own
+evidence. Its four-file patch is now applied to the working docs; do not apply
+it again automatically. Original stash remains unchanged.
 
 User requests an exported packages example with PDF in out and broad public
 configuration coverage. Package-level complete isolation is mandatory; content
@@ -25,9 +29,8 @@ as docs from flake fileset through the package overlay. Six bilingual guide/math
 figure-table builds use real INCLUDE chapters and Org-derived configuration/
 bibliography; driver stays in pkgs, no separate README. Practical coverage replaces
 mechanical option enumeration; native BibTeX type/concat/crossref behavior is shown.
-Initial implementation was files-only. Subsequent isolated acceptance is above;
-visual layout, Chinese glyph quality and production draft formatting remain
-unverified. Details and next review/validation step:
+Initial implementation was files-only. Subsequent cleanup acceptance is above;
+visual layout and Chinese glyph quality remain unverified. Details:
 memory/documents-package.md. Do not turn this into a default check
 or release gate, change generic worker behavior, or reintroduce font repair.
 

@@ -1,5 +1,42 @@
 # Literate documentation package
 
+## Restored documentation cleanup and acceptance
+
+After INCLUDE repair delivery, user reapplies all21draft paths, then explicitly
+requests workspace cleanup and authorizes exact formatter/full-check/docs-build
+commands. Metadata tables use verbatim EXPORT_TITLE, matrix STM is closed,
+guide EOF blanks and Chinese metadata punctuation corrected. Bilingual build
+instructions describe result paths and the entire Emacs build timeout. README
+lists three package outputs, explicit docs input and compiled guide links.
+Only package.nix/build.el change under the five-file formatter invocation.
+
+Actual root package build exits0: all six en/zh guide/math/figure-table leaves
+produce .tm/PDF/pdf-info and logs. This uses the real package driver, without
+temporary diagnostic/reload additions. Output:
+/nix/store/pq50lvs8p0bcvq7405qybvx01612gd3c-org-texmacs-documents.
+Saved reload/PDF-text equality was verified in the preceding isolated draft
+phase, not rerun by the production cleanup package. No visual/glyph/byte-identity
+or cross-platform acceptance is claimed.
+
+Root explicit path full check imports Git metadata and treefmt's temporary Git
+operation cannot find git-gaw for the copied hook. No bypass or governance edit.
+A separately authorized metadata-free106file copy passes full flake check with
+ERT/lint/package outputs cached and treefmt executed. Initial Org missing-formatter
+failure is fixed by *.org exclusion; narrower docs/**/*.org did not match the
+root-level Org files. All106current inputs remain equal after the gate.
+Manifest SHA256: b734db81dda08abd7865d91b645981a2efdb16d975812c6ae1938b6429ca25fb.
+Complete current worktree diff against delivered INCLUDE HEAD SHA256:
+356444f0dd8f09bfa77ccf094113dc75de13571448a47094d3b9b067263f34c6.
+Manifest/verification are under tmp/documents-cleanup. No project-parent
+association is needed for this uncommitted candidate's test state.
+
+Combined diff --check passes; no parent traversal/host hardcoding found. Ordinary
+index is untouched:19staged blobs still equal the restored original stash and
+contain old mistakes. User must review/restage corrections, wiring and README
+before commit preparation. No new default check/app/CI or font work. Original
+stash unchanged. Fresh test/formatter authorizations apply only this cleanup round.
+Earlier isolated evidence: memory/include-view-implementation.md.
+
 ## Objective, decisions and authority
 
 User selects a buildable org-texmacs-documents package rather than a standalone
@@ -10,8 +47,8 @@ representative features and configuration instead of mechanically setting every
 option. No separate package README is wanted. The guides own the build/output
 instructions formerly kept in that README.
 
-Original implementation authorization was files-only. No agent Nix evaluation,
-tangle, build, formatter, test or dependency resolution has run or been authorized.
+Original implementation authorization was files-only. At that phase no agent
+Nix evaluation, tangle, build, formatter, test or dependency resolution had run.
 The later user-run failed build and read-only diagnosis are recorded below.
 Do not treat written drivers or output checks as execution evidence.
 No agent ordinary project staging/history writes; source files remain candidates.
