@@ -1,11 +1,19 @@
 # org-texmacs active backlog
 
-## Literate bilingual documentation package written, not validated
+## Literate bilingual documentation remains stashed; INCLUDE repair accepted
 
-User now saves this candidate in [wip] docs stash; worktree/index clean, no stash
-application authorized. Current follow-up reviews the INCLUDE snapshot/view
-separation proposal; direction sound with native-branch/context/cache corrections,
-not an adopted implementation plan. See memory/include-view-review.md.
+User keeps docs in [wip] docs stash; no stash application authorized. Unified
+INCLUDE snapshot/view repair is implemented in five ordinary files, unstaged.
+Final focused26/26and full592ERT/all default checks pass. Details:
+memory/include-view-implementation.md. Prior review/probes remain separate
+evidence, not additional unfinished implementation phases.
+
+Docs draft is extracted read-only into a temporary copy. All six corrected
+documents build and saved-.tm reload/PDF text agree with direct rendering.
+Raw stash still needs two types of source corrections in four Org files:
+mark EXPORT_TITLE as verbatim in metadata tables and close matrix STM properly.
+Temporary draft-fixes.patch records them; production/stash unchanged. Do not
+equate corrected-copy acceptance with unchanged stash readiness.
 
 User requests an exported packages example with PDF in out and broad public
 configuration coverage. Package-level complete isolation is mandatory; content
@@ -16,8 +24,9 @@ as docs from flake fileset through the package overlay. Six bilingual guide/math
 figure-table builds use real INCLUDE chapters and Org-derived configuration/
 bibliography; driver stays in pkgs, no separate README. Practical coverage replaces
 mechanical option enumeration; native BibTeX type/concat/crossref behavior is shown.
-No evaluation/tangle/build/formatter/test run; syntax, rendering, Chinese glyphs/
-layout and formatting remain unverified. Details and next review/validation step:
+Initial implementation was files-only. Subsequent isolated acceptance is above;
+visual layout, Chinese glyph quality and production draft formatting remain
+unverified. Details and next review/validation step:
 memory/documents-package.md. Do not turn this into a default check
 or release gate, change generic worker behavior, or reintroduce font repair.
 

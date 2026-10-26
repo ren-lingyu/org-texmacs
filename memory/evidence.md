@@ -1,5 +1,17 @@
 # org-texmacs durable evidence
 
+## INCLUDE snapshot/view repair accepted in isolated copies
+
+Final full locked check exits0:203core+323native+27PDF-render+33PDF-document+
+6patched=592ERT, strict compile/lint/treefmt/aggregates pass. Host focused26/26
+also passes. All85tracked runtime/build/test inputs match root/copy afterward.
+Six corrected isolated documents build, independently reload saved .tm and
+match normalized PDF text including configuration listings. Docs stash itself
+remains unchanged and has two draft errors corrected only in four temporary
+Org files. No optional extension suite, other platforms, visual/glyph quality
+or PDF byte identity claim. Uncommitted candidate hashes and authority:
+memory/include-view-implementation.md.
+
 ## Isolated INCLUDE semantics investigation
 
 49plain-Lisp probes have zero unexpected failures on host Emacs31.1/Org9.8.7.

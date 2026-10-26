@@ -1,6 +1,30 @@
 # org-texmacs current memory
 
-## Current: isolated INCLUDE semantics probes complete; implementation pending
+## Current: INCLUDE snapshot/view repair accepted locally, not staged
+
+User adopts and requests unified repair. Five ordinary paths now separate raw
+snapshots from mode-specific views, admit literal and ordinary/native wrappers,
+add11core/2native regressions and explain the new contract in README. Public
+signatures, pure lowering, path/encoding/budget/receipt checks remain unchanged.
+Host focused26/26passes. Final isolated locked full check exits0:203core,
+323native,27PDF-render,33PDF-document and6patched=592ERT, strict compile/lint/
+formatting/aggregates pass. All85tracked runtime/build/test inputs match root
+and check copy after acceptance; final documentation Lisp inputs also match.
+
+All six corrected isolated en/zh guide/math/figure-table documents build,
+independently reload saved .tm and retain equal normalized PDF text plus expected
+included configuration. Raw stash has two unrelated draft mistakes: unmarked
+EXPORT_TITLE in metadata tables and a missing matrix closing parenthesis.
+Four temporary Org corrections are in tmp/include-view-documents/draft-fixes.patch.
+Temporary driver logging/reload verification is not a production package change.
+No font or visual-layout acceptance, optional extension-suite rerun or release.
+
+Ordinary index remains empty, HEAD/lock and both stashes unchanged. No project
+commit performed. Exact test/formatter authorizations apply only this round.
+Next: user reviews/stages repair; handle docs corrections only when separately
+selected. Details, hashes and validation limits: memory/include-view-implementation.md.
+
+## Previous: isolated INCLUDE semantics probes complete
 
 User authorizes isolated experiments and repeated execution of the exact
 timeout120s run.sh command for this round. Final49probes have zero unexpected
@@ -18,10 +42,9 @@ a limited spike, not a complete protected-view transaction. One captured source
 snapshot does not mean one physical read: existing receipt verification causes
 12byte reads for two uses in the measured fixture. Preserve those checks.
 
-Next: specify/implement raw snapshot and semantic-view separation only after
-user selection; validate native-body selection/opacity, full transaction guards,
-locked-environment regressions and restored docs/.tm/PDF then. No stash restore
-or production edits performed. Details: memory/include-view-probes.md.
+At this investigation phase no implementation or stash restoration was performed.
+The subsequently selected repair is described in the Current section above.
+Details: memory/include-view-probes.md.
 
 ## Previous: INCLUDE snapshot/view proposal reviewed; docs stashed
 

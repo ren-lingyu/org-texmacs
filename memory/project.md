@@ -1,5 +1,20 @@
 # org-texmacs current project model
 
+## Current local INCLUDE snapshot/view repair
+
+Accepted uncommitted candidate separates raw source/receipt capture from
+interpretation views. Literal INCLUDE reads raw text and uses native escaping;
+ordinary block wrapping uses actual wrapper context; native texmacs/equation/
+equation* selects raw text then shields the generated block. Native branch
+recursion/options differ and final AST support remains explicit. Shared block
+name classification avoids parsing opaque native bodies as Org. Public signatures
+and source INFO semantics remain unchanged; coding overrides/unmatched and file/
+budget/configuration guards remain. Receipt checking can reread bytes despite
+one captured snapshot. This supersedes earlier blanket wrapper rejection only.
+Final592ERT/compile/lint/formatting/default checks pass; six corrected isolated
+docs reload and PDF-text acceptance pass. Ordinary index empty, docs stashed.
+Contract, provenance and limits: memory/include-view-implementation.md.
+
 ## Current flake and formatting-check state
 
 Following the delivered Issue14 feature, user commits Lisp/Nix formatting,
