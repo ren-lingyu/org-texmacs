@@ -206,9 +206,11 @@ stop it so a later call cannot reuse a semantically inconsistent peer."
        (org-texmacs--worker-stop)
        (signal (car err) (cdr err))))))
 
-(defun org-texmacs--native-file-target (path base)
+(defun org-texmacs--native-file-target
+    (path base &optional preserve-relative org-files-as-pdf)
   "Translate a raw local file PATH using explicit resource BASE.
-Return an absolute system path for TeXmacs's native URL handler.  Never read
+PRESERVE-RELATIVE retains the original path form; otherwise resolve against
+BASE.  ORG-FILES-AS-PDF changes a terminal .org suffix to .pdf.  Never read
 files, expand a home abbreviation or infer a base from the current buffer."
   (unless (and (org-texmacs--document-local-file-path-p path)
                (or (null base)
@@ -221,23 +223,38 @@ files, expand a home abbreviation or infer a base from the current buffer."
           (setq base (org-texmacs--source-copy-path base))
         (org-texmacs-document-error
          (signal 'org-texmacs-encoding-error (cdr err)))))
-    (unless (or (file-name-absolute-p path) base)
+    (unless (or preserve-relative (file-name-absolute-p path) base)
       (signal
        'org-texmacs-encoding-error
        '("Relative native file target requires a resource base")))
-    (let ((absolute (expand-file-name path (or base "/"))))
+    (let* ((case-fold-search t)
+           (path
+            (if (and org-files-as-pdf
+                     (string-match-p "\\.org\\'" path))
+                (concat (substring path 0 -4) ".pdf")
+              path))
+           (target
+            (if preserve-relative
+                path
+              (expand-file-name path (or base "/")))))
       ;; TeXmacs navigation interprets query/anchor and URL expression syntax.
       ;; Preserve these filenames structurally, but reject this native subset.
       (when (cl-some
              (lambda (character)
-               (string-match-p (regexp-quote character) absolute))
+               (string-match-p (regexp-quote character) target))
              '("#" "?" "*" "$" "|" "\\" "[" "]"))
         (signal 'org-texmacs-encoding-error
                 '("Unsupported character in native file target")))
-      absolute)))
+      target)))
 
 (defun org-texmacs--native-resolve-file-paths
-    (body files stm-paths base)
+    (body
+     files
+     stm-paths
+     base
+     &optional
+     preserve-relative
+     org-files-as-pdf)
   "Replace file target leaves in copied BODY using FILES and BASE.
 Validate target roles and separation from STM-PATHS before serializing."
   (unless (proper-list-p files)
@@ -283,15 +300,29 @@ Validate target roles and separation from STM-PATHS before serializing."
            '("File target path does not name an hlink target")))
         (setcar
          (cddr parent)
-         (org-texmacs--native-file-target (nth 2 parent) base))))))
+         (org-texmacs--native-file-target
+          (nth 2 parent) base
+          preserve-relative
+          org-files-as-pdf))))))
 
-(defun org-texmacs--native-document-wire (document)
+(defun org-texmacs--native-document-wire (document &optional pdf)
   "Validate DOCUMENT and serialize its native fields as Scheme data.
 Translate marked local file targets on a body copy using the captured resource
-base.  Return style, initial, body and STM-path arguments without a process."
+base and fixed link policies.  PDF selects the PDF path policy; other consumers
+resolve relative targets.  Return native arguments without starting a process."
   (unless (org-texmacs-document-p document)
     (signal 'org-texmacs-encoding-error
             '("Expected a document result")))
+  (unless (and (memq
+                (org-texmacs-document-pdf-file-links-as-absolute
+                 document)
+                '(nil t))
+               (memq
+                (org-texmacs-document-link-org-files-as-pdf
+                 document)
+                '(nil t)))
+    (signal 'org-texmacs-encoding-error
+            '("Invalid file link policies")))
   (let ((body nil)
         (style nil)
         (initial nil)
@@ -354,7 +385,12 @@ base.  Return style, initial, body and STM-path arguments without a process."
      body
      (org-texmacs-document-file-paths document)
      paths
-     (org-texmacs-document-resource-base document))
+     (org-texmacs-document-resource-base document)
+     (and
+      pdf
+      (not
+       (org-texmacs-document-pdf-file-links-as-absolute document)))
+     (org-texmacs-document-link-org-files-as-pdf document))
     (cl-labels
      ((wire
        (node)
@@ -418,8 +454,9 @@ the result back to this encoder.  No files or persistent buffers are created."
   "Return DOCUMENT as a complete native TeXmacs .tm byte string.
 Consume a completed `org-texmacs-document' result using its explicit style,
 initial environment, body and provenance.  Translate marked file links with
-the captured resource base, then encode once and construct the file wrapper
-with the running TeXmacs version.  Use TeXmacs's native serializer.
+the captured resource base and Org-to-PDF suffix policy, then encode once and
+construct the file wrapper with the running TeXmacs version.  Use TeXmacs's
+native serializer.
 The returned unibyte string preserves native output bytes; write it with
 `no-conversion' when a separate caller chooses to save it.  Never feed it back
 to the document encoder.  No output file or native session is created, and an
@@ -436,6 +473,8 @@ invalid response payloads stop it.  No source buffer or resource file is read."
   "Render completed DOCUMENT to native PDF bytes with the shared worker.
 Encode explicit fields once and typeset in an owned temporary native buffer.
 Return an unibyte string; no .tm intermediary or public session is created.
+Use DOCUMENT's captured file-link policies: preserve relative targets by default
+and optionally replace .org suffixes with .pdf, leaving DOCUMENT unchanged.
 Force typesetting before each of two native prints.  In compatible native
 footnote macros, supply a missing destination only in the disposable PDF buffer;
 preserve explicit overrides, serialized documents and existing sessions.
@@ -444,7 +483,7 @@ Existing sessions remain unchanged.  Encoding/rendering errors preserve healthy
 transport; invalid output or cleanup failure stops it.  Native printing writes
 an owned temporary PDF and may populate native font caches.  Remove the
 temporary PDF/buffer before returning; font caches follow TeXmacs's lifetime."
-  (let ((wire (org-texmacs--native-document-wire document)))
+  (let ((wire (org-texmacs--native-document-wire document t)))
     (cl-labels
      ((check
        (tree)

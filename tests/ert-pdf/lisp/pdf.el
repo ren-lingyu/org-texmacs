@@ -789,6 +789,93 @@
                          nil
                          "\\`render-.*\\.pdf\\'"))))))
 
+(ert-deftest org-texmacs-pdf-file-link-policies ()
+  :tags
+  '(pdf-links)
+  (org-texmacs-test--with-worker
+   (dolist (absolute '(nil t))
+     (dolist (pdf '(nil t))
+       (let*
+           ((document
+             (org-texmacs--document-create
+              :body
+              '(document
+                (concat (hlink "Org" "./article.ORG") " ")
+                (concat (hlink "Parent" "../peer.org") " ")
+                (concat (hlink "Space" "space name.org") " ")
+                (concat (hlink "Unicode" "子/é.org") " ")
+                (concat
+                 (hlink "Absolute" "/absolute/article.org") " ")
+                (concat
+                 (hlink "URI" "https://example.org/file.org") " ")
+                (concat (hlink "Native" "native.org") " "))
+              :resource-base "/captured/source/"
+              :file-paths '((0 0 1) (1 0 1) (2 0 1) (3 0 1) (4 0 1))
+              :stm-paths '((6 0))
+              :pdf-file-links-as-absolute absolute
+              :link-org-files-as-pdf pdf))
+            (before (copy-tree (org-texmacs-document-body document)))
+            (file
+             (expand-file-name (format "links-%s-%s.pdf" absolute pdf)
+                               test-directory))
+            (relative
+             (if pdf
+                 '("./article.pdf"
+                   "../peer.pdf"
+                   "space name.pdf"
+                   "子/é.pdf"
+                   "/absolute/article.pdf")
+               '("./article.ORG"
+                 "../peer.org"
+                 "space name.org"
+                 "子/é.org"
+                 "/absolute/article.org")))
+            (expected
+             (append
+              (if absolute
+                  (mapcar
+                   (lambda (path)
+                     (expand-file-name path "/captured/source/"))
+                   relative)
+                relative)
+              '("https://example.org/file.org" "native.org")))
+            ;; Completed document policies, not consumer-time globals, decide.
+            (org-texmacs-pdf-file-links-as-absolute (not absolute))
+            (org-texmacs-link-org-files-as-pdf (not pdf)))
+         (org-texmacs-document-save-pdf document file)
+         (should
+          (equal
+           expected
+           (mapcar
+            (lambda (link) (alist-get 'uri link))
+            (alist-get
+             'links (org-texmacs-test--pdf-note-inspect file t)))))
+         (should (equal before (org-texmacs-document-body document)))
+         ;; A serialized native document intentionally retains absolute targets.
+         (when (and (not absolute) pdf)
+           (let ((tm
+                  (expand-file-name "links-native.tm" test-directory))
+                 (reload
+                  (expand-file-name "links-native-reload.pdf"
+                                    test-directory)))
+             (org-texmacs-document-save document tm)
+             (org-texmacs-test--issue11-reload-pdf
+              tm reload test-directory)
+             (should
+              (equal
+               (append
+                (mapcar
+                 (lambda (path)
+                   (expand-file-name path "/captured/source/"))
+                 relative)
+                '("https://example.org/file.org" "native.org"))
+               (mapcar
+                (lambda (link) (alist-get 'uri link))
+                (alist-get
+                 'links
+                 (org-texmacs-test--pdf-note-inspect
+                  reload t))))))))))))
+
 (ert-deftest org-texmacs-pdf-derived-link-targets ()
   :tags
   '(pdf-adjacent)

@@ -683,7 +683,7 @@
         (should
          (equal
           (org-texmacs--native-document-wire document)
-          "(\"generic\") ((\"language\" \"english\" org-literal)) (\"document\" (\"concat\" (\"hlink\" \"Figure\" \"/source/resources/figures/a.pdf\") \" \") (\"concat\" (\"hlink\" \"./notes.org\" \"/source/resources/notes.org\") \" \")) ()")))
+          "(\"generic\") ((\"language\" \"english\" org-literal)) (\"document\" (\"concat\" (\"hlink\" \"Figure\" \"/source/resources/figures/a.pdf\") \" \") (\"concat\" (\"hlink\" \"./notes.org\" \"/source/resources/notes.pdf\") \" \")) ()")))
       (should (equal before (org-texmacs-document-body document))))))
 
 (ert-deftest

@@ -210,6 +210,36 @@ effects are the caller's responsibility."
   :type 'function
   :group 'org-texmacs)
 
+(defcustom org-texmacs-pdf-file-links-as-absolute nil
+  "Whether PDF rendering expands relative Org file links to absolute paths.
+When nil, preserve their relative paths.  When non-nil, resolve them against
+the captured source resource base.  Native .tm and session consumers always
+resolve relative file links.  Document preparation captures this setting."
+  :type 'boolean
+  :group 'org-texmacs)
+
+(defcustom org-texmacs-link-org-files-as-pdf t
+  "Whether Org file links ending in .org target the corresponding .pdf.
+Match the suffix without case sensitivity.  This applies to PDF rendering,
+native .tm serialization and native sessions, without changing link labels,
+URI links or authored STM.  Document preparation captures this setting."
+  :type 'boolean
+  :group 'org-texmacs)
+
+(defun org-texmacs--document-file-link-options (info)
+  "Return fixed absolute-PDF and Org-to-PDF policies from INFO.
+Omitted keys select fixed defaults, never current dynamic settings."
+  (let ((absolute
+         (plist-get info :texmacs-pdf-file-links-as-absolute))
+        (pdf
+         (if (plist-member info :texmacs-link-org-files-as-pdf)
+             (plist-get info :texmacs-link-org-files-as-pdf)
+           t)))
+    (unless (and (memq absolute '(nil t)) (memq pdf '(nil t)))
+      (signal 'org-texmacs-document-error
+              '("Invalid file link policies")))
+    (cons absolute pdf)))
+
 (defun org-texmacs-format-headline-default-function
     (todo _todo-type priority title-parts tags _info)
   "Return a fresh text title stree without side effects.
@@ -266,6 +296,17 @@ so later redefinition affects only new calls."
           (plist-put
            info
            :texmacs-format-headline-function formatter))
+    (setq
+     info
+     (plist-put
+      info
+      :texmacs-pdf-file-links-as-absolute org-texmacs-pdf-file-links-as-absolute))
+    (setq
+     info
+     (plist-put
+      info
+      :texmacs-link-org-files-as-pdf org-texmacs-link-org-files-as-pdf))
+    (org-texmacs--document-file-link-options info)
     (setq info
           (plist-put
            info
@@ -289,6 +330,8 @@ zero-based child indices, excluding tags.  SOURCE-FILE and RESOURCE-BASE
 are copied source identity and resource-base strings, or nil.
 FILE-PATHS locate Org file-link target string leaves in BODY, separate from
 STM roots.  Consumers use RESOURCE-BASE without changing these raw leaves.
+PDF-FILE-LINKS-AS-ABSOLUTE and LINK-ORG-FILES-AS-PDF are fixed boolean policies
+applied by consumers to their own body copies, not during AST lowering.
 Callers must not mutate any slot
 or nested list/string.  No source buffer is retained."
  (body nil :read-only t)
@@ -298,7 +341,9 @@ or nested list/string.  No source buffer is retained."
  (initial-literal-keys nil :read-only t)
  (source-file nil :read-only t)
  (resource-base nil :read-only t)
- (file-paths nil :read-only t))
+ (file-paths nil :read-only t)
+ (pdf-file-links-as-absolute nil :read-only t)
+ (link-org-files-as-pdf t :read-only t))
 
 (defconst org-texmacs--document-languages
   '(("en" . "english")
@@ -1492,6 +1537,8 @@ for consumers.  Final handlers must preserve contents identity and provenance."
            :with-priority nil
            :with-tags t
            :texmacs-format-headline-function org-texmacs-format-headline-default-function)))
+       (file-link-options
+        (org-texmacs--document-file-link-options info))
        (resolution
         (or frozen-resolution
             (and (plist-get info :texmacs-special-block-preflight)
@@ -3131,7 +3178,9 @@ for consumers.  Final handlers must preserve contents identity and provenance."
         :initial initial
         :initial-literal-keys initial-literal-keys
         :source-file source-file
-        :resource-base resource-base)))))
+        :resource-base resource-base
+        :pdf-file-links-as-absolute (car file-link-options)
+        :link-org-files-as-pdf (cdr file-link-options))))))
 
 (defun org-texmacs--document-heading-settings ()
   "Copy effective Org heading parser settings for transfer and comparison.

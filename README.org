@@ -1157,10 +1157,25 @@ child indices.  These paths remain separate from STM provenance and propagate
 through supported inline and block containers.  Relative paths require an
 explicit captured =resource-base=; absolute paths need no implicit base.
 
-The native bridge translates only marked file targets into absolute system
-paths using the captured base, then applies ordinary literal native encoding.
-It does not open or inspect resources, inline images, or consult the caller's
-current directory.  The original document remains unchanged.  File searches
+The native bridge translates only marked file targets on its own body copy,
+then applies ordinary literal native encoding.  The captured
+=org-texmacs-link-org-files-as-pdf= setting defaults to =t=: terminal =.org=
+suffixes become =.pdf= without case sensitivity.  Set it to =nil= to retain
+the original suffix.  This applies to PDF, native =.tm= and session consumers;
+labels, URI links and authored STM links remain unchanged.  Other suffixes,
+including =.org.gpg=, are not converted.
+
+Native =.tm= and session consumers resolve relative targets into absolute system
+paths using the captured source base.  PDF consumers instead preserve relative
+paths by default.  Setting =org-texmacs-pdf-file-links-as-absolute= to =t= restores
+source-based absolute resolution for PDF only.  Absolute targets remain absolute.
+Both booleans are captured during document preparation; changing them later does
+not alter a prepared input or completed document.  Pure AST inputs use fixed
+defaults unless their INFO supplies =:texmacs-pdf-file-links-as-absolute= or
+=:texmacs-link-org-files-as-pdf=.  The structural body always retains raw targets.
+
+The bridge does not open or inspect resources, inline images, or consult the
+caller's current directory.  The original document remains unchanged.  File searches
 such as =file:notes.org::#target=, application hints, tilde targets, remote
 resources, and file links in titles/metadata are unsupported.  Native string
 navigation also rejects targets containing =#=, =?=, =*=, =$=, =|=, backslash,
@@ -1857,6 +1872,15 @@ selection and new-file policies remain independent of the frontend below.
 document snapshot.  =org-texmacs-document-save-pdf DOCUMENT FILE= writes those
 bytes to a new absolute local file, with the same exclusive creation and
 partial-write rules as native document saving.
+
+PDF rendering preserves relative Org file targets by default.  Set
+=org-texmacs-pdf-file-links-as-absolute= to =t= before preparation to resolve
+them against the captured source resource base.  The independent
+=org-texmacs-link-org-files-as-pdf= setting controls =.org= to =.pdf= target
+conversion for all native consumers and defaults to =t=.  Neither setting
+checks whether the linked file exists or builds it.  Serialized =.tm= files
+retain absolute file targets, so re-rendering them in TeXmacs can produce
+different file-link targets from direct PDF export.
 
 =org-texmacs-export-pdf-from-buffer SOURCE-BUFFER &optional BIBLIOGRAPHY-SOURCES SUBTREE-POSITION REGION EXT-PLIST=
 returns PDF bytes from an explicit Org buffer.

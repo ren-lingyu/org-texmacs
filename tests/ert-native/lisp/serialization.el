@@ -119,7 +119,7 @@
              (should (string-prefix-p "<TeXmacs|" bytes))
              (should
               (string-match-p
-               (regexp-quote "/tmp/org-serialization-source/file.org")
+               (regexp-quote "/tmp/org-serialization-source/file.pdf")
                bytes))
              (should
               (string-match-p (regexp-quote "<\\initial>") bytes))
@@ -178,7 +178,7 @@
                   (cadar
                    (org-texmacs-test--caption-inline-footnote-nodes
                     (org-texmacs-document-body document) 'reference)))
-                 "/tmp/file.org"))
+                 "/tmp/file.pdf"))
          (should (string-match-p (regexp-quote marker) bytes)))
        (should (equal body (org-texmacs-document-body document)))
        (should (equal stm (org-texmacs-document-stm-paths document)))
@@ -332,7 +332,7 @@
        (should
         (string-match-p
          (regexp-quote
-          "/tmp/org-save-source/file.org")
+          "/tmp/org-save-source/file.pdf")
          (buffer-string))))
      (should-not (find-buffer-visiting file))
      (should (eq process org-texmacs--worker-process)))))
@@ -488,7 +488,7 @@
                (should
                 (string-match-p
                  (regexp-quote
-                  (expand-file-name "file.org" test-directory))
+                  (expand-file-name "file.pdf" test-directory))
                  (buffer-string))))
              (should
               (equal
@@ -754,5 +754,49 @@
            (with-current-buffer source
              (should (equal (buffer-string) "Original source.\n"))))
        (kill-buffer source)))))
+
+(ert-deftest org-texmacs-file-link-policy-native-consumers ()
+  (org-texmacs-test--with-worker
+   (dolist (pdf '(nil t))
+     (let* ((document
+             (org-texmacs--document-create
+              :body
+              '(document
+                (concat
+                 (hlink "Article" "./article.org")
+                 " "
+                 (hlink "Native" "native.org")))
+              :file-paths '((0 0 1))
+              :stm-paths '((0 2))
+              :resource-base "/captured/source/"
+              :link-org-files-as-pdf pdf))
+            (before (copy-tree (org-texmacs-document-body document)))
+            (target
+             (if pdf
+                 "/captured/source/article.pdf"
+               "/captured/source/article.org"))
+            (org-texmacs-link-org-files-as-pdf (not pdf))
+            (bytes (org-texmacs-document-serialize document))
+            (session (org-texmacs-session-open)))
+       (unwind-protect
+           (progn
+             (should (string-match-p (regexp-quote target) bytes))
+             (should
+              (string-match-p "<hlink|Native|native.org>" bytes))
+             (org-texmacs-session-set-document session document)
+             (should
+              (equal
+               (org-texmacs--session-read session)
+               (org-texmacs-test--native-hex
+                (list
+                 'document
+                 (list
+                  'concat
+                  (list 'hlink "Article" target)
+                  " "
+                  '(hlink "Native" "native.org"))))))
+             (should
+              (equal before (org-texmacs-document-body document))))
+         (org-texmacs-session-close session))))))
 
 ;;; serialization.el ends here

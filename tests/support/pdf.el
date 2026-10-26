@@ -314,8 +314,9 @@ bounded word records rather than interpreting the whole output as XML."
         (cdr b)))
      words reference)))
 
-(defun org-texmacs-test--pdf-note-inspect (file)
-  "Inspect actual link targets and text rectangles in FILE."
+(defun org-texmacs-test--pdf-note-inspect (file &optional links-only)
+  "Inspect actual link targets and text rectangles in FILE.
+LINKS-ONLY skips Poppler text XML and returns native PDF annotations only."
   (let ((python (executable-find "python3")))
     (when (getenv "ORG_TEXMACS_TEST_STRICT_TOOLS")
       (should python))
@@ -328,21 +329,29 @@ bounded word records rather than interpreting the whole output as XML."
                  (file-readable-p org-texmacs-test--pdf-inspector))
       (error
        "ORG_TEXMACS_TEST_PDF_LINKS must name the PDF inspector"))
-    (with-temp-buffer
-      (should
-       (= 0
-          (call-process python
-                        nil
-                        '(t nil)
-                        nil
-                        org-texmacs-test--pdf-inspector
-                        file)))
-      (goto-char (point-min))
-      (json-parse-buffer
-       :object-type 'alist
-       :array-type 'list
-       :null-object nil
-       :false-object nil))))
+    (let ((stderr (make-temp-file "org-texmacs-pdf-inspector-")))
+      (unwind-protect
+          (with-temp-buffer
+            (let ((status
+                   (apply #'call-process
+                          python
+                          nil
+                          (list t stderr)
+                          nil
+                          org-texmacs-test--pdf-inspector
+                          file
+                          (and links-only '("--links-only")))))
+              (unless (eq status 0)
+                (goto-char (point-max))
+                (insert-file-contents stderr)
+                (ert-fail (buffer-string))))
+            (goto-char (point-min))
+            (json-parse-buffer
+             :object-type 'alist
+             :array-type 'list
+             :null-object nil
+             :false-object nil))
+        (delete-file stderr)))))
 
 (defun org-texmacs-test--pdf-note-text (inspection word)
   "Find the unique text run containing WORD in INSPECTION."

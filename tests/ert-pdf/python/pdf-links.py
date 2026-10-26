@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 from pypdf import PdfReader
 
 
-def inspect(filename):
+def inspect(filename, links_only=False):
     reader = PdfReader(filename)
 
     def point(page, x, y):
@@ -43,7 +43,8 @@ def inspect(filename):
             annotation = ref.get_object()
             if annotation.get("/Subtype") != "/Link":
                 continue
-            action = annotation.get("/A", {})
+            action = annotation.get("/A")
+            action = action.get_object() if action is not None else {}
             dest = annotation.get("/Dest", action.get("/D"))
             x1, y1, x2, y2 = map(float, annotation["/Rect"])
             links.append(
@@ -51,8 +52,12 @@ def inspect(filename):
                     "page": page_number,
                     "rect": [x1, height - y2, x2, height - y1],
                     "target": resolve(dest),
+                    "uri": str(action["/URI"]) if "/URI" in action else None,
                 }
             )
+
+    if links_only:
+        return {"links": links}
 
     xml = subprocess.run(
         ["pdftohtml", "-xml", "-i", "-hidden", "-stdout", filename],
@@ -77,5 +82,5 @@ def inspect(filename):
 
 
 if __name__ == "__main__":
-    json.dump(inspect(sys.argv[1]), sys.stdout)
+    json.dump(inspect(sys.argv[1], "--links-only" in sys.argv[2:]), sys.stdout)
     print()

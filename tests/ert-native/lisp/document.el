@@ -2431,7 +2431,7 @@
                      (caption-detailed
                       (concat
                        "<#4E2D> <less>alpha<gtr> "
-                       (hlink "File" "/tmp/caption.org"))
+                       (hlink "File" "/tmp/caption.pdf"))
                       "Short")))
                    (label "org-texmacs-ref-1"))
                  document)))))
