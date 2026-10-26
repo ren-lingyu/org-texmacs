@@ -1,6 +1,26 @@
 # org-texmacs current memory
 
-## Current: literate bilingual documentation package written, not validated
+## Current: INCLUDE snapshot/view proposal reviewed; docs stashed
+
+User stashes21documentation/package paths in latest [wip] docs, based on the
+current gitignore-anchoring HEAD. Worktree/index clean; stash inspected read-only,
+not applied. Current source matches the HEAD cited in the supplied architecture
+proposal. Active request is review, not implementation or testing.
+
+Proposal correctly identifies capture's coupling of byte acquisition, Org parsing/
+STM protection and line-selection checks. Support direction: immutable source
+snapshots with mode-specific views and native Org expansion, existing final AST
+mapping retained. It needs corrections before implementation: Org literal/block/
+plain branches do not share recursion or location/heading/footnote behavior;
+native-body wrappers need genuinely opaque selected views; dynamic mode must
+start before any semantic view generation; snapshot keys/budgets and helper
+restoration/compatibility must remain explicit. Review covers published Org9.8.10
+source statically, not the installed/pinned runtime. Mixed-mode ordering, code
+escaping/terminators, nested wrappers and original en/zh/guide outputs need
+future validation. No broader feature adoption, stash action or test authority.
+Details: memory/include-view-review.md.
+
+## Previous: literate bilingual documentation package written, not validated
 
 User selects review of a new example package exposed through flake packages,
 with PDF in out and preferably full public configuration coverage. Complete
@@ -26,12 +46,21 @@ crossref parent; native limitations are documented. Existing source ignore rules
 suffice; all newly added exemptions removed. User prefers ASCII punctuation in
 all new prose, Chinese enumeration commas become commas; documents converted.
 
-Static source/diff/search review only, no evaluation/tangle/build/format/tests or
-dependency resolution. New docs/package files untracked; flake and pkgs/default
-unstaged; no agent project index/history writes. Syntax, tangle, native rendering,
-Chinese glyphs, layout and formatting unverified. No default checks/apps/CI
-changes or font repair. No raw archive need. Next: user file review, then separate
-validation authorization. Details: memory/documents-package.md.
+User stages candidate paths and reports first package build exits1. Logs confirm
+three config blocks and one bibliography block tangled in en/figures-tables;
+preparation then rejects Unsupported INCLUDE parameters. Other leaf/render results
+unconfirmed. Requested read-only diagnosis establishes valid Org src INCLUDE is
+explicitly outside org-texmacs's current contract and is a maintained negative
+test. New docs wrongly assumed this support, not a regression in plain INCLUDE.
+Fourteen wrapped directives affect all six documents. Removing src would lose
+literal code presentation. Recommend a bounded source-INCLUDE extension, not
+generic wrapper permission; implementation remains unselected.
+
+No agent evaluation/tangle/build/format/tests or dependency resolution. No project
+files/index/history changed during diagnosis. Rendering, Chinese glyphs, layout
+and formatting unverified. No default checks/apps/CI changes or font repair.
+No raw archive need. Next: user selects how to address the support gap.
+Details: memory/documents-package.md.
 
 ## Previous: post-Issue14 HEAD reviewed and README delivery verified
 

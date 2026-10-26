@@ -10,8 +10,9 @@ representative features and configuration instead of mechanically setting every
 option. No separate package README is wanted. The guides own the build/output
 instructions formerly kept in that README.
 
-Current authorization is files-only implementation. No Nix evaluation, tangle,
-build, formatter, test or dependency resolution has run or been authorized.
+Original implementation authorization was files-only. No agent Nix evaluation,
+tangle, build, formatter, test or dependency resolution has run or been authorized.
+The later user-run failed build and read-only diagnosis are recorded below.
 Do not treat written drivers or output checks as execution evidence.
 No agent ordinary project staging/history writes; source files remain candidates.
 
@@ -111,12 +112,53 @@ inventory did not adopt exhaustive combinations as a documentation requirement.
 
 ## Evidence and next action
 
-Only bounded source reads, file writes/moves and Git diff/static searches.
+User subsequently saves all21candidate paths in the [wip] docs stash, based on
+the gitignore-anchoring HEAD. Ordinary project worktree/index clean; package/docs
+are no longer present as candidate worktree files. Stash read only, not applied.
+Active follow-up is a snapshot/view architecture proposal review, not a docs
+restoration or implementation task. Findings: memory/include-view-review.md.
+
+User now stages the candidate paths and reports the first nix build of
+org-texmacs-documents exits1. In the en/figures-tables leaf, logs show three
+configuration blocks and one bibliography block tangled successfully, followed
+by preparation failure: Unsupported INCLUDE parameters. This is user-reported
+runtime evidence, not an agent rerun; other parallel leaf outcomes and rendering
+remain unconfirmed. User requests read-only diagnosis only; no project edits or
+validation command is authorized by this report.
+
+Static diagnosis: fourteen src-wrapped INCLUDE directives across all six
+documents exceed the current contract. lisp/org-texmacs-preprocess.el checks
+:env/:block are absent before acquisition, explicitly rejecting wrapped INCLUDE.
+tests/ert-core/lisp/preprocess.el's fixed-read/parameter-error test explicitly
+expects failure for an included file with src emacs-lisp. README already states
+unsupported wrappers fail. This is not a regression in existing supported plain
+Org INCLUDE. Standard Org syntax permits these wrappers:
+https://orgmode.org/manual/Include-Files.html
+
+Authoring the new docs assumed support that does not exist. Merely removing src
+would parse displayed configuration as Org and can expose the bibliography's
+tangle headers, so it is not a correct presentation fix. Recommended next design
+is a bounded extension for literal source inclusion, preserving native Org code
+escaping, fixed input reads/budgets, STM shielding and no evaluation. Plain source
+block lowering already exists; unrestricted INCLUDE wrappers/export environments
+are not thereby adopted. No implementation choice or production fix is authorized
+yet. No project file was changed during this diagnosis.
+
+User asks about related extension candidates. Review recommendation only, not
+adoption: first support literal src LANG and example INCLUDE wrappers, including
+their interaction with existing :lines selection and inert nested Org/STM/code
+text. Other supported structural wrappers (quote/center/formal statements) and
+native texmacs/equation bodies are possible later candidates needing separate
+recursive versus native-body classification. Arbitrary export wrappers, unknown
+blocks, non-UTF8 acquisition and Babel evaluation are not bundled into this
+recommendation. Existing location/only-contents/lines/minlevel support is not new.
+
+At the files-only handoff: bounded source reads, file writes/moves and static searches.
 Static searches find no old package identifiers, parent traversal or source-root
 inference in the candidate package/docs, and no Chinese fullwidth punctuation in
 the new prose. No actual syntax/API/tangle/rendering/Chinese-font/format acceptance
-is established. Next: review written files, then separately authorized evaluation,
-build and visual inspection. Source remains untracked until user stages it.
+was established at that handoff. User has since staged the paths and attempted
+a build as recorded above; no full candidate byte-equivalence review is claimed.
 Existing Issue14 acceptance remains scoped to its old fixed inputs, not the
 current refreshed lock or this package.
 

@@ -2,6 +2,11 @@
 
 ## Literate bilingual documentation package written, not validated
 
+User now saves this candidate in [wip] docs stash; worktree/index clean, no stash
+application authorized. Current follow-up reviews the INCLUDE snapshot/view
+separation proposal; direction sound with native-branch/context/cache corrections,
+not an adopted implementation plan. See memory/include-view-review.md.
+
 User requests an exported packages example with PDF in out and broad public
 configuration coverage. Package-level complete isolation is mandatory; content
 and layout equivalence suffice, non-body timestamp differences are allowed.
