@@ -28,6 +28,7 @@
 !/pkgs/**/
 !/pkgs/**/*.el
 !/pkgs/**/*.nix
+!/pkgs/**/*.patch
 
 !/tests/
 !/tests/**/
