@@ -4,13 +4,11 @@
     overlayFile = "overlay.nix";
     extraArgs = { inherit src; };
     groups = {
-      default = {
-        exclude = [
-          "emacs-with-org-texmacs"
-          "org-texmacs-examples"
-          "texmacs-fandol"
-          "texmacs-fandol-with-gotor-support"
-        ];
+      emacsPackages = {
+        include = [ "emacsPackages" ];
+      };
+      texmacs = {
+        include = [ "texmacs-with-gotor-support" ];
       };
       legacy = {
         export = true;

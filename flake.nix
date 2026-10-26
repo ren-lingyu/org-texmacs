@@ -49,7 +49,7 @@
             systems = inputs.nixpkgs.lib.systems.flakeExposed;
 
             flake = {
-              overlays.default = lpkgs.overlays.default;
+              overlays = { inherit (lpkgs.overlays) emacsPackages texmacs; };
             };
 
             perSystem =
