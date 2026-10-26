@@ -61,6 +61,7 @@
                 packages = {
                   org-texmacs = pkgs.emacsPackages.org-texmacs;
                   emacs = pkgs.emacs-with-org-texmacs;
+                  texmacs-fandol = pkgs.texmacs-fandol;
                 };
 
                 checks = import ./tests {
@@ -72,7 +73,7 @@
                   default = pkgs.mkShell {
                     packages = [
                       pkgs.emacs-with-org-texmacs
-                      pkgs.texmacs
+                      pkgs.texmacs-fandol
                     ];
                   };
                 };
