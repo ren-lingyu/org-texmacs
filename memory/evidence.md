@@ -1,5 +1,16 @@
 # org-texmacs durable evidence
 
+## Split overlay API review on updated personal-nixpkgs
+
+Project76ecfd0 locks personal/local-nixpkgs a9cc71a5233b6885ec66613c7f1f3a45bc2931c6;
+391e7c5 exports emacsPackages and texmacs groups. User permits read-only library
+inspection; local ~/nixpkgs HEAD equals lock and relevant files clean.
+pkgs/lib/packages/default.nix mkGroup_ filters include/exclude then composes
+selected overlays; no dependency completion. Current texmacs group selects plain
+texmacs-with-gotor-support, so earlier combined-wrapper dependency issue absent.
+Emacs group uses implicit emacsPackagesFor overrideScope factory adaptation.
+Static source review only; no Nix evaluation or downstream runtime check.
+
 ## Targeted GoToR guard and maintained native regression acceptance
 
 User-authorized exact check-only build exits0; output

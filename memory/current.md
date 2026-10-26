@@ -1,5 +1,41 @@
 # org-texmacs current memory
 
+## Latest delivery: split public overlays with explicit selection
+
+User delivered76ecfd059b86eee7f1be14e0ded9776735f7c44a (lock update), followed
+by391e7c5a7b602ad8213f959c03e48098d1ee6acb (split overlay outputs). Ordinary
+worktree/index clean. Current exports overlays.emacsPackages and overlays.texmacs;
+overlays.default removed. Groups now explicitly include emacsPackages and
+texmacs-with-gotor-support respectively, legacy remains full internally.
+Root personal-nixpkgs and nested local-nixpkgs both lock a9cc71a5233b6885ec66613c7f1f3a45bc2931c6;
+personal URL lock metadata now matches .git spelling. Root nixpkgs d3b13ad unchanged.
+
+User authorizes read-only local library inspection. ~/nixpkgs HEAD exactly matches
+locked a9cc71a, package library paths clean. Actual library is
+pkgs/lib/packages/default.nix (not lib/packages). validateGroup_ accepts include/
+exclude/export/overlays; mkGroup_ filters overlays and composes ONLY selected
+ones, no dependency closure. emacsPackages implicit rule overrides
+emacsPackagesFor via descendant overrideScope; this is a nixpkgs overlay, not a
+direct Emacs package scope overlay. Public web lookup unavailable; local source
+is the evidence, no shell network/evaluation/build performed.
+
+Static review confirms current texmacs group selects the plain patched renderer,
+whose lib/texmacs/callPackage/source-guard dependencies are supplied by ordinary
+nixpkgs and local package files. No omitted Fandol dependency remains. Emacs
+group supplies captured Lisp src to the package. Independent downstream overlay
+evaluation/build still not performed, and internal full legacy checks are not
+proof of independent output behavior. No tests under refreshed personal lock.
+
+User reset/reorganized project and GAW checkpoints. Intake confirms GAW base
+valid at prior downstream-input checkpoint, with three staged memory files from
+the superseded review. Corrected those records to actual new project tip and
+removed obsolete unresolved-dependency finding. No agent reset/history rewrite
+or ordinary project mutation; create new checkpoint from validated GAW base,
+associate current391e7c5reviewed snapshot only. Commit whitespace check passes.
+
+Earlier single-default-output/current-lock descriptions below are historical;
+the split names, updated lock and current dependency review above are authoritative.
+
 ## Latest delivery: downstream nested-input compatibility
 
 User committed13e3ca7264cbce9f8157006e6c8282069466378c, changing flake.nix and

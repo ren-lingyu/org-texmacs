@@ -1,5 +1,15 @@
 # org-texmacs current project model
 
+Latest delivered public API391e7c5: overlays.emacsPackages and overlays.texmacs,
+replacing overlays.default. Prior76ecfd0 updates personal/local-nixpkgs lock to
+a9cc71a. Matching local library inspection confirms include selects overlays
+without dependency closure; emacsPackages group patches emacsPackagesFor through
+implicit scope rule. Texmacs group selects texmacs-with-gotor-support, whose
+dependencies come from ordinary nixpkgs; no missing Fandol dependency. Internal
+legacy is full. Static source review only, no independent downstream overlay
+evaluation/build. User-reorganized history now reviewed; current.md has evidence.
+Single-default-output and older library lock descriptions below superseded.
+
 Latest flake input wiring delivered13e3ca7: explicitly overrides personal-nixpkgs's
 nested local-nixpkgs from relative path input to remote Git input with dir=pkgs,
 per user's downstream path-resolution compatibility motivation. Remains nested,
