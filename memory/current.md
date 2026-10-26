@@ -1,6 +1,208 @@
 # org-texmacs current memory
 
-## Current: documentation package cleanup accepted; staging remains stale
+## Current: file-link consumer policies accepted locally
+
+User explicitly authorizes source implementation and finalizes exactly2Customs:
+org-texmacs-pdf-file-links-as-absolute=nil (PDF-only), and
+org-texmacs-link-org-files-as-pdf=t (uniform PDF/.tm/native-memory consumers).
+No as-texmacs variable. Session set-document consumes completed structured output
+AFTER combined Org/TeXmacs AST construction and pure lowering; open only creates
+an empty buffer. Preparation captures typed booleans; pure input defaults fixed.
+Native consumers rewrite marked file-target leaves on copied trees. PDF retains
+relative form unless requested absolute; other consumers still resolve captured
+source base. Final .org->.pdf is case-insensitive; labels/URI/STM/other suffixes
+unchanged. No target reads, existence checks or implicit builds.
+
+Implementation:2Lisp files, README and regressions/inspector. Added3core+1native+
+1PDF tests. User permits repeated exact7file nix fmt120s and metadata-free
+108file tmp/file-link-implementation full flake check600s this round. Separately
+permits ONE nix fmt for examples/build.el (prior reorganization formatting);
+that one-use command completed. No ordinary index/lock/history changes by agent.
+
+Final authorized isolated flake check exits0, all checks pass.597ERT outputs:
+206core,324native,33PDF-document,28PDF-render,6patched. Strict compile, package-lint,
+treefmt and aggregates pass; unchanged passing outputs reuse cache. Final PDF
+render28/28runs148.143938s; new policy test4.687840s checks4combinations plus
+fresh native reload. Inspector reads exact URI actions, with links-only pypdf
+mode avoiding Poppler's invalid XML for Unicode URI. Shared helper captures stderr
+separately, preserving successful JSON and failure diagnostics. Final fixture uses
+ordinary Org concat paragraphs; target/count assertions remain exact.
+
+After gate all108inputs equal root/copy and manifest. inputs.json SHA256:
+563dec3a7d450717613c1ab89e7f2b81de570832965ca3e39303923b8a1a6f1d.
+Complete candidate diff against font-package HEAD SHA256:
+e5de0f806c038e4ed318a06d3d4d3dd281004c40f51edbd8bc0d35db0c3bb057.
+No agent index/lock/history/result changes. Eleven unstaged paths include main
+feature/tests/README plus separately authorized example-driver formatting;
+existing example candidate remains user-staged. Full authority/provenance/limits:
+memory/file-link-implementation.md and tmp/file-link-implementation/REPORT.org.
+
+Separate example candidate is user-staged, still3entries per language:
+configuration(generic), mathematics/figures-tables(article). Package-local
+sources/shared and en/zh+chapters, pdf/texmacs/sources output layout and scoped
+Fandol override. User proposes TWO compiled entries per language (generic index
+linked to article), NOT implemented yet. Automatic final bibliography/TOC order
+changes deferred; only en/zh. Independent font package delivered as aa1af88,
+main Lisp retains plain texmacs. Stash8429dcc retained but superseded by current
+reorganized candidate. No package build acceptance for reorganized example files.
+
+Next user reviews/stages source feature separately or selects next example work.
+Do not silently implement2entry examples or repeat tests without a new reason.
+Earlier native relative-link spike: memory/relative-link-probes.md. No project
+commit/optional extension suite/example package build or GUI-click acceptance.
+
+## Previous: font package delivered; documentation restored with local override
+
+Latest scope steering: user explicitly keeps only en/zh examples. Personal
+preference is automatic references at document end and TOC before abstract;
+user explicitly defers both behavior topics while focusing on examples. Current
+explicit PRINT_BIBLIOGRAPHY and existing metadata->TOC->body ordering remain.
+Do not infer authorization for automatic bibliography, TOC/abstract restructuring,
+additional languages or new tests. Package-local examples rename/layout remains
+the preceding recommendation, not an executed or explicitly adopted migration.
+No ordinary project file or Git-state change in this steering turn.
+
+Follow-up user selects Org timestamps and no blank after headlines in docs.
+All6DATE entries now [2026-10-26 Mon], blank lines directly following headings
+removed throughout docs; bounded search confirms no remaining heading blanks.
+Static diff --check passes, no runtime/formatter run. User also asks abstract/TOC
+ownership and bibliography print necessity. Static lowering explicitly appends
+metadata then toc then body (document.el around3104); abstract-data remains in
+body source order, so current TOC precedes abstract, not purely style-controlled.
+Presentation uses native macros, structural order currently belongs to package.
+Bibliography collector requires exactly1print if citations exist, no implicit
+insertion; zero citations/prints allowed. Included print directive suffices (as
+current guide bibliography chapter), not necessarily handwriting per entry file.
+These are review findings, no renderer/order/bibliography feature change adopted.
+
+User commits aa1af88c70a45c30feeb415784ca480e173cfa72 with the drafted
+feat(texmacs-fandol) message. Read-only complete commit/staged-context comparison
+confirms3paths: standalone wrapper/overlay plus flake export/devShell. Intake
+clean. User explicitly requests docs restoration and adaptation. Stash8429dcc
+also carries rejected main-Lisp injection, so agent uses authorized worktree-only
+selective restore of README, docs, pkgs/default and document package, then merges
+flake docs input/export/Org formatter exclusions by patch. New HEAD font export
+and devShell retained, main Lisp/font wrapper files remain equal HEAD. Stash is
+retained, ordinary index unchanged/empty, restored new files untracked.
+
+Document overlay constructs Emacs via (emacsPackagesFor emacs).withPackages and
+selects org-texmacs.override {texmacs=texmacs-fandol;}. Only documentation selects
+this dependency; ordinary Lisp/Emacs/tests unchanged. README lists4package outputs
+and describes local override; bilingual building chapters match. Earlier ASCII
+test prefix, pdf/texmacs/sources output layout and Nix-only logs preserved.
+Static tracked diff --check passes, bounded source search finds no parent/host
+hardcoding. No formatter/evaluation/build/test authorized or run for this restored
+candidate, existing result remains older layout/font version. Next: user review,
+optional explicitly authorized format/build validation and staging/commit draft.
+
+## Previous: Fandol packaging adopted, runtime verification pending
+
+Latest commit-readiness intake: user has synchronized the index, removed main
+Lisp font injection entirely, and staged a flake package export plus devShell
+switch to texmacs-fandol. Exactly3staged paths: flake.nix and two font package
+files, no unstaged changes. Complete staged diff reviewed; --check passes.
+Suitable single feature commit; tmp/commit.md now feat(texmacs-fandol): provide
+TeXmacs with Chinese fonts, Chinese body covers explicit font wrapper/export/shell.
+No fresh build/evaluation/formatter and no ordinary Git writes by agent. Docs
+still in stash8429dcc; font commit not yet reported delivered. Earlier MM warning
+below is superseded by this newly inspected staged candidate.
+
+User corrects dependency scope: org-texmacs packaging must NOT carry Fandol.
+Agent removes its outer-pkgs/font injection from the ordinary overlay file,
+whose worktree bytes now equal HEAD. Index untouched, so overlay remains MM:
+staged font injection plus unstaged reversal. User must update that index path
+before the font-only commit. Keep independent pkgs/texmacs-fandol package;
+when docs is restored, scope its font executable to document build only and
+correct stashed README claim that the main package uses Fandol. Do not propagate
+fonts to main Lisp/Emacs or tests. No stash restore/build/index write performed.
+This correction supersedes the main-package default adoption below.
+
+Latest user selects font-package-first delivery and explicitly asks for docs-only
+stash push. Intake all25candidate paths staged. Authorized path-specific stash
+push saves README.org, docs/, flake.nix, pkgs/default.nix and
+pkgs/org-texmacs-documents/ as "wip: bilingual documentation package and output
+layout", restores those paths to HEAD. Leaves only three staged font-package
+paths: pkgs/texmacs-fandol/{overlay,package}.nix and
+pkgs/emacsPackages/org-texmacs/overlay.nix. No ordinary commit/build/formatter.
+README font description was in the compiled-docs section and travels with docs.
+Next user may prepare/deliver the standalone font package, then separately
+authorize reapplying the selected stash; do not automatically restore it.
+Stash object8429dcc0ca02cb86b21929ccba1232b07f4a26f5. Important native Git detail:
+stash snapshot also includes the three preexisting staged font paths (25total
+diff paths), although the pathspec restores only22docs paths. Font files stay
+staged in the ordinary worktree. Inspect full stash and delivered font bytes
+before restoration; don't misdescribe the stash tree as excluding font content.
+
+User explicitly adopts downstream texmacs-fandol packaging after citing retained
+experiments and downstream successful Chinese output. New pkgs/texmacs-fandol/
+package.nix and overlay.nix faithfully use symlinkJoin/makeWrapper with explicit
+texlive.pkgs.fandol.tex and TEXMACS_FONT_PATH. emacsPackages/org-texmacs overlay
+injects outer pkgs.texmacs-fandol exactly as downstream; ordinary packaged Emacs
+and documentation inherit it. This adopts a packaged default, beyond earlier
+documentation-only recommendation. README and en/zh build chapters explain fonts.
+Bare pkgs.texmacs and tests' explicit executable inputs remain unchanged; no
+generic renderer/font-discovery change. New files untracked, modified existing
+files unstaged; agent leaves ordinary index untouched. Static diff --check passes.
+No evaluation, build, formatter or fresh PDF verification is authorized/run;
+historical Fandol/native evidence and user downstream confirmation support design,
+not a claim of a current candidate runtime gate. Existing result remains old.
+General native font policy/typography repair stays outside scope; the explicit
+Fandol package adoption supersedes earlier no-font-packaging decision only.
+
+## Previous: documentation section marker inspected read-only
+
+Latest: user confirms Chinese PDF literally printed <#...>, and independently
+confirms adding downstream TeXmacs Chinese font support fixes it. Authorized
+read-only downstream inspection finds ~/emarccs/pkgs/emacsPackages/org-texmacs/
+overlay passes pkgs.texmacs-fandol into its Lisp package. Referenced
+~/emarccs/pkgs/texmacs-fandol wraps texmacs with TEXMACS_FONT_PATH prefixed by
+texlive.pkgs.fandol.tex/fonts/opentype/public/fandol, via symlinkJoin/makeWrapper.
+No parser/encoder patch or reliance on host fonts in that packaging. This is
+user-reported causal rendering evidence plus independently inspected packaging,
+not an agent reproduction or verified equality to current project runtime.
+No font implementation/backlog adoption; project remains unchanged by inspection.
+
+User subsequently explicitly selects output cleanup. package.nix now installs
+pdf/<language>/<entry>.pdf, texmacs/<language>/<entry>.tm and complete retained
+input/config sets under sources/<language>/<entry>/. Driver still receives an
+explicit output basename, now in the writable build source directory. Build/PDF
+inspection diagnostics stream directly to Nix logs; no build.log/pdf-info.txt
+is installed. README, bilingual building chapters and guide footnotes describe
+this worktree layout. Canonical INCLUDE layout and six independent builds stay.
+No build/formatter authorized for this follow-up; existing result is old. Ordinary
+index remains unchanged and latest edits are unstaged. Static diff checks only.
+
+Follow-up: user explicitly requests replacing the test prefix. Only
+docs/configuration.org is edited: formatter now prepends "(Test prefix) " and
+its docstring says test prefix. Ordinary index untouched; change is unstaged
+above staged docs candidate. Bounded diff --check passes; no build authorized or
+rerun and existing result still contains §. User also asks for cleaner package
+outputs, matching entry/artifact basenames, and considers includes under a
+subdirectory or one combined document. Read-only package review confirms every
+leaf copies all language Org inputs plus all tangled profiles into its output,
+with generic document.tm/pdf names. Layout redesign remains a proposal, not an
+authorized project edit. Recommend keeping separate profile-specific documents,
+putting PDFs/TM under language directories with matching basenames, and retained
+source/config/logs under distinct subdirectories; avoid merging profiles without
+an explicit document-wide style/formatter decision.
+
+User now has all22documentation/package/README/wiring paths staged and asks why
+figure/table output shows octal237/replacement glyphs. Existing result points to
+the accepted real package output pq50lvs8p0bcvq7405qybvx01612gd3c. The derived
+article.el retains the explicit Unicode section marker in docs/configuration.org
+line60: formatter prepends "§ " to every headline; TOC uses the same formatter.
+The en figure/table .tm byte dump confirms raw0x9f (octal237) at the prefix,
+not UTF-8 U+FFFD bytes. Worker utf8->cork followed by native serialize-texmacs
+explains native byte output; the serialized file API explicitly preserves those
+bytes. UTF-8 text viewers can display replacement glyphs for these bytes.
+Included profile code has the same character representation. This is not evidence
+of figure/table lowering damage or a font defect. PDF glyph correctness remains
+unverified in this turn: pdftotext is unavailable on PATH. No build, production
+edit or index change performed. Prior PDF text-equality evidence was not a visual
+or glyph-level acceptance. Next: explain intended marker versus native encoding;
+if unwanted, user may select a configuration edit. No new repair adopted.
+
+## Previous: documentation package cleanup accepted; staging remained stale
 
 User now explicitly requests worktree cleanup, including whitespace, formatting
 and outdated descriptions. Four known metadata/matrix corrections are applied

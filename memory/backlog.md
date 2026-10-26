@@ -1,38 +1,37 @@
 # org-texmacs active backlog
 
-## Literate bilingual documentation cleanup accepted; restaging pending
+## File-link policies accepted, user delivery pending
 
-User reapplies docs stash then selects cleanup. Known metadata/matrix errors,
-guide EOF blanks and punctuation are corrected; package Lisp/Nix formatted,
-README package list/build links and bilingual output/timeout descriptions updated.
-Org has no formatter, so treefmt excludes *.org. Actual six-document package
-build and106file-identical metadata-free full flake check pass. Root explicit
-path check hits copied Git metadata's unavailable GAW hook; no bypass performed.
-Original19staged blobs remain unchanged/stale, so restaging is still the user's
-next step. Details and acceptance limits: memory/documents-package.md. Unified
-INCLUDE snapshot/view repair is delivered in five ordinary files; complete
-diff/message/85committed-input verification matches the accepted candidate.
-Final focused26/26and full592ERT/all default checks pass. Details:
-memory/include-view-implementation.md. Prior review/probes remain separate
-evidence, not additional unfinished implementation phases.
+User authorizes and accepts2consumer flags: PDF-only relative-vs-absolute policy
+(default relative), and all-native-consumer .org->.pdf suffix policy (default on).
+No as-texmacs variable. Strict preparation snapshot and typed file provenance;
+original joint AST/completed body stay raw. Full isolated check and597ERT pass,
+108inputs equal root. Source/test/README changes unstaged; staged example work
+preserved. Earlier all-consumer preservation and session-base proposals are
+superseded by this final scope. Details: memory/file-link-implementation.md.
 
-Earlier corrected-copy saved-.tm reload/PDF text acceptance remains its own
-evidence. Its four-file patch is now applied to the working docs; do not apply
-it again automatically. Original stash remains unchanged.
+## Bilingual example organization and remaining selection
 
-User requests an exported packages example with PDF in out and broad public
-configuration coverage. Package-level complete isolation is mandatory; content
-and layout equivalence suffice, non-body timestamp differences are allowed.
-User subsequently authorizes files-only implementation, not validation.
-User renames this to org-texmacs-documents: canonical docs/ input passes explicitly
-as docs from flake fileset through the package overlay. Six bilingual guide/math/
-figure-table builds use real INCLUDE chapters and Org-derived configuration/
-bibliography; driver stays in pkgs, no separate README. Practical coverage replaces
-mechanical option enumeration; native BibTeX type/concat/crossref behavior is shown.
-Initial implementation was files-only. Subsequent cleanup acceptance is above;
-visual layout and Chinese glyph quality remain unverified. Details:
-memory/documents-package.md. Do not turn this into a default check
-or release gate, change generic worker behavior, or reintroduce font repair.
+User selects package-local org-texmacs-examples with sources/shared+en/zh and
+include-only chapters, Org-tangled configuration/BibTeX, no package README/i18n
+layer. Current3entries per language: configuration(generic), mathematics and
+figures-tables(article). Outputs separated into pdf/texmacs/sources with matching
+basenames; logs stay in Nix. Independent texmacs-fandol is delivered, examples
+use a private matching Emacs package override, main Lisp keeps plain texmacs.
+No host-font discovery or general typography repair. User has staged this layout.
+
+New user proposal: TWO compiled entries per language, generic index linking to
+article, mathematical/figure material using article. Not implemented yet; link
+consumer prerequisite above now accepted. Keep only en/zh. Automatic bibliography
+at document end and TOC/abstract placement explicitly deferred. Current explicit
+bibliography print and ordering remain. Current full gate evaluates the example
+derivation and formats driver, but no package PDF build after this migration.
+Earlier six-doc acceptance belongs to the old layout, not new package output.
+Exact provenance/scope: memory/documents-package.md. Original docs stash retained;
+do not reapply it blindly over migrated files.
+
+Unified INCLUDE snapshot/view repair remains delivered/accepted; no unfinished
+repair node. Details: memory/include-view-implementation.md.
 
 ## Issue14 document information delivered; issue completed
 

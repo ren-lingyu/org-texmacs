@@ -1,6 +1,34 @@
 # org-texmacs current project model
 
-## Accepted working documentation package
+## Accepted working file-link consumer policies
+
+New uncommitted source feature captures org-texmacs-pdf-file-links-as-absolute
+(nil default, PDF-only) and org-texmacs-link-org-files-as-pdf (t default, all native
+consumers). Readonly document slots retain typed preparation-time values; pure
+input defaults fixed. Joint AST/lowered body retain raw targets; consumer copies
+rewrite marked targets only. PDF preserves relative form unless absolute chosen;
+.tm/session retain source-base resolution. Final .org->.pdf is case-insensitive,
+labels/URI/STM/other suffixes unchanged. No target reads/builds.597ERT and full
+isolated checks accepted,108inputs equal root; source not delivered yet. Details:
+memory/file-link-implementation.md. This supersedes historical absolute-only
+policy in the committed local-file-link node below.
+
+## Current working example package
+
+Uncommitted docs candidate has been migrated by explicit user request to
+pkgs/org-texmacs-examples. Package-local lib.fileset collects sources/shared and
+en/zh entry Org files (configuration, mathematics, figures-tables) plus chapters.
+No root docs/ or docs argument remains. Builds explicitly stage shared tangle
+inputs in chapters, load derived config there and preserve relative include/bib
+paths. Emacs override scopes texmacs-fandol to examples. Flake exposes examples;
+output pdf/texmacs/sources layout retained with entry basenames. No extra language,
+implicit bibliography or abstract/TOC order work. Current full flake gate evaluates
+the example package and verifies driver formatting, but does not build its PDFs.
+User synchronized staging to new layout; source feature remains unstaged.
+Supersedes the working documentation description immediately below. Details:
+memory/documents-package.md and memory/current.md.
+
+## Historical working documentation package acceptance
 
 Uncommitted org-texmacs-documents package receives explicit docs fileset alongside
 Lisp src and builds six en/zh guide/math/figure-table documents. Org configuration/

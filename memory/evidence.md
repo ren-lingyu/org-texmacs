@@ -1,5 +1,27 @@
 # org-texmacs durable evidence
 
+## File-link consumer policies accepted on current candidate
+
+User-selected2flags captured before pure lowering, applied on consumer copies:
+PDF relative preservation by default, optional absolute resolution for PDF only;
+optional .org->.pdf mapping default on for all native consumers. New3core/1native/
+1PDF regressions plus existing tests pass.597ERT:206core,324native,33PDF-document,
+28PDF-render,6patched. Final full isolated flake check exits0, strict compile/lint/
+treefmt/aggregates pass; final render gate freshly runs, other passing outputs
+can be cached.108current input bytes equal root after gate. Exact hashes,
+authority, corrected fixture/inspector issues and limits:
+memory/file-link-implementation.md. No normal index/lock/history/result mutation,
+example-package build/optional extensions/GUI viewer acceptance or project commit.
+
+## Relative file-link consumer spike
+
+Current-lock3policy modes produce9PDFs/81actual URI annotations. Relative targets
+and .org->.pdf spike survive native save/reload/relocation; baseline absolute
+targets retain source /build paths. Session base is native scratch, so source-
+relative navigation needs distinct handling. No clicks/viewer portability or
+production support claim. All16runtime hashes+lock equal root, command exits0.
+Complete provenance/limits: memory/relative-link-probes.md. No main/index edits.
+
 ## Restored documentation cleanup accepted
 
 Actual working-tree org-texmacs-documents build exits0, all six .tm/PDF outputs
