@@ -62,6 +62,8 @@
                   org-texmacs = pkgs.emacsPackages.org-texmacs;
                   emacs = pkgs.emacs-with-org-texmacs;
                   texmacs-fandol = pkgs.texmacs-fandol;
+                  texmacs-with-gotor-support = pkgs.texmacs-with-gotor-support;
+                  texmacs-fandol-with-gotor-support = pkgs.texmacs-fandol-with-gotor-support;
                 };
 
                 checks = import ./tests {
@@ -73,7 +75,7 @@
                   default = pkgs.mkShell {
                     packages = [
                       pkgs.emacs-with-org-texmacs
-                      pkgs.texmacs-fandol
+                      pkgs.texmacs-fandol-with-gotor-support
                     ];
                   };
                 };

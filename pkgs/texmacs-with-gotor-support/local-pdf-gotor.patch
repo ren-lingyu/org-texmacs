@@ -1,0 +1,45 @@
+--- a/src/Plugins/Pdf/pdf_hummus_renderer.cpp
++++ b/src/Plugins/Pdf/pdf_hummus_renderer.cpp
+@@ -2293,6 +2293,28 @@
+   dests << dest_data(l, page_num, to_x(x1), to_y(y2+20*pixel));
+ }
+ 
++// Probe only: recognize bare local PDF paths, not URI schemes or anchors.
++static bool
++probe_local_pdf (string s) {
++  int n= N(s);
++  if (n < 4 || starts (s, "//")) return false;
++  for (int i=0; i<n; i++)
++    if (s[i] == ':' || s[i] == '#' || s[i] == '?') return false;
++  return s[n-4] == '.' && (s[n-3] == 'p' || s[n-3] == 'P') &&
++    (s[n-2] == 'd' || s[n-2] == 'D') && (s[n-1] == 'f' || s[n-1] == 'F');
++}
++
++static string
++probe_pdf_hex (string s) {
++  static const char* digits= "0123456789ABCDEF";
++  string r= "<";
++  for (int i=0; i<N(s); i++) {
++    unsigned char c= (unsigned char) s[i];
++    r << string (digits[c >> 4]) << string (digits[c & 15]);
++  }
++  return r * ">";
++}
++
+ void
+ pdf_hummus_renderer_rep::href (string label, SI x1, SI y1, SI x2, SI y2)
+ {
+@@ -2312,6 +2334,13 @@
+   dict << as_string(((double)default_dpi / dpi)*to_y(y2 + 10*pixel)) << "]\r\n";
+   if (starts (label, "#")) {
+     dict << "\t/Dest /label" << as_string(get_label_id(prepare_text (label))) << "\r\n";
++  }
++  else if (probe_local_pdf (cork_to_utf8 (label))) {
++    // /F uses UTF-8 path bytes; /UF retains PDF text-string Unicode semantics.
++    dict << "/A << /S /GoToR /F << /Type /Filespec /F "
++         << probe_pdf_hex (cork_to_utf8 (label)) << " /UF "
++         << probe_pdf_hex (prepare_text (label))
++         << " >> /D [0 /Fit] >>\r\n";
+   }
+   else {
+     dict << "/A << /S /URI /URI (" << prepare_text (label) << ") >>\r\n";
