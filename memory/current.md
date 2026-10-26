@@ -1,6 +1,29 @@
 # org-texmacs current memory
 
-## Current: INCLUDE snapshot/view proposal reviewed; docs stashed
+## Current: isolated INCLUDE semantics probes complete; implementation pending
+
+User authorizes isolated experiments and repeated execution of the exact
+timeout120s run.sh command for this round. Final49probes have zero unexpected
+failures on host Emacs31.1/Org9.8.7, using copied sources, isolated HOME/XDG/tmp
+and fresh fixtures. No network, Nix/store operation, worker or PDF rendering.
+All16production source hashes remain unchanged; project/index clean, docs and
+older stash unchanged. This does not authorize production implementation.
+
+Three guard-only counterexamples confirm mode-specific views are necessary:
+literal malformed STM rejected, literal line selection falsely treated as STM
+truncation, and restored native text bypasses Org source escaping so #+end_src
+ends code early. Native wrapper/plain branch differences are experimentally
+confirmed. Dynamic include-mode dispatch nests/restores and reaches readers in
+a limited spike, not a complete protected-view transaction. One captured source
+snapshot does not mean one physical read: existing receipt verification causes
+12byte reads for two uses in the measured fixture. Preserve those checks.
+
+Next: specify/implement raw snapshot and semantic-view separation only after
+user selection; validate native-body selection/opacity, full transaction guards,
+locked-environment regressions and restored docs/.tm/PDF then. No stash restore
+or production edits performed. Details: memory/include-view-probes.md.
+
+## Previous: INCLUDE snapshot/view proposal reviewed; docs stashed
 
 User stashes21documentation/package paths in latest [wip] docs, based on the
 current gitignore-anchoring HEAD. Worktree/index clean; stash inspected read-only,

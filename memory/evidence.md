@@ -1,5 +1,13 @@
 # org-texmacs durable evidence
 
+## Isolated INCLUDE semantics investigation
+
+49plain-Lisp probes have zero unexpected failures on host Emacs31.1/Org9.8.7.
+Native branches, guard-only failure examples, dispatch scope and current guard
+controls are measured; this is not a full implementation or pinned Nix/native
+acceptance gate. Source hashes, worktree/index and stashes unchanged. Details
+and validation limits: memory/include-view-probes.md.
+
 ## Post-Issue14 HEAD review, no new runtime gate
 
 User commits15formatting paths, enables treefmt flake check and updates the two

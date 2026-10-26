@@ -4,8 +4,10 @@
 
 User stashes the documentation package, then supplies a detailed proposal for
 read-only review: separate source acquisition, inclusion interpretation, native
-Org expansion, restoration/validation and existing AST conversion. No project
-implementation, stash application, test, evaluation or build is authorized.
+Org expansion, restoration/validation and existing AST conversion. At review,
+no project implementation, stash application, test, evaluation or build was
+authorized. Subsequent isolated probes are recorded in include-view-probes.md;
+they do not authorize production changes or stash restoration.
 
 Project worktree and index are clean. The current gitignore-anchoring HEAD
 matches the commit cited in the supplied proposal; its parent is the previously
@@ -29,8 +31,10 @@ native line ranges. Thus removing the parameter guard alone leaves a real
 semantic-context mismatch for literal files, not merely missing syntax support.
 
 The proposal correctly separates immutable raw snapshots from interpretation:
-one source can supply ordinary Org and literal code without rereads or sharing
-the wrong protected representation. Literal src/example/export bodies should
+one source can supply ordinary Org and literal code without repeating snapshot
+acquisition or sharing the wrong protected representation. Receipt verification
+may still reread physical bytes, as measured in include-view-probes.md.
+Literal src/example/export bodies should
 not trigger STM discovery. Final supported AST mapping remains separate from
 input acquisition; unsupported resulting nodes may fail in lowering. Delegation
 to Org does not adopt Babel, macro, SETUPFILE/BIND or full generic export.
