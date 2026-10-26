@@ -1,23 +1,54 @@
 # org-texmacs current memory
 
-## Current: native GoToR experiment accepted; packaging next
+## Current: native GoToR packages and bilingual examples delivered
 
-Action/path/Chinese/Fandol/relocation and strict source-drift/no-fuzz/result-hash
-checks pass. User confirms another reader fails with baseline URI and succeeds
-with GoToR, accepting the experiment. Zathura still fails; not an adoption blocker,
-exact cause unproven. Details: memory/texmacs-gotor-probe.md.
+Project HEAD is the delivered examples change0559700e78b2b30e54a7c8ca7a268f6b32926027,
+following native GoToR package delivery ecbe6cb53cfcca203ba3e12e41e52266d897fee8.
+Examples commit contains24intended paths and reviewed feat message. Ordinary
+worktree/index clean, commit whitespace checks pass. Latest read-only inspection
+finds no stashes; user performed stash deletions, agent did not delete them.
+Review found old documentation stash's useful material retained or deliberately
+superseded, including rejection of main-package font injection.
 
-User requests experiment checkpoint BEFORE packaging under pkgs/. Implement
-texmacs-gotor and texmacs-gotor-fandol via texmacs-fandol.override {
-texmacs = texmacs-gotor; }; preserve original font wrapper. Production files not
-created yet; experimental validation is not a production package build.
+Delivered packages: texmacs-with-gotor-support and
+texmacs-fandol-with-gotor-support, latter composed through
+texmacs-fandol.override { texmacs = texmacs-with-gotor-support; }.
+Original Fandol method stays independent; ordinary org-texmacs keeps plain
+TeXmacs. Reviewed2.1.5renderer hash checks run before/after zero-fuzz patching
+following upstream postPatch. Both named outputs and final wrapper in devShell.
+Native probe contract/hashes/guards: memory/texmacs-gotor-probe.md.
 
-Examples user-stashed as [wip] example; ordinary worktree/index clean. Do not
-restore automatically. Eventual examples/devShell should use final wrapper.
-Preserve active timestamps with timezone, e.g. <2026-10-27 Tue +0800>.
-File-link feature delivered in 32643f81c424c9a8265eb73525d35e4be03f4f6e;
-9 runtime/test blobs match accepted isolated inputs. No new full project run.
-Pre-delivery/staging descriptions below superseded by this state.
+Examples are package-local sources/shared+en/zh, two entries per language:
+generic index and article-profile article with include-only math/figure chapters.
+Org-derived config/BibTeX, explicit build driver paths, isolated per-document
+HOME/TeXmacs/XDG state, private final-wrapper dependency. Outputs grouped into
+pdf/, texmacs/ and sources/. Index has explicit standalone companion link;
+PDF targets remain relative and terminal .org maps to .pdf. Active timestamps
+with timezone retained, e.g. <2026-10-27 Tue +0800>. README/allowlists agree.
+Only en/zh; implicit references and TOC/abstract reordering explicitly deferred.
+Details: memory/documents-package.md.
+
+Exact authorized build completed successfully:
+timeout 1200s nix build --no-link --no-write-lock-file --max-jobs 2 --cores 2 --print-out-paths path:/home/lingyu/Projects/org-texmacs#org-texmacs-examples -L.
+Output /nix/store/gzghcxhjgmc4r8d5vdhs9j5c9bg20z3a-org-texmacs-examples.
+Compiled formal renderer/Fandol/private Emacs and all4documents. Raw PDF
+inspection verifies relative GoToR sibling targets, destination files and embedded
+FandolKai/FandolSong regular+bold in both Chinese PDFs (index5pages/article4pages).
+Native .tm/config snapshots exist. Latest navigation headings and reader prose
+postdate this build and have static review only. No post-commit build, full
+flake check or formatter run for final candidate. No result symlink/lock update.
+
+User reports navigation fails with Zathura pdf-mupdf but works after switching
+to pdf-poppler, then confirms no further viewing issues. Supplied versions:
+Zathura2026.10.4, girara2026.07.18, pdf-poppler2026.07.18. Do not generalize
+failure to all Zathura or claim exact internal cause established. Separate
+reader comparison also found baseline URI failed where GoToR succeeded.
+
+No implementation remains selected. Future validation must use applicable
+command authority; do not run tests, mutate ordinary Git or restore obsolete
+layouts by habit. File-link feature delivered in32643f81c424c9a8265eb73525d35e4be03f4f6e;
+9runtime/test blobs match earlier597ERT/full isolated acceptance. Historical
+pre-delivery descriptions below are superseded by this current state.
 
 ## Current: file-link consumer policies accepted locally
 

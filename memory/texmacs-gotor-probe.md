@@ -1,12 +1,28 @@
-# Native GoToR probe and conditional package adoption
+# Native GoToR probe and delivered packages
+
+Latest user correction: switching Zathura to pdf-poppler makes previous links
+work. Supplied version output: Zathura2026.10.4, girara2026.07.18,
+pdf-poppler2026.07.18. Prior failure used pdf-mupdf. Thus generic Zathura
+incompatibility is superseded; backend-specific behavior observed, exact cause
+not established. User subsequently confirms no further viewing issues.
+
+Current production names, selected and renamed per user:
+pkgs/texmacs-with-gotor-support and pkgs/texmacs-fandol-with-gotor-support.
+Flake outputs/devShell/overlays agree. The font variant calls
+texmacs-fandol.override { texmacs = texmacs-with-gotor-support; }.
+Both named flake outputs are delivered; devShell and examples use final wrapper.
+Renderer guard runs after upstream patches/postPatch, asserting version2.1.5,
+original hash, zero-fuzz patch application and exact result hash. Patch is byte-
+identical to accepted experiment, including probe helper names. Formal package
+build later succeeds through examples; see documents-package.md/evidence.md.
 
 User selects standalone flake experiment, explicitly retaining existing Chinese
 font method. Both baseline and patched2.1.5 use unchanged copied texmacs-fandol
 package. Probe consumes native STM directly, no org-texmacs runtime or PDF
 postprocessor. Root lock copied unchanged. Official source archive SHA256
 b3a127bdba8e79010b239291415cbe3431333521e24477a814b586e1b4027360
-matches actual locked source derivation. Detailed source audit is in current
-memory; STM already expresses external file/label, native PDF maps them to URI.
+matches actual locked source derivation. Detailed source audit is in evidence.md;
+STM already expresses external file/label, unpatched native PDF maps them to URI.
 
 User authorizes repeated exact command:
 `timeout 1200s nix build --no-link --no-write-lock-file --max-jobs 2 --cores 2 --print-out-paths path:/home/lingyu/Projects/org-texmacs/tmp/texmacs-gotor-probe#checks.x86_64-linux.gotor -L`.
@@ -37,25 +53,17 @@ sy6g358kb0vfz503a79006cxcdqdic4m has same checks with blank targets.
 Probe/manifest/report/strict package draft retained in tmp/texmacs-gotor-probe.
 No raw archive selected; distilled hashes/contract/provenance sufficient.
 
-PyMuPDF binding1.28.2, MuPDF1.28.5; local Zathura plugin also links1.28.5.
+PyMuPDF binding1.28.2, MuPDF1.28.5; original Zathura pdf-mupdf also links1.28.5.
 Baseline raw link file://article.pdf becomes file:article.pdf#page=1&view=Fit.
-Parser success does not prove GUI dispatch/open. After visible markers were
-added, user initially reports success, then explicitly corrects: navigation
-failed in Zathura but succeeded in other readers (names not supplied). Latest
-correction is authoritative; Zathura acceptance fails despite native action and
-MuPDF parsing success. Reader dispatch is a plausible remaining cause, not yet
-proven against the exact installed GUI execution path.
-User additionally confirms the successful reader failed on the baseline URI
-links and accepts the GoToR result as successful. This within-reader contrast
-supports adoption; Zathura remains a documented compatibility limitation rather
-than an adoption gate. Do not claim its exact cause has been established.
+Parser success alone does not prove GUI dispatch/open. User's successful other
+reader failed with baseline URI and succeeded with GoToR, supporting adoption.
+Original Zathura backend failure and later pdf-poppler success are distinguished
+above; exact GUI dispatch cause unproven. Do not promise every backend works.
 
-User stashes examples as [wip] example, ordinary worktree/index clean at intake.
-Do not restore stash automatically. Conditional adoption if feasible and
-maintenance acceptable: sibling pkgs/texmacs-gotor and texmacs-gotor-fandol,
-latter explicitly via texmacs-fandol.override {texmacs=texmacs-gotor;}, then
-examples/devShell use final wrapper. Original Fandol implementation unchanged.
-Strict source/version/result-hash and no-fuzz package draft ready, not promoted.
-Reader acceptance is sufficient per user; proceed with conditional packaging.
-External named-destination
-support, production packages/check wiring and full org regressions not done.
+User requested experiment checkpoint before packaging; sequence honored. Original
+texmacs-fandol implementation unchanged. Examples restored/adapted/delivered,
+stash cleanup performed by user; latest stash list empty. No standalone package
+README tracked; README and compiled example build chapters document composition.
+External named destinations and maintained behavioral check wiring were not
+added. Isolated experiment evidence remains distinct from later formal examples
+build acceptance and from final prose/navigation changes not rebuilt.

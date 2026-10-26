@@ -89,14 +89,17 @@ Full nix flake check is already routine per commit, not an additional release-on
 blocking gate. User now selects review of a standalone configuration/documentation
 example package exposed through packages, with PDFs in out. Package-level complete
 isolation and content/layout reproducibility are required; byte identity is not.
-User authorizes files-only implementation of bilingual documentation and
-subsequently selects org-texmacs-documents, explicit docs parameter and
-literate Org configuration/bibliography with real INCLUDE chapter composition.
-Package files are written, not evaluated/tangled/built or accepted. This
-does not adopt a release prerequisite or default check. Validation needs separate
-authorization. Details: memory/documents-package.md. New prose uses ASCII
-punctuation per user preference, including commas instead of ideographic commas.
-Chinese font issue and PS route have been removed from blocking scope.
+User subsequently selected and delivered org-texmacs-examples with package-local
+bilingual sources, two entries per language and literate Org configuration/
+bibliography with native INCLUDE composition. Four-document package build is
+accepted before final navigation/prose edits, which have static review only.
+Independent reviewed GoToR renderer package and unchanged Fandol wrapper compose
+for examples/devShell; ordinary Lisp package keeps plain TeXmacs. This is not a
+release prerequisite or default check. Only en/zh, no exhaustive option matrix.
+Automatic bibliography insertion and abstract/TOC ordering changes are explicitly
+deferred. Details/validation limits: memory/documents-package.md. Authored prose
+uses ASCII punctuation, including commas instead of ideographic commas. No
+general font/layout repair or PS route is selected.
 After the source/package/test refactors, user selected README-only synchronization
 to HEAD without extra release-plan narrative; user committed the reviewed README-only
 change; exact parent/patch/message verified and project clean, no runtime rerun. Existing version declarations remain0.5.0.

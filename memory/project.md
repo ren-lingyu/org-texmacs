@@ -1,60 +1,28 @@
 # org-texmacs current project model
 
-## Latest example layout and link delivery
+## Delivered file-link policies and bilingual examples
 
-File-link feature is delivered in the ordinary project; previous uncommitted
-wording below is superseded. User-stashed examples implement two entries
-per language, generic index.org and article-profile article.org. Math/figure
-bodies remain include-only chapters, preserving demonstrated functionality.
-Mutual sibling links use delivered PDF-relative/.org-to-.pdf policies. Four
-isolated builds retain source snapshots and scoped Fandol. README/bilingual prose
-updated; static review only, no current four-entry package build. Latest stash
-is [wip] example; ordinary worktree/index clean, do not restore automatically.
-Accepted GoToR experiment and pending package integration are recorded in
-memory/texmacs-gotor-probe.md. Full current scope:
-memory/documents-package.md and memory/current.md.
+File-link feature delivered: org-texmacs-pdf-file-links-as-absolute=nil (PDF-only)
+and org-texmacs-link-org-files-as-pdf=t (all native consumers), captured in readonly
+preparation slots. Joint AST/lowered body keep raw targets; consumer copies rewrite
+marked file leaves. PDF preserves relative form unless absolute chosen; .tm/session
+retain source-base resolution. Final suffix mapping case-insensitive. No target
+reads/builds, no rewriting URI/STM/labels/other suffixes. Earlier597ERT/full isolated
+acceptance details: memory/file-link-implementation.md.
 
-## Accepted working file-link consumer policies
-
-New uncommitted source feature captures org-texmacs-pdf-file-links-as-absolute
-(nil default, PDF-only) and org-texmacs-link-org-files-as-pdf (t default, all native
-consumers). Readonly document slots retain typed preparation-time values; pure
-input defaults fixed. Joint AST/lowered body retain raw targets; consumer copies
-rewrite marked targets only. PDF preserves relative form unless absolute chosen;
-.tm/session retain source-base resolution. Final .org->.pdf is case-insensitive,
-labels/URI/STM/other suffixes unchanged. No target reads/builds.597ERT and full
-isolated checks accepted,108inputs equal root; source not delivered yet. Details:
-memory/file-link-implementation.md. This supersedes historical absolute-only
-policy in the committed local-file-link node below.
-
-## Current working example package
-
-Uncommitted docs candidate has been migrated by explicit user request to
-pkgs/org-texmacs-examples. Package-local lib.fileset collects sources/shared and
-en/zh entry Org files (configuration, mathematics, figures-tables) plus chapters.
-No root docs/ or docs argument remains. Builds explicitly stage shared tangle
-inputs in chapters, load derived config there and preserve relative include/bib
-paths. Emacs override scopes texmacs-fandol to examples. Flake exposes examples;
-output pdf/texmacs/sources layout retained with entry basenames. No extra language,
-implicit bibliography or abstract/TOC order work. Current full flake gate evaluates
-the example package and verifies driver formatting, but does not build its PDFs.
-User synchronized staging to new layout; source feature remains unstaged.
-Supersedes the working documentation description immediately below. Details:
-memory/documents-package.md and memory/current.md.
-
-## Historical working documentation package acceptance
-
-Uncommitted org-texmacs-documents package receives explicit docs fileset alongside
-Lisp src and builds six en/zh guide/math/figure-table documents. Org configuration/
-bibliography tangle before bounded INCLUDE conversion. Each leaf has fresh runtime
-state; .tm/PDF/sources/derived config/logs/pdf-info aggregate under language/topic
-directories in out. No app/default check or generic worker change. README lists
-three outputs and guide links. Manual Org cleanup and Lisp/Nix formatting complete;
-treefmt excludes *.org because no Org formatter is configured. Actual documents
-build succeeds;106equal-file metadata-free full gate passes with runtime caches.
-Root explicit path treefmt Git-hook failure remains a source-metadata caveat.
-Ordinary partial index is intentionally unchanged/stale. Details and verification
-limits: memory/documents-package.md.
+Delivered org-texmacs-examples uses package-local fileset sources/shared+en/zh,
+generic index and article entries with include-only chapters. Four independent
+isolated builders tangle Org config/BibTeX and save .tm/PDF from same document.
+Outputs pdf/texmacs/sources; explicit navigation links retain sibling PDF paths.
+Private matching Emacs override selects texmacs-fandol-with-gotor-support; ordinary
+Lisp/Emacs dependency remains plain TeXmacs. Standalone final wrapper composes
+texmacs-fandol.override with texmacs-with-gotor-support; reviewed2.1.5renderer
+hash guards and zero-fuzz patching follow upstream postPatch. Named packages and
+devShell wired. No automatic examples check or app. README/allowlists agree.
+Four-doc build accepted, later prose/navigation edits static only; user accepts
+Zathura pdf-poppler after pdf-mupdf failure. No universal-reader claim. No extra
+language, implicit bibliography or abstract/TOC order change selected. Current
+scope/evidence: documents-package.md, texmacs-gotor-probe.md and current.md.
 
 ## Delivered INCLUDE snapshot/view repair
 

@@ -4,47 +4,27 @@
 
 User delivered the feature with feat(document): configure file-link paths and
 Org-to-PDF targets. Exact 9 runtime/test blobs equal accepted isolated inputs;
-README feature hunks committed separately. Index empty; examples remain outside
-index. Detailed confirmation is in memory/current.md. Candidate-state descriptions
-below record pre-delivery acceptance, not current staging.
+README feature hunks committed separately. Examples subsequently delivered;
+ordinary worktree/index clean. Detailed confirmation is in memory/current.md.
 
 User authorizes and accepts2consumer flags: PDF-only relative-vs-absolute policy
 (default relative), and all-native-consumer .org->.pdf suffix policy (default on).
 No as-texmacs variable. Strict preparation snapshot and typed file provenance;
 original joint AST/completed body stay raw. Full isolated check and597ERT pass,
-108inputs equal root. Source/test/README changes unstaged; staged example work
-preserved. Earlier all-consumer preservation and session-base proposals are
+108inputs equal root at acceptance. Source/test/README delivery verified.
+Earlier all-consumer preservation and session-base proposals are
 superseded by this final scope. Details: memory/file-link-implementation.md.
 
-## Bilingual example organization and remaining selection
+## Bilingual examples delivered; deferred behavior preferences
 
-Latest user selects the two-entry layout; it is now user-stashed as [wip] example:
-generic index/article per language, include-only math/figure chapters, mutual
-relative Org links exported as sibling PDF links. Static review passes; no new
-package build/formatter run for that rewrite. Ordinary worktree/index now clean;
-do not restore the stash automatically. Details:
-memory/documents-package.md. This supersedes the unimplemented proposal below.
-
-User selects package-local org-texmacs-examples with sources/shared+en/zh and
-include-only chapters, Org-tangled configuration/BibTeX, no package README/i18n
-layer. Current3entries per language: configuration(generic), mathematics and
-figures-tables(article). Outputs separated into pdf/texmacs/sources with matching
-basenames; logs stay in Nix. Independent texmacs-fandol is delivered, examples
-use a private matching Emacs package override, main Lisp keeps plain texmacs.
-No host-font discovery or general typography repair. User has staged this layout.
-
-New user proposal: TWO compiled entries per language, generic index linking to
-article, mathematical/figure material using article. Not implemented yet; link
-consumer prerequisite above now accepted. Keep only en/zh. Automatic bibliography
-at document end and TOC/abstract placement explicitly deferred. Current explicit
-bibliography print and ordering remain. Current full gate evaluates the example
-derivation and formats driver, but no package PDF build after this migration.
-Earlier six-doc acceptance belongs to the old layout, not new package output.
-Exact provenance/scope: memory/documents-package.md. Original docs stash retained;
-do not reapply it blindly over migrated files.
-
-Unified INCLUDE snapshot/view repair remains delivered/accepted; no unfinished
-repair node. Details: memory/include-view-implementation.md.
+org-texmacs-examples delivers en/zh generic index plus article, Org-derived config/
+bibliography and private GoToR+Fandol package build. Four-document build accepted
+before final reader prose/navigation edits; those latest edits have static review.
+Ordinary tree/index clean, stash list empty. No further organization/package work
+selected. Automatic bibliography at document end and TOC/abstract placement remain
+explicitly deferred preferences, not selected implementation. Keep en/zh only.
+Scope/evidence: memory/documents-package.md and memory/texmacs-gotor-probe.md.
+Unified INCLUDE snapshot/view repair remains delivered; no unfinished repair node.
 
 ## Issue14 document information delivered; issue completed
 

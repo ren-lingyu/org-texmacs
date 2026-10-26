@@ -1,5 +1,27 @@
 # org-texmacs durable evidence
 
+Delivery confirmation: examples commit0559700e78b2b30e54a7c8ca7a268f6b32926027
+contains24intended paths,1126additions/11deletions and reviewed feat message.
+Commit whitespace check passes, ordinary tree/index clean. Final prose/index
+heading edits have static review only; no new runtime validation claimed.
+
+Latest user-reported GUI evidence: Zathura links work after switching from
+pdf-mupdf to pdf-poppler. User-supplied version output confirms
+Zathura2026.10.4/girara2026.07.18/pdf-poppler2026.07.18. Do not generalize prior
+backend failure to all Zathura. This is reported acceptance, not agent GUI test.
+
+## Restored examples with committed GoToR and Fandol packages
+
+User-authorized exact examples build (current.md) exits0 after native renderer
+compilation, Fandol override, strict Lisp compilation and four document exports.
+Output /nix/store/gzghcxhjgmc4r8d5vdhs9j5c9bg20z3a-org-texmacs-examples.
+All four raw PDFs contain GoToR Filespecs with expected relative sibling paths;
+targets exist. Chinese entries embed FandolKai-Regular, FandolSong-Bold and
+FandolSong-Regular; index5pages, article4pages. Native .tm and derived config
+snapshots present. Candidate is restored/adapted worktree on delivered package
+HEAD before final prose/navigation edits, subsequently committed. GUI evidence
+is user-reported; no fresh agent GUI/full-flake/formatter acceptance.
+
 ## Native GoToR isolated action and font acceptance
 
 Standalone flake builds matching2.1.5renderer patch under unchanged Fandol
@@ -12,7 +34,8 @@ GUI evidence, distinct from automated native-action acceptance.
 The successful reader also failed with baseline URI links, per user, who accepts
 this comparison as successful patch validation. Zathura cause remains unproven.
 Scope, command authority, exact hashes/artifact and conditional packaging details:
-memory/texmacs-gotor-probe.md. No production implementation/default switch.
+memory/texmacs-gotor-probe.md. That isolated stage preceded production delivery;
+formal package/example build acceptance is recorded above.
 ## Locked TeXmacs GoToR source audit
 
 Official2.1.5archive download SHA256 matches actual derivation flat hash:
