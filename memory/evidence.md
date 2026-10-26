@@ -1,5 +1,33 @@
 # org-texmacs durable evidence
 
+## Native GoToR isolated action and font acceptance
+
+Standalone flake builds matching2.1.5renderer patch under unchanged Fandol
+wrapper. Native baseline/candidate27annotations;9PDF path forms become18GoToR,
+URI/internal controls retained. MuPDF1.28.5 resolves all files/page0; Chinese
+text identical and Fandol embedded. Relocation and source-drift/no-fuzz/result-
+hash guards pass. User corrects initial marked-target success: Zathura did not
+navigate successfully, while other unnamed readers did. This is user-reported
+GUI evidence, distinct from automated native-action acceptance.
+The successful reader also failed with baseline URI links, per user, who accepts
+this comparison as successful patch validation. Zathura cause remains unproven.
+Scope, command authority, exact hashes/artifact and conditional packaging details:
+memory/texmacs-gotor-probe.md. No production implementation/default switch.
+## Locked TeXmacs GoToR source audit
+
+Official2.1.5archive download SHA256 matches actual derivation flat hash:
+b3a127bdba8e79010b239291415cbe3431333521e24477a814b586e1b4027360.
+TeXmacs-2.1.5.15315/src/Plugins/Pdf/pdf_hummus_renderer.cpp href2297:
+# links emit /Dest at2313-2314; every other target emits /S /URI at2317.
+148PDF-plugin C++ source files reviewed for alternate actions/entry points;
+no native GoToR emission found. Fandol actual derivation wraps unpatched2.1.5
+renderer, only font environment changed. This explains why path-form policy
+alone cannot select PDF remote-file actions. Scheme/macros have no discovered
+selector. At that source-audit stage no native patch/render had run; subsequent
+accepted probe evidence is above. Archive
+remains temporary locally, distilled provenance here suffices; no GAW archive
+selected. Details/authority: memory/current.md.
+
 ## File-link consumer policies accepted on current candidate
 
 User-selected2flags captured before pure lowering, applied on consumer copies:

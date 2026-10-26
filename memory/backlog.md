@@ -1,6 +1,12 @@
 # org-texmacs active backlog
 
-## File-link policies accepted, user delivery pending
+## File-link policies delivered
+
+User delivered the feature with feat(document): configure file-link paths and
+Org-to-PDF targets. Exact 9 runtime/test blobs equal accepted isolated inputs;
+README feature hunks committed separately. Index empty; examples remain outside
+index. Detailed confirmation is in memory/current.md. Candidate-state descriptions
+below record pre-delivery acceptance, not current staging.
 
 User authorizes and accepts2consumer flags: PDF-only relative-vs-absolute policy
 (default relative), and all-native-consumer .org->.pdf suffix policy (default on).
@@ -11,6 +17,13 @@ preserved. Earlier all-consumer preservation and session-base proposals are
 superseded by this final scope. Details: memory/file-link-implementation.md.
 
 ## Bilingual example organization and remaining selection
+
+Latest user selects the two-entry layout; it is now user-stashed as [wip] example:
+generic index/article per language, include-only math/figure chapters, mutual
+relative Org links exported as sibling PDF links. Static review passes; no new
+package build/formatter run for that rewrite. Ordinary worktree/index now clean;
+do not restore the stash automatically. Details:
+memory/documents-package.md. This supersedes the unimplemented proposal below.
 
 User selects package-local org-texmacs-examples with sources/shared+en/zh and
 include-only chapters, Org-tangled configuration/BibTeX, no package README/i18n

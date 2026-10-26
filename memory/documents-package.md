@@ -1,5 +1,30 @@
 # Compilable bilingual examples
 
+## Current: two-entry bilingual rewrite selected and user-stashed
+
+User stashed this candidate as [wip] example after the link diagnosis. Ordinary
+worktree/index are clean. Do not restore it automatically. Planned renderer
+package integration is in memory/texmacs-gotor-probe.md. The following describes
+the stashed files, not files currently present in the ordinary worktree.
+
+User authorizes prior plan following delivered file-link feature. Each language
+now has index.org with generic profile and article.org with article profile.
+Index retains configuration/metadata/bibliography/build prose and links to
+article.org; article links back to index.org and includes math/figure chapters
+with :minlevel 2. Full original demonstration bodies preserved exactly; old
+three top-level entries removed. Shared literal config and BibTeX tangling remain.
+Shared config explicitly chooses PDF-relative and Org-to-PDF suffix mapping;
+prose covers native absolute targets and shows alternate flags without executing.
+References get explicit UNNUMBERED:t heading, PRINT_BIBLIOGRAPHY remains explicit.
+Four package builds retain isolated process/state and Fandol override. Outputs
+pdf/en|zh/{index,article}.pdf, texmacs equivalents, sources/lang/entry snapshots.
+README and bilingual chapter descriptions agree. No production/test behavior
+change. Read-only static paths/content/format review passes, no current build or
+formatter authorization/run. User had restaged old examples before this rewrite;
+agent preserves index exactly, so new rewrite remains unstaged/untracked over it.
+Historical three-entry and original six-doc runtime claims below do not accept
+the current four-entry package. Next authorized build and eventual user staging.
+
 ## Current state after link-policy acceptance
 
 Current candidate is pkgs/org-texmacs-examples, sources/shared+en/zh with3entries

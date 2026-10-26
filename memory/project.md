@@ -1,5 +1,19 @@
 # org-texmacs current project model
 
+## Latest example layout and link delivery
+
+File-link feature is delivered in the ordinary project; previous uncommitted
+wording below is superseded. User-stashed examples implement two entries
+per language, generic index.org and article-profile article.org. Math/figure
+bodies remain include-only chapters, preserving demonstrated functionality.
+Mutual sibling links use delivered PDF-relative/.org-to-.pdf policies. Four
+isolated builds retain source snapshots and scoped Fandol. README/bilingual prose
+updated; static review only, no current four-entry package build. Latest stash
+is [wip] example; ordinary worktree/index clean, do not restore automatically.
+Accepted GoToR experiment and pending package integration are recorded in
+memory/texmacs-gotor-probe.md. Full current scope:
+memory/documents-package.md and memory/current.md.
+
 ## Accepted working file-link consumer policies
 
 New uncommitted source feature captures org-texmacs-pdf-file-links-as-absolute

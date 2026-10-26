@@ -1,5 +1,13 @@
 # File-link consumer policy implementation
 
+## Delivery
+
+User committed 32643f81c424c9a8265eb73525d35e4be03f4f6e, exactly 10 intended
+paths (435 additions/49 deletions). Nine runtime/test/helper blobs match the
+accepted isolated input bytes; README feature hunks were separated from example
+documentation. Ordinary index empty; user subsequently stashed examples. No new
+HEAD test run. Pre-delivery provenance and validation limits below still apply.
+
 ## Adopted contract and ownership
 
 User explicitly requests source implementation following isolated relative-link

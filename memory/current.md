@@ -1,5 +1,24 @@
 # org-texmacs current memory
 
+## Current: native GoToR experiment accepted; packaging next
+
+Action/path/Chinese/Fandol/relocation and strict source-drift/no-fuzz/result-hash
+checks pass. User confirms another reader fails with baseline URI and succeeds
+with GoToR, accepting the experiment. Zathura still fails; not an adoption blocker,
+exact cause unproven. Details: memory/texmacs-gotor-probe.md.
+
+User requests experiment checkpoint BEFORE packaging under pkgs/. Implement
+texmacs-gotor and texmacs-gotor-fandol via texmacs-fandol.override {
+texmacs = texmacs-gotor; }; preserve original font wrapper. Production files not
+created yet; experimental validation is not a production package build.
+
+Examples user-stashed as [wip] example; ordinary worktree/index clean. Do not
+restore automatically. Eventual examples/devShell should use final wrapper.
+Preserve active timestamps with timezone, e.g. <2026-10-27 Tue +0800>.
+File-link feature delivered in 32643f81c424c9a8265eb73525d35e4be03f4f6e;
+9 runtime/test blobs match accepted isolated inputs. No new full project run.
+Pre-delivery/staging descriptions below superseded by this state.
+
 ## Current: file-link consumer policies accepted locally
 
 User explicitly authorizes source implementation and finalizes exactly2Customs:
