@@ -518,4 +518,84 @@
     (org-texmacs-prepare-buffer-preprocessed (current-buffer))
     :type 'org-texmacs-document-error)))
 
+(ert-deftest
+    org-texmacs-preprocess-included-native-body-matches-direct-source
+    ()
+  (org-texmacs-test--with-worker
+   (org-texmacs-test--with-bibliography-files
+    (let
+        ((raw
+          "(concat \"* Heading\n[fn:x] #+INCLUDE: missing.org\n\")\n"))
+      (write-region
+       (concat "Discard\n" raw "Discard\n") nil "part.stm"
+       nil 'silent)
+      (dolist (wrapper '("texmacs" "equation" "equation*"))
+        (erase-buffer)
+        (insert
+         (format "#+INCLUDE: \"part.stm\" \"%s\" :lines \"2-5\"\n"
+                 wrapper))
+        (let* ((before
+                (org-texmacs-test--document-buffer-state
+                 (current-buffer)))
+               (input
+                (org-texmacs-prepare-buffer-preprocessed
+                 (current-buffer)))
+               (document (org-texmacs-document input))
+               (base default-directory)
+               (direct
+                (with-temp-buffer
+                  (org-mode)
+                  (setq-local default-directory base)
+                  (insert
+                   (format "#+begin_%s\n%s#+end_%s\n"
+                           wrapper
+                           raw
+                           wrapper))
+                  (org-texmacs-document-from-buffer
+                   (current-buffer)))))
+          (should (= 1 (length (org-texmacs-input-islands input))))
+          (should
+           (equal
+            (org-texmacs--native-document-wire document)
+            (org-texmacs--native-document-wire direct)))
+          (should
+           (equal
+            before
+            (org-texmacs-test--document-buffer-state
+             (current-buffer))))
+          (should
+           (string-match-p
+            "TeXmacs"
+            (org-texmacs-document-serialize document)))))))))
+
+(ert-deftest org-texmacs-preprocess-mixed-literal-and-native-targets
+    ()
+  (org-texmacs-test--with-worker
+   (org-texmacs-test--with-bibliography-files
+    (write-region "(math \"x\")\n" nil "part.org" nil 'silent)
+    (dolist (forms
+             '(("src org" "texmacs" "quote")
+               ("quote" "texmacs" "src org")))
+      (erase-buffer)
+      (dolist (wrapper forms)
+        (insert (format "#+INCLUDE: \"part.org\" %s\n" wrapper)))
+      (let* ((input
+              (org-texmacs-prepare-buffer-preprocessed
+               (current-buffer)))
+             (document (org-texmacs-document input))
+             (body
+              (prin1-to-string (org-texmacs-document-body document))))
+        (should (= 2 (length (org-texmacs-input-islands input))))
+        (should
+         (= 1
+            (length
+             (plist-get
+              (org-texmacs-input-info input)
+              :texmacs-preprocessing-sources))))
+        (should (string-match-p "code" body))
+        (should (string-match-p "quotation" body))
+        (should
+         (string-match-p
+          "TeXmacs" (org-texmacs-document-serialize document))))))))
+
 ;;; preprocess.el ends here

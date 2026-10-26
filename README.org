@@ -1424,12 +1424,14 @@ This adapter does not run full annotation, global ID lookup, macros, Babel,
 SETUPFILE/BIND processing or Cite output processors; genuine unsupported directives
 in the final document fail.  Arbitrary callbacks and I/O are not sandboxed.
 
-Org implements =::location=, =:only-contents=, =:lines= and =:minlevel= selection,
-heading adjustment and footnote extraction.  Line-count-preserving STM shielding
-prevents native INCLUDE, headline and footnote operations from changing payload.
+For ordinary Org inclusion, Org implements =::location=, =:only-contents=,
+=:lines= and =:minlevel= selection, heading adjustment and footnote extraction.
+Line-count-preserving STM shielding prevents native INCLUDE, headline and
+footnote operations from changing payload.
 STM discovery retains its existing paragraph/special-block grammar; this adapter
 does not extend discovery across Org headline boundaries.
-Selection intersecting only part of an original STM fragment/block fails explicitly;
+Ordinary Org selection intersecting only part of an original STM fragment/block
+fails explicitly;
 no original character map or textual recreation of Org selection rules is used.
 Native location lookup and content preparation use transaction-local fixed readers
 with original path identities; no occurrence mirrors are created.  Scoped helper
@@ -1437,14 +1439,33 @@ bindings are restored on success/error.  Real extension integration is validated
 with the pinned isolated fixtures described below; broader advice behavior is not
 inferred from those cases.
 
+Literal INCLUDE forms such as =#+INCLUDE: "common.el" src emacs-lisp=,
+=example= and =export BACKEND= use the original captured text without STM
+discovery.  Org selects lines and escapes literal block delimiters; code is
+displayed, not executed.  A literal =:lines= selection may cut text that looks
+like STM.  Source languages do not require separate TeXmacs handlers.
+
+Other block wrappers use their actual Org parsing context.  Native-body wrappers
+=texmacs=, =equation= and =equation*= select raw text before protecting the
+generated native block; their contents are not interpreted as Org.  Quote block
+names containing punctuation, for example =#+INCLUDE: "formula.stm" "equation*"=,
+as required by Org's INCLUDE parser.  Wrapper branches retain Org's own behavior:
+they do not recursively expand nested INCLUDE
+or apply ordinary Org location/only-contents/minlevel processing.  Resulting
+blocks still pass through the existing structural converter.  Unsupported export
+blocks, source headers or target structures fail there instead of being accepted
+merely because INCLUDE expanded them.  Existing native block delimiter rules apply.
+
 The source must be full, unnarrowed and use ordinary headline levels
 (=org-odd-levels-only= disabled for both source and native defaults).  Visiting
 identity and resource base must agree; existing identity is regular or absent.
 Included local UTF-8 regular files may be in different directories and are limited
 to 64 KiB each.  Original captured texts total at most 256 KiB, final working text
 at most 256 KiB, recursion at most eight levels and includes at most 32 expansions
-including root.  Repeated reads reuse fixed text.  Symlink/physical aliases, cycles,
-remote/URL/tilde/control paths and unsupported INCLUDE wrappers/options fail.
+including root.  Repeated and mixed-mode inclusion reuse one original snapshot;
+dependency verification can still reread files to check their content hashes.
+Symlink/physical aliases, cycles, remote/URL/tilde/control paths, explicit INCLUDE
+encoding overrides and unrecognized parameters fail.
 Native recursion policy remains authoritative; nested location-only references
 to the same file can be rejected even when their selected headings differ.
 Root subtree/region/narrowing remain separate.

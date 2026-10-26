@@ -129,17 +129,21 @@ Compare its wrapper name without case, preserving NODE and its STM contents."
        (let ((type (org-element-property :type node)))
          (and (stringp type) (equal (downcase type) "texmacs")))))
 
+(defun org-texmacs--native-body-name-kind (name)
+  "Return the native raw-body kind for block NAME, or nil."
+  (when (stringp name)
+    (cdr
+     (assoc
+      (downcase name)
+      '(("texmacs" . texmacs)
+        ("equation" . equation)
+        ("equation*" . equation*))))))
+
 (defun org-texmacs--native-body-kind (node)
   "Return the native raw-body kind of NODE, or nil."
   (when (and (consp node) (eq (org-element-type node) 'special-block))
-    (let ((type (org-element-property :type node)))
-      (when (stringp type)
-        (cdr
-         (assoc
-          (downcase type)
-          '(("texmacs" . texmacs)
-            ("equation" . equation)
-            ("equation*" . equation*))))))))
+    (org-texmacs--native-body-name-kind
+     (org-element-property :type node))))
 
 (defun org-texmacs--native-body-blocks (ast)
   "Collect outermost native-body blocks in AST order without entering them."

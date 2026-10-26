@@ -342,7 +342,6 @@
          "First\nSecond\n"))))
    (dolist (value
             '("\"part.org::*Absent\""
-              "\"part.org\" src emacs-lisp"
               "\"part.org\" :unknown t"
               "\"~/part.org\""
               "\"part.org\" :minlevel 0"
@@ -371,5 +370,291 @@
    (should-error
     (org-texmacs-test--compose)
     :type 'org-texmacs-document-error)))
+
+(defun org-texmacs-test--native-include-text (source)
+  "Expand SOURCE through native Org with the current explicit file context."
+  (let ((base default-directory)
+        (file buffer-file-name))
+    (with-temp-buffer
+      (org-mode)
+      (setq-local default-directory base)
+      (setq-local buffer-file-name file)
+      (insert source)
+      (org-export-expand-include-keyword nil base nil file)
+      (buffer-string))))
+
+(ert-deftest org-texmacs-preprocess-literal-include-native-escaping ()
+  (org-texmacs-test--with-bibliography-files
+   (let ((raw
+          (concat
+           "Text[fn::(math \"unfinished].\n"
+           "* Literal heading\n#+INCLUDE: \"missing.org\"\n"
+           "#+begin_texmacs\n(concat \"hello\n#+end_src\nbye\")\n"
+           "#+end_texmacs\n#+end_example\n,#+begin_src\n")))
+     (write-region raw nil "literal.txt" nil 'silent)
+     (dolist (wrapper
+              '("src emacs-lisp"
+                "src org"
+                "src bibtex"
+                "example"
+                "export html"))
+       (erase-buffer)
+       (insert (format "#+INCLUDE: \"literal.txt\" %s\n" wrapper))
+       (let* ((source (buffer-string))
+              (native (org-texmacs-test--native-include-text source))
+              (result (org-texmacs-test--compose)))
+         (should (equal (plist-get result :source) native))
+         (should (equal source (buffer-string)))
+         (should
+          (equal
+           (cdr
+            (assoc
+             (expand-file-name "literal.txt")
+             (plist-get result :sources)))
+           raw))
+         (should (= 1 (length (plist-get result :receipts)))))))))
+
+(ert-deftest org-texmacs-preprocess-literal-lines-ignore-stm-spans ()
+  (org-texmacs-test--with-bibliography-files
+   (write-region "(math\n  \"x\")\n" nil "part.org" nil 'silent)
+   (dolist (wrapper '("src org" "example"))
+     (erase-buffer)
+     (insert
+      (format "#+INCLUDE: \"part.org\" %s :lines \"2-3\"\n" wrapper))
+     (should
+      (equal
+       (plist-get (org-texmacs-test--compose) :source)
+       (org-texmacs-test--native-include-text (buffer-string)))))))
+
+(ert-deftest org-texmacs-preprocess-literal-code-never-executes ()
+  (org-texmacs-test--with-bibliography-files
+   (write-region "(error \"INCLUDE executed source\")\n" nil "code.el"
+                 nil
+                 'silent)
+   (insert "#+INCLUDE: \"code.el\" src emacs-lisp\n")
+   (cl-letf (((symbol-function 'org-babel-execute-src-block)
+              (lambda (&rest _) (ert-fail "Executed Babel")))
+             ((symbol-function 'org-texmacs--worker-request)
+              (lambda (&rest _) (ert-fail "Parsed literal STM"))))
+     (let* ((input
+             (org-texmacs-prepare-buffer-preprocessed
+              (current-buffer)))
+            (body
+             (org-texmacs-document-body
+              (org-texmacs-document input))))
+       (should-not (org-texmacs-input-islands input))
+       (should
+        (string-match-p
+         "INCLUDE executed source" (prin1-to-string body)))
+       (should (string-match-p "code" (prin1-to-string body)))))))
+
+(ert-deftest
+    org-texmacs-preprocess-wrapper-target-errors-after-expansion
+    ()
+  (org-texmacs-test--with-bibliography-files
+   (write-region "Text\n" nil "part.txt" nil 'silent)
+   (dolist (wrapper
+            '("export html" "src org :tangle never-created.el"))
+     (erase-buffer)
+     (insert (format "#+INCLUDE: \"part.txt\" %s\n" wrapper))
+     (should
+      (string-match-p
+       "Text" (plist-get (org-texmacs-test--compose) :source)))
+     (let ((err
+            (should-error
+             (org-texmacs-document-from-buffer-preprocessed
+              (current-buffer))
+             :type 'org-texmacs-document-error)))
+       (should-not
+        (string-match-p
+         "INCLUDE parameters" (error-message-string err)))))
+   (should-not (file-exists-p "never-created.el"))))
+
+(ert-deftest
+    org-texmacs-preprocess-mixed-views-share-original-snapshot
+    ()
+  (org-texmacs-test--with-bibliography-files
+   (let* ((raw "(math \"x\")\n")
+          (forms
+           '("#+INCLUDE: \"part.org\"\n"
+             "#+INCLUDE: \"part.org\" src org\n"
+             "#+INCLUDE: \"part.org\" quote\n")))
+     (write-region raw nil "part.org" nil 'silent)
+     (dolist (order (list forms (reverse forms)))
+       (erase-buffer)
+       (insert (apply #'concat (append order order)))
+       (let ((result (org-texmacs-test--compose)))
+         (should (= 1 (length (plist-get result :sources))))
+         (should (= 1 (length (plist-get result :receipts))))
+         (should (equal (cdar (plist-get result :sources)) raw))
+         (should
+          (equal
+           (plist-get result :source)
+           (org-texmacs-test--native-include-text
+            (buffer-string)))))))))
+
+(ert-deftest
+    org-texmacs-preprocess-mixed-reader-copies-and-relative-paths
+    ()
+  (org-texmacs-test--with-bibliography-files
+   (write-region "(math \"x\")\n" nil "part.org" nil 'silent)
+   (insert
+    "#+INCLUDE: \"part.org\" src org\n"
+    "#+INCLUDE: \"part.org\" quote\n")
+   (let ((prepare
+          (symbol-function 'org-export--prepare-file-contents)))
+     (cl-letf (((symbol-function 'org-export--prepare-file-contents)
+                (lambda (file &rest args)
+                  (let ((copy
+                         (org-file-contents
+                          (file-relative-name file
+                                              default-directory))))
+                    (aset copy 0 ?X))
+                  (apply prepare file args))))
+       (should
+        (equal
+         (plist-get (org-texmacs-test--compose) :source)
+         (org-texmacs-test--native-include-text (buffer-string))))))))
+
+(ert-deftest org-texmacs-preprocess-wrapper-native-branch-semantics ()
+  (org-texmacs-test--with-bibliography-files
+   (write-region
+    "* Alpha\n#+INCLUDE: \"missing.org\"\n* Beta\nOther\n"
+    nil
+    "part.org"
+    nil
+    'silent)
+   (dolist (suffix '("src org" "example" "quote" "theorem"))
+     (erase-buffer)
+     (insert
+      (format "#+INCLUDE: \"part.org::*Alpha\" %s :only-contents t\n"
+              suffix))
+     (should
+      (equal
+       (plist-get (org-texmacs-test--compose) :source)
+       (org-texmacs-test--native-include-text (buffer-string))))))
+  (org-texmacs-test--with-bibliography-files
+   ;; A COMMENT wrapper owns literal text; it must not discover malformed STM
+   ;; by parsing its file outside the eventual wrapper context.
+   (write-region "Text[fn::(math \"unfinished].\n" nil "part.org"
+                 nil
+                 'silent)
+   (insert "#+INCLUDE: \"part.org\" comment\n")
+   (should
+    (equal
+     (plist-get (org-texmacs-test--compose) :source)
+     (org-texmacs-test--native-include-text (buffer-string))))))
+
+(ert-deftest
+    org-texmacs-preprocess-native-body-selected-before-protection
+    ()
+  (org-texmacs-test--with-bibliography-files
+   (write-region
+    "Discard\n(concat \"* Heading\n[fn:x] #+INCLUDE: missing.org\n\")\nDiscard\n"
+    nil
+    "part.stm"
+    nil
+    'silent)
+   (dolist (wrapper '("texmacs" "equation" "equation*" "TeXmAcS"))
+     (erase-buffer)
+     (insert
+      (format "#+INCLUDE: \"part.stm\" \"%s\" :lines \"2-5\"\n"
+              wrapper))
+     (let ((org-export-before-parsing-functions
+            (list
+             (lambda (_backend)
+               (should-not
+                (string-match-p
+                 "Heading\\|missing.org" (buffer-string)))))))
+       (should
+        (equal
+         (plist-get (org-texmacs-test--compose) :source)
+         (org-texmacs-test--native-include-text (buffer-string))))))))
+
+(ert-deftest
+    org-texmacs-preprocess-nested-modes-and-helper-restoration
+    ()
+  (org-texmacs-test--with-bibliography-files
+   (let* ((names
+           '(org-file-contents
+             org-export-parse-include-value
+             org-export--prepare-file-contents
+             org-export--blindly-expand-include
+             org-export-expand-include-keyword
+             org-export--inclusion-absolute-lines))
+          (functions (mapcar #'symbol-function names)))
+     (write-region "Text[fn::(math \"unfinished].\n" nil "literal.txt"
+                   nil
+                   'silent)
+     (write-region "* Child\nKept\n" nil "child.org" nil 'silent)
+     (write-region
+      (concat
+       "#+INCLUDE: \"literal.txt\" src org\n"
+       "#+INCLUDE: \"child.org::*Child\" :only-contents t\n")
+      nil "parent.org"
+      nil 'silent)
+     (insert "#+INCLUDE: \"parent.org\"\n")
+     (should
+      (string-match-p
+       "Kept" (plist-get (org-texmacs-test--compose) :source)))
+     (should
+      (cl-every #'eq functions (mapcar #'symbol-function names)))
+     (write-region "#+INCLUDE: \"missing.org\"\n" nil "child.org"
+                   nil
+                   'silent)
+     (should-error
+      (org-texmacs-test--compose)
+      :type 'org-texmacs-document-error)
+     (should
+      (cl-every #'eq functions (mapcar #'symbol-function names))))))
+
+(ert-deftest
+    org-texmacs-preprocess-wrapper-budgets-and-dependency-guards
+    ()
+  (org-texmacs-test--with-bibliography-files
+   (write-region (make-string 30000 ?x) nil "part.txt" nil 'silent)
+   (insert
+    (apply #'concat
+           (make-list 9 "#+INCLUDE: \"part.txt\" src org\n")))
+   (should-error
+    (org-texmacs-test--compose)
+    :type 'org-texmacs-document-error)
+   (erase-buffer)
+   (insert
+    (apply #'concat
+           (make-list 32 "#+INCLUDE: \"part.txt\" example\n")))
+   (should-error
+    (org-texmacs-test--compose)
+    :type 'org-texmacs-document-error)
+   (write-region "Original\n" nil "part.txt" nil 'silent)
+   (erase-buffer)
+   (insert "#+INCLUDE: \"part.txt\" src org\n")
+   (let ((org-export-before-parsing-functions
+          (list
+           (lambda (_backend)
+             (write-region "Changed\n" nil "part.txt" nil 'silent)))))
+     (should-error
+      (org-texmacs-prepare-buffer-preprocessed (current-buffer))
+      :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-preprocess-new-helper-identity-guard ()
+  (org-texmacs-test--with-bibliography-files
+   (write-region "Text\n" nil "part.org" nil 'silent)
+   (insert "#+INCLUDE: \"part.org\" src org\n")
+   (let ((original
+          (symbol-function 'org-export--blindly-expand-include))
+         (prepare
+          (symbol-function 'org-export--prepare-file-contents)))
+     (cl-letf (((symbol-function 'org-export--prepare-file-contents)
+                (lambda (&rest args)
+                  (fset 'org-export--blindly-expand-include #'ignore)
+                  (apply prepare args))))
+       (should-error
+        (org-texmacs-test--compose)
+        :type 'org-texmacs-document-error))
+     (should
+      (eq
+       original
+       (symbol-function 'org-export--blindly-expand-include))))))
 
 ;;; preprocess.el ends here

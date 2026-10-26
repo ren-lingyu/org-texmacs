@@ -229,6 +229,8 @@ Return working text and receipts."
            org-texmacs-document-initial))
          (backend (car (org-texmacs--context-filter-state)))
          (expand (symbol-function 'org-export-expand-include-keyword))
+         (include
+          (symbol-function 'org-export--blindly-expand-include))
          (parser (symbol-function 'org-export-parse-include-value))
          (prepare
           (symbol-function 'org-export--prepare-file-contents))
@@ -241,12 +243,15 @@ Return working text and receipts."
              org-export-parse-include-value
              org-export--prepare-file-contents
              org-export-expand-include-keyword
+             org-export--blindly-expand-include
              org-export--inclusion-absolute-lines)))
          (active-functions native-functions)
          (depth -1)
          (occurrences 1)
          (total (string-bytes source))
          cache
+         views
+         mode
          receipts
          payloads
          physical)
@@ -287,8 +292,33 @@ Return working text and receipts."
        (setq-local org-texmacs-document-style (copy-sequence style))
        (setq-local org-texmacs-document-initial
                    (org-texmacs--context-copy initial)))
+      (shield
+       (begin end)
+       (let* ((raw (buffer-substring-no-properties begin end))
+              (id (length payloads))
+              (start (format "TXMB%sX%dA" nonce id))
+              (finish (format "TXME%sX%dZ" nonce id))
+              (newlines (cl-count ?\n raw))
+              (trailing (string-suffix-p "\n" raw))
+              (token
+               (concat
+                start
+                (make-string
+                 (- newlines
+                    (if trailing
+                        1
+                      0))
+                 ?\n)
+                finish
+                (if trailing
+                    "\n"
+                  ""))))
+         (push (list token raw start finish) payloads)
+         (delete-region begin end)
+         (goto-char begin)
+         (insert token)))
       (protect
-       ()
+       (&optional block)
        (when (string-match-p nonce (buffer-string))
          ;; Existing tokens are allowed on the root's second protection pass.
          (let ((text (buffer-string)))
@@ -301,13 +331,36 @@ Return working text and receipts."
            (when (string-match-p nonce text)
              (org-texmacs--preprocess-fail
               "Reserved STM marker in source"))))
-       (let ((spans
-              (mapcar
-               (lambda (span)
-                 (cons
-                  (org-texmacs-fragment-span-begin span)
-                  (org-texmacs-fragment-span-end span)))
-               (org-texmacs--fragment-collect tags))))
+       ;; Parse wrapped content in its real block context, not as a standalone
+       ;; Org file.  Native-body wrappers take a separate, unparsed path.
+       (let* ((prefix
+               (if block
+                   (format "#+begin_%s\n" block)
+                 ""))
+              (separator
+               (if (or (= (point-min) (point-max))
+                       (eq (char-before (point-max)) ?\n))
+                   ""
+                 "\n"))
+              (suffix
+               (if block
+                   (format "%s#+end_%s\n" separator block)
+                 ""))
+              (offset (length prefix))
+              (limit (point-max))
+              spans)
+         (when block
+           (goto-char (point-max))
+           (insert suffix)
+           (goto-char (point-min))
+           (insert prefix))
+         (setq spans
+               (mapcar
+                (lambda (span)
+                  (cons
+                   (org-texmacs-fragment-span-begin span)
+                   (org-texmacs-fragment-span-end span)))
+                (org-texmacs--fragment-collect tags)))
          (dolist (node
                   (org-texmacs--native-body-blocks
                    (org-element-parse-buffer)))
@@ -315,33 +368,25 @@ Return working text and receipts."
                   (org-element-property :begin node)
                   (org-element-property :end node))
                  spans))
+         (when block
+           (delete-region (+ limit offset) (point-max))
+           (delete-region (point-min) (1+ offset))
+           (setq spans
+                 (mapcar
+                  (lambda (span)
+                    (let ((begin (- (car span) offset))
+                          (end (- (cdr span) offset)))
+                      (unless (<= 1
+                                  begin
+                                  end
+                                  (+ limit (length separator)))
+                        (org-texmacs--preprocess-fail
+                         "STM crosses INCLUDE wrapper boundary"))
+                      (cons begin (min end limit))))
+                  spans)))
          (dolist (span
                   (sort spans (lambda (a b) (> (car a) (car b)))))
-           (let* ((raw
-                   (buffer-substring-no-properties
-                    (car span) (cdr span)))
-                  (id (length payloads))
-                  (start (format "TXMB%sX%dA" nonce id))
-                  (end (format "TXME%sX%dZ" nonce id))
-                  (newlines (cl-count ?\n raw))
-                  (trailing (string-suffix-p "\n" raw))
-                  (token
-                   (concat
-                    start
-                    (make-string
-                     (- newlines
-                        (if trailing
-                            1
-                          0))
-                     ?\n)
-                    end
-                    (if trailing
-                        "\n"
-                      ""))))
-             (push (list token raw start end) payloads)
-             (delete-region (car span) (cdr span))
-             (goto-char (car span))
-             (insert token)))
+           (shield (car span) (cdr span)))
          spans))
       (capture
        (file)
@@ -381,16 +426,29 @@ Return working text and receipts."
                       attrs
                       (secure-hash 'sha256 bytes))
                      receipts)
+               (when (string-match-p nonce text)
+                 (org-texmacs--preprocess-fail
+                  "Reserved STM marker in include"))
+               (push (cons file text) cache)
+               text))))
+      (view
+       (file)
+       (setq file (org-texmacs--bibliography-local-path file base))
+       (let* ((text (capture file))
+              (key (list file mode)))
+         (if (memq mode '(literal native))
+             (list text text nil)
+           (or (cdr (assoc key views))
                (with-temp-buffer
                  (let ((work-buffer (current-buffer)))
                    (unwind-protect
                        (progn
                          (context file)
                          (insert text)
-                         (let ((spans (protect)))
+                         (let ((spans (protect mode)))
                            (let ((entry
                                   (list text (buffer-string) spans)))
-                             (push (cons file entry) cache)
+                             (push (cons key entry) views)
                              entry)))
                      ;; Retire this owned view's file identity.
                      (when (buffer-live-p work-buffer)
@@ -467,12 +525,6 @@ Return working text and receipts."
                                 (file (plist-get parameters :file)))
                            (unless (and file
                                         (not
-                                         (plist-get parameters :env))
-                                        (not
-                                         (plist-get
-                                          parameters
-                                          :block))
-                                        (not
                                          (plist-get
                                           parameters
                                           :coding-system))
@@ -498,9 +550,40 @@ Return working text and receipts."
                               "Occurrence budget exceeded"))
                            (capture file)
                            parameters)))
+                      ((symbol-function
+                        'org-export--blindly-expand-include)
+                       (lambda (parameters &rest args)
+                         (let* ((previous mode)
+                                (block (plist-get parameters :block))
+                                (begin (point)))
+                           (unwind-protect
+                               (progn
+                                 (setq
+                                  mode
+                                  (cond
+                                   ((eq
+                                     (plist-get
+                                      parameters
+                                      :env)
+                                     'literal)
+                                    'literal)
+                                   ((org-texmacs--native-body-name-kind
+                                     block)
+                                    'native)
+                                   (t
+                                    block)))
+                                 (guard)
+                                 (apply include parameters args)
+                                 (guard)
+                                 ;; The native block branch only selects and
+                                 ;; wraps raw text.  Shield the resulting region
+                                 ;; before later hooks can enter its STM body.
+                                 (when (eq mode 'native)
+                                   (shield begin (point))))
+                             (setq mode previous)))))
                       ((symbol-function 'org-file-contents)
                        (lambda (file &optional _noerror _nocache)
-                         (copy-sequence (cadr (capture file)))))
+                         (copy-sequence (cadr (view file)))))
                       ((symbol-function
                         'org-export--prepare-file-contents)
                        (lambda (file
@@ -511,7 +594,8 @@ Return working text and receipts."
                                 id
                                 footnotes
                                 includer)
-                         (selection (capture file) lines)
+                         (unless (memq mode '(literal native))
+                           (selection (view file) lines))
                          (funcall prepare
                                   file
                                   lines
@@ -582,7 +666,7 @@ Return working text and receipts."
                  (lambda (entry)
                    (cons
                     (copy-sequence (car entry))
-                    (copy-sequence (cadr entry))))
+                    (copy-sequence (cdr entry))))
                  cache)
                 :receipts receipts))
            ;; Retire this owned view's file identity.
@@ -654,15 +738,17 @@ SOURCES and OPTIONS are explicit inputs.  DISCOVER separately enables Cite."
 BIBLIOGRAPHY-SOURCES supplies explicit texts; EXT-PLIST restricted options.
 DISCOVER-BIBLIOGRAPHY is exactly t or nil and separately enables Cite discovery.
 Run captured preprocessing hooks in a private view and native INCLUDE with fixed
-local UTF-8 source reads.  STM shielding preserves line counts for location,
-only-contents, lines and minlevel selection.  Partial STM selections fail.
+local UTF-8 source reads.  Org content uses line-preserving STM shielding;
+partial STM selections fail.  Literal INCLUDE uses raw text and native Org
+escaping without STM discovery.  Native-body wrappers protect selected raw STM.
+Ordinary block wrappers retain native Org expansion and final AST checks.
 INFO owns original/final working text and acquired original dependency texts;
 no exact original position, occurrence or generic AST origin map is promised.
 Full unnarrowed ordinary-level sources and a local resource base are required.
 Cross-directory INCLUDE uses native link relocation.  STM and bibliography paths
 use the final working document context, without recovering original directories.
 Includes have limits of 64 KiB/file, eight levels, 32 expansions including root
-and 256 KiB original-source/final-working bytes.  Reject unsupported wrappers,
+and 256 KiB original-source/final-working bytes.  Reject unsupported options,
 paths, aliases, configuration changes and damaged protected STM.  No full native
 export lifecycle, macro/Babel/SETUPFILE/BIND execution, file or menu is added.
 Source/configuration/dependency checks enclose native waits and final return;
