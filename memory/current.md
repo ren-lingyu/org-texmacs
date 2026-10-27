@@ -1,5 +1,46 @@
 # org-texmacs current memory
 
+## Current: read-only v0.5.0 publication audit
+
+User now prepares0.5.0 and asks whether remaining work/docs/comments/versions
+are complete. Reviewed clean main391e7c5, no ordinary edits/index/network/builds.
+Version declarations agree: lisp/org-texmacs.el Version0.5.0 and package.nix
+version/melpaVersion0.5.0. Older0.4/0.3 references are migration/history, and2.1.5
+is the native renderer support guard, not a stale project version.
+
+Old mandatory features remain delivered. Later Issue14/INCLUDE-view repair/file-
+link policies and bilingual four-entry examples are also delivered; the earlier
+optional representative-document choice now has an implemented examples package,
+not an unfulfilled work item. Automatic final bibliography/TOC-abstract placement,
+Issues9/7 and general font-engine/PS work remain outside selected release scope.
+No additional functional blocker identified by this bounded source audit.
+
+Documentation is not completely synchronized:
+- README Loading optional configuration still says eight core Custom variables;
+  there are ten now, plus two frontend variables. Two file-link settings are
+  described elsewhere but absent from this eight-variable example/count.
+- README With Nix lists six package outputs but omits the latest public
+  overlays.emacsPackages / overlays.texmacs. Explain both as nixpkgs overlays;
+  the former is not a direct Emacs package-scope override. overlays.default is
+  removed; independent selection remains as last delivery record below.
+- Main source document-from-buffer docstring still summarizes rich metadata as
+  title/author/date, omitting delivered subtitle and other Issue14 mappings;
+  useful final commentary synchronization, not a runtime defect. Header says
+  flake.lock validation uses Emacs31.1/Org9.8.10, while README correctly describes
+  recorded regression environments; avoid implying refreshed-lock acceptance.
+
+Validation gap is bounded to actual later changes: last full597ERT gate predates
+new root/nested locks and split public overlays. GoToR focused native gate and
+four-example build passed earlier; final example prose/navigation edits only
+statically reviewed. GAW has no current-lock test or independent public-overlay
+consumer result. Do not invent failure or a separate release-only full-test gate.
+Existing user per-commit results after dependency changes can fill this evidence;
+no agent runtime command is authorized by the audit. Current scopes/known native
+limits remain as recorded. No local v0.5* tag observed; no remote publication check.
+Next user may select small docs/comment corrections and provide/select applicable
+change-specific validation, then manual tag/publication. No raw archive/skill
+change needed: source and distilled review suffice.
+
 ## Latest delivery: split public overlays with explicit selection
 
 User delivered76ecfd059b86eee7f1be14e0ded9776735f7c44a (lock update), followed

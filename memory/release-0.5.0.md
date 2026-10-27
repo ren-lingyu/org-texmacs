@@ -1,5 +1,25 @@
 # v0.5.0 release readiness
 
+## Latest publication audit: functionality delivered, small documentation gaps
+
+Read-only review of clean current source finds project Version/version/melpaVersion
+all0.5.0. Old gates remain delivered and later metadata/INCLUDE/file-link work is
+also delivered. English/Chinese generic+article examples now implement the earlier
+optional representative-document work. No new functional blocker identified.
+README/commentary still need narrow sync: eight vs ten core Customs (two frontend
+options separate), new split public overlays not documented in With Nix, and main
+public docstring's old metadata summary. Keep dependency/regression wording tied
+to actually tested environments. Details/paths and validation scope: current.md top.
+
+Latest full597ERT gate and example/GoToR acceptance are before current refreshed
+lock/split-overlay HEAD; current-lock and independent downstream overlay runtime
+results are absent from GAW. This is actual-change evidence scope, not an extra
+release-only full-check prerequisite or proof of failure. User's per-commit check
+results may supply missing evidence; no new commands authorized/run in this audit.
+No ordinary file edits/staging or local v0.5 tag. Next user selects corrections/
+applicable validation and manual publication. Previously deferred bibliography/
+TOC placement, Issue9/7 and general fonts/PS remain outside release scope.
+
 ## Current reconciliation after source/package/test refactoring
 
 Read-only review finds old mandatory feature work still delivered, with retained
