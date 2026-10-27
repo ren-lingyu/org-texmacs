@@ -27,8 +27,8 @@
 
 ;;; Commentary:
 
-;; Package-Requires declares minimum versions.  Development and regression
-;; validation use the project's flake.lock (Emacs 31.1 and Org 9.8.10).
+;; Package-Requires declares minimum versions.  Recorded regressions used
+;; Emacs 31.1 and Org 9.8.10; Nix selects dependencies from flake.lock.
 ;; Org 9.8 separately passed API/signature checks and strict module compilation;
 ;; full ERT/native behavior regression on that minimum version is unverified.
 ;; Org-roam and its extensions are optional integration-test dependencies.
@@ -338,13 +338,20 @@ Levels are Org's parsed levels, including its odd-level policy.  Other
 parser customization is not supported.  TODO, priority and explicit tags use
 standard `org-export-with-todo-keywords', `org-export-with-priority' and
 `org-export-with-tags' settings with `org-texmacs-format-headline-function'.
-Lower supported rich title/author/date metadata into body `doc-data'.  Apply
-headline depth and numbering options, including UNNUMBERED.  Build a static
-table of contents from the filtered headline set when `org-export-with-toc'
-is non-nil; use parsed ALT_TITLE for TOC text and generated labels with
-`hlink' and `pageref' for structural navigation.  Resolve same-document
-headline, CUSTOM_ID, ID and dedicated-target links from the owned AST, without
-cross-file or global ID lookup.  This does not resolve page numbers.
+Lower rich title/subtitle/author/date and supported email/creator metadata
+into body `doc-data', honoring their visibility options.  Keep abstract blocks
+independent and ordered.  Whole-document keyword declarations retain their
+positions; scoped exports use the effective inherited or overridden keywords.
+Map language and description to native initial entries with literal provenance;
+description remains hidden and supplies PDF Subject, not an abstract.
+Use the documented Org collection and external/file/subtree precedence rules.
+Apply headline depth and numbering options, including UNNUMBERED.  Build a
+static table of contents from the filtered headline set when
+`org-export-with-toc' is non-nil; use parsed ALT_TITLE for TOC text and
+labels with `hlink' and `pageref' for structural navigation.
+Resolve same-document headline, CUSTOM_ID, ID and dedicated-target links
+from the owned AST, without cross-file or global ID lookup.
+This does not resolve page numbers.
 Capture the base buffer's file name as source identity and SOURCE-BUFFER's
 effective `default-directory' as the resource base, keeping them distinct.
 Expand any home-directory abbreviation once during preparation.
