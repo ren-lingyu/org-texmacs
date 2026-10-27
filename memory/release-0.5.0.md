@@ -2,19 +2,24 @@
 
 ## Latest publication audit: functionality delivered, small documentation gaps
 
-Subsequent user nix flake check fails at strict package compilation: newly edited
-TOC docstring sentence83characters. It was missed by earlier width review, which
-was incomplete. Corrected wrapping only; readonly diff against HEAD confirms all
-added Lisp lines <=80 and whitespace clean. No agent runtime rerun; current full
-gate has not passed. Both prior files were user-staged; latest Lisp wrap correction
-is unstaged and requires restaging. No automatic project index change.
+Initial user full check failed at83column added docstring; corrected wrapping is
+now staged with the two-path documentation candidate. Complete staged diff and
+whitespace reviewed; no unstaged project changes. User explicitly confirms prior
+manual tests passed; supplied subsequent nix flake check exits0 in1.7010s with
+running0checks/all checks passed, indicating satisfied outputs without a fresh
+ERT run in that invocation. Accepted as user-reported manual validation, filling
+normal current-lock check evidence. No agent rerun or extra release-only gate.
+Independent downstream application of public overlays remains separately untested.
+Single-commit draft tmp/commit.md: docs(package): document overlays, options and
+metadata contracts. Exact staged patch/message hashes: current.md top. User may
+commit; agent has not staged/committed ordinary project files in this task.
 
 User subsequently authorizes README/docstring corrections. Two-path local
 candidate fixes core Custom count/example, documents split public overlays,
 expands the main API metadata summary and makes regression-version commentary
 historical. No runtime logic/API/version/lock/test change. Source/contract diff,
 whitespace and docstring width reviewed; no new builds/tests/formatting/network.
-Unstaged/uncommitted; next user may stage. Audit findings below are pre-correction
+User-staged/uncommitted; next user may commit. Audit findings below are pre-correction
 context; documented runtime acceptance limits remain unchanged.
 
 Read-only review of clean current source finds project Version/version/melpaVersion

@@ -1,33 +1,28 @@
 # org-texmacs current memory
 
-## Current: README/docstring synchronization; unstaged width correction
+## Current: documentation corrections staged, user validation accepted
 
-User staged both files and ran nix flake check. Supplied exit1 log stops during
-strict package compilation with docstring wider than80; ERT did not complete.
-The new TOC sentence in document-from-buffer was83characters. Original claimed
-width review was incomplete. Rewrapped the paragraph; readonly examination of ALL
-added Lisp lines against HEAD now finds no line over80, diff whitespace clean.
-Only wrapping changed. No agent build/test rerun. Index retains prior staged
-README/Lisp candidate; latest Lisp width fix is unstaged (MM), so restaging is
-needed before commit. No automatic index mutation authorized. No raw archive:
-root cause, exact boundary and result sufficiently distilled here.
+Exactly README.org and lisp/org-texmacs.el staged against391e7c5, no unstaged
+changes. Complete staged diff reviewed: split public overlay boundaries, ten
+core Customs/default file-link examples, expanded metadata/abstract/keywords/
+initial provenance and precedence docstring, historical regression environment.
+No runtime logic/API/version/lock changes. Initial83column docstring failure
+was corrected and the final wrapping is now staged by user.
 
-User authorizes corrections identified by the publication audit. Exactly two
-ordinary paths changed against clean391e7c5: README.org and lisp/org-texmacs.el.
-README says ten core Customs (two frontend options separate), adds both captured
-file-link defaults to use-package example and describes overlays.emacsPackages/
-overlays.texmacs as independently selectable nixpkgs overlays, not a direct Emacs
-package-scope override. Entry docstring now covers title/subtitle/author/date,
-email/creator visibility, independent abstracts, positional/effective keywords,
-language/description initial literal provenance and Org precedence. Commentary
-states regression versions historically instead of asserting current lock identity.
-No runtime logic/API/version/lock/test changes or extra release-plan prose.
-Changed claims checked against current options, metadata docs/lowering and explicit
-package group includes. Complete diff/whitespace and added docstring line widths
-reviewed; no builds/tests/formatting/network authorized or run. Ordinary candidate
-uncommitted; latest line-width correction remains unstaged as above. Prior current-lock/public-overlay
-runtime evidence gap is unchanged, not a new release-only check gate. No raw
-archive/skill changes; ordinary source and distilled state suffice.
+User explicitly confirms prior manual tests passed. Supplied subsequent nix flake
+check exits0 in1.7010s with running0flake checks/all checks passed for current
+outputs. Accept user-reported manual validation and observed satisfied outputs;
+this invocation does not freshly execute ERT. No agent test/build rerun needed
+for commit drafting. This fills the prior current-lock normal-check record gap;
+independent downstream overlay consumption still has no separate runtime evidence.
+
+One coherent documentation commit, split unnecessary/difficulty low. Generated
+tmp/commit.md: docs(package): document overlays, options and metadata contracts.
+Full-index binary staged patch SHA256
+292b3b1039c54102929911b3b79d21cf80f8d33a61c10f93618da4fe2e487daf;
+message SHA25638b5dd8f97d07cfc61a7cc4f270c20a1e745485237aa4f40266634f248ca0044.
+Whitespace clean. Next user commits; no agent project index/history mutation.
+No raw archive/skill change needed. No new release-only check gate or feature work.
 
 ## Previous: read-only v0.5.0 publication audit
 
