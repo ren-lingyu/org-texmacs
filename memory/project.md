@@ -1,5 +1,20 @@
 # org-texmacs current project model
 
+Delivered1017764, exact13reviewed blobs and clean ordinary worktree verified:
+bare default citations in headings/TOC, emphasis, table cells and supported
+captions, with ALT_TITLE collection only for emitted TOC entries. Key-only
+Phase1 filters include affiliated secondary ASTs. Existing with-bib/cite/native
+plain bibliography and all syntax/key/print contracts retained. Statement short
+captions remain unsupported; metadata and footnote placement unchanged.602ERT
+and full isolated default check pass; current.md/evidence.md have validation.
+This supersedes the initial paragraph/inline-footnote-only context scope below.
+
+Accompanying validated en/zh examples add cited heading/ALT_TITLE, emphasis,
+table cells and long/short captions to generic entry; article figure captions
+use citations and each article prints its own bibliography from unchanged shared
+Org source. Existing4entry package builds successfully; dates, package driver,
+shared configuration/bibliography and footnotes unchanged.
+
 Latest delivered public API391e7c5: overlays.emacsPackages and overlays.texmacs,
 replacing overlays.default. Prior76ecfd0 updates personal/local-nixpkgs lock to
 a9cc71a. Matching local library inspection confirms include selects overlays
@@ -10,12 +25,12 @@ legacy is full. Static source review only, no independent downstream overlay
 evaluation/build. User-reorganized history now reviewed; current.md has evidence.
 Single-default-output and older library lock descriptions below superseded.
 
-Latest flake input wiring delivered13e3ca7: explicitly overrides personal-nixpkgs's
-nested local-nixpkgs from relative path input to remote Git input with dir=pkgs,
-per user's downstream path-resolution compatibility motivation. Remains nested,
-not an added root dependency; personal nixpkgs still follows root nixpkgs.
-local/personal lock revisions equal6c339e0; root nixpkgs updated to d3b13ad.
-No new evaluation/build acceptance on refreshed lock; details current.md.
+Latest flake input wiring delivered6955ba5 removes the explicit nested Git input
+override, restoring personal-nixpkgs's upstream relative ./pkgs local-nixpkgs input.
+The locked path has parent personal-nixpkgs, not a new root dependency. Personal
+revision a9cc71a, root nixpkgs d3b13ad; root nixpkgs follows retained. Current602ERT
+full isolated check and examples build used these exact flake.nix/lock bytes.
+This supersedes the earlier13e3ca7 remote nested override and old lock descriptions.
 
 Delivered user-requested package follow-up3ccf195: targeted href dispatch guard replaces
 full renderer hashes; version2.1.5 and zero-fuzz patching remain. Maintained native
@@ -780,8 +795,9 @@ eight-file diff. This bounded capability is included in v0.4.0.
   Native Cork text is converted to UTF-8 while ASCII source notation is retained.
   Native prefix/style/default-style values are restored on success/error.
   Formatting domain errors preserve the worker; invalid payloads stop it.
-- Styles, nonempty affixes, print options/multiple locations, and non-paragraph/
-  inline-footnote citation contexts remain unsupported. No dependency-field name
+- Styles, nonempty affixes and print options/multiple locations remain unsupported.
+  The original paragraph/inline-footnote-only placement scope is superseded by
+  the delivered expansion above. No dependency-field name
   blacklist: native style owns interpretation/omission. Native dangling references
   fail as document errors while valid existing selected references may export. No automatic heading or source-order
   numbering is assigned. Native readback is not GUI/typesetting verification.

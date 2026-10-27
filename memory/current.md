@@ -1,28 +1,75 @@
 # org-texmacs current memory
 
-## Current: documentation corrections staged, user validation accepted
+## Current: citation placement and examples delivered
 
-Exactly README.org and lisp/org-texmacs.el staged against391e7c5, no unstaged
-changes. Complete staged diff reviewed: split public overlay boundaries, ten
-core Customs/default file-link examples, expanded metadata/abstract/keywords/
-initial provenance and precedence docstring, historical regression environment.
-No runtime logic/API/version/lock changes. Initial83column docstring failure
-was corrected and the final wrapping is now staged by user.
+Delivered1017764dc90331e90f54fd56c4989316e6edc9cc, exact13reviewed staged blobs/path
+set verified, direct child of captured6955ba5. Actual message matches tmp/commit.md;
+ordinary worktree/index clean, commit whitespace check passes. Agent did not stage
+or commit ordinary project files. No issue closure associated with this feature.
 
-User explicitly confirms prior manual tests passed. Supplied subsequent nix flake
-check exits0 in1.7010s with running0flake checks/all checks passed for current
-outputs. Accept user-reported manual validation and observed satisfied outputs;
-this invocation does not freshly execute ERT. No agent test/build rerun needed
-for commit drafting. This fills the prior current-lock normal-check record gap;
-independent downstream overlay consumption still has no separate runtime evidence.
+Bare default cites support headings/TOC, emphasis, table cells, supported long/short
+captions; ALT_TITLE participates only for emitted TOC entries (depth/H/notoc).
+Key-only Phase1 filters include secondary ASTs. Existing with-bib/cite/native plain
+contracts remain. Statement short captions/metadata/additional syntax not added;
+user explicitly leaves footnote and link-description behavior unchanged.
 
-One coherent documentation commit, split unnecessary/difficulty low. Generated
-tmp/commit.md: docs(package): document overlays, options and metadata contracts.
-Full-index binary staged patch SHA256
-292b3b1039c54102929911b3b79d21cf80f8d33a61c10f93618da4fe2e487daf;
-message SHA25638b5dd8f97d07cfc61a7cc4f270c20a1e745485237aa4f40266634f248ca0044.
-Whitespace clean. Next user commits; no agent project index/history mutation.
-No raw archive/skill change needed. No new release-only check gate or feature work.
+Authorized formatter and full isolated default check exit0: core206/native328/
+PDF-document33/PDF-render29/patched-caption6 =602ERT, zero unexpected, plus compile,
+native compile, lint and treefmt. Four new native tests cover placements, ownership,
+secondary filters, inactive ALT_TITLE and preflight. New PDF test13.336s checks
+4generic/article xTOC documents, cross-page references and .tm reload/text equality.
+Final README-only sync/recheck exits0 with runtime results reused.
+
+Six accompanying en/zh examples validated by isolated package build, exit0:
+/nix/store/61vjrqwjlcm31ba53jgdx8s7cqq7sax7-org-texmacs-examples.
+Generic entry has heading/ALT_TITLE, emphasis, cells and long-short caption cites;
+article figure caption and independent bibliography print use existing shared source.
+en index/article5pages each, zh index5/article4. Native readback index13cite+1bib-list
+each, article1cite+1bib-list each.119final snapshot inputs equal committed files.
+Dates, package driver/shared inputs/footnotes unchanged; no viewer/raster review.
+602ERT predates six Org-only edits; runtime/tests unchanged, no redundant rerun.
+
+Both validation snapshots' flake.nix/lock match6955ba5: removes explicit nested Git
+override in favor of upstream ./pkgs input under personal-nixpkgs a9cc71a; root
+nixpkgs d3b13ad. Earlier3458labels describe ancestry, not a different tested lock.
+Prior README/docstring correction delivered3458bfe. No independent downstream check.
+
+One checkpoint warranted for native investigation, adopted scope,602ERT+examples
+acceptance and exact delivery, grounded in the checked delivery snapshot. No new
+feature/backlog selected. Next: wait for user task. Temporary review/checksum files
+are supplementary; durable findings/limits captured here and project/evidence.
+
+## Investigation evidence behind citation scope
+
+Ignored tmp/inline-context-probe keeps exact baseline and gate-only relaxed source,
+root lock, scripts, diff, manifest, findings.md and result-path.txt. Final experiment
+build exits0; artifact:
+/nix/store/if6agsb3qzbgkgwdm5xcihladm2lvn6j-org-texmacs-inline-context-probe.
+Inspection SHA25685c654dc235d18be2fd0cb4c623a67d9220f68e436968b90ab1766c9e98e187d.
+80conversion observations;34relaxed documents+6native controls, direct and .tm
+reload PDFs. Main title/TOC/emphasis/cell cites work; ALT_TITLE/captions needed
+collection. Native controls establish ALT_TITLE/long caption rendering. Short
+caption structure saves but list-of-tables rendering not exercised.
+
+Emphasized notes worked experimentally but user did not select implementation.
+Table notes lose body; heading notes lose body/conflict in numbering and article
+running-header number changes after reload. Keep existing behavior, no new guards
+or features. Locked Org treats link-description citation/footnote syntax as text;
+caption footnotes likewise need the existing separate patched-Org compatibility.
+
+History fe6c435 initial citation scope and8c1ac95 collector guard had no inspected
+native heading-citation defect rationale; b4ba750 initial paragraph-note scope.
+No blanket adoption of unsupported grammar, styles/affixes/multiple prints,
+metadata, file-title provenance or additional footnote contexts. Probe evidence is
+bounded; maintained implementation tests above establish delivered worktree scope.
+
+## Prior documentation delivery
+
+README/main docstring corrections delivered3458bfe: split overlays, ten core
+Customs/file-link defaults and rich metadata/initial contracts. Earlier user manual
+validation accepted; fast flake check reused outputs. Fresh602ERT evidence now above.
+Earlier publication-audit deficiencies below were addressed by that documentation
+commit; independent downstream overlay use still lacks separate runtime proof.
 
 ## Previous: read-only v0.5.0 publication audit
 

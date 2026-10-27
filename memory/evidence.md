@@ -1,5 +1,46 @@
 # org-texmacs durable evidence
 
+## Citation placement expansion acceptance
+
+Delivery1017764dc90331e90f54fd56c4989316e6edc9cc verified as direct child of captured
+6955ba5. Exactly13changed paths and all staged blob IDs match accepted final
+candidate; ordinary tree/index clean. Both validation snapshots' flake.nix/lock
+match6955ba5 input wiring (upstream relative ./pkgs, personal a9cc71a/root d3b13ad).
+No new tests merely to attach provenance; source equality transfers existing
+acceptance. Independent downstream/viewer-click acceptance remains unclaimed.
+
+Accompanying en/zh canonical examples now validated by exact authorized isolated
+package build under tmp/citation-examples, exit0. Output
+/nix/store/61vjrqwjlcm31ba53jgdx8s7cqq7sax7-org-texmacs-examples.
+en index/article5pages each; zh index5/article4. Existing pdfinfo build inspection
+passes. Native .tm readback: index13cite/1bib-list each, including headline/TOC,
+four emphasis forms, cited cells and long-short captions; article1cite/1bib-list
+each from figure-caption example and independent bibliography print. All119input
+files byte-equal final tree. No viewer/raster review or fresh ERT rerun after these
+six Org-only edits; runtime/tests remain the accepted602ERT inputs below.
+
+Seven implementation/docs/test paths accompany six example paths. Authorized six-file
+formatter exits0. Isolated full flake check under tmp/citation-implementation
+exits0: core206, native328, PDF-document33, PDF-render29, patched-caption6 =602ERT,
+zero unexpected; compile/native compile, lint, treefmt and default checks pass.
+New citation PDF test13.336s verifies generic/article xTOC four documents,
+bibliography on another page, actual citation destinations, direct/.tm reload
+text equality. Four native tests cover secondary AST ownership, emitted ALT_TITLE
+selection, key-only filters, caption/heading/emphasis/cell/statement placements
+and syntax rejection before worker. Final README-only sync recheck exits0 with
+runtime outputs reused. All119snapshot inputs matched implementation acceptance
+before the six examples-only edits;
+tmp/citation-implementation-validation.md retains diff checksum. No ordinary Git
+write, independent downstream check or viewer click claimed; no footnote expansion.
+
+Preceding gate-only native experiment artifact:
+/nix/store/if6agsb3qzbgkgwdm5xcihladm2lvn6j-org-texmacs-inline-context-probe.
+80conversion observations and40direct/reload document pairs. Confirms initial
+citation placement boundary can be widened; table/headline footnotes exhibit
+real body/numbering problems. Short-caption serialization observed, not its
+list-of-tables rendering. Local tmp/inline-context-probe/findings.md retains
+scope. Experiment does not establish arbitrary styles or all Org/native contexts.
+
 ## Split overlay API review on updated personal-nixpkgs
 
 Project76ecfd0 locks personal/local-nixpkgs a9cc71a5233b6885ec66613c7f1f3a45bc2931c6;
