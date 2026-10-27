@@ -2,6 +2,14 @@
 
 ## Latest publication audit: functionality delivered, small documentation gaps
 
+User subsequently authorizes README/docstring corrections. Two-path local
+candidate fixes core Custom count/example, documents split public overlays,
+expands the main API metadata summary and makes regression-version commentary
+historical. No runtime logic/API/version/lock/test change. Source/contract diff,
+whitespace and docstring width reviewed; no new builds/tests/formatting/network.
+Unstaged/uncommitted; next user may stage. Audit findings below are pre-correction
+context; documented runtime acceptance limits remain unchanged.
+
 Read-only review of clean current source finds project Version/version/melpaVersion
 all0.5.0. Old gates remain delivered and later metadata/INCLUDE/file-link work is
 also delivered. English/Chinese generic+article examples now implement the earlier

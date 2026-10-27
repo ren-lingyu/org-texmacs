@@ -1,6 +1,25 @@
 # org-texmacs current memory
 
-## Current: read-only v0.5.0 publication audit
+## Current: README and public docstring final synchronization, unstaged
+
+User authorizes corrections identified by the publication audit. Exactly two
+ordinary paths changed against clean391e7c5: README.org and lisp/org-texmacs.el.
+README says ten core Customs (two frontend options separate), adds both captured
+file-link defaults to use-package example and describes overlays.emacsPackages/
+overlays.texmacs as independently selectable nixpkgs overlays, not a direct Emacs
+package-scope override. Entry docstring now covers title/subtitle/author/date,
+email/creator visibility, independent abstracts, positional/effective keywords,
+language/description initial literal provenance and Org precedence. Commentary
+states regression versions historically instead of asserting current lock identity.
+No runtime logic/API/version/lock/test changes or extra release-plan prose.
+Changed claims checked against current options, metadata docs/lowering and explicit
+package group includes. Complete diff/whitespace and added docstring line widths
+reviewed; no builds/tests/formatting/network authorized or run. Ordinary candidate
+unstaged/uncommitted; user may review/stage it. Prior current-lock/public-overlay
+runtime evidence gap is unchanged, not a new release-only check gate. No raw
+archive/skill changes; ordinary source and distilled state suffice.
+
+## Previous: read-only v0.5.0 publication audit
 
 User now prepares0.5.0 and asks whether remaining work/docs/comments/versions
 are complete. Reviewed clean main391e7c5, no ordinary edits/index/network/builds.
