@@ -2,6 +2,13 @@
 
 ## Latest publication audit: functionality delivered, small documentation gaps
 
+Subsequent user nix flake check fails at strict package compilation: newly edited
+TOC docstring sentence83characters. It was missed by earlier width review, which
+was incomplete. Corrected wrapping only; readonly diff against HEAD confirms all
+added Lisp lines <=80 and whitespace clean. No agent runtime rerun; current full
+gate has not passed. Both prior files were user-staged; latest Lisp wrap correction
+is unstaged and requires restaging. No automatic project index change.
+
 User subsequently authorizes README/docstring corrections. Two-path local
 candidate fixes core Custom count/example, documents split public overlays,
 expands the main API metadata summary and makes regression-version commentary

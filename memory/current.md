@@ -1,6 +1,16 @@
 # org-texmacs current memory
 
-## Current: README and public docstring final synchronization, unstaged
+## Current: README/docstring synchronization; unstaged width correction
+
+User staged both files and ran nix flake check. Supplied exit1 log stops during
+strict package compilation with docstring wider than80; ERT did not complete.
+The new TOC sentence in document-from-buffer was83characters. Original claimed
+width review was incomplete. Rewrapped the paragraph; readonly examination of ALL
+added Lisp lines against HEAD now finds no line over80, diff whitespace clean.
+Only wrapping changed. No agent build/test rerun. Index retains prior staged
+README/Lisp candidate; latest Lisp width fix is unstaged (MM), so restaging is
+needed before commit. No automatic index mutation authorized. No raw archive:
+root cause, exact boundary and result sufficiently distilled here.
 
 User authorizes corrections identified by the publication audit. Exactly two
 ordinary paths changed against clean391e7c5: README.org and lisp/org-texmacs.el.
@@ -15,7 +25,7 @@ No runtime logic/API/version/lock/test changes or extra release-plan prose.
 Changed claims checked against current options, metadata docs/lowering and explicit
 package group includes. Complete diff/whitespace and added docstring line widths
 reviewed; no builds/tests/formatting/network authorized or run. Ordinary candidate
-unstaged/uncommitted; user may review/stage it. Prior current-lock/public-overlay
+uncommitted; latest line-width correction remains unstaged as above. Prior current-lock/public-overlay
 runtime evidence gap is unchanged, not a new release-only check gate. No raw
 archive/skill changes; ordinary source and distilled state suffice.
 
