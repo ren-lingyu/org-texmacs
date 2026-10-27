@@ -966,7 +966,8 @@ Caption belongs to the outer wrapper.  It supports the existing long/short,
 markup and link subset, including file-link provenance.  Caption text resembling
 STM remains ordinary Org text and does not create native parse requests.
 Anonymous inline footnote ASTs use the caption compatibility rules below;
-citations and targets remain unsupported.  Omitted caption
+bare default citations use the bibliography rules below.  Targets remain
+unsupported.  Omitted caption
 passes =""= to the native environment; numbered variants still show their native
 Figure/Table number.  One outer =NAME= is accepted.  Explicit empty =#+CAPTION:=, =ATTR_*=,
 parameters and inner-body affiliated metadata are rejected.  Native =generic=
@@ -1094,8 +1095,8 @@ Basic tables accept =#+NAME:= and =#+CAPTION:=.  A captioned table becomes
 =(big-table TABULAR CAPTION)=; TeXmacs supplies its table counter and caption
 layout.  Multiple caption lines are joined with spaces.  Optional short
 captions use =caption-detailed= with long and short bodies.  Captions retain
-the supported inline text/markup and URI/internal/file links; STM fragment
-discovery and citations do not enter captions.  Their literal text
+the supported inline text/markup, bare default citations and URI/internal/file
+links; STM fragment discovery does not enter captions.  Their literal text
 uses ordinary Org encoding.  Other affiliated keywords, repeated names and
 empty captions are explicit errors.
 
@@ -1294,8 +1295,8 @@ entry key.  Existing citation grammar and bibliography restrictions still apply.
 
 Filters run after selection, pruning, dependency restoration and STM mapping,
 before resolution, bibliography planning, native requests and input owning.
-The tree contains the selected body and needed footnotes.  Each filter receives
-that tree, backend name =texmacs= and a read-only, restricted INFO view: the
+The tree contains the selected body, needed footnotes and owned secondary
+strings such as captions and =ALT_TITLE=.  Each filter receives that tree, backend name =texmacs= and a read-only, restricted INFO view: the
 supported effective context options, =:back-end=, explicit =:input-file=,
 =:texmacs-resource-base=, supplied =:bibliography= path identities, and
 =:with-cite-processors nil=.  Final =:parse-tree=, =:input-buffer=, exporter caches
@@ -1315,12 +1316,14 @@ to the separate opt-in adapter below and precedes this stage.
       (org-element-map tree 'citation-reference
         (lambda (reference)
           (when (equal (org-element-property :key reference) "managed-uuid")
-            (org-element-put-property reference :key "external-key")))))
+            (org-element-put-property reference :key "external-key")))
+        nil nil nil t))
     tree)
   (add-hook 'org-export-filter-parse-tree-functions #'my-citation-keys)
   ;; Continue to supply explicit bibliography text snapshots to the source APIs.
 #+end_src
 
+The final =t= includes affiliated secondary strings such as captions.
 After every callback, including nil returns, preparation checks the original
 AST topology, node identities, parent links, other values/text properties,
 island/post-blank mappings, INFO and work-buffer state.  Replacing a tree or
@@ -1388,7 +1391,11 @@ The two buffer conversion wrappers accept the same optional text-snapshot
 argument, using the preparation checks above.
 
 Bare default citations such as =[cite:@one; @two]= are supported directly in
-paragraphs and inline footnote bodies.  Citation keys use ASCII letters, digits,
+paragraphs, inline footnote bodies, headings, basic emphasis and table cells,
+as well as long/short captions on supported tables, figures and statements.
+Statements retain their existing long-caption-only rule.  Heading citations also
+work in the generated table of contents; =ALT_TITLE= citations participate only
+when that heading has a TOC entry.  Citation keys use ASCII letters, digits,
 hyphen, underscore, period, colon or plus.  Each group becomes =with-bib= around
 =cite= with a private prefix.  Named-footnote bodies participate at first use;
 repeated footnote references do not duplicate bibliography entries.
@@ -1408,8 +1415,9 @@ The package does not automatically include uncited parent/dependency entries.
 Native-generated internal references must resolve to this bibliography's actual
 labels; otherwise export fails explicitly.  A field ignored by the native style
 is not independently rejected by name.
-Styles, nonempty citation affixes, print options, multiple print locations and citations in
-headings, emphasis, table cells or link descriptions are unsupported.  Org's
+Styles, nonempty citation affixes, print options and multiple print locations
+remain unsupported.  Org does not parse citation syntax inside link descriptions
+as citation objects.  Document metadata citations remain unsupported.  Org's
 =CITE_EXPORT= processors are not invoked; pure construction uses explicit
 declaration data and native plain policy.  The opt-in adapter can prepare that
 data from the effective Org Cite global bibliography configuration.

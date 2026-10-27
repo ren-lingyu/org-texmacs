@@ -1452,7 +1452,7 @@
               (cons (point-min) (point))))))))))
 
 (ert-deftest org-texmacs-issue13-stage3-caption-subset-and-registry ()
-  ;; Named notes, citations and targets remain unsupported caption objects.
+  ;; Named notes, malformed citations and targets remain invalid caption objects.
   ;; Anonymous inline notes have separate long/short AST compatibility coverage.
   (dolist (object
            (list

@@ -5,6 +5,7 @@
 #+LANGUAGE: zh-CN
 #+DESCRIPTION: 在同一篇文章中展示数学表达式, statement, 原生图形和表格.
 #+OPTIONS: toc:2 num:t
+#+BIBLIOGRAPHY: chapters/references.bib
 
 #+begin_abstract
 本文把数学叙述与原生图形, 表格组织在一起. Org 提供文档结构,
@@ -17,8 +18,9 @@ TeXmacs 负责 STM 表达式与最终排版. article 配置还展示了自定义
 返回 [[file:index.org][案例入口]] 查看配置, 文档信息, 文献与构建说明.
 PDF 中的相对链接指向本文旁边的 index.pdf. 两份文档分别独立编译.
 
-公共配置和选中的 article 配置在文末展示. 数学与图表章节是普通 Org INCLUDE 输入,
+公共配置和选中的 article 配置在案例之后展示. 数学与图表章节是普通 Org INCLUDE 输入,
 不再作为单独的编译入口. 名称和引用在整篇文章中共享作用域.
+每份文档都从同一份 Org 文献源打印自己的参考文献.
 
 * 数学与陈述
 #+INCLUDE: "chapters/mathematics.org" :minlevel 2
@@ -29,3 +31,9 @@ PDF 中的相对链接指向本文旁边的 index.pdf. 两份文档分别独立�
 * 文章实际使用的配置
 #+INCLUDE: "chapters/common.el" src emacs-lisp
 #+INCLUDE: "chapters/profile.el" src emacs-lisp
+
+* 参考文献
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
+#+print_bibliography:

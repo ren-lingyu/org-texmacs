@@ -913,12 +913,34 @@ read a source buffer, query an ID database or invoke an export consumer."
   "Collect actual citation usage from owned Org structures, without BibTeX parsing.
 SOURCES lists available identities.  Check only source-independent contracts;
 entry identities are resolved later against owned native ASTs."
-  (let ((declarations
-         (plist-get info :texmacs-bibliography-declarations))
-        citations
-        keys
-        prints
-        visited)
+  (let* ((declarations
+          (plist-get info :texmacs-bibliography-declarations))
+         (levels
+          (delq
+           nil
+           (mapcar
+            (lambda (node)
+              (when (eq (org-element-type node) 'headline)
+                (let ((level (org-element-property :level node)))
+                  (and (integerp level) (> level 0) level))))
+            (org-texmacs-resolution-nodes resolution))))
+         (minimum (and levels (apply #'min levels)))
+         (limit
+          (if (plist-member info :headline-levels)
+              (plist-get info :headline-levels)
+            3))
+         (toc (plist-get info :with-toc))
+         (depth
+          (and (wholenump limit)
+               (cond
+                ((eq toc t)
+                 limit)
+                ((wholenump toc)
+                 (min toc limit)))))
+         citations
+         keys
+         prints
+         visited)
     (dolist (declaration declarations)
       (unless (member (cdr declaration) sources)
         (signal
@@ -932,8 +954,21 @@ entry identities are resolved later against owned native ASTs."
              (lambda (part)
                (and (stringp part) (string-blank-p part)))
              value)))
+      (toc-title-p
+       (node)
+       ;; Match static TOC selection: relative depth and UNNUMBERED:notoc.
+       (let ((level (org-element-property :level node)))
+         (and depth
+              minimum
+              (integerp level)
+              (<= 1 (1+ (- level minimum)) depth)
+              (not
+               (equal
+                (org-texmacs--document-unnumbered-value
+                 node)
+                "notoc")))))
       (walk
-       (node parent)
+       (node context)
        (when (and (consp node) (not (assq node islands)))
          (pcase (org-element-type node)
            ('footnote-definition nil)
@@ -947,16 +982,25 @@ entry identities are resolved later against owned native ASTs."
                   (unless (memq note visited)
                     (push note visited)
                     (mapc
-                     (lambda (child) (walk child (nth 1 note)))
+                     (lambda (child)
+                       (walk child (org-element-type (nth 1 note))))
                      (org-element-contents (nth 1 note))))
                 (mapc
-                 (lambda (child) (walk child node))
+                 (lambda (child)
+                   (walk child (org-element-type node)))
                  (org-element-contents node)))))
            ('citation
-            (unless (and parent
-                         (memq
-                          (org-element-type parent)
-                          '(paragraph footnote-reference)))
+            (unless (memq
+                     context
+                     '(paragraph
+                       footnote-reference
+                       headline
+                       caption
+                       bold
+                       italic
+                       underline
+                       strike-through
+                       table-cell))
               (org-texmacs--document-fail
                node "Unsupported citation context"))
             (unless (and (null (org-element-property :style node))
@@ -1005,10 +1049,28 @@ entry identities are resolved later against owned native ASTs."
            (_
             (when (eq (org-element-type node) 'headline)
               (mapc
-               (lambda (child) (walk child node))
+               (lambda (child)
+                 (walk child (org-element-type node)))
                (org-element-property :title node)))
+            (when (and (eq (org-element-type node) 'headline)
+                       (toc-title-p node))
+              (mapc
+               (lambda (child) (walk child 'headline))
+               (org-element-property :ALT_TITLE node)))
+            (when (or (eq (org-element-type node) 'table)
+                      (org-texmacs--figure-table-kind node)
+                      (and (eq (org-element-type node) 'special-block)
+                           (org-texmacs--document-statement-tag
+                            node)))
+              (dolist (line
+                       (org-texmacs--document-caption-lines node))
+                (mapc
+                 (lambda (child) (walk child 'caption)) (car line))
+                (mapc
+                 (lambda (child) (walk child 'caption)) (cdr line))))
             (mapc
-             (lambda (child) (walk child node))
+             (lambda (child)
+               (walk child (org-element-type node)))
              (org-element-contents node)))))))
      (walk ast nil))
     (unless (or (and (null keys) (null prints)) (= (length prints) 1))
@@ -1468,6 +1530,8 @@ references with anonymous inline or named inline/separate definitions.
 Emit named bodies once at first use and share labels for repeated references.
 Caption contexts also accept anonymous inline footnote ASTs, including their
 existing native layout limitations; no caption STM discovery is performed.
+Bare default citations also support headings and emitted alternate TOC titles,
+basic emphasis, table cells and long/short captions on supported containers.
 Reject nested footnotes, list checkboxes and
 explicit counters; description terms use the existing inline subset.
 Collapse ordinary spaces, tabs and soft newlines across Org inline text
@@ -1883,7 +1947,18 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                     'footnote (list labelled))))
                (blank node space))))
            ((and (consp node) (eq (org-element-type node) 'citation))
-            (unless (memq context '(paragraph footnote))
+            (unless (memq
+                     context
+                     '(paragraph
+                       footnote
+                       title
+                       toc-title
+                       caption
+                       bold
+                       italic
+                       underline
+                       strike-through
+                       table-cell))
               (org-texmacs--document-fail
                node "Unsupported citation context"))
             (unless (assq node (plist-get citation-plan :citations))

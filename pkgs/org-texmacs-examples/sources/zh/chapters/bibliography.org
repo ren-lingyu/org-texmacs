@@ -1,4 +1,7 @@
-* 从 Org 派生文献库
+* 从 Org 派生文献库 [cite:@knuth1984]
+:PROPERTIES:
+:ALT_TITLE: 文献库与引用位置 [cite:@knuth1984]
+:END:
 数学记号与结构清晰的源文件相辅相成[cite:@knuth1984],
 也可以组合引用排版资料与古典数学著作[cite:@knuth1984; @euclid1956].
 BibTeX 源码保存在 references.org 的代码块中, 不单独维护 .bib. 下面以字面源码展示原始文件:
@@ -9,6 +12,21 @@ BibTeX 源码保存在 references.org 的代码块中, 不单独维护 .bib. 下
 [cite:@native-child; @native-parent; @native-online]. 这些是文档演示数据, 不是外部出版物声明.
 TeXmacs 负责解析与原生 plain 排版; 未知类型采用原生回退格式, @online 的 URL 等字段可能被忽略.
 这不等于完整 BibLaTeX/Biber 兼容, 也不会自动补入未引用的 crossref 父条目.
+
+** 格式文本与表格中的引用
+上方标题和目录中采用的 =ALT_TITLE= 都包含文献引用. 引用还可以放在
+*粗体文本 [cite:@knuth1984]*, /斜体文本 [cite:@euclid1956]/,
+_下划线文本 [cite:@knuth1984]_ 和 +删除线文本 [cite:@euclid1956]+ 中.
+这些短语展示引用的放置位置, 不表示不同的 citation 样式.
+
+下面的资料摘要在单元格, 长题注和短题注中分别使用引用.
+打印的表格显示长题注, 短题注保留在原生文档中, 供使用它的样式读取.
+
+#+CAPTION[资料 [cite:@knuth1984]]: 本案例讨论的资料 [cite:@knuth1984; @euclid1956]
+| 著作 | 主题 |
+|------+------|
+| The TeXbook [cite:@knuth1984] | 排版 |
+| The Elements [cite:@euclid1956] | 几何 |
 
 * 参考文献
 :PROPERTIES:

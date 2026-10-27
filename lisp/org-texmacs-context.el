@@ -382,7 +382,8 @@ read-only view.  Do not run preprocessing, discovery or citation processors."
                (unless (cl-some
                         #'org-texmacs--native-body-kind
                         (org-element-lineage node))
-                 node))))
+                 node))
+             nil nil nil t))
            (buffer (current-buffer))
            (tick (buffer-modified-tick))
            (mode major-mode)

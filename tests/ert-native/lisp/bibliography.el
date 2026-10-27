@@ -863,4 +863,139 @@
        (should (string-match-p "FirstFieldSentinel" body))
        (should-not (string-match-p "SecondFieldSentinel" body))))))
 
+
+(ert-deftest org-texmacs-citations-inline-contexts ()
+  (org-texmacs-test--with-worker
+   (dolist
+       (case
+        '(("* Heading [cite:@key]\nBody.\n" . 1)
+          ("#+OPTIONS: toc:t\n* Heading [cite:@key]\nBody.\n" . 2)
+          ("#+OPTIONS: toc:t\n* Heading\n:PROPERTIES:\n:ALT_TITLE: Alternate [cite:@key]\n:END:\nBody.\n"
+           .
+           1)
+          ("*Bold [cite:@key] text*. /Italic [cite:@key] text/.\n_Underlined [cite:@key] text_. +Struck [cite:@key] text+.\n"
+           .
+           4)
+          ("| Cell [cite:@key] | other |\n" . 1)
+          ("#+CAPTION[Short [cite:@key]]: Long [cite:@key]\n| Cell | other |\n"
+           .
+           2)
+          ("#+CAPTION: Caption [cite:@key]\n#+begin_table\n| Cell | other |\n#+end_table\n"
+           .
+           1)
+          ("#+CAPTION: Caption [cite:@key]\n#+begin_figure\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n#+end_figure\n"
+           .
+           1)
+          ("#+CAPTION: Caption [cite:@key]\n#+begin_theorem\nBody.\n#+end_theorem\n"
+           .
+           1)))
+     (ert-info
+      ((car case))
+      (let (input)
+        (with-temp-buffer
+          (org-mode)
+          (insert
+           "#+OPTIONS: toc:nil\n#+bibliography: refs.bib\n"
+           (car case)
+           "\n#+print_bibliography:\n")
+          (setq input
+                (org-texmacs-prepare-buffer
+                 (current-buffer)
+                 '(("refs.bib" . "@book{key,title={ContextBook}}")))))
+        ;; Conversion uses owned secondary ASTs after the source buffer dies.
+        (let* ((document (org-texmacs-document input))
+               (body (org-texmacs-document-body document))
+               (cites
+                (org-texmacs-test--caption-inline-footnote-nodes
+                 body 'cite)))
+          (should (= (length cites) (cdr case)))
+          (should
+           (cl-every
+            (lambda (cite) (equal cite '(cite "key"))) cites))
+          (should
+           (string-match-p "ContextBook" (prin1-to-string body)))
+          (should (equal document (org-texmacs-document input)))
+          (should (org-texmacs-document-serialize document))))))))
+
+(ert-deftest org-texmacs-citations-unused-alt-title ()
+  (org-texmacs-test--with-worker
+   (dolist
+       (body
+        '("#+OPTIONS: toc:nil\n* Heading\n:PROPERTIES:\n:ALT_TITLE: Unused [cite:@missing]\n:END:\n"
+          "#+OPTIONS: toc:0\n* Heading\n:PROPERTIES:\n:ALT_TITLE: Unused [cite:@missing]\n:END:\n"
+          "#+OPTIONS: toc:1\n* Root\n** Child\n:PROPERTIES:\n:ALT_TITLE: Unused [cite:@missing]\n:END:\n"
+          "#+OPTIONS: toc:t\n* Heading\n:PROPERTIES:\n:UNNUMBERED: notoc\n:ALT_TITLE: Unused [cite:@missing]\n:END:\n"))
+     (with-temp-buffer
+       (org-mode)
+       (insert
+        "#+bibliography: refs.bib\n"
+        body
+        "Body [cite:@key].\n#+print_bibliography:\n")
+       (let ((text
+              (prin1-to-string
+               (org-texmacs-document-body
+                (org-texmacs-document-from-buffer
+                 (current-buffer)
+                 '(("refs.bib" . "@book{key,title={UsedBook}}")))))))
+         (should (string-match-p "UsedBook" text))
+         (should-not (string-match-p "missing\\|Unused" text)))))))
+
+(ert-deftest org-texmacs-citations-secondary-filter-and-selection ()
+  (org-texmacs-test--with-worker
+   (with-temp-buffer
+     (org-mode)
+     (insert
+      "#+OPTIONS: toc:t\n#+bibliography: refs.bib\n"
+      "* Heading\n:PROPERTIES:\n:ALT_TITLE: Alternate [cite:@managed]\n:END:\n"
+      "#+CAPTION[Short [cite:@managed]]: Long [cite:@managed]\n| Cell | other |\n"
+      "#+print_bibliography:\n* Hidden :noexport:\n[cite:@missing]\n")
+     (let* ((calls 0)
+            (org-export-filter-parse-tree-functions
+             (list
+              (lambda (tree _backend _info)
+                (cl-incf calls)
+                (org-element-map
+                 tree 'citation-reference
+                 (lambda (node)
+                   (org-element-put-property node :key "key"))
+                 nil nil nil t)
+                tree)))
+            (document
+             (org-texmacs-document-from-buffer
+              (current-buffer)
+              '(("refs.bib" . "@book{key,title={FilteredBook}}"))))
+            (body (org-texmacs-document-body document)))
+       (should (= calls 1))
+       (should
+        (= 3
+           (length
+            (org-texmacs-test--caption-inline-footnote-nodes
+             body 'cite))))
+       (should-not
+        (string-match-p
+         "managed\\|missing" (prin1-to-string body)))))))
+
+(ert-deftest org-texmacs-citations-expanded-context-preflight ()
+  (dolist (citation '("[cite/author:@key]" "[cite:see @key]"))
+    (dolist
+        (format-string
+         '("* Heading %s\nBody.\n"
+           "*Bold %s text*.\n"
+           "| Cell %s | other |\n"
+           "#+CAPTION: Caption %s\n| Cell | other |\n"
+           "#+OPTIONS: toc:t\n* Heading\n:PROPERTIES:\n:ALT_TITLE: Alternate %s\n:END:\nBody.\n"))
+      (with-temp-buffer
+        (org-mode)
+        (insert
+         "#+bibliography: refs.bib\n"
+         (format format-string citation)
+         "#+print_bibliography:\n")
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _)
+                     (ert-fail "Invalid citation reached worker"))))
+          (should-error
+           (org-texmacs-prepare-buffer
+            (current-buffer) '(("refs.bib" . "@book{key}")))
+           :type 'org-texmacs-document-error))))))
+
 ;;; bibliography.el ends here

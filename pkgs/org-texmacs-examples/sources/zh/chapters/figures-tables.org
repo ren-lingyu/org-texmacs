@@ -1,6 +1,6 @@
 * 有编号的原生图形
 #+NAME: rectangle
-#+CAPTION[矩形]: 带有文字标记的 *原生* 矩形
+#+CAPTION[矩形]: 带有文字标记的 *原生* 矩形 (题注引用演示 [cite:@knuth1984])
 #+begin_figure
 #+begin_texmacs
 (with "gr-geometry" (tuple "geometry" "4cm" "2cm" "center") "gr-frame" (tuple "scale" "1cm" (tuple "2cm" "1cm")) (graphics "" (line (point "-1" "-0.5") (point "1" "-0.5") (point "1" "0.5") (point "-1" "0.5") (point "-1" "-0.5")) (text-at "Diagram" (point "-0.5" "0"))))
@@ -9,6 +9,7 @@
 
 图 [[rectangle]] 的内容是一棵原生 graphics 树. figure 内部只有一个 texmacs 块,
 解释文字放在外层封装之外. 图中保留英文标记, 中文题注属于 Org 正文.
+题注中的引用只演示放置位置, 不表示绘图取自该文献.
 
 * 两种表格内容来源
 #+NAME: org-values

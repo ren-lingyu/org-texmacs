@@ -1,4 +1,7 @@
-* Bibliography from Org
+* Bibliography from Org [cite:@knuth1984]
+:PROPERTIES:
+:ALT_TITLE: Bibliography and citation placement [cite:@knuth1984]
+:END:
 Readable notation and a structured source belong together[cite:@knuth1984].
 A group can include a classical source[cite:@knuth1984; @euclid1956].
 The bibliography is maintained as a BibTeX source block in references.org, not
@@ -14,6 +17,23 @@ selected records in its native plain style. Unknown entry types use native
 fallback formatting; fields such as @online URL may be ignored. This is not full
 BibLaTeX/Biber compatibility, and an uncited cross-reference parent is not added
 automatically.
+
+** Citations in formatted text and tables
+The heading and its alternate table-of-contents title above both contain a
+citation. Citations also remain structured inside *bold text [cite:@knuth1984]*,
+/italic text [cite:@euclid1956]/, _underlined text [cite:@knuth1984]_ and
++struck-through text [cite:@euclid1956]+. These phrases demonstrate placement,
+not different citation styles.
+
+The following source summary uses citations in table cells and in both the
+long and short caption. The printed table shows the long caption; the short
+caption is retained in the native document for styles that use it.
+
+#+CAPTION[Sources [cite:@knuth1984]]: Sources discussed in this example [cite:@knuth1984; @euclid1956]
+| Work | Topic |
+|------+-------|
+| The TeXbook [cite:@knuth1984] | Typesetting |
+| The Elements [cite:@euclid1956] | Geometry |
 
 * References
 :PROPERTIES:

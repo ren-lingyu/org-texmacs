@@ -1405,4 +1405,86 @@
          (should (string-match-p "in *\\[[123]\\]" text))
          (should (equal text loaded)))))))
 
+
+(ert-deftest org-texmacs-pdf-citation-contexts-and-reload ()
+  (org-texmacs-test--with-worker
+   (dolist (style '("generic" "article"))
+     (dolist (toc '(nil t))
+       (let* ((directory
+               (make-temp-file (expand-file-name "citations-"
+                                                 test-directory)
+                               t))
+              (org-texmacs-document-style (list style))
+              (pdf (expand-file-name "direct.pdf" directory))
+              (tm (expand-file-name "saved.tm" directory))
+              (reload (expand-file-name "reload.pdf" directory)))
+         (with-temp-buffer
+           (org-mode)
+           (insert
+            (format
+             "#+OPTIONS: toc:%s title:nil author:nil date:nil\n"
+             (if toc
+                 "t"
+               "nil"))
+            "#+bibliography: refs.bib\n"
+            "* HeadingProbe [cite:@key]\n:PROPERTIES:\n:ALT_TITLE: AlternateProbe [cite:@key]\n:END:\n"
+            "*BoldProbe [cite:@key] text*. /ItalicProbe [cite:@key] text/.\n"
+            "_UnderlineProbe [cite:@key] text_. +StrikeProbe [cite:@key] text+.\n\n"
+            "#+CAPTION: CaptionProbe [cite:@key]\n| CellProbe [cite:@key] | other |\n\n"
+            "#+begin_texmacs\n(new-page)\n#+end_texmacs\n\n#+print_bibliography:\n")
+           (let
+               ((document
+                 (org-texmacs-document-from-buffer
+                  (current-buffer)
+                  '(("refs.bib"
+                     .
+                     "@book{key,author={Ada Alpha},title={ReferencePayload},year=2024,publisher={Example}}")))))
+             (org-texmacs-document-save document tm)
+             (org-texmacs-document-save-pdf document pdf)))
+         (org-texmacs-test--issue11-reload-pdf tm reload directory)
+         (should
+          (equal
+           (org-texmacs-test--pdf-text pdf)
+           (org-texmacs-test--pdf-text reload)))
+         (dolist (file (list pdf reload))
+           (let* ((text (org-texmacs-test--pdf-text file))
+                  (inspection
+                   (org-texmacs-test--pdf-note-inspect file))
+                  (reference
+                   (org-texmacs-test--pdf-note-text
+                    inspection "ReferencePayload"))
+                  (page (alist-get 'page reference))
+                  (links (alist-get 'links inspection))
+                  (citations
+                   (cl-remove-if-not
+                    (lambda (link)
+                      (let ((target (alist-get 'target link)))
+                        (and target
+                             (= (alist-get 'page target) page)
+                             (< (alist-get 'page link) page))))
+                    links)))
+             (should (> page 1))
+             (should-not (string-match-p "[?]\\|\\[cite:" text))
+             (dolist (word
+                      '("HeadingProbe"
+                        "BoldProbe"
+                        "ItalicProbe"
+                        "UnderlineProbe"
+                        "StrikeProbe"
+                        "CaptionProbe"
+                        "CellProbe"))
+               (should (string-match-p word text)))
+             (should
+              (eq (and (string-match-p "AlternateProbe" text) t) toc))
+             ;; Heading and TOC navigation must coexist with citation links to
+             ;; the bibliography on a different page, including after reload.
+             (should
+              (>= (length citations)
+                  (if toc
+                      8
+                    7)))
+             (should
+              (cl-every
+               (lambda (link) (alist-get 'target link)) links)))))))))
+
 ;;; pdf.el ends here

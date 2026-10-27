@@ -5,6 +5,7 @@
 #+LANGUAGE: en
 #+DESCRIPTION: Mathematical expressions, statements and native figures and tables in one article.
 #+OPTIONS: toc:2 num:t
+#+BIBLIOGRAPHY: chapters/references.bib
 
 #+begin_abstract
 This article combines mathematical exposition with native graphics and tables.
@@ -19,9 +20,11 @@ Return to [[file:index.org][the examples entry]] for configuration, metadata,
 bibliography and build instructions. In the PDF, the relative link targets
 index.pdf beside this article. The two documents are compiled independently.
 
-The common and selected article settings are listed at the end. The mathematical
-and figure/table chapters below are ordinary Org INCLUDE inputs, not additional
-compiled entries. Labels and references share the complete article's scope.
+The common and selected article settings are listed after the examples. The
+mathematical and figure/table chapters below are ordinary Org INCLUDE inputs,
+not additional compiled entries. Labels and references share the complete
+article's scope. Each document prints its own bibliography from the same
+Org-maintained source.
 
 * Mathematics and statements
 #+INCLUDE: "chapters/mathematics.org" :minlevel 2
@@ -32,3 +35,9 @@ compiled entries. Labels and references share the complete article's scope.
 * Actual article configuration
 #+INCLUDE: "chapters/common.el" src emacs-lisp
 #+INCLUDE: "chapters/profile.el" src emacs-lisp
+
+* References
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
+#+print_bibliography:

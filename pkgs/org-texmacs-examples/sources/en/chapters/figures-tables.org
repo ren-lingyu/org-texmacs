@@ -1,6 +1,6 @@
 * A numbered native figure
 #+NAME: rectangle
-#+CAPTION[Rectangle]: A *native* rectangle with a text label
+#+CAPTION[Rectangle]: A *native* rectangle with a text label (citation example [cite:@knuth1984])
 #+begin_figure
 #+begin_texmacs
 (with "gr-geometry" (tuple "geometry" "4cm" "2cm" "center") "gr-frame" (tuple "scale" "1cm" (tuple "2cm" "1cm")) (graphics "" (line (point "-1" "-0.5") (point "1" "-0.5") (point "1" "0.5") (point "-1" "0.5") (point "-1" "-0.5")) (text-at "Diagram" (point "-0.5" "0"))))
@@ -8,7 +8,8 @@
 #+end_figure
 
 Figure [[rectangle]] is a native graphics tree. There is exactly one TeXmacs
-block inside the wrapper; explanatory prose stays outside it.
+block inside the wrapper; explanatory prose stays outside it. The caption
+citation demonstrates placement and is not a source attribution for the drawing.
 
 * Two ways to supply table contents
 #+NAME: org-values

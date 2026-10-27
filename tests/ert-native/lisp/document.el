@@ -61,7 +61,7 @@
          "#+bibliography: refs.bib\n[cite:see @key]\n#+print_bibliography:\n"
          "#+bibliography: refs.bib\n[cite:@key]\n"
          "#+bibliography: refs.bib\n[cite:@key]\n#+print_bibliography:\n#+print_bibliography:\n"
-         "#+bibliography: refs.bib\n* Title[cite:@key]\n#+print_bibliography:\n"))
+         "#+bibliography: refs.bib\n* Title[cite/author:@key]\n#+print_bibliography:\n"))
     (with-temp-buffer
       (org-mode)
       (insert source)
