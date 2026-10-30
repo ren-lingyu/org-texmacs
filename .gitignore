@@ -5,7 +5,7 @@
 !/.github/**/
 !/.github/**/*.yaml
 !/.gitignore
-!/.gitsubmodules
+!/.gitmodules
 
 !/LICENSE
 
