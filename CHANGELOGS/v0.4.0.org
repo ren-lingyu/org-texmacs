@@ -1,0 +1,136 @@
+#+title: Org TeXmacs v0.4.0 Release Notes
+
+* Overview
+This release extends structured document conversion to document-wide references,
+native =.tm= serialization, PDF rendering and a bounded interactive Org export
+frontend. Org remains the canonical source; native consumers use owned document
+data rather than reconstructing it from a textual intermediary.
+
+* Changed
+Source-buffer preparation now accepts existing narrowing instead of rejecting
+it. The accessible range bounds the body; configuration and required footnote/
+bibliography dependencies come from a private complete source snapshot.
+Restriction changes during prompts or native waits reject output before writing.
+
+* Added
+** Links, footnotes and table references
+- Same-document links resolve visible headline titles, =CUSTOM_ID=, =ID= and
+  dedicated targets from the prepared AST. Missing or ambiguous used targets
+  fail explicitly; no global ID database or source-buffer fallback is queried.
+- Plain local file links retain captured resource context. Native consumers
+  resolve marked relative targets to absolute paths against that base, keeping
+  it independent of the eventual output directory. Linked resources are not
+  opened, embedded or built.
+- Named footnotes support inline/separate definitions, forward references and
+  repeated references. Their bodies appear at first use; later references share
+  the same target. Required definitions survive selection/filtering, while
+  unused definitions and their STM parse requests are omitted.
+- Basic tables accept names and long/short captions. Captioned tables use native
+  table counters and references. Uncaptioned named tables require descriptive
+  links; no displayed table number is invented for them.
+
+File searches, cross-file IDs, remote resources, advanced table syntax and named
+non-table objects remain unsupported. Captions accept the supported inline
+markup/link subset, without citation, footnote or STM fragment discovery.
+Inline footnote bodies also do not gain STM fragment discovery in this release.
+
+** Citations and explicit bibliography snapshots
+Preparation accepts explicit source-path/BibTeX-text pairs. Paths identify
+declarations and resolve against the captured source base; conversion does not
+open those files or consult global bibliography configuration.
+
+- Bare default citations such as =[cite:@one; @two]= work directly in paragraphs
+  and inline footnote bodies. Used keys must resolve unambiguously.
+- Exactly one option-free =PRINT_BIBLIOGRAPHY= supplies the output location.
+  TeXmacs's native =plain= style formats selected entries and determines their
+  order and displayed labels.
+- The initial BibTeX grammar accepts standard entry types and single braced,
+  quoted or decimal values. Malformed input, duplicate keys/fields, =@string=,
+  =@preamble=, symbolic constants and concatenation are rejected. Native parsed
+  structures must agree with the validated entry/key/field signatures.
+- Nonempty citation affixes, custom styles, bibliography dependency fields,
+  multiple prints and citations in headings, emphasis, table cells or captions
+  remain unsupported. Org Cite processors and automatic discovery do not run.
+
+** Native documents and PDF
+- =org-texmacs-document-serialize= returns complete native =.tm= bytes through
+  TeXmacs's serializer. =org-texmacs-document-save= writes those bytes to a new
+  absolute local file.
+- =org-texmacs-document-pdf= returns PDF bytes from the completed document;
+  =org-texmacs-document-save-pdf= writes them to a new local file. Rendering uses
+  a temporary native document and bounded update/print passes, preserving any
+  existing public session.
+- =org-texmacs-export-from-buffer= and =org-texmacs-export-pdf-from-buffer=
+  combine explicit-source preparation with the corresponding byte consumer.
+  Source and dependency consistency checks include native serialization or
+  rendering before returning output.
+- =org-texmacs-export-to-buffer= exposes native bytes in a fresh read-only buffer.
+  =org-texmacs-export-to-file= and =org-texmacs-export-to-pdf= save to explicit
+  new destinations. These three entry points also provide interactive commands;
+  interactive calls supply no bibliography text snapshots.
+
+Preserve native byte output with =no-conversion=. Direct saving requires an
+existing parent directory and rejects existing files, directories and symlinks.
+Conversion failures create no destination; filesystem write failures can leave
+a newly created partial file. These APIs do not replace files or update sessions.
+
+** Optional Org dispatcher
+Loading =(require 'ox-texmacs)= registers the =texmacs= backend and its default
+=C-c C-e T= submenu:
+
+- =T T=: =org-texmacs-export-as-texmacs= returns a fresh native byte buffer.
+- =T t=: =org-texmacs-export-to-texmacs= writes a native file.
+- =T p=: =org-texmacs-export-to-texmacs-pdf= writes a PDF.
+
+These frontend commands use Org's five optional export arguments and output
+naming, including =EXPORT_FILE_NAME= and subtree overrides. They synchronously
+export the accessible buffer, containing subtree or active region. No PDF viewer
+or rendered preview is opened.
+
+Unlike the explicit new-file APIs, frontend file actions can replace existing
+writable regular output files. Directories, symlinks and source aliases are
+rejected. Conversion and consistency checks finish before opening the output,
+preserving existing content on preparation/rendering failure. Ordinary writes
+provide neither atomic replacement nor backups; a write error may leave partial
+output.
+
+Generic =org-export-as=, publishing and string-transcoder calls remain unsupported
+and are rejected before preprocessing. The early guard is conditional on the
+TeXmacs backend; unrelated exporters keep their ordinary hooks and behavior.
+
+** Selection and configuration
+- Subtree export omits the selected root heading/planning/properties from the
+  body and uses its supported =EXPORT_*= configuration and output name. Child
+  section levels are relative to the remaining body.
+- Active or explicit regions take precedence for body selection, while subtree
+  configuration/naming can still apply. Partial ordinary text is accepted;
+  truncated TeXmacs islands fail before native requests. Regions must lie inside
+  existing narrowing.
+- Required named footnotes and bibliography declarations come from the same
+  snapshot. Internal targets must be in the emitted body/dependencies, and the
+  bibliography print must be in the selected body.
+- Restricted =ext-plist= metadata, headline and selection options follow
+  global/buffer-local < external < file < subtree precedence. Unknown/duplicate
+  keys or invalid types fail before prompts or worker operations. These options
+  do not select output paths, hooks, styles or bibliography source texts.
+
+Existing source-buffer preparation/document/byte-buffer adapters gain optional
+bibliography, subtree-position, region and external-configuration arguments.
+Explicit new-file saving adapters keep their separate signatures; prepare a
+configured document first when those consumers need selected input.
+
+* Requirements and limitations
+Runtime requirements remain Emacs 31.1 or later, Org 9.8 or later, and headless
+TeXmacs with embedded Scheme and Unix-domain sockets. Manual installations keep
+the Lisp libraries, optional =ox-texmacs.el= and Scheme service together at the
+checkout root. Nix still exports the library through =packages.default=.
+
+This is not full Org exporter parity. INCLUDE/SETUPFILE, macros, Babel, generic
+export hooks/filters, automatic bibliography discovery, async, =visible-only=
+and =body-only= exports remain unsupported. PDF consumers reject explicit
+resource/executable trees such as =image=, =include=, =extern= and =eval=;
+installed native styles/fonts remain TeXmacs resources, not a sandbox.
+
+Maintained native/PDF regressions check structural and selected text/reference
+semantics. They do not establish GUI preview, universal font/style support,
+pixel-level fidelity or convergence of arbitrary pagination.

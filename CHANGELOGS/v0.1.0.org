@@ -1,0 +1,80 @@
+#+title: Org TeXmacs v0.1.0 Release Notes
+
+* Overview
+Initial release of Org TeXmacs. Write official STM/Scheme serialization directly
+in Org and obtain structured TeXmacs trees without an external =.tm= source
+file. Org remains the canonical source; parsing does not replace its live AST.
+
+* Added
+** Block parsing and derived trees
+- =org-texmacs-tree= parses a current =texmacs= special-block element through
+  TeXmacs and returns an Org-compatible pseudo tree. Nested children have Org
+  parent links; the returned root is detached from the source block.
+- Block results use Org's custom element cache. Cache hits may return the same
+  object, so treat results as read-only. Source edits can invalidate the cache,
+  including edits outside the block; it is not persistent block identity.
+- Raw block contents and source whitespace are preserved. Invalid input and
+  source changes during a worker wait reject the result without caching it.
+
+For example, place point on the opening marker of:
+
+#+begin_example
+  ,#+begin_texmacs
+  (with "mode" "math" (frac "1" "2"))
+  ,#+end_texmacs
+#+end_example
+
+Then call =(org-texmacs-tree (org-element-at-point))=.
+
+** Paragraph fragments
+- =org-texmacs-fragment-at-point= and =org-texmacs-fragment-map= discover source
+  spans without starting TeXmacs. =org-texmacs-fragment-tree= parses a span into
+  a fresh pseudo tree on every call; fragments have no parse cache.
+- =org-texmacs-fragment-tags= selects case-sensitive root names. Its defaults
+  cover =math= and the numbered/starred equation, eqnarray, align, gather and
+  eqsplit families. Nested children need no separate registration. An empty
+  tag list disables fragment discovery while leaving block parsing available.
+- Discovery supports paragraph text, including paragraphs in list items and
+  quote blocks. It excludes headings, table cells, inline Org objects and
+  literal or TeXmacs block bodies. A fragment cannot cross a paragraph boundary.
+- Spans belong to their original buffer and configuration. Obtain fresh spans
+  after character edits or tag changes, and respect the accessible narrowing.
+  Traversal rejects source or configuration changes made by callbacks.
+
+** Worker and diagnostics
+- One persistent headless TeXmacs worker serves buffers synchronously through
+  Unix-domain sockets. STM is read as data, not evaluated as Scheme code.
+- Worker input must contain exactly one supported STM datum. Malformed input
+  is rejected before TeXmacs's recovery-oriented parser. Parse errors leave the
+  worker available; transport failures or cancellation stop it for later restart.
+- =org-texmacs-program= selects the executable. Startup and request waits have
+  separate configurable timeouts, defaulting to 60 and 10 seconds.
+- =org-texmacs-check-setup= reports required APIs and executable availability.
+  It does not start TeXmacs or establish successful socket communication.
+
+* Runtime requirements
+- Emacs 31.1 or later and Org 9.8 or later, as declared by the package.
+- TeXmacs with headless mode and its embedded Scheme runtime.
+- Unix-domain socket support in Emacs and TeXmacs. No standalone Guile runtime
+  is required for package use.
+
+The recorded environment was =x86_64-linux= with Emacs 31.1, Org 9.8-pre and
+TeXmacs 2.1.5. This does not establish support on other platforms.
+
+* Installation and Nix packaging
+Keep the Lisp libraries and =org-texmacs-worker.scm= together in the checkout
+root, add that directory to =load-path= and load =(require 'org-texmacs)=.
+Loading and fragment discovery do not start the native worker.
+
+The Nix =packages.default= output builds the library, installs the Scheme
+service beside it and selects an absolute TeXmacs store path. The development
+shell supplies Emacs with the package and its Lisp dependencies, plus TeXmacs.
+Nix checks cover compilation, package linting and ERT with the real native
+parser, worker lifecycle, caching and fragment boundaries.
+
+* Limitations
+This release provides source discovery and AST integration, without document
+conversion, export, preview, fontification, editing support or automatic
+synchronization. Org's native object parser is not extended by fragment
+discovery. Successful native parsing does not validate every tag's arity,
+mathematical meaning, numbering or visual layout.

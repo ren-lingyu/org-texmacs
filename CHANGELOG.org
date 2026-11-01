@@ -1,0 +1,127 @@
+#+title: Changelog
+#+description: Follows Keep a Changelog 2.0.0 conventions; all timestamps use UTC.
+#+todo: TODO NEXT WAIT | DONE CANCELED
+#+startup: logdone
+#+property: TIMEZONE UTC
+
+Notable user-visible changes, newest first. Version links lead to complete
+release notes.
+
+* DONE v0.4.0
+CLOSED: [2026-10-08 Thu 17:12]
+:PROPERTIES:
+:CUSTOM_ID: v0.4.0
+:END:
+[[file:CHANGELOGS/v0.4.0.org][Detailed release notes]]
+
+** Changed
+- Convert the accessible body of narrowed source buffers instead of rejecting
+  narrowing. Capture configuration and required dependencies from the complete
+  source, and reject restriction changes before writing output.
+
+** Added
+- Same-document headline, ID and dedicated-target links, plus local file links
+  resolved against captured source resource locations.
+- Named footnotes with forward and repeated references, and named/captioned
+  basic Org tables with cross-references.
+- Bare default citations and native plain bibliographies from explicit BibTeX
+  text snapshots, with a restricted input grammar and one bibliography print.
+- Complete native =.tm= serialization, PDF rendering, explicit-source export
+  APIs, new-file saving and interactive native byte-buffer/file commands.
+- An optional =ox-texmacs= dispatcher with =T T=, =T t= and =T p= actions,
+  Org output naming and replacement of existing writable regular outputs.
+- Subtree and region selection, required footnote restoration and restricted
+  external configuration with global < external < file < subtree precedence.
+
+* DONE v0.3.1
+CLOSED: [2026-10-06 Tue 11:44]
+:PROPERTIES:
+:CUSTOM_ID: v0.3.1
+:END:
+[[file:CHANGELOGS/v0.3.1.org][Detailed release notes]]
+
+** Fixed
+- Preserve a healthy worker and the original error when local request
+  construction fails, instead of treating that failure as broken transport.
+
+* DONE v0.3.0
+CLOSED: [2026-09-21 Mon 11:52]
+:PROPERTIES:
+:CUSTOM_ID: v0.3.0
+:END:
+[[file:CHANGELOGS/v0.3.0.org][Detailed release notes]]
+
+** Changed
+- *Breaking:* Make =org-texmacs-document= consume prepared input. Replace
+  =(org-texmacs-document SOURCE-BUFFER)= with
+  =(org-texmacs-document-from-buffer SOURCE-BUFFER)= for buffer conversion.
+- Make sectioning relative to the shallowest retained headline, with up to five
+  section levels and list output below the configured =H= depth.
+- Apply captured style and initial environment together with the body when
+  updating a native document session.
+
+** Added
+- Owned prepared-input construction and separate buffer preparation for
+  structural conversion without source-buffer or worker access during lowering.
+- Restricted Org metadata/options, task/archive/tag/comment filtering, numbered
+  or starred headings, alternate TOC titles and a static table of contents.
+- Unordered, ordered and description lists, quote/center containers, static
+  preformatted blocks and basic rectangular tables with rule rows.
+- =org-texmacs-document-style= and =org-texmacs-document-initial= configuration.
+
+* DONE v0.2.1
+CLOSED: [2026-09-13 Sun 18:56]
+:PROPERTIES:
+:CUSTOM_ID: v0.2.1
+:END:
+[[file:CHANGELOGS/v0.2.1.org][Detailed release notes]]
+
+** Changed
+- *Breaking:* Require an explicit live Org source buffer in
+  =org-texmacs-document=. Replace the zero-argument call with
+  =(org-texmacs-document SOURCE-BUFFER)= or
+  =(org-texmacs-document-current-buffer)=.
+
+** Fixed
+- Keep conversion and source-change checks bound to the selected source buffer
+  when the caller's current buffer changes.
+- Run headline formatters outside temporary private parser bindings.
+
+** Added
+- =org-texmacs-document-current-buffer= as a current-buffer convenience wrapper.
+
+* DONE v0.2.0
+CLOSED: [2026-09-12 Sat 17:49]
+:PROPERTIES:
+:CUSTOM_ID: v0.2.0
+:END:
+[[file:CHANGELOGS/v0.2.0.org][Detailed release notes]]
+
+** Added
+- Whole-buffer document conversion through the zero-argument
+  =org-texmacs-document= API, preserving Org source and STM provenance.
+- Structural lowering for paragraphs, basic inline markup, URI links,
+  anonymous inline footnotes, levels 1–3 headings and TeXmacs islands.
+- Headline TODO/priority/tag presentation and a configurable headline formatter.
+- Explicit native body sessions with open, whole-body update and close
+  operations, provenance-aware encoding and worker-bound session lifetimes.
+
+* DONE v0.1.0
+CLOSED: [2026-09-11 Fri 14:50]
+:PROPERTIES:
+:CUSTOM_ID: v0.1.0
+:END:
+[[file:CHANGELOGS/v0.1.0.org][Detailed release notes]]
+
+Initial release. Requires Emacs 31.1 or later, Org 9.8 or later and a headless
+TeXmacs runtime with Unix-domain socket support.
+
+** Added
+- On-demand parsing of TeXmacs special blocks into Org-compatible pseudo trees,
+  with best-effort Org-managed caching and stale-source checks.
+- Configurable paragraph fragment discovery and independent fragment parsing,
+  with immutable source spans and explicit lifetime/configuration checks.
+- A shared persistent headless TeXmacs worker, strict single-datum STM input
+  validation, configurable timeouts and recovery after transport failures.
+- =org-texmacs-check-setup= for capability and executable diagnostics.
+- A Nix default library package and an Emacs/TeXmacs development shell.

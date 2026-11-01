@@ -1,0 +1,97 @@
+#+title: Org TeXmacs v0.3.0 Release Notes
+
+* Overview
+This release expands document semantics and separates reusable prepared input
+from buffer preparation. Native sessions now apply a complete style, initial
+environment and body, extending the body-only sessions available since v0.2.0.
+
+* Changed
+** Prepared-input document API
+*Breaking:* =org-texmacs-document= now consumes an =org-texmacs-input= rather
+than a source buffer. Buffer callers must use =org-texmacs-document-from-buffer=.
+The core does not dispatch on buffer arguments for compatibility.
+
+Structural lowering consumes the owned AST, configuration and parsed STM
+islands without reading buffers, collecting options, starting a worker or
+parsing source. Both prepared input and completed results are read-only data
+from the caller's perspective.
+
+** Sectioning and native sessions
+- Sectioning is relative to the shallowest retained headline. The supported
+  section depth extends to five levels; headings below =H= become nested lists
+  with their contents preserved. Numbering policy selects numbered or starred
+  section tags, and =UNNUMBERED= controls individual headings.
+- Session updates apply the captured style, initial environment and body
+  together, replacing earlier explicit initial values and validating readback.
+  A headless internal view supports native document operations without opening
+  a GUI window. This does not provide visual preview or pagination guarantees.
+
+* Added
+** Reusable input and configuration
+- =org-texmacs-input-create= owns copies of a parsed Org AST, INFO and identity-
+  keyed mappings of already parsed STM. It rejects malformed ownership and
+  deferred/opaque data; construction does not lower or access a source buffer.
+- =org-texmacs-prepare-buffer= captures the existing source-buffer workflow as
+  prepared input. =org-texmacs-document-from-buffer= prepares and lowers in one
+  call; =org-texmacs-document-current-buffer= remains the convenience wrapper.
+- =org-texmacs-document-style= defaults to =("generic")=, and
+  =org-texmacs-document-initial= defaults to an empty environment. Buffer
+  preparation captures these settings. Pure manual construction uses explicit
+  values or fixed defaults, without reading ambient Custom settings.
+
+** Org document context
+- Supported =TITLE=, =AUTHOR= and =DATE= metadata becomes native title data.
+  Rich inline content is retained within the supported subset. A simple date
+  timestamp becomes =YYYY-MM-DD=; richer timestamp forms remain unsupported.
+- Supported =OPTIONS=, task/archive policies, select/exclude tags and file tags
+  participate in one captured context. Comments and filtered subtrees are
+  removed before STM parsing, so excluded islands do not trigger parse errors.
+- A static filtered TOC uses relative heading levels, generated links and page
+  references. =ALT_TITLE= replaces TOC title text; =UNNUMBERED: notoc= omits an
+  entry without removing its body. Page values remain for native typesetting.
+
+** Additional body structures
+- Unordered, ordered and description lists, including multiple paragraphs and
+  nested supported content. Checkboxes and explicit list counters are rejected.
+- Quote and center containers with recursive body structure.
+- Static example, fixed-width and source blocks, preserving line structure and
+  captured tab width without syntax highlighting or code execution. Dynamic
+  source headers, noweb and coderef/line-number options are rejected.
+- Basic rectangular pipe tables, including rule rows and supported inline cell
+  content. Complex table control, alignment/width cookies and formulas remain
+  unsupported.
+
+* Upgrade from v0.2.1
+For buffer conversion, replace:
+
+#+begin_src emacs-lisp
+  (org-texmacs-document source-buffer)
+#+end_src
+
+with:
+
+#+begin_src emacs-lisp
+  (org-texmacs-document-from-buffer source-buffer)
+#+end_src
+
+To prepare once and lower separately:
+
+#+begin_src emacs-lisp
+  (let ((input (org-texmacs-prepare-buffer source-buffer)))
+    (org-texmacs-document input))
+#+end_src
+
+The current-buffer wrapper keeps its zero-argument call. Recheck heading levels
+and numbering in consumers that depended on the earlier absolute levels 1–3.
+Configure style and initial values before preparing a new buffer snapshot.
+
+* Requirements and limitations
+Runtime requirements remain Emacs 31.1 or later, Org 9.8 or later, and headless
+TeXmacs with embedded Scheme and Unix-domain sockets.
+
+Buffer preparation still requires an unnarrowed Org source. Source-authored
+internal/file links, named footnotes, citations, file/PDF export and a generic
+Org backend are not introduced here. Generated TOC links do not imply general
+reference resolution. Unsupported directives/options fail explicitly; INCLUDE,
+SETUPFILE, macros, Babel, hooks and filters do not run. Native session readback
+does not establish visual numbering, page references or general layout.

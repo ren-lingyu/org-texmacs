@@ -1,0 +1,56 @@
+#+title: Org TeXmacs v0.2.1 Release Notes
+
+* Overview
+This release hardens the document conversion boundary introduced in v0.2.0.
+It intentionally changes the document API despite the patch-version increment.
+
+* Changed
+** Explicit source buffer
+*Breaking:* =org-texmacs-document= now requires a live, unnarrowed Org buffer
+object. Buffer names and file paths are not accepted. Text, supported parser
+settings and output options come from that source rather than whichever buffer
+happens to be current in the caller.
+
+Detectable source, mode, narrowing or parser-setting changes reject conversion
+without automatic retry. Captured output options remain fixed for that call.
+Private preparation preserves source text, point, mark, narrowing, modified
+state, text properties and the source's observable Org cache state. Completed
+results do not retain the source buffer and remain usable after it is killed.
+
+* Fixed
+- Keep source validation bound to the explicitly selected buffer during worker
+  waits. Switching the caller's current buffer alone no longer invalidates the
+  selected source or redirects conversion.
+- Invoke headline formatters outside temporary private link/parser bindings,
+  so Org parsing inside a custom formatter observes ordinary parser behavior.
+  Structural preflight still rejects unsupported input before STM requests.
+
+* Added
+=org-texmacs-document-current-buffer= provides a thin convenience wrapper for
+the previous current-buffer workflow.
+
+* Upgrade from v0.2.0
+Replace the old zero-argument call:
+
+#+begin_src emacs-lisp
+  (org-texmacs-document)
+#+end_src
+
+with an explicit source:
+
+#+begin_src emacs-lisp
+  (org-texmacs-document source-buffer)
+#+end_src
+
+or the current-buffer wrapper:
+
+#+begin_src emacs-lisp
+  (org-texmacs-document-current-buffer)
+#+end_src
+
+* Requirements and scope
+Runtime requirements remain Emacs 31.1 or later, Org 9.8 or later, and headless
+TeXmacs with embedded Scheme and Unix-domain sockets. The supported document
+syntax and body-session APIs remain those of v0.2.0. Narrowed input is still
+rejected; file/PDF export, preview, automatic synchronization and a complete
+Org export environment are not introduced by this release.

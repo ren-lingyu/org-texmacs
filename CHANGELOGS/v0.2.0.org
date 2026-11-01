@@ -1,0 +1,76 @@
+#+title: Org TeXmacs v0.2.0 Release Notes
+
+* Overview
+This release adds an initial document conversion path and explicit native body
+sessions to the existing block and fragment APIs. Conversion constructs TeXmacs
+trees directly from a private Org snapshot; source text and the live Org AST
+remain unchanged.
+
+* Added
+** Whole-buffer document conversion
+=org-texmacs-document= takes no arguments and converts the current, unnarrowed
+Org buffer. It returns a derived document body with the provenance needed to
+distinguish literal Org text from authored STM during native encoding.
+
+Supported input includes:
+- Paragraphs, plain text, bold, italic, underline, strike-through, literal inline
+  code/verbatim and explicit line breaks.
+- Self-contained =http=, =https=, =mailto=, =ftp= and =ftps= links, with supported
+  inline descriptions.
+- Anonymous inline footnotes directly in paragraphs, with the supported inline
+  body subset.
+- Nonempty headings at Org's parsed levels 1–3, paragraph fragments and complete
+  TeXmacs special blocks.
+
+Ordinary inline whitespace follows prose normalization; STM subtrees retain
+their own structure and text. Source text, fragment configuration and supported
+heading/link parser settings are captured and checked across native waits.
+Unsupported document structure fails before island parsing instead of being
+silently discarded.
+
+** Headline presentation
+Conversion captures the standard Org TODO keyword, priority and explicit-tag
+display settings. =org-texmacs-format-headline-function= accepts a structured
+formatter; its default combines the selected metadata with the lowered title.
+Display options and the formatter remain fixed for one conversion.
+
+This reads variable values rather than collecting a complete export environment.
+File-local =OPTIONS= and other export preprocessing are not supported here.
+
+** Native body sessions
+The three session APIs manage one native body buffer in the shared worker:
+
+#+begin_src emacs-lisp
+  (let ((document (org-texmacs-document))
+        (session (org-texmacs-session-open)))
+    (unwind-protect
+        (org-texmacs-session-set-document session document)
+      (org-texmacs-session-close session)))
+#+end_src
+
+- Open is explicit and lazy; set-document replaces the complete body and checks
+  native readback. There are no edit hooks or incremental updates.
+- Org literal text and STM source notation retain distinct encoding semantics,
+  including Unicode and literal angle brackets. Callers pass the original text
+  document, not encoded diagnostic output.
+- A session belongs to one worker incarnation. A second open is rejected;
+  worker termination invalidates old handles, and closing a stale handle does
+  not restart the worker or close a later session.
+- Preflight or encoding failure preserves the previous body. Native update or
+  readback failure discards the session; transport failure stops the worker.
+
+* Requirements
+Runtime requirements remain Emacs 31.1 or later, Org 9.8 or later, and a headless
+TeXmacs runtime with embedded Scheme and Unix-domain sockets. The Lisp libraries
+and Scheme service remain adjacent in the checkout root or installed package.
+
+* Limitations
+This is a body-level conversion and session API, not a complete TeXmacs file or
+Org export backend. It does not provide style/initial-environment application,
+file saving, PDF, preview, numbering/reference resolution or synchronization.
+
+Narrowed sources, COMMENT/archive headings, empty or deeper headings, lists,
+tables, unsupported blocks/metadata, local file/internal links, named or nested
+footnotes and STM discovery inside footnotes are outside this initial subset.
+No INCLUDE expansion, Babel execution, export hooks or external-resource reads
+are performed. Native body readback verifies structure, not rendered layout.
