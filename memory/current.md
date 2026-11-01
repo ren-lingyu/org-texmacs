@@ -1,5 +1,18 @@
 # org-texmacs current memory
 
+## Current release status: unpublished 0.5.0, prior tag removed
+
+On2026-11-02 user clarifies that0.5.0 was tagged but never actually published;
+the tag has now been removed. Supersedes initial wording "release withdrawn":
+there was no published release to withdraw. Local git tag --list '*0.5.0*'
+returns no matches. No remote release/tag lookup performed; prior tag creation/
+removal and nonpublication are user-reported, not reconstructed from local refs.
+Existing memory records preparation/version/documentation acceptance, not a
+verified0.5.0 publication. Header/version/melpaVersion remain0.5.0; this metadata
+does not establish a release. Do not infer source/version rollback or authority
+to recreate a tag/publish. Prior runtime acceptance remains historical evidence;
+current HEAD has later input updates, not freshly tested by this status review.
+
 ## Current: citation placement and examples delivered
 
 Delivered1017764dc90331e90f54fd56c4989316e6edc9cc, exact13reviewed staged blobs/path

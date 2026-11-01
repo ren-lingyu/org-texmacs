@@ -1,5 +1,14 @@
 # v0.5.0 release readiness
 
+## Current publication status (2026-11-02)
+
+User confirms0.5.0 was only tagged, never actually published, and the tag is now
+removed. Do not describe this as withdrawing a published release. No matching
+local0.5.0tag observed; remote state not independently queried. Version declarations
+remain0.5.0 and existing preparation/validation records do not imply publication.
+No source/version rollback or new tag/publication action selected. Earlier
+staging/readiness descriptions below are historical, not outstanding authority.
+
 ## Latest publication audit: functionality delivered, small documentation gaps
 
 Initial user full check failed at83column added docstring; corrected wrapping is

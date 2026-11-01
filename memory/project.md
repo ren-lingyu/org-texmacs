@@ -1,5 +1,10 @@
 # org-texmacs current project model
 
+Release status2026-11-02: user reports0.5.0 was tagged but never published, and
+the tag has been removed. Local matching tag list empty; no remote lookup.
+Version declarations remain0.5.0; version metadata and delivered features are
+distinct from publication. No source rollback or republishing selected.
+
 Delivered1017764, exact13reviewed blobs and clean ordinary worktree verified:
 bare default citations in headings/TOC, emphasis, table cells and supported
 captions, with ALT_TITLE collection only for emitted TOC entries. Key-only
