@@ -30,9 +30,10 @@ reference resolution and a combined live Org/TeXmacs AST are outside the current
 support boundary.
 Org's source buffer and live AST remain unchanged.
 
-* Version 0.5.0
-This version extends the supported Org-first mathematical authoring subset;
-it does not provide complete Org exporter parity.  Changes since =0.4.0= include:
+* Development version 0.5.0
+Version =0.5.0= has not been published.  This README describes the current
+development tree, which extends the supported Org-first mathematical authoring
+subset without complete Org exporter parity.  Changes since =0.4.0= include:
 
 - Recursive formal statements with long captions, raw STM equations, explicit
   figure/table wrappers and single-object =NAME= / =[[name]]= references.
@@ -45,6 +46,8 @@ it does not provide complete Org exporter parity.  Changes since =0.4.0= include
   for TeXmacs blocks through =org-texmacs-edit-mode=.
 - Opt-in bibliography discovery, restricted citation-key AST filters and
   native TeXmacs interpretation of BibTeX, without a second entry/field whitelist.
+- Bare default citations in headings and their TOC entries, basic emphasis,
+  table cells and supported captions, including emitted =ALT_TITLE= values.
 - Bounded Org preprocessing and native INCLUDE for full frontend exports,
   explicit dispatcher key configuration and separate frontend/Lisp export APIs.
 - Native quotation mapping, explicit table column alignment and literal raw
@@ -67,6 +70,11 @@ Load =ox-texmacs= for its three interactive commands, which take Org's five
 optional export arguments.  In particular, the new frontend
 =org-texmacs-export-to-pdf= does not accept the old source-buffer/file arguments.
 See [[*Explicit-source native byte buffers][Explicit-source native byte buffers]] and [[*Org export dispatcher][Org export dispatcher]].
+
+For manual source checkouts, update =load-path= and direct file loads to use
+the =lisp/= directory.  For Nix, replace =nix build .#default= with
+=nix build .#org-texmacs= for the library; =nix build .#emacs= builds an Emacs
+wrapper with the package.  See [[*Loading the package][Loading the package]].
 
 The dispatcher has no menu by default.  To restore the former keys, set the
 complete option before the first frontend load:
@@ -150,7 +158,7 @@ This Emacs includes the package and its Lisp dependencies.  The development
 environment also includes TeXmacs.  Evaluate =(require 'org-texmacs)= before
 using the API.
 
-The flake exposes six named package outputs:
+The flake exposes six named package outputs and no default package:
 
 | Output                                       | Contents                                                      |
 |----------------------------------------------+---------------------------------------------------------------|
@@ -170,6 +178,11 @@ Nix store path.  TeXmacs is therefore part of its runtime closure; the installed
 package does not depend on finding it in =exec-path=.  Building
 =packages.org-texmacs= alone does not configure an existing Emacs installation.
 The development shell uses the same Emacs wrapper as =packages.emacs=.
+It also provides =texmacs-fandol-with-gotor-support= on =PATH=; this does not
+override the Lisp package's built-in TeXmacs path.  To use that renderer from
+the shell's Emacs, set =org-texmacs-program= to its executable path before the
+first worker operation.  The compiled examples select it through their own
+package override, as described below.
 
 Package definitions live under =pkgs/=, with Lisp supplied explicitly from
 =lisp/= and example sources collected from =pkgs/org-texmacs-examples/sources/=
@@ -702,11 +715,11 @@ now export their accessible body; restriction changes during prompts/native wait
 reject results.  Existing APIs use explicit bibliography text snapshots.
 The opt-in discovery APIs below can acquire missing local =.bib= files.
 
-The current release does not implement generic =org-export-as=/publishing, =visible-only=,
-=body-only= fragments, async export or unrestricted preprocessing.  Native PDF
-regression checks structure/text/reference semantics; it does not establish GUI
-layout or general pagination convergence.  Detailed supported and rejected
-cases remain part of the API contracts below.
+The current implementation does not support generic =org-export-as=/publishing,
+=visible-only=, =body-only= fragments, async export or unrestricted preprocessing.
+Native PDF regression checks structure/text/reference semantics; it does not
+establish GUI layout or general pagination convergence.  Detailed supported and
+rejected cases remain part of the API contracts below.
 
 ** Preparing a document result
 The document API separates prepared input from buffer preparation.
@@ -836,6 +849,8 @@ The supported Org subset is deliberately small:
 | Same-document headline/ID or dedicated-target link                  | =hlink= or =reference= with generated =label= target            |
 | Anonymous inline footnote directly in a paragraph                   | =footnote= containing a body =document=                         |
 | Named footnote with inline or separate definition                   | First-use =footnote=; repeated superscript =reference=          |
+| Bare default citation in a supported text context                   | =with-bib= / =cite= with resolved bibliography keys             |
+| One option-free =PRINT_BIBLIOGRAPHY= keyword                        | =with-bib= / native =bib-list= at the declaration position      |
 | Relative headline levels 1 through 5                                | Five numbered or starred TeXmacs sectioning tags                |
 | Headlines below the configured =H= depth                            | Nested =itemize= structures without discarding body content     |
 | Filtered headline table of contents                                 | Static =table-of-contents= with =toc-N=/links/page references   |
@@ -855,12 +870,13 @@ The supported Org subset is deliberately small:
 | COMMENT / comment block                                             | Removed before structural preflight                             |
 | Task, archive and select/exclude filtering                          | Org policy applied before STM worker requests                   |
 
-Heading text may contain supported emphasis and literal inline code, but not
-explicit line breaks.  This is not a general Org
+Heading text may contain supported emphasis, literal inline code and bare
+default citations, but not explicit line breaks.  This is not a general Org
 exporter: unsupported links and footnotes, advanced table semantics, other
 blocks, unrecognized keywords, drawers and affiliated metadata outside the
 object-specific NAME/CAPTION rules below are rejected.
-Empty and deeper headings are also rejected rather than silently discarded.
+Empty headline titles and =H= values outside 0 through 5 are rejected.
+Headings below =H= use the list mapping above.
 Fragment discovery can support
 contexts that this whole-document conversion does not support.
 
@@ -2500,8 +2516,9 @@ check has a 600-second outer timeout; package-lint has 120 seconds.  Existing
 per-operation failure and cleanup checks retain their own bounds.
 
 The flake provides =nix fmt= through treefmt to apply the configured formatters.
-=nix flake check= also includes the treefmt formatting check.  =README.org= and
-the Org sources under =pkgs/org-texmacs-examples/sources/= are excluded from formatting.
+=nix flake check= also includes the treefmt formatting check.  Org files,
+including =README.org= and the compiled examples' sources, and =.gitignore=
+participate in formatting.  Patch files, =LICENSE= and =flake.lock= are excluded.
 
 Git flake inputs omit untracked files.  When checking new files before staging,
 use an explicit =path:.= flake input, such as
