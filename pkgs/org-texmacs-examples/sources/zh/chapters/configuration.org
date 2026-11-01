@@ -3,13 +3,13 @@
 再把这些实际文件收录到下面. tangle 只复制源码, 不执行代码块; 加载指定配置是单独且明确的构建步骤.
 
 ** 公共页面和 worker 设置
-#+INCLUDE: "common.el" src emacs-lisp
+#+include: "common.el" src emacs-lisp
 
 可执行程序路径由 Nix package 提供. 完整文档使用较长的请求超时, worker 启动超时保留默认值.
 页面设置作为原生 initial 捕获; 文件中的语言和描述覆盖 initial 中对应的全局默认值.
 
 ** 当前文档的配置
-#+INCLUDE: "profile.el" src emacs-lisp
+#+include: "profile.el" src emacs-lisp
 
 入口保留默认 generic 样式. 配套文章使用 article, 测试用标题前缀和 math-only 段落发现.
 显式 equation 与 texmacs 块仍然可以使用.
@@ -28,8 +28,8 @@ package 显式构建这两个入口.
 同时保留 .org 扩展名, 可以使用:
 
 #+begin_src emacs-lisp
-(setq org-texmacs-pdf-file-links-as-absolute t
-      org-texmacs-link-org-files-as-pdf nil)
+  (setq org-texmacs-pdf-file-links-as-absolute t
+        org-texmacs-link-org-files-as-pdf nil)
 #+end_src
 
 ** 只展示, 不执行的交互设置
@@ -37,13 +37,13 @@ package 显式构建这两个入口.
 以下可选初始化代码不会被本构建 tangle 或加载:
 
 #+begin_src emacs-lisp
-(require 'org-texmacs)
-(setq org-texmacs-edit-mode 'scheme-mode)
-;; 在首次加载 ox-texmacs 前设置, 并选择当前会话中可用的菜单键.
-(setq org-texmacs-export-menu-keys
-      '(:prefix ?T :buffer ?b :file ?f :pdf ?p))
-(require 'ox-texmacs)
-(setq org-texmacs-export-discover-bibliography t)
+  (require 'org-texmacs)
+  (setq org-texmacs-edit-mode 'scheme-mode)
+  ;; 在首次加载 ox-texmacs 前设置, 并选择当前会话中可用的菜单键.
+  (setq org-texmacs-export-menu-keys
+        '(:prefix ?T :buffer ?b :file ?f :pdf ?p))
+  (require 'ox-texmacs)
+  (setq org-texmacs-export-discover-bibliography t)
 #+end_src
 
 文档构建使用显式文献快照, 不发现用户的全局数据库.

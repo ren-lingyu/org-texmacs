@@ -2,7 +2,7 @@
 Inline notation can contain indices (math (concat "a" (rsub "n"))), powers
 (math (concat "x" (rsup "2"))) and Greek letters (math "<alpha>+<beta>").
 
-#+NAME: quadratic
+#+name: quadratic
 #+begin_equation
 (concat "x=" (frac (concat "-b<pm>" (sqrt (concat "b" (rsup "2") "-4ac"))) "2a"))
 #+end_equation
@@ -56,15 +56,15 @@ paragraph discovery setting does not prevent this block from being parsed.
 #+end_texmacs
 
 * A short argument
-#+NAME: norm-definition
-#+CAPTION: The Euclidean norm
+#+name: norm-definition
+#+caption: The Euclidean norm
 #+begin_statement definition
 For a vector (math (concat "v=" (around* "(" "x,y" ")"))), define
 (math (concat "N" (around* "(" "v" ")") "=" (sqrt (concat "x" (rsup "2") "+y" (rsup "2"))))).
 #+end_statement
 
-#+NAME: norm-positive
-#+CAPTION: Non-negativity
+#+name: norm-positive
+#+caption: Non-negativity
 #+begin_statement theorem
 The quantity in Definition [[norm-definition]] is nonnegative and vanishes
 exactly at the zero vector.

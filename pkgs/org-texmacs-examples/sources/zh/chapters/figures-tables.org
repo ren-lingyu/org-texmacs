@@ -1,6 +1,6 @@
 * 有编号的原生图形
-#+NAME: rectangle
-#+CAPTION[矩形]: 带有文字标记的 *原生* 矩形 (题注引用演示 [cite:@knuth1984])
+#+name: rectangle
+#+caption[矩形]: 带有文字标记的 *原生* 矩形 (题注引用演示 [cite:@knuth1984])
 #+begin_figure
 #+begin_texmacs
 (with "gr-geometry" (tuple "geometry" "4cm" "2cm" "center") "gr-frame" (tuple "scale" "1cm" (tuple "2cm" "1cm")) (graphics "" (line (point "-1" "-0.5") (point "1" "-0.5") (point "1" "0.5") (point "-1" "0.5") (point "-1" "-0.5")) (text-at "Diagram" (point "-0.5" "0"))))
@@ -12,19 +12,19 @@
 题注中的引用只演示放置位置, 不表示绘图取自该文献.
 
 * 两种表格内容来源
-#+NAME: org-values
-#+CAPTION[数值]: 展示数值的矩形 Org 表格
+#+name: org-values
+#+caption[数值]: 展示数值的矩形 Org 表格
 #+begin_table
 | 变量 | 数值 | 平方 |
 |------+------+------|
-| x | 2 | 4 |
-| y | 3 | 9 |
+| x    |    2 |    4 |
+| y    |    3 |    9 |
 #+end_table
 
 表 [[org-values]] 使用普通 Org 表格作为唯一主体. 另一种方式是直接提供原生表格数据:
 
-#+NAME: native-values
-#+CAPTION: 由 STM 提供内容的表格
+#+name: native-values
+#+caption: 由 STM 提供内容的表格
 #+begin_table
 #+begin_texmacs
 (tformat
@@ -42,27 +42,27 @@
 * 无编号形式与后续计数
 带星号的形式选择原生无编号环境, 不表示双栏浮动体.
 
-#+CAPTION: 用于比较的无编号图形
+#+caption: 用于比较的无编号图形
 #+begin_figure*
 #+begin_texmacs
 (with "gr-geometry" (tuple "geometry" "4cm" "2cm" "center") "gr-frame" (tuple "scale" "1cm" (tuple "2cm" "1cm")) (graphics "" (line (point "-1" "-0.5") (point "1" "0.5")) (line (point "-1" "0.5") (point "1" "-0.5"))))
 #+end_texmacs
 #+end_figure*
 
-#+CAPTION: 无编号的封装摘要
+#+caption: 无编号的封装摘要
 #+begin_table*
-| 环境 | 主体 |
-|------+------|
-| figure | 一个原生块 |
-| table | 一个 Org 表格或原生块 |
+| 环境   | 主体                  |
+|--------+-----------------------|
+| figure | 一个原生块            |
+| table  | 一个 Org 表格或原生块 |
 #+end_table*
 
-#+NAME: last-table
-#+CAPTION: 无编号案例之后的另一张编号表格
+#+name: last-table
+#+caption: 无编号案例之后的另一张编号表格
 #+begin_table
-| 项目 | 含义 |
-|------+------|
-| NAME | 对象标识 |
+| 项目    | 含义     |
+|---------+----------|
+| NAME    | 对象标识 |
 | CAPTION | 可见题注 |
 #+end_table
 

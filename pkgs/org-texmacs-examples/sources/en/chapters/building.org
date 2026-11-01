@@ -1,6 +1,6 @@
 * Building and inspecting the examples
 #+begin_src sh
-nix build .#org-texmacs-examples
+  nix build .#org-texmacs-examples
 #+end_src
 
 On Linux, this package builds two entries per language: index.org uses the

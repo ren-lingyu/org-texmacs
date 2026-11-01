@@ -1,5 +1,5 @@
-#+TITLE: Org TeXmacs
-#+AUTHOR: aRenCoco
+#+title: Org TeXmacs
+#+author: aRenCoco
 
 Org TeXmacs provides TeXmacs AST integration for Org documents.  Write
 structured content in official STM/Scheme serialization directly in Org;
@@ -55,12 +55,12 @@ The frontend/API and preprocessing changes are breaking changes.  No compatibili
 aliases are provided.  Update callers before reloading; a fresh Emacs session
 avoids retaining removed definitions or an already registered dispatcher menu.
 
-| Previous call or command | Replacement |
-|--------------------------+-------------|
-| =org-texmacs-export-from-buffer= | =org-texmacs-export-texmacs-from-buffer= |
-| =org-texmacs-export-to-file= | =org-texmacs-export-to-texmacs-file= |
+| Previous call or command                       | Replacement                                         |
+|------------------------------------------------+-----------------------------------------------------|
+| =org-texmacs-export-from-buffer=               | =org-texmacs-export-texmacs-from-buffer=            |
+| =org-texmacs-export-to-file=                   | =org-texmacs-export-to-texmacs-file=                |
 | =org-texmacs-export-to-pdf SOURCE-BUFFER FILE= | =org-texmacs-export-to-pdf-file SOURCE-BUFFER FILE= |
-| Frontend =org-texmacs-export-to-texmacs-pdf= | =org-texmacs-export-to-pdf= from =ox-texmacs= |
+| Frontend =org-texmacs-export-to-texmacs-pdf=   | =org-texmacs-export-to-pdf= from =ox-texmacs=       |
 
 The main package's explicit-source exports are noninteractive Lisp APIs.
 Load =ox-texmacs= for its three interactive commands, which take Org's five
@@ -152,14 +152,14 @@ using the API.
 
 The flake exposes six named package outputs:
 
-| Output | Contents |
-|--------+----------|
-| =packages.org-texmacs= | Lisp package with the adjacent Scheme service |
-| =packages.emacs= | Emacs with Org TeXmacs and its Lisp dependencies |
-| =packages.texmacs-fandol= | TeXmacs with explicit Fandol Chinese fonts |
-| =packages.texmacs-with-gotor-support= | TeXmacs with native GoToR actions for local PDF file links |
-| =packages.texmacs-fandol-with-gotor-support= | TeXmacs with both Fandol fonts and GoToR support |
-| =packages.org-texmacs-examples= | English and Chinese examples as native TeXmacs files and PDFs |
+| Output                                       | Contents                                                      |
+|----------------------------------------------+---------------------------------------------------------------|
+| =packages.org-texmacs=                       | Lisp package with the adjacent Scheme service                 |
+| =packages.emacs=                             | Emacs with Org TeXmacs and its Lisp dependencies              |
+| =packages.texmacs-fandol=                    | TeXmacs with explicit Fandol Chinese fonts                    |
+| =packages.texmacs-with-gotor-support=        | TeXmacs with native GoToR actions for local PDF file links    |
+| =packages.texmacs-fandol-with-gotor-support= | TeXmacs with both Fandol fonts and GoToR support              |
+| =packages.org-texmacs-examples=              | English and Chinese examples as native TeXmacs files and PDFs |
 
 The GoToR package currently requires TeXmacs 2.1.5.  Its build checks the reviewed
 link-action branch before applying a zero-fuzz patch.  Unrelated renderer changes
@@ -179,10 +179,10 @@ the project's =nixpkgs=.
 
 Two public overlays allow downstream package sets to select these additions:
 
-| Overlay | Addition |
-|---------+----------|
-| =overlays.emacsPackages= | =emacsPackages.org-texmacs= |
-| =overlays.texmacs= | =texmacs-with-gotor-support= |
+| Overlay                  | Addition                     |
+|--------------------------+------------------------------|
+| =overlays.emacsPackages= | =emacsPackages.org-texmacs=  |
+| =overlays.texmacs=       | =texmacs-with-gotor-support= |
 
 Both are nixpkgs overlays, applied when constructing a nixpkgs package set.
 =overlays.emacsPackages= extends the Emacs package machinery; it is not a
@@ -744,16 +744,16 @@ The source restriction is restored immediately after the full-text read, before
 parsing, callbacks or worker waits.  The adapter
 parses STM islands with the shared worker, and returns a document result:
 
-| Accessor                         | Result                                                           |
-|----------------------------------+------------------------------------------------------------------|
-| =org-texmacs-document-body=      | Text stree rooted at =document=, before native encoding          |
-| =org-texmacs-document-style=     | Copied list of TeXmacs style identifiers                         |
-| =org-texmacs-document-initial=   | Copied initial trees; literal provenance distinguishes Org text |
-| =org-texmacs-document-stm-paths= | Paths to source-semantic roots (STM and prepared bibliography)    |
-| =org-texmacs-document-initial-literal-keys= | Keys of Org-derived literal initial entries              |
-| =org-texmacs-document-source-file= | Optional copied absolute source file name                      |
-| =org-texmacs-document-resource-base= | Optional copied base for source-relative resources         |
-| =org-texmacs-document-file-paths= | Paths to Org file-link target leaves in the body                |
+| Accessor                                    | Result                                                          |
+|---------------------------------------------+-----------------------------------------------------------------|
+| =org-texmacs-document-body=                 | Text stree rooted at =document=, before native encoding         |
+| =org-texmacs-document-style=                | Copied list of TeXmacs style identifiers                        |
+| =org-texmacs-document-initial=              | Copied initial trees; literal provenance distinguishes Org text |
+| =org-texmacs-document-stm-paths=            | Paths to source-semantic roots (STM and prepared bibliography)  |
+| =org-texmacs-document-initial-literal-keys= | Keys of Org-derived literal initial entries                     |
+| =org-texmacs-document-source-file=          | Optional copied absolute source file name                       |
+| =org-texmacs-document-resource-base=        | Optional copied base for source-relative resources              |
+| =org-texmacs-document-file-paths=           | Paths to Org file-link target leaves in the body                |
 
 Paths use zero-based child indices, excluding the tag.  Keep all fields
 together and treat the result and all nested data as read-only.  It is not
@@ -823,37 +823,37 @@ This example returns a document result; it starts TeXmacs to parse its islands:
 
 The supported Org subset is deliberately small:
 
-| Org input                                         | TeXmacs body structure                                       |
-|---------------------------------------------------+--------------------------------------------------------------|
-| Document / section container                      | =document= / transparent contents                            |
-| Paragraph / plain text                            | =concat=, or a bare STM island / prose whitespace normalization |
-| Bold                                              | =strong=                                                     |
-| Italic / underline / strike-through               | =em= / =underline= / =strike-through=                        |
-| Inline code / verbatim                            | =verbatim= with literal inline text                          |
-| Explicit line break in paragraph contents         | =next-line=                                                  |
-| Supported self-contained URI link                 | =hlink= with separate display body and target                |
-| Plain local file link in body text                | =hlink= plus typed file-target provenance                    |
-| Same-document headline/ID or dedicated-target link | =hlink= or =reference= with generated =label= target         |
-| Anonymous inline footnote directly in a paragraph | =footnote= containing a body =document=                      |
-| Named footnote with inline or separate definition | First-use =footnote=; repeated superscript =reference=       |
-| Relative headline levels 1 through 5              | Five numbered or starred TeXmacs sectioning tags              |
-| Headlines below the configured =H= depth          | Nested =itemize= structures without discarding body content   |
-| Filtered headline table of contents               | Static =table-of-contents= with =toc-N=/links/page references |
-| Title / subtitle / author / email / date / creator | Native fields in a leading =doc-data=                          |
-| Language / description                             | Initial =language= / hidden =global-subject=                  |
-| Abstract blocks / keyword declarations              | Independent =abstract-data= / =abstract-keywords= in order     |
-| Unordered / ordered / description list            | =itemize= / =enumerate= / =description= with body =document= |
-| Quote / center block                               | =quotation= / =center= with body =document=                  |
-| Example / fixed-width / source block               | Static =code= containing a line-wise =document=               |
-| Basic rectangular Org table                       | =tabular= / =tformat= / =table= / =row= / =cell=             |
-| Named/captioned basic table                       | Private anchors and native =big-table= / =caption-detailed= |
-| Recognized paragraph / inline-footnote fragment   | One parsed STM subtree                                       |
-| =texmacs= special block                           | One parsed STM subtree, even for a string or =document= root |
-| Formal statement special block                   | Native statement environment with recursive body =document= |
-| =equation= / =equation*= special block             | One raw STM datum in a numbered / unnumbered native formula |
-| Explicit =figure= / =table= special block (including starred forms) | Native =big-figure= / =big-table=, with outer caption and name |
-| COMMENT / comment block                           | Removed before structural preflight                         |
-| Task, archive and select/exclude filtering        | Org policy applied before STM worker requests                |
+| Org input                                                           | TeXmacs body structure                                          |
+|---------------------------------------------------------------------+-----------------------------------------------------------------|
+| Document / section container                                        | =document= / transparent contents                               |
+| Paragraph / plain text                                              | =concat=, or a bare STM island / prose whitespace normalization |
+| Bold                                                                | =strong=                                                        |
+| Italic / underline / strike-through                                 | =em= / =underline= / =strike-through=                           |
+| Inline code / verbatim                                              | =verbatim= with literal inline text                             |
+| Explicit line break in paragraph contents                           | =next-line=                                                     |
+| Supported self-contained URI link                                   | =hlink= with separate display body and target                   |
+| Plain local file link in body text                                  | =hlink= plus typed file-target provenance                       |
+| Same-document headline/ID or dedicated-target link                  | =hlink= or =reference= with generated =label= target            |
+| Anonymous inline footnote directly in a paragraph                   | =footnote= containing a body =document=                         |
+| Named footnote with inline or separate definition                   | First-use =footnote=; repeated superscript =reference=          |
+| Relative headline levels 1 through 5                                | Five numbered or starred TeXmacs sectioning tags                |
+| Headlines below the configured =H= depth                            | Nested =itemize= structures without discarding body content     |
+| Filtered headline table of contents                                 | Static =table-of-contents= with =toc-N=/links/page references   |
+| Title / subtitle / author / email / date / creator                  | Native fields in a leading =doc-data=                           |
+| Language / description                                              | Initial =language= / hidden =global-subject=                    |
+| Abstract blocks / keyword declarations                              | Independent =abstract-data= / =abstract-keywords= in order      |
+| Unordered / ordered / description list                              | =itemize= / =enumerate= / =description= with body =document=    |
+| Quote / center block                                                | =quotation= / =center= with body =document=                     |
+| Example / fixed-width / source block                                | Static =code= containing a line-wise =document=                 |
+| Basic rectangular Org table                                         | =tabular= / =tformat= / =table= / =row= / =cell=                |
+| Named/captioned basic table                                         | Private anchors and native =big-table= / =caption-detailed=     |
+| Recognized paragraph / inline-footnote fragment                     | One parsed STM subtree                                          |
+| =texmacs= special block                                             | One parsed STM subtree, even for a string or =document= root    |
+| Formal statement special block                                      | Native statement environment with recursive body =document=     |
+| =equation= / =equation*= special block                              | One raw STM datum in a numbered / unnumbered native formula     |
+| Explicit =figure= / =table= special block (including starred forms) | Native =big-figure= / =big-table=, with outer caption and name  |
+| COMMENT / comment block                                             | Removed before structural preflight                             |
+| Task, archive and select/exclude filtering                          | Org policy applied before STM worker requests                   |
 
 Heading text may contain supported emphasis and literal inline code, but not
 explicit line breaks.  This is not a general Org
@@ -867,15 +867,15 @@ contexts that this whole-document conversion does not support.
 Formal statements use Org special blocks with recursively converted Org bodies:
 
 #+begin_example
-  #+begin_statement theorem
+  ,#+begin_statement theorem
   First paragraph with *markup* and (math "x").
 
-  #+begin_texmacs
+  ,#+begin_texmacs
   (equation* (concat "x=" (frac "1" "2")))
-  #+end_texmacs
+  ,#+end_texmacs
 
   Last paragraph.
-  #+end_statement
+  ,#+end_statement
 #+end_example
 
 The canonical =statement TYPE= form requires exactly one type token.
@@ -910,13 +910,13 @@ objects use the existing native conversion and its documented layout limits.
 Raw STM equations use =begin_equation= (numbered) or =begin_equation*= (unnumbered):
 
 #+begin_example
-  #+begin_equation
+  ,#+begin_equation
   (concat "a=" (frac "1" "2"))
-  #+end_equation
+  ,#+end_equation
 
-  #+begin_equation*
+  ,#+begin_equation*
   "x"
-  #+end_equation*
+  ,#+end_equation*
 #+end_example
 
 Each body is exactly one complete STM datum, parsed by TeXmacs and wrapped as
@@ -940,18 +940,18 @@ environments.  Experimental =figure*= / =table*= wrappers select their native
 unnumbered variants; they do not mean LaTeX double-column floats.
 
 #+begin_example
-  #+CAPTION[Short]: A *formatted* table caption
-  #+begin_table
+  ,#+CAPTION[Short]: A *formatted* table caption
+  ,#+begin_table
   | A | B |
   | 1 | 2 |
-  #+end_table
+  ,#+end_table
 
-  #+CAPTION: A native figure
-  #+begin_figure
-  #+begin_texmacs
+  ,#+CAPTION: A native figure
+  ,#+begin_figure
+  ,#+begin_texmacs
   (graphics "" (line (point "0" "0") (point "1" "1")))
-  #+end_texmacs
-  #+end_figure
+  ,#+end_texmacs
+  ,#+end_figure
 #+end_example
 
 A figure requires exactly one direct =texmacs= block.  A table requires exactly
@@ -1072,10 +1072,10 @@ has no lossless mapping in this subset.
 A table may have one independent alignment-format row anywhere in its body:
 
 #+begin_example
-| <l>  | <c>   | <r>  |
-| Name | Score | Rank |
-|------+-------+------|
-| A    | 95    | 1    |
+  | <l>  | <c>   | <r>  |
+  | Name | Score | Rank |
+  |------+-------+------|
+  | A    | 95    | 1    |
 #+end_example
 
 Every cell of that row must contain exactly =<l>=, =<c>= or =<r>=, with optional
@@ -1178,10 +1178,10 @@ targets or cause unrelated metadata errors.
 #+begin_example
   See [[eq:main]] or [[eq:main][the main equation]].
 
-  #+NAME: eq:main
-  #+begin_equation
+  ,#+NAME: eq:main
+  ,#+begin_equation
   (frac "1" "2")
-  #+end_equation
+  ,#+end_equation
 #+end_example
 
 Org allocates internal references once during preparation.  Named labels use
@@ -1344,9 +1344,9 @@ That evidence does not cover arbitrary databases or extension configurations.
 The preparation API accepts an optional alist of source paths to BibTeX text:
 
 #+begin_src emacs-lisp
-(org-texmacs-prepare-buffer
- org-source-buffer
- '(("references.bib" . "@book{example, title={A book}, year=2026}")))
+  (org-texmacs-prepare-buffer
+   org-source-buffer
+   '(("references.bib" . "@book{example, title={A book}, year=2026}")))
 #+end_src
 
 The caller supplies the text explicitly.  Paths are identities, resolved once
@@ -1430,8 +1430,8 @@ document or =org-texmacs-export-from-buffer-discover-bibliography= for native
 retain their explicit snapshot behavior; frontend discovery is controlled separately by =org-texmacs-export-discover-bibliography=.
 
 #+begin_src emacs-lisp
-(let ((org-cite-global-bibliography '("references.bib")))
-  (org-texmacs-export-from-buffer-discover-bibliography org-source-buffer))
+  (let ((org-cite-global-bibliography '("references.bib")))
+    (org-texmacs-export-from-buffer-discover-bibliography org-source-buffer))
 #+end_src
 
 The adapter captures the live source, configuration and provided texts before
@@ -1488,8 +1488,8 @@ Existing direct APIs retain their earlier defaults.  Full-document dispatcher
 actions now use this provider, as described in the frontend section below.
 
 #+begin_src emacs-lisp
-;; Full unnarrowed source; native INCLUDE can read other local directories.
-(org-texmacs-export-from-buffer-preprocessed org-source-buffer nil nil t)
+  ;; Full unnarrowed source; native INCLUDE can read other local directories.
+  (org-texmacs-export-from-buffer-preprocessed org-source-buffer nil nil t)
 #+end_src
 
 Captured before-processing hooks run in a private protected root view, then native
@@ -1617,19 +1617,19 @@ Document conversion snapshots these standard Org options from the source
 buffer and accepts their listed =#+OPTIONS= keys.  It does not introduce
 parallel TeXmacs display switches:
 
-| Org option                          | Source key  | Current effect                                      |
-|-------------------------------------+-------------+-----------------------------------------------------|
-| =org-export-with-todo-keywords=     | =todo=      | Show TODO/DONE keyword                              |
-| =org-export-with-priority=          | =pri=       | Show priority cookie                                |
-| =org-export-with-tags=              | =tags=      | Show explicit headline tags                         |
-| =org-export-with-tasks=             | =tasks=     | Keep the selected task states                       |
-| =org-export-with-archived-trees=    | =arch=      | Keep, remove or retain only an archived headline    |
-| =org-export-headline-levels=        | =H=         | Set sectioning depth from 0 through 5               |
-| =org-export-with-section-numbers=   | =num=       | Select the deepest numbered section level           |
-| =org-export-with-toc=               | =toc=       | Build a static TOC to the selected depth            |
-| =org-export-with-title/author/date= | =title/author/date= | Control rich document metadata output          |
-| =org-export-with-email=             | =email=      | Show email independently of the author name           |
-| =org-export-with-creator=           | =creator=    | Show a labelled generator note; nil by default        |
+| Org option                          | Source key          | Current effect                                   |
+|-------------------------------------+---------------------+--------------------------------------------------|
+| =org-export-with-todo-keywords=     | =todo=              | Show TODO/DONE keyword                           |
+| =org-export-with-priority=          | =pri=               | Show priority cookie                             |
+| =org-export-with-tags=              | =tags=              | Show explicit headline tags                      |
+| =org-export-with-tasks=             | =tasks=             | Keep the selected task states                    |
+| =org-export-with-archived-trees=    | =arch=              | Keep, remove or retain only an archived headline |
+| =org-export-headline-levels=        | =H=                 | Set sectioning depth from 0 through 5            |
+| =org-export-with-section-numbers=   | =num=               | Select the deepest numbered section level        |
+| =org-export-with-toc=               | =toc=               | Build a static TOC to the selected depth         |
+| =org-export-with-title/author/date= | =title/author/date= | Control rich document metadata output            |
+| =org-export-with-email=             | =email=             | Show email independently of the author name      |
+| =org-export-with-creator=           | =creator=           | Show a labelled generator note; nil by default   |
 
 Native section counters and their presentation are distinct.  The pinned
 =generic= style hides displayed =paragraph=/=subparagraph= numbers by default
@@ -1715,20 +1715,20 @@ otherwise the captured =org-export-default-language= is mapped.
 
 Language codes are trimmed and matched without case sensitivity:
 
-| Org code        | Native language |
-|-----------------+-----------------|
-| en, en-US       | english         |
-| en-GB           | british         |
-| zh, zh-CN       | chinese         |
-| zh-TW           | taiwanese       |
-| bg / hr / cs    | bulgarian / croatian / czech |
-| da / nl / eo    | danish / dutch / esperanto |
-| fi / fr / de    | finnish / french / german |
-| el / hu / it    | greek / hungarian / italian |
-| ja / ko / pl    | japanese / korean / polish |
-| pt / ro / ru    | portuguese / romanian / russian |
-| sk / sl / es    | slovak / slovene / spanish |
-| sv / uk         | swedish / ukrainian |
+| Org code     | Native language                 |
+|--------------+---------------------------------|
+| en, en-US    | english                         |
+| en-GB        | british                         |
+| zh, zh-CN    | chinese                         |
+| zh-TW        | taiwanese                       |
+| bg / hr / cs | bulgarian / croatian / czech    |
+| da / nl / eo | danish / dutch / esperanto      |
+| fi / fr / de | finnish / french / german       |
+| el / hu / it | greek / hungarian / italian     |
+| ja / ko / pl | japanese / korean / polish      |
+| pt / ro / ru | portuguese / romanian / russian |
+| sk / sl / es | slovak / slovene / spanish      |
+| sv / uk      | swedish / ukrainian             |
 
 Unknown nonempty effective codes are errors; unlisted regional variants are not
 silently guessed.  Language selection does not install or repair fonts.
@@ -2014,11 +2014,11 @@ keys; these values are examples, not defaults:
 
 With this explicit configuration, select =T= in Org's =C-c C-e= menu:
 
-| Keys  | Action                                                |
-|-------+-------------------------------------------------------|
+| Keys  | Action                                                  |
+|-------+---------------------------------------------------------|
 | =T T= | Export to the managed readonly native =.tm= byte buffer |
 | =T t= | Export to Org's local =.tm= output path                 |
-| =T p= | Export to Org's local PDF output path                  |
+| =T p= | Export to Org's local PDF output path                   |
 
 =nil= omits only the menu; use =M-x org-texmacs-export-as-texmacs=,
 =M-x org-texmacs-export-to-texmacs= or =M-x org-texmacs-export-to-pdf=
@@ -2143,17 +2143,17 @@ does not register this menu or guard, and no PDF viewer opens.
 *** Restricted external configuration
 The frontend's =ext-plist= argument accepts these existing configuration fields:
 
-| Keys                                                       | Value type                                      |
-|------------------------------------------------------------+-------------------------------------------------|
-| =:title=, =:subtitle=, =:author=, =:date=                    | Raw rich Org string or nil                           |
-| =:email=, =:language=, =:keywords=, =:description=, =:creator= | Plain string or nil                             |
-| =:headline-levels=                                         | Integer from 0 through 5                         |
-| =:section-numbers=, =:with-toc=                             | nil, t or a nonnegative integer                  |
-| =:with-archived-trees=                                      | nil, t or =headline=                             |
-| =:with-author=, =:with-date=, =:with-email=, =:with-creator=, =:with-priority=, =:with-title=, =:with-todo-keywords= | nil or t                       |
-| =:with-tags=                                               | nil, t or =not-in-toc=                            |
-| =:with-tasks=                                              | nil, t, =todo=, =done= or a list of TODO strings   |
-| =:select-tags=, =:exclude-tags=                             | List of strings                                 |
+| Keys                                                                                                                 | Value type                                       |
+|----------------------------------------------------------------------------------------------------------------------+--------------------------------------------------|
+| =:title=, =:subtitle=, =:author=, =:date=                                                                            | Raw rich Org string or nil                       |
+| =:email=, =:language=, =:keywords=, =:description=, =:creator=                                                       | Plain string or nil                              |
+| =:headline-levels=                                                                                                   | Integer from 0 through 5                         |
+| =:section-numbers=, =:with-toc=                                                                                      | nil, t or a nonnegative integer                  |
+| =:with-archived-trees=                                                                                               | nil, t or =headline=                             |
+| =:with-author=, =:with-date=, =:with-email=, =:with-creator=, =:with-priority=, =:with-title=, =:with-todo-keywords= | nil or t                                         |
+| =:with-tags=                                                                                                         | nil, t or =not-in-toc=                           |
+| =:with-tasks=                                                                                                        | nil, t, =todo=, =done= or a list of TODO strings |
+| =:select-tags=, =:exclude-tags=                                                                                      | List of strings                                  |
 
 Precedence follows Org: captured global/buffer-local defaults < =ext-plist= <
 supported file keywords/options < supported subtree =EXPORT_*= properties.
@@ -2272,21 +2272,21 @@ or source-text reconstruction is used.
 
 Supported subtree properties override the captured file/global configuration:
 
-| Property               | Meaning                                      |
-|------------------------+----------------------------------------------|
-| =EXPORT_TITLE=         | Rich title; otherwise the selected heading   |
-| =EXPORT_SUBTITLE=      | Rich subtitle metadata                       |
-| =EXPORT_EMAIL=         | Literal email                                |
-| =EXPORT_LANGUAGE=      | Mapped document language                     |
-| =EXPORT_KEYWORDS=      | Effective keywords replacing file values     |
-| =EXPORT_DESCRIPTION=   | Hidden document description                  |
-| =EXPORT_CREATOR=       | Generator text                               |
-| =EXPORT_AUTHOR=        | Rich author metadata                         |
-| =EXPORT_DATE=          | Date metadata                                |
-| =EXPORT_OPTIONS=       | The existing restricted =OPTIONS= subset     |
-| =EXPORT_SELECT_TAGS=   | Selection tags                               |
-| =EXPORT_EXCLUDE_TAGS=  | Exclusion tags                               |
-| =EXPORT_FILE_NAME=     | Output naming through Org's subtree helper   |
+| Property              | Meaning                                    |
+|-----------------------+--------------------------------------------|
+| =EXPORT_TITLE=        | Rich title; otherwise the selected heading |
+| =EXPORT_SUBTITLE=     | Rich subtitle metadata                     |
+| =EXPORT_EMAIL=        | Literal email                              |
+| =EXPORT_LANGUAGE=     | Mapped document language                   |
+| =EXPORT_KEYWORDS=     | Effective keywords replacing file values   |
+| =EXPORT_DESCRIPTION=  | Hidden document description                |
+| =EXPORT_CREATOR=      | Generator text                             |
+| =EXPORT_AUTHOR=       | Rich author metadata                       |
+| =EXPORT_DATE=         | Date metadata                              |
+| =EXPORT_OPTIONS=      | The existing restricted =OPTIONS= subset   |
+| =EXPORT_SELECT_TAGS=  | Selection tags                             |
+| =EXPORT_EXCLUDE_TAGS= | Exclusion tags                             |
+| =EXPORT_FILE_NAME=    | Output naming through Org's subtree helper |
 
 Property lookup follows the captured =org-use-property-inheritance= policy.
 Unsupported =EXPORT_*= properties on the selected root and unsupported option
@@ -2415,16 +2415,16 @@ after the current worker stops.  Worker exit and Emacs shutdown clean up its
 socket directory.  For development, =(org-texmacs--worker-stop)= stops it
 explicitly; this is an internal function, not a stable public command.
 
-| Condition                    | Meaning                                                                    |
-|------------------------------+----------------------------------------------------------------------------|
-| =org-texmacs-error=          | Base error; invalid input/configuration, stale span or inaccessible source |
-| =org-texmacs-parse-error=    | Invalid STM source or a fragment root tag mismatch                         |
-| =org-texmacs-worker-error=   | Startup, communication or response failure                                 |
-| =org-texmacs-document-error= | Unsupported document input or changed source/configuration                 |
-| =org-texmacs-encoding-error= | Invalid native encoding input                                              |
-| =org-texmacs-session-error=  | Invalid/stale session or native body operation failure                     |
-| =org-texmacs-serialization-error= | Native document serialization failure                                 |
-| =org-texmacs-rendering-error= | Native PDF rendering failure                                              |
+| Condition                         | Meaning                                                                    |
+|-----------------------------------+----------------------------------------------------------------------------|
+| =org-texmacs-error=               | Base error; invalid input/configuration, stale span or inaccessible source |
+| =org-texmacs-parse-error=         | Invalid STM source or a fragment root tag mismatch                         |
+| =org-texmacs-worker-error=        | Startup, communication or response failure                                 |
+| =org-texmacs-document-error=      | Unsupported document input or changed source/configuration                 |
+| =org-texmacs-encoding-error=      | Invalid native encoding input                                              |
+| =org-texmacs-session-error=       | Invalid/stale session or native body operation failure                     |
+| =org-texmacs-serialization-error= | Native document serialization failure                                      |
+| =org-texmacs-rendering-error=     | Native PDF rendering failure                                               |
 
 All these conditions inherit from =org-texmacs-error=.  Parse errors leave
 the worker available for the next request.  Transport failures and request

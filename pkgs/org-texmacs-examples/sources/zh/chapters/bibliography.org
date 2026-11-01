@@ -6,7 +6,7 @@
 也可以组合引用排版资料与古典数学著作[cite:@knuth1984; @euclid1956].
 BibTeX 源码保存在 references.org 的代码块中, 不单独维护 .bib. 下面以字面源码展示原始文件:
 
-#+INCLUDE: "references.org" src org
+#+include: "references.org" src org
 
 最后几条演示记录使用字符串声明与拼接, @online 类型, 以及指向显式引用父条目的 crossref
 [cite:@native-child; @native-parent; @native-online]. 这些是文档演示数据, 不是外部出版物声明.
@@ -22,14 +22,14 @@ _下划线文本 [cite:@knuth1984]_ 和 +删除线文本 [cite:@euclid1956]+ 中
 下面的资料摘要在单元格, 长题注和短题注中分别使用引用.
 打印的表格显示长题注, 短题注保留在原生文档中, 供使用它的样式读取.
 
-#+CAPTION[资料 [cite:@knuth1984]]: 本案例讨论的资料 [cite:@knuth1984; @euclid1956]
-| 著作 | 主题 |
-|------+------|
-| The TeXbook [cite:@knuth1984] | 排版 |
+#+caption[资料 [cite:@knuth1984]]: 本案例讨论的资料 [cite:@knuth1984; @euclid1956]
+| 著作                            | 主题 |
+|---------------------------------+------|
+| The TeXbook [cite:@knuth1984]   | 排版 |
 | The Elements [cite:@euclid1956] | 几何 |
 
 * 参考文献
 :PROPERTIES:
 :UNNUMBERED: t
 :END:
-#+print_bibliography:
+#+print_bibliography: 

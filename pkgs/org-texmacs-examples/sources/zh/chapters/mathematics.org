@@ -2,7 +2,7 @@
 行内公式可以包含下标 (math (concat "a" (rsub "n"))), 幂次
 (math (concat "x" (rsup "2"))) 和希腊字母 (math "<alpha>+<beta>").
 
-#+NAME: quadratic
+#+name: quadratic
 #+begin_equation
 (concat "x=" (frac (concat "-b<pm>" (sqrt (concat "b" (rsup "2") "-4ac"))) "2a"))
 #+end_equation
@@ -55,15 +55,15 @@
 #+end_texmacs
 
 * 一个简短的论证
-#+NAME: norm-definition
-#+CAPTION: 欧几里得范数
+#+name: norm-definition
+#+caption: 欧几里得范数
 #+begin_statement definition
 对向量 (math (concat "v=" (around* "(" "x,y" ")"))), 定义
 (math (concat "N" (around* "(" "v" ")") "=" (sqrt (concat "x" (rsup "2") "+y" (rsup "2"))))).
 #+end_statement
 
-#+NAME: norm-positive
-#+CAPTION: 非负性
+#+name: norm-positive
+#+caption: 非负性
 #+begin_statement theorem
 定义 [[norm-definition]] 中的量非负, 并且仅在零向量处取零.
 #+end_statement

@@ -1,18 +1,16 @@
 *
 */
 
+!/.gitignore
+!/.gitmodules
+!/LICENSE
+!/README.org
+!/flake.lock
+!/flake.nix
+
 !/.github/
 !/.github/**/
 !/.github/**/*.yaml
-!/.gitignore
-!/.gitmodules
-
-!/LICENSE
-
-!/README.org
-
-!/flake.lock
-!/flake.nix
 
 !/lisp/
 !/lisp/org-texmacs-*.el
@@ -35,6 +33,6 @@
 !/tests/**/*.py
 !/tests/**/*.scm
 
-*~
 *#
 **/tmp/
+*~

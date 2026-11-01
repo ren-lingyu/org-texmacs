@@ -1,4 +1,4 @@
-#+TITLE: Bibliography sources
+#+title: Bibliography sources
 
 The bibliography is maintained here, alongside the examples. The example
 builder tangles this BibTeX block into a temporary references.bib. Tangling copies
@@ -10,36 +10,36 @@ an unknown entry type and an explicitly selected cross-reference parent. They
 are illustrative documentation records, not additional external publications.
 
 #+begin_src bibtex :tangle references.bib
-@book{knuth1984,
-  author = {Donald E. Knuth},
-  title = {The TeXbook},
-  publisher = {Addison-Wesley},
-  year = {1984}
-}
+  @book{knuth1984,
+    author = {Donald E. Knuth},
+    title = {The TeXbook},
+    publisher = {Addison-Wesley},
+    year = {1984}
+  }
 
-@book{euclid1956,
-  author = {Euclid},
-  title = {The Thirteen Books of the Elements},
-  publisher = {Dover Publications},
-  year = {1956}
-}
+  @book{euclid1956,
+    author = {Euclid},
+    title = {The Thirteen Books of the Elements},
+    publisher = {Dover Publications},
+    year = {1956}
+  }
 
-@string{project = {TeXmacs}}
+  @string{project = {TeXmacs}}
 
-@book{native-parent,
-  title = {Native Bibliography Demonstrations},
-  publisher = {Documentation Examples},
-  year = {2026}
-}
+  @book{native-parent,
+    title = {Native Bibliography Demonstrations},
+    publisher = {Documentation Examples},
+    year = {2026}
+  }
 
-@book{native-child,
-  title = {An Explicit Cross-Reference},
-  crossref = {native-parent}
-}
+  @book{native-child,
+    title = {An Explicit Cross-Reference},
+    crossref = {native-parent}
+  }
 
-@online{native-online,
-  title = project # { Documentation Example},
-  year = {2026},
-  url = {https://www.texmacs.org}
-}
+  @online{native-online,
+    title = project # { Documentation Example},
+    year = {2026},
+    url = {https://www.texmacs.org}
+  }
 #+end_src

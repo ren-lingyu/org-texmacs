@@ -1,6 +1,6 @@
 * A numbered native figure
-#+NAME: rectangle
-#+CAPTION[Rectangle]: A *native* rectangle with a text label (citation example [cite:@knuth1984])
+#+name: rectangle
+#+caption[Rectangle]: A *native* rectangle with a text label (citation example [cite:@knuth1984])
 #+begin_figure
 #+begin_texmacs
 (with "gr-geometry" (tuple "geometry" "4cm" "2cm" "center") "gr-frame" (tuple "scale" "1cm" (tuple "2cm" "1cm")) (graphics "" (line (point "-1" "-0.5") (point "1" "-0.5") (point "1" "0.5") (point "-1" "0.5") (point "-1" "-0.5")) (text-at "Diagram" (point "-0.5" "0"))))
@@ -12,20 +12,20 @@ block inside the wrapper; explanatory prose stays outside it. The caption
 citation demonstrates placement and is not a source attribution for the drawing.
 
 * Two ways to supply table contents
-#+NAME: org-values
-#+CAPTION[Values]: A rectangular Org table of numerical values
+#+name: org-values
+#+caption[Values]: A rectangular Org table of numerical values
 #+begin_table
 | Variable | Value | Square |
 |----------+-------+--------|
-| x | 2 | 4 |
-| y | 3 | 9 |
+| x        |     2 |      4 |
+| y        |     3 |      9 |
 #+end_table
 
 Table [[org-values]] uses an ordinary Org table as its single body. A second
 table uses explicit native table data instead:
 
-#+NAME: native-values
-#+CAPTION: A table supplied as native STM
+#+name: native-values
+#+caption: A table supplied as native STM
 #+begin_table
 #+begin_texmacs
 (tformat
@@ -45,27 +45,27 @@ stay native. Paragraph fragment discovery does not scan ordinary Org table cells
 The starred forms select native unnumbered environments; they do not request
 double-column floats.
 
-#+CAPTION: An unnumbered comparison figure
+#+caption: An unnumbered comparison figure
 #+begin_figure*
 #+begin_texmacs
 (with "gr-geometry" (tuple "geometry" "4cm" "2cm" "center") "gr-frame" (tuple "scale" "1cm" (tuple "2cm" "1cm")) (graphics "" (line (point "-1" "-0.5") (point "1" "0.5")) (line (point "-1" "0.5") (point "1" "-0.5"))))
 #+end_texmacs
 #+end_figure*
 
-#+CAPTION: An unnumbered summary table
+#+caption: An unnumbered summary table
 #+begin_table*
-| Environment | Body |
-|-------------+------|
-| figure | One native block |
-| table | One Org table or native block |
+| Environment | Body                          |
+|-------------+-------------------------------|
+| figure      | One native block              |
+| table       | One Org table or native block |
 #+end_table*
 
-#+NAME: last-table
-#+CAPTION: Another numbered table after the starred examples
+#+name: last-table
+#+caption: Another numbered table after the starred examples
 #+begin_table
-| Item | Meaning |
-|------+---------|
-| NAME | Object identity |
+| Item    | Meaning         |
+|---------+-----------------|
+| NAME    | Object identity |
 | CAPTION | Displayed title |
 #+end_table
 

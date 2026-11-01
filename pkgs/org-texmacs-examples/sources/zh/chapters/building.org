@@ -1,6 +1,6 @@
 * 构建与查看案例
 #+begin_src sh
-nix build .#org-texmacs-examples
+  nix build .#org-texmacs-examples
 #+end_src
 
 此 package 在 Linux 上为每种语言构建两个入口: index.org 使用 generic 配置,
