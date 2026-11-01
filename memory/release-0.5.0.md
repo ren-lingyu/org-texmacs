@@ -3,11 +3,25 @@
 ## Current publication status (2026-11-02)
 
 User confirms0.5.0 was only tagged, never actually published, and the tag is now
-removed. Do not describe this as withdrawing a published release. No matching
-local0.5.0tag observed; remote state not independently queried. Version declarations
+removed locally. Do not describe this as withdrawing a published release. No
+matching local0.5.0tag observed. Later public reads for changelog planning find no
+v0.5.0 Release, but the remote annotated tag still points to the earlier3458bfe
+documentation delivery. No remote cleanup is selected. Version declarations
 remain0.5.0 and existing preparation/validation records do not imply publication.
 No source/version rollback or new tag/publication action selected. Earlier
 staging/readiness descriptions below are historical, not outstanding authority.
+
+User adopted an Org changelog introduction before any publication: initial full
+HEAD-based README synchronization, separate .gitignore allowance, six-version
+historical backfill, v0.5.0 manuscript preparation, then final README history/
+navigation cleanup. User explicitly selects initial NEXT rather than TODO for
+v0.5.0; new root entry has matching CUSTOM_ID, no CLOSED and no publication claim.
+The complete root summary and detailed manuscript were prepared against v0.4.0 and
+8104016HEAD, then user-delivered in386b35e. Historical backfill and its editorial
+review are also delivered. Current phase is final README history/navigation
+cleanup against386b35eHEAD. User requests a draft message directly from that
+worktree diff and selective GAW checkpointing. Current state/shared rules are in
+memory/current.md. No new tag, runtime gate or publishing automation is selected.
 
 ## Latest publication audit: functionality delivered, small documentation gaps
 

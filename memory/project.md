@@ -1,9 +1,14 @@
 # org-texmacs current project model
 
 Release status2026-11-02: user reports0.5.0 was tagged but never published, and
-the tag has been removed. Local matching tag list empty; no remote lookup.
+the local tag has been removed. Public reads during changelog planning find six
+published releases through0.4.0 and no0.5.0 Release, while the remote0.5.0tag still
+points to the earlier3458bfe documentation delivery. No tag cleanup is selected.
 Version declarations remain0.5.0; version metadata and delivered features are
 distinct from publication. No source rollback or republishing selected.
+Root CHANGELOG.org now records six historical versions and user-frozen NEXT
+v0.5.0, with complete independent manuscripts under CHANGELOGS/. NEXT has no
+CLOSED; it does not establish publication. Final README history cleanup is pending.
 
 Delivered1017764, exact13reviewed blobs and clean ordinary worktree verified:
 bare default citations in headings/TOC, emphasis, table cells and supported
@@ -30,12 +35,15 @@ legacy is full. Static source review only, no independent downstream overlay
 evaluation/build. User-reorganized history now reviewed; current.md has evidence.
 Single-default-output and older library lock descriptions below superseded.
 
-Latest flake input wiring delivered6955ba5 removes the explicit nested Git input
+Flake input wiring delivered6955ba5 removes the explicit nested Git input
 override, restoring personal-nixpkgs's upstream relative ./pkgs local-nixpkgs input.
-The locked path has parent personal-nixpkgs, not a new root dependency. Personal
-revision a9cc71a, root nixpkgs d3b13ad; root nixpkgs follows retained. Current602ERT
-full isolated check and examples build used these exact flake.nix/lock bytes.
-This supersedes the earlier13e3ca7 remote nested override and old lock descriptions.
+The tested lock's nested path had parent personal-nixpkgs, not a new root dependency. Personal
+revision a9cc71a, root nixpkgs d3b13ad at that runtime acceptance; follows retained.
+The recorded602ERT/full isolated check and examples build used those exact
+flake.nix/lock bytes. Subsequent c4a0eff root-input refresh predates the current
+documentation baseline but has no newly executed validation in this maintenance
+work. Revision labels above describe the tested snapshot, not the current lock.
+The root manifest still omits the earlier13e3ca7 explicit nested Git override.
 
 Delivered user-requested package follow-up3ccf195: targeted href dispatch guard replaces
 full renderer hashes; version2.1.5 and zero-fuzz patching remain. Maintained native

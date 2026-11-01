@@ -1,12 +1,164 @@
 # org-texmacs current memory
 
-## Current release status: unpublished 0.5.0, prior tag removed
+## Active: staged introduction of an Org changelog workflow
+
+User approved implementation on 2026-11-02. Deliver in this exact order:
+1. Fully synchronize README against the current HEAD, preserving historical and
+   migration sections and adding no links to not-yet-created changelog files.
+2. After the README commit, separately allow CHANGELOG.org and flat
+   CHANGELOGS/*.org files through the existing .gitignore allowlist.
+3. Backfill all six confirmed historical versions, v0.1.0 through v0.4.0.
+4. Compare v0.4.0 with the then-confirmed HEAD and prepare NEXT v0.5.0 plus its
+   complete CHANGELOGS/v0.5.0.org manuscript, without CLOSED. User explicitly
+   changed the requested initial state from TODO to NEXT on 2026-11-02; this is
+   direct authorization for the new frozen entry, not an inferred transition.
+5. After changelog commits, synchronize README again against that HEAD, moving
+   historical/upgrade narratives into changelog and repairing navigation while
+   retaining current usage contracts. Finish with a coherent GAW checkpoint.
+
+At every ordinary-project stage, finish edits/static review, wait for user
+staging, draft the message from the complete staged diff, then wait for the user
+commit and verify it before proceeding. No agent project staging/commit, builds,
+tests or formatting are authorized by this plan. Normal declared GAW memory work
+remains authorized. Keep current memory updated without checkpointing every edit.
+
+Adopt English root summaries and full per-version release manuscripts using the
+global git-maintenance changelog profile and its current canonical five-line
+header (title Changelog; description declares conventions and UTC). New historical
+DONE/CLOSED entries derive time from peeled-commit committer seconds in UTC;
+existing state/time transitions remain human-only. Future release notes come from
+the detailed file in the release tag; no publishing/generator/CI work is selected.
+Curate user-visible changes with actionable Breaking guidance; omit changelog
+self-reference, formatting/ignore churn and internal execution inventories.
+Detail organization may differ from platform notes; no generic navigation,
+reverse root links or speculative future-work inventory. Separate runtime
+requirements from packaging/distribution facts. README holds current contracts.
+
+Planning verified six published GitHub releases and identical local/remote tag
+objects, ordered by their ancestor relationships. Existing platform notes are
+supplementary: fragment APIs already exist at v0.1.0, and document conversion and
+sessions at v0.2.0, so later release prose must not falsely introduce them again.
+v0.2.1 changes the document source argument; v0.3.0 introduces the prepared-input
+core/buffer adapter migration. Historical reconstruction still needs each complete
+endpoint audit during its implementation stage; planning alone was not backfill.
+That historical stage has now been completed and reviewed against the tagged
+READMEs, public API implementations/docstrings, input/session/worker code, bounded
+BibTeX validation and manifests, plus the previously verified platform notes.
+No inline-to-fragment migration is falsely attributed to v0.2.0. v0.3.1 root
+records the observable request-construction error fix, with internal refactoring
+compressed in its detail. v0.4.0 retains the old strict BibTeX subset, default T
+menu, original export names, absolute native file links and root-level sources;
+later native bibliography delegation, citation placements and lisp/ layout must
+not be backdated into it. No new historical runtime verification was performed.
+
+Initial README baseline: 627604c2134e1dac01cc36bc00206f96b2ff11cc. Project began
+clean; README fully read. User delivered8993277 with the reviewed docs(readme)
+message, followed by878ef14, chore(git): allow CHANGELOG files. Read the complete
+two-commit transition: README semantic changes match review (one new table row's
+padding additionally aligned), followed by the intended three .gitignore allow
+rules only. Ordinary index/worktree clean. No agent project staging or commit.
+Changes clarify unpublished0.5.0, HEAD's Org/.gitignore treefmt coverage, source/
+default-package migration, named-only Nix outputs, and the shell renderer versus
+the Lisp package's absolute default. Existing detailed citation contracts match
+the recent implementation; overview/structure table and heading summary now agree.
+Corrected stale deeper-heading rejection: H is limited to0..5, while headings
+below H map to lists; source logic and maintained fixtures support that distinction.
+Read public entry points, setup/defaults, caption/citation collection/tests, Nix
+package/overlay/example definitions and check drivers. Reviewed complete README
+diff; whitespace and source/example block boundaries pass. All local file links
+and newly added heading navigation resolve. The existing [[*Headline]] spelling
+is illustrative link syntax, not an added broken navigation link.
+No new runtime, test, build or formatter evidence. First README and .gitignore
+phases are complete. Historical backfill is grounded in
+878ef143240198c9951e2bbada80d2b679494c93 for the ordinary documentation worktree
+and each exact historical release tree for reconstruction. Created CHANGELOG.org
+and six CHANGELOGS/v*.org files. User deliveredada0df54c266dc6c7d45b95db7267dea853f07dc
+with the reviewed docs(changelog) message and expected878ef14parent. Seven paths,
+602 added lines: the six details match the reviewed staged contents; root removes
+six blank lines after version property drawers. Ordinary index/worktree clean.
+No agent project staging or commit. The complete staged candidate and final
+v0.3.0 limitations supplement were reviewed before delivery.
+Static checks confirm the exact canonical root header, descending six-version
+order, matching CUSTOM_ID/filenames, all root/detail links, per-tag committer UTC
+CLOSED values, balanced examples, API-name presence in each tagged source,
+whitespace and file allowlist coverage. No generic external or reverse root links
+were added to details. CLOSED values are retrospective committer-time records,
+not actual historical Org transitions or platform publication timestamps.
+No builds/tests/formatters, source/README/version edits or publication writes ran.
+User first requested read-only judgment on normalization. Review againstada0df5
+found version attribution/API migrations sound and recommended a small editorial
+pass. User subsequently explicitly requested detailed-body edits and a commit
+message directly from the resulting diff. This message uses the ordinary
+WORKTREE diff as expressly selected for that editorial pass, overriding the usual
+staged-only source; no agent project staging or commit was authorized or performed.
+
+Editorial pass was delivered by the user as8104016bb8cf600a816978ec00707756309b706f,
+direct child ofada0df5, with the reviewed message and exact six-file +50/-39
+diff. Ordinary worktree/index clean. Each now has separate Runtime requirements and
+Limitations sections; installation/Nix packaging stays separate where relevant.
+v0.1.0 uses unstarred/starred forms without implying numbering. v0.4.0 distinguishes
+full-source configuration/declarations/footnote definitions from caller-supplied
+BibTeX text, matching its tagged preparation code. v0.3.0 simplifies input
+ownership prose and removes the identity- / keyed line split; v0.3.1 compresses
+module-split/test exposition into public compatibility and lifetime behavior.
+Public API/migration examples remain intact. Root CHANGELOG.org, state/time/ID
+records, historical version scope, source and README are unchanged.
+
+Reviewed the complete six-file worktree diff; whitespace checks pass. Read-only
+inspection confirms one runtime and one limitations section per file, unchanged
+version titles and unchanged complete source/example blocks. No builds, runtime
+tests or formatter ran. The reviewed editorial message was:
+docs(changelog): normalize historical release note structure.
+The v0.5.0 phase was implemented against v0.4.0 and8104016HEAD, then user-delivered
+as386b35e59b8fc243e2d5f7f2b361324bd600f1b4, direct child of8104016, with the reviewed
+message and two-path +396-line scope: root NEXT summary (+67) and detailed
+manuscript (329 lines). Ordinary worktree/index clean at intake. User explicitly
+directed creating NEXT rather than TODO;
+CUSTOM_ID is v0.5.0, with no CLOSED, DONE transition, tag or publishing action.
+New body scope is implemented endpoint changes, not future backlog. Existing
+root header/historical version sections and all historical details are unchanged.
+
+The manuscript covers export API/menu/source/Nix migrations, full frontend
+preprocessing and selection limits, changed file-link defaults with both old-policy
+settings, mixed-display rejection, native BibTeX delegation, raw dates, Org reference
+matching and managed frontend buffers. Additions cover math/name/caption structures,
+footnote STM/caption AST compatibility, expanded citation placement, opt-in discovery
+and key filters, native INCLUDE variants/budgets, editing/metadata/alignment, optional
+renderer/example/overlay outputs and development checks. PDF navigation/footnote,
+quotation/block-case and temporary-context fixes are recorded. Caption parser/layout,
+platform/native-style, generic export, output-write and callback limits remain explicit.
+Dependencies/minimums are historical recorded evidence, not newly executed validation.
+
+Static review confirms header/history preservation, NEXT/CUSTOM_ID identity with no
+CLOSED, link/ignore coverage, example boundaries and whitespace. API spellings match
+the source endpoints; org-texmacs-examples is a Nix output rather than a Lisp API.
+No runtime tests, builds, formatters, source/README edits or ordinary Git writes ran.
+User additionally requested generating the commit-message draft immediately from
+this phase's WORKTREE diff (including the new manuscript), without waiting for stage.
+The delivered message is docs(changelog): prepare v0.5.0 release notes.
+Current phase: final README history/navigation synchronization against386b35eHEAD.
+User explicitly requests an immediate draft message from this README WORKTREE diff
+after edits, without waiting for staging, and reminds agent to checkpoint selectively.
+No ordinary Git staging/commit or runtime validation is authorized.
+The changelog adoption/historical attribution/NEXT freeze has independent recovery
+value, so checkpoint this coherent completed phase before editing README, grounded
+in the actually reviewed386b35eproject tree. Newly introduced ancestry since the
+previous GAW state consists of the reviewed input/ignore/format and documentation
+commits; no new source runtime result is inferred. Final GAW reconciliation follows
+the user's final README commit, with the actual next action kept current meanwhile.
+No source/API/version/dependency/test changes or remote tag cleanup selected.
+
+## Current release status: unpublished 0.5.0, local tag removed
 
 On2026-11-02 user clarifies that0.5.0 was tagged but never actually published;
-the tag has now been removed. Supersedes initial wording "release withdrawn":
+the local tag has now been removed. Supersedes initial wording "release withdrawn":
 there was no published release to withdraw. Local git tag --list '*0.5.0*'
-returns no matches. No remote release/tag lookup performed; prior tag creation/
-removal and nonpublication are user-reported, not reconstructed from local refs.
+returns no matches. Subsequent public GitHub reads during changelog planning list
+six non-draft/non-prerelease releases through v0.4.0 and no v0.5.0 release. Remote
+refs/tags/v0.5.0 still exists as annotated object
+8ae8998b77d266d3eba7edab0a7850dccbe06478, peeled to the earlier documentation
+delivery3458bfe. Local tag removal does not imply remote removal, and the remote
+tag does not establish publication. No fetch, tag mutation or release write ran.
 Existing memory records preparation/version/documentation acceptance, not a
 verified0.5.0 publication. Header/version/melpaVersion remain0.5.0; this metadata
 does not establish a release. Do not infer source/version rollback or authority
