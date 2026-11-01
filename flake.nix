@@ -89,9 +89,7 @@
                   flakeCheck = true;
                   settings.excludes = [
                     "*.patch"
-                    ".gitignore"
                     "LICENSE"
-                    "*.org"
                     "flake.lock"
                   ];
                 };
