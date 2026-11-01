@@ -7,6 +7,73 @@
 Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
+* NEXT v0.5.0
+:PROPERTIES:
+:CUSTOM_ID: v0.5.0
+:END:
+[[file:CHANGELOGS/v0.5.0.org][Detailed release notes]]
+
+Changes since v0.4.0.
+
+** Changed
+- *Breaking:* Separate noninteractive explicit-source export APIs from frontend
+  commands. Update the renamed Lisp calls; the old explicit-source
+  =org-texmacs-export-to-pdf= call becomes =org-texmacs-export-to-pdf-file=.
+  Load =ox-texmacs= for the three interactive frontend commands.
+- *Breaking:* Require explicit dispatcher menu keys. Set the complete
+  =org-texmacs-export-menu-keys= option before loading =ox-texmacs= to restore
+  the former =T= submenu; the default registers commands without a menu.
+- *Breaking:* Run bounded hooks and native INCLUDE in full unnarrowed frontend
+  exports, with source/final-text limits even without INCLUDE. Selected exports
+  retain direct preparation; use explicit-source APIs for direct full conversion.
+- *Breaking:* Move the Lisp libraries and Scheme service into =lisp/=; update
+  manual =load-path= entries, direct file loads and installation recipes.
+- *Breaking:* Replace Nix =.#default= with =.#org-texmacs= for the library.
+  No default package is exported.
+- *Breaking:* Preserve relative PDF file targets by default and map terminal
+  =.org= targets to =.pdf= in all native consumers. Before preparation, set
+  =org-texmacs-pdf-file-links-as-absolute= to =t= and
+  =org-texmacs-link-org-files-as-pdf= to =nil= to retain the earlier policies.
+- *Breaking:* Preserve standalone STM layout and reject known display-math roots
+  mixed with prose. Use a bare STM paragraph or an explicit native block instead.
+- Delegate BibTeX syntax, entry types, fields and plain formatting to TeXmacs.
+  The former entry whitelist and blanket duplicate-key/field rejection are
+  removed; missing or ambiguous used keys still fail explicitly.
+- Preserve complete raw date timestamps instead of normalizing them to a date.
+- Use Org search matching and target priorities for same-document references,
+  retaining explicit errors for missing or ambiguous targets.
+- Reuse untouched frontend result buffers; user edits or takeover cause a new
+  result. Explicit-source buffer exports still create independent buffers.
+
+** Fixed
+- Restore native PDF hyperlink annotations and forward footnote destinations,
+  including tested cross-page and repeated-reference cases.
+- Use native quotation semantics for Org quote blocks.
+- Recognize TeXmacs block names without case sensitivity while preserving source
+  spelling and case-sensitive STM contents.
+- Avoid spurious save prompts from temporary buffers used for export naming.
+
+** Added
+- Recursive formal statements with long captions, raw STM equation blocks,
+  explicit figure/table wrappers and names with same-document references.
+- STM fragments in direct inline footnote text, plus AST compatibility for
+  anonymous caption footnotes. Stock Org parsing and native caption layout
+  remain limited.
+- Bare default citations in headings/TOC, basic emphasis, table cells and
+  supported captions; alternate titles participate only in emitted TOC entries.
+- Opt-in Org Cite bibliography discovery and restricted AST filters that can
+  rewrite citation keys, including caption and alternate-title secondary data.
+- Explicit native preprocessing adapters with protected STM, cross-directory
+  INCLUDE, native selection parameters and literal/block inclusion forms.
+- Default Scheme fontification of recognized STM and Org source editing/
+  indentation for =texmacs= blocks, with a configurable editing major mode.
+- Subtitle, email, language, keywords, description and creator metadata,
+  independent ordered abstracts, and explicit table column alignment.
+- A named =emacs= package, Fandol and native PDF GoToR renderer packages, and
+  compilable English/Chinese examples with native documents and PDFs.
+- Independently selectable =overlays.emacsPackages= and =overlays.texmacs=,
+  configured =legacyPackages= outputs, =nix fmt= and treefmt checks.
+
 * DONE v0.4.0
 CLOSED: [2026-10-08 Thu 17:12]
 :PROPERTIES:
