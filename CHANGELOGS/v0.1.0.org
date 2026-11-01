@@ -31,9 +31,10 @@ Then call =(org-texmacs-tree (org-element-at-point))=.
   spans without starting TeXmacs. =org-texmacs-fragment-tree= parses a span into
   a fresh pseudo tree on every call; fragments have no parse cache.
 - =org-texmacs-fragment-tags= selects case-sensitive root names. Its defaults
-  cover =math= and the numbered/starred equation, eqnarray, align, gather and
-  eqsplit families. Nested children need no separate registration. An empty
-  tag list disables fragment discovery while leaving block parsing available.
+  cover =math= and the unstarred/starred forms of =equation=, =eqnarray=,
+  =align=, =gather= and =eqsplit=. Nested children need no separate registration.
+  An empty tag list disables fragment discovery while leaving block parsing
+  available.
 - Discovery supports paragraph text, including paragraphs in list items and
   quote blocks. It excludes headings, table cells, inline Org objects and
   literal or TeXmacs block bodies. A fragment cannot cross a paragraph boundary.

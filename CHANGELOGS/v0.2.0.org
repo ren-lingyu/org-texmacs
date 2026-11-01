@@ -59,10 +59,13 @@ The three session APIs manage one native body buffer in the shared worker:
 - Preflight or encoding failure preserves the previous body. Native update or
   readback failure discards the session; transport failure stops the worker.
 
-* Requirements
+* Runtime requirements
 Runtime requirements remain Emacs 31.1 or later, Org 9.8 or later, and a headless
-TeXmacs runtime with embedded Scheme and Unix-domain sockets. The Lisp libraries
-and Scheme service remain adjacent in the checkout root or installed package.
+TeXmacs runtime with embedded Scheme and Unix-domain sockets.
+
+* Installation
+Keep the Lisp libraries and Scheme service together in the checkout root or
+installed package.
 
 * Limitations
 This is a body-level conversion and session API, not a complete TeXmacs file or

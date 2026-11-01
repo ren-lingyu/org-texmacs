@@ -22,15 +22,15 @@ from the caller's perspective.
   with their contents preserved. Numbering policy selects numbered or starred
   section tags, and =UNNUMBERED= controls individual headings.
 - Session updates apply the captured style, initial environment and body
-  together, replacing earlier explicit initial values and validating readback.
-  A headless internal view supports native document operations without opening
-  a GUI window. This does not provide visual preview or pagination guarantees.
+  together, replacing earlier explicit initial values. Native readback checks
+  the resulting state; sessions remain headless, without visual preview or
+  pagination guarantees.
 
 * Added
 ** Reusable input and configuration
-- =org-texmacs-input-create= owns copies of a parsed Org AST, INFO and identity-
-  keyed mappings of already parsed STM. It rejects malformed ownership and
-  deferred/opaque data; construction does not lower or access a source buffer.
+- =org-texmacs-input-create= copies a parsed Org AST, effective settings and
+  mappings from AST nodes to parsed STM trees into reusable input. Construction
+  does not lower the document or access a source buffer.
 - =org-texmacs-prepare-buffer= captures the existing source-buffer workflow as
   prepared input. =org-texmacs-document-from-buffer= prepares and lowers in one
   call; =org-texmacs-document-current-buffer= remains the convenience wrapper.
@@ -85,10 +85,11 @@ The current-buffer wrapper keeps its zero-argument call. Recheck heading levels
 and numbering in consumers that depended on the earlier absolute levels 1–3.
 Configure style and initial values before preparing a new buffer snapshot.
 
-* Requirements and limitations
+* Runtime requirements
 Runtime requirements remain Emacs 31.1 or later, Org 9.8 or later, and headless
 TeXmacs with embedded Scheme and Unix-domain sockets.
 
+* Limitations
 Buffer preparation still requires an unnarrowed Org source. Source-authored
 internal/file links, named footnotes, citations, file/PDF export and a generic
 Org backend are not introduced here. Generated TOC links do not imply general

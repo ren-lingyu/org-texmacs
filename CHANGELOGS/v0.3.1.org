@@ -10,21 +10,19 @@ Local request-construction errors retain their original error condition and
 leave a healthy worker available. They are no longer classified as transport
 failure merely because request preparation failed before sending data.
 
-Transport, framing and malformed-response failures still stop an unhealthy
-worker. Native parse, encoding and session errors retain their respective
+Transport, framing and malformed-response failures still stop the worker.
+Native parse, encoding and session errors retain their respective
 operation-specific handling.
 
 * Compatibility
-No caller migration is required for the public block, fragment, prepared-input,
-document or session entry points. Native encoding and session response handling
-now belong to =org-texmacs-session.el=; shared error definitions belong to
-=org-texmacs-core.el=. Keep all shipped libraries and the Scheme service together
-when updating a manual installation.
+Public block, fragment, prepared-input, document and session calls need no
+migration. Update all shipped Lisp libraries and the adjacent Scheme service
+together in manual installations.
 
-The refactoring does not add document syntax, file/PDF export, preprocessing,
-preview or automatic synchronization. Regression coverage exercises the revised
-response ownership and worker lifetime boundaries.
-
-* Requirements
+* Runtime requirements
 Runtime requirements remain Emacs 31.1 or later, Org 9.8 or later, and headless
 TeXmacs with embedded Scheme and Unix-domain sockets.
+
+* Limitations
+The release does not expand the supported document syntax or add file/PDF
+export, preprocessing, preview or automatic synchronization.

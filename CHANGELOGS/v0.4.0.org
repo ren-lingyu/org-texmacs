@@ -8,8 +8,9 @@ data rather than reconstructing it from a textual intermediary.
 
 * Changed
 Source-buffer preparation now accepts existing narrowing instead of rejecting
-it. The accessible range bounds the body; configuration and required footnote/
-bibliography dependencies come from a private complete source snapshot.
+it. The accessible range bounds the body. File-wide configuration, bibliography
+declarations and required footnote definitions come from a private copy of the
+complete Org source. Bibliography text is supplied separately by the caller.
 Restriction changes during prompts or native waits reject output before writing.
 
 * Added
@@ -35,9 +36,9 @@ markup/link subset, without citation, footnote or STM fragment discovery.
 Inline footnote bodies also do not gain STM fragment discovery in this release.
 
 ** Citations and explicit bibliography snapshots
-Preparation accepts explicit source-path/BibTeX-text pairs. Paths identify
-declarations and resolve against the captured source base; conversion does not
-open those files or consult global bibliography configuration.
+The caller supplies bibliography data as pairs of source paths and BibTeX text.
+Paths identify declarations and resolve against the captured source base;
+conversion does not open those files or consult global bibliography configuration.
 
 - Bare default citations such as =[cite:@one; @two]= work directly in paragraphs
   and inline footnote bodies. Used keys must resolve unambiguously.
@@ -119,12 +120,16 @@ bibliography, subtree-position, region and external-configuration arguments.
 Explicit new-file saving adapters keep their separate signatures; prepare a
 configured document first when those consumers need selected input.
 
-* Requirements and limitations
+* Runtime requirements
 Runtime requirements remain Emacs 31.1 or later, Org 9.8 or later, and headless
-TeXmacs with embedded Scheme and Unix-domain sockets. Manual installations keep
-the Lisp libraries, optional =ox-texmacs.el= and Scheme service together at the
-checkout root. Nix still exports the library through =packages.default=.
+TeXmacs with embedded Scheme and Unix-domain sockets.
 
+* Installation and Nix packaging
+Manual installations keep the Lisp libraries, optional =ox-texmacs.el= and Scheme
+service together at the checkout root. Nix still exports the library through
+=packages.default=.
+
+* Limitations
 This is not full Org exporter parity. INCLUDE/SETUPFILE, macros, Babel, generic
 export hooks/filters, automatic bibliography discovery, async, =visible-only=
 and =body-only= exports remain unsupported. PDF consumers reject explicit

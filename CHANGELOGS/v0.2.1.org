@@ -48,9 +48,12 @@ or the current-buffer wrapper:
   (org-texmacs-document-current-buffer)
 #+end_src
 
-* Requirements and scope
+* Runtime requirements
 Runtime requirements remain Emacs 31.1 or later, Org 9.8 or later, and headless
-TeXmacs with embedded Scheme and Unix-domain sockets. The supported document
-syntax and body-session APIs remain those of v0.2.0. Narrowed input is still
-rejected; file/PDF export, preview, automatic synchronization and a complete
-Org export environment are not introduced by this release.
+TeXmacs with embedded Scheme and Unix-domain sockets.
+
+* Limitations
+The supported document syntax and body-session APIs remain those of v0.2.0.
+Narrowed input is still rejected; file/PDF export, preview, automatic
+synchronization and a complete Org export environment are not introduced by
+this release.
