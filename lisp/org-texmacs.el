@@ -52,6 +52,9 @@
 ;; `org-texmacs-model-display' to show it in a new read-only buffer.
 ;; Use `org-texmacs-model-serialize' for normalized Org text, or
 ;; `org-texmacs-model-to-buffer' for a new editable Org buffer.
+;; Use `org-texmacs-model-copy' for an independent snapshot,
+;; `org-texmacs-model-island' for read-only access by snapshot-local node,
+;; and `org-texmacs-model-replace-stm' for structural STM subtree replacement.
 ;; Use `org-texmacs-document' to lower an explicit prepared input, or
 ;; `org-texmacs-document-from-buffer' for source-buffer structural conversion
 ;; to a text TeXmacs document result with body, style, initial environment and

@@ -352,11 +352,12 @@ nested data.  Signal `org-texmacs-model-error' for invalid inputs."
   (signal 'org-texmacs-model-error
           (list (format "%s at AST path %S" message path))))
 
-(defun org-texmacs--model-snapshot (model)
+(defun org-texmacs--model-snapshot (model &optional context)
   "Validate MODEL and return detached (AST ISLANDS PATHS) for projection.
 Reuse model ownership and island validation.  Also check existing parents rather
 than silently repairing a damaged snapshot.  PATHS indexes all structural nodes,
-including secondary strings, captions and native island body residue."
+including secondary strings, captions and native island body residue.
+With CONTEXT non-nil, append owned syntax context as a fourth result."
   (unless (and (org-texmacs-model-p model)
                (consp (org-texmacs-model-ast model))
                (eq (car (org-texmacs-model-ast model)) 'org-data))
@@ -433,7 +434,115 @@ including secondary strings, captions and native island body residue."
            (org-texmacs--model-path-error
             "Inconsistent Org parent" (gethash new paths)))))
      (org-texmacs--model-owner-nodes owner))
-    (list ast islands paths)))
+    (append
+     (list ast islands paths)
+     (when context
+       (let ((value (org-texmacs-model-context model))
+             seen)
+         (unless (and (proper-list-p value)
+                      (zerop (% (length value) 2)))
+           (org-texmacs--model-path-error
+            "Invalid syntax context" nil))
+         (cl-loop
+          for (key _value) on value by #'cddr do
+          (unless (and (memq key org-texmacs--model-context-keys)
+                       (not (memq key seen)))
+            (org-texmacs--model-path-error
+             "Invalid or duplicate syntax context key" nil))
+          (push key seen))
+         (list (org-texmacs--model-copy-data owner value)))))))
+
+;;;###autoload
+(defun org-texmacs-model-copy (model)
+  "Return an independent, structurally equivalent snapshot of MODEL.
+Copy all mutable Org, STM and context data, rebuild parents and remap island
+identities and structural references.  No parser, worker or lowering runs.
+Accessors on the result return read-only references, as on MODEL.
+Signal `org-texmacs-model-error' for invalid input; leave MODEL untouched."
+  (let ((snapshot (org-texmacs--model-snapshot model t)))
+    (org-texmacs--model-create
+     :ast (nth 0 snapshot)
+     :islands (nth 1 snapshot)
+     :context (nth 3 snapshot))))
+
+;;;###autoload
+(defun org-texmacs-model-island (model node)
+  "Return the read-only STM tree associated with MODEL's island NODE.
+NODE must be the actual island key from MODEL, not an equal copy or a node
+from another snapshot.  Obtain keys from `org-texmacs-model-islands' or native
+Org traversal.  Do not modify the returned tree or any of its nested data.
+Signal `org-texmacs-model-error' if NODE is not an island in MODEL."
+  (unless (org-texmacs-model-p model)
+    (org-texmacs--model-path-error
+     "Expected a mathematical-document model" nil))
+  (let ((entry (assq node (org-texmacs-model-islands model))))
+    (unless entry
+      (org-texmacs--model-path-error
+       "Node is not an island in this snapshot" nil))
+    (cdr entry)))
+
+;;;###autoload
+(defun org-texmacs-model-replace-stm (model node path replacement)
+  "Return a new snapshot replacing MODEL island NODE's PATH with REPLACEMENT.
+NODE is a snapshot-local island key.  PATH is a proper list of zero-based
+STM child indices, excluding each tag; nil replaces the whole island tree.
+REPLACEMENT is a structured STM tree, including a possible atomic string.
+Own every mutable input, rebuild Org parents and island identities, and leave
+MODEL and its locators untouched on success or failure.  Old nodes cannot
+locate islands in the result.  No source coordinates, text round trips,
+parser, worker or document lowering are used.
+
+Root changes need only be structurally valid.  Serialization may subsequently
+signal unsupported syntax without invalidating this result.  Source text and
+coordinates retained on Org nodes describe the original source, not the new
+STM content.  Use island identities and AST paths, never those coordinates,
+to address the result.  Signal `org-texmacs-model-error' for invalid arguments."
+  (let* ((snapshot (org-texmacs--model-snapshot model t))
+         (islands (nth 1 snapshot))
+         (position
+          (cl-position
+           node
+           (org-texmacs-model-islands model)
+           :key #'car
+           :test #'eq))
+         (entry (and position (nth position islands)))
+         (location
+          (and entry (gethash (car entry) (nth 2 snapshot)))))
+    (unless entry
+      (org-texmacs--model-path-error
+       "Node is not an island in this snapshot" nil))
+    (unless (and (proper-list-p path) (cl-every #'natnump path))
+      (org-texmacs--model-path-error
+       "Expected STM child indices" location))
+    (let ((tree (cdr entry))
+          (steps path)
+          (visited (append location '(stm)))
+          parent
+          slot)
+      (while steps
+        (let ((index (pop steps)))
+          (unless (and (consp tree) (< index (length (cdr tree))))
+            (org-texmacs--model-path-error
+             "STM child index out of range"
+             (append visited (list index))))
+          (setq
+           parent tree
+           slot index
+           tree (nth (1+ index) tree)
+           visited (append visited (list index)))))
+      (let ((owned
+             (condition-case err
+                 (org-texmacs--model-copy-stree replacement)
+               (org-texmacs-model-error
+                (org-texmacs--model-path-error
+                 (error-message-string err) visited)))))
+        (if parent
+            (setcar (nthcdr (1+ slot) parent) owned)
+          (setcdr entry owned))))
+    (org-texmacs--model-create
+     :ast (nth 0 snapshot)
+     :islands islands
+     :context (nth 3 snapshot))))
 
 (provide 'org-texmacs-model)
 ;;; org-texmacs-model.el ends here

@@ -13,6 +13,7 @@ let
     ./lisp/model-inspect.el
     ./lisp/model-parser.el
     ./lisp/model-serialization.el
+    ./lisp/model-transform.el
     ./lisp/document.el
     ./lisp/editing.el
     ./lisp/frontend.el

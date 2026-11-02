@@ -608,8 +608,7 @@ apply to complete TeXmacs special blocks, not paragraph fragments.
 * Mathematical-document model construction
 Load =(require 'org-texmacs-model)= to construct an independent snapshot from
 an already parsed native Org AST and STM trees.  This module does not load the
-document lowering layer, export frontend or worker.  Transformation commands
-remain planned.  Its autoloaded
+document lowering layer, export frontend or worker.  Its autoloaded
 =org-texmacs-parse-buffer= adapter can construct a complete model from an explicit
 Org source buffer, using native STM parsing without document lowering.
 
@@ -633,7 +632,7 @@ The constructor does not scan source text, start a worker, allocate output
 references or invoke document lowering.  The caller supplies the island
 associations; this entry does not prove source-recognition completeness.
 
-Model validity is independent of the exporter's Org support and of future Org
+Model validity is independent of the exporter's Org support and of Org
 serialization support.  Legal comments, drawers, unused footnotes and excluded
 headlines can remain in the AST.  A structurally valid tree at an island can
 have a root that current inline recognition would not recognize.  That does
@@ -746,6 +745,47 @@ The returned view shares no mutable AST/STM data with the model.  It is a debug
 projection, not a persistence format or a structural-equivalence definition.
 Display uses a unique buffer even when an existing buffer has the requested
 optional name, and removes its new buffer if printing or display fails.
+
+* Structural model operations
+=org-texmacs-model-copy MODEL= returns an independent, structurally equivalent
+snapshot.  =org-texmacs-model-island MODEL NODE= returns the read-only STM tree
+for an island key belonging to that snapshot.  Obtain keys from
+=org-texmacs-model-islands=, or use native Org traversal to locate a block.
+Ordinary Org nodes, equal copies and keys from another snapshot are not valid
+island locators.  Accessor results remain read-only by convention.
+
+=org-texmacs-model-replace-stm MODEL NODE PATH REPLACEMENT= creates a new
+snapshot with one STM subtree replaced.  PATH is a proper list of zero-based
+child indices, excluding tag symbols; nil replaces the entire island.
+
+#+begin_src emacs-lisp
+  (let* ((model (org-texmacs-parse-buffer (current-buffer)))
+         (node (caar (org-texmacs-model-islands model)))
+         ;; Replace the first child's second child in a suitable STM tree.
+         (changed (org-texmacs-model-replace-stm model node '(0 1) '(sqrt "x"))))
+    (org-texmacs-model-display changed))
+#+end_src
+
+These operations use structured Org and STM data directly, without source
+parsing, text serialization, native workers or document lowering.  Copy and
+replacement own all mutable AST, STM and syntax-context data, rebuild parents
+and island mappings, and remap structural references.  A replacement may be
+borrowed from an existing tree; the result owns its own copy.  The original
+model and its locators remain valid on success and failure.  Obtain new keys
+from the new model; old-model keys cannot address it.
+
+Replacing a root with any structurally valid STM tree, including an atomic
+string, produces a valid model.  If the root is not recognized at that Org
+position under captured syntax, serialization signals
+=org-texmacs-model-serialization-error=.  It never silently uses old source
+text instead.  Invalid locators, paths or replacement trees signal
+=org-texmacs-model-error=; path diagnostics use AST and STM child paths.
+
+Org text residues and source coordinates retain their original-source meaning
+after a replacement.  They do not describe the new mathematical content; use
+the authoritative island tree, native node identities and structural paths.
+This initial API changes STM content and keeps the Org hierarchy.  Arbitrary
+Org node insertion, removal or movement is outside this transformation profile.
 
 * Normalized Org serialization
 =org-texmacs-model-serialize MODEL= returns normalized Org text.

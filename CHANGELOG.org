@@ -36,15 +36,15 @@ Development in progress; checked items are implemented and verified.
   producing lossy output.
 
 *** Structural transformation
-- [ ] Copy independent snapshots, access islands, and replace STM subtrees
+- [X] Copy independent snapshots, access islands, and replace STM subtrees
   with owned data, rebuilt associations and snapshot-local locators.
-- [ ] Keep structurally valid transformation results valid even outside
+- [X] Keep structurally valid transformation results valid even outside
   serialization support, and fail their serialization explicitly.
 
 *** Round-trip verification
 - [X] Verify structural parse/serialize round trips.
 - [X] Verify normalization idempotence.
-- [ ] Verify supported transformation round trips without requiring TeXmacs
+- [X] Verify supported transformation round trips without requiring TeXmacs
   document or PDF output.
 
 * DONE v0.5.0
