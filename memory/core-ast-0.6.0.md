@@ -534,3 +534,27 @@ has12complete/1ongoing/0pending, version TODO unchanged. Complete worktree commi
 message was prepared before review. Human delivery is verified against expected
 serialization parent,8paths/message and all132accepted input hashes. Worktree/
 index clean. Node8 begins after the user resumes a pause during initial reads.
+
+## Node8 version/docs and export research: accepted, awaiting delivery
+
+After the resumed source investigation, the8-path candidate aligns main Lisp
+Version and Nix version/melpaVersion to0.6.0, updates flake/main/README positioning,
+adds a complete self-contained core workflow example and qualifies minimum-
+version evidence. New CHANGELOGS/v0.6.0.org is the release manuscript; new
+docs/standard-org-export.org separates inspected control flow from a future
+in-stack handoff experiment and unresolved STM/Cite/INFO/error boundaries.
+The new directory was ignored, so a narrow docs/*.org allowlist is included.
+No standard-export compatibility implementation or package-specific shim was
+introduced; existing guards and preparation order remain. Current public
+org-roam-organize source requires dynamic export scope and mutable bibliography
+INFO; legacy pinned integration evidence does not establish its compatibility.
+
+Scoped fmt, package-version eval0.6.0, full isolated flake/665ERT/all17checks and
+default package build pass. The final root CHANGELOG/release-note update passes
+with cached runtime outputs and a fresh treefmt check. All134final input hashes
+match root/copy, local file links exist and whitespace passes. Root progress is
+14complete/0ongoing/0pending; TODO/CLOSED/tag/publication remain untouched. Complete
+worktree message is proactively prepared before review. After exact human
+delivery verification, the approved eight-node implementation plan is complete.
+The documented export experiment is follow-up research/implementation scope,
+not a hidden ninth node or an automatically authorized compatibility project.

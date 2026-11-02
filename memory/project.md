@@ -19,11 +19,25 @@ snapshots and island validation. Existing export support descriptions below
 remain factual baseline and historical delivery evidence; their target-support
 rejection rules do not govern independent core validity.
 
+Node8 version/docs candidate is now accepted, awaiting human delivery. Lisp/Nix/
+README declare0.6.0; main/flake/README positioning names the independent AST
+framework. The complete core workflow example, release manuscript and sourced
+standard-export follow-up design are present. A narrow docs/*.org allowlist
+makes the new design trackable. Full0.6.0gate passes665ERT/all17checks, package
+eval/build confirms0.6.0, and final docs-only snapshot also passes. All134input
+hashes identify the8-path candidate. CHANGELOG has14complete/0ongoing/0pending;
+version TODO/CLOSED unchanged. Standard export compatibility remains research,
+not implemented support: current extensions can mutate INFO and depend on the
+org-export-as dynamic invocation. Older optional integration results do not
+establish current org-roam-organize compatibility. Details/limits are in
+docs/standard-org-export.org and evidence.md. No export execution order changed.
+
 Native parser/serializer reuse, semantic Org round trips, structural equivalence
 and normalization idempotence guide subsequent design. Org-fmt is user-supplied
 inspiration, not researched dependency/API evidence. Standard Org Export
-preparation, AST filters, Cite and INFO need separate later investigation after
-core interfaces are clear. Existing bounded dispatcher behavior is unchanged.
+preparation, AST filters, Cite and INFO now have a source-based investigation;
+an in-stack prototype and runtime interoperability validation remain future
+work. Existing bounded dispatcher behavior is unchanged.
 Current scope is one document, with no formal-math semantics, knowledge-base
 protocol, compulsory second application or wholesale refactor selected. Goals
 are authoritative in memory/goals.md. The subsequent preferred development guide
@@ -44,7 +58,7 @@ AST-path property references, parent validation and unique read-only model-displ
 buffers with failure cleanup. Eleven core cases and docs are committed; exact
 six-path/message/parent and126accepted input/doc hashes match, worktree/index
 clean. Native unset standard slots and cache state are filtered while
-ordinary explicit nil properties stay visible. CHANGELOG progress sync now has
+ordinary explicit nil properties stay visible. The delivered progress sync marked
 five complete/one ongoing/seven pending, now human-delivered with exact diff/
 parent/message verification and a clean worktree/index. Serialization is now
 implemented and human-delivered, with native standalone STM runtime
@@ -53,7 +67,7 @@ proof and eleven core/five native regression cases. Full isolated flake passes
 runtime outputs and a fresh treefmt check. Human delivery is verified against
 expected parent,15paths, prepared message and all130accepted input hashes;
 ordinary worktree/index clean, no delivery-only rerun.
-CHANGELOG now has9complete/1ongoing/3pending items; version TODO is unchanged. Public
+Serialization delivery marked9complete/1ongoing/3pending items; TODO stayed unchanged. Public
 model-serialize/model-to-buffer require recorded syntax and explicitly reject
 unsupported/lossy output without invalidating the model. Serialization owns
 its Org copy, restores authoritative trees, uses native Org interpretation and

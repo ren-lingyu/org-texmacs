@@ -24,6 +24,15 @@ node is human-delivered and verified against expected parent/8paths/message and
 all132accepted input hashes. Node8 standard-export research/docs/version completion
 is active after user resume. Node7 delivery progress:12complete,
 1ongoing export-preservation item,0pending feature boxes; version TODO unchanged.
+Node8 is now implemented and accepted, awaiting human review/delivery:
+0.6.0metadata and positioning, complete core workflow example, release manuscript
+and source-based standard-export design. Full665ERT/all17checks and package
+eval/build pass;134final input hashes identify the8-path candidate. CHANGELOG
+has14complete/0ongoing/0pending, with TODO unchanged. No standard-export adapter
+or current-extension runtime compatibility is claimed. Prototype acceptance
+cases in docs/standard-org-export.org are future work, not new implementation
+authorization. After delivery verification the approved implementation plan is
+complete; freeze/tag/publication remain separate human actions.
 The user grants nix fmt/build/eval/flake check and argument variants as needed
 until the approved plan is complete; ordinary Git writes remain separate.
 Before delivery of each development node, synchronize both CHANGELOG

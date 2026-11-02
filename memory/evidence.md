@@ -1,5 +1,34 @@
 # org-texmacs durable evidence
 
+## Node8 v0.6.0 candidate acceptance
+
+Eight-path uncommitted candidate aligns Lisp/Nix/README0.6.0, adds release notes
+and standard-export follow-up design, updates positioning/workflow example and
+completion state, and allows docs/*.org tracking. Standard adapter code and
+human TODO/CLOSED/tag/publication state are unchanged. No minimum-version or
+current-extension compatibility claim is inferred from earlier evidence.
+
+Under standing Nix authorization, scoped8-path fmt exits0 (1file changed).
+Nix eval package version exits0 and returns0.6.0. First timeout600s isolated
+full flake exits0/all17checks pass on x86_64-linux. Fresh suites:
+core258/258 in1.787199s; native339/339 in251.335821s; PDF-document33/33
+in105.356681s; PDF-render29/29 in175.996328s; patched-caption6/6 in3.025114s:
+665ERT, zero unexpected. Strict byte/native compile, lint/treefmt/aggregates pass.
+Default package build exits0 with --no-link, producing
+/nix/store/0mw31iahaz7i0vag326xg5y7np20k5hy-emacs-org-texmacs-0.6.0.
+
+Only CHANGELOG/release notes then change for the last checkbox and validation
+paragraph. Scoped doc fmt exits0/no changes. Final full command exits0 using
+the same runtime outputs and a fresh treefmt check; not a second fresh665ERT
+execution. All134final root/copy hashes match; whitespace and local file-link
+checks pass. Runtime/build input snapshot/manifest:
+tmp/core-ast-0.6.0-finalization-attempt-1 (ignored).
+Final snapshot/manifest: tmp/core-ast-0.6.0-finalization.
+The final candidate's only differences from runtime inputs are those two docs.
+No new runtime coverage for minimum Org9.8, other platforms, current optional
+extensions or GUI. No project staging/commit/lockfile or output-link mutation.
+Proactive message uses complete worktree diff including two new documents.
+
 ## Node8 static export research: source evidence only
 
 Read Org9.8.10 ox.el/oc.el via official GitHub sources. org-export-as keeps

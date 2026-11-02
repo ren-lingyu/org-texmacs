@@ -1,102 +1,73 @@
 # org-texmacs current memory
 
-## Current: resumed node8 export research and version completion
+## Current: node8 accepted; v0.6.0 candidate awaiting human review
 
-Nodes1-6 are human-delivered, including serialization delivery verified against
-its expected parent,15paths/message and all130accepted input hashes. Node7 is
-now human-delivered and verified: expected serialization parent, exactly8paths,
-prepared message and all132accepted committed input hashes match; ordinary
-worktree/index clean. Delivery is commit6ae0bd8eada719ee4ccaa0270cf0807871b9ca1e.
-User said to continue; all eight statuses were reported, then node8 began with
-read-only inspection of metadata, README, existing export/preprocessing and
-optional integration fixtures, plus initial public Org9.8.10 source lookup.
-User paused during initial reads and now explicitly resumes. Full eight-node
-progress was reported again. Node8 is active: standard-export follow-up design,
-positioning/API/examples/release documentation and0.6.0metadata, then full
-regression and build. No export adaptation implementation is selected.
-Node8 now has a7-path unvalidated candidate: README positioning/core example,
-root CHANGELOG, new CHANGELOGS/v0.6.0.org and docs/standard-org-export.org,
-main package summary/Version, Nix version/melpaVersion and flake description.
-Metadata is0.6.0; version TODO/CLOSED and publication are untouched.
-No node8 Nix commands yet; no delivery-only node7 rerun is needed.
-Static research has now read Org9.8.10 ox.el/oc.el and current public
-org-roam-organize56fdaac6adab06deafc23357aec63ae2a497e09b. Its export advice
-around org-export-as creates per-export dynamic bibliography state; its tree
-filter mutates INFO bibliography as well as UUID keys. Existing restricted
-filters permit citation-key changes only and do not invoke standard Cite
-processors. Thus legacy extension evidence does not prove current compatibility.
-Document a candidate in-stack handoff after standard filters/Cite processing,
-preserving export INFO outside the generic model. Resolve deferred properties,
-STM protection through preprocessing/filter rewrites and arbitrary processor
-output in future implementation; do not weaken core validity or change current
-export preflight/parse ordering merely to claim compatibility.
+Nodes1-7 are human-delivered and verified. Node7 matched expected serialization
+parent,8paths/message and132accepted input hashes; no delivery-only rerun.
+User paused during node8 initial reads and explicitly resumed. Full eight-node
+progress preceded work and was repeated on resume. All eight implementation
+nodes are now complete and checked; node8's8-path candidate is NOT committed yet.
 
-Before EVERY new node report all eight statuses, scope, validation and delivery.
-At the END of EACH development node synchronize BOTH CHANGELOG and README.
-Before handing over EVERY completed node, proactively draft tmp/commit.md from
-the COMPLETE node diff, including unstaged/new files and explicitly state the
-basis. This user instruction overrides staged-only message preparation for
-these node handovers. Do not wait for another message request or stage files.
-User authorizes nix fmt/build/eval/flake check and argument variants as needed
-until the approved plan completes. Disclose commands, effects/network and bounded
-timeouts, but do not request repeated permission. Ordinary project staging
-remains separately authorized and commits remain human actions.
+Before EVERY new node report all statuses, scope, validation and delivery.
+At the END of EACH development node sync BOTH README and CHANGELOG. Before
+handover proactively prepare tmp/commit.md from the COMPLETE node diff, including
+unstaged/new files, and explicitly label the basis. Do not wait for another
+message request or stage project files. User authorizes nix fmt/build/eval/flake
+check and argument variants as needed through completion of this approved plan;
+disclose commands/effects/network/timeouts, without repeated permission requests.
+Ordinary project staging remains separately authorized; commits stay human.
 
-New APIs in model.el:
+Candidate paths: .gitignore, README.org, CHANGELOG.org, flake.nix,
+lisp/org-texmacs.el, pkgs/emacsPackages/org-texmacs/package.nix, and new
+CHANGELOGS/v0.6.0.org plus docs/standard-org-export.org. All8are unstaged.
+The new design was initially ignored, so a narrow docs/*.org allowlist was added.
+No project index/history/ref/remote or lockfile mutation occurred.
 
-- model-copy: own independent Org/STM/context graphs, rebuild parents and island
-  keys, and remap structural references including context references.
-- model-island: read-only STM reference by actual snapshot-local Org island key;
-  equal copies, ordinary nodes and other-model locators fail.
-- model-replace-stm: node plus zero-based STM child path and replacement produce
-  a new independent snapshot; nil path replaces the root, including an atom.
+Lisp Version, Nix version/melpaVersion and README align to0.6.0. Main/flake/README
+position the package as the independent mathematical-document AST framework,
+with TeXmacs export a bounded consumer. README adds a self-contained complete
+parse/transform/inspect/Org-buffer example, distinguishes bare-model vs existing
+prepared-input export APIs, and qualifies historical minimum-Org evidence.
+Release manuscript covers APIs, migration, ownership/context/output support,
+error boundaries and verified environment. Root CHANGELOG has14complete,
+0ongoing/0pending checkboxes; version TODO/CLOSED is unchanged, final review pending.
+No tag/publication/freeze or human version-state transition is implied.
 
-No AST -> text -> AST intermediate, source read, worker or lowering. The original
-and its locators survive success/failure. Source text/coordinates remain original-
-source data, never addressing the changed tree. Errors use AST/STM paths.
-Model validity is independent of output syntax/support. Changed inline roots
-outside captured tags remain valid, inspectable/copyable models; S fails explicitly.
-Configured additional tags permit supported changed roots to round-trip.
+Export research reads Org9.8.10 ox.el/oc.el and current public org-roam-organize
+56fdaac6adab06deafc23357aec63ae2a497e09b. The extension wraps org-export-as for
+dynamic bibliography state and mutates INFO bibliography plus UUID keys. Existing
+restricted filters and older eaaee8e integration evidence do not prove current
+compatibility. The design separates observed flow, a candidate in-stack handoff,
+unresolved STM protection/deferred properties/Cite result shapes/INFO remapping/
+error priority, and future acceptance tests. No current-extension runtime test,
+generic export support, adapter implementation or new compatibility layer is
+claimed. This follow-up implementation is outside the completed0.6.0 scope.
 
-The owned snapshot helper accepts optional context as a fourth result, retaining
-its existing three-result contract for inspection/serialization. Context ownership
-uses the same node-remapping transaction, not disconnected generic copying.
-Org hierarchy editing is outside this finite transformation profile; no derived
-export INFO/reference data is stored or carried across these core operations.
+Validation: first scoped8-path fmt succeeds (1file changed). nix eval reports
+0.6.0. Full isolated gate exits0/all17checks pass on x86_64-linux, with fresh
+core258/native339/PDF-document33/PDF-render29/patched6 =665ERT, zero unexpected,
+strict byte/native compilation, package-lint and treefmt. Default package build
+exits0, output /nix/store/0mw31iahaz7i0vag326xg5y7np20k5hy-emacs-org-texmacs-0.6.0.
+Then only root CHANGELOG and release notes changed for final status/evidence;
+scoped doc fmt exits0/no changes. Final full command exits0 using unchanged
+runtime outputs and a fresh treefmt check, not another fresh665ERT run.
+README/CHANGELOG/release-note local file targets exist; whitespace passes.
+Minimum Org9.8 new APIs, other platforms, optional current extensions and GUI
+are not newly runtime-verified. Evidence/timings are in evidence.md.
 
-Node7 adds8core/3native regressions. Entire mutable graphs are checked disjoint,
-including strings/conses/vectors, secondary objects/captions and context refs.
-Covers borrowed replacements, deep/root/atomic edits, locator isolation, bad
-paths/trees, invalid parents, historical coordinates, purity and transformed
-round-trip/idempotence. Maintained independent model-meaning test oracle is reused.
+Accepted runtime/build134-input snapshot/manifest:
+tmp/core-ast-0.6.0-finalization-attempt-1 (ignored).
+Final134-input snapshot/manifest: tmp/core-ast-0.6.0-finalization and adjacent
+inputs.json. Root and isolated-copy hashes match. Full command:
+timeout 600s nix flake check -L --no-write-lock-file --max-jobs 2 path:/home/lingyu/Projects/org-texmacs/tmp/core-ast-0.6.0-finalization
+Package build used --no-link; no project result link was created.
 
-First full gate exits0/all17checks passed on x86_64-linux: core258/native339/
-PDF-document33/PDF-render29/patched6 =665ERT, zero unexpected. Strict byte/native
-compilation, lint and treefmt pass. Final CHANGELOG-only completion update also
-passes the full command using cached runtime outputs and fresh treefmt; no second
-fresh665ERT run. Two scoped nix fmt commands succeed. Other platforms, optional
-real extension integration and GUI are not newly verified.
-
-Accepted runtime132-input snapshot/manifest:
-tmp/core-ast-0.6.0-transformation-attempt-1 (ignored).
-Final snapshot/manifest: tmp/core-ast-0.6.0-transformation
-and adjacent inputs.json. Final snapshot differs only in CHANGELOG. Full command:
-timeout 600s nix flake check -L --no-write-lock-file --max-jobs 2 path:/home/lingyu/Projects/org-texmacs/tmp/core-ast-0.6.0-transformation
-All132committed input hashes matched at node7 delivery, which left the ordinary
-worktree/index clean. No ordinary Git write/lockfile mutation occurred.
-
-README documents APIs, paths, read-only references, identity/ownership and scope.
-Node7 left12complete/1ongoing/0pending CHANGELOG items. Node8 adds one complete
-integration-guidance item; export preservation still awaits the final check.
-Version TODO remains unchanged; the candidate package metadata is now0.6.0.
-tmp/commit.md is proactively prepared from the complete WORKTREE diff including
-new files: feat(model): add structural snapshot transformations.
-
-Next: review the follow-up design/release/core documentation and0.6.0metadata,
-format/check/build under standing
-authorization, synchronize completion evidence and prepare the full-diff message.
-Keep version TODO/CLOSED transitions and tags/publication human-only.
-No new test is needed solely for staging or unchanged delivery confirmation.
+tmp/commit.md is proactively prepared from the complete WORKTREE diff, including
+both new documents: chore(release): prepare v0.6.0 AST framework release.
+Next: human review/staging/commit. Verify the eventual expected transform parent,
+8paths/message and all134accepted committed input hashes. Do not rerun unchanged
+checks merely for staging/delivery. Implementation-plan work is complete after
+this delivery; release-state transitions/tags/publication remain human actions.
 
 ## Accepted foundation and delivery evidence
 
