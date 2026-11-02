@@ -1,5 +1,36 @@
 # org-texmacs current memory
 
+## Current: v0.7.0 standard-export guide reviewed; planning next
+
+The user asks to recover GAW memory and inspect the workspace before upcoming
+v0.7.0 development. Public GAW status/check pass; the ordinary main worktree
+and GAW worktree/index are clean at intake. Ordinary HEAD equals the peeled
+local v0.6.0 tag. Lisp/Nix/README still declare0.6.0; CHANGELOG begins with
+DONE v0.6.0 and has no0.7.0 entry. This is local read-only baseline recovery,
+not a new runtime validation or remote-publication check.
+
+The user then supplied the eleven-section v0.7.0 Standard Org Export Integration
+guide and requested read-only review before subsequent Plan mode planning.
+The requested direction and complete distilled requirements, stage sequence,
+test matrix, source findings and open gates are in memory/standard-export-0.7.0.md.
+This selects the version objective, not an executable implementation plan or
+runtime authority. No prototype, tests, builds or ordinary project edits ran.
+The completed v0.6.0 plan and its Nix authority do not carry forward.
+
+Review finds the direction coherent. Main planning gates: earlier org-export-data
+traversal before inner-template (org-data is special-cased), basic Cite's own
+string transcoding/raw output, final-tree ownership/deferred properties/ignore-list,
+late STM recognition under AST edits, and text-finalization versus direct PDF.
+Use standard preparation output as input; original STM byte equality is no
+longer a standard-export requirement. No callback/processor strategy is selected.
+Current public extension source still relies on org-export-as dynamic state and
+INFO bibliography mutation; static reads do not prove runtime interoperability.
+No raw archive is needed for the sufficiently distilled chat guide.
+Next: enter planning from the reviewed guide; move callback/Cite feasibility
+and output-coding risk discovery early without collapsing A-E into a wholesale
+rewrite. Async/nonblocking and Issue9 are not selected by this guide. Maintain
+core independence and separate model validity from backend output support.
+
 ## Current: v0.6.0 locally finalized and tagged; approved plan complete
 
 The human committed the final CHANGELOG corrections and created local tag

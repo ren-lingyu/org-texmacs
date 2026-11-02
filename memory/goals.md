@@ -1,5 +1,22 @@
 # org-texmacs project goals
 
+## Requested v0.7.0 direction: Standard Org Export Integration
+
+The user supplies the v0.7.0 guide for read-only review followed by Plan mode
+planning. Make ox-texmacs consume prepared Org structures inside real
+org-export-as, with Org owning standard preparation/selection/options/filters/
+Cite and org-texmacs owning the existing mathematical model, native lowering
+and outputs. Preserve independent core and pure lowering APIs; do not maintain
+parallel standard preparation, use extension-specific adapters, add a third AST
+or reparse serialized STM as routine lowering. Standard preprocessing may
+legally change/generate STM; original-byte fidelity is not the standard contract.
+Standard semantics and AST-first integrity are both mandatory; legacy frontend
+details are subordinate and changed contracts require explicit documentation/tests.
+Full requirements and review gates: memory/standard-export-0.7.0.md.
+The implementation plan, callback/processor strategy and runtime authorization
+remain pending. This advances earlier long-term export direction below, without
+selecting general syntax expansion, async/nonblocking work or Issue9.
+
 ## Purpose and project positioning
 
 Build an Org-first mathematical-document AST framework. Org AST represents

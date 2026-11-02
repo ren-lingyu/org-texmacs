@@ -1,5 +1,15 @@
 # org-texmacs current project model
 
+## v0.7.0 requested architecture; implementation still at v0.6.0
+
+Read-only review of the user's Standard Org Export Integration guide is recorded
+in memory/standard-export-0.7.0.md. The real standard Org pipeline is the selected
+direction for planning, not implemented behavior. Existing generic rejection and
+bounded frontend remain. Source inspection establishes callback/Cite/ownership
+risks, not prototype feasibility or new support. Keep existing0.6.0 core APIs
+independent, generic model context separate from consumer INFO, and treat
+standard preprocessing output as input rather than require original STM bytes.
+
 ## Adopted positioning versus implemented architecture
 
 As of the user's 2026-11-02 v0.6.0 positioning, the intended abstraction is an

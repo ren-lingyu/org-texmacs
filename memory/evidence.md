@@ -1,5 +1,18 @@
 # org-texmacs durable evidence
 
+## v0.7.0 guide review: static evidence only
+
+The chat-supplied guide and read-only source findings are distilled in
+memory/standard-export-0.7.0.md, with source URLs/blob provenance and retention
+assessment. Org9.8.10 performs org-export-data before inner-template, then text
+filters/templates/Cite finalization; basic itself transcodes citation/bibliography
+structures to strings and Org Cite turns string results into raw nodes.
+Existing model copying rejects deferred/opaque values; native .tm/PDF consumers
+return unibyte output. Current public organize source retains export dynamic
+state and INFO bibliography mutation. No prototype, ERT, build or extension
+runtime was executed;665ERT remains historical0.6.0 evidence. Review supports
+planning with explicit feasibility gates, not an adopted implementation strategy.
+
 ## Final release-entry commit and local v0.6.0 tag
 
 The local v0.6.0 tag peels to ordinary HEAD with the expected node8 delivery

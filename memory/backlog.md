@@ -1,5 +1,18 @@
 # org-texmacs active backlog
 
+## v0.7.0 Standard Org Export Integration: planning input
+
+The user selects this version direction by supplying the guide for read-only
+review, followed by Plan mode planning. The guide's A-E stages, public API
+migration constraints and complete acceptance matrix are distilled in
+memory/standard-export-0.7.0.md. This is not an approved executable plan.
+Callback/Cite/STM/ownership/output feasibility gates precede broad migration;
+inner-template and a TeXmacs Cite processor remain candidates, not decisions.
+Standard preparation may generate STM and owns recursive INCLUDE. Existing
+independent preparation can survive with a clear standalone purpose, but must
+exit the new standard path. Async/nonblocking, Issue9 and arbitrary syntax
+expansion are not added to0.7.0 by this intake. Prior0.6.0 plan is complete.
+
 ## v0.6.0 framework positioning and scope intake
 
 Status: **complete and locally tagged v0.6.0**. Final release-entry cleanup is
