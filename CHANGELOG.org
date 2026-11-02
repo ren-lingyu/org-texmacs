@@ -7,6 +7,55 @@
 Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
+* TODO v0.7.0
+Planned Standard Org Export Integration; the changes below are not yet
+implemented. Independent mathematical-document models and pure TeXmacs document
+lowering remain separate from standard export preparation.
+
+** Changed
+*** Standard Org Export backend
+- [ ] Make =org-export-as 'texmacs= a usable standard export entry, with Org
+  managing preparation, options, document selection, AST filters and Org Cite.
+- [ ] Replace parallel export preparation with the standard Org flow while
+  preserving AST-first TeXmacs construction.
+
+*** Public export API migration
+- [ ] Route interactive commands and feasible source-buffer convenience APIs
+  through shared standard preparation, retaining their distinct result types.
+- [ ] Consolidate, deprecate or remove redundant preparation and bibliography
+  discovery variants, with explicit migration guidance for changed contracts.
+
+** Added
+*** Prepared AST and STM adaptation
+- [ ] Construct owned mathematical-document models from the final Org AST and
+  a separate export context, preserving node identity and related mappings.
+- [ ] Recognize complete STM from preprocessing results and structurally valid
+  filter-created nodes, including nodes without reliable source positions.
+- [ ] Deliver prepared structures and completed native documents to text, API
+  and PDF consumers without repeating preparation or reparsing serialized STM.
+
+*** Standard export semantics
+- [ ] Reuse Org selection, INCLUDE, SETUPFILE, macros, Babel, hooks and options
+  filters, and allow legal AST insertion, deletion, movement and replacement.
+- [ ] Support native visible-only selection and standard reference, numbering
+  and footnote queries while retaining TeXmacs labels and native structures.
+
+*** Org Cite integration
+- [ ] Process citations and bibliographies through the standard Org Cite
+  protocol, with explicit processor and raw-output support boundaries.
+- [ ] Verify managed UUID citations, dynamic bibliographies and INFO propagation
+  through real =org-roam-organize= integration without package-specific adapters.
+
+*** Text and native PDF output
+- [ ] Return text from the standard exporter with verified native =.tm= byte
+  conversion and supported standard output filters.
+- [ ] Render native PDF from the shared completed document without a =.tm=
+  round trip, with explicit text-filter and Cite-finalizer compatibility rules.
+
+*** Documentation and regression coverage
+- [ ] Document standard export, independent models, pure lowering and API
+  migrations, update examples, and verify native output and existing contracts.
+
 * DONE v0.6.0
 CLOSED: [2026-11-02 Mon 11:03]
 :PROPERTIES:
