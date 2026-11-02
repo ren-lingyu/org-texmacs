@@ -1,0 +1,104 @@
+this derivation will be built:
+  /nix/store/kasfbfn41w8mjws9c1rsimdja1yq7kxi-org-texmacs-standard-export-stage-a.drv
+building '/nix/store/kasfbfn41w8mjws9c1rsimdja1yq7kxi-org-texmacs-standard-export-stage-a.drv'...
+org-texmacs-standard-export-stage-a> Running 7 tests (2026-11-02 16:41:58+0000, selector `t')
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed  1/7  a-01-real-identity-order-and-model (0.132444 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed  2/7  a-02-cite-return-matrix (0.003720 sec)
+org-texmacs-standard-export-stage-a> Checking syntactical structure (done)
+org-texmacs-standard-export-stage-a> Checking for duplicate keys (done)
+org-texmacs-standard-export-stage-a> Buffer is syntactically correct
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed  3/7  a-03-basic-emits-raw (0.005133 sec)
+org-texmacs-standard-export-stage-a>    passed  4/7  a-04-structured-nesting-cleanup (0.001737 sec)
+org-texmacs-standard-export-stage-a> Test a-05-text-file-bytes-unicode backtrace:
+org-texmacs-standard-export-stage-a>   ert-fail(((should (equal bytes (buffer-string))) :form (equal "<TeXm
+org-texmacs-standard-export-stage-a>   (if (unwind-protect (setq value-178 (apply fn-176 args-177)) (setq f
+org-texmacs-standard-export-stage-a>   (let (form-description-180) (if (unwind-protect (setq value-178 (app
+org-texmacs-standard-export-stage-a>   (let ((value-178 'ert-form-evaluation-aborted-179)) (let (form-descr
+org-texmacs-standard-export-stage-a>   (let* ((fn-176 #'equal) (args-177 (condition-case err (list bytes (b
+org-texmacs-standard-export-stage-a>   (progn (set-buffer-multibyte nil) (insert-file-contents-literally ta
+org-texmacs-standard-export-stage-a>   (unwind-protect (progn (set-buffer-multibyte nil) (insert-file-conte
+org-texmacs-standard-export-stage-a>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-standard-export-stage-a>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-standard-export-stage-a>   (let* ((a--mode 'text) (text (org-export-as 'texmacs)) (bytes (plist
+org-texmacs-standard-export-stage-a>   (progn (org-mode) (insert "Unicode 中文 α é and literal <alpha>.\n") (
+org-texmacs-standard-export-stage-a>   (unwind-protect (progn (org-mode) (insert "Unicode 中文 α é and litera
+org-texmacs-standard-export-stage-a>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-standard-export-stage-a>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-standard-export-stage-a>   (let ((org-export-before-processing-functions (cons #'a--before (rem
+org-texmacs-standard-export-stage-a>   (let ((default-directory (file-name-as-directory test-directory))) (
+org-texmacs-standard-export-stage-a>   (unwind-protect (let ((default-directory (file-name-as-directory tes
+org-texmacs-standard-export-stage-a>   (let ((org-texmacs--worker-process nil) (org-texmacs--worker-directo
+org-texmacs-standard-export-stage-a>   #f(lambda () [t] (let ((org-texmacs--worker-process nil) (org-texmac
+org-texmacs-standard-export-stage-a>   #f(compiled-function () #<bytecode -0x76e9d5ca7cfe6ac>)()
+org-texmacs-standard-export-stage-a>   handler-bind-1(#f(compiled-function () #<bytecode -0x76e9d5ca7cfe6ac
+org-texmacs-standard-export-stage-a>   ert--run-test-internal(#s(ert--test-execution-info :test ... :result
+org-texmacs-standard-export-stage-a>   ert-run-test(#s(ert-test :name a-05-text-file-bytes-unicode :documen
+org-texmacs-standard-export-stage-a>   ert-run-or-rerun-test(#s(ert--stats :selector t :tests ... :test-map
+org-texmacs-standard-export-stage-a>   ert-run-tests(t #f(compiled-function (event-type &rest event-args) #
+org-texmacs-standard-export-stage-a>   ert-run-tests-batch(t)
+org-texmacs-standard-export-stage-a>   ert-run-tests-batch-and-exit(t)
+org-texmacs-standard-export-stage-a>   load-with-code-conversion("/nix/store/7vg71x1p12n1b2qvlv4rja6im71yqy
+org-texmacs-standard-export-stage-a>   command-line-1(("--load" "/nix/store/7vg71x1p12n1b2qvlv4rja6im71yqy4
+org-texmacs-standard-export-stage-a>   command-line()
+org-texmacs-standard-export-stage-a>   normal-top-level()
+org-texmacs-standard-export-stage-a> Test a-05-text-file-bytes-unicode condition:
+org-texmacs-standard-export-stage-a>     (ert-test-failed
+org-texmacs-standard-export-stage-a>      ((should (equal bytes (buffer-string))) :form
+org-texmacs-standard-export-stage-a>       (equal
+org-texmacs-standard-export-stage-a>        "<TeXmacs|2.1.5>\n\n<style|generic>\n\n<\\body>\n  Unicode \\<#4E2D\\>\\<#6587\\> \\<alpha\\> \351 and literal \\<less\\>alpha\\<gtr\\>.\\ \n</body>"
+org-texmacs-standard-export-stage-a>        "<TeXmacs|2.1.5>\n\n<style|generic>\n\n<\\body>\n  Unicode \\<#4E2D\\>\\<#6587\\> \\<alpha\\> \351 and literal \\<less\\>alpha\\<gtr\\>.\\ \n</body>\n")
+org-texmacs-standard-export-stage-a>       :value nil :explanation
+org-texmacs-standard-export-stage-a>       (arrays-of-different-length 126 127
+org-texmacs-standard-export-stage-a>                              "<TeXmacs|2.1.5>\n\n<style|generic>\n\n<\\body>\n  Unicode \\<#4E2D\\>\\<#6587\\> \\<alpha\\> \351 and literal \\<less\\>alpha\\<gtr\\>.\\ \n</body>"
+org-texmacs-standard-export-stage-a>                              "<TeXmacs|2.1.5>\n\n<style|generic>\n\n<\\body>\n  Unicode \\<#4E2D\\>\\<#6587\\> \\<alpha\\> \351 and literal \\<less\\>alpha\\<gtr\\>.\\ \n</body>\n"
+org-texmacs-standard-export-stage-a>                              first-mismatch-at 126)))
+org-texmacs-standard-export-stage-a>    FAILED  5/7  a-05-text-file-bytes-unicode (1.720712 sec) at ../nix/store/cvk02gigvhd8wklpg6nq1c0ihx93mcpc-probe.el:171
+org-texmacs-standard-export-stage-a>    passed  6/7  a-06-pdf-direct-and-effective-filters (1.595919 sec)
+org-texmacs-standard-export-stage-a>    passed  7/7  a-07-other-backend-still-works (0.001134 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a> Ran 7 tests, 6 results as expected, 1 unexpected (2026-11-02 16:42:01+0000, 3.503310 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a> 1 unexpected results:
+org-texmacs-standard-export-stage-a>    FAILED  a-05-text-file-bytes-unicode
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a> ORDER ((before texmacs) (parsing texmacs) (ast texmacs #s(org-export-backend texmacs nil ((plain-text . a--plain) (section . a--contents) (paragraph . a--contents) (headline . a--contents) (bold . a--contents) (italic . a--contents) (inner-template . a--inner)) nil nil nil nil)) plain plain transcode plain transcode transcode inner)
+org-texmacs-standard-export-stage-a> CITE string => (org-data section keyword paragraph plain-text raw plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> CITE element => (org-data section keyword paragraph plain-text bold plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> CITE secondary => (org-data section keyword paragraph plain-text plain-text italic plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> CITE reentrant => (org-data section keyword paragraph plain-text raw plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> BASIC (org-data section keyword keyword paragraph raw plain-text plain-text raw plain-text)
+error: Cannot build '/nix/store/kasfbfn41w8mjws9c1rsimdja1yq7kxi-org-texmacs-standard-export-stage-a.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/17jlgzamjgnjfvkn1prg57009b19q90a-org-texmacs-standard-export-stage-a
+       Last 25 log lines:
+       >     (ert-test-failed
+       >      ((should (equal bytes (buffer-string))) :form
+       >       (equal
+       >        "<TeXmacs|2.1.5>\n\n<style|generic>\n\n<\\body>\n  Unicode \\<#4E2D\\>\\<#6587\\> \\<alpha\\> \351 and literal \\<less\\>alpha\\<gtr\\>.\\ \n</body>"
+       >        "<TeXmacs|2.1.5>\n\n<style|generic>\n\n<\\body>\n  Unicode \\<#4E2D\\>\\<#6587\\> \\<alpha\\> \351 and literal \\<less\\>alpha\\<gtr\\>.\\ \n</body>\n")
+       >       :value nil :explanation
+       >       (arrays-of-different-length 126 127
+       >                                  "<TeXmacs|2.1.5>\n\n<style|generic>\n\n<\\body>\n  Unicode \\<#4E2D\\>\\<#6587\\> \\<alpha\\> \351 and literal \\<less\\>alpha\\<gtr\\>.\\ \n</body>"
+       >                                   "<TeXmacs|2.1.5>\n\n<style|generic>\n\n<\\body>\n  Unicode \\<#4E2D\\>\\<#6587\\> \\<alpha\\> \351 and literal \\<less\\>alpha\\<gtr\\>.\\ \n</body>\n"
+       >                                 first-mismatch-at 126)))
+       >    FAILED  5/7  a-05-text-file-bytes-unicode (1.720712 sec) at ../nix/store/cvk02gigvhd8wklpg6nq1c0ihx93mcpc-probe.el:171
+       >    passed  6/7  a-06-pdf-direct-and-effective-filters (1.595919 sec)
+       >    passed  7/7  a-07-other-backend-still-works (0.001134 sec)
+       >
+       > Ran 7 tests, 6 results as expected, 1 unexpected (2026-11-02 16:42:01+0000, 3.503310 sec)
+       >
+       > 1 unexpected results:
+       >    FAILED  a-05-text-file-bytes-unicode
+       >
+       > ORDER ((before texmacs) (parsing texmacs) (ast texmacs #s(org-export-backend texmacs nil ((plain-text . a--plain) (section . a--contents) (paragraph . a--contents) (headline . a--contents) (bold . a--contents) (italic . a--contents) (inner-template . a--inner)) nil nil nil nil)) plain plain transcode plain transcode transcode inner)
+       > CITE string => (org-data section keyword paragraph plain-text raw plain-text plain-text paragraph plain-text)
+       > CITE element => (org-data section keyword paragraph plain-text bold plain-text plain-text paragraph plain-text)
+       > CITE secondary => (org-data section keyword paragraph plain-text plain-text italic plain-text plain-text paragraph plain-text)
+       > CITE reentrant => (org-data section keyword paragraph plain-text raw plain-text plain-text paragraph plain-text)
+       > BASIC (org-data section keyword keyword paragraph raw plain-text plain-text raw plain-text)
+       For full logs, run:
+         nix log /nix/store/kasfbfn41w8mjws9c1rsimdja1yq7kxi-org-texmacs-standard-export-stage-a.drv

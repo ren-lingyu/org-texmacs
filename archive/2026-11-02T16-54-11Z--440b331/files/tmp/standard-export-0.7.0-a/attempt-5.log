@@ -1,0 +1,38 @@
+this derivation will be built:
+  /nix/store/hjz8n48ycnqv8f80x1128kbavxxqmc0h-org-texmacs-standard-export-stage-a.drv
+building '/nix/store/hjz8n48ycnqv8f80x1128kbavxxqmc0h-org-texmacs-standard-export-stage-a.drv'...
+org-texmacs-standard-export-stage-a> Running 12 tests (2026-11-02 16:50:18+0000, selector `t')
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed   1/12  a-01-real-identity-order-and-model (0.105480 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed   2/12  a-02-cite-return-matrix (0.003657 sec)
+org-texmacs-standard-export-stage-a> Checking syntactical structure (done)
+org-texmacs-standard-export-stage-a> Checking for duplicate keys (done)
+org-texmacs-standard-export-stage-a> Buffer is syntactically correct
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed   3/12  a-03-basic-emits-raw (0.005010 sec)
+org-texmacs-standard-export-stage-a>    passed   4/12  a-04-structured-nesting-cleanup (0.001712 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed   5/12  a-05-text-file-bytes-unicode (1.597240 sec)
+org-texmacs-standard-export-stage-a>    passed   6/12  a-06-pdf-direct-and-effective-filters (1.692796 sec)
+org-texmacs-standard-export-stage-a>    passed   7/12  a-07-other-backend-still-works (0.002747 sec)
+org-texmacs-standard-export-stage-a>    passed   8/12  a-08-normal-return-and-exception-isolation (0.005056 sec)
+org-texmacs-standard-export-stage-a>    passed   9/12  a-09-basic-raw-lowering-boundary (0.001681 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed  10/12  a-10-structured-processor-document-and-coding-reload (1.613773 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed  11/12  a-11-node-output-filter-loss-counterexample (1.634318 sec)
+org-texmacs-standard-export-stage-a>    passed  12/12  a-12-early-exit-skips-normal-advice-counterexample (0.003219 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a> Ran 12 tests, 12 results as expected, 0 unexpected (2026-11-02 16:50:25+0000, 6.667459 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a> ORDER ((before texmacs) (parsing texmacs) (ast texmacs #s(org-export-backend texmacs nil ((plain-text . a--plain) (section . a--contents) (paragraph . a--contents) (headline . a--contents) (bold . a--contents) (italic . a--contents) (inner-template . a--inner)) nil nil nil nil)) plain plain transcode plain transcode transcode inner)
+org-texmacs-standard-export-stage-a> CITE string => (org-data section keyword paragraph plain-text raw plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> CITE element => (org-data section keyword paragraph plain-text bold plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> CITE secondary => (org-data section keyword paragraph plain-text plain-text italic plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> CITE reentrant => (org-data section keyword paragraph plain-text raw plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> BASIC (org-data section keyword keyword paragraph raw plain-text plain-text raw plain-text)
+org-texmacs-standard-export-stage-a> BYTES latin1-roundtrip=t high-bytes=1
+org-texmacs-standard-export-stage-a> NATIVE parsed-original=parsed-terminal-newline; utf8-raw-octets=present; latin1-reversible=ok
+org-texmacs-standard-export-stage-a> COUNTEREXAMPLE paragraph output filter discarded by final-AST handoff
+/nix/store/srjhvq4nfhhc51d0baya8h1nk8d6l8w6-org-texmacs-standard-export-stage-a

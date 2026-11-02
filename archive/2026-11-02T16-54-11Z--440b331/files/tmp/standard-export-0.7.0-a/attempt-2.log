@@ -1,0 +1,100 @@
+this derivation will be built:
+  /nix/store/0dvsbh1adhz1rrgljn3rlwbcd7w6i0j0-org-texmacs-standard-export-stage-a.drv
+building '/nix/store/0dvsbh1adhz1rrgljn3rlwbcd7w6i0j0-org-texmacs-standard-export-stage-a.drv'...
+org-texmacs-standard-export-stage-a> Running 10 tests (2026-11-02 16:44:52+0000, selector `t')
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed   1/10  a-01-real-identity-order-and-model (0.108264 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed   2/10  a-02-cite-return-matrix (0.003663 sec)
+org-texmacs-standard-export-stage-a> Checking syntactical structure (done)
+org-texmacs-standard-export-stage-a> Checking for duplicate keys (done)
+org-texmacs-standard-export-stage-a> Buffer is syntactically correct
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed   3/10  a-03-basic-emits-raw (0.005062 sec)
+org-texmacs-standard-export-stage-a>    passed   4/10  a-04-structured-nesting-cleanup (0.001746 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed   5/10  a-05-text-file-bytes-unicode (1.600385 sec)
+org-texmacs-standard-export-stage-a>    passed   6/10  a-06-pdf-direct-and-effective-filters (1.678767 sec)
+org-texmacs-standard-export-stage-a>    passed   7/10  a-07-other-backend-still-works (0.000913 sec)
+org-texmacs-standard-export-stage-a>    passed   8/10  a-08-normal-return-and-exception-isolation (0.002121 sec)
+org-texmacs-standard-export-stage-a>    passed   9/10  a-09-basic-raw-lowering-boundary (0.000932 sec)
+org-texmacs-standard-export-stage-a> Test a-10-structured-processor-document-and-coding-reload backtrace:
+org-texmacs-standard-export-stage-a>   signal(org-texmacs-document-error ("Unsupported or unprepared block"
+org-texmacs-standard-export-stage-a>   apply(signal (org-texmacs-document-error ("Unsupported or unprepared
+org-texmacs-standard-export-stage-a>   (setq value-244 (apply fn-242 args-243))
+org-texmacs-standard-export-stage-a>   (unwind-protect (setq value-244 (apply fn-242 args-243)) (setq form-
+org-texmacs-standard-export-stage-a>   (if (unwind-protect (setq value-244 (apply fn-242 args-243)) (setq f
+org-texmacs-standard-export-stage-a>   (let (form-description-246) (if (unwind-protect (setq value-244 (app
+org-texmacs-standard-export-stage-a>   (let ((value-244 'ert-form-evaluation-aborted-245)) (let (form-descr
+org-texmacs-standard-export-stage-a>   (let* ((fn-242 #'plist-get) (args-243 (condition-case err (list (a--
+org-texmacs-standard-export-stage-a>   (let ((a--shape 'element)) (let* ((fn-242 #'plist-get) (args-243 (co
+org-texmacs-standard-export-stage-a>   (progn (org-mode) (insert "#+cite_export: a-probe\n[cite:@key]\n#+pr
+org-texmacs-standard-export-stage-a>   (unwind-protect (progn (org-mode) (insert "#+cite_export: a-probe\n[
+org-texmacs-standard-export-stage-a>   (save-current-buffer (set-buffer temp-buffer) (unwind-protect (progn
+org-texmacs-standard-export-stage-a>   (let ((temp-buffer (generate-new-buffer " *temp*" t))) (save-current
+org-texmacs-standard-export-stage-a>   (let ((org-export-before-processing-functions (cons #'a--before (rem
+org-texmacs-standard-export-stage-a>   (let ((default-directory (file-name-as-directory test-directory))) (
+org-texmacs-standard-export-stage-a>   (unwind-protect (let ((default-directory (file-name-as-directory tes
+org-texmacs-standard-export-stage-a>   (let ((org-texmacs--worker-process nil) (org-texmacs--worker-directo
+org-texmacs-standard-export-stage-a>   #f(lambda () [t] (let ((org-texmacs--worker-process nil) (org-texmac
+org-texmacs-standard-export-stage-a>   #f(compiled-function () #<bytecode -0x76e9d5ca7cfe6ac>)()
+org-texmacs-standard-export-stage-a>   handler-bind-1(#f(compiled-function () #<bytecode -0x76e9d5ca7cfe6ac
+org-texmacs-standard-export-stage-a>   ert--run-test-internal(#s(ert--test-execution-info :test #s(ert-test
+org-texmacs-standard-export-stage-a>   ert-run-test(#s(ert-test :name a-10-structured-processor-document-an
+org-texmacs-standard-export-stage-a>   ert-run-or-rerun-test(#s(ert--stats :selector t :tests ... :test-map
+org-texmacs-standard-export-stage-a>   ert-run-tests(t #f(compiled-function (event-type &rest event-args) #
+org-texmacs-standard-export-stage-a>   ert-run-tests-batch(t)
+org-texmacs-standard-export-stage-a>   ert-run-tests-batch-and-exit(t)
+org-texmacs-standard-export-stage-a>   load-with-code-conversion("/nix/store/7vg71x1p12n1b2qvlv4rja6im71yqy
+org-texmacs-standard-export-stage-a>   command-line-1(("--load" "/nix/store/7vg71x1p12n1b2qvlv4rja6im71yqy4
+org-texmacs-standard-export-stage-a>   command-line()
+org-texmacs-standard-export-stage-a>   normal-top-level()
+org-texmacs-standard-export-stage-a> Test a-10-structured-processor-document-and-coding-reload condition:
+org-texmacs-standard-export-stage-a>     (org-texmacs-document-error "Unsupported or unprepared block" keyword
+org-texmacs-standard-export-stage-a>                            1)
+org-texmacs-standard-export-stage-a>    FAILED  10/10  a-10-structured-processor-document-and-coding-reload (0.001124 sec) at ../nix/store/iwf0f1y53rpv8p72c8z2894xxvz7rhc2-probe.el:227
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a> Ran 10 tests, 9 results as expected, 1 unexpected (2026-11-02 16:44:56+0000, 3.444399 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a> 1 unexpected results:
+org-texmacs-standard-export-stage-a>    FAILED  a-10-structured-processor-document-and-coding-reload
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a> ORDER ((before texmacs) (parsing texmacs) (ast texmacs #s(org-export-backend texmacs nil ((plain-text . a--plain) (section . a--contents) (paragraph . a--contents) (headline . a--contents) (bold . a--contents) (italic . a--contents) (inner-template . a--inner)) nil nil nil nil)) plain plain transcode plain transcode transcode inner)
+org-texmacs-standard-export-stage-a> CITE string => (org-data section keyword paragraph plain-text raw plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> CITE element => (org-data section keyword paragraph plain-text bold plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> CITE secondary => (org-data section keyword paragraph plain-text plain-text italic plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> CITE reentrant => (org-data section keyword paragraph plain-text raw plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> BASIC (org-data section keyword keyword paragraph raw plain-text plain-text raw plain-text)
+org-texmacs-standard-export-stage-a> BYTES latin1-roundtrip=t high-bytes=1
+error: Cannot build '/nix/store/0dvsbh1adhz1rrgljn3rlwbcd7w6i0j0-org-texmacs-standard-export-stage-a.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/yyhf7d7v01j61a2fahsxb1808sgwrph7-org-texmacs-standard-export-stage-a
+       Last 25 log lines:
+       >   ert-run-or-rerun-test(#s(ert--stats :selector t :tests ... :test-map
+       >   ert-run-tests(t #f(compiled-function (event-type &rest event-args) #
+       >   ert-run-tests-batch(t)
+       >   ert-run-tests-batch-and-exit(t)
+       >   load-with-code-conversion("/nix/store/7vg71x1p12n1b2qvlv4rja6im71yqy
+       >   command-line-1(("--load" "/nix/store/7vg71x1p12n1b2qvlv4rja6im71yqy4
+       >   command-line()
+       >   normal-top-level()
+       > Test a-10-structured-processor-document-and-coding-reload condition:
+       >     (org-texmacs-document-error "Unsupported or unprepared block" keyword
+       >                              1)
+       >    FAILED  10/10  a-10-structured-processor-document-and-coding-reload (0.001124 sec) at ../nix/store/iwf0f1y53rpv8p72c8z2894xxvz7rhc2-probe.el:227
+       >
+       > Ran 10 tests, 9 results as expected, 1 unexpected (2026-11-02 16:44:56+0000, 3.444399 sec)
+       >
+       > 1 unexpected results:
+       >    FAILED  a-10-structured-processor-document-and-coding-reload
+       >
+       > ORDER ((before texmacs) (parsing texmacs) (ast texmacs #s(org-export-backend texmacs nil ((plain-text . a--plain) (section . a--contents) (paragraph . a--contents) (headline . a--contents) (bold . a--contents) (italic . a--contents) (inner-template . a--inner)) nil nil nil nil)) plain plain transcode plain transcode transcode inner)
+       > CITE string => (org-data section keyword paragraph plain-text raw plain-text plain-text paragraph plain-text)
+       > CITE element => (org-data section keyword paragraph plain-text bold plain-text plain-text paragraph plain-text)
+       > CITE secondary => (org-data section keyword paragraph plain-text plain-text italic plain-text plain-text paragraph plain-text)
+       > CITE reentrant => (org-data section keyword paragraph plain-text raw plain-text plain-text paragraph plain-text)
+       > BASIC (org-data section keyword keyword paragraph raw plain-text plain-text raw plain-text)
+       > BYTES latin1-roundtrip=t high-bytes=1
+       For full logs, run:
+         nix log /nix/store/0dvsbh1adhz1rrgljn3rlwbcd7w6i0j0-org-texmacs-standard-export-stage-a.drv
