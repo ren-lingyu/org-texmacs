@@ -77,9 +77,20 @@ The user adopts this positioning for v0.6.0 on 2026-11-02 and then supplies thei
 preferred development guide for independent parsing, inspection, finite structural
 transformation and normalized Org serialization. Existing TeXmacs export must
 remain usable. Preferred stages, data contract and acceptance properties are
-distilled in memory/core-ast-0.6.0.md. Exact API/type layout, release inventory and
-later export-adaptation extent remain unfrozen. These goals do not authorize
-ordinary source edits, builds or tests.
+distilled in memory/core-ast-0.6.0.md. The subsequent reviewed plan is approved
+for implementation. First GAW plan checkpoint, then CHANGELOG-only first human
+project commit, then functional nodes. v0.6.0 delivers the core loop and preserves
+existing export behavior; standard Org Export is investigation/follow-up design.
+Runtime and ordinary Git operations remain subject to their explicit boundaries.
+
+Model validity, syntax expressibility and serialization round-trip support are
+separate contracts. A structurally valid model or root-changing transformation
+may be outside current serialization support; serialize must fail explicitly.
+No lowering whitelist constrains core Org validity. Recognition completeness is
+the buffer parser's duty, not a source-rescan requirement on supplied-tree
+construction. Preserve unrecognized STM contexts as ordinary Org content.
+Retain only demonstrated necessary syntax context, not export INFO. Preserve
+existing export preflight/parse/error ordering while sharing core ownership.
 
 ## Strict design constraints
 

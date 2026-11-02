@@ -1,6 +1,40 @@
 # org-texmacs current memory
 
-## Current: v0.6.0 independent core AST guidance and initial survey
+## Current: approved v0.6.0 implementation; plan checkpoint then CHANGELOG
+
+The user approved execution with "Implement the plan" after planning and the
+nine-section review supplement. The final executable contract/order/API list is
+in memory/core-ast-0.6.0.md. Initial recovery confirms clean ordinary main at the
+finalized v0.5.0 release baseline and clean valid GAW. No runtime result is new.
+
+First establish the GAW plan checkpoint, then edit only CHANGELOG.org to create
+TODO v0.6.0 with the planned core/consumer separation, construction, inspection,
+normalized Org output, independent copy/island access/finite replacement and
+round-trip acceptance scope. No CLOSED/detail manuscript/link/version change.
+The first ordinary project commit MUST be that CHANGELOG-only delivery. Wait
+for human commit and verify it before any source implementation. Ordinary
+project staging still requires explicit path-specific authority, ordinary
+commits remain human-only, and runtime commands need risk disclosure/authority.
+
+Locked decisions: core loop is the release requirement; standard Org Export is
+investigation/follow-up design only. Preserve ox-texmacs and existing export
+behavior while reusing common model ownership/mapping, not a common preparation
+order. Keep preflight before body STM parsing, bibliography/resolution timing,
+selection/output/cleanup/error contracts. Other APIs can be reorganized as needed.
+Core parsing reads the full document, restores narrowing, preserves legal Org
+regardless of lowering, and keeps unrecognized STM contexts as ordinary Org.
+Worker allowed at native parsing/STM serialization boundaries only; no worker
+for model construction from supplied trees, validation, inspection or transforms.
+
+Separate model validity, syntax expressibility and serialization round-trip
+support. Root-changing replacement may yield a valid nonserializable model;
+serializer must fail explicitly, never downgrade it to ordinary text. STM tree
+is authoritative, Org keys retain structural metadata, and stale raw content
+must not return after transforms. Accessors return read-only nested references;
+copy/replacement owns independent data and remaps parents/islands/locators.
+Native STM serializer runtime evidence is required before implementation.
+
+## Earlier: v0.6.0 guide intake and initial survey
 
 The user now supplies their preferred twelve-section Core Mathematical-Document
 AST Development Guide. The announced feature is independent parsing, structural
@@ -8,8 +42,8 @@ inspection, normalized Org round-trip serialization and finite AST transformatio
 with existing export preserved. Preferred order: dependency survey -> independent
 buffer/preparsed construction -> inspection projection/display -> serialization
 and finite fresh-snapshot transforms -> later standard Org Export research.
-Types/names/layout, exact release inventory and export-adaptation extent remain
-unfrozen; no ordinary source/test/build/Git mutation is authorized by this intake.
+This earlier intake preceded the approved plan above; its original no-execution
+status is superseded by the user's scoped implementation instruction.
 The guide supersedes the earlier "feature unspecified" state below. Complete
 requirements, acceptance equations, exclusions, retention assessment and bounded
 code findings: memory/core-ast-0.6.0.md.
@@ -20,8 +54,7 @@ finalization resolves/allocates references, and source preparation prunes commen
 metadata syntax/property drawers and export-excluded content before STM parsing.
 Do not call prepare-buffer a generic full-document constructor merely by removing
 its lower call. Existing ownership/remapping/native parsing remain reuse candidates.
-Next: finish field/constructor/consumer analysis and propose the smallest viable
-core contract and implementation nodes. Runtime behavior, Org serializer APIs and
+The approved order above now controls the next action. Runtime behavior, Org serializer APIs and
 current org-roam-organize Cite interoperability are not newly verified.
 
 ## Adopted v0.6.0 project positioning

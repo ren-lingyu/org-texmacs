@@ -1,5 +1,26 @@
 # org-texmacs durable evidence
 
+## Reviewed v0.6.0 plan and implementation instruction
+
+After the guide, the user selected: core completion plus standard-export
+investigation/design; ox-texmacs compatibility with other APIs reorganizable;
+existing STM recognition syntax independent of Org preservation; explicit
+serialization support/errors; whole-document buffer construction; native worker
+only at STM parsing/serialization boundaries; common model with distinct source
+and export preparations. Their nine-section supplement clarifies independent
+validity/expressibility/round-trip contracts, authoritative STM content,
+necessary syntax context, export error/timing compatibility, read-only nested
+references and independent snapshot locators, definedness of test equations,
+and targeted regression requirements. The revised plan incorporates all of it.
+
+User now requests implementation. Persist the final contract/order in
+memory/core-ast-0.6.0.md and establish the GAW plan checkpoint before the
+CHANGELOG-only first project delivery. This is conversational decision provenance,
+not new source/runtime evidence. Source/guide/review/plan are sufficiently
+distilled; no independent original-byte archive is needed or claimed. No native
+probe, STM serializer validation, test/build/formatter or project Git write has
+yet run. Original static findings and previous validation retain their scopes.
+
 ## Preferred core AST development guide and initial survey, 2026-11-02
 
 Source: the user's twelve-section Core Mathematical-Document AST Development

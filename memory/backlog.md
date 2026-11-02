@@ -2,19 +2,21 @@
 
 ## v0.6.0 framework positioning and scope intake
 
-Status: adopted project direction and preferred core-feature guide; concrete
-API/type/release plan pending. Detailed guidance and initial code survey:
-memory/core-ast-0.6.0.md. Preferred sequence is dependency classification,
+Status: **active-next**, reviewed plan approved for implementation. First GAW
+plan checkpoint, then the human's CHANGELOG-only TODO v0.6.0 project commit,
+verified before source implementation. Approved APIs/contracts and initial survey:
+memory/core-ast-0.6.0.md. Subsequent sequence is dependency classification,
 independent construction (buffer and supplied native trees), inspection projection
 and display, normalized Org serialization, finite fresh-snapshot transformation,
-then later standard Org Export research. Serialization and transformation may
-reorder; no general rewriting framework or test-infrastructure rewrite is needed.
+then standard Org Export investigation/follow-up design, documentation and
+version completion. No standard-export implementation is a release requirement;
+no general rewriting framework or test-infrastructure rewrite is needed.
 The user selects an independent mathematical-document AST framework with Org
 AST, parsed native STM trees and island associations. Core construction,
 structural inspection, AST transformation and normalized semantic Org output
 are intended capabilities. Existing export-driven APIs may be separated
-incrementally; no particular representation, algorithm, public API, whole-project
-refactor or implementation node has been selected. See memory/goals.md.
+incrementally under the approved model API plan. No whole-project refactor is
+selected. See memory/goals.md.
 
 After core interfaces are clear, investigate standard Org Export interoperability
 through preparation, AST filters, Cite and INFO independently. Org reserialization

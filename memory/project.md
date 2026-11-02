@@ -27,11 +27,18 @@ Current scope is one document, with no formal-math semantics, knowledge-base
 protocol, compulsory second application or wholesale refactor selected. Goals
 are authoritative in memory/goals.md. The subsequent preferred development guide
 identifies independent parse/inspect/normalize/finite-transform operations as the
-core feature; concrete API/type design remains pending. Requirements and initial
-static dependency survey are in memory/core-ast-0.6.0.md. In particular, existing
+core feature; the subsequently reviewed plan now selects the public model APIs
+and staged implementation. Requirements, approved contracts/order and initial
+static dependency survey are in memory/core-ast-0.6.0.md. No core capability is
+implemented yet; first project delivery is CHANGELOG-only. In particular, existing
 preparation prunes source syntax/content by export policy before the lower call,
 and input finalization allocates references. Both need boundary analysis; skipping
 preflight alone is insufficient to establish a generic full-document core path.
+Separate structural validity from syntax expressibility and round-trip support.
+Keep authoritative island trees, structural Org keys, detached read-only
+snapshots and model-local locators. Reuse export ownership/mapping without
+moving existing preflight behind STM parsing or changing selection/bibliography/
+resolution/output/cleanup behavior. Native serializer still needs runtime proof.
 
 Release status2026-11-02: local finalization delivered3bd7b33, exact two-path
 CHANGELOG/README candidate verified. Human-set DONE v0.5.0/CLOSED recorded;
