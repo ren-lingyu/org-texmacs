@@ -19,18 +19,19 @@ snapshots and island validation. Existing export support descriptions below
 remain factual baseline and historical delivery evidence; their target-support
 rejection rules do not govern independent core validity.
 
-Node8 version/docs candidate is now accepted, awaiting human delivery. Lisp/Nix/
-README declare0.6.0; main/flake/README positioning names the independent AST
-framework. The complete core workflow example, release manuscript and sourced
-standard-export follow-up design are present. A narrow docs/*.org allowlist
-makes the new design trackable. Full0.6.0gate passes665ERT/all17checks, package
-eval/build confirms0.6.0, and final docs-only snapshot also passes. All134input
-hashes identify the8-path candidate. CHANGELOG has14complete/0ongoing/0pending;
-version TODO/CLOSED unchanged. Standard export compatibility remains research,
-not implemented support: current extensions can mutate INFO and depend on the
-org-export-as dynamic invocation. Older optional integration results do not
-establish current org-roam-organize compatibility. Details/limits are in
-docs/standard-org-export.org and evidence.md. No export execution order changed.
+Node8 version/docs candidate passed665ERT/all17checks and package eval/build.
+Lisp/Nix/README declare0.6.0. It includes framework positioning, a complete core
+workflow example and release manuscript. At the user's request, substantive
+standard-export research belongs in memory/standard-org-export.md; README keeps
+concise compatibility boundaries. No new project docs directory or allowlist
+remains in the revised six-path candidate. Documentation revalidation passes:
+scoped fmt, full gate with cached runtime checks/fresh treefmt,133matching input
+hashes, local links and whitespace.
+The human previously staged the eight-path candidate and must resynchronize the
+index. CHANGELOG has14complete/0ongoing/0pending; version TODO/CLOSED unchanged.
+Current extensions may mutate INFO and rely on the org-export-as dynamic scope;
+older integration results do not prove current compatibility. No adapter or
+export-order change is implemented.
 
 Native parser/serializer reuse, semantic Org round trips, structural equivalence
 and normalization idempotence guide subsequent design. Org-fmt is user-supplied

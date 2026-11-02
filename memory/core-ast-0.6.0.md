@@ -540,10 +540,16 @@ index clean. Node8 begins after the user resumes a pause during initial reads.
 After the resumed source investigation, the8-path candidate aligns main Lisp
 Version and Nix version/melpaVersion to0.6.0, updates flake/main/README positioning,
 adds a complete self-contained core workflow example and qualifies minimum-
-version evidence. New CHANGELOGS/v0.6.0.org is the release manuscript; new
-docs/standard-org-export.org separates inspected control flow from a future
+version evidence. CHANGELOGS/v0.6.0.org is the release manuscript.
+The initial project design separated inspected control flow from a future
 in-stack handoff experiment and unresolved STM/Cite/INFO/error boundaries.
-The new directory was ignored, so a narrow docs/*.org allowlist is included.
+The initial candidate included a narrow docs/*.org allowlist. The user later
+requested substantive research in GAW instead: memory/standard-org-export.md
+now preserves the full source findings, alternatives and acceptance cases.
+The revised candidate removes that docs file/allowlist and keeps concise README
+guidance. Documentation-only revalidation passes with cached runtime checks,
+fresh treefmt,133matching root/copy hashes and valid local links. Human staging
+still reflects the earlier eight-path candidate and must be resynchronized.
 No standard-export compatibility implementation or package-specific shim was
 introduced; existing guards and preparation order remain. Current public
 org-roam-organize source requires dynamic export scope and mutable bibliography

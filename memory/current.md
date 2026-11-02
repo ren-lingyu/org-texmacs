@@ -1,73 +1,47 @@
 # org-texmacs current memory
 
-## Current: node8 accepted; v0.6.0 candidate awaiting human review
+## Current: node8 accepted after research relocation; human delivery pending
 
-Nodes1-7 are human-delivered and verified. Node7 matched expected serialization
-parent,8paths/message and132accepted input hashes; no delivery-only rerun.
-User paused during node8 initial reads and explicitly resumed. Full eight-node
-progress preceded work and was repeated on resume. All eight implementation
-nodes are now complete and checked; node8's8-path candidate is NOT committed yet.
+Nodes1-7 are human-delivered and verified. Node8 implementation and release
+metadata passed the full default gate (665ERT/all17checks) and package eval/build.
+The user then requested that detailed export research live in GAW, with concise
+README guidance instead of a new project docs directory. All source candidate
+paths were staged by the human before this revision; preserve that index.
 
-Before EVERY new node report all statuses, scope, validation and delivery.
-At the END of EACH development node sync BOTH README and CHANGELOG. Before
-handover proactively prepare tmp/commit.md from the COMPLETE node diff, including
-unstaged/new files, and explicitly label the basis. Do not wait for another
-message request or stage project files. User authorizes nix fmt/build/eval/flake
-check and argument variants as needed through completion of this approved plan;
-disclose commands/effects/network/timeouts, without repeated permission requests.
-Ordinary project staging remains separately authorized; commits stay human.
+The complete sourced research, candidate handoff alternatives, unresolved
+STM/Cite/INFO/error boundaries and future acceptance cases are now in
+memory/standard-org-export.md. README retains concise compatibility boundaries;
+CHANGELOG integration guidance matches. The new docs file and its .gitignore
+allowlist are removed from the worktree. The resulting release candidate has
+six changed source paths relative to HEAD: README.org, CHANGELOG.org,
+CHANGELOGS/v0.6.0.org, flake.nix, lisp/org-texmacs.el and
+pkgs/emacsPackages/org-texmacs/package.nix. The human must resynchronize the
+staged candidate before committing, especially the formerly staged docs file.
 
-Candidate paths: .gitignore, README.org, CHANGELOG.org, flake.nix,
-lisp/org-texmacs.el, pkgs/emacsPackages/org-texmacs/package.nix, and new
-CHANGELOGS/v0.6.0.org plus docs/standard-org-export.org. All8are unstaged.
-The new design was initially ignored, so a narrow docs/*.org allowlist was added.
-No project index/history/ref/remote or lockfile mutation occurred.
+Before EVERY new node report all eight statuses, scope, validation and delivery.
+At the END of EACH node sync BOTH README and CHANGELOG. Proactively prepare
+tmp/commit.md from the COMPLETE node diff including unstaged/new files.
+User authorizes nix fmt/build/eval/flake check and argument variants as needed
+through this approved plan; disclose commands/effects/network/timeouts without
+repeated permission requests. Ordinary project staging remains separately
+authorized; project commits remain human actions.
 
-Lisp Version, Nix version/melpaVersion and README align to0.6.0. Main/flake/README
-position the package as the independent mathematical-document AST framework,
-with TeXmacs export a bounded consumer. README adds a self-contained complete
-parse/transform/inspect/Org-buffer example, distinguishes bare-model vs existing
-prepared-input export APIs, and qualifies historical minimum-Org evidence.
-Release manuscript covers APIs, migration, ownership/context/output support,
-error boundaries and verified environment. Root CHANGELOG has14complete,
-0ongoing/0pending checkboxes; version TODO/CLOSED is unchanged, final review pending.
-No tag/publication/freeze or human version-state transition is implied.
+Core validity stays independent of lowering and serialization. No standard
+Org Export adapter, current-extension runtime compatibility, new minimum-Org
+proof or export-order change is claimed. Detailed findings and source versions
+are in memory/standard-org-export.md. CHANGELOG has14complete/0ongoing/0pending;
+version TODO/CLOSED and tag/publication remain human decisions.
 
-Export research reads Org9.8.10 ox.el/oc.el and current public org-roam-organize
-56fdaac6adab06deafc23357aec63ae2a497e09b. The extension wraps org-export-as for
-dynamic bibliography state and mutates INFO bibliography plus UUID keys. Existing
-restricted filters and older eaaee8e integration evidence do not prove current
-compatibility. The design separates observed flow, a candidate in-stack handoff,
-unresolved STM protection/deferred properties/Cite result shapes/INFO remapping/
-error priority, and future acceptance tests. No current-extension runtime test,
-generic export support, adapter implementation or new compatibility layer is
-claimed. This follow-up implementation is outside the completed0.6.0 scope.
-
-Validation: first scoped8-path fmt succeeds (1file changed). nix eval reports
-0.6.0. Full isolated gate exits0/all17checks pass on x86_64-linux, with fresh
-core258/native339/PDF-document33/PDF-render29/patched6 =665ERT, zero unexpected,
-strict byte/native compilation, package-lint and treefmt. Default package build
-exits0, output /nix/store/0mw31iahaz7i0vag326xg5y7np20k5hy-emacs-org-texmacs-0.6.0.
-Then only root CHANGELOG and release notes changed for final status/evidence;
-scoped doc fmt exits0/no changes. Final full command exits0 using unchanged
-runtime outputs and a fresh treefmt check, not another fresh665ERT run.
-README/CHANGELOG/release-note local file targets exist; whitespace passes.
-Minimum Org9.8 new APIs, other platforms, optional current extensions and GUI
-are not newly runtime-verified. Evidence/timings are in evidence.md.
-
-Accepted runtime/build134-input snapshot/manifest:
-tmp/core-ast-0.6.0-finalization-attempt-1 (ignored).
-Final134-input snapshot/manifest: tmp/core-ast-0.6.0-finalization and adjacent
-inputs.json. Root and isolated-copy hashes match. Full command:
-timeout 600s nix flake check -L --no-write-lock-file --max-jobs 2 path:/home/lingyu/Projects/org-texmacs/tmp/core-ast-0.6.0-finalization
-Package build used --no-link; no project result link was created.
-
-tmp/commit.md is proactively prepared from the complete WORKTREE diff, including
-both new documents: chore(release): prepare v0.6.0 AST framework release.
-Next: human review/staging/commit. Verify the eventual expected transform parent,
-8paths/message and all134accepted committed input hashes. Do not rerun unchanged
-checks merely for staging/delivery. Implementation-plan work is complete after
-this delivery; release-state transitions/tags/publication remain human actions.
+Earlier 134-input accepted snapshots remain in ignored tmp; the revised
+133-input snapshot uses tmp/core-ast-0.6.0-finalization and adjacent manifest.
+Scoped README/CHANGELOG fmt exits0 with no changes. The first sandboxed full
+check could not connect to the Nix daemon; the same authorized command with
+elevated access exits0/all checks pass, using cached runtime checks and fresh
+treefmt. All133root/copy hashes match, local links and whitespace pass. Runtime
+code is unchanged from the accepted665ERT/package build; this is not new ERT
+execution. tmp/commit.md has been revised from the complete six-path HEAD-to-
+worktree diff. Next: human review and resynchronization of staging before project
+commit; verify six paths/message and all133accepted input hashes on delivery.
 
 ## Accepted foundation and delivery evidence
 

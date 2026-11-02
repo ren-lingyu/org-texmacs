@@ -1,5 +1,26 @@
 # org-texmacs durable evidence
 
+## Node8 research relocation and revised candidate acceptance
+
+The user requested substantive export design in GAW and concise README guidance.
+Preserved the complete sourced observations, candidate alternatives, unresolved
+boundaries and future acceptance cases in memory/standard-org-export.md.
+Removed the new project docs file and its .gitignore allowlist from the worktree;
+updated README and CHANGELOG guidance. No additional unreleased section was needed.
+The resulting six-path candidate retains release notes and metadata updates.
+The human had staged the earlier eight-path candidate; the agent leaves that
+index unchanged, so the human must resynchronize staging before committing.
+
+Scoped README/CHANGELOG nix fmt exits0/no changes. The sandboxed full command
+fails before evaluation because the Nix daemon socket is unavailable; the exact
+same authorized command with elevated access exits0/all checks pass, using cached
+runtime results and a fresh treefmt check. No additional665ERT execution is claimed.
+The updated133-input snapshot/manifest is tmp/core-ast-0.6.0-finalization;
+the earlier134-input documentation snapshot/manifest is preserved as attempt-2.
+All133root/copy hashes match, local documentation targets exist and whitespace
+passes. The complete six-path HEAD-to-worktree diff was reviewed and tmp/commit.md
+updated, with no ordinary project staging, commit or lockfile change.
+
 ## Node8 v0.6.0 candidate acceptance
 
 Eight-path uncommitted candidate aligns Lisp/Nix/README0.6.0, adds release notes
@@ -23,7 +44,8 @@ the same runtime outputs and a fresh treefmt check; not a second fresh665ERT
 execution. All134final root/copy hashes match; whitespace and local file-link
 checks pass. Runtime/build input snapshot/manifest:
 tmp/core-ast-0.6.0-finalization-attempt-1 (ignored).
-Final snapshot/manifest: tmp/core-ast-0.6.0-finalization.
+That snapshot is preserved as tmp/core-ast-0.6.0-finalization-attempt-2
+when preparing the subsequent documentation relocation.
 The final candidate's only differences from runtime inputs are those two docs.
 No new runtime coverage for minimum Org9.8, other platforms, current optional
 extensions or GUI. No project staging/commit/lockfile or output-link mutation.
@@ -44,7 +66,9 @@ It wraps org-export-as to maintain per-export bibliography state and mutates
 INFO bibliography in its UUID filter. Existing restricted TeXmacs filter INFO
 is read-only and runs without standard Cite processing. Thus earlier eaaee8e
 integration evidence does not establish current compatibility. No current
-extension runtime test or adapter implementation is claimed. Follow-up doc
+extension runtime test or adapter implementation is claimed.
+The complete research now lives in memory/standard-org-export.md at the user's
+request; README retains concise guidance. The research
 separates observed ordering, candidate in-stack handoff and unresolved STM
 protection/deferred-property/Cite-result/INFO-remapping/error boundaries.
 
