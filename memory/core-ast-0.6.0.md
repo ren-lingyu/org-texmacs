@@ -170,6 +170,9 @@ paths only with explicit path-specific authorization, prepare messages from the
 complete staged candidate, and wait for human commit/delivery verification before
 the next node. Keep memory current and checkpoint consequential phase boundaries,
 not every edit. No unrelated build/test/repository refactor is selected.
+User additionally requires a complete eight-node progress report BEFORE starting
+each node, with done/current/pending, current scope and validation/delivery status.
+This reporting preference applies throughout the current v0.6.0 development.
 
 ## Serialization and equivalence
 
@@ -396,5 +399,42 @@ x86_64-linux/default checks, not optional real extension integration or GUI.
 No native serializer probe is selected for this node. User staged all8paths,
 including the repaired source; no unstaged diff. Complete staged review passes
 and tmp/commit.md contains feat(model): add independent mathematical-document
-snapshots. Do not repeat the passed gate solely for delivery. Next: human
-commit and exact delivery/source verification, then buffer parsing.
+snapshots. Human delivery is now verified: exact expected parent/eight-path
+scope/approved message and all120committed input hashes match acceptance, ordinary
+worktree/index clean. Do not repeat the passed gate solely for delivery. Buffer
+parsing followed as the next node and is delivered below.
+
+## Independent source parser: delivered and verified
+
+The parser node implements org-texmacs-parse-buffer in its own module, autoloaded
+from the worker-free model module. It snapshots the whole buffer despite caller
+narrowing, captures explicit bound syntax data plus link names/abbreviations,
+and initializes empty private Org buffers without hooks before inserting source.
+Native Org structure is parsed before raw-block body masking; existing paragraph/
+direct-inline-footnote discovery gains an optional initializer for captured syntax.
+It preserves export-excluded content and does not run INCLUDE/SETUPFILE/Babel/
+Cite/export filters/pruning, bibliography or lowering. Owned model/mappings are
+built before STM waits; guards detect changed/killed source or syntax. Native
+blocks retain wrapper metadata but clear old body children. Existing export
+preflight/parser/bibliography/reference order remains intact.
+
+Block recognition follows native Org section boundaries. A test wrongly assumed
+a column-one headline inside an STM string belonged to the raw block. The first
+check caught the missing block (three calls versus four). Repair indents that
+line in the fixture and exact tree expectation, with a new three-kind regression
+preserving actual headlines and incomplete block syntax as ordinary Org. README
+documents this input-syntax boundary; no lowering validity restriction is added.
+
+After user formatting/restaging and fresh one-shot permission, the isolated
+tmp/core-ast-0.6.0-parser-fix full default check exits0:228core/331native/
+33PDF-document/29PDF-render/6cached patched-caption =627ERT; strict compilation,
+treefmt, lint and aggregates pass. All123input hashes still match root and copy.
+Eleven new core and three native tests; current locked x86_64-linux only. Other
+systems, optional integration, GUI and STM serializer proof are not claimed.
+All nine parser paths are human-committed with exact expected parent/message/
+path and123committed input hashes verified; ordinary worktree/index clean.
+Node5 is now active after reporting the complete eight-node table. It will add
+model-inspect/model-display, retaining properties/secondary strings/captions,
+authoritative STM bodies and AST-path references instead of recursive property
+reference expansion. No new worker/lowering or native serializer work belongs
+to this node. New-node tests/formatting need fresh command authority.

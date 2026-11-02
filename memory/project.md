@@ -30,12 +30,22 @@ identifies independent parse/inspect/normalize/finite-transform operations as th
 core feature; the subsequently reviewed plan now selects the public model APIs
 and staged implementation. Requirements, approved contracts/order and initial
 static dependency survey are in memory/core-ast-0.6.0.md. The human has delivered
-the exact CHANGELOG-only first project commit. The uncommitted common-model
-foundation candidate is now accepted by full isolated flake check/613ERT:
+the exact CHANGELOG-only first project commit and the common-model foundation:
 model constructor/error, common ownership helpers and export MODEL integration,
-with eleven new core cases. User staged all8paths; no unstaged diff, message
-ready, human delivery pending. Parsing/inspection/serialization/transformation
-operations remain subsequent nodes. In particular, existing
+with eleven new core cases, accepted by full isolated flake check/613ERT.
+The independent org-texmacs-parse-buffer implementation is now accepted by the full
+default flake check/627ERT, with eleven new core and three native parser cases;
+all nine paths are human-committed with exact123input hash verification and a
+clean worktree/index. Inspection/display is the active next node; serialization
+and transformation remain subsequent nodes. The parser snapshots full Org source
+and effective syntax, uses native Org block boundaries and existing inline
+recognition, preserves comments/drawers/excluded headings/unused definitions,
+and never performs export preprocessing, pruning or lowering. Native island trees
+own mathematical content; raw block Org children are removed, wrapper metadata
+is retained. Source/syntax guards bracket private preparation and native waits.
+The model detaches from source lifetime. Existing export ordering is unchanged;
+the fragment collector's optional private initializer leaves old callers intact.
+In particular, existing export
 preparation prunes source syntax/content by export policy before the lower call,
 and input finalization allocates references. Both need boundary analysis; skipping
 preflight alone is insufficient to establish a generic full-document core path.

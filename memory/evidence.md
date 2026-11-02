@@ -1,5 +1,40 @@
 # org-texmacs durable evidence
 
+## Independent buffer-parser acceptance
+
+The common-model foundation was human-committed after the CHANGELOG-only
+delivery: exact parent, eight paths, message and all120committed build/source/
+test hashes match its accepted613ERT snapshot. The buffer-parser work was a new
+nine-path candidate, now delivered separately from that foundation commit.
+
+First parser check exited1: core227 ran,226 passed; the new four-island test
+observed three. Its raw STM string contained a column-one headline, ending the
+native Org section before the block terminator. Official Org9.8.10 source
+(release_9.8.10 org-element.el section/special-block parsers) explains this
+recognition boundary. Repair indents that fixture line, retains exact multiline
+tree expectations, adds a three-block-kind real-headline preservation regression
+and documents the native syntax boundary. No production parser change was
+needed; the successful rerun verifies both corrected and boundary cases.
+
+After user manual formatting/restaging and fresh authority, ran once:
+timeout600s nix flake check -L --no-write-lock-file --max-jobs2 against the new
+isolated path tmp/core-ast-0.6.0-parser-fix. Exit0/all checks passed in locked
+x86_64-linux. Core228/228, native331/331, PDF-document33/33, PDF-render29/29,
+cached patched-caption6/6 =627ERT. Four newly run suite times are1.496819,
+208.751608,92.834656,155.969434s. Strict compilation, treefmt, lint and aggregates
+pass; cached outputs are not claimed as fresh reruns. Other platforms, optional
+real extension integration, GUI and native STM serialization remain unverified
+for this node. First failed input copy remains intact for comparison.
+
+New copy contains123build/source/test inputs with adjacent SHA256 manifest;
+root/copy still match all123hashes. Root README is separate static documentation,
+not part of that check input set. All nine paths are user-staged, no unstaged
+diff and staged whitespace passes. No agent project staging/commit, root lock
+mutation, formatter or automatic retry. Human delivery now verified: expected
+foundation parent, exact nine paths/message and all123committed input hashes
+match acceptance; README equals reviewed candidate and ordinary worktree/index
+are clean. No delivery-only rerun, external issue or remote mutation.
+
 ## CHANGELOG delivered; common-model foundation acceptance
 
 Read-only verification confirms the human's CHANGELOG-only first commit is the
@@ -8,8 +43,8 @@ exact 40-line TODO entry, six feature headings, unchecked task items and retaine
 history. Project index/worktree were clean at intake; commit whitespace passes.
 No issue trailer/closure or remote change is associated with this delivery.
 
-The following source work is an uncommitted candidate, not code from that
-project commit: common-model constructor/error and ownership extraction,
+The following source work was initially an uncommitted candidate, subsequently
+delivered separately from the CHANGELOG: common-model constructor/error and ownership extraction,
 export MODEL graph reuse, eleven new core ERT cases and scoped documentation.
 The candidate's dependency classification and behavioral limits are in
 memory/core-ast-0.6.0.md. User manual formatting exposed two missing right
