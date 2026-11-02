@@ -1,5 +1,17 @@
 # org-texmacs durable evidence
 
+## v0.7.0 revised plan approval; no new runtime evidence
+
+The user confirmed API consolidation, standard TeXmacs Cite processor allowance,
+experimental architecture gates, visible-only/body-only/async boundaries, necessary
+minimum-version policy, and per-node human delivery. Their six-point revision
+clarifies structured result delivery, synthetic STM, conservative PDF callback
+compatibility, real backend identity, native reference duties and Cite raw values.
+"Implement the plan" approves the revised execution contract distilled in
+memory/standard-export-0.7.0-plan.md. Public status/check and clean ordinary/GAW
+intake are verified; HEAD still equals local v0.6.0. This is plan adoption, not
+proof of a callback/result/processor design. No0.7.0 tests/builds/prototypes ran.
+
 ## v0.7.0 guide review: static evidence only
 
 The chat-supplied guide and read-only source findings are distilled in

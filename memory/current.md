@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: v0.7.0 standard-export guide reviewed; planning next
+## Current: revised v0.7.0 plan approved; initial delivery gate
 
 The user asks to recover GAW memory and inspect the workspace before upcoming
 v0.7.0 development. Public GAW status/check pass; the ordinary main worktree
@@ -13,9 +13,11 @@ The user then supplied the eleven-section v0.7.0 Standard Org Export Integration
 guide and requested read-only review before subsequent Plan mode planning.
 The requested direction and complete distilled requirements, stage sequence,
 test matrix, source findings and open gates are in memory/standard-export-0.7.0.md.
-This selects the version objective, not an executable implementation plan or
-runtime authority. No prototype, tests, builds or ordinary project edits ran.
-The completed v0.6.0 plan and its Nix authority do not carry forward.
+The subsequent conversational plan and six-point revision note are now approved
+by "Implement the plan". The controlling ordered execution contract is
+memory/standard-export-0.7.0-plan.md. Earlier review-only authority is superseded
+within this approved scope; the completed0.6.0 Nix permission is not reused.
+No0.7.0 prototype, tests, builds or ordinary source edits have run.
 
 Review finds the direction coherent. Main planning gates: earlier org-export-data
 traversal before inner-template (org-data is special-cased), basic Cite's own
@@ -26,10 +28,23 @@ longer a standard-export requirement. No callback/processor strategy is selected
 Current public extension source still relies on org-export-as dynamic state and
 INFO bibliography mutation; static reads do not prove runtime interoperability.
 No raw archive is needed for the sufficiently distilled chat guide.
-Next: enter planning from the reviewed guide; move callback/Cite feasibility
-and output-coding risk discovery early without collapsing A-E into a wholesale
-rewrite. Async/nonblocking and Issue9 are not selected by this guide. Maintain
-core independence and separate model validity from backend output support.
+The revision adds A-stage gates for unified structured results in one standard
+transaction, actual texmacs backend identity, the complete Cite return/raw matrix,
+and PDF/text-postprocessing compatibility. PDF may conservatively reject unknown
+effective callbacks; arbitrary no-op detection is not required and callbacks must
+not be replayed. B must admit positionless synthetic STM with complete structural
+input; C keeps native reference/footnote/numbering responsibilities in lowering.
+Visible-only is selected; body-only/async are rejected/deferred. Org9.8.10 is the
+acceptance baseline, with a minimum bump only if necessary. Basic is not a blocker
+if a proper Org Cite TeXmacs processor meets required semantics/real integration.
+
+Next: finish the mandatory memory plan checkpoint, then add only CHANGELOG.org's
+TODO v0.7.0 planned features and prepare tmp/commit.md. Wait for the human's
+CHANGELOG-only commit and verify it before A experiments or production edits.
+Each later production node also waits for human delivery. No ordinary staging
+authority; no commits/tags/pushes by the agent. Async/nonblocking and Issue9 stay
+outside scope. Isolated experiments require immediate retention review and
+selective archive when independently useful, not default directory capture.
 
 ## Current: v0.6.0 locally finalized and tagged; approved plan complete
 

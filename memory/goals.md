@@ -1,6 +1,6 @@
 # org-texmacs project goals
 
-## Requested v0.7.0 direction: Standard Org Export Integration
+## Approved v0.7.0 objective: Standard Org Export Integration
 
 The user supplies the v0.7.0 guide for read-only review followed by Plan mode
 planning. Make ox-texmacs consume prepared Org structures inside real
@@ -13,9 +13,17 @@ legally change/generate STM; original-byte fidelity is not the standard contract
 Standard semantics and AST-first integrity are both mandatory; legacy frontend
 details are subordinate and changed contracts require explicit documentation/tests.
 Full requirements and review gates: memory/standard-export-0.7.0.md.
-The implementation plan, callback/processor strategy and runtime authorization
-remain pending. This advances earlier long-term export direction below, without
-selecting general syntax expansion, async/nonblocking work or Issue9.
+The revised execution plan is approved by "Implement the plan" and controls
+ordering/authority: memory/standard-export-0.7.0-plan.md. First memory checkpoint,
+then CHANGELOG-only human delivery, then A-E. Callback/result-delivery/processor
+strategies remain experimental gates, not fixed architecture. Preserve independent
+core/pure lowering; source-buffer APIs survive only as thin standard consumers.
+Support visible-only; reject body-only and defer async. Basic is optional when
+a standards-compliant TeXmacs Cite processor meets required acceptance. Use9.8.10
+as baseline, raising the minimum only when required. PDF allows known compatible
+callbacks and conservative rejection of unproven effective combinations without
+arbitrary effect prediction/replay. Full revision constraints are in the plan.
+No general syntax expansion, async/nonblocking work or Issue9 is selected.
 
 ## Purpose and project positioning
 

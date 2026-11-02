@@ -1,11 +1,15 @@
 # org-texmacs active backlog
 
-## v0.7.0 Standard Org Export Integration: planning input
+## v0.7.0 Standard Org Export Integration: approved execution
 
 The user selects this version direction by supplying the guide for read-only
 review, followed by Plan mode planning. The guide's A-E stages, public API
 migration constraints and complete acceptance matrix are distilled in
-memory/standard-export-0.7.0.md. This is not an approved executable plan.
+memory/standard-export-0.7.0.md. The subsequent revised plan is now approved;
+memory/standard-export-0.7.0-plan.md controls execution and supersedes review-only
+status. First create the memory plan checkpoint, then a CHANGELOG-only candidate;
+wait for human delivery before experiments. Each production node has its own
+human-delivery gate. No existing preparation API forces parallel standard semantics.
 Callback/Cite/STM/ownership/output feasibility gates precede broad migration;
 inner-template and a TeXmacs Cite processor remain candidates, not decisions.
 Standard preparation may generate STM and owns recursive INCLUDE. Existing

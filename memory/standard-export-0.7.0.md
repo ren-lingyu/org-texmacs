@@ -1,5 +1,14 @@
 # v0.7.0 Standard Org Export Integration: guide intake and read-only review
 
+## Superseding execution contract
+
+The revised implementation plan is now approved with "Implement the plan".
+memory/standard-export-0.7.0-plan.md is the controlling execution document,
+including all six revision-note requirements and confirmed planning choices.
+Review-only status below describes intake history, not current authority.
+In particular, PDF compatibility permits conservative refusal of unproven
+effective callbacks and does not require predicting arbitrary runtime effects.
+
 ## Status, provenance and authority
 
 On 2026-11-02 the user supplied the eleven-section v0.7.0 development guide

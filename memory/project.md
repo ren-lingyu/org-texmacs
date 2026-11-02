@@ -1,10 +1,11 @@
 # org-texmacs current project model
 
-## v0.7.0 requested architecture; implementation still at v0.6.0
+## v0.7.0 approved plan; implementation still at v0.6.0
 
 Read-only review of the user's Standard Org Export Integration guide is recorded
 in memory/standard-export-0.7.0.md. The real standard Org pipeline is the selected
-direction for planning, not implemented behavior. Existing generic rejection and
+direction for approved execution, not implemented behavior. The controlling
+revised plan is memory/standard-export-0.7.0-plan.md. Existing generic rejection and
 bounded frontend remain. Source inspection establishes callback/Cite/ownership
 risks, not prototype feasibility or new support. Keep existing0.6.0 core APIs
 independent, generic model context separate from consumer INFO, and treat
