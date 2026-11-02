@@ -331,13 +331,15 @@ TAGS is the source configuration snapshot; REGEXP matches its prefixes."
                     (goto-char end)))))))
         (nreverse spans)))))
 
-(defun org-texmacs--fragment-collect (tags)
+(defun org-texmacs--fragment-collect (tags &optional initialize)
   "Collect fragment spans in a private copy of the accessible Org source.
 
 Do not widen the source buffer, run its mode hooks, or start a worker.
 Scan the entire copy before region filtering to preserve left-to-right
 precedence.  An unsupported or unclosed candidate stops its paragraph.
-TAGS is a validated copy of the source buffer's configuration."
+TAGS is a validated copy of the source buffer's configuration.
+Optional INITIALIZE installs captured parser syntax after private Org mode
+initialization.  Existing callers retain their original discovery behavior."
   (let ((buffer (current-buffer))
         (tick (buffer-chars-modified-tick))
         (offset (1- (point-min)))
@@ -352,6 +354,8 @@ TAGS is a validated copy of the source buffer's configuration."
                 (org-inhibit-startup t))
             (delay-mode-hooks
               (org-mode))
+            (when initialize
+              (funcall initialize))
             (insert source)
             (let ((paragraphs
                    (org-element-map

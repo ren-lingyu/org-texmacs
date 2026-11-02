@@ -609,7 +609,9 @@ apply to complete TeXmacs special blocks, not paragraph fragments.
 Load =(require 'org-texmacs-model)= to construct an independent snapshot from
 an already parsed native Org AST and STM trees.  This module does not load the
 document lowering layer, export frontend or worker.  It does not yet provide
-the planned buffer parser, inspection, serialization or transformation commands.
+the planned inspection, serialization or transformation commands.  Its autoloaded
+=org-texmacs-parse-buffer= adapter can construct a complete model from an explicit
+Org source buffer, using native STM parsing without document lowering.
 
 #+begin_src emacs-lisp
   (require 'org-texmacs-model)
@@ -648,8 +650,56 @@ CONTEXT is an explicit plist of resolved syntax/source data.  Its accepted keys
 are =:fragment-tags=, =:heading-settings=, =:link-settings=, =:source-file= and
 =:resource-base=.  Values are owned without reading ambient settings or files.
 The model does not capture export INFO, style, initial environment, bibliography
-output or reference allocation.  Context capture from buffers belongs to the
-subsequent parser implementation.
+output or reference allocation.
+
+For buffer construction, =org-texmacs-parse-buffer SOURCE-BUFFER= captures the
+complete unnarrowed source and its effective syntax settings.  It restores the
+original narrowing before private parsing or native waits, preserves source
+text, point and mark, and returns a model independent of the source lifetime.
+It does not interpret narrowing as body selection or run export pruning.
+
+#+begin_src emacs-lisp
+  (require 'org-texmacs-model)
+  (let ((model (org-texmacs-parse-buffer (current-buffer))))
+    (org-texmacs-model-islands model))
+#+end_src
+
+The adapter recognizes the existing =texmacs=, =equation= and =equation*= raw
+blocks and configured paragraph/direct-inline-footnote fragments.  Titles,
+captions, emphasis, table cells and code retain ordinary Org interpretation;
+STM-looking text in those contexts does not become an island.  Block parameters
+and affiliated properties are preserved without applying TeXmacs lowering's
+restrictions.  Raw block parsing residue is removed after association; its STM
+tree owns the mathematical content.
+
+Native block boundaries follow Org syntax.  An unindented headline ends its
+section, so a block opener before that headline cannot enclose text after it.
+Indent headline-looking lines inside multiline STM strings when they are meant
+to remain block content.  An incomplete block retains ordinary Org structure;
+the adapter does not reinterpret its headings as mathematical data.
+
+Comments, arbitrary property drawers, unreferenced footnote definitions,
+excluded headlines and other native Org structures remain in the model.
+INCLUDE, SETUPFILE and bibliography declarations remain source syntax here;
+the adapter does not acquire files, run Babel, export hooks/filters or Cite
+processors, format bibliography, resolve output references or invoke lowering.
+It parses every recognized island, including those in export-excluded content.
+Consequently, invalid STM there also fails model construction.
+
+The syntax snapshot stores bound native heading/TODO/level/priority settings,
+the parser's emphasis/list/affiliation/secondary conventions, source radio-link
+syntax, registered link names and global/local abbreviations.  Link follow and
+export handlers are not captured or invoked as export operations.  Private Org
+mode initialization happens before source insertion and without mode hooks.
+Regex regeneration stays within private bindings.  This is not a sandbox for
+user-defined callbacks used by native Org syntax, such as link abbreviations.
+
+Source text, mode, narrowing, file/resource identity and effective syntax are
+checked before and after native waits and before return.  A changed or killed
+source signals =org-texmacs-model-error= without rolling back external edits.
+Invalid native STM retains =org-texmacs-parse-error= and transport failures retain
+=org-texmacs-worker-error=.  This does not change the existing export adapter's
+selection, preflight order, bibliography or output contracts.
 
 Existing export inputs reuse this model's ownership machinery.  Their
 =org-texmacs-input-model= accessor holds the same owned AST and islands exposed

@@ -46,6 +46,8 @@
 ;; Use `org-texmacs-model-create' to own a native Org AST and already parsed
 ;; STM islands independently of document lowering.  The model module can be
 ;; loaded alone without export preparation or a native worker.
+;; Use `org-texmacs-parse-buffer' for complete-source model construction with
+;; native STM parsing, without export filtering or document lowering.
 ;; Use `org-texmacs-document' to lower an explicit prepared input, or
 ;; `org-texmacs-document-from-buffer' for source-buffer structural conversion
 ;; to a text TeXmacs document result with body, style, initial environment and

@@ -10,6 +10,7 @@ let
   testFiles = [
     ./lisp/bibliography.el
     ./lisp/metadata.el
+    ./lisp/model-parser.el
     ./lisp/document.el
     ./lisp/editing.el
     ./lisp/examples.el

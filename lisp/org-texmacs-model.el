@@ -14,6 +14,8 @@
 
 (require 'org-texmacs-core)
 
+(autoload 'org-texmacs-parse-buffer "org-texmacs-parse")
+
 (cl-defstruct
  (org-texmacs-model
   (:constructor org-texmacs--model-create) (:copier nil))
