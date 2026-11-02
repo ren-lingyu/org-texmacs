@@ -1,5 +1,46 @@
 # org-texmacs durable evidence
 
+## CHANGELOG delivered; common-model foundation acceptance
+
+Read-only verification confirms the human's CHANGELOG-only first commit is the
+direct child of the v0.5.0 baseline, with the planned docs(changelog) subject and
+exact 40-line TODO entry, six feature headings, unchecked task items and retained
+history. Project index/worktree were clean at intake; commit whitespace passes.
+No issue trailer/closure or remote change is associated with this delivery.
+
+The following source work is an uncommitted candidate, not code from that
+project commit: common-model constructor/error and ownership extraction,
+export MODEL graph reuse, eleven new core ERT cases and scoped documentation.
+The candidate's dependency classification and behavioral limits are in
+memory/core-ast-0.6.0.md. User manual formatting exposed two missing right
+parentheses in the agent-authored --model-check-islands helper. Read-only
+diagnosis identified the internal let and cl-labels binding boundaries; the
+original formatter failure was a real source syntax defect, not configuration.
+User authorized repair and one format/test run, then asked for tests directly
+after their own formatting. Two-parenthesis repair complete; the one disclosed
+scoped formatter exited0, no subsequent agent formatter. The isolated full
+flake check ran once and exited0/all checks passed. No retry or broader test.
+
+Results: core217/217(11new model cases), native328/328, PDF-document33/33,
+PDF-render29/29, patched-caption6/6 =613ERT, zero unexpected. Strict byte/native
+compilation, lint, formatting check and aggregates pass in the current locked
+x86_64-linux environment. Suite elapsed seconds:1.415810/205.063958/92.897863/
+157.249239/2.881775 respectively. Other systems omitted by Nix; optional real
+extension integration and standalone STM serialization are not covered anew.
+Root README has static staged review; the isolated check input set contains
+source/build/test files, not root release/readme manuscripts.
+
+Input preparation itself uses the validated
+ignored tmp boundary: 120 byte-identical tracked/intended new build/source/test
+files under tmp/core-ast-0.6.0-foundation, with an adjacent checksum manifest,
+no Git metadata or dependency/agent directories. Static diff/allowlist review
+passes. All120root/copy hashes still match after acceptance. User staged all
+eight candidate paths, correcting the earlier stale index; there are no unstaged
+project changes and the complete staged diff/whitespace is reviewed. The agent
+did not change the ordinary index, lock, result or project history. Commit-message
+draft is prepared from that staged tree, not the earlier malformed candidate.
+No new raw archive: maintained cases and distilled evidence suffice.
+
 ## Reviewed v0.6.0 plan and implementation instruction
 
 After the guide, the user selected: core completion plus standard-export

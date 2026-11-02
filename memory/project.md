@@ -29,8 +29,13 @@ are authoritative in memory/goals.md. The subsequent preferred development guide
 identifies independent parse/inspect/normalize/finite-transform operations as the
 core feature; the subsequently reviewed plan now selects the public model APIs
 and staged implementation. Requirements, approved contracts/order and initial
-static dependency survey are in memory/core-ast-0.6.0.md. No core capability is
-implemented yet; first project delivery is CHANGELOG-only. In particular, existing
+static dependency survey are in memory/core-ast-0.6.0.md. The human has delivered
+the exact CHANGELOG-only first project commit. The uncommitted common-model
+foundation candidate is now accepted by full isolated flake check/613ERT:
+model constructor/error, common ownership helpers and export MODEL integration,
+with eleven new core cases. User staged all8paths; no unstaged diff, message
+ready, human delivery pending. Parsing/inspection/serialization/transformation
+operations remain subsequent nodes. In particular, existing
 preparation prunes source syntax/content by export policy before the lower call,
 and input finalization allocates references. Both need boundary analysis; skipping
 preflight alone is insufficient to establish a generic full-document core path.

@@ -1,16 +1,82 @@
 # org-texmacs current memory
 
-## Current: approved v0.6.0 implementation; plan checkpoint then CHANGELOG
+## Current: common-model foundation accepted; staged for human delivery
+
+Human delivery of the 40-line CHANGELOG-only headline/checkbox candidate is
+verified: expected single v0.5.0 parent, exact path/blob/diff and planned subject,
+clean ordinary index/worktree at intake, commit whitespace passes. The required
+first project commit boundary is satisfied. Ordinary main is one commit ahead
+of its locally recorded upstream; no remote state was queried or changed.
+
+Continuing the already authorized plan, implemented an uncommitted foundation
+candidate: independent org-texmacs-model module/constructor and model-error,
+shared structural copying/remapping/stree validation, export input MODEL slot
+sharing the existing owned AST/island graph, eleven new core ERT cases, and
+README/main commentary. Export preflight/body-STM/bibliography/reference order
+is unchanged. Source parser, inspection, serialization and transformation APIs
+are later nodes, not delivered capabilities. Complete field/context classification
+and candidate limits are in memory/core-ast-0.6.0.md, foundation section.
+
+User's manual nix fmt exposed two missing closing parentheses in the newly
+authored --model-check-islands function. Read-only lexical diagnosis located
+the unfinished internal let/cl-labels boundaries; the syntax bug was in the
+agent-authored source, not the formatter. User then explicitly requested repair
+and one format/test run. Corrected those two boundaries; one disclosed scoped
+formatter exits0 (7files traversed,6formatted). User subsequently says they have
+formatted manually and to run tests directly; do not run any further formatter.
+
+Refreshed all120source/build/test inputs in tmp/core-ast-0.6.0-foundation to
+the current root and invoked the disclosed timeout600s full isolated flake
+check once. It exits0/all checks passed: core217/native328/PDF-document33/
+PDF-render29/patched-caption6 =613ERT, zero unexpected; strict byte/native
+compilation, package-lint, treefmt and aggregates pass. Observed suite times:
+core1.415810s/native205.063958s/document92.897863s/render157.249239s/
+patched2.881775s. Only the current x86_64-linux gate is claimed; optional real
+extension integration was not rerun. No native STM serializer probe yet.
+
+Static review and isolated input preparation are complete: 120 byte-identical
+build/source/test inputs in the disclosed check copy, adjacent checksum manifest,
+no Git metadata, caches or agent memory copied. Current root snapshot and copy
+match after acceptance too. User restaged all8candidate paths during the run,
+including the corrected model file; there is now no unstaged project diff.
+Complete staged diff reviewed as one coupled feat(model) candidate; whitespace
+passes, staged source matches the tested inputs. Root lock/result/history and
+ordinary index were not changed by the agent. Do not repeat the passed gate.
+
+Resumed the user's previously requested commit-message preparation after syntax
+repair/testing. tmp/commit.md now contains feat(model): add independent
+mathematical-document snapshots, with three Chinese bullets describing the
+public constructor/model error, shared ownership/export graph and regressions/
+docs. No breaking/issue-closing footer. Split assessment: not necessary, low
+difficulty; one constructor capability and its shared export integration/tests.
+Next: human commit, verify exact delivery and source equality, then proceed to
+the buffer-parser node. Do not begin another functional node before delivery.
+
+## Earlier: plan checkpoint and CHANGELOG preparation
 
 The user approved execution with "Implement the plan" after planning and the
 nine-section review supplement. The final executable contract/order/API list is
 in memory/core-ast-0.6.0.md. Initial recovery confirms clean ordinary main at the
 finalized v0.5.0 release baseline and clean valid GAW. No runtime result is new.
 
-First establish the GAW plan checkpoint, then edit only CHANGELOG.org to create
-TODO v0.6.0 with the planned core/consumer separation, construction, inspection,
-normalized Org output, independent copy/island access/finite replacement and
-round-trip acceptance scope. No CLOSED/detail manuscript/link/version change.
+The required plan checkpoint has been created through public git gaw commit;
+locate it through the first-parent history of memory/core-ast-0.6.0.md. It has
+only memory changes and no new project parent, appropriate for adopted planning.
+Then edited only CHANGELOG.org, creating TODO v0.6.0 with
+planned core/consumer separation, construction, inspection, normalized Org output,
+independent copy/island access/finite replacement and round-trip acceptance.
+The entry explicitly states these changes are not yet implemented. No CLOSED,
+detail manuscript/link, frozen CUSTOM_ID or version change. Read-only byte
+comparison confirms the header and all historical contents are identical to HEAD;
+diff whitespace passes and the existing explicit allowlist permits tracking.
+User staged the initial 26-line candidate, then requests headline/checkbox
+organization. The revised worktree adds 40 lines relative to HEAD: existing
+Changed/Added categories, six level-three feature headings and unchecked task
+items, with the same scope and TODO version state. Diff whitespace passes.
+Agent leaves the index untouched: CHANGELOG.org is now MM, since the user's
+index still contains the earlier list-only candidate. Restage before delivery.
+No runtime test/build/formatter or source implementation has run. Next: human
+staging/commit of this exact candidate, then read-only delivery verification.
 The first ordinary project commit MUST be that CHANGELOG-only delivery. Wait
 for human commit and verify it before any source implementation. Ordinary
 project staging still requires explicit path-specific authority, ordinary

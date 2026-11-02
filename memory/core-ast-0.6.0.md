@@ -310,7 +310,91 @@ baseline, not an implemented candidate or runtime experiment.
   .tm document. Standalone STM serialization remains an investigation item;
   response-wire printing is not evidence of STM output round-trip correctness.
 
-Next: follow the required GAW plan checkpoint -> CHANGELOG-only human delivery
-boundary above, then complete the field/constructor/consumer/context dependency
-map as the first implementation node. No native probe or third-party/API
-compatibility verification has been run.
+## Foundation node: dependency classification and candidate
+
+The human delivered the exact headline/checkbox CHANGELOG-only candidate, direct
+child of the v0.5.0 baseline, with the planned docs(changelog) subject and clean
+ordinary index/worktree at intake. No remote operation or issue closure is
+associated with that delivery. The prerequisite is satisfied; implementation of
+the common-model/ownership foundation is now runtime accepted and staged,
+awaiting human delivery.
+
+Field classification from the existing implementation:
+
+| Existing input field/data | Responsibility and treatment |
+| --- | --- |
+| AST, ISLANDS | Common owned Org graph, authoritative STM trees and remapped identity association. |
+| POST-BLANKS | Exact source-derived tabs/spaces used by current export lowering; stays in export input, not core target policy. Future normalized serialization need not reproduce spelling. |
+| INFO | Mixed export context: fixed metadata secondary ASTs, presentation functions, handler registry, selection/options, bibliography views and node references. Keep consumer-specific capture and secondary ownership; share the structural copier, never treat the whole plist as model context. |
+| STYLE, INITIAL | TeXmacs output configuration, owned/validated in the export constructor. |
+| BIBLIOGRAPHY | Explicit parsed dependencies and native formatting inputs, export path only. |
+| RESOLUTION | Document target analysis/reference allocation, export finalization only. |
+| SOURCE-FILE, RESOURCE-BASE | Explicit source/resource identity without filesystem reads; necessary source context is eligible for the independent model but is not inferred by its constructor. Existing export accessors remain unchanged. |
+
+Syntax-context classification for the next buffer-parser node:
+
+- Fragment tags are explicit recognition syntax and must be owned by the model
+  when parsing a source snapshot. Capture remains in the buffer adapter.
+- Existing --document-heading-settings captures effective org-todo-regexp,
+  org-done-keywords, org-odd-levels-only, org-priority-regexp and
+  org-footnote-section. Those describe source interpretation; the parser node
+  must review any additional settings actually required by native Org
+  serialization rather than copying export selection/options.
+- Existing --document-link-settings copies link registrations and global/local
+  abbreviations. Effective source syntax belongs to context; private regex
+  regeneration/local installation is temporary construction state. Symbolic
+  callback identity versus mutable closure capture needs the parser node's
+  transaction review, not a universal configuration framework in this node.
+- Native-body block recognition is the existing fixed case-insensitive
+  texmacs/equation/equation* convention in the source module, not a style/lowering
+  configuration field. Preserve block type/parameters/affiliation as Org data.
+- Export tag/archive/task/selection flags, subtree inheritance, style/initial,
+  bibliography discovery/formatting, handlers, presentation functions and output
+  references remain consumer context. The foundation neither captures nor runs
+  them in the public core constructor.
+
+The candidate adds org-texmacs-model.el, requiring only shared core. It extracts
+Org node/data/secondary/caption copying, pending forward-reference remapping,
+mapping ownership and stree copying from the prior input/document machinery.
+The export owner retains document-error conditions and its stricter caption
+policy, presentation function handling and reference-finalization sequence.
+Existing input AST/ISLANDS accessors and its new MODEL slot share one owned graph;
+--input-with-info preserves that same model. No worker/preflight/bibliography
+ordering is changed. Public model-create uses independent model errors and
+structural caption validation, including empty secondary strings, with overlap
+checking and no source/recognition/lowering checks.
+
+The model's explicit CONTEXT keys are fragment-tags, heading-settings,
+link-settings, source-file and resource-base (keywords in the API). The constructor
+owns resolved data and rejects unknown/duplicate keys and opaque runtime values;
+it does not yet capture source settings or freeze a parser-setting value schema.
+No model-copy/island operation/inspection/parser/serializer is delivered by this
+foundation node. Their names/order above remain subsequent implementation scope.
+
+Eleven new core ERT cases cover isolated module loading without export/worker,
+actual native Org structures beyond lowering, detached source lifetime, nested
+ownership/secondary/caption and context mutation, forward property links,
+inexpressible supplied-tree associations, malformed/overlapping maps, runtime
+and cyclic values, export-versus-core caption policy and shared export identities.
+README and main commentary document only the current constructor boundary.
+The initial malformed helper had two missing right parentheses, exposed by the
+user's manual formatter and corrected at its internal let/cl-labels boundaries.
+User authorized one repair/format/test run, then requested direct testing after
+their own formatting. One scoped formatter succeeded; no further formatter ran.
+
+The single authorized gate was:
+
+```sh
+timeout 600s nix flake check -L --no-write-lock-file --max-jobs 2 path:/home/lingyu/Projects/org-texmacs/tmp/core-ast-0.6.0-foundation
+```
+
+It exits0/all checks passed:217core/328native/33PDF-document/29PDF-render/
+6patched-caption =613ERT, strict byte/native compilation, lint, treefmt and
+aggregates. All120source/build/test input hashes equal root and isolated copy
+after acceptance; root docs have separate static review. Only locked
+x86_64-linux/default checks, not optional real extension integration or GUI.
+No native serializer probe is selected for this node. User staged all8paths,
+including the repaired source; no unstaged diff. Complete staged review passes
+and tmp/commit.md contains feat(model): add independent mathematical-document
+snapshots. Do not repeat the passed gate solely for delivery. Next: human
+commit and exact delivery/source verification, then buffer parsing.

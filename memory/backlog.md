@@ -2,11 +2,15 @@
 
 ## v0.6.0 framework positioning and scope intake
 
-Status: **active-next**, reviewed plan approved for implementation. First GAW
-plan checkpoint, then the human's CHANGELOG-only TODO v0.6.0 project commit,
-verified before source implementation. Approved APIs/contracts and initial survey:
-memory/core-ast-0.6.0.md. Subsequent sequence is dependency classification,
-independent construction (buffer and supplied native trees), inspection projection
+Status: **active-next**, common-model/ownership foundation candidate accepted by
+full isolated flake/613ERT, all8paths user-staged and reviewed, awaiting human
+commit/delivery verification. The next functional node is independent buffer
+parsing after that delivery. The required GAW plan
+checkpoint and exact human CHANGELOG-only TODO v0.6.0 delivery are complete;
+delivery is verified before source implementation. Approved APIs/contracts,
+field/context classification and candidate limits: memory/core-ast-0.6.0.md.
+Subsequent sequence is independent construction (buffer and supplied native
+trees), inspection projection
 and display, normalized Org serialization, finite fresh-snapshot transformation,
 then standard Org Export investigation/follow-up design, documentation and
 version completion. No standard-export implementation is a release requirement;
