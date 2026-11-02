@@ -8,8 +8,8 @@
 ;; Consume prepared structures inside the real Org exporter.  Org owns all
 ;; preparation.  A scoped request can retain the owned input/document while the
 ;; standard call returns normally; native consumers never reconstruct that data
-;; from serialized text.  STM and richer prepared-context adaptation follow this
-;; initial handoff.  Unsupported structures fail at the existing lowerer.
+;; from serialized text.  The prepared adapter recognizes STM from the final
+;; tree.  Unsupported structures fail explicitly at the consumer boundary.
 
 ;;; Code:
 
@@ -18,6 +18,7 @@
 (require 'org-texmacs-input)
 (require 'org-texmacs-session)
 (require 'org-texmacs-fragment)
+(require 'org-texmacs-prepared)
 
 (defvar org-texmacs--standard-request nil
   "Private, single-invocation structured result request.")
@@ -80,7 +81,8 @@ through unchanged.  No Org preparation or transcoder implementation is copied."
    (and buffer-file-name (substring-no-properties buffer-file-name))
    (substring-no-properties default-directory)
    (org-texmacs--document-copy-style org-texmacs-document-style)
-   (org-texmacs--document-copy-initial org-texmacs-document-initial)))
+   (org-texmacs--document-copy-initial org-texmacs-document-initial)
+   (org-texmacs--fragment-tags)))
 
 (defun org-texmacs--standard-check-source (state &optional selecting)
   "Reject source changes across native waits using captured STATE.
@@ -178,42 +180,36 @@ The prepared AST remains authoritative; this is not STM text construction."
     (delete-dups
      (append org-element-all-elements org-element-all-objects nil)))))
 
-(defun org-texmacs--standard-check-unadapted-stm (tree)
-  "Reject recognizable inline STM in TREE until island adaptation is available.
-Do not silently render configured mathematical fragments as ordinary Org text.
-Code/verbatim and other unrecognized contexts remain ordinary Org content."
-  (when-let* ((tags (org-texmacs--fragment-tags)))
-    (let ((regexp (concat "(" (regexp-opt tags t) "[ \t\r\n()]"))
-          (case-fold-search nil))
-      (org-element-map
-       tree '(paragraph footnote-reference)
-       (lambda (node)
-         (when (or (eq (org-element-type node) 'paragraph)
-                   (eq (org-element-property :type node) 'inline))
-           (dolist (child (org-element-contents node))
-             (when (and (stringp child) (string-match-p regexp child))
-               (signal
-                'org-texmacs-document-error
-                '("Standard export STM island adaptation is not available yet"))))))))))
-
 (defun org-texmacs--standard-input (info state)
   "Own the prepared tree from standard INFO and source STATE.
-This initial adapter projects supported options, never reruns preparation or
-copies the full export INFO/cache into a model.  Richer STM/logical-exclusion
-adaptation remains a separate node."
+Project supported options without repeating preparation or retaining full INFO."
   (let ((tree (plist-get info :parse-tree))
         (keys (mapcar #'car org-texmacs--context-option-alist))
         projected)
-    (when (plist-get info :ignore-list)
-      (signal
-       'org-texmacs-document-error
-       '("Standard logical exclusion requires prepared AST adaptation")))
     ;; Org's public map resolves deferred properties while its buffer is live,
     ;; including affiliated/secondary data.  Never reparse the working buffer.
-    (org-element-map tree t #'identity nil nil nil t)
-    (org-texmacs--standard-check-unadapted-stm tree)
+    (org-element-map
+     tree t
+     (lambda (node)
+       (when (consp node)
+         ;; Resolve without FORCE: explicit AST-filter property replacements
+         ;; remain authoritative over deferred source-derived values.
+         (org-element-properties-resolve node)))
+     nil nil nil t)
+    (setq tree
+          (org-texmacs--prepared-copy
+           tree (plist-get info :ignore-list)))
+    (org-texmacs--prepared-control-keywords tree)
+    (org-texmacs--prepared-affiliation tree)
     (dolist (key keys)
       (when (plist-member info key)
+        (when (memq key org-texmacs--context-rich-metadata)
+          (org-element-map
+           (plist-get info key) t
+           (lambda (node)
+             (when (consp node)
+               (org-element-properties-resolve node)))
+           nil nil nil t))
         (setq projected
               (plist-put projected key (plist-get info key)))))
     (setq projected
@@ -238,13 +234,28 @@ adaptation remains a separate node."
      (plist-put
       projected
       :texmacs-link-org-files-as-pdf org-texmacs-link-org-files-as-pdf))
-    (org-texmacs-input-create
-     tree
-     projected
-     :style (nth 7 state)
-     :initial (nth 8 state)
-     :source-file (nth 5 state)
-     :resource-base (nth 6 state))))
+    (let*
+        ((requests
+          (org-texmacs--prepared-discover
+           tree (org-texmacs--fragment-tags)))
+         ;; As in the independent parser, placeholders exist only inside an
+         ;; unpublished ownership transaction.  Freeze context before waits;
+         ;; allocate labels only after all actual native trees are available.
+         (input
+          (org-texmacs--input-own
+           tree projected
+           :islands
+           (mapcar
+            (lambda (request)
+              (cons (car request) '(concat "")))
+            requests)
+           :style (nth 7 state)
+           :initial (nth 8 state)
+           :source-file (nth 5 state)
+           :resource-base (nth 6 state))))
+      (org-texmacs--prepared-parse
+       requests (org-texmacs-input-islands input))
+      (org-texmacs--input-finalize input))))
 
 (defun org-texmacs--standard-structured-tail (info)
   "Reject unproven string-tail effects for a structured consumer of INFO.

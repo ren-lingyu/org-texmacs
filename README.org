@@ -882,12 +882,32 @@ An initialization failure removes the newly allocated buffer.
 * Standard Org Export integration status
 The independent core loop is implemented.  The initial standard backend now
 runs through =(org-export-as 'texmacs)= and consumes its prepared AST in the
-live export context.  It can export ordinary supported Org structures; STM,
-standard control-keyword/logical-exclusion adaptation and Cite output support
-are still under development.  Recognized inline STM is rejected until island
-adaptation is available; it is not exported as literal source.  Unsupported
-prepared structures fail explicitly.
+live export context.  It recognizes configured paragraph/direct-inline-footnote
+STM and native =texmacs=/=equation=/=equation*= bodies from the final AST,
+including macro, Babel and recursive INCLUDE results.  Org logical exclusions
+are projected by identity before STM discovery, and consumed configuration
+directives remain represented by their effective INFO values.  Full standard
+selection/reference/footnote adaptation and Cite support remain in development.
+Unsupported prepared structures fail explicitly.
 The dispatcher commands retain their bounded preparation until their migration.
+
+The adapter resolves deferred properties while the export buffer is live,
+copies the final tree, and parses complete STM once with TeXmacs.  Its model
+owns the Org nodes and island mappings without retaining full INFO or relying
+on source positions.  Legal AST filters can insert, delete, move and replace
+supported nodes.  Adjacent text leaves can supply synthetic inline STM; a
+synthetic native block can supply structured contents or a complete
+=:texmacs-source= string property.  That explicit property supplies its native
+body, while the Org node retains its type and affiliation.
+
+Org syntax inside a complete STM string can be recovered from its structured
+Org representation, including bold text, links and code.  Objects outside the
+STM string cannot be absorbed across a fragment boundary.  Incomplete input,
+unrecoverable structure and target-specific =raw= objects fail explicitly.
+Multiline STM still obeys Org block boundaries: indent headline-looking string
+lines to keep them inside a native block.  The adapter does not reparse the
+whole Org buffer or add an INCLUDE/protection pipeline.  Standalone
+=org-texmacs-parse-buffer= keeps its independent, non-export preparation.
 
 Standard options and AST filters run through Org.  Node-level string filters
 (for example, paragraph or plain-text filters) are currently rejected before

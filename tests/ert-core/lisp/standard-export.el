@@ -1,5 +1,306 @@
 ;;; standard-export.el --- Standard export ownership regressions -*- lexical-binding: t; -*-
 
+(ert-deftest org-texmacs-standard-export-native-body-raw-is-not-source
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
+    (let ((org-export-use-babel nil)
+          (org-export-filter-parse-tree-functions
+           (list
+            (lambda (tree _backend _info)
+              (org-element-map
+               tree 'special-block
+               (lambda (node)
+                 (org-element-set-contents
+                  node
+                  "(math \""
+                  (org-export-raw-string "TARGET")
+                  "\")")))
+              tree))))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (_source)
+                   (ert-fail "Target raw reached native parser"))))
+        (should-error
+         (org-texmacs--standard-consume 'input)
+         :type 'org-texmacs-document-error)))))
+
+(ert-deftest
+    org-texmacs-standard-export-freezes-context-before-native-wait
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* Heading\n(math \"x\")\n")
+    (let* ((formatter (make-symbol "standard-test-headline"))
+           (original (lambda (&rest _arguments) "owned-heading"))
+           (org-texmacs-format-headline-function formatter)
+           (org-export-use-babel nil))
+      (fset formatter original)
+      (unwind-protect
+          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                     (lambda (_text)
+                       (fset formatter
+                             (lambda (&rest _arguments)
+                               "changed-heading"))
+                       '(math "x"))))
+            (let ((input (org-texmacs--standard-consume 'input)))
+              (should
+               (eq
+                (plist-get
+                 (org-texmacs-input-info input)
+                 :texmacs-format-headline-function)
+                original))
+              (should
+               (string-match-p
+                "owned-heading"
+                (prin1-to-string
+                 (org-texmacs-document-body
+                  (org-texmacs-document input)))))))
+        (fmakunbound formatter)))))
+
+(ert-deftest
+    org-texmacs-standard-export-adjacent-synthetic-text-is-one-input
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "Replace.\n")
+    (let ((org-export-use-babel nil)
+          (org-export-filter-parse-tree-functions
+           (list
+            (lambda (tree _backend _info)
+              (org-element-set-element
+               (car (org-element-map tree 'paragraph #'identity))
+               (org-element-create
+                'paragraph nil "(ma" "th \"joined\")"))
+              tree))))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (source)
+                   (should (equal source "(math \"joined\")"))
+                   '(math "joined"))))
+        (should
+         (equal
+          (cdar
+           (org-texmacs-input-islands
+            (org-texmacs--standard-consume 'input)))
+          '(math "joined")))))))
+
+(ert-deftest
+    org-texmacs-standard-export-resolves-code-without-overwriting-filter
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "(math \"~original~\")\n")
+    (let ((org-export-use-babel nil)
+          (org-export-filter-parse-tree-functions
+           (list
+            (lambda (tree _backend _info)
+              (org-element-map
+               tree 'code
+               (lambda (node)
+                 (org-element-put-property node :value "filtered")))
+              tree))))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (source)
+                   (should (equal source "(math \"~filtered~\")"))
+                   '(math "~filtered~"))))
+        (should
+         (equal
+          (cdar
+           (org-texmacs-input-islands
+            (org-texmacs--standard-consume 'input)))
+          '(math "~filtered~")))))))
+
+(ert-deftest
+    org-texmacs-standard-export-positionless-unsupported-affiliation-fails
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "Text.\n")
+    (let ((org-export-use-babel nil)
+          (org-export-filter-parse-tree-functions
+           (list
+            (lambda (tree _backend _info)
+              (org-element-set-element
+               (car (org-element-map tree 'paragraph #'identity))
+               (org-element-create
+                'paragraph '(:attr_texmacs ("unsupported")) "Text."))
+              tree))))
+      (should-error
+       (org-texmacs--standard-consume 'input)
+       :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-standard-export-positionless-island-ownership
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "Replace this.\n")
+    (let (final-node
+          final-tree
+          (calls 0)
+          (org-export-use-babel nil))
+      (let ((org-export-filter-parse-tree-functions
+             (list
+              (lambda (tree _backend _info)
+                (setq final-node
+                      (org-element-create
+                       'paragraph nil "Left (math \"new\") right."))
+                (org-element-set-element
+                 (car
+                  (org-element-map tree 'paragraph #'identity))
+                 final-node)
+                (setq final-tree tree)
+                tree))))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (text)
+                     (cl-incf calls)
+                     (should (equal text "(math \"new\")"))
+                     '(math "new"))))
+          (let* ((input (org-texmacs--standard-consume 'input))
+                 (island (car (org-texmacs-input-islands input)))
+                 (model (org-texmacs-input-model input)))
+            (should (= calls 1))
+            (should-not (org-element-property :begin final-node))
+            (should
+             (eq
+              (org-texmacs-input-ast input)
+              (org-texmacs-model-ast model)))
+            (should
+             (eq
+              (org-texmacs-input-islands input)
+              (org-texmacs-model-islands model)))
+            (should-not
+             (eq
+              (org-element-property :parent (car island)) final-node))
+            (should
+             (memq
+              (car island)
+              (org-element-contents
+               (org-element-property :parent (car island)))))
+            (should (= (length (org-element-contents final-node)) 1))
+            (org-element-set-contents final-node "External mutation")
+            (should (equal (cdr island) '(math "new")))
+            (should-not (eq (org-texmacs-input-ast input) final-tree))
+            (should (org-texmacs-document input))))))))
+
+(ert-deftest
+    org-texmacs-standard-export-logical-exclusion-before-parsing
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "Keep.\n\n(math incomplete\n")
+    (let ((org-export-use-babel nil)
+          captured
+          (org-export-filter-parse-tree-functions
+           (list
+            (lambda (tree _backend info)
+              (plist-put
+               info
+               :ignore-list
+               (last (org-element-map tree 'paragraph #'identity)))
+              tree))))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (_text) (ert-fail "Ignored STM parsed"))))
+        (setq captured (org-texmacs--standard-consume 'input)))
+      (should-not (org-texmacs-input-islands captured))
+      (should
+       (= (length
+           (org-element-map
+            (org-texmacs-input-ast captured) 'paragraph #'identity))
+          1)))))
+
+(ert-deftest
+    org-texmacs-standard-export-native-source-property-and-movement
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* One\nOld.\n* Two\nNext.\n")
+    (let ((org-export-use-babel nil)
+          (org-export-filter-parse-tree-functions
+           (list
+            (lambda (tree _backend _info)
+              (let* ((headings
+                      (org-element-map tree 'headline #'identity))
+                     (old
+                      (car
+                       (org-element-map tree 'paragraph #'identity)))
+                     (block
+                      (org-element-create
+                       'special-block
+                       '(:type
+                         "equation*"
+                         :texmacs-source "(sqrt \"new\")"))))
+                (org-element-extract-element old)
+                (org-element-adopt (cadr headings) block))
+              tree))))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (text)
+                   (should (equal text "(sqrt \"new\")"))
+                   '(sqrt "new"))))
+        (let* ((input (org-texmacs--standard-consume 'input))
+               (island (car (org-texmacs-input-islands input))))
+          (should (equal (cdr island) '(sqrt "new")))
+          (should
+           (equal
+            (org-element-property
+             :raw-value (org-element-property :parent (car island)))
+            "Two"))
+          (should-not (org-element-property :begin (car island))))))))
+
+(ert-deftest
+    org-texmacs-standard-export-boundary-errors-before-native-effects
+    ()
+  (dolist (text
+           '("(math *x*)\n"
+             "(math \"unterminated)\n"
+             "(math (sqrt *x*))\n"))
+    (with-temp-buffer
+      (org-mode)
+      (insert text)
+      (let ((org-export-use-babel nil))
+        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                   (lambda (_source)
+                     (ert-fail "Invalid boundary started worker"))))
+          (should-error
+           (org-texmacs--standard-consume 'input)
+           :type 'org-texmacs-document-error))))))
+
+(ert-deftest
+    org-texmacs-standard-export-stm-parse-error-and-source-preservation
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "(math \"x\")\n")
+    (let ((source (buffer-string))
+          (org-export-use-babel nil))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (_source)
+                   (signal 'org-texmacs-parse-error
+                           '("Invalid native data")))))
+        (should-error
+         (org-texmacs--standard-consume 'document)
+         :type 'org-texmacs-parse-error))
+      (should (equal source (buffer-string)))
+      (should-not org-texmacs--standard-transaction)
+      (should-not org-texmacs--standard-request))))
+
+(ert-deftest
+    org-texmacs-standard-export-fragment-settings-change-across-wait
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "(math \"x\")\n")
+    (let ((source (current-buffer))
+          (org-texmacs-fragment-tags '("math"))
+          (org-export-use-babel nil))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (_text)
+                   (with-current-buffer source
+                     (setq org-texmacs-fragment-tags '("other")))
+                   '(math "x"))))
+        (should-error
+         (org-texmacs--standard-consume 'input)
+         :type 'org-texmacs-document-error)))))
+
 (ert-deftest
     org-texmacs-standard-export-real-preparation-and-structured-result
     ()
@@ -290,15 +591,15 @@
        (org-export-as 'texmacs nil nil t)
        :type 'user-error))))
 
-(ert-deftest org-texmacs-standard-export-unadapted-stm-is-not-literal
+(ert-deftest org-texmacs-standard-export-incomplete-stm-is-not-literal
     ()
   (with-temp-buffer
     (org-mode)
-    (insert "Math (math \"x\").\n")
+    (insert "Math (math \"x\".\n")
     (let ((org-export-use-babel nil))
       (cl-letf (((symbol-function 'org-texmacs-document-serialize)
                  (lambda (_document)
-                   (ert-fail "Unadapted STM serialized as text"))))
+                   (ert-fail "Incomplete STM serialized as text"))))
         (should-error
          (org-export-as 'texmacs)
          :type 'org-texmacs-document-error)))))

@@ -8,9 +8,9 @@ Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
 * TODO v0.7.0
-Standard Org Export Integration is in development. The initial standard entry
-and structured result handoff are implemented; remaining planned work is marked
-below. Independent mathematical-document models and pure TeXmacs document
+Standard Org Export Integration is in development. The initial standard entry,
+structured result handoff and prepared STM adapter are implemented; remaining
+work is marked below. Independent mathematical-document models and pure TeXmacs document
 lowering remain separate from standard export preparation.
 
 ** Changed
@@ -28,9 +28,9 @@ lowering remain separate from standard export preparation.
 
 ** Added
 *** Prepared AST and STM adaptation
-- [ ] Construct owned mathematical-document models from the final Org AST and
+- [X] Construct owned mathematical-document models from the final Org AST and
   a separate export context, preserving node identity and related mappings.
-- [ ] Recognize complete STM from preprocessing results and structurally valid
+- [X] Recognize complete STM from preprocessing results and structurally valid
   filter-created nodes, including nodes without reliable source positions.
 - [X] Deliver prepared structures and completed native documents to text, API
   and PDF consumers without repeating preparation or reparsing serialized STM.
