@@ -18,10 +18,13 @@ navigation cleanup. User explicitly selects initial NEXT rather than TODO for
 v0.5.0; new root entry has matching CUSTOM_ID, no CLOSED and no publication claim.
 The complete root summary and detailed manuscript were prepared against v0.4.0 and
 8104016HEAD, then user-delivered in386b35e. Historical backfill and its editorial
-review are also delivered. Current phase is final README history/navigation
-cleanup against386b35eHEAD. User requests a draft message directly from that
-worktree diff and selective GAW checkpointing. Current state/shared rules are in
-memory/current.md. No new tag, runtime gate or publishing automation is selected.
+review are also delivered. Final README history/navigation cleanup against
+386b35eHEAD was user-delivered as4c2381a, matching the reviewed README-only
++26/-139 scope and worktree-derived message. README retains current contracts and
+links the root history and v0.5.0 manuscript. The documentation workflow is complete,
+with selective GAW checkpoints; ordinary index/worktree are clean. Current state/
+shared rules are in memory/current.md. No new runtime validation, tag, runtime gate
+or publishing automation is selected; v0.5.0 remains NEXT without CLOSED.
 
 ## Latest publication audit: functionality delivered, small documentation gaps
 

@@ -8,7 +8,10 @@ Version declarations remain0.5.0; version metadata and delivered features are
 distinct from publication. No source rollback or republishing selected.
 Root CHANGELOG.org now records six historical versions and user-frozen NEXT
 v0.5.0, with complete independent manuscripts under CHANGELOGS/. NEXT has no
-CLOSED; it does not establish publication. Final README history cleanup is pending.
+CLOSED; it does not establish publication. Final README cleanup was delivered in
+4c2381a, based on386b35e: README retains current usage/contracts and links the root
+history and v0.5.0 manuscript for changes/upgrades. The documentation workflow is
+complete; no runtime result, tag or publication follows from that completion.
 
 Delivered1017764, exact13reviewed blobs and clean ordinary worktree verified:
 bare default citations in headings/TOC, emphasis, table cells and supported

@@ -1,8 +1,8 @@
 # org-texmacs current memory
 
-## Active: staged introduction of an Org changelog workflow
+## Completed: staged introduction of an Org changelog workflow
 
-User approved implementation on 2026-11-02. Deliver in this exact order:
+User approved implementation on 2026-11-02. The following sequence is complete:
 1. Fully synchronize README against the current HEAD, preserving historical and
    migration sections and adding no links to not-yet-created changelog files.
 2. After the README commit, separately allow CHANGELOG.org and flat
@@ -136,16 +136,38 @@ No runtime tests, builds, formatters, source/README edits or ordinary Git writes
 User additionally requested generating the commit-message draft immediately from
 this phase's WORKTREE diff (including the new manuscript), without waiting for stage.
 The delivered message is docs(changelog): prepare v0.5.0 release notes.
-Current phase: final README history/navigation synchronization against386b35eHEAD.
-User explicitly requests an immediate draft message from this README WORKTREE diff
-after edits, without waiting for staging, and reminds agent to checkpoint selectively.
-No ordinary Git staging/commit or runtime validation is authorized.
+Final README history/navigation synchronization used386b35eHEAD as its baseline.
+User explicitly requested an immediate draft message from the README WORKTREE diff
+after edits, without waiting for staging, and selective GAW checkpointing.
+No agent ordinary Git staging/commit or runtime validation was authorized or run.
 The changelog adoption/historical attribution/NEXT freeze has independent recovery
-value, so checkpoint this coherent completed phase before editing README, grounded
-in the actually reviewed386b35eproject tree. Newly introduced ancestry since the
-previous GAW state consists of the reviewed input/ignore/format and documentation
-commits; no new source runtime result is inferred. Final GAW reconciliation follows
-the user's final README commit, with the actual next action kept current meanwhile.
+value and was checkpointed before README edits, grounded in the reviewed386b35e
+project tree. Introduced ancestry consists of reviewed input/ignore/format and
+documentation commits; no new runtime result is inferred. The normal memory-loop
+stage/checkpoint commands required sandbox escalation for the read-only .git
+directory and then succeeded through the public GAW interface; no lifecycle action.
+
+Final README was user-delivered as4c2381a583357f9e2e57ec4f640701942ff23500,
+direct child of386b35e, matching the reviewed README-only +26/-139 scope and
+message. Ordinary index/worktree are clean; commit whitespace checks pass.
+It links the root summary and0.5.0
+manuscript, replacing the version overview and old upgrade table/narratives.
+Rewrites document/source/frontend prose as current contracts and removes obsolete
+pre-first-release inline naming and intermediate0.5preprocessing field migrations,
+without inventing those as released-version changes. Current prepared INFO keys
+and provenance limits remain. Public configuration/API examples, citation/bibliography,
+editing, scoped export, compatibility and development-check contracts remain.
+Only the duplicated top menu example was removed; source/example blocks stay
+balanced. All local links resolve; the pre-existing illustrative [[*Headline]]
+syntax is not a broken navigation link. Root/detail files are unchanged.
+No runtime tests, builds, formatters or ordinary Git writes ran. Immediate draft
+from the selected WORKTREE diff is in tmp/commit.md:
+docs(readme): replace release history with changelog navigation.
+The documentation workflow is complete. Final GAW reconciliation is grounded in
+the reviewed4c2381a project tree; the only newly introduced project ancestry since
+the preceding checkpoint is that README commit. No next project task is selected;
+wait for the user's next objective. The existing NEXT version is not published
+or advanced as part of documentation closure.
 No source/API/version/dependency/test changes or remote tag cleanup selected.
 
 ## Current release status: unpublished 0.5.0, local tag removed
