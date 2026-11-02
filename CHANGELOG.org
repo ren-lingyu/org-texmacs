@@ -8,26 +8,26 @@ Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
 * TODO v0.6.0
-Planned scope; these changes are not implemented yet.
+Development in progress; checked items are implemented and verified.
 
 ** Changed
 *** Independent mathematical-document AST core
-- [ ] Establish a core using native Org AST and parsed TeXmacs STM islands,
+- [X] Establish a core using native Org AST and parsed TeXmacs STM islands,
   with model validity independent of document-lowering and Org serialization
   support.
-- [ ] Preserve existing =ox-texmacs= APIs and observable export behavior while
+- [-] Preserve existing =ox-texmacs= APIs and observable export behavior while
   separating core and consumer responsibilities.
 
 ** Added
 *** Independent model construction
-- [ ] Construct full-document snapshots from an Org buffer, or from an existing
+- [X] Construct full-document snapshots from an Org buffer, or from an existing
   Org AST and already parsed STM trees, without requiring document lowering.
-- [ ] Preserve legal Org content beyond the exporter's supported subset.
+- [X] Preserve legal Org content beyond the exporter's supported subset.
 
 *** Structured inspection
-- [ ] Project Org structure and authoritative STM islands into a readable
+- [X] Project Org structure and authoritative STM islands into a readable
   structural representation.
-- [ ] Display that representation in an Emacs buffer.
+- [X] Display that representation in an Emacs buffer.
 
 *** Normalized Org serialization
 - [ ] Serialize supported models to normalized Org text and new editable
