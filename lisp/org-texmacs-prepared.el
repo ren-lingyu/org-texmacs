@@ -6,7 +6,7 @@
 ;;; Commentary:
 
 ;; Adapt the final Org export tree without source coordinates or preparation.
-;; Native parsing happens once at this input boundary, before model ownership.
+;; Native parsing happens once during the private input ownership transaction.
 
 ;;; Code:
 
@@ -18,13 +18,35 @@
   "Reject incomplete or ambiguous prepared input with MESSAGE."
   (signal 'org-texmacs-document-error (list message)))
 
-(defun org-texmacs--prepared-copy (tree ignored)
+(defun org-texmacs--prepared-resolve (data)
+  "Resolve DATA properties while live, preserving explicit filter values.
+Some conditional deferred values survive the bulk resolver.  Public property
+access materializes them without FORCE or replaying an overwritten value."
+  (org-element-map
+   data t
+   (lambda (node)
+     (when (consp node)
+       (org-element-properties-resolve node)
+       (org-element-properties-mapc
+        (lambda (key _value _owner)
+          (org-element-put-property
+           node key (org-element-property key node)))
+        node)))
+   nil nil nil t))
+
+(defun org-texmacs--prepared-copy (tree ignored &optional identities)
   "Own final TREE and apply Org's identity-keyed IGNORED list.
 This realizes exclusion decisions already made by Org; it does not select or
-prune export trees independently.  Detached ignore entries have no effect."
+prune export trees independently.  Detached ignore entries have no effect.
+Optionally populate IDENTITIES with original-to-owned node associations."
   (let* ((owner
           (org-texmacs--model-owner-create
            :error-type 'org-texmacs-document-error
+           :secondary-normalizer
+           (lambda (value)
+             (if (stringp value)
+                 (list value)
+               value))
            :caption-reader #'org-texmacs--document-caption-lines))
          (copy (org-texmacs--model-copy-node owner tree nil)))
     (org-texmacs--model-finish-owner owner)
@@ -35,6 +57,11 @@ prune export trees independently.  Detached ignore entries have no effect."
         (if (eq owned copy)
             (org-element-set-contents copy)
           (org-element-extract-element owned))))
+    (when identities
+      (maphash
+       (lambda (original owned)
+         (puthash original owned identities))
+       (org-texmacs--model-owner-nodes owner)))
     copy))
 
 (defun org-texmacs--prepared-control-keywords (tree)
@@ -72,6 +99,12 @@ affiliations still reach the lowerer's explicit validation."
           (lambda (key value _owner)
             (let ((name (upcase (substring (symbol-name key) 1))))
               (when (and value
+                         (not
+                          (and (eq key :label)
+                               (memq
+                                (org-element-type node)
+                                '(footnote-reference
+                                  footnote-definition))))
                          (or (member
                               name org-element-affiliated-keywords)
                              (string-prefix-p "ATTR_" name)))
@@ -200,7 +233,8 @@ ordinary Org objects outside islands remain structured and untouched."
                    (nreverse children)))))
       (nreverse requests))))
 
-(defun org-texmacs--prepared-discover (tree tags)
+(defun org-texmacs--prepared-discover
+    (tree tags &optional defer-notes)
   "Recognize final TREE STM under TAGS, returning (KEY SOURCE TAG) requests.
 Native blocks can supply complete :texmacs-source text explicitly.  Otherwise
 their final structured contents are interpreted as input syntax, never reread
@@ -211,6 +245,11 @@ from potentially stale source positions.  No Org reparsing or export is done."
        (node)
        (when (consp node)
          (cond
+          ((and defer-notes
+                (or (eq (org-element-type node) 'footnote-definition)
+                    (and (eq (org-element-type node) 'headline)
+                         (org-element-property
+                          :footnote-section-p node)))))
           ((org-texmacs--native-body-kind node)
            (org-texmacs--native-body-check node)
            (let ((raw

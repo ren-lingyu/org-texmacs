@@ -581,7 +581,58 @@ Return the long-only caption pairs."
   (let ((case-fold-search nil))
     (downcase (replace-regexp-in-string "[^A-Za-z0-9]" "_" name))))
 
-(defun org-texmacs--document-allocate (ast analysis static)
+(defun org-texmacs--document-standard-notes
+    (references query static scan)
+  "Plan native notes for REFERENCES from frozen Org QUERY, reserving STATIC.
+SCAN visits a used definition's body.  Native footnotes use sequential counters;
+reject unrepresentable standard numbers or an unrendered first reference."
+  (let ((reserved (copy-sequence static))
+        (next 1)
+        groups
+        result)
+    (dolist (reference references)
+      (let* ((record (assq reference (plist-get query :footnotes)))
+             (number (nth 2 record))
+             (first (nth 3 record))
+             (note (cdr (assq number groups))))
+        (unless (and record (integerp number) (> number 0))
+          (org-texmacs--document-fail
+           reference "Missing frozen Org footnote number"))
+        (unless note
+          (unless (and first (= number next))
+            (org-texmacs--document-fail
+             reference
+             "Org footnote order cannot be represented natively"))
+          (let ((anchor
+                 (concat
+                  org-texmacs--document-footnote-label-prefix
+                  (number-to-string number)))
+                (suffix 0))
+            (while (member anchor reserved)
+              (setq
+               suffix (1+ suffix)
+               anchor
+               (format "%s%d-%d"
+                       org-texmacs--document-footnote-label-prefix
+                       number
+                       suffix)))
+            (push anchor reserved)
+            (setq
+             note (list reference (nth 1 record) anchor)
+             next (1+ next))
+            (push (cons number note) groups)
+            ;; Anonymous inline contents were already visited in the main walk.
+            (unless (and (eq
+                          (org-element-property :type reference)
+                          'inline)
+                         (null
+                          (org-element-property :label reference)))
+              (funcall scan (nth 1 record)))))
+        (push (cons reference note) result)))
+    result))
+
+(defun org-texmacs--document-allocate
+    (ast analysis static &optional query)
   "Freeze AST's ANALYSIS with Org-allocated references, reserving STATIC labels.
 The mutable Org cache remains local and is never returned."
   (let ((info
@@ -624,7 +675,20 @@ The mutable Org cache remains local and is never returned."
                    (and name
                         (concat
                          (org-texmacs--reference-slug name) "-"))
-                   (org-export-get-reference node info))))
+                   (if query
+                       (let ((reference
+                              (cdr
+                               (assq
+                                node (plist-get query :references)))))
+                         (unless reference
+                           (org-texmacs--document-fail
+                            node "Missing frozen Org reference"))
+                         (concat
+                          reference
+                          (if (> attempt 1)
+                              (format "-%d" attempt)
+                            "")))
+                     (org-export-get-reference node info)))))
           (when (member candidate reserved)
             (org-texmacs--document-fail
              node "Unable to allocate a unique label"))
@@ -644,13 +708,14 @@ The mutable Org cache remains local and is never returned."
      :footnotes (org-texmacs-resolution-footnotes analysis))))
 
 (defun org-texmacs--document-resolve
-    (ast islands static-labels resource-base)
+    (ast islands static-labels resource-base &optional query)
   "Validate local Org links in AST without allocating final references.
 ISLANDS are opaque.  STATIC-LABELS reserves user-authored STM labels.
 Return node-identity mappings only; never
 read a source buffer, query an ID database or invoke an export consumer."
   (let ((definitions
-         (org-texmacs--context-footnote-definitions ast islands))
+         (unless query
+           (org-texmacs--context-footnote-definitions ast islands)))
         custom-ids
         ids
         links
@@ -664,7 +729,12 @@ read a source buffer, query an ID database or invoke an export consumer."
      ((scan
        (node ancestors)
        (unless (and (consp node)
-                    (eq (org-element-type node) 'footnote-definition))
+                    (or (eq
+                         (org-element-type node) 'footnote-definition)
+                        (and query
+                             (eq (org-element-type node) 'headline)
+                             (org-element-property
+                              :footnote-section-p node))))
          (when (consp node)
            (when (memq node ancestors)
              (org-texmacs--document-fail node "Cyclic Org AST"))
@@ -752,61 +822,72 @@ read a source buffer, query an ID database or invoke an export consumer."
        (cl-remove-if-not
         (lambda (entry) (equal key (car entry))) mapping)))
      (scan ast nil)
-     (let ((reserved (copy-sequence static-labels))
-           (next 1))
-       (dolist (reference (nreverse footnote-references))
-         (when-let* ((name (org-element-property :label reference)))
-           (unless (and (stringp name) (> (length name) 0))
-             (org-texmacs--document-fail
-              reference "Invalid named footnote label"))
-           (let ((note (cdr (assoc name notes))))
-             (unless note
-               (let ((matching
-                      (cl-remove-if-not
-                       (lambda (definition)
-                         (equal
-                          name
-                          (org-element-property :label definition)))
-                       definitions))
-                     anchor)
-                 (unless (= (length matching) 1)
-                   (org-texmacs--document-fail
-                    reference
-                    (if matching
-                        "Ambiguous footnote definition"
-                      "Unresolved named footnote")))
-                 (while
-                     (progn
-                       (setq
-                        anchor
-                        (concat
-                         org-texmacs--document-footnote-label-prefix
-                         (number-to-string next))
-                        next (1+ next))
-                       (member anchor reserved)))
-                 (push anchor reserved)
-                 ;; Shared immutable data: first occurrence, definition, anchor.
-                 (setq note (list reference (car matching) anchor))
-                 (push (cons name note) notes)
-                 (mapc
-                  (lambda (child)
-                    (scan child (list (car matching))))
-                  (org-element-contents (car matching)))))
-             (push (cons reference note) footnotes)))))
+     (if query
+         (setq footnotes
+               (org-texmacs--document-standard-notes
+                (nreverse footnote-references) query static-labels
+                (lambda (definition)
+                  (mapc
+                   (lambda (child) (scan child (list definition)))
+                   (org-element-contents definition)))))
+       (let ((reserved (copy-sequence static-labels))
+             (next 1))
+         (dolist (reference (nreverse footnote-references))
+           (when-let* ((name (org-element-property :label reference)))
+             (unless (and (stringp name) (> (length name) 0))
+               (org-texmacs--document-fail
+                reference "Invalid named footnote label"))
+             (let ((note (cdr (assoc name notes))))
+               (unless note
+                 (let ((matching
+                        (cl-remove-if-not
+                         (lambda (definition)
+                           (equal
+                            name
+                            (org-element-property :label definition)))
+                         definitions))
+                       anchor)
+                   (unless (= (length matching) 1)
+                     (org-texmacs--document-fail
+                      reference
+                      (if matching
+                          "Ambiguous footnote definition"
+                        "Unresolved named footnote")))
+                   (while
+                       (progn
+                         (setq
+                          anchor
+                          (concat
+                           org-texmacs--document-footnote-label-prefix
+                           (number-to-string next))
+                          next (1+ next))
+                         (member anchor reserved)))
+                   (push anchor reserved)
+                   ;; Shared immutable data: first occurrence, definition, anchor.
+                   (setq note (list reference (car matching) anchor))
+                   (push (cons name note) notes)
+                   (mapc
+                    (lambda (child)
+                      (scan child (list (car matching))))
+                    (org-element-contents (car matching)))))
+               (push (cons reference note) footnotes))))))
      (setq
       links (nreverse links)
       order (nreverse order))
      (let ((cells (make-hash-table :test #'equal)))
-       (dolist (node order)
-         (when (or (memq
-                    (org-element-type node) '(headline target table))
-                   (org-texmacs--document-named-block-p node))
-           (when-let* ((name (org-element-property :name node)))
-             (unless (and (stringp name) (not (string-blank-p name)))
-               (org-texmacs--document-fail
-                node "Invalid object NAME")))
-           (dolist (cell (org-export-search-cells node))
-             (push node (gethash cell cells)))))
+       (unless query
+         (dolist (node order)
+           (when (or (memq
+                      (org-element-type node)
+                      '(headline target table))
+                     (org-texmacs--document-named-block-p node))
+             (when-let* ((name (org-element-property :name node)))
+               (unless (and (stringp name)
+                            (not (string-blank-p name)))
+                 (org-texmacs--document-fail
+                  node "Invalid object NAME")))
+             (dolist (cell (org-export-search-cells node))
+               (push node (gethash cell cells))))))
        (let ((org-info
               (list
                :parse-tree ast
@@ -820,40 +901,46 @@ read a source buffer, query an ID database or invoke an export consumer."
                      (unless (and (stringp path) (> (length path) 0))
                        (org-texmacs--document-fail
                         link "Invalid internal link path"))
-                     (pcase kind
-                       ("custom-id"
-                        (choose link (lookup path custom-ids)))
-                       ("id" (choose link (lookup path ids)))
-                       ("fuzzy"
-                        (let* ((search
-                                (org-export-string-to-search-cell
-                                 path))
-                               (matches
-                                (cl-mapcan
-                                 (lambda (cell)
-                                   (copy-sequence
-                                    (gethash cell cells)))
-                                 search))
-                               (preferred
-                                (cl-remove-if
-                                 (lambda (node)
-                                   (eq
-                                    (org-element-type node)
-                                    'headline))
-                                 matches))
-                               (chosen
-                                (choose
-                                 link
-                                 (mapcar
-                                  (lambda (node) (cons nil node))
-                                  (or preferred matches)))))
-                          (unless (eq
-                                   chosen
-                                   (org-export-resolve-fuzzy-link
-                                    link org-info))
-                            (org-texmacs--document-fail
-                             link "Inconsistent Org link resolution"))
-                          chosen))))))
+                     (if query
+                         (or (cdr
+                              (assq link (plist-get query :targets)))
+                             (org-texmacs--document-fail
+                              link "Missing frozen Org target"))
+                       (pcase kind
+                         ("custom-id"
+                          (choose link (lookup path custom-ids)))
+                         ("id" (choose link (lookup path ids)))
+                         ("fuzzy"
+                          (let* ((search
+                                  (org-export-string-to-search-cell
+                                   path))
+                                 (matches
+                                  (cl-mapcan
+                                   (lambda (cell)
+                                     (copy-sequence
+                                      (gethash cell cells)))
+                                   search))
+                                 (preferred
+                                  (cl-remove-if
+                                   (lambda (node)
+                                     (eq
+                                      (org-element-type node)
+                                      'headline))
+                                   matches))
+                                 (chosen
+                                  (choose
+                                   link
+                                   (mapcar
+                                    (lambda (node) (cons nil node))
+                                    (or preferred matches)))))
+                            (unless (eq
+                                     chosen
+                                     (org-export-resolve-fuzzy-link
+                                      link org-info))
+                              (org-texmacs--document-fail
+                               link
+                               "Inconsistent Org link resolution"))
+                            chosen)))))))
              (when target
                (when (and (eq (org-element-type target) 'table)
                           (null
@@ -1172,15 +1259,18 @@ resolve against labels actually generated for this bibliography."
 (defun org-texmacs--document-numbered-headline-p
     (headline relative info)
   "Return non-nil when HEADLINE at RELATIVE level is numbered under INFO."
-  (let ((numbering
-         (if (memq :section-numbers info)
-             (plist-get info :section-numbers)
-           t)))
-    (and (not
-          (org-not-nil
-           (org-texmacs--document-unnumbered-value headline)))
-         (or (eq numbering t)
-             (and (wholenump numbering) (<= relative numbering))))))
+  (if-let* ((query (plist-get info :texmacs-org-query)))
+      (nth 2 (assq headline (plist-get query :headlines)))
+    (let ((numbering
+           (if (memq :section-numbers info)
+               (plist-get info :section-numbers)
+             t)))
+      (and (not
+            (org-not-nil
+             (org-texmacs--document-unnumbered-value headline)))
+           (or (eq numbering t)
+               (and (wholenump numbering)
+                    (<= relative numbering)))))))
 
 (defun org-texmacs--document-copy-style (style)
   "Validate and copy TeXmacs STYLE identifier strings."
@@ -1662,7 +1752,12 @@ for consumers.  Final handlers must preserve contents identity and provenance."
     (cl-labels
      ((minimum
        (node ancestors)
-       (unless (assq node islands)
+       (unless (or (assq node islands)
+                   (and (plist-get info :texmacs-org-query)
+                        (consp node)
+                        (eq (org-element-type node) 'headline)
+                        (org-element-property
+                         :footnote-section-p node)))
          (when (consp node)
            (when (memq node ancestors)
              (org-texmacs--document-fail node "Cyclic Org AST"))
@@ -1698,7 +1793,12 @@ for consumers.  Final handlers must preserve contents identity and provenance."
              candidate))
           (walk
            (node ancestors)
-           (unless (assq node islands)
+           (unless (or (assq node islands)
+                       (and (plist-get info :texmacs-org-query)
+                            (consp node)
+                            (eq (org-element-type node) 'headline)
+                            (org-element-property
+                             :footnote-section-p node)))
              (when (consp node)
                (when (memq node ancestors)
                  (org-texmacs--document-fail node "Cyclic Org AST"))
@@ -1707,7 +1807,16 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                         (relative
                          (and (integerp level)
                               headline-minimum
-                              (1+ (- level headline-minimum))))
+                              (if-let* ((query
+                                         (plist-get
+                                          info
+                                          :texmacs-org-query)))
+                                  (nth
+                                   1
+                                   (assq
+                                    node
+                                    (plist-get query :headlines)))
+                                (1+ (- level headline-minimum)))))
                         (unnumbered
                          (org-texmacs--document-unnumbered-value
                           node)))
@@ -1717,28 +1826,40 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                    (when (<= relative headline-limit)
                      (when (org-texmacs--document-numbered-headline-p
                             node relative info)
-                       (let ((index (1- relative)))
-                         (aset
-                          counters index (1+ (aref counters index)))
-                         (cl-loop
-                          for
-                          deeper
-                          from
-                          relative
-                          below
-                          5
-                          do
-                          (aset counters deeper 0))
-                         (push (cons
-                                node
-                                (cl-loop
-                                 for
-                                 index
-                                 below
-                                 relative
-                                 collect
-                                 (aref counters index)))
-                               headline-numbering)))
+                       (if-let* ((query
+                                  (plist-get
+                                   info
+                                   :texmacs-org-query)))
+                           (push (cons
+                                  node
+                                  (nth
+                                   3
+                                   (assq
+                                    node
+                                    (plist-get query :headlines))))
+                                 headline-numbering)
+                         (let ((index (1- relative)))
+                           (aset
+                            counters index (1+ (aref counters index)))
+                           (cl-loop
+                            for
+                            deeper
+                            from
+                            relative
+                            below
+                            5
+                            do
+                            (aset counters deeper 0))
+                           (push (cons
+                                  node
+                                  (cl-loop
+                                   for
+                                   index
+                                   below
+                                   relative
+                                   collect
+                                   (aref counters index)))
+                                 headline-numbering))))
                      (when (and (<= relative toc-depth)
                                 (not (equal unnumbered "notoc")))
                        (push (cons node (new-label)) toc-labels)))))
@@ -2300,11 +2421,18 @@ for consumers.  Final handlers must preserve contents identity and provenance."
        (let ((level (org-element-property :level node)))
          (unless (and headline-minimum (integerp level) (> level 0))
            (org-texmacs--document-fail node "Invalid headline level"))
-         (1+ (- level headline-minimum))))
+         (if-let* ((query (plist-get info :texmacs-org-query)))
+             (or (nth 1 (assq node (plist-get query :headlines)))
+                 (org-texmacs--document-fail
+                  node "Missing frozen Org headline level"))
+           (1+ (- level headline-minimum)))))
       (low-headline-p
        (node)
        (and (consp node)
             (eq (org-element-type node) 'headline)
+            (not
+             (and (plist-get info :texmacs-org-query)
+                  (org-element-property :footnote-section-p node)))
             (> (relative-level node) headline-limit)))
       (headline-parts
        (node toc ancestors)
@@ -2927,6 +3055,10 @@ for consumers.  Final handlers must preserve contents identity and provenance."
           ((org-texmacs--native-body-kind node)
            (org-texmacs--document-fail
             node "Missing native-body island"))
+          ((and (plist-get info :texmacs-org-query)
+                (eq type 'headline)
+                (org-element-property :footnote-section-p node))
+           nil)
           ((eq type 'section)
            (unless (memq context '(org-data headline))
              (org-texmacs--document-fail

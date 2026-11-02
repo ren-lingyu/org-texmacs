@@ -199,6 +199,10 @@ Unsupported semantic inputs retain their error until document lowering."
          (static
           (org-texmacs--document-static-labels
            (org-texmacs-input-islands input)))
+         (query
+          (plist-get
+           (org-texmacs-input-info input)
+           :texmacs-org-query))
          (resolution
           (condition-case err
               (org-texmacs--document-allocate
@@ -207,8 +211,9 @@ Unsupported semantic inputs retain their error until document lowering."
                 ast
                 (org-texmacs-input-islands input)
                 static
-                (org-texmacs-input-resource-base input))
-               static)
+                (org-texmacs-input-resource-base input)
+                query)
+               static query)
             (org-texmacs-document-error
              (org-texmacs--resolution-create :failure (cdr err))))))
     (org-texmacs--input-with-info input (org-texmacs-input-info input)

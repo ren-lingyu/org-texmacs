@@ -9,15 +9,15 @@ release notes.
 
 * TODO v0.7.0
 Standard Org Export Integration is in development. The initial standard entry,
-structured result handoff and prepared STM adapter are implemented; remaining
-work is marked below. Independent mathematical-document models and pure TeXmacs document
+structured handoff, STM adapter and standard context queries are implemented;
+remaining work is marked below. Independent models and pure TeXmacs document
 lowering remain separate from standard export preparation.
 
 ** Changed
 *** Standard Org Export backend
 - [-] Make =org-export-as 'texmacs= a usable standard export entry, with Org
   managing preparation, options, document selection, AST filters and Org Cite.
-- [ ] Replace parallel export preparation with the standard Org flow while
+- [-] Replace parallel export preparation with the standard Org flow while
   preserving AST-first TeXmacs construction.
 
 *** Public export API migration
@@ -36,9 +36,9 @@ lowering remain separate from standard export preparation.
   and PDF consumers without repeating preparation or reparsing serialized STM.
 
 *** Standard export semantics
-- [ ] Reuse Org selection, INCLUDE, SETUPFILE, macros, Babel, hooks and options
+- [X] Reuse Org selection, INCLUDE, SETUPFILE, macros, Babel, hooks and options
   filters, and allow legal AST insertion, deletion, movement and replacement.
-- [ ] Support native visible-only selection and standard reference, numbering
+- [X] Support native visible-only selection and standard reference, numbering
   and footnote queries while retaining TeXmacs labels and native structures.
 
 *** Org Cite integration

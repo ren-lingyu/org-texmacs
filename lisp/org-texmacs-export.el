@@ -19,6 +19,7 @@
 (require 'org-texmacs-session)
 (require 'org-texmacs-fragment)
 (require 'org-texmacs-prepared)
+(require 'org-texmacs-query)
 
 (defvar org-texmacs--standard-request nil
   "Private, single-invocation structured result request.")
@@ -184,32 +185,19 @@ The prepared AST remains authoritative; this is not STM text construction."
   "Own the prepared tree from standard INFO and source STATE.
 Project supported options without repeating preparation or retaining full INFO."
   (let ((tree (plist-get info :parse-tree))
+        (identities (make-hash-table :test #'eq))
         (keys (mapcar #'car org-texmacs--context-option-alist))
         projected)
-    ;; Org's public map resolves deferred properties while its buffer is live,
-    ;; including affiliated/secondary data.  Never reparse the working buffer.
-    (org-element-map
-     tree t
-     (lambda (node)
-       (when (consp node)
-         ;; Resolve without FORCE: explicit AST-filter property replacements
-         ;; remain authoritative over deferred source-derived values.
-         (org-element-properties-resolve node)))
-     nil nil nil t)
+    ;; Resolve through public access while live, never reparse working text.
+    (org-texmacs--prepared-resolve tree)
     (setq tree
           (org-texmacs--prepared-copy
-           tree (plist-get info :ignore-list)))
+           tree (plist-get info :ignore-list) identities))
     (org-texmacs--prepared-control-keywords tree)
-    (org-texmacs--prepared-affiliation tree)
     (dolist (key keys)
       (when (plist-member info key)
         (when (memq key org-texmacs--context-rich-metadata)
-          (org-element-map
-           (plist-get info key) t
-           (lambda (node)
-             (when (consp node)
-               (org-element-properties-resolve node)))
-           nil nil nil t))
+          (org-texmacs--prepared-resolve (plist-get info key)))
         (setq projected
               (plist-put projected key (plist-get info key)))))
     (setq projected
@@ -237,13 +225,24 @@ Project supported options without repeating preparation or retaining full INFO."
     (let*
         ((requests
           (org-texmacs--prepared-discover
-           tree (org-texmacs--fragment-tags)))
+           tree (org-texmacs--fragment-tags) t))
+         (query
+          (prog1 (org-texmacs--query-snapshot
+                  tree info identities
+                  (lambda (definition)
+                    (setq
+                     requests
+                     (append
+                      requests
+                      (org-texmacs--prepared-discover
+                       definition (org-texmacs--fragment-tags))))))
+            (org-texmacs--prepared-affiliation tree)))
          ;; As in the independent parser, placeholders exist only inside an
          ;; unpublished ownership transaction.  Freeze context before waits;
          ;; allocate labels only after all actual native trees are available.
          (input
           (org-texmacs--input-own
-           tree projected
+           tree (plist-put projected :texmacs-org-query query)
            :islands
            (mapcar
             (lambda (request)
@@ -311,9 +310,11 @@ Arbitrary functions are not replayed or predicted to be no-ops."
             "")
         (org-texmacs--standard-check-source prepared-state)))))
 
-(defun org-texmacs--standard-consume (consumer)
+(defun org-texmacs--standard-consume
+    (consumer &optional subtreep visible-only ext-plist)
   "Return a structured CONSUMER result from the current source once.
-CONSUMER is input, model, document or pdf.  Do not reinterpret serialized text.
+CONSUMER is input, model, document or pdf.  Forward standard SUBTREEP,
+VISIBLE-ONLY and EXT-PLIST without selecting or merging configuration here.
 This private bridge does not migrate the legacy source APIs or frontend yet."
   (unless (memq consumer '(input model document pdf))
     (signal 'org-texmacs-document-error
@@ -328,11 +329,10 @@ This private bridge does not migrate the legacy source APIs or frontend yet."
           :source nil)))
     (let ((org-texmacs--standard-request request))
       (org-export-as
-       'texmacs
-       nil
-       nil
-       nil
-       (list :texmacs--result-token (plist-get request :token))))
+       'texmacs subtreep visible-only nil
+       (append
+        (list :texmacs--result-token (plist-get request :token))
+        ext-plist)))
     (unless (plist-get request :document)
       (signal 'org-texmacs-document-error
               '("Missing standard export result")))

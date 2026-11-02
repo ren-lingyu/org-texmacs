@@ -50,6 +50,7 @@ owns supplied resolved data; it does not infer settings or interpret options.")
  (nodes (make-hash-table :test #'eq))
  pending
  (error-type 'org-texmacs-model-error)
+ (secondary-normalizer #'identity)
  (caption-reader #'org-texmacs--model-caption-lines))
 
 (defun org-texmacs--model-fail (owner message)
@@ -192,6 +193,11 @@ properties after all structural identities have been registered."
                 (org-texmacs--model-owner-caption-reader owner)
                 old))))
             ((memq key keys)
+             (setq value
+                   (funcall
+                    (org-texmacs--model-owner-secondary-normalizer
+                     owner)
+                    value))
              (unless (proper-list-p value)
                (org-texmacs--model-fail
                 owner "Expected parsed secondary objects"))

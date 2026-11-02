@@ -886,8 +886,10 @@ live export context.  It recognizes configured paragraph/direct-inline-footnote
 STM and native =texmacs=/=equation=/=equation*= bodies from the final AST,
 including macro, Babel and recursive INCLUDE results.  Org logical exclusions
 are projected by identity before STM discovery, and consumed configuration
-directives remain represented by their effective INFO values.  Full standard
-selection/reference/footnote adaptation and Cite support remain in development.
+directives remain represented by their effective INFO values.  Full, subtree,
+region, narrowed and visible-only selection, standard options and AST filters
+follow Org.  Cite support and public convenience-command migration remain in
+development.
 Unsupported prepared structures fail explicitly.
 The dispatcher commands retain their bounded preparation until their migration.
 
@@ -908,6 +910,24 @@ Multiline STM still obeys Org block boundaries: indent headline-looking string
 lines to keep them inside a native block.  The adapter does not reparse the
 whole Org buffer or add an INCLUDE/protection pipeline.  Standalone
 =org-texmacs-parse-buffer= keeps its independent, non-export preparation.
+
+Reference targets, relative headline levels, numbering and footnote definitions
+are queried in the original standard export transaction, then remapped into the
+owned input.  Mutable INFO and identity-sensitive caches are not copied into
+the model or replayed after worker waits.  This includes definitions outside a
+selected body and Org's actual choice among duplicate targets or definition
+copies.  Unused footnote copies are not parsed as STM.  Deferred properties are
+materialized while live, including conditional getters, without overwriting
+ordinary values supplied by AST filters.
+
+TeXmacs lowering generates native labels, references and footnote structures,
+reserves STM static labels, and consumes frozen Org headline/TOC numbers.
+Repeated notes bind to their first native footnote.  Nested notes, unsupported
+target contexts, targets outside rendered structures, or an Org footnote order
+that cannot use sequential native counters fail explicitly.  Org itself may
+reject missing footnote definitions during preparation even inside an unused
+definition.  Standalone preparation APIs retain their independent semantics;
+their stricter ambiguity rules do not replace standard Org target selection.
 
 Standard options and AST filters run through Org.  Node-level string filters
 (for example, paragraph or plain-text filters) are currently rejected before

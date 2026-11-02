@@ -22,6 +22,7 @@ let
     ./lisp/session.el
     ./lisp/source.el
     ./lisp/standard-export.el
+    ./lisp/standard-context.el
     ./lisp/special-blocks.el
     ./lisp/worker.el
   ];

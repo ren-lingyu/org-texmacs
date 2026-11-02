@@ -14,7 +14,8 @@
 ;; exports.
 ;; The standard org-export-as entry consumes prepared ASTs through an independent
 ;; handoff.  The legacy frontend commands retain their bounded route until their
-;; migration.  STM/Cite and richer prepared-context adaptation are follow-up nodes.
+;; migration.  Standard preparation, STM and context queries use Org's live
+;; transaction; Cite support remains a follow-up node.
 
 ;;; Code:
 

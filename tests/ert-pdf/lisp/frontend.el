@@ -6,6 +6,35 @@
 
 ;;; Code:
 
+(ert-deftest
+    org-texmacs-standard-context-native-pdf-selected-footnote-binding
+    ()
+  (org-texmacs-test--with-worker
+   (with-temp-buffer
+     (org-mode)
+     (insert
+      "#+OPTIONS: toc:nil author:nil date:nil\n* Selected\nFirst[fn:n], again[fn:n].\n** Destination\nSee [[*Destination]].\n* Other\n\n[fn:n] Footnote sentinel.\n")
+     (goto-char (point-min))
+     (search-forward "* Selected")
+     (beginning-of-line)
+     (let* ((org-export-use-babel nil)
+            (file
+             (expand-file-name "standard-note.pdf" test-directory))
+            (bytes
+             (cl-letf (((symbol-function
+                         'org-texmacs-document-serialize)
+                        (lambda (_)
+                          (ert-fail "Standard PDF serialized .tm"))))
+               (org-texmacs--standard-consume 'pdf t))))
+       (let ((coding-system-for-write 'no-conversion))
+         (write-region bytes nil file nil 'silent))
+       (let ((text (org-texmacs-test--pdf-text file)))
+         (should (string-match-p "Footnote sentinel" text))
+         (should
+          (string-match-p
+           "First[[:space:]]*1.*again[[:space:]]*1" text))
+         (should-not (string-match-p "Footnotes\\|[?][?]" text)))))))
+
 (ert-deftest org-texmacs-cleanup-full-native-file-exports ()
   (org-texmacs-test--with-worker
    (org-texmacs-test--with-cleanup-source
