@@ -30,80 +30,10 @@ reference resolution and a combined live Org/TeXmacs AST are outside the current
 support boundary.
 Org's source buffer and live AST remain unchanged.
 
-* Development version 0.5.0
-Version =0.5.0= has not been published.  This README describes the current
-development tree, which extends the supported Org-first mathematical authoring
-subset without complete Org exporter parity.  Changes since =0.4.0= include:
-
-- Recursive formal statements with long captions, raw STM equations, explicit
-  figure/table wrappers and single-object =NAME= / =[[name]]= references.
-- STM fragments in inline footnote bodies and native display layout for bare
-  STM paragraphs.  Mixed paragraphs containing known display-math roots now fail
-  explicitly; ordinary inline =math= remains supported.
-- Native PDF hyperlink annotations and forward footnote destinations, with
-  maintained anonymous, named/repeated and cross-page link regressions.
-- Scheme fontification of embedded STM, plus source editing and indentation
-  for TeXmacs blocks through =org-texmacs-edit-mode=.
-- Opt-in bibliography discovery, restricted citation-key AST filters and
-  native TeXmacs interpretation of BibTeX, without a second entry/field whitelist.
-- Bare default citations in headings and their TOC entries, basic emphasis,
-  table cells and supported captions, including emitted =ALT_TITLE= values.
-- Bounded Org preprocessing and native INCLUDE for full frontend exports,
-  explicit dispatcher key configuration and separate frontend/Lisp export APIs.
-- Native quotation mapping, explicit table column alignment and literal raw
-  timestamp preservation in date metadata.
-
-** Upgrading from 0.4.0
-The frontend/API and preprocessing changes are breaking changes.  No compatibility
-aliases are provided.  Update callers before reloading; a fresh Emacs session
-avoids retaining removed definitions or an already registered dispatcher menu.
-
-| Previous call or command                       | Replacement                                         |
-|------------------------------------------------+-----------------------------------------------------|
-| =org-texmacs-export-from-buffer=               | =org-texmacs-export-texmacs-from-buffer=            |
-| =org-texmacs-export-to-file=                   | =org-texmacs-export-to-texmacs-file=                |
-| =org-texmacs-export-to-pdf SOURCE-BUFFER FILE= | =org-texmacs-export-to-pdf-file SOURCE-BUFFER FILE= |
-| Frontend =org-texmacs-export-to-texmacs-pdf=   | =org-texmacs-export-to-pdf= from =ox-texmacs=       |
-
-The main package's explicit-source exports are noninteractive Lisp APIs.
-Load =ox-texmacs= for its three interactive commands, which take Org's five
-optional export arguments.  In particular, the new frontend
-=org-texmacs-export-to-pdf= does not accept the old source-buffer/file arguments.
-See [[*Explicit-source native byte buffers][Explicit-source native byte buffers]] and [[*Org export dispatcher][Org export dispatcher]].
-
-For manual source checkouts, update =load-path= and direct file loads to use
-the =lisp/= directory.  For Nix, replace =nix build .#default= with
-=nix build .#org-texmacs= for the library; =nix build .#emacs= builds an Emacs
-wrapper with the package.  See [[*Loading the package][Loading the package]].
-
-The dispatcher has no menu by default.  To restore the former keys, set the
-complete option before the first frontend load:
-
-#+begin_src emacs-lisp
-  (setq org-texmacs-export-menu-keys
-        '(:prefix ?T :buffer ?T :file ?t :pdf ?p))
-  (require 'ox-texmacs)
-#+end_src
-
-Full unnarrowed frontend exports now run captured preprocessing hooks and native
-INCLUDE within the documented limits, including the 256 KiB source/final-text
-budget even without INCLUDE.  Subtree, region and narrowed exports keep direct
-preparation.  Explicit-source APIs do not automatically preprocess; callers may
-use the separate =-preprocessed= adapters.  Bibliography discovery remains opt-in
-and defaults to nil in the frontend.  See [[*Opt-in native preprocessing and INCLUDE][Opt-in native preprocessing and INCLUDE]].
-
-Embedded STM fontification is enabled on load.  The public
-=org-texmacs-edit-mode= option selects a major mode for block editing; it is not
-a minor-mode toggle.  It defaults to bundled =scheme-mode= and does not install
-Tree-sitter support.  See [[*Embedded STM editing][Embedded STM editing]].
-
-The default Org dependency is unchanged.  Stock Org treats caption =[fn::...]=
-as text; anonymous inline footnote ASTs supplied by a prepared input or an external
-parser can be converted.  The parser patch is a test dependency only.  TeXmacs
-2.1.5 floating captions still have known footnote body/numbering/layout limitations;
-AST compatibility does not promise correct caption-footnote PDF typesetting.
-The private PDF footnote destination repair does not change serialized =.tm= files
-or existing sessions.  See [[*Preparing a document result][Preparing a document result]] and [[*Native PDF rendering][Native PDF rendering]].
+* Version history
+This README describes current use in the unreleased =0.5.0= tree.
+See [[file:CHANGELOG.org][the changelog]] for version history and
+[[file:CHANGELOGS/v0.5.0.org][the v0.5.0 release notes]] for changes and upgrade instructions.
 
 * Requirements
 - Emacs 31.1 or later and Org 9.8 or later, as declared by the package.
@@ -419,15 +349,6 @@ If text changes while waiting for the worker, the call reports an error and
 does not cache the old result.  Obtain a fresh block and call again.
 
 * Fragment formulas
-** Migration from inline APIs
-The former =org-texmacs-inline-*= functions and span accessors now use
-=org-texmacs-fragment-*=.  The span type is =org-texmacs-fragment-span=,
-and the module feature is =org-texmacs-fragment= instead of
-=org-texmacs-inline=.  No compatibility aliases are provided.  Update callers
-and obtain fresh spans after reloading; restarting Emacs avoids retaining
-old definitions.  The paragraph boundaries remain unchanged; recognized
-root names are now controlled by =org-texmacs-fragment-tags=.
-
 ** Usage
 Write fragments directly in paragraph text using a configured TeXmacs root:
 
@@ -548,7 +469,7 @@ nonempty strings.  Names start with an ASCII letter and continue with ASCII
 letters, digits or ~- _ . * + ? ! : / < > =~.  Reader-escaped names are not
 supported; invalid configuration signals =org-texmacs-error= before parsing.
 
-To keep the former math-only discovery behavior in the current Org buffer:
+For math-only discovery in the current Org buffer:
 
 #+begin_src emacs-lisp
   (setq-local org-texmacs-fragment-tags '("math"))
@@ -685,34 +606,20 @@ mode used for STM fontification.  Dedicated source editing and indentation
 apply to complete TeXmacs special blocks, not paragraph fragments.
 
 * Document conversion and native sessions
-Document conversion and native sessions were introduced in version 0.2.0.
-Version 0.2.1 requires an explicit source buffer for document conversion and
-adds a separate current-buffer wrapper.  This is a breaking API change,
-despite the patch version increment; see the migration note below.
-Version 0.3.0 separates the prepared-input core from its buffer adapter, adds
-the restricted document semantics and structures listed below, and extends the
-native session from body-only replacement to complete style, initial environment
-and body application.
-They form an additional downstream path; the block and fragment APIs above
-continue to return Org-compatible pseudo subtrees.
-Version 0.3.1 separates worker transport from the native session protocol.
-It preserves the public APIs and Scheme request/response format, including the
-existing document and native-session behavior.
-Version 0.4.0 adds the bounded document-wide link, named-footnote,
-citation/bibliography and named-table semantics described below, plus independent
-native =.tm=/PDF consumers and the optional Org dispatcher frontend.  It supports
-subtree, region and existing narrowing with captured configuration/dependencies,
-and restricted =ext-plist= overrides.  Org remains the canonical source; pure
-lowering and native consumers use owned input instead of generic string export.
+The document API separates source preparation, pure structural lowering and
+native consumers.  A completed document can update an explicit native session,
+serialize to =.tm= or render PDF.  The block and fragment APIs remain available
+as independent parsing interfaces.
 
 Load =(require 'ox-texmacs)= to register the backend and export commands.
 The dispatcher menu requires explicit key configuration before loading; the
 core package alone does not register this frontend.  The frontend uses Org
 output names and can overwrite writable regular outputs.  Explicit new-file
-saving APIs remain exclusive.  Source-buffer adapters retain their earlier calls and add optional
-subtree-position, region and external configuration arguments.  Narrowed sources
-now export their accessible body; restriction changes during prompts/native waits
-reject results.  Existing APIs use explicit bibliography text snapshots.
+saving APIs remain exclusive.  Source-buffer adapters accept optional
+subtree-position, region and restricted external configuration arguments.
+Existing narrowing bounds the accessible body; restriction changes during
+prompts or native waits reject results.  Direct APIs use explicit bibliography
+text snapshots.
 The opt-in discovery APIs below can acquire missing local =.bib= files.
 
 The current implementation does not support generic =org-export-as=/publishing,
@@ -777,10 +684,6 @@ waiting for the worker; call it again after editing.
 
 For the current buffer, use =(org-texmacs-document-current-buffer)=.
 This is a thin wrapper around =(org-texmacs-document-from-buffer (current-buffer))=.
-Migration from v0.2.1: rename =(org-texmacs-document SOURCE-BUFFER)= calls to
-=(org-texmacs-document-from-buffer SOURCE-BUFFER)=.  The core name now requires
-a prepared input; it does not dispatch on a buffer argument for compatibility.
-The current-buffer wrapper remains available, including for v0.2.0 callers.
 Both entry points capture supported settings from the source buffer and
 restore the caller's current-buffer context on return or error.  A mere
 current-buffer switch while waiting does not invalidate the source snapshot.
@@ -1099,7 +1002,7 @@ surrounding whitespace, and its column count must match the data rows.  It sets
 native =cell-halign= for each complete column and is omitted from output and
 border coordinates.  Multiple format rows are rejected even if identical;
 partial declarations and cookies mixed with data are unsupported.  Tables without
-a format row retain their previous alignment; numerical content does not enable
+a format row use native alignment; numerical content does not enable
 automatic alignment inference.  Removing the format row does not repair the
 remaining table: missing data or consecutive rules still fail.
 
@@ -1500,8 +1403,8 @@ Use =org-texmacs-prepare-buffer-preprocessed= for owned prepared input,
 Their arguments are =source-buffer= followed by optional =bibliography-sources=,
 =ext-plist= and =discover-bibliography=.  The last argument accepts exactly =t=
 or =nil= and separately enables discovery over the composed document.
-Existing direct APIs retain their earlier defaults.  Full-document dispatcher
-actions now use this provider, as described in the frontend section below.
+Direct APIs do not automatically preprocess.  Full-document dispatcher actions
+use this provider, as described in the frontend section below.
 
 #+begin_src emacs-lisp
   ;; Full unnarrowed source; native INCLUDE can read other local directories.
@@ -1565,11 +1468,9 @@ Root subtree/region/narrowing remain separate.
 
 Prepared INFO owns =:texmacs-original-source=, =:texmacs-preprocessed-source= and
 =:texmacs-preprocessing-sources= (original acquired file identities/texts).
-These replace the adapter's earlier =:texmacs-composition-sources=,
-=:texmacs-source-origins= and =:texmacs-island-origins= data.  Exact original
-ranges, occurrence IDs and generic AST origins are no longer part of this adapter's
-contract.  Final islands are identified from the working document and owned by
-existing preparation.  Native Org relocates ordinary file links across directories.
+Exact original ranges, occurrence IDs and generic AST origin maps are outside
+this adapter's contract.  Final islands are identified from the working document
+and owned by preparation.  Native Org relocates ordinary file links across directories.
 Relative bibliography declarations and STM resources use the final document's
 effective context; they do not automatically retain the included file's directory.
 This meaning can differ from standalone conversion.  Native STM resource parsing,
@@ -1583,7 +1484,7 @@ input and checks it during conversion; it does not invoke or reconstruct the
 external preprocessing provider, its source history, file reads or database state.
 That provider owns its preprocessing guarantees.  The opt-in preprocessing wrapper
 above remains a separate provider with its own native-read/dependency checks.
-Phase 1 citation-key filters and optional bibliography discovery run once;
+Citation-key filters and optional bibliography discovery run once;
 explicit bibliography texts retain priority.  Pure lowering performs no file I/O.
 
 Acquired texts and receipts are fixed; source/configuration/hooks and include/bib
@@ -1863,7 +1764,7 @@ to write them.  Do not decode them as UTF-8, re-encode them as document text or
 replace the native header with the package version.  Preflight and encoding
 errors preserve a healthy worker; serialization failures signal
 =org-texmacs-serialization-error=.  Invalid response payloads stop the worker.
-This node does not collect live reference tables, attachments or auxiliary
+The serializer does not collect live reference tables, attachments or auxiliary
 typesetter state.  It does not paginate, resolve displayed reference values,
 save files, integrate an Org exporter or render PDF/preview.
 
@@ -1888,7 +1789,7 @@ directories or update a native session.  It copies FILE before worker waits.
 
 Serialization failures create no output.  Filesystem errors propagate as
 standard Emacs file errors; a write failure can leave a newly created partial
-file for the caller to inspect.  This first saving API creates new files; it
+file for the caller to inspect.  This API creates new files; it
 does not provide atomic content publication, replacement, backups, an export
 frontend or rendering.
 
@@ -1992,7 +1893,7 @@ Font caches follow TeXmacs's normal lifetime.  Rendering errors signal
 =org-texmacs-rendering-error= and preserve a healthy worker; cleanup failure or
 invalid responses stop it.
 
-This first rendering subset rejects explicit =image=, =include=, =extern=,
+The PDF consumer rejects explicit =image=, =include=, =extern=,
 =script=, =action=, =eval= and =raw-data= trees.  Native styles and fonts still
 use installed TeXmacs resources; custom styles are not sandboxed.  The renderer
 does not run bibliography generation or read caller bibliography files.
@@ -2019,8 +1920,7 @@ export commands, but has no dispatcher menu by default:
 #+end_src
 
 To add a menu, configure the single =org-texmacs-export-menu-keys= option before
-the first =(require 'ox-texmacs)=.  This recommended example restores the former
-keys; these values are examples, not defaults:
+the first =(require 'ox-texmacs)=.  For example:
 
 #+begin_src emacs-lisp
   (setq org-texmacs-export-menu-keys
@@ -2038,8 +1938,7 @@ With this explicit configuration, select =T= in Org's =C-c C-e= menu:
 
 =nil= omits only the menu; use =M-x org-texmacs-export-as-texmacs=,
 =M-x org-texmacs-export-to-texmacs= or =M-x org-texmacs-export-to-pdf=
-directly without configuring keys.  This changes the former default =C-c C-e T=
-entry: existing users must add the explicit pre-load configuration above.
+directly without configuring keys.
 
 Non-nil configuration must contain exactly =:prefix=, =:buffer=, =:file= and =:pdf=
 once each, with graphic single-character keys.  Unicode keys are supported;
@@ -2099,18 +1998,6 @@ buffers with =no-conversion= coding and no visiting file.  Mode hooks do not run
 =org-export-show-temporary-export-buffer= controls display.  Use =kill-buffer=
 to clean up; the next export recreates a closed result.  Closing the Org source
 does not delete the result, and no dedicated cleanup command is provided.
-
-This API revision provides no compatibility aliases.  Replace
-=org-texmacs-export-from-buffer= with =org-texmacs-export-texmacs-from-buffer=,
-=org-texmacs-export-to-file= with =org-texmacs-export-to-texmacs-file=, and the old
-explicit-source =org-texmacs-export-to-pdf SOURCE-BUFFER FILE= with
-=org-texmacs-export-to-pdf-file SOURCE-BUFFER FILE=.  The old frontend
-=org-texmacs-export-to-texmacs-pdf= is now =org-texmacs-export-to-pdf= in
-=ox-texmacs.el=, with Org's five optional arguments.  Load =ox-texmacs= for the
-three interactive commands; loading =org-texmacs= provides the five Lisp APIs.
-The explicit buffer and file APIs no longer appear as =M-x= commands.
-Preprocessing/bibliography special entry points and Document/Session APIs retain
-their names and contracts.
 
 Full, unnarrowed exports with no subtree or active region use the bounded
 preprocessing provider: captured before-processing/before-parsing hooks, native
