@@ -1,6 +1,26 @@
 # org-texmacs durable evidence
 
-## C acceptance and B human delivery
+## C human delivery; D Cite comparison and selected direction
+
+C054d6cf matches expected76f4763parent,14paths, exact prepared message and all147
+accepted hashes. Intake ordinary worktree/index clean; unchanged tests not rerun.
+D isolated comparison passes8/8 and simplified CSL+actual Organize passes6/6
+on locked Emacs31.1/Org9.8.10/TeXmacs2.1.5/x86_64-linux. Existing CSL returns
+Org objects/elements (linked citations and bibliography targets); its finalizer
+only changes org-latex output. Native document/PDF and real extension UUID/key/
+bibliography/HTML work without a custom processor. Rich global affix bold survives.
+Basic returns target raw, explicitly unsupported. Reentrant/string/secondary/
+element/native-wrapper matrix retains same INFO and once-only callbacks. Initial
+raw undercount was an incorrect probe walk, not data loss.
+
+Selective original-byte comparison archive:
+archive/2026-11-02T20-32-35Z--054d6cf/MANIFEST.md. It preserves one source/runtime
+log, exact152input digests, five-file source delta, four probe files and source
+pin; no overwritten failed harness replay claim. The lighter CSL path is selected
+for production. New maintained tests/docs and formal acceptance remain pending;
+these probe counts are not production/default-check or release acceptance.
+
+## Historical C acceptance and B human delivery
 
 B76f4763delivery matches expected4f03ee4parent, exact6paths/message/all144accepted
 hashes, clean ordinary intake. C formal full-1 exits0/all12checks: fresh core292,

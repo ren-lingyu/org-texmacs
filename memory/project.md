@@ -1,6 +1,6 @@
 # org-texmacs current project model
 
-## v0.7.0 standard backend: A/B delivered, C validated candidate
+## v0.7.0 standard backend: A-C delivered, D Cite candidate
 
 The real texmacs backend consumes standard org-export-as in one transaction.
 Prepared structures/native documents use the isolated single-use result handoff;
@@ -26,10 +26,15 @@ Standard selection/visibility/options/AST mutation, SETUPFILE/recursive INCLUDE/
 relative resource links and actual direct PDF note binding are maintained tests.
 No private Org preparation copy/advice, extra AST or independent INCLUDE recursion.
 
-C candidate14paths is unstaged, full12checks/709ERT accepted on147exact inputs:
-memory/standard-export-0.7.0-c-inputs.json. README/CHANGELOG and tmp/commit.md are
-ready; await human delivery before D. Current limits/evidence are in C note.
-D Cite/actual current extension and E public frontend/API cleanup remain pending.
+C054d6cfhuman delivery matches14paths/message/all147accepted C inputs; no rerun.
+D now prefers the existing CSL processor's Org-return path over a custom native
+processor. Isolated CSL+actual Organize and rich-affix probes pass6/6; comparison
+with native wrappers passes8/8 and is selectively archived. Production candidate
+consumes bibliography directives, rejects target raw before native parsing and
+admits only the unchanged/unadvised known CSL finalizer/format-dispatch branch.
+Maintained core/Cite/PDF/optional real-extension tests and docs are being added;
+formal candidate acceptance is still pending. E public frontend/API cleanup
+remains after D human delivery. Current evidence is in memory/current.md.
 Historical0.6descriptions below remain baseline evidence, not current standard
 backend support claims.
 

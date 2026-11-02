@@ -1,51 +1,69 @@
 # org-texmacs current memory
 
-## Current: stage C implemented and validated; await human delivery
+## Current: C human-delivered; D Org Cite and actual extension active
 
-Controlling0.7.0plan: memory/standard-export-0.7.0-plan.md. B76f4763human delivery
-matches expected parent/6paths/message and all144accepted B hashes, clean intake.
-A-C implementation complete; D Cite/actual extension and E command/API cleanup
-remain pending after the human C delivery gate. Org remains semantic authority;
-no private preparation copy, new document AST or independent INCLUDE recursion.
+Human C054d6cf is verified against expected76f4763parent,14paths, exact prepared
+message and all147accepted hashes; ordinary index/worktree clean. Its complete
+12checks/709ERT are unchanged and not rerun for delivery. D now investigates
+Org Cite processor return/raw/finalizer semantics and real org-roam-organize.
+Controlling plan: memory/standard-export-0.7.0-plan.md. A-C evidence and exact
+accepted identity remain in their note/input manifests. E migration remains next.
 
-C queries original nodes in actual INFO, then remaps finite target/reference,
-relative headline/numbering and footnote facts into owned input. Copying INFO
-cannot rebind identity-keyed footnote caches (verified counterexample). Freeze
-conditional getter results explicitly before ownership; do not FORCE overwritten
-AST-filter values. A private generic secondary-normalizer lets the export adapter
-import synthetic scalar footnote titles; standalone core defaults stay strict.
+Keep one real org-export-as transaction and original INFO/dynamic scope. Org
+owns bibliography discovery/processor selection/AST filters; native lowering,
+label/counter structure and output remain project duties. No extension-specific
+compatibility or fallback parallel preparation. Basic support is optional if a
+standards-compliant TeXmacs Cite processor meets actual integration acceptance.
+Raw is target code, not automatically ordinary text; no native tree serialization
+and reparse for Cite. Preserve source/ownership and early node-filter boundaries.
 
-Discover body STM first and only discover definitions selected by Org queries;
-unused supplemental definition copies are removed, avoiding unused islands.
-TeXmacs still generates/reserves labels, handles static STM conflicts and native
-numbering/notes. Unsupported nested notes, unrendered targets or unrepresentable
-native note order fail explicitly. Standard full/subtree/region/narrowing/visible,
-options/AST filters, duplicate-target choice, selected external/repeated notes,
-SETUPFILE/recursive INCLUDE/resource paths and direct PDF binding are tested.
-Independent inputs retain their separate semantics; legacy frontend waits for E.
+The historical integration suite uses older extension revisions/APIs and old
+frontend commands; do not claim it validates current standard integration.
+Authorized isolated Nix fetch recovered actual org-roam-organize revision
+56fdaac6adab06deafc23357aec63ae2a497e09b, narHash
+sha256-rZBPdTRUmPKrk0JWkF5ukQs9qjPzo6600Vct2P3Ac9A=.
+Its real parse-tree filter rewrites UUID keys and updates live INFO bibliography
+inside public org-export-as advice/discovery scope. No production adapter needed.
 
-Accepted147input identity: memory/standard-export-0.7.0-c-inputs.json. Every root
-and isolated hash matches. Formal full-1 exits0/all12checks: fresh core292,
-native348/PDF-document34/PDF-render29/patched6 =709ERT/zero unexpected; strict
-compilation/lint/treefmt pass on Emacs31.1/Org9.8.10/TeXmacs2.1.5/x86_64-linux.
-No new other-platform/minimum9.8behavior/current extension/examples-build claim.
-Evidence/failed hypotheses/boundaries: memory/standard-export-0.7.0-c.md.
-Immutable selective prototype archive:
-archive/2026-11-02T19-26-45Z--76f4763/MANIFEST.md (ten text files+manifest).
-No raw production-directory/cache/PDF retention is needed after maintained tests.
+D comparison passes8/8 (attempt14): processor returns element/secondary/string/
+reentrant raw/native wrapper, callbacks once/same INFO; native-wrapper processor
+prototype, multiple citation locations, actual extension UUID/bibliography/native
+PDF/HTML; existing CSL text/document/native PDF. Basic produces raw target code;
+raw-only traversal's initial undercount was a probe bug, not runtime data loss.
 
-Fourteen project paths are unstaged. README/CHANGELOG synchronized;5complete/
-2ongoing/7pending, TODO/version unchanged. tmp/commit.md uses approved full-worktree
-workflow: feat(export): use standard Org context and reference queries. HEAD76f4763,
-ordinary index/lock/result unchanged. No ordinary stage/commit performed. Await
-human C commit and verify parent/paths/message/all147hashes before D. Do not repeat
-unchanged passed gates merely for delivery. Keep early unsupported node-string-
-filter rejection, standard final text filters and direct native consumption.
+Source-proven CSL path returns Org objects/elements with fuzzy links/targets;
+its finalizer is identity outside org-latex. Prefer this existing standard
+processor over adding a custom native processor/protocol. Capture unchanged
+CSL finalizer/format definitions for conservative native compatibility; reject
+replaced definitions or unknown finalizers. Do not execute callbacks as probes.
+The native jobs prototype is NOT production-adopted.
+Its complete152input digests, five-source delta, probe source/pin and single
+source/runtime log are byte-exact in
+archive/2026-11-02T20-32-35Z--054d6cf/MANIFEST.md (separate archive checkpoint).
+No failed harness logs/full temporary tree retained; no exact replay claim for
+earlier overwritten failures. Simplified CSL+actual Organize passes6/6 (attempt15),
+including document/native PDF/HTML and preserved bold global citation affix.
+Production export/prepared changes, core protocol tests, dedicated optional-
+dependency Cite/PDF default check and pinned optional real-extension check are
+now authored with README/CHANGELOG. Scoped fmt passes;154candidate inputs copied
+to isolated acceptance. Focused strict/core299/299 passes. Cite3/5 exposed test
+assumptions about INFO plist head identity and CSL bracket/emphasis boundaries;
+tests are corrected against actual Org behavior. Actual integration2/2 passes
+after NFKC PDF text matching, but CSL's U+200B currently prints visible <#200B>.
+Isolated native zero-width structural lowering passes7/7 and is now a production
+candidate with model/PDF/word-width regressions. Raw checks cover secondary
+titles/captions/INFO and native body contents before STM workers. Second scoped
+fmt passes6files/6changed;154inputs refreshed byte-exactly. Focused-3 runs all
+core/Cite/actual integration targets with keep-going. Detailed contract/results:
+memory/standard-export-0.7.0-d.md. Next inspect those results, then
+full gates and selective retention. Prepare draft and
+wait for human D delivery before E. No ordinary staging/commit; D not accepted.
 
-User permits nix fmt/build/eval/flake check and variants throughout0.7.0plan;
-continue exact command/write/network/timeout disclosure. Ordinary project staging
-needs separate authority; commits/tags/pushes remain human-only. Maintain GAW,
-per-node docs/draft and selective evidence review as the work proceeds.
+User permits nix fmt/build/eval/flake check and variants throughout0.7.0plan.
+Disclose exact commands/scope/writes/network/timeouts, isolate experiments and
+review selective retention. No ordinary staging/commit/tag/push. Each production
+node syncs README/CHANGELOG/tmp/commit.md and awaits human delivery. Keep GAW
+current through the validated memory loop and selective checkpoints.
 
 ## Current: v0.6.0 locally finalized and tagged; approved plan complete
 
