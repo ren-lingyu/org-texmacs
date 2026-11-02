@@ -1,6 +1,22 @@
 # org-texmacs current project model
 
-## v0.7.0 approved plan; implementation still at v0.6.0
+## v0.7.0 stage A candidate implemented and validated; human delivery pending
+
+The real texmacs backend now consumes standard org-export-as preparation through
+an inner-template handoff. The uncommitted candidate owns input/model/document,
+uses a single-use private token removed before INFO, and isolates nested exports
+and native-consumer waits. Unsupported effective node string filters fail before
+execution; options/AST filters and final text body/output filters remain standard.
+Native text uses reversible Latin1 transport; native PDF consumes the document
+directly. Source snapshot strings are owned and mutation across waits is checked.
+Legacy conveniences remain unchanged until E; STM, raw and logical exclusion
+adaptation remain explicit unsupported boundaries for B/C/D. Independent core
+and pure lowering retain their contracts. Exact accepted133input identity is in
+memory/standard-export-0.7.0-a-inputs.json; full12checks/678ERT pass. HEAD440b331
+remains the prior human CHANGELOG delivery; the11-path candidate is unstaged and
+awaits human commit before B. See current and evidence for validation limits.
+
+## Historical intake and initial feasibility (superseded by candidate above)
 
 Read-only review of the user's Standard Org Export Integration guide is recorded
 in memory/standard-export-0.7.0.md. The real standard Org pipeline is the selected

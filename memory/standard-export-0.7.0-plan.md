@@ -1,6 +1,16 @@
 # v0.7.0 Standard Org Export Integration: approved execution plan
 
-## Stage A evidence gate in progress
+## Stage A accepted candidate; human delivery gate pending
+
+The initial human CHANGELOG delivery440b331 and isolated18/18refined probes are
+complete. Maintained implementation passes full12flake checks and678ERT on the
+exact133inputs in memory/standard-export-0.7.0-a-inputs.json. Normal-return handoff
+uses a single-use scoped token removed before INFO; tests cover nested advice,
+native waits, owned source state, errors and early effective filter guards.
+Native output/file coding and Cite raw limits are documented. No ordinary
+staging/commit performed. Verify the human A commit before B; B-E and original
+gates remain unchanged. The following records the adopted refinement, whose
+required A validation is now complete.
 
 The initial project delivery is verified. Isolated experiments now show that
 early nonlocal result delivery skips normal advice completion, and a naive final

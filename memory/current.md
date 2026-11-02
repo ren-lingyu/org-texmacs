@@ -1,89 +1,73 @@
 # org-texmacs current memory
 
-## Current: stage A feasibility; early string-filter guard validation next
+## Current: stage A implemented and accepted; await human delivery
 
-The user asks to recover GAW memory and inspect the workspace before upcoming
-v0.7.0 development. Public GAW status/check pass; the ordinary main worktree
-and GAW worktree/index are clean at intake. Ordinary HEAD equals the peeled
-local v0.6.0 tag. Lisp/Nix/README still declare0.6.0; CHANGELOG begins with
-DONE v0.6.0 and has no0.7.0 entry. This is local read-only baseline recovery,
-not a new runtime validation or remote-publication check.
+The revised v0.7.0 plan is approved with "Implement the plan". Its controlling
+contract is memory/standard-export-0.7.0-plan.md; guide intake and six revision
+requirements are in memory/standard-export-0.7.0.md. The mandatory plan checkpoint
+and first CHANGELOG-only human delivery440b331 are complete and verified against
+the v0.6.0 parent (only one blank differs from the reviewed initial candidate).
 
-The user then supplied the eleven-section v0.7.0 Standard Org Export Integration
-guide and requested read-only review before subsequent Plan mode planning.
-The requested direction and complete distilled requirements, stage sequence,
-test matrix, source findings and open gates are in memory/standard-export-0.7.0.md.
-The subsequent conversational plan and six-point revision note are now approved
-by "Implement the plan". The controlling ordered execution contract is
-memory/standard-export-0.7.0-plan.md. Earlier review-only authority is superseded
-within this approved scope; the completed0.6.0 Nix permission is not reused.
-No0.7.0 prototype, tests, builds or ordinary source edits have run.
+Stage A isolated hypotheses and refinements are complete. The minimal production
+candidate adds org-texmacs-export.el and switches the actual texmacs backend to
+real org-export-as. It owns prepared input/model/document and delivers structures
+through a single-use request token removed before preparation/INFO. Normal
+return/advice completion, nested callbacks and native-consumer waits do not
+inherit other calls' requests. Source file/directory strings are independently
+owned; changes across waits fail without rolling back arbitrary user code.
 
-Review finds the direction coherent. Main planning gates: earlier org-export-data
-traversal before inner-template (org-data is special-cased), basic Cite's own
-string transcoding/raw output, final-tree ownership/deferred properties/ignore-list,
-late STM recognition under AST edits, and text-finalization versus direct PDF.
-Use standard preparation output as input; original STM byte equality is no
-longer a standard-export requirement. No callback/processor strategy is selected.
-Current public extension source still relies on org-export-as dynamic state and
-INFO bibliography mutation; static reads do not prove runtime interoperability.
-No raw archive is needed for the sufficiently distilled chat guide.
-The revision adds A-stage gates for unified structured results in one standard
-transaction, actual texmacs backend identity, the complete Cite return/raw matrix,
-and PDF/text-postprocessing compatibility. PDF may conservatively reject unknown
-effective callbacks; arbitrary no-op detection is not required and callbacks must
-not be replayed. B must admit positionless synthetic STM with complete structural
-input; C keeps native reference/footnote/numbering responsibilities in lowering.
-Visible-only is selected; body-only/async are rejected/deferred. Org9.8.10 is the
-acceptance baseline, with a minimum bump only if necessary. Basic is not a blocker
-if a proper Org Cite TeXmacs processor meets required semantics/real integration.
+The user explicitly excludes complete node-string-filter support from the0.7.0
+release gate. Reject unsupported effective node callbacks before invocation,
+including ones installed by options/AST filters, using early backend callbacks
+and narrowly guarded public org-export-data/org-cite-process-citations boundaries.
+Keep full standard options/AST semantics and body/final-output filters on final
+text. No private preparation copy/advice, text roundtrip, arbitrary callback
+sandbox or no-op prediction. Native structured consumers currently conservatively
+reject effective string-tail callbacks/finalizers whose effects cannot be kept.
 
-The mandatory memory-only plan checkpoint is complete through public git gaw
-commit; find it in the first-parent history of memory/standard-export-0.7.0-plan.md.
-Then edited only CHANGELOG.org: +50lines, TODO v0.7.0, Changed/Added categories,
-seven feature headings and14unchecked items, explicitly not yet implemented.
-Read-only byte comparison proves header and all prior release content unchanged;
-no CLOSED/CUSTOM_ID/completed markers added. Ordinary index is empty; whitespace
-passes. Candidate CHANGELOG blob is ccb23138e9c3405ba0d5183d57f4a11efa37c27e.
-tmp/commit.md uses the explicitly selected full worktree diff and subject
-docs(changelog): plan v0.7.0 standard export integration, with two Chinese bullets.
-One coherent documentation candidate needs no split. No runtime tests, formatter,
-build, isolated experiment, version metadata or production source change ran.
-Human delivery440b331 is verified: expected v0.6.0 parent, CHANGELOG.org-only
-49-line insertion, matching prepared message and clean ordinary worktree/index.
-The sole difference from the reviewed50-line candidate is removal of the blank
-line directly after TODO v0.7.0; restoring it reproduces the exact candidate blob.
-The first project boundary is satisfied. Stage A isolated experiments under
-tmp/standard-export-0.7.0-a have now run; full evidence/limits are distilled in
-memory/standard-export-0.7.0-a.md. Final focused build exits0,12/12 in6.667459s,
-including expected counterexamples. Normal-return result-container delivery,
-structured Cite returns, native text/PDF and nested/error/advice fixtures work.
-Basic/reentrant strings become target raw and need explicit support boundaries.
-Latin1 transport preserves native bytes; standard file adds a newline whose
-parsed native tree equals the original serialized tree on the fixture.
+Native .tm text uses reversible ISO-Latin1 byte transport; standard file callers
+need matching coding, and Org adds a terminal newline. Direct native PDF consumes
+the completed document without .tm serialization/reparsing. Legacy frontend and
+public source conveniences retain their old routes until E. Inline STM, target
+raw and logical exclusion are explicitly rejected pending B/C/D adaptation.
+This is the minimal A bridge, not full standard STM/Cite/current-extension support.
 
-Do not adopt early throw delivery: it skips normal advice completion. Naive final
-AST handoff also loses paragraph-string-filter modifications. The user explicitly
-adopts early rejection of unsupported node-string filters, not full support as
-a release gate. Preserve complete standard options/AST semantics and execute
-body/final-output filters on final text; never execute and discard node changes,
-or add STM text roundtrips/parallel preparation. Validate guards for effective
-callbacks installed initially or later by options/AST filters, including Cite's
-org-export-data calls. The archive-only checkpoint is complete; manifest is
-archive/2026-11-02T16-54-11Z--440b331/MANIFEST.md. Attempt6 early guards now pass:
-18/18 in8.603494s on Emacs31.1/Org9.8.10, including initially/options/AST-installed
-callbacks rejected before invocation and before Cite, standard AST/options/final
-text behavior and unrelated backend isolation. A evidence records the selected
-normal-return result container, reversible native text transport and early guard
-design. Next: checkpoint this adopted A refinement, implement the minimal standard
-backend with maintained regressions/docs, then validate before human node delivery.
-Actual extension integration, full suite and all B-E remain pending. Ordinary
-worktree/index are clean;130root/copy inputs still match, lock/result untouched.
-No production README/CHANGELOG/source edit has run in this phase.
-Each later production node also waits for human delivery. No ordinary staging
-authority; no commits/tags/pushes by the agent. Async/nonblocking and Issue9 stay
-outside scope. Isolated experiments require immediate retention review and
-selective archive when independently useful, not default directory capture.
+Final accepted input identity: memory/standard-export-0.7.0-a-inputs.json
+(133input SHA256s; baseline440b331, uncommitted candidate). Root and isolated
+copy match every accepted input. Focused core269/269 passes; final full isolated
+600s/max-jobs2/keep-going flake gate exits0/all12checks pass with that exact core
+result reused, plus fresh native341/PDF-document33/PDF-render29/patched6:
+678ERT, zero unexpected. Strict byte/native compile, lint and treefmt pass.
+Runtime Emacs31.1/Org9.8.10/TeXmacs2.1.5 on x86_64-linux. No other-platform,
+minimum9.8behavior, real-extension integration or examples-build claim is new.
+Full chronology, validation limits and artifact provenance:
+memory/standard-export-0.7.0-a.md.
+
+Two immutable selective experiment captures are verified and checkpointed:
+archive/2026-11-02T16-54-11Z--440b331/MANIFEST.md and
+archive/2026-11-02T17-28-52Z--440b331/MANIFEST.md. They preserve failed-hypothesis
+controls, final prototypes, inputs/replay and necessary logs, not binaries or
+whole copies. Routine production validation is distilled with maintained tests
+and the active accepted-input manifest; no extra raw build-log archive needed.
+
+Candidate is11ordinary paths, unstaged. README/CHANGELOG describe the implemented
+bridge and pending boundaries; TODO v0.7.0 is unchanged with1complete/1ongoing/
+12pending feature items. No version bump/CLOSED/CUSTOM_ID. tmp/commit.md uses the
+approved full worktree-diff workflow: feat(export): add standard Org export handoff,
+four Chinese bullets, no breaking/issue footer. One coupled feature needs no split.
+HEAD remains440b331; ordinary index, lock and result unchanged.
+
+The user grants nix fmt/flake check/build/eval and argument variants as needed
+through this0.7.0plan; do not reconfirm each command. Continue exact scope/write/
+network/timeout disclosure. Ordinary project staging requires separate authority;
+ordinary commits/tags/pushes remain human-only. Do not reuse permission beyond
+the approved plan or automatically publish.
+
+Next: await the human A commit, verify expected parent, complete paths/content/
+message and all133accepted hashes before stage B. Do not rerun unchanged passed
+gates merely for delivery. Report full progress before B; B-E remain pending.
+Continue selective experiment retention review, per-node README/CHANGELOG and
+commit drafts, memory evolution and human delivery gates.
 
 ## Current: v0.6.0 locally finalized and tagged; approved plan complete
 

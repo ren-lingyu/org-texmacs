@@ -2,6 +2,15 @@
 
 ## v0.7.0 Standard Org Export Integration: approved execution
 
+Current gate: mandatory memory checkpoint and human CHANGELOG delivery440b331
+are complete. Stage A experimental refinements and minimal production candidate
+are accepted by full12checks/678ERT; await human delivery before B. Prepared STM
+adapter (including synthetic nodes), standard semantics, Cite/real extension
+integration and convenience migration remain B-E. inner-template and scoped
+normal-return handoff are adopted for A, with early node-filter rejection and
+conservative native string-tail compatibility. The intake sequence below records
+already-completed initial steps; do not repeat them.
+
 The user selects this version direction by supplying the guide for read-only
 review, followed by Plan mode planning. The guide's A-E stages, public API
 migration constraints and complete acceptance matrix are distilled in

@@ -1,5 +1,25 @@
 # org-texmacs durable evidence
 
+## Stage A production acceptance: exact uncommitted candidate
+
+Final isolated full-attempt-6 exits0/all12flake checks pass. Core269/269 is reused
+from the focused exact-input check; fresh native341, PDF-document33, PDF-render29
+and patched6 yield678ERT/zero unexpected. Strict compilation, lint and treefmt
+pass on x86_64-linux, Emacs31.1/Org9.8.10/TeXmacs2.1.5. No minimum9.8behavior,
+other-platform, real-extension or additional examples-build claim is made.
+Accepted133input SHA256s: memory/standard-export-0.7.0-a-inputs.json, manifest hash
+b556b4c1e46222ff92c591d7f7825cda673b8c189c12fea915ff2feaeb43c2ab.
+Every root/isolated input matches. Log remains at
+ tmp/standard-export-0.7.0-a-production/full-attempt-6.log.
+Maintained regressions cover early effective filters, shared preparation, source
+ownership/mutation, single-use requests, nested exports and direct native PDF.
+Routine logs need no new archive beyond distilled evidence and exact inputs.
+Supplemental prototype guard evidence is verified in
+archive/2026-11-02T17-28-52Z--440b331/MANIFEST.md; the first archive supplies replay
+baseline. Candidate:11ordinary paths, index empty, HEAD440b331; README/CHANGELOG
+and tmp/commit.md synchronized. Human delivery pending: do not attribute accepted
+uncommitted source to440b331. Older entries below describe their own snapshots.
+
 ## Stage A focused feasibility and expected counterexamples
 
 Human440b331delivery has expected v0.6.0 parent, exact prepared message and

@@ -1,4 +1,4 @@
-# v0.7.0 stage A: isolated feasibility evidence in progress
+# v0.7.0 stage A: accepted candidate; human delivery pending
 
 ## Scope and inputs
 
@@ -147,3 +147,46 @@ to maintained tests and run the ordinary full gate before declaring A delivered.
 Attempt6 scripts/log remain in tmp; core prior counterexamples are archived.
 Additional raw retention will be assessed against the maintained guard regressions
 at node completion, not automatically duplicate the previous archive.
+
+
+## Final maintained implementation and acceptance
+
+The adopted inner-template handoff is implemented under the real texmacs identity.
+Public narrow guards reject effective node-string callbacks before execution,
+including late INFO installs and Cite reentrancy; standard final text filters
+remain active. Structured consumers conservatively reject incompatible effective
+text tails/finalizers without replay. Native Latin1 text transport is reversible;
+PDF uses the completed native document directly. Legacy conveniences stay old
+until E; STM/raw/ignore-list adaptation remains an explicit error boundary.
+
+Production refinements fixed request plist ownership, source file/directory
+string aliasing, request leakage during native waits and outer advice/nested
+exports. The final request token is single-use and stripped before preparation
+and INFO; its dynamic binding ends before native consumption. Maintained tests
+cover these regressions, normal return/error handling and source mutation checks.
+Earlier full attempts exposed formatting/stale generic-rejection expectations,
+then passed675/676/677ERT as ownership/isolation cases were added; these are
+superseded by the final accepted snapshot, not unresolved failures.
+
+Focused core269/269 and final full-attempt-6 pass; the full gate reuses that exact
+core result and freshly passes native341/PDF-document33/PDF-render29/patched6:
+678ERT, zero unexpected, all12flake checks including strict compilation/lint/fmt.
+Command: timeout 600s nix flake check -L --no-write-lock-file --max-jobs 2
+--keep-going path:/home/lingyu/Projects/org-texmacs/tmp/standard-export-0.7.0-a-production/project
+Runtime: Emacs31.1/Org9.8.10/TeXmacs2.1.5/x86_64-linux. No other-platform,
+minimum9.8behavior, real extension or additional examples-build acceptance.
+Active accepted manifest: memory/standard-export-0.7.0-a-inputs.json (133inputs),
+byte-identical to the isolated source-manifest.json and ordinary root inputs.
+Final log: tmp/standard-export-0.7.0-a-production/full-attempt-6.log.
+
+Additional guard prototype evidence was selectively archived and checkpointed:
+archive/2026-11-02T17-28-52Z--440b331/MANIFEST.md, preserving original REPORT/probe/
+log bytes with hashes and referring to the first snapshot for replay baseline.
+No new raw production-log archive is needed after maintained regressions and
+accepted input identity. No binaries or whole production copy archived.
+
+README/CHANGELOG and worktree-based tmp/commit.md now describe the11-path minimal
+candidate, subject feat(export): add standard Org export handoff. Ordinary index
+is empty and HEAD440b331 unchanged. A is validated, not human-delivered; await
+human commit and compare parent/paths/message/all133hashes before B. No version
+bump or TODO release transition. B-E remain pending.
