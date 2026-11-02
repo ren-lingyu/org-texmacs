@@ -1,0 +1,46 @@
+--- a/lisp/org-texmacs-model.el
++++ b/lisp/org-texmacs-model.el
+@@ -50,6 +50,7 @@
+  (nodes (make-hash-table :test #'eq))
+  pending
+  (error-type 'org-texmacs-model-error)
++ (secondary-normalizer #'identity)
+  (caption-reader #'org-texmacs--model-caption-lines))
+ 
+ (defun org-texmacs--model-fail (owner message)
+@@ -192,6 +193,7 @@
+                 (org-texmacs--model-owner-caption-reader owner)
+                 old))))
+             ((memq key keys)
++             (setq value (funcall (org-texmacs--model-owner-secondary-normalizer owner) value))
+              (unless (proper-list-p value)
+                (org-texmacs--model-fail
+                 owner "Expected parsed secondary objects"))
+--- a/lisp/org-texmacs-prepared.el
++++ b/lisp/org-texmacs-prepared.el
+@@ -18,13 +18,14 @@
+   "Reject incomplete or ambiguous prepared input with MESSAGE."
+   (signal 'org-texmacs-document-error (list message)))
+ 
+-(defun org-texmacs--prepared-copy (tree ignored)
++(defun org-texmacs--prepared-copy (tree ignored &optional identities)
+   "Own final TREE and apply Org's identity-keyed IGNORED list.
+ This realizes exclusion decisions already made by Org; it does not select or
+ prune export trees independently.  Detached ignore entries have no effect."
+   (let* ((owner
+           (org-texmacs--model-owner-create
+            :error-type 'org-texmacs-document-error
++           :secondary-normalizer (lambda (value) (if (stringp value) (list value) value))
+            :caption-reader #'org-texmacs--document-caption-lines))
+          (copy (org-texmacs--model-copy-node owner tree nil)))
+     (org-texmacs--model-finish-owner owner)
+@@ -35,6 +36,9 @@
+         (if (eq owned copy)
+             (org-element-set-contents copy)
+           (org-element-extract-element owned))))
++    (when identities
++      (maphash (lambda (original owned) (puthash original owned identities))
++               (org-texmacs--model-owner-nodes owner)))
+     copy))
+ 
+ (defun org-texmacs--prepared-control-keywords (tree)

@@ -1,0 +1,310 @@
+these 5 derivations will be built:
+  /nix/store/lghq6q91pcn7dycwl30h594r8jqwfilr-emacs-org-texmacs-0.6.0.drv
+  /nix/store/pmck14fn05qn133f0h7dizrwbvwzvany-emacs-packages-deps.drv
+  /nix/store/ijv4snh7cqv9n41788w4ymmlianifp36-emacs-with-packages-fonts.conf.drv
+  /nix/store/v027wjk1w5bjsbx97faxaq1lr875kcbz-emacs-with-packages-31.1.drv
+  /nix/store/ww5fl9wqlvmxq5vpywi1dgwp1ip48iqa-org-texmacs-standard-query-probe.drv
+building '/nix/store/lghq6q91pcn7dycwl30h594r8jqwfilr-emacs-org-texmacs-0.6.0.drv'...
+emacs-org-texmacs> structuredAttrs is enabled
+emacs-org-texmacs> Running phase: unpackPhase
+emacs-org-texmacs> unpacking source archive /nix/store/jkbfvg2dd4i2lgn1hjjzcx65ir4zcpxh-source
+emacs-org-texmacs> source root is source
+emacs-org-texmacs> Running phase: patchPhase
+emacs-org-texmacs> Running phase: updateAutotoolsGnuConfigScriptsPhase
+emacs-org-texmacs> Running phase: configurePhase
+emacs-org-texmacs> no configure script, doing nothing
+emacs-org-texmacs> Running phase: buildPhase
+emacs-org-texmacs> /build /build/source
+emacs-org-texmacs> Copying files (->) and directories (=>)
+emacs-org-texmacs>   from /build/working/org-texmacs/
+emacs-org-texmacs>   to /build/org-texmacs-QDcfFe/org-texmacs-0.6.0
+emacs-org-texmacs>     org-texmacs-ast.el -> org-texmacs-ast.el
+emacs-org-texmacs>     org-texmacs-bibliography.el -> org-texmacs-bibliography.el
+emacs-org-texmacs>     org-texmacs-context.el -> org-texmacs-context.el
+emacs-org-texmacs>     org-texmacs-core.el -> org-texmacs-core.el
+emacs-org-texmacs>     org-texmacs-document.el -> org-texmacs-document.el
+emacs-org-texmacs>     org-texmacs-edit.el -> org-texmacs-edit.el
+emacs-org-texmacs>     org-texmacs-export.el -> org-texmacs-export.el
+emacs-org-texmacs>     org-texmacs-font-lock.el -> org-texmacs-font-lock.el
+emacs-org-texmacs>     org-texmacs-fragment.el -> org-texmacs-fragment.el
+emacs-org-texmacs>     org-texmacs-input.el -> org-texmacs-input.el
+emacs-org-texmacs>     org-texmacs-inspect.el -> org-texmacs-inspect.el
+emacs-org-texmacs>     org-texmacs-model.el -> org-texmacs-model.el
+emacs-org-texmacs>     org-texmacs-parse.el -> org-texmacs-parse.el
+emacs-org-texmacs>     org-texmacs-prepared.el -> org-texmacs-prepared.el
+emacs-org-texmacs>     org-texmacs-preprocess.el -> org-texmacs-preprocess.el
+emacs-org-texmacs>     org-texmacs-query.el -> org-texmacs-query.el
+emacs-org-texmacs>     org-texmacs-serialize.el -> org-texmacs-serialize.el
+emacs-org-texmacs>     org-texmacs-session.el -> org-texmacs-session.el
+emacs-org-texmacs>     org-texmacs-source.el -> org-texmacs-source.el
+emacs-org-texmacs>     org-texmacs-worker.el -> org-texmacs-worker.el
+emacs-org-texmacs>     org-texmacs.el -> org-texmacs.el
+emacs-org-texmacs>     ox-texmacs.el -> ox-texmacs.el
+emacs-org-texmacs>     org-texmacs-worker.scm -> org-texmacs-worker.scm
+emacs-org-texmacs> Created org-texmacs-0.6.0.tar containing:
+emacs-org-texmacs>   org-texmacs-0.6.0/
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-ast.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-bibliography.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-context.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-core.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-document.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-edit.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-export.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-font-lock.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-fragment.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-input.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-inspect.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-model.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-parse.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-pkg.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-prepared.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-preprocess.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-query.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-serialize.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-session.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-source.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-worker.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-worker.scm
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs.el
+emacs-org-texmacs>   org-texmacs-0.6.0/ox-texmacs.el
+emacs-org-texmacs> /build/source
+emacs-org-texmacs> Running phase: installPhase
+emacs-org-texmacs> Parsing tar file...
+emacs-org-texmacs> Parsing tar file...done
+emacs-org-texmacs> Parsing tar file...
+emacs-org-texmacs> Parsing tar file...done
+emacs-org-texmacs> Extracting... \
+emacs-org-texmacs> Extracting...done
+emacs-org-texmacs>   INFO     Scraping 23 files for loaddefs...
+emacs-org-texmacs>   INFO     Scraping 23 files for loaddefs...done
+emacs-org-texmacs>   GEN      org-texmacs-autoloads.el
+emacs-org-texmacs> Checking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-ast.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-autoloads.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-bibliography.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-context.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-core.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-document.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-edit.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-export.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-font-lock.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-fragment.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-input.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-inspect.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-model.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-parse.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-pkg.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-prepared.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-preprocess.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-query.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-serialize.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-session.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-source.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-worker.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs.el...
+emacs-org-texmacs> Compiling /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/ox-texmacs.el...
+emacs-org-texmacs> Done (Total of 22 files compiled, 2 skipped)
+emacs-org-texmacs> Parsing tar file...
+emacs-org-texmacs> Parsing tar file...done
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-preprocess.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-session.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-inspect.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-source.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-input.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-export.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-prepared.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-document.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-query.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-model.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-edit.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-ast.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-autoloads.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-context.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-font-lock.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-worker.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-core.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-serialize.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-parse.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-fragment.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-bibliography.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/ox-texmacs.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-pkg.el        || exit $?'
+emacs-org-texmacs> Running phase: fixupPhase
+emacs-org-texmacs> shrinking RPATHs of ELF executables and libraries in /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/ox-texmacs-8a1d118c-6f440645.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-document-9b77cd25-e7dcc779.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-preprocess-80570056-81fa7497.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-edit-81791886-6a069153.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-parse-33a2f1be-59a549ce.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-export-5b2163ff-dbd6135b.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-source-1048283c-7011665e.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-bibliography-61df6aae-8fdfccff.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-font-lock-97594315-eb244a2c.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-session-6d0271c2-85ea56b6.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-fragment-dbcb8ee4-32fd7186.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-prepared-9d4a42d2-f6725dcd.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-context-e3380cf5-d5d9976b.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-input-5b9e90fd-b4ea30bd.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-serialize-74c95854-b8e03217.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-worker-8939260b-491ad12a.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-query-df5698e0-a5afd428.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-ast-dfcfe3db-4244444e.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-core-819ad243-4e71f532.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-model-1f9cfbd6-67b174fe.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-3c5a66ec-72bd9310.eln
+emacs-org-texmacs> shrinking /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-inspect-a4a7c587-f6fbe705.eln
+emacs-org-texmacs> checking for references to /build/ in /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0...
+emacs-org-texmacs> patching script interpreter paths in /nix/store/sbxwrdhbxzby6yx3jcbay1ckq6yl56li-emacs-org-texmacs-0.6.0
+building '/nix/store/pmck14fn05qn133f0h7dizrwbvwzvany-emacs-packages-deps.drv'...
+building '/nix/store/ijv4snh7cqv9n41788w4ymmlianifp36-emacs-with-packages-fonts.conf.drv'...
+emacs-with-packages-fonts.conf> structuredAttrs is enabled
+building '/nix/store/v027wjk1w5bjsbx97faxaq1lr875kcbz-emacs-with-packages-31.1.drv'...
+building '/nix/store/ww5fl9wqlvmxq5vpywi1dgwp1ip48iqa-org-texmacs-standard-query-probe.drv'...
+org-texmacs-standard-query-probe> PUBLIC org-export-get-footnote-definition "Return definition of FOOTNOTE-REFERENCE as parsed data.
+org-texmacs-standard-query-probe> INFO is the plist used as a communication channel.  If no such
+org-texmacs-standard-query-probe> definition can be found, raise an error.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> (fn FOOTNOTE-REFERENCE INFO)"
+org-texmacs-standard-query-probe> PUBLIC org-export-get-footnote-number "Return number associated to a footnote.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> FOOTNOTE is either a footnote reference or a footnote definition.
+org-texmacs-standard-query-probe> INFO is the plist containing export state.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> Number is unique throughout the whole parse tree, or DATA, when
+org-texmacs-standard-query-probe> non-nil.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> By default, as soon as a new footnote reference is encountered,
+org-texmacs-standard-query-probe> counting process moves into its definition.  However, if
+org-texmacs-standard-query-probe> BODY-FIRST is non-nil, this step is delayed until the end of the
+org-texmacs-standard-query-probe> process, leading to a different order when footnotes are nested.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> (fn FOOTNOTE INFO &optional DATA BODY-FIRST)"
+org-texmacs-standard-query-probe> PUBLIC org-export-footnote-first-reference-p "Non-nil when a footnote reference is the first one for its label.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> FOOTNOTE-REFERENCE is the footnote reference being considered.
+org-texmacs-standard-query-probe> INFO is a plist containing current export state.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> Search is done throughout the whole parse tree, or DATA when
+org-texmacs-standard-query-probe> non-nil.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> By default, as soon as a new footnote reference is encountered,
+org-texmacs-standard-query-probe> other references are searched within its definition.  However, if
+org-texmacs-standard-query-probe> BODY-FIRST is non-nil, this step is delayed after the whole tree
+org-texmacs-standard-query-probe> is checked.  This alters results when references are found in
+org-texmacs-standard-query-probe> footnote definitions.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> (fn FOOTNOTE-REFERENCE INFO &optional DATA BODY-FIRST)"
+org-texmacs-standard-query-probe> PUBLIC org-export-get-headline-number "Return numbered HEADLINE numbering as a list of numbers.
+org-texmacs-standard-query-probe> INFO is a plist holding contextual information.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> (fn HEADLINE INFO)"
+org-texmacs-standard-query-probe> PUBLIC org-export-numbered-headline-p "Return a non-nil value if HEADLINE element should be numbered.
+org-texmacs-standard-query-probe> INFO is a plist used as a communication channel.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> (fn HEADLINE INFO)"
+org-texmacs-standard-query-probe> PUBLIC org-export-get-relative-level "Return HEADLINE relative level within current parsed tree.
+org-texmacs-standard-query-probe> INFO is a plist holding contextual information.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> (fn HEADLINE INFO)"
+org-texmacs-standard-query-probe> PUBLIC org-export-resolve-id-link "Return headline referenced as LINK destination.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> INFO is a plist used as a communication channel.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> Return value can be the headline element matched in current parse
+org-texmacs-standard-query-probe> tree or a file name.  Assume LINK type is either \"id\" or
+org-texmacs-standard-query-probe> \"custom-id\".  Throw an error if no match is found.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> (fn LINK INFO)"
+org-texmacs-standard-query-probe> PUBLIC org-export-resolve-fuzzy-link "Return LINK destination.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> INFO is a plist holding contextual information.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> Return value can be an object or an element:
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> - If LINK path matches a target object (i.e. <<path>>) return it.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> - If LINK path exactly matches the name or results affiliated keyword
+org-texmacs-standard-query-probe>   (i.e. #+NAME: path or #+RESULTS: name) of an element, return that
+org-texmacs-standard-query-probe>   element.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> - If LINK path exactly matches any headline name, return that
+org-texmacs-standard-query-probe>   element.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> - Otherwise, throw an error.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> PSEUDO-TYPES are pseudo-elements types, i.e., elements defined
+org-texmacs-standard-query-probe> specifically in an export backend, that could have a name
+org-texmacs-standard-query-probe> affiliated keyword.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> Assume LINK type is \"fuzzy\".  White spaces are not
+org-texmacs-standard-query-probe> significant.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> (fn LINK INFO &rest PSEUDO-TYPES)"
+org-texmacs-standard-query-probe> PUBLIC org-export-get-ordinal "Return ordinal number of an element or object.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> ELEMENT is the element or object considered.  INFO is the plist
+org-texmacs-standard-query-probe> used as a communication channel.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> Optional argument TYPES, when non-nil, is a list of element or
+org-texmacs-standard-query-probe> object types, as symbols, that should also be counted in.
+org-texmacs-standard-query-probe> Otherwise, only provided element's type is considered.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> Optional argument PREDICATE is a function returning a non-nil
+org-texmacs-standard-query-probe> value if the current element or object should be counted in.  It
+org-texmacs-standard-query-probe> accepts two arguments: the element or object being considered and
+org-texmacs-standard-query-probe> the plist used as a communication channel.  This allows counting
+org-texmacs-standard-query-probe> only a certain type of object (i.e. inline images).
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> Return value is a list of numbers if ELEMENT is a headline or an
+org-texmacs-standard-query-probe> item.  It is nil for keywords.  It represents the footnote number
+org-texmacs-standard-query-probe> for footnote definitions and footnote references.  If ELEMENT is
+org-texmacs-standard-query-probe> a target, return the same value as if ELEMENT was the closest
+org-texmacs-standard-query-probe> table, item or headline containing the target.  In any other
+org-texmacs-standard-query-probe> case, return the sequence number of ELEMENT among elements or
+org-texmacs-standard-query-probe> objects of the same type.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> (fn ELEMENT INFO &optional TYPES PREDICATE)"
+org-texmacs-standard-query-probe> PUBLIC org-export-get-reference "Return a unique reference for DATUM, as a string.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> DATUM is either an element or an object.  INFO is the current
+org-texmacs-standard-query-probe> export state, as a plist.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> References for the current document are stored in
+org-texmacs-standard-query-probe> `:internal-references' property.  Its value is an alist with
+org-texmacs-standard-query-probe> associations of the following types:
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe>   (REFERENCE . DATUM) and (SEARCH-CELL . ID)
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> REFERENCE is the reference string to be used for object or
+org-texmacs-standard-query-probe> element DATUM.  SEARCH-CELL is a search cell, as returned by
+org-texmacs-standard-query-probe> `org-export-search-cells'.  ID is a number or a string uniquely
+org-texmacs-standard-query-probe> identifying DATUM within the document.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> This function also checks `:crossrefs' property for search cells
+org-texmacs-standard-query-probe> matching DATUM before creating a new reference.
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> (fn DATUM INFO)"
+org-texmacs-standard-query-probe> Running 8 tests (2026-11-02 18:57:35+0000, selector `t')
+org-texmacs-standard-query-probe>    passed  1/8  c-copy-info-footnote-cache-counterexample (0.112683 sec)
+org-texmacs-standard-query-probe>    passed  2/8  c-filter-inserted-headline-gets-standard-numbering (0.000913 sec)
+org-texmacs-standard-query-probe> IGNORE TYPES nil HEADINGS nil
+org-texmacs-standard-query-probe> DEF SHAPE "a" BODY (plain-text) FIRST plain-text PARENT footnote-reference NUMBER 1 FIRSTREF t
+org-texmacs-standard-query-probe> DEF SHAPE "a" BODY (plain-text) FIRST plain-text PARENT footnote-reference NUMBER 1 FIRSTREF nil
+org-texmacs-standard-query-probe> DEF SHAPE nil BODY (plain-text) FIRST plain-text PARENT footnote-reference NUMBER 2 FIRSTREF t
+org-texmacs-standard-query-probe> DEF SHAPE "b" BODY (paragraph) FIRST paragraph PARENT footnote-definition NUMBER 3 FIRSTREF t
+org-texmacs-standard-query-probe>    passed  3/8  c-footnote-definition-and-cache-shapes (0.001223 sec)
+org-texmacs-standard-query-probe> NOTE SCOPE narrow DEF "External definition.
+org-texmacs-standard-query-probe> " IGNORE nil DEF-IN-TREE t
+org-texmacs-standard-query-probe> NOTE SCOPE subtree DEF "External definition.
+org-texmacs-standard-query-probe> " IGNORE nil DEF-IN-TREE t
+org-texmacs-standard-query-probe>    passed  4/8  c-footnote-outside-narrowing-and-subtree (0.002500 sec)
+org-texmacs-standard-query-probe>    passed  5/8  c-headline-and-duplicate-link-query (0.001087 sec)
+org-texmacs-standard-query-probe>    passed  6/8  c-owning-original-query-results-preserves-selected-footnotes (0.001337 sec)
+org-texmacs-standard-query-probe> OFFSET -2 NUMBERS ((1 (1)))
+org-texmacs-standard-query-probe>    passed  7/8  c-selected-headline-offset (0.001037 sec)
+org-texmacs-standard-query-probe>    passed  8/8  c-stm-org-objects-are-opaque-to-query-dispatch (0.000942 sec)
+org-texmacs-standard-query-probe> 
+org-texmacs-standard-query-probe> Ran 8 tests, 8 results as expected, 0 unexpected (2026-11-02 18:57:35+0000, 0.121925 sec)
+org-texmacs-standard-query-probe> 
+/nix/store/59wqyqin804f72imn5q0v1bhh02lhmq9-org-texmacs-standard-query-probe
