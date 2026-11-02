@@ -3,8 +3,8 @@
 ## State and authority
 
 A-C are human-delivered. C delivery matches its expected parent,14paths,
-message and147accepted input hashes. D implementation remains an uncommitted
-candidate; E must wait for D acceptance and human delivery. Standing scoped Nix
+message and147accepted input hashes. D is fully accepted as an uncommitted
+candidate; E must wait for human D delivery. Standing scoped Nix
 authority and ordinary Git boundaries remain in the approved execution plan.
 
 ## Chosen path
@@ -52,13 +52,14 @@ UUID keys and update INFO bibliography; later discovery is export-local and
 excludes unused managed sources. Actual CSL document/PDF/HTML pass after valid
 fixture setup. No business-logic mock or extension patch is used.
 
-## Maintained candidate and unresolved validation
+## Accepted candidate and causal findings
 
-Root candidate adds export/prepared changes, core protocol tests, dedicated
-ert-cite default check (citeproc only in test Emacs), pinned optional integration
-runner, README/CHANGELOG.154inputs copied to tmp/standard-export-0.7.0-d/acceptance.
-Scoped fmt passes10files/8changed. Focused core299/299 passes strict compilation.
-The other checks reveal three distinctions before full acceptance:
+The14path candidate adds export/prepared/zero-width lowering, core protocol
+tests, dedicated ert-cite default check (citeproc only in test Emacs), ert
+aggregate wiring, pinned optional integration runner and README/CHANGELOG.
+All154root/isolated hashes match memory/standard-export-0.7.0-d-inputs.json,
+SHA2567ae77dcb209a0156fadc31b10505dfada87dfb5307f27ba198e82d89daeda69b.
+Validation establishes these distinctions:
 
 - Org may extend the INFO plist after AST filters. Test propagation plus
   identical INFO between Cite callbacks, not eq with the earlier plist head.
@@ -68,16 +69,30 @@ The other checks reveal three distinctions before full acceptance:
 - Italic CSL output includes U+200B Org delimiters. The original native PDF
   displays literal <#200B>. The isolated `(space "0em")` lowering experiment
   passes7/7: model retains Unicode and native PDF shows ab without the marker.
-  This pure lowering change is now in the production candidate with model/PDF/
-  word-width regressions, still pending maintained validation. PDF text also uses
+  Maintained model/PDF/word-width regressions all pass for this pure lowering
+  change. STM strings stay opaque. PDF text also uses
   legitimate fi ligatures; normalize observations with NFKC for text matching.
 
-Focused integration2/2 after NFKC matching does not alone prove the zero-width
-fix; the new explicit marker/width checks must pass. Cite was3/5 before INFO/
-affix assertion corrections. Early target-raw checks now also cover secondary
-titles/captions/INFO and native block contents before body workers, with a core
-regression. Second scoped fmt passes6files/6changed;154inputs refreshed exactly.
-Focused-3 is running all three targets with keep-going, then full Nix gate.
-Review retention for the
-new causal zero-width evidence, update manifests/docs/draft, and await human D
-commit before E. No release/version bump or ordinary staging/commit performed.
+Raw preflight covers secondary titles/captions/INFO and native block contents
+before body workers. Focused-3 passes core301/Cite6/actual integration2. Full-1
+fresh native348/PDF-document34/PDF-render29/patched6 pass, with only README
+Org-example escaping failing treefmt. Correcting docs/aggregate wiring leaves
+all source/test hashes unchanged. Full-2 exits0/all12isolated checks (11default
+plus actual extension); only treefmt and aggregate rebuild, no runtime replay.
+Default ERT724 + actual2, zero unexpected. Byte/native compile, lint/format and
+aggregates pass on the locked environment above. Other platforms, minimum9.8
+behavior, all styles/fonts, GUI and examples build are not newly validated.
+
+The original INFO-head and bracket-affix assertion failures are test-assumption
+corrections, not production semantics workarounds. New native zero-width causal
+evidence is sufficiently preserved by maintained regressions, the exact C
+baseline and accepted input manifest. No additional raw logs, PDFs or whole
+temporary tree need archiving; comparison evidence above retains independent
+design value. No earlier overwritten failed script is claimed exact/replayable.
+
+Ordinary HEAD remains C and index/lock/result unchanged.14task paths consist of
+7modified and7untracked files, with no unrelated changes. README/CHANGELOG and
+worktree-based tmp/commit.md are ready: feat(export): integrate standard Org Cite
+with CSL. One coupled feature node; split unnecessary, medium review difficulty.
+No release/version bump or ordinary staging/commit performed. Await human D
+delivery; verify expected C parent/14paths/message/all154hashes before E.

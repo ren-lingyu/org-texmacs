@@ -25,6 +25,12 @@ callbacks and conservative rejection of unproven effective combinations without
 arbitrary effect prediction/replay. Full revision constraints are in the plan.
 No general syntax expansion, async/nonblocking work or Issue9 is selected.
 
+D selects the existing CSL processor's structured Org output for the supported
+TeXmacs export subset, with optional citeproc installed by the user. A custom
+backend-specific processor is unnecessary for the verified acceptance cases;
+basic/target raw remain explicitly unsupported. Preserve final prepared Org
+structures and native output, rather than repairing processor-generated markup.
+
 ## Purpose and project positioning
 
 Build an Org-first mathematical-document AST framework. Org AST represents

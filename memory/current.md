@@ -1,63 +1,50 @@
 # org-texmacs current memory
 
-## Current: C human-delivered; D Org Cite and actual extension active
+## Current: A-C delivered; D accepted, await human delivery
 
-Human C054d6cf is verified against expected76f4763parent,14paths, exact prepared
-message and all147accepted hashes; ordinary index/worktree clean. Its complete
-12checks/709ERT are unchanged and not rerun for delivery. D now investigates
-Org Cite processor return/raw/finalizer semantics and real org-roam-organize.
-Controlling plan: memory/standard-export-0.7.0-plan.md. A-C evidence and exact
-accepted identity remain in their note/input manifests. E migration remains next.
+Controlling plan: memory/standard-export-0.7.0-plan.md. Human C054d6cf matches
+expected76f4763parent,14paths/message/all147accepted hashes; clean intake and no
+unchanged test rerun. D is implemented and fully validated, still uncommitted.
+Next wait for human D commit, verify expected C parent/14paths/full prepared
+message and all154accepted hashes, then enter E. Do not repeat unchanged gates.
 
-Keep one real org-export-as transaction and original INFO/dynamic scope. Org
-owns bibliography discovery/processor selection/AST filters; native lowering,
-label/counter structure and output remain project duties. No extension-specific
-compatibility or fallback parallel preparation. Basic support is optional if a
-standards-compliant TeXmacs Cite processor meets actual integration acceptance.
-Raw is target code, not automatically ordinary text; no native tree serialization
-and reparse for Cite. Preserve source/ownership and early node-filter boundaries.
+D consumes existing CSL Org-return structures inside real org-export-as. Org
+owns bibliography, processor selection, options/AST filters and Cite scope;
+no custom processor, extension-specific adapter, duplicate preparation, third
+AST or native serialization/reparse. Basic and other target raw fail explicitly
+before body STM parsing, including secondary titles/captions/metadata. Native
+consumers admit only the unchanged/unadvised known CSL finalizer and format
+dispatch; unknown callbacks or incompatible text tails reject without probing.
+Org U+200B remains in the model and lowers to native zero-width spacing, verified
+by actual PDF text and equal word widths. STM strings remain opaque. CSL style/
+affix output is authoritative; no repair of processor-generated Org markup.
 
-The historical integration suite uses older extension revisions/APIs and old
-frontend commands; do not claim it validates current standard integration.
-Authorized isolated Nix fetch recovered actual org-roam-organize revision
-56fdaac6adab06deafc23357aec63ae2a497e09b, narHash
-sha256-rZBPdTRUmPKrk0JWkF5ukQs9qjPzo6600Vct2P3Ac9A=.
-Its real parse-tree filter rewrites UUID keys and updates live INFO bibliography
-inside public org-export-as advice/discovery scope. No production adapter needed.
+Formal full-2 exits0/all12isolated checks (11default + optional actual extension).
+Default724ERT = core301/native348/PDF-document34/PDF-render29/patched6/Cite6,
+plus actual integration2/2, all zero unexpected. Strict byte/native compilation,
+lint/treefmt and ERT aggregates pass on Emacs31.1/Org9.8.10/TeXmacs2.1.5/
+x86_64-linux. Full-1 runtime leaves passed; only README example escaping failed.
+Final docs/aggregate correction reran only treefmt+aggregate, not runtime tests.
+Every accepted154root/isolated hash matches memory/standard-export-0.7.0-d-inputs.json
+(SHA2567ae77dcb209a0156fadc31b10505dfada87dfb5307f27ba198e82d89daeda69b).
+No new other-platform/minimum9.8/all-CSL-style/GUI/examples-build claim.
 
-D comparison passes8/8 (attempt14): processor returns element/secondary/string/
-reentrant raw/native wrapper, callbacks once/same INFO; native-wrapper processor
-prototype, multiple citation locations, actual extension UUID/bibliography/native
-PDF/HTML; existing CSL text/document/native PDF. Basic produces raw target code;
-raw-only traversal's initial undercount was a probe bug, not runtime data loss.
+Actual Organize pin/contract/probe findings/retention are in
+memory/standard-export-0.7.0-d.md. Its normal real SQLite/mode/hooks/advice map UUID
+keys and propagate only selected bibliography in live Cite INFO, with native PDF,
+text/HTML and restoration tests. Historical multi-extension fixtures do not prove
+current standard integration. Selected comparison archive:
+archive/2026-11-02T20-32-35Z--054d6cf/MANIFEST.md. New zero-width evidence is
+sufficiently retained by maintained causal/native regressions plus exact baseline
+and accepted input identities; no further raw logs/PDF/temporary-tree archive.
 
-Source-proven CSL path returns Org objects/elements with fuzzy links/targets;
-its finalizer is identity outside org-latex. Prefer this existing standard
-processor over adding a custom native processor/protocol. Capture unchanged
-CSL finalizer/format definitions for conservative native compatibility; reject
-replaced definitions or unknown finalizers. Do not execute callbacks as probes.
-The native jobs prototype is NOT production-adopted.
-Its complete152input digests, five-source delta, probe source/pin and single
-source/runtime log are byte-exact in
-archive/2026-11-02T20-32-35Z--054d6cf/MANIFEST.md (separate archive checkpoint).
-No failed harness logs/full temporary tree retained; no exact replay claim for
-earlier overwritten failures. Simplified CSL+actual Organize passes6/6 (attempt15),
-including document/native PDF/HTML and preserved bold global citation affix.
-Production export/prepared changes, core protocol tests, dedicated optional-
-dependency Cite/PDF default check and pinned optional real-extension check are
-now authored with README/CHANGELOG. Scoped fmt passes;154candidate inputs copied
-to isolated acceptance. Focused strict/core299/299 passes. Cite3/5 exposed test
-assumptions about INFO plist head identity and CSL bracket/emphasis boundaries;
-tests are corrected against actual Org behavior. Actual integration2/2 passes
-after NFKC PDF text matching, but CSL's U+200B currently prints visible <#200B>.
-Isolated native zero-width structural lowering passes7/7 and is now a production
-candidate with model/PDF/word-width regressions. Raw checks cover secondary
-titles/captions/INFO and native body contents before STM workers. Second scoped
-fmt passes6files/6changed;154inputs refreshed byte-exactly. Focused-3 runs all
-core/Cite/actual integration targets with keep-going. Detailed contract/results:
-memory/standard-export-0.7.0-d.md. Next inspect those results, then
-full gates and selective retention. Prepare draft and
-wait for human D delivery before E. No ordinary staging/commit; D not accepted.
+Fourteen task paths (7modified,7untracked), index empty; HEAD/lock/result unchanged.
+README/CHANGELOG synced, TODO/version retained. tmp/commit.md follows explicitly
+approved full-worktree workflow: feat(export): integrate standard Org Cite with
+CSL. One coupled feature node; split unnecessary, medium review difficulty.
+E remains public command/source API migration, parallel-preparation cleanup,
+examples/final docs and release checks after human D delivery. Do not start E
+or ordinary staging/commit/tag/push at this handoff.
 
 User permits nix fmt/build/eval/flake check and variants throughout0.7.0plan.
 Disclose exact commands/scope/writes/network/timeouts, isolate experiments and
@@ -65,7 +52,7 @@ review selective retention. No ordinary staging/commit/tag/push. Each production
 node syncs README/CHANGELOG/tmp/commit.md and awaits human delivery. Keep GAW
 current through the validated memory loop and selective checkpoints.
 
-## Current: v0.6.0 locally finalized and tagged; approved plan complete
+## Earlier: v0.6.0 locally finalized and tagged; approved plan complete
 
 The human committed the final CHANGELOG corrections and created local tag
 v0.6.0. Read-only verification confirms its peeled commit equals ordinary HEAD,

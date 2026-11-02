@@ -1,6 +1,33 @@
 # org-texmacs durable evidence
 
-## C human delivery; D Cite comparison and selected direction
+## D accepted candidate and C human delivery
+
+D final full-2 exits0/all12isolated checks, comprising11default checks plus the
+optional actual extension check. Default724ERT are core301/native348/Cite6/
+PDF-document34/PDF-render29/patched6; actual Organize2/2, zero unexpected.
+Strict byte/native compilation, lint/treefmt and aggregates pass. Focused-3
+establishes301+6+2; full-1 fresh native348(239.066119s), PDF-document34(94.118520s),
+render29(154.326751s), patched6(2.835858s) pass. Only README example escaping fails
+that gate. Final docs/aggregate changes rerun treefmt+aggregate only; no repeated
+runtime execution. All154root/isolated input hashes match
+memory/standard-export-0.7.0-d-inputs.json, SHA256
+7ae77dcb209a0156fadc31b10505dfada87dfb5307f27ba198e82d89daeda69b.
+Environment remains x86_64-linux/Emacs31.1/Org9.8.10/TeXmacs2.1.5; no new
+other-platform/minimum9.8/all-style/GUI/examples-build validation. HEAD is C,
+ordinary index/lock unchanged,14task paths pending human delivery with docs/draft.
+
+Maintained native evidence catches Org U+200B printing literal <#200B>, then
+verifies retained model Unicode, no visible fallback and equal ab word widths
+using native zero-width structure. NFKC only normalizes observed PDF ligatures.
+Org can extend INFO after AST filters: preserve propagated values, compare actual
+Cite callback INFO identities, not earlier plist heads. CSL bracket layout can
+leave affix stars literal; unwrapped fixture retains bold. Do not repair the
+processor's authoritative final AST. Raw preflight covers secondary/metadata/
+native-body contexts before STM workers. Unknown/advised finalizers do not run.
+These maintained causal regressions and the baseline/accepted identities suffice
+for new zero-width evidence; no extra raw logs/PDF/temporary-tree archive needed.
+
+## D comparison and adopted direction
 
 C054d6cf matches expected76f4763parent,14paths, exact prepared message and all147
 accepted hashes. Intake ordinary worktree/index clean; unchanged tests not rerun.
@@ -17,8 +44,8 @@ Selective original-byte comparison archive:
 archive/2026-11-02T20-32-35Z--054d6cf/MANIFEST.md. It preserves one source/runtime
 log, exact152input digests, five-file source delta, four probe files and source
 pin; no overwritten failed harness replay claim. The lighter CSL path is selected
-for production. New maintained tests/docs and formal acceptance remain pending;
-these probe counts are not production/default-check or release acceptance.
+for production. These probe counts remain comparison evidence, distinct from
+the formal candidate acceptance recorded above and from any release claim.
 
 ## Historical C acceptance and B human delivery
 

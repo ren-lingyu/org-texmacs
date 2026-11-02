@@ -1,6 +1,6 @@
 # v0.7.0 Standard Org Export Integration: approved execution plan
 
-## Execution state: A-C human-delivered; D CSL production candidate active
+## Execution state: A-C human-delivered; D accepted, await human delivery
 
 Human B76f4763 matches parent/message/6paths/all144accepted hashes. C now passes
 formal12checks/709ERT with147accepted input hashes in
@@ -12,12 +12,15 @@ preparation copy/whole-buffer reparse/independent INCLUDE or third AST.
 C evidence/cache counterexample/limits: memory/standard-export-0.7.0-c.md.
 
 Human C054d6cf matches expected parent/14paths/message/all147accepted hashes;
-ordinary index/worktree clean. No unchanged gate rerun for delivery. D isolated
+ordinary index/worktree clean at intake. No unchanged gate rerun for delivery. D isolated
 Cite comparison passes8/8, simplified CSL/actual Organize passes6/6. Existing
 CSL's Org-return path is selected; a custom processor is unnecessary for this
-verified subset. Production raw/finalizer/control-directive changes and tests/
-docs are in progress, formal acceptance pending. Current remaining gates are in
-memory/current.md. E migration/cleanup follows D human delivery; no
+verified subset. Production raw/finalizer/control-directive/zero-width changes
+pass all12isolated checks (11default+actual),724defaultERT+2actual and strict
+compile/lint/treefmt.154accepted hashes are in memory/standard-export-0.7.0-d-inputs.json;
+14task paths, README/CHANGELOG and tmp/commit.md await human delivery. Verify
+expected C parent/paths/message/all154hashes before E. Current contracts/evidence:
+memory/standard-export-0.7.0-d.md. E migration/cleanup follows D human delivery; no
 version bump or Org TODO release transition. Existing native
 labels, static STM conflicts, note structures and error boundaries are retained.
 

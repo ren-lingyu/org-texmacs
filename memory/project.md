@@ -1,6 +1,6 @@
 # org-texmacs current project model
 
-## v0.7.0 standard backend: A-C delivered, D Cite candidate
+## v0.7.0 standard backend: A-C delivered, D accepted pending delivery
 
 The real texmacs backend consumes standard org-export-as in one transaction.
 Prepared structures/native documents use the isolated single-use result handoff;
@@ -27,14 +27,23 @@ relative resource links and actual direct PDF note binding are maintained tests.
 No private Org preparation copy/advice, extra AST or independent INCLUDE recursion.
 
 C054d6cfhuman delivery matches14paths/message/all147accepted C inputs; no rerun.
-D now prefers the existing CSL processor's Org-return path over a custom native
-processor. Isolated CSL+actual Organize and rich-affix probes pass6/6; comparison
-with native wrappers passes8/8 and is selectively archived. Production candidate
-consumes bibliography directives, rejects target raw before native parsing and
-admits only the unchanged/unadvised known CSL finalizer/format-dispatch branch.
-Maintained core/Cite/PDF/optional real-extension tests and docs are being added;
-formal candidate acceptance is still pending. E public frontend/API cleanup
-remains after D human delivery. Current evidence is in memory/current.md.
+D consumes existing CSL Org-return structures, Org-owned bibliography/filters
+and the original Cite dynamic scope. Target raw rejects before body STM work,
+including secondary/metadata/native-body contexts. Native results permit only
+the captured unchanged/unadvised known CSL finalizer/format branch; no arbitrary
+effect probing. U+200B stays in the model and becomes native zero-width spacing
+for Org text, with PDF content/width proof. No custom processor, third AST,
+native round trip or extension-specific production path is introduced.
+
+The14path D candidate passes all12isolated checks:11default plus actual Organize
+integration,724defaultERT+2actual, strict compile/lint/treefmt. Its154root/isolated
+hashes match memory/standard-export-0.7.0-d-inputs.json. Optional citeproc is a
+user dependency and a test-only dependency for ert-cite; ert aggregates that
+leaf without replay. Basic/raw and unsupported CSL-generated structures fail;
+style/affix markup is the processor's authoritative output. Exact scope,
+comparison archive/causal findings and limits: memory/standard-export-0.7.0-d.md.
+README/CHANGELOG/draft ready, no ordinary staging/commit. Await human D delivery
+before E public command/source API migration, preparation cleanup and final docs.
 Historical0.6descriptions below remain baseline evidence, not current standard
 backend support claims.
 

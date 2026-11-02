@@ -3,8 +3,8 @@
 ## v0.7.0 Standard Org Export Integration: approved execution
 
 Current gate: initial CHANGELOG and A-C are human-delivered/verified. D now adopts
-existing CSL Org-return output after isolated comparison and actual-extension
-probes; maintained production acceptance remains pending. A custom native Cite
+existing CSL Org-return output, passing complete candidate acceptance with724
+defaultERT+2actual/all12isolated checks; await human D delivery. A custom native Cite
 processor is deferred as unnecessary for the verified CSL subset, not a new
 commitment. E public consumer/API consolidation follows D human delivery.
 C freezes original-transaction query results
@@ -23,7 +23,7 @@ status. First create the memory plan checkpoint, then a CHANGELOG-only candidate
 wait for human delivery before experiments. Each production node has its own
 human-delivery gate. No existing preparation API forces parallel standard semantics.
 Callback/Cite/STM/ownership/output feasibility gates precede broad migration;
-The Cite processor design remains a candidate; A has selected inner-template.
+Existing CSL is selected and validated; A has selected inner-template.
 Standard preparation may generate STM and owns recursive INCLUDE. Existing
 independent preparation can survive with a clear standalone purpose, but must
 exit the new standard path. Async/nonblocking, Issue9 and arbitrary syntax
