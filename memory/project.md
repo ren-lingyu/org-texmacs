@@ -1,17 +1,15 @@
 # org-texmacs current project model
 
-Release status2026-11-02: user reports0.5.0 was tagged but never published, and
-the local tag has been removed. Public reads during changelog planning find six
-published releases through0.4.0 and no0.5.0 Release, while the remote0.5.0tag still
-points to the earlier3458bfe documentation delivery. No tag cleanup is selected.
-Version declarations remain0.5.0; version metadata and delivered features are
-distinct from publication. No source rollback or republishing selected.
-Root CHANGELOG.org now records six historical versions and user-frozen NEXT
-v0.5.0, with complete independent manuscripts under CHANGELOGS/. NEXT has no
-CLOSED; it does not establish publication. Final README cleanup was delivered in
-4c2381a, based on386b35e: README retains current usage/contracts and links the root
-history and v0.5.0 manuscript for changes/upgrades. The documentation workflow is
-complete; no runtime result, tag or publication follows from that completion.
+Release status2026-11-02: local finalization delivered3bd7b33, exact two-path
+CHANGELOG/README candidate verified. Human-set DONE v0.5.0/CLOSED recorded;
+README uses neutral0.5.0 wording. Local annotated v0.5.0 peels to this HEAD and
+contains the complete CHANGELOGS/v0.5.0.org manuscript. Root retains six older
+historical releases. Current user-supplied default flake check passes with
+already-satisfied outputs, not a fresh ERT run. Other platforms unverified.
+User did not report platform publication; remote tag/push/Release not rechecked.
+The earlier removed tag was never a published release; last remote-tag evidence
+pointed to3458bfe, not confirmation of the new remote state. No source rollback,
+agent tag/commit/push or release write performed. Details: release-0.5.0.md.
 
 Delivered1017764, exact13reviewed blobs and clean ordinary worktree verified:
 bare default citations in headings/TOC, emphasis, table cells and supported

@@ -2,13 +2,31 @@
 
 ## Current publication status (2026-11-02)
 
-User confirms0.5.0 was only tagged, never actually published, and the tag is now
-removed locally. Do not describe this as withdrawing a published release. No
-matching local0.5.0tag observed. Later public reads for changelog planning find no
+Local finalization now delivered3bd7b33, matching reviewed two-path +3/-4
+candidate and message; ordinary tree/index clean. Annotated local v0.5.0 tag
+peels to that exact HEAD, with complete CHANGELOGS/v0.5.0.org manuscript.
+Human-set DONE/CLOSED and neutral README0.5.0 wording are committed. User's final
+nix flake check exits0/all checks passed in2.1903s, running0checks (cached outputs,
+not fresh ERT). No agent tests/tag/commit/publication. Remote tag/push/Release
+not rechecked; last observed remote target3458bfe is historical, not current
+verification. Local tag creation does not establish platform publication.
+
+Final preparation follow-up: user manually set v0.5.0 DONE and CLOSED
+[2026-11-02 Mon 00:53]; agent preserved this user-authored state/time. User supplied
+current nix flake check exit0/all checks passed after correcting CLOSED indentation.
+Only treefmt rebuilt; other default check outputs reused, not a fresh ERT run.
+Agent's subsequent authorized one-line README edit removes 'unreleased' wording
+without claiming platform publication. All version declarations remain0.5.0.
+Both final edits are now committed as verified above. Earlier NEXT/readiness
+workflow records below are historical; DONE alone does not establish publication.
+
+Earlier user confirmed0.5.0 was only tagged, never actually published, and removed
+the old local tag. Do not describe that as withdrawing a published release.
+Before current re-tagging, public reads for changelog planning found no
 v0.5.0 Release, but the remote annotated tag still points to the earlier3458bfe
 documentation delivery. No remote cleanup is selected. Version declarations
 remain0.5.0 and existing preparation/validation records do not imply publication.
-No source/version rollback or new tag/publication action selected. Earlier
+No source/version rollback or remote publication selected by this record. Earlier
 staging/readiness descriptions below are historical, not outstanding authority.
 
 User adopted an Org changelog introduction before any publication: initial full

@@ -1,5 +1,31 @@
 # org-texmacs current memory
 
+## Current: v0.5.0 locally finalized and tagged
+
+User delivered3bd7b33273c5b72104a760df326e661a3cf16b86, direct child of4c2381a,
+with reviewed docs(release): finalize v0.5.0 release documentation message and
+exact two-path +3/-4 diff. Commit whitespace check passes; ordinary index/worktree
+clean. CHANGELOG v0.5.0 is human-set DONE with CLOSED [2026-11-02 Mon 00:53]
+and matching CUSTOM_ID. README now documents0.5.0 without 'unreleased'. Version
+header/version/melpaVersion remain0.5.0. No runtime/code/config change.
+
+Local annotated tag v0.5.0 object b038e944b13d43d19c00bcc249d0b5ca78992acf peels
+to that exact HEAD, replacing the previously removed local tag. Tagged tree
+contains CHANGELOGS/v0.5.0.org, the sole authoritative publication manuscript.
+No tag or commit was created by the agent. Remote tag/push/Release status not
+rechecked; last remote observation was the obsolete3458bfe tag. User reports
+commit and tag only, so do not infer GitHub publication. Local finalization is
+complete; if publication is requested, verify remote tag and publish from the
+intended tagged manuscript. No automatic remote mutation selected.
+
+User's current x86_64-linux nix flake check initially failed only because CLOSED
+was indented. After human correction: exit0/all checks passed in10.5845s,
+only treefmt rebuilt. After README prose finalization, user reran: exit0 in2.1903s,
+running0checks/all checks passed. Current default outputs are satisfied; these
+runs did not execute a fresh ERT suite. Other platforms remain unverified.
+Commit matches accepted final staged candidate; no redundant agent test/build/
+formatter run. Preserve earlier602ERT/native/examples evidence at its true scope.
+
 ## Completed: staged introduction of an Org changelog workflow
 
 User approved implementation on 2026-11-02. The following sequence is complete:
@@ -170,7 +196,7 @@ wait for the user's next objective. The existing NEXT version is not published
 or advanced as part of documentation closure.
 No source/API/version/dependency/test changes or remote tag cleanup selected.
 
-## Current release status: unpublished 0.5.0, local tag removed
+## Earlier release status: unpublished 0.5.0, old local tag removed
 
 On2026-11-02 user clarifies that0.5.0 was tagged but never actually published;
 the local tag has now been removed. Supersedes initial wording "release withdrawn":
