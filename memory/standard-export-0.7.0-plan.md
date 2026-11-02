@@ -1,5 +1,21 @@
 # v0.7.0 Standard Org Export Integration: approved execution plan
 
+## Stage A evidence gate in progress
+
+The initial project delivery is verified. Isolated experiments now show that
+early nonlocal result delivery skips normal advice completion, and a naive final
+AST handoff discards node-string-filter effects. Normal-return result containers
+are feasible. Evidence is in memory/standard-export-0.7.0-a.md. The user now adopts
+explicit restriction/rejection of unsupported node-string filters: full support
+is not a0.7.0release gate. Standard options/AST filters retain full semantics;
+body/final-output filters run on final text. Detect unsupported effective node
+callbacks as early as practical, before their potentially side-effectful execution;
+never execute and silently discard them, or add STM text roundtrips/parallel
+preparation for arbitrary string changes. Document/test the limit and expand
+later on concrete need. Do not treat the12/12focused probe result
+as complete architecture acceptance or begin dependent production implementation
+before validating this support boundary and completing A validation.
+
 ## Authority and execution boundary
 
 The user approved the revised plan with "Implement the plan" after supplying

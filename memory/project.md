@@ -11,6 +11,16 @@ risks, not prototype feasibility or new support. Keep existing0.6.0 core APIs
 independent, generic model context separate from consumer INFO, and treat
 standard preprocessing output as input rather than require original STM bytes.
 
+Stage A now has isolated focused feasibility evidence and expected counterexamples
+in memory/standard-export-0.7.0-a.md. The root remains unchanged at440b331, with
+no production standard backend. Normal-return structured delivery is promising;
+the naive final-AST/string-filter mismatch is resolved by the user's explicit
+unsupported-node-filter boundary. Attempt6 validates early guards18/18, including
+late INFO installations/Cite and other-backend isolation, on Emacs31.1/Org9.8.10.
+Normal-return scoped results/native Latin1 transport are adopted for the minimal
+node. No production source yet; focused probes do not establish maintained full
+gate or release acceptance.
+
 ## Adopted positioning versus implemented architecture
 
 As of the user's 2026-11-02 v0.6.0 positioning, the intended abstraction is an

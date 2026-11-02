@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: revised v0.7.0 plan approved; initial delivery gate
+## Current: stage A feasibility; early string-filter guard validation next
 
 The user asks to recover GAW memory and inspect the workspace before upcoming
 v0.7.0 development. Public GAW status/check pass; the ordinary main worktree
@@ -38,9 +38,48 @@ Visible-only is selected; body-only/async are rejected/deferred. Org9.8.10 is th
 acceptance baseline, with a minimum bump only if necessary. Basic is not a blocker
 if a proper Org Cite TeXmacs processor meets required semantics/real integration.
 
-Next: finish the mandatory memory plan checkpoint, then add only CHANGELOG.org's
-TODO v0.7.0 planned features and prepare tmp/commit.md. Wait for the human's
-CHANGELOG-only commit and verify it before A experiments or production edits.
+The mandatory memory-only plan checkpoint is complete through public git gaw
+commit; find it in the first-parent history of memory/standard-export-0.7.0-plan.md.
+Then edited only CHANGELOG.org: +50lines, TODO v0.7.0, Changed/Added categories,
+seven feature headings and14unchecked items, explicitly not yet implemented.
+Read-only byte comparison proves header and all prior release content unchanged;
+no CLOSED/CUSTOM_ID/completed markers added. Ordinary index is empty; whitespace
+passes. Candidate CHANGELOG blob is ccb23138e9c3405ba0d5183d57f4a11efa37c27e.
+tmp/commit.md uses the explicitly selected full worktree diff and subject
+docs(changelog): plan v0.7.0 standard export integration, with two Chinese bullets.
+One coherent documentation candidate needs no split. No runtime tests, formatter,
+build, isolated experiment, version metadata or production source change ran.
+Human delivery440b331 is verified: expected v0.6.0 parent, CHANGELOG.org-only
+49-line insertion, matching prepared message and clean ordinary worktree/index.
+The sole difference from the reviewed50-line candidate is removal of the blank
+line directly after TODO v0.7.0; restoring it reproduces the exact candidate blob.
+The first project boundary is satisfied. Stage A isolated experiments under
+tmp/standard-export-0.7.0-a have now run; full evidence/limits are distilled in
+memory/standard-export-0.7.0-a.md. Final focused build exits0,12/12 in6.667459s,
+including expected counterexamples. Normal-return result-container delivery,
+structured Cite returns, native text/PDF and nested/error/advice fixtures work.
+Basic/reentrant strings become target raw and need explicit support boundaries.
+Latin1 transport preserves native bytes; standard file adds a newline whose
+parsed native tree equals the original serialized tree on the fixture.
+
+Do not adopt early throw delivery: it skips normal advice completion. Naive final
+AST handoff also loses paragraph-string-filter modifications. The user explicitly
+adopts early rejection of unsupported node-string filters, not full support as
+a release gate. Preserve complete standard options/AST semantics and execute
+body/final-output filters on final text; never execute and discard node changes,
+or add STM text roundtrips/parallel preparation. Validate guards for effective
+callbacks installed initially or later by options/AST filters, including Cite's
+org-export-data calls. The archive-only checkpoint is complete; manifest is
+archive/2026-11-02T16-54-11Z--440b331/MANIFEST.md. Attempt6 early guards now pass:
+18/18 in8.603494s on Emacs31.1/Org9.8.10, including initially/options/AST-installed
+callbacks rejected before invocation and before Cite, standard AST/options/final
+text behavior and unrelated backend isolation. A evidence records the selected
+normal-return result container, reversible native text transport and early guard
+design. Next: checkpoint this adopted A refinement, implement the minimal standard
+backend with maintained regressions/docs, then validate before human node delivery.
+Actual extension integration, full suite and all B-E remain pending. Ordinary
+worktree/index are clean;130root/copy inputs still match, lock/result untouched.
+No production README/CHANGELOG/source edit has run in this phase.
 Each later production node also waits for human delivery. No ordinary staging
 authority; no commits/tags/pushes by the agent. Async/nonblocking and Issue9 stay
 outside scope. Isolated experiments require immediate retention review and

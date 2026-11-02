@@ -1,5 +1,42 @@
 # org-texmacs durable evidence
 
+## Stage A focused feasibility and expected counterexamples
+
+Human440b331delivery has expected v0.6.0 parent, exact prepared message and
+CHANGELOG-only scope; only one blank after TODO differs from the candidate.
+All130snapshot inputs remain byte-identical in ordinary root and isolated copy,
+ordinary worktree/index clean. Final disclosed timeout120s focused Nix build
+exits0,12/12probes in6.667459s, not full maintained regression acceptance.
+Normal-return scoped structured delivery and native outputs are feasible; early
+nonlocal delivery skips normal advice, and naive final-AST handoff loses node
+string filters. Basic emits target raw. Native byteE9 is not ordinary UTF8;
+Latin1 transport is reversible and an added final newline preserves the parsed
+native tree on the fixture. Complete outcomes, failed-hypothesis refinement,
+source/runtime limits and pending filter-policy decision:
+memory/standard-export-0.7.0-a.md. Selected verified raw text evidence:
+archive/2026-11-02T16-54-11Z--440b331/MANIFEST.md. No production edits, real
+extension compatibility, full gate or all-A acceptance is claimed.
+
+The user subsequently confirms explicit early rejection of unsupported node
+string filters while preserving standard options/AST and final body/output
+semantics. Attempt6 adds initial/options/AST-installed callback side-effect guards,
+Cite timing, normal final filters and unrelated backend checks:18/18 in8.603494s,
+runtime Emacs31.1/Org9.8.10. This supports the selected minimal-node architecture;
+production/regression gate remains next, not already delivered.
+
+## v0.7.0 initial CHANGELOG candidate after plan checkpoint
+
+The memory-only execution-plan checkpoint precedes the ordinary edit. The sole
+ordinary diff adds50lines to CHANGELOG.org: TODO v0.7.0, seven feature headings,
+14unchecked entries and an explicit not-yet-implemented introduction. A read-only
+byte comparison removes the inserted0.7.0 interval and recovers exact HEAD bytes,
+preserving header/history. No CLOSED/CUSTOM_ID/completed markers enter the entry.
+git diff --check passes, ordinary index is empty; candidate blob is
+ccb23138e9c3405ba0d5183d57f4a11efa37c27e. The approved worktree-based draft is
+tmp/commit.md with docs(changelog): plan v0.7.0 standard export integration.
+No formatter, ERT/Nix build/check or stage-A experiment has run. Human project
+delivery remains the next mandatory gate; no ordinary staging/commit performed.
+
 ## v0.7.0 revised plan approval; no new runtime evidence
 
 The user confirmed API consolidation, standard TeXmacs Cite processor allowance,
