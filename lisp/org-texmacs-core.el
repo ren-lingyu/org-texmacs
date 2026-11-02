@@ -26,6 +26,10 @@ Changing this option takes effect after the current worker is stopped."
 (define-error 'org-texmacs-error "Org TeXmacs error")
 
 (define-error
+ 'org-texmacs-model-error "Invalid mathematical-document model"
+ 'org-texmacs-error)
+
+(define-error
  'org-texmacs-document-error "Org TeXmacs document conversion failed"
  'org-texmacs-error)
 

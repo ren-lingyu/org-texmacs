@@ -605,6 +605,58 @@ edit buffers retain their mode until closed.  This option does not select the
 mode used for STM fontification.  Dedicated source editing and indentation
 apply to complete TeXmacs special blocks, not paragraph fragments.
 
+* Mathematical-document model construction
+Load =(require 'org-texmacs-model)= to construct an independent snapshot from
+an already parsed native Org AST and STM trees.  This module does not load the
+document lowering layer, export frontend or worker.  It does not yet provide
+the planned buffer parser, inspection, serialization or transformation commands.
+
+#+begin_src emacs-lisp
+  (require 'org-texmacs-model)
+  (let* ((leaf (copy-sequence "island"))
+         (ast (org-element-create
+               'org-data nil (org-element-create 'paragraph nil leaf)))
+         (model (org-texmacs-model-create
+                 ast :islands (list (cons leaf '(math (frac "1" "2")))))))
+    (org-texmacs-model-islands model))
+#+end_src
+
+=org-texmacs-model-create AST :islands ISLANDS :context CONTEXT= copies the
+=org-data= AST, rebuilds parent links and remaps identity-keyed islands to the
+owned nodes.  Secondary strings and captions are included.  Each island value
+is a parsed STM tree, including a possible atomic string leaf.  Invalid trees,
+cycles, multiply owned nodes, detached or duplicate keys, overlapping islands,
+deferred properties and opaque runtime objects signal =org-texmacs-model-error=.
+The constructor does not scan source text, start a worker, allocate output
+references or invoke document lowering.  The caller supplies the island
+associations; this entry does not prove source-recognition completeness.
+
+Model validity is independent of the exporter's Org support and of future Org
+serialization support.  Legal comments, drawers, unused footnotes and excluded
+headlines can remain in the AST.  A structurally valid tree at an island can
+have a root that current inline recognition would not recognize.  That does
+not invalidate the model or trigger implicit source parsing.
+
+The STM tree is authoritative for mathematical content.  Its Org key retains
+the wrapper and affiliated structure; old raw mathematical text is not a
+fallback value for consumers.  The snapshot has no dependency on its source
+buffer's continued existence.  Model accessors return internal read-only
+references: callers must not modify any nested strings, lists or vectors.
+Read-only structure slots do not enforce deep immutability.
+
+CONTEXT is an explicit plist of resolved syntax/source data.  Its accepted keys
+are =:fragment-tags=, =:heading-settings=, =:link-settings=, =:source-file= and
+=:resource-base=.  Values are owned without reading ambient settings or files.
+The model does not capture export INFO, style, initial environment, bibliography
+output or reference allocation.  Context capture from buffers belongs to the
+subsequent parser implementation.
+
+Existing export inputs reuse this model's ownership machinery.  Their
+=org-texmacs-input-model= accessor holds the same owned AST and islands exposed
+by the existing input accessors.  Export INFO, exact post-blank mappings and
+target settings remain separate.  Source filtering, bibliography, reference
+planning, preflight and native parsing retain their existing export route.
+
 * Document conversion and native sessions
 The document API separates source preparation, pure structural lowering and
 native consumers.  A completed document can update an explicit native session,

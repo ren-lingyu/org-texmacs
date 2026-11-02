@@ -14,6 +14,7 @@
 
 
 (require 'org-texmacs-core)
+(require 'org-texmacs-model)
 (require 'org-texmacs-source)
 (require 'org-texmacs-fragment)
 (require 'org-texmacs-context)
@@ -435,24 +436,10 @@ value exists; explicit nil/empty removes its corresponding default."
 
 (defun org-texmacs--document-copy-stree (node &optional ancestors)
   "Validate and copy text stree NODE without sharing strings or conses.
-ANCESTORS detects cycles; repeated, non-cyclic subtrees are copied separately."
-  (cond
-   ((stringp node)
-    (substring-no-properties node))
-   ((and (consp node)
-         (car node)
-         (symbolp (car node))
-         (proper-list-p node)
-         (not (memq node ancestors)))
-    (cons
-     (car node)
-     (mapcar
-      (lambda (child)
-        (org-texmacs--document-copy-stree child
-                                          (cons node ancestors)))
-      (cdr node))))
-   (t
-    (signal 'org-texmacs-document-error '("Invalid island stree")))))
+ANCESTORS detects cycles; repeated, non-cyclic subtrees are copied separately.
+Retain the document error condition at this consumer boundary."
+  (org-texmacs--model-copy-stree
+   node 'org-texmacs-document-error ancestors))
 
 (defun org-texmacs--document-output-labels (body)
   "Collect only static label strings in validated BODY, retaining duplicates."

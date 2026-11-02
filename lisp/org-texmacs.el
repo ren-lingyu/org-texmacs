@@ -43,6 +43,9 @@
 ;; Loading enables Scheme fontification of embedded STM in Org buffers.
 ;; Use Org's source-edit workflow for TeXmacs blocks; `org-texmacs-edit-mode'
 ;; selects the editing/indentation major mode, defaulting to `scheme-mode'.
+;; Use `org-texmacs-model-create' to own a native Org AST and already parsed
+;; STM islands independently of document lowering.  The model module can be
+;; loaded alone without export preparation or a native worker.
 ;; Use `org-texmacs-document' to lower an explicit prepared input, or
 ;; `org-texmacs-document-from-buffer' for source-buffer structural conversion
 ;; to a text TeXmacs document result with body, style, initial environment and
