@@ -15,6 +15,8 @@
 (require 'org-texmacs-core)
 
 (autoload 'org-texmacs-parse-buffer "org-texmacs-parse")
+(autoload 'org-texmacs-model-inspect "org-texmacs-inspect")
+(autoload 'org-texmacs-model-display "org-texmacs-inspect")
 
 (cl-defstruct
  (org-texmacs-model

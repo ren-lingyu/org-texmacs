@@ -609,7 +609,7 @@ apply to complete TeXmacs special blocks, not paragraph fragments.
 Load =(require 'org-texmacs-model)= to construct an independent snapshot from
 an already parsed native Org AST and STM trees.  This module does not load the
 document lowering layer, export frontend or worker.  It does not yet provide
-the planned inspection, serialization or transformation commands.  Its autoloaded
+the planned serialization or transformation commands.  Its autoloaded
 =org-texmacs-parse-buffer= adapter can construct a complete model from an explicit
 Org source buffer, using native STM parsing without document lowering.
 
@@ -706,6 +706,46 @@ Existing export inputs reuse this model's ownership machinery.  Their
 by the existing input accessors.  Export INFO, exact post-blank mappings and
 target settings remain separate.  Source filtering, bibliography, reference
 planning, preflight and native parsing retain their existing export route.
+
+* Mathematical-document inspection
+=org-texmacs-model-inspect MODEL= returns a detached readable S-expression view.
+=org-texmacs-model-display MODEL= pretty-prints that view in a new read-only
+buffer and returns the buffer.  Both entries are autoloaded by
+=org-texmacs-model= and work on an existing model without source buffers, STM
+parsing, document lowering or native output.
+
+#+begin_src emacs-lisp
+  (let ((model (org-texmacs-parse-buffer (current-buffer))))
+    (org-texmacs-model-inspect model)
+    (org-texmacs-model-display model))
+#+end_src
+
+Org nodes appear as =(TYPE PROPERTIES CONTENTS...)=, ordinary text stays text,
+and islands appear as =(stm TREE)= at their structural positions.  Native block
+islands keep wrapper properties and affiliation; their old body is replaced in
+the view by the current STM tree.  Supplied node islands also suppress old
+body-valued properties such as =:value=, =:raw-value= and secondary body objects,
+while keeping affiliated captions.  Parsed secondary strings, including titles,
+are expanded as Org objects.  Caption lines appear as
+=(:long OBJECTS :short OBJECTS)=.  Parsed titles take precedence over redundant
+raw title strings, so old source text cannot duplicate a changed title island.
+
+The view preserves document order, text whitespace and other properties, with
+property keys sorted for readability.  It omits parent links, source coordinates
+and parser bookkeeping, including cache state.  Unset standard =:post-blank=,
+=:structure= and =:true-level= slots are omitted; other explicit =nil= properties
+remain visible.  Other property links to AST nodes become
+=(org-ref PATH)= instead of recursively expanding the linked node.  Paths use
+zero-based indices, for example =(contents 0 :title 1)= or
+=(contents 0 :caption 0 :short 0)=; the root path is =nil=.
+
+Invalid ownership, parents or island associations signal
+=org-texmacs-model-error= with an AST path; errors validating the whole snapshot
+use the root path.  Inspection never silently repairs the original model.
+The returned view shares no mutable AST/STM data with the model.  It is a debug
+projection, not a persistence format or a structural-equivalence definition.
+Display uses a unique buffer even when an existing buffer has the requested
+optional name, and removes its new buffer if printing or display fails.
 
 * Document conversion and native sessions
 The document API separates source preparation, pure structural lowering and

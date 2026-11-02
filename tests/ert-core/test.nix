@@ -10,6 +10,7 @@ let
     ./lisp/bibliography.el
     ./lisp/metadata.el
     ./lisp/model.el
+    ./lisp/model-inspect.el
     ./lisp/model-parser.el
     ./lisp/document.el
     ./lisp/editing.el

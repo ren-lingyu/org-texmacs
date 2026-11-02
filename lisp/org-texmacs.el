@@ -48,6 +48,8 @@
 ;; loaded alone without export preparation or a native worker.
 ;; Use `org-texmacs-parse-buffer' for complete-source model construction with
 ;; native STM parsing, without export filtering or document lowering.
+;; Use `org-texmacs-model-inspect' for a readable structural projection, or
+;; `org-texmacs-model-display' to show it in a new read-only buffer.
 ;; Use `org-texmacs-document' to lower an explicit prepared input, or
 ;; `org-texmacs-document-from-buffer' for source-buffer structural conversion
 ;; to a text TeXmacs document result with body, style, initial environment and
