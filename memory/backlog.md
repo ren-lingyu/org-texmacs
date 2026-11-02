@@ -2,14 +2,16 @@
 
 ## v0.7.0 Standard Org Export Integration: approved execution
 
-Current gate: initial CHANGELOG and A are human-delivered and verified. B is
-implemented and accepted by full12checks/693ERT, awaiting human delivery before C.
-Late final-AST recognition works for supported original/generated/positionless
-STM, so no early protection is adopted. C standard selection/reference/footnote,
-D Cite/actual extension and E convenience/API cleanup remain. inner-template and
-scoped normal-return handoff are adopted; a TeXmacs Cite processor remains a D
-candidate. Early node-filter rejection/native string-tail boundaries remain.
-The sequence below records initial adoption; do not repeat completed gates.
+Current gate: initial CHANGELOG, A and B are human-delivered/verified. C is
+implemented and accepted by full12checks/709ERT, awaiting human delivery before D.
+D standard Cite/processors/raw values/actual extension acceptance and E public
+consumer/API consolidation remain. C freezes original-transaction query results
+before identity adaptation; do not query with copied INFO caches. Org-selected
+actual footnote definitions precede STM discovery; no extra preparation/protection
+framework is adopted. D must retain original INFO/dynamic scope and the existing
+AST-first/native result delivery boundaries. TeXmacs Cite processor is a candidate,
+not an already implemented/publicly supported integration. The sequence below is
+initial adoption context, not a request to repeat completed gates.
 
 The user selects this version direction by supplying the guide for read-only
 review, followed by Plan mode planning. The guide's A-E stages, public API

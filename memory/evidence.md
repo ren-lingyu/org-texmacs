@@ -1,5 +1,32 @@
 # org-texmacs durable evidence
 
+## C acceptance and B human delivery
+
+B76f4763delivery matches expected4f03ee4parent, exact6paths/message/all144accepted
+hashes, clean ordinary intake. C formal full-1 exits0/all12checks: fresh core292,
+native348, PDF-document34, PDF-render29 and patched6 =709ERT/zero unexpected.
+Strict byte/native compilation, package-lint/treefmt/aggregates pass on
+Emacs31.1/Org9.8.10/TeXmacs2.1.5/x86_64-linux. No new other-platform/minimum9.8/
+current extension/examples-build claim. Active147input manifest:
+memory/standard-export-0.7.0-c-inputs.json, SHA256
+925acf5b7be67c9784ce8e58d79204951bd4c3d0d22bf2f1112b50c7d0118114.
+Every root/isolated hash matches; HEAD76f4763/index/lock unchanged. Acceptance is
+uncommitted C, not B's committed production.14task paths unstaged, docs/draft ready;
+await human C commit before D. No unchanged test rerun for delivery.
+
+C note contains counterexamples/ownership details. Clone-INFO footnote query
+returns nil; query original nodes in the actual transaction, then remap results.
+Conditional deferred getters do not always cache, so explicitly store results
+without FORCE before copying. Selected Org footnote cache may reference one of
+several supplemental tree copies; only its actual definition contributes STM.
+Maintained tests prove selection/visibility/options/AST mutations and direct
+native PDF selected-footnote/repeated1binding without .tm serialization. Pure
+lowering does not replay identity-sensitive queries; native label duties remain.
+Immutable prototype capture:
+archive/2026-11-02T19-26-45Z--76f4763/MANIFEST.md (ten source text files+manifest).
+Routine production diagnostics are distilled in maintained tests/memory, no
+whole directory/cache/PDF archive. Earlier acceptance sections are historical.
+
 ## Stage B acceptance and A human delivery
 
 A4f03ee4delivery matches expected440b331parent, exact11paths, prepared message

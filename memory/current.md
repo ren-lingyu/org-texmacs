@@ -1,55 +1,51 @@
 # org-texmacs current memory
 
-## Current: stage B implemented and validated; await human delivery
+## Current: stage C implemented and validated; await human delivery
 
-The approved0.7.0plan is memory/standard-export-0.7.0-plan.md. Initial CHANGELOG
-and Stage A are human-delivered; A4f03ee4 matches expected parent/message/11paths
-and all133accepted A hashes. Stage B now adds the final-AST STM adapter, without
-source coordinates, earlier protection, extra Org parse, independent preparation
-or INCLUDE recursion. Org remains authority; existing independent model and pure
-lowering APIs remain separate. C-E are pending after the human B delivery gate.
+Controlling0.7.0plan: memory/standard-export-0.7.0-plan.md. B76f4763human delivery
+matches expected parent/6paths/message and all144accepted B hashes, clean intake.
+A-C implementation complete; D Cite/actual extension and E command/API cleanup
+remain pending after the human C delivery gate. Org remains semantic authority;
+no private preparation copy, new document AST or independent INCLUDE recursion.
 
-B resolves deferred properties through public org-element-properties-resolve
-without FORCE (including INFO metadata), preserving AST-filter writes; owns the
-final tree and ignore identities; projects consumed directives/RESULTS and
-structural affiliation; recognizes original/generated/synthetic STM from final
-contents or explicit native :texmacs-source. Inline objects may supply syntax
-only wholly inside a complete quoted STM string; cross-boundary, incomplete,
-opaque/target-raw input fails explicitly. No original-source fidelity promise.
+C queries original nodes in actual INFO, then remaps finite target/reference,
+relative headline/numbering and footnote facts into owned input. Copying INFO
+cannot rebind identity-keyed footnote caches (verified counterexample). Freeze
+conditional getter results explicitly before ownership; do not FORCE overwritten
+AST-filter values. A private generic secondary-normalizer lets the export adapter
+import synthetic scalar footnote titles; standalone core defaults stay strict.
 
-Freeze complete private input/context/functions before worker waits, fill owned
-islands exactly once, then allocate labels from actual parsed trees. Partial
-models never escape. Source tags join mutation checks. Standard text/node-filter
-and native result delivery contracts from A remain. Legacy frontend migration
-and full standard reference/footnote/Cite adaptation remain C-E.
+Discover body STM first and only discover definitions selected by Org queries;
+unused supplemental definition copies are removed, avoiding unused islands.
+TeXmacs still generates/reserves labels, handles static STM conflicts and native
+numbering/notes. Unsupported nested notes, unrendered targets or unrepresentable
+native note order fail explicitly. Standard full/subtree/region/narrowing/visible,
+options/AST filters, duplicate-target choice, selected external/repeated notes,
+SETUPFILE/recursive INCLUDE/resource paths and direct PDF binding are tested.
+Independent inputs retain their separate semantics; legacy frontend waits for E.
 
-Final accepted144input SHA256s: memory/standard-export-0.7.0-b-inputs.json.
-Root and isolated snapshot match all inputs. Focused core280/native6 pass;
-formal full-1 exits0/all12checks pass with that core result reused and fresh
-native345/PDF-document33/PDF-render29/patched6:693ERT/zero unexpected. Strict
+Accepted147input identity: memory/standard-export-0.7.0-c-inputs.json. Every root
+and isolated hash matches. Formal full-1 exits0/all12checks: fresh core292,
+native348/PDF-document34/PDF-render29/patched6 =709ERT/zero unexpected; strict
 compilation/lint/treefmt pass on Emacs31.1/Org9.8.10/TeXmacs2.1.5/x86_64-linux.
-No new minimum9.8behavior/other-platform/real extension/examples-build claim.
-Detailed failures/refinement, validation and provenance:
-memory/standard-export-0.7.0-b.md.
+No new other-platform/minimum9.8behavior/current extension/examples-build claim.
+Evidence/failed hypotheses/boundaries: memory/standard-export-0.7.0-c.md.
+Immutable selective prototype archive:
+archive/2026-11-02T19-26-45Z--76f4763/MANIFEST.md (ten text files+manifest).
+No raw production-directory/cache/PDF retention is needed after maintained tests.
 
-Selective prototype evidence is verified/immutable at
-archive/2026-11-02T18-33-35Z--4f03ee4/MANIFEST.md. Its prose baseline133count
-is corrected to143 by its own original JSON; production has144inputs, including
-LICENSE/.gitignore/eight release manuscripts excluded from the A133manifest.
-No evidence bytes changed; do not repeat the erroneous carried-over count.
-Routine production diagnostics are distilled with maintained regressions.
+Fourteen project paths are unstaged. README/CHANGELOG synchronized;5complete/
+2ongoing/7pending, TODO/version unchanged. tmp/commit.md uses approved full-worktree
+workflow: feat(export): use standard Org context and reference queries. HEAD76f4763,
+ordinary index/lock/result unchanged. No ordinary stage/commit performed. Await
+human C commit and verify parent/paths/message/all147hashes before D. Do not repeat
+unchanged passed gates merely for delivery. Keep early unsupported node-string-
+filter rejection, standard final text filters and direct native consumption.
 
-Six ordinary paths are unstaged; README/CHANGELOG synchronized,3complete/
-1ongoing/10pending feature boxes and TODO unchanged. tmp/commit.md uses the
-approved full-worktree draft workflow: feat(export): adapt prepared ASTs and
-native STM islands. HEAD4f03ee4/index/lock/result unchanged. No ordinary staging
-or commit performed. Await human B commit; verify parent/paths/message/all144
-hashes before C. Do not repeat unchanged passed gates for delivery.
-
-User permits nix fmt/build/eval/flake check and variants throughout this0.7.0
-plan. Continue exact command/write/network/timeout disclosure. Ordinary project
-staging needs separate authority; commits/tags/pushes remain human-only. Maintain
-memory promptly, per-node README/CHANGELOG/drafts and selective evidence review.
+User permits nix fmt/build/eval/flake check and variants throughout0.7.0plan;
+continue exact command/write/network/timeout disclosure. Ordinary project staging
+needs separate authority; commits/tags/pushes remain human-only. Maintain GAW,
+per-node docs/draft and selective evidence review as the work proceeds.
 
 ## Current: v0.6.0 locally finalized and tagged; approved plan complete
 

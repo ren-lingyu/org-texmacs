@@ -1,33 +1,37 @@
 # org-texmacs current project model
 
-## v0.7.0 standard backend: A delivered, B validated candidate
+## v0.7.0 standard backend: A/B delivered, C validated candidate
 
-The real texmacs backend consumes standard org-export-as preparation through
-inner-template. A is human-delivered at4f03ee4. The owned single-use result token
-is removed before INFO, nested exports/native waits are isolated, and effective
-unsupported node-string callbacks fail before execution. Options/AST and final
-text body/output filters retain standard semantics; structured consumers reject
-unproven string tails/finalizers. Native text uses reversible Latin1 transport;
-native PDF consumes the completed document directly.
+The real texmacs backend consumes standard org-export-as in one transaction.
+Prepared structures/native documents use the isolated single-use result handoff;
+text uses reversible Latin1 transport, native PDF never reconstructs .tm.
+Effective unsupported node-string filters fail before execution, options/AST and
+final text filters retain standard behavior. Generic Org+STM models remain
+separate from INFO/output policy; independent core/legacy input APIs still work.
 
-B adds source-coordinate-independent final-AST STM discovery and native parsing.
-Resolve deferred properties via the public API without FORCE while live, own tree/
-ignore identities, project consumed directives and RESULTS/affiliation, and obtain
-complete native source from final structured contents or :texmacs-source. Support
-configured paragraph/direct-inline-note fragments and texmacs/equation/equation*;
-Org objects can contribute syntax inside complete quoted STM only. Incomplete,
-cross-boundary or target-raw inputs fail explicitly. No earlier protection or
-whole-buffer reparse is introduced. Generic models keep Org AST plus parsed STM
-islands, separate from INFO and output policy.
+B76f4763human delivery is verified. C adds original-node live Org queries with
+finite identity-remapped facts for targets/references, headline levels/numbers
+and footnotes. Copied INFO cannot remap its cached reference identities. Public
+getters/setters materialize even noncaching conditional properties without FORCE;
+a generic private owner normalizer imports scalar generated footnote titles
+while public core defaults stay strict. Freeze complete input/context/functions
+before workers, fill native islands once, then allocate native labels.
 
-Freeze private input/context/function identities before native waits, fill owned
-islands once and allocate references afterward. Reuse model/input ownership and
-existing lowering; keep independent parsing/model APIs and legacy frontend routes
-until E. Full standard selection/reference/footnote and Cite adaptation remain C/D.
-B is uncommitted,6paths, full12checks/693ERT accepted. Exact144inputs:
-memory/standard-export-0.7.0-b-inputs.json; current/evidence/B note define limits.
-Await human B delivery before C. Historical0.6architecture below remains a
-baseline, not the current standard backend support matrix.
+Body discovery defers footnote definitions; actual Org-query-selected definition
+identities alone contribute islands, and unused supplemental copies are removed.
+TeXmacs keeps labels/static STM conflicts/native note structures and numbering
+bindings. Repeated notes work, including selected external definitions; nested or
+unrepresentable note order, unrendered targets and unsupported contexts fail.
+Standard selection/visibility/options/AST mutation, SETUPFILE/recursive INCLUDE/
+relative resource links and actual direct PDF note binding are maintained tests.
+No private Org preparation copy/advice, extra AST or independent INCLUDE recursion.
+
+C candidate14paths is unstaged, full12checks/709ERT accepted on147exact inputs:
+memory/standard-export-0.7.0-c-inputs.json. README/CHANGELOG and tmp/commit.md are
+ready; await human delivery before D. Current limits/evidence are in C note.
+D Cite/actual current extension and E public frontend/API cleanup remain pending.
+Historical0.6descriptions below remain baseline evidence, not current standard
+backend support claims.
 
 ## Adopted positioning versus implemented architecture
 

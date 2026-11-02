@@ -1,25 +1,28 @@
 # v0.7.0 Standard Org Export Integration: approved execution plan
 
-## Execution state: A delivered; B accepted candidate pending human delivery
+## Execution state: A/B delivered; C accepted pending human delivery
 
-Human A4f03ee4 matches expected parent/message/11paths and all133accepted inputs.
-B now passes full12checks/693ERT on the exact144inputs recorded in
-memory/standard-export-0.7.0-b-inputs.json. It owns final-tree identities, resolves
-deferred properties without FORCE, discovers supported original/generated/
-synthetic STM late and freezes input/context before worker waits. No earlier
-protection, whole-buffer reparse, private preparation copy/advice or separate
-INCLUDE recursion is introduced. See B evidence and source-identity/count limits.
-Six B paths are unstaged; await human commit and verify it before C. C-E and their
-original acceptance gates remain; B does not establish full standard Cite/extension
-or reference/selection semantics. No release version/TODO transition performed.
+Human B76f4763 matches parent/message/6paths/all144accepted hashes. C now passes
+formal12checks/709ERT with147accepted input hashes in
+memory/standard-export-0.7.0-c-inputs.json. It queries original nodes in actual
+standard INFO, remaps finite facts into owned input, selects actual footnote
+copies before STM discovery and materializes conditional getter results before
+ownership. Public setters preserve ordinary AST-filter values; no FORCE/private
+preparation copy/whole-buffer reparse/independent INCLUDE or third AST.
+C evidence/cache counterexample/limits: memory/standard-export-0.7.0-c.md.
 
-A adopted normal-return scoped results after a nonlocal-exit counterexample.
-The user excludes full node-string-filter support from0.7.0release gates.
-Reject unsupported effective node callbacks early, including late INFO installs,
-before side effects; never execute then discard. Keep full standard options/AST
-semantics and final body/output filters on text. Do not add STM text roundtrips
-or parallel preparation for arbitrary string modifications. A maintained tests
-verify scope/error/nesting/file/native output; B extends ownership across parsing.
+Fourteen C paths remain unstaged with README/CHANGELOG/draft ready. Await human
+commit, then verify expected parent/complete paths/message/all147hashes before D.
+Original D Cite/actual extension and E migration/cleanup gates remain; no new
+Cite support claim, version bump or Org TODO release transition. Existing native
+labels, static STM conflicts, note structures and error boundaries are retained.
+
+A selected normal-return single-use result delivery after a nonlocal-exit
+counterexample. Full node-string-filter support is not a0.7.0release gate;
+reject unsupported effective callbacks early before effects, never execute then
+discard. Preserve standard options/AST and final body/output text filters, native
+structured compatibility contracts and independent models/pure lowering. Do not
+add STM text roundtrips/parallel preparation to preserve arbitrary string edits.
 
 ## Authority and execution boundary
 
