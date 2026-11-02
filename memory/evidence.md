@@ -1,5 +1,23 @@
 # org-texmacs durable evidence
 
+## Preferred core AST development guide and initial survey, 2026-11-02
+
+Source: the user's twelve-section Core Mathematical-Document AST Development
+Guide in conversation, following the positioning statement. Their preferred core
+feature, stages, model validity/ownership contract, structural-equivalence and
+normalization properties, finite transformation scope, existing-export continuity
+and later standard-export/Org Cite acceptance direction are sufficiently distilled
+in memory/core-ast-0.6.0.md. No raw original-byte archive is needed or claimed.
+
+Targeted static reads use the exact stated v0.5.0 release baseline, unchanged
+ordinary HEAD and clean project worktree. Observed input ownership/finalization,
+preparation/preflight, context pruning and STM/native-wire boundaries are recorded
+with source paths in that plan. These observations do not constitute a complete
+field/consumer audit, native probe, serializer validation, new regression result
+or third-party integration acceptance. Existing source evidence, not new runtime
+claims, supports the conclusion that removing lowering preflight alone is
+insufficient for a general full-document AST constructor.
+
 ## v0.6.0 positioning intake, 2026-11-02
 
 Source: the user's eight-section "org-texmacs: Project Positioning and Design
@@ -18,7 +36,8 @@ byte evidence need; no raw archive selected. Org-fmt is inspiration supplied by
 the user, not an inspected implementation or confirmed API choice. No new source
 audit, parser/serializer probe, runtime test, compatibility result or external
 tracking verification follows from this policy decision. Existing validation
-retains its original scopes. The separate new core feature remains unspecified.
+retains its original scopes. At this positioning-only intake the separate feature
+was unspecified; the subsequent development guide above supplies its direction.
 
 ## Citation placement expansion acceptance
 

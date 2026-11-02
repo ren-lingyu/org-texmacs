@@ -25,7 +25,13 @@ preparation, AST filters, Cite and INFO need separate later investigation after
 core interfaces are clear. Existing bounded dispatcher behavior is unchanged.
 Current scope is one document, with no formal-math semantics, knowledge-base
 protocol, compulsory second application or wholesale refactor selected. Goals
-are authoritative in memory/goals.md; concrete feature/API design is pending.
+are authoritative in memory/goals.md. The subsequent preferred development guide
+identifies independent parse/inspect/normalize/finite-transform operations as the
+core feature; concrete API/type design remains pending. Requirements and initial
+static dependency survey are in memory/core-ast-0.6.0.md. In particular, existing
+preparation prunes source syntax/content by export policy before the lower call,
+and input finalization allocates references. Both need boundary analysis; skipping
+preflight alone is insufficient to establish a generic full-document core path.
 
 Release status2026-11-02: local finalization delivered3bd7b33, exact two-path
 CHANGELOG/README candidate verified. Human-set DONE v0.5.0/CLOSED recorded;

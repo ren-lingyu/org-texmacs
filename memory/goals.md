@@ -73,9 +73,13 @@ proof-assistant semantics remain independent future research. Do not add
 speculative infrastructure or build a complex second application to demonstrate
 core independence; construction, inspection and transformation interfaces suffice.
 
-The user adopts this positioning for v0.6.0 on 2026-11-02. The separately
-announced core feature and exact release scope are not yet specified or frozen.
-These goals do not authorize ordinary source edits, builds or tests.
+The user adopts this positioning for v0.6.0 on 2026-11-02 and then supplies their
+preferred development guide for independent parsing, inspection, finite structural
+transformation and normalized Org serialization. Existing TeXmacs export must
+remain usable. Preferred stages, data contract and acceptance properties are
+distilled in memory/core-ast-0.6.0.md. Exact API/type layout, release inventory and
+later export-adaptation extent remain unfrozen. These goals do not authorize
+ordinary source edits, builds or tests.
 
 ## Strict design constraints
 

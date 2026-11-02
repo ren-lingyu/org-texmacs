@@ -1,6 +1,30 @@
 # org-texmacs current memory
 
-## Current: v0.6.0 framework positioning adopted; feature scope pending
+## Current: v0.6.0 independent core AST guidance and initial survey
+
+The user now supplies their preferred twelve-section Core Mathematical-Document
+AST Development Guide. The announced feature is independent parsing, structural
+inspection, normalized Org round-trip serialization and finite AST transformation,
+with existing export preserved. Preferred order: dependency survey -> independent
+buffer/preparsed construction -> inspection projection/display -> serialization
+and finite fresh-snapshot transforms -> later standard Org Export research.
+Types/names/layout, exact release inventory and export-adaptation extent remain
+unfrozen; no ordinary source/test/build/Git mutation is authorized by this intake.
+The guide supersedes the earlier "feature unspecified" state below. Complete
+requirements, acceptance equations, exclusions, retention assessment and bounded
+code findings: memory/core-ast-0.6.0.md.
+
+Targeted static reads confirm the stated v0.5.0 baseline and expose coupling
+beyond lowering preflight: input owning captures target presentation/configuration,
+finalization resolves/allocates references, and source preparation prunes comments,
+metadata syntax/property drawers and export-excluded content before STM parsing.
+Do not call prepare-buffer a generic full-document constructor merely by removing
+its lower call. Existing ownership/remapping/native parsing remain reuse candidates.
+Next: finish field/constructor/consumer analysis and propose the smallest viable
+core contract and implementation nodes. Runtime behavior, Org serializer APIs and
+current org-roam-organize Cite interoperability are not newly verified.
+
+## Adopted v0.6.0 project positioning
 
 On 2026-11-02 the user asks to recover GAW memory and inspect the workspace
 before v0.6.0 development, then supplies the eight-section "Project Positioning
@@ -26,10 +50,9 @@ single-document scope and structured transformations; no immediate whole-project
 refactor, speculative knowledge-base model, formal math semantics or complex
 second consumer is selected. Full adopted constraints: memory/goals.md.
 
-The separately announced core feature and exact v0.6.0 scope remain unspecified.
-Next: receive that feature and reconcile concrete API/ownership/serialization and
-consumer boundaries. No source edits, version changes, builds, tests or external
-tracking writes are selected by this positioning intake.
+The subsequent guide identifies the core feature as summarized above; exact
+v0.6.0 release scope still needs design reconciliation. No source edits, version
+changes, builds, tests or external tracking writes are selected by these intakes.
 
 Retention: this chat-supplied design is sufficiently distilled into current
 goals/model/backlog/evidence; no repository-file original or byte-exact capture

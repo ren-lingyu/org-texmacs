@@ -2,7 +2,13 @@
 
 ## v0.6.0 framework positioning and scope intake
 
-Status: adopted project direction; concrete feature/release plan pending.
+Status: adopted project direction and preferred core-feature guide; concrete
+API/type/release plan pending. Detailed guidance and initial code survey:
+memory/core-ast-0.6.0.md. Preferred sequence is dependency classification,
+independent construction (buffer and supplied native trees), inspection projection
+and display, normalized Org serialization, finite fresh-snapshot transformation,
+then later standard Org Export research. Serialization and transformation may
+reorder; no general rewriting framework or test-infrastructure rewrite is needed.
 The user selects an independent mathematical-document AST framework with Org
 AST, parsed native STM trees and island associations. Core construction,
 structural inspection, AST transformation and normalized semantic Org output
@@ -17,7 +23,8 @@ models/protocols and formal-mathematics integrations; a complex second consumer
 is unnecessary. Native parsing/serialization should be reused where appropriate;
 org-fmt inspiration and proposed round-trip properties are not runtime evidence.
 
-The separately announced new core feature has not been specified. Issue9's
+The guide identifies the new feature as independent parse/inspect/transform/Org
+round-trip capability, preserving existing export. Issue9's
 earlier pre-0.6.0 scheduling and Issue7's deferred nonblocking direction remain
 prior decisions to reconcile when release scope is set, not automatic selection
 as this feature. Earlier completed release entries below do not define new scope.
