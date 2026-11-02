@@ -31,7 +31,7 @@ support boundary.
 Org's source buffer and live AST remain unchanged.
 
 * Version history
-This README describes current use in the unreleased =0.5.0= tree.
+This README documents Org TeXmacs =0.5.0=.
 See [[file:CHANGELOG.org][the changelog]] for version history and
 [[file:CHANGELOGS/v0.5.0.org][the v0.5.0 release notes]] for changes and upgrade instructions.
 

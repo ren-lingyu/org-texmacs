@@ -7,13 +7,12 @@
 Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
-* NEXT v0.5.0
+* DONE v0.5.0
+CLOSED: [2026-11-02 Mon 00:53]
 :PROPERTIES:
 :CUSTOM_ID: v0.5.0
 :END:
 [[file:CHANGELOGS/v0.5.0.org][Detailed release notes]]
-
-Changes since v0.4.0.
 
 ** Changed
 - *Breaking:* Separate noninteractive explicit-source export APIs from frontend
