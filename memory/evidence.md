@@ -1,5 +1,42 @@
 # org-texmacs durable evidence
 
+## Node6 normalized Org serialization acceptance
+
+The standalone native prerequisite below now also covers the product Scheme
+serializer helper: all20 source-expressible cases passed. Candidate adds11core
+and5native cases plus documented normalized Org string/buffer APIs.
+User manually formatted and authorized repeated exact600s full isolated checks.
+First gate exited1: core250/248pass/2fail, patched6pass; native336 started but
+completion was not established. Failures were lost custom link syntax on a
+private-buffer switch from a buffer-local registry, and a hand-built residue
+fixture missing Org's section wrapper. Repairs install captured syntax in each
+private parser buffer and use a native-parsed wrapper for the stale-body case.
+Second gate exited1 on treefmt layout in parse.el/core model-serialization.el.
+Third gate fixed both original failures: core250/250, native335/336. The remaining
+failure was Unicode tag names returned as per-byte-escaped symbols. Native
+intra-Scheme validation passed, but the existing response writer split UTF-8
+bytes with backslashes. Escape ASCII symbol characters only; preserve contiguous
+non-ASCII bytes on the UTF-8 socket. Existing ASCII protocol behavior is retained.
+
+User grants standing nix fmt/build/eval/flake check authorization, including
+argument variants, until plan completion. Three scoped fmt commands exit0 with
+no changed files. Fourth full isolated command exits0/all17checks passed on
+x86_64-linux. Fresh suites: core250/250 in1.613239s, native336/336 in219.436518s,
+PDF-document33/33 in92.474426s, PDF-render29/29 in154.936088s, patched-caption6/6
+in2.837927s:654ERT, zero unexpected. Strict byte/native compilation, treefmt,
+package-lint and aggregates pass. Other platforms, optional real extension
+integration and GUI behavior are not newly verified.
+
+After acceptance, only README/CHANGELOG changed: four serialization/direct-round-
+trip boxes become complete, and README states Unicode leaf/tag preservation.
+Fifth full command exits0 using identical cached runtime outputs and rerunning
+only changed treefmt. Do not claim a second fresh654ERT execution. All130final
+source/test/build/doc hashes match root and isolated copy, whitespace passes.
+Accepted runtime snapshot/manifest is serialization-attempt-4 under ignored tmp;
+final snapshot/manifest is core-ast-0.6.0-serialization. Attempts1-3 remain too.
+Candidate spans15ordinary paths, with both staged and unstaged changes; no agent
+project staging/commit or lockfile mutation. Human delivery remains pending.
+
 ## Inspection/display acceptance: user-run full root gate
 
 User manually formatted then ran root nix flake check. Supplied shell result:
@@ -47,6 +84,20 @@ TeXmacs Scheme API (https://www.texmacs.org/tmweb/documents/manuals/texmacs-sche
 identifies texmacs->stm as tree_to_scheme and snippet parsing as scheme_to_tree;
 23case standalone probe scripts are prepared in ignored tmp, awaiting permission.
 These source/API facts do not establish native round-trip behavior.
+
+Node6 native proof is now established on TeXmacs2.1.5. User authorized repeated
+execution of the exact disclosed timeout120s nix-develop/emacs probe command.
+After two harness-only failures (automatic log encoding prompt, first record
+sharing a line with version output),23case probe exits0: all15required cases
+round-trip exactly via stree->tree/texmacs->stm/existing native parse validation.
+Eight edge cases: numeric/unicode/raw-data tags and NUL/control leaves pass;
+spaced, closing-parenthesis and boolean-looking tags fail source validation.
+Native output retains literal LF/CR/TAB; a further23case pass proves replacing
+those characters with Scheme escapes preserves trees/leaf contents in every
+successful case. Unicode, quotes, backslashes, atomic/empty leaves, nesting,
+whitespace and Org delimiter strings are covered. Logs/results are ignored tmp
+probe-run evidence, not maintained regression coverage or a product test gate.
+No product serializer existed before this prerequisite was satisfied.
 
 ## Independent buffer-parser acceptance
 

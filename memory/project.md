@@ -10,13 +10,13 @@ models must expose parsed islands; intermediate preparation may defer parsing.
 Core validity must be independent of a target consumer's supported Org subset,
 and valid caller-supplied STM trees must not require a parser restart.
 
-Construction, structural inspection, AST transformation and normalized Org
-serialization are intended core capabilities, not newly delivered APIs. The
-existing prepared-input/preflight pipeline and several interfaces grew around
-export and have not yet been audited or decoupled for that contract. Existing
-implementation/support descriptions below remain factual baseline and historical
-delivery evidence; their target-support rejection rules must not be promoted to
-the future independent core validity contract.
+Construction and structural inspection are delivered. Normalized Org
+serialization is accepted and awaiting human delivery; finite AST transformation
+remains the next planned node. The existing prepared-input/preflight pipeline
+retains consumer-specific preparation, while the new core reuses common owned
+snapshots and island validation. Existing export support descriptions below
+remain factual baseline and historical delivery evidence; their target-support
+rejection rules do not govern independent core validity.
 
 Native parser/serializer reuse, semantic Org round trips, structural equivalence
 and normalization idempotence guide subsequent design. Org-fmt is user-supplied
@@ -45,9 +45,19 @@ six-path/message/parent and126accepted input/doc hashes match, worktree/index
 clean. Native unset standard slots and cache state are filtered while
 ordinary explicit nil properties stay visible. CHANGELOG progress sync now has
 five complete/one ongoing/seven pending, now human-delivered with exact diff/
-parent/message verification and a clean worktree/index. Serialization is the
-active investigation node; standalone native STM runtime proof is pending before
-implementation. Transformation remains subsequent. At each node completion,
+parent/message verification and a clean worktree/index. Serialization is now
+implemented as an uncommitted candidate, with native standalone STM runtime
+proof and eleven core/five native regression cases. Full isolated flake passes
+654/654ERT and all17checks; final docs-only snapshot also passes using cached
+runtime outputs and a fresh treefmt check. Human delivery remains pending.
+CHANGELOG now has9complete/1ongoing/3pending items; version TODO is unchanged. Public
+model-serialize/model-to-buffer require recorded syntax and explicitly reject
+unsupported/lossy output without invalidating the model. Serialization owns
+its Org copy, restores authoritative trees, uses native Org interpretation and
+native STM source serialization, and checks output structure using known trees.
+Captured link syntax is installed in each private buffer; Unicode response
+symbol bytes stay contiguous instead of being escaped separately. Transformation
+remains subsequent. At each node completion,
 sync both CHANGELOG and README per the user's new requirement. The parser snapshots full Org source
 and effective syntax, uses native Org block boundaries and existing inline
 recognition, preserves comments/drawers/excluded headings/unused definitions,
@@ -64,7 +74,8 @@ Separate structural validity from syntax expressibility and round-trip support.
 Keep authoritative island trees, structural Org keys, detached read-only
 snapshots and model-local locators. Reuse export ownership/mapping without
 moving existing preflight behind STM parsing or changing selection/bibliography/
-resolution/output/cleanup behavior. Native serializer still needs runtime proof.
+resolution/output/cleanup behavior. Native STM source runtime proof is complete;
+see evidence.md for the isolated full-gate status and its limits.
 
 Release status2026-11-02: local finalization delivered3bd7b33, exact two-path
 CHANGELOG/README candidate verified. Human-set DONE v0.5.0/CLOSED recorded;

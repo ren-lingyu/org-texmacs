@@ -1,58 +1,74 @@
 # org-texmacs current memory
 
-## Current: node6 serialization investigation; native probe authority pending
+## Current: node6 serialization accepted; awaiting human delivery
 
-Nodes1-5 are delivered. Inspection delivery matches expected parser parent,
-six paths/message and all126accepted input/doc hashes. User then delivered the
-CHANGELOG-only progress sync: expected inspection parent, one file, exact7line
-replacement diff and approved message. Ordinary worktree/index clean at intake.
-Checkboxes are five complete, export compatibility ongoing, seven pending;
-version TODO is unchanged. No source changes or delivery-only test rerun.
+Nodes1-5 and the CHANGELOG progress sync are human-delivered. Node6's
+15-path candidate is implemented and accepted by the full isolated flake gate:
+654/654ERT, strict byte/native compilation, lint, treefmt and all17checks.
+Final README/CHANGELOG-only edits also pass the full command, reusing accepted
+runtime outputs and executing the changed treefmt check only. All130final
+root/copy hashes match and diff whitespace passes. Node6 is NOT human-committed
+yet; do not begin node7.
 
-User explicitly continues development. BEFORE starting node6, reported the full
-eight-node table:1-5done,6native STM/normalized Org serialization current,
-7finite transforms/8standard-export investigation-docs-version completion
-pending. Repeat all eight statuses, scope and validation/delivery BEFORE EVERY
-new node. NEW persistent requirement: at the END of EACH development node,
-update BOTH CHANGELOG and README to match delivered capability, limitations and
-progress before review/delivery. Do not leave progress housekeeping to release end.
+Before EVERY new node report all eight statuses, scope, validation and delivery.
+At the END of EACH development node synchronize BOTH CHANGELOG and README.
+User now authorizes nix fmt/build/eval/flake check and their argument variants
+as needed until the approved plan completes. Disclose exact commands, effects,
+network and bounded timeout; do not request this authorization again.
+Ordinary project staging remains separately authorized and commits stay human.
+No ordinary project Git mutation has been performed. tmp/commit.md still
+describes the earlier delivered CHANGELOG sync, not this source candidate.
 
-Node6 public targets are model-serialize and model-to-buffer. Model validity
-must stay independent of serialization expressibility/support. Reuse native Org
-interpretation on an owned structural copy, not global text placeholders.
-Validate unsupported types/positions explicitly; no lowering/preflight whitelist.
-Keep native document/session/export order unchanged. No product serializer code
-has been written yet: native standalone STM serialization must be runtime-proven
-first, per the approved user guide.
+New APIs: model-serialize/model-to-buffer, autoloaded from model. Serializer
+requires explicit captured syntax, validates supported node/island positions,
+owns its Org copy, restores authoritative current trees and uses native Org
+interpretation plus standalone native STM worker serialization. Generated Org
+is privately parsed under captured syntax and checked structurally, associating
+known trees without STM input reparsing. Editable output buffer is allocated
+only after successful serialization, uses captured syntax/resource base, has
+unique name and failure cleanup, and runs no mode hooks/export acquisition.
 
-Read worker Scheme/Elisp, native fixture and Nix test support. Existing .tm
-serialize operation constructs a full document; it is not the standalone STM
-boundary. Official TeXmacs Scheme API PDF identifies texmacs->stm as tree_to_scheme
-(string output) and stm-snippet->texmacs as scheme_to_tree. This is source evidence
-only, not runtime validation. Official Org9.8.10 org-element-interpret-data
-recursively resolves native interpreters but falls back to children for unknown
-node types, so a bounded serializer needs explicit prevalidation.
+Model validity is independent of serialization support and lowering. Unsupported
+positions/types/properties/source-unexpressible roots fail explicitly at output.
+New model-serialization-error is distinct from model-error; transport failures
+retain worker-error. No lowering, export preparation, Cite or Babel is invoked.
+Existing export preflight/STM parsing/error/cleanup order stays intact.
+Shared owned snapshot/path validation moved from inspection into model, keeping
+inspection behavior. Private parser buffers now install captured link syntax
+locally, preserving generated-buffer custom types/abbreviations across switches.
 
-Prepared two untracked ignored tmp scripts:
-tmp/core-ast-0.6.0-stm-probe.el and .scm. They launch one headless native process,
-load existing Scheme parsing validation, test23cases (15required,8edge probes),
-and compare stree->tree -> texmacs->stm -> existing org-texmacs-parse. Covers
-Unicode/escapes/atomic leaves/whitespace/Org delimiters/custom and unusual tags.
-Native config/log/results go under tmp/core-ast-0.6.0-stm-probe-run; host HOME
-is not reassigned. No scripts run and no product source changed so far.
+Native prerequisite before implementation:23probe cases,15required exact pass,
+20source-expressible pass including the product helper. LF/CR/TAB become native
+Scheme escapes without changing leaf content. Three unusual tags fail native
+source expressibility. Maintained native coverage additionally found that the
+response printer escaped each UTF-8 symbol byte, splitting Unicode tag names;
+now only ASCII symbol characters are escaped, leaving UTF-8 sequences intact.
 
-Asked fresh authority for:
-timeout 120s nix develop --no-write-lock-file --command emacs -Q --batch --load
-/home/lingyu/Projects/org-texmacs/tmp/core-ast-0.6.0-stm-probe.el
-(single command, ordinary spacing). User can authorize repeated node6 probe,
-one run, or decline. WAIT for reply before executing. Prior repeated node5 flake
-check permission does not cover this command or node6 tests/formatters.
-While waiting, static Org serializer/syntax-context investigation may continue;
-do not implement the native serializer assuming the probe outcome.
+Validation evolution: first gate core248/250, fixed private-buffer link context
+and a residue fixture missing native Org's section wrapper. Second gate layout
+failure. Third gate core250/250/native335/336, found Unicode-tag wire corruption.
+Fourth gate exits0: core250/native336/PDF-document33/PDF-render29/patched6,
+zero unexpected, on x86_64-linux. All11new core/5new native cases pass.
+No other platform, optional real extension or GUI claim. Evidence/times in
+evidence.md. Three scoped nix fmt invocations exit0/no changes.
 
-No ordinary project stage/commit/tag/push. User formats manually. Each node
-remains reviewable and human-delivered before advancing. The current
-tmp/commit.md is the delivered CHANGELOG sync message, not a future source message.
+Accepted runtime input snapshot/manifest is attempt-4 under ignored tmp.
+Current tmp/core-ast-0.6.0-serialization plus adjacent inputs.json contains all
+130final inputs; only README/CHANGELOG differ from attempt-4. Earlier attempts
+are retained. Final check uses:
+timeout 600s nix flake check -L --no-write-lock-file --max-jobs 2 path:/home/lingyu/Projects/org-texmacs/tmp/core-ast-0.6.0-serialization
+It reuses unchanged runtime outputs; do not claim a second fresh654ERT run.
+
+README documents APIs, context/profile limits, source/buffer/worker boundaries,
+Unicode and explicit errors. CHANGELOG now has9complete/1ongoing/3pending:
+serialization2 and direct roundtrip2 are complete; finite transforms2 and
+transformed roundtrip remain pending. Version TODO is unchanged.
+
+Next: deliver for human review/staging/commit. The acceptance memory checkpoint
+has no external project parent because the candidate is uncommitted. Prepare
+a commit message only when requested against the actual complete staged diff. After
+human delivery verification, report all eight statuses and begin node7 finite
+snapshot transforms; node8 export research/docs/version completion follows.
 
 ## Accepted foundation and delivery evidence
 

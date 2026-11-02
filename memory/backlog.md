@@ -11,8 +11,14 @@ input/doc hashes verified. User authorized CHANGELOG progress sync after the
 audit: worktree now has five completed, one ongoing and seven pending items,
 with an accurate introduction, now human-delivered with exact diff/parent/message
 verification. No version TODO transition or source change. Native STM/normalized
-Org serialization is now active, with a prepared native probe awaiting command
-authority. Before delivery of each development node, synchronize both CHANGELOG
+Org serialization now has an implemented candidate, native standalone proof,
+eleven new core and five native cases; full flake/654ERT passes, and final
+README/CHANGELOG snapshot is accepted too. Worktree progress is now9complete,
+1ongoing and3pending, with version TODO unchanged. Finite transformation follows
+human delivery of this15-path node; it is not committed yet.
+The user grants nix fmt/build/eval/flake check and argument variants as needed
+until the approved plan is complete; ordinary Git writes remain separate.
+Before delivery of each development node, synchronize both CHANGELOG
 and README, per the user's new explicit instruction.
 Before every new node, report the complete eight-node progress and validation/
 delivery status. The required GAW plan

@@ -20,7 +20,11 @@ creates and the agent verifies that first project commit. Ordinary project index
 changes still require explicit path-specific staging authorization; ordinary
 commits remain the user's action. Runtime probes, checks, builds and formatting
 require the command/risk disclosure and authorization specified by repository
-rules and this plan. No runtime command has yet been authorized or executed.
+rules and this plan. The initial plan had no runtime authorization. The user
+now grants standing authorization until this plan is complete for nix fmt,
+nix build, nix eval, nix flake check and their argument variants as needed.
+Disclose exact commands, effects, network behavior and bounded timeouts; do not
+request that authorization again. Ordinary project Git writes remain separate.
 
 v0.6.0 completes the independent core loop and preserves existing export behavior.
 Standard Org Export integration is investigation and a follow-up design in this
@@ -231,9 +235,9 @@ STM non-ASCII and special characters, copying/association validity, source
 preservation and disposed-source lifetime, malformed STM/model errors, identity
 and finite replacement transforms, independent inspection without TM/PDF, and
 AST transformations without text intermediates. Keep existing TeXmacs export
-regressions and supported behavior working. No validation command has yet been
-authorized for execution; disclose exact commands, writes/network/timeouts and
-obtain required authority before running them. Focused gates per node and full
+regressions and supported behavior working. The standing Nix authorization
+above covers necessary validation; disclose commands, writes/network/timeouts.
+Focused gates per node and full
 flake checks at integration/version completion; do not rerun unchanged passed
 inputs merely for staging or delivery confirmation.
 
@@ -475,8 +479,23 @@ all nodes after verifying it, then proceed with native-serializer investigation.
 
 The CHANGELOG-only sync is now human-delivered: expected inspection parent,
 exact one-file7replacement-line diff/message and clean ordinary worktree/index.
-Complete eight-node report precedes node6, now investigating serialization.
-No serializer implementation or runtime probe yet. Official native Scheme API
-identifies texmacs->stm/tree_to_scheme as the candidate standalone serializer;
-two ignored tmp scripts prepare23native round-trip probes. Fresh runtime-command
-authority is pending; node5 repeated-test permission does not transfer.
+Complete eight-node report preceded node6. Native proof is now complete:
+23 standalone cases,15required pass,20 source-expressible pass including
+escaped LF/CR/TAB and the product Scheme helper. Three unusual tag spellings
+fail source expressibility without invalidating their models. The implemented
+candidate exposes model-serialize/model-to-buffer, explicit syntax/type/position
+support checks, authoritative restoration on an owned Org copy, native
+interpretation and an independent structural output guard. Known STM trees are
+associated when checking generated Org, without another STM input parse.
+Initial profile requires captured syntax context; buffer creation is editable,
+unique, hook-free and cleaned up on failure. New coverage is11core/5native.
+First checks exposed a buffer-local link binding bug, an unrepresentable manual
+fixture and Unicode symbols split by per-byte escaping on the response socket.
+These are repaired; full isolated flake passes654ERT and all17checks, including
+strict compilation/lint/treefmt. Final README/CHANGELOG-only changes also pass
+the full command, using cached runtime outputs and a fresh treefmt check.
+README documents the conservative profile and Unicode support; CHANGELOG now
+marks serialization2/direct-round-trip2 complete, leaving transform2/transformed-
+round-trip1 pending and export preservation ongoing. Final130input hashes match
+root/copy. Candidate is accepted but not human-delivered; verify the eventual
+commit against this snapshot before beginning finite transformation.
