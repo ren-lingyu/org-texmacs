@@ -463,7 +463,7 @@
         (with-temp-buffer
           (org-mode)
           (should-error
-           (org-export-as 'texmacs)
+           (org-export-as 'texmacs nil nil t)
            :type 'user-error))))))
 
 (ert-deftest

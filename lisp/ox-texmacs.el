@@ -12,14 +12,16 @@
 ;; full-document preprocessing and direct local selection.
 ;; This frontend supports synchronous whole-buffer, subtree and active-region
 ;; exports.
-;; Org's generic string-transcoder/preprocessing APIs are explicitly rejected
-;; for this backend before includes, macros or Babel processing.
+;; The standard org-export-as entry consumes prepared ASTs through an independent
+;; handoff.  The legacy frontend commands retain their bounded route until their
+;; migration.  STM/Cite and richer prepared-context adaptation are follow-up nodes.
 
 ;;; Code:
 
 (require 'ox)
 (require 'org-texmacs)
 (require 'org-texmacs-preprocess)
+(require 'org-texmacs-export)
 
 (defcustom org-texmacs-export-discover-bibliography nil
   "Enable explicit Org Cite bibliography discovery in frontend exports.
@@ -475,16 +477,16 @@ Do not change existing backends, hooks, or the user's configuration."
 (let ((menu
        (org-texmacs--export-menu-entry org-texmacs-export-menu-keys)))
   (org-export-define-backend
-   'texmacs
-   '((org-data . org-texmacs--export-reject-string-transcoding)
-     (plain-text . org-texmacs--export-reject-string-transcoding))
+   'texmacs (org-texmacs--standard-transcoders)
+   :filters-alist
+   '((:filter-options . org-texmacs--standard-options)
+     (:filter-parse-tree . org-texmacs--standard-tree))
    :menu-entry menu))
 
-;; Abort unsupported generic export before Org reads includes or executes Babel.
-;; This hook is inert for unrelated backends; menu consumers do not run it.
-(add-hook 'org-export-before-processing-functions
-          #'org-texmacs--export-reject-generic-preprocessing
-          -100)
+;; A previous load may have installed the old rejection hook.
+(remove-hook
+ 'org-export-before-processing-functions
+ #'org-texmacs--export-reject-generic-preprocessing)
 
 (provide 'ox-texmacs)
 ;;; ox-texmacs.el ends here

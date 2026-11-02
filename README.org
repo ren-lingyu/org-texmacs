@@ -880,9 +880,39 @@ text on failure, and buffer construction starts only after successful output.
 An initialization failure removes the newly allocated buffer.
 
 * Standard Org Export integration status
-The independent core loop is implemented.  Standard Org Export adaptation of
-=ox-texmacs= remains follow-up work; generic =(org-export-as 'texmacs)= is still
-rejected.  The current dispatcher uses its established bounded preparation.
+The independent core loop is implemented.  The initial standard backend now
+runs through =(org-export-as 'texmacs)= and consumes its prepared AST in the
+live export context.  It can export ordinary supported Org structures; STM,
+standard control-keyword/logical-exclusion adaptation and Cite output support
+are still under development.  Recognized inline STM is rejected until island
+adaptation is available; it is not exported as literal source.  Unsupported
+prepared structures fail explicitly.
+The dispatcher commands retain their bounded preparation until their migration.
+
+Standard options and AST filters run through Org.  Node-level string filters
+(for example, paragraph or plain-text filters) are currently rejected before
+their callbacks execute, including callbacks installed by options/AST filters.
+Their modifications are never executed and silently discarded.  Body and final
+output filters run on the final serialized text.  This distinction does not
+turn string filters into structural STM transformations.
+
+Native =.tm= source contains Cork octets.  The standard return string uses a
+reversible ISO-Latin-1 transport, distinct from the exact unibyte native API.
+Use the matching coding system for standard file export; Org adds a terminal
+newline.  Do not assume UTF-8 file export preserves these native bytes.
+
+#+begin_src emacs-lisp
+  (require 'ox-texmacs)
+  (org-export-as 'texmacs)
+  (let ((org-export-coding-system 'iso-latin-1-unix))
+    (org-export-to-file 'texmacs "/absolute/path/output.tm"))
+#+end_src
+
+A private per-call result handoff retains owned structures for native consumers
+without repeating preparation or reparsing =.tm=.  Native structured output
+currently rejects effective body/final-output filters and Cite finalizers whose
+string effects it cannot preserve.  It does not probe arbitrary callbacks by
+executing them.  Public convenience/PDF command migration is a later node.
 
 Standard preparation, AST filters, mutable export INFO and Org Cite processing
 must retain their export context; an AST-to-buffer round trip does not preserve
@@ -906,8 +936,11 @@ prompts or native waits reject results.  Direct APIs use explicit bibliography
 text snapshots.
 The opt-in discovery APIs below can acquire missing local =.bib= files.
 
-The current implementation does not support generic =org-export-as=/publishing,
-=visible-only=, =body-only= fragments, async export or unrestricted preprocessing.
+The legacy frontend below does not support =visible-only=, =body-only= fragments,
+async export or unrestricted preprocessing.  The initial standard entry above
+uses Org preparation and selection but still has the stated adapter limits;
+body-only fragments are explicitly rejected before preparation.  Publishing
+integration and async export are not claimed.
 Native PDF regression checks structure/text/reference semantics; it does not
 establish GUI layout or general pagination convergence.  Detailed supported and
 rejected cases remain part of the API contracts below.
@@ -2301,12 +2334,11 @@ Each action prepares once and runs native serialization or PDF rendering inside
 that route's source/configuration/dependency checks.  File naming uses the original
 source context, not a temporary working buffer.  The frontend does not run Org's
 generic string-transcoder, macro/Babel or full export lifecycle.
-Loading this module installs a conditional early
-=org-export-before-processing-functions= guard: generic =org-export-as=,
-=org-export-to-buffer= or =org-export-to-file= calls for =texmacs= or its
-derivatives fail explicitly before Org's preprocessing.  The guard is inert
-for unrelated backends.  This is a bounded dispatcher frontend; generic export
-and publishing APIs are not implemented by this backend.
+The standard =org-export-as= route is separate from these legacy commands during
+migration; see the standard integration status above for its current support
+boundary.  Its guards reject unsupported body-only and node-string-filter
+contracts while leaving unrelated backends unchanged.  The old generic export
+rejection hook is removed.
 
 These commands pass no explicit bibliography snapshots.  The independent
 buffer-local boolean =org-texmacs-export-discover-bibliography= defaults to nil;
@@ -2325,7 +2357,7 @@ hooks and AST filters may still access their own external state.
 Documents needing explicit text snapshots can use the existing Lisp source
 adapters with =BIBLIOGRAPHY-SOURCES=.  Unrestricted overrides, visible/body-only
 and async semantics remain future design work.  Loading =org-texmacs= alone
-does not register this menu or guard, and no PDF viewer opens.
+does not register this menu or the standard export bridge, and no PDF viewer opens.
 
 *** Restricted external configuration
 The frontend's =ext-plist= argument accepts these existing configuration fields:

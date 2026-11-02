@@ -213,7 +213,9 @@
   (with-temp-buffer
     (org-mode)
     (insert "Text\n")
-    (should-error (org-export-as 'texmacs) :type 'user-error)))
+    (should-error
+     (org-export-as 'texmacs nil nil t)
+     :type 'user-error)))
 
 (ert-deftest org-texmacs-preprocess-native-parameter-combinations ()
   (org-texmacs-test--with-bibliography-files

@@ -82,7 +82,8 @@
             (kill-buffer output))
           (kill-buffer existing))))))
 
-(ert-deftest org-texmacs-export-backend-generic-preprocessing-guard ()
+(ert-deftest org-texmacs-export-backend-body-only-preprocessing-guard
+    ()
   (with-temp-buffer
     (org-mode)
     (insert "#+INCLUDE: never-read.org\nSource.\n")
@@ -95,7 +96,9 @@
                  (lambda (&rest _)
                    (ert-fail
                     "TeXmacs generic export invoked Babel"))))
-        (should-error (org-export-as 'texmacs) :type 'user-error))
+        (should-error
+         (org-export-as 'texmacs nil nil t)
+         :type 'user-error))
       (should (equal original (buffer-string)))))
   (require 'ox-ascii)
   (with-temp-buffer

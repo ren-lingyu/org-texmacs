@@ -21,6 +21,7 @@ let
     ./lisp/serialization.el
     ./lisp/session.el
     ./lisp/source.el
+    ./lisp/standard-export.el
     ./lisp/special-blocks.el
     ./lisp/worker.el
   ];
