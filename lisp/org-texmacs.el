@@ -1,10 +1,10 @@
-;;; org-texmacs.el --- TeXmacs trees and document sessions for Org -*- lexical-binding: t; -*-
+;;; org-texmacs.el --- Mathematical-document ASTs for Org -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2026 aRenCoco
 
 ;; Author: aRenCoco
 ;; Maintainer: aRenCoco
-;; Version: 0.5.0
+;; Version: 0.6.0
 ;; Package-Requires: ((emacs "31.1") (org "9.8"))
 ;; Keywords: outlines, tex
 ;; URL: https://github.com/ren-lingyu/org-texmacs
@@ -27,6 +27,11 @@
 
 ;;; Commentary:
 
+;; Independent mathematical-document models combine native Org structure with
+;; parsed TeXmacs STM islands.  Construct, inspect, transform and serialize them
+;; as normalized Org; TeXmacs document export is a separate bounded consumer.
+;; Core model validity is independent of lowering and serialization support.
+;;
 ;; Package-Requires declares minimum versions.  Recorded regressions used
 ;; Emacs 31.1 and Org 9.8.10; Nix selects dependencies from flake.lock.
 ;; Org 9.8 separately passed API/signature checks and strict module compilation;

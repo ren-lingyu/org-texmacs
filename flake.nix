@@ -1,5 +1,5 @@
 {
-  description = "TeXmacs trees and document sessions for Org";
+  description = "Org mathematical-document ASTs with native TeXmacs STM";
 
   inputs = {
     nixpkgs = {

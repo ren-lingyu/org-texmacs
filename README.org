@@ -1,16 +1,28 @@
 #+title: Org TeXmacs
 #+author: aRenCoco
 
-Org TeXmacs provides TeXmacs AST integration for Org documents.  Write
-structured content in official STM/Scheme serialization directly in Org;
-the Org buffer is the source of truth, with no external =.tm= file required.
+Org TeXmacs is an Org-first mathematical-document AST framework.  Native Org
+AST represents document structure and semantics; native TeXmacs STM trees
+represent mathematical expressions; identity-based islands connect them.
+This is one logical structure, without a third canonical AST.  Org buffers
+remain the canonical authoring input, with no external =.tm= file required.
 
-The core provides block-level parsing with lazy caching and configurable
-fragment source discovery with on-demand tree parsing.  It provides an explicit
-prepared-input core, a restricted Org document context, structural body
-lowering, provenance-aware native encoding, and native document sessions that
-apply style, initial environment and body together.  Buffer preparation takes
-an explicit source buffer, with a separate current-buffer convenience wrapper.
+The independent core constructs owned models, exposes readable structure,
+copies snapshots, replaces STM subtrees and generates normalized Org text or
+editable buffers.  Complete models expose parsed STM trees; source discovery
+and other construction intermediates can defer parsing.  Structural validity,
+syntax expressibility and serialization support are separate contracts.
+The native expression trees are structural representations, not a formal
+mathematical semantics system.
+
+=ox-texmacs= is a separate bounded export consumer.  Its existing preparation
+captures a restricted Org document context and output configuration, then uses
+structural lowering, native encoding and document sessions for TeXmacs/PDF.
+Shared ownership does not make a bare =org-texmacs-model= a supported argument
+to the existing =org-texmacs-document= prepared-input API.  Use the established
+export preparation entries for that consumer.
+Block caching, on-demand fragment parsing, Scheme fontification and source
+editing remain available independently of whole-document model construction.
 
 Document conversion supports basic inline markup, self-contained URI links,
 plain local file links with captured resource context,
@@ -26,14 +38,14 @@ Independent consumers provide native =.tm= serialization, new-file saving and
 PDF rendering.  The optional =ox-texmacs= frontend connects these consumers to
 Org's export dispatcher, with local output naming/reexports, subtree/region/
 narrowing scopes and restricted external configuration.  GUI preview, cross-file
-reference resolution and a combined live Org/TeXmacs AST are outside the current
+reference resolution and live incremental Org/TeXmacs synchronization are outside the current
 support boundary.
 Org's source buffer and live AST remain unchanged.
 
 * Version history
-This README documents Org TeXmacs =0.5.0=.
+This README documents Org TeXmacs =0.6.0=.
 See [[file:CHANGELOG.org][the changelog]] for version history and
-[[file:CHANGELOGS/v0.5.0.org][the v0.5.0 release notes]] for changes and upgrade instructions.
+[[file:CHANGELOGS/v0.6.0.org][the v0.6.0 release notes]] for changes and upgrade instructions.
 
 * Requirements
 - Emacs 31.1 or later and Org 9.8 or later, as declared by the package.
@@ -43,10 +55,11 @@ See [[file:CHANGELOG.org][the changelog]] for version history and
 Recorded regressions on =x86_64-linux= used Emacs 31.1, Org 9.8.10 and
 TeXmacs 2.1.5.  Nix selects dependency revisions from the project's =flake.lock=;
 an existing local Org installation does not select those versions.  The package's
-Org 9.8 minimum has passed a separate API existence/signature check and strict
-compilation of all production Lisp modules with Emacs 31.1.  Complete ERT and
-native behavior regressions remain validated on Org 9.8.10; they have not been
-run on Org 9.8.  Other platforms have not been validated.
+Org 9.8 minimum passed a separate API/signature and strict compilation check
+for the earlier v0.5.0 implementation.  That result does not establish minimum-
+version behavior for the new model APIs.  Complete v0.6.0 ERT and native behavior
+regressions use Org 9.8.10; they have not been run on Org 9.8.  Other platforms
+have not been validated.
 
 Org-roam and the three extensions described under [[*Optional real Org extension integration][Optional real Org extension integration]]
 are optional test dependencies, not package runtime requirements.
@@ -787,6 +800,30 @@ the authoritative island tree, native node identities and structural paths.
 This initial API changes STM content and keeps the Org hierarchy.  Arbitrary
 Org node insertion, removal or movement is outside this transformation profile.
 
+* Complete model workflow
+This self-contained example parses an Org buffer, replaces the denominator of
+an inline fraction, inspects the new model and opens normalized Org output:
+
+#+begin_src emacs-lisp
+  (require 'org-texmacs-model)
+  (let* ((model
+          (with-temp-buffer
+            (org-mode)
+            (insert "* Example\nThe value is (math (frac \"1\" \"2\")).\n")
+            (org-texmacs-parse-buffer (current-buffer))))
+         (node (caar (org-texmacs-model-islands model)))
+         (changed
+          (org-texmacs-model-replace-stm model node '(0 1) '(sqrt "2"))))
+    (org-texmacs-model-display changed)
+    (pop-to-buffer (org-texmacs-model-to-buffer changed)))
+#+end_src
+
+The source buffer has already been destroyed when the transformation runs.
+The original model still contains =1/2=; the new model contains =1/sqrt(2)=.
+Path =(0 1)= selects the first =math= child, then the second =frac= child.
+Parsing and final STM serialization use TeXmacs, while copying, tree access,
+replacement and inspection operate directly on the stored structures.
+
 * Normalized Org serialization
 =org-texmacs-model-serialize MODEL= returns normalized Org text.
 =org-texmacs-model-to-buffer MODEL= creates a new editable Org buffer and returns
@@ -841,6 +878,16 @@ signals =org-texmacs-model-serialization-error= with an AST path; transport
 failures retain =org-texmacs-worker-error=.  Serialization returns no partial
 text on failure, and buffer construction starts only after successful output.
 An initialization failure removes the newly allocated buffer.
+
+* Standard Org Export integration status
+The independent core loop is implemented.  Standard Org Export adaptation of
+=ox-texmacs= remains follow-up work; generic =(org-export-as 'texmacs)= is still
+rejected.  The current dispatcher uses its established bounded preparation.
+
+Standard preparation, AST filters, mutable export INFO and Org Cite processing
+must retain their export context; an AST-to-buffer round trip does not preserve
+it.  Existing optional integration evidence below uses older pinned revisions
+and does not establish compatibility with current =org-roam-organize=.
 
 * Document conversion and native sessions
 The document API separates source preparation, pure structural lowering and

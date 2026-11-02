@@ -1,0 +1,112 @@
+#+title: Org TeXmacs v0.6.0 Release Notes
+
+* Overview
+Changes since v0.5.0. Org TeXmacs now provides an independent mathematical-document
+AST framework: native Org document structure, parsed native TeXmacs STM trees
+and identity-based islands connecting them. The structure is logically unified
+without introducing a third canonical AST.
+
+The core loop is Org buffer -> model -> structural transformation -> normalized
+Org text or buffer. Structured inspection is an independent model consumer.
+The existing TeXmacs document and PDF export routes remain available.
+
+* Upgrade from v0.5.0
+The existing export APIs, dispatcher commands, configuration and output handling
+retain their v0.5.0 contracts. No core-loop migration is required for callers that
+continue to use those APIs. The new model APIs are additive.
+
+Load =(require 'org-texmacs-model)= for supplied-tree construction and structural
+operations. Buffer parsing, inspection/display and Org serialization are
+autoloaded. Native STM parsing and serialization require TeXmacs; supplied-tree
+construction, copying, island access, replacement and inspection do not start it.
+
+A bare =org-texmacs-model= is not a substitute argument for the existing
+=org-texmacs-document= prepared-input API. Use the established export preparation
+entry points for TeXmacs output. Shared ownership does not imply identical
+preparation strategies or complete standard Org Export compatibility.
+
+* Independent construction
+=org-texmacs-model-create= owns a native =org-data= AST, supplied STM trees and
+explicit syntax/source context. It rebuilds parents and remaps islands and
+structural references. Model validity does not require serialization support or
+support by TeXmacs document lowering.
+
+=org-texmacs-parse-buffer= captures the complete unnarrowed Org source and
+effective syntax, protects recognized mathematical regions and parses every
+recognized island with the native worker. It preserves source state and returns
+a snapshot independent of the source buffer's lifetime. Comments, property
+drawers, unused footnotes and export-excluded headlines remain available.
+INCLUDE, Babel, Cite processing and export pruning are not core parsing steps.
+
+Initial recognition covers native =texmacs=/=equation=/=equation*= blocks and
+configured fragments in paragraphs and direct inline-footnote contents.
+Unrecognized contexts remain ordinary Org content. A supplied-tree constructor
+validates its provided associations without rescanning source text.
+
+* Inspection and structural operations
+=org-texmacs-model-inspect= returns a detached readable structural projection,
+including secondary strings, captions, properties and authoritative STM trees.
+=org-texmacs-model-display= presents it in a uniquely named read-only buffer.
+The projection is a debugging view, not another persistent AST format.
+
+=org-texmacs-model-copy= returns an independent snapshot.
+=org-texmacs-model-island= reads a tree by a node belonging to that model.
+=org-texmacs-model-replace-stm= replaces a subtree by a zero-based child path;
+nil replaces the whole island. These operations use structures directly,
+without parsing or a text intermediary. Copies rebuild ownership and associations;
+old-model locators remain valid only on their original model.
+
+Nested accessor results are read-only by convention, not runtime-frozen objects.
+Do not mutate them directly. Replacement may change a root or produce an atomic
+tree even when the result is outside current Org serialization support.
+Arbitrary insertion, deletion or movement of Org nodes is outside this profile.
+
+* Normalized Org output
+=org-texmacs-model-serialize= returns normalized Org text and
+=org-texmacs-model-to-buffer= creates a new editable Org buffer. They use an
+owned Org copy, native Org interpretation and native STM serialization.
+Authoritative current trees replace stale mathematical source residues.
+Control characters are escaped without changing leaf contents, and supported
+Unicode tag names and string leaves survive native round trips.
+
+Output requires suitable captured syntax context. The first profile covers
+common native Org structures and recognized island positions; unknown types,
+unexpressible roots, or metadata and structures that cannot survive native Org
+interpretation fail explicitly. Such failures do not invalidate the model.
+Normalization preserves defined structure and semantic whitespace, rather than
+recovering source bytes or original formatting.
+
+The serializer privately checks generated Org using known STM trees. It does
+not reparse STM as routine model processing. Buffer allocation follows successful
+serialization, uses captured syntax/resource context and cleans up on failure.
+It does not overwrite another buffer or visit the original file.
+
+Invalid model/transform arguments signal =org-texmacs-model-error=.
+Invalid STM source signals =org-texmacs-parse-error=.
+Unsupported or lossy output signals =org-texmacs-model-serialization-error=;
+native transport errors retain =org-texmacs-worker-error=. Structural diagnostics
+use AST paths rather than relying on coordinates made stale by transformation.
+
+* Export compatibility and current boundaries
+The independent model contains no export INFO, TeXmacs style/initial settings,
+formatted bibliography or allocated output references. The existing export
+consumer retains those responsibilities and its preflight-before-body-STM order.
+
+Standard Org Export adaptation remains follow-up work. In particular, current
+Org Cite integrations can mutate INFO and rely on dynamic export scope, which
+an AST-to-buffer round trip does not preserve. Existing optional integration
+tests record older extension revisions; they do not establish compatibility with
+the current standard Org Cite integration of org-roam-organize.
+
+No knowledge-base model, cross-document rewriting, formal mathematical semantics,
+live incremental synchronization or general rewriting framework is introduced.
+
+* Validation
+The locked =x86_64-linux= environment used Emacs 31.1, Org 9.8.10 and
+TeXmacs 2.1.5. The complete default Nix checks passed 665 ERT cases across
+core, native, PDF and patched-caption suites, plus strict compilation,
+package-lint and formatting checks. The Lisp package builds as version 0.6.0.
+
+The minimum dependency declarations remain unchanged. These results do not
+establish full v0.6.0 behavior on minimum Org 9.8 or other platforms, or runtime
+compatibility with the current optional extension sources discussed above.
