@@ -1,0 +1,310 @@
+--- /dev/null
++++ b/lisp/org-texmacs-cite.el
+@@ -0,0 +1,102 @@
++;;; org-texmacs-cite.el --- Structured Org Cite processor -*- lexical-binding: t; package-lint-main-file: "org-texmacs.el"; -*-
++
++;; Copyright (C) 2026 aRenCoco
++;; SPDX-License-Identifier: GPL-3.0-or-later
++
++;;; Commentary:
++
++;; Org supplies final citation keys and bibliography sources.  Return native
++;; trees in Org wrappers; native bibliography work waits for owned input.
++
++;;; Code:
++
++(require 'oc)
++(require 'org-texmacs-bibliography)
++(defvar org-texmacs--standard-transaction)
++
++(defun org-texmacs--cite-fail (message)
++  "Reject unsupported citation semantics with MESSAGE."
++  (signal 'org-texmacs-document-error (list message)))
++
++(defun org-texmacs--cite-prefix (backend info)
++  "Return this export's native prefix from BACKEND and live INFO."
++  (unless (org-export-derived-backend-p backend 'texmacs)
++    (org-texmacs--cite-fail "The texmacs Cite processor requires the TeXmacs backend"))
++  (or (plist-get info :texmacs-cite-prefix)
++      (let ((prefix (concat "org-texmacs-cite-"
++                            (org-export-get-reference (plist-get info :parse-tree) info))))
++        (setf (plist-get info :texmacs-cite-prefix) prefix)
++        prefix)))
++
++(defun org-texmacs--cite-print-count (info)
++  "Count standard print directives in final INFO."
++  (length (org-element-map (plist-get info :parse-tree) 'keyword
++                          (lambda (node)
++                            (and (equal (org-element-property :key node) "PRINT_BIBLIOGRAPHY") node)))))
++
++(defun org-texmacs--cite-citation (citation style backend info)
++  "Return structured native output for CITATION/STYLE/BACKEND in INFO."
++  (unless (and (member (car style) '(nil "numeric" "nb")) (null (cdr style)))
++    (org-texmacs--cite-fail "Unsupported TeXmacs citation style or variant"))
++  (unless (= 1 (org-texmacs--cite-print-count info))
++    (org-texmacs--cite-fail "Native citations require exactly one print_bibliography directive"))
++  (let ((prefix (org-texmacs--cite-prefix backend info)) keys)
++    (dolist (reference (org-cite-get-references citation))
++      (dolist (property '(:prefix :suffix))
++        (unless (cl-every (lambda (part) (and (stringp part) (string-blank-p part)))
++                          (org-element-property property reference))
++          (org-texmacs--cite-fail "Local citation affixes are not supported")))
++      (push (org-element-property :key reference) keys))
++    (append (org-element-property :prefix citation)
++            (list (org-element-create 'export-snippet
++                                      (list :back-end "texmacs" :texmacs-tree
++                                            (list 'with-bib prefix (cons 'cite (nreverse keys))))))
++            (org-element-property :suffix citation))))
++
++(defun org-texmacs--cite-bibliography (keys files style props backend info)
++  "Return a native bibliography job for standard KEYS/FILES/STYLE/PROPS.
++BACKEND/INFO belong to the same standard Org export transaction."
++  (unless (and (member style '(nil "plain")) (null props))
++    (org-texmacs--cite-fail "Only the plain TeXmacs bibliography without print options is supported"))
++  (unless (= 1 (org-texmacs--cite-print-count info))
++    (org-texmacs--cite-fail "Native bibliography supports exactly one print directive"))
++  (let* ((prefix (org-texmacs--cite-prefix backend info))
++         (acquired (org-texmacs--bibliography-acquire files default-directory nil nil)))
++    (unless org-texmacs--standard-transaction
++      (org-texmacs--cite-fail "Expected a live standard export transaction"))
++    (setf (plist-get org-texmacs--standard-transaction :bibliography-receipts)
++          (append (plist-get org-texmacs--standard-transaction :bibliography-receipts)
++                  (plist-get acquired :receipts)))
++    (org-element-create
++     'special-block
++     (list :type "texmacs" :texmacs-bibliography
++           (list :keys keys :acquired acquired :prefix prefix)))))
++
++(defun org-texmacs--cite-render (job)
++  "Render owned native bibliography JOB after the input snapshot is frozen."
++  (let ((keys (plist-get job :keys)) (prefix (plist-get job :prefix)))
++    (if (null keys) '(document "")
++      (let* ((acquired (plist-get job :acquired))
++             (index (make-hash-table :test #'equal)) entries)
++        (dolist (source (plist-get acquired :sources))
++          (let ((tree (org-texmacs--worker-request (cdr source) 'bibliography)))
++            (dolist (entry (cdr tree))
++              (when (and (consp entry) (eq (car entry) 'bib-entry))
++                (push entry (gethash (nth 2 entry) index))))))
++        (dolist (key keys)
++          (let ((matches (gethash key index)))
++            (unless (= 1 (length matches))
++              (org-texmacs--cite-fail (format "Missing or ambiguous bibliography key: %s" key)))
++            (push (car matches) entries)))
++        (let ((body (nth 3 (org-texmacs--bibliography-format
++                           (list :keys keys :prefix prefix :entries (cons 'document (nreverse entries)))))))
++          (org-texmacs--bibliography-check-receipts (plist-get acquired :receipts))
++          (list 'with-bib prefix body))))))
++
++(org-cite-register-processor 'texmacs
++  :export-citation #'org-texmacs--cite-citation
++  :export-bibliography #'org-texmacs--cite-bibliography
++  :cite-styles '((("nil")) (("numeric" "nb"))))
++
++(provide 'org-texmacs-cite)
++;;; org-texmacs-cite.el ends here
+--- a/lisp/org-texmacs-export.el
++++ b/lisp/org-texmacs-export.el
+@@ -20,6 +20,7 @@
+ (require 'org-texmacs-fragment)
+ (require 'org-texmacs-prepared)
+ (require 'org-texmacs-query)
++(require 'org-texmacs-bibliography)
+ 
+ (defvar org-texmacs--standard-request nil
+   "Private, single-invocation structured result request.")
+@@ -70,6 +71,11 @@
+ (defun org-texmacs--standard-cite (info)
+   "Check INFO after AST filters and before Cite callbacks execute."
+   (org-texmacs--standard-node-filters info))
++
++(defun org-texmacs--standard-check-bibliography (&optional receipts)
++  "Verify native bibliography dependencies captured in RECEIPTS or this export."
++  (org-texmacs--bibliography-check-receipts
++   (or receipts (plist-get org-texmacs--standard-transaction :bibliography-receipts))))
+ 
+ (defun org-texmacs--standard-source-state ()
+   "Capture source identity and native presentation settings without preparation."
+@@ -160,7 +166,8 @@
+                       visible-only
+                       nil
+                       ext-plist)
+-        (org-texmacs--standard-check-source state)))))
++        (org-texmacs--standard-check-source state)
++        (org-texmacs--standard-check-bibliography)))))
+ 
+ (defun org-texmacs--standard-plain (text _info)
+   "Return provisional plain TEXT for Org's standard traversal.
+@@ -270,7 +277,12 @@
+   (when (plist-get info :with-cite-processors)
+     (when-let* ((processor
+                  (org-cite-get-processor (org-cite-processor info))))
+-      (when (org-cite-processor-export-finalizer processor)
++      (when (and (org-cite-processor-export-finalizer processor)
++                 (not (and
++                       (eq (org-cite-processor-export-finalizer processor)
++                           'org-cite-csl-finalizer)
++                       (fboundp 'org-cite-csl--output-format)
++                       (eq (funcall 'org-cite-csl--output-format info) 'org))))
+         (signal
+          'org-texmacs-document-error
+          '("Unsupported Cite finalizer for native structured output"))))))
+@@ -297,7 +309,9 @@
+         (setf
+          (plist-get request :input) input
+          (plist-get request :document) document
+-         (plist-get request :source) state))
++         (plist-get request :source) state
++         (plist-get request :bibliography-receipts)
++         (plist-get transaction :bibliography-receipts)))
+       (prog1
+           (if (eq consumer 'text)
+               ;; Native source uses Cork octets, not arbitrary UTF-8.  The standard
+@@ -308,7 +322,8 @@
+                 document)
+                'iso-latin-1-unix)
+             "")
+-        (org-texmacs--standard-check-source prepared-state)))))
++        (org-texmacs--standard-check-source prepared-state)
++        (org-texmacs--standard-check-bibliography)))))
+ 
+ (defun org-texmacs--standard-consume
+     (consumer &optional subtreep visible-only ext-plist)
+@@ -345,7 +360,9 @@
+               (org-texmacs-document-pdf
+                (plist-get request :document))))
+       (org-texmacs--standard-check-source
+-       (plist-get request :source)))))
++       (plist-get request :source))
++      (org-texmacs--standard-check-bibliography
++       (plist-get request :bibliography-receipts)))))
+ 
+ ;; The normal backend callbacks cannot see filters installed by later user
+ ;; callbacks.  Narrow guards at public dispatch boundaries prevent execution
+--- a/lisp/org-texmacs-prepared.el
++++ b/lisp/org-texmacs-prepared.el
+@@ -13,6 +13,7 @@
+ (require 'org-texmacs-input)
+ (require 'org-texmacs-fragment)
+ (require 'org-texmacs-worker)
++(declare-function org-texmacs--cite-render "org-texmacs-cite" (job))
+ 
+ (defun org-texmacs--prepared-fail (message)
+   "Reject incomplete or ambiguous prepared input with MESSAGE."
+@@ -80,7 +81,7 @@
+                "SETUPFILE"
+                "INCLUDE"
+                "BIND"
+-               "CITE_EXPORT")))
++               "CITE_EXPORT" "BIBLIOGRAPHY")))
+        (org-element-extract-element node))))
+   tree)
+ 
+@@ -250,6 +251,17 @@
+                     (and (eq (org-element-type node) 'headline)
+                          (org-element-property
+                           :footnote-section-p node)))))
++          ((and (or (org-texmacs--native-body-kind node)
++                    (and (eq (org-element-type node) 'export-snippet)
++                         (equal (org-element-property :back-end node) "texmacs")))
++                (or (org-element-property :texmacs-tree node)
++                    (org-element-property :texmacs-bibliography node)))
++           (push (list node nil nil
++                       (org-element-property :texmacs-tree node)
++                       (org-element-property :texmacs-bibliography node)) requests)
++           (org-element-put-property node :texmacs-tree nil)
++           (org-element-put-property node :texmacs-bibliography nil)
++           (org-element-set-contents node))
+           ((org-texmacs--native-body-kind node)
+            (org-texmacs--native-body-check node)
+            (let ((raw
+@@ -281,7 +293,15 @@
+                     requests)))
+            (mapc #'walk (org-element-contents node)))
+           (t
+-           (mapc #'walk (org-element-contents node)))))))
++           (mapc #'walk (org-element-contents node))))
++         (unless (and defer-notes
++                      (or (eq (org-element-type node) 'footnote-definition)
++                          (org-element-property :footnote-section-p node)))
++           (dolist (key (org-element-property :secondary node))
++             (mapc #'walk (org-element-property key node)))
++           (dolist (line (org-element-property :caption node))
++             (mapc #'walk (car line))
++             (mapc #'walk (cdr line)))))))
+      (walk tree))
+     (nreverse requests)))
+ 
+@@ -289,11 +309,21 @@
+   "Fill private owned ISLANDS from already discovered REQUESTS.
+ The caller must own the complete input/context before the first native wait.
+ No intermediate input or placeholder island may be exposed to consumers."
++  (setq requests
++        (mapcar (lambda (request)
++                  (cons (car request)
++                        (org-texmacs--model-copy-data
++                         (org-texmacs--model-owner-create
++                          :error-type 'org-texmacs-document-error)
++                         (cdr request))))
++                requests))
+   (cl-mapc
+    (lambda (request island)
+      (let ((parsed
+-            (org-texmacs--worker-request
+-             (copy-sequence (nth 1 request))))
++            (cond ((nth 3 request) (nth 3 request))
++                  ((nth 4 request) (org-texmacs--cite-render (nth 4 request)))
++                  (t (org-texmacs--worker-request
++                      (copy-sequence (nth 1 request))))))
+            (tag (nth 2 request)))
+        (when (and tag
+                   (not
+--- a/lisp/org-texmacs-document.el
++++ b/lisp/org-texmacs-document.el
+@@ -1886,10 +1886,10 @@
+          (org-texmacs--document-create :body value)))
+       (island
+        (node entry)
+-       (when (memq entry used-islands)
+-         (org-texmacs--document-fail
+-          node "Island occurs more than once"))
+-       (push entry used-islands)
++       (if (memq entry used-islands)
++           (unless (and (consp node) (eq (org-element-type node) 'export-snippet))
++             (org-texmacs--document-fail node "Island occurs more than once"))
++         (push entry used-islands))
+        (org-texmacs--document-create
+         :body
+         (org-texmacs--document-copy-stree (cdr entry))
+@@ -1921,13 +1921,14 @@
+         (let ((entry (assq node islands)))
+           (cond
+            (entry
+-            (unless (and (stringp node)
+-                         (memq context '(paragraph footnote)))
+-              (org-texmacs--document-fail
+-               node "Island outside paragraph or footnote text"))
+-            ;; An island is opaque, even if its root is an atomic string.
+-            (setcar space nil)
+-            (list (island node entry)))
++            (cond
++             ((and (stringp node) (memq context '(paragraph footnote)))
++              (setcar space nil) (list (island node entry)))
++             ((and (consp node) (eq (org-element-type node) 'export-snippet)
++                   (equal (org-element-property :back-end node) "texmacs")
++                   (memq context '(paragraph footnote title toc-title caption bold italic underline strike-through table-cell link)))
++              (setcar space nil) (cons (island node entry) (blank node space)))
++             (t (org-texmacs--document-fail node "Island outside supported native context"))))
+            ((stringp node)
+             (list (text node space)))
+            ((and (consp node)
+--- a/lisp/ox-texmacs.el
++++ b/lisp/ox-texmacs.el
+@@ -23,6 +23,7 @@
+ (require 'org-texmacs)
+ (require 'org-texmacs-preprocess)
+ (require 'org-texmacs-export)
++(require 'org-texmacs-cite)
+ 
+ (defcustom org-texmacs-export-discover-bibliography nil
+   "Enable explicit Org Cite bibliography discovery in frontend exports.

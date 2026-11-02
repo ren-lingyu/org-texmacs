@@ -1,0 +1,639 @@
+these 5 derivations will be built:
+  /nix/store/ncqxrv263hvjrmfj30yybs05x7gn6bp4-emacs-org-texmacs-0.6.0.drv
+  /nix/store/83pbb9yn3wrhlbas1p2myyqgq0rkxvwq-emacs-packages-deps.drv
+  /nix/store/0zr2kw5i2pdpz1bsk9v79f8pskci99wm-emacs-with-packages-fonts.conf.drv
+  /nix/store/0fk6z8whhh27ncppb9sjhsy3idpvxp7d-emacs-with-packages-31.1.drv
+  /nix/store/yanj6n5j8a9c3ym9mq4525flc7prz8dh-org-texmacs-standard-cite-probe.drv
+building '/nix/store/ncqxrv263hvjrmfj30yybs05x7gn6bp4-emacs-org-texmacs-0.6.0.drv'...
+emacs-org-texmacs> structuredAttrs is enabled
+emacs-org-texmacs> Running phase: unpackPhase
+emacs-org-texmacs> unpacking source archive /nix/store/rc21brmwa9dkq01lvlgkkc3lj9iigv14-source
+emacs-org-texmacs> source root is source
+emacs-org-texmacs> Running phase: patchPhase
+emacs-org-texmacs> Running phase: updateAutotoolsGnuConfigScriptsPhase
+emacs-org-texmacs> Running phase: configurePhase
+emacs-org-texmacs> no configure script, doing nothing
+emacs-org-texmacs> Running phase: buildPhase
+emacs-org-texmacs> /build /build/source
+emacs-org-texmacs> Copying files (->) and directories (=>)
+emacs-org-texmacs>   from /build/working/org-texmacs/
+emacs-org-texmacs>   to /build/org-texmacs-QGhnq8/org-texmacs-0.6.0
+emacs-org-texmacs>     org-texmacs-ast.el -> org-texmacs-ast.el
+emacs-org-texmacs>     org-texmacs-bibliography.el -> org-texmacs-bibliography.el
+emacs-org-texmacs>     org-texmacs-cite.el -> org-texmacs-cite.el
+emacs-org-texmacs>     org-texmacs-context.el -> org-texmacs-context.el
+emacs-org-texmacs>     org-texmacs-core.el -> org-texmacs-core.el
+emacs-org-texmacs>     org-texmacs-document.el -> org-texmacs-document.el
+emacs-org-texmacs>     org-texmacs-edit.el -> org-texmacs-edit.el
+emacs-org-texmacs>     org-texmacs-export.el -> org-texmacs-export.el
+emacs-org-texmacs>     org-texmacs-font-lock.el -> org-texmacs-font-lock.el
+emacs-org-texmacs>     org-texmacs-fragment.el -> org-texmacs-fragment.el
+emacs-org-texmacs>     org-texmacs-input.el -> org-texmacs-input.el
+emacs-org-texmacs>     org-texmacs-inspect.el -> org-texmacs-inspect.el
+emacs-org-texmacs>     org-texmacs-model.el -> org-texmacs-model.el
+emacs-org-texmacs>     org-texmacs-parse.el -> org-texmacs-parse.el
+emacs-org-texmacs>     org-texmacs-prepared.el -> org-texmacs-prepared.el
+emacs-org-texmacs>     org-texmacs-preprocess.el -> org-texmacs-preprocess.el
+emacs-org-texmacs>     org-texmacs-query.el -> org-texmacs-query.el
+emacs-org-texmacs>     org-texmacs-serialize.el -> org-texmacs-serialize.el
+emacs-org-texmacs>     org-texmacs-session.el -> org-texmacs-session.el
+emacs-org-texmacs>     org-texmacs-source.el -> org-texmacs-source.el
+emacs-org-texmacs>     org-texmacs-worker.el -> org-texmacs-worker.el
+emacs-org-texmacs>     org-texmacs.el -> org-texmacs.el
+emacs-org-texmacs>     ox-texmacs.el -> ox-texmacs.el
+emacs-org-texmacs>     org-texmacs-worker.scm -> org-texmacs-worker.scm
+emacs-org-texmacs> Created org-texmacs-0.6.0.tar containing:
+emacs-org-texmacs>   org-texmacs-0.6.0/
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-ast.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-bibliography.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-cite.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-context.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-core.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-document.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-edit.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-export.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-font-lock.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-fragment.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-input.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-inspect.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-model.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-parse.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-pkg.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-prepared.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-preprocess.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-query.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-serialize.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-session.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-source.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-worker.el
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs-worker.scm
+emacs-org-texmacs>   org-texmacs-0.6.0/org-texmacs.el
+emacs-org-texmacs>   org-texmacs-0.6.0/ox-texmacs.el
+emacs-org-texmacs> /build/source
+emacs-org-texmacs> Running phase: installPhase
+emacs-org-texmacs> Parsing tar file...
+emacs-org-texmacs> Parsing tar file...done
+emacs-org-texmacs> Parsing tar file...
+emacs-org-texmacs> Parsing tar file...done
+emacs-org-texmacs> Extracting... \
+emacs-org-texmacs> Extracting...done
+emacs-org-texmacs>   INFO     Scraping 24 files for loaddefs...
+emacs-org-texmacs>   INFO     Scraping 24 files for loaddefs...done
+emacs-org-texmacs>   GEN      org-texmacs-autoloads.el
+emacs-org-texmacs> Checking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-ast.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-autoloads.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-bibliography.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-cite.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-context.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-core.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-document.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-edit.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-export.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-font-lock.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-fragment.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-input.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-inspect.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-model.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-parse.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-pkg.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-prepared.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-preprocess.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-query.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-serialize.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-session.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-source.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-worker.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs.el...
+emacs-org-texmacs> Compiling /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/ox-texmacs.el...
+emacs-org-texmacs> Done (Total of 23 files compiled, 2 skipped)
+emacs-org-texmacs> Parsing tar file...
+emacs-org-texmacs> Parsing tar file...done
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-preprocess.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-session.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-inspect.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-source.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-input.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-export.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-prepared.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-document.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-query.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-model.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-edit.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-ast.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-autoloads.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-context.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-font-lock.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-worker.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-core.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-serialize.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-parse.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-cite.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-fragment.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-bibliography.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/ox-texmacs.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs.el        || exit $?'
+emacs-org-texmacs> sh -c 'emacs          --batch          -f package-activate-all          --eval '\''(setq native-comp-eln-load-path (cdr native-comp-eln-load-path))'\''          --eval '\''(let ((default-directory "/nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp")) (normal-top-level-add-subdirs-to-load-path))'\''          --eval '\''(setq large-file-warning-threshold nil)'\''          --eval '\''(setq byte-compile-error-on-warn t)'\''          -f batch-native-compile /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/site-lisp/elpa/org-texmacs-0.6.0/org-texmacs-pkg.el        || exit $?'
+emacs-org-texmacs> Running phase: fixupPhase
+emacs-org-texmacs> shrinking RPATHs of ELF executables and libraries in /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/ox-texmacs-3998cbc7-2ad087be.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-parse-32970e52-59a549ce.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-core-1e33286e-4e71f532.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-document-4a2ed908-e040fa2d.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-source-2df349ac-7011665e.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-cite-788f9c0b-f8907215.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-ast-f6fc1227-4244444e.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-inspect-474967ff-f6fbe705.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-query-1fa71df6-94bf09d6.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-prepared-71a9993b-efc08739.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-model-5cc31afd-f7b8e361.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-export-3f954b97-13d4b666.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-worker-2d325d95-491ad12a.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-session-46222eee-85ea56b6.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-serialize-5f5a7a6c-b8e03217.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-context-e766b02d-d5d9976b.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-fragment-5fee558c-32fd7186.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-preprocess-a63ce360-81fa7497.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-edit-5ae11108-6a069153.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-e00832f7-72bd9310.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-font-lock-b9c2d9b1-eb244a2c.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-input-e3bd7ed1-68a8e676.eln
+emacs-org-texmacs> shrinking /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0/share/emacs/native-lisp/31.1-e8c54744/org-texmacs-bibliography-888071e5-8fdfccff.eln
+emacs-org-texmacs> checking for references to /build/ in /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0...
+emacs-org-texmacs> patching script interpreter paths in /nix/store/81sc05b1l67fz5y3y8qm2a9gxrihk8bl-emacs-org-texmacs-0.6.0
+building '/nix/store/83pbb9yn3wrhlbas1p2myyqgq0rkxvwq-emacs-packages-deps.drv'...
+building '/nix/store/0zr2kw5i2pdpz1bsk9v79f8pskci99wm-emacs-with-packages-fonts.conf.drv'...
+emacs-with-packages-fonts.conf> structuredAttrs is enabled
+building '/nix/store/0fk6z8whhh27ncppb9sjhsy3idpvxp7d-emacs-with-packages-31.1.drv'...
+building '/nix/store/yanj6n5j8a9c3ym9mq4525flc7prz8dh-org-texmacs-standard-cite-probe.drv'...
+org-texmacs-standard-cite-probe> CSL FINALIZER ACTUAL org-cite-csl-finalizer
+org-texmacs-standard-cite-probe> PUBLIC org-cite-register-processor "Mark citation processor NAME as available.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> NAME is a symbol.  BODY is a property list, where the following
+org-texmacs-standard-cite-probe> optional keys can be set:
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>   `:activate'
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>     Function activating a citation.  It is called with a single
+org-texmacs-standard-cite-probe>     argument: a citation object extracted from the current
+org-texmacs-standard-cite-probe>     buffer.  It may add text properties to the buffer.  If it is
+org-texmacs-standard-cite-probe>     not provided, `org-cite-fontify-default' is used.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>   `:export-bibliography'
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>     Function rendering a bibliography.  It is called with six
+org-texmacs-standard-cite-probe>     arguments: the list of citation keys used in the document, as
+org-texmacs-standard-cite-probe>     strings, a list of bibliography files, the style, as a string
+org-texmacs-standard-cite-probe>     or nil, the local properties, as a property list, the export
+org-texmacs-standard-cite-probe>     backend, as a symbol, and the communication channel, as a
+org-texmacs-standard-cite-probe>     property list.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>     It is called at each \"print_bibliography\" keyword in the
+org-texmacs-standard-cite-probe>     parse tree.  It may return a string, a parsed element, a list
+org-texmacs-standard-cite-probe>     of parsed elements, or nil.  When it returns nil, the keyword
+org-texmacs-standard-cite-probe>     is ignored.  Otherwise, the value it returns replaces the
+org-texmacs-standard-cite-probe>     keyword in the export output.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>   `:export-citation'    (mandatory for \"export\" capability)
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>     Function rendering citations.  It is called with four
+org-texmacs-standard-cite-probe>     arguments: a citation object, the style, as a pair, the
+org-texmacs-standard-cite-probe>     export backend, as a symbol, and the communication channel,
+org-texmacs-standard-cite-probe>     as a property list.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>     It is called on each citation object in the parse tree.  It
+org-texmacs-standard-cite-probe>     may return a string, a parsed object, a secondary string, or
+org-texmacs-standard-cite-probe>     nil.  When it returns nil, the citation is ignored.
+org-texmacs-standard-cite-probe>     Otherwise, the value it returns replaces the citation object
+org-texmacs-standard-cite-probe>     in the export output.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>   `:export-finalizer'
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>     Function called at the end of export process.  It must accept
+org-texmacs-standard-cite-probe>     six arguments: the output, as a string, a list of citation
+org-texmacs-standard-cite-probe>     keys used in the document, a list of bibliography files, the
+org-texmacs-standard-cite-probe>     expected bibliography style, as a string or nil, the export
+org-texmacs-standard-cite-probe>     backend, as a symbol, and the communication channel, as a
+org-texmacs-standard-cite-probe>     property list.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>     It must return a string, which will become the final output
+org-texmacs-standard-cite-probe>     from the export process, barring subsequent modifications
+org-texmacs-standard-cite-probe>     from export filters.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>   `:follow'
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>     Function called to follow a citation.  It accepts two
+org-texmacs-standard-cite-probe>     arguments, the citation or citation reference object at
+org-texmacs-standard-cite-probe>     point, and any prefix argument received during interactive
+org-texmacs-standard-cite-probe>     call of `org-open-at-point'.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>   `:insert'
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>     Function called to insert a citation.  It accepts two
+org-texmacs-standard-cite-probe>     arguments, the citation or citation reference object at point
+org-texmacs-standard-cite-probe>     or nil, and any prefix argument received.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>   `:cite-styles'
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>     When the processor has export capability, the value can
+org-texmacs-standard-cite-probe>     specify what cite styles, variants, and their associated
+org-texmacs-standard-cite-probe>     shortcuts are supported.  It can be useful information for
+org-texmacs-standard-cite-probe>     completion or linting.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>     The expected format is
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>       ((STYLE . SHORTCUTS) . VARIANTS))
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>     where STYLE is a string, SHORTCUTS a list of strings or nil,
+org-texmacs-standard-cite-probe>     and VARIANTS is a list of pairs (VARIANT . SHORTCUTS),
+org-texmacs-standard-cite-probe>     VARIANT being a string and SHORTCUTS a list of strings or
+org-texmacs-standard-cite-probe>     nil.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>     The \"nil\" style denotes the processor fall-back style.  It
+org-texmacs-standard-cite-probe>     should have a corresponding entry in the value.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>     The value can also be a function.  It will be called without
+org-texmacs-standard-cite-probe>     any argument and should return a list structured as the above.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> Return a non-nil value on a successful operation.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> (fn NAME &rest BODY)"
+org-texmacs-standard-cite-probe> PUBLIC org-cite-get-references "Return citations references contained in CITATION object.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> When optional argument KEYS-ONLY is non-nil, return the references' keys, as a
+org-texmacs-standard-cite-probe> list of strings.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> Assume CITATION object comes from either a full parse tree, e.g., during export,
+org-texmacs-standard-cite-probe> or from the current buffer.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> (fn CITATION &optional KEYS-ONLY)"
+org-texmacs-standard-cite-probe> PUBLIC org-cite-list-bibliography-files "List all bibliography files defined in the buffer."
+org-texmacs-standard-cite-probe> PUBLIC org-cite-processor "Return expected citation/bibliography processor.
+org-texmacs-standard-cite-probe> INFO is a plist used as a communication channel.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> (fn INFO)"
+org-texmacs-standard-cite-probe> PUBLIC org-cite-basic-export-citation "Export CITATION object.
+org-texmacs-standard-cite-probe> STYLE is the expected citation style, as a pair of strings or nil.  INFO is the
+org-texmacs-standard-cite-probe> export communication channel, as a property list.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> (fn CITATION STYLE _ INFO)"
+org-texmacs-standard-cite-probe> PUBLIC org-cite-basic-export-bibliography "Generate bibliography.
+org-texmacs-standard-cite-probe> KEYS is the list of cited keys, as strings.  STYLE is the expected bibliography
+org-texmacs-standard-cite-probe> style, as a string.  BACKEND is the export backend, as a symbol.  INFO is the
+org-texmacs-standard-cite-probe> export state, as a property list.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> (fn KEYS FILES STYLE PROPS BACKEND INFO)"
+org-texmacs-standard-cite-probe> RUNTIME SOURCE org-cite-csl-render-citation
+org-texmacs-standard-cite-probe> (defun org-cite-csl-render-citation (citation _style _backend info)
+org-texmacs-standard-cite-probe>   "Export CITATION object.
+org-texmacs-standard-cite-probe> INFO is the export state, as a property list."
+org-texmacs-standard-cite-probe>   (org-require-package 'citeproc)
+org-texmacs-standard-cite-probe>   (let ((output (cdr (assq citation (org-cite-csl--rendered-citations info)))))
+org-texmacs-standard-cite-probe>     (if (not (eq 'org (org-cite-csl--output-format info)))
+org-texmacs-standard-cite-probe>         output
+org-texmacs-standard-cite-probe>       ;; Parse Org output to re-export it during the regular export
+org-texmacs-standard-cite-probe>       ;; process.
+org-texmacs-standard-cite-probe>       (org-cite-parse-objects output))))
+org-texmacs-standard-cite-probe> RUNTIME SOURCE org-cite-csl-render-bibliography
+org-texmacs-standard-cite-probe> (defun org-cite-csl-render-bibliography (_keys _files _style props _backend info)
+org-texmacs-standard-cite-probe>   "Export bibliography.
+org-texmacs-standard-cite-probe> INFO is the export state, as a property list."
+org-texmacs-standard-cite-probe>   (org-require-package 'citeproc)
+org-texmacs-standard-cite-probe>   (let* ((format (org-cite-csl--output-format info))
+org-texmacs-standard-cite-probe>         (outputs (car (org-cite-csl--rendered-bibliographies info)))
+org-texmacs-standard-cite-probe>         (output (cdr (assoc props outputs))))
+org-texmacs-standard-cite-probe>     (pcase format
+org-texmacs-standard-cite-probe>       ('html
+org-texmacs-standard-cite-probe>        (unless (plist-get info :html-head-csl-styles-added)
+org-texmacs-standard-cite-probe>         (if-let* ((head-part (org-cite-csl--generate-html-head info)))
+org-texmacs-standard-cite-probe>             (plist-put info :html-head
+org-texmacs-standard-cite-probe>                         (concat (plist-get info :html-head) head-part)))
+org-texmacs-standard-cite-probe>         (plist-put info :html-head-csl-styles-added t))
+org-texmacs-standard-cite-probe>        output)
+org-texmacs-standard-cite-probe>       ('org-latex output)
+org-texmacs-standard-cite-probe>       (_
+org-texmacs-standard-cite-probe>        ;; Parse Org output to re-export it during the regular export process.
+org-texmacs-standard-cite-probe>        (org-cite-parse-elements output)))))
+org-texmacs-standard-cite-probe> RUNTIME SOURCE org-cite-csl--output-format
+org-texmacs-standard-cite-probe> (defun org-cite-csl--output-format (info)
+org-texmacs-standard-cite-probe>   "Return expected Citeproc's output format.
+org-texmacs-standard-cite-probe> INFO is the export state, as a property list.  The return value is a symbol
+org-texmacs-standard-cite-probe> corresponding to one of the output formats supported by Citeproc: `html',
+org-texmacs-standard-cite-probe> `latex', or `org'."
+org-texmacs-standard-cite-probe>   (let ((backend (plist-get info :back-end)))
+org-texmacs-standard-cite-probe>     (cond
+org-texmacs-standard-cite-probe>      ((org-export-derived-backend-p backend 'html) 'html)
+org-texmacs-standard-cite-probe>      ((org-export-derived-backend-p backend 'latex) 'org-latex)
+org-texmacs-standard-cite-probe>      (t 'org))))
+org-texmacs-standard-cite-probe> RUNTIME SOURCE org-cite-csl-finalizer
+org-texmacs-standard-cite-probe> (defun org-cite-csl-finalizer (output _keys _files _style _backend info)
+org-texmacs-standard-cite-probe>   "Add \"hanging\" package if missing from LaTeX output.
+org-texmacs-standard-cite-probe> OUTPUT is the export document, as a string.  INFO is the export state, as a
+org-texmacs-standard-cite-probe> property list."
+org-texmacs-standard-cite-probe>   (org-require-package 'citeproc)
+org-texmacs-standard-cite-probe>   (if (not (eq 'org-latex (org-cite-csl--output-format info)))
+org-texmacs-standard-cite-probe>       output
+org-texmacs-standard-cite-probe>     (with-temp-buffer
+org-texmacs-standard-cite-probe>       (save-excursion (insert output))
+org-texmacs-standard-cite-probe>       (when (search-forward "\\begin{document}" nil t)
+org-texmacs-standard-cite-probe>        (goto-char (match-beginning 0))
+org-texmacs-standard-cite-probe>        ;; Insert the CSL-specific parts of the LaTeX preamble.
+org-texmacs-standard-cite-probe>        (insert (org-cite-csl--generate-latex-preamble info)))
+org-texmacs-standard-cite-probe>       (buffer-string))))
+org-texmacs-standard-cite-probe> RUNTIME SOURCE org-cite-basic-export-citation
+org-texmacs-standard-cite-probe> (defun org-cite-basic-export-citation (citation style _ info)
+org-texmacs-standard-cite-probe>   "Export CITATION object.
+org-texmacs-standard-cite-probe> STYLE is the expected citation style, as a pair of strings or nil.  INFO is the
+org-texmacs-standard-cite-probe> export communication channel, as a property list."
+org-texmacs-standard-cite-probe>   (let ((has-variant-p
+org-texmacs-standard-cite-probe>          (lambda (variant type)
+org-texmacs-standard-cite-probe>            ;; Non-nil when style VARIANT has TYPE.  TYPE is either
+org-texmacs-standard-cite-probe>            ;; `bare' or `caps'.
+org-texmacs-standard-cite-probe>            (member variant
+org-texmacs-standard-cite-probe>                    (pcase type
+org-texmacs-standard-cite-probe>                      ('bare '("bare" "bare-caps" "b" "bc"))
+org-texmacs-standard-cite-probe>                      ('caps '("caps" "bare-caps" "c" "bc"))
+org-texmacs-standard-cite-probe>                      (_ (error "Invalid variant type: %S" type)))))))
+org-texmacs-standard-cite-probe>     (pcase style
+org-texmacs-standard-cite-probe>       ;; "author" style.
+org-texmacs-standard-cite-probe>       (`(,(or "author" "a") . ,variant)
+org-texmacs-standard-cite-probe>        (let ((caps (member variant '("caps" "c"))))
+org-texmacs-standard-cite-probe>          (org-cite-basic--format-author-year
+org-texmacs-standard-cite-probe>           citation
+org-texmacs-standard-cite-probe>           (lambda (p c s) (org-cite-concat p c s))
+org-texmacs-standard-cite-probe>           (lambda (prefix author _ suffix)
+org-texmacs-standard-cite-probe>             (org-cite-concat
+org-texmacs-standard-cite-probe>              prefix
+org-texmacs-standard-cite-probe>              (if caps (org-cite-capitalize author) author)
+org-texmacs-standard-cite-probe>              suffix))
+org-texmacs-standard-cite-probe>           info)))
+org-texmacs-standard-cite-probe>       ;; "noauthor" style.
+org-texmacs-standard-cite-probe>       (`(,(or "noauthor" "na") . ,variant)
+org-texmacs-standard-cite-probe>        (let ((bare? (funcall has-variant-p variant 'bare)))
+org-texmacs-standard-cite-probe>          (org-cite-basic--format-author-year
+org-texmacs-standard-cite-probe>           citation
+org-texmacs-standard-cite-probe>           (lambda (prefix contents suffix)
+org-texmacs-standard-cite-probe>             (org-cite-concat
+org-texmacs-standard-cite-probe>              (unless bare? "(")
+org-texmacs-standard-cite-probe>              prefix
+org-texmacs-standard-cite-probe>              contents
+org-texmacs-standard-cite-probe>              suffix
+org-texmacs-standard-cite-probe>              (unless bare? ")")))
+org-texmacs-standard-cite-probe>           (lambda (prefix _ year suffix)
+org-texmacs-standard-cite-probe>             (org-cite-concat prefix year suffix))
+org-texmacs-standard-cite-probe>           info)))
+org-texmacs-standard-cite-probe>       ;; "nocite" style.
+org-texmacs-standard-cite-probe>       (`(,(or "nocite" "n") . ,_) nil)
+org-texmacs-standard-cite-probe>       ;; "text" and "note" styles.
+org-texmacs-standard-cite-probe>       (`(,(and (or "text" "note" "t" "ft") style) . ,variant)
+org-texmacs-standard-cite-probe>        (when (and (member style '("note" "ft"))
+org-texmacs-standard-cite-probe>                   (not (org-cite-inside-footnote-p citation)))
+org-texmacs-standard-cite-probe>          (org-cite-adjust-note citation info)
+org-texmacs-standard-cite-probe>          (org-cite-wrap-citation citation info))
+org-texmacs-standard-cite-probe>        (let ((bare (funcall has-variant-p variant 'bare))
+org-texmacs-standard-cite-probe>              (caps (funcall has-variant-p variant 'caps)))
+org-texmacs-standard-cite-probe>          (org-cite-basic--format-author-year
+org-texmacs-standard-cite-probe>           citation
+org-texmacs-standard-cite-probe>           (lambda (p c s) (org-cite-concat p c s))
+org-texmacs-standard-cite-probe>           (lambda (p a y s)
+org-texmacs-standard-cite-probe>             (org-cite-concat p
+org-texmacs-standard-cite-probe>                              (if caps (org-cite-capitalize a) a)
+org-texmacs-standard-cite-probe>                              (if bare " " " (")
+org-texmacs-standard-cite-probe>                              y
+org-texmacs-standard-cite-probe>                              (and (not bare) ")")
+org-texmacs-standard-cite-probe>                              s))
+org-texmacs-standard-cite-probe>           info)))
+org-texmacs-standard-cite-probe>       ;; "numeric" style.
+org-texmacs-standard-cite-probe>       ;;
+org-texmacs-standard-cite-probe>       ;; When using this style on citations with multiple references,
+org-texmacs-standard-cite-probe>       ;; use global affixes and ignore local ones.
+org-texmacs-standard-cite-probe>       (`(,(or "numeric" "nb") . ,_)
+org-texmacs-standard-cite-probe>        (pcase-let ((`(,prefix . ,suffix) (org-cite-main-affixes citation)))
+org-texmacs-standard-cite-probe>          (org-export-data
+org-texmacs-standard-cite-probe>           (org-cite-concat
+org-texmacs-standard-cite-probe>            "(" prefix (org-cite-basic--citation-numbers citation info) suffix ")")
+org-texmacs-standard-cite-probe>           info)))
+org-texmacs-standard-cite-probe>       ;; Default ("nil") style.
+org-texmacs-standard-cite-probe>       (`(,_ . ,variant)
+org-texmacs-standard-cite-probe>        (let ((bare (funcall has-variant-p variant 'bare))
+org-texmacs-standard-cite-probe>              (caps (funcall has-variant-p variant 'caps)))
+org-texmacs-standard-cite-probe>          (org-cite-basic--format-author-year
+org-texmacs-standard-cite-probe>           citation
+org-texmacs-standard-cite-probe>           (lambda (p c s)
+org-texmacs-standard-cite-probe>             (org-cite-concat (and (not bare) "(") p c s (and (not bare) ")")))
+org-texmacs-standard-cite-probe>           (lambda (p a y s)
+org-texmacs-standard-cite-probe>             (org-cite-concat p (if caps (org-cite-capitalize a) a) ", " y s))
+org-texmacs-standard-cite-probe>           info)))
+org-texmacs-standard-cite-probe>       ;; This should not happen.
+org-texmacs-standard-cite-probe>       (_ (error "Invalid style: %S" style)))))
+org-texmacs-standard-cite-probe> RUNTIME SOURCE org-cite-basic-export-bibliography
+org-texmacs-standard-cite-probe> (defun org-cite-basic-export-bibliography (keys _files style _props backend info)
+org-texmacs-standard-cite-probe>   "Generate bibliography.
+org-texmacs-standard-cite-probe> KEYS is the list of cited keys, as strings.  STYLE is the expected bibliography
+org-texmacs-standard-cite-probe> style, as a string.  BACKEND is the export backend, as a symbol.  INFO is the
+org-texmacs-standard-cite-probe> export state, as a property list."
+org-texmacs-standard-cite-probe>   (mapconcat
+org-texmacs-standard-cite-probe>    (lambda (entry)
+org-texmacs-standard-cite-probe>      (org-export-data
+org-texmacs-standard-cite-probe>       (org-cite-make-paragraph
+org-texmacs-standard-cite-probe>        (and (org-export-derived-backend-p backend 'latex)
+org-texmacs-standard-cite-probe>             (org-export-raw-string "\\noindent\n"))
+org-texmacs-standard-cite-probe>        (org-cite-basic--print-entry entry style info))
+org-texmacs-standard-cite-probe>       info))
+org-texmacs-standard-cite-probe>    (delq nil
+org-texmacs-standard-cite-probe>          (mapcar
+org-texmacs-standard-cite-probe>           (lambda (k) (org-cite-basic--get-entry k info))
+org-texmacs-standard-cite-probe>           (org-cite-basic--sort-keys keys info)))
+org-texmacs-standard-cite-probe>    "\n"))
+org-texmacs-standard-cite-probe> RUNTIME SOURCE org-export-data
+org-texmacs-standard-cite-probe> (defun org-export-data (data info)
+org-texmacs-standard-cite-probe>   "Convert DATA into current backend format.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> DATA is a parse tree, an element or an object or a secondary
+org-texmacs-standard-cite-probe> string.  INFO is a plist holding export options.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> The `:filter-parse-tree' filters are not applied.
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> Return a string."
+org-texmacs-standard-cite-probe>   (or (gethash data (plist-get info :exported-data))
+org-texmacs-standard-cite-probe>       ;; Handle broken links according to
+org-texmacs-standard-cite-probe>       ;; `org-export-with-broken-links'.
+org-texmacs-standard-cite-probe>       (cl-macrolet
+org-texmacs-standard-cite-probe>          ((broken-link-handler
+org-texmacs-standard-cite-probe>            (&rest body)
+org-texmacs-standard-cite-probe>            `(condition-case err
+org-texmacs-standard-cite-probe>                 (progn ,@body)
+org-texmacs-standard-cite-probe>               (org-link-broken
+org-texmacs-standard-cite-probe>                (pcase (plist-get info :with-broken-links)
+org-texmacs-standard-cite-probe>                  (`nil (user-error "Org export aborted.  Unable to resolve link: %S\nSee `org-export-with-broken-links'" (nth 1 err)))
+org-texmacs-standard-cite-probe>                  (`mark (org-export-data
+org-texmacs-standard-cite-probe>                          (format "[BROKEN LINK: %s]" (nth 1 err)) info))
+org-texmacs-standard-cite-probe>                  (_ nil))))))
+org-texmacs-standard-cite-probe>        (let* ((type (org-element-type data))
+org-texmacs-standard-cite-probe>               (parent (org-element-parent data))
+org-texmacs-standard-cite-probe>               (results
+org-texmacs-standard-cite-probe>                (cond
+org-texmacs-standard-cite-probe>                 ;; Ignored element/object.
+org-texmacs-standard-cite-probe>                 ((memq data (plist-get info :ignore-list)) nil)
+org-texmacs-standard-cite-probe>                  ;; Raw code.
+org-texmacs-standard-cite-probe>                  ((eq type 'raw) (car (org-element-contents data)))
+org-texmacs-standard-cite-probe>                 ;; Plain text.
+org-texmacs-standard-cite-probe>                 ((eq type 'plain-text)
+org-texmacs-standard-cite-probe>                  (org-export-filter-apply-functions
+org-texmacs-standard-cite-probe>                   (plist-get info :filter-plain-text)
+org-texmacs-standard-cite-probe>                   (let ((transcoder (org-export-transcoder data info)))
+org-texmacs-standard-cite-probe>                     (if transcoder (funcall transcoder data info) data))
+org-texmacs-standard-cite-probe>                   info))
+org-texmacs-standard-cite-probe>                 ;; Secondary string.
+org-texmacs-standard-cite-probe>                 ((not type)
+org-texmacs-standard-cite-probe>                  (mapconcat (lambda (obj) (org-export-data obj info)) data ""))
+org-texmacs-standard-cite-probe>                 ;; Element/Object without contents or, as a special
+org-texmacs-standard-cite-probe>                 ;; case, headline with archive tag and archived trees
+org-texmacs-standard-cite-probe>                 ;; restricted to title only.
+org-texmacs-standard-cite-probe>                 ((or (not (org-element-contents data))
+org-texmacs-standard-cite-probe>                      (and (eq type 'headline)
+org-texmacs-standard-cite-probe>                           (eq (plist-get info :with-archived-trees) 'headline)
+org-texmacs-standard-cite-probe>                           (org-element-property :archivedp data)))
+org-texmacs-standard-cite-probe>                  (let ((transcoder (org-export-transcoder data info)))
+org-texmacs-standard-cite-probe>                    (and (functionp transcoder)
+org-texmacs-standard-cite-probe>                          (if (eq type 'link)
+org-texmacs-standard-cite-probe>                             (broken-link-handler
+org-texmacs-standard-cite-probe>                              (funcall transcoder data nil info))
+org-texmacs-standard-cite-probe>                            (funcall transcoder data nil info)))))
+org-texmacs-standard-cite-probe>                 ;; Element/Object with contents.
+org-texmacs-standard-cite-probe>                 (t
+org-texmacs-standard-cite-probe>                  (let ((transcoder (org-export-transcoder data info)))
+org-texmacs-standard-cite-probe>                    (when transcoder
+org-texmacs-standard-cite-probe>                      (let* ((greaterp (memq type org-element-greater-elements))
+org-texmacs-standard-cite-probe>                             (objectp
+org-texmacs-standard-cite-probe>                              (and (not greaterp)
+org-texmacs-standard-cite-probe>                                   (memq type org-element-recursive-objects)))
+org-texmacs-standard-cite-probe>                             (contents
+org-texmacs-standard-cite-probe>                              (mapconcat
+org-texmacs-standard-cite-probe>                               (lambda (element) (org-export-data element info))
+org-texmacs-standard-cite-probe>                               (org-element-contents
+org-texmacs-standard-cite-probe>                                (if (or greaterp objectp) data
+org-texmacs-standard-cite-probe>                                  ;; Elements directly containing
+org-texmacs-standard-cite-probe>                                  ;; objects must have their indentation
+org-texmacs-standard-cite-probe>                                  ;; normalized first.
+org-texmacs-standard-cite-probe>                                  (org-element-normalize-contents
+org-texmacs-standard-cite-probe>                                   data
+org-texmacs-standard-cite-probe>                                   ;; When normalizing first paragraph
+org-texmacs-standard-cite-probe>                                   ;; of an item or
+org-texmacs-standard-cite-probe>                                   ;; a footnote-definition, ignore
+org-texmacs-standard-cite-probe>                                   ;; first line's indentation.
+org-texmacs-standard-cite-probe>                                   (and
+org-texmacs-standard-cite-probe>                                    (eq type 'paragraph)
+org-texmacs-standard-cite-probe>                                    (org-element-type-p
+org-texmacs-standard-cite-probe>                                      parent '(footnote-definition item))
+org-texmacs-standard-cite-probe>                                    (eq (car (org-element-contents parent))
+org-texmacs-standard-cite-probe>                                        data)
+org-texmacs-standard-cite-probe>                                    (eq (org-element-property :pre-blank parent)
+org-texmacs-standard-cite-probe>                                        0)))))
+org-texmacs-standard-cite-probe>                               "")))
+org-texmacs-standard-cite-probe>                        (broken-link-handler
+org-texmacs-standard-cite-probe>                         (funcall transcoder data
+org-texmacs-standard-cite-probe>                                  (if (not greaterp) contents
+org-texmacs-standard-cite-probe>                                    (org-element-normalize-string contents))
+org-texmacs-standard-cite-probe>                                  info)))))))))
+org-texmacs-standard-cite-probe>          ;; Final result will be memoized before being returned.
+org-texmacs-standard-cite-probe>          (puthash
+org-texmacs-standard-cite-probe>           data
+org-texmacs-standard-cite-probe>           (cond
+org-texmacs-standard-cite-probe>            ((not results) (or (org-export--keep-spaces data info) ""))
+org-texmacs-standard-cite-probe>             ((memq type '(nil org-data plain-text raw)) results)
+org-texmacs-standard-cite-probe>            ;; Append the same white space between elements or objects
+org-texmacs-standard-cite-probe>            ;; as in the original buffer, and call appropriate filters.
+org-texmacs-standard-cite-probe>            (t
+org-texmacs-standard-cite-probe>             (org-export-filter-apply-functions
+org-texmacs-standard-cite-probe>              (plist-get info (intern (format ":filter-%s" type)))
+org-texmacs-standard-cite-probe>              (let ((blank (or (org-element-post-blank data) 0)))
+org-texmacs-standard-cite-probe>                (if (eq (org-element-class data parent) 'object)
+org-texmacs-standard-cite-probe>                    (concat results (make-string blank ?\s))
+org-texmacs-standard-cite-probe>                  (concat (org-element-normalize-string results)
+org-texmacs-standard-cite-probe>                          (make-string blank ?\n))))
+org-texmacs-standard-cite-probe>              info)))
+org-texmacs-standard-cite-probe>           (plist-get info :exported-data))))))
+org-texmacs-standard-cite-probe> Running 8 tests (2026-11-02 20:31:05+0000, selector `t')
+org-texmacs-standard-cite-probe> Clearing removed files...
+org-texmacs-standard-cite-probe> Clearing removed files...done
+org-texmacs-standard-cite-probe> Processing modified files...
+org-texmacs-standard-cite-probe> Processing modified files...done
+org-texmacs-standard-cite-probe> ACTUAL ORGANIZE DOCUMENT #s(org-texmacs-document (document (doc-data (doc-title "Actual Cite") (doc-author (author-data (author-name "Nix build user")))) (concat (with-bib "org-texmacs-cite-orga121ac8" (cite "real-key")) " ") (with-bib "org-texmacs-cite-orga121ac8" (bib-list "1" (document (concat (bibitem* "1") (label "org-texmacs-cite-orga121ac8-real-key") "Jane Doe. " (newblock) (with "font-shape" "italic" "Actual fixture reference") ". " (newblock) "2026." (newblock)))))) ((1 0) (2)) ("generic") (("language" . "english")) ("language") "/build/org-texmacs-ert-hhIShl/notes/root.org" "/build/org-texmacs-ert-hhIShl/notes/" nil nil t)
+org-texmacs-standard-cite-probe> Checking syntactical structure (done)
+org-texmacs-standard-cite-probe> Checking for duplicate keys (done)
+org-texmacs-standard-cite-probe> Buffer is syntactically correct
+org-texmacs-standard-cite-probe>    passed  1/8  d-actual-organize-standard-transaction (2.372031 sec)
+org-texmacs-standard-cite-probe> Checking syntactical structure (done)
+org-texmacs-standard-cite-probe> Checking for duplicate keys (done)
+org-texmacs-standard-cite-probe> Buffer is syntactically correct
+org-texmacs-standard-cite-probe> BASIC AST #1=(org-data (:standard-properties [1 1 1 80 80 0 nil org-data ...] :pre-blank 0 :path nil :CATEGORY nil) #2=(section (:standard-properties [1 1 1 80 80 0 nil first-section ...]) (keyword (:standard-properties [1 1 nil nil 46 0 nil top-comment ...] :key "BIBLIOGRAPHY" :value "/build/cite-probe-PRd5Rm.bib")) #3=(paragraph (:standard-properties [46 46 46 58 58 0 nil nil ...]) #4=(raw (:standard-properties [nil nil nil nil nil nil nil nil ...]) #("(Doe, Jane, 2026)" 0 17 ...)) #("
+org-texmacs-standard-cite-probe> " 0 1 (:parent #3#))) #5=(raw (:standard-properties [nil nil nil nil nil nil nil nil ...]) #("Doe, Jane (2026). Fixture.
+org-texmacs-standard-cite-probe> " 0 9 (:parent #5#) 9 11 (:parent #5#) 11 15 (:parent #5#) 15 18 (:parent #5#) 18 25 (:parent #5#) 25 26 (:parent #5#) 26 27 (:parent #5#))))) RAW (#4=(raw (:standard-properties [nil nil nil nil nil nil nil nil ...]) #("(Doe, Jane, 2026)" 0 17 (:parent #4#))) #3=(raw (:standard-properties [nil nil nil nil nil nil nil nil ...]) #("Doe, Jane (2026). Fixture.
+org-texmacs-standard-cite-probe> " 0 9 (:parent #3#) 9 11 (:parent #3#) 11 15 (:parent #3#) 15 18 (:parent #3#) 18 25 (:parent #3#) 25 26 (:parent #3#) 26 27 (:parent #3#))))
+org-texmacs-standard-cite-probe>    passed  2/8  d-basic-outputs-are-raw (0.005500 sec)
+org-texmacs-standard-cite-probe> CSL ACTUAL AST #1=(org-data (:standard-properties [1 1 1 126 126 0 nil org-data nil nil nil 3 ...] :pre-blank 0 :path nil :CATEGORY nil) #2=(section (:standard-properties [1 1 1 126 126 0 nil first-section nil nil nil 1 ...]) (keyword (:standard-properties [1 1 nil nil 44 0 nil top-comment nil nil nil nil ...] :key "BIBLIOGRAPHY" :value "/build/cite-csl-VBDGHN.bib")) (keyword (:standard-properties [44 44 nil nil 92 0 nil nil nil nil nil nil ...] :key "CITE_EXPORT" :value "csl /build/cite-style-iFkn0X.csl")) #3=(paragraph (:standard-properties [92 92 92 104 104 0 nil nil nil nil nil nil ...]) #5=(link (:standard-properties [1 nil 24 31 33 0 nil nil nil nil nil nil ...] :type "fuzzy" :type-explicit-p nil :path #4="citeproc_bib_item_1" :format bracket :raw-link #4# ...) #("Fixture" 0 7 ...)) #("
+org-texmacs-standard-cite-probe> " 0 1 (:parent #3#))) #6=(paragraph (:standard-properties [1 1 1 31 31 0 nil top-comment nil nil nil nil ...]) (target (:standard-properties [1 nil nil nil 24 0 nil nil nil nil nil nil ...] :value "citeproc_bib_item_1")) #("Fixture" 0 7 (:parent #6#))))) RAWCOUNT 0
+org-texmacs-standard-cite-probe> CSL TEXT "<TeXmacs|2.1.5>
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> <style|generic>
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> <\\body>
+org-texmacs-standard-cite-probe>   <doc-data|<doc-author|<author-data|<author-name|Nix build user>>>>
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>   <hlink|Fixture|#org-texmacs-org1564f77>\\
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe>   <label|org-texmacs-org1564f77>Fixture
+org-texmacs-standard-cite-probe> </body>
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> <\\initial>
+org-texmacs-standard-cite-probe>   <\\collection>
+org-texmacs-standard-cite-probe>     <associate|language|english>
+org-texmacs-standard-cite-probe>   </collection>
+org-texmacs-standard-cite-probe> </initial>"
+org-texmacs-standard-cite-probe> CSL DOCUMENT #s(org-texmacs-document (document (doc-data (doc-author (author-data (author-name "Nix build user")))) (concat (hlink "Fixture" "#org-texmacs-org5a3f370") " ") (concat (label "org-texmacs-org5a3f370") "Fixture")) nil ("generic") (("language" . "english")) ("language") nil "/build/org-texmacs-ert-W3Mj62/" nil nil t)
+org-texmacs-standard-cite-probe>    passed  3/8  d-csl-real-return-shape (1.782181 sec)
+org-texmacs-standard-cite-probe> NATIVE RESULT #s(org-texmacs-document (document (doc-data (doc-author (author-data (author-name "Nix build user")))) (concat "Text " (with-bib "org-texmacs-cite-orgd460c62" (cite "key")) ". ") (with-bib "org-texmacs-cite-orgd460c62" (bib-list "1" (document (concat (bibitem* "1") (label "org-texmacs-cite-orgd460c62-key") "Jane Doe. " (newblock) (with "font-shape" "italic" "Fixture") ". " (newblock) "2026." (newblock)))))) ((1 1) (2)) ("generic") (("language" . "english")) ("language") nil "/build/" nil nil t)
+org-texmacs-standard-cite-probe>    passed  4/8  d-native-processor-full-transaction (1.923490 sec)
+org-texmacs-standard-cite-probe> LOCATION "* Heading [cite:@key]
+org-texmacs-standard-cite-probe> Text.
+org-texmacs-standard-cite-probe> "
+org-texmacs-standard-cite-probe> LOCATION "Note[fn::[cite:@key]].
+org-texmacs-standard-cite-probe> "
+org-texmacs-standard-cite-probe> LOCATION "Note[fn:x].
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> [fn:x] [cite:@key]
+org-texmacs-standard-cite-probe> "
+org-texmacs-standard-cite-probe> LOCATION "| [cite:@key] | Cell |
+org-texmacs-standard-cite-probe> "
+org-texmacs-standard-cite-probe> LOCATION "#+caption: Caption [cite:@key]
+org-texmacs-standard-cite-probe> | Cell | Cell |
+org-texmacs-standard-cite-probe> "
+org-texmacs-standard-cite-probe> LOCATION "*Markup [cite:@key]*.
+org-texmacs-standard-cite-probe> "
+org-texmacs-standard-cite-probe>    passed  5/8  d-native-processor-locations (2.438059 sec)
+org-texmacs-standard-cite-probe>    passed  6/8  d-processor-early-contract-errors (0.010611 sec)
+org-texmacs-standard-cite-probe> CITE ARGS SHAPE element STYLE (nil) BACKEND texmacs BIB nil
+org-texmacs-standard-cite-probe> SHAPE element AST #1=(org-data (:standard-properties [1 1 1 13 13 0 nil org-data ...] :pre-blank 0 :path nil :CATEGORY nil) #2=(section (:standard-properties [1 1 1 13 13 0 nil first-section ...]) #3=(paragraph (:standard-properties [1 1 1 13 13 0 nil top-comment ...]) #4=(bold (:standard-properties [nil nil nil nil nil 0 nil nil ...]) #("Structured" 0 10 ...)) #("
+org-texmacs-standard-cite-probe> " 0 1 (:parent #3#)))))
+org-texmacs-standard-cite-probe> CITE ARGS SHAPE secondary STYLE (nil) BACKEND texmacs BIB nil
+org-texmacs-standard-cite-probe> SHAPE secondary AST #1=(org-data (:standard-properties [1 1 1 13 13 0 nil org-data ...] :pre-blank 0 :path nil :CATEGORY nil) #2=(section (:standard-properties [1 1 1 13 13 0 nil first-section ...]) #3=(paragraph (:standard-properties [1 1 1 13 13 0 nil top-comment ...]) #("Prefix " 0 7 (:parent #3#)) #4=(italic (:standard-properties [nil nil nil nil nil 0 nil nil ...]) #("Structured" 0 10 ...)) #("
+org-texmacs-standard-cite-probe> " 0 1 (:parent #3#)))))
+org-texmacs-standard-cite-probe> CITE ARGS SHAPE reentrant STYLE (nil) BACKEND texmacs BIB nil
+org-texmacs-standard-cite-probe> REENTRANT VALUE #("Nested" 0 6 (:parent (bold nil #("Nested" 0 6 (:parent #2)))))
+org-texmacs-standard-cite-probe> SHAPE reentrant AST #1=(org-data (:standard-properties [1 1 1 13 13 0 nil org-data ...] :pre-blank 0 :path nil :CATEGORY nil) #2=(section (:standard-properties [1 1 1 13 13 0 nil first-section ...]) #3=(paragraph (:standard-properties [1 1 1 13 13 0 nil top-comment ...]) #4=(raw (:standard-properties [nil nil nil nil nil nil nil nil ...]) #("Nested" 0 6 ...)) #("
+org-texmacs-standard-cite-probe> " 0 1 (:parent #3#)))))
+org-texmacs-standard-cite-probe> CITE ARGS SHAPE string STYLE (nil) BACKEND texmacs BIB nil
+org-texmacs-standard-cite-probe> SHAPE string AST #1=(org-data (:standard-properties [1 1 1 13 13 0 nil org-data ...] :pre-blank 0 :path nil :CATEGORY nil) #2=(section (:standard-properties [1 1 1 13 13 0 nil first-section ...]) #3=(paragraph (:standard-properties [1 1 1 13 13 0 nil top-comment ...]) #4=(raw (:standard-properties [nil nil nil nil nil nil nil nil ...]) #("Target output" 0 13 ...)) #("
+org-texmacs-standard-cite-probe> " 0 1 (:parent #3#)))))
+org-texmacs-standard-cite-probe> CITE ARGS SHAPE tree STYLE (nil) BACKEND texmacs BIB nil
+org-texmacs-standard-cite-probe> SHAPE tree AST #1=(org-data (:standard-properties [1 1 1 13 13 0 nil org-data ...] :pre-blank 0 :path nil :CATEGORY nil) #2=(section (:standard-properties [1 1 1 13 13 0 nil first-section ...]) #3=(paragraph (:standard-properties [1 1 1 13 13 0 nil top-comment ...]) (export-snippet (:standard-properties [nil nil nil nil nil 0 nil nil ...] :back-end "texmacs" :texmacs-tree ...)) #("
+org-texmacs-standard-cite-probe> " 0 1 (:parent #3#)))))
+org-texmacs-standard-cite-probe>    passed  7/8  d-processor-return-shapes-and-reentrant-count (0.019245 sec)
+org-texmacs-standard-cite-probe> CITE ARGS SHAPE tree STYLE (nil) BACKEND texmacs BIB nil
+org-texmacs-standard-cite-probe> BIB ARGS nil texmacs
+org-texmacs-standard-cite-probe>    passed  8/8  d-structured-tree-property-survives-cite (0.003112 sec)
+org-texmacs-standard-cite-probe> 
+org-texmacs-standard-cite-probe> Ran 8 tests, 8 results as expected, 0 unexpected (2026-11-02 20:31:14+0000, 8.555016 sec)
+org-texmacs-standard-cite-probe> 
+/nix/store/hdx076q995lqxdbp9yrnr9xq2f6d0wng-org-texmacs-standard-cite-probe
