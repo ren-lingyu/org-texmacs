@@ -600,4 +600,76 @@ FAILURE injects an error after modification in root, include or bibliography."
    "#+KEYWORDS: SecondKeywords\n* BodyHeading\nBodySentinel\n")
   "Test-owned document covering metadata and interleaved summaries.")
 
+(defun org-texmacs-test--model-meaning (model)
+  "Return a test-owned semantic summary of MODEL for round-trip assertions.
+Explicit native attributes and traversal differ from the production output
+guard and inspection view.  Keep object spaces and literal/STM whitespace."
+  (let ((islands (org-texmacs-model-islands model)))
+    (cl-labels
+     ((clone
+       (value)
+       (cond
+        ((stringp value)
+         (substring-no-properties value))
+        ((consp value)
+         (cons (clone (car value)) (clone (cdr value))))
+        ((vectorp value)
+         (apply #'vector (mapcar #'clone value)))
+        (t
+         value)))
+      (objects (values) (mapcar #'walk values))
+      (walk
+       (node)
+       (let ((entry (assq node islands)))
+         (if (stringp node)
+             (if entry
+                 (list 'island (cdr entry))
+               (substring-no-properties node))
+           (let ((type (org-element-type node)))
+             (list
+              type
+              (mapcar
+               (lambda (key)
+                 (list key (org-element-property key node)))
+               '(:type
+                 :level
+                 :todo-keyword
+                 :todo-type
+                 :priority
+                 :tags
+                 :commentedp
+                 :key
+                 :language
+                 :parameters
+                 :label
+                 :name
+                 :path
+                 :search-option
+                 :checkbox
+                 :bullet
+                 :counter
+                 :style
+                 :tblfm
+                 :application
+                 :format))
+              (when (eq
+                     (org-element-class
+                      node (org-element-parent node))
+                     'object)
+                (or (org-element-property :post-blank node) 0))
+              (unless (or entry (eq type 'headline))
+                (org-element-property :value node))
+              (mapcar
+               (lambda (key)
+                 (list key (objects (org-element-property key node))))
+               '(:title :tag :prefix :suffix))
+              (mapcar
+               (lambda (line)
+                 (list (objects (car line)) (objects (cdr line))))
+               (org-element-property :caption node))
+              (if entry
+                  (list 'island (cdr entry))
+                (objects (org-element-contents node)))))))))
+     (clone (walk (org-texmacs-model-ast model))))))
+
 ;;; common.el ends here

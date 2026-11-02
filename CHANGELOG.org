@@ -30,9 +30,9 @@ Development in progress; checked items are implemented and verified.
 - [X] Display that representation in an Emacs buffer.
 
 *** Normalized Org serialization
-- [ ] Serialize supported models to normalized Org text and new editable
+- [X] Serialize supported models to normalized Org text and new editable
   buffers using native Org and STM serialization.
-- [ ] Report unsupported or unexpressible structures explicitly instead of
+- [X] Report unsupported or unexpressible structures explicitly instead of
   producing lossy output.
 
 *** Structural transformation
@@ -42,8 +42,8 @@ Development in progress; checked items are implemented and verified.
   serialization support, and fail their serialization explicitly.
 
 *** Round-trip verification
-- [ ] Verify structural parse/serialize round trips.
-- [ ] Verify normalization idempotence.
+- [X] Verify structural parse/serialize round trips.
+- [X] Verify normalization idempotence.
 - [ ] Verify supported transformation round trips without requiring TeXmacs
   document or PDF output.
 

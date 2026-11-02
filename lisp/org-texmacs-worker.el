@@ -235,6 +235,70 @@ The latter parses source data only, without querying files or databases."
        (org-texmacs--worker-stop)
        (signal (car err) (cdr err))))))
 
+(defun org-texmacs--worker-stm-wire (tree &optional ancestors)
+  "Validate STM TREE and produce data-only Scheme wire syntax.
+ANCESTORS detects cycles.  Tag names travel as strings, never executable code."
+  (cond
+   ((stringp tree)
+    (org-texmacs--scheme-string tree))
+   ((and (consp tree)
+         (car tree)
+         (symbolp (car tree))
+         (proper-list-p tree)
+         (not (memq tree ancestors)))
+    (concat
+     "(" (org-texmacs--scheme-string (symbol-name (car tree)))
+     (mapconcat (lambda (child)
+                  (concat
+                   " "
+                   (org-texmacs--worker-stm-wire
+                    child
+                    (cons tree ancestors))))
+                (cdr tree)
+                "")
+     ")"))
+   (t
+    (signal 'org-texmacs-model-serialization-error
+            '("Invalid STM tree")))))
+
+(defun org-texmacs--worker-serialize-stm (tree)
+  "Return native single-line STM source for structured TREE.
+Validate before starting the worker.  Native parsing verifies the serialized
+tree, including escaped control characters.  Unsupported trees signal
+`org-texmacs-model-serialization-error' and preserve the worker; malformed
+replies stop it and signal `org-texmacs-worker-error'."
+  (let* ((wire (org-texmacs--worker-stm-wire tree))
+         (datum
+          (org-texmacs--worker-call
+           (lambda (id) (format "(serialize-stm %d %s)\n" id wire)))))
+    (condition-case err
+        (pcase (car datum)
+          ('ok
+           (let ((payload (nth 2 datum)))
+             (unless (and (proper-list-p payload)
+                          (= (length payload) 2)
+                          (eq (car payload) 'serialized-stm)
+                          (stringp (cadr payload))
+                          (> (length (cadr payload)) 0)
+                          (not
+                           (string-match-p
+                            "[\n\r\t]" (cadr payload))))
+               (signal 'org-texmacs-worker-error
+                       '("Invalid serialized STM")))
+             (substring-no-properties (cadr payload))))
+          ('stm-serialization-error
+           (unless (stringp (nth 2 datum))
+             (signal 'org-texmacs-worker-error
+                     '("Invalid STM error reply")))
+           (signal 'org-texmacs-model-serialization-error
+                   (list (nth 2 datum))))
+          (_
+           (signal 'org-texmacs-worker-error
+                   '("Unknown STM serializer reply"))))
+      (org-texmacs-worker-error
+       (org-texmacs--worker-stop)
+       (signal (car err) (cdr err))))))
+
 (defun org-texmacs--worker-call (make-request)
   "Send the fixed request produced by MAKE-REQUEST and return its envelope.
 Validate transport framing and the assigned request ID, but leave payload

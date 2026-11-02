@@ -29,6 +29,10 @@ Changing this option takes effect after the current worker is stopped."
  'org-texmacs-model-error "Invalid mathematical-document model"
  'org-texmacs-error)
 
+(define-error 'org-texmacs-model-serialization-error
+              "Mathematical-document serialization failed"
+              'org-texmacs-error)
+
 (define-error
  'org-texmacs-document-error "Org TeXmacs document conversion failed"
  'org-texmacs-error)

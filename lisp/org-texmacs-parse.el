@@ -88,6 +88,25 @@ Call only after initializing an empty Org buffer, before inserting source."
      (org-texmacs--parse-copy (cdr setting))))
   (setq-local org-link-abbrev-alist-local
               (org-texmacs--parse-copy (plist-get links :local)))
+  (setq-local org-link-abbrev-alist
+              (org-texmacs--parse-copy (plist-get links :global)))
+  (setq-local org-link-parameters
+              (mapcar
+               (lambda (name) (list (copy-sequence name)))
+               (plist-get links :types)))
+  ;; A let binding made in a buffer with local link settings does not follow
+  ;; a switch to another buffer.  Install syntax in each private buffer.
+  (dolist (variable
+           '(org-link-types-re
+             org-link-angle-re
+             org-link-plain-re
+             org-link-bracket-re
+             org-link-any-re
+             org-element--object-regexp
+             org-element-paragraph-separate))
+    (set (make-local-variable variable) (symbol-value variable)))
+  (org-link-make-regexps)
+  (org-element--set-regexps)
   (setq-local org-texmacs-fragment-tags
               (org-texmacs--parse-copy tags))
   (when base

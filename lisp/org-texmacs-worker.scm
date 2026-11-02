@@ -1,4 +1,4 @@
-;; org-texmacs-worker.scm --- Headless STM parser service
+;; org-texmacs-worker.scm --- Headless STM parsing and serialization service
 ;; Copyright (C) 2026 aRenCoco
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -48,6 +48,36 @@
          (cons (string->symbol (car node))
                (map org-texmacs-wire-tree (cdr node))))
         (else (error "Invalid text tree"))))
+
+(define (org-texmacs-stm-wire-tree node)
+  ;; Standalone STM source has no document encoding or raw-data policy.
+  (cond ((string? node) node)
+        ((and (list? node) (pair? node) (string? (car node)))
+         (cons (string->symbol (car node))
+               (map org-texmacs-stm-wire-tree (cdr node))))
+        (else (error "Invalid STM tree"))))
+
+(define (org-texmacs-serialize-stm-reply request)
+  (let ((id (cadr request)))
+    (catch #t
+           (lambda ()
+             (if (not (defined? 'texmacs->stm))
+                 (error "Missing STM serializer"))
+             (let* ((input (org-texmacs-stm-wire-tree (caddr request)))
+                    (native (stree->tree input))
+                    (source (texmacs->stm native))
+                    ;; Escape literal controls without changing leaf content.
+                    (flat (string-replace
+                           (string-replace
+                            (string-replace source "\n" "\\n") "\r" "\\r")
+                           "\t" "\\t")))
+               (if (not (and (equal? input (tree->stree native))
+                             (equal? input (org-texmacs-parse flat))))
+                   (error "STM serialization changed the tree"))
+               (list 'ok id (list 'serialized-stm flat))))
+           (lambda args
+             (list 'stm-serialization-error id
+                   "STM tree cannot round-trip through native source")))))
 
 (define (org-texmacs-check-paths body paths)
   (if (not (list? paths)) (error "Invalid STM paths"))
@@ -530,6 +560,10 @@
              (and (eq? (car request) 'session-set) (= (length request) 7)
                   (string? (caddr request)))))
     (org-texmacs-session-reply request))
+   ((and (list? request) (= (length request) 3)
+         (eq? (car request) 'serialize-stm)
+         (integer? (cadr request)) (> (cadr request) 0))
+    (org-texmacs-serialize-stm-reply request))
    ((and (list? request) (= (length request) 6)
          (eq? (car request) 'render-pdf)
          (integer? (cadr request)) (> (cadr request) 0))
@@ -576,7 +610,10 @@
           (display "##" port)
           (for-each
            (lambda (character)
-             (write-char #\\ port)
+             ;; Guile may expose UTF-8 as individual bytes.  Escaping each
+             ;; non-ASCII byte would split its sequence on the UTF-8 socket.
+             (if (< (char->integer character) 128)
+                 (write-char #\\ port))
              (write-char character port))
            (string->list name)))))
    ((list? datum)

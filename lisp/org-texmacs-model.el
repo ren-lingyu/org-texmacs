@@ -17,6 +17,8 @@
 (autoload 'org-texmacs-parse-buffer "org-texmacs-parse")
 (autoload 'org-texmacs-model-inspect "org-texmacs-inspect")
 (autoload 'org-texmacs-model-display "org-texmacs-inspect")
+(autoload 'org-texmacs-model-serialize "org-texmacs-serialize")
+(autoload 'org-texmacs-model-to-buffer "org-texmacs-serialize")
 
 (cl-defstruct
  (org-texmacs-model
@@ -344,6 +346,94 @@ nested data.  Signal `org-texmacs-model-error' for invalid inputs."
     :islands mapping
     :context
     (org-texmacs--model-copy-data owner context))))
+
+(defun org-texmacs--model-path-error (message path)
+  "Report structural MESSAGE at native AST PATH without source coordinates."
+  (signal 'org-texmacs-model-error
+          (list (format "%s at AST path %S" message path))))
+
+(defun org-texmacs--model-snapshot (model)
+  "Validate MODEL and return detached (AST ISLANDS PATHS) for projection.
+Reuse model ownership and island validation.  Also check existing parents rather
+than silently repairing a damaged snapshot.  PATHS indexes all structural nodes,
+including secondary strings, captions and native island body residue."
+  (unless (and (org-texmacs-model-p model)
+               (consp (org-texmacs-model-ast model))
+               (eq (car (org-texmacs-model-ast model)) 'org-data))
+    (org-texmacs--model-path-error
+     "Expected a mathematical-document model" nil))
+  (let* ((owner (org-texmacs--model-owner-create))
+         (paths (make-hash-table :test #'eq))
+         ast
+         islands)
+    (condition-case err
+        (progn
+          (setq ast
+                (org-texmacs--model-copy-node
+                 owner (org-texmacs-model-ast model) nil))
+          (org-texmacs--model-finish-owner owner)
+          (setq islands
+                (org-texmacs--model-copy-mapping
+                 owner
+                 (org-texmacs-model-islands model)
+                 #'org-texmacs--model-copy-stree))
+          (org-texmacs--model-check-islands ast islands))
+      (org-texmacs-model-error
+       (org-texmacs--model-path-error
+        (error-message-string err) nil)))
+    (cl-labels
+     ((sequence
+       (children path)
+       (cl-loop
+        for
+        child
+        in
+        children
+        for
+        index
+        from
+        0
+        do
+        (walk child (append path (list index)))))
+      (walk
+       (node path) (puthash node path paths)
+       (when (consp node)
+         (sequence
+          (org-element-contents node) (append path '(contents)))
+         (dolist (key (org-element-property-raw :secondary node))
+           (unless (eq key :caption)
+             (sequence
+              (org-element-property-raw key node)
+              (append path (list key)))))
+         (cl-loop
+          for
+          line
+          in
+          (org-element-property-raw :caption node)
+          for
+          index
+          from
+          0
+          do
+          (sequence
+           (car line) (append path (list :caption index :long)))
+          (sequence
+           (cdr line) (append path (list :caption index :short)))))))
+     (walk ast nil))
+    (maphash
+     (lambda (old new)
+       (let ((actual (org-element-property-raw :parent old))
+             (expected (org-element-property-raw :parent new)))
+         (unless (if expected
+                     (eq
+                      (gethash
+                       actual (org-texmacs--model-owner-nodes owner))
+                      expected)
+                   (null actual))
+           (org-texmacs--model-path-error
+            "Inconsistent Org parent" (gethash new paths)))))
+     (org-texmacs--model-owner-nodes owner))
+    (list ast islands paths)))
 
 (provide 'org-texmacs-model)
 ;;; org-texmacs-model.el ends here

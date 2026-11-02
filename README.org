@@ -608,8 +608,8 @@ apply to complete TeXmacs special blocks, not paragraph fragments.
 * Mathematical-document model construction
 Load =(require 'org-texmacs-model)= to construct an independent snapshot from
 an already parsed native Org AST and STM trees.  This module does not load the
-document lowering layer, export frontend or worker.  It does not yet provide
-the planned serialization or transformation commands.  Its autoloaded
+document lowering layer, export frontend or worker.  Transformation commands
+remain planned.  Its autoloaded
 =org-texmacs-parse-buffer= adapter can construct a complete model from an explicit
 Org source buffer, using native STM parsing without document lowering.
 
@@ -746,6 +746,61 @@ The returned view shares no mutable AST/STM data with the model.  It is a debug
 projection, not a persistence format or a structural-equivalence definition.
 Display uses a unique buffer even when an existing buffer has the requested
 optional name, and removes its new buffer if printing or display fails.
+
+* Normalized Org serialization
+=org-texmacs-model-serialize MODEL= returns normalized Org text.
+=org-texmacs-model-to-buffer MODEL= creates a new editable Org buffer and returns
+it, using a unique optional name (default =*org-texmacs-org*=).  Neither entry
+invokes document lowering or export preparation.
+
+#+begin_src emacs-lisp
+  (let ((model (org-texmacs-parse-buffer (current-buffer))))
+    (org-texmacs-model-serialize model)
+    (pop-to-buffer (org-texmacs-model-to-buffer model)))
+#+end_src
+
+The first output profile requires the recorded syntax context captured by
+=org-texmacs-parse-buffer=.  A model constructed from supplied native structures
+must also supply suitable context to serialize; omitting it does not invalidate
+the model.  Plain Org strings do not carry all buffer-local syntax settings.
+The buffer convenience entry installs the captured syntax, fragment tags, link
+names/abbreviations and resource directory before inserting text.  It keeps
+currently available link handlers; the model does not retain old handler code.
+The new buffer does not visit the original file or run mode hooks, INCLUDE,
+SETUPFILE, Babel, Cite processors or export filters.
+
+Supported output includes native headings/sections, paragraphs and common inline
+objects, lists, footnotes, keywords, comments, property drawers, static code,
+ordinary tables and containers.  STM islands must occupy native
+=texmacs=/=equation=/=equation*= blocks or the recognized paragraph/direct-inline-
+footnote positions.  Supplied islands in titles, captions or other positions can
+remain valid models while their serialization fails explicitly.  Unknown Org
+extension types and properties that native Org syntax cannot preserve also fail.
+
+Serialization restores authoritative trees on an independent Org copy and uses
+=org-element-interpret-data=.  Block metadata and captions remain attached;
+old mathematical source and parsing residue cannot overwrite current trees.
+STM output uses TeXmacs's native =texmacs->stm= serializer through a separate
+worker operation, with native source round-trip validation.  It escapes actual
+newlines, returns and tabs to produce single-line source; leaf contents remain
+unchanged when parsed.  Tags that cannot round-trip through native STM source
+are rejected.  Unicode string leaves and source-expressible Unicode tag names
+are preserved.  Models without islands need no native process.
+
+The generated Org text is parsed privately under the captured syntax to check
+structure and island placement, associating already known STM trees without
+calling the STM parser again.  The check preserves semantic attributes, order,
+object spacing and literal/STM text, while allowing source-coordinate and
+element-spacing differences.  This conservative profile can reject additional
+structures whose native Org interpretation would change the model.
+The independent test comparison and normalization-idempotence checks do not use
+the human inspection view as their semantic definition.
+
+Invalid models signal =org-texmacs-model-error=.  Unsupported or lossy output
+signals =org-texmacs-model-serialization-error= with an AST path; transport
+failures retain =org-texmacs-worker-error=.  Serialization returns no partial
+text on failure, and buffer construction starts only after successful output.
+An initialization failure removes the newly allocated buffer.
 
 * Document conversion and native sessions
 The document API separates source preparation, pure structural lowering and
