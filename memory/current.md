@@ -1,11 +1,35 @@
 # org-texmacs current memory
 
-## Current: node7 finite structural transforms accepted; awaiting human review
+## Current: resumed node8 export research and version completion
 
 Nodes1-6 are human-delivered, including serialization delivery verified against
 its expected parent,15paths/message and all130accepted input hashes. Node7 is
-now implemented and accepted by full isolated flake/665ERT. Its8-path candidate
-has NOT been human-committed. Do not begin node8 before delivery verification.
+now human-delivered and verified: expected serialization parent, exactly8paths,
+prepared message and all132accepted committed input hashes match; ordinary
+worktree/index clean. Delivery is commit6ae0bd8eada719ee4ccaa0270cf0807871b9ca1e.
+User said to continue; all eight statuses were reported, then node8 began with
+read-only inspection of metadata, README, existing export/preprocessing and
+optional integration fixtures, plus initial public Org9.8.10 source lookup.
+User paused during initial reads and now explicitly resumes. Full eight-node
+progress was reported again. Node8 is active: standard-export follow-up design,
+positioning/API/examples/release documentation and0.6.0metadata, then full
+regression and build. No export adaptation implementation is selected.
+Node8 now has a7-path unvalidated candidate: README positioning/core example,
+root CHANGELOG, new CHANGELOGS/v0.6.0.org and docs/standard-org-export.org,
+main package summary/Version, Nix version/melpaVersion and flake description.
+Metadata is0.6.0; version TODO/CLOSED and publication are untouched.
+No node8 Nix commands yet; no delivery-only node7 rerun is needed.
+Static research has now read Org9.8.10 ox.el/oc.el and current public
+org-roam-organize56fdaac6adab06deafc23357aec63ae2a497e09b. Its export advice
+around org-export-as creates per-export dynamic bibliography state; its tree
+filter mutates INFO bibliography as well as UUID keys. Existing restricted
+filters permit citation-key changes only and do not invoke standard Cite
+processors. Thus legacy extension evidence does not prove current compatibility.
+Document a candidate in-stack handoff after standard filters/Cite processing,
+preserving export INFO outside the generic model. Resolve deferred properties,
+STM protection through preprocessing/filter rewrites and arbitrary processor
+output in future implementation; do not weaken core validity or change current
+export preflight/parse ordering merely to claim compatibility.
 
 Before EVERY new node report all eight statuses, scope, validation and delivery.
 At the END of EACH development node synchronize BOTH CHANGELOG and README.
@@ -58,18 +82,20 @@ tmp/core-ast-0.6.0-transformation-attempt-1 (ignored).
 Final snapshot/manifest: tmp/core-ast-0.6.0-transformation
 and adjacent inputs.json. Final snapshot differs only in CHANGELOG. Full command:
 timeout 600s nix flake check -L --no-write-lock-file --max-jobs 2 path:/home/lingyu/Projects/org-texmacs/tmp/core-ast-0.6.0-transformation
-Verify final root/copy hashes at delivery. All8paths are currently unstaged,
-including2new test files; no ordinary Git write/lockfile mutation occurred.
+All132committed input hashes matched at node7 delivery, which left the ordinary
+worktree/index clean. No ordinary Git write/lockfile mutation occurred.
 
 README documents APIs, paths, read-only references, identity/ownership and scope.
-CHANGELOG now has12complete/1ongoing/0pending; only release-wide export behavior
-preservation remains ongoing. Version TODO and package0.5.0 metadata unchanged.
+Node7 left12complete/1ongoing/0pending CHANGELOG items. Node8 adds one complete
+integration-guidance item; export preservation still awaits the final check.
+Version TODO remains unchanged; the candidate package metadata is now0.6.0.
 tmp/commit.md is proactively prepared from the complete WORKTREE diff including
 new files: feat(model): add structural snapshot transformations.
 
-Next: deliver the candidate for human review/staging/commit. Verify eventual
-parent,8paths/message and132accepted committed input hashes, then report all eight
-statuses before node8 standard Org Export research, docs and version completion.
+Next: review the follow-up design/release/core documentation and0.6.0metadata,
+format/check/build under standing
+authorization, synchronize completion evidence and prepare the full-diff message.
+Keep version TODO/CLOSED transitions and tags/publication human-only.
 No new test is needed solely for staging or unchanged delivery confirmation.
 
 ## Accepted foundation and delivery evidence

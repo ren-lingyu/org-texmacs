@@ -20,8 +20,9 @@ message and all130accepted input hashes. That delivery left the ordinary
 worktree/index clean.
 Finite transformation is now implemented and accepted by full isolated flake/
 665ERT, with8core/3native cases and synchronized README/CHANGELOG. The8-path
-candidate is uncommitted; human review/delivery precedes node8 standard-export
-research/docs/version completion. Current worktree progress:12complete,
+node is human-delivered and verified against expected parent/8paths/message and
+all132accepted input hashes. Node8 standard-export research/docs/version completion
+is active after user resume. Node7 delivery progress:12complete,
 1ongoing export-preservation item,0pending feature boxes; version TODO unchanged.
 The user grants nix fmt/build/eval/flake check and argument variants as needed
 until the approved plan is complete; ordinary Git writes remain separate.

@@ -1,5 +1,24 @@
 # org-texmacs durable evidence
 
+## Node8 static export research: source evidence only
+
+Read Org9.8.10 ox.el/oc.el via official GitHub sources. org-export-as keeps
+preparation/transcoding in a private buffer within its dynamic invocation;
+annotate-info orders processing/INCLUDE/macros/Babel, before-parsing, environment,
+Cite setup/options filters, deferred parse/pruning, tree filters/property
+collection, then Cite/bibliography processing. Processor output can replace
+citations with raw strings or Org structures. No model-returning public API
+was established; private annotate-info is version-sensitive.
+Read current public ren-lingyu/org-roam-organize at
+56fdaac6adab06deafc23357aec63ae2a497e09b (lisp/org-roam-organize-cite.el).
+It wraps org-export-as to maintain per-export bibliography state and mutates
+INFO bibliography in its UUID filter. Existing restricted TeXmacs filter INFO
+is read-only and runs without standard Cite processing. Thus earlier eaaee8e
+integration evidence does not establish current compatibility. No current
+extension runtime test or adapter implementation is claimed. Follow-up doc
+separates observed ordering, candidate in-stack handoff and unresolved STM
+protection/deferred-property/Cite-result/INFO-remapping/error boundaries.
+
 ## Node7 finite structural transformation acceptance
 
 Eight-path uncommitted candidate adds model-copy/model-island/model-replace-stm,
@@ -27,6 +46,11 @@ core-ast-0.6.0-transformation-attempt-1; final132-input snapshot/manifest is
 tmp/core-ast-0.6.0-transformation. No ordinary project staging/commit, source
 selection/export ordering change or lockfile mutation. Proactive tmp/commit.md
 uses complete worktree diff including2new test files, per the user's instruction.
+Human delivery is now verified: expected serialization parent, exactly8paths,
+prepared message and all132committed input hashes match the accepted snapshot.
+Ordinary worktree/index clean; no unchanged delivery-only test rerun. User paused
+during node8 initial reads, then explicitly resumed; no project writes or Nix
+commands occurred before resumption.
 
 ## Node6 normalized Org serialization acceptance
 

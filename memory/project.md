@@ -12,7 +12,7 @@ and valid caller-supplied STM trees must not require a parser restart.
 
 Construction and structural inspection are delivered. Normalized Org
 serialization is human-delivered and verified; finite AST transformation is now
-accepted by full flake/665ERT, awaiting human review/delivery. The existing
+human-delivered and verified after full flake/665ERT. The existing
 prepared-input/preflight pipeline
 retains consumer-specific preparation, while the new core reuses common owned
 snapshots and island validation. Existing export support descriptions below
@@ -66,7 +66,9 @@ Org/STM/context data and remap context references, retaining old locators only
 on the old model. Source coordinates/residues remain historical; no text/parser/
 worker/lowering participates. Root changes remain valid outside output support.
 Eight core/three native cases pass;132final input hashes identify the8-path
-candidate. README and CHANGELOG are synchronized (12complete/1ongoing/0pending);
+delivery, with exact parent/8paths/message and132committed input hashes matching
+acceptance, leaving the ordinary worktree/index clean. At node7 delivery,
+README/CHANGELOG were synchronized (12complete/1ongoing/0pending);
 version TODO is unchanged. At each node completion,
 sync both CHANGELOG and README per the user's new requirement. The parser snapshots full Org source
 and effective syntax, uses native Org block boundaries and existing inline

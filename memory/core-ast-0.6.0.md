@@ -531,5 +531,6 @@ atomic edits, configured tags and transformed structure/idempotence. Full flake
 passes665ERT/all17checks; final CHANGELOG-only snapshot passes with cached runtime
 outputs and fresh treefmt. README documents the public contract; CHANGELOG now
 has12complete/1ongoing/0pending, version TODO unchanged. Complete worktree commit
-message is prepared before review; candidate remains uncommitted. Verify eventual
-delivery against132input hashes before node8 export research/docs/version work.
+message was prepared before review. Human delivery is verified against expected
+serialization parent,8paths/message and all132accepted input hashes. Worktree/
+index clean. Node8 begins after the user resumes a pause during initial reads.
