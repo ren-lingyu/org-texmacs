@@ -1,0 +1,46 @@
+this derivation will be built:
+  /nix/store/97m9kcal93xxymj17ycmnijpa8kd3zpq-org-texmacs-standard-export-stage-a.drv
+building '/nix/store/97m9kcal93xxymj17ycmnijpa8kd3zpq-org-texmacs-standard-export-stage-a.drv'...
+org-texmacs-standard-export-stage-a> Running 18 tests (2026-11-02 16:58:38+0000, selector `t')
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed   1/18  a-01-real-identity-order-and-model (0.105161 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed   2/18  a-02-cite-return-matrix (0.003600 sec)
+org-texmacs-standard-export-stage-a> Checking syntactical structure (done)
+org-texmacs-standard-export-stage-a> Checking for duplicate keys (done)
+org-texmacs-standard-export-stage-a> Buffer is syntactically correct
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed   3/18  a-03-basic-emits-raw (0.004967 sec)
+org-texmacs-standard-export-stage-a>    passed   4/18  a-04-structured-nesting-cleanup (0.001678 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed   5/18  a-05-text-file-bytes-unicode (1.668227 sec)
+org-texmacs-standard-export-stage-a>    passed   6/18  a-06-pdf-direct-and-effective-filters (1.758081 sec)
+org-texmacs-standard-export-stage-a>    passed   7/18  a-07-other-backend-still-works (0.001101 sec)
+org-texmacs-standard-export-stage-a>    passed   8/18  a-08-normal-return-and-exception-isolation (0.002415 sec)
+org-texmacs-standard-export-stage-a>    passed   9/18  a-09-basic-raw-lowering-boundary (0.000977 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed  10/18  a-10-structured-processor-document-and-coding-reload (1.647856 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed  11/18  a-11-node-output-filter-loss-counterexample (1.704355 sec)
+org-texmacs-standard-export-stage-a>    passed  12/18  a-12-early-exit-skips-normal-advice-counterexample (0.002159 sec)
+org-texmacs-standard-export-stage-a>    passed  13/18  a-13-initial-filter-rejected-before-callback (0.001543 sec)
+org-texmacs-standard-export-stage-a>    passed  14/18  a-14-options-installed-filter-rejected-before-callback (0.002008 sec)
+org-texmacs-standard-export-stage-a>    passed  15/18  a-15-ast-installed-filter-rejected-before-cite (0.002299 sec)
+org-texmacs-standard-export-stage-a>    passed  16/18  a-16-guards-preserve-ast-options-and-final-text (1.691651 sec)
+org-texmacs-standard-export-stage-a>    passed  17/18  a-17-guards-inert-for-other-backends (0.003675 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a>    passed  18/18  a-18-runtime-versions (0.000791 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a> Ran 18 tests, 18 results as expected, 0 unexpected (2026-11-02 16:58:47+0000, 8.603494 sec)
+org-texmacs-standard-export-stage-a> 
+org-texmacs-standard-export-stage-a> ORDER ((before texmacs) (parsing texmacs) (ast texmacs #s(org-export-backend texmacs nil ((plain-text . a--plain) (section . a--contents) (paragraph . a--contents) (headline . a--contents) (bold . a--contents) (italic . a--contents) (inner-template . a--inner)) nil ((:filter-options . a--options-guard) (:filter-parse-tree . a--tree-guard)) nil nil)) plain plain transcode plain transcode transcode inner)
+org-texmacs-standard-export-stage-a> CITE string => (org-data section keyword paragraph plain-text raw plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> CITE element => (org-data section keyword paragraph plain-text bold plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> CITE secondary => (org-data section keyword paragraph plain-text plain-text italic plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> CITE reentrant => (org-data section keyword paragraph plain-text raw plain-text plain-text paragraph plain-text)
+org-texmacs-standard-export-stage-a> BASIC (org-data section keyword keyword paragraph raw plain-text plain-text raw plain-text)
+org-texmacs-standard-export-stage-a> BYTES latin1-roundtrip=t high-bytes=1
+org-texmacs-standard-export-stage-a> NATIVE parsed-original=parsed-terminal-newline; utf8-raw-octets=present; latin1-reversible=ok
+org-texmacs-standard-export-stage-a> COUNTEREXAMPLE paragraph output filter discarded by final-AST handoff
+org-texmacs-standard-export-stage-a> VERSIONS Emacs=31.1 Org=9.8.10
+/nix/store/rcr4mcpvjb8aw9mpy197k9x6rlmgqcpf-org-texmacs-standard-export-stage-a
