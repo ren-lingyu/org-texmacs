@@ -1,5 +1,25 @@
 # org-texmacs durable evidence
 
+## v0.6.0 positioning intake, 2026-11-02
+
+Source: the user's eight-section "org-texmacs: Project Positioning and Design
+Principles", supplied directly in conversation after initial workspace recovery.
+It establishes adopted intent, not implementation or runtime acceptance.
+The independent core/consumer boundary, complete-model parsed-island contract,
+flexible construction parsing boundary, four intended core operations, normalized
+semantic Org output, native representation reuse, standard-export research order
+and single-document/non-formal-semantics limits are distilled in memory/goals.md,
+with current implementation distinctions in memory/project.md and next actions
+in memory/current.md and memory/backlog.md.
+
+No repository-file original, source-file digest or byte-exact archival capture is
+claimed for this chat input. Sufficient extraction leaves no independent original-
+byte evidence need; no raw archive selected. Org-fmt is inspiration supplied by
+the user, not an inspected implementation or confirmed API choice. No new source
+audit, parser/serializer probe, runtime test, compatibility result or external
+tracking verification follows from this policy decision. Existing validation
+retains its original scopes. The separate new core feature remains unspecified.
+
 ## Citation placement expansion acceptance
 
 Delivery1017764dc90331e90f54fd56c4989316e6edc9cc verified as direct child of captured

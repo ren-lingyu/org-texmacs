@@ -1,19 +1,81 @@
 # org-texmacs project goals
 
-## Purpose
+## Purpose and project positioning
 
-Use Org as the sole canonical source for a structured document that can be
-lowered directly into TeXmacs document trees and consumed by TeXmacs-native
-facilities. TeXmacs islands are an implementation technique inside the larger
-document model, not the final boundary of the project.
+Build an Org-first mathematical-document AST framework. Org AST represents
+native document structure and semantics; native TeXmacs STM trees represent
+structured mathematical expressions; STM islands associate the two. The model
+is logically unified without requiring physical grafting into one tree or a
+third complete AST. Atomic STM text leaves may still be strings.
+
+`ox-texmacs` is one consumer, not the abstraction center. TeXmacs document
+lowering and export must not exclusively determine core representation and
+operations. Existing export-driven coupling may be separated incrementally;
+the new positioning does not demand an immediate whole-project refactor.
 
 ```text
-Org source and semantics
-  -> structured Org document input with parsed TeXmacs islands
-  -> structured TeXmacs document representation
-  -> TeXmacs native tree/state
-  -> independent consumers
+Org buffer or supplied native AST structures
+  -> complete mathematical-document AST (Org AST + parsed STM islands)
+       -> structural inspection / transformation / normalized Org serialization
+       -> consumer-specific TeXmacs document lowering and native output
 ```
+
+These are intended responsibilities, not a claim that all core interfaces
+already exist. Org remains the canonical authoring source.
+
+## Core model and AST-first boundary
+
+AST-first governs the complete mathematical-document model, not every input-
+processing intermediate. Every recognized STM island must expose a parsed tree
+before a complete model is returned. Consumers access and transform those trees
+without reparsing STM source. STM tree -> text -> STM tree is not a routine
+AST transformation mechanism; parsing at input boundaries and serialization at
+output boundaries are allowed.
+
+Construction may defer parsing through source/preparation stages and choose an
+appropriate boundary. Leaving the original Org buffer does not itself require
+immediate STM parsing. Core validity is independent of the TeXmacs document-
+lowering subset: unsupported target Org structures must not by themselves
+prevent core construction. Valid caller-supplied STM trees must not force a
+parser restart. Native TeXmacs parsing is an expected core dependency; document
+export is not implied by that dependency. STM initially supplies structure,
+not formal mathematical semantics.
+
+## Intended independent core capabilities
+
+- Org buffer -> complete mathematical-document AST.
+- Mathematical-document AST -> structured inspection representation, such as
+  readable Lisp/S-expressions exposing Org structure and associated STM trees.
+  This is distinct from regenerating Org source.
+- Mathematical-document AST -> mathematical-document AST transformations.
+- Mathematical-document AST -> semantically equivalent normalized Org text or
+  buffer, without requiring original whitespace, line breaks or spelling.
+
+Prefer native Org and TeXmacs parsers/serializers. The user's org-fmt inspiration
+suggests structural equivalence and normalization idempotence for round-trip
+validation; no particular native API or org-fmt implementation has been
+investigated in this intake. Normalized STM serialization is sufficient;
+multiline layout and a dedicated STM formatter are not required.
+
+## Export consumer direction and current scope
+
+Long term, `ox-texmacs` should be a standard Org Export consumer and cooperate
+with extensions such as org-roam-organize through their standard Org mechanisms,
+without requiring a separate adapter for each extension. Research preparation,
+AST filters, Org Cite processors and export INFO separately to identify the
+appropriate mathematical-document model construction boundary. Re-serializing
+Org AST into a buffer alone does not establish standard-export compatibility.
+Clarify core interfaces before adapting export compatibility.
+
+Current scope is one mathematical document. Knowledge-base-wide models,
+cross-document relation protocols, general knowledge graphs, OpenMath, MMT and
+proof-assistant semantics remain independent future research. Do not add
+speculative infrastructure or build a complex second application to demonstrate
+core independence; construction, inspection and transformation interfaces suffice.
+
+The user adopts this positioning for v0.6.0 on 2026-11-02. The separately
+announced core feature and exact release scope are not yet specified or frozen.
+These goals do not authorize ordinary source edits, builds or tests.
 
 ## Strict design constraints
 
@@ -26,9 +88,10 @@ Org source and semantics
 - Parsing user-authored STM once with TeXmacs, transmitting structured strees,
   encoding string leaves, and final serialization are compatible with
   AST-first design.
-- Preserve document semantics instead of silently dropping unsupported nodes or
-  degrading them to ordinary text. Unsupported semantics must have an explicit
-  boundary or error.
+- Preserve document semantics instead of silently dropping nodes or degrading
+  them to ordinary text. Distinguish malformed core structures from valid
+  structures unsupported by a consumer; enforce target-support errors at the
+  appropriate consumer boundary.
 - Inputs, source ownership, configuration, and context must be explicit or
   captured in a documented stable snapshot. Conversion must not depend on an
   accidental `current-buffer` or editor state.
@@ -60,6 +123,13 @@ Org source and semantics
   reimplementing them in Emacs Lisp.
 
 ## Adopted v0.5.0 release objective
+
+Historical baseline: v0.5.0 implementation and local release finalization are
+complete as recorded in memory/current.md. The release-era scope and progression
+below explain prior decisions, not unfinished gates or the new framework scope.
+The positioning above takes precedence for subsequent design. Issue9's earlier
+scheduling and Issue7's deferred proposal do not identify the newly announced
+core feature.
 
 First practically usable release for Org-first mathematical writing with embedded
 native STM and complete .tm/PDF exports inside a tested supported subset.

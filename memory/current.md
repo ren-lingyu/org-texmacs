@@ -1,6 +1,48 @@
 # org-texmacs current memory
 
-## Current: v0.5.0 locally finalized and tagged
+## Current: v0.6.0 framework positioning adopted; feature scope pending
+
+On 2026-11-02 the user asks to recover GAW memory and inspect the workspace
+before v0.6.0 development, then supplies the eight-section "Project Positioning
+and Design Principles" directly in chat. Adopt an independent mathematical-
+document AST framework: native Org AST + parsed TeXmacs STM trees connected by
+islands, logically unified without requiring a physical joint tree or a third
+complete AST. `ox-texmacs` is one consumer, not the abstraction center.
+
+Complete models expose parsed trees for every recognized island; construction
+may defer parsing through input/preparation stages. Leaving the source buffer
+does not mandate immediate parsing. Core validity must not depend on TeXmacs
+document-lowering support, and supplied valid STM trees need no parser restart.
+Intended core operations are buffer construction, structural inspection, AST
+transformation and semantically equivalent normalized Org serialization. Prefer
+native parsers/serializers; structural equivalence and normalization idempotence
+are validation goals, not newly verified runtime capabilities. Normalized STM
+output is sufficient, with no dedicated formatter requirement.
+
+Core clarification precedes standard Org Export interoperability research,
+including separate preparation/filter/Cite/INFO questions. Re-serializing an AST
+into a buffer does not establish that compatibility. Keep Org-first ownership,
+single-document scope and structured transformations; no immediate whole-project
+refactor, speculative knowledge-base model, formal math semantics or complex
+second consumer is selected. Full adopted constraints: memory/goals.md.
+
+The separately announced core feature and exact v0.6.0 scope remain unspecified.
+Next: receive that feature and reconcile concrete API/ownership/serialization and
+consumer boundaries. No source edits, version changes, builds, tests or external
+tracking writes are selected by this positioning intake.
+
+Retention: this chat-supplied design is sufficiently distilled into current
+goals/model/backlog/evidence; no repository-file original or byte-exact capture
+is claimed. No independent raw-evidence need justifies an archive copy.
+
+Public GAW status and check pass; the deployed memory worktree is initially
+clean. Ordinary main is clean at 3bd7b33, the v0.5.0 release-documentation
+finalization recorded below. Read-only recovery and structural source inspection
+do not provide new runtime evidence or recheck remote publication. Issue9's
+previous after-0.5.0/before-0.6.0 scheduling and Issue7's deferred nonblocking
+export proposal remain prior plans, not the newly announced core capability.
+
+## Previous: v0.5.0 locally finalized and tagged
 
 User delivered3bd7b33273c5b72104a760df326e661a3cf16b86, direct child of4c2381a,
 with reviewed docs(release): finalize v0.5.0 release documentation message and

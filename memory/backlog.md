@@ -1,5 +1,27 @@
 # org-texmacs active backlog
 
+## v0.6.0 framework positioning and scope intake
+
+Status: adopted project direction; concrete feature/release plan pending.
+The user selects an independent mathematical-document AST framework with Org
+AST, parsed native STM trees and island associations. Core construction,
+structural inspection, AST transformation and normalized semantic Org output
+are intended capabilities. Existing export-driven APIs may be separated
+incrementally; no particular representation, algorithm, public API, whole-project
+refactor or implementation node has been selected. See memory/goals.md.
+
+After core interfaces are clear, investigate standard Org Export interoperability
+through preparation, AST filters, Cite and INFO independently. Org reserialization
+alone is insufficient. Single-document scope excludes speculative knowledge-base
+models/protocols and formal-mathematics integrations; a complex second consumer
+is unnecessary. Native parsing/serialization should be reused where appropriate;
+org-fmt inspiration and proposed round-trip properties are not runtime evidence.
+
+The separately announced new core feature has not been specified. Issue9's
+earlier pre-0.6.0 scheduling and Issue7's deferred nonblocking direction remain
+prior decisions to reconcile when release scope is set, not automatic selection
+as this feature. Earlier completed release entries below do not define new scope.
+
 ## File-link policies delivered
 
 User delivered the feature with feat(document): configure file-link paths and

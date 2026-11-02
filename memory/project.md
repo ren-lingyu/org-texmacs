@@ -1,5 +1,32 @@
 # org-texmacs current project model
 
+## Adopted positioning versus implemented architecture
+
+As of the user's 2026-11-02 v0.6.0 positioning, the intended abstraction is an
+independent mathematical-document AST: native Org structure and native parsed
+STM trees associated through islands. Logical unity does not require physical
+grafting. `ox-texmacs` and TeXmacs document lowering are consumers. Complete core
+models must expose parsed islands; intermediate preparation may defer parsing.
+Core validity must be independent of a target consumer's supported Org subset,
+and valid caller-supplied STM trees must not require a parser restart.
+
+Construction, structural inspection, AST transformation and normalized Org
+serialization are intended core capabilities, not newly delivered APIs. The
+existing prepared-input/preflight pipeline and several interfaces grew around
+export and have not yet been audited or decoupled for that contract. Existing
+implementation/support descriptions below remain factual baseline and historical
+delivery evidence; their target-support rejection rules must not be promoted to
+the future independent core validity contract.
+
+Native parser/serializer reuse, semantic Org round trips, structural equivalence
+and normalization idempotence guide subsequent design. Org-fmt is user-supplied
+inspiration, not researched dependency/API evidence. Standard Org Export
+preparation, AST filters, Cite and INFO need separate later investigation after
+core interfaces are clear. Existing bounded dispatcher behavior is unchanged.
+Current scope is one document, with no formal-math semantics, knowledge-base
+protocol, compulsory second application or wholesale refactor selected. Goals
+are authoritative in memory/goals.md; concrete feature/API design is pending.
+
 Release status2026-11-02: local finalization delivered3bd7b33, exact two-path
 CHANGELOG/README candidate verified. Human-set DONE v0.5.0/CLOSED recorded;
 README uses neutral0.5.0 wording. Local annotated v0.5.0 peels to this HEAD and
