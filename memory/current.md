@@ -1,61 +1,41 @@
 # org-texmacs current memory
 
-## Current: implementation complete; final release-document review has two findings
+## Current: v0.6.0 locally finalized and tagged; approved plan complete
 
-The user manually changed the worktree v0.6.0 heading to DONE with
-CLOSED [2026-11-02 Mon 11:03] and requested final review. HEAD remains the
-verified node8 delivery; only CHANGELOG.org has an unstaged change. Final
-read-only review found two release-document issues: the DONE version lacks
-its required CUSTOM_ID v0.6.0, and its body still says "final review pending".
-Recommend adding the identity drawer and removing the stale candidate sentence.
-No ordinary project files, state/time records or index were changed in review.
-The CLOSED weekday is consistent; its actual transition time was not independently
-verified. No local v0.6.0 tag exists; DONE does not establish publication.
+The human committed the final CHANGELOG corrections and created local tag
+v0.6.0. Read-only verification confirms its peeled commit equals ordinary HEAD,
+with the expected node8 delivery parent and CHANGELOG.org as the only changed
+path. Exact content matches the reviewed finalization: human DONE/CLOSED
+[2026-11-02 Mon 11:03], CUSTOM_ID v0.6.0, stale review sentence removed and all14
+completed checkbox markers converted to plain entries without losing content.
+The detailed release manuscript exists in the tagged tree. Every other132input
+hash matches the accepted snapshot. Ordinary worktree/index and whitespace are
+clean. Subject/body match tmp/commit.md; no unchanged tests were rerun.
 
-All other132accepted worktree inputs remain byte-identical. Versions agree on
-0.6.0,14checkboxes are complete, release notes/local file links and whitespace
-checks pass. Documented API autoload entries exist; review of shared lowering
-changes does not reveal an export preparation-order change. Prior665ERT/full
-check/package evidence still applies to unchanged runtime inputs; no fresh tests
-or exhaustive independent code audit were performed for this documentation review.
-Next: user review/correction of these two findings, followed by final commit
-verification if requested. Do not modify release state/time or publish by inference.
+All eight approved development nodes and final release-entry cleanup are
+human-delivered. Core construction, inspection, normalized Org serialization
+and finite structural transformations are complete; Lisp/Nix/README declare0.6.0.
+Detailed export research remains in memory/standard-org-export.md, with concise
+README guidance. Standard Org Export adaptation/current-extension runtime
+interoperability are follow-up work, not an authorized ninth node. No project
+docs directory/allowlist was delivered; core validity stays independent of
+lowering and serialization support.
 
-Human delivery of node8 is verified against the expected node7 parent, exactly
-six changed paths, all133accepted committed input hashes, whitespace and a clean
-ordinary worktree/index. The subject matches the prepared release message; the
-human adjusted one README-description bullet without changing implementation
-scope. No repeated tests were needed for byte-identical delivery.
+Validation remains the accepted665ERT/all17checks, package eval/build0.6.0 and
+final documentation gate using cached runtime/fresh treefmt. Only final release
+entry content changed afterward, verified exactly without a new test execution.
+Minimum Org9.8 behavior, other platforms and current optional extensions were
+not newly proven. Tagged finalization is verified locally; remote push and
+platform publication have not been checked or performed.
 
-The approved eight-node implementation plan is complete. Core construction,
-inspection, normalized Org serialization and finite structural transformations
-are delivered. Lisp/Nix/README align to0.6.0; release notes and root CHANGELOG
-are synchronized at committed delivery. CHANGELOG has14complete/0ongoing/0pending.
-The later human DONE transition exists only in the worktree as described above;
-tags and publication remain human actions.
-
-Detailed export research lives in memory/standard-org-export.md, with concise
-README guidance. No new project docs directory or allowlist was delivered.
-Standard Org Export adaptation/current-extension runtime interoperability are
-follow-up work, not an automatically authorized ninth node. Core validity stays
-independent of lowering and serialization support. No export-order change or
-new minimum-Org compatibility proof is claimed.
-
-Validation remains full default665ERT/all17checks and package eval/build0.6.0;
-final documentation gate used cached runtime results and fresh treefmt. All133
-committed input hashes match the accepted isolated snapshot/manifest under
-ignored tmp/core-ast-0.6.0-finalization. Earlier134-input snapshots are retained
-as attempt-1/attempt-2. Evidence and limitations are in evidence.md.
-
-User preferences for future authorized development: before every new node report
-all statuses/scope/validation/delivery; at each node end synchronize BOTH README
-and CHANGELOG and proactively prepare tmp/commit.md from the COMPLETE diff,
-including unstaged/new files. Ordinary project staging needs separate authority;
-commits remain human actions. Standing Nix command authority was scoped through
-completion of this approved plan; do not silently extend it to follow-up work.
-
-No implementation or runtime tests remain under the completed plan; do not
-begin the export prototype by inference.
+User preferences for future authorized development: report full progress before
+each new node, synchronize README/CHANGELOG at each node end and proactively
+prepare tmp/commit.md from the complete diff. Ordinary project staging needs
+separate authority; commits/tags remain human actions. Standing Nix authority
+was scoped through this completed plan and does not extend to future work.
+Next: await a new objective. No implementation, tests or release-document
+corrections remain under the completed plan. Do not publish or begin the export
+prototype by inference.
 
 ## Accepted foundation and delivery evidence
 

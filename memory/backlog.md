@@ -2,7 +2,12 @@
 
 ## v0.6.0 framework positioning and scope intake
 
-Status: **active**, common-model/ownership foundation delivered and verified after
+Status: **complete and locally tagged v0.6.0**. Final release-entry cleanup is
+human-delivered: tag equals HEAD, exact CHANGELOG finalization,132other accepted
+input hashes match, ordinary worktree/index clean. Remote publication is not
+verified. The progression below records the completed implementation sequence.
+
+Common-model/ownership foundation delivered and verified after
 full isolated flake/613ERT. Independent buffer-parser candidate now accepted by
 full isolated default flake/627ERT; all nine paths human-delivered with exact
 source/message verification. Inspection/display is accepted by the user's full

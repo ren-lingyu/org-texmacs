@@ -1,5 +1,27 @@
 # org-texmacs durable evidence
 
+## Final release-entry commit and local v0.6.0 tag
+
+The local v0.6.0 tag peels to ordinary HEAD with the expected node8 delivery
+parent. The commit changes only CHANGELOG.org and matches the prepared message.
+Reconstructed expected bytes from the parent plus the reviewed DONE/CLOSED,
+CUSTOM_ID, stale-sentence removal and14checkbox-marker removals; the tagged file
+matches exactly. Detailed release notes exist in that tag. All132other accepted
+manifest input hashes match tagged blobs. Worktree/index and whitespace are clean.
+No repeated tests or ordinary Git mutations were performed. No remote push or
+platform publication evidence was queried; local finalization/tagging is the
+verified status. This exact final snapshot is associated with the checkpoint.
+
+## Final release-entry corrections after review
+
+User explicitly requested the two corrections and then checkbox cleanup.
+The worktree adds CUSTOM_ID v0.6.0 and removes the stale pending-review sentence;
+all14v0.6.0 [X] markers become plain list entries with hierarchy/content retained.
+Human DONE/CLOSED values are untouched. Full HEAD-to-worktree diff and whitespace
+were reviewed; no runtime changes or tests. tmp/commit.md reflects that full diff.
+Ordinary staging remains unchanged at the earlier human state/time-only edit.
+The final review findings are resolved in the worktree, pending human delivery.
+
 ## Final read-only review after human DONE transition
 
 The worktree-only CHANGELOG diff changes TODO to DONE and adds

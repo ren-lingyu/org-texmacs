@@ -567,3 +567,14 @@ worktree message was proactively prepared before review. Exact human delivery
 verification is complete; all eight approved implementation nodes are delivered.
 The documented export experiment is follow-up research/implementation scope,
 not a hidden ninth node or an automatically authorized compatibility project.
+
+## Final release-entry delivery and local tag verification
+
+Human finalization commit and local v0.6.0 tag are verified. The tag peels to
+ordinary HEAD with the expected node8 delivery parent; only CHANGELOG.org changes.
+Its bytes match the reviewed DONE/CLOSED/CUSTOM_ID, stale-sentence removal and
+14checkbox-to-plain-entry cleanup. Tagged detailed notes exist;132other accepted
+input hashes match. Subject/body, whitespace and clean worktree/index pass.
+All eight nodes and the release-entry review are complete. No repeated tests,
+remote push or platform publication verification was performed. Future standard
+Org Export work requires a new objective and is not a release blocker.

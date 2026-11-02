@@ -29,7 +29,10 @@ scoped fmt, full gate with cached runtime checks/fresh treefmt,133matching input
 hashes, local links and whitespace.
 Human delivery is now verified: expected node7 parent, exactly six paths, all133
 committed input hashes, intended subject/scope and a clean ordinary index/worktree.
-CHANGELOG has14complete/0ongoing/0pending; version TODO/CLOSED unchanged.
+The final CHANGELOG cleanup is now human-committed and tagged v0.6.0 at ordinary
+HEAD: DONE/CLOSED/CUSTOM_ID and plain change entries replace development status.
+All other132accepted input hashes match; ordinary worktree/index are clean.
+Local tag verification does not establish remote push or platform publication.
 Current extensions may mutate INFO and rely on the org-export-as dynamic scope;
 older integration results do not prove current compatibility. No adapter or
 export-order change is implemented.
