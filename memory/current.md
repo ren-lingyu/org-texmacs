@@ -1,82 +1,53 @@
 # org-texmacs current memory
 
-## Current: independent buffer parser delivered; inspection node started
+## Current: inspection/display accepted; prepare message and await human delivery
 
-User reports foundation delivery and requests continuation. Read-only verification
-confirms expected CHANGELOG parent, exact eight paths, approved message and all
-120committed input hashes equal the accepted613ERT candidate; ordinary worktree
-and index are clean. No test rerun for byte-identical delivery, no external issue
-or remote change. The buffer-parser candidate now passes the complete isolated
-flake check after the fixture repair described below. Human delivery now matches
-the expected foundation parent, nine paths, approved message and all123committed
-input hashes. Ordinary worktree/index are clean at intake. No repeated tests
-for byte-identical delivery. Node5 inspection/display starts after the complete
-eight-node progress report:1-4done,5current,6-8pending. New-node test/format
-authority has not been granted; prior parser check permission is consumed.
+Nodes1-4 are complete: plan checkpoint, CHANGELOG, model foundation and independent
+parser. Parser delivery matches expected parent/nine paths/message and all123
+accepted input hashes; the parser-delivery checkpoint grounds its exact snapshot.
+Node5 began after the complete eight-node progress report. Before EVERY new node,
+report all eight statuses plus scope, validation and delivery. Node5 now passes
+the gate and awaits human commit;6serialization/7transforms/8docs-standard-export-
+investigation-version completion remain pending. Do not start node6 before
+delivery verification.
 
-User's new reporting preference: before starting EVERY implementation node,
-report the COMPLETE eight-node v0.6.0 progress (completed/current/pending),
-current-node scope, and validation/delivery status. Acknowledge and retain this
-for the rest of this development task. Reported now: plan checkpoint/CHANGELOG/
-foundation/parser done, inspection/display current, serialization/transformation/
-docs-and-standard-export-research pending.
+Accepted six-path candidate: new org-texmacs-inspect module, model autoloads/main
+commentary, README and eleven registered core cases. It reuses model ownership/
+island validation, checks original parents and projects detached Org/STM trees.
+Expand secondary objects and long/short captions; use AST-path references for
+ordinary cross-node property links. Hide parent/source/parser metadata, stale
+island contents/body properties and redundant raw titles. Hide :cached/:mode;
+omit only unset standard :post-blank/:structure/:true-level slots while keeping
+ordinary explicit nil properties. Display creates a new unique read-only
+special-mode buffer, disables mode hooks/print truncation and cleans failures.
+No parser/worker/lowering or source lifetime is needed by this consumer.
 
-Parser candidate: new org-texmacs-parse module captures full source and effective
-syntax, protects native blocks and discovered inline spans, parses complete Org
-without export filtering, associates islands and constructs an owned model before
-native waits. Source/syntax checks bracket preparation and each worker request.
-Native block contents are removed from the Org wrapper so STM trees remain the
-authority. Fragment discovery gains an optional private-buffer initializer;
-existing export callers and preparation ordering are unchanged. README/main
-commentary and ten core plus three native parser regressions are written and
-registered. User manually formatted and staged all nine candidate paths, then
-explicitly authorized nix flake check. Ran the disclosed timeout600s full check
-once against tmp/core-ast-0.6.0-parser (123 build/source/test inputs; adjacent
-SHA256 manifest). Exit1: core227 ran,226 passed,1 failed:
-org-texmacs-model-parse-blocks-inline-and-unused-notes expected4worker calls,
-observed3. Other nine new core parser tests passed. Patched-caption6passed;
-native331 started but did not finish before fail-fast stopped the check. Do not
-claim a complete native/PDF/lint/format gate. Root and copy still match all123
-manifest hashes after the run; agent did not format, stage or change project
-sources during validation. No automatic retry. This single-run test authority
-is consumed.
+Acceptance is USER-RUN root nix flake check, not an agent rerun. After manual
+nix fmt, user reports exit0 in226.8042s, running17flake checks, all checks passed
+in current x86_64-linux. Output identifies strict package builds, treefmt, lint,
+core/native/PDF/patched-caption checks and aggregates; no individual suite counts
+or fresh per-suite timings were printed. Do not invent them or rerun this gate.
+Other systems omitted; optional integration, GUI and native STM serialization
+are not newly verified. User subsequently explicitly confirmed tests passed.
+Current six paths are staged with no unstaged changes; staged/worktree whitespace
+passes. Captured126current build/source/test/README hashes matching index and
+worktree in tmp/core-ast-0.6.0-inspection-accepted.inputs.json for later exact
+delivery comparison. The code is not yet committed, so do not attach the latest
+project commit as provenance for this user-run acceptance.
 
-User requested repair. Source-level diagnosis against official Org9.8.10
-org-element.el (release_9.8.10, section-parser and special-block-parser) shows
-the fixture's column-one '* not a headline' ends the section before the block
-terminator. The opener is therefore ordinary Org, not a recognized native
-special-block; this explains the three calls without changing target policy.
-Repair adds one leading space to that string line and its exact expected STM
-tree, retaining the four-island/multiline/fake-INCLUDE coverage. Added a separate
-three-block-kind boundary regression asserting real headlines and incomplete
-block text remain ordinary Org, with no worker. README now documents native Org
-block/headline boundaries. Production parser/export code is unchanged. These
-two repair paths were initially unstaged on top of the user's nine staged parser
-paths. The user then formatted/restaged and authorized one new complete check.
-The disclosed timeout600s nix flake check against tmp/core-ast-0.6.0-parser-fix
-exits0/all checks passed. Core228/228 (including the fixed four-island case and
-the new three-kind boundary case), native331/331 (three new parser cases),
-PDF-document33/33, PDF-render29/29 and cached patched-caption6/6 =627ERT.
-Strict compilation, treefmt, lint and aggregates pass; some outputs reused Nix
-cache. Newly observed suite times:1.496819/208.751608/92.834656/155.969434s.
-The root and new isolated copy still match all123manifest input hashes; staged
-whitespace passes, no unstaged project changes. No agent formatting, staging,
-lock changes, project commit or automatic retry. This check authority is now
-consumed. Only current locked x86_64-linux default checks are claimed, not
-other systems, optional real extension integration, GUI or native STM serializer.
-Do not rerun a passed gate without changed inputs or a new concern. Delivery is
-verified and the full progress table reported. Next: implement inspect/display
-with tests/docs, then request fresh exact-command validation after preparation.
+Earlier failures and fixes: strict docstring-width warning, then six new core
+projection failures from native unset standard slots, then treefmt-only reflow.
+Original structural test expectations were retained; explicit nil-property
+coverage was added. Failed125input copies/manifests remain under tmp. User grants
+repeated execution of the previously disclosed inspection-verify check command
+within node5 only; formatting remains manual. No repeat is now warranted.
 
-User requested parser commit-message preparation. Reviewed the complete staged
-nine-path diff as one coherent feat(model) capability plus supporting tests/docs;
-no unstaged project changes, staged whitespace passes, all123staged build/source/
-test hashes equal the accepted parser-fix manifest. tmp/commit.md now contains
-feat(model): parse Org buffers into independent AST snapshots, with four Chinese
-bullets for full-source construction, syntax/context/island capture, authoritative
-block content/source guards and eleven core/three native cases/docs. No issue
-or breaking footer. Split not necessary, difficulty low. Human commit is now
-verified; do not stage or commit the ordinary project on the user's behalf.
+User now requests GAW update FIRST, then commit-message preparation. Update and
+checkpoint this accepted state, then inspect the complete staged diff and write
+the inspection message to tmp/commit.md. Its existing content is the delivered
+parser message and must not be reused. No ordinary staging/commit/tag/push.
+After human delivery, compare exact scope/message/accepted hashes before the
+complete progress report and node6 native-serializer investigation.
 
 ## Accepted foundation and delivery evidence
 

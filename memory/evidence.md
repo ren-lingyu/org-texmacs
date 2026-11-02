@@ -1,5 +1,32 @@
 # org-texmacs durable evidence
 
+## Inspection/display acceptance: user-run full root gate
+
+User manually formatted then ran root nix flake check. Supplied shell result:
+exit0,226.8042seconds,17flake checks, all checks passed on x86_64-linux.
+Named outputs include strict package builds, treefmt, package-lint, core/native/
+PDF-document/PDF-render/patched-caption checks and aggregates. Core derivation
+793ksrsh06404xkllbc41vzdl9p2s0dk; native hi2zwlnv3552ir4zlfj3vjdxxwzspmiy;
+treefmt6rn34ibn74hjnn7v4wc7gd8f2x9wbcl7. These are user-reported run evidence,
+not an agent-executed rerun. Per-suite final ERT counts/times were not printed;
+do not infer fresh counts/timings from earlier failed runs. Other platforms,
+optional real extension integration, GUI and STM serialization are not newly
+covered. User explicitly confirmed success; no duplicate test is needed.
+
+The node adds two independent inspection/display APIs and eleven core cases.
+Earlier agent checks caught an over80-character docstring, then native unset
+standard slots appearing in the view (core239ran/233passed/6failed), followed
+by treefmt-only reflow. Repairs rewrap docstrings, hide parser cache state and
+unset post-blank/structure/true-level slots, preserve ordinary explicit nil
+properties and retain structural expectations. User performed final formatting.
+
+All six changed project paths are user-staged; worktree/index bytes agree and
+whitespace passes. Captured126current input/doc hashes (125build/source/test
+plus README) in tmp/core-ast-0.6.0-inspection-accepted.inputs.json for delivery
+comparison. This is an uncommitted accepted candidate: no exact project commit
+is asserted as the source of this user-run check. Earlier failed copies remain
+under tmp. No agent formatter, ordinary staging/commit or remote mutation.
+
 ## Independent buffer-parser acceptance
 
 The common-model foundation was human-committed after the CHANGELOG-only

@@ -36,8 +36,14 @@ with eleven new core cases, accepted by full isolated flake check/613ERT.
 The independent org-texmacs-parse-buffer implementation is now accepted by the full
 default flake check/627ERT, with eleven new core and three native parser cases;
 all nine paths are human-committed with exact123input hash verification and a
-clean worktree/index. Inspection/display is the active next node; serialization
-and transformation remain subsequent nodes. The parser snapshots full Org source
+clean worktree/index. Inspection/display is now an accepted uncommitted six-path
+candidate after user-run complete default flake check: independent detached
+model-inspect projection with secondary objects/captions/authoritative STM,
+AST-path property references, parent validation and unique read-only model-display
+buffers with failure cleanup. Eleven core cases and docs are staged, with no
+unstaged changes. Native unset standard slots and cache state are filtered while
+ordinary explicit nil properties stay visible. Human delivery is pending;
+serialization and transformation remain subsequent nodes. The parser snapshots full Org source
 and effective syntax, uses native Org block boundaries and existing inline
 recognition, preserves comments/drawers/excluded headings/unused definitions,
 and never performs export preprocessing, pruning or lowering. Native island trees

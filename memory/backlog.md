@@ -5,7 +5,9 @@
 Status: **active**, common-model/ownership foundation delivered and verified after
 full isolated flake/613ERT. Independent buffer-parser candidate now accepted by
 full isolated default flake/627ERT; all nine paths human-delivered with exact
-source/message verification. Inspection/display is now the active node.
+source/message verification. Inspection/display is accepted by the user's full
+root flake check (17checks, exit0); six paths staged, human delivery pending.
+Next functional node is native STM/normalized Org serialization, after delivery.
 Before every new node, report the complete eight-node progress and validation/
 delivery status. The required GAW plan
 checkpoint and exact human CHANGELOG-only TODO v0.6.0 delivery are complete;

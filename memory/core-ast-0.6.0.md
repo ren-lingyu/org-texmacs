@@ -438,3 +438,25 @@ model-inspect/model-display, retaining properties/secondary strings/captions,
 authoritative STM bodies and AST-path references instead of recursive property
 reference expansion. No new worker/lowering or native serializer work belongs
 to this node. New-node tests/formatting need fresh command authority.
+
+## Inspection/display: accepted candidate, human delivery pending
+
+The node adds org-texmacs-model-inspect/model-display in a separate autoloaded
+worker-free module. Reuse ownership copying and island validation, index nodes
+by AST paths and verify original parents. The detached readable projection
+retains Org order, semantic whitespace, secondary objects/captions and wrapper
+attributes; authoritative STM trees replace stale island body values. Parsed
+titles supersede redundant raw titles. Other property node references use
+org-ref paths. Omit source/parent/parser metadata, cache state and unset standard
+post-blank/structure/true-level slots; preserve other explicit nil attributes.
+Display pretty-prints fully into a new unique read-only special-mode buffer,
+avoids mode hooks and cleans its new buffer on print/mode/display failure.
+
+Six changed paths, eleven new core cases. Initial strict docstring-width and
+unset-standard-slot projection failures were fixed, then the user formatted and
+ran the full root gate: exit0,17checks,226.8042s, all checks passed (x86_64-linux).
+No per-suite final ERT totals/times were supplied; do not claim a new aggregate
+count. Optional integration/GUI/native STM serializer remain unverified. Current
+six paths are staged with no unstaged diff;126input/doc hashes match worktree
+and index in the accepted manifest. User requests GAW update then staged message
+preparation. Wait for human delivery before the complete progress report/node6.
