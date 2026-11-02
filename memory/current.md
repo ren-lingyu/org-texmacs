@@ -1,47 +1,43 @@
 # org-texmacs current memory
 
-## Current: node8 accepted after research relocation; human delivery pending
+## Current: all eight v0.6.0 plan nodes delivered and verified
 
-Nodes1-7 are human-delivered and verified. Node8 implementation and release
-metadata passed the full default gate (665ERT/all17checks) and package eval/build.
-The user then requested that detailed export research live in GAW, with concise
-README guidance instead of a new project docs directory. All source candidate
-paths were staged by the human before this revision; preserve that index.
+Human delivery of node8 is verified against the expected node7 parent, exactly
+six changed paths, all133accepted committed input hashes, whitespace and a clean
+ordinary worktree/index. The subject matches the prepared release message; the
+human adjusted one README-description bullet without changing implementation
+scope. No repeated tests were needed for byte-identical delivery.
 
-The complete sourced research, candidate handoff alternatives, unresolved
-STM/Cite/INFO/error boundaries and future acceptance cases are now in
-memory/standard-org-export.md. README retains concise compatibility boundaries;
-CHANGELOG integration guidance matches. The new docs file and its .gitignore
-allowlist are removed from the worktree. The resulting release candidate has
-six changed source paths relative to HEAD: README.org, CHANGELOG.org,
-CHANGELOGS/v0.6.0.org, flake.nix, lisp/org-texmacs.el and
-pkgs/emacsPackages/org-texmacs/package.nix. The human must resynchronize the
-staged candidate before committing, especially the formerly staged docs file.
+The approved eight-node implementation plan is complete. Core construction,
+inspection, normalized Org serialization and finite structural transformations
+are delivered. Lisp/Nix/README align to0.6.0; release notes and root CHANGELOG
+are synchronized. CHANGELOG has14complete/0ongoing/0pending; version TODO/CLOSED
+remains unchanged. Release-state transition, tags and publication remain human
+actions, not unfinished authorized implementation.
 
-Before EVERY new node report all eight statuses, scope, validation and delivery.
-At the END of EACH node sync BOTH README and CHANGELOG. Proactively prepare
-tmp/commit.md from the COMPLETE node diff including unstaged/new files.
-User authorizes nix fmt/build/eval/flake check and argument variants as needed
-through this approved plan; disclose commands/effects/network/timeouts without
-repeated permission requests. Ordinary project staging remains separately
-authorized; project commits remain human actions.
+Detailed export research lives in memory/standard-org-export.md, with concise
+README guidance. No new project docs directory or allowlist was delivered.
+Standard Org Export adaptation/current-extension runtime interoperability are
+follow-up work, not an automatically authorized ninth node. Core validity stays
+independent of lowering and serialization support. No export-order change or
+new minimum-Org compatibility proof is claimed.
 
-Core validity stays independent of lowering and serialization. No standard
-Org Export adapter, current-extension runtime compatibility, new minimum-Org
-proof or export-order change is claimed. Detailed findings and source versions
-are in memory/standard-org-export.md. CHANGELOG has14complete/0ongoing/0pending;
-version TODO/CLOSED and tag/publication remain human decisions.
+Validation remains full default665ERT/all17checks and package eval/build0.6.0;
+final documentation gate used cached runtime results and fresh treefmt. All133
+committed input hashes match the accepted isolated snapshot/manifest under
+ignored tmp/core-ast-0.6.0-finalization. Earlier134-input snapshots are retained
+as attempt-1/attempt-2. Evidence and limitations are in evidence.md.
 
-Earlier 134-input accepted snapshots remain in ignored tmp; the revised
-133-input snapshot uses tmp/core-ast-0.6.0-finalization and adjacent manifest.
-Scoped README/CHANGELOG fmt exits0 with no changes. The first sandboxed full
-check could not connect to the Nix daemon; the same authorized command with
-elevated access exits0/all checks pass, using cached runtime checks and fresh
-treefmt. All133root/copy hashes match, local links and whitespace pass. Runtime
-code is unchanged from the accepted665ERT/package build; this is not new ERT
-execution. tmp/commit.md has been revised from the complete six-path HEAD-to-
-worktree diff. Next: human review and resynchronization of staging before project
-commit; verify six paths/message and all133accepted input hashes on delivery.
+User preferences for future authorized development: before every new node report
+all statuses/scope/validation/delivery; at each node end synchronize BOTH README
+and CHANGELOG and proactively prepare tmp/commit.md from the COMPLETE diff,
+including unstaged/new files. Ordinary project staging needs separate authority;
+commits remain human actions. Standing Nix command authority was scoped through
+completion of this approved plan; do not silently extend it to follow-up work.
+
+Next: await a new user objective. No implementation or tests remain under the
+completed plan; do not change release state or begin the export prototype by
+inference.
 
 ## Accepted foundation and delivery evidence
 

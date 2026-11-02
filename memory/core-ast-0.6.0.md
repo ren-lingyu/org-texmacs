@@ -535,7 +535,7 @@ message was prepared before review. Human delivery is verified against expected
 serialization parent,8paths/message and all132accepted input hashes. Worktree/
 index clean. Node8 begins after the user resumes a pause during initial reads.
 
-## Node8 version/docs and export research: accepted, awaiting delivery
+## Node8 version/docs and export research: delivered and verified
 
 After the resumed source investigation, the8-path candidate aligns main Lisp
 Version and Nix version/melpaVersion to0.6.0, updates flake/main/README positioning,
@@ -548,8 +548,10 @@ requested substantive research in GAW instead: memory/standard-org-export.md
 now preserves the full source findings, alternatives and acceptance cases.
 The revised candidate removes that docs file/allowlist and keeps concise README
 guidance. Documentation-only revalidation passes with cached runtime checks,
-fresh treefmt,133matching root/copy hashes and valid local links. Human staging
-still reflects the earlier eight-path candidate and must be resynchronized.
+fresh treefmt,133matching root/copy hashes and valid local links. Human delivery
+now matches the expected node7 parent, exact six paths and all133committed input
+hashes, with a clean worktree/index. Subject/scope match; one body bullet was
+reworded by the human. No delivery-only test rerun was needed.
 No standard-export compatibility implementation or package-specific shim was
 introduced; existing guards and preparation order remain. Current public
 org-roam-organize source requires dynamic export scope and mutable bibliography
@@ -557,10 +559,11 @@ INFO; legacy pinned integration evidence does not establish its compatibility.
 
 Scoped fmt, package-version eval0.6.0, full isolated flake/665ERT/all17checks and
 default package build pass. The final root CHANGELOG/release-note update passes
-with cached runtime outputs and a fresh treefmt check. All134final input hashes
-match root/copy, local file links exist and whitespace passes. Root progress is
+with cached runtime outputs and a fresh treefmt check. Its initial134input hashes
+matched root/copy; the subsequent relocation has133verified committed inputs.
+Local file links exist and whitespace passes. Root progress is
 14complete/0ongoing/0pending; TODO/CLOSED/tag/publication remain untouched. Complete
-worktree message is proactively prepared before review. After exact human
-delivery verification, the approved eight-node implementation plan is complete.
+worktree message was proactively prepared before review. Exact human delivery
+verification is complete; all eight approved implementation nodes are delivered.
 The documented export experiment is follow-up research/implementation scope,
 not a hidden ninth node or an automatically authorized compatibility project.

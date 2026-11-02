@@ -1,5 +1,21 @@
 # org-texmacs durable evidence
 
+## Node8 human delivery verification and plan completion
+
+The delivered release-preparation commit has the expected node7 parent and
+exactly the six accepted source paths. Every one of133committed input hashes
+matches the final accepted snapshot manifest. Commit whitespace passes and the
+ordinary worktree/index are clean. The subject matches; the human reworded one
+README-description bullet in the body without changing scope. No project index,
+history or refs were mutated by the agent, and unchanged tests were not rerun.
+The earlier staged docs file and allowlist were not delivered.
+
+This completes delivery and verification of all eight approved v0.6.0 plan nodes.
+CHANGELOG retains TODO and14complete/0ongoing/0pending feature boxes. No tag,
+publication, version-state transition or standard-export adapter is implied.
+The completed delivery snapshot is associated with this memory checkpoint;
+earlier uncommitted candidate validation retains its recorded input provenance.
+
 ## Node8 research relocation and revised candidate acceptance
 
 The user requested substantive export design in GAW and concise README guidance.

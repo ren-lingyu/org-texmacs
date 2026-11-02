@@ -24,21 +24,24 @@ node is human-delivered and verified against expected parent/8paths/message and
 all132accepted input hashes. Node8 standard-export research/docs/version completion
 is active after user resume. Node7 delivery progress:12complete,
 1ongoing export-preservation item,0pending feature boxes; version TODO unchanged.
-Node8 is now implemented and accepted, awaiting human review/delivery:
+Node8 is implemented, accepted and human-delivered with exact verification:
 0.6.0metadata and positioning, complete core workflow example, release manuscript
 and source-based standard-export design. Full665ERT/all17checks and package
 eval/build pass for the initial eight-path candidate. CHANGELOG
 has14complete/0ongoing/0pending, with TODO unchanged. No standard-export adapter
 or current-extension runtime compatibility is claimed. Prototype acceptance
 cases in memory/standard-org-export.md are future work, not new implementation
-authorization. After delivery verification the approved implementation plan is
-complete; freeze/tag/publication remain separate human actions.
+authorization. Delivery verification completes the approved eight-node plan;
+freeze/tag/publication remain separate human actions.
 The user requested relocation of detailed research to GAW and concise README
 guidance. The revised six-path candidate removes the new docs file/allowlist;
 documentation revalidation passes with cached runtime/fresh treefmt checks and
-133matching input hashes. Human staging resynchronization/delivery remain pending.
+133matching input hashes. Human delivery now matches the expected node7 parent,
+exact six paths, all133committed input hashes and intended subject/scope; ordinary
+worktree/index are clean. No further implementation is authorized by this plan.
 The user grants nix fmt/build/eval/flake check and argument variants as needed
-until the approved plan is complete; ordinary Git writes remain separate.
+until the approved plan is complete; that scope is now fulfilled and does not
+extend to future work. Ordinary Git writes remain separate.
 Before delivery of each development node, synchronize both CHANGELOG
 and README, per the user's new explicit instruction.
 Before every new node, report the complete eight-node progress and validation/

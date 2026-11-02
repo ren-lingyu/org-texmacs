@@ -27,8 +27,9 @@ concise compatibility boundaries. No new project docs directory or allowlist
 remains in the revised six-path candidate. Documentation revalidation passes:
 scoped fmt, full gate with cached runtime checks/fresh treefmt,133matching input
 hashes, local links and whitespace.
-The human previously staged the eight-path candidate and must resynchronize the
-index. CHANGELOG has14complete/0ongoing/0pending; version TODO/CLOSED unchanged.
+Human delivery is now verified: expected node7 parent, exactly six paths, all133
+committed input hashes, intended subject/scope and a clean ordinary index/worktree.
+CHANGELOG has14complete/0ongoing/0pending; version TODO/CLOSED unchanged.
 Current extensions may mutate INFO and rely on the org-export-as dynamic scope;
 older integration results do not prove current compatibility. No adapter or
 export-order change is implemented.
