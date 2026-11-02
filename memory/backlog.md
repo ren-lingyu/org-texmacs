@@ -2,14 +2,14 @@
 
 ## v0.7.0 Standard Org Export Integration: approved execution
 
-Current gate: mandatory memory checkpoint and human CHANGELOG delivery440b331
-are complete. Stage A experimental refinements and minimal production candidate
-are accepted by full12checks/678ERT; await human delivery before B. Prepared STM
-adapter (including synthetic nodes), standard semantics, Cite/real extension
-integration and convenience migration remain B-E. inner-template and scoped
-normal-return handoff are adopted for A, with early node-filter rejection and
-conservative native string-tail compatibility. The intake sequence below records
-already-completed initial steps; do not repeat them.
+Current gate: initial CHANGELOG and A are human-delivered and verified. B is
+implemented and accepted by full12checks/693ERT, awaiting human delivery before C.
+Late final-AST recognition works for supported original/generated/positionless
+STM, so no early protection is adopted. C standard selection/reference/footnote,
+D Cite/actual extension and E convenience/API cleanup remain. inner-template and
+scoped normal-return handoff are adopted; a TeXmacs Cite processor remains a D
+candidate. Early node-filter rejection/native string-tail boundaries remain.
+The sequence below records initial adoption; do not repeat completed gates.
 
 The user selects this version direction by supplying the guide for read-only
 review, followed by Plan mode planning. The guide's A-E stages, public API
@@ -20,7 +20,7 @@ status. First create the memory plan checkpoint, then a CHANGELOG-only candidate
 wait for human delivery before experiments. Each production node has its own
 human-delivery gate. No existing preparation API forces parallel standard semantics.
 Callback/Cite/STM/ownership/output feasibility gates precede broad migration;
-inner-template and a TeXmacs Cite processor remain candidates, not decisions.
+The Cite processor design remains a candidate; A has selected inner-template.
 Standard preparation may generate STM and owns recursive INCLUDE. Existing
 independent preparation can survive with a clear standalone purpose, but must
 exit the new standard path. Async/nonblocking, Issue9 and arbitrary syntax

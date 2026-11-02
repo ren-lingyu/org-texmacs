@@ -1,41 +1,33 @@
 # org-texmacs current project model
 
-## v0.7.0 stage A candidate implemented and validated; human delivery pending
+## v0.7.0 standard backend: A delivered, B validated candidate
 
-The real texmacs backend now consumes standard org-export-as preparation through
-an inner-template handoff. The uncommitted candidate owns input/model/document,
-uses a single-use private token removed before INFO, and isolates nested exports
-and native-consumer waits. Unsupported effective node string filters fail before
-execution; options/AST filters and final text body/output filters remain standard.
-Native text uses reversible Latin1 transport; native PDF consumes the document
-directly. Source snapshot strings are owned and mutation across waits is checked.
-Legacy conveniences remain unchanged until E; STM, raw and logical exclusion
-adaptation remain explicit unsupported boundaries for B/C/D. Independent core
-and pure lowering retain their contracts. Exact accepted133input identity is in
-memory/standard-export-0.7.0-a-inputs.json; full12checks/678ERT pass. HEAD440b331
-remains the prior human CHANGELOG delivery; the11-path candidate is unstaged and
-awaits human commit before B. See current and evidence for validation limits.
+The real texmacs backend consumes standard org-export-as preparation through
+inner-template. A is human-delivered at4f03ee4. The owned single-use result token
+is removed before INFO, nested exports/native waits are isolated, and effective
+unsupported node-string callbacks fail before execution. Options/AST and final
+text body/output filters retain standard semantics; structured consumers reject
+unproven string tails/finalizers. Native text uses reversible Latin1 transport;
+native PDF consumes the completed document directly.
 
-## Historical intake and initial feasibility (superseded by candidate above)
+B adds source-coordinate-independent final-AST STM discovery and native parsing.
+Resolve deferred properties via the public API without FORCE while live, own tree/
+ignore identities, project consumed directives and RESULTS/affiliation, and obtain
+complete native source from final structured contents or :texmacs-source. Support
+configured paragraph/direct-inline-note fragments and texmacs/equation/equation*;
+Org objects can contribute syntax inside complete quoted STM only. Incomplete,
+cross-boundary or target-raw inputs fail explicitly. No earlier protection or
+whole-buffer reparse is introduced. Generic models keep Org AST plus parsed STM
+islands, separate from INFO and output policy.
 
-Read-only review of the user's Standard Org Export Integration guide is recorded
-in memory/standard-export-0.7.0.md. The real standard Org pipeline is the selected
-direction for approved execution, not implemented behavior. The controlling
-revised plan is memory/standard-export-0.7.0-plan.md. Existing generic rejection and
-bounded frontend remain. Source inspection establishes callback/Cite/ownership
-risks, not prototype feasibility or new support. Keep existing0.6.0 core APIs
-independent, generic model context separate from consumer INFO, and treat
-standard preprocessing output as input rather than require original STM bytes.
-
-Stage A now has isolated focused feasibility evidence and expected counterexamples
-in memory/standard-export-0.7.0-a.md. The root remains unchanged at440b331, with
-no production standard backend. Normal-return structured delivery is promising;
-the naive final-AST/string-filter mismatch is resolved by the user's explicit
-unsupported-node-filter boundary. Attempt6 validates early guards18/18, including
-late INFO installations/Cite and other-backend isolation, on Emacs31.1/Org9.8.10.
-Normal-return scoped results/native Latin1 transport are adopted for the minimal
-node. No production source yet; focused probes do not establish maintained full
-gate or release acceptance.
+Freeze private input/context/function identities before native waits, fill owned
+islands once and allocate references afterward. Reuse model/input ownership and
+existing lowering; keep independent parsing/model APIs and legacy frontend routes
+until E. Full standard selection/reference/footnote and Cite adaptation remain C/D.
+B is uncommitted,6paths, full12checks/693ERT accepted. Exact144inputs:
+memory/standard-export-0.7.0-b-inputs.json; current/evidence/B note define limits.
+Await human B delivery before C. Historical0.6architecture below remains a
+baseline, not the current standard backend support matrix.
 
 ## Adopted positioning versus implemented architecture
 

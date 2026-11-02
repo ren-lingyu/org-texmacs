@@ -1,73 +1,55 @@
 # org-texmacs current memory
 
-## Current: stage A implemented and accepted; await human delivery
+## Current: stage B implemented and validated; await human delivery
 
-The revised v0.7.0 plan is approved with "Implement the plan". Its controlling
-contract is memory/standard-export-0.7.0-plan.md; guide intake and six revision
-requirements are in memory/standard-export-0.7.0.md. The mandatory plan checkpoint
-and first CHANGELOG-only human delivery440b331 are complete and verified against
-the v0.6.0 parent (only one blank differs from the reviewed initial candidate).
+The approved0.7.0plan is memory/standard-export-0.7.0-plan.md. Initial CHANGELOG
+and Stage A are human-delivered; A4f03ee4 matches expected parent/message/11paths
+and all133accepted A hashes. Stage B now adds the final-AST STM adapter, without
+source coordinates, earlier protection, extra Org parse, independent preparation
+or INCLUDE recursion. Org remains authority; existing independent model and pure
+lowering APIs remain separate. C-E are pending after the human B delivery gate.
 
-Stage A isolated hypotheses and refinements are complete. The minimal production
-candidate adds org-texmacs-export.el and switches the actual texmacs backend to
-real org-export-as. It owns prepared input/model/document and delivers structures
-through a single-use request token removed before preparation/INFO. Normal
-return/advice completion, nested callbacks and native-consumer waits do not
-inherit other calls' requests. Source file/directory strings are independently
-owned; changes across waits fail without rolling back arbitrary user code.
+B resolves deferred properties through public org-element-properties-resolve
+without FORCE (including INFO metadata), preserving AST-filter writes; owns the
+final tree and ignore identities; projects consumed directives/RESULTS and
+structural affiliation; recognizes original/generated/synthetic STM from final
+contents or explicit native :texmacs-source. Inline objects may supply syntax
+only wholly inside a complete quoted STM string; cross-boundary, incomplete,
+opaque/target-raw input fails explicitly. No original-source fidelity promise.
 
-The user explicitly excludes complete node-string-filter support from the0.7.0
-release gate. Reject unsupported effective node callbacks before invocation,
-including ones installed by options/AST filters, using early backend callbacks
-and narrowly guarded public org-export-data/org-cite-process-citations boundaries.
-Keep full standard options/AST semantics and body/final-output filters on final
-text. No private preparation copy/advice, text roundtrip, arbitrary callback
-sandbox or no-op prediction. Native structured consumers currently conservatively
-reject effective string-tail callbacks/finalizers whose effects cannot be kept.
+Freeze complete private input/context/functions before worker waits, fill owned
+islands exactly once, then allocate labels from actual parsed trees. Partial
+models never escape. Source tags join mutation checks. Standard text/node-filter
+and native result delivery contracts from A remain. Legacy frontend migration
+and full standard reference/footnote/Cite adaptation remain C-E.
 
-Native .tm text uses reversible ISO-Latin1 byte transport; standard file callers
-need matching coding, and Org adds a terminal newline. Direct native PDF consumes
-the completed document without .tm serialization/reparsing. Legacy frontend and
-public source conveniences retain their old routes until E. Inline STM, target
-raw and logical exclusion are explicitly rejected pending B/C/D adaptation.
-This is the minimal A bridge, not full standard STM/Cite/current-extension support.
+Final accepted144input SHA256s: memory/standard-export-0.7.0-b-inputs.json.
+Root and isolated snapshot match all inputs. Focused core280/native6 pass;
+formal full-1 exits0/all12checks pass with that core result reused and fresh
+native345/PDF-document33/PDF-render29/patched6:693ERT/zero unexpected. Strict
+compilation/lint/treefmt pass on Emacs31.1/Org9.8.10/TeXmacs2.1.5/x86_64-linux.
+No new minimum9.8behavior/other-platform/real extension/examples-build claim.
+Detailed failures/refinement, validation and provenance:
+memory/standard-export-0.7.0-b.md.
 
-Final accepted input identity: memory/standard-export-0.7.0-a-inputs.json
-(133input SHA256s; baseline440b331, uncommitted candidate). Root and isolated
-copy match every accepted input. Focused core269/269 passes; final full isolated
-600s/max-jobs2/keep-going flake gate exits0/all12checks pass with that exact core
-result reused, plus fresh native341/PDF-document33/PDF-render29/patched6:
-678ERT, zero unexpected. Strict byte/native compile, lint and treefmt pass.
-Runtime Emacs31.1/Org9.8.10/TeXmacs2.1.5 on x86_64-linux. No other-platform,
-minimum9.8behavior, real-extension integration or examples-build claim is new.
-Full chronology, validation limits and artifact provenance:
-memory/standard-export-0.7.0-a.md.
+Selective prototype evidence is verified/immutable at
+archive/2026-11-02T18-33-35Z--4f03ee4/MANIFEST.md. Its prose baseline133count
+is corrected to143 by its own original JSON; production has144inputs, including
+LICENSE/.gitignore/eight release manuscripts excluded from the A133manifest.
+No evidence bytes changed; do not repeat the erroneous carried-over count.
+Routine production diagnostics are distilled with maintained regressions.
 
-Two immutable selective experiment captures are verified and checkpointed:
-archive/2026-11-02T16-54-11Z--440b331/MANIFEST.md and
-archive/2026-11-02T17-28-52Z--440b331/MANIFEST.md. They preserve failed-hypothesis
-controls, final prototypes, inputs/replay and necessary logs, not binaries or
-whole copies. Routine production validation is distilled with maintained tests
-and the active accepted-input manifest; no extra raw build-log archive needed.
+Six ordinary paths are unstaged; README/CHANGELOG synchronized,3complete/
+1ongoing/10pending feature boxes and TODO unchanged. tmp/commit.md uses the
+approved full-worktree draft workflow: feat(export): adapt prepared ASTs and
+native STM islands. HEAD4f03ee4/index/lock/result unchanged. No ordinary staging
+or commit performed. Await human B commit; verify parent/paths/message/all144
+hashes before C. Do not repeat unchanged passed gates for delivery.
 
-Candidate is11ordinary paths, unstaged. README/CHANGELOG describe the implemented
-bridge and pending boundaries; TODO v0.7.0 is unchanged with1complete/1ongoing/
-12pending feature items. No version bump/CLOSED/CUSTOM_ID. tmp/commit.md uses the
-approved full worktree-diff workflow: feat(export): add standard Org export handoff,
-four Chinese bullets, no breaking/issue footer. One coupled feature needs no split.
-HEAD remains440b331; ordinary index, lock and result unchanged.
-
-The user grants nix fmt/flake check/build/eval and argument variants as needed
-through this0.7.0plan; do not reconfirm each command. Continue exact scope/write/
-network/timeout disclosure. Ordinary project staging requires separate authority;
-ordinary commits/tags/pushes remain human-only. Do not reuse permission beyond
-the approved plan or automatically publish.
-
-Next: await the human A commit, verify expected parent, complete paths/content/
-message and all133accepted hashes before stage B. Do not rerun unchanged passed
-gates merely for delivery. Report full progress before B; B-E remain pending.
-Continue selective experiment retention review, per-node README/CHANGELOG and
-commit drafts, memory evolution and human delivery gates.
+User permits nix fmt/build/eval/flake check and variants throughout this0.7.0
+plan. Continue exact command/write/network/timeout disclosure. Ordinary project
+staging needs separate authority; commits/tags/pushes remain human-only. Maintain
+memory promptly, per-node README/CHANGELOG/drafts and selective evidence review.
 
 ## Current: v0.6.0 locally finalized and tagged; approved plan complete
 

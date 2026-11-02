@@ -1,5 +1,31 @@
 # org-texmacs durable evidence
 
+## Stage B acceptance and A human delivery
+
+A4f03ee4delivery matches expected440b331parent, exact11paths, prepared message
+and all133accepted A hashes; clean ordinary worktree/index confirmed before B.
+B formal full-1 exits0/all12checks pass: cached exact core280 plus fresh native345,
+PDF-document33, PDF-render29 and patched6 =693ERT/zero unexpected. Strict byte/
+native compile, package-lint and treefmt pass on x86_64-linux/Emacs31.1/Org9.8.10/
+TeXmacs2.1.5. No new other-platform/minimum9.8behavior/real extension acceptance.
+Accepted144input manifest: memory/standard-export-0.7.0-b-inputs.json, SHA256
+620fc064080e31650cbcebcd522f306c5e16122eb10683f85db94a44efecd13e.
+All root/isolated hashes match; HEAD4f03ee4/index/lock unchanged. Production is
+uncommitted6paths with README/CHANGELOG and worktree-based tmp/commit.md ready.
+Wait for human B commit and verify exact inputs before C; no unchanged test rerun.
+
+B evidence/refinements: memory/standard-export-0.7.0-b.md. Public deferred resolver
+must run without FORCE before copying, including rich INFO; identity mapping alone
+does not resolve code :value. Final affiliation/RESULTS is structured, input/context
+and functions freeze before worker waits, then actual parsed islands precede
+reference allocation. Original/generated/synthetic STM, boundary/raw failures and
+independent snapshots are maintained regressions. No early protection adopted.
+Immutable experiment capture: archive/2026-11-02T18-33-35Z--4f03ee4/MANIFEST.md.
+Its carried-over133baseline prose count is corrected to143 by its original JSON;
+B production has144files, including ten files excluded from A's133manifest.
+Original archive bytes/results are intact; do not modify immutable evidence.
+Earlier A-candidate sections below describe their own historical snapshots.
+
 ## Stage A production acceptance: exact uncommitted candidate
 
 Final isolated full-attempt-6 exits0/all12flake checks pass. Core269/269 is reused
