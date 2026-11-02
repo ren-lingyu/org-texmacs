@@ -1,23 +1,32 @@
 # org-texmacs current memory
 
-## Current: node6 serialization accepted; awaiting human delivery
+## Current: node6 serialization delivered and verified
 
 Nodes1-5 and the CHANGELOG progress sync are human-delivered. Node6's
 15-path candidate is implemented and accepted by the full isolated flake gate:
 654/654ERT, strict byte/native compilation, lint, treefmt and all17checks.
 Final README/CHANGELOG-only edits also pass the full command, reusing accepted
 runtime outputs and executing the changed treefmt check only. All130final
-root/copy hashes match and diff whitespace passes. Node6 is NOT human-committed
-yet; do not begin node7.
+root/copy hashes match and diff whitespace passes. Human delivery is now
+verified: expected CHANGELOG-sync parent, exactly15paths, prepared message and
+all130accepted input hashes match the committed tree. Ordinary index/worktree
+are clean. No delivery-only test rerun. Nodes1-6 are delivered; node7 finite
+snapshot transforms and node8 export research/docs/version completion remain.
 
 Before EVERY new node report all eight statuses, scope, validation and delivery.
 At the END of EACH development node synchronize BOTH CHANGELOG and README.
+NEW user preference: before handing over EVERY completed node for review,
+proactively draft tmp/commit.md from the COMPLETE node diff, including unstaged
+and new files when present, and label that basis explicitly. This is an explicit
+exception to staged-only message preparation for those node handovers; do not
+wait for a separate message request or alter the project index automatically.
 User now authorizes nix fmt/build/eval/flake check and their argument variants
 as needed until the approved plan completes. Disclose exact commands, effects,
 network and bounded timeout; do not request this authorization again.
 Ordinary project staging remains separately authorized and commits stay human.
-No ordinary project Git mutation has been performed. tmp/commit.md still
-describes the earlier delivered CHANGELOG sync, not this source candidate.
+No ordinary project Git mutation has been performed. tmp/commit.md now describes
+the delivered source node: feat(model): serialize mathematical-document ASTs to
+Org. The complete staged snapshot was verified before the human committed it.
 
 New APIs: model-serialize/model-to-buffer, autoloaded from model. Serializer
 requires explicit captured syntax, validates supported node/island positions,
@@ -64,11 +73,14 @@ Unicode and explicit errors. CHANGELOG now has9complete/1ongoing/3pending:
 serialization2 and direct roundtrip2 are complete; finite transforms2 and
 transformed roundtrip remain pending. Version TODO is unchanged.
 
-Next: deliver for human review/staging/commit. The acceptance memory checkpoint
-has no external project parent because the candidate is uncommitted. Prepare
-a commit message only when requested against the actual complete staged diff. After
-human delivery verification, report all eight statuses and begin node7 finite
-snapshot transforms; node8 export research/docs/version completion follows.
+Next development node: report all eight statuses and begin node7 finite snapshot
+transforms; node8 export research/docs/version completion follows. This delivery
+confirmation turn verifies and records node6 only, without starting node7.
+Prepare commit messages proactively at completed-node handover using the complete
+diff, as explicitly requested above. The current message used the complete
+staged diff. The earlier acceptance checkpoint had no external project parent
+because its candidate was uncommitted; delivery can now be grounded in the exact
+verified project commit without rerunning unchanged accepted tests.
 
 ## Accepted foundation and delivery evidence
 

@@ -34,8 +34,12 @@ only changed treefmt. Do not claim a second fresh654ERT execution. All130final
 source/test/build/doc hashes match root and isolated copy, whitespace passes.
 Accepted runtime snapshot/manifest is serialization-attempt-4 under ignored tmp;
 final snapshot/manifest is core-ast-0.6.0-serialization. Attempts1-3 remain too.
-Candidate spans15ordinary paths, with both staged and unstaged changes; no agent
-project staging/commit or lockfile mutation. Human delivery remains pending.
+Candidate spans15ordinary paths; no agent project staging/commit or lockfile
+mutation. User subsequently staged all15paths, with no unstaged changes and
+all130index hashes equal to final acceptance. Prepared message from the complete
+staged diff. Human delivery now verified: expected CHANGELOG-sync parent,
+exact15paths, prepared message and all130committed input hashes match acceptance;
+ordinary worktree/index clean. No unchanged delivery-only test rerun.
 
 ## Inspection/display acceptance: user-run full root gate
 

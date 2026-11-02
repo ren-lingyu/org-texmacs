@@ -11,7 +11,7 @@ Core validity must be independent of a target consumer's supported Org subset,
 and valid caller-supplied STM trees must not require a parser restart.
 
 Construction and structural inspection are delivered. Normalized Org
-serialization is accepted and awaiting human delivery; finite AST transformation
+serialization is human-delivered and verified; finite AST transformation
 remains the next planned node. The existing prepared-input/preflight pipeline
 retains consumer-specific preparation, while the new core reuses common owned
 snapshots and island validation. Existing export support descriptions below
@@ -46,10 +46,12 @@ clean. Native unset standard slots and cache state are filtered while
 ordinary explicit nil properties stay visible. CHANGELOG progress sync now has
 five complete/one ongoing/seven pending, now human-delivered with exact diff/
 parent/message verification and a clean worktree/index. Serialization is now
-implemented as an uncommitted candidate, with native standalone STM runtime
+implemented and human-delivered, with native standalone STM runtime
 proof and eleven core/five native regression cases. Full isolated flake passes
 654/654ERT and all17checks; final docs-only snapshot also passes using cached
-runtime outputs and a fresh treefmt check. Human delivery remains pending.
+runtime outputs and a fresh treefmt check. Human delivery is verified against
+expected parent,15paths, prepared message and all130accepted input hashes;
+ordinary worktree/index clean, no delivery-only rerun.
 CHANGELOG now has9complete/1ongoing/3pending items; version TODO is unchanged. Public
 model-serialize/model-to-buffer require recorded syntax and explicitly reject
 unsupported/lossy output without invalidating the model. Serialization owns

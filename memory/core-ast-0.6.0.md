@@ -180,6 +180,12 @@ This reporting preference applies throughout the current v0.6.0 development.
 User additionally requires synchronizing BOTH CHANGELOG and README at the end
 of EACH development node, recording implemented capability, limits and progress
 before delivery rather than postponing this to version completion.
+User now additionally requires proactive commit-message preparation from the
+complete node diff BEFORE handing over each completed node for review. Include
+unstaged/new files when present and state the basis; this explicitly overrides
+the staged-only default for those node handovers. Do not wait for another
+message request or stage project files automatically. Human commits and
+delivery verification before the next node remain required.
 
 ## Serialization and equivalence
 
@@ -497,5 +503,7 @@ the full command, using cached runtime outputs and a fresh treefmt check.
 README documents the conservative profile and Unicode support; CHANGELOG now
 marks serialization2/direct-round-trip2 complete, leaving transform2/transformed-
 round-trip1 pending and export preservation ongoing. Final130input hashes match
-root/copy. Candidate is accepted but not human-delivered; verify the eventual
-commit against this snapshot before beginning finite transformation.
+root/copy. Human delivery is now verified: expected CHANGELOG-sync parent,
+exact15paths, prepared message and all130accepted input hashes match the committed
+tree; ordinary worktree/index clean. No unchanged delivery-only rerun. Finite
+transformation is the next development node.

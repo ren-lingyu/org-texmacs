@@ -15,7 +15,8 @@ Org serialization now has an implemented candidate, native standalone proof,
 eleven new core and five native cases; full flake/654ERT passes, and final
 README/CHANGELOG snapshot is accepted too. Worktree progress is now9complete,
 1ongoing and3pending, with version TODO unchanged. Finite transformation follows
-human delivery of this15-path node; it is not committed yet.
+this15-path node, now human-delivered and verified against the expected parent,
+message and all130accepted input hashes. Ordinary worktree/index are clean.
 The user grants nix fmt/build/eval/flake check and argument variants as needed
 until the approved plan is complete; ordinary Git writes remain separate.
 Before delivery of each development node, synchronize both CHANGELOG
