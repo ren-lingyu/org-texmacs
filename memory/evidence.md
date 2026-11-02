@@ -1,5 +1,22 @@
 # org-texmacs durable evidence
 
+## Final read-only review after human DONE transition
+
+The worktree-only CHANGELOG diff changes TODO to DONE and adds
+CLOSED [2026-11-02 Mon 11:03]. The adopted Org release profile requires a matching
+CUSTOM_ID for DONE versions, but v0.6.0 has no property drawer. Its body also
+retains "Implementation verified; final review pending." Reported both as
+release-document corrections; no project files or index were modified.
+Compared all133accepted manifest entries with the worktree: only CHANGELOG.org
+differs. Version metadata agree,14checkboxes complete, local README/changelog/
+release-note targets exist and whitespace passes. Public parser/inspection/
+serialization autoload entries exist. The v0.5.0-to-HEAD document/fragment diff
+retains shared-copy consumer errors and does not change preparation ordering.
+No new runtime tests were run; prior665ERT evidence remains unchanged, not a
+new exhaustive code audit. Local tag lookup returns no v0.6.0 tag; no network
+publication evidence was requested or obtained. Human CLOSED time provenance
+is not independently verified; the recorded weekday matches its calendar date.
+
 ## Node8 human delivery verification and plan completion
 
 The delivered release-preparation commit has the expected node7 parent and

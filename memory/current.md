@@ -1,6 +1,25 @@
 # org-texmacs current memory
 
-## Current: all eight v0.6.0 plan nodes delivered and verified
+## Current: implementation complete; final release-document review has two findings
+
+The user manually changed the worktree v0.6.0 heading to DONE with
+CLOSED [2026-11-02 Mon 11:03] and requested final review. HEAD remains the
+verified node8 delivery; only CHANGELOG.org has an unstaged change. Final
+read-only review found two release-document issues: the DONE version lacks
+its required CUSTOM_ID v0.6.0, and its body still says "final review pending".
+Recommend adding the identity drawer and removing the stale candidate sentence.
+No ordinary project files, state/time records or index were changed in review.
+The CLOSED weekday is consistent; its actual transition time was not independently
+verified. No local v0.6.0 tag exists; DONE does not establish publication.
+
+All other132accepted worktree inputs remain byte-identical. Versions agree on
+0.6.0,14checkboxes are complete, release notes/local file links and whitespace
+checks pass. Documented API autoload entries exist; review of shared lowering
+changes does not reveal an export preparation-order change. Prior665ERT/full
+check/package evidence still applies to unchanged runtime inputs; no fresh tests
+or exhaustive independent code audit were performed for this documentation review.
+Next: user review/correction of these two findings, followed by final commit
+verification if requested. Do not modify release state/time or publish by inference.
 
 Human delivery of node8 is verified against the expected node7 parent, exactly
 six changed paths, all133accepted committed input hashes, whitespace and a clean
@@ -11,9 +30,9 @@ scope. No repeated tests were needed for byte-identical delivery.
 The approved eight-node implementation plan is complete. Core construction,
 inspection, normalized Org serialization and finite structural transformations
 are delivered. Lisp/Nix/README align to0.6.0; release notes and root CHANGELOG
-are synchronized. CHANGELOG has14complete/0ongoing/0pending; version TODO/CLOSED
-remains unchanged. Release-state transition, tags and publication remain human
-actions, not unfinished authorized implementation.
+are synchronized at committed delivery. CHANGELOG has14complete/0ongoing/0pending.
+The later human DONE transition exists only in the worktree as described above;
+tags and publication remain human actions.
 
 Detailed export research lives in memory/standard-org-export.md, with concise
 README guidance. No new project docs directory or allowlist was delivered.
@@ -35,9 +54,8 @@ including unstaged/new files. Ordinary project staging needs separate authority;
 commits remain human actions. Standing Nix command authority was scoped through
 completion of this approved plan; do not silently extend it to follow-up work.
 
-Next: await a new user objective. No implementation or tests remain under the
-completed plan; do not change release state or begin the export prototype by
-inference.
+No implementation or runtime tests remain under the completed plan; do not
+begin the export prototype by inference.
 
 ## Accepted foundation and delivery evidence
 
