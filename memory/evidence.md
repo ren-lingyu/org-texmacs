@@ -27,6 +27,27 @@ comparison. This is an uncommitted accepted candidate: no exact project commit
 is asserted as the source of this user-run check. Earlier failed copies remain
 under tmp. No agent formatter, ordinary staging/commit or remote mutation.
 
+Subsequent human delivery verified: expected parser parent, exact six paths,
+message equals prepared draft and all126committed input/doc hashes match accepted
+manifest; ordinary worktree/index clean. No delivery-only rerun. The root
+CHANGELOG still has thirteen unchecked0.6.0items and the obsolete statement
+that none are implemented. This is documentation lag, not evidence that the
+committed constructor/parser/inspection APIs are absent. Five items satisfy
+their feature descriptions; export preservation remains an ongoing release
+constraint, and seven serialization/transformation/round-trip items are pending.
+User then authorized root progress synchronization. Worktree-only CHANGELOG diff
+marks those five complete, export preservation ongoing and seven pending, and
+corrects the introductory implementation claim. No version-state/history/source
+edit. Whitespace passes; message explicitly requested from this worktree diff,
+without staging. Human doc commit must precede node6 continuation.
+That doc commit is now verified: exact inspection parent, one-file seven-line
+replacement diff and approved message, clean ordinary worktree/index. No rerun.
+Node6 investigation has no native serializer runtime evidence yet. The official
+TeXmacs Scheme API (https://www.texmacs.org/tmweb/documents/manuals/texmacs-scheme.en.pdf)
+identifies texmacs->stm as tree_to_scheme and snippet parsing as scheme_to_tree;
+23case standalone probe scripts are prepared in ignored tmp, awaiting permission.
+These source/API facts do not establish native round-trip behavior.
+
 ## Independent buffer-parser acceptance
 
 The common-model foundation was human-committed after the CHANGELOG-only

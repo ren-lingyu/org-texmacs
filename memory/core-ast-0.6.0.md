@@ -173,6 +173,9 @@ not every edit. No unrelated build/test/repository refactor is selected.
 User additionally requires a complete eight-node progress report BEFORE starting
 each node, with done/current/pending, current scope and validation/delivery status.
 This reporting preference applies throughout the current v0.6.0 development.
+User additionally requires synchronizing BOTH CHANGELOG and README at the end
+of EACH development node, recording implemented capability, limits and progress
+before delivery rather than postponing this to version completion.
 
 ## Serialization and equivalence
 
@@ -439,7 +442,7 @@ authoritative STM bodies and AST-path references instead of recursive property
 reference expansion. No new worker/lowering or native serializer work belongs
 to this node. New-node tests/formatting need fresh command authority.
 
-## Inspection/display: accepted candidate, human delivery pending
+## Inspection/display: delivered and verified
 
 The node adds org-texmacs-model-inspect/model-display in a separate autoloaded
 worker-free module. Reuse ownership copying and island validation, index nodes
@@ -459,4 +462,21 @@ No per-suite final ERT totals/times were supplied; do not claim a new aggregate
 count. Optional integration/GUI/native STM serializer remain unverified. Current
 six paths are staged with no unstaged diff;126input/doc hashes match worktree
 and index in the accepted manifest. User requests GAW update then staged message
-preparation. Wait for human delivery before the complete progress report/node6.
+preparation. Human delivery now verified: expected parent/six paths/message,
+all126accepted input/doc hashes equal committed contents, worktree/index clean.
+Read-only root CHANGELOG audit shows five completed items still unchecked and
+the none-implemented introduction obsolete; keep TODO version state and remaining
+seven feature items pending, with export preservation ongoing. User asked about
+consistency; that audit did not edit root. User then authorized root progress
+sync and a message directly from its one-file worktree diff. Five complete,
+export preservation ongoing and seven pending now match delivery; version TODO
+unchanged, doc commit pending. User requires that commit before node6. Report
+all nodes after verifying it, then proceed with native-serializer investigation.
+
+The CHANGELOG-only sync is now human-delivered: expected inspection parent,
+exact one-file7replacement-line diff/message and clean ordinary worktree/index.
+Complete eight-node report precedes node6, now investigating serialization.
+No serializer implementation or runtime probe yet. Official native Scheme API
+identifies texmacs->stm/tree_to_scheme as the candidate standalone serializer;
+two ignored tmp scripts prepare23native round-trip probes. Fresh runtime-command
+authority is pending; node5 repeated-test permission does not transfer.

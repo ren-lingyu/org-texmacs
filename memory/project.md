@@ -36,14 +36,19 @@ with eleven new core cases, accepted by full isolated flake check/613ERT.
 The independent org-texmacs-parse-buffer implementation is now accepted by the full
 default flake check/627ERT, with eleven new core and three native parser cases;
 all nine paths are human-committed with exact123input hash verification and a
-clean worktree/index. Inspection/display is now an accepted uncommitted six-path
-candidate after user-run complete default flake check: independent detached
+clean worktree/index. Inspection/display is now delivered after user-run complete
+default flake check: independent detached
 model-inspect projection with secondary objects/captions/authoritative STM,
 AST-path property references, parent validation and unique read-only model-display
-buffers with failure cleanup. Eleven core cases and docs are staged, with no
-unstaged changes. Native unset standard slots and cache state are filtered while
-ordinary explicit nil properties stay visible. Human delivery is pending;
-serialization and transformation remain subsequent nodes. The parser snapshots full Org source
+buffers with failure cleanup. Eleven core cases and docs are committed; exact
+six-path/message/parent and126accepted input/doc hashes match, worktree/index
+clean. Native unset standard slots and cache state are filtered while
+ordinary explicit nil properties stay visible. CHANGELOG progress sync now has
+five complete/one ongoing/seven pending, now human-delivered with exact diff/
+parent/message verification and a clean worktree/index. Serialization is the
+active investigation node; standalone native STM runtime proof is pending before
+implementation. Transformation remains subsequent. At each node completion,
+sync both CHANGELOG and README per the user's new requirement. The parser snapshots full Org source
 and effective syntax, uses native Org block boundaries and existing inline
 recognition, preserves comments/drawers/excluded headings/unused definitions,
 and never performs export preprocessing, pruning or lowering. Native island trees

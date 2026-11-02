@@ -6,8 +6,14 @@ Status: **active**, common-model/ownership foundation delivered and verified aft
 full isolated flake/613ERT. Independent buffer-parser candidate now accepted by
 full isolated default flake/627ERT; all nine paths human-delivered with exact
 source/message verification. Inspection/display is accepted by the user's full
-root flake check (17checks, exit0); six paths staged, human delivery pending.
-Next functional node is native STM/normalized Org serialization, after delivery.
+root flake check (17checks, exit0); six paths human-delivered with126accepted
+input/doc hashes verified. User authorized CHANGELOG progress sync after the
+audit: worktree now has five completed, one ongoing and seven pending items,
+with an accurate introduction, now human-delivered with exact diff/parent/message
+verification. No version TODO transition or source change. Native STM/normalized
+Org serialization is now active, with a prepared native probe awaiting command
+authority. Before delivery of each development node, synchronize both CHANGELOG
+and README, per the user's new explicit instruction.
 Before every new node, report the complete eight-node progress and validation/
 delivery status. The required GAW plan
 checkpoint and exact human CHANGELOG-only TODO v0.6.0 delivery are complete;

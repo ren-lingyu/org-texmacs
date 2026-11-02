@@ -1,53 +1,58 @@
 # org-texmacs current memory
 
-## Current: inspection/display accepted; prepare message and await human delivery
+## Current: node6 serialization investigation; native probe authority pending
 
-Nodes1-4 are complete: plan checkpoint, CHANGELOG, model foundation and independent
-parser. Parser delivery matches expected parent/nine paths/message and all123
-accepted input hashes; the parser-delivery checkpoint grounds its exact snapshot.
-Node5 began after the complete eight-node progress report. Before EVERY new node,
-report all eight statuses plus scope, validation and delivery. Node5 now passes
-the gate and awaits human commit;6serialization/7transforms/8docs-standard-export-
-investigation-version completion remain pending. Do not start node6 before
-delivery verification.
+Nodes1-5 are delivered. Inspection delivery matches expected parser parent,
+six paths/message and all126accepted input/doc hashes. User then delivered the
+CHANGELOG-only progress sync: expected inspection parent, one file, exact7line
+replacement diff and approved message. Ordinary worktree/index clean at intake.
+Checkboxes are five complete, export compatibility ongoing, seven pending;
+version TODO is unchanged. No source changes or delivery-only test rerun.
 
-Accepted six-path candidate: new org-texmacs-inspect module, model autoloads/main
-commentary, README and eleven registered core cases. It reuses model ownership/
-island validation, checks original parents and projects detached Org/STM trees.
-Expand secondary objects and long/short captions; use AST-path references for
-ordinary cross-node property links. Hide parent/source/parser metadata, stale
-island contents/body properties and redundant raw titles. Hide :cached/:mode;
-omit only unset standard :post-blank/:structure/:true-level slots while keeping
-ordinary explicit nil properties. Display creates a new unique read-only
-special-mode buffer, disables mode hooks/print truncation and cleans failures.
-No parser/worker/lowering or source lifetime is needed by this consumer.
+User explicitly continues development. BEFORE starting node6, reported the full
+eight-node table:1-5done,6native STM/normalized Org serialization current,
+7finite transforms/8standard-export investigation-docs-version completion
+pending. Repeat all eight statuses, scope and validation/delivery BEFORE EVERY
+new node. NEW persistent requirement: at the END of EACH development node,
+update BOTH CHANGELOG and README to match delivered capability, limitations and
+progress before review/delivery. Do not leave progress housekeeping to release end.
 
-Acceptance is USER-RUN root nix flake check, not an agent rerun. After manual
-nix fmt, user reports exit0 in226.8042s, running17flake checks, all checks passed
-in current x86_64-linux. Output identifies strict package builds, treefmt, lint,
-core/native/PDF/patched-caption checks and aggregates; no individual suite counts
-or fresh per-suite timings were printed. Do not invent them or rerun this gate.
-Other systems omitted; optional integration, GUI and native STM serialization
-are not newly verified. User subsequently explicitly confirmed tests passed.
-Current six paths are staged with no unstaged changes; staged/worktree whitespace
-passes. Captured126current build/source/test/README hashes matching index and
-worktree in tmp/core-ast-0.6.0-inspection-accepted.inputs.json for later exact
-delivery comparison. The code is not yet committed, so do not attach the latest
-project commit as provenance for this user-run acceptance.
+Node6 public targets are model-serialize and model-to-buffer. Model validity
+must stay independent of serialization expressibility/support. Reuse native Org
+interpretation on an owned structural copy, not global text placeholders.
+Validate unsupported types/positions explicitly; no lowering/preflight whitelist.
+Keep native document/session/export order unchanged. No product serializer code
+has been written yet: native standalone STM serialization must be runtime-proven
+first, per the approved user guide.
 
-Earlier failures and fixes: strict docstring-width warning, then six new core
-projection failures from native unset standard slots, then treefmt-only reflow.
-Original structural test expectations were retained; explicit nil-property
-coverage was added. Failed125input copies/manifests remain under tmp. User grants
-repeated execution of the previously disclosed inspection-verify check command
-within node5 only; formatting remains manual. No repeat is now warranted.
+Read worker Scheme/Elisp, native fixture and Nix test support. Existing .tm
+serialize operation constructs a full document; it is not the standalone STM
+boundary. Official TeXmacs Scheme API PDF identifies texmacs->stm as tree_to_scheme
+(string output) and stm-snippet->texmacs as scheme_to_tree. This is source evidence
+only, not runtime validation. Official Org9.8.10 org-element-interpret-data
+recursively resolves native interpreters but falls back to children for unknown
+node types, so a bounded serializer needs explicit prevalidation.
 
-User now requests GAW update FIRST, then commit-message preparation. Update and
-checkpoint this accepted state, then inspect the complete staged diff and write
-the inspection message to tmp/commit.md. Its existing content is the delivered
-parser message and must not be reused. No ordinary staging/commit/tag/push.
-After human delivery, compare exact scope/message/accepted hashes before the
-complete progress report and node6 native-serializer investigation.
+Prepared two untracked ignored tmp scripts:
+tmp/core-ast-0.6.0-stm-probe.el and .scm. They launch one headless native process,
+load existing Scheme parsing validation, test23cases (15required,8edge probes),
+and compare stree->tree -> texmacs->stm -> existing org-texmacs-parse. Covers
+Unicode/escapes/atomic leaves/whitespace/Org delimiters/custom and unusual tags.
+Native config/log/results go under tmp/core-ast-0.6.0-stm-probe-run; host HOME
+is not reassigned. No scripts run and no product source changed so far.
+
+Asked fresh authority for:
+timeout 120s nix develop --no-write-lock-file --command emacs -Q --batch --load
+/home/lingyu/Projects/org-texmacs/tmp/core-ast-0.6.0-stm-probe.el
+(single command, ordinary spacing). User can authorize repeated node6 probe,
+one run, or decline. WAIT for reply before executing. Prior repeated node5 flake
+check permission does not cover this command or node6 tests/formatters.
+While waiting, static Org serializer/syntax-context investigation may continue;
+do not implement the native serializer assuming the probe outcome.
+
+No ordinary project stage/commit/tag/push. User formats manually. Each node
+remains reviewable and human-delivered before advancing. The current
+tmp/commit.md is the delivered CHANGELOG sync message, not a future source message.
 
 ## Accepted foundation and delivery evidence
 
