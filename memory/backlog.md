@@ -16,7 +16,13 @@ eleven new core and five native cases; full flake/654ERT passes, and final
 README/CHANGELOG snapshot is accepted too. Worktree progress is now9complete,
 1ongoing and3pending, with version TODO unchanged. Finite transformation follows
 this15-path node, now human-delivered and verified against the expected parent,
-message and all130accepted input hashes. Ordinary worktree/index are clean.
+message and all130accepted input hashes. That delivery left the ordinary
+worktree/index clean.
+Finite transformation is now implemented and accepted by full isolated flake/
+665ERT, with8core/3native cases and synchronized README/CHANGELOG. The8-path
+candidate is uncommitted; human review/delivery precedes node8 standard-export
+research/docs/version completion. Current worktree progress:12complete,
+1ongoing export-preservation item,0pending feature boxes; version TODO unchanged.
 The user grants nix fmt/build/eval/flake check and argument variants as needed
 until the approved plan is complete; ordinary Git writes remain separate.
 Before delivery of each development node, synchronize both CHANGELOG

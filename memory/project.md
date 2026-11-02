@@ -11,8 +11,9 @@ Core validity must be independent of a target consumer's supported Org subset,
 and valid caller-supplied STM trees must not require a parser restart.
 
 Construction and structural inspection are delivered. Normalized Org
-serialization is human-delivered and verified; finite AST transformation
-remains the next planned node. The existing prepared-input/preflight pipeline
+serialization is human-delivered and verified; finite AST transformation is now
+accepted by full flake/665ERT, awaiting human review/delivery. The existing
+prepared-input/preflight pipeline
 retains consumer-specific preparation, while the new core reuses common owned
 snapshots and island validation. Existing export support descriptions below
 remain factual baseline and historical delivery evidence; their target-support
@@ -58,8 +59,15 @@ unsupported/lossy output without invalidating the model. Serialization owns
 its Org copy, restores authoritative trees, uses native Org interpretation and
 native STM source serialization, and checks output structure using known trees.
 Captured link syntax is installed in each private buffer; Unicode response
-symbol bytes stay contiguous instead of being escaped separately. Transformation
-remains subsequent. At each node completion,
+symbol bytes stay contiguous instead of being escaped separately. The finite
+transform candidate adds model-copy, model-island and model-replace-stm, using
+snapshot-local Org keys and zero-based STM child paths. Copy/replacement own
+Org/STM/context data and remap context references, retaining old locators only
+on the old model. Source coordinates/residues remain historical; no text/parser/
+worker/lowering participates. Root changes remain valid outside output support.
+Eight core/three native cases pass;132final input hashes identify the8-path
+candidate. README and CHANGELOG are synchronized (12complete/1ongoing/0pending);
+version TODO is unchanged. At each node completion,
 sync both CHANGELOG and README per the user's new requirement. The parser snapshots full Org source
 and effective syntax, uses native Org block boundaries and existing inline
 recognition, preserves comments/drawers/excluded headings/unused definitions,

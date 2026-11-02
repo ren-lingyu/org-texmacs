@@ -1,5 +1,33 @@
 # org-texmacs durable evidence
 
+## Node7 finite structural transformation acceptance
+
+Eight-path uncommitted candidate adds model-copy/model-island/model-replace-stm,
+context-aware owned snapshots,8core/3native cases, README/main commentary and
+CHANGELOG progress. Complete mutable graph disjointness includes Org/STM/context,
+secondary objects/captions and structural references. Tests cover old/new locator
+isolation, borrowed replacements, nested/root/atomic replacements, invalid
+paths/trees/parents, unchanged originals, historical coordinate avoidance and
+operations trapped against worker/parser/serialization/lowering calls.
+Native transformed-output tests reuse the independent meaning oracle, covering
+structure/idempotence and valid root changes both inside/outside output syntax.
+
+Standing Nix authorization covers this node. First scoped8-path fmt exits0,
+4files changed. First isolated timeout600s full flake exits0/all17checks pass on
+x86_64-linux. Fresh results: core258/258 in1.624726s, native339/339 in225.874501s,
+PDF-document33/33 in93.354967s, PDF-render29/29 in155.843921s, patched-caption6/6
+in2.888091s:665ERT, zero unexpected. Strict byte/native compile, package-lint,
+treefmt and aggregates pass. No other platform, optional extension or GUI claim.
+
+Afterward only CHANGELOG changes: transform2/transformed-roundtrip1 boxes become
+complete. Scoped README/CHANGELOG fmt exits0/no changes. Final full command also
+exits0 using unchanged runtime outputs and a fresh treefmt check; do not claim
+another fresh665ERT run. Accepted runtime snapshot/manifest is ignored tmp/
+core-ast-0.6.0-transformation-attempt-1; final132-input snapshot/manifest is
+tmp/core-ast-0.6.0-transformation. No ordinary project staging/commit, source
+selection/export ordering change or lockfile mutation. Proactive tmp/commit.md
+uses complete worktree diff including2new test files, per the user's instruction.
+
 ## Node6 normalized Org serialization acceptance
 
 The standalone native prerequisite below now also covers the product Scheme

@@ -506,4 +506,30 @@ round-trip1 pending and export preservation ongoing. Final130input hashes match
 root/copy. Human delivery is now verified: expected CHANGELOG-sync parent,
 exact15paths, prepared message and all130accepted input hashes match the committed
 tree; ordinary worktree/index clean. No unchanged delivery-only rerun. Finite
-transformation is the next development node.
+transformation acceptance is recorded below.
+
+## Finite structural transformation: accepted, awaiting delivery
+
+The user explicitly continues after serialization delivery verification; all
+eight node statuses were reported before implementation. New public model-copy,
+model-island and model-replace-stm implement the selected finite profile. Copy
+and replacement use the existing owner transaction for Org/STM and optional
+context copying, including AST references in context; existing snapshot callers
+still receive three values. Model-local island keys are identity locators;
+replacement paths are zero-based STM child indices, nil for the entire root.
+All mutable data is independently owned, parents and mappings rebuilt. Borrowed
+replacement subtrees are copied. No source/parser/worker/lowering or text
+intermediate is used. Old locators remain valid on their original model only.
+Root changes, including atomic leaves, are structurally valid independently of
+serialization; unrecognized output roots fail explicitly at the serializer.
+Org hierarchy edits remain outside scope. Preserved source residues/coordinates
+describe the original source; diagnostics and addressing use structural paths.
+
+Eight core cases and three native cases cover ownership/refs/secondary/captions,
+purity, locator isolation, valid/invalid paths, failure preservation, nested/root/
+atomic edits, configured tags and transformed structure/idempotence. Full flake
+passes665ERT/all17checks; final CHANGELOG-only snapshot passes with cached runtime
+outputs and fresh treefmt. README documents the public contract; CHANGELOG now
+has12complete/1ongoing/0pending, version TODO unchanged. Complete worktree commit
+message is prepared before review; candidate remains uncommitted. Verify eventual
+delivery against132input hashes before node8 export research/docs/version work.

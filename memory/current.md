@@ -1,86 +1,76 @@
 # org-texmacs current memory
 
-## Current: node6 serialization delivered and verified
+## Current: node7 finite structural transforms accepted; awaiting human review
 
-Nodes1-5 and the CHANGELOG progress sync are human-delivered. Node6's
-15-path candidate is implemented and accepted by the full isolated flake gate:
-654/654ERT, strict byte/native compilation, lint, treefmt and all17checks.
-Final README/CHANGELOG-only edits also pass the full command, reusing accepted
-runtime outputs and executing the changed treefmt check only. All130final
-root/copy hashes match and diff whitespace passes. Human delivery is now
-verified: expected CHANGELOG-sync parent, exactly15paths, prepared message and
-all130accepted input hashes match the committed tree. Ordinary index/worktree
-are clean. No delivery-only test rerun. Nodes1-6 are delivered; node7 finite
-snapshot transforms and node8 export research/docs/version completion remain.
+Nodes1-6 are human-delivered, including serialization delivery verified against
+its expected parent,15paths/message and all130accepted input hashes. Node7 is
+now implemented and accepted by full isolated flake/665ERT. Its8-path candidate
+has NOT been human-committed. Do not begin node8 before delivery verification.
 
 Before EVERY new node report all eight statuses, scope, validation and delivery.
 At the END of EACH development node synchronize BOTH CHANGELOG and README.
-NEW user preference: before handing over EVERY completed node for review,
-proactively draft tmp/commit.md from the COMPLETE node diff, including unstaged
-and new files when present, and label that basis explicitly. This is an explicit
-exception to staged-only message preparation for those node handovers; do not
-wait for a separate message request or alter the project index automatically.
-User now authorizes nix fmt/build/eval/flake check and their argument variants
-as needed until the approved plan completes. Disclose exact commands, effects,
-network and bounded timeout; do not request this authorization again.
-Ordinary project staging remains separately authorized and commits stay human.
-No ordinary project Git mutation has been performed. tmp/commit.md now describes
-the delivered source node: feat(model): serialize mathematical-document ASTs to
-Org. The complete staged snapshot was verified before the human committed it.
+Before handing over EVERY completed node, proactively draft tmp/commit.md from
+the COMPLETE node diff, including unstaged/new files and explicitly state the
+basis. This user instruction overrides staged-only message preparation for
+these node handovers. Do not wait for another message request or stage files.
+User authorizes nix fmt/build/eval/flake check and argument variants as needed
+until the approved plan completes. Disclose commands, effects/network and bounded
+timeouts, but do not request repeated permission. Ordinary project staging
+remains separately authorized and commits remain human actions.
 
-New APIs: model-serialize/model-to-buffer, autoloaded from model. Serializer
-requires explicit captured syntax, validates supported node/island positions,
-owns its Org copy, restores authoritative current trees and uses native Org
-interpretation plus standalone native STM worker serialization. Generated Org
-is privately parsed under captured syntax and checked structurally, associating
-known trees without STM input reparsing. Editable output buffer is allocated
-only after successful serialization, uses captured syntax/resource base, has
-unique name and failure cleanup, and runs no mode hooks/export acquisition.
+New APIs in model.el:
 
-Model validity is independent of serialization support and lowering. Unsupported
-positions/types/properties/source-unexpressible roots fail explicitly at output.
-New model-serialization-error is distinct from model-error; transport failures
-retain worker-error. No lowering, export preparation, Cite or Babel is invoked.
-Existing export preflight/STM parsing/error/cleanup order stays intact.
-Shared owned snapshot/path validation moved from inspection into model, keeping
-inspection behavior. Private parser buffers now install captured link syntax
-locally, preserving generated-buffer custom types/abbreviations across switches.
+- model-copy: own independent Org/STM/context graphs, rebuild parents and island
+  keys, and remap structural references including context references.
+- model-island: read-only STM reference by actual snapshot-local Org island key;
+  equal copies, ordinary nodes and other-model locators fail.
+- model-replace-stm: node plus zero-based STM child path and replacement produce
+  a new independent snapshot; nil path replaces the root, including an atom.
 
-Native prerequisite before implementation:23probe cases,15required exact pass,
-20source-expressible pass including the product helper. LF/CR/TAB become native
-Scheme escapes without changing leaf content. Three unusual tags fail native
-source expressibility. Maintained native coverage additionally found that the
-response printer escaped each UTF-8 symbol byte, splitting Unicode tag names;
-now only ASCII symbol characters are escaped, leaving UTF-8 sequences intact.
+No AST -> text -> AST intermediate, source read, worker or lowering. The original
+and its locators survive success/failure. Source text/coordinates remain original-
+source data, never addressing the changed tree. Errors use AST/STM paths.
+Model validity is independent of output syntax/support. Changed inline roots
+outside captured tags remain valid, inspectable/copyable models; S fails explicitly.
+Configured additional tags permit supported changed roots to round-trip.
 
-Validation evolution: first gate core248/250, fixed private-buffer link context
-and a residue fixture missing native Org's section wrapper. Second gate layout
-failure. Third gate core250/250/native335/336, found Unicode-tag wire corruption.
-Fourth gate exits0: core250/native336/PDF-document33/PDF-render29/patched6,
-zero unexpected, on x86_64-linux. All11new core/5new native cases pass.
-No other platform, optional real extension or GUI claim. Evidence/times in
-evidence.md. Three scoped nix fmt invocations exit0/no changes.
+The owned snapshot helper accepts optional context as a fourth result, retaining
+its existing three-result contract for inspection/serialization. Context ownership
+uses the same node-remapping transaction, not disconnected generic copying.
+Org hierarchy editing is outside this finite transformation profile; no derived
+export INFO/reference data is stored or carried across these core operations.
 
-Accepted runtime input snapshot/manifest is attempt-4 under ignored tmp.
-Current tmp/core-ast-0.6.0-serialization plus adjacent inputs.json contains all
-130final inputs; only README/CHANGELOG differ from attempt-4. Earlier attempts
-are retained. Final check uses:
-timeout 600s nix flake check -L --no-write-lock-file --max-jobs 2 path:/home/lingyu/Projects/org-texmacs/tmp/core-ast-0.6.0-serialization
-It reuses unchanged runtime outputs; do not claim a second fresh654ERT run.
+Node7 adds8core/3native regressions. Entire mutable graphs are checked disjoint,
+including strings/conses/vectors, secondary objects/captions and context refs.
+Covers borrowed replacements, deep/root/atomic edits, locator isolation, bad
+paths/trees, invalid parents, historical coordinates, purity and transformed
+round-trip/idempotence. Maintained independent model-meaning test oracle is reused.
 
-README documents APIs, context/profile limits, source/buffer/worker boundaries,
-Unicode and explicit errors. CHANGELOG now has9complete/1ongoing/3pending:
-serialization2 and direct roundtrip2 are complete; finite transforms2 and
-transformed roundtrip remain pending. Version TODO is unchanged.
+First full gate exits0/all17checks passed on x86_64-linux: core258/native339/
+PDF-document33/PDF-render29/patched6 =665ERT, zero unexpected. Strict byte/native
+compilation, lint and treefmt pass. Final CHANGELOG-only completion update also
+passes the full command using cached runtime outputs and fresh treefmt; no second
+fresh665ERT run. Two scoped nix fmt commands succeed. Other platforms, optional
+real extension integration and GUI are not newly verified.
 
-Next development node: report all eight statuses and begin node7 finite snapshot
-transforms; node8 export research/docs/version completion follows. This delivery
-confirmation turn verifies and records node6 only, without starting node7.
-Prepare commit messages proactively at completed-node handover using the complete
-diff, as explicitly requested above. The current message used the complete
-staged diff. The earlier acceptance checkpoint had no external project parent
-because its candidate was uncommitted; delivery can now be grounded in the exact
-verified project commit without rerunning unchanged accepted tests.
+Accepted runtime132-input snapshot/manifest:
+tmp/core-ast-0.6.0-transformation-attempt-1 (ignored).
+Final snapshot/manifest: tmp/core-ast-0.6.0-transformation
+and adjacent inputs.json. Final snapshot differs only in CHANGELOG. Full command:
+timeout 600s nix flake check -L --no-write-lock-file --max-jobs 2 path:/home/lingyu/Projects/org-texmacs/tmp/core-ast-0.6.0-transformation
+Verify final root/copy hashes at delivery. All8paths are currently unstaged,
+including2new test files; no ordinary Git write/lockfile mutation occurred.
+
+README documents APIs, paths, read-only references, identity/ownership and scope.
+CHANGELOG now has12complete/1ongoing/0pending; only release-wide export behavior
+preservation remains ongoing. Version TODO and package0.5.0 metadata unchanged.
+tmp/commit.md is proactively prepared from the complete WORKTREE diff including
+new files: feat(model): add structural snapshot transformations.
+
+Next: deliver the candidate for human review/staging/commit. Verify eventual
+parent,8paths/message and132accepted committed input hashes, then report all eight
+statuses before node8 standard Org Export research, docs and version completion.
+No new test is needed solely for staging or unchanged delivery confirmation.
 
 ## Accepted foundation and delivery evidence
 
