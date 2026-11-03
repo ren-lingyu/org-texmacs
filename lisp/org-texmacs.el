@@ -87,6 +87,8 @@
 (require 'org-texmacs-input)
 (require 'org-texmacs-session)
 
+(autoload 'org-texmacs--standard-source-consume "org-texmacs-export")
+
 (autoload
   'org-texmacs-document-from-buffer-discover-bibliography
   "org-texmacs-bibliography")
@@ -793,60 +795,64 @@ separate from that read-only temporary input before filling native results."
 (defun org-texmacs-export-texmacs-from-buffer
     (source-buffer
      &optional bibliography-sources subtree-position region ext-plist)
-  "Export explicit Org SOURCE-BUFFER to a complete native .tm byte string.
-Optional SUBTREE-POSITION selects the containing subtree in owned preparation.
-REGION is an optional (BEGIN . END) body range with priority over subtree body
-selection, retaining subtree configuration.  EXT-PLIST provides restricted
-configuration overrides.  See `org-texmacs-prepare-buffer'.
-Use the same restricted preparation, configuration snapshot and explicit
-BIBLIOGRAPHY-SOURCES text snapshots as `org-texmacs-document-from-buffer'.
-Lower and serialize inside preparation's final source consistency check, so
-source, parser or dependency changes during native waits reject the export.
-Preserve SOURCE-BUFFER and return an unibyte string.  No output file, live
-session, export hook or generic Org export backend is created or invoked.
-Unsupported directives retain the existing explicit preparation errors."
-  (org-texmacs--prepare-buffer source-buffer
-                               (lambda (input)
-                                 (org-texmacs-document-serialize
-                                  (org-texmacs-document input)))
-                               bibliography-sources
-                               subtree-position
-                               region
-                               ext-plist))
+  "Export explicit Org SOURCE-BUFFER to final native .tm bytes.
+Run one standard Org export transaction on a live Org buffer object.
+BIBLIOGRAPHY-SOURCES must be nil. Configure standard Org Cite instead.
+
+SUBTREE-POSITION selects its accessible containing heading.
+REGION is a nonempty integer (BEGIN . END) body range.
+When both are given, the heading at BEGIN must match the subtree heading;
+otherwise fail before preparation. Nil REGION ignores an active region.
+Preserve source point, mark and restriction independently of the caller.
+
+Own EXT-PLIST before hooks. Org manages options, selection, AST filters
+and Cite. Final text filters feed reversible Latin-1 transport.
+Lossy conversion fails. Return unibyte data after source/native checks.
+No file is written. Load the backend only at export use."
+  (org-texmacs--standard-source-consume
+   'tm
+   source-buffer
+   bibliography-sources
+   subtree-position
+   region
+   ext-plist))
 
 ;;;###autoload
 (defun org-texmacs-export-pdf-from-buffer
     (source-buffer
      &optional bibliography-sources subtree-position region ext-plist)
   "Render explicit Org SOURCE-BUFFER to native PDF bytes.
-Optional SUBTREE-POSITION selects the containing subtree in owned preparation.
-REGION is an optional (BEGIN . END) body range with priority over subtree body
-selection, retaining subtree configuration.  EXT-PLIST provides restricted
-configuration overrides.  See `org-texmacs-prepare-buffer'.
-Use explicit BIBLIOGRAPHY-SOURCES snapshots and the restricted preparation.
-Keep lowering and native printing inside the final source/dependency check.
-Return unibyte PDF data; no final output file or GUI preview is created."
-  (org-texmacs--prepare-buffer source-buffer
-                               (lambda (input)
-                                 (org-texmacs-document-pdf
-                                  (org-texmacs-document input)))
-                               bibliography-sources
-                               subtree-position
-                               region
-                               ext-plist))
+Run one standard export transaction. Arguments and selection follow
+`org-texmacs-export-texmacs-from-buffer'; supplied BibTeX texts fail.
+Consume the completed native document without a .tm text round trip.
+Reject incompatible text filters/finalizers before their tail effects.
+Return unibyte PDF data after source/native-setting checks.
+No output file or viewer is created."
+  (org-texmacs--standard-source-consume
+   'pdf
+   source-buffer
+   bibliography-sources
+   subtree-position
+   region
+   ext-plist))
 
 ;;;###autoload
 (defun org-texmacs-export-to-pdf-file
     (source-buffer file &optional bibliography-sources)
   "Render explicit Org SOURCE-BUFFER to a new local PDF at absolute FILE.
-Capture the destination before preparation, then render with explicit
-BIBLIOGRAPHY-SOURCES and check source/dependencies before writing PDF bytes.
-Use the existing exclusive creation and partial-write file-error boundary.
-This is a noninteractive explicit-source API.  No GUI preview opens."
+Capture the destination before one standard export transaction.
+BIBLIOGRAPHY-SOURCES must be nil. Pass the actual path in INFO
+without aliasing the write target. Check source before writing.
+Use exclusive creation and native saving's partial-write error boundary.
+This API is noninteractive and opens no viewer."
   (let ((target (org-texmacs--native-save-target file)))
     (org-texmacs--native-save-bytes
-     (org-texmacs-export-pdf-from-buffer source-buffer
-                                         bibliography-sources)
+     (org-texmacs-export-pdf-from-buffer
+      source-buffer
+      bibliography-sources
+      nil
+      nil
+      (list :output-file (substring-no-properties target)))
      target)
     target))
 
@@ -901,19 +907,14 @@ during Org parsing or prompts.  Do not run mode hooks or export preprocessing."
 (defun org-texmacs-export-to-buffer
     (source-buffer
      &optional bibliography-sources subtree-position region ext-plist)
-  "Export explicit Org SOURCE-BUFFER into a fresh readonly native byte buffer.
-Optional SUBTREE-POSITION selects the containing subtree in owned preparation.
-REGION is an optional (BEGIN . END) body range with priority over subtree body
-selection, retaining subtree configuration.  EXT-PLIST provides restricted
-configuration overrides.  See `org-texmacs-prepare-buffer'.
-Pass explicit BIBLIOGRAPHY-SOURCES snapshots to
-`org-texmacs-export-texmacs-from-buffer'.
-Create the derived buffer only after export/source checking succeeds.  Retain
-native bytes in a unibyte `special-mode' buffer with no-conversion coding, no
-visiting file and no mode hooks.  Never reuse or overwrite another export
-buffer.
-Return the new buffer without displaying it.  The Lisp caller owns its lifetime.
-This is a native source view, not rendered TeXmacs output."
+  "Export explicit Org SOURCE-BUFFER to a fresh readonly native byte buffer.
+Arguments follow `org-texmacs-export-texmacs-from-buffer'.
+BIBLIOGRAPHY-SOURCES must be nil; use standard Org Cite instead.
+Return a new unibyte `special-mode' buffer without display.
+Use no-conversion coding, no visiting file and no mode hooks.
+Create it only after successful conversion and source checks.
+Existing result buffers are never reused or changed.
+The caller owns the result's lifetime."
   (org-texmacs--export-byte-buffer
    (org-texmacs-export-texmacs-from-buffer
     source-buffer
@@ -953,20 +954,23 @@ Optional NAME overrides the explicit-source result name prefix."
 ;;;###autoload
 (defun org-texmacs-export-to-texmacs-file
     (source-buffer file &optional bibliography-sources)
-  "Export explicit Org SOURCE-BUFFER to a new local native file at FILE.
-Validate and copy the absolute destination before preparation.  Export with
-`org-texmacs-export-texmacs-from-buffer' and BIBLIOGRAPHY-SOURCES, checking
-source and dependency consistency through serialization before opening the file.
-Write the already serialized bytes once and return the copied path.
-The destination does not redefine source-relative links.  Existing files or
-symlinks are never overwritten; use the same exclusive creation and file-error
-boundary as `org-texmacs-document-save'.  No source/output buffer is visited or
-changed, and no generic Org export preprocessing or session update runs.
-This is a noninteractive explicit-source API."
+  "Export explicit Org SOURCE-BUFFER to a new native file at absolute FILE.
+Copy the destination before one standard export transaction.
+BIBLIOGRAPHY-SOURCES must be nil; configure standard Org Cite instead.
+Pass the actual path in INFO without aliasing the write target.
+Write checked native bytes once without conversion or an extra newline.
+Source-relative resources retain their captured base.
+Existing files and symlinks are never overwritten.
+Use exclusive creation and the native partial-write file-error boundary.
+No output buffer or viewer is opened."
   (let ((target (org-texmacs--native-save-target file)))
     (org-texmacs--native-save-bytes
-     (org-texmacs-export-texmacs-from-buffer source-buffer
-                                             bibliography-sources)
+     (org-texmacs-export-texmacs-from-buffer
+      source-buffer
+      bibliography-sources
+      nil
+      nil
+      (list :output-file (substring-no-properties target)))
      target)
     target))
 

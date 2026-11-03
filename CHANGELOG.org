@@ -27,7 +27,13 @@ TeXmacs document lowering remain separate from standard export preparation.
   visible-only, and preserve managed buffers and guarded native file writing.
 - Breaking: non-nil =org-texmacs-export-discover-bibliography= is rejected;
   configure standard Org Cite instead.  Interactive EXT-PLIST follows Org,
-  while explicit source adapters retain their legacy contracts during migration.
+  while structured preparation/document and legacy preprocessed/discovery
+  variants retain old contracts until caller migration.
+- Source TM/PDF bytes, fresh buffers and exclusive new-file exports now use one
+  standard transaction with lazy backend loading and owned options/selections.
+- Breaking: source byte/buffer/file =BIBLIOGRAPHY-SOURCES= must be nil; configure
+  standard Org Cite.  Combined explicit subtree/region selections require matching
+  headings at region start; ambient active regions do not select explicit exports.
 - Final text filters feed reversible native byte output; lossy text conversion
   fails explicitly.  PDF consumes the completed native document directly.
 - Preserve Org's table alignment after control-row pruning, including numeric

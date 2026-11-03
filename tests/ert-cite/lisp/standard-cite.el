@@ -279,6 +279,69 @@
            (should (= prepared 1))
            (should (= citations 1))))))))
 
+(ert-deftest org-texmacs-standard-csl-explicit-source-consumers ()
+  (org-texmacs-test--with-csl
+   (with-temp-buffer
+     (org-mode)
+     (insert csl-header "[cite:@key]\n#+print_bibliography:\n")
+     (let ((source (current-buffer))
+           (cite (symbol-function 'org-cite-csl-render-citation)))
+       (dolist (kind '(tm pdf buffer tm-file pdf-file))
+         (let ((prepared 0)
+               (citations 0)
+               (file
+                (expand-file-name (format "source-%s" kind)
+                                  default-directory)))
+           (let ((org-export-before-processing-functions
+                  (list (lambda (_) (cl-incf prepared)))))
+             (cl-letf (((symbol-function
+                         'org-cite-csl-render-citation)
+                        (lambda (&rest args)
+                          (cl-incf citations)
+                          (apply cite args))))
+               (let ((result
+                      (with-temp-buffer
+                        (pcase kind
+                          ('tm
+                           (org-texmacs-export-texmacs-from-buffer
+                            source))
+                          ('pdf
+                           (org-texmacs-export-pdf-from-buffer
+                            source))
+                          ('buffer
+                           (org-texmacs-export-to-buffer source))
+                          ('tm-file
+                           (org-texmacs-export-to-texmacs-file
+                            source file))
+                          ('pdf-file
+                           (org-texmacs-export-to-pdf-file
+                            source file))))))
+                 (pcase kind
+                   ('buffer
+                    (unwind-protect
+                        (with-current-buffer result
+                          (should
+                           (string-search
+                            "Reference alpha" (buffer-string))))
+                      (kill-buffer result)))
+                   ('pdf (should (string-prefix-p "%PDF-" result)))
+                   ('pdf-file
+                    (should
+                     (string-search
+                      "Reference alpha"
+                      (org-texmacs-test--pdf-text result))))
+                   ('tm-file
+                    (with-temp-buffer
+                      (insert-file-contents-literally result)
+                      (should
+                       (string-search
+                        "Reference alpha" (buffer-string)))))
+                   (_
+                    (should
+                     (string-search "Reference alpha" result)))))))
+           (should (= prepared 1))
+           (should (= citations 1))))))))
+
 (ert-deftest
     org-texmacs-standard-csl-owned-bibliography-after-preparation
     ()

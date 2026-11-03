@@ -1666,13 +1666,19 @@
      (let ((org-use-property-inheritance
             (list (copy-sequence "EXPORT_AUTHOR"))))
        (cl-letf (((symbol-function 'org-texmacs-document-serialize)
-                  (lambda (_document)
+                  (lambda (document)
+                    (should
+                     (string-search
+                      "FirstBodySentinel"
+                      (prin1-to-string
+                       (org-texmacs-document-body document))))
                     (aset (car org-use-property-inheritance) 0 ?X)
                     (encode-coding-string
                      "<TeXmacs|2.1.5>" 'us-ascii))))
-         (should-error
-          (org-texmacs-export-texmacs-from-buffer
-           (current-buffer) nil (point))
-          :type 'org-texmacs-document-error))))))
+         (should
+          (string-prefix-p
+           "<TeXmacs|"
+           (org-texmacs-export-texmacs-from-buffer
+            (current-buffer) nil (point)))))))))
 
 ;;; frontend.el ends here

@@ -131,3 +131,30 @@
         (should-error
          (org-texmacs--standard-consume 'document)
          :type 'org-texmacs-document-error)))))
+
+(ert-deftest org-texmacs-standard-source-main-loads-backend-on-use ()
+  (org-texmacs-test--menu-fresh-process
+   '(progn
+      (require 'org-texmacs)
+      (should-not (featurep 'ox-texmacs))
+      (with-temp-buffer
+        (org-mode)
+        (insert
+         "#+OPTIONS: toc:nil title:nil author:nil date:nil\nBody.\n")
+        (let ((calls 0))
+          (let ((org-export-before-processing-functions
+                 (list (lambda (_) (cl-incf calls)))))
+            (cl-letf (((symbol-function
+                        'org-texmacs-document-serialize)
+                       (lambda (_document)
+                         (encode-coding-string "Native" 'us-ascii)))
+                      ((symbol-function 'org-texmacs--prepare-buffer)
+                       (lambda (&rest _)
+                         (ert-fail "Legacy preparation"))))
+              (should
+               (equal
+                "Native"
+                (org-texmacs-export-texmacs-from-buffer
+                 (current-buffer))))))
+          (should (= calls 1))
+          (should (featurep 'ox-texmacs)))))))

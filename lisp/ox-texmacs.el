@@ -28,39 +28,6 @@ Non-nil values are rejected by the standard frontend with migration advice."
   :group 'org-texmacs)
 (make-variable-buffer-local 'org-texmacs-export-discover-bibliography)
 
-(defun org-texmacs--export-copy-options (value)
-  "Own mutable VALUE data, preserving functions and opaque object identities.
-A memoized graph copy also preserves parent links in parsed Org metadata."
-  (let ((copies (make-hash-table :test #'eq)))
-    (cl-labels
-     ((copy
-       (item)
-       (cond
-        ((functionp item)
-         item)
-        ((gethash item copies))
-        ((stringp item)
-         (let ((new (substring-no-properties item)))
-           (puthash item new copies)
-           new))
-        ((consp item)
-         (let ((new (cons nil nil)))
-           (puthash item new copies)
-           (setcar new (copy (car item)))
-           (setcdr new (copy (cdr item)))
-           new))
-        ((recordp item)
-         item)
-        ((vectorp item)
-         (let ((new (copy-sequence item)))
-           (puthash item new copies)
-           (dotimes (index (length item))
-             (aset new index (copy (aref item index))))
-           new))
-        (t
-         item))))
-     (copy value))))
-
 (defun org-texmacs--export-check-options
     (async subtreep visible-only body-only ext-plist)
   "Capture standard frontend arguments before prompts and workers.
@@ -73,23 +40,15 @@ VISIBLE-ONLY and EXT-PLIST semantics under the real Org export transaction."
   (when org-texmacs-export-discover-bibliography
     (user-error
      "Remove org-texmacs-export-discover-bibliography; configure standard Org Cite"))
-  (unless (and (proper-list-p ext-plist)
-               (zerop (% (length ext-plist) 2))
-               (cl-loop
-                for
-                (key _value)
-                on
-                ext-plist
-                by
-                #'cddr
-                always
-                (keywordp key)))
-    (user-error "Expected an Org export option plist"))
   (let ((position (point))
         (region
          (and (org-region-active-p)
               (cons (region-beginning) (region-end))))
-        (options (org-texmacs--export-copy-options ext-plist)))
+        (options
+         (condition-case err
+             (org-texmacs--standard-copy-options ext-plist)
+           (org-texmacs-document-error
+            (user-error "%s" (error-message-string err))))))
     (list
      (when subtreep
        (org-texmacs--export-source-copy

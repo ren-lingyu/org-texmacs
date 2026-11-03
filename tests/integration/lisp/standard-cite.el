@@ -246,3 +246,71 @@
                         (buffer-string)))))))))
             (should (= prepared 1))
             (should (= citations 1))))))))
+
+(ert-deftest
+    org-texmacs-integration-standard-organize-source-consumers
+    ()
+  (org-texmacs-integration--with-standard-organize
+    (with-temp-buffer
+      (org-mode)
+      (setq
+       default-directory notes
+       buffer-file-name (expand-file-name "source-api.org" notes))
+      (insert
+       (format
+        "#+cite_export: csl fixture.csl\n[cite:@%s]\n#+print_bibliography:\n"
+        uuid))
+      (let ((source (current-buffer))
+            (cite (symbol-function 'org-cite-csl-render-citation)))
+        (dolist (kind '(tm pdf-file buffer))
+          (let ((prepared 0)
+                (citations 0)
+                (file (expand-file-name "source-api.pdf" notes)))
+            (let ((org-export-before-processing-functions
+                   (list (lambda (_) (cl-incf prepared)))))
+              (cl-letf
+                  (((symbol-function 'org-cite-csl-render-citation)
+                    (lambda (citation style backend info)
+                      (cl-incf citations)
+                      (should
+                       org-roam-organize--cite-export-in-progress)
+                      (should
+                       (equal
+                        '("real-key")
+                        (org-cite-get-references citation t)))
+                      (should
+                       (equal
+                        (list bib) (plist-get info :bibliography)))
+                      (funcall cite citation style backend info))))
+                (let ((result
+                       (with-temp-buffer
+                         (pcase kind
+                           ('tm
+                            (org-texmacs-export-texmacs-from-buffer
+                             source))
+                           ('pdf-file
+                            (org-texmacs-export-to-pdf-file
+                             source file))
+                           ('buffer
+                            (org-texmacs-export-to-buffer source))))))
+                  (pcase kind
+                    ('buffer
+                     (unwind-protect
+                         (with-current-buffer result
+                           (should
+                            (string-search
+                             "Actual fixture reference"
+                             (buffer-string))))
+                       (kill-buffer result)))
+                    ('pdf-file
+                     (should
+                      (string-search
+                       "Actual fixture reference"
+                       (ucs-normalize-NFKC-string
+                        (org-texmacs-test--pdf-text result)))))
+                    (_
+                     (should
+                      (string-search
+                       "Actual fixture reference" result)))))))
+            (should (= prepared 1))
+            (should (= citations 1))))))))

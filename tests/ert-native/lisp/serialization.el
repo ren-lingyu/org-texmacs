@@ -431,7 +431,10 @@
   (org-texmacs-test--with-worker
    (let ((destination (expand-file-name "destination" test-directory))
          (serialize (symbol-function 'org-texmacs-document-serialize))
-         (calls 0))
+         (calls 0)
+         (prepared 0)
+         (parsed 0)
+         (export (symbol-function 'org-export-as)))
      (make-directory destination)
      (with-temp-buffer
        (org-mode)
@@ -450,22 +453,18 @@
                (buffer-modified-p)
                default-directory
                buffer-file-name))
-             (org-export-before-processing-hook
-              (list
-               (lambda (&rest _)
-                 (ert-fail "Export ran generic processing hook"))))
-             (org-export-before-parsing-hook
-              (list
-               (lambda (&rest _)
-                 (ert-fail "Export ran generic parsing hook")))))
+             (org-export-before-processing-functions
+              (list (lambda (&rest _) (cl-incf prepared))))
+             (org-export-before-parsing-functions
+              (list (lambda (&rest _) (cl-incf parsed)))))
          (cl-letf (((symbol-function 'org-texmacs-document-serialize)
                     (lambda (document)
                       (cl-incf calls)
                       (funcall serialize document)))
                    ((symbol-function 'org-export-as)
-                    (lambda (&rest _)
-                      (ert-fail
-                       "Export entered generic backend pipeline"))))
+                    (lambda (&rest args)
+                      (should (eq (car args) 'texmacs))
+                      (apply export args))))
            (let* ((source (current-buffer))
                   (bytes
                    (org-texmacs-export-texmacs-from-buffer source))
@@ -481,6 +480,8 @@
                  file
                  (org-texmacs-export-to-texmacs-file source file))))
              (should (= calls 2))
+             (should (= prepared 2))
+             (should (= parsed 2))
              (with-temp-buffer
                (set-buffer-multibyte nil)
                (insert-file-contents-literally file)
@@ -511,11 +512,18 @@
        (org-mode)
        (insert "Text.\n")
        (let ((source (current-buffer))
+             (save-bytes
+              (symbol-function 'org-texmacs--native-save-bytes))
              (file
               (expand-file-name (format "%s.tm" change)
                                 test-directory)))
          (cl-letf (((symbol-function 'org-texmacs-document-serialize)
-                    (lambda (_document)
+                    (lambda (document)
+                      (should
+                       (string-search
+                        "Text."
+                        (prin1-to-string
+                         (org-texmacs-document-body document))))
                       (with-current-buffer source
                         (pcase change
                           ('text
@@ -536,14 +544,27 @@
                       (encode-coding-string
                        "<TeXmacs|2.1.5>\n" 'us-ascii)))
                    ((symbol-function 'org-texmacs--native-save-bytes)
-                    (lambda (&rest _)
-                      (ert-fail "Export wrote before source check"))))
-           (should-error
-            (org-texmacs-export-to-texmacs-file source file)
-            :type 'org-texmacs-document-error))
-         (should-not (file-exists-p file)))))))
+                    (lambda (&rest args)
+                      (if (memq change '(heading links))
+                          (apply save-bytes args)
+                        (ert-fail
+                         "Export wrote before source check")))))
+           (if (memq change '(heading links))
+               (should
+                (equal
+                 file
+                 (org-texmacs-export-to-texmacs-file source file)))
+             (should-error
+              (org-texmacs-export-to-texmacs-file source file)
+              :type 'org-texmacs-document-error)))
+         (should
+          (eq
+           (and (file-exists-p file) t)
+           (and (memq change '(heading links)) t))))))))
 
-(ert-deftest org-texmacs-serialization-export-bibliography-wait ()
+(ert-deftest
+    org-texmacs-serialization-export-bibliography-migration-before-effects
+    ()
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
@@ -571,7 +592,8 @@
            (current-buffer) file sources)
           :type 'org-texmacs-document-error))
        (should-not (file-exists-p file))
-       (should (org-texmacs--worker-live-p))))))
+       (should-not (org-texmacs--worker-live-p))
+       (should (string-prefix-p "@book" (cdar sources)))))))
 
 (ert-deftest
     org-texmacs-serialization-export-destination-and-preflight
@@ -607,9 +629,7 @@
           (org-texmacs-export-to-texmacs-file
            (current-buffer) expected)
           :type 'file-already-exists))))
-   (dolist (directive
-            '("#+INCLUDE: missing.org\n"
-              "#+SETUPFILE: missing.org\n"))
+   (dolist (directive '("#+INCLUDE: missing.org\n"))
      (with-temp-buffer
        (org-mode)
        (insert directive "(math \"x\")\n")
@@ -624,7 +644,7 @@
                       (ert-fail "Unsupported export wrote output"))))
            (should-error
             (org-texmacs-export-to-texmacs-file (current-buffer) file)
-            :type 'org-texmacs-document-error))
+            :type 'error))
          (should-not (file-exists-p file)))))))
 
 (ert-deftest org-texmacs-serialization-export-buffer-native-and-owned

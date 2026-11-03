@@ -89,6 +89,52 @@ through unchanged.  No Org preparation or transcoder implementation is copied."
   "Check INFO after AST filters and before Cite callbacks execute."
   (org-texmacs--standard-node-filters info))
 
+(defun org-texmacs--standard-copy-options (value)
+  "Own mutable VALUE data, preserving functions and opaque object identities.
+A memoized graph copy also preserves parent links in parsed Org metadata."
+  (unless (and (proper-list-p value)
+               (cl-evenp (length value))
+               (cl-loop
+                for
+                (key _value)
+                on
+                value
+                by
+                #'cddr
+                always
+                (keywordp key)))
+    (signal 'org-texmacs-document-error
+            '("Expected an Org export option plist")))
+  (let ((copies (make-hash-table :test #'eq)))
+    (cl-labels
+     ((copy
+       (item)
+       (cond
+        ((functionp item)
+         item)
+        ((gethash item copies))
+        ((stringp item)
+         (let ((new (substring-no-properties item)))
+           (puthash item new copies)
+           new))
+        ((consp item)
+         (let ((new (cons nil nil)))
+           (puthash item new copies)
+           (setcar new (copy (car item)))
+           (setcdr new (copy (cdr item)))
+           new))
+        ((recordp item)
+         item)
+        ((vectorp item)
+         (let ((new (copy-sequence item)))
+           (puthash item new copies)
+           (dotimes (index (length item))
+             (aset new index (copy (aref item index))))
+           new))
+        (t
+         item))))
+     (copy value))))
+
 (defun org-texmacs--standard-source-state ()
   "Capture source identity and native presentation settings without preparation."
   (list
@@ -371,12 +417,107 @@ Arbitrary functions are not replayed or predicted to be no-ops."
        '("Text filter output is not reversible native Latin-1 transport")))
     bytes))
 
+(defun org-texmacs--standard-source-consume
+    (consumer
+     source-buffer
+     bibliography-sources
+     subtree-position
+     region
+     ext-plist)
+  "Consume explicit SOURCE-BUFFER once through standard CONSUMER export.
+BIBLIOGRAPHY-SOURCES must be nil; configure normal Org Cite instead.
+SUBTREE-POSITION and REGION are integer selections within accessible source.
+When both are given, their containing heading at REGION start must match.
+Nil REGION ignores any ambient active region.  Own EXT-PLIST before hooks."
+  (unless (and (bufferp source-buffer) (buffer-live-p source-buffer))
+    (signal 'org-texmacs-document-error
+            '("Expected a live Org buffer object")))
+  (unless (memq consumer '(tm input model document pdf))
+    (signal 'org-texmacs-document-error
+            '("Invalid standard source consumer")))
+  (when bibliography-sources
+    (signal
+     'org-texmacs-document-error
+     '("Supplied BibTeX texts are unsupported; configure standard Org Cite")))
+  (setq ext-plist (org-texmacs--standard-copy-options ext-plist))
+  (with-current-buffer source-buffer
+    (unless (derived-mode-p 'org-mode)
+      (signal 'org-texmacs-document-error
+              '("Expected an Org buffer")))
+    (when (and subtree-position
+               (not
+                (and (integerp subtree-position)
+                     (<= (point-min) subtree-position (point-max)))))
+      (signal 'org-texmacs-document-error
+              '("Invalid subtree source position")))
+    (when (and region
+               (not
+                (and (consp region)
+                     (integerp (car region))
+                     (integerp (cdr region))
+                     (<= (point-min) (car region))
+                     (< (car region) (cdr region))
+                     (<= (cdr region) (point-max)))))
+      (signal 'org-texmacs-document-error '("Invalid source region")))
+    (setq region (and region (cons (car region) (cdr region))))
+    (let ((state (org-texmacs--standard-source-state)))
+      (save-mark-and-excursion
+        (cl-labels
+         ((heading
+           ()
+           (condition-case nil
+               (progn
+                 (org-back-to-heading t)
+                 (point))
+             (error
+              (signal 'org-texmacs-document-error
+                      '("No accessible subtree at position"))))))
+         (let ((selected-heading
+                (and subtree-position
+                     (save-excursion
+                       (goto-char subtree-position)
+                       (heading))))
+               (mark-active (and region t))
+               (transient-mark-mode
+                (if region
+                    t
+                  transient-mark-mode)))
+           (cond
+            (region
+             (goto-char (car region))
+             (when (and selected-heading
+                        (/=
+                         selected-heading (save-excursion (heading))))
+               (signal
+                'org-texmacs-document-error
+                '("Region start must belong to requested subtree")))
+             (set-marker (mark-marker) (cdr region)))
+            (subtree-position
+             (goto-char subtree-position)))
+           ;; Register only at actual export use; independent core stays separate.
+           (require 'ox-texmacs)
+           (prog1 (if (eq consumer 'tm)
+                      (org-texmacs--standard-text-bytes
+                       (org-export-as
+                        'texmacs
+                        (and subtree-position t)
+                        nil
+                        nil
+                        ext-plist))
+                    (org-texmacs--standard-consume consumer
+                                                   (and
+                                                    subtree-position
+                                                    t)
+                                                   nil ext-plist))
+             (org-texmacs--standard-check-source state))))))))
+
 (defun org-texmacs--standard-consume
     (consumer &optional subtreep visible-only ext-plist)
   "Return a structured CONSUMER result from the current source once.
 CONSUMER is input, model, document or pdf.  Forward standard SUBTREEP,
 VISIBLE-ONLY and EXT-PLIST without selecting or merging configuration here.
-Interactive commands share this bridge; legacy source APIs migrate separately."
+Interactive/source byte commands share this bridge.
+Structured source APIs migrate separately."
   (unless (memq consumer '(input model document pdf))
     (signal 'org-texmacs-document-error
             '("Invalid structured export consumer")))

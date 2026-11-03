@@ -623,11 +623,13 @@
        (insert
         "#+OPTIONS: toc:nil\n#+bibliography: refs.bib\n"
         "Group [cite:@a; @b]. Repeat [cite:@a].\n\n#+print_bibliography:\n")
-       (org-texmacs-export-to-pdf-file
-        (current-buffer) file
-        '(("refs.bib"
-           .
-           "@book{a, author={Ada Alpha}, title={FirstTitleSentinel}, year=2024, publisher={Example}}\n@book{b, author={Bob Beta}, title={SecondTitleSentinel}, year=2025, publisher={Example}}\n@book{unused, title={UnusedTitleSentinel}}"))))
+       (org-texmacs-document-save-pdf
+        (org-texmacs-document-from-buffer
+         (current-buffer)
+         '(("refs.bib"
+            .
+            "@book{a, author={Ada Alpha}, title={FirstTitleSentinel}, year=2024, publisher={Example}}\n@book{b, author={Bob Beta}, title={SecondTitleSentinel}, year=2025, publisher={Example}}\n@book{unused, title={UnusedTitleSentinel}}")))
+        file))
      (let ((text (org-texmacs-test--pdf-text file)))
        (should (string-match-p "Group *\\[1, *2\\]" text))
        (should (string-match-p "Repeat *\\[1\\]" text))
@@ -892,10 +894,11 @@
                  (state
                   (org-texmacs-test--document-buffer-state
                    (current-buffer))))
-             (org-texmacs-export-to-pdf-file
-              (current-buffer)
-              file
-              `(("refs.bib" . ,org-texmacs-test--adjacent-bib)))
+             (org-texmacs-document-save-pdf
+              (org-texmacs-document-from-buffer
+               (current-buffer)
+               `(("refs.bib" . ,org-texmacs-test--adjacent-bib)))
+              file)
              (should
               (equal
                state
