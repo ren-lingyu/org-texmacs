@@ -1,5 +1,103 @@
 ;;; standard-export.el --- Standard export ownership regressions -*- lexical-binding: t; -*-
 
+(ert-deftest org-texmacs-standard-export-entity-options-and-late-nodes
+    ()
+  (dolist (enabled '(nil t))
+    (dolist (late '(nil t))
+      (with-temp-buffer
+        (org-mode)
+        (insert
+         (format
+          "#+OPTIONS: toc:nil title:nil author:nil date:nil e:%s\n"
+          (if enabled
+              "t"
+            "nil"))
+         "Before \\alpha{} \\copy after.\n")
+        (let* ((org-export-use-babel nil)
+               (calls 0)
+               (source (buffer-string))
+               (org-export-filter-parse-tree-functions
+                (and late
+                     (list
+                      (lambda (tree _backend _info)
+                        (cl-incf calls)
+                        (org-element-set-contents
+                         (org-element-map
+                          tree 'paragraph #'identity nil t)
+                         "Before "
+                         (org-element-create
+                          'entity
+                          '(:name
+                            "alpha"
+                            :utf-8 "α"
+                            :latex-math-p t
+                            :use-brackets-p t
+                            :post-blank 1))
+                         (org-element-create
+                          'entity
+                          '(:name "copy" :utf-8 "©" :post-blank 1))
+                         "after.\n")
+                        tree))))
+               (input (org-texmacs--standard-consume 'input))
+               (info (org-texmacs-input-info input))
+               (body
+                (org-texmacs-document-body
+                 (org-texmacs-document input))))
+          (should (plist-member info :with-entities))
+          (should (eq enabled (plist-get info :with-entities)))
+          (should
+           (= calls
+              (if late
+                  1
+                0)))
+          (should (equal source (buffer-string)))
+          (if enabled
+              (progn
+                (should
+                 (member
+                  '(math "α")
+                  (org-texmacs-test--caption-inline-footnote-nodes
+                   body 'math)))
+                (should (string-search "©" (prin1-to-string body))))
+            (should-not
+             (org-texmacs-test--caption-inline-footnote-nodes
+              body 'math))
+            (should
+             (string-search "\\\\alpha{}" (prin1-to-string body)))
+            (should
+             (string-search "\\\\copy" (prin1-to-string body)))))))))
+
+(ert-deftest
+    org-texmacs-standard-export-entity-final-info-and-metadata
+    ()
+  (dolist (enabled '(nil t))
+    (with-temp-buffer
+      (org-mode)
+      (insert
+       "#+TITLE: Title \\alpha\n#+OPTIONS: toc:nil date:nil author:nil\n"
+       "Body.\n")
+      (let* ((org-export-use-babel nil)
+             (org-export-filter-parse-tree-functions
+              (list
+               (lambda (tree _backend info)
+                 (plist-put info :with-entities enabled)
+                 tree)))
+             (input (org-texmacs--standard-consume 'input))
+             (body
+              (org-texmacs-document-body
+               (org-texmacs-document input))))
+        (if enabled
+            (should
+             (member
+              '(math "α")
+              (org-texmacs-test--caption-inline-footnote-nodes
+               body 'math)))
+          (should-not
+           (org-texmacs-test--caption-inline-footnote-nodes
+            body 'math))
+          (should
+           (string-search "\\\\alpha" (prin1-to-string body))))))))
+
 (ert-deftest org-texmacs-standard-export-caption-note-boundary ()
   ;; Stock Org spelling stays literal, in both caption parts.
   (with-temp-buffer

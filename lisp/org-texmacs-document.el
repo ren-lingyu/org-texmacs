@@ -1548,6 +1548,8 @@ trailing spaces/tabs.  Without an entry, use the nonnegative `:post-blank'
 count.  Both inputs have prose whitespace semantics, not source fidelity.
 
 Support paragraphs, plain text, basic emphasis, inline code/verbatim,
+Unicode-backed Org entities as text or local math, with a fixed enabled
+default and explicit nil `:with-entities' preserving their source syntax,
 explicit line breaks, self-contained URI links, transparent Org sections,
 same-document headline/ID and dedicated-target links resolved from AST,
 plain local body file links with raw target paths and file provenance,
@@ -1898,6 +1900,37 @@ for consumers.  Final handlers must preserve contents identity and provenance."
             (list (island node entry)))
            ((stringp node)
             (list (text node space)))
+           ((and (consp node) (eq (org-element-type node) 'entity))
+            (let ((name (org-element-property :name node))
+                  (brackets
+                   (org-element-property :use-brackets-p node)))
+              (unless (and (stringp name)
+                           (> (length name) 0)
+                           (memq brackets '(nil t))
+                           (null (org-element-contents node)))
+                (org-texmacs--document-fail
+                 node "Invalid entity node"))
+              (cons
+               (if (and (plist-member info :with-entities)
+                        (null (plist-get info :with-entities)))
+                   ;; Also applies to nodes created after Org's initial option
+                   ;; rewrite by an AST filter or Cite processor.  The standard
+                   ;; interpreter uses properties, not source positions.
+                   (text (org-export-expand node nil) space)
+                 (let ((value (org-element-property :utf-8 node))
+                       (math
+                        (org-element-property :latex-math-p node)))
+                   (unless (and (stringp value)
+                                (> (length value) 0)
+                                (memq math '(nil t)))
+                     (org-texmacs--document-fail
+                      node "Unsupported entity representation"))
+                   (let ((part (text value space)))
+                     (if math
+                         (org-texmacs--document-pack
+                          'math (list part))
+                       part))))
+               (blank node space))))
            ((and (consp node)
                  (assq
                   (org-element-type node)

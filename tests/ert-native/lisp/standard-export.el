@@ -1,5 +1,41 @@
 ;;; standard-export.el --- Standard native output regressions -*- lexical-binding: t; -*-
 
+(ert-deftest org-texmacs-standard-export-native-entity-encoding ()
+  (org-texmacs-test--with-worker
+   (with-temp-buffer
+     (org-mode)
+     (insert
+      "#+OPTIONS: toc:nil title:nil author:nil date:nil e:t\n"
+      "Before \\alpha{} \\cdot \\rightarrow \\copy literal <alpha> After.\n")
+     (let* ((document (org-texmacs--standard-consume 'document))
+            (session (org-texmacs-session-open))
+            (expected
+             '(document
+               (concat
+                "Before "
+                (math "<alpha>")
+                " "
+                (math "<cdot>")
+                " "
+                (math "<rightarrow>")
+                " "
+                "<copyright>"
+                " "
+                "literal <less>alpha<gtr> After. "))))
+       (should-not (org-texmacs-document-stm-paths document))
+       (unwind-protect
+           (progn
+             (org-texmacs-session-set-document session document)
+             (should
+              (equal
+               (org-texmacs--session-read session)
+               (org-texmacs-test--native-hex expected))))
+         (org-texmacs-session-close session))
+       (should
+        (string-search
+         "<math|\\<alpha\\>>"
+         (org-texmacs-document-serialize document)))))))
+
 (ert-deftest org-texmacs-standard-export-native-final-stm-matrix ()
   (org-texmacs-test--with-worker
    (dolist

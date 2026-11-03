@@ -6,6 +6,136 @@
 
 ;;; Code:
 
+(ert-deftest org-texmacs-document-entity-owned-pure-options ()
+  (dolist (info '(nil (:with-entities t) (:with-entities nil)))
+    (let* ((value (copy-sequence "α"))
+           (entity
+            (org-element-create
+             'entity
+             (list
+              :name "alpha"
+              :utf-8 value
+              :latex-math-p t
+              :use-brackets-p t
+              :post-blank 1)))
+           (leaf (copy-sequence "island"))
+           (ast
+            (org-element-create
+             'org-data nil
+             (org-element-create
+              'paragraph
+              nil
+              "Before "
+              entity
+              "literal <alpha> "
+              leaf)))
+           (input
+            (org-texmacs-input-create
+             ast info
+             :islands (list (cons leaf '(math "x")))))
+           (before
+            (let ((print-circle t))
+              (prin1-to-string input)))
+           (org-export-with-entities nil)
+           (org-entities-user
+            '(("alpha" "wrong" t "wrong" "wrong" "wrong" "wrong")))
+           result)
+      ;; The input owns entity values and STM trees before pure conversion.
+      (should-not
+       (eq
+        value
+        (org-element-property
+         :utf-8
+         (org-element-map
+          (org-texmacs-input-ast input) 'entity #'identity nil t))))
+      (org-element-put-property entity :utf-8 "changed")
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _)
+                   (ert-fail "Entity invoked worker")))
+                ((symbol-function 'buffer-substring-no-properties)
+                 (lambda (&rest _) (ert-fail "Entity read source")))
+                ((symbol-function 'org-entity-get)
+                 (lambda (&rest _)
+                   (ert-fail "Entity read dynamic definitions"))))
+        (setq result (org-texmacs-document input))
+        (should (equal result (org-texmacs-document input))))
+      (should
+       (equal
+        (org-texmacs-document-body result)
+        `(document
+          (concat
+           "Before "
+           ,(if (and info (null (plist-get info :with-entities)))
+                "\\alpha{}"
+              '(math "α"))
+           " " "literal <alpha> " (math "x")))))
+      (should
+       (equal (org-texmacs-document-stm-paths result) '((0 4))))
+      (should
+       (equal
+        before
+        (let ((print-circle t))
+          (prin1-to-string input)))))))
+
+(ert-deftest org-texmacs-document-entity-invalid-representation ()
+  (dolist (props
+           '((:name "missing")
+             (:name "empty" :utf-8 "")
+             (:name "wrong" :utf-8 3)
+             (:name "wrong" :utf-8 "x" :latex-math-p math)
+             (:name "wrong" :utf-8 "x" :use-brackets-p brackets)
+             (:name nil :utf-8 "x")))
+    (should-error
+     (org-texmacs-document
+      (org-texmacs-input-create
+       (org-element-create
+        'org-data nil
+        (org-element-create
+         'paragraph nil (org-element-create 'entity props)))
+       nil))
+     :type 'org-texmacs-document-error))
+  ;; Disabled interpretation needs source spelling, not a Unicode fallback.
+  (should
+   (equal
+    (org-texmacs-document-body
+     (org-texmacs-document
+      (org-texmacs-input-create
+       (org-element-create
+        'org-data nil
+        (org-element-create
+         'paragraph
+         nil
+         (org-element-create 'entity '(:name "unknown"))))
+       '(:with-entities nil))))
+    '(document (concat "\\unknown")))))
+
+(ert-deftest org-texmacs-document-entity-text-and-structured-contexts
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert
+     "* Heading \\alpha\n/Emphasis \\copy/ and note[fn::\\rightarrow].\n"
+     "#+CAPTION: Caption \\cdot\n| Cell \\copy |\n")
+    (let* ((ast (org-element-parse-buffer))
+           (_affiliation
+            (org-element-put-property
+             (org-element-map ast 'table #'identity nil t)
+             :texmacs-affiliated-keywords '("CAPTION")))
+           (input (org-texmacs-input-create ast nil))
+           (body
+            (org-texmacs-document-body (org-texmacs-document input))))
+      (should
+       (equal
+        (org-texmacs-test--caption-inline-footnote-nodes
+         body 'math)
+        '((math "α") (math "→") (math "⋅"))))
+      (should (string-search "©" (prin1-to-string body)))
+      (should-not
+       (member
+        '(math "©")
+        (org-texmacs-test--caption-inline-footnote-nodes
+         body 'math))))))
+
 (ert-deftest org-texmacs-caption-inline-footnote-owned-ast ()
   (dolist (kind '("plain" "figure" "figure*" "table" "table*"))
     (let* ((link

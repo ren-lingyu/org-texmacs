@@ -94,9 +94,13 @@ lowering remain separate from standard export preparation.
 - [X] Render native PDF from the shared completed document without a =.tm=
   round trip, with explicit text-filter and Cite-finalizer compatibility rules.
 
-*** Prerelease inline mathematics (planned)
-- [ ] Lower Org =entity= objects to native text or local mathematical structures,
+*** Prerelease inline mathematics
+- [X] Lower Org =entity= objects to native text or local mathematical structures,
   preserving the distinction between literal text and native symbols.
+- Honor =e:nil= for effective entities, including nodes generated later by AST
+  filters or Cite processors; independent inputs default to enabled entities.
+- Preserve native symbol encoding and local math without changing surrounding
+  text mode; missing or invalid entity representations fail explicitly.
 - [ ] Lower =subscript= and =superscript= objects with verified native base
   binding, nested contents and text/math boundaries, preserving opaque STM.
 - [ ] Honor effective entity, script and applicable LaTeX export options,

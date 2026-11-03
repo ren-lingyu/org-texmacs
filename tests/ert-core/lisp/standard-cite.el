@@ -11,6 +11,9 @@
   (push 'citation org-texmacs-test--cite-calls)
   (setq org-texmacs-test--cite-info info)
   (pcase org-texmacs-test--cite-result
+    ('entity
+     (org-element-create
+      'entity '(:name "alpha" :utf-8 "α" :latex-math-p t)))
     ('element (org-element-create 'bold nil "Structured"))
     ('secondary
      (list "Prefix " (org-element-create 'italic nil "Structured")))
@@ -40,6 +43,37 @@
  :export-citation #'org-texmacs-test--cite-citation
  :export-finalizer #'org-texmacs-test--cite-finalizer
  :cite-styles '((("nil"))))
+
+(ert-deftest org-texmacs-standard-cite-late-entity-options ()
+  (dolist (enabled '(nil t))
+    (with-temp-buffer
+      (org-mode)
+      (insert "[cite:@key]\n")
+      (let* ((org-export-use-babel nil)
+             (org-export-with-entities enabled)
+             (org-cite-export-processors
+              '((t org-texmacs-test-structured)))
+             (org-texmacs-test--cite-result 'entity)
+             (org-texmacs-test--cite-calls nil)
+             (input (org-texmacs--standard-consume 'input))
+             (body
+              (org-texmacs-document-body
+               (org-texmacs-document input))))
+        (should (equal org-texmacs-test--cite-calls '(citation)))
+        (should
+         (org-element-map
+          (org-texmacs-input-ast input) 'entity #'identity))
+        (if enabled
+            (should
+             (member
+              '(math "α")
+              (org-texmacs-test--caption-inline-footnote-nodes
+               body 'math)))
+          (should-not
+           (org-texmacs-test--caption-inline-footnote-nodes
+            body 'math))
+          (should
+           (string-search "\\\\alpha" (prin1-to-string body))))))))
 
 (ert-deftest org-texmacs-standard-cite-structured-protocol-once ()
   (dolist (org-texmacs-test--cite-result '(element secondary))

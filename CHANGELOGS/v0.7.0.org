@@ -78,6 +78,23 @@ counter and page-placement limitations remain. Existing private PDF footnote
 destination repair is separate and retained. Native caption macro-package work
 is outside this release.
 
+* Org entities
+Unicode-backed =entity= objects lower to native text or local mathematical
+structures according to their captured Org properties. Examples include =\alpha=,
+=\cdot=, =\rightarrow= and text =\copy=. Literal =<alpha>= remains literal;
+surrounding prose stays in text mode and existing STM islands remain opaque.
+
+Effective =e:nil= preserves entity source syntax, also for nodes generated later
+by AST filters or Cite processors. Pure structured inputs default to enabled
+entities; explicit =:with-entities nil= preserves spelling. Lowering neither
+queries dynamic entity definitions nor starts a worker, and rejects missing or
+invalid representations. Native encoding, rendering and saved-document reload
+are checked against independently authored native symbols.
+
+Entity support does not interpret =latex-fragment= objects such as =$\cdot$=.
+Finite inline LaTeX conversion and CSL math-title compatibility remain separate
+conditional work; they are not implied by this addition.
+
 * Org Cite
 The supported path uses the existing CSL processor's structured Org output with
 optional =citeproc=. Org owns bibliography acquisition, processor selection,

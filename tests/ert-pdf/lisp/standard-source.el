@@ -1,5 +1,67 @@
 ;;; standard-source.el --- Standard explicit source outputs -*- lexical-binding: t; -*-
 
+(ert-deftest org-texmacs-standard-entity-native-layout-and-reload ()
+  (org-texmacs-test--with-worker
+   (with-temp-buffer
+     (org-mode)
+     (insert
+      "#+OPTIONS: toc:nil title:nil author:nil date:nil e:t\n"
+      "Before \\alpha{} \\cdot \\rightarrow \\copy literal <alpha> After.\n")
+     (let* ((document (org-texmacs--standard-consume 'document))
+            (expected
+             (org-texmacs--document-create
+              :body
+              '(document
+                (concat
+                 "Before "
+                 (math "<alpha>")
+                 " "
+                 (math "<cdot>")
+                 " "
+                 (math "<rightarrow>")
+                 " "
+                 "<copyright>"
+                 " "
+                 "literal <less>alpha<gtr> After. "))
+              :stm-paths '(nil)
+              :style (org-texmacs-document-style document)
+              :initial (org-texmacs-document-initial document)))
+            (actual (expand-file-name "entity.pdf" test-directory))
+            (reference
+             (expand-file-name "reference.pdf" test-directory))
+            (tm (expand-file-name "entity.tm" test-directory))
+            (reload (expand-file-name "reloaded.pdf" test-directory)))
+       (org-texmacs-document-save-pdf document actual)
+       (org-texmacs-document-save-pdf expected reference)
+       (org-texmacs-document-save document tm)
+       (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+       ;; Math fonts do not reliably extract as Unicode. Compare actual ink to
+       ;; independently authored native symbols, also after a saved TM reload.
+       (cl-labels
+        ((raster
+          (file)
+          (with-temp-buffer
+            (set-buffer-multibyte nil)
+            (should
+             (= 0
+                (call-process "pdftoppm"
+                              nil
+                              t
+                              nil
+                              "-f"
+                              "1"
+                              "-singlefile"
+                              "-scale-to"
+                              "1200"
+                              "-gray"
+                              file)))
+            (buffer-string))))
+        (should (equal (raster actual) (raster reference)))
+        (should (equal (raster actual) (raster reload))))
+       (let ((text (org-texmacs-test--pdf-text actual)))
+         (dolist (token '("Before" "©" "literal <alpha>" "After."))
+           (should (string-search token text))))))))
+
 (ert-deftest org-texmacs-standard-source-five-output-consumers ()
   (org-texmacs-test--with-worker
    (with-temp-buffer

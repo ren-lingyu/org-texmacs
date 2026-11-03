@@ -50,6 +50,7 @@
     :with-date
     :with-email
     :with-creator
+    :with-entities
     :with-priority
     :with-toc
     :with-tags

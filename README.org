@@ -24,7 +24,8 @@ export preparation entries for that consumer.
 Block caching, on-demand fragment parsing, Scheme fontification and source
 editing remain available independently of whole-document model construction.
 
-Document conversion supports basic inline markup, self-contained URI links,
+Document conversion supports basic inline markup, Unicode-backed Org entities,
+self-contained URI links,
 plain local file links with captured resource context,
 same-document headline/ID and dedicated-target links, anonymous and named
 footnotes, standard Org Cite through the supported CSL processor,
@@ -927,6 +928,16 @@ or structural validation fails.  No generic early STM parser or INCLUDE shieldin
 is installed.  Arbitrary original STM text cannot always be expressed unchanged
 in an Org paragraph.  Independent =org-texmacs-parse-buffer=, model operations and
 pure document lowering keep their separate existing contracts.
+
+Org =entity= objects use their captured Unicode representation: mathematical
+entities such as =\alpha=, =\cdot= and =\rightarrow= become local native math,
+while text entities such as =\copy= remain text.  Literal =<alpha>= stays literal;
+an entity does not switch the whole paragraph into math mode.  Effective =e:nil=
+preserves entity source syntax, including for objects created later by AST filters
+or Cite processors.  Pure structured inputs enable entities by default; an explicit
+=:with-entities nil= preserves their spelling without consulting dynamic settings.
+Missing or invalid representations fail explicitly.  The distinct =latex-fragment=
+input =$\cdot$= is not converted by entity support and remains unsupported.
 
 Org Cite owns bibliography acquisition, processor selection and citation/
 bibliography processing in this same transaction, after AST filters.  With the
@@ -2114,8 +2125,10 @@ extracted whitespace and use short fixtures in isolated native configurations;
 they do not assert PDF bytes, pixel snapshots or fixed pagination.  Footnote tests
 also use test-only =pypdf= to resolve actual destinations and compare their
 positions with the corresponding text lines, including nearby zero-width anchors.
+Entity math tests separately compare rasterized output with independently authored
+native symbols and saved-document reloads, without fixed pixel snapshots.
 The bounded update/print sequence does not guarantee convergence for every
-native layout.  GUI preview and visual layout
+native layout.  GUI preview and broader visual layout
 coverage remain future work.
 
 ** Org export dispatcher
