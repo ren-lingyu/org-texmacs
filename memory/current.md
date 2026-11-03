@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Current: prerelease inline N1 ready for human delivery
+## Current: prerelease N1 delivered, N2 entity work active
 
 User explicitly says "Implement the plan" after both refinement notes and final
 N0-N5 revision. Active contract: memory/inline-objects-0.7.0-plan.md. Mandatory
@@ -8,13 +8,13 @@ A entities/scripts; B only for real unmet CSL needs, reliable finite conversion
 or deferral. Late-generated option behavior, actual text-mode script binding and
 three-way/repeatable converter acceptance are mandatory gates. No production
 implementation or new runtime proof yet. Ordinary project/index and GAW clean
-at intake; gaw check passes. N0 plan checkpoint is complete. N1 now changes only
-CHANGELOG.org TODO -> NEXT plus seven unchecked items; complete diff and whitespace
-review pass. tmp/commit.md is the requested worktree-candidate draft, not a claim
-about staged changes; ordinary index stays empty. Wait for human N1 delivery,
-verify exact parent/content/message, then resume N2 entities. No native probe,
-build/test/formatter or production source edit performed. User explicitly authorizes that one transition,
-not finalization. Corrected earlier INFO spelling: :with-sub-superscript singular.
+at intake; gaw check passes. N0 and N1 are complete. Human N1 a34b574 has the
+expected f6aa2ae parent, sole CHANGELOG path, exact accepted blob and corrected
+docs(changelog) message; ordinary project/index clean. No unchanged tests rerun.
+N2 entity work is now active: first inspect/probe native encoding and local mode,
+then implement INFO/pure lowering and maintained tests/docs; verify before human
+N2 delivery. N3 scripts/N4 CSL/N5 conditional conversion remain later nodes.
+No new runtime proof yet. Full contract remains the N0-N5 plan.
 Retention: semantic extraction is sufficient for supplied conversational notes;
 selective experimental retention/archival review belongs to N4.
 

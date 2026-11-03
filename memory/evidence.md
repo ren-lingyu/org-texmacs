@@ -1,5 +1,14 @@
 # org-texmacs durable evidence
 
+## Prerelease N1 human delivery verified
+
+Human a34b574114976558f349ac252d067719fd430a9c matches expected f6aa2ae parent,
+sole CHANGELOG.org change, accepted SHA256 and corrected docs(changelog) message.
+Ordinary project/index clean. No unchanged check rerun. Any project association
+for this checkpoint grounds exact delivery verification, not future N2 runtime.
+N2 entity work now starts; native encoding/option behavior is not yet validated.
+
+
 ## Prerelease N1 CHANGELOG-only candidate ready
 
 N0 plan checkpoint precedes the first ordinary project edit. Baseline remains
@@ -11,8 +20,10 @@ and older releases preserved. git diff --check exits0; ordinary index is empty.
 No build/test/formatter/native experiment run for this bookkeeping node.
 Expected CHANGELOG SHA256: cdfa88640d3d086bc6db6f5750436550dc365aff85e3af814a6df12e77d4ad26.
 Requested worktree-candidate draft tmp/commit.md SHA256:
-70c2f2c779924b9cb1c7a6db9f4659099a23b8d51971a3e309be8f92c0327d47.
-Subject: chore(release): record final 0.7.0 inline mathematics scope.
+fb59ce77d5f4130443e84600d25fdf11e9929b5cc544b7685834266a1ed3327a.
+Subject: docs(changelog): record final 0.7.0 inline mathematics scope.
+User requested this classification correction; only the draft title changed,
+with its Chinese body preserved. Current candidate remains unchanged.
 Draft is not staged-diff evidence. Human staging/commit remains; verify exact
 parent/path/content/message after delivery before N2. No new raw archive needed.
 
