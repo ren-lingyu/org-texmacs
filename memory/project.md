@@ -1,13 +1,16 @@
 # org-texmacs current project model
 
-Final prerelease inline-object work is approved, not implemented yet. Active
-N0-N5 contract: memory/inline-objects-0.7.0-plan.md. N0 checkpoint is complete;
-N1 NEXT/seven unchecked items is human-delivered and verified as a34b574;
-N2 entity work is active, with no new supported capability claimed yet.
-Entity/subscript/superscript dispatch and related INFO projection are still absent;
-LaTeX conversion remains a gated hypothesis. The INFO key is singular
-:with-sub-superscript, not the plural variable spelling. Historical stage material
-below records delivered/reviewed states; the active plan controls next actions.
+Final prerelease N0/N1 are complete; N2 entities are locally accepted, awaiting
+human delivery. Plan: memory/inline-objects-0.7.0-plan.md; accepted N2 contract,
+evidence/limits: memory/inline-objects-0.7.0-n2.md. Captured Unicode-backed Org
+entity values lower to plain text or local math, with native encoding provenance
+preserved. Effective :with-entities nil preserves spelling including late nodes;
+missing option enables pure inputs. Invalid representations fail explicitly.
+No worker/source/dynamic entity lookup during lowering; input/model/islands stay
+owned and unchanged. 645defaultERT+actual4/all12checks pass in the locked baseline.
+Subscript/superscript/latex-fragment remain unsupported; N3/N4/N5 are next gated
+work, not completed capabilities. INFO's script key is singular
+:with-sub-superscript. Full current handoff and source manifest: memory/current.md.
 
 A-E3 are human-delivered. Final E3 f6aa2ae matches expected E2b parent/full message/
 21paths/all159accepted inputs; worktree/index clean, no unchanged runtime rerun.

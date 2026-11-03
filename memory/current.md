@@ -1,22 +1,25 @@
 # org-texmacs current memory
 
-## Current: prerelease N1 delivered, N2 entity work active
+## Current: prerelease N2 entities accepted, human delivery pending
 
-User explicitly says "Implement the plan" after both refinement notes and final
-N0-N5 revision. Active contract: memory/inline-objects-0.7.0-plan.md. Mandatory
-A entities/scripts; B only for real unmet CSL needs, reliable finite conversion
-or deferral. Late-generated option behavior, actual text-mode script binding and
-three-way/repeatable converter acceptance are mandatory gates. No production
-implementation or new runtime proof yet. Ordinary project/index and GAW clean
-at intake; gaw check passes. N0 and N1 are complete. Human N1 a34b574 has the
-expected f6aa2ae parent, sole CHANGELOG path, exact accepted blob and corrected
-docs(changelog) message; ordinary project/index clean. No unchanged tests rerun.
-N2 entity work is now active: first inspect/probe native encoding and local mode,
-then implement INFO/pure lowering and maintained tests/docs; verify before human
-N2 delivery. N3 scripts/N4 CSL/N5 conditional conversion remain later nodes.
-No new runtime proof yet. Full contract remains the N0-N5 plan.
-Retention: semantic extraction is sufficient for supplied conversational notes;
-selective experimental retention/archival review belongs to N4.
+User-approved N0-N5 contract: memory/inline-objects-0.7.0-plan.md, including late
+node option semantics, native script binding and reliable repeatable converter
+gates. N0/N1 complete; N1 a34b574 exact delivery verified. N2 entity lowering,
+:with-entities projection, eight new tests and documentation are locally accepted.
+Native symbols versus literal encoding and local text/math mode are verified;
+e:nil applies to late filter/Cite nodes and pure input defaults stay fixed.
+Full checks:645defaultERT+actual4/all12named checks, with final README-only change
+rebuilding treefmt alone; all other runtime derivations identical and reused.
+No scripts/LaTeX/worker/model-island contract changes or broader support claims.
+
+Complete ten-path worktree candidate reviewed and whitespace clean; ordinary
+index remains empty. tmp/commit.md contains the requested feat(document) draft.
+Expected parent/message/paths/all159hashes: memory/inline-objects-0.7.0-n2-inputs.json.
+Wait for human N2 commit, verify exact delivery, then report progress and begin N3
+native scripts/options/binding. Do not begin N4 CSL conversion prematurely.
+Implementation/evidence/fixture failures/retention: memory/inline-objects-0.7.0-n2.md.
+No new raw archive necessary after maintained causal tests and exact extraction.
+Release remains0.7.0/NEXT; finalization/CLOSED/tag/publication are human-owned.
 
 A-E3 are delivered. Final E3 f6aa2ae matches expected E2b parent, full approved
 message/21paths/all159accepted committed and worktree hashes, including native

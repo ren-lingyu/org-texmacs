@@ -1,5 +1,19 @@
 # org-texmacs durable evidence
 
+## Prerelease N2 entity candidate accepted
+
+Ten-path candidate on verified human N1 passes native entity/literal encoding and
+local mode proof, focused9/9 and complete645defaultERT+actual4/all12named checks.
+Final README-only clarification reuses identical runtime derivations and rebuilds
+treefmt alone, exit0. Complete diff/whitespace/159root-snapshot equality pass;
+ordinary index untouched. Source/message/paths and command-level scope/limits:
+memory/inline-objects-0.7.0-n2-inputs.json and memory/inline-objects-0.7.0-n2.md.
+No project parent is invented for an uncommitted candidate. Human N2 delivery is
+pending; then N3. Native glyph extraction limitations are addressed by independent
+reference/raster/reload assertions and a targeted inspected prototype render.
+No new raw archive required; maintained tests plus manifest/distillation suffice.
+
+
 ## Prerelease N1 human delivery verified
 
 Human a34b574114976558f349ac252d067719fd430a9c matches expected f6aa2ae parent,
