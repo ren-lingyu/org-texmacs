@@ -1,5 +1,19 @@
 # org-texmacs durable evidence
 
+## N3 native scripts accepted, human delivery pending
+
+Final653defaultERT+actual4/all12checks pass; native275 reruns corrected clipping
+regressions in202.862289s. Other successful full-1 runtime derivations have exactly
+identical inputs and are reused; treefmt/aggregate rebuilt. Eight new maintained
+cases/10-case directed acceptance, native inspected prototype and actual relative
+binding geometry/reload prove text-mode behavior. Complete11path diff/whitespace/
+159root-frozen hash checks pass. No ordinary index/history mutation. Exact candidate:
+memory/inline-objects-0.7.0-n3-inputs.json; proof/failed gates/limits in N3 note.
+N3 production patch matches the archived control variant byte-for-byte: no source
+restoration workaround introduced. Minimal independent control is immutable at
+archive/2026-11-03T18-03-24Z--5ce20ef/MANIFEST.md. Human delivery before N4.
+
+
 ## N3 final-AST clipping counterexample
 
 New script native/layout/options cases pass. Full-1 exposes two legacy clipping

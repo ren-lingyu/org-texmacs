@@ -1,16 +1,21 @@
 # org-texmacs current project model
 
-Final prerelease N0-N2 are human-delivered; N2 5ce20ef matches exact parent,
-ten paths/message/all159input hashes. N3 script work is active. Plan: memory/inline-objects-0.7.0-plan.md; accepted N2 contract,
-evidence/limits: memory/inline-objects-0.7.0-n2.md. Captured Unicode-backed Org
-entity values lower to plain text or local math, with native encoding provenance
-preserved. Effective :with-entities nil preserves spelling including late nodes;
-missing option enables pure inputs. Invalid representations fail explicitly.
-No worker/source/dynamic entity lookup during lowering; input/model/islands stay
-owned and unchanged. 645defaultERT+actual4/all12checks pass in the locked baseline.
-Subscript/superscript/latex-fragment remain unsupported; N3/N4/N5 are next gated
-work, not completed capabilities. INFO's script key is singular
-:with-sub-superscript. Full current handoff and source manifest: memory/current.md.
+Final prerelease N0-N2 are human-delivered. N3 scripts are locally accepted,
+awaiting human delivery. Pure lowering uses native rsub/rsup with recursive
+contents, local whitespace inheriting metadata restrictions and opaque neighboring
+STM roots. Effective :with-sub-superscript t/{}/nil is projected from final INFO;
+missing defaults to enabled for independent inputs. Disabled markers/braces retain
+child Org structure; no dynamic settings, parser/worker/source access or extra AST.
+Entities retain the N2 owned Unicode/local-math versus literal encoding contract.
+
+Accepted653defaultERT+actual4/all12checks, native coordinates/size and reload proof
+in the locked baseline. Two previous clipping errors were incidental missing-script
+support: Org/HTML treat unclosed markers as ordinary prose. Updated tests require
+actual no-native structure/parser and correct footnote selection; no early parser
+or wrapper restoration. Details/immutable counterexample locator/current handoff:
+memory/inline-objects-0.7.0-n3.md and memory/current.md. LaTeX fragments/raw remain
+unsupported; N4 CSL-triggered finite conversion is conditional. No core model,
+island ownership or worker protocol change. Active plan: memory/inline-objects-0.7.0-plan.md.
 
 A-E3 are human-delivered. Final E3 f6aa2ae matches expected E2b parent/full message/
 21paths/all159accepted inputs; worktree/index clean, no unchanged runtime rerun.

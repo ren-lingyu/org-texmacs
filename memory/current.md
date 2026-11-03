@@ -1,30 +1,32 @@
 # org-texmacs current memory
 
-## Current: prerelease N2 human-delivered, N3 script work active
+## Current: prerelease N3 scripts accepted, human delivery pending
 
-User-approved N0-N5 contract: memory/inline-objects-0.7.0-plan.md. N0-N2 are
-human-delivered. N2 5ce20ef matches expected N1 parent, exact10paths/message and
-all159committed/worktree input hashes. Ordinary project/index clean at intake;
-no unchanged test rerun. Accepted N2 evidence remains645defaultERT+actual4/all12
-checks, native entity rendering and literal/option/ownership proof.
+N0-N2 human-delivered; N2 5ce20ef exact parent/message/ten paths/all159hashes
+verified. N3 eight new tests, native script lowering and effective singular
+:with-sub-superscript projection are locally accepted. t/{}/nil policies apply
+also to late filters/Cite; pure defaults fixed, local whitespace inherits metadata
+guards. Native binding/mode/nesting/heading/caption/styled/opaque-STM and saved
+reload are proved, not inferred from tags. Directed10/10 and final653defaultERT+
+actual4/all12checks pass. Full-2 reruns revised native275 and treefmt/aggregate;
+all other successful full-1 leaf derivations have identical inputs and are reused.
 
-N3 now starts with an isolated native script experiment: rsub/rsup text-mode base
-binding, consecutive/nested scripts, emphasis, heading/caption and neighboring
-opaque STM. Then implement singular :with-sub-superscript projection and pure
-lowering, fixed defaults versus explicit nil/{}, normal/late AST/Cite nodes,
-maintained tests/docs and full checks. Actual binding/layout is mandatory; matching
-tags alone are insufficient. N4 CSL/LaTeX work must wait for human N3 delivery.
-N2 receipt: memory/inline-objects-0.7.0-n2-inputs.json; native/retention/limits:
-memory/inline-objects-0.7.0-n2.md. N3 native prototype passes2/2 and its render
-and base geometry were inspected. N3 code/tests/docs candidate now exists; focused
-8/8 focused checks pass. Full-1 failed two legacy native error expectations:
-clipped markers are ordinary Org prose with scripts, proved by final AST and
-standard HTML controls (three variants). Follow approved final-Org priority,
-replace incidental-error assertions with positive structure/no-parser checks and
-document behavior before repeating full acceptance. Minimal counterexample text
-archive selected; no complete N3 acceptance yet. Evidence/retention and exact stage:
-memory/inline-objects-0.7.0-n3.md. No final N3 support claim yet.
-Release remains0.7.0/NEXT; finalization/CLOSED/tag/publication are human-owned.
+Full-1 exposed two old clipping should-error assertions that depended on missing
+script support. Final Org and independent HTML treat those markers as prose,
+with no native block/island/parser. Follow approved Org-first semantics; two
+regressions now check actual structure and selected/unused footnotes, docs state
+the observable consequence. No source protection/parallel preparation introduced.
+Immutable minimal text control: archive/2026-11-03T18-03-24Z--5ce20ef/MANIFEST.md.
+
+Complete eleven-path worktree diff reviewed, whitespace clean, all159final hashes
+match frozen inputs. Ordinary index untouched. tmp/commit.md is the requested
+feat(document) candidate draft. Receipt: memory/inline-objects-0.7.0-n3-inputs.json;
+evidence/causal failures/retention: memory/inline-objects-0.7.0-n3.md. Wait for human
+N3 commit, verify exact delivery, then report progress and start N4 real CSL trace.
+A is locally complete; B only triggered by unmet actual CSL final-AST need and
+reliable finite conversion. No body-only expansion, raw reinterpretation or LaTeX
+support claim. Plan: memory/inline-objects-0.7.0-plan.md. Release0.7.0/NEXT;
+finalization/CLOSED/tag/publication remain human-owned.
 
 A-E3 are delivered. Final E3 f6aa2ae matches expected E2b parent, full approved
 message/21paths/all159accepted committed and worktree hashes, including native
