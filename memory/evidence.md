@@ -1,5 +1,25 @@
 # org-texmacs durable evidence
 
+## Caption source compatibility gate reopened
+
+User correctly recalls the adopted caption-inline-footnotes contract. Recovery of
+memory/caption-inline-footnotes.md confirms acceptance included anonymous inline
+notes in long AND short captions via official source document adapters with a
+parser-only patched Org, not merely independent AST/pure lowering. E2b retargeted
+two successful source tests to pure input and changed four-scope source success
+into refusal. This is a real source-contract regression; Org missing numbering
+explains the technical cause but does not itself authorize dropping support.
+The earlier claim that support remained unchanged was incomplete. Treat the
+candidate as checks-passing but NOT ready for delivery until this gate is resolved.
+Do not use green retargeted tests as proof of preserved source compatibility.
+Reassess native target numbering responsibilities against standard Org authority,
+without copied preparation, string round trips, parser identity branches or a
+parallel exporter. Restore meaningful source integration coverage with the chosen
+architecture. Other verified runtime results remain facts, not overall acceptance.
+Current project changes are user-staged (37paths), HEAD still E2a; preserve index.
+The previous tmp/commit.md and accepted-candidate label are not submission-ready.
+No production or index mutation was made during this corrective read-only review.
+
 ## E2b complete acceptance, human project delivery pending
 
 Locked x86_64-linux Emacs31.1/Org9.8.10/TeXmacs2.1.5. Full-2 exits0:

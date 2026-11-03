@@ -1,5 +1,13 @@
 # E2b: structured source consumers and parallel preparation retirement
 
+## Active correction: E2b caption compatibility gate reopened
+
+Prior adopted caption support included official source APIs under the parser-only
+Org patch. Retargeted pure tests and source refusal lose that support; E2b is not
+submission-ready despite passing checks. Reassess this regression before E3.
+Current authority/details: memory/current.md and memory/caption-inline-footnotes.md.
+The acceptance statements below describe the superseded candidate assessment.
+
 ## Accepted candidate and human gate
 
 Complete37path worktree diff reviewed, ordinary index untouched. default636ERT

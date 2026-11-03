@@ -1,5 +1,13 @@
 # org-texmacs current project model
 
+## Active correction: E2b caption compatibility gate reopened
+
+Prior adopted caption support included official source APIs under the parser-only
+Org patch. Retargeted pure tests and source refusal lose that support; E2b is not
+submission-ready despite passing checks. Reassess this regression before E3.
+Current authority/details: memory/current.md and memory/caption-inline-footnotes.md.
+The acceptance statements below describe the superseded candidate assessment.
+
 ## v0.7.0 standard backend: A-E2a delivered; E2b accepted candidate
 
 User-approved E2b semantics: standard Org defines structure and content before STM

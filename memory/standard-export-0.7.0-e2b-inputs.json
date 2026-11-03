@@ -161,7 +161,7 @@
     "tests/ert-pdf/lisp/standard-source.el": "74f953e08d5a13d8b0a16997b102df37934dc96003727046d1999b6043b036f1"
   },
   "purpose": "Formal E2b full-check candidate, not yet accepted.",
-  "status": "accepted E2b worktree candidate; human project commit pending",
+  "status": "checks-passing historical candidate; acceptance reopened for adopted caption source compatibility regression",
   "changed_paths": [
     "CHANGELOG.org",
     "README.org",
