@@ -2,6 +2,13 @@
 
 ## Current: v0.7.0 development plan fully human-delivered
 
+Read-only prerelease inline compatibility proposal is now reviewed. No execution
+request yet: do not implement or run native/CSL probes from the supplied plan alone.
+Proposal and amendments: memory/inline-objects-0.7.0-review.md. First scope is
+entity/subscript/superscript lowering with preserved Org options/encoding; second
+is conditional final-AST LaTeX conversion, deferred for upstream loss or large
+ownership redesign. Delivered baseline below remains unchanged and clean.
+
 A-E3 are delivered. Final E3 f6aa2ae matches expected E2b parent, full approved
 message/21paths/all159accepted committed and worktree hashes, including native
 rprime polish in both languages. Ordinary worktree/index and GAW clean at intake.

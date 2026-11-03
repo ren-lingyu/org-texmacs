@@ -1,5 +1,17 @@
 # org-texmacs durable evidence
 
+## Static prerelease inline compatibility plan review
+
+At clean f6aa2ae, inline dispatch lacks entity/subscript/superscript branches and
+INFO projection lacks :with-entities/:with-sub-superscripts/:with-latex. Worker
+encoding distinguishes native paths from literal leaves; no LaTeX conversion
+operation exists. Input data copying remaps known Org identities, suggesting a
+possible local context view, not verified conversion support. Official Org option
+and citeproc-el upstream docs read; no build/test/probe or production modification.
+Full reviewed requirements/amendments and source/evidence limits:
+memory/inline-objects-0.7.0-review.md. No raw guide archive needed after extraction.
+The conditional LaTeX feature is not validated or adopted for implementation.
+
 ## v0.7.0 final E3 human delivery verified
 
 f6aa2ae5588c183a0fb04f5e115347f68604c85e has exact expected E2b parent, complete

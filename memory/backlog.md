@@ -1,5 +1,14 @@
 # org-texmacs active backlog
 
+## Reviewed proposal, execution not yet authorized
+
+User requests read-only review of prerelease inline objects and conditional CSL
+LaTeX math. Do not count this as implemented/adopted extra release scope yet.
+Concrete proposal, static findings, conditional gates and retention assessment:
+memory/inline-objects-0.7.0-review.md. Await execution direction; baseline remains
+the delivered A-E3 plan. Main review: projected Org options missing, native literal/
+symbol provenance, script base binding, converter error/ownership/encoding gates.
+
 A-E3 are human-delivered. Final E3 f6aa2ae matches expected E2b parent/full message/
 21paths/all159accepted inputs; worktree/index clean, no unchanged runtime rerun.
 Accepted637defaultERT+actual4/all12checks, four examples and package/version0.7.0
