@@ -2,8 +2,8 @@
 
 E2b human delivery is verified against expected parent/message/37paths/all158inputs.
 E3 examples/version/final docs now pass159-input acceptance:637defaultERT+actual4/
-all12checks, four example TM/PDF builds and package/version0.7.0. Nineteen paths
-are staged and equal the accepted worktree, awaiting human E3 commit. TODO/CLOSED/
+all12checks, four example TM/PDF builds and package/version0.7.0. Native-prime polish brings the candidate to21paths; four latest changes need
+manual restaging before human E3 commit. TODO/CLOSED/
 tag/publication remain human-controlled; no release claim. See E3 note/current.
 
 

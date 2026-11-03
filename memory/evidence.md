@@ -1,5 +1,15 @@
 # org-texmacs durable evidence
 
+## E3 native right-prime polish accepted
+
+User requests structured native prime in EN/ZH derivative examples. Replaced
+plain "=f-apostrophe" leaf by "=f" plus (rprime "'") before argument. Official
+primitive docs confirm rprime; actual four-example native build and pdfinfo pass,
+full-prime all12checks exit0 with only treefmt rebuilt; runtime/code inputs unchanged.
+Updated159hashes/21paths/message manifest includes four pending manual restaging
+paths. Existing19path index preserved. README/root summary and draft reflect the
+polish. No mirrored unit test or raw archive needed for this small sample change.
+
 ## E3 final acceptance, human delivery pending
 
 Verified E2b delivery is the baseline. Final E3 package/build/version eval0.7.0

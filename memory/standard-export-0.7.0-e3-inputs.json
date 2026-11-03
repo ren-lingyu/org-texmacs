@@ -2,7 +2,7 @@
   "baseline": "c596e091be2f9ce7f61df6aa76140c79685f8e05",
   "sha256": {
     ".gitignore": "d5cd7c28f728b0facaf53a82ec716a8b52bd9eef2a6728c9a39905c382f35204",
-    "CHANGELOG.org": "ad4bae36243ed887af24e4507e604cb9dc2fdd3fb97e69b8c6d31368419c114e",
+    "CHANGELOG.org": "bc5110a47f19f74158ed87061f71b8f0817578dc18fd8551f3576467dafee5ee",
     "CHANGELOGS/v0.1.0.org": "0ac600241de985bea57b884f26f506141450cba00c2af3acbfae331ddd1f1ca9",
     "CHANGELOGS/v0.2.0.org": "5b109960fc9958c57d4b36b666aae453bd8be7bb51bd2146111561f492fa3838",
     "CHANGELOGS/v0.2.1.org": "67aa35154dcbb3ba9fbca7d5f1c88ca2f55750b542d488b070357f6af19b3165",
@@ -13,7 +13,7 @@
     "CHANGELOGS/v0.6.0.org": "0b4e815792e40e3d2794c659465382392df49143999beda231515cf36f65c686",
     "CHANGELOGS/v0.7.0.org": "044d65da939cab7e88fee7cc782eed23cd051c85d25eef75a8e8c99a37bb18fd",
     "LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
-    "README.org": "b21eb3c5d971040e5aaf709ca859dc7972f4ffd9b4d5355fde7ab898c7afb9a8",
+    "README.org": "fe8203c133350e626e497a823903a48f44b727cb57bfbce1c89ac22d2d6f6c0b",
     "flake.lock": "ec36a6d3f3c69c85323f7a5e30f1e12a1d84fe7f9eef4649cf0c116b1a6114cc",
     "flake.nix": "18cbede235bd51ff756283931fd08e8cde0bb2049b281bad89b7a63d5119e905",
     "lisp/org-texmacs-ast.el": "1700538cf1ba87ea90eca9d4afb9b92ea8ba9c4c8711ee0ea998fdb33442b203",
@@ -52,7 +52,7 @@
     "pkgs/org-texmacs-examples/sources/en/chapters/building.org": "8e51e449f345a4ad81ff53b6713044076c612687bfc7459c1c279fe843b826bd",
     "pkgs/org-texmacs-examples/sources/en/chapters/configuration.org": "7e3509f63cf95aab4c771e7ec55b1fec3a58560234c4571f21dc74e4e6925c89",
     "pkgs/org-texmacs-examples/sources/en/chapters/figures-tables.org": "de04fbc5f3f95c4c7642e61e6a68d1dff001d5953f1e0a15afd893a2da9136e6",
-    "pkgs/org-texmacs-examples/sources/en/chapters/mathematics.org": "28f0dc09cd1c0c6be6c11e4a27b464086a7006ea7c354b4a7192eff2fb3c91fb",
+    "pkgs/org-texmacs-examples/sources/en/chapters/mathematics.org": "26892839d1b652e11814da0972452b9943f38ccd3186e0d36ccd35b9d5306441",
     "pkgs/org-texmacs-examples/sources/en/chapters/metadata.org": "f8cec1de326e36c6c1e5dfdc86f1e3ae515680da892016417c3297ee8ab9d779",
     "pkgs/org-texmacs-examples/sources/en/index.org": "116920ca958c45cb97b99496bb53ac61efc84177671a63f6f9050a090cc5d8e7",
     "pkgs/org-texmacs-examples/sources/shared/configuration.org": "9854eb95001a271bd7acf8eb17101a328038810570a936908fab790b8c35e2db",
@@ -62,7 +62,7 @@
     "pkgs/org-texmacs-examples/sources/zh/chapters/building.org": "013d44b2256cdebc21d3cade1d593b9e420cb33d3f98d51ed161b4b0870f8e04",
     "pkgs/org-texmacs-examples/sources/zh/chapters/configuration.org": "bd7c49681bd6e073a2aef8bd53ec411a0a9ee146cac1cc6d8ec58ef76dbf5390",
     "pkgs/org-texmacs-examples/sources/zh/chapters/figures-tables.org": "5e75f4e26c3f923e98fad0d7bfedc3a00861f3c722b261247ed0e99959264ad3",
-    "pkgs/org-texmacs-examples/sources/zh/chapters/mathematics.org": "ac1dfa13ef486d3226d0062ce38d2abb019cbc89cd410960b0fda07cbb658231",
+    "pkgs/org-texmacs-examples/sources/zh/chapters/mathematics.org": "855e5532c5e3f41b2459643008f051bf2c274f66890c3ff9c8ec8604321a1b2a",
     "pkgs/org-texmacs-examples/sources/zh/chapters/metadata.org": "58d90c15ed4cd01421959503ae62de9b2c252f67ccdaefbdec45689dcdb63076",
     "pkgs/org-texmacs-examples/sources/zh/index.org": "bc817ba2df40e0a87a1901c7121bf73044eadd7d9308b9d610921eab8bec90e6",
     "pkgs/texmacs-fandol-with-gotor-support/overlay.nix": "123fab43c8b780f238762489dee730f258838ec5818b727dcf54e8323ee3c085",
@@ -174,6 +174,7 @@
     "pkgs/org-texmacs-examples/sources/en/chapters/bibliography.org",
     "pkgs/org-texmacs-examples/sources/en/chapters/building.org",
     "pkgs/org-texmacs-examples/sources/en/chapters/configuration.org",
+    "pkgs/org-texmacs-examples/sources/en/chapters/mathematics.org",
     "pkgs/org-texmacs-examples/sources/en/index.org",
     "pkgs/org-texmacs-examples/sources/shared/configuration.org",
     "pkgs/org-texmacs-examples/sources/shared/references.org",
@@ -181,22 +182,31 @@
     "pkgs/org-texmacs-examples/sources/zh/chapters/bibliography.org",
     "pkgs/org-texmacs-examples/sources/zh/chapters/building.org",
     "pkgs/org-texmacs-examples/sources/zh/chapters/configuration.org",
+    "pkgs/org-texmacs-examples/sources/zh/chapters/mathematics.org",
     "pkgs/org-texmacs-examples/sources/zh/index.org"
   ],
-  "expected_commit_message": "chore(release): prepare 0.7.0 examples and release notes\n\n- 将 Lisp 与 Nix 包版本更新为 `0.7.0`, 同步 README 的依赖和验证范围说明.\n- 将示例构建从旧 preparation 和 BibTeX 文本快照迁移到标准 document API, 用同一个原生 document 生成 TeXmacs 和 PDF.\n- 为示例 Emacs 添加可选 `citeproc` 依赖, 从规范 Org 文件 tangle 本地 BibTeX 与 CSL, 禁用示例导出期间的 Babel 求值并同步中英文配置指南.\n- 完成 `CHANGELOGS/v0.7.0.org` 的迁移与支持边界说明, 更新根 CHANGELOG 的功能清单和导航, 记录中文示例的 CSL locale fallback 限制.\n",
+  "expected_commit_message": "chore(release): prepare 0.7.0 examples and release notes\n\n- 将 Lisp 与 Nix 包版本更新为 `0.7.0`, 同步 README 的依赖和验证范围说明.\n- 将示例构建从旧 preparation 和 BibTeX 文本快照迁移到标准 document API, 用同一个原生 document 生成 TeXmacs 和 PDF.\n- 为示例 Emacs 添加可选 `citeproc` 依赖, 从规范 Org 文件 tangle 本地 BibTeX 与 CSL, 禁用示例导出期间的 Babel 求值并同步中英文配置指南, 将导数案例改为原生 `rprime` 结构.\n- 完成 `CHANGELOGS/v0.7.0.org` 的迁移与支持边界说明, 更新根 CHANGELOG 的功能清单和导航, 记录中文示例的 CSL locale fallback 限制.\n",
   "validation": {
     "version": "0.7.0",
     "default_ert": 637,
     "actual_integration": 4,
     "named_checks": 12,
     "full_1": "passed runtime/compile/lint/format; prior example-style packaging",
-    "full_2": "passed final snapshot, only treefmt rebuilt; identical runtime derivations reused",
-    "examples": "final build-2 passed all four TM/PDF and pdfinfo, en/index6 en/article5 zh/index6 zh/article4 pages",
+    "full_2": "earlier19path candidate passed; superseded by prime_checks for current input hashes",
+    "examples": "final build-prime passed all four TM/PDF and pdfinfo; en/index6 en/article5 zh/index6 zh/article4 pages",
     "base_package": "build and eval0.7.0 passed",
-    "limits": "x86_64-linux Emacs31.1 Org9.8.10 TeXmacs2.1.5; other platforms/minimum Org/GUI not certified; Chinese CSL uses bundled en-US fallback"
+    "limits": "x86_64-linux Emacs31.1 Org9.8.10 TeXmacs2.1.5; other platforms/minimum Org/GUI not certified; Chinese CSL uses bundled en-US fallback",
+    "prime_examples": "build-prime exit0; both derivative examples use native rprime, four TM/PDF artifacts regenerated",
+    "prime_checks": "full-prime exit0/all12checks; only treefmt rebuilt, runtime leaves unchanged"
   },
   "integration_driver_sha256": {
     "tests/standard-integration-probe/test.nix": "136d5f2ba62244eddfc0a497b78683f0e0895178bd8815a5464f20b779ec5de7",
     "tests/standard-integration-probe/test-overlay.nix": "e851cc50c57dd2293cc7656b34a51b8f0d95bd9b267c224f5178d1f8d1577815"
-  }
+  },
+  "pending_stage_paths": [
+    "CHANGELOG.org",
+    "README.org",
+    "pkgs/org-texmacs-examples/sources/en/chapters/mathematics.org",
+    "pkgs/org-texmacs-examples/sources/zh/chapters/mathematics.org"
+  ]
 }

@@ -35,7 +35,7 @@ Executed final commands from repository root (SNAPSHOT denotes the checked
 - timeout 120s nix eval --raw --no-write-lock-file
   path:SNAPSHOT#packages.x86_64-linux.org-texmacs.version.
 
-Final build-2 exits0 for base0.7.0 package and all four TM/PDF/preserved-source
+Earlier build-2 exits0 for base0.7.0 package and all four TM/PDF/preserved-source
 examples. Two blocks tangle from references.org in each process; local CSL check
 passes. pdfinfo accepts all four A4 PDFs: en/index6pages, en/article5, zh/index6,
 zh/article4. Package version eval returns0.7.0. Output store directories:
@@ -45,12 +45,12 @@ No visual/GUI or Chinese bibliography localization claim: citeproc warns missing
 zh-CN locale and uses bundled en-US fallback. Body language/Fandol fonts remain.
 No additional network style/locale acquisition or native parser workaround.
 
-All159project input hashes equal final worktree/index/isolated snapshot; two
-controlled actual-integration driver hashes retained separately in E3 inputs JSON.
-Complete19path diff and release notes reviewed, whitespace clean. Index changed
-externally during work and now equals accepted candidate; no ordinary Git write
-was invoked by agent. No unrelated flake/lock/tracking-policy mutation. Expected
-human commit message is tmp/commit.md and E3 manifest. Human E3 commit pending.
+All159project input hashes equal final worktree/isolated snapshot; two controlled
+actual-integration driver hashes are retained separately. Complete21path diff and
+release notes reviewed, whitespace clean. Existing19path index is preserved; four
+late prime/document changes need manual restaging. No ordinary Git write invoked.
+No unrelated flake/lock/tracking-policy mutation. Expected human commit message
+is tmp/commit.md and E3 manifest. Human E3 commit pending.
 
 ## Retention and next action
 
@@ -61,7 +61,24 @@ source/build drivers and sufficient extracted facts/manifests make original raw
 prototype/log/PDF retention unnecessary; no new archive selected. No binary/cache/
 whole temporary tree copied into GAW. Source manifests are pure text.
 
-Verify manual E3 delivery against exact E2b parent/message/19paths/all159hashes;
+Verify manual E3 delivery against exact E2b parent/message/21paths/all159hashes;
 do not rerun unchanged checks. Then development is delivered, with human version
 state/tag/publication separate. Do not claim minimum Org9.8, other platforms,
 arbitrary styles or GUI layout were newly validated.
+
+## Native prime example refinement
+
+User requests replacing plain string f-apostrophe by structured right prime in
+EN/ZH derivative example. Official TeXmacs primitive docs identify (rprime s):
+https://www.texmacs.org/tmdoc/devel/format/primitives.en.html . Use "=f" then
+(rprime "'") before the existing argument, with apostrophe as native node payload,
+not plain baseline text. Two math sources plus README/root example summary change;
+updated commit draft records the polish. build-prime/full-prime exit0: all four
+TM/PDF artifacts regenerated, all12checks pass with only treefmt rebuilt. Final
+159input manifest/21paths updated; four pending_stage_paths need manual restaging. No mirrored unit
+test for this reversible sample-only edit; actual native sample build verifies it.
+
+Final prime-refined example output: /nix/store/r5zh1msnpipcl4axqwrxddzc87j9m6px-org-texmacs-examples.
+Earlier19path/index-equality statements describe the pre-polish candidate; current
+source/hash/message authority is the updated E3 manifest. No standalone raw archive
+needed for this small maintained source correction. No new runtime tests added.

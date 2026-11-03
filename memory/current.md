@@ -2,6 +2,12 @@
 
 ## Current: E3 accepted; v0.7.0 development ready for human delivery
 
+User-requested native prime polish is verified: EN/ZH derivative examples use
+rprime, both examples plus README/root summary updated. Four-artifact build and
+all12checks pass again; only treefmt reruns, runtime leaves unchanged. Updated
+E3 manifest/draft covers21paths/159inputs. Four final paths need manual restaging;
+existing19path index is preserved. See pending_stage_paths in E3 inputs JSON.
+
 A-E2b are human-delivered. E2b c596e09 exactly matched expected E2a parent/full
 message/37paths/all158accepted inputs; clean intake, no unchanged test rerun.
 Approved final-AST/STM/caption boundaries remain; independent models/pure lowering
@@ -17,14 +23,14 @@ human-controlled. No release-state transition/tag/publication performed.
 
 Final package/four-example builds and version eval pass. Full-1 passes default637
 ERT+actual4/all12checks; full-2 final example/docs snapshot passes with only treefmt
-rebuilt, identical runtime derivations cached. All159root/index/isolated inputs
-match. Complete19path staged/worktree diff reviewed, whitespace clean. Observed
-index equals accepted worktree; no ordinary Git write was invoked by agent.
+rebuilt, identical runtime derivations cached. All159root/final-snapshot inputs
+match. Complete21path worktree diff reviewed, whitespace clean. Four late polish
+paths differ from the existing index; no ordinary Git write invoked by agent.
 Exact inputs/message/limits: memory/standard-export-0.7.0-e3-inputs.json.
 Draft tmp/commit.md is ready. Retention: maintained sources/manifests/facts suffice,
 no raw temporary tree/log/PDF archive. Details: memory/standard-export-0.7.0-e3.md.
 
-Next: user manually commits E3. Verify exact c596e09 parent/full message/19paths/
+Next: user manually commits E3. Restage the four polish paths, then verify exact c596e09 parent/full message/21paths/
 all159accepted inputs, including unchanged files; no unchanged runtime rerun.
 Then report development delivery complete. Human may freeze/finalize version and
 perform tag/publication separately; do not infer those actions from commit alone.
