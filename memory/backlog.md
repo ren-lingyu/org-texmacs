@@ -10,6 +10,8 @@ No mandatory broad LaTeX/core/island redesign. Begin N0 checkpoint, N1 CHANGELOG
 state/items and human delivery, then N2 entities/N3 scripts/N4 experiments/N5
 conditional conversion and release documentation. Unsupported cases are not
 implicitly added to scope. Original static review remains as amended evidence.
+N0 checkpoint is complete; N1 single-path candidate is ready and awaits human
+delivery. Do not begin N2 production implementation before that gate.
 
 A-E3 are human-delivered. Final E3 f6aa2ae matches expected E2b parent/full message/
 21paths/all159accepted inputs; worktree/index clean, no unchanged runtime rerun.

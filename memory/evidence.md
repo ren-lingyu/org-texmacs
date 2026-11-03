@@ -1,5 +1,21 @@
 # org-texmacs durable evidence
 
+## Prerelease N1 CHANGELOG-only candidate ready
+
+N0 plan checkpoint precedes the first ordinary project edit. Baseline remains
+f6aa2ae5588c183a0fb04f5e115347f68604c85e. Complete worktree diff has exactly one
+path, CHANGELOG.org: the explicitly requested NEXT headline and seven unchecked
+planned items. Read-only structural comparison confirms removing only those
+changes reproduces the baseline byte-for-byte, all existing completed checkboxes
+and older releases preserved. git diff --check exits0; ordinary index is empty.
+No build/test/formatter/native experiment run for this bookkeeping node.
+Expected CHANGELOG SHA256: cdfa88640d3d086bc6db6f5750436550dc365aff85e3af814a6df12e77d4ad26.
+Requested worktree-candidate draft tmp/commit.md SHA256:
+70c2f2c779924b9cb1c7a6db9f4659099a23b8d51971a3e309be8f92c0327d47.
+Subject: chore(release): record final 0.7.0 inline mathematics scope.
+Draft is not staged-diff evidence. Human staging/commit remains; verify exact
+parent/path/content/message after delivery before N2. No new raw archive needed.
+
 ## Prerelease inline plan adoption and option-key correction
 
 The user approved the revised plan and all notes with "Implement the plan".

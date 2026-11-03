@@ -1,8 +1,8 @@
 # org-texmacs current project model
 
 Final prerelease inline-object work is approved, not implemented yet. Active
-N0-N5 contract: memory/inline-objects-0.7.0-plan.md. N0 memory checkpoint precedes
-N1 CHANGELOG-only TODO -> NEXT (explicit user request) and its human commit gate.
+N0-N5 contract: memory/inline-objects-0.7.0-plan.md. N0 checkpoint is complete;
+N1 CHANGELOG-only NEXT/seven unchecked items is reviewed and awaits human commit.
 Entity/subscript/superscript dispatch and related INFO projection are still absent;
 LaTeX conversion remains a gated hypothesis. The INFO key is singular
 :with-sub-superscript, not the plural variable spelling. Historical stage material
