@@ -7,8 +7,10 @@ existing CSL Org-return output, passing complete candidate acceptance with724
 defaultERT+2actual/all12isolated checks and exact D delivery. A custom native Cite
 processor is deferred as unnecessary for the verified CSL subset, not a new
 commitment. E1 command migration is human-delivered and verified: default737ERT+actual3,
-all named checks. E2 source APIs/preparation cleanup is active as E2a byte/output
-consumers followed by E2b structured entries and caller-based cleanup;
+all named checks. E2a five main-module source byte/output consumers are accepted
+with default745ERT+actual4/all12named checks, awaiting human delivery. Verify E2a
+before E2b structured entries, old preprocessed/discovery variants and caller-based
+parallel preparation cleanup;
 E3 examples/version/final docs follows its human delivery gate. Table query and
 native layout regression are resolved within E1; no release completion claim.
 C freezes original-transaction query results

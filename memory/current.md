@@ -1,60 +1,56 @@
 # org-texmacs current memory
 
-## Current: A-E1 delivered; E2 source API migration active
+## Current: A-E1 delivered; E2a accepted, awaiting human delivery
 
-Controlling plan: memory/standard-export-0.7.0-plan.md. Human E1 e8ee1ac matches
-expected delivered D parent,15paths/full prepared message/all156accepted input
-hashes; ordinary worktree/index and GAW clean at intake. No unchanged tests rerun.
-E1 acceptance remains default737ERT+actual3/all named checks on locked baseline.
-The E2 call inventory finds444public source API occurrences in maintained tests
-across22files; private preparation also services structured/direct/preprocessed/
-discovery adapters. Preserve caller migration before deletion. E2 is subdivided
-into E2a source byte/buffer/new-file export consumers and E2b structured source
-entry migration plus duplicate preparation cleanup. Each production candidate
-retains the existing human-delivery gate; E3 remains examples/version/final docs.
-This changes execution granularity, not final architecture or feature scope.
-Current inventory, decision and experiment questions: memory/standard-export-0.7.0-e2.md.
-Four isolated source-selection/result probes pass4/4(5.676516s). Select the region
-from its beginning; require a matching accessible heading when subtree-position
-is also given. Reject old supplied BibTeX texts before preparation. No production
-edits yet. Next thin source consumer implementation, maintained tests/docs and full gate.
-Version remains0.6.0/TODO, not a completed release. No ordinary staging/commit.
+Controlling plan: memory/standard-export-0.7.0-plan.md. E1 human delivery matches
+D parent/15paths/full message/all156accepted hashes; clean intake, no unchanged
+runtime rerun. E2 caller inventory led to E2a five main-module byte/output APIs,
+then E2b structured entries/legacy variants/parallel preparation cleanup. Each
+reviewable production node retains its human-delivery gate. E3 examples/version/
+final docs/release checks follows E2. This is execution granularity, not new scope.
 
-Three interactive commands now use one genuine standard Org export transaction
-for all scopes, including visible-only. Org owns preparation/options/AST filters/
-Cite. Freeze mutable option graphs and selections before prompts; preserve function/
-opaque identities. Keep managed buffers and guarded local file writing. Actual
-output-file INFO uses Org's merger and a separate path string. Text consumers honor
-final filters then reversibly convert Latin1 transport; native PDF uses completed
-structured document and the established conservative tail-callback contract.
-Non-nil legacy discovery flag rejects before preparation/prompts with migration
-advice. Source APIs remain legacy until E2; independent core and pure lowering stay
-separate. No private preparation copy, third AST, STM round trip, recursive INCLUDE
-implementation or extension-specific production adapter.
+E2a15task paths are uncommitted, ordinary index/HEAD/lock untouched. README/
+CHANGELOG and complete-worktree tmp/commit.md are synchronized. All158root/isolated
+hashes match memory/standard-export-0.7.0-e2a-inputs.json, SHA256
+8c8fd2438002685c6f525de141d0a4f66638dc58c04e4c3b1f7553a79001e80f.
+Wait for human E2a commit; verify expected E1 parent/paths/message/all158accepted
+hashes without rerunning unchanged gates, then continue E2b. Version0.6.0 and
+CHANGELOG TODO remain; v0.7.0 is neither complete nor released.
 
-The first full gate exposed missing table alignment after Org ignores the cookie
-row. Freeze public Org cell alignment queries in original INFO, remap finite
-per-table data with AST identities and consume it in pure lowering. Preserve Org's
-numeric inference and explicitly reject width cookies via its public query. The
-original PDF coordinate/assertion test is unchanged and now passes. Standard
-narrowed subtree selection requires an accessible heading; documented and tested
-against actual Org errors. Scalar rich INFO strings become literal secondary lists
-without reparsing Org markup. Full causal evidence and retention assessment:
-memory/standard-export-0.7.0-e1.md; earlier CSL boundaries/pin/archive in D note.
+Five main-module source TM/PDF byte/fresh-buffer/exclusive-file exports now use
+one genuine standard Org transaction and lazy backend loading. Core/model use
+and mere main-module loading stay independent. Shared option graph ownership
+preserves function/opaque identities and parent cycles. Explicit nil REGION ignores
+an ambient active region. Combined subtree-position/region requires the accessible
+heading at region beginning to match the requested heading; mismatches and supplied
+BibTeX text snapshots fail before preparation. Standard EXT-PLIST/Org Cite apply.
+Text honors final filters and reversible byte transport. PDF consumes the completed
+native document without TM serialization/reparse. Actual new-file INFO gets a
+separate target string; writer guards/exclusive-create/fresh result ownership stay.
+No private preparation copy, independent INCLUDE, third AST or extension adapter.
 
-E1 full-2 exits0/all named checks pass:11default plus actual extension, default737ERT
-= core306/native348/Cite8/PDF-document40/PDF-render29/patched6, plus actual3/3,
-zero unexpected. Strict byte/native compilation, lint/treefmt and ERT aggregates
-pass on x86_64-linux/Emacs31.1/Org9.8.10/TeXmacs2.1.5. Core uses accepted focused-6
-output; other native/PDF/Cite/actual leaves rerun after the query/lowering change.
-No other-platform/minimum9.8/all-CSL-style/GUI/examples-build claim. Maintained
-causal/native tests plus delivered baseline and accepted identities suffice;
-no new raw logs/full temporary tree/PDF archive selected.
+Already consumed parser/property/dependency data remain owned; do not replay the
+old provider's receipts. Source text/mode/restriction/identity/native-setting changes
+still reject before publication. Two native bibliography PDF cases retain all
+original text/target assertions through document consumers. Standard source Cite
+is proved separately by actual CSL/five outputs and real Organize/SQLite/UUID/INFO.
+Structured preparation/document and all preprocessed/discovery variants, including
+byte-returning variants, remain legacy until E2b. Do not call that cleanup complete
+or preserve a parallel authority merely to satisfy old tests. E2 causal evidence,
+known changed contracts/retention/next actions: memory/standard-export-0.7.0-e2.md.
+
+E2a formal full-1 exits0/all12named checks (11default+actual extension). Default745
+ERT = core307/native352/Cite9/document42/render29/patched6; actual4/4, zero unexpected.
+Strict byte/native compilation, lint/treefmt and aggregates pass. All runtime leaves
+except Cite rerun against final source; Cite reuses exact accepted cite-2. Locked
+x86_64-linux/Emacs31.1/Org9.8.10/TeXmacs2.1.5 only; no minimum9.8/other-platform/
+all-CSL-style/GUI/examples-build claim. Maintained causal tests plus exact baseline
+and accepted input hashes suffice; no new raw logs/full temporary tree/PDF archive.
 
 User permits nix fmt/build/eval/flake check and variants throughout0.7.0plan.
 Disclose exact commands/scope/writes/network/timeouts; isolate experiments and
-assess retention. Each production node syncs docs/draft then awaits human delivery.
-Keep GAW current through the validated memory loop and selective checkpoints.
+assess retention. No ordinary staging/commit/tag/push. Maintain GAW through its
+validated memory loop and selective checkpoints. E3/human controls release states.
 
 ## Earlier: v0.6.0 locally finalized and tagged; approved plan complete
 

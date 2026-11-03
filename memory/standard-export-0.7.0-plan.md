@@ -1,6 +1,12 @@
 # v0.7.0 Standard Org Export Integration: approved execution plan
 
-## Execution state: A-E1 human-delivered; E2 active
+## Execution state: A-E1 human-delivered; E2a accepted, awaiting delivery
+
+E2a15task paths pass full-1/default745ERT+actual4/all12named checks. Exact158
+accepted input hashes: memory/standard-export-0.7.0-e2a-inputs.json. Docs and
+complete-diff commit draft are ready. Verify human E2a delivery before E2b
+structured entries/all legacy preprocessed/discovery variants/parallel preparation
+cleanup, then E3 examples/version/final release checks. No release completion.
 
 Human E1 delivery matches parent/15paths/message/all156accepted hashes, clean
 intake and no unchanged rerun. E2 is subdivided into E2a source byte/buffer/new-file

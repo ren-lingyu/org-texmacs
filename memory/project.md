@@ -1,6 +1,6 @@
 # org-texmacs current project model
 
-## v0.7.0 standard backend: A-E1 delivered; E2 source consumers active
+## v0.7.0 standard backend: A-E1 delivered; E2a accepted candidate
 
 The real texmacs backend consumes standard org-export-as in one transaction.
 Prepared structures/native documents use the isolated single-use result handoff;
@@ -55,12 +55,19 @@ and default numeric inference, reject width cookies. Pure lowering consumes owne
 identity-remapped values; original native PDF layout assertions remain unchanged.
 Standard narrowed subtree selection requires an accessible heading, unlike legacy
 source APIs. Human E1 delivery matches parent/15paths/message/all156hashes in
-memory/standard-export-0.7.0-e1-inputs.json; clean intake, no unchanged rerun. E2
-proceeds as E2a byte/buffer/new-file exports, then E2b structured entries/cleanup
-after caller migration, retaining human gates. Four isolated source-selection/
-result probes pass; matched heading/region maps directly, mismatches and supplied
-BibTeX text reject before preparation. No E2 production edits yet. Examples,
-version metadata and final release documentation/checks remain E3.
+memory/standard-export-0.7.0-e1-inputs.json; clean intake, no unchanged rerun.
+E2a byte/buffer/new-file exports now pass formal acceptance: default745ERT+actual4,
+all12named checks, strict compile/lint/treefmt. Shared option graph copy lives in
+standard adapter; main lazily loads backend at export use, independently of core.
+Nil explicit REGION ignores an ambient active region; combined explicit selections
+require matching headings at region start. Supplied BibTeX text snapshots reject
+before preparation in the five main-module exports. Source/native guards and byte/
+PDF/file ownership contracts are documented; actual new-file INFO cannot redirect
+writes. Consumed parser/property/dependency data do not need legacy receipt replay.
+All158accepted input hashes: memory/standard-export-0.7.0-e2a-inputs.json.
+15task paths await human E2a delivery before E2b structured entries/all legacy
+preprocessed/discovery variants/parallel preparation cleanup. Independent pure
+input/lowering/core remain. Examples/version/final docs/release checks remain E3.
 Historical0.6descriptions below remain baseline evidence, not current standard
 backend support claims.
 

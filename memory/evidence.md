@@ -1,5 +1,30 @@
 # org-texmacs durable evidence
 
+## E2a accepted source consumer candidate
+
+Formal full-1 exits0/all12named check attributes (11default+actual integration).
+Default745ERT = core307/native352/Cite9/document42/render29/patched6; actual4/4,
+zero unexpected. Exact-final-source full gate reruns core307(2.036157s),
+native352(248.465689s), document42(103.445101s), render29(155.322656s),
+patched6(2.916235s), actual4(5.897598s). Cite9 reuses exact cite-2(11.627528s).
+Strict byte/native compilation, lint/treefmt and ERT aggregates pass on locked
+x86_64-linux/Emacs31.1/Org9.8.10/TeXmacs2.1.5. No new minimum9.8/other-platform/
+all-style/GUI/examples-build claim. All158root/isolated hashes match
+memory/standard-export-0.7.0-e2a-inputs.json, SHA256
+8c8fd2438002685c6f525de141d0a4f66638dc58c04e4c3b1f7553a79001e80f.
+HEAD remains delivered E1, index/lock untouched;15task paths/docs/draft await human
+E2a delivery before E2b. No new raw archive: maintained selection/nesting/ownership/
+file/filter/Cite/actual integration regressions plus exact baseline/inputs suffice.
+
+Four isolated probes establish explicit source-selection mapping. New output
+consumers preserve one preparation/Cite per invocation; actual Organize proves
+SQLite/UUID/bibliography/INFO through source APIs without extension-specific code.
+An early new Cite test has syntax and sentence-case expectation mistakes, both
+corrected; no runtime evidence is claimed for its parse failure, nor production
+case repair. Native bibliography PDF text/target assertions remain through completed
+document consumers; they do not substitute for normal standard Cite acceptance.
+Full causal observations and scope limits: memory/standard-export-0.7.0-e2.md.
+
 ## E1 human delivery and E2 inventory
 
 E1 e8ee1ac matches exact delivered D parent,15paths/full prepared commit message

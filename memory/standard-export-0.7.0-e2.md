@@ -75,3 +75,71 @@ Retention assessment: adopted probe cases will enter maintained regressions; the
 exact delivered E1 baseline and source manifest plus these semantic findings are
 sufficient. No independent need for raw logs/full temporary tree archive is selected.
 If maintained cases omit a consequential finding, reconsider retention before disposal.
+
+## Production E2a candidate and causal validation
+
+Five byte/buffer/new-file adapters now use the thin standard-source consumer.
+Option graph ownership moved from frontend to the standard adapter; main module
+autoloads the private source consumer and lazily registers the backend only at
+export use. Actual file INFO gets a nonaliasing target copy. Structured public
+source entries remain unchanged until E2b. README/CHANGELOG migration updates and
+source-selection/options/nesting/PDF/five-consumer/lazy-loading tests are authored.
+
+First focused attempt stops before ERT for overlong new docstrings, corrected.
+Focused-2 strict compilation/core307/307 pass; selected native12/17 and PDF18/20.
+Seven failures enforce old semantics: generic export forbidden, supplied native
+BibTeX snapshots expected to run workers, all preparation errors project-typed,
+and parser/property receipts checked after completed structures. Update those
+expectations to standard semantics. Two native bibliography PDF assertions retain
+their exact text/target requirements through completed-document consumers, not a
+fake standard path. New maintained CSL/actual Organize source-consumer coverage
+prove normal Cite once per transaction. No second preparation or extension
+adapter is introduced. These are causal validation steps, not current blockers.
+
+Focused-3 passes core307/307(2.037515s), source-native17/17(18.718471s),
+source-PDF18/18(29.742171s), actual Organize4/4(5.925541s). A new Cite test has
+one excess parenthesis; formatting fails but the orchestrator incorrectly proceeds
+to build that fixed snapshot. Cite does not run; other leaves remain valid.
+Fix syntax, then cite-1 passes8/9 because the new case expects original BibTeX
+capitalization rather than actual CSL sentence-case output. Fix only that fixture
+to literal Reference alpha; cite-2 passes9/9(11.627528s). No processor markup/case
+repair. Main docstring reflow also changes source bytes only; final full
+gate supplies exact-final-input validation rather than claiming hash equality
+with the earlier focused outputs. Scoped formatting now succeeds.
+
+All158candidate root/isolated inputs refreshed; owned temporary focused drivers
+removed. Formal full-1 runs11default named checks plus optional actual Organize.
+README/CHANGELOG explicitly distinguish five migrated main-module source exports
+from structured APIs and all old preprocessed/discovery variants, including their
+byte wrappers, which remain for E2b. Version/TODO unchanged; no ordinary staging.
+
+## Final E2a acceptance and next delivery gate
+
+Full-1 exits0/all12named check attributes. Default745ERT = core307/native352/
+Cite9/document42/render29/patched6; actual4/4, zero unexpected. Exact-final-source
+core307 takes2.036157s, native352 248.465689s, document42 103.445101s, render29
+155.322656s, patched6 2.916235s, actual4 5.897598s. Cite9 reuses exact cite-2 output
+11.627528s. Strict byte/native compilation, lint/treefmt and ERT aggregates pass.
+Only locked x86_64-linux/Emacs31.1/Org9.8.10/TeXmacs2.1.5; no new minimum9.8,
+other-platform, all-CSL-style, GUI or examples-build claim.
+
+All158accepted root/isolated bytes match memory/standard-export-0.7.0-e2a-inputs.json,
+SHA2568c8fd2438002685c6f525de141d0a4f66638dc58c04e4c3b1f7553a79001e80f.
+15task paths form one coherent source byte/output migration plus shared ownership,
+required caller-contract tests/docs and real Cite coverage; split unnecessary.
+README/CHANGELOG and complete-worktree tmp/commit.md reviewed; index/HEAD/lock
+unchanged. No ordinary staging/commit. Human E2a delivery/verification precedes E2b.
+
+E2b must migrate prepare-buffer/document-from-buffer/current-buffer and inventory
+all preprocessed/discovery variants, including their byte wrappers; no standard
+source entry may depend on parallel preparation afterward. Existing private
+--standard-source-consume already forwards input/model/document kinds as well as
+TM/PDF, but public structured entries remain legacy now. Preserve independent
+core/model/input constructors, pure lowering and native worker/output behavior.
+Keep native labels/footnote/reference/STM structural duties. Do not simply preserve
+old preparation as a compatibility branch for obsolete source tests. Reconcile
+explicit bibliography/selection/options and native-format tests with chosen
+standard source contracts, retaining meaningful pure-constructor/lowering evidence.
+Only remove duplicate context/filter/INCLUDE/bibliography functions after their
+remaining callers and genuine independent uses are accounted for. E3 retains
+examples/version/final docs/release gates. Version0.6.0/TODO unchanged.
