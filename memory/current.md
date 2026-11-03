@@ -1,67 +1,38 @@
 # org-texmacs current memory
 
-## Caption source compatibility gate reopened
+## Current: E2b accepted with approved caption scope, human delivery pending
 
-User correctly recalls the adopted caption-inline-footnotes contract. Recovery of
-memory/caption-inline-footnotes.md confirms acceptance included anonymous inline
-notes in long AND short captions via official source document adapters with a
-parser-only patched Org, not merely independent AST/pure lowering. E2b retargeted
-two successful source tests to pure input and changed four-scope source success
-into refusal. This is a real source-contract regression; Org missing numbering
-explains the technical cause but does not itself authorize dropping support.
-The earlier claim that support remained unchanged was incomplete. Treat the
-candidate as checks-passing but NOT ready for delivery until this gate is resolved.
-Do not use green retargeted tests as proof of preserved source compatibility.
-Reassess native target numbering responsibilities against standard Org authority,
-without copied preparation, string round trips, parser identity branches or a
-parallel exporter. Restore meaningful source integration coverage with the chosen
-architecture. Other verified runtime results remain facts, not overall acceptance.
-Current project changes are user-staged (37paths), HEAD still E2a; preserve index.
-The previous tmp/commit.md and accepted-candidate label are not submission-ready.
-No production or index mutation was made during this corrective read-only review.
+Controlling plan: memory/standard-export-0.7.0-plan.md. User explicitly approves
+standard source caption scope contraction after reviewing historical support and
+native limits; see goals.md. Stock Org note-looking caption text follows Org.
+Effective caption footnote nodes from extensions/AST filters reject explicitly.
+Independent model/pure lowering anonymous long/short caption conversion remains.
+Native package research is outside0.7.0; existing PDF anchor repair stays unchanged.
+This supersedes the earlier source-compatibility regression gate and patched
+source success requirement. Prior unilateral contraction was corrected by review;
+now the public behavior change is explicitly adopted, not a hidden regression.
 
-Historical comparison is now verified in evidence.md: native caption body/counter
-limits (fae3287 acceptance), private PDF destination repair (947289b), and current
-Elisp missing-number rejection are distinct. Keep existing worker PDF anchor fix;
-restore compatibility in standard query/native lowering, with mixed-note tests.
-No new runtime evidence; do not claim a completed repair.
+Prepared adapter now checks caption nodes after canonical definition/ignore-list
+exclusions, before native parsing. Definition discovery does not query unsupported
+caption definitions. New stock/synthetic test covers both caption parts, deletion,
+logical ignore and unused definition, without numbering/native worker callbacks.
+Focused checks pass core275/275(1.447825s), patchedcaption6/6(2.730115s). Complete
+caption-scope check exits0: default637ERT plus actualintegration4, all12checks.
+All158inputs equal the final snapshot; source/compile/lint/format/native/PDF gates
+pass. The previous636candidate is superseded by this checked scope refinement.
 
-## Current: E2b accepted candidate; human project commit pending
+User-staged37paths match every previous158-input hash; preserve ordinary index.
+Current refinement adds seven unstaged paths, all within those37. No ordinary
+staging/commit/tag/push. README/CHANGELOG and complete-worktree tmp/commit.md
+state the approved source boundary. Version0.6.0/TODO unchanged.
 
-Controlling plan: memory/standard-export-0.7.0-plan.md. Human E2a delivery is
-verified against expected parent/15paths/message/all158accepted hashes. E2b now
-passes complete acceptance; ordinary project index remains empty. No ordinary
-staging/commit/tag/push. Version0.6.0/TODO unchanged. User requests continued work
-and a complete progress update; report delivered, human E2b gate still applies.
-
-Structured source input/document/current-document and five deprecated wrappers
-share standard Org preparation. Input/model handoff skips target lowering;
-document/text/PDF lower once. Parallel options/selection/filter/INCLUDE/bibliography
-preparation is retired after caller migration. Org-selected canonical note bodies
-precede strict ownership; ignored shared alternatives are excluded. Inline note
-bodies receive owned paragraphs without reparse. Source settings/INFO have separate
-copies; base-buffer file identity/path normalization and inherited-property scratch
-marker isolation preserve source state. Independent model/input/lowering remain.
-
-User Org structure priority controls: final AST, complete STM within one effective
-owner, no cross-boundary joining/original restoration/early parser or INCLUDE
-interception. Native/PDF/worker contracts remain. Parsed caption notes for which
-Org9.8.10 gives no number explicitly fail standard source conversion; test-only
-parser patch does not extend numbering. Independent caption/native support stays.
-
-Full-2 clean isolation passes default636ERT plus actual Organize4, all12checks.
-Full-3 after README-only corrections passes; only treefmt rebuilt, identical runtime
-and lint/compile derivations reused. Complete37path diff reviewed, all158root inputs
-match the final checked snapshot. Exact inputs/expected human message and limits:
-memory/standard-export-0.7.0-e2b-inputs.json. Per-case test inventory:
-memory/standard-export-0.7.0-e2b-tests.json (118retired, fourrenamed, ninenew).
-Draft tmp/commit.md is from the complete worktree diff per adopted delivery plan.
-
-Next: user manually commits E2b. Verify exact E2a parent/full message/37paths/all158
-accepted hashes, including unchanged inputs; do not rerun unchanged gates. Then
-start E3 examples/version/final docs/release checks. No claim for other platforms,
-alternate minimum Org, GUI typesetting or example package build in E2b. Temporary
-logs/prototypes have no additional raw archival need; durable facts/manifests suffice.
+Complete worktree and seven-path refinement reviewed; manifests/draft updated.
+Next: user manually restages the seven refinement paths and commits E2b. Verify expected E2a
+parent/message/37paths/all158hashes after user delivery; no unchanged test rerun.
+E3 examples/version/final docs/release checks start after that human commit.
+No claim for other systems/minimum Org/GUI layout/example builds in E2b. History
+comparison: caption native body/count limits differ from947289b PDF anchors and
+from the now-explicit source subset. Details: evidence.md/caption note/E2b note.
 
 Five main-module source TM/PDF byte/fresh-buffer/exclusive-file exports now use
 one genuine standard Org transaction and lazy backend loading. Core/model use
@@ -80,9 +51,8 @@ old provider's receipts. Source text/mode/restriction/identity/native-setting ch
 still reject before publication. Two native bibliography PDF cases retain all
 original text/target assertions through document consumers. Standard source Cite
 is proved separately by actual CSL/five outputs and real Organize/SQLite/UUID/INFO.
-Structured preparation/document and all preprocessed/discovery variants, including
-byte-returning variants, remain legacy until E2b. Do not call that cleanup complete
-or preserve a parallel authority merely to satisfy old tests. E2 causal evidence,
+E2b now completes structured preparation/document and all deprecated variants.
+Do not restore parallel preparation merely to satisfy retired implementation tests. E2 causal evidence,
 known changed contracts/retention/next actions: memory/standard-export-0.7.0-e2.md.
 
 E2a formal full-1 exits0/all12named checks (11default+actual extension). Default745

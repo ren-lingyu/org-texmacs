@@ -1,12 +1,13 @@
 # v0.7.0 Standard Org Export Integration: approved execution plan
 
-## Active correction: E2b caption compatibility gate reopened
+## Approved E2b caption scope
 
-Prior adopted caption support included official source APIs under the parser-only
-Org patch. Retargeted pure tests and source refusal lose that support; E2b is not
-submission-ready despite passing checks. Reassess this regression before E3.
-Current authority/details: memory/current.md and memory/caption-inline-footnotes.md.
-The acceptance statements below describe the superseded candidate assessment.
+User approves standard source rejection of effective caption footnote nodes from
+parser extensions/AST filters, with stock text following Org. Independent model/
+pure lowering support remains; native macro-package work is outside0.7.0. This
+supersedes earlier patched source success requirements. Authority: goals.md.
+Explicit adapter guard and stock/synthetic regression pass complete validation:
+637defaultERT+actual4/all12checks; human restaging/commit remains.
 
 ## Execution state: A-E2a human-delivered; E2b accepted, awaiting human commit
 
@@ -15,7 +16,7 @@ clean intake, no unchanged rerun. E2b migrated structured entries and old varian
 then removed parallel preparation after all callers were accounted for.
 Prepared-only input/model result gate passes4/4, preserving one real standard
 transaction and independent core/pure lowering. Production acceptance passes
-636defaultERT+actual4/all12checks;37paths/158accepted input hashes. Human commit
+637defaultERT+actual4/all12checks;37paths/158accepted input hashes. Human commit
 is pending, then E3. See E2b inputs/test migration manifests.
 Details: memory/standard-export-0.7.0-e2b.md.
 

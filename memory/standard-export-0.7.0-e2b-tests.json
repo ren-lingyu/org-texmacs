@@ -682,13 +682,13 @@
       "path": "tests/caption-inline-footnotes/lisp/captions.el",
       "old_name": "org-texmacs-caption-patched-private-snapshot-export",
       "new_name": "org-texmacs-caption-patched-independent-model-output",
-      "reason": "retain native caption/session/pure model assertions; standard scoped export separately rejects absent Org numbering"
+      "reason": "retain native caption/session/pure model assertions; earlier source-adapter success contract explicitly withdrawn by user, with standard refusal coverage retained"
     },
     {
       "path": "tests/caption-inline-footnotes/lisp/captions.el",
       "old_name": "org-texmacs-caption-patched-statement-private-snapshot",
       "new_name": "org-texmacs-caption-patched-statement-independent-model",
-      "reason": "retain native caption/session/pure model assertions; standard scoped export separately rejects absent Org numbering"
+      "reason": "retain native caption/session/pure model assertions; earlier source-adapter success contract explicitly withdrawn by user, with standard refusal coverage retained"
     }
   ],
   "added_tests": [
@@ -727,13 +727,17 @@
     {
       "path": "tests/ert-core/lisp/preprocess.el",
       "name": "org-texmacs-standard-structured-source-migration-before-effects"
+    },
+    {
+      "path": "tests/ert-core/lisp/standard-export.el",
+      "name": "org-texmacs-standard-export-caption-note-boundary"
     }
   ],
   "changed_existing_contracts": [
     {
       "path": "tests/caption-inline-footnotes/lisp/captions.el",
       "name": "org-texmacs-caption-patched-scoped-export",
-      "reason": "all four scopes explicitly reject parsed caption notes when standard Org numbering omits affiliated keywords; no custom numbering"
+      "reason": "User-approved standard source caption subset explicitly rejects effective extension nodes after exclusions; independent parser/model/native lowering support retained"
     },
     {
       "path": "tests/ert-native/lisp/frontend.el",
@@ -754,17 +758,18 @@
   ],
   "catalog_audit": {
     "all_tracked_ert_baseline": 758,
-    "all_tracked_ert_candidate": 649,
+    "all_tracked_ert_candidate": 650,
     "removed_names": 122,
-    "added_names": 13,
+    "added_names": 14,
     "retired": 118,
     "renamed": 4,
-    "new": 9,
+    "new": 10,
     "stock_baseline": 739,
-    "stock_candidate": 630,
+    "stock_candidate": 631,
     "patched_caption": 6,
-    "expected_default_total": 636,
+    "expected_default_total": 637,
     "actual_standard_integration": 4,
     "note": "catalog totals include optional legacy integration cases; not all catalog cases run by default"
-  }
+  },
+  "status": "accepted final candidate under user-approved caption source subset"
 }

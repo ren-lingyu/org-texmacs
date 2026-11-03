@@ -1,5 +1,17 @@
 # org-texmacs project goals
 
+## Approved E2b caption source scope contraction
+
+User explicitly confirms continuing E2b with the proposed scope. Standard source
+export follows stock Org caption syntax without a parsing extension; note-looking
+text keeps Org's normal result. Effective caption footnote nodes supplied by a
+parser extension or AST filter are explicitly unsupported in standard export.
+Independent models and pure lowering retain anonymous long/short caption AST
+conversion and documented native layout limits. Native macro-package research is
+not a0.7.0gate; keep existing PDF anchor repair. This supersedes earlier patched
+source adapter success requirements; it is an approved public behavior change,
+not an unacknowledged regression. No raw archive needed after semantic extraction.
+
 ## Approved v0.7.0 objective: Standard Org Export Integration
 
 The E2b user decision makes Org structure authoritative over embedded STM syntax.

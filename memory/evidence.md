@@ -1,5 +1,66 @@
 # org-texmacs durable evidence
 
+## Final E2b approved-scope acceptance
+
+User explicitly approves source caption scope contraction. Explicit owned-AST
+check rejects effective caption footnote nodes after canonical/ignore exclusions,
+before native parsing; definition discovery skips unsupported affiliated notes.
+Stock caption text remains literal. New core regression covers long/short filter
+nodes, deletion, logical ignore and unused definitions with worker/number queries
+forbidden. Pure/native caption support and existing PDF anchor repair remain.
+
+Locked x86_64-linux Emacs31.1/Org9.8.10/TeXmacs2.1.5. Focused core275/275
+(1.447825s), patchedcaption6/6(2.730115s). Complete caption-scope check exits0:
+Cite9/9(10.722908s), PDFdocument45/45(100.779602s), PDFrender29/29(146.930102s),
+native273/273(179.904133s), actual Organize4/4(5.905383s); core/patched exact
+focused derivations reused. Default total637, all12namedchecks pass incl strict
+compile/lint/treefmt/native gotor. No changed runtime bytes after validation.
+All158root hashes match final isolated inputs; two actual-driver hashes unchanged.
+Complete37path worktree diff reviewed; seven refinements are unstaged. User index
+still equals all158previous candidate hashes; no ordinary Git mutation. Updated
+commit draft describes explicitly approved breaking source contract. Exact inputs
+and per-case118retired/fourrenamed/tennew inventory are retained in E2b manifests.
+Manual restaging/commit gates E3. No new raw archive; prior diagnostic text and
+maintained tests suffice. No other systems/minimum Org/GUI/example build claim.
+
+## Approved E2b caption source scope contraction
+
+User explicitly confirms continuing E2b with the proposed scope. Standard source
+export follows stock Org caption syntax without a parsing extension; note-looking
+text keeps Org's normal result. Effective caption footnote nodes supplied by a
+parser extension or AST filter are explicitly unsupported in standard export.
+Independent models and pure lowering retain anonymous long/short caption AST
+conversion and documented native layout limits. Native macro-package research is
+not a0.7.0gate; keep existing PDF anchor repair. This supersedes earlier patched
+source adapter success requirements; it is an approved public behavior change,
+not an unacknowledged regression. No raw archive needed after semantic extraction.
+
+## Caption scope and native package feasibility discussion
+
+User asks stock Org support, retention value, and native macro-package options.
+Official Org syntax explicitly excludes footnote references from parsed keyword/
+affiliated keyword values, with CAPTION the default parsed keyword; corroborates
+locked9.8.10 parser restriction and numbering query exclusion already inspected.
+https://orgmode.org/worg/org-syntax.html (keywords/affiliated keywords).
+This includes named and anonymous references; test patch is an extension, not
+stock syntax support. AST filter insertion likewise extends effective structures.
+
+Official TeXmacs style manual exposes native style/packages and figure rendering
+macro customization: https://www.texmacs.org/tmweb/manual/webman-style.en.html .
+Its flow manual describes independent text/footnote/float flows:
+https://www.texmacs.org/tmweb/manual/webman-layout.en.html . These support studying
+native package solutions, not claiming a verified existing package or full fix.
+Prior paired controls prove disabling list-caption removes extra count, while
+removing the outer table restores body in the diagnostic only; combined approach
+changes native layout/list semantics and was not adopted. No evidence that engine
+changes are mandatory, nor proof that a simple package fixes all cases/page anchors.
+No new native build/experiment executed. No claim of exhaustive package search.
+
+Recommendation under discussion, NOT adopted: standard source extension need not
+be a0.7.0gate if user explicitly withdraws earlier compatibility; keep cheap pure
+AST conversion as a separate optional boundary if useful, rather than expanding
+Org parsing/native layout work. Prior source support cannot be silently retired
+based on this recommendation. User has not chosen retained/removed scope yet.
 ## Caption migration versus earlier native footnote problems
 
 User requests historical comparison. Read adopted caption-inline-footnotes.md,

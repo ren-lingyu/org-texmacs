@@ -1,5 +1,14 @@
 # Caption anonymous inline footnotes: implemented AST compatibility, native limits
 
+## v0.7.0 scope revision
+
+User explicitly approves withdrawing patched-parser source-adapter compatibility.
+Stock source syntax follows Org; effective extension/AST-filter caption footnotes
+are unsupported in standard export. Independent model/pure lowering anonymous
+long/short caption conversion and native layout evidence remain valid. Native
+package research is outside0.7.0. Current authority: memory/goals.md. The source
+integration acceptance below describes the earlier contract, now superseded.
+
 ## Current adopted semantic decision
 
 User's final development decision supersedes the initial PDF correctness gate and

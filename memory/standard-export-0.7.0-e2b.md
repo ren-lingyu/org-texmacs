@@ -1,33 +1,26 @@
 # E2b: structured source consumers and parallel preparation retirement
 
-## Active correction: E2b caption compatibility gate reopened
+## Approved E2b caption scope
 
-Prior adopted caption support included official source APIs under the parser-only
-Org patch. Retargeted pure tests and source refusal lose that support; E2b is not
-submission-ready despite passing checks. Reassess this regression before E3.
-Current authority/details: memory/current.md and memory/caption-inline-footnotes.md.
-The acceptance statements below describe the superseded candidate assessment.
+User approves standard source rejection of effective caption footnote nodes from
+parser extensions/AST filters, with stock text following Org. Independent model/
+pure lowering support remains; native macro-package work is outside0.7.0. This
+supersedes earlier patched source success requirements. Authority: goals.md.
+Explicit adapter guard and stock/synthetic regression pass complete validation:
+637defaultERT+actual4/all12checks; human restaging/commit remains.
 
-Earlier native footnote history does not justify source rejection: body suppression/
-list-caption count effects are accepted native layout limits, and PDF missing
-anchors were independently repaired in the worker. Current missing Org number is
-an earlier Elisp migration failure. Keep the existing PDF fix; see evidence.md.
+## Accepted final candidate and human gate
 
-## Accepted candidate and human gate
-
-Complete37path worktree diff reviewed, ordinary index untouched. default636ERT
-(core274/native273/Cite9/PDFdocument45/PDFrender29/patchedcaption6), actualstandard
-Organize4, all12Nixchecks pass. Full-2 runs final implementation/tests; full-3
-passes after README-only review corrections, unchanged runtime derivations cached.
-All158root input hashes equal final isolated snapshot. Exact manifest and expected
-human message: memory/standard-export-0.7.0-e2b-inputs.json. Test migration inventory:
-memory/standard-export-0.7.0-e2b-tests.json. tmp/commit.md contains complete-worktree
-Conventional Commit draft under the adopted exception; no ordinary staging.
-
-User manually commits E2b, then verify parent/message/37paths/all158hashes before
-E3. Keep version0.6.0/TODO now. Other platforms, alternate minimum Org, GUI layout
-and example build are not E2b claims. Full-1 failures below are diagnosed history,
-not current blockers. No raw archive needed beyond causal facts and text manifests.
+Complete37path worktree diff and seven unstaged refinement paths reviewed.
+Default637ERT (core275/native273/Cite9/PDFdocument45/PDFrender29/patchedcaption6),
+actualstandard Organize4 and all12Nixchecks pass on the final158-input snapshot.
+Input/driver hashes and expected human message: E2b inputs JSON. Exact test
+migration: E2b tests JSON,118retired/fourrenamed/tennew, catalog758->650.
+User-staged37paths still equal every prior158input hash; no ordinary index writes.
+Seven latest worktree changes must be restaged manually before committing with
+updated tmp/commit.md. Version0.6.0/TODO stays. Verify expected E2a parent/full
+message/37paths/all158hashes after delivery; then E3. Other platforms/minimum Org/
+GUI layout/example package build are outside this node. No raw archive needed.
 
 ## Controlling user decision: Org structure priority
 
@@ -147,27 +140,25 @@ receipts. INFO owns a separate graph. Base-buffer paths normalize once; inherite
 property scratch markers are scoped so source marker state remains unchanged.
 Org metadata and registered URI semantics replace private precedence assumptions.
 
-Default stock tests currently630 plus six patched caption cases; initial739stock
-baseline is intentionally reduced by per-case obsolete preparation retirement.
-118 obsolete tests retire, nine added and two renamed before caption retargeting;
-complete exact-name inventory is memory/standard-export-0.7.0-e2b-tests.json.
-Including the caption retargeting,118retire, fourrename and nineareadded; exact
-alltracked catalog758->649 (122removednames/13addednames). Only636aredefault;
-actual standard integration4 is separate. All49retired private definitions have
-no remaining production references. Pure model/native
-bibliography, original native structure/layout/PDF assertions remain maintained.
+Default stock tests are631 plus six patched caption cases; initial739stock
+baseline is reduced by per-case obsolete preparation retirement. Exact inventory:
+E2b tests JSON,118retired/fourrenamed/tennew; alltracked catalog758->650,
+122removednames/14addednames. Default637 and actualstandardintegration4 remain
+separate. All49retired private definitions have no production references. Pure
+model/native bibliography and native structure/layout/PDF assertions remain.
 
 Full-1 exact158-input clean snapshot fails: native271/273, Cite9/9, PDFdocument45/45,
 PDF rendering29/29, patched caption3/6; README table formatter also fails.
 Two native fixtures disable author but require it in output: explicitly enable it.
 Org9.8.10 footnote number/first-reference helpers traverse no affiliated keywords;
 test-only parser patch changes grammar only. Do not invent parallel numbering.
-Standard source conversion explicitly rejects missing frozen numbers. Two patched
+The initial candidate rejected missing frozen numbers. Two patched
 cases now use independent parse/model/input with the same native/session structure
 assertions; four-scope source case requires explicit refusal. Independent contracts
 remain; README/CHANGELOG document the source behavior change. No worker workaround.
 Migration-5 passes native2/2(0.092782s), patched6/6(2.680176s). Full-2 and full-3
-subsequently pass the complete acceptance gate described above.
+subsequently passed the earlier636candidate gate. Final explicit source-scope
+refinement passes637 plus actual4/all12checks as recorded above.
 
 Earlier evidence retained causally: prepared-only prototype4/4; core274/274; selected
 five-scope canonical footnote input and document probes pass after strict ownership

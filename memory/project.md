@@ -1,12 +1,13 @@
 # org-texmacs current project model
 
-## Active correction: E2b caption compatibility gate reopened
+## Approved E2b caption scope
 
-Prior adopted caption support included official source APIs under the parser-only
-Org patch. Retargeted pure tests and source refusal lose that support; E2b is not
-submission-ready despite passing checks. Reassess this regression before E3.
-Current authority/details: memory/current.md and memory/caption-inline-footnotes.md.
-The acceptance statements below describe the superseded candidate assessment.
+User approves standard source rejection of effective caption footnote nodes from
+parser extensions/AST filters, with stock text following Org. Independent model/
+pure lowering support remains; native macro-package work is outside0.7.0. This
+supersedes earlier patched source success requirements. Authority: goals.md.
+Explicit adapter guard and stock/synthetic regression pass complete validation:
+637defaultERT+actual4/all12checks; human restaging/commit remains.
 
 ## v0.7.0 standard backend: A-E2a delivered; E2b accepted candidate
 
@@ -93,10 +94,10 @@ separately owned by INFO; source guards cover text/mode/restriction/file identit
 style/initial/fragment tags, without old consumed-setting receipt replay.
 
 All source bibliography text/discovery arguments require nil; standard Org owns
-Cite, preprocessing, URI registration and metadata precedence. Missing standard
-caption footnote numbers reject document conversion, including parser-only test
-patches; independent model/pure lowering caption AST support remains. Full E2b
-acceptance: default636ERT+actual4/all12checks,37changedpaths/158exactinputs. Human
+Cite, preprocessing, URI registration and metadata precedence. Effective caption
+footnote nodes from parser extensions/AST filters explicitly reject standard
+export after exclusions; independent model/pure lowering support remains. Full E2b
+acceptance: default637ERT+actual4/all12checks,37changedpaths/158exactinputs. Human
 commit pending; manifests and per-case retirement inventory are in E2b memory.
 Independent pure input/lowering/core remain. Examples/version/final release checks
 remain E3, after this human delivery.

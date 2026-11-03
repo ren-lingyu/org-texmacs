@@ -1,12 +1,13 @@
 # org-texmacs active backlog
 
-## Active correction: E2b caption compatibility gate reopened
+## Approved E2b caption scope
 
-Prior adopted caption support included official source APIs under the parser-only
-Org patch. Retargeted pure tests and source refusal lose that support; E2b is not
-submission-ready despite passing checks. Reassess this regression before E3.
-Current authority/details: memory/current.md and memory/caption-inline-footnotes.md.
-The acceptance statements below describe the superseded candidate assessment.
+User approves standard source rejection of effective caption footnote nodes from
+parser extensions/AST filters, with stock text following Org. Independent model/
+pure lowering support remains; native macro-package work is outside0.7.0. This
+supersedes earlier patched source success requirements. Authority: goals.md.
+Explicit adapter guard and stock/synthetic regression pass complete validation:
+637defaultERT+actual4/all12checks; human restaging/commit remains.
 
 ## v0.7.0 Standard Org Export Integration: approved execution
 
@@ -23,7 +24,7 @@ commitment. E1 command migration is human-delivered and verified: default737ERT+
 all named checks. E2a five main-module source byte/output consumers are accepted
 with default745ERT+actual4/all12named checks and verified human delivery. E2b
 structured entries, old preprocessed/discovery variants and caller-based parallel
-preparation cleanup is accepted (636defaultERT+actual4/all12checks), awaiting
+preparation cleanup is accepted (637defaultERT+actual4/all12checks), awaiting
 human37path delivery before E3;
 E3 examples/version/final docs follows its human delivery gate. Table query and
 native layout regression are resolved within E1; no release completion claim.

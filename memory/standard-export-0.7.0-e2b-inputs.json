@@ -2,7 +2,7 @@
   "baseline": "a44ec6a25ff8cc0fee2c27169d4e9aa5a41508e8",
   "sha256": {
     ".gitignore": "d5cd7c28f728b0facaf53a82ec716a8b52bd9eef2a6728c9a39905c382f35204",
-    "CHANGELOG.org": "411e86322dd79937919c63ae568b49c1b337b7b7831b69f0b22f8ab675a35ae1",
+    "CHANGELOG.org": "ac492b539ed777bf25e62b62e5cb0a84c9ccf92a9d3b59b5a9b652145f26a0ba",
     "CHANGELOGS/v0.1.0.org": "0ac600241de985bea57b884f26f506141450cba00c2af3acbfae331ddd1f1ca9",
     "CHANGELOGS/v0.2.0.org": "5b109960fc9958c57d4b36b666aae453bd8be7bb51bd2146111561f492fa3838",
     "CHANGELOGS/v0.2.1.org": "67aa35154dcbb3ba9fbca7d5f1c88ca2f55750b542d488b070357f6af19b3165",
@@ -12,7 +12,7 @@
     "CHANGELOGS/v0.5.0.org": "46319d968f9797f86ae8b3fed9a6abfc9470731cdb20b1f645056b5b692a0e39",
     "CHANGELOGS/v0.6.0.org": "0b4e815792e40e3d2794c659465382392df49143999beda231515cf36f65c686",
     "LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
-    "README.org": "907fea213a5e600fd147407f2d7b44fd0281c35326189685262f765773c932c7",
+    "README.org": "62a3764e72ef7649f1c9f4ff342998d869ab50cbfdac2c0db50109507fff8bf0",
     "flake.lock": "ec36a6d3f3c69c85323f7a5e30f1e12a1d84fe7f9eef4649cf0c116b1a6114cc",
     "flake.nix": "18cbede235bd51ff756283931fd08e8cde0bb2049b281bad89b7a63d5119e905",
     "lisp/org-texmacs-ast.el": "1700538cf1ba87ea90eca9d4afb9b92ea8ba9c4c8711ee0ea998fdb33442b203",
@@ -21,16 +21,16 @@
     "lisp/org-texmacs-core.el": "9a9885b6e473b1ebf36dac0c5970b545218500f57788c7121311beec957f7135",
     "lisp/org-texmacs-document.el": "e72d927a3f67e0dd45f6e7834822469033e0800d95847b56b6ffbd55a88d1676",
     "lisp/org-texmacs-edit.el": "96e6ed040e1745de17a3db2e665da307b69decde482dd59ebf22f8fbdd53c1a0",
-    "lisp/org-texmacs-export.el": "1e95fc2dbb01f09584f54e0b18c9aeacc097f039de4c86f153b39a2559157d3e",
+    "lisp/org-texmacs-export.el": "261b788d92525f6cf4f8ce7dcdeb241a2527cf2052c8b315865892781151c0e7",
     "lisp/org-texmacs-font-lock.el": "3b4d7f75b09d812d1403db4a2e285c488f28e9c2a3c49e5f493daa76505ac496",
     "lisp/org-texmacs-fragment.el": "4a669eefdb613cca8ca4c471f3f184d3c84d680c9215af9d30d13c1a4184429e",
     "lisp/org-texmacs-input.el": "9d055d99b53e604ed1a3002ba5bf11ba23e9c8db11efd52b431f3f8d0d34aa20",
     "lisp/org-texmacs-inspect.el": "915784c4bad0e07ea40641b8f0c3b7147ffdce055dfded212b59dbb4d21e51f6",
     "lisp/org-texmacs-model.el": "7a9ab93c8f66ddd5a169769d7de065e89ffdfb94b4cfe648943ca06de4f93dee",
     "lisp/org-texmacs-parse.el": "6f58b61e468803d49e6e1a64be4974b3cfee83173b3faaf6739ca9f6fce9a6ce",
-    "lisp/org-texmacs-prepared.el": "4a1699f1e8641eeb3cd9d7387de340805b7dd8f1314050f97690ebcd56742042",
+    "lisp/org-texmacs-prepared.el": "3649d181a7e277d1382f9620de6db76d63bd3b123a6fca750b812dd5b907ee03",
     "lisp/org-texmacs-preprocess.el": "5c605a1160d3472686c656ea78a9b8f2187442fc68848f11f5f14f145197b2e1",
-    "lisp/org-texmacs-query.el": "881c6fbff0efd892711b491f83abf4141ce4454d0996162e41a2cc2da6064ffe",
+    "lisp/org-texmacs-query.el": "d8d1020dc2e1519b01d9ff81d76b8b93d363eaaa2269c7cbcf75325c10b042c5",
     "lisp/org-texmacs-serialize.el": "cb177a67ed3f7f179a1988fd30ebd960363532d98939049ed6b25885c038691b",
     "lisp/org-texmacs-session.el": "4bf41427936fd0bd73f35ed92fe8f7ea00e4e8636dd10f78f676f7c35f0fb146",
     "lisp/org-texmacs-source.el": "958cda7e817e711a89e7b47c75e52f53e666001fe917de14da6ace52962ebc8c",
@@ -72,7 +72,7 @@
     "pkgs/texmacs-with-gotor-support/overlay.nix": "52e696d3af2e375756a72951372d23e346d231e275f1bee7f77eb5ae74e84a23",
     "pkgs/texmacs-with-gotor-support/package.nix": "09c9b35b147052bd6cd730ad025f6669fc8a4487d366d7af2bcb01ccdf47748d",
     "pkgs/texmacs-with-gotor-support/source-guard.nix": "2d2b2c64c60bba38775ae86c51abbb2cd8ba09196c6a5f6a052c5881fbaaed1e",
-    "tests/caption-inline-footnotes/lisp/captions.el": "066699d426671281c61ba5711fbc2429f33baf2832186c7f5fba52554fd6473a",
+    "tests/caption-inline-footnotes/lisp/captions.el": "6e91e002b3d5912f02f54bf3c54014fd0c19dd9b02801482c78891afbf91fb74",
     "tests/caption-inline-footnotes/org-caption-inline-footnote.patch": "b19cc830d4436c423b33ae1a4f25b7807daeac1045a62772427a70ec3cdb7a8c",
     "tests/caption-inline-footnotes/test-overlay.nix": "c02dad30ddc9633c69974bd004e28d4fef375d132669bd5c693a45bdc5faab44",
     "tests/caption-inline-footnotes/test.nix": "e1bb8721f9aa68b9f30b0fcab01e57abd22fa6ec0221ba0d765ca36d2bf57d50",
@@ -91,7 +91,7 @@
     "tests/ert-core/lisp/source.el": "c3368acd12ab0365862105a10f52ddfb90c795fea8f5ea31ecafa89d0aee89e3",
     "tests/ert-core/lisp/special-blocks.el": "a35c24855114486595a938466b43ee7eb917f698e79a15385b0008907ec31227",
     "tests/ert-core/lisp/standard-context.el": "ee6902271516febfe789130a5e0912a1225a7b487d6d75feb42fc396a9240d0d",
-    "tests/ert-core/lisp/standard-export.el": "dd74f3dd6674d108311f63229b4331adf2930be6105b5a970a1f4f460ee61338",
+    "tests/ert-core/lisp/standard-export.el": "9a44ccfefccba6f07a1f6afc7bc8a441cbfdb06e5b8941ae02df0b91569b638f",
     "tests/ert-core/lisp/worker.el": "a8d41c9887d90c344de6ae1db7837a93e4ae88a980544f43601c6a4de7aa2b17",
     "tests/ert-core/test-overlay.nix": "ff31b9e3a5968a6cad26590ce624f19eed6c520e680fa9488eaaa0d5929e62a7",
     "tests/ert-core/test.nix": "17db2a6294203532d281f0152b08d6b7a0e8f6ea02740681f3d9a6d2b6625c83",
@@ -160,8 +160,8 @@
     "tests/ert-native/lisp/standard-source.el": "92159083f8b54499c07dd8245f401a7a662cadde01b9d6b324c9ea5ab829d930",
     "tests/ert-pdf/lisp/standard-source.el": "74f953e08d5a13d8b0a16997b102df37934dc96003727046d1999b6043b036f1"
   },
-  "purpose": "Formal E2b full-check candidate, not yet accepted.",
-  "status": "checks-passing historical candidate; acceptance reopened for adopted caption source compatibility regression",
+  "purpose": "Final reviewed and checked E2b input identities under the approved caption source subset",
+  "status": "accepted final E2b candidate with user-approved caption scope; human project restaging/commit pending",
   "changed_paths": [
     "CHANGELOG.org",
     "README.org",
@@ -201,18 +201,29 @@
     "tests/integration/lisp/standard-cite.el",
     "tests/support/common.el"
   ],
-  "expected_commit_message": "feat(export): migrate structured APIs and retire parallel preparation\n\n- 将 `prepare-buffer`, `document-from-buffer` 和 `document-current-buffer` 改为共享单次标准 Org 事务, prepared input 不再强制进行目标 lowering.\n- 将五个 preprocessed/discovery 接口收敛为弃用包装, 删除调用者已迁移的 options, selection, AST filters, INCLUDE 和 bibliography preparation.\n- 在 ownership 前选取 Org 的有效脚注定义并排除忽略节点, 保留独立节点身份, 源路径及 native settings 快照; STM 只在最终有效 Org 结构内识别.\n- 迁移过时的 preparation 测试, 保留独立模型和原生文档/PDF 断言, 扩展真实 Org Cite 集成的结构化消费者, 同步 README 和 CHANGELOG 的公开边界.\n\nBREAKING-CHANGE: 结构化 source API 的 `BIBLIOGRAPHY-SOURCES` 及旧 discovery 开关必须为 nil; 所有 source API 遵循标准 Org preparation, 不再保留旧 shielding, full-source restoration 或私有配置优先级. 标准源导出拒绝 Org 无法编号的 caption 脚注, 独立模型和纯 lowering 支持不变.\n",
+  "expected_commit_message": "feat(export): migrate structured APIs and retire parallel preparation\n\n- 将 `prepare-buffer`, `document-from-buffer` 和 `document-current-buffer` 改为共享单次标准 Org 事务, prepared input 不再强制进行目标 lowering.\n- 将五个 preprocessed/discovery 接口收敛为弃用包装, 删除调用者已迁移的 options, selection, AST filters, INCLUDE 和 bibliography preparation.\n- 在 ownership 前选取 Org 的有效脚注定义并排除忽略节点, 保留独立节点身份, 源路径及 native settings 快照; STM 只在最终有效 Org 结构内识别.\n- 按标准 Org caption 语法收缩源导出支持, 对 parser 扩展或 AST filter 生成的有效 caption 脚注明确拒绝, 保留独立模型和纯 lowering 转换.\n- 迁移过时的 preparation 测试, 保留独立模型和原生文档/PDF 断言, 扩展真实 Org Cite 集成的结构化消费者, 同步 README 和 CHANGELOG 的公开边界.\n\nBREAKING-CHANGE: 结构化 source API 的 `BIBLIOGRAPHY-SOURCES` 及旧 discovery 开关必须为 nil; 所有 source API 遵循标准 Org preparation, 不再保留旧 shielding, full-source restoration 或私有配置优先级. 标准源导出不再支持 parser 扩展或 AST filter 提供的 caption 脚注节点; 普通脚注样式文本遵循 Org 结果, 独立模型和纯 lowering 的匿名 caption 脚注转换保留.\n",
   "checks": {
     "environment": "x86_64-linux Emacs31.1 Org9.8.10 TeXmacs2.1.5",
-    "default_ert": 636,
+    "default_ert": 637,
     "actual_standard_integration": 4,
     "named_checks": 12,
-    "full_2": "passed; all runtime/lint/compile gates",
-    "full_3": "passed after README-only review correction; only treefmt rebuilt, other derivations unchanged",
-    "limits": "other systems, alternate minimum Org, GUI layout and example package build not verified; E3 remains"
+    "full_2": "historical prior-caption-refinement candidate passed; not current sha256 validation",
+    "full_3": "historical README-only prior candidate passed; superseded by caption_scope_full",
+    "limits": "other systems, alternate minimum Org, GUI layout and example package build not verified; E3 remains",
+    "caption_scope_full": "passed: core275/native273/Cite9/PDFdocument45/PDFrender29/patched6 + actual4; all12 named checks",
+    "caption_scope_focus": "core275/275, patched6/6"
   },
   "integration_driver_sha256": {
     "tests/standard-integration-probe/test.nix": "136d5f2ba62244eddfc0a497b78683f0e0895178bd8815a5464f20b779ec5de7",
     "tests/standard-integration-probe/test-overlay.nix": "e851cc50c57dd2293cc7656b34a51b8f0d95bd9b267c224f5178d1f8d1577815"
-  }
+  },
+  "unstaged_refinement_paths": [
+    "CHANGELOG.org",
+    "README.org",
+    "lisp/org-texmacs-export.el",
+    "lisp/org-texmacs-prepared.el",
+    "lisp/org-texmacs-query.el",
+    "tests/caption-inline-footnotes/lisp/captions.el",
+    "tests/ert-core/lisp/standard-export.el"
+  ]
 }
