@@ -1,5 +1,79 @@
 ;;; standard-export.el --- Standard export ownership regressions -*- lexical-binding: t; -*-
 
+(ert-deftest org-texmacs-standard-export-caption-note-boundary ()
+  ;; Stock Org spelling stays literal, in both caption parts.
+  (with-temp-buffer
+    (org-mode)
+    (insert
+     "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+     "#+CAPTION[Short[fn::ShortNote]]: Long[fn::LongNote]\n| A |\n")
+    (let ((body
+           (org-texmacs-document-body
+            (org-texmacs-document-from-buffer (current-buffer)))))
+      (should-not (memq 'footnote (flatten-tree body)))
+      (should (string-search "[fn::LongNote]" (prin1-to-string body)))
+      (should
+       (string-search "[fn::ShortNote]" (prin1-to-string body)))))
+  ;; Positionless filter-created notes fail before native parsing or numbering.
+  ;; Deleted/ignored owners and unused definitions must not be resurrected.
+  (dolist (part '(long short))
+    (dolist (selection '(keep delete ignore unused-definition))
+      (with-temp-buffer
+        (org-mode)
+        (insert "| A |\n")
+        (let ((org-export-use-babel nil)
+              (org-export-filter-parse-tree-functions
+               (list
+                (lambda (tree _backend info)
+                  (let* ((table
+                          (org-element-map
+                           tree 'table #'identity nil t))
+                         (note
+                          (org-element-create
+                           'footnote-reference
+                           '(:type inline)
+                           "Note")))
+                    (org-element-put-property
+                     table
+                     :caption
+                     (list
+                      (if (eq part 'long)
+                          (cons (list "Long" note) nil)
+                        (cons (list "Long") (list "Short" note)))))
+                    (pcase selection
+                      ('delete (org-element-extract-element table))
+                      ('ignore
+                       (plist-put info :ignore-list (list table)))
+                      ('unused-definition
+                       (org-element-extract-element table)
+                       (org-element-set-contents
+                        tree
+                        (org-element-create
+                         'footnote-definition
+                         '(:label "unused")
+                         table))))
+                    tree)))))
+          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                     (lambda (&rest _)
+                       (ert-fail
+                        "Caption validation started native parsing")))
+                    ((symbol-function 'org-export-get-footnote-number)
+                     (lambda (&rest _)
+                       (ert-fail
+                        "Caption validation queried numbering"))))
+            (if (eq selection 'keep)
+                (let ((failure
+                       (should-error
+                        (org-texmacs-prepare-buffer (current-buffer))
+                        :type 'org-texmacs-document-error)))
+                  (should
+                   (equal
+                    (cadr failure)
+                    "Caption footnotes are unsupported in standard source export")))
+              (should
+               (org-texmacs-input-p
+                (org-texmacs-prepare-buffer (current-buffer)))))))))))
+
 (ert-deftest org-texmacs-standard-export-native-body-raw-is-not-source
     ()
   (with-temp-buffer
@@ -126,7 +200,7 @@
                 'paragraph '(:attr_texmacs ("unsupported")) "Text."))
               tree))))
       (should-error
-       (org-texmacs--standard-consume 'input)
+       (org-texmacs--standard-consume 'document)
        :type 'org-texmacs-document-error))))
 
 (ert-deftest org-texmacs-standard-export-positionless-island-ownership

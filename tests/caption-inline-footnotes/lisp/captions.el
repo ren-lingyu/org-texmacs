@@ -27,7 +27,8 @@
     'footnote-reference
     (cdr (assq 'keyword org-element-object-restrictions)))))
 
-(ert-deftest org-texmacs-caption-patched-statement-private-snapshot ()
+(ert-deftest org-texmacs-caption-patched-statement-independent-model
+    ()
   (dolist (syntax '("theorem" "statement example" "statement_proof"))
     (with-temp-buffer
       (org-mode)
@@ -46,7 +47,9 @@
                      (unless (eq (current-buffer) source-buffer)
                        (setq private t))
                      (apply parser args))))
-          (let* ((input (org-texmacs-prepare-buffer source-buffer))
+          (let* ((input
+                  (org-texmacs-test--input-from-model
+                   (org-texmacs-parse-buffer source-buffer)))
                  (document (org-texmacs-document input))
                  (body (org-texmacs-document-body document)))
             (should private)
@@ -83,7 +86,7 @@
       (should-not
        (org-element-map ast 'footnote-definition #'identity)))))
 
-(ert-deftest org-texmacs-caption-patched-private-snapshot-export ()
+(ert-deftest org-texmacs-caption-patched-independent-model-output ()
   (org-texmacs-test--with-worker
    (dolist (kind '("plain" "figure" "figure*" "table" "table*"))
      (with-temp-buffer
@@ -119,12 +122,16 @@
                     (lambda (raw &rest args)
                       (push raw requests)
                       (apply worker raw args))))
-           (setq
-            input (org-texmacs-prepare-buffer (current-buffer))
-            document (org-texmacs-document-from-buffer (current-buffer))))
+           (setq input
+                 (org-texmacs-test--input-from-model
+                  (org-texmacs-parse-buffer (current-buffer)))
+                 document
+                 (org-texmacs-document
+                  (org-texmacs-test--input-from-model
+                   (org-texmacs-parse-buffer (current-buffer))))))
          (should private)
          (should (equal source (buffer-string)))
-         ;; Both formal source entry points use the private snapshot pipeline.
+         ;; Independent parsing and explicit input retain caption AST support.
          (should (equal document (org-texmacs-document input)))
          (should (equal document (org-texmacs-document input)))
          (should
@@ -201,18 +208,20 @@
         (save-restriction
           (when (eq scope 'narrow)
             (narrow-to-region start end))
-          (let ((document
-                 (org-texmacs-document-from-buffer
-                  (current-buffer)
-                  nil
-                  (and (eq scope 'subtree) start)
-                  (and (eq scope 'region) (cons start end)))))
+          ;; Parser extensions do not widen the standard source support
+          ;; boundary.  Pure models are exercised separately above.
+          (let ((failure
+                 (should-error
+                  (org-texmacs-document-from-buffer
+                   (current-buffer)
+                   nil
+                   (and (eq scope 'subtree) start)
+                   (and (eq scope 'region) (cons start end)))
+                  :type 'org-texmacs-document-error)))
             (should
-             (= 2
-                (length
-                 (org-texmacs-test--caption-inline-footnote-nodes
-                  (org-texmacs-document-body document)
-                  'footnote))))))))))
+             (equal
+              (cadr failure)
+              "Caption footnotes are unsupported in standard source export"))))))))
 
 (ert-deftest org-texmacs-caption-patched-unsupported-notes ()
   (dolist (caption

@@ -262,7 +262,9 @@
         uuid))
       (let ((source (current-buffer))
             (cite (symbol-function 'org-cite-csl-render-citation)))
-        (dolist (kind '(tm pdf-file buffer))
+        (dolist (kind
+                 '(tm
+                   pdf-file buffer input document current-document))
           (let ((prepared 0)
                 (citations 0)
                 (file (expand-file-name "source-api.pdf" notes)))
@@ -282,17 +284,33 @@
                        (equal
                         (list bib) (plist-get info :bibliography)))
                       (funcall cite citation style backend info))))
-                (let ((result
-                       (with-temp-buffer
-                         (pcase kind
-                           ('tm
-                            (org-texmacs-export-texmacs-from-buffer
-                             source))
-                           ('pdf-file
-                            (org-texmacs-export-to-pdf-file
-                             source file))
-                           ('buffer
-                            (org-texmacs-export-to-buffer source))))))
+                (let
+                    ((result
+                      (with-temp-buffer
+                        (pcase kind
+                          ('tm
+                           (org-texmacs-export-texmacs-from-buffer
+                            source))
+                          ('pdf-file
+                           (org-texmacs-export-to-pdf-file
+                            source file))
+                          ('buffer
+                           (org-texmacs-export-to-buffer source))
+                          ('input
+                           (let ((input
+                                  (org-texmacs-prepare-buffer
+                                   source)))
+                             (should (org-texmacs-input-p input))
+                             (org-texmacs-document-serialize
+                              (org-texmacs-document input))))
+                          ('document
+                           (org-texmacs-document-serialize
+                            (org-texmacs-document-from-buffer
+                             source)))
+                          ('current-document
+                           (org-texmacs-document-serialize
+                            (with-current-buffer source
+                              (org-texmacs-document-current-buffer))))))))
                   (pcase kind
                     ('buffer
                      (unwind-protect

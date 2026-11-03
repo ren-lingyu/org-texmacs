@@ -524,6 +524,8 @@
                  (big-table
                   (tabular
                    (tformat
+                    (cwith "1" "-1" "1" "1" "cell-halign" "r")
+                    (cwith "1" "-1" "2" "2" "cell-halign" "r")
                     (table
                      (row (cell "A") (cell "B"))
                      (row (cell "1") (cell "2")))))

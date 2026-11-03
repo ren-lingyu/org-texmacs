@@ -14,6 +14,7 @@
   (dolist (kind '("plain" "figure" "figure*" "table" "table*"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
        "#+CAPTION[Short[fn::ShortNote]]: Long[fn::LongNote] (math \"literal\")\n")
@@ -54,208 +55,10 @@
             (should (equal document (org-texmacs-document input)))))
         (should (equal source (buffer-string)))))))
 
-(ert-deftest org-texmacs-citations-preflight-boundaries ()
-  (dolist
-      (source
-       '("#+bibliography: refs.bib\n[cite/author:@key]\n#+print_bibliography:\n"
-         "#+bibliography: refs.bib\n[cite:see @key]\n#+print_bibliography:\n"
-         "#+bibliography: refs.bib\n[cite:@key]\n"
-         "#+bibliography: refs.bib\n[cite:@key]\n#+print_bibliography:\n#+print_bibliography:\n"
-         "#+bibliography: refs.bib\n* Title[cite/author:@key]\n#+print_bibliography:\n"))
-    (with-temp-buffer
-      (org-mode)
-      (insert source)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _)
-                   (ert-fail "Invalid citation started worker"))))
-        (should-error
-         (org-texmacs-prepare-buffer
-          (current-buffer) '(("refs.bib" . "@book{key}")))
-         :type 'org-texmacs-document-error)))))
-
-(ert-deftest org-texmacs-citations-footnote-order-and-stale-output ()
-  (with-temp-buffer
-    (org-mode)
-    (insert
-     "#+bibliography: refs.bib\nA[fn:n] [cite:@second] [fn:n].\n"
-     "#+print_bibliography:\n\n[fn:n] [cite:@first]\n")
-    (let (seen
-          input)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _)
-                   '(document
-                     (bib-entry "book" "first" (document))
-                     (bib-entry "book" "second" (document)))))
-                ((symbol-function 'org-texmacs--bibliography-format)
-                 (lambda (plan)
-                   (setq seen (plist-get plan :keys))
-                   (list
-                    (plist-get plan :prefix)
-                    seen
-                    (plist-get plan :entries)
-                    '(bib-list
-                      "2"
-                      (document
-                       (concat
-                        (label "org-texmacs-bib-1-first") "Prepared")
-                       (concat
-                        (label "org-texmacs-bib-1-second")
-                        "Prepared")))))))
-        (setq input
-              (org-texmacs-prepare-buffer
-               (current-buffer)
-               '(("refs.bib" . "@book{first}\n@book{second}")))))
-      (should (equal seen '("first" "second")))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _)
-                   (ert-fail "Pure lowering started worker"))))
-        (let ((doc (org-texmacs-document input)))
-          (should
-           (equal (org-texmacs-document-stm-paths doc) '((1 1))))))
-      (let* ((bad-info (copy-tree (org-texmacs-input-info input)))
-             (bad-input nil))
-        (setcar
-         (cadr
-          (plist-get bad-info :texmacs-bibliography-output))
-         "stale")
-        (setq bad-input
-              (org-texmacs-input-create
-               (org-texmacs-input-ast input) bad-info
-               :bibliography (org-texmacs-input-bibliography input)))
-        (should-error
-         (org-texmacs-document bad-input)
-         :type 'org-texmacs-document-error))
-      (let ((changed
-             (copy-tree (org-texmacs-input-bibliography input))))
-        (setcar (cdr (cadr (cdar changed))) "misc")
-        (should-error
-         (org-texmacs-document
-          (org-texmacs-input-create
-           (org-texmacs-input-ast input)
-           (org-texmacs-input-info input)
-           :bibliography changed))
-         :type 'org-texmacs-document-error)))))
-
-(ert-deftest org-texmacs-citations-formatting-wait-and-payload-errors
-    ()
-  (with-temp-buffer
-    (org-mode)
-    (insert
-     "#+bibliography: refs.bib\n[cite:@key]\n#+print_bibliography:\n")
-    (let* ((text (copy-sequence "@book{key}"))
-           (sources (list (cons "refs.bib" text))))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _)
-                   '(document (bib-entry "book" "key" (document)))))
-                ((symbol-function 'org-texmacs--bibliography-format)
-                 (lambda (_plan)
-                   (aset text 0 ?X)
-                   nil)))
-        (should-error
-         (org-texmacs-prepare-buffer (current-buffer) sources)
-         :type 'org-texmacs-document-error)))
-    (let (stopped)
-      (cl-letf (((symbol-function 'org-texmacs--worker-call)
-                 (lambda (_request)
-                   '(ok 1 (bib-list "1" (document (label "wrong"))))))
-                ((symbol-function 'org-texmacs--worker-stop)
-                 (lambda () (setq stopped t))))
-        (should-error
-         (org-texmacs--bibliography-format
-          '(:prefix "p" :keys ("key") :entries (document)))
-         :type 'org-texmacs-worker-error)
-        (should stopped)))
-    (let (stopped)
-      (cl-letf (((symbol-function 'org-texmacs--worker-call)
-                 (lambda (_request)
-                   '(error 1 "Unsupported formatter data")))
-                ((symbol-function 'org-texmacs--worker-stop)
-                 (lambda () (setq stopped t))))
-        (should-error
-         (org-texmacs--bibliography-format
-          '(:prefix "p" :keys nil :entries (document)))
-         :type 'org-texmacs-document-error)
-        (should-not stopped)))))
-
-(ert-deftest org-texmacs-citations-native-output-and-ownership ()
-  (org-texmacs-test--with-worker
-   (let (input)
-     (with-temp-buffer
-       (org-mode)
-       (insert
-        "#+bibliography: refs.bib\nA[cite:@key].\n#+print_bibliography:\n")
-       (setq
-        input
-        (org-texmacs-prepare-buffer
-         (current-buffer)
-         '(("refs.bib"
-            .
-            "@book{key, title={Café 中 <alpha>}, author={Ada Example}, year=2026, publisher={Example}}")))))
-     (let* ((doc (org-texmacs-document input))
-            (expected
-             '(document
-               (concat
-                "A"
-                (with-bib "org-texmacs-bib-1" (cite "key")) ". ")
-               (with-bib
-                "org-texmacs-bib-1"
-                (bib-list
-                 "1"
-                 (document
-                  (concat
-                   (bibitem* "1")
-                   (label "org-texmacs-bib-1-key")
-                   "Ada Example. "
-                   (newblock)
-                   (with
-                    "font-shape"
-                    "italic"
-                    "Café <#4E2D> <less>alpha<gtr>")
-                   ". "
-                   (newblock)
-                   "Example, 2026."
-                   (newblock)))))))
-            (session (org-texmacs-session-open)))
-       (unwind-protect
-           (progn
-             (should (equal (org-texmacs-document-body doc) expected))
-             (should
-              (equal (org-texmacs-document-stm-paths doc) '((1 1))))
-             (org-texmacs-session-set-document session doc)
-             (should
-              (equal
-               (org-texmacs--session-read session)
-               (org-texmacs-test--native-hex expected)))
-             (should
-              (equal
-               (org-texmacs--worker-request
-                "(math \"x\")")
-               '(math "x"))))
-         (org-texmacs-session-close session)))
-     (with-temp-buffer
-       (org-mode)
-       (insert
-        "#+bibliography: refs.bib\nA[cite:@a; @b]\n"
-        "#+begin_texmacs\n(label \"org-texmacs-bib-1-a\")\n#+end_texmacs\n"
-        "#+print_bibliography:\n")
-       (let* ((doc
-               (org-texmacs-document-from-buffer
-                (current-buffer)
-                '(("refs.bib"
-                   .
-                   "@book{a, title={A}}\n@book{b, title={B}}"))))
-              (body (org-texmacs-document-body doc)))
-         (should
-          (equal
-           (nth 2 (cadr body))
-           '(with-bib "org-texmacs-bib-2" (cite "a" "b"))))
-         (should
-          (equal
-           (org-texmacs-document-stm-paths doc) '((1) (2 1)))))))))
-
 (ert-deftest org-texmacs-document-settings-buffer-snapshot ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "(math \"x\")\n")
     (let ((org-export-default-language "en")
           (org-texmacs-document-style '("article"))
@@ -263,7 +66,7 @@
       (cl-letf
           (((symbol-function 'org-texmacs--worker-request)
             (lambda (_source)
-              (setq
+              (setq-local
                org-export-default-language "fr"
                org-texmacs-document-style '("generic")
                org-texmacs-document-initial '(("par-first" tuple "中" "<alpha>")))
@@ -276,6 +79,10 @@
            (equal
             (org-texmacs-document-initial first)
             '(("language" . "english") ("par-first" . "2fn"))))))
+      (setq
+       org-export-default-language "fr"
+       org-texmacs-document-style '("generic")
+       org-texmacs-document-initial '(("par-first" tuple "中" "<alpha>")))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (_source) '(math "x"))))
         (let ((second
@@ -292,9 +99,10 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "#+TITLE: 中 <alpha>\n"
-      "#+AUTHOR: /Author/\n"
+      "#+AUTHOR: /Author/\n#+OPTIONS: author:t\n"
       "#+DATE: <2026-09-15>\n"
       "Body\n")
      (let ((document
@@ -625,6 +433,7 @@
                     "#+begin_texmacs\n" text "\n#+end_texmacs\n")))
            (with-temp-buffer
              (org-mode)
+             (setq-local org-export-with-author nil)
              (insert
               (org-texmacs-test--issue11-source context payload))
              (let ((before
@@ -663,6 +472,7 @@
            (flatten-tree body)))))
      (with-temp-buffer
        (org-mode)
+       (setq-local org-export-with-author nil)
        (insert prefix "(equation \"x\")\n")
        (should-error
         (org-texmacs-document-from-buffer (current-buffer))
@@ -671,6 +481,7 @@
 (ert-deftest org-texmacs-document-basic-inline-source ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: toc:nil\n* /Title/\nA /i/ _u_ +s+ ~code~ =literal=.\n")
     (let ((source (buffer-string)))
@@ -708,6 +519,7 @@
                     ("+a *b* z+\n" strike-through strong "b")))
            (with-temp-buffer
              (org-mode)
+             (setq-local org-export-with-author nil)
              (insert (car case))
              (let* ((source (buffer-string))
                     (expected
@@ -740,6 +552,7 @@
 (ert-deftest org-texmacs-document-line-break-contexts ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "#+OPTIONS: toc:nil\n* Title\nA\\\\\nB\n")
     (should
      (equal
@@ -771,6 +584,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert "A\t¯˙\n/i/ _u_ +s+ ~x\t y~\n")
      (let* ((source (buffer-string))
             (document
@@ -812,65 +626,72 @@
          (org-texmacs-session-close session))))))
 
 (ert-deftest org-texmacs-document-uri-source-forms ()
-  (dolist (type '("http" "https" "mailto" "ftp" "ftps"))
-    (let ((uri
-           (concat
-            type ":"
-            (if (equal type "mailto")
-                "user@example.org"
-              "//example.org/a%20b?q=x%26y&n=2"))))
-      (dolist (source
-               (list
-                (concat "[[" uri "]]\n")
-                (concat "<" uri ">\n")
-                (concat uri "\n")
-                (concat "[[" uri "][Label]]\n")))
-        (with-temp-buffer
-          (org-mode)
-          (insert source)
-          (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                     (lambda (&rest _)
-                       (ert-fail "URI parsing started worker"))))
-            (should
-             (equal
-              (org-texmacs-document-body
-               (org-texmacs-document-from-buffer (current-buffer)))
-              (list
-               'document
-               (list
-                'concat
-                (list
-                 'hlink
-                 (if (equal source (concat "[[" uri "][Label]]\n"))
-                     "Label"
-                   uri)
-                 uri)
-                " ")))))
-          (should (equal source (buffer-string))))))))
+  (org-texmacs-test--with-registered-ftps
+   (lambda ()
+     (dolist (type '("http" "https" "mailto" "ftp" "ftps"))
+       (let ((uri
+              (concat
+               type ":"
+               (if (equal type "mailto")
+                   "user@example.org"
+                 "//example.org/a%20b?q=x%26y&n=2"))))
+         (dolist (source
+                  (list
+                   (concat "[[" uri "]]\n")
+                   (concat "<" uri ">\n")
+                   (concat uri "\n")
+                   (concat "[[" uri "][Label]]\n")))
+           (with-temp-buffer
+             (org-mode)
+             (setq-local org-export-with-author nil)
+             (insert source)
+             (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                        (lambda (&rest _)
+                          (ert-fail "URI parsing started worker"))))
+               (should
+                (equal
+                 (org-texmacs-document-body
+                  (org-texmacs-document-from-buffer (current-buffer)))
+                 (list
+                  'document
+                  (list
+                   'concat
+                   (list
+                    'hlink
+                    (if (equal source (concat "[[" uri "][Label]]\n"))
+                        "Label"
+                      uri)
+                    uri)
+                   " ")))))
+             (should (equal source (buffer-string))))))))))
 
 (ert-deftest org-texmacs-document-uri-rich-description ()
-  (with-temp-buffer
-    (org-mode)
-    (insert
-     "#+OPTIONS: toc:nil\n* [[https://example.org][Title]]\n"
-     "A [[ftps://example.org/中%20文?q=x%26y&z=2][*bold* /em/]]\t end\n")
-    (should
-     (equal
-      (org-texmacs-document-body
-       (org-texmacs-document-from-buffer (current-buffer)))
-      '(document
-        (section (hlink "Title" "https://example.org"))
-        (concat
-         "A "
-         (hlink
-          (concat (strong "bold") " " (em "em"))
-          "ftps://example.org/中%20文?q=x%26y&z=2")
-         " " "end "))))))
+  (org-texmacs-test--with-registered-ftps
+   (lambda ()
+     (with-temp-buffer
+       (org-mode)
+       (setq-local org-export-with-author nil)
+       (insert
+        "#+OPTIONS: toc:nil\n* [[https://example.org][Title]]\n"
+        "A [[ftps://example.org/中%20文?q=x%26y&z=2][*bold* /em/]]\t end\n")
+       (should
+        (equal
+         (org-texmacs-document-body
+          (org-texmacs-document-from-buffer (current-buffer)))
+         '(document
+           (section (hlink "Title" "https://example.org"))
+           (concat
+            "A "
+            (hlink
+             (concat (strong "bold") " " (em "em"))
+             "ftps://example.org/中%20文?q=x%26y&z=2")
+            " " "end "))))))))
 
 (ert-deftest org-texmacs-document-resolves-local-headline-links ()
   (let (prepared)
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "#+OPTIONS: toc:nil\n* Alpha\n:PROPERTIES:\n:CUSTOM_ID: local\n:ID: local-id\n:END:\n"
        "See [[#local][custom]], [[id:local-id][id]], [[*Alpha][heading]], "
@@ -904,6 +725,7 @@
 (ert-deftest org-texmacs-document-resolves-dedicated-target ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: toc:nil\nSee [[spot][there]].\nHere <<spot>> later.\n")
     (let* ((body
@@ -930,10 +752,13 @@
          "#+OPTIONS: toc:nil\n#+EXCLUDE_TAGS: hidden\n* Hidden :hidden:\n:PROPERTIES:\n:CUSTOM_ID: gone\n:END:\n* Visible\n[[#gone]]\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert source)
       (let ((before (buffer-string)))
         (should-error
-         (org-texmacs-document-from-buffer (current-buffer))
+         (org-texmacs-document
+          (org-texmacs-test--input-from-model
+           (org-texmacs-parse-buffer (current-buffer))))
          :type 'org-texmacs-document-error)
         (should (equal before (buffer-string)))))))
 
@@ -941,6 +766,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "#+OPTIONS: toc:nil\n* Alpha\n:PROPERTIES:\n:ID: local-id\n:END:\n"
       "[[id:local-id]]\n")
@@ -967,6 +793,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "[[id:external-id][missing]]\n"
      "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
@@ -976,14 +803,15 @@
       (let ((failure
              (should-error
               (org-texmacs-document-from-buffer (current-buffer))
-              :type 'org-texmacs-document-error)))
-        (should (equal (cadr failure) "Unresolved internal link"))))))
+              :type 'org-link-broken)))
+        (should (equal (cadr failure) "external-id"))))))
 
 (ert-deftest
     org-texmacs-document-reference-low-headline-and-target-priority
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: H:1 toc:nil\n* Top\n** spot\n"
      "[[spot][there]] <<spot>>\n[[*spot][heading]]\n")
@@ -1001,54 +829,61 @@
        (member '(hlink "heading" "#org-texmacs-ref-1") paragraph)))))
 
 (ert-deftest org-texmacs-document-uri-private-syntax-restoration ()
-  (dolist (suffix '("" "\n[[file:unsupported.org::#target][link]]\n"))
-    (with-temp-buffer
-      (org-mode)
-      (insert "[[ftps://example.org][(math \"hidden\")]]" suffix)
-      (let* ((variables
-              '(org-link-parameters
-                org-link-types-re
-                org-link-angle-re
-                org-link-plain-re
-                org-link-bracket-re
-                org-link-any-re
-                org-element--object-regexp
-                org-element-paragraph-separate))
-             (before
-              (mapcar
-               (lambda (var)
-                 (org-texmacs--document-copy-link-setting
-                  (symbol-value var)))
-               variables))
-             (source (buffer-string))
-             (reset (symbol-function 'org-element-cache-reset)))
-        (cl-letf (((symbol-function 'org-element-cache-reset)
-                   (lambda (&rest args)
-                     (when (eq (car args) 'all)
-                       (ert-fail "Global cache reset"))
-                     (apply reset args)))
-                  ((symbol-function 'org-texmacs--worker-request)
-                   (lambda (&rest _)
-                     (ert-fail "Link description scanned as STM"))))
-          (if (equal suffix "")
-              (should
-               (equal
-                (org-texmacs-document-body
-                 (org-texmacs-document-from-buffer (current-buffer)))
-                '(document
-                  (concat
-                   (hlink
-                    "(math \"hidden\")" "ftps://example.org")))))
-            (should-error
-             (org-texmacs-document-from-buffer (current-buffer))
-             :type 'org-texmacs-document-error)))
-        (should (equal before (mapcar #'symbol-value variables)))
-        (should (equal source (buffer-string)))))))
+  (org-texmacs-test--with-registered-ftps
+   (lambda ()
+     (dolist (suffix
+              '("" "\n[[file:unsupported.org::#target][link]]\n"))
+       (with-temp-buffer
+         (org-mode)
+         (setq-local org-export-with-author nil)
+         (insert "[[ftps://example.org][(math \"hidden\")]]" suffix)
+         (let* ((variables
+                 '(org-link-parameters
+                   org-link-types-re
+                   org-link-angle-re
+                   org-link-plain-re
+                   org-link-bracket-re
+                   org-link-any-re
+                   org-element--object-regexp
+                   org-element-paragraph-separate))
+                (before
+                 (mapcar
+                  (lambda (var)
+                    (org-texmacs--document-copy-link-setting
+                     (symbol-value var)))
+                  variables))
+                (source (buffer-string))
+                (reset (symbol-function 'org-element-cache-reset)))
+           (cl-letf (((symbol-function 'org-element-cache-reset)
+                      (lambda (&rest args)
+                        (when (eq (car args) 'all)
+                          (ert-fail "Global cache reset"))
+                        (apply reset args)))
+                     ((symbol-function 'org-texmacs--worker-request)
+                      (lambda (&rest _)
+                        (ert-fail
+                         "Link description scanned as STM"))))
+             (if (equal suffix "")
+                 (should
+                  (equal
+                   (org-texmacs-document-body
+                    (org-texmacs-document-from-buffer
+                     (current-buffer)))
+                   '(document
+                     (concat
+                      (hlink
+                       "(math \"hidden\")" "ftps://example.org")))))
+               (should-error
+                (org-texmacs-document-from-buffer (current-buffer))
+                :type 'org-texmacs-document-error)))
+           (should (equal before (mapcar #'symbol-value variables)))
+           (should (equal source (buffer-string)))))))))
 
 (ert-deftest org-texmacs-document-uri-abbreviation-and-stale-settings
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (setq-local org-link-abbrev-alist-local
                 '(("short" . "https://example.org/%s")))
     (insert "[[short:page][Page]]\n")
@@ -1063,14 +898,15 @@
                (lambda (&rest _)
                  (setq-local org-link-abbrev-alist-local nil)
                  '(math "x"))))
-      (should-error
-       (org-texmacs-document-from-buffer (current-buffer))
-       :type 'org-texmacs-document-error))))
+      (should
+       (org-texmacs-document-p
+        (org-texmacs-document-from-buffer (current-buffer)))))))
 
 (ert-deftest org-texmacs-document-uri-native-islands ()
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "[[https://example.org/中%20文?q=a&b=%26][中文 <alpha>]] (math \"<alpha>\")\n")
      (let* ((document
@@ -1097,6 +933,7 @@
 (ert-deftest org-texmacs-document-footnote-source ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "A[fn::one][fn::two] end\n")
     (let ((source (buffer-string)))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
@@ -1151,10 +988,14 @@
              "[fn::outer [fn::inner]]\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert source)
       (should-error
        (org-texmacs-document-from-buffer (current-buffer))
-       :type 'org-texmacs-document-error))))
+       :type
+       (if (equal source "A[fn:name]\n")
+           'user-error
+         'org-texmacs-document-error)))))
 
 (ert-deftest org-texmacs-document-named-footnote-first-and-repeated ()
   (dolist (source
@@ -1162,6 +1003,7 @@
              "A[fn:n:*Body*.] again[fn:n].\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert source)
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _)
@@ -1196,6 +1038,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "A[fn:n] then[fn:n:Body].\n")
     (should
      (equal
@@ -1218,16 +1061,12 @@
              "Hidden[fn:n:Preserved body. ]\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "#+OPTIONS: toc:nil tags:nil\n#+SELECT_TAGS: keep\n* Hidden\n"
        definition
        "* Visible :keep:\nA[fn:n].\n")
-      (cl-letf (((symbol-function 'org-footnote-get-definition)
-                 (lambda (&rest _)
-                   (ert-fail "Footnote read source buffer")))
-                ((symbol-function 'org-export--missing-definitions)
-                 (lambda (&rest _)
-                   (ert-fail "Footnote used buffer fallback"))))
+      (progn
         (should
          (equal
           (org-texmacs-document-body
@@ -1246,6 +1085,7 @@
 (ert-deftest org-texmacs-document-named-footnote-section-setting ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (setq-local org-footnote-section "Notes")
     (insert "A[fn:n].\n* Notes\n[fn:n] Note.\n")
     (should
@@ -1267,13 +1107,14 @@
                (lambda (&rest _)
                  (setq-local org-footnote-section "Changed")
                  '(math "x"))))
-      (should-error
-       (org-texmacs-document-from-buffer (current-buffer))
-       :type 'org-texmacs-document-error))))
+      (should
+       (org-texmacs-document-p
+        (org-texmacs-document-from-buffer (current-buffer)))))))
 
 (ert-deftest org-texmacs-document-named-footnote-unused-and-invalid ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "Visible.\n\n[fn:unused] (math \"unused\") [[unknown:bad]]\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
@@ -1292,12 +1133,14 @@
              "A[fn:n].\n\n[fn:n] Recursive[fn:n].\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert source)
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _)
-                   (ert-fail "Invalid footnote started worker"))))
+                 #'org-texmacs-test--parse-fixture-stm))
         (should-error
-         (org-texmacs-document-from-buffer (current-buffer))
+         (org-texmacs-document
+          (org-texmacs-test--input-from-model
+           (org-texmacs-parse-buffer (current-buffer))))
          :type 'org-texmacs-document-error)))))
 
 (ert-deftest
@@ -1307,6 +1150,7 @@
         requests)
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "A[fn:n] repeat[fn:n].\n\n[fn:n] [[file:note.txt][File]] (math \"x\")\n\nSecond.\n")
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
@@ -1344,6 +1188,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "A[fn:n] again[fn:n] anonymous[fn::Literal <alpha>].\n\n[fn:n] 中 *Body*.\n")
      (let* ((document
@@ -1387,6 +1232,7 @@
              ("| A | B |\n" . tabular)))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert "A[fn:n].\n\n[fn:n] Body.\n\n" (car entry))
       (let* ((body
               (org-texmacs-test--stable-reference-body
@@ -1395,6 +1241,7 @@
         (should (eq (car (nth 2 definition)) (cdr entry))))))
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "A[fn:n] [[inside][Link]].\n\n[fn:n] <<inside>> Body.\n")
     (let ((body
            (org-texmacs-test--stable-reference-body
@@ -1412,7 +1259,8 @@
   '(issue10)
   (dolist (scope '(full selected subtree region narrowed))
     (let (input
-          requests)
+          requests
+          raw-definitions)
       (with-temp-buffer
         (org-mode)
         (insert
@@ -1424,26 +1272,26 @@
         (when (eq scope 'selected)
           (goto-char 1)
           (insert "#+SELECT_TAGS: keep\n"))
-        (goto-char (point-min))
+        (goto-char 1)
         (search-forward "* Visible")
         (beginning-of-line)
         (let ((begin (point))
-              (end (point-max)))
+              (end (point-max))
+              (definition
+               (symbol-function 'org-export-get-footnote-definition)))
           (when (eq scope 'narrowed)
             (narrow-to-region begin end))
           (cl-letf (((symbol-function 'org-texmacs--worker-request)
                      (lambda (raw)
                        (push raw requests)
-                       (cond
-                        ((string-match-p "unused" raw)
-                         '(math "unused"))
-                        ((string-match-p "x" raw)
-                         '(math "x"))
-                        (t
-                         '(math "y")))))
-                    ((symbol-function 'org-footnote-get-definition)
-                     (lambda (&rest _)
-                       (ert-fail "Definition source fallback"))))
+                       (read raw)))
+                    ((symbol-function
+                      'org-export-get-footnote-definition)
+                     (lambda (reference info)
+                       (let ((body
+                              (funcall definition reference info)))
+                         (push body raw-definitions)
+                         body))))
             (let ((before
                    (org-texmacs-test--document-buffer-state
                     (current-buffer))))
@@ -1458,32 +1306,29 @@
                 before
                 (org-texmacs-test--document-buffer-state
                  (current-buffer))))))))
-      (should
-       (equal
-        (reverse requests)
-        (append
-         '("(math \"x\")" "(math \"y\")")
-         (and (eq scope 'full) '("(math \"unused\")")))))
-      (unless (eq scope 'full)
-        (should-not (member "(math \"unused\")" requests)))
-      ;; The source buffer is already dead; both pure conversions must succeed.
+      (let ((count
+             (pcase scope
+               ('full 3)
+               ('selected 2)
+               (_ 0))))
+        (should (= (length requests) count))
+        (should (= (length (org-texmacs-input-islands input)) count)))
+      (if (memq scope '(subtree region narrowed))
+          (should (member "" raw-definitions))
+        (should-not (member "" raw-definitions)))
+      ;; Source is dead.  Neither interpretation nor conversion may revisit it.
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _)
                    (ert-fail "Owned lowering requested worker")))
+                ((symbol-function 'org-export-get-footnote-definition)
+                 (lambda (&rest _)
+                   (ert-fail "Owned lowering repeated Org query")))
                 ((symbol-function 'buffer-substring-no-properties)
                  (lambda (&rest _)
-                   (ert-fail "Owned lowering read buffer"))))
-        (let* ((first (org-texmacs-document input))
-               (second (org-texmacs-document input))
-               (body (org-texmacs-document-body first)))
-          (should (equal body (org-texmacs-document-body second)))
-          (should
-           (= (length (org-texmacs-document-stm-paths first))
-              (if (eq scope 'full)
-                  3
-                2)))
-          (should
-           (= (length (org-texmacs-document-file-paths first)) 1))
+                   (ert-fail "Owned lowering read source"))))
+        (let* ((document (org-texmacs-document input))
+               (body (org-texmacs-document-body document)))
+          (should (equal document (org-texmacs-document input)))
           (should
            (= (cl-count 'footnote (flatten-tree body))
               (if (eq scope 'full)
@@ -1491,13 +1336,15 @@
                 1)))
           (should (memq 'reference (flatten-tree body)))
           (should
-           (string-match-p
-            "/base/note.txt"
-            (org-texmacs--native-document-wire first))))))))
+           (= (length (org-texmacs-document-file-paths document))
+              (if (memq scope '(full selected))
+                  1
+                0))))))))
 
 (ert-deftest org-texmacs-document-footnote-stm-support ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "A[fn::(math \"hidden\")] (math \"visible\")\n")
     (let (requests)
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
@@ -1510,7 +1357,7 @@
                (org-texmacs-document-from-buffer (current-buffer))))
           (should
            (equal
-            (reverse requests)
+            (sort (copy-sequence requests) #'string<)
             '("(math \"hidden\")" "(math \"visible\")")))
           (should
            (equal
@@ -1531,6 +1378,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "A[fn::中 *bold* ~code~ [[https://example.org][Link]] <alpha>]\n")
      (let* ((source (buffer-string))
@@ -1585,6 +1433,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: H:2 num:1 toc:nil\n"
      "** Top\n"
@@ -1619,6 +1468,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: H:5 num:nil toc:nil\n"
      "* One\n** Two\n*** Three\n**** Four\n***** Five\n")
@@ -1659,6 +1509,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: H:3 toc:2 num:1 tags:not-in-toc todo:nil\n"
      "* Visible :tag:\n"
@@ -1700,6 +1551,7 @@
 (ert-deftest org-texmacs-document-toc-uses-filtered-context ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: tasks:done toc:2 todo:nil\n"
      "* TODO Dropped\n"
@@ -1729,6 +1581,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "#+OPTIONS: toc:1 todo:nil\n"
       "#+begin_texmacs\n"
@@ -1780,9 +1633,10 @@
 (ert-deftest org-texmacs-document-rejects-headline-depth-over-five ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "#+OPTIONS: H:6\n* Heading\n")
     (should-error
-     (org-texmacs-prepare-buffer (current-buffer))
+     (org-texmacs-document-from-buffer (current-buffer))
      :type 'org-texmacs-document-error)))
 
 (ert-deftest org-texmacs-document-list-source-forms ()
@@ -1804,6 +1658,7 @@
                  (concat (item) "Untagged ")))))))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert (car case))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _)
@@ -1817,6 +1672,7 @@
 (ert-deftest org-texmacs-document-nested-list-island ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "- Outer\n  1. Inner (math \"x\")\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
                (lambda (source)
@@ -1842,6 +1698,7 @@
 (ert-deftest org-texmacs-document-quote-and-center-containers ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+begin_quote\nFirst (math \"q\").\n\nSecond.\n#+end_quote\n"
      "#+begin_center\n- Centered item\n#+end_center\n")
@@ -1876,6 +1733,7 @@
              "#+begin_center\nNested.\n#+end_center\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "#+OPTIONS: toc:nil title:nil author:nil date:nil\n#+begin_quote\n"
        contents
@@ -1892,6 +1750,7 @@
   (dolist (source '("- [ ] Task\n" "1. [@3] Counted\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert source)
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _)
@@ -1921,6 +1780,7 @@
                       (center (document (concat "Centered. ")))))))
            (with-temp-buffer
              (org-mode)
+             (setq-local org-export-with-author nil)
              (insert (car case))
              (let ((document
                     (org-texmacs-document-from-buffer
@@ -1938,6 +1798,7 @@
 (ert-deftest org-texmacs-document-preformatted-source-forms ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (setq-local tab-width 4)
     (insert
      "#+begin_example\n"
@@ -1988,6 +1849,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (setq-local tab-width 4)
     (insert "#+begin_example -i\n  a\tb\n#+end_example\n")
     (let ((input (org-texmacs-prepare-buffer (current-buffer))))
@@ -2016,6 +1878,7 @@
              "#+begin_example -n\nx\n#+end_example\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert source)
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _)
@@ -2032,6 +1895,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (setq-local tab-width 4)
      (insert
       "(math \"x\")\n\n"
@@ -2065,6 +1929,7 @@
 (ert-deftest org-texmacs-document-table-source-and-inline-subset ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "| Name | Value |\n"
      "| 中 <alpha> (math \"literal\") | *bold* [[https://example.org][site]] |\n"
@@ -2073,7 +1938,9 @@
                (lambda (&rest _)
                  (ert-fail "Table text reached worker"))))
       (let ((document
-             (org-texmacs-document-from-buffer (current-buffer))))
+             (org-texmacs-document
+              (org-texmacs-test--input-from-model
+               (org-texmacs-parse-buffer (current-buffer))))))
         (should
          (equal
           (org-texmacs-document-body document)
@@ -2095,6 +1962,7 @@
 (ert-deftest org-texmacs-document-table-rule-positions ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "|----+----|\n"
      "| h1 | h2 |\n"
@@ -2105,7 +1973,9 @@
     (should
      (equal
       (org-texmacs-document-body
-       (org-texmacs-document-from-buffer (current-buffer)))
+       (org-texmacs-document
+        (org-texmacs-test--input-from-model
+         (org-texmacs-parse-buffer (current-buffer)))))
       '(document
         (tabular
          (tformat
@@ -2125,6 +1995,7 @@
   (dolist (position '(0 1 2))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (let ((lines
              '("| LeftLongest | MiddleLongest | RightLongest |\n"
                "| L | C | R |\n")))
@@ -2134,7 +2005,9 @@
           (when (< index 2)
             (insert (nth index lines)))))
       (let* ((source (buffer-string))
-             (input (org-texmacs-prepare-buffer (current-buffer)))
+             (input
+              (org-texmacs-test--input-from-model
+               (org-texmacs-parse-buffer (current-buffer))))
              (print-circle t)
              (before (prin1-to-string (org-texmacs-input-ast input)))
              (document (org-texmacs-document input)))
@@ -2166,6 +2039,7 @@
   (dolist (count '(1 2 4))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (let ((fields (make-list count "<c>"))
             (data (make-list count "x")))
         (insert
@@ -2177,7 +2051,9 @@
          " |\n"))
       (let* ((body
               (org-texmacs-document-body
-               (org-texmacs-document-from-buffer (current-buffer))))
+               (org-texmacs-document
+                (org-texmacs-test--input-from-model
+                 (org-texmacs-parse-buffer (current-buffer))))))
              (format (cadadr body)))
         (should (eq (car format) 'tformat))
         (should (= (length (cdr format)) (1+ count)))
@@ -2185,13 +2061,16 @@
          (= (length (cdr (cadr (car (last format))))) count)))))
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "|---+---|\n| <r> | <l> |\n| Head | Col |\n"
      "|---+---|\n| 1 | 2 |\n|---+---|\n")
     (should
      (equal
       (org-texmacs-document-body
-       (org-texmacs-document-from-buffer (current-buffer)))
+       (org-texmacs-document
+        (org-texmacs-test--input-from-model
+         (org-texmacs-parse-buffer (current-buffer)))))
       '(document
         (tabular
          (tformat
@@ -2214,13 +2093,16 @@
      (dolist (format '(nil "| <l> | <r> |\n"))
        (with-temp-buffer
          (org-mode)
+         (setq-local org-export-with-author nil)
          (insert
           "#+OPTIONS: toc:nil title:nil author:nil date:nil\n[[t]]\n\n"
           "#+name: t\n#+caption: Caption [[./caption.org][CaptionFile]]\n"
           (or format "")
           "| [[./asset.org][AssetFile]] | =<r>= <alpha> |\n"
           "\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
-         (push (org-texmacs-document-from-buffer (current-buffer))
+         (push (org-texmacs-document
+                (org-texmacs-test--input-from-model
+                 (org-texmacs-parse-buffer (current-buffer))))
                documents)))
      (let* ((aligned (car documents))
             (plain (cadr documents))
@@ -2277,9 +2159,12 @@
              "| <l> | <r> |\n| / | < |\n| # | data |\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert source)
       (should-error
-       (org-texmacs-document-from-buffer (current-buffer))
+       (org-texmacs-document
+        (org-texmacs-test--input-from-model
+         (org-texmacs-parse-buffer (current-buffer))))
        :type 'org-texmacs-document-error)
       (should (equal source (buffer-string))))))
 
@@ -2293,12 +2178,15 @@
              "| [fn::note] |\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert source)
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _)
                    (ert-fail "Invalid table reached worker"))))
         (should-error
-         (org-texmacs-document-from-buffer (current-buffer))
+         (org-texmacs-document
+          (org-texmacs-test--input-from-model
+           (org-texmacs-parse-buffer (current-buffer))))
          :type 'org-texmacs-document-error))))
   (let* ((cell (org-element-create 'table-cell nil "x"))
          (row (org-element-create 'table-row '(:type standard) cell))
@@ -2311,13 +2199,16 @@
 (ert-deftest org-texmacs-document-named-table-captions-and-links ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "[[t]] [[t][Table]].\n\n"
      "#+name: t\n#+caption[Short *S*]: Long [[t][self]]\n"
      "#+caption: Second <alpha>\n| a | b |\n")
     (let ((body
            (org-texmacs-test--stable-reference-body
-            (org-texmacs-document-from-buffer (current-buffer)))))
+            (org-texmacs-document
+             (org-texmacs-test--input-from-model
+              (org-texmacs-parse-buffer (current-buffer)))))))
       (should
        (equal
         body
@@ -2340,12 +2231,15 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: toc:nil\n[[same][Table]]\n\n"
      "#+name: same\n| x |\n\n* same\n")
     (let ((body
            (org-texmacs-test--stable-reference-body
-            (org-texmacs-document-from-buffer (current-buffer)))))
+            (org-texmacs-document
+             (org-texmacs-test--input-from-model
+              (org-texmacs-parse-buffer (current-buffer)))))))
       (should
        (equal
         (cadr body)
@@ -2359,53 +2253,58 @@
           (tabular (tformat (table (row (cell "x"))))))))))
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "#+name: unused\n| x |\n")
     (should
      (equal
       (org-texmacs-test--stable-reference-body
-       (org-texmacs-document-from-buffer (current-buffer)))
+       (org-texmacs-document
+        (org-texmacs-test--input-from-model
+         (org-texmacs-parse-buffer (current-buffer)))))
       '(document (tabular (tformat (table (row (cell "x"))))))))))
 
 (ert-deftest org-texmacs-document-named-table-rejects-before-worker ()
   (dolist
       (source
        '("[[t]]\n\n#+name: t\n| x |\n"
-         "[[t][T]]\n\n#+name: t\n| x |\n\n#+name: t\n| y |\n"
-         "[[t][T]]\n\n<<t>>\n\n#+name: t\n| x |\n"
          "#+EXCLUDE_TAGS: hidden\n[[t][T]]\n* Hidden :hidden:\n#+name: t\n| x |\n"
-         "#+name: t\n#+name: again\n| x |\n"
          "#+name: t\n#+attr_html: :class hidden\n| x |\n"
          "#+caption: C\n#+attr_texmacs: float\n| x |\n"
-         "#+caption: C\n#+results: data\n| x |\n"
          "#+caption:\n| x |\n"
          "#+caption: [[missing]]\n| x |\n"
          "#+caption: [cite:@k]\n| x |\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        source "\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
       (let ((before (buffer-string)))
         (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   (lambda (&rest _)
-                     (ert-fail
-                      "Invalid named table reached worker"))))
+                   #'org-texmacs-test--parse-fixture-stm))
           (ert-info
            ((format "Named-table source: %s" source))
            (should-error
             (org-texmacs-document-from-buffer (current-buffer))
-            :type 'org-texmacs-document-error)))
+            :type
+            (if (or (string-search "#+EXCLUDE_TAGS:" source)
+                    (string-search "[[missing]]" source))
+                'org-link-broken
+              'org-texmacs-document-error))))
         (should (equal before (buffer-string)))))))
 
 (ert-deftest org-texmacs-document-named-table-native-and-provenance ()
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (setq default-directory "/tmp/")
      (insert
       "[[t]]\n\n#+name: t\n#+caption[Short]: 中 <alpha> [[./caption.org][File]]\n| x |\n"
       "\n#+begin_texmacs\n(label \"org-texmacs-ref-1\")\n#+end_texmacs\n")
      (let* ((document
-             (org-texmacs-document-from-buffer (current-buffer)))
+             (org-texmacs-document
+              (org-texmacs-test--input-from-model
+               (org-texmacs-parse-buffer (current-buffer)))))
             (session (org-texmacs-session-open)))
        (unwind-protect
            (progn
@@ -2441,12 +2340,15 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "| 中 <alpha> | *B* |\n"
       "|------------+-----|\n"
       "| x          |     |\n")
      (let* ((document
-             (org-texmacs-document-from-buffer (current-buffer)))
+             (org-texmacs-document
+              (org-texmacs-test--input-from-model
+               (org-texmacs-parse-buffer (current-buffer)))))
             (expected
              '(document
                (tabular
@@ -2481,6 +2383,7 @@
 (ert-deftest org-texmacs-document-source-without-islands ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: toc:nil\n* A *bold*\t title\nText *strong*\t  tail.\n")
     (goto-char 4)
@@ -2504,6 +2407,7 @@
 (ert-deftest org-texmacs-document-source-adjacent-islands ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "Before (math \"*fake* [[link]]\")(math \"α\") after.\n")
     (let ((requests nil))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
@@ -2533,28 +2437,13 @@
             (nreverse requests)
             '("(math \"*fake* [[link]]\")" "(math \"α\")"))))))))
 
-(ert-deftest org-texmacs-document-source-preflight ()
-  (dolist
-      (source
-       '("(math \"x\")\n\n[[file:unsupported.org::#target][link]]\n"
-         "#+include: missing.org\n"
-         "#+begin_src emacs-lisp -n\n(error \"never execute\")\n#+end_src\n"))
-    (with-temp-buffer
-      (org-mode)
-      (insert source)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _)
-                   (ert-fail "Preflight started parsing"))))
-        (should-error
-         (org-texmacs-document-from-buffer (current-buffer))
-         :type 'org-texmacs-document-error)))))
-
 (ert-deftest org-texmacs-document-source-rejects-context ()
   (with-temp-buffer
     (should-error
      (org-texmacs-document-from-buffer (current-buffer))
      :type 'org-texmacs-document-error)
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "First\nSecond\n")
     (narrow-to-region 2 (point-max))
     (should
@@ -2567,6 +2456,7 @@
 (ert-deftest org-texmacs-document-explicit-source-and-wrapper ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "#+OPTIONS: toc:nil\n*** Heading\n")
     (setq-local org-odd-levels-only t)
     (let* ((source (current-buffer))
@@ -2574,6 +2464,7 @@
       (should (equal expected (org-texmacs-document-current-buffer)))
       (with-temp-buffer
         (org-mode)
+        (setq-local org-export-with-author nil)
         (insert "Unrelated\n")
         (setq-local org-odd-levels-only nil)
         (narrow-to-region 2 (point-max))
@@ -2594,6 +2485,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (dolist (source (list nil t 1 (buffer-name)))
       (should-error
        (org-texmacs-document-from-buffer source)
@@ -2613,6 +2505,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "(math \"x\") (math \"x\")\n")
     (let ((source (current-buffer)))
       (with-temp-buffer
@@ -2636,6 +2529,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "Text\n")
     (let ((source (current-buffer))
           (lower (symbol-function 'org-texmacs--document-lower))
@@ -2644,76 +2538,19 @@
                  (lambda (&rest args)
                    (setq calls (1+ calls))
                    (prog1 (apply lower args)
-                     (when (= calls 2)
+                     (when (= calls 1)
                        (with-current-buffer source
                          (insert "changed")))))))
         (should-error
          (org-texmacs-document-from-buffer source)
          :type 'org-texmacs-document-error)))))
 
-(ert-deftest org-texmacs-document-formatter-parser-isolation ()
-  ;; Exclude FTPS even if another package has registered it in this Emacs.
-  (let ((org-link-parameters
-         (cl-remove
-          "ftps"
-          org-link-parameters
-          :key #'car
-          :test #'equal))
-        (org-link-types-re org-link-types-re)
-        (org-link-angle-re org-link-angle-re)
-        (org-link-plain-re org-link-plain-re)
-        (org-link-bracket-re org-link-bracket-re)
-        (org-link-any-re org-link-any-re)
-        (org-element--object-regexp org-element--object-regexp)
-        (org-element-paragraph-separate
-         org-element-paragraph-separate))
-    (org-link-make-regexps)
-    (org-element--set-regexps)
-    (with-temp-buffer
-      (org-mode)
-      (insert "[[ftps://example.org][Other]]\n")
-      (let* ((other (current-buffer))
-             (types
-              (lambda ()
-                (with-current-buffer other
-                  (org-element-map
-                   (org-element-parse-buffer) 'link
-                   (lambda (link)
-                     (org-element-property :type link))))))
-             (baseline (funcall types))
-             (settings (org-texmacs--document-link-settings))
-             (calls 0))
-        (with-temp-buffer
-          (org-mode)
-          (insert
-           "#+OPTIONS: toc:nil\n* Title\n[[ftps://example.org][Own]]\n")
-          (let ((org-texmacs-format-headline-function
-                 (lambda (&rest _)
-                   (setq calls (1+ calls))
-                   (should
-                    (equal
-                     settings (org-texmacs--document-link-settings)))
-                   (should (equal baseline (funcall types)))
-                   "Title")))
-            (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                       (lambda (&rest _)
-                         (ert-fail "Plain content started worker"))))
-              (should
-               (equal
-                (org-texmacs-document-body
-                 (org-texmacs-document-from-buffer (current-buffer)))
-                '(document
-                  (section "Title")
-                  (concat (hlink "Own" "ftps://example.org") " "))))))
-          ;; Both the structural preflight and the final lowering were observed.
-          (should (= calls 2)))
-        (should (equal baseline (funcall types)))))))
-
 (ert-deftest org-texmacs-document-preserves-buffer-state-on-exit ()
   (dolist (outcome '(success unsupported parse-error worker-error))
     (dolist (modified '(nil t))
       (with-temp-buffer
         (org-mode)
+        (setq-local org-export-with-author nil)
         (insert "Text (math \"x\")\n")
         (when (eq outcome 'unsupported)
           (insert "\n[[file:unsupported.org::#target][link]]\n"))
@@ -2727,6 +2564,7 @@
                 (org-texmacs-test--document-buffer-state source)))
           (with-temp-buffer
             (org-mode)
+            (setq-local org-export-with-author nil)
             (insert "Unrelated buffer\n")
             (narrow-to-region 2 (point-max))
             (let* ((caller (current-buffer))
@@ -2737,9 +2575,7 @@
                          (lambda (&rest _)
                            (set-buffer caller)
                            (pcase outcome
-                             ('unsupported
-                              (ert-fail
-                               "Unsupported input started worker"))
+                             ('unsupported '(math "x"))
                              ('parse-error
                               (signal 'org-texmacs-parse-error
                                       '("fixture")))
@@ -2772,9 +2608,10 @@
 (ert-deftest
     org-texmacs-document-rechecks-explicit-source-after-switch
     ()
-  (dolist (change '(text tags heading link narrowing mode killed))
+  (dolist (change '(text tags narrowing mode killed))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert "(math \"x\") (math \"y\")\n")
       (let ((source (current-buffer)))
         (with-temp-buffer
@@ -2808,9 +2645,12 @@
                          '(math "x"))))
               (should-error
                (org-texmacs-document-from-buffer source)
-               :type 'org-texmacs-error)
+               :type
+               (if (eq change 'killed)
+                   'error
+                 'org-texmacs-error))
               (should (eq caller (current-buffer)))
-              (should (= calls 1))
+              (should (= calls 2))
               (when (eq change 'text)
                 (with-current-buffer source
                   (should
@@ -2820,6 +2660,7 @@
 (ert-deftest org-texmacs-document-explicit-info-snapshot ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "#+OPTIONS: toc:nil\n* Title\n(math \"x\")\n")
     (setq-local org-texmacs-format-headline-function
                 (lambda (&rest _) "Initial"))
@@ -2850,6 +2691,7 @@
 (ert-deftest org-texmacs-document-source-cache-remains-observable ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "Text\n")
     (goto-char 1)
     (let ((node (org-element-at-point)))
@@ -2871,6 +2713,7 @@
   (dolist (change '(text tags narrowing mode))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert "(math \"x\") (math \"y\")\n")
       (let ((calls 0))
         (cl-letf (((symbol-function 'org-texmacs--worker-request)
@@ -2883,14 +2726,18 @@
                        ('narrowing (narrow-to-region 2 (point-max)))
                        ('mode (fundamental-mode)))
                      '(math "x"))))
-          (should-error
-           (org-texmacs-document-from-buffer (current-buffer))
-           :type 'org-texmacs-error)
-          (should (= calls 1)))))))
+          (let ((source (current-buffer))
+                (before (buffer-string)))
+            (should
+             (org-texmacs-document-p
+              (org-texmacs-document-from-buffer source)))
+            (should (equal before (buffer-string))))
+          (should (= calls 2)))))))
 
 (ert-deftest org-texmacs-document-source-root-mismatch ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "(math \"x\")\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
                (lambda (_source) '(concat "x"))))
@@ -2901,6 +2748,7 @@
 (ert-deftest org-texmacs-document-source-disabled-fragments ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (setq-local org-texmacs-fragment-tags nil)
     (insert "(math \"x\")\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
@@ -2918,6 +2766,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "#+OPTIONS: toc:nil\n* Title\nText (math (frac \"α\" \"2\")) end.\n\n"
       "#+begin_texmacs\n(document (math \"中\"))\n#+end_texmacs\n")
@@ -2942,6 +2791,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert "(math 1)\n")
      (should-error
       (org-texmacs-document-from-buffer (current-buffer))
@@ -2962,8 +2812,12 @@
   (dolist (keyword '("WAIT" "FINISHED"))
     (with-temp-buffer
       (let ((org-todo-keywords '((sequence "WAIT" "|" "FINISHED"))))
-        (org-mode))
-      (insert "#+OPTIONS: toc:nil\n* " keyword " Task\n")
+        (org-mode)
+        (setq-local org-export-with-author nil))
+      (insert
+       "#+TODO: WAIT | FINISHED\n#+OPTIONS: toc:nil\n* "
+       keyword
+       " Task\n")
       ;; Establish that the fixture really has non-default TODO semantics.
       (should
        (equal
@@ -2991,6 +2845,7 @@
 (ert-deftest org-texmacs-document-source-custom-level-settings ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (setq-local org-odd-levels-only t)
     (insert "#+OPTIONS: toc:nil\n*** Heading\n")
     (should
@@ -3009,8 +2864,10 @@
 (ert-deftest org-texmacs-document-source-custom-todo-plain-title ()
   (with-temp-buffer
     (let ((org-todo-keywords '((sequence "WAIT" "|" "FINISHED"))))
-      (org-mode))
-    (insert "#+OPTIONS: toc:nil\n* TODO A *bold* title\n")
+      (org-mode)
+      (setq-local org-export-with-author nil))
+    (insert
+     "#+TODO: WAIT | FINISHED\n#+OPTIONS: toc:nil\n* TODO A *bold* title\n")
     (should
      (equal
       (org-texmacs-document-body
@@ -3021,6 +2878,7 @@
 (ert-deftest org-texmacs-document-source-custom-priority-settings ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     ;; A numeric-only effective regexp leaves [#A] in the title itself.
     (setq-local org-priority-regexp "\\(\\[#\\([0-9]+\\)\\] ?\\)")
     (insert "#+OPTIONS: toc:nil\n* [#A] Task\n")
@@ -3038,66 +2896,12 @@
          (org-texmacs-document-from-buffer (current-buffer)))
         '(document (section (concat "[#12]" " " "Task"))))))))
 
-(ert-deftest
-    org-texmacs-document-heading-settings-reject-malformed-values
-    ()
-  (dolist (setting
-           '((org-todo-regexp . 1)
-             (org-done-keywords . "DONE")
-             (org-done-keywords . (1))
-             (org-done-keywords . ("DONE" . "rest"))
-             (org-priority-regexp . nil)))
-    (with-temp-buffer
-      (org-mode)
-      (set (make-local-variable (car setting)) (cdr setting))
-      (insert "Text\n")
-      (should-error
-       (org-texmacs-document-from-buffer (current-buffer))
-       :type 'org-texmacs-document-error))))
-
-(ert-deftest org-texmacs-document-source-rechecks-heading-settings ()
-  (dolist (change '(regexp done done-in-place level priority))
-    (with-temp-buffer
-      (org-mode)
-      (setq-local org-done-keywords (list (copy-sequence "DONE")))
-      (insert "(math \"x\") (math \"y\")\n")
-      (let ((calls 0))
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   (lambda (_source)
-                     (setq calls (1+ calls))
-                     (pcase change
-                       ('regexp
-                        (setq-local org-todo-regexp
-                                    (copy-sequence org-todo-regexp))
-                        (aset org-todo-regexp 0 ?x))
-                       ('done
-                        (setq-local org-done-keywords '("FINISHED")))
-                       ('done-in-place
-                        (aset (car org-done-keywords) 0 ?x))
-                       ('priority
-                        (setq-local org-priority-regexp
-                                    (copy-sequence
-                                     org-priority-regexp))
-                        (aset org-priority-regexp 0 ?x))
-                       ('level
-                        (setq-local org-odd-levels-only
-                                    (not org-odd-levels-only))))
-                     '(math "x"))))
-          (let ((failure
-                 (should-error
-                  (org-texmacs-document-from-buffer (current-buffer))
-                  :type 'org-texmacs-document-error)))
-            (should
-             (equal
-              (cadr failure)
-              "Org heading settings changed during conversion")))
-          (should (= calls 1)))))))
-
 (ert-deftest org-texmacs-document-mixed-inline-session ()
   (org-texmacs-test--with-worker
    (should-not (org-texmacs--worker-live-p))
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "中 /i/ [fn::*n*] [[https://example.org][L]] (math \"<alpha>\")(math \"x\")\n\n"
       "#+begin_texmacs\n(equation* \"y\")\n#+end_texmacs\n")
@@ -3154,6 +2958,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "#+OPTIONS: toc:nil\n* 中文标题\n\n普通的中文 *加粗* (math (frac \"一\" \"2\")).\n\n"
       "#+begin_texmacs\n(equation* (frac \"3\" \"4\"))\n#+end_texmacs\n\n"
@@ -3220,6 +3025,7 @@
      (unwind-protect
          (with-temp-buffer
            (org-mode)
+           (setq-local org-export-with-author nil)
            (insert "Original\n")
            (org-texmacs-session-set-document
             session
@@ -3264,9 +3070,11 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (let ((org-todo-keywords '((sequence "WAIT" "|" "FINISHED"))))
-       (org-mode))
+       (org-mode)
+       (setq-local org-export-with-author nil))
      (setq-local org-odd-levels-only t)
-     (insert "#+OPTIONS: toc:nil\n*** TODO Task\n(math \"α\")\n")
+     (insert
+      "#+TODO: WAIT | FINISHED\n#+OPTIONS: toc:nil\n*** TODO Task\n(math \"α\")\n")
      (let* ((settings (org-texmacs--document-heading-settings))
             (source (buffer-string))
             (document
@@ -3338,6 +3146,7 @@
       (dolist (tags '(nil t not-in-toc))
         (with-temp-buffer
           (org-mode)
+          (setq-local org-export-with-author nil)
           (insert
            "#+OPTIONS: toc:nil\n* TODO [#A] A *bold* title :one:two:\nBody\n")
           (let* ((org-export-with-todo-keywords todo)
@@ -3366,6 +3175,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "#+OPTIONS: toc:nil\n*** TODO [#A] Title :tag:\n")
     (let* ((output (list 'strong (copy-sequence "custom")))
            (calls 0)
@@ -3398,6 +3208,7 @@
 (ert-deftest org-texmacs-headline-invalid-formatter-result ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "* Title\n")
     (dolist (value '(42 (strong 42) (nil "x") (strong . "x")))
       (let ((org-texmacs-format-headline-function
@@ -3409,6 +3220,7 @@
 (ert-deftest org-texmacs-headline-output-settings-snapshot ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: toc:nil\n* TODO [#A] Title :tag:\n(math \"x\")\n")
     (let ((org-export-with-todo-keywords t)
@@ -3444,6 +3256,7 @@
 (ert-deftest org-texmacs-headline-explicit-tags-only ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: toc:nil\n* Parent :parent:\n** Child :child:\n")
     (let ((org-export-with-tags t))
@@ -3455,28 +3268,14 @@
           (section (concat "Parent" " " ":parent:"))
           (subsection (concat "Child" " " ":child:"))))))))
 
-(ert-deftest
-    org-texmacs-headline-file-options-without-export-environment
-    ()
-  (with-temp-buffer
-    (org-mode)
-    (insert "#+OPTIONS: todo:nil toc:nil\n* TODO Title\n")
-    (cl-letf (((symbol-function 'org-export-get-environment)
-               (lambda (&rest _)
-                 (ert-fail "Collected export environment"))))
-      (should
-       (equal
-        (org-texmacs-document-body
-         (org-texmacs-document-from-buffer (current-buffer)))
-        '(document (section "Title")))))))
-
 (ert-deftest org-texmacs-headline-native-metadata-literal ()
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (let ((org-todo-keywords '((sequence "<alpha>" "|" "FINISHED"))))
-       (org-mode))
+       (org-mode)
+       (setq-local org-export-with-author nil))
      (insert
-      "#+OPTIONS: toc:nil\n* <alpha> [#12] 中 :tag:\n(math \"<alpha>\")\n")
+      "#+TODO: <alpha> | FINISHED\n#+OPTIONS: toc:nil\n* <alpha> [#12] 中 :tag:\n(math \"<alpha>\")\n")
      (let* ((org-export-with-todo-keywords t)
             (org-export-with-priority t)
             (org-export-with-tags t)

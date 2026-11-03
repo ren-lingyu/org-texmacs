@@ -12,51 +12,40 @@
    (insert "#+INCLUDE: \"part.org\"\n")
    (let ((before
           (org-texmacs-test--document-buffer-state (current-buffer)))
-         (kinds
-          (org-texmacs-test--observe-cleanup
-           (lambda ()
-             (should
-              (equal
-               (plist-get (org-texmacs-test--compose) :source)
-               "Included\n"))))))
-     (should (equal (sort kinds #'string-lessp) '(include root)))
+         (org-export-use-babel nil))
+     (should
+      (equal
+       (org-texmacs-test--observe-standard-cleanup
+        (lambda ()
+          (let ((input (org-texmacs-prepare-buffer (current-buffer))))
+            (should
+             (string-search
+              "Included"
+              (prin1-to-string (org-texmacs-input-ast input)))))))
+       '(root prepared ast)))
      (should
       (equal
        before
        (org-texmacs-test--document-buffer-state (current-buffer)))))))
 
 (ert-deftest org-texmacs-cleanup-source-configuration-guard ()
-  (dolist (discover '(nil t))
-    (org-texmacs-test--with-cleanup-source
-     (setq-local org-export-with-toc nil)
-     (let ((source (current-buffer)))
-       (should
-        (equal
-         (should-error
-          (org-texmacs--bibliography-convert
-           source #'identity nil nil nil nil
-           (lambda (_text
-                    _tags
-                    _headings
-                    _links
-                    _info
-                    _file
-                    _base
-                    _texts
-                    check)
-             (with-temp-buffer
-               (org-mode)
-               ;; This matches the snapshot; the actual source has changed.
-               (setq-local org-export-with-toc nil)
+  ;; Settings already consumed by Org belong to the prepared snapshot.
+  ;; Native settings changing on the original source still invalidate publication.
+  (with-temp-buffer
+    (org-mode)
+    (insert "Text.\n")
+    (let* ((source (current-buffer))
+           (org-export-use-babel nil)
+           (org-export-filter-parse-tree-functions
+            (list
+             (lambda (tree _backend _info)
                (with-current-buffer source
-                 (setq-local org-export-with-toc t))
-               (funcall check)))
-           discover)
-          :type 'org-texmacs-document-error)
-         '(org-texmacs-document-error
-           "Bibliography transaction configuration changed")))
-       ;; External callback changes are detected, not rolled back by the package.
-       (should org-export-with-toc)))))
+                 (setq-local org-texmacs-document-style '("article")))
+               tree))))
+      (should-error
+       (org-texmacs-prepare-buffer source)
+       :type 'org-texmacs-document-error)
+      (should (equal org-texmacs-document-style '("article"))))))
 
 ;;; font-lock-tests.el --- Embedded Scheme presentation regressions -*- lexical-binding: t; -*-
 
@@ -156,7 +145,8 @@
               (with-temp-buffer
                 (org-mode)
                 (setq default-directory "/captured/source/")
-                (insert "[[file:./article.org][Article]]\n")
+                (insert
+                 "#+OPTIONS: title:nil author:nil date:nil toc:nil\n[[file:./article.org][Article]]\n")
                 (org-texmacs-prepare-buffer (current-buffer)))))
            ;; Later settings do not affect prepared or completed documents.
            (org-texmacs-pdf-file-links-as-absolute (not absolute))
@@ -211,7 +201,7 @@
         (org-mode)
         (insert "Text\n")
         (should-error
-         (org-texmacs-prepare-buffer (current-buffer))
+         (org-texmacs-document-from-buffer (current-buffer))
          :type 'org-texmacs-document-error))))
   (dolist (document
            (list

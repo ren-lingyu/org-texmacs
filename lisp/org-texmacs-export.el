@@ -143,11 +143,19 @@ A memoized graph copy also preserves parent links in parsed Org metadata."
    major-mode
    (point-min)
    (point-max)
-   (and buffer-file-name (substring-no-properties buffer-file-name))
+   (when-let* ((file (buffer-file-name (buffer-base-buffer))))
+     (substring-no-properties file))
    (substring-no-properties default-directory)
    (org-texmacs--document-copy-style org-texmacs-document-style)
    (org-texmacs--document-copy-initial org-texmacs-document-initial)
-   (org-texmacs--fragment-tags)))
+   (org-texmacs--fragment-tags)
+   (org-texmacs--standard-copy-options
+    (list
+     :texmacs-tab-width tab-width
+     :texmacs-format-headline-function org-texmacs-format-headline-function
+     :texmacs-special-block-handlers org-texmacs--document-special-block-handlers
+     :texmacs-pdf-file-links-as-absolute org-texmacs-pdf-file-links-as-absolute
+     :texmacs-link-org-files-as-pdf org-texmacs-link-org-files-as-pdf))))
 
 (defun org-texmacs--standard-check-source (state &optional selecting)
   "Reject source changes across native waits using captured STATE.
@@ -163,7 +171,10 @@ Do not roll back changes made by arbitrary callbacks."
                (setf
                 (nth 3 current) (nth 3 state)
                 (nth 4 current) (nth 4 state)))
-             (equal state current))))
+             ;; Presentation data in the last field has already been consumed.
+             ;; Keep source/style/initial/fragment guards without receipt replay.
+             (equal
+              (cl-subseq state 0 10) (cl-subseq current 0 10)))))
       (signal
        'org-texmacs-document-error
        '("Standard export source or native settings changed")))))
@@ -209,6 +220,7 @@ not an early exit across normal export advice or a second preparation pass."
              append
              (list key value)))
            (org-texmacs--standard-request nil)
+           (org-entry-property-inherited-from (make-marker))
            (state (org-texmacs--standard-source-state))
            (org-texmacs--standard-transaction
             (list
@@ -250,13 +262,19 @@ The prepared AST remains authoritative; this is not STM text construction."
 Project supported options without repeating preparation or retaining full INFO."
   (let ((tree (plist-get info :parse-tree))
         (identities (make-hash-table :test #'eq))
-        (keys (mapcar #'car org-texmacs--context-option-alist))
+        (keys org-texmacs--context-export-options)
         projected)
     ;; Resolve through public access while live, never reparse working text.
     (org-texmacs--prepared-resolve tree)
     (setq tree
           (org-texmacs--prepared-copy
-           tree (plist-get info :ignore-list) identities))
+           tree
+           (append
+            (plist-get info :ignore-list)
+            (org-texmacs--query-excluded-definitions tree info))
+           identities))
+    (org-texmacs--prepared-footnote-bodies tree)
+    (org-texmacs--prepared-check-caption-notes tree)
     (org-texmacs--prepared-control-keywords tree)
     (dolist (key keys)
       (when (plist-member info key)
@@ -273,48 +291,29 @@ Project supported options without repeating preparation or retaining full INFO."
                      (list value)
                    value))))))
     (setq projected
-          (plist-put projected :texmacs-tab-width tab-width))
-    (setq
-     projected
-     (plist-put
-      projected
-      :texmacs-format-headline-function org-texmacs-format-headline-function))
-    (setq
-     projected
-     (plist-put
-      projected
-      :texmacs-special-block-handlers org-texmacs--document-special-block-handlers))
-    (setq
-     projected
-     (plist-put
-      projected
-      :texmacs-pdf-file-links-as-absolute org-texmacs-pdf-file-links-as-absolute))
-    (setq
-     projected
-     (plist-put
-      projected
-      :texmacs-link-org-files-as-pdf org-texmacs-link-org-files-as-pdf))
+          (append
+           projected
+           (org-texmacs--standard-copy-options (nth 10 state))))
     (let*
         ((requests
-          (org-texmacs--prepared-discover
-           tree (org-texmacs--fragment-tags) t))
+          (org-texmacs--prepared-discover tree (nth 9 state) t))
          (query
           (prog1 (org-texmacs--query-snapshot
                   tree info identities
                   (lambda (definition)
-                    (setq
-                     requests
-                     (append
-                      requests
-                      (org-texmacs--prepared-discover
-                       definition (org-texmacs--fragment-tags))))))
+                    (setq requests
+                          (append
+                           requests
+                           (org-texmacs--prepared-discover
+                            definition (nth 9 state))))))
             (org-texmacs--prepared-affiliation tree)))
          ;; As in the independent parser, placeholders exist only inside an
          ;; unpublished ownership transaction.  Freeze context before waits;
          ;; allocate labels only after all actual native trees are available.
          (input
           (org-texmacs--input-own
-           tree (plist-put projected :texmacs-org-query query)
+           tree
+           (plist-put projected :texmacs-org-query query)
            :islands
            (mapcar
             (lambda (request)
@@ -322,8 +321,10 @@ Project supported options without repeating preparation or retaining full INFO."
             requests)
            :style (nth 7 state)
            :initial (nth 8 state)
-           :source-file (nth 5 state)
-           :resource-base (nth 6 state))))
+           :source-file
+           (org-texmacs--source-capture-path (nth 5 state))
+           :resource-base
+           (org-texmacs--source-capture-path (nth 6 state)))))
       (org-texmacs--prepared-parse
        requests (org-texmacs-input-islands input))
       (org-texmacs--input-finalize input))))
@@ -385,7 +386,9 @@ Arbitrary functions are not replayed or predicted to be no-ops."
             (with-current-buffer (car state)
               (org-texmacs--standard-source-state)))
            (input (org-texmacs--standard-input info state))
-           (document (org-texmacs-document input))
+           (document
+            (unless (memq consumer '(input model))
+              (org-texmacs-document input)))
            (request (plist-get transaction :request)))
       (when request
         (setf
@@ -516,8 +519,7 @@ Nil REGION ignores any ambient active region.  Own EXT-PLIST before hooks."
   "Return a structured CONSUMER result from the current source once.
 CONSUMER is input, model, document or pdf.  Forward standard SUBTREEP,
 VISIBLE-ONLY and EXT-PLIST without selecting or merging configuration here.
-Interactive/source byte commands share this bridge.
-Structured source APIs migrate separately."
+Public source APIs and interactive commands share this bridge."
   (unless (memq consumer '(input model document pdf))
     (signal 'org-texmacs-document-error
             '("Invalid structured export consumer")))
@@ -535,7 +537,9 @@ Structured source APIs migrate separately."
        (append
         (list :texmacs--result-token (plist-get request :token))
         ext-plist)))
-    (unless (plist-get request :document)
+    (unless (and (plist-get request :input)
+                 (or (memq consumer '(input model))
+                     (plist-get request :document)))
       (signal 'org-texmacs-document-error
               '("Missing standard export result")))
     (prog1 (pcase consumer

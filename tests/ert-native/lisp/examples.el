@@ -10,6 +10,7 @@
   "Exercise the fixed document fixture."
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: toc:nil\n"
      "* 中\n"
@@ -24,6 +25,7 @@
   (let ((document
          (with-temp-buffer
            (org-mode)
+           (setq-local org-export-with-author nil)
            (insert "Text (math \"α\")\n")
            (org-texmacs-document-from-buffer (current-buffer)))))
     (let ((session (org-texmacs-session-open)))

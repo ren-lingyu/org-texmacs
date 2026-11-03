@@ -50,6 +50,7 @@ owns supplied resolved data; it does not infer settings or interpret options.")
  (nodes (make-hash-table :test #'eq))
  pending
  (error-type 'org-texmacs-model-error)
+ excluded-nodes
  (secondary-normalizer #'identity)
  (caption-reader #'org-texmacs--model-caption-lines))
 
@@ -183,12 +184,24 @@ properties after all structural identities have been registered."
                    (lambda
                      (child)
                      (org-texmacs--model-copy-node owner child new))
-                   (car line))
+                   (cl-remove-if
+                    (lambda (child)
+                      (memq
+                       child
+                       (org-texmacs--model-owner-excluded-nodes
+                        owner)))
+                    (car line)))
                   (mapcar
                    (lambda
                      (child)
                      (org-texmacs--model-copy-node owner child new))
-                   (cdr line))))
+                   (cl-remove-if
+                    (lambda (child)
+                      (memq
+                       child
+                       (org-texmacs--model-owner-excluded-nodes
+                        owner)))
+                    (cdr line)))))
                (funcall
                 (org-texmacs--model-owner-caption-reader owner)
                 old))))
@@ -206,7 +219,12 @@ properties after all structural identities have been registered."
               (mapcar
                (lambda (child)
                  (org-texmacs--model-copy-node owner child new))
-               value)))
+               (cl-remove-if
+                (lambda (child)
+                  (memq
+                   child
+                   (org-texmacs--model-owner-excluded-nodes owner)))
+                value))))
             (t
              (push (list new key value)
                    (org-texmacs--model-owner-pending owner)))))
@@ -218,7 +236,12 @@ properties after all structural identities have been registered."
                (mapcar
                 (lambda (child)
                   (org-texmacs--model-copy-node owner child new))
-                (cddr old)))
+                (cl-remove-if
+                 (lambda (child)
+                   (memq
+                    child
+                    (org-texmacs--model-owner-excluded-nodes owner)))
+                 (cddr old))))
         new))
      (t
       (org-texmacs--model-fail owner "Invalid Org AST node")))))

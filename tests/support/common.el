@@ -31,6 +31,52 @@
     :resource-base resource-base
     :bibliography bibliography)))
 
+(defun org-texmacs-test--input-from-model (model)
+  "Construct target input from explicit MODEL with fixed defaults.
+Options are not interpreted; no selection, hooks, Cite or source preparation."
+  (let* ((copy
+          (org-texmacs-model-create
+           (org-texmacs-model-ast model)
+           :islands (org-texmacs-model-islands model)
+           :context (org-texmacs-model-context model)))
+         (ast (org-texmacs-model-ast copy))
+         (context (org-texmacs-model-context copy)))
+    ;; These constructor fixtures supply fixed settings, not source OPTIONS.
+    (org-element-map
+     ast 'keyword
+     (lambda (node)
+       (when (equal (org-element-property :key node) "OPTIONS")
+         (org-element-extract-element node))))
+    (org-texmacs--prepared-affiliation ast)
+    (org-texmacs-input-create
+     ast
+     nil
+     :islands (org-texmacs-model-islands copy)
+     :source-file (plist-get context :source-file)
+     :resource-base (plist-get context :resource-base))))
+
+(defun org-texmacs-test--with-registered-ftps (thunk)
+  "Call THUNK with an Org-registered FTPS scheme and isolated parser regexps."
+  (let ((org-link-parameters (cons '("ftps") org-link-parameters))
+        (org-link-types-re org-link-types-re)
+        (org-link-angle-re org-link-angle-re)
+        (org-link-plain-re org-link-plain-re)
+        (org-link-bracket-re org-link-bracket-re)
+        (org-link-any-re org-link-any-re)
+        (org-element--object-regexp org-element--object-regexp)
+        (org-element-paragraph-separate
+         org-element-paragraph-separate))
+    (org-link-make-regexps)
+    (org-element--set-regexps)
+    (funcall thunk)))
+
+(defun org-texmacs-test--parse-fixture-stm (raw &rest _)
+  "Return the parsed tree for a small known fixture RAW."
+  (condition-case nil
+      (read raw)
+    (end-of-file
+     (signal 'org-texmacs-parse-error '("Incomplete fixture STM")))))
+
 (defun org-texmacs-test--reference-map (body)
   "Map BODY's random labels to structural fixture names, preserving static IDs."
   (let* ((labels (org-texmacs--document-output-labels body))
@@ -257,6 +303,32 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
       (concat
        "- Intro\n\n" (replace-regexp-in-string "^" "  " payload))))))
 
+(defun org-texmacs-test--document-settings ()
+  "Copy settings for state diagnostics; do not prepare export input."
+  (org-texmacs--standard-copy-options
+   (list
+    :settings
+    (mapcar
+     (lambda (symbol) (cons symbol (symbol-value symbol)))
+     '(org-export-headline-levels
+       org-export-with-toc
+       org-export-with-section-numbers
+       org-export-with-author
+       org-export-with-date
+       org-export-with-title
+       org-export-with-email
+       org-export-with-creator
+       org-export-with-priority
+       org-export-with-tags
+       org-export-with-tasks
+       org-export-with-todo-keywords
+       org-export-with-archived-trees
+       org-export-select-tags
+       org-export-exclude-tags
+       org-tag-groups-alist
+       org-tag-groups-alist-for-agenda
+       org-texmacs-format-headline-function)))))
+
 (defun org-texmacs-test--document-buffer-state (buffer)
   "Capture observable BUFFER state without moving point or touching caches."
   (with-current-buffer buffer
@@ -272,7 +344,91 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
      (org-texmacs--fragment-tags)
      (org-texmacs--document-heading-settings)
      (org-texmacs--document-link-settings)
-     (org-texmacs--document-options))))
+     (org-texmacs-test--document-settings))))
+
+(defun org-texmacs-test--native-bib-document
+    (model text &optional toc style alternate-title)
+  "Lower explicit fixture MODEL and native bibliography TEXT with fixed INFO.
+This is a constructor fixture, not an Org exporter or option parser.  The
+fixture already has its final AST/islands and supplies target settings here."
+  (let*
+      ((model
+        (org-texmacs-model-create
+         (org-texmacs-model-ast model)
+         :islands (org-texmacs-model-islands model)
+         :context (org-texmacs-model-context model)))
+       (context (org-texmacs-model-context model))
+       (bibliography (org-texmacs--worker-request text 'bibliography))
+       (info
+        (list
+         :with-toc toc
+         :with-title nil
+         :with-author nil
+         :with-date nil
+         :section-numbers t
+         :headline-levels 3
+         :texmacs-format-headline-function org-texmacs-format-headline-function
+         :texmacs-bibliography-declarations '(("refs.bib" . "/native-fixture/refs.bib"))))
+       (_
+        (org-texmacs--prepared-affiliation
+         (org-texmacs-model-ast model)))
+       (_
+        (org-element-map
+         (org-texmacs-model-ast model) 'keyword
+         (lambda (node)
+           (when (equal (org-element-property :key node) "OPTIONS")
+             (org-element-extract-element node)))))
+       (_
+        (org-element-map
+         (org-texmacs-model-ast model)
+         'property-drawer
+         #'org-element-extract-element))
+       (_
+        (when alternate-title
+          (let ((heading
+                 (org-element-map
+                  (org-texmacs-model-ast model)
+                  'headline
+                  #'identity
+                  nil
+                  t)))
+            (org-element-put-property
+             heading
+             :ALT_TITLE alternate-title)
+            (org-element-put-property
+             heading
+             :secondary '(:title :ALT_TITLE)))))
+       (input
+        (org-texmacs-input-create
+         (org-texmacs-model-ast model)
+         info
+         :islands
+         (org-texmacs-model-islands model)
+         :source-file
+         (plist-get context :source-file)
+         :resource-base
+         (plist-get context :resource-base)
+         :style (or style '("generic"))
+         :bibliography
+         (list (cons "/native-fixture/refs.bib" bibliography))))
+       (static
+        (org-texmacs--document-static-labels
+         (org-texmacs-input-islands input)))
+       (plan
+        (org-texmacs--bibliography-plan
+         (org-texmacs-input-ast input)
+         (org-texmacs-input-islands input)
+         (org-texmacs-input-info input)
+         (org-texmacs-input-bibliography input)
+         (org-texmacs-input-resolution input)
+         static))
+       (owned-info
+        (plist-put
+         (copy-sequence (org-texmacs-input-info input))
+         :texmacs-bibliography-output
+         (org-texmacs--bibliography-format plan))))
+    (org-texmacs-document
+     (org-texmacs--input-with-info input owned-info))))
 
 (defconst org-texmacs-test--adjacent-bib
   "@book{alpha, author={Ada Alpha}, title={FirstTitleSentinel}, year=2024, publisher={Example}}\n@book{beta, author={Bob Beta}, title={SecondTitleSentinel}, year=2025, publisher={Example}}"
@@ -281,7 +437,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
 (defun org-texmacs-test--adjacent-source (long)
   "Return a combined link fixture, adding flowing paragraphs when LONG."
   (concat
-   "#+OPTIONS: toc:t num:t title:nil author:nil date:nil\n#+BIBLIOGRAPHY: refs.bib\n"
+   "#+BIBLIOGRAPHY: refs.bib\n"
    "[[https://example.org][ExternalLink]] and [[*OmegaDestination][ForwardToOmega]].\n\n"
    "#+begin_texmacs\n(new-page)\n#+end_texmacs\n\n"
    "* AlphaDestination\nAlphaBodySentinel. Group [cite:@alpha; @beta].\n\n"
@@ -342,21 +498,6 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
            ,@body)
        (delete-directory directory t))))
 
-(defun org-texmacs-test--compose ()
-  "Exercise the private composition component with current captured source."
-  (org-texmacs--preprocess-compose
-   (buffer-string)
-   (org-texmacs--fragment-tags)
-   (org-texmacs--document-heading-settings)
-   (org-texmacs--document-link-settings)
-   (plist-put
-    (org-texmacs--document-options)
-    :texmacs-resource-base default-directory)
-   buffer-file-name
-   default-directory
-   #'ignore
-   (org-texmacs--preprocess-hooks)))
-
 (defun org-texmacs-test--menu-fresh-process (form)
   "Evaluate FORM in a fresh locked Emacs with no previous frontend require."
   (let ((file (make-temp-file "org-texmacs-menu-" nil ".el")))
@@ -416,98 +557,6 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
              (setq buffer-file-name nil))
            (let ((kill-buffer-query-functions nil))
              (kill-buffer buffer)))))))
-
-(defun org-texmacs-test--observe-cleanup (thunk &optional failure)
-  "Call THUNK observing actual private buffer destruction.
-FAILURE injects an error after modification in root, include or bibliography."
-  (let ((context (symbol-function 'org-texmacs--preprocess-context))
-        (collect (symbol-function 'org-texmacs--fragment-collect))
-        (cite (symbol-function 'org-cite-list-bibliography-files))
-        (kill (symbol-function 'kill-buffer))
-        (other (generate-new-buffer " *cleanup-user-owned*"))
-        records
-        killed)
-    (unwind-protect
-        (progn
-          (with-current-buffer other
-            (insert "User-owned sentinel"))
-          (cl-labels
-           ((register
-             (kind)
-             (let ((record
-                    (list
-                     (current-buffer)
-                     kind
-                     buffer-file-name
-                     default-directory)))
-               (push record records)
-               record))
-            (fail
-             (kind)
-             (when (eq failure kind)
-               (should (buffer-modified-p))
-               ;; Cleanup must target the owned object after a callback switches.
-               (set-buffer other)
-               (signal 'org-texmacs-document-error
-                       '("Cleanup sentinel")))))
-           (cl-letf
-               (((symbol-function 'org-texmacs--preprocess-context)
-                 (lambda (&rest args)
-                   (apply context args)
-                   (should (equal buffer-file-name (nth 4 args)))
-                   (should (equal default-directory (nth 5 args)))
-                   (register
-                    (if (and buffer-file-name
-                             (equal
-                              (file-name-nondirectory
-                               buffer-file-name)
-                              "part.org"))
-                        'include
-                      'root))))
-                ((symbol-function 'org-texmacs--fragment-collect)
-                 (lambda (&rest args)
-                   (prog1 (apply collect args)
-                     (when-let* ((record
-                                  (assq (current-buffer) records)))
-                       (fail (nth 1 record))))))
-                ((symbol-function 'org-cite-list-bibliography-files)
-                 (lambda (&rest args)
-                   (register 'bibliography)
-                   (prog1 (apply cite args)
-                     (fail 'bibliography))))
-                ((symbol-function 'kill-buffer)
-                 (lambda (&optional buffer)
-                   (let* ((target
-                           (get-buffer (or buffer (current-buffer))))
-                          (record (assq target records)))
-                     (when record
-                       (push (list
-                              target
-                              (buffer-local-value
-                               'buffer-file-name target)
-                              (buffer-modified-p target))
-                             killed))
-                     ;; Observe, never replace the actual destruction or throw here.
-                     (funcall kill buffer)))))
-             (funcall thunk)))
-          (should records)
-          (dolist (record records)
-            (let ((event (assq (car record) killed)))
-              (should event)
-              (should-not (and (nth 1 event) (nth 2 event)))
-              (should-not (buffer-live-p (car record)))))
-          (should (buffer-live-p other))
-          (with-current-buffer other
-            (should (equal (buffer-string) "User-owned sentinel"))
-            (should (buffer-modified-p))
-            (should-not buffer-file-name))
-          (mapcar #'cadr records))
-      (dolist (record records)
-        (when (buffer-live-p (car record))
-          (with-current-buffer (car record)
-            (setq buffer-file-name nil))
-          (funcall kill (car record))))
-      (funcall kill other))))
 
 (defun org-texmacs-test--observe-standard-cleanup
     (thunk &optional failure)

@@ -28,6 +28,7 @@
              org-texmacs--document-statement-tags)))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
        "[[Object--A]] [[Object--A][Describe]].\n"
@@ -83,6 +84,7 @@
   (dolist (link '("" "[[Same]]" "[[Same][Describe]]"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "#+OPTIONS: toc:nil\n"
        link
@@ -93,20 +95,26 @@
           (let ((ids
                  (org-texmacs--document-output-labels
                   (org-texmacs-document-body
-                   (org-texmacs-document-from-buffer
-                    (current-buffer))))))
+                   (org-texmacs-document
+                    (org-texmacs-test--input-from-model
+                     (org-texmacs-parse-buffer (current-buffer))))))))
             (should (= 2 (length ids)))
             (should-not (equal (car ids) (cadr ids))))
         (should-error
-         (org-texmacs-document-from-buffer (current-buffer))
+         (org-texmacs-document
+          (org-texmacs-test--input-from-model
+           (org-texmacs-parse-buffer (current-buffer))))
          :type 'org-texmacs-document-error))))
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      (org-texmacs-test--stage4-block "theorem" "Spot")
      "<<Spot>> [[Spot]]\n")
     (should-error
-     (org-texmacs-document-from-buffer (current-buffer))
+     (org-texmacs-document
+      (org-texmacs-test--input-from-model
+       (org-texmacs-parse-buffer (current-buffer))))
      :type 'org-texmacs-document-error)))
 
 (ert-deftest org-texmacs-issue13-stage4-slug-and-allocation-collision
@@ -147,6 +155,7 @@
   ;; A custom handler can introduce a conflicting static label only at final lower.
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      (org-texmacs-test--stage4-block "theorem" "A")
      "#+begin_custom\nText\n#+end_custom\n")
@@ -173,6 +182,7 @@
   (dolist (kind '("theorem" "equation" "texmacs" "figure" "table"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "* Kept\n"
        (org-texmacs-test--stage4-block kind "Kept")
@@ -195,31 +205,31 @@
                 nil
                 (and (eq scope 'subtree) 1)
                 (and (eq scope 'region) (cons 1 end)))))))))
-    (dolist (prefix
-             '("#+NAME: First\n" "#+ATTR_TEXMACS: unsupported\n"))
+    (dolist (prefix '("#+ATTR_TEXMACS: unsupported\n"))
       (with-temp-buffer
         (org-mode)
+        (setq-local org-export-with-author nil)
         (insert prefix (org-texmacs-test--stage4-block kind "Second"))
         (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   (lambda (&rest _)
-                     (ert-fail "Invalid NAME requested STM"))))
+                   #'org-texmacs-test--parse-fixture-stm))
           (should-error
            (org-texmacs-document-from-buffer (current-buffer))
            :type 'org-texmacs-document-error))))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert (org-texmacs-test--stage4-block kind "Cut"))
       (goto-char (point-min))
       (forward-line 1)
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _)
-                   (ert-fail "Truncated NAME requested STM"))))
-        (should-error
-         (org-texmacs-document-from-buffer
-          (current-buffer) nil nil (cons (point) (point-max)))
-         :type 'org-texmacs-document-error))))
+                 #'org-texmacs-test--parse-fixture-stm))
+        (should
+         (org-texmacs-document-p
+          (org-texmacs-document-from-buffer
+           (current-buffer) nil nil (cons (point) (point-max))))))))
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+NAME: Raw\n#+begin_texmacs\n(document \"<<Fake>>\")\n#+end_texmacs\n[[Fake]]\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
@@ -230,6 +240,7 @@
        :type 'org-texmacs-document-error)))
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      (org-texmacs-test--stage4-block "theorem" "Spot")
      "[[Spot]]\n\n[fn:unused] <<Spot>>\n")
@@ -274,6 +285,7 @@
     (should (org-texmacs-document input)))
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+NAME: Outer\n#+begin_theorem\nSee [[Inner]].\n\n"
      "#+NAME: Inner\n#+begin_lemma\n[[file:note.pdf][File]] (math \"x\")\n"
@@ -299,6 +311,7 @@
   (dolist (kind '("equation" "equation*" "texmacs"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "* Kept\nVisible.\n* Hidden :noexport:\n#+NAME: First\n"
        (org-texmacs-test--stage4-block kind "Duplicate"))
@@ -321,6 +334,7 @@
   (dolist (filtered '(nil t))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        (org-texmacs-test--stage4-block "equation" "A")
        "[[A]] [[A][Again]]\n")
@@ -336,10 +350,10 @@
                      (read raw)))
                   ((symbol-function 'org-export-get-reference)
                    (lambda (&rest args)
-                     (should parsed)
                      (cl-incf calls)
                      (apply allocate args))))
           (setq input (org-texmacs-prepare-buffer (current-buffer))))
+        (should parsed)
         (should (= 1 calls))
         (should
          (equal
@@ -352,6 +366,7 @@
   (dolist (name '("eq:main" "Thm--Main" "A+B=C" "张量范畴" "_X_" "a b"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "#+OPTIONS: toc:nil\n"
        (org-texmacs-test--stage4-block "theorem" name)
@@ -374,6 +389,7 @@
         (should (org-texmacs-document input)))))
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: toc:nil\n* A+B\n"
      (org-texmacs-test--stage4-block "theorem" "A+B")
@@ -394,6 +410,7 @@
 (ert-deftest org-texmacs-issue13-stage4-rejects-custom-handler-name ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+NAME: Custom\n#+begin_custom\n(math \"x\")\n#+end_custom\n")
     (let ((org-texmacs--document-special-block-handlers
@@ -404,8 +421,7 @@
                (&rest _)
                (ert-fail "Named custom handler ran"))))))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _)
-                   (ert-fail "Named custom block requested STM"))))
+                 #'org-texmacs-test--parse-fixture-stm))
         (should-error
          (org-texmacs-document-from-buffer (current-buffer))
          :type 'org-texmacs-document-error)))))
@@ -426,6 +442,7 @@
     (should (equal (org-texmacs-document input) document)))
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+begin_custom\n[[file:relative.pdf][File]]\n#+end_custom\n")
     (let* ((org-texmacs--document-special-block-handlers
@@ -442,6 +459,7 @@
 (ert-deftest org-texmacs-issue13-rejects-file-leaf-sharing ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+begin_custom\n[[file:relative.pdf][File]]\n#+end_custom\n")
     (let ((org-texmacs--document-special-block-handlers
@@ -461,6 +479,7 @@
   (dolist (filtered '(nil t))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert "#+begin_custom\n(math \"x\")\n#+end_custom\n")
       (let* ((org-export-filter-parse-tree-functions
               (and filtered (list (lambda (&rest _) nil))))
@@ -485,6 +504,7 @@
 (ert-deftest org-texmacs-issue13-prepared-input-without-stm ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "#+begin_custom\nOnly prose.\n#+end_custom\n")
     (let ((calls 0)
           (org-texmacs--document-special-block-handlers nil))
@@ -516,6 +536,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "#+begin_custom\n#+begin_texmacs\n(math \"α\")\n#+end_texmacs\n#+end_custom\n")
      (let ((org-texmacs--document-special-block-handlers
@@ -543,6 +564,7 @@
 (ert-deftest org-texmacs-issue13-scoped-islands-and-footnotes ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "* Kept\n#+begin_theorem\nFirst (math \"one\")[fn:n].\n\n"
      "#+begin_texmacs\n(math \"two\")\n#+end_texmacs\n#+end_theorem\n"
@@ -588,6 +610,7 @@
 (ert-deftest org-texmacs-issue13-source-change-during-wait ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "#+begin_theorem\n(math \"x\")\n#+end_theorem\n")
     (let ((source (current-buffer)))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
@@ -613,6 +636,7 @@
                 (list (upcase (symbol-name tag))))))
       (with-temp-buffer
         (org-mode)
+        (setq-local org-export-with-author nil)
         (insert
          "#+NAME: Object\n#+CAPTION: Title *bold* [[Object]] [[Object][Self]]\n"
          "#+CAPTION: More [[file:caption.pdf][File]] (math \"literal\")\n"
@@ -669,27 +693,29 @@
     ()
   (dolist (metadata
            '("#+CAPTION[Short]: Long\n"
-             "#+CAPTION[]: Long\n"
              "#+CAPTION: \n"
              "#+CAPTION: \t\n"
              "#+CAPTION[[[Missing]]]: Long\n"
-             "#+CAPTION: Good\n#+CAPTION[]: Other\n"
-             "#+NAME: A\n#+NAME: B\n#+CAPTION: Long\n"
              "#+ATTR_TEXMACS: x\n#+CAPTION: Long\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        metadata
        "#+begin_theorem\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n#+end_theorem\n")
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _)
-                   (ert-fail
-                    "Invalid statement submitted body request"))))
+                 #'org-texmacs-test--parse-fixture-stm))
         (let ((err
-               (should-error
-                (org-texmacs-document-from-buffer (current-buffer))
-                :type 'org-texmacs-document-error)))
-          (when (string-match-p "CAPTION\\[" metadata)
+               (ert-info
+                ((format "Caption metadata: %S" metadata))
+                (should-error
+                 (org-texmacs-document-from-buffer (current-buffer))
+                 :type
+                 (if (string-search "Missing" metadata)
+                     'org-link-broken
+                   'org-texmacs-document-error)))))
+          (when (and (eq (car err) 'org-texmacs-document-error)
+                     (string-match-p "CAPTION\\[" metadata))
             (should
              (string-match-p
               "short caption" (error-message-string err)))))))))
@@ -701,6 +727,7 @@
          "(with \"color\" \"red\" \"Original\")"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "#+NAME: A\n#+CAPTION: [[file:caption.pdf][File]]\n#+begin_theorem\n"
        "#+begin_texmacs\n"
@@ -746,6 +773,7 @@
                "#+NAME: A\n#+CAPTION: Title\n"))
       (with-temp-buffer
         (org-mode)
+        (setq-local org-export-with-author nil)
         (insert metadata "#+begin_theorem\n" body "#+end_theorem\n")
         (let* ((document
                 (org-texmacs-document-from-buffer (current-buffer)))
@@ -768,6 +796,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "* Bad :noexport:\n#+CAPTION[]: Bad\n#+begin_theorem\nBad\n#+end_theorem\n"
      "* Good\n#+CAPTION: Good\n#+begin_theorem\nBody\n#+end_theorem\n")
@@ -775,33 +804,39 @@
     (goto-char (point-min))
     (search-forward "* Good")
     (beginning-of-line)
-    (let ((subtree (point)))
-      (should
-       (org-texmacs-document-from-buffer
-        (current-buffer) nil subtree)))
+    (should
+     (org-texmacs-document-from-buffer (current-buffer) nil (point)))
     (search-forward "#+CAPTION: Good")
     (beginning-of-line)
     (let ((begin (point))
-          (end (point-max)))
-      (should
-       (org-texmacs-document-from-buffer
-        (current-buffer) nil nil (cons begin end)))
+          (end (point-max))
+          (before (buffer-string)))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _) (ert-fail "Truncated request"))))
-        (should-error
-         (org-texmacs-document-from-buffer
-          (current-buffer) nil nil (cons (1+ begin) end))
-         :type 'org-texmacs-document-error)
-        (should-error
-         (org-texmacs-document-from-buffer
-          (current-buffer) nil nil (cons begin (- end 5)))
-         :type 'org-texmacs-document-error)))))
+                 (lambda (&rest _)
+                   (ert-fail "Plain selection requested STM"))))
+        (dolist (region (list (cons begin end) (cons (1+ begin) end)))
+          (let ((document
+                 (org-texmacs-document-from-buffer
+                  (current-buffer) nil nil region)))
+            (should (org-texmacs-document-p document))
+            (when (= (car region) (1+ begin))
+              (should
+               (string-search
+                "+CAPTION: Good"
+                (prin1-to-string
+                 (org-texmacs-document-body document))))))))
+      (should-error
+       (org-texmacs-document-from-buffer
+        (current-buffer) nil nil (cons begin (- end 5)))
+       :type 'org-texmacs-document-error)
+      (should (equal before (buffer-string))))))
 
 (ert-deftest org-texmacs-statement-caption-errors-and-worker-boundary
     ()
   (dolist (caption '("[[Missing]]" "[cite:@missing]" "<<Target>>"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "#+BIBLIOGRAPHY: refs.bib\n#+CAPTION: "
        caption
@@ -818,6 +853,7 @@
          :type 'org-texmacs-document-error))))
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "#+CAPTION: Title\n#+begin_custom\nBody\n#+end_custom\n")
     (let ((org-texmacs--document-special-block-handlers
            (list
@@ -835,6 +871,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+CAPTION: Title[fn::literal] [[Later][Forward]]\n#+begin_theorem\nBody\n#+end_theorem\n"
      "#+NAME: Later\n#+begin_lemma\nDestination\n#+end_lemma\n")
@@ -862,6 +899,7 @@
              "STATEMENT THEOREM"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "#+begin_"
        syntax
@@ -889,6 +927,7 @@
   (dolist (syntax '("statement example" "statement_example"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "#+begin_"
        syntax
@@ -914,6 +953,7 @@
              "unknown"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "#+begin_"
        syntax
@@ -921,9 +961,7 @@
        (car (split-string syntax))
        "\n")
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _)
-                   (ert-fail
-                    "Invalid block submitted native request"))))
+                 #'org-texmacs-test--parse-fixture-stm))
         (should-error
          (org-texmacs-document-from-buffer (current-buffer))
          :type 'org-texmacs-document-error))))
@@ -931,6 +969,7 @@
            '("#+CAPTION[short]: caption\n" "#+ATTR_TEXMACS: x\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert metadata "#+begin_theorem\nBody.\n#+end_theorem\n")
       (should-error
        (org-texmacs-document-from-buffer (current-buffer))
@@ -939,6 +978,7 @@
 (ert-deftest org-texmacs-issue13-preflight-bibliography-boundary ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+BIBLIOGRAPHY: refs.bib\n#+begin_unknown\n(math \"body\")\n#+end_unknown\n")
     (let (requests)
@@ -952,13 +992,14 @@
          (org-texmacs-document-from-buffer
           (current-buffer) '(("refs.bib" . "")))
          :type 'org-texmacs-document-error)
-        (should (equal requests '(bibliography)))))))
+        (should-not requests)))))
 
 (ert-deftest
     org-texmacs-issue13-preflight-skips-handler-and-final-errors
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+begin_custom\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n#+end_custom\n")
     (let ((calls 0)
@@ -986,6 +1027,7 @@
     (dolist (wrapper '(nil "statement theorem" "quote" "center"))
       (with-temp-buffer
         (org-mode)
+        (setq-local org-export-with-author nil)
         (insert "#+OPTIONS: toc:nil title:nil author:nil date:nil\n")
         (when wrapper
           (insert "#+begin_" wrapper "\n"))
@@ -1018,29 +1060,28 @@
                   1))))
           (should
            (equal
-            requests '("  (concat \"α=\" (frac \"1\" \"2\"))  \n")))
+            requests '("(concat \"α=\" (frac \"1\" \"2\"))  \n")))
           (should (equal source (buffer-string))))))))
 
 (ert-deftest org-texmacs-issue13-stage2-preflight-source-errors ()
   (dolist (type '("equation" "equation*"))
-    (dolist
-        (fixture
-         '("#+begin_%s bad\n\"x\"\n#+end_%s\n"
-           "#+begin_%s\n \t\n#+end_%s\n"
-           "#+NAME: first\n#+NAME: named\n#+begin_%s\n\"x\"\n#+end_%s\n"
-           "#+CAPTION: caption\n#+begin_%s\n\"x\"\n#+end_%s\n"
-           "#+ATTR_TEXMACS: bad\n#+begin_%s\n\"x\"\n#+end_%s\n"))
+    (dolist (fixture
+             '("#+begin_%s bad\n\"x\"\n#+end_%s\n"
+               "#+begin_%s\n \t\n#+end_%s\n"
+               "#+CAPTION: caption\n#+begin_%s\n\"x\"\n#+end_%s\n"
+               "#+ATTR_TEXMACS: bad\n#+begin_%s\n\"x\"\n#+end_%s\n"))
       (with-temp-buffer
         (org-mode)
+        (setq-local org-export-with-author nil)
         (insert (format fixture type type))
         (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   (lambda (&rest _)
-                     (ert-fail "Invalid equation reached worker"))))
+                   #'org-texmacs-test--parse-fixture-stm))
           (should-error
            (org-texmacs-document-from-buffer (current-buffer))
-           :type 'org-texmacs-document-error)))))
+           :type 'org-texmacs-error)))))
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+BIBLIOGRAPHY: refs.bib\n#+NAME: first\n#+NAME: named\n#+begin_equation\n\"x\"\n#+end_equation\n")
     (let (requests)
@@ -1052,55 +1093,14 @@
         (should-error
          (org-texmacs-document-from-buffer
           (current-buffer) '(("refs.bib" . "")))
-         :type 'org-texmacs-document-error)
-        (should (equal requests '(bibliography)))))))
-
-(ert-deftest
-    org-texmacs-issue13-stage2-opaque-preprocessing-and-dependencies
-    ()
-  (dolist (type '("equation" "equation*"))
-    (with-temp-buffer
-      (org-mode)
-      (insert
-       "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
-       "Before (math \"before\").\n\n#+begin_"
-       type
-       "\n"
-       "(concat \"raw\"\n; raw STM comment\n"
-       "; (math \"inside\")\n"
-       "\"\n#+INCLUDE: \"missing-file.org\"\n"
-       "#+BIBLIOGRAPHY: missing.bib\n#+TITLE: Hidden\n"
-       "[cite:@hidden] [fn:missing]\n[fn:hidden] Ghost\n\")\n"
-       "#+end_"
-       type
-       "\n\nAfter (math \"after\").\n")
-      (let (requests)
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   (lambda (raw &optional operation)
-                     (should-not operation)
-                     (push raw requests)
-                     (if (string-prefix-p "(math" raw)
-                         (read raw)
-                       "opaque"))))
-          (dolist (convert
-                   '(org-texmacs-document-from-buffer
-                     org-texmacs-document-from-buffer-preprocessed))
-            (setq requests nil)
-            (let ((document (funcall convert (current-buffer))))
-              (should
-               (= (length (org-texmacs-document-stm-paths document))
-                  3))
-              (should (= (length requests) 3))
-              (should
-               (cl-find-if
-                (lambda (raw)
-                  (string-match-p "INCLUDE" raw))
-                requests)))))))))
+         :type 'org-texmacs-error)
+        (should-not requests)))))
 
 (ert-deftest org-texmacs-issue13-stage2-scoped-selection-and-clipping
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "* Kept\n#+begin_equation*\n\"kept\"\n#+end_equation*\n"
      "* Omitted\n#+begin_equation bad\n\n#+end_equation\n")
@@ -1142,12 +1142,14 @@
   (dolist (end '("" "#+end_equation*\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert "#+begin_equation\n\"x\"\n" end)
       ;; Unclosed/mismatched wrappers are ordinary Org source, not native blocks.
       (should-not
        (org-texmacs--native-body-blocks (org-element-parse-buffer)))))
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+begin_equation\n(concat \"\n#+begin_equation*\n"
      "(math \"inner\")\n#+end_equation*\n\")\n#+end_equation\n")
@@ -1166,6 +1168,7 @@
         (should (= (length requests) 1)))))
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "- Item\n\n  #+begin_equation*\n  \"list\"\n  #+end_equation*\n")
     (let (requests)
@@ -1184,6 +1187,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "* Kept\nText[fn:n].\n* Hidden :noexport:\n"
      "#+begin_equation bad\n\n#+end_equation\n"
@@ -1206,6 +1210,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "#+begin_equation\n\"[cite:@raw]\"\n#+end_equation\n")
     (let ((org-export-filter-parse-tree-functions
            (list
@@ -1225,6 +1230,7 @@
 (ert-deftest org-texmacs-issue13-stage2-wait-source-guard ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "#+begin_equation\n\"x\"\n#+end_equation\n")
     (let ((source (current-buffer)))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
@@ -1244,6 +1250,7 @@
    (dolist (raw '("\"\"" "\"a\\\"b\\\\c\"" "(sqrt \"x\")"))
      (with-temp-buffer
        (org-mode)
+       (setq-local org-export-with-author nil)
        (insert "#+begin_equation*\n" raw "\n#+end_equation*\n")
        (let ((document
               (org-texmacs-document-from-buffer (current-buffer))))
@@ -1253,6 +1260,7 @@
            'equation*)))))
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert "#+begin_equation\n\"a\" \"b\"\n#+end_equation\n")
      (should-error
       (org-texmacs-document-from-buffer (current-buffer))
@@ -1270,6 +1278,7 @@
   (dolist (kind '("figure" "figure*" "table" "table*"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert
        "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
        "#+CAPTION[Short]: Long *bold* [[file:caption.pdf][File]] (math \"literal\")\n"
@@ -1302,113 +1311,10 @@
             (should (org-texmacs-document-file-paths before))
             (should (equal before (org-texmacs-document input)))))))))
 
-(ert-deftest
-    org-texmacs-issue13-stage3-original-body-errors-before-worker
-    ()
-  (dolist (extra
-           '("# Comment\n"
-             "#+TITLE: Hidden\n"
-             "[fn:n] Unused\n"
-             "Prose\n"
-             "| Extra |\n"))
-    (dolist (scope '(full region))
-      (with-temp-buffer
-        (org-mode)
-        (insert "#+begin_table\n| A |\n\n" extra "#+end_table\n")
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   (lambda (&rest _)
-                     (ert-fail
-                      "Invalid source body reached worker"))))
-          (should-error
-           (org-texmacs-document-from-buffer
-            (current-buffer)
-            nil
-            nil
-            (and (eq scope 'region) (cons (point-min) (point-max))))
-           :type 'org-texmacs-document-error)))))
-  (dolist (extra
-           '("# Comment\n" "#+TITLE: Hidden\n" "[fn:n] Unused\n"))
-    (with-temp-buffer
-      (org-mode)
-      (insert
-       "#+begin_figure\n#+begin_texmacs\n\"x\"\n#+end_texmacs\n\n"
-       extra
-       "#+end_figure\n")
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _)
-                   (ert-fail
-                    "Invalid original wrapper submitted body STM"))))
-        (should-error
-         (org-texmacs-document-from-buffer (current-buffer))
-         :type 'org-texmacs-document-error))))
-  (dolist
-      (source
-       '("#+begin_figure\n#+end_figure\n"
-         "#+begin_figure\n| A |\n#+end_figure\n"
-         "#+begin_table bad\n| A |\n#+end_table\n"
-         "#+NAME: first\n#+NAME: outer\n#+begin_table\n| A |\n#+end_table\n"
-         "#+CAPTION:\n#+begin_table\n| A |\n#+end_table\n"
-         "#+begin_table\n#+CAPTION: inner\n| A |\n#+end_table\n"
-         "#+begin_table\n#+NAME: inner\n| A |\n#+end_table\n"
-         "#+begin_figure\n#+begin_texmacs bad\n\"x\"\n#+end_texmacs\n#+end_figure\n"))
-    (with-temp-buffer
-      (org-mode)
-      (insert source)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _)
-                   (ert-fail "Invalid metadata reached worker"))))
-        (should-error
-         (org-texmacs-document-from-buffer (current-buffer))
-         :type 'org-texmacs-document-error)))))
-
-(ert-deftest org-texmacs-issue13-stage3-scope-and-complete-wrapper ()
-  (with-temp-buffer
-    (org-mode)
-    (insert
-     "* Kept\n#+CAPTION: Caption\n#+begin_table\n| A |\n#+end_table\n"
-     "* Omitted\n#+begin_figure\nIllegal\n#+end_figure\n")
-    (dolist (scope '(subtree region narrow))
-      (save-restriction
-        (goto-char (point-min))
-        (let ((start (point))
-              (end
-               (save-excursion
-                 (outline-next-heading)
-                 (point))))
-          (when (eq scope 'narrow)
-            (narrow-to-region start end))
-          (should
-           (org-texmacs-document-from-buffer
-            (current-buffer)
-            nil
-            (and (eq scope 'subtree) start)
-            (and (eq scope 'region) (cons start end)))))))
-    (dolist (clip '(caption body end))
-      (goto-char (point-min))
-      (let* ((start
-              (if (eq clip 'caption)
-                  (progn
-                    (search-forward "Caption")
-                    (point))
-                (point-min)))
-             (end
-              (progn
-                (search-forward
-                 (if (eq clip 'end)
-                     "end_table"
-                   "| A |"))
-                (point))))
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   (lambda (&rest _)
-                     (ert-fail "Incomplete wrapper reached worker"))))
-          (should-error
-           (org-texmacs-document-from-buffer
-            (current-buffer) nil nil (cons start end))
-           :type 'org-texmacs-document-error))))))
-
 (ert-deftest org-texmacs-issue13-stage3-excluded-partial-wrapper ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "* Visible\nKept.\n* Hidden :noexport:\n#+CAPTION: Hidden\n"
      "#+begin_table\n| A |\n\n# extra\n#+end_table\n")
@@ -1428,6 +1334,7 @@
     (dolist (reference '(nil t))
       (with-temp-buffer
         (org-mode)
+        (setq-local org-export-with-author nil)
         (insert
          (if reference
              "Text[fn:n].\n\n"
@@ -1481,6 +1388,7 @@
        :type 'org-texmacs-document-error)))
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+CAPTION: [cite:@k]\n#+begin_table\n| A |\n#+end_table\n")
     (should-error
@@ -1496,6 +1404,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+BIBLIOGRAPHY: refs.bib\n#+begin_figure\nIllegal\n#+end_figure\n")
     (let (operations)
@@ -1508,10 +1417,11 @@
          (org-texmacs-document-from-buffer
           (current-buffer) '(("refs.bib" . "")))
          :type 'org-texmacs-document-error)
-        (should (equal operations '(bibliography))))))
+        (should-not operations))))
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "#+begin_table\n#+begin_texmacs\n(math \"bad-root\")\n#+end_texmacs\n#+end_table\n")
      (should-error
@@ -1530,69 +1440,11 @@
           (tabular (tformat (table (row (cell "ok"))))) "")))))))
 
 (ert-deftest
-    org-texmacs-issue13-stage3-include-restored-notes-and-opaque-body
-    ()
-  (org-texmacs-test--with-worker
-   (org-texmacs-test--with-bibliography-files
-    (write-region
-     "#+begin_table*\n| Included |\n#+end_table*\n" nil "part.org"
-     nil 'silent)
-    (insert
-     "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
-     "#+INCLUDE: \"part.org\"\n"
-     "#+begin_figure\n#+begin_texmacs\n"
-     "(concat \"\n#+INCLUDE: missing.org\n#+BIBLIOGRAPHY: missing.bib\n[fn:missing]\n\")\n"
-     "#+end_texmacs\n#+end_figure\n"
-     "Text[fn:n].\n\n[fn:n]\n#+begin_figure\n#+begin_texmacs\n"
-     "\"Restored\"\n#+end_texmacs\n#+end_figure\n")
-    (let* ((source (buffer-string))
-           (document
-            (org-texmacs-document-from-buffer-preprocessed
-             (current-buffer))))
-      (should
-       (string-match-p
-        "big-table\\*"
-        (prin1-to-string (org-texmacs-document-body document))))
-      (should
-       (= (length (org-texmacs-document-stm-paths document)) 2))
-      (should (equal source (buffer-string)))))))
-
-(ert-deftest
-    org-texmacs-issue13-stage3-filter-cannot-replace-source-evidence
-    ()
-  (dolist (mutation '(proof child duplicate))
-    (with-temp-buffer
-      (org-mode)
-      (insert
-       "#+begin_figure\n#+begin_texmacs\n\"x\"\n#+end_texmacs\n#+end_figure\n")
-      (let ((org-export-filter-parse-tree-functions
-             (list
-              (lambda (ast _backend _info)
-                (let* ((wrapper
-                        (org-element-map
-                         ast 'special-block #'identity nil t))
-                       (child (car (org-element-contents wrapper))))
-                  (pcase mutation
-                    ('proof
-                     (org-element-put-property
-                      wrapper
-                      :texmacs-figure-table-source nil))
-                    ('child (org-element-extract child))
-                    ('duplicate
-                     (org-element-set-contents wrapper child child))))
-                ast))))
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   (lambda (&rest _)
-                     (ert-fail "Mutated wrapper reached worker"))))
-          (should-error
-           (org-texmacs-document-from-buffer (current-buffer))
-           :type 'org-texmacs-document-error))))))
-
-(ert-deftest
     org-texmacs-issue13-stage3-owned-proof-pure-and-excluded-wrapper
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
      "#+CAPTION: (math \"text\") [[https://example.org][Link]]\n"

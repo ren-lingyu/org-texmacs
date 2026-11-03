@@ -156,11 +156,9 @@
             "#+NAME: t\n#+CAPTION: Caption 中\n| a | b |\n\n"
             "#+bibliography: refs.bib\n#+print_bibliography:\n\n"
             "[fn:n] *Body* [[./file.org][File]].\n")
-           (org-texmacs-document-from-buffer
-            (current-buffer)
-            '(("refs.bib"
-               .
-               "@book{key,title={Café},author={Ada Example},year=2026,publisher={Example}}"))))))
+           (org-texmacs-test--native-bib-document
+            (org-texmacs-parse-buffer (current-buffer))
+            "@book{key,title={Café},author={Ada Example},year=2026,publisher={Example}}"))))
      (let ((body (copy-tree (org-texmacs-document-body document)))
            (stm (copy-tree (org-texmacs-document-stm-paths document)))
            (files

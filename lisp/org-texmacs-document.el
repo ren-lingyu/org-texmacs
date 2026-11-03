@@ -271,53 +271,6 @@ Keep advice side-effect-free.  The conversion captures this function's
 definition, not mutable state captured by advice."
   raw)
 
-(defun org-texmacs--document-options ()
-  "Snapshot supported Org document policies and the selected formatter.
-File keywords are merged later from the prepared AST without following setup
-files.  Do not run export preprocessing, BIND, hooks or filters here.
-Capture `tab-width' for preformatted content.  Resolve a formatter symbol now
-so later redefinition affects only new calls."
-  (let ((formatter
-         (indirect-function org-texmacs-format-headline-function))
-        (date-formatter
-         (indirect-function
-          'org-texmacs--document-date-timestamp-text))
-        (info
-         (plist-put
-          (org-texmacs--context-base-options)
-          :texmacs-tab-width tab-width)))
-    (unless (and (memq org-export-with-todo-keywords '(nil t))
-                 (memq org-export-with-priority '(nil t))
-                 (memq org-export-with-tags '(nil t not-in-toc))
-                 (functionp formatter)
-                 (functionp date-formatter))
-      (signal 'org-texmacs-document-error
-              '("Invalid headline presentation options")))
-    (setq info
-          (plist-put
-           info
-           :texmacs-format-headline-function formatter))
-    (setq
-     info
-     (plist-put
-      info
-      :texmacs-pdf-file-links-as-absolute org-texmacs-pdf-file-links-as-absolute))
-    (setq
-     info
-     (plist-put
-      info
-      :texmacs-link-org-files-as-pdf org-texmacs-link-org-files-as-pdf))
-    (org-texmacs--document-file-link-options info)
-    (setq info
-          (plist-put
-           info
-           :texmacs-special-block-handlers
-           (org-texmacs--document-copy-handlers
-            org-texmacs--document-special-block-handlers)))
-    (plist-put
-     info
-     :texmacs-date-timestamp-text-function date-formatter)))
-
 (cl-defstruct
  (org-texmacs-document
   (:constructor org-texmacs--document-create) (:copier nil))
@@ -604,11 +557,12 @@ reject unrepresentable standard numbers or an unrendered first reference."
              reference
              "Org footnote order cannot be represented natively"))
           (let ((anchor
-                 (concat
-                  org-texmacs--document-footnote-label-prefix
-                  (number-to-string number)))
+                 (and (org-element-property :label reference)
+                      (concat
+                       org-texmacs--document-footnote-label-prefix
+                       (number-to-string number))))
                 (suffix 0))
-            (while (member anchor reserved)
+            (while (and anchor (member anchor reserved))
               (setq
                suffix (1+ suffix)
                anchor
@@ -616,7 +570,8 @@ reject unrepresentable standard numbers or an unrendered first reference."
                        org-texmacs--document-footnote-label-prefix
                        number
                        suffix)))
-            (push anchor reserved)
+            (when anchor
+              (push anchor reserved))
             (setq
              note (list reference (nth 1 record) anchor)
              next (1+ next))
@@ -3457,322 +3412,6 @@ buffer-local copies separate from the caller's snapshot and source buffer."
     org-link-abbrev-alist
     org-link-abbrev-alist-local)))
 
-(defun org-texmacs--document-prepare-source
-    (source
-     tags
-     headings
-     links
-     info
-     &optional
-     subtree-position
-     region
-     restriction
-     filter)
-  "Prepare SOURCE under private Org link syntax using fixed LINKS settings.
-TAGS and HEADINGS are the conversion's other parser inputs.
-Return prepared structure without invoking headline formatters or lowering.
-Never register protocols globally or reset source element caches.  Keep
-Org's internal regexp regeneration confined to this preparation boundary.
-INFO is the fixed supported global and buffer-local context snapshot.
-Optional FILTER consumes the completed preparation in its private Org buffer.
-Optional SUBTREE-POSITION selects a subtree in that complete source snapshot.
-REGION selects its (BEGIN . END) body while retaining subtree configuration.
-RESTRICTION is the source's captured outer body boundary, not a live narrowing."
-  (let ((org-link-parameters
-         (org-texmacs--document-copy-link-setting (nth 0 links)))
-        (org-link-abbrev-alist
-         (org-texmacs--document-copy-link-setting (nth 1 links)))
-        (org-link-types-re org-link-types-re)
-        (org-link-angle-re org-link-angle-re)
-        (org-link-plain-re org-link-plain-re)
-        (org-link-bracket-re org-link-bracket-re)
-        (org-link-any-re org-link-any-re)
-        (org-element--object-regexp org-element--object-regexp)
-        (org-element-paragraph-separate
-         org-element-paragraph-separate))
-    (dolist (type org-texmacs--supported-link-types)
-      (unless (assoc type org-link-parameters)
-        (push (list type) org-link-parameters)))
-    (org-link-make-regexps)
-    (org-element--set-regexps)
-    (with-temp-buffer
-      (let ((org-element-use-cache nil)
-            (org-inhibit-startup t))
-        (delay-mode-hooks
-          (org-mode))
-        (setq-local org-texmacs-fragment-tags tags)
-        (insert source)
-        (org-texmacs--document-prepare
-         source
-         (org-texmacs--fragment-collect tags)
-         headings
-         (nth 2 links)
-         info
-         subtree-position
-         region
-         restriction
-         filter)))))
-
-(defun org-texmacs--document-prepare
-    (source
-     spans
-     heading-settings
-     &optional
-     abbrevs
-     info
-     subtree-position
-     region
-     restriction
-     filter)
-  "Prepare SOURCE and discovered SPANS without starting a worker.
-HEADING-SETTINGS is the source's effective heading configuration snapshot.
-Install it locally after private mode initialization, before parsing source.
-ABBREVS supplies source-local Org link abbreviations for the private parser.
-INFO is the fixed context base to merge with supported source keywords.
-Return (AST ISLANDS REQUESTS POST-BLANKS INFO).  Each request is
-(ISLAND-ENTRY SOURCE TAG); TAG is nil for an unrestricted special block.
-Island entries initially contain placeholder strees for structural validation.
-All positions refer to the complete, unnarrowed source snapshot.
-Optional SUBTREE-POSITION selects a body plus owned dependencies before walking.
-REGION takes precedence for body selection; reject truncated STM islands.
-Optional FILTER is called after context and mapping construction, before return.
-RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
-  (with-temp-buffer
-    (let ((org-element-use-cache nil)
-          (org-inhibit-startup t)
-          (remaining spans)
-          (islands nil)
-          (requests nil)
-          (blanks nil))
-      (delay-mode-hooks
-        (org-mode))
-      (org-texmacs--document-use-heading-settings heading-settings)
-      (setq-local org-link-abbrev-alist-local
-                  (org-texmacs--document-copy-link-setting abbrevs))
-      (insert source)
-      (dolist (span spans)
-        (goto-char (org-texmacs-fragment-span-begin span))
-        (delete-region (point) (org-texmacs-fragment-span-end span))
-        (insert
-         (org-texmacs--fragment-mask
-          (org-texmacs-fragment-span-source span))))
-      (cl-labels
-       ((register
-         (node raw tag &optional begin end)
-         (let* ((entry (cons node '(concat "")))
-                (request (list entry raw tag)))
-           ;; Composition needs coordinates for inline string identity keys.
-           ;; Retain them before context/filter owning; legacy requests keep
-           ;; their existing three fields.  Pure INFO later owns origins.
-           (when (plist-get info :texmacs-source-origins)
-             (setq request
-                   (append
-                    request
-                    (list
-                     (cons
-                      (or begin (org-element-property :begin node))
-                      (or end (org-element-property :end node)))))))
-           (push entry islands)
-           (push request requests)))
-        (whitespace
-         (node)
-         (when (or (assq
-                    (org-element-type node)
-                    org-texmacs--document-markup-tags)
-                   (memq
-                    (org-element-type node)
-                    '(code
-                      verbatim line-break link footnote-reference)))
-           (let* ((end (org-element-property :end node))
-                  (count
-                   (or (org-element-property :post-blank node) 0)))
-             (push (cons
-                    node
-                    (buffer-substring-no-properties
-                     (- end count) end))
-                   blanks))
-           (if (and (eq (org-element-type node) 'footnote-reference)
-                    (eq (org-element-property :type node) 'inline))
-               (paragraph node)
-             (mapc #'whitespace (org-element-contents node)))))
-        (paragraph
-         (node)
-         (let ((position (org-element-property :contents-begin node))
-               (children nil))
-           (if (null position)
-               ;; Coordinate-less synthetic paragraphs carry already parsed
-               ;; inline data, not source fragment intervals.
-               (mapc #'whitespace (org-element-contents node))
-             (dolist (child (org-element-contents node))
-               (if (not (stringp child))
-                   (progn
-                     (whitespace child)
-                     (push child children)
-                     (setq position
-                           (org-element-property :end child)))
-                 (let ((end (+ position (length child))))
-                   ;; Fail closed if Org normalized a leaf or a mask became markup.
-                   (unless (equal
-                            (substring-no-properties child)
-                            (buffer-substring-no-properties
-                             position end))
-                     (org-texmacs--document-fail
-                      node "Org text differs from snapshot"))
-                   (while (and
-                           remaining
-                           (< (org-texmacs-fragment-span-begin
-                               (car remaining))
-                              end)
-                           ;; Restored dependencies can have earlier
-                           ;; source positions than this paragraph.
-                           (or (not (or subtree-position region))
-                               (>= (org-texmacs-fragment-span-begin
-                                    (car remaining))
-                                   (org-element-property
-                                    :contents-begin node))))
-                     (let* ((span (pop remaining))
-                            (begin
-                             (org-texmacs-fragment-span-begin span))
-                            (stop
-                             (org-texmacs-fragment-span-end span)))
-                       (unless (<= position begin stop end)
-                         (org-texmacs--document-fail
-                          node "Fragment crosses an Org object"))
-                       (when (< position begin)
-                         (push (buffer-substring-no-properties
-                                position begin)
-                               children))
-                       (let ((leaf
-                              (copy-sequence
-                               (org-texmacs-fragment-span-source
-                                span))))
-                         (push leaf children)
-                         (register
-                          leaf
-                          leaf
-                          (org-texmacs-fragment-span-tag span)
-                          begin
-                          stop))
-                       (setq position stop)))
-                   (when (< position end)
-                     (push (buffer-substring-no-properties
-                            position end)
-                           children))
-                   (setq position end))))
-             (apply #'org-element-set-contents
-                    node
-                    (nreverse children)))))
-        (walk
-         (node)
-         (cond
-          ((org-texmacs--native-body-kind node)
-           (register node (org-texmacs--native-body-source node) nil))
-          ((eq (org-element-type node) 'paragraph)
-           (paragraph node))
-          ((or (eq (org-element-type node) 'table)
-               (org-texmacs--figure-table-kind node)
-               (and (eq (org-element-type node) 'special-block)
-                    (ignore-errors
-                      (org-texmacs--document-statement-tag node))))
-           (org-element-put-property
-            node
-            :texmacs-affiliated-keywords
-            (org-texmacs--source-affiliated-keys node))
-           (dolist (line (org-texmacs--document-caption-lines node))
-             (mapc #'whitespace (car line))
-             (mapc #'whitespace (cdr line)))
-           (when (eq (org-element-type node) 'special-block)
-             (mapc #'walk (org-element-contents node))))
-          ((memq
-            (org-element-type node)
-            '(org-data
-              section
-              headline
-              plain-list
-              item
-              footnote-definition
-              quote-block
-              center-block
-              special-block))
-           (when (eq (org-element-type node) 'headline)
-             (mapc #'whitespace (org-element-property :title node)))
-           (when (eq (org-element-type node) 'item)
-             (mapc #'whitespace (org-element-property :tag node)))
-           (mapc #'walk (org-element-contents node))))))
-       (let ((ast (org-element-parse-buffer)))
-         (org-texmacs--name-source-shapes ast)
-         (org-texmacs--figure-table-source-shapes ast)
-         (setq region
-               (org-texmacs--context-body-region
-                ast subtree-position region restriction))
-         (when (and region (< (car region) (cdr region)))
-           (cl-labels
-            ((complete
-              (begin end)
-              (when (and (< begin (cdr region))
-                         (< (car region) end)
-                         (not
-                          (<= (car region) begin end (cdr region))))
-                (signal 'org-texmacs-document-error
-                        '("Region truncates a TeXmacs island")))))
-            (dolist (span spans)
-              (complete
-               (org-texmacs-fragment-span-begin span)
-               (org-texmacs-fragment-span-end span)))))
-         (when (or subtree-position region)
-           ;; Prune owned full-source structure before walking/validating body.
-           ;; Block placeholders make STM opaque while collecting dependencies.
-           (let* ((opaque
-                   (mapcar
-                    (lambda (node) (cons node '(concat "")))
-                    (org-texmacs--native-body-blocks ast)))
-                  (scoped
-                   (org-texmacs--context-prepare
-                    ast opaque nil nil info subtree-position region))
-                  paragraphs)
-             (cl-labels
-              ((collect
-                (node)
-                (unless (org-texmacs--native-body-kind node)
-                  (when (org-element-type-p node 'paragraph)
-                    (push node paragraphs))
-                  (mapc #'collect (org-element-contents node)))))
-              (collect ast))
-             (setq paragraphs (nreverse paragraphs))
-             (setq
-              info (nth 4 scoped)
-              remaining
-              ;; Dependencies may precede the selected subtree in source
-              ;; but follow its body in AST order.  Match that traversal.
-              (cl-mapcan
-               (lambda (paragraph)
-                 (let ((begin (org-element-property :begin paragraph))
-                       (end (org-element-property :end paragraph)))
-                   (when (and (integerp begin) (integerp end))
-                     (cl-remove-if-not
-                      (lambda (span)
-                        (<= begin
-                            (org-texmacs-fragment-span-begin span)
-                            (org-texmacs-fragment-span-end span)
-                            end))
-                      remaining))))
-               paragraphs))))
-         (walk ast)
-         (when remaining
-           (signal 'org-texmacs-document-error
-                   '("Unconsumed fragment spans")))
-         (setq
-          islands (nreverse islands)
-          requests (nreverse requests))
-         (let ((prepared
-                (if (or subtree-position region)
-                    (list ast islands requests blanks info)
-                  (org-texmacs--context-prepare
-                   ast islands requests blanks info))))
-           (if filter
-               (funcall filter prepared)
-             prepared)))))))
-
 (defun org-texmacs--document-normalize-table (document)
   "Validate and wrap raw table DOCUMENT, retaining its original STM root."
   (let* ((root (org-texmacs-document-body document))
@@ -3830,18 +3469,6 @@ RESTRICTION bounds the body, intersecting subtree selection when REGION is nil."
        'tabular
        (list
         (org-texmacs--document-pack 'tformat (list document))))))))
-
-(defun org-texmacs--document-check-native-requests (prepared)
-  "Validate selected raw equation requests in PREPARED before native parsing."
-  (dolist (request (nth 2 prepared))
-    (let ((node (caar request)))
-      (when (memq
-             (org-texmacs--native-body-kind node)
-             '(equation equation*))
-        (org-texmacs--native-body-check node)
-        (when (string-match-p "\\`[ \t\r\n]*\\'" (nth 1 request))
-          (org-texmacs--document-fail
-           node "Empty equation source"))))))
 
 (provide 'org-texmacs-document)
 

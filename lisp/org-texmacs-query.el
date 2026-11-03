@@ -13,6 +13,51 @@
 (require 'ox)
 (require 'org-texmacs-prepared)
 
+(defun org-texmacs--query-definition (reference info)
+  "Return (DEFINITION BODY) selected by Org for REFERENCE in INFO.
+Org can represent a definition unavailable in the selected scope as empty text.
+Use the empty reference itself as its structural body, preserving that result."
+  (let ((body (org-export-get-footnote-definition reference info)))
+    (when (and (stringp body) (not (equal body "")))
+      (org-texmacs--prepared-fail
+       "Unsupported textual Org footnote definition"))
+    (list
+     (if (or (eq (org-element-property :type reference) 'inline)
+             (equal body ""))
+         reference
+       (and body (org-element-parent (car body))))
+     body)))
+
+(defun org-texmacs--query-excluded-definitions (tree info)
+  "Identify TREE definitions not selected by Org's live footnote queries.
+Supplemental definitions can share actual child nodes.  Select Org's canonical
+definition before ownership, rather than copying all alternatives first."
+  (let ((visited (make-hash-table :test #'eq))
+        selected)
+    (cl-labels
+     ((walk
+       (data)
+       (org-element-map
+        data 'footnote-reference
+        (lambda (reference)
+          (unless (gethash reference visited)
+            (puthash reference t visited)
+            (let* ((selection
+                    (org-texmacs--query-definition reference info))
+                   (definition (car selection))
+                   (body (cadr selection)))
+              (push definition selected)
+              (walk body))))
+        ;; Caption notes are outside the standard source subset.  Validate
+        ;; them after canonical exclusions, without acquiring their definitions.
+        info nil '(footnote-definition))))
+     (walk tree))
+    (org-element-map
+     tree 'footnote-definition
+     (lambda (node)
+       (unless (memq node selected)
+         node)))))
+
 (defun org-texmacs--query-snapshot
     (tree info identities &optional discover-note)
   "Freeze Org query results for adapted TREE using live INFO and IDENTITIES.
@@ -118,17 +163,10 @@ STM islands must already be discovered so their Org parsing residue is opaque."
                  (when in-note
                    (org-texmacs--prepared-fail
                     "Nested footnotes are unsupported"))
-                 (let* ((body
-                         (org-export-get-footnote-definition
-                          original info))
-                        (definition
-                         (if (eq
-                              (org-element-property :type original)
-                              'inline)
-                             original
-                           (and body
-                                (org-element-property
-                                 :parent (car body)))))
+                 (let* ((definition
+                         (car
+                          (org-texmacs--query-definition
+                           original info)))
                         (owned-definition
                          (gethash definition identities)))
                    (unless (and owned-definition

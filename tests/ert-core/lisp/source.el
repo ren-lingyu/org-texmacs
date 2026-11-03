@@ -111,66 +111,6 @@
         (should (= (buffer-modified-tick) tick))
         (should (= (point) position))))))
 
-(ert-deftest org-texmacs-block-case-preprocessing-shield ()
-  (dolist (type '("texmacs" "TEXMACS" "TeXmAcS"))
-    (org-texmacs-test--with-bibliography-files
-     (let ((payload
-            (concat
-             (format "#+BEGIN_%s\n" type)
-             "#+INCLUDE: \"absent.org\"\n#+SETUPFILE: absent.org\n"
-             "#+END_TEXMACS\n")))
-       (write-region payload nil "included.org" nil 'silent)
-       (insert payload "#+INCLUDE: \"included.org\"\n")
-       (let* ((state
-               (org-texmacs-test--document-buffer-state
-                (current-buffer)))
-              (result (org-texmacs-test--compose))
-              (source (plist-get result :source))
-              (first (string-match (regexp-quote payload) source)))
-         (should first)
-         (should
-          (string-match (regexp-quote payload) source
-                        (+ first (length payload))))
-         (should (= (length (plist-get result :sources)) 1))
-         (should
-          (equal
-           state
-           (org-texmacs-test--document-buffer-state
-            (current-buffer)))))))))
-
-(ert-deftest org-texmacs-block-case-bibliography-shield ()
-  (dolist (type '("texmacs" "TEXMACS" "TeXmAcS"))
-    (org-texmacs-test--with-bibliography-files
-     (insert
-      "#+bibliography: refs.bib\n"
-      (format "#+BEGIN_%s\n" type)
-      "#+bibliography: absent.bib\n#+SETUPFILE: absent.org\n"
-      "[cite:@GhostKey]\n#+END_TEXMACS\n")
-     (let ((state
-            (org-texmacs-test--document-buffer-state
-             (current-buffer))))
-       (cl-letf (((symbol-function 'org-file-contents)
-                  (lambda (&rest _)
-                    (ert-fail "STM caused external keyword read"))))
-         (let ((result
-                (org-texmacs--bibliography-discover
-                 (buffer-string)
-                 (org-texmacs--fragment-tags)
-                 (org-texmacs--document-heading-settings)
-                 (org-texmacs--document-link-settings)
-                 (plist-put
-                  (org-texmacs--document-options)
-                  :texmacs-resource-base default-directory)
-                 nil
-                 default-directory
-                 nil)))
-           (should (equal (car result) '("refs.bib")))))
-       (should
-        (equal
-         state
-         (org-texmacs-test--document-buffer-state
-          (current-buffer))))))))
-
 (ert-deftest org-texmacs-fragment-issue10-discovery ()
   :tags
   '(issue10)

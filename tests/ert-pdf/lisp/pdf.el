@@ -621,14 +621,12 @@
      (with-temp-buffer
        (org-mode)
        (insert
-        "#+OPTIONS: toc:nil\n#+bibliography: refs.bib\n"
+        "#+bibliography: refs.bib\n"
         "Group [cite:@a; @b]. Repeat [cite:@a].\n\n#+print_bibliography:\n")
        (org-texmacs-document-save-pdf
-        (org-texmacs-document-from-buffer
-         (current-buffer)
-         '(("refs.bib"
-            .
-            "@book{a, author={Ada Alpha}, title={FirstTitleSentinel}, year=2024, publisher={Example}}\n@book{b, author={Bob Beta}, title={SecondTitleSentinel}, year=2025, publisher={Example}}\n@book{unused, title={UnusedTitleSentinel}}")))
+        (org-texmacs-test--native-bib-document
+         (org-texmacs-parse-buffer (current-buffer))
+         "@book{a, author={Ada Alpha}, title={FirstTitleSentinel}, year=2024, publisher={Example}}\n@book{b, author={Bob Beta}, title={SecondTitleSentinel}, year=2025, publisher={Example}}\n@book{unused, title={UnusedTitleSentinel}}")
         file))
      (let ((text (org-texmacs-test--pdf-text file)))
        (should (string-match-p "Group *\\[1, *2\\]" text))
@@ -895,9 +893,11 @@
                   (org-texmacs-test--document-buffer-state
                    (current-buffer))))
              (org-texmacs-document-save-pdf
-              (org-texmacs-document-from-buffer
-               (current-buffer)
-               `(("refs.bib" . ,org-texmacs-test--adjacent-bib)))
+              (org-texmacs-test--native-bib-document
+               (org-texmacs-parse-buffer (current-buffer))
+               org-texmacs-test--adjacent-bib
+               t
+               (list style))
               file)
              (should
               (equal
@@ -1389,9 +1389,10 @@
            '(("refs.bib"
               .
               "@string{word={Native}}\n@preamble{\"PreambleSentinel\"}\n@book{child,title={ChildTitle},crossref={parent}}\n@book{parent,title={ParentTitle}}\n@online{online,title=word # {Title},year=2026}")))
-          (input
-           (org-texmacs-prepare-buffer (current-buffer) sources))
-          (document (org-texmacs-document input))
+          (document
+           (org-texmacs-test--native-bib-document
+            (org-texmacs-parse-buffer (current-buffer))
+            (cdar sources)))
           (pdf (expand-file-name "native.pdf" test-directory))
           (tm (expand-file-name "native.tm" test-directory))
           (reload (expand-file-name "reload.pdf" test-directory)))
@@ -1437,11 +1438,14 @@
             "#+begin_texmacs\n(new-page)\n#+end_texmacs\n\n#+print_bibliography:\n")
            (let
                ((document
-                 (org-texmacs-document-from-buffer
-                  (current-buffer)
-                  '(("refs.bib"
-                     .
-                     "@book{key,author={Ada Alpha},title={ReferencePayload},year=2024,publisher={Example}}")))))
+                 (org-texmacs-test--native-bib-document
+                  (org-texmacs-parse-buffer (current-buffer))
+                  "@book{key,author={Ada Alpha},title={ReferencePayload},year=2024,publisher={Example}}"
+                  toc
+                  (list style)
+                  (org-element-parse-secondary-string
+                   "AlternateProbe [cite:@key]"
+                   (org-element-restriction 'headline)))))
              (org-texmacs-document-save document tm)
              (org-texmacs-document-save-pdf document pdf)))
          (org-texmacs-test--issue11-reload-pdf tm reload directory)

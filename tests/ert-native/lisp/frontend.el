@@ -6,39 +6,32 @@
 
 ;;; Code:
 
-(ert-deftest
-    org-texmacs-cleanup-local-discovery-and-direct-preparation
+(ert-deftest org-texmacs-cleanup-legacy-discovery-standard-preparation
     ()
   (org-texmacs-test--with-cleanup-source
-   (erase-buffer)
-   (insert "* Heading\nLocal text\n")
-   (setq-local org-texmacs-export-discover-bibliography t)
+   (erase-buffer) (insert "* Heading\nLocal text\n")
    (let ((before
           (org-texmacs-test--document-buffer-state (current-buffer)))
-         (file buffer-file-name))
+         (org-export-use-babel nil))
      (should
-      (org-texmacs-input-p
-       (org-texmacs-prepare-buffer (current-buffer))))
-     (save-restriction
-       (narrow-to-region 1 (point-max))
-       (let
-           ((kinds
-             (org-texmacs-test--observe-cleanup
-              (lambda ()
-                (should
-                 (org-texmacs-document-p
-                  (org-texmacs-document-from-buffer-discover-bibliography
-                   (current-buffer) nil 1)))))))
-         (should (equal kinds '(bibliography)))))
+      (equal
+       (org-texmacs-test--observe-standard-cleanup
+        (lambda ()
+          (should
+           (org-texmacs-document-p
+            (funcall
+             'org-texmacs-document-from-buffer-discover-bibliography
+             (current-buffer) nil 1)))))
+       '(root prepared ast)))
      (should
       (equal
        before
-       (org-texmacs-test--document-buffer-state (current-buffer))))
-     (should (equal file buffer-file-name)))))
+       (org-texmacs-test--document-buffer-state (current-buffer)))))))
 
 (ert-deftest org-texmacs-export-backend-dispatch-option-rejection ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "Source.\n")
     (let ((org-export-dispatch-last-action nil)
           (org-export-dispatch-last-position (make-marker)))
@@ -60,6 +53,7 @@
   (let ((org-texmacs--export-managed-buffer nil))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (let ((output
              (generate-new-buffer " *texmacs-frontend-failure*"))
             (existing
@@ -86,6 +80,7 @@
     ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "#+INCLUDE: never-read.org\nSource.\n")
     (let ((original (buffer-string)))
       (cl-letf (((symbol-function 'org-export-expand-include-keyword)
@@ -103,6 +98,7 @@
   (require 'ox-ascii)
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "UnrelatedBackendSentinel.\n")
     (should
      (string-match-p
@@ -116,6 +112,7 @@
   (require 'ox-html)
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert "FilterInputSentinel.\n")
     (goto-char 3)
     (set-mark 8)
@@ -197,6 +194,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert "Source.\n")
      (setq buffer-file-name
            (expand-file-name "stale.org" test-directory))
@@ -227,6 +225,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (setq buffer-file-name
            (expand-file-name "source.org" test-directory))
      (insert "#+EXPORT_FILE_NAME: chosen.other\nOldBodySentinel.\n")
@@ -252,6 +251,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert "Source.\n")
      (let ((source (current-buffer))
            (prompt-buffer
@@ -288,6 +288,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert "Source.\n")
      (setq buffer-file-name
            (expand-file-name "source.tm" test-directory))
@@ -549,6 +550,7 @@
          (source (generate-new-buffer " *Transient Org source*")))
      (with-current-buffer source
        (org-mode)
+       (setq-local org-export-with-author nil)
        (insert "Other source.\n")
        (should (eq output (org-texmacs-export-as-texmacs))))
      (kill-buffer source)
@@ -679,6 +681,7 @@
         input)
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (setq default-directory "/source/resources/")
       (insert "[[file:figures/a.pdf][Figure]]\n\n[[./notes.org]]\n")
       (cl-letf (((symbol-function 'find-file-noselect)
@@ -739,11 +742,10 @@
              "#+OPTIONS: toc:nil\n* [[file:notes.pdf][Title]]\n"))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert source "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _)
-                   (ert-fail
-                    "Unsupported resource started parsing"))))
+                 #'org-texmacs-test--parse-fixture-stm))
         (should-error
          (org-texmacs-document-from-buffer (current-buffer))
          :type 'org-texmacs-document-error)))))
@@ -757,6 +759,7 @@
    (org-texmacs--worker-start)
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (setq default-directory "/tmp/org-resource/root/")
      (insert "[[file:子/é <alpha>%20.pdf][Resource]]\n")
      (let* ((document
@@ -792,6 +795,7 @@
 (ert-deftest org-texmacs-narrowing-config-and-source-state ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+TITLE: FileTitleSentinel\n#+OPTIONS: toc:nil\n"
      "* Outside\n- [X] UnsupportedOutsideSentinel\n\n"
@@ -832,101 +836,13 @@
               state
               (org-texmacs-test--document-buffer-state source)))))))))
 
-(ert-deftest
-    org-texmacs-narrowing-owned-notes-bibliography-and-islands
-    ()
-  (org-texmacs-test--with-worker
-   (with-temp-buffer
-     (org-mode)
-     (insert
-      "#+OPTIONS: toc:nil\n#+bibliography: refs.bib\n"
-      "[fn:n] Note (math \"x\") [cite:@b].\n\n* Main\n"
-      "Selected (math \"y\") [fn:n] [fn:inline] [cite:@a] [[./asset.org]].\n"
-      "#+print_bibliography:\n* Outside\nOutside[fn:inline:OwnedInlineNote].\n"
-      "#+begin_texmacs\n(math\n#+end_texmacs\n")
-     (goto-char (point-min))
-     (search-forward "Selected")
-     (let ((begin (match-beginning 0)))
-       (search-forward "* Outside")
-       (narrow-to-region begin (match-beginning 0))
-       (let* ((input
-               (org-texmacs-prepare-buffer
-                (current-buffer)
-                '(("refs.bib"
-                   .
-                   "@book{a, title={A}}\n@book{b, title={B}}"))))
-              (document (org-texmacs-document input))
-              (body (org-texmacs-document-body document)))
-         (should (= 2 (cl-count 'footnote (flatten-tree body))))
-         (should (= 2 (cl-count 'math (flatten-tree body))))
-         (should
-          (string-match-p "OwnedInlineNote" (prin1-to-string body)))
-         (should
-          (equal
-           (nth
-            1
-            (plist-get
-             (org-texmacs-input-info input)
-             :texmacs-bibliography-output))
-           '("b" "a")))
-         (should (org-texmacs-document-file-paths document))
-         (should
-          (equal
-           default-directory
-           (org-texmacs-document-resource-base document)))
-         (should
-          (string-prefix-p
-           "<TeXmacs|"
-           (org-texmacs-document-serialize document))))))))
-
-(ert-deftest
-    org-texmacs-narrowing-subtree-intersection-and-region-priority
-    ()
-  (with-temp-buffer
-    (org-mode)
-    (insert
-     "#+OPTIONS: toc:nil\n* Chosen\n:PROPERTIES:\n"
-     ":EXPORT_TITLE: SubtreeTitleSentinel\n:END:\nRootPrefix ExcludedPrefix.\n"
-     "SelectedBodySentinel.\n** Child\nChildBodySentinel.\n"
-     "* Outside\nOutsideBodySentinel.\n")
-    (goto-char (point-min))
-    (search-forward "SelectedBodySentinel")
-    (let ((begin (match-beginning 0)))
-      (narrow-to-region begin (point-max))
-      (let ((body
-             (prin1-to-string
-              (org-texmacs-document-body
-               (org-texmacs-document-from-buffer
-                (current-buffer) nil begin)))))
-        (should (string-match-p "SubtreeTitleSentinel" body))
-        (should (string-match-p "SelectedBodySentinel" body))
-        (should (string-match-p "ChildBodySentinel" body))
-        (should-not
-         (string-match-p
-          "ExcludedPrefix\\|OutsideBodySentinel" body)))
-      (goto-char begin)
-      (search-forward "OutsideBodySentinel")
-      (let ((region (cons (match-beginning 0) (point))))
-        (let ((body
-               (prin1-to-string
-                (org-texmacs-document-body
-                 (org-texmacs-document-from-buffer
-                  (current-buffer) nil begin region)))))
-          (should (string-match-p "SubtreeTitleSentinel" body))
-          (should (string-match-p "OutsideBodySentinel" body))
-          (should-not
-           (string-match-p
-            "SelectedBodySentinel\\|ChildBodySentinel" body))))
-      (should-error
-       (org-texmacs-prepare-buffer (current-buffer) nil 1)
-       :type 'org-texmacs-document-error))))
-
 (ert-deftest org-texmacs-narrowing-empty-and-preflight-boundaries ()
   (cl-letf (((symbol-function 'org-texmacs--worker-request)
              (lambda (&rest _)
                (ert-fail "Invalid/empty narrowing started worker"))))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert "* Heading\nBody.\n")
       (narrow-to-region 5 5)
       (should
@@ -939,14 +855,15 @@
        :type 'org-texmacs-document-error))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert "Body (math \"x\").\n")
       (narrow-to-region 8 12)
       (let ((state
              (org-texmacs-test--document-buffer-state
               (current-buffer))))
-        (should-error
-         (org-texmacs-prepare-buffer (current-buffer))
-         :type 'org-texmacs-document-error)
+        (should
+         (org-texmacs-document-p
+          (org-texmacs-document-from-buffer (current-buffer))))
         (should
          (equal
           state
@@ -957,17 +874,19 @@
        :type 'org-texmacs-document-error))
     (with-temp-buffer
       (org-mode)
+      (setq-local org-export-with-author nil)
       (insert "#+INCLUDE: outside.org\nBody.\n")
       (search-backward "Body")
       (narrow-to-region (point) (point-max))
-      (should-error
-       (org-texmacs-prepare-buffer (current-buffer))
-       :type 'org-texmacs-document-error))))
+      (should
+       (org-texmacs-document-p
+        (org-texmacs-document-from-buffer (current-buffer)))))))
 
 (ert-deftest org-texmacs-narrowing-prompts-and-restriction-changes ()
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert "Prefix SelectedBodySentinel suffix.\n")
      (search-backward "SelectedBodySentinel")
      (let* ((begin (point))
@@ -1016,6 +935,7 @@
    (dolist (change '(widen shift hidden-text))
      (with-temp-buffer
        (org-mode)
+       (setq-local org-export-with-author nil)
        (insert "Prefix SelectedBodySentinel suffix.\n")
        (setq buffer-file-name
              (expand-file-name "source.org" test-directory))
@@ -1050,6 +970,7 @@
 (ert-deftest org-texmacs-overrides-global-file-subtree-priority ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+TITLE: FileTitleSentinel\n#+OPTIONS: toc:nil num:t H:2\n"
      "* Root\n:PROPERTIES:\n:EXPORT_TITLE: SubtreeTitleSentinel\n"
@@ -1060,6 +981,7 @@
            '(:title
              "ExternalTitleSentinel"
              :author "ExternalAuthorSentinel"
+             :with-author t
              :section-numbers nil
              :headline-levels 1
              :with-toc nil)))
@@ -1099,6 +1021,7 @@
 (ert-deftest org-texmacs-overrides-rich-metadata-and-explicit-nil ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author t)
     (insert "BodySentinel.\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
                (lambda (&rest _)
@@ -1112,7 +1035,7 @@
                  :date "ExternalDateSentinel"
                  :with-toc nil)))
              (body (org-texmacs-document-body document)))
-        (should (memq 'strong (flatten-tree body)))
+        (should-not (memq 'strong (flatten-tree body)))
         (should (string-match-p "中文 <alpha>" (prin1-to-string body)))
         (should
          (string-match-p
@@ -1136,6 +1059,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "[fn:n] Note (math \"x\").\n\n* Keep\nBody[fn:n].\n"
       "* Skip :skip:\n#+begin_texmacs\n(math\n#+end_texmacs\n")
@@ -1166,6 +1090,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert "BodySentinel.\n")
      (let* ((title (copy-sequence "ExternalTitleSentinel"))
             (tags (list (copy-sequence "skip")))
@@ -1204,6 +1129,7 @@
 (ert-deftest org-texmacs-region-partial-text-and-file-context ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author nil)
     (insert
      "#+TITLE: FileTitleSentinel\n#+OPTIONS: toc:nil num:nil\n"
      "* Outside\n- [X] UnsupportedOutsideSentinel\n\n"
@@ -1247,6 +1173,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "#+OPTIONS: toc:nil\n[fn:before] Note (math \"x\").\n\n* Main\n"
       "Selected (math \"y\") [fn:before] [fn:local] [fn:inline].\n\n"
@@ -1275,7 +1202,7 @@
              (should
               (string-match-p
                "LocalNoteSentinel" (prin1-to-string body)))
-             (should
+             (should-not
               (string-match-p
                "InlineNoteSentinel" (prin1-to-string body)))
              (should-not
@@ -1289,6 +1216,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "#+OPTIONS: toc:nil num:nil\n* Outside\nElse.\n"
       "** Kept\nSee [[*Target]].\n*** Target\nBody.\n"
@@ -1324,97 +1252,11 @@
            (org-texmacs-document-from-buffer
             (current-buffer) nil nil (cons begin (point)))))))))))
 
-(ert-deftest org-texmacs-region-invalid-boundaries-and-link-scope ()
-  (cl-letf (((symbol-function 'org-texmacs--worker-request)
-             (lambda (&rest _)
-               (ert-fail "Invalid region started worker"))))
-    (with-temp-buffer
-      (org-mode)
-      (insert "Body (math \"x\").\n")
-      (dolist (region
-               '(t (1 2) (1 . 1) (0 . 2) (1 . 999) (1 . marker)))
-        (should-error
-         (org-texmacs-prepare-buffer (current-buffer) nil nil region)
-         :type 'org-texmacs-document-error))
-      (should-error
-       (org-texmacs-prepare-buffer (current-buffer) nil nil '(8 . 12))
-       :type 'org-texmacs-document-error))
-    (with-temp-buffer
-      (org-mode)
-      (insert
-       "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n\nElse.\n")
-      (should-error
-       (org-texmacs-prepare-buffer
-        (current-buffer) nil nil '(17 . 25))
-       :type 'org-texmacs-document-error))
-    (with-temp-buffer
-      (org-mode)
-      (insert
-       "#+OPTIONS: toc:nil\nSee [[*Outside]].\n* Outside\nElse.\n")
-      (goto-char (point-min))
-      (search-forward "See")
-      (let ((begin (match-beginning 0)))
-        (search-forward "* Outside")
-        (should-error
-         (org-texmacs-prepare-buffer
-          (current-buffer) nil nil (cons begin (match-beginning 0)))
-         :type 'org-texmacs-document-error)))
-    (with-temp-buffer
-      (org-mode)
-      (insert "#+INCLUDE: secret.org\nBody.\n")
-      (search-backward "Body")
-      (should-error
-       (org-texmacs-prepare-buffer
-        (current-buffer) nil nil (cons (point) (point-max)))
-       :type 'org-texmacs-document-error))))
-
-(ert-deftest org-texmacs-region-owned-bibliography-and-resource-base
-    ()
-  (org-texmacs-test--with-worker
-   (with-temp-buffer
-     (org-mode)
-     (insert
-      "#+OPTIONS: toc:nil\n#+bibliography: refs.bib\n"
-      "[fn:n] Note [cite:@b].\n\n* Main\nSelected [fn:n] [cite:@a] [[./asset.org]].\n"
-      "#+print_bibliography:\n* Outside\n[cite:@missing]\n")
-     (goto-char (point-min))
-     (search-forward "Selected")
-     (let ((begin (match-beginning 0)))
-       (search-forward "* Outside")
-       (let* ((sources
-               '(("refs.bib"
-                  .
-                  "@book{a, title={A}}\n@book{b, title={B}}")))
-              (input
-               (org-texmacs-prepare-buffer
-                (current-buffer)
-                sources
-                nil
-                (cons begin (match-beginning 0))))
-              (document (org-texmacs-document input)))
-         (should
-          (equal
-           (nth
-            1
-            (plist-get
-             (org-texmacs-input-info input)
-             :texmacs-bibliography-output))
-           '("b" "a")))
-         (should
-          (equal
-           default-directory
-           (org-texmacs-document-resource-base document)))
-         (should (org-texmacs-document-file-paths document))
-         (should-not
-          (string-match-p
-           "missing"
-           (prin1-to-string
-            (org-texmacs-document-body document)))))))))
-
 (ert-deftest org-texmacs-region-frozen-selection-and-stale-source ()
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "#+OPTIONS: toc:nil\nPrefix SelectedBodySentinel suffix.\n")
      (search-backward "SelectedBodySentinel")
@@ -1449,6 +1291,7 @@
 (ert-deftest org-texmacs-subtree-configuration-and-owned-selection ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author t)
     (insert
      "#+TITLE: File title\n#+AUTHOR: File author\n#+OPTIONS: toc:nil\n"
      "* Parent\n:PROPERTIES:\n:EXPORT_AUTHOR: Inherited author\n:END:\n"
@@ -1495,6 +1338,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "#+OPTIONS: toc:nil\n[fn:before] Before (math \"x\").\n\n"
       "* Chosen\nSelected (math \"y\") [fn:before] [fn:inline].\n"
@@ -1515,7 +1359,8 @@
            (should
             (equal (nreverse seen) '("(math \"y\")" "(math \"x\")")))
            (should (= 2 (cl-count 'footnote (flatten-tree body))))
-           (should (string-match-p "Owned" (prin1-to-string body)))
+           (should-not
+            (string-match-p "Owned" (prin1-to-string body)))
            (should-not (string-match-p "Else" (prin1-to-string body)))
            (should
             (string-prefix-p
@@ -1525,6 +1370,7 @@
 (ert-deftest org-texmacs-subtree-date-and-filter-overrides ()
   (with-temp-buffer
     (org-mode)
+    (setq-local org-export-with-author t)
     (insert
      "#+AUTHOR: File author\n#+DATE: File date\n#+OPTIONS: toc:nil\n"
      "* Parent\n:PROPERTIES:\n:EXPORT_AUTHOR: Parent author\n:END:\n"
@@ -1551,98 +1397,11 @@
             "Parent author\\|File date\\|ExcludedBodySentinel"
             body)))))))
 
-(ert-deftest org-texmacs-subtree-links-and-invalid-scope-preflight ()
-  (cl-letf (((symbol-function 'org-texmacs--worker-request)
-             (lambda (&rest _)
-               (ert-fail "Invalid scope started worker"))))
-    (with-temp-buffer
-      (org-mode)
-      (insert
-       "Preamble.\n* Chosen\n[[*Inner]]\n** Inner\nBody.\n* Outside\nElse.\n")
-      (let ((source (current-buffer)))
-        (should-error
-         (org-texmacs-prepare-buffer source nil 1)
-         :type 'org-texmacs-document-error)
-        (should-error
-         (org-texmacs-prepare-buffer source nil -1)
-         :type 'org-texmacs-document-error)
-        (goto-char (point-min))
-        (search-forward "* Chosen")
-        (let ((position (point)))
-          (should
-           (memq
-            'reference
-            (flatten-tree
-             (org-texmacs-document-body
-              (org-texmacs-document-from-buffer
-               source nil position)))))
-          (search-forward "[[*Inner]]")
-          (replace-match "[[*Outside]]" t t)
-          (should-error
-           (org-texmacs-prepare-buffer source nil position)
-           :type 'org-texmacs-document-error))))
-    (with-temp-buffer
-      (org-mode)
-      (insert
-       "* Chosen\n:PROPERTIES:\n:EXPORT_OPTIONS: d:nil\n:END:\nBody.\n")
-      (should-error
-       (org-texmacs-prepare-buffer (current-buffer) nil 1)
-       :type 'org-texmacs-document-error))
-    (with-temp-buffer
-      (org-mode)
-      (insert "#+CITE_EXPORT: basic\n* Chosen\nBody (math \"x\").\n")
-      (goto-char (point-min))
-      (search-forward "* Chosen")
-      (should-error
-       (org-texmacs-prepare-buffer (current-buffer) nil (point))
-       :type 'org-texmacs-document-error))))
-
-(ert-deftest org-texmacs-subtree-owned-bibliography-and-resource-base
-    ()
-  (org-texmacs-test--with-worker
-   (with-temp-buffer
-     (org-mode)
-     (insert
-      "#+OPTIONS: toc:nil\n#+bibliography: refs.bib\n"
-      "[fn:r] Note [cite:@b].\n\n* Chosen\nBody [fn:r] [cite:@a] [[./asset.org]].\n"
-      "#+print_bibliography:\n* Outside\n[cite:@missing]\n")
-     (goto-char (point-min))
-     (search-forward "* Chosen")
-     (let*
-         ((position (point))
-          (sources
-           '(("refs.bib"
-              .
-              "@book{a, title={A}}\n@book{b, title={B}}\n@book{unused, title={Unused}}")))
-          (input
-           (org-texmacs-prepare-buffer
-            (current-buffer) sources position))
-          (document (org-texmacs-document input)))
-       (should
-        (equal
-         (nth
-          1
-          (plist-get
-           (org-texmacs-input-info input)
-           :texmacs-bibliography-output))
-         '("b" "a")))
-       (should
-        (equal
-         (org-texmacs-document-resource-base document)
-         default-directory))
-       (should (org-texmacs-document-file-paths document))
-       (should-not
-        (string-match-p
-         "missing\\|Unused"
-         (prin1-to-string (org-texmacs-document-body document))))
-       (should
-        (string-prefix-p
-         "<TeXmacs|" (org-texmacs-document-serialize document)))))))
-
 (ert-deftest org-texmacs-subtree-selection-and-property-waits ()
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
+     (setq-local org-export-with-author nil)
      (insert
       "#+OPTIONS: toc:nil\n* First\nFirstBodySentinel.\n* Second\nSecondBodySentinel.\n")
      (goto-char (point-min))

@@ -731,32 +731,12 @@
                    (ert-fail "Invalid overrides prompted"))))
         (dolist (options
                  (list
-                  t
-                  '(:title)
-                  '(:title . "bad")
-                  cycle
-                  '(:title 42)
-                  '(:title ("already parsed"))
-                  '(:with-title t :with-title nil)
-                  '(title "bad")
-                  '(:headline-levels 6)
-                  '(:section-numbers -1)
-                  '(:with-author "yes")
-                  '(:with-tasks (1))
-                  '(:select-tags "tag")
-                  '(:exclude-tags (t))
-                  '(:with-tags invalid)
-                  '(:options "toc:nil")
-                  '(:export-file-name "other")
-                  '(:texmacs-resource-base "/")
-                  '(:filter-final-output ignore)
-                  '(:bibliography "refs.bib")))
+                  t '(:title) '(:title . "bad") cycle '(title "bad")))
           (should-error
            (org-texmacs-prepare-buffer
             (current-buffer) nil nil nil options)
            :type 'org-texmacs-document-error)
-          ;; The standalone API retains its restricted value contract.
-          ;; Standard commands validate plist shape, leaving values to Org.
+          ;; All source APIs validate plist shape, leaving values to Org.
           (when (or (not (proper-list-p options))
                     (cl-oddp (length options))
                     (not (keywordp (car options))))

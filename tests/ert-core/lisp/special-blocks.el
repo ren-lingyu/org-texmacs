@@ -164,36 +164,6 @@
           '(document (theorem (document (concat "Manual"))))))
         (should (equal (org-element-property :type block) type))))))
 
-(ert-deftest org-texmacs-issue13-handler-snapshot-and-pure-defaults ()
-  (cl-letf (((symbol-function 'org-texmacs-test--issue13-handler)
-             (lambda (_b c _i) (list 'initial c))))
-    (let* ((key (copy-sequence "CUSTOM"))
-           (registry
-            (list (cons key 'org-texmacs-test--issue13-handler)))
-           (org-texmacs--document-special-block-handlers registry)
-           (info (org-texmacs--document-options))
-           (ast
-            (org-element-create
-             'org-data nil
-             (org-element-create
-              'special-block
-              '(:type "custom")
-              (org-element-create 'paragraph nil "Text")))))
-      (aset key 0 ?X)
-      (setcdr (car registry) #'ignore)
-      (cl-letf (((symbol-function 'org-texmacs-test--issue13-handler)
-                 (lambda (_b c _i) (list 'next c))))
-        (let ((input (org-texmacs-input-create ast info)))
-          (should
-           (member
-            '(initial (document (concat "Text")))
-            (cdr
-             (org-texmacs-document-body
-              (org-texmacs-document input)))))
-          (should-error
-           (org-texmacs-test--lower ast)
-           :type 'org-texmacs-document-error))))))
-
 (ert-deftest org-texmacs-statement-caption-original-concat-indivisible
     ()
   (let* ((root (list 'concat "Original" (list 'math "x")))
@@ -434,5 +404,39 @@
       (org-element-parse-buffer)
       'special-block
       #'org-texmacs--figure-table-kind))))
+
+(ert-deftest org-texmacs-issue13-handler-snapshot-and-pure-defaults ()
+  (cl-letf (((symbol-function 'org-texmacs-test--issue13-handler)
+             (lambda (_b c _i) (list 'initial c))))
+    (let* ((key (copy-sequence "CUSTOM"))
+           (registry
+            (list (cons key 'org-texmacs-test--issue13-handler)))
+           (org-texmacs--document-special-block-handlers registry)
+           (info
+            (list
+             :texmacs-special-block-handlers
+             (org-texmacs--document-copy-handlers registry)))
+           (ast
+            (org-element-create
+             'org-data nil
+             (org-element-create
+              'special-block
+              '(:type "custom")
+              (org-element-create 'paragraph nil "Text")))))
+      (aset key 0 ?X)
+      (setcdr (car registry) #'ignore)
+      (cl-letf (((symbol-function 'org-texmacs-test--issue13-handler)
+                 (lambda (_b c _i) (list 'next c))))
+        (let ((input (org-texmacs-input-create ast info)))
+          (should
+           (member
+            '(initial (document (concat "Text")))
+            (cdr
+             (org-texmacs-document-body
+              (org-texmacs-document input)))))
+          (should-error
+           (org-texmacs-test--lower ast)
+           :type 'org-texmacs-document-error))))))
+
 
 ;;; special-blocks.el ends here

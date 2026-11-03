@@ -17,29 +17,47 @@ TeXmacs document lowering remain separate from standard export preparation.
 *** Standard Org Export backend
 - [X] Make =org-export-as 'texmacs= a usable standard export entry, with Org
   managing preparation, options, document selection, AST filters and Org Cite.
-- [-] Replace parallel export preparation with the standard Org flow while
+- [X] Replace parallel export preparation with the standard Org flow while
   preserving AST-first TeXmacs construction.
 
 *** Public export API migration
-- [-] Route interactive commands and feasible source-buffer convenience APIs
+- [X] Route interactive commands and feasible source-buffer convenience APIs
   through shared standard preparation, retaining their distinct result types.
 - Interactive commands now share standard preparation for all scopes, including
   visible-only, and preserve managed buffers and guarded native file writing.
 - Breaking: non-nil =org-texmacs-export-discover-bibliography= is rejected;
-  configure standard Org Cite instead.  Interactive EXT-PLIST follows Org,
-  while structured preparation/document and legacy preprocessed/discovery
-  variants retain old contracts until caller migration.
+  configure standard Org Cite instead.  All source API EXT-PLIST values follow
+  Org; the old restricted option whitelist and citation-key-only filters retire.
 - Source TM/PDF bytes, fresh buffers and exclusive new-file exports now use one
   standard transaction with lazy backend loading and owned options/selections.
-- Breaking: source byte/buffer/file =BIBLIOGRAPHY-SOURCES= must be nil; configure
+- Structured =prepare-buffer=, =document-from-buffer= and =document-current-buffer=
+  now use the same standard transaction. Preparation returns owned input without
+  forcing target lowering; document consumers validate target support.
+- Deprecated preprocessed/discovery names become thin standard wrappers; supplied
+  BibTeX text or non-nil discovery switches fail before preparation with guidance.
+- Breaking: all source API =BIBLIOGRAPHY-SOURCES= arguments must be nil; configure
   standard Org Cite.  Combined explicit subtree/region selections require matching
   headings at region start; ambient active regions do not select explicit exports.
 - Final text filters feed reversible native byte output; lossy text conversion
   fails explicitly.  PDF consumes the completed native document directly.
 - Preserve Org's table alignment after control-row pruning, including numeric
   column inference; unsupported width cookies fail explicitly.
-- [ ] Consolidate, deprecate or remove redundant preparation and bibliography
-  discovery variants, with explicit migration guidance for changed contracts.
+- [X] Consolidate deprecated wrappers and retire parallel options, selection,
+  filter, INCLUDE and bibliography preparation after caller migration.
+- Breaking: final Org structure takes priority over embedded STM syntax.
+  Preparation may rewrite, delete or generate candidates; original STM is not
+  restored or generically protected. Complete multiline STM is supported within
+  one effective Org owner; crossing structural boundaries fails when identifiable.
+- Effective Org metadata controls native language/description defaults; nil/empty
+  values clear those entries. Optional URI schemes follow Org registration.
+- Breaking: standard source export no longer supports caption footnote nodes
+  supplied by parser extensions or AST filters. Effective nodes fail explicitly;
+  stock Org note-looking caption text stays literal. Independent models and pure
+  lowering retain anonymous caption footnote AST support and native layout limits.
+- Org preparation errors propagate. Consumed settings are owned snapshots;
+  old private receipt replay, full-source restoration and preflight order retire.
+- Preserve independent model APIs, explicit native bibliography inputs, pure
+  lowering, native worker, serialization and PDF consumers.
 
 ** Added
 *** Prepared AST and STM adaptation

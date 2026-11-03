@@ -53,6 +53,10 @@ Optionally populate IDENTITIES with original-to-owned node associations."
   (let* ((owner
           (org-texmacs--model-owner-create
            :error-type 'org-texmacs-document-error
+           :excluded-nodes
+           (if (memq tree ignored)
+               (org-element-contents tree)
+             ignored)
            :secondary-normalizer
            (lambda (value)
              (if (stringp value)
@@ -61,19 +65,64 @@ Optionally populate IDENTITIES with original-to-owned node associations."
            :caption-reader #'org-texmacs--document-caption-lines))
          (copy (org-texmacs--model-copy-node owner tree nil)))
     (org-texmacs--model-finish-owner owner)
-    (dolist (node ignored)
-      (when-let* ((owned
-                   (gethash
-                    node (org-texmacs--model-owner-nodes owner))))
-        (if (eq owned copy)
-            (org-element-set-contents copy)
-          (org-element-extract-element owned))))
     (when identities
       (maphash
        (lambda (original owned)
          (puthash original owned identities))
        (org-texmacs--model-owner-nodes owner)))
     copy))
+
+(defun org-texmacs--prepared-check-caption-notes (tree)
+  "Reject caption footnotes in owned effective standard export TREE.
+Stock Org leaves note-looking caption text literal.  Structured caption notes
+remain supported by independent models and pure lowering, not source export."
+  (org-element-map
+   tree t
+   (lambda (node)
+     (when (and (consp node)
+                (cl-some
+                 (lambda (line)
+                   (or (org-element-map
+                        (car line)
+                        'footnote-reference
+                        #'identity
+                        nil
+                        t
+                        nil
+                        t)
+                       (org-element-map
+                        (cdr line)
+                        'footnote-reference
+                        #'identity
+                        nil
+                        t
+                        nil
+                        t)))
+                 (org-element-property :caption node)))
+       (org-texmacs--prepared-fail
+        "Caption footnotes are unsupported in standard source export")))
+   nil nil nil t))
+
+(defun org-texmacs--prepared-footnote-bodies (tree)
+  "Give supplemental inline definitions in owned TREE a paragraph body.
+Org may place inline objects directly in a supplemental footnote-definition.
+Preserve those identities and wrap them structurally for document lowering."
+  (org-element-map
+   tree 'footnote-definition
+   (lambda (definition)
+     (let ((contents (org-element-contents definition)))
+       (when (and contents
+                  (cl-every
+                   (lambda (node)
+                     (or (stringp node)
+                         (memq
+                          (org-element-type node)
+                          org-element-all-objects)))
+                   contents))
+         (let ((paragraph (org-element-create 'paragraph nil)))
+           (apply #'org-element-set-contents paragraph contents)
+           (org-element-set-contents definition paragraph))))))
+  tree)
 
 (defun org-texmacs--prepared-control-keywords (tree)
   "Remove consumed preparation/configuration directives from owned TREE.

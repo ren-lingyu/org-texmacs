@@ -4,7 +4,7 @@
 
 (defun org-texmacs-test--metadata-input
     (source &optional external subtree region)
-  "Prepare SOURCE with explicit EXTERNAL, SUBTREE and REGION selections."
+  "Prepare SOURCE and validate document lowering for metadata assertions."
   (with-temp-buffer
     (org-mode)
     (let ((org-export-with-author nil)
@@ -13,8 +13,11 @@
           (org-export-with-creator nil)
           (org-export-with-email nil))
       (insert source)
-      (org-texmacs-prepare-buffer
-       (current-buffer) nil subtree region external))))
+      (let ((input
+             (org-texmacs-prepare-buffer
+              (current-buffer) nil subtree region external)))
+        (org-texmacs-document input)
+        input))))
 
 (defun org-texmacs-test--metadata-nodes (tree tag)
   "Return TREE's nodes with TAG in depth-first order."
@@ -69,7 +72,7 @@
            ("global-subject" . "Default")
            ("par-first" . "2fn"))))
     (dolist (case
-             '(("Body\n" nil "german" "Default")
+             '(("Body\n" nil "english" nil)
                ("#+LANGUAGE: fr\n#+DESCRIPTION: File\nBody\n"
                 (:language "en" :description "External")
                 "french"
@@ -164,9 +167,8 @@
 
 (ert-deftest org-texmacs-metadata-external-validation-and-fallback ()
   (dolist (options
-           '((:email 42)
+           '((:email 42 :with-email t)
              (:description ("bad"))
-             (:keywords "one" :keywords "two")
              (:with-email comment)
              (:with-creator comment)))
     (should-error

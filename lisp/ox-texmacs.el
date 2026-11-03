@@ -439,6 +439,10 @@ Do not change existing backends, hooks, or the user's configuration."
        (org-texmacs--export-menu-entry org-texmacs-export-menu-keys)))
   (org-export-define-backend
    'texmacs (org-texmacs--standard-transcoders)
+   :options-alist
+   '((:subtitle "SUBTITLE" nil nil parse)
+     (:keywords "KEYWORDS" nil nil space)
+     (:description "DESCRIPTION" nil nil newline))
    :filters-alist
    '((:filter-options . org-texmacs--standard-options)
      (:filter-parse-tree . org-texmacs--standard-tree))

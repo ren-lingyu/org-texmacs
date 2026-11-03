@@ -5,6 +5,12 @@
    (dolist
        (pair
         '(("Left (math (sqrt \"x\")) right.\n" . (math (sqrt "x")))
+          ("(math \"first line\nsecond line\")\n"
+           .
+           (math "first line\nsecond line"))
+          ("Note[fn::(math \"first line\nsecond line\")].\n"
+           .
+           (math "first line\nsecond line"))
           ("#+TITLE: ~literal~\n(math (sqrt \"x\"))\n"
            .
            (math (sqrt "x")))

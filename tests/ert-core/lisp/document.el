@@ -747,66 +747,6 @@
      (equal (org-texmacs-document-body result) '(document "literal")))
     (should (equal (org-texmacs-document-stm-paths result) '((0))))))
 
-(ert-deftest org-texmacs-document-named-table-caption-ownership ()
-  (let (input
-        expected)
-    (with-temp-buffer
-      (org-mode)
-      (insert
-       "#+caption[Short]: Long *B* [[https://example.org][URI]]\n| x |\n")
-      (let* ((prepared
-              (org-texmacs--document-prepare-source
-               (buffer-string)
-               nil
-               (org-texmacs--document-heading-settings)
-               (org-texmacs--document-link-settings)
-               (org-texmacs--document-options)))
-             (ast (car prepared))
-             (table (org-element-map ast 'table #'identity nil t))
-             (bold
-              (cadr (caar (org-element-property :caption table)))))
-        (setq
-         input
-         (org-texmacs-input-create
-          ast
-          (nth 4 prepared)
-          :post-blanks (nth 3 prepared))
-         expected (org-texmacs-document-body (org-texmacs-document input)))
-        (org-element-set-contents bold "Changed")
-        (org-element-put-property table :caption nil)
-        (should
-         (equal
-          expected
-          (org-texmacs-document-body (org-texmacs-document input))))))
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (&rest _)
-                 (ert-fail "Owned caption requested a worker"))))
-      (should
-       (equal
-        expected
-        (org-texmacs-document-body (org-texmacs-document input)))))
-    (let* ((table
-            (org-element-map
-             (org-texmacs-input-ast input) 'table #'identity nil t))
-           (bold (cadr (caar (org-element-property :caption table)))))
-      (should (eq (org-element-parent bold) table))
-      (should (assq bold (org-texmacs-input-post-blanks input)))))
-  (dolist (caption '(("unparsed") ((("Long") . "unparsed"))))
-    (let* ((table (org-element-create 'table (list :caption caption)))
-           (ast (org-element-create 'org-data nil table)))
-      (should-error
-       (org-texmacs-input-create ast nil)
-       :type 'org-texmacs-document-error)))
-  (let* ((bold (org-element-create 'bold nil "Shared"))
-         (table
-          (org-element-create
-           'table
-           (list :caption (list (cons (list bold) (list bold))))))
-         (ast (org-element-create 'org-data nil table)))
-    (should-error
-     (org-texmacs-input-create ast nil)
-     :type 'org-texmacs-document-error)))
-
 (ert-deftest org-texmacs-document-rejects-unsupported-source ()
   (dolist (source
            '("[[file:notes.org][link]]\n"
@@ -981,5 +921,62 @@
            nil nil nil (list text) nil nil)))
     (should (equal result text))
     (should-not (eq result text))))
+
+(ert-deftest org-texmacs-document-named-table-caption-ownership ()
+  (let (input
+        expected)
+    (with-temp-buffer
+      (org-mode)
+      (insert
+       "#+caption[Short]: Long *B* [[https://example.org][URI]]\n| x |\n")
+      (let* ((ast (org-element-parse-buffer))
+             (table (org-element-map ast 'table #'identity nil t))
+             (bold
+              (cadr (caar (org-element-property :caption table)))))
+        (org-element-put-property
+         table
+         :texmacs-affiliated-keywords '("CAPTION"))
+        (setq
+         input
+         (org-texmacs-input-create
+          ast
+          nil
+          :post-blanks (list (cons bold " ")))
+         expected (org-texmacs-document-body (org-texmacs-document input)))
+        (org-element-set-contents bold "Changed")
+        (org-element-put-property table :caption nil)
+        (should
+         (equal
+          expected
+          (org-texmacs-document-body (org-texmacs-document input))))))
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _)
+                 (ert-fail "Owned caption requested a worker"))))
+      (should
+       (equal
+        expected
+        (org-texmacs-document-body (org-texmacs-document input)))))
+    (let* ((table
+            (org-element-map
+             (org-texmacs-input-ast input) 'table #'identity nil t))
+           (bold (cadr (caar (org-element-property :caption table)))))
+      (should (eq (org-element-parent bold) table))
+      (should (assq bold (org-texmacs-input-post-blanks input)))))
+  (dolist (caption '(("unparsed") ((("Long") . "unparsed"))))
+    (let* ((table (org-element-create 'table (list :caption caption)))
+           (ast (org-element-create 'org-data nil table)))
+      (should-error
+       (org-texmacs-input-create ast nil)
+       :type 'org-texmacs-document-error)))
+  (let* ((bold (org-element-create 'bold nil "Shared"))
+         (table
+          (org-element-create
+           'table
+           (list :caption (list (cons (list bold) (list bold))))))
+         (ast (org-element-create 'org-data nil table)))
+    (should-error
+     (org-texmacs-input-create ast nil)
+     :type 'org-texmacs-document-error)))
+
 
 ;;; document.el ends here
