@@ -1,0 +1,98 @@
+# E2b: structured source consumers and parallel preparation retirement
+
+E2a human delivery matches expected E1 parent/15paths/message/all158accepted inputs;
+ordinary and GAW intake clean. No unchanged runtime rerun. Use this exact baseline
+for the isolated architecture and migration experiment. Scope remains the approved
+E2b, followed by E3; no further production subdivision is selected.
+
+## Ownership and migration boundary
+
+Migrate prepare-buffer/document-from-buffer/current-buffer via the standard source
+consumer. Keep model parsing/construction/inspection/transformation/normalized Org
+serialization independent; keep pure input construction/document lowering. Retire
+private main/document source preparation, parallel context merge/pruning/key-only
+AST filter and independent INCLUDE/bibliography preparation after caller migration.
+
+Legacy preprocessed/discovery public names can be thin deprecated standard entry
+wrappers when their argument mapping is explicit. Supplied BibTeX texts and old
+nonmappable discovery switches reject before preparation, not a compatibility
+branch or reader override. Keep normal Org Cite/AST filters/INFO semantic authority.
+Do not remove native lowering/label/footnote/reference responsibilities merely
+because old preparation also called them. Retained schema/copy/naming/footnote
+helpers need actual independent callers; line count or file deletion is no goal.
+
+## Prepared result gate
+
+Current standard-inner always constructs document, even for input/model consumers;
+standard-consume treats document presence as completion. Investigate input/model
+handoff without target lowering, with required input completion/source identity,
+one standard transaction, known tail compatibility, exception/cleanup/nested
+isolation. Document/PDF/text must still lower once and return complete native data.
+This supports a genuine preparation/lowering boundary rather than preserving the
+old custom preparation order. Do not assume success without isolated evidence.
+
+## Regression migration discipline
+
+Old provider budgets/receipts, source-only native BibTeX acquisition, whitelist and
+key-only filters are obsolete implementation contracts. Retire those tests with
+explicit replacement/coverage rationale; do not retain parallel code just to pass
+them. Standard preparation already has maintained A-D/E1/E2a coverage; add actual
+public structured entry, deprecated wrapper/error, prepared ownership and pure
+lowering boundary cases. Preserve meaningful native document structures, worker
+protocol/serialization/PDF, independent model and pure-constructor coverage.
+Native bibliography data/format lowering can be tested from explicit owned
+constructor inputs, not asserted as standard Cite acceptance. Inventory surviving
+callers before removal and report any intentional count/contract changes.
+
+Next: isolated prepared-only result experiment, then production caller migration,
+legacy cleanup/tests/docs, complete gate and human delivery. Assess experiment
+retention promptly; no raw archive selected merely for inventory reads.
+
+## Prepared-only gate accepted
+
+Isolated E2a-baseline prototype passes4/4(3.659545s), locked Emacs31.1/Org9.8.10/
+TeXmacs2.1.5/x86_64-linux. An unknown-but-valid Org block returns owned input/model
+while public document conversion still rejects it. Input/model do not call target
+lowering; text/document/PDF each lower once in one real standard transaction.
+Five legacy wrappers use standard preparation, even with old converters stubbed
+to fail; nonmappable discovery/BibTeX args fail before effects. Nested input
+requests keep distinct prepared data. Use input presence as prepared completion,
+require a document only for document/PDF consumers; normal text always lowers.
+Keep raw/Cite/tail compatibility and source checks unchanged. Production source
+was unchanged during this experiment. No private Org preparation copy is involved.
+
+Retention assessment: four probe cases will be maintained as public structured/
+wrapper/boundary regressions; baseline+input identities and these causal findings
+suffice. No independent raw archive selected. Test retirement must not copy old
+preparation into fixtures or be driven by keeping the old test count. Preserve
+native bibliography target structures via explicit constructor inputs/native
+converters, and keep meaningful source-independent/worker/PDF evidence. Retire
+only documented obsolete semantics with standard/pure replacements accounted for.
+
+## Candidate validation in progress
+
+Structured APIs and five deprecated wrappers now share standard preparation.
+Private main/document/context/preprocess/bibliography preparation is removed
+after caller migration; keep24-field INFO projection and actual pure naming,
+footnote and native bibliography lowering helpers. Initial98retired tests have
+a temporary per-case manifest; two pure ownership tests are rewritten, not retired.
+First focused candidate compiles, structured4/4; core259/275 (16unexpected).
+Missing backend SUBTITLE/KEYWORDS/DESCRIPTION declarations are a real INFO gap;
+add standard Org option declarations rather than custom merging. Prepared-only
+inputs no longer promise target-validation errors: document consumers own them.
+Old provider buffer cleanup tests must use standard transaction observations.
+No complete acceptance or documentation delivery yet; do not claim passing core.
+
+Focused-4 core now274/274(1.401931s). Backend declarations restore standard
+metadata acquisition; standard nil/default INFO takes precedence over native
+initial defaults. Test target-validation is explicit document lowering.
+Focused-2 native/PDF combined120s times out incomplete, not a completed suite.
+Selected-inline-note probe shows Org-generated supplemental definitions share
+text children with ignored original subtrees. The old copy-then-ignore order
+falsely rejects valid prepared data. Candidate owner gains optional excluded-node
+handling, used only by prepared adapter to skip Org ignore-list before copying;
+independent constructor strict defaults stay unchanged. Validate this correction
+before depending on it. Source tab-width/formatter/handlers/link policy must be
+captured before Org working-copy defaults can replace them; INFO gets a separate
+mutable copy from the source guard. A shared plist tail caused spurious guard
+failures in focused-3; focused-4 fixes that and returns core to274/274.

@@ -1,5 +1,8 @@
 # E2: source consumers and preparation cleanup
 
+E2a human delivery a44ec6a is verified: E1 parent/15paths/message/all158accepted
+input hashes, clean intake, no unchanged rerun. Continue E2b in its own note.
+
 Human E1 delivery is byte-verified against accepted156input hashes, exact15paths,
 D parent and prepared full message. Source and GAW intake clean; no unchanged
 runtime rerun. Use that delivered source as the isolated experiment baseline.
@@ -128,7 +131,7 @@ SHA2568c8fd2438002685c6f525de141d0a4f66638dc58c04e4c3b1f7553a79001e80f.
 15task paths form one coherent source byte/output migration plus shared ownership,
 required caller-contract tests/docs and real Cite coverage; split unnecessary.
 README/CHANGELOG and complete-worktree tmp/commit.md reviewed; index/HEAD/lock
-unchanged. No ordinary staging/commit. Human E2a delivery/verification precedes E2b.
+unchanged during implementation. Human E2a delivery/verification is now complete.
 
 E2b must migrate prepare-buffer/document-from-buffer/current-buffer and inventory
 all preprocessed/discovery variants, including their byte wrappers; no standard

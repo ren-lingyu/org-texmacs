@@ -1,5 +1,19 @@
 # org-texmacs durable evidence
 
+## E2a human delivery and E2b intake
+
+Human a44ec6a matches expected E1 parent, exact15paths/full prepared message and
+all158accepted committed/worktree input hashes. Ordinary/Gaw intake clean; no
+unchanged test rerun. E2b starts from this delivered state. Production inventory
+separates pure schema/footnote/naming use from old source preparation. Current
+input/model handoff unnecessarily called document lowering. Four isolated probes
+establish prepared-only return without lowering, with one transaction and nested
+isolation. Focused-4 core274/274; combined native/PDF120s times out incomplete.
+An isolated selected-inline-note probe reproduces shared children in ignored
+originals and Org supplemental definitions: copying ignored trees before removal
+is invalid. Candidate ownership must skip them before copying. Detailed current
+findings/limits: memory/standard-export-0.7.0-e2b.md.
+
 ## E2a accepted source consumer candidate
 
 Formal full-1 exits0/all12named check attributes (11default+actual integration).

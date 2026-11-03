@@ -1,6 +1,6 @@
 # org-texmacs current project model
 
-## v0.7.0 standard backend: A-E1 delivered; E2a accepted candidate
+## v0.7.0 standard backend: A-E2a delivered; E2b active
 
 The real texmacs backend consumes standard org-export-as in one transaction.
 Prepared structures/native documents use the isolated single-use result handoff;
@@ -65,8 +65,14 @@ before preparation in the five main-module exports. Source/native guards and byt
 PDF/file ownership contracts are documented; actual new-file INFO cannot redirect
 writes. Consumed parser/property/dependency data do not need legacy receipt replay.
 All158accepted input hashes: memory/standard-export-0.7.0-e2a-inputs.json.
-15task paths await human E2a delivery before E2b structured entries/all legacy
-preprocessed/discovery variants/parallel preparation cleanup. Independent pure
+Human E2a delivery matches E1 parent/15paths/message/all158accepted hashes, clean
+intake; no unchanged rerun. E2b structured entries/all legacy preprocessed/discovery
+variants/parallel preparation cleanup is active but not accepted. Four isolated
+probes establish input/model-only delivery without forced document lowering.
+Selected inline footnote supplemental copies expose valid Org sharing across
+ignored nodes; adapter must skip logical exclusions before strict copying.
+Native configuration must come from captured source, not working-buffer defaults.
+Independent pure
 input/lowering/core remain. Examples/version/final docs/release checks remain E3.
 Historical0.6descriptions below remain baseline evidence, not current standard
 backend support claims.

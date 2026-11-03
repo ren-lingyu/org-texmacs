@@ -8,9 +8,9 @@ defaultERT+2actual/all12isolated checks and exact D delivery. A custom native Ci
 processor is deferred as unnecessary for the verified CSL subset, not a new
 commitment. E1 command migration is human-delivered and verified: default737ERT+actual3,
 all named checks. E2a five main-module source byte/output consumers are accepted
-with default745ERT+actual4/all12named checks, awaiting human delivery. Verify E2a
-before E2b structured entries, old preprocessed/discovery variants and caller-based
-parallel preparation cleanup;
+with default745ERT+actual4/all12named checks and verified human delivery. E2b
+structured entries, old preprocessed/discovery variants and caller-based parallel
+preparation cleanup is active;
 E3 examples/version/final docs follows its human delivery gate. Table query and
 native layout regression are resolved within E1; no release completion claim.
 C freezes original-transaction query results

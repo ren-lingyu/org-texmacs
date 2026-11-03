@@ -1,21 +1,34 @@
 # org-texmacs current memory
 
-## Current: A-E1 delivered; E2a accepted, awaiting human delivery
+## Current: A-E2a delivered; E2b structured consumers/cleanup active
 
-Controlling plan: memory/standard-export-0.7.0-plan.md. E1 human delivery matches
-D parent/15paths/full message/all156accepted hashes; clean intake, no unchanged
-runtime rerun. E2 caller inventory led to E2a five main-module byte/output APIs,
-then E2b structured entries/legacy variants/parallel preparation cleanup. Each
-reviewable production node retains its human-delivery gate. E3 examples/version/
-final docs/release checks follows E2. This is execution granularity, not new scope.
+Controlling plan: memory/standard-export-0.7.0-plan.md. Human E2a a44ec6a matches
+expected E1 parent/15paths/full message/all158accepted hashes. Ordinary worktree/
+index and GAW clean at intake; no unchanged runtime rerun. Continue the already
+approved E2b structured source API migration and caller-first cleanup, then E3.
+Version0.6.0/TODO unchanged; no ordinary staging/commit/tag/push.
 
-E2a15task paths are uncommitted, ordinary index/HEAD/lock untouched. README/
-CHANGELOG and complete-worktree tmp/commit.md are synchronized. All158root/isolated
-hashes match memory/standard-export-0.7.0-e2a-inputs.json, SHA256
-8c8fd2438002685c6f525de141d0a4f66638dc58c04e4c3b1f7553a79001e80f.
-Wait for human E2a commit; verify expected E1 parent/paths/message/all158accepted
-hashes without rerunning unchanged gates, then continue E2b. Version0.6.0 and
-CHANGELOG TODO remain; v0.7.0 is neither complete nor released.
+Inventory confirms private main preparation, document source preparation, context
+pruning/filter/option merge and preprocessed/discovery providers have no place in
+the standard export authority. Preserve pure ownership/lowering and the metadata
+schema, source naming helpers and pure footnote queries actually used independently.
+New architecture question before migration: current private input/model request
+always constructs a document. Public preparation should return owned prepared
+input without forcing target lowering. Probe whether input/model-only handoff can
+skip unnecessary lowering while retaining one genuine standard transaction, tail
+compatibility, source checks and nesting; document/text/PDF still require a complete
+native document. Do not introduce fallback preparation for old test assumptions.
+Details, migration/test coverage assessment: memory/standard-export-0.7.0-e2b.md.
+Four isolated prepared-consumer probes pass4/4(3.659545s); input/model can skip
+target lowering while text/document/PDF lower once. Normal completion and nested
+results/source checks remain. Production migration/cleanup is applied but not
+accepted. Focused-4 core passes274/274 after metadata declaration and fixture
+migration. Focused-2 combined native/PDF120s times out incomplete; failures remain.
+Isolated selected-inline-note probe exposes shared children in ignored originals
+and Org supplemental notes; adapter must skip ignore-list before strict ownership.
+Native settings must be captured from source, with separate copies for INFO and
+source guards. Both changes are under validation. Do not copy
+old preparation into test helpers merely to preserve the old test count.
 
 Five main-module source TM/PDF byte/fresh-buffer/exclusive-file exports now use
 one genuine standard Org transaction and lazy backend loading. Core/model use
