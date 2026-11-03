@@ -1,0 +1,81 @@
+this derivation will be built:
+  /nix/store/4mzg6m893jj2f4rbpf3rj25kam20fsb5-org-texmacs-inline-script-probe.drv
+building '/nix/store/4mzg6m893jj2f4rbpf3rj25kam20fsb5-org-texmacs-inline-script-probe.drv'...
+org-texmacs-inline-script-probe> Running 1 tests (2026-11-03 17:59:24+0000, selector `t')
+org-texmacs-inline-script-probe> KIND equation AST-NATIVE nil ISLANDS nil BODY (document (doc-data (doc-author (author-data (author-name "Nix build user")))) (table-of-contents "org-texmacs-toc" (document (toc-1 (hlink (concat "1 " "Kept") "#org-texmacs-toc-1") (pageref "org-texmacs-toc-1")))) (section "Kept") (label "org-texmacs-toc-1") (concat "#+begin" (rsub "equation") "* \"kept"))
+org-texmacs-inline-script-probe> KIND equation HTML "<div id=\"table-of-contents\" role=\"doc-toc\">
+org-texmacs-inline-script-probe> <h2>Table of Contents</h2>
+org-texmacs-inline-script-probe> <div id=\"text-table-of-contents\" role=\"doc-toc\">
+org-texmacs-inline-script-probe> <ul>
+org-texmacs-inline-script-probe> <li><a href=\"#org2d80f71\">1. Kept</a></li>
+org-texmacs-inline-script-probe> </ul>
+org-texmacs-inline-script-probe> </div>
+org-texmacs-inline-script-probe> </div>
+org-texmacs-inline-script-probe> <div id=\"outline-container-org2d80f71\" class=\"outline-2\">
+org-texmacs-inline-script-probe> <h2 id=\"org2d80f71\"><span class=\"section-number-2\">1.</span> Kept</h2>
+org-texmacs-inline-script-probe> <div class=\"outline-text-2\" id=\"text-1\">
+org-texmacs-inline-script-probe> <p>
+org-texmacs-inline-script-probe> #+begin<sub>equation</sub>*
+org-texmacs-inline-script-probe> \"kept</p>
+org-texmacs-inline-script-probe> </div>
+org-texmacs-inline-script-probe> </div>
+org-texmacs-inline-script-probe> "
+org-texmacs-inline-script-probe> KIND plain-note AST-NATIVE nil ISLANDS nil BODY (document (doc-data (doc-author (author-data (author-name "Nix build user")))) (concat "Text" (footnote (surround (label "org-texmacs-fn-1") "" (document (concat "#+begin" (rsub "table") " ") (tabular (tformat (cwith "1" "-1" "1" "1" "cell-halign" "l") (table (row (cell "A")))))))) ". "))
+org-texmacs-inline-script-probe> KIND plain-note HTML "<p>
+org-texmacs-inline-script-probe> Text<sup><a id=\"fnr.n\" class=\"footref\" href=\"#fn.n\" role=\"doc-backlink\">1</a></sup>.
+org-texmacs-inline-script-probe> </p>
+org-texmacs-inline-script-probe> <div id=\"footnotes\">
+org-texmacs-inline-script-probe> <h2 class=\"footnotes\">Footnotes: </h2>
+org-texmacs-inline-script-probe> <div id=\"text-footnotes\">
+org-texmacs-inline-script-probe> 
+org-texmacs-inline-script-probe> <div class=\"footdef\"><sup><a id=\"fn.n\" class=\"footnum\" href=\"#fnr.n\" role=\"doc-backlink\">1</a></sup> <div class=\"footpara\" role=\"doc-footnote\"><p class=\"footpara\">
+org-texmacs-inline-script-probe> #+begin<sub>table</sub>
+org-texmacs-inline-script-probe> </p>
+org-texmacs-inline-script-probe> <table border=\"2\" cellspacing=\"0\" cellpadding=\"6\" rules=\"groups\" frame=\"hsides\">
+org-texmacs-inline-script-probe> 
+org-texmacs-inline-script-probe> 
+org-texmacs-inline-script-probe> <colgroup>
+org-texmacs-inline-script-probe> <col  class=\"org-left\" />
+org-texmacs-inline-script-probe> </colgroup>
+org-texmacs-inline-script-probe> <tbody>
+org-texmacs-inline-script-probe> <tr>
+org-texmacs-inline-script-probe> <td class=\"org-left\">A</td>
+org-texmacs-inline-script-probe> </tr>
+org-texmacs-inline-script-probe> </tbody>
+org-texmacs-inline-script-probe> </table></div></div>
+org-texmacs-inline-script-probe> 
+org-texmacs-inline-script-probe> 
+org-texmacs-inline-script-probe> </div>
+org-texmacs-inline-script-probe> </div>"
+org-texmacs-inline-script-probe> KIND heading-note AST-NATIVE nil ISLANDS nil BODY (document (doc-data (doc-author (author-data (author-name "Nix build user")))) (concat "Text" (footnote (surround (label "org-texmacs-fn-1") "" (document (concat "#+begin" (rsub "table") " ") (tabular (tformat (cwith "1" "-1" "1" "1" "cell-halign" "l") (table (row (cell "A")))))))) ". "))
+org-texmacs-inline-script-probe> KIND heading-note HTML "<p>
+org-texmacs-inline-script-probe> Text<sup><a id=\"fnr.n\" class=\"footref\" href=\"#fn.n\" role=\"doc-backlink\">1</a></sup>.
+org-texmacs-inline-script-probe> </p>
+org-texmacs-inline-script-probe> <div id=\"footnotes\">
+org-texmacs-inline-script-probe> <h2 class=\"footnotes\">Footnotes: </h2>
+org-texmacs-inline-script-probe> <div id=\"text-footnotes\">
+org-texmacs-inline-script-probe> 
+org-texmacs-inline-script-probe> <div class=\"footdef\"><sup><a id=\"fn.n\" class=\"footnum\" href=\"#fnr.n\" role=\"doc-backlink\">1</a></sup> <div class=\"footpara\" role=\"doc-footnote\"><p class=\"footpara\">
+org-texmacs-inline-script-probe> #+begin<sub>table</sub>
+org-texmacs-inline-script-probe> </p>
+org-texmacs-inline-script-probe> <table border=\"2\" cellspacing=\"0\" cellpadding=\"6\" rules=\"groups\" frame=\"hsides\">
+org-texmacs-inline-script-probe> 
+org-texmacs-inline-script-probe> 
+org-texmacs-inline-script-probe> <colgroup>
+org-texmacs-inline-script-probe> <col  class=\"org-left\" />
+org-texmacs-inline-script-probe> </colgroup>
+org-texmacs-inline-script-probe> <tbody>
+org-texmacs-inline-script-probe> <tr>
+org-texmacs-inline-script-probe> <td class=\"org-left\">A</td>
+org-texmacs-inline-script-probe> </tr>
+org-texmacs-inline-script-probe> </tbody>
+org-texmacs-inline-script-probe> </table></div></div>
+org-texmacs-inline-script-probe> 
+org-texmacs-inline-script-probe> 
+org-texmacs-inline-script-probe> </div>
+org-texmacs-inline-script-probe> </div>"
+org-texmacs-inline-script-probe>    passed  1/1  org-script-clipped-markers (0.122523 sec)
+org-texmacs-inline-script-probe> 
+org-texmacs-inline-script-probe> Ran 1 tests, 1 results as expected, 0 unexpected (2026-11-03 17:59:24+0000, 0.122581 sec)
+org-texmacs-inline-script-probe> 
+/nix/store/3cmvg2mzbb00jnli2b6m5v9raww3j8la-org-texmacs-inline-script-probe

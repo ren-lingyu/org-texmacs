@@ -1,0 +1,83 @@
+diff --git a/lisp/org-texmacs-context.el b/lisp/org-texmacs-context.el
+index 9fb10b6..912a303 100644
+--- a/lisp/org-texmacs-context.el
++++ b/lisp/org-texmacs-context.el
+@@ -51,6 +51,7 @@
+     :with-email
+     :with-creator
+     :with-entities
++    :with-sub-superscript
+     :with-priority
+     :with-toc
+     :with-tags
+diff --git a/lisp/org-texmacs-document.el b/lisp/org-texmacs-document.el
+index 8feda8b..b91d7b3 100644
+--- a/lisp/org-texmacs-document.el
++++ b/lisp/org-texmacs-document.el
+@@ -1550,6 +1550,8 @@ count.  Both inputs have prose whitespace semantics, not source fidelity.
+ Support paragraphs, plain text, basic emphasis, inline code/verbatim,
+ Unicode-backed Org entities as text or local math, with a fixed enabled
+ default and explicit nil `:with-entities' preserving their source syntax,
++recursive subscripts/superscripts using native right scripts, with a fixed
++enabled default and effective nil/{} `:with-sub-superscript' syntax policies,
+ explicit line breaks, self-contained URI links, transparent Org sections,
+ same-document headline/ID and dedicated-target links resolved from AST,
+ plain local body file links with raw target paths and file provenance,
+@@ -1931,6 +1933,57 @@ for consumers.  Final handlers must preserve contents identity and provenance."
+                           'math (list part))
+                        part))))
+                (blank node space))))
++           ((and (consp node)
++                 (memq
++                  (org-element-type node) '(subscript superscript)))
++            (when (memq node ancestors)
++              (org-texmacs--document-fail node "Cyclic Org AST"))
++            (let* ((type (org-element-type node))
++                   (brackets
++                    (org-element-property :use-brackets-p node))
++                   (policy
++                    (if (plist-member info :with-sub-superscript)
++                        (plist-get info :with-sub-superscript)
++                      t))
++                   (ancestors (cons node ancestors)))
++              (unless (memq brackets '(nil t))
++                (org-texmacs--document-fail
++                 node "Invalid script brackets"))
++              (if (or (null policy)
++                      (and (eq policy '{}) (not brackets)))
++                  ;; Like Org's option rewrite, retain the marker/braces and
++                  ;; recursively handle child objects, without reparsing text.
++                  (append
++                   (list
++                    (text
++                     (concat
++                      (if (eq type 'subscript)
++                          "_"
++                        "^")
++                      (and brackets "{"))
++                     space))
++                   (inlines
++                    (org-element-contents node)
++                    context
++                    ancestors
++                    space)
++                   (and brackets (list (text "}" space)))
++                   (blank node space))
++                (let ((body
++                       (one-body
++                        (inlines
++                         (org-element-contents node) type ancestors
++                         (list nil (cadr space))))))
++                  ;; Script whitespace must not suppress the next prose space.
++                  ;; Keep title/metadata restrictions inside the new local state.
++                  (setcar space nil)
++                  (cons
++                   (org-texmacs--document-pack
++                    (if (eq type 'subscript)
++                        'rsub
++                      'rsup)
++                    (list body))
++                   (blank node space))))))
+            ((and (consp node)
+                  (assq
+                   (org-element-type node)
