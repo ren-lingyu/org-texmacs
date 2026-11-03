@@ -1,5 +1,17 @@
 # org-texmacs durable evidence
 
+## E1 human delivery and E2 inventory
+
+E1 e8ee1ac matches exact delivered D parent,15paths/full prepared commit message
+and all156accepted committed/worktree input hashes. Ordinary and GAW intake clean;
+no unchanged tests rerun. This is the exact baseline of the following E2 work.
+Scoped search finds444source API occurrences across22maintained test files; this
+is an inventory count, not independent tests. Migrate source byte/output consumers
+first, structured entries/parallel preparation afterward; no extra feature scope.
+Four isolated standard-transaction probes pass4/4(5.676516s), establishing the
+matched-heading region mapping, early rejection and nested native PDF contract.
+Complete findings and retention assessment: memory/standard-export-0.7.0-e2.md.
+
 ## E1 accepted candidate and D human delivery
 
 Human D matches expected C parent, exact14paths/full prepared message/all154accepted

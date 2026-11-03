@@ -1,6 +1,6 @@
 # org-texmacs current project model
 
-## v0.7.0 standard backend: A-D delivered; E1 accepted candidate
+## v0.7.0 standard backend: A-E1 delivered; E2 source consumers active
 
 The real texmacs backend consumes standard org-export-as in one transaction.
 Prepared structures/native documents use the isolated single-use result handoff;
@@ -54,8 +54,12 @@ E1 adds frozen per-table public Org alignment queries: retain ignored-row cookie
 and default numeric inference, reject width cookies. Pure lowering consumes owned
 identity-remapped values; original native PDF layout assertions remain unchanged.
 Standard narrowed subtree selection requires an accessible heading, unlike legacy
-source APIs.15task paths await human E1 delivery; exact156input hashes are in
-memory/standard-export-0.7.0-e1-inputs.json. Source APIs/cleanup remain E2; examples,
+source APIs. Human E1 delivery matches parent/15paths/message/all156hashes in
+memory/standard-export-0.7.0-e1-inputs.json; clean intake, no unchanged rerun. E2
+proceeds as E2a byte/buffer/new-file exports, then E2b structured entries/cleanup
+after caller migration, retaining human gates. Four isolated source-selection/
+result probes pass; matched heading/region maps directly, mismatches and supplied
+BibTeX text reject before preparation. No E2 production edits yet. Examples,
 version metadata and final release documentation/checks remain E3.
 Historical0.6descriptions below remain baseline evidence, not current standard
 backend support claims.

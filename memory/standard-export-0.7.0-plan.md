@@ -1,11 +1,18 @@
 # v0.7.0 Standard Org Export Integration: approved execution plan
 
-## Execution state: A-D human-delivered; E1 accepted, awaiting delivery
+## Execution state: A-E1 human-delivered; E2 active
+
+Human E1 delivery matches parent/15paths/message/all156accepted hashes, clean
+intake and no unchanged rerun. E2 is subdivided into E2a source byte/buffer/new-file
+exports, then E2b structured entries and duplicate preparation cleanup after
+caller migration. Keep human gates for each valid production node. Final E2 scope
+and architecture stay unchanged. Inventory/selection questions:
+memory/standard-export-0.7.0-e2.md.
 
 E1 passes all named checks/default737ERT+actual3 with156accepted input hashes
 in memory/standard-export-0.7.0-e1-inputs.json.15task paths, docs and complete-diff
-commit draft await human delivery. Verify that delivery before E2 source API/
-parallel preparation cleanup, then E3 examples/version/final release checks.
+commit draft are human-delivered and verified. E2 source API/parallel preparation
+cleanup now follows, then E3 examples/version/final release checks.
 E1's full-gate table regression is resolved through public Org alignment/width
 queries frozen into finite identity-remapped context; no preparation duplication.
 Original PDF layout assertions remain unchanged. Details/limits/retention:

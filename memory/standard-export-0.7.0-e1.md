@@ -1,5 +1,8 @@
 # E1: standard interactive commands
 
+Human E1 delivery e8ee1ac now matches expected D parent,15paths/full message/all156
+accepted hashes, clean intake; unchanged runtime tests not rerun. Continue E2.
+
 D human delivery matches its expected C parent,14paths/message/all154accepted
 hashes, with clean intake. E1 starts from that exact delivered source; no
 unchanged D tests rerun. E is split into E1 commands, E2 source APIs/preparation
@@ -104,7 +107,7 @@ Accepted156input hashes: memory/standard-export-0.7.0-e1-inputs.json, SHA256
 bytes all match.15task paths are one coherent command migration + required table
 query fix/docs/tests; split unnecessary. README/CHANGELOG and complete-worktree
 commit draft in tmp/commit.md reviewed; ordinary index/HEAD/lock unchanged.
-Wait for human E1 commit and exact delivery verification before E2; E3 retains
+Human E1 commit and exact delivery verification are complete; E3 retains
 examples/version/final docs/release checks. Keep0.6.0/TODO until E3/human release
 transitions. No other-platform/minimum9.8/all-style/GUI/examples-build claim.
 No ordinary staging/commit.

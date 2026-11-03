@@ -1,17 +1,24 @@
 # org-texmacs current memory
 
-## Current: A-D delivered; E1 accepted, awaiting human delivery
+## Current: A-E1 delivered; E2 source API migration active
 
-Controlling plan: memory/standard-export-0.7.0-plan.md. Human D delivery matches
-expected C parent,14paths/message/all154accepted hashes and clean intake; no
-unchanged gate rerun. E1 now has15uncommitted task paths, ordinary index untouched.
-All156root/isolated input hashes match memory/standard-export-0.7.0-e1-inputs.json
-(SHA25698a3d11b1a912a9706463c67bbfb841d721777870f63dfca0f79ec44477e47ff).
-README/CHANGELOG and complete-worktree tmp/commit.md are synchronized. No ordinary
-staging/commit/tag/push. Wait for human E1 commit, verify exact parent/paths/message/
-accepted input hashes, then E2 source convenience APIs/parallel preparation cleanup.
-E3 examples/version/final docs/release checks follows its own human-delivery gate.
-Version remains0.6.0 and CHANGELOG TODO; v0.7.0 is not complete or released.
+Controlling plan: memory/standard-export-0.7.0-plan.md. Human E1 e8ee1ac matches
+expected delivered D parent,15paths/full prepared message/all156accepted input
+hashes; ordinary worktree/index and GAW clean at intake. No unchanged tests rerun.
+E1 acceptance remains default737ERT+actual3/all named checks on locked baseline.
+The E2 call inventory finds444public source API occurrences in maintained tests
+across22files; private preparation also services structured/direct/preprocessed/
+discovery adapters. Preserve caller migration before deletion. E2 is subdivided
+into E2a source byte/buffer/new-file export consumers and E2b structured source
+entry migration plus duplicate preparation cleanup. Each production candidate
+retains the existing human-delivery gate; E3 remains examples/version/final docs.
+This changes execution granularity, not final architecture or feature scope.
+Current inventory, decision and experiment questions: memory/standard-export-0.7.0-e2.md.
+Four isolated source-selection/result probes pass4/4(5.676516s). Select the region
+from its beginning; require a matching accessible heading when subtree-position
+is also given. Reject old supplied BibTeX texts before preparation. No production
+edits yet. Next thin source consumer implementation, maintained tests/docs and full gate.
+Version remains0.6.0/TODO, not a completed release. No ordinary staging/commit.
 
 Three interactive commands now use one genuine standard Org export transaction
 for all scopes, including visible-only. Org owns preparation/options/AST filters/
