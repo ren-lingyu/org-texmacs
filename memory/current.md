@@ -1,38 +1,28 @@
 # org-texmacs current memory
 
-## Current: E2b accepted with approved caption scope, human delivery pending
+## Current: A-E2b human-delivered; E3 examples/version/release preparation active
 
-Controlling plan: memory/standard-export-0.7.0-plan.md. User explicitly approves
-standard source caption scope contraction after reviewing historical support and
-native limits; see goals.md. Stock Org note-looking caption text follows Org.
-Effective caption footnote nodes from extensions/AST filters reject explicitly.
-Independent model/pure lowering anonymous long/short caption conversion remains.
-Native package research is outside0.7.0; existing PDF anchor repair stays unchanged.
-This supersedes the earlier source-compatibility regression gate and patched
-source success requirement. Prior unilateral contraction was corrected by review;
-now the public behavior change is explicitly adopted, not a hidden regression.
+Human E2b c596e09 matches E2a parent, complete expected message/37paths/all158
+accepted committed and worktree hashes. Ordinary worktree/index clean at intake;
+no unchanged test rerun. Standard source caption scope is explicitly user-approved;
+independent model/pure lowering remain. Keep existing PDF footnote anchor fix.
+E2b validation remains default637ERT+actual4/all12checks on exact accepted inputs.
 
-Prepared adapter now checks caption nodes after canonical definition/ignore-list
-exclusions, before native parsing. Definition discovery does not query unsupported
-caption definitions. New stock/synthetic test covers both caption parts, deletion,
-logical ignore and unused definition, without numbering/native worker callbacks.
-Focused checks pass core275/275(1.447825s), patchedcaption6/6(2.730115s). Complete
-caption-scope check exits0: default637ERT plus actualintegration4, all12checks.
-All158inputs equal the final snapshot; source/compile/lint/format/native/PDF gates
-pass. The previous636candidate is superseded by this checked scope refinement.
+Proceed with approved E3: migrate compiled examples from deprecated source-native
+bibliography snapshots to standard document/Cite with local CSL style and an
+example-only citeproc dependency; update bilingual guidance, metadata0.7.0 and
+complete release manuscript. Four examples require fresh actual package builds.
+Do not ship test helper CSL files or add citeproc to the base runtime dependency.
+Preserve standard Org authority, AST-first, native ownership and same-document
+TM/PDF consumers. No example-only exporter compatibility code.
 
-User-staged37paths match every previous158-input hash; preserve ordinary index.
-Current refinement adds seven unstaged paths, all within those37. No ordinary
-staging/commit/tag/push. README/CHANGELOG and complete-worktree tmp/commit.md
-state the approved source boundary. Version0.6.0/TODO unchanged.
-
-Complete worktree and seven-path refinement reviewed; manifests/draft updated.
-Next: user manually restages the seven refinement paths and commits E2b. Verify expected E2a
-parent/message/37paths/all158hashes after user delivery; no unchanged test rerun.
-E3 examples/version/final docs/release checks start after that human commit.
-No claim for other systems/minimum Org/GUI layout/example builds in E2b. History
-comparison: caption native body/count limits differ from947289b PDF anchors and
-from the now-explicit source subset. Details: evidence.md/caption note/E2b note.
+Update README/CHANGELOG with final verified support/migration boundaries. Human
+controls TODO transition/CLOSED/tag/publication; keep TODO until human action.
+Validate package version/build, four EN/ZH generic/article artifacts and all Nix
+checks including actual Organize, review complete diff, capture input hashes and
+GAW, then human E3 commit. Authorized nix fmt/build/eval/flake check variants;
+use isolated final snapshots, bounded commands, disclose writes/network/timeouts.
+No ordinary staging/commit. Scope/validation: memory/standard-export-0.7.0-e3.md.
 
 Five main-module source TM/PDF byte/fresh-buffer/exclusive-file exports now use
 one genuine standard Org transaction and lazy backend loading. Core/model use

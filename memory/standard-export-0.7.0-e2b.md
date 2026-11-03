@@ -1,5 +1,10 @@
 # E2b: structured source consumers and parallel preparation retirement
 
+E2b human delivery is verified against exact expected parent/message/37paths/
+all158accepted inputs; clean intake and no unchanged runtime rerun. E3 examples,
+version metadata/final docs/release validation is now active. Earlier candidate
+handoff statements below are superseded by delivery. See E3 note/current state.
+
 ## Approved E2b caption scope
 
 User approves standard source rejection of effective caption footnote nodes from

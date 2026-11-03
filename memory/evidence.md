@@ -1,5 +1,16 @@
 # org-texmacs durable evidence
 
+## E2b human delivery verification and E3 intake
+
+c596e091be2f9ce7f61df6aa76140c79685f8e05 has the expected E2a parent, complete
+approved message/37paths and all158accepted committed/worktree input hashes.
+Ordinary index/worktree clean. No unchanged validation rerun. Any associated
+project parent grounds this exact delivery inspection, not earlier modified
+runtime candidates. E3 inventory finds example builder still passing native
+BibTeX texts to deprecated preprocessed API; shared bilingual snippets still set
+retired discovery flag. Migrate examples to standard document/Cite with a shipped
+local CSL style and example-only citeproc. Base package stays optional-Cite.
+
 ## Final E2b approved-scope acceptance
 
 User explicitly approves source caption scope contraction. Explicit owned-AST
