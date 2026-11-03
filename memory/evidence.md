@@ -1,5 +1,29 @@
 # org-texmacs durable evidence
 
+## Caption migration versus earlier native footnote problems
+
+User requests historical comparison. Read adopted caption-inline-footnotes.md,
+footnote-pdf-fix.md and footnote-private-integration.md, and actual project commits
+fae32879f62a78758bffaab29ea9638dd3618ec7 /947289b5ec4c223e498b4d6e180c0a9abbbeded5.
+These establish three distinct layers, not one unresolved native defect:
+- Native caption layout: paired20controls generic/article show table-cell footnote
+  body suppression and separate list-caption extra counter consumption. Final
+  user decision accepts anonymous long/short caption AST conversion, including
+  official source adapters under parser patch, with native layout limitations;
+  no split notes, separate counters, unboxed layout or list-write suppression.
+- PDF destination repair: render-footnote* set-binding alone lacks PDF destination.
+  Same-key label before binding in private PDF buffer fixes forward links while
+  preserving layout/numbering. Delivered947289b, isolated44PDF evidence and later
+  maintained tests; caption body/counter layout was explicitly outside its repair.
+- Current E2b failure: Org9.8.10 numbering query skips affiliated captions but the
+  new structured note planner requires an integer for every reference. It fails
+  before native rendering. This migration regression is not native body loss or
+  missing PDF anchors. Existing worker anchor installer remains present, unchanged
+  by E2b. Keep it; restore source caption compatibility at query/lowering boundary.
+No new native/PDF runtime or archive inspection performed for this comparison.
+Main HEAD still E2a; user-staged candidate is preserved. Comparison does not certify
+an unimplemented fix. See causal records above and active reopened caption gate.
+
 ## Caption source compatibility gate reopened
 
 User correctly recalls the adopted caption-inline-footnotes contract. Recovery of

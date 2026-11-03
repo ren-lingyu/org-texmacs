@@ -8,6 +8,11 @@ submission-ready despite passing checks. Reassess this regression before E3.
 Current authority/details: memory/current.md and memory/caption-inline-footnotes.md.
 The acceptance statements below describe the superseded candidate assessment.
 
+Earlier native footnote history does not justify source rejection: body suppression/
+list-caption count effects are accepted native layout limits, and PDF missing
+anchors were independently repaired in the worker. Current missing Org number is
+an earlier Elisp migration failure. Keep the existing PDF fix; see evidence.md.
+
 ## Accepted candidate and human gate
 
 Complete37path worktree diff reviewed, ordinary index untouched. default636ERT

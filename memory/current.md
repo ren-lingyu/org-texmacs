@@ -20,6 +20,12 @@ Current project changes are user-staged (37paths), HEAD still E2a; preserve inde
 The previous tmp/commit.md and accepted-candidate label are not submission-ready.
 No production or index mutation was made during this corrective read-only review.
 
+Historical comparison is now verified in evidence.md: native caption body/counter
+limits (fae3287 acceptance), private PDF destination repair (947289b), and current
+Elisp missing-number rejection are distinct. Keep existing worker PDF anchor fix;
+restore compatibility in standard query/native lowering, with mixed-note tests.
+No new runtime evidence; do not claim a completed repair.
+
 ## Current: E2b accepted candidate; human project commit pending
 
 Controlling plan: memory/standard-export-0.7.0-plan.md. Human E2a delivery is
