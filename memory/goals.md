@@ -2,6 +2,16 @@
 
 ## Approved v0.7.0 objective: Standard Org Export Integration
 
+The E2b user decision makes Org structure authoritative over embedded STM syntax.
+Final prepared/pruned/filtered/Cite-transformed AST is the input. Accept complete
+native STM within one supported effective structure, including multiline text;
+never join across Org boundaries. Preparation may transform, delete or generate
+candidates; propagate its failures and do not restore original STM. Stop generic
+early parser protection and INCLUDE interception, including successful isolated
+variants. Independent parse-buffer/model/transform/pure lowering contracts stay
+unchanged. Arbitrary literal containers need a separate later contract outside
+0.7.0. This supersedes conditional early-protection research in the guide/plan.
+
 The user supplies the v0.7.0 guide for read-only review followed by Plan mode
 planning. Make ox-texmacs consume prepared Org structures inside real
 org-export-as, with Org owning standard preparation/selection/options/filters/

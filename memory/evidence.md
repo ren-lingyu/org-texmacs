@@ -1,5 +1,20 @@
 # org-texmacs durable evidence
 
+## E2b Org structure priority decision and rejected protection research
+
+User explicitly adopts final Org AST authority and stops generic early parser
+development. opaque-2 real TeXmacs proves the multiline native math string with
+an INCLUDE directive is valid STM while standard preparation attempts INCLUDE;
+this is now an accepted source syntax boundary/error propagation, not a blocker.
+opaque-parser-2 fixes a missing lexical cookie and accepts INCLUDE/SETUPFILE/
+footnote/citation cases but fails a heading case. Widening to point-max in
+opaque-parser-3 leaves extra parsed tail structure and fails; do not repair it.
+The later opaque-parser-4 patch failed as JavaScript before any write/build and
+supplies no evidence. No generic parser or INCLUDE interception is in production.
+Retain facts and the minimal reproducible input in memory; no raw archive needed:
+original script/log bytes add no independent evidence after sufficient extraction.
+No production tests for rejected designs. Full acceptance remains pending.
+
 ## E2a human delivery and E2b intake
 
 Human a44ec6a matches expected E1 parent, exact15paths/full prepared message and

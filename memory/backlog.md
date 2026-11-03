@@ -2,6 +2,11 @@
 
 ## v0.7.0 Standard Org Export Integration: approved execution
 
+E2b user revision narrows STM work to final AST adaptation and stops early generic
+protection. Org structure priority is an adopted architecture contract, not a test
+waiver. Arbitrary literal containment requires a separately adopted later syntax;
+do not add it to0.7.0. API/cleanup/docs/full checks/human gates remain unchanged.
+
 Current gate: initial CHANGELOG and A-D are human-delivered/verified. D adopts
 existing CSL Org-return output, passing complete candidate acceptance with724
 defaultERT+2actual/all12isolated checks and exact D delivery. A custom native Cite

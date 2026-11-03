@@ -27,7 +27,20 @@ migration. Focused-2 combined native/PDF120s times out incomplete; failures rema
 Isolated selected-inline-note probe exposes shared children in ignored originals
 and Org supplemental notes; adapter must skip ignore-list before strict ownership.
 Native settings must be captured from source, with separate copies for INFO and
-source guards. Both changes are under validation. Do not copy
+source guards. Follow-up shows ignore-list alone is insufficient: canonical Org
+definition selection must precede copying. Input-only five-scope probe passes,
+but document probe exposes inline object children in supplemental definitions;
+owned paragraph wrapping and empty-definition handling are under validation.
+Allowing shared text alone failed and was withdrawn. README migration rewrite
+is in progress; full gates and remaining native test migration are pending.
+User adopts Org structure priority and stops early parser development. The
+multiline INCLUDE counterexample remains evidence of standard preprocessing,
+not a protection gate. Do not continue parser candidates or repair cross-heading
+variants. No generic parser was added to production. Consume final AST, propagate
+Org errors and never restore deleted/rewritten STM. Complete native/PDF candidate
+results211/292,43/45,27/29 remain unaccepted. Continue E2b API/cleanup/docs and
+per-contract regression migration, then full Nix checks/diff/GAW/human delivery.
+E3 follows that human commit. See E2b decision note. Do not copy
 old preparation into test helpers merely to preserve the old test count.
 
 Five main-module source TM/PDF byte/fresh-buffer/exclusive-file exports now use

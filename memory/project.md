@@ -2,6 +2,15 @@
 
 ## v0.7.0 standard backend: A-E2a delivered; E2b active
 
+User-approved E2b semantics: standard Org defines structure and content before STM
+recognition. Islands must be complete inside their effective Org owner; multiline
+is allowed there, crossing headings/paragraphs/blocks is not. Native blocks use
+the actual final block and effective contents. Legal preprocessing changes,
+generated content and synthetic AST nodes are supported; deleted candidates are
+not recovered. Org preparation failures propagate. Early generic parser/INCLUDE
+protection is rejected for0.7.0; isolated variants are not production. Independent
+core/model/pure lowering contracts do not change with this decision.
+
 The real texmacs backend consumes standard org-export-as in one transaction.
 Prepared structures/native documents use the isolated single-use result handoff;
 text uses reversible Latin1 transport, native PDF never reconstructs .tm.

@@ -9,6 +9,12 @@ Prepared-only input/model result gate passes4/4, preserving one real standard
 transaction and independent core/pure lowering. Production acceptance is pending.
 Details: memory/standard-export-0.7.0-e2b.md.
 
+E2b user revision adopts Org structure priority and closes early generic parser
+research without production adoption. Final AST is authoritative; accept complete
+STM only within effective Org structure, propagate preprocessing errors and never
+recover original deleted/rewritten candidates. Independent core/pure APIs stay.
+Use the narrowed regression matrix in E2b. Full acceptance remains pending.
+
 E2a15task paths pass full-1/default745ERT+actual4/all12named checks. Exact158
 accepted input hashes: memory/standard-export-0.7.0-e2a-inputs.json. Docs and
 complete-diff commit draft are human-delivered and verified. Continue E2b
@@ -181,8 +187,9 @@ do not blindly copy full INFO/runtime caches into model or pure input. Consume
 Org ignore-list and existing interpretation decisions without re-pruning or
 recomputing option precedence.
 
-Try late one-pass recognition first for inline/native/math-environment STM and
-preprocessing-generated content. Add minimal earlier protection only on proven
+Use final-AST recognition for inline/native/math-environment STM and generated
+content. E2b user decision supersedes earlier protection research. Historical
+conditional research (no longer active): add protection only on proven
 counterexamples; Org still owns INCLUDE recursion. Final AST is authoritative.
 Distinguish buffer-backed original/preprocessed nodes from filter-created or
 replaced nodes lacking reliable begin/end/source mapping. Missing positions alone
