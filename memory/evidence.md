@@ -1,5 +1,21 @@
 # org-texmacs durable evidence
 
+## E3 final acceptance, human delivery pending
+
+Verified E2b delivery is the baseline. Final E3 package/build/version eval0.7.0
+and all four EN/ZH generic/article native TM/PDF examples pass, with local CSL
+and BibTeX tangled from canonical Org. pdfinfo passes6/5/6/4pages respectively.
+First full E3 check passes637defaultERT+actual4/all12checks; final full-2 after
+sample/style-source packaging and README corrections passes with only treefmt
+rebuilt, identical runtime/compile/lint derivations cached. Exact159project hashes,
+two optional actual-integration driver hashes and expected19path human message
+are in E3 inputs JSON. All root/index/final-snapshot hashes agree; complete diff
+and detailed notes reviewed, whitespace clean. No ordinary Git write invoked.
+TODO0.7.0 remains; no CLOSED/tag/publication action. Chinese CSL fallback en-US
+is documented, not certified localization. No minimum Org/other-platform/GUI/
+all-style claim. Maintained sources and distilled facts suffice; no raw archive.
+Full commands, outputs, durations and limitations: memory/standard-export-0.7.0-e3.md.
+
 ## E2b human delivery verification and E3 intake
 
 c596e091be2f9ce7f61df6aa76140c79685f8e05 has the expected E2a parent, complete

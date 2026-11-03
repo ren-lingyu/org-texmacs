@@ -1,28 +1,34 @@
 # org-texmacs current memory
 
-## Current: A-E2b human-delivered; E3 examples/version/release preparation active
+## Current: E3 accepted; v0.7.0 development ready for human delivery
 
-Human E2b c596e09 matches E2a parent, complete expected message/37paths/all158
-accepted committed and worktree hashes. Ordinary worktree/index clean at intake;
-no unchanged test rerun. Standard source caption scope is explicitly user-approved;
-independent model/pure lowering remain. Keep existing PDF footnote anchor fix.
-E2b validation remains default637ERT+actual4/all12checks on exact accepted inputs.
+A-E2b are human-delivered. E2b c596e09 exactly matched expected E2a parent/full
+message/37paths/all158accepted inputs; clean intake, no unchanged test rerun.
+Approved final-AST/STM/caption boundaries remain; independent models/pure lowering
+and native PDF anchor repair stay. E3 now completes examples/version/final docs.
 
-Proceed with approved E3: migrate compiled examples from deprecated source-native
-bibliography snapshots to standard document/Cite with local CSL style and an
-example-only citeproc dependency; update bilingual guidance, metadata0.7.0 and
-complete release manuscript. Four examples require fresh actual package builds.
-Do not ship test helper CSL files or add citeproc to the base runtime dependency.
-Preserve standard Org authority, AST-first, native ownership and same-document
-TM/PDF consumers. No example-only exporter compatibility code.
+Lisp/Nix package versions and README declare0.7.0. All four EN/ZH generic/article
+examples use standard document/Cite preparation, example-only citeproc and local
+CSL tangled with BibTeX from canonical Org; same completed document supplies TM/PDF.
+No extra tracking rule or standalone CSL input. Example Babel evaluation disabled.
+Chinese CSL uses bundled en-US fallback, documented without localization claims.
+Detailed release notes/root summary complete; TODO0.7.0/CLOSED/tag/publication stay
+human-controlled. No release-state transition/tag/publication performed.
 
-Update README/CHANGELOG with final verified support/migration boundaries. Human
-controls TODO transition/CLOSED/tag/publication; keep TODO until human action.
-Validate package version/build, four EN/ZH generic/article artifacts and all Nix
-checks including actual Organize, review complete diff, capture input hashes and
-GAW, then human E3 commit. Authorized nix fmt/build/eval/flake check variants;
-use isolated final snapshots, bounded commands, disclose writes/network/timeouts.
-No ordinary staging/commit. Scope/validation: memory/standard-export-0.7.0-e3.md.
+Final package/four-example builds and version eval pass. Full-1 passes default637
+ERT+actual4/all12checks; full-2 final example/docs snapshot passes with only treefmt
+rebuilt, identical runtime derivations cached. All159root/index/isolated inputs
+match. Complete19path staged/worktree diff reviewed, whitespace clean. Observed
+index equals accepted worktree; no ordinary Git write was invoked by agent.
+Exact inputs/message/limits: memory/standard-export-0.7.0-e3-inputs.json.
+Draft tmp/commit.md is ready. Retention: maintained sources/manifests/facts suffice,
+no raw temporary tree/log/PDF archive. Details: memory/standard-export-0.7.0-e3.md.
+
+Next: user manually commits E3. Verify exact c596e09 parent/full message/19paths/
+all159accepted inputs, including unchanged files; no unchanged runtime rerun.
+Then report development delivery complete. Human may freeze/finalize version and
+perform tag/publication separately; do not infer those actions from commit alone.
+No minimum Org9.8/other-platform/GUI/all-style layout certification is claimed.
 
 Five main-module source TM/PDF byte/fresh-buffer/exclusive-file exports now use
 one genuine standard Org transaction and lazy backend loading. Core/model use

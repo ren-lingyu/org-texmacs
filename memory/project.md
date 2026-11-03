@@ -1,9 +1,11 @@
 # org-texmacs current project model
 
-E2b human delivery is verified against exact expected parent/message/37paths/
-all158accepted inputs; clean intake and no unchanged runtime rerun. E3 examples,
-version metadata/final docs/release validation is now active. Earlier candidate
-handoff statements below are superseded by delivery. See E3 note/current state.
+E2b human delivery is verified against expected parent/message/37paths/all158inputs.
+E3 examples/version/final docs now pass159-input acceptance:637defaultERT+actual4/
+all12checks, four example TM/PDF builds and package/version0.7.0. Nineteen paths
+are staged and equal the accepted worktree, awaiting human E3 commit. TODO/CLOSED/
+tag/publication remain human-controlled; no release claim. See E3 note/current.
+
 
 ## Approved E2b caption scope
 
