@@ -2,11 +2,12 @@
 
 ## v0.7.0 Standard Org Export Integration: approved execution
 
-Current gate: initial CHANGELOG and A-C are human-delivered/verified. D now adopts
+Current gate: initial CHANGELOG and A-D are human-delivered/verified. D adopts
 existing CSL Org-return output, passing complete candidate acceptance with724
-defaultERT+2actual/all12isolated checks; await human D delivery. A custom native Cite
+defaultERT+2actual/all12isolated checks and exact D delivery. A custom native Cite
 processor is deferred as unnecessary for the verified CSL subset, not a new
-commitment. E public consumer/API consolidation follows D human delivery.
+commitment. E1 command migration is active; E2 source APIs/preparation cleanup
+and E3 examples/version/final docs follow their human delivery gates.
 C freezes original-transaction query results
 before identity adaptation; do not query with copied INFO caches. Org-selected
 actual footnote definitions precede STM discovery; no extra preparation/protection

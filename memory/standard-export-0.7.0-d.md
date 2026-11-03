@@ -3,8 +3,9 @@
 ## State and authority
 
 A-C are human-delivered. C delivery matches its expected parent,14paths,
-message and147accepted input hashes. D is fully accepted as an uncommitted
-candidate; E must wait for human D delivery. Standing scoped Nix
+message and147accepted input hashes. D acceptance is now human-delivered as
+7da08a9 with the expected C parent/14paths/message/all154accepted hashes and clean
+intake. No unchanged rerun. E1 is active. Standing scoped Nix
 authority and ordinary Git boundaries remain in the approved execution plan.
 
 ## Chosen path
@@ -90,9 +91,8 @@ baseline and accepted input manifest. No additional raw logs, PDFs or whole
 temporary tree need archiving; comparison evidence above retains independent
 design value. No earlier overwritten failed script is claimed exact/replayable.
 
-Ordinary HEAD remains C and index/lock/result unchanged.14task paths consist of
-7modified and7untracked files, with no unrelated changes. README/CHANGELOG and
-worktree-based tmp/commit.md are ready: feat(export): integrate standard Org Cite
-with CSL. One coupled feature node; split unnecessary, medium review difficulty.
-No release/version bump or ordinary staging/commit performed. Await human D
-delivery; verify expected C parent/14paths/message/all154hashes before E.
+At acceptance ordinary HEAD was C and index/lock/result unchanged;14task paths
+had no unrelated changes. The human delivered the exact candidate, with full
+message matching the prepared draft, without new agent staging/commit. No
+release/version bump occurred. Subsequent work is E1 command migration, then
+E2 source API/preparation cleanup and E3 final examples/docs/version validation.

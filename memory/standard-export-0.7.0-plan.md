@@ -1,6 +1,6 @@
 # v0.7.0 Standard Org Export Integration: approved execution plan
 
-## Execution state: A-C human-delivered; D accepted, await human delivery
+## Execution state: A-D human-delivered; E1 active
 
 Human B76f4763 matches parent/message/6paths/all144accepted hashes. C now passes
 formal12checks/709ERT with147accepted input hashes in
@@ -18,8 +18,8 @@ CSL's Org-return path is selected; a custom processor is unnecessary for this
 verified subset. Production raw/finalizer/control-directive/zero-width changes
 pass all12isolated checks (11default+actual),724defaultERT+2actual and strict
 compile/lint/treefmt.154accepted hashes are in memory/standard-export-0.7.0-d-inputs.json;
-14task paths, README/CHANGELOG and tmp/commit.md await human delivery. Verify
-expected C parent/paths/message/all154hashes before E. Current contracts/evidence:
+Human D7da08a9 matches expected C parent/14paths/message/all154hashes; ordinary
+intake clean and no unchanged rerun. Current contracts/evidence:
 memory/standard-export-0.7.0-d.md. E migration/cleanup follows D human delivery; no
 version bump or Org TODO release transition. Existing native
 labels, static STM conflicts, note structures and error boundaries are retained.
@@ -193,6 +193,13 @@ INFO, nested exports and errors. Investigate csl/other combinations and publish
 an evidence-based support table with explicit unsupported errors.
 
 ### 7. E: consumers, API migration and cleanup
+
+Implement E as three independently valid production nodes, preserving the
+existing human-delivery gates: E1 interactive commands/managed output/file
+policies; E2 source conveniences, deprecated variants/flag and parallel
+preparation cleanup after caller migration; E3 examples/version/final docs and
+release validation. This is execution granularity within E, not a new feature
+scope or relaxation of the original acceptance requirements.
 
 Standard entry returns text; native serializer/PDF retain byte contracts. Text
 runs supported standard string filters/finalizers. PDF follows the A compatibility

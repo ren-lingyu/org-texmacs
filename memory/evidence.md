@@ -1,5 +1,19 @@
 # org-texmacs durable evidence
 
+## D human delivery and E1 baseline
+
+Human D7da08a9 matches expected C parent, exact14paths, prepared full message and
+all154accepted input hashes. Ordinary worktree/index clean at intake; no unchanged
+tests rerun. E1 isolated frontend experiment starts from a byte-identical154input
+copy of this delivered state; production files were unchanged at experiment start.
+E1 probes real standard command transactions/scopes, options ownership across
+prompts and final string-to-native-byte conversion before production migration.
+Six probes pass; scalar INFO metadata needs secondary-list wrapping, and actual
+file INFO needs Org's public plist merge plus a nonaliasing write-path copy.
+These exact causal cases now have maintained regressions, so no new raw archive
+is selected. Production candidate156inputs is under focused validation, not yet
+accepted; memory/standard-export-0.7.0-e1.md gives current findings and limits.
+
 ## D accepted candidate and C human delivery
 
 D final full-2 exits0/all12isolated checks, comprising11default checks plus the

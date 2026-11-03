@@ -1,12 +1,17 @@
 # org-texmacs current memory
 
-## Current: A-C delivered; D accepted, await human delivery
+## Current: A-D delivered; E1 interactive command migration active
 
 Controlling plan: memory/standard-export-0.7.0-plan.md. Human C054d6cf matches
 expected76f4763parent,14paths/message/all147accepted hashes; clean intake and no
-unchanged test rerun. D is implemented and fully validated, still uncommitted.
-Next wait for human D commit, verify expected C parent/14paths/full prepared
-message and all154accepted hashes, then enter E. Do not repeat unchanged gates.
+unchanged test rerun. Human D7da08a9 now matches expected C parent, exact14paths,
+prepared message and all154accepted hashes; ordinary worktree/index clean at intake.
+No unchanged gate rerun. E proceeds in reviewable nodes: E1 three interactive
+commands, E2 source convenience APIs/parallel preparation cleanup, E3 examples,
+version metadata/final docs/release checks. Each production node retains its
+human delivery gate. E1 isolated scope/options/text-byte/INFO probes pass6/6;
+production command migration, maintained tests and README/CHANGELOG are authored.
+Details and retention assessment: memory/standard-export-0.7.0-e1.md.
 
 D consumes existing CSL Org-return structures inside real org-export-as. Org
 owns bibliography, processor selection, options/AST filters and Cite scope;
@@ -38,13 +43,20 @@ archive/2026-11-02T20-32-35Z--054d6cf/MANIFEST.md. New zero-width evidence is
 sufficiently retained by maintained causal/native regressions plus exact baseline
 and accepted input identities; no further raw logs/PDF/temporary-tree archive.
 
-Fourteen task paths (7modified,7untracked), index empty; HEAD/lock/result unchanged.
-README/CHANGELOG synced, TODO/version retained. tmp/commit.md follows explicitly
-approved full-worktree workflow: feat(export): integrate standard Org Cite with
-CSL. One coupled feature node; split unnecessary, medium review difficulty.
-E remains public command/source API migration, parallel-preparation cleanup,
-examples/final docs and release checks after human D delivery. Do not start E
-or ordinary staging/commit/tag/push at this handoff.
+All D paths are human-delivered. E1 keeps existing managed-buffer and local
+file naming/overwrite guards, makes each consumer call standard preparation
+once, permits visible-only, and preserves captured selections/options around
+prompts. Native PDF uses structured result delivery; text consumes final string
+filters then reversibly converts Latin1 transport to native bytes. Non-nil legacy
+discovery flag must fail with migration advice, not silently suppress Org Cite.
+Keep old standalone APIs until E2 caller migration. Standard scalar INFO metadata
+is wrapped into secondary lists at ownership, never parsed as markup. Actual
+output metadata uses Org's public plist merger with a nonaliasing path copy.
+Scoped fmt passes13files/9changed;156production inputs copied exactly to isolated
+acceptance. First two focused attempts stop before ERT for overlong docstrings
+and an obsolete function-quote; both corrected. Focused-3 now runs core, selected
+command/native/PDF, CSL and real Organize. No ordinary staging/commit. Next inspect
+focused results, complete gates and per-node docs/draft/human E1 delivery.
 
 User permits nix fmt/build/eval/flake check and variants throughout0.7.0plan.
 Disclose exact commands/scope/writes/network/timeouts, isolate experiments and

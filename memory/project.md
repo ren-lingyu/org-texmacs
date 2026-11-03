@@ -1,6 +1,6 @@
 # org-texmacs current project model
 
-## v0.7.0 standard backend: A-C delivered, D accepted pending delivery
+## v0.7.0 standard backend: A-D delivered; E1 frontend active
 
 The real texmacs backend consumes standard org-export-as in one transaction.
 Prepared structures/native documents use the isolated single-use result handoff;
@@ -42,8 +42,14 @@ user dependency and a test-only dependency for ert-cite; ert aggregates that
 leaf without replay. Basic/raw and unsupported CSL-generated structures fail;
 style/affix markup is the processor's authoritative output. Exact scope,
 comparison archive/causal findings and limits: memory/standard-export-0.7.0-d.md.
-README/CHANGELOG/draft ready, no ordinary staging/commit. Await human D delivery
-before E public command/source API migration, preparation cleanup and final docs.
+Human D7da08a9 matches expected C parent, exact14paths/message/all154accepted
+hashes, clean intake. No unchanged gate rerun. E runs as reviewable E1 commands,
+E2 source APIs/parallel preparation cleanup and E3 examples/version/final docs.
+E1 six isolated probes validate command transactions/scopes/options/native bytes
+and actual output INFO. Production commands now migrate to that route, retaining
+managed output/local writer policy. Scalar INFO metadata is adapted without Org
+reparsing; non-nil old discovery flag rejects. Source APIs remain for E2. New
+maintained tests/docs are authored, formal E1 acceptance still pending.
 Historical0.6descriptions below remain baseline evidence, not current standard
 backend support claims.
 
