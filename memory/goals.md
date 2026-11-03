@@ -1,5 +1,20 @@
 # org-texmacs project goals
 
+## Approved final v0.7.0 prerelease inline compatibility work
+
+The user approves N0-N5 in memory/inline-objects-0.7.0-plan.md with all refinement
+notes. Mandatory entity/subscript/superscript support must honor effective INFO,
+including late filter/Cite nodes, source-independent ownership and native text/
+math binding. Conditional inline LaTeX is triggered only by unmet actual CSL AST
+needs; body samples are controls. Reliable conversion versus lossy recovery must
+be distinguishable and repeatable, or B is deferred without blocking A/release.
+No third AST, parallel preparation, raw reinterpretation, worker in pure lowering
+or core/island redesign. Start with memory checkpoint, then CHANGELOG-only
+TODO -> NEXT plus planned items, human delivery, then N2-N5. The explicit user
+request authorizes that one state transition; final DONE/CLOSED/tag/publication
+remain human-controlled. This extends the delivered A-E3 scope for the last
+release feature work, rather than reopening its completed implementation gates.
+
 ## Approved E2b caption source scope contraction
 
 User explicitly confirms continuing E2b with the proposed scope. Standard source

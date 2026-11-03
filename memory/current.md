@@ -1,13 +1,19 @@
 # org-texmacs current memory
 
-## Current: v0.7.0 development plan fully human-delivered
+## Current: approved prerelease inline compatibility plan, N0
 
-Read-only prerelease inline compatibility proposal is now reviewed. No execution
-request yet: do not implement or run native/CSL probes from the supplied plan alone.
-Proposal and amendments: memory/inline-objects-0.7.0-review.md. First scope is
-entity/subscript/superscript lowering with preserved Org options/encoding; second
-is conditional final-AST LaTeX conversion, deferred for upstream loss or large
-ownership redesign. Delivered baseline below remains unchanged and clean.
+User explicitly says "Implement the plan" after both refinement notes and final
+N0-N5 revision. Active contract: memory/inline-objects-0.7.0-plan.md. Mandatory
+A entities/scripts; B only for real unmet CSL needs, reliable finite conversion
+or deferral. Late-generated option behavior, actual text-mode script binding and
+three-way/repeatable converter acceptance are mandatory gates. No production
+implementation or new runtime proof yet. Ordinary project/index and GAW clean
+at intake; gaw check passes. N0 coordinated memory update/checkpoint comes first;
+next N1 updates only CHANGELOG.org TODO -> NEXT plus unchecked items, then waits
+for human delivery before N2. User explicitly authorizes that one transition,
+not finalization. Corrected earlier INFO spelling: :with-sub-superscript singular.
+Retention: semantic extraction is sufficient for supplied conversational notes;
+selective experimental retention/archival review belongs to N4.
 
 A-E3 are delivered. Final E3 f6aa2ae matches expected E2b parent, full approved
 message/21paths/all159accepted committed and worktree hashes, including native
@@ -30,11 +36,11 @@ message and delivery: memory/standard-export-0.7.0-e3-inputs.json. Current scope
 limits: E3 note/project/goals/evidence. Chinese CSL uses documented en-US fallback;
 minimum Org9.8, other platforms, arbitrary styles and GUI layout are not certified.
 
-No remaining approved implementation node. CHANGELOG remains TODOv0.7.0, no tag
-points at delivered HEAD during inspection, external publication not checked.
-Human controls freeze/finalize/CLOSED/tag/publication. Do not infer a state change
-or start external release actions from successful commit delivery. No ordinary
-Git write performed. Do not rerun unchanged checks merely for publication status.
+Original A-E3 has no remaining implementation node; N0-N5 above is newly approved.
+CHANGELOG is TODOv0.7.0 until N1; finalization/CLOSED/tag/publication remain human
+controlled. No tag pointed at delivered HEAD at earlier inspection; external
+publication was not checked. Successful delivery does not imply release authority.
+No ordinary Git write performed. Do not rerun unchanged checks merely for publication status.
 Retention: maintained sources/manifests/facts suffice; no new raw archive needed.
 
 Five main-module source TM/PDF byte/fresh-buffer/exclusive-file exports now use

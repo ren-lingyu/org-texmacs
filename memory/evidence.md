@@ -1,16 +1,30 @@
 # org-texmacs durable evidence
 
+## Prerelease inline plan adoption and option-key correction
+
+The user approved the revised plan and all notes with "Implement the plan".
+N0 intake verifies clean ordinary project/index and deployed GAW with successful
+public status/check. No new runtime test is claimed. Planning inspection of locked
+Org9.8.10 ox.el establishes singular INFO :with-sub-superscript (variable plural),
+option-driven remove-uninterpreted-data before parse-tree filters, tree-property
+collection and Cite. Corrected the prior review's plural INFO typo. User explicitly
+requires local effective-INFO decisions for late-created nodes without rerunning
+preparation; AST existence alone is insufficient. Full plan and retention decision:
+memory/inline-objects-0.7.0-plan.md. Original baseline results are not new feature
+validation; converter behavior and native script binding remain experimental.
+
 ## Static prerelease inline compatibility plan review
 
 At clean f6aa2ae, inline dispatch lacks entity/subscript/superscript branches and
-INFO projection lacks :with-entities/:with-sub-superscripts/:with-latex. Worker
+INFO projection lacks :with-entities/:with-sub-superscript/:with-latex. Worker
 encoding distinguishes native paths from literal leaves; no LaTeX conversion
 operation exists. Input data copying remaps known Org identities, suggesting a
 possible local context view, not verified conversion support. Official Org option
 and citeproc-el upstream docs read; no build/test/probe or production modification.
 Full reviewed requirements/amendments and source/evidence limits:
 memory/inline-objects-0.7.0-review.md. No raw guide archive needed after extraction.
-The conditional LaTeX feature is not validated or adopted for implementation.
+The later approved N0-N5 plan adopts a conditional investigation, not validated
+LaTeX support; it supersedes the earlier review-only status.
 
 ## v0.7.0 final E3 human delivery verified
 

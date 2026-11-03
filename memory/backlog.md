@@ -1,18 +1,20 @@
 # org-texmacs active backlog
 
-## Reviewed proposal, execution not yet authorized
+## Approved final prerelease inline compatibility execution
 
-User requests read-only review of prerelease inline objects and conditional CSL
-LaTeX math. Do not count this as implemented/adopted extra release scope yet.
-Concrete proposal, static findings, conditional gates and retention assessment:
-memory/inline-objects-0.7.0-review.md. Await execution direction; baseline remains
-the delivered A-E3 plan. Main review: projected Org options missing, native literal/
-symbol provenance, script base binding, converter error/ownership/encoding gates.
+User approves memory/inline-objects-0.7.0-plan.md (N0-N5). A is mandatory;
+B is conditional on unmet actual CSL final-AST needs and reliable native conversion.
+Body-only needs do not independently trigger B. Capture effective options for
+late nodes; verify real script binding/modes and repeatable converter fidelity.
+No mandatory broad LaTeX/core/island redesign. Begin N0 checkpoint, N1 CHANGELOG
+state/items and human delivery, then N2 entities/N3 scripts/N4 experiments/N5
+conditional conversion and release documentation. Unsupported cases are not
+implicitly added to scope. Original static review remains as amended evidence.
 
 A-E3 are human-delivered. Final E3 f6aa2ae matches expected E2b parent/full message/
 21paths/all159accepted inputs; worktree/index clean, no unchanged runtime rerun.
 Accepted637defaultERT+actual4/all12checks, four examples and package/version0.7.0
-remain. Development plan is complete; TODO/CLOSED/tag/publication stay human-owned.
+remain. Original A-E3 plan is complete; finalization/tag/publication remain human-owned.
 No tag points at inspected HEAD; external publication not verified. Current state:
 memory/current.md; final scope/evidence: E3 note/input manifest.
 

@@ -1,9 +1,17 @@
 # org-texmacs current project model
 
+Final prerelease inline-object work is approved, not implemented yet. Active
+N0-N5 contract: memory/inline-objects-0.7.0-plan.md. N0 memory checkpoint precedes
+N1 CHANGELOG-only TODO -> NEXT (explicit user request) and its human commit gate.
+Entity/subscript/superscript dispatch and related INFO projection are still absent;
+LaTeX conversion remains a gated hypothesis. The INFO key is singular
+:with-sub-superscript, not the plural variable spelling. Historical stage material
+below records delivered/reviewed states; the active plan controls next actions.
+
 A-E3 are human-delivered. Final E3 f6aa2ae matches expected E2b parent/full message/
 21paths/all159accepted inputs; worktree/index clean, no unchanged runtime rerun.
 Accepted637defaultERT+actual4/all12checks, four examples and package/version0.7.0
-remain. Development plan is complete; TODO/CLOSED/tag/publication stay human-owned.
+remain. Original A-E3 plan is complete; finalization/tag/publication remain human-owned.
 No tag points at inspected HEAD; external publication not verified. Current state:
 memory/current.md; final scope/evidence: E3 note/input manifest.
 

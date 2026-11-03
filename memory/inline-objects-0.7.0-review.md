@@ -1,9 +1,16 @@
-# Read-only review: prerelease inline object compatibility
+# Prerelease inline object compatibility: initial review and corrections
 
-## Authority and retention
+## Current authority
+
+The user subsequently approved the refined N0-N5 execution plan with all notes.
+memory/inline-objects-0.7.0-plan.md is now authoritative. The initial review below
+records pre-execution evidence, not an outstanding requirement to ask permission.
+INFO spelling corrected after locked Org inspection: :with-sub-superscript.
+
+## Initial review authority and retention
 
 User supplies an in-conversation prerelease plan and explicitly requests read-only
-review. This authorizes no production implementation or runtime experiment now.
+review. That review request alone authorized no production implementation or runtime experiment.
 The proposal describes entity/subscript/superscript support as mandatory once
 adopted for execution, and CSL bibliography inline LaTeX support as conditional.
 Current delivered baseline is f6aa2ae; project/index clean during static inspection.
@@ -40,7 +47,7 @@ README/root summary/detailed notes if implementation is later authorized.
 
 1. document.el inline dispatch currently has none of the three requested branches;
    fallback is Unsupported inline node. context.el's projected keys omit
-   :with-entities, :with-sub-superscripts and :with-latex; export.el owns only that
+   :with-entities, :with-sub-superscript and :with-latex; export.el owns only that
    projection. Thus this cannot safely be treated as a document.el-only change.
    Verify final AST AND live INFO for e:t/nil, ^:t/{}/nil and, if added,
    tex:t/nil/verbatim. Do not assume string-transcoding decisions have physically
@@ -86,4 +93,5 @@ https://raw.githubusercontent.com/andras-simonyi/citeproc-el/master/citeproc-bib
 TeXmacs snippet converter exact API/result/failure behavior remains unverified.
 A failed public source fetch supplies no converter evidence. Review conclusion:
 plan is architecturally reasonable with these amendments; keep two features/gates
-separate and await explicit execution request. No release state/tag/publication.
+separate. The later explicit execution request is recorded in the active plan;
+finalization/tag/publication remain outside this implementation authority.
