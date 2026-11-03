@@ -1,0 +1,121 @@
+#+title: Org TeXmacs v0.7.0 Release Notes
+
+* Overview
+Changes since v0.6.0. =ox-texmacs= is now a standard Org Export backend:
+=(org-export-as 'texmacs)= runs Org preparation and returns TeXmacs text.
+Org owns document selection, configuration, INCLUDE, SETUPFILE, macros, Babel,
+hooks, options/AST filters and Org Cite. The backend consumes the final effective
+Org AST and INFO, owns native STM islands, and uses the existing TeXmacs lowering.
+No third document AST or serialized STM intermediate is introduced.
+
+Independent mathematical-document models remain available without export
+preparation. Pure input construction and document lowering remain separate from
+source-buffer export, workers, serialization and PDF rendering.
+
+* Upgrade from v0.6.0
+All source-buffer preparation, document and byte/buffer/file export APIs now use
+the same standard preparation bridge as the dispatcher. Existing useful result
+types remain: prepared input, native document, TeXmacs bytes or PDF bytes.
+=org-texmacs-prepare-buffer= does not force document lowering; valid prepared Org
+structures may still be unsupported by the target document consumer.
+
+Source API =BIBLIOGRAPHY-SOURCES= must be nil. Configure standard Org Cite using
+=BIBLIOGRAPHY= and =CITE_EXPORT= instead of passing BibTeX text snapshots.
+The =org-texmacs-export-discover-bibliography= flag must be nil. Deprecated
+preprocessed/discovery names are thin standard wrappers, without independent
+acquisition or preparation. Their old non-nil discovery switches fail explicitly.
+
+=EXT-PLIST= and file/subtree options follow Org priority and syntax. Scalar rich
+metadata supplied directly as an option stays literal; pass parsed secondary
+strings when structured metadata is needed. Effective Org language/description
+override corresponding native initial values, including defaults and empty values.
+Optional URI schemes follow normal Org registration, without backend registration.
+
+Explicit source APIs use their REGION argument and ignore an ambient active region
+when it is nil. Combined subtree/region requests require the heading at region
+start to match the requested subtree. The dispatcher supports standard visible-only
+selection. Async and body-only frontend modes remain unsupported.
+
+* Final Org structure and STM
+The prepared, pruned, filtered and Cite-transformed AST is authoritative.
+Preprocessing may legally change, delete or generate STM. Complete final islands
+are parsed natively, including structured filter-created nodes without source
+coordinates. Native block filters may provide complete =:texmacs-source= input.
+
+STM must be complete within one effective supported owner. Multiline paragraphs,
+inline footnotes and native =texmacs=/=equation=/=equation*= blocks are supported;
+an island cannot join across headings, paragraphs or blocks to find a close.
+Identifiable incomplete, invalid or unassociated STM fails explicitly.
+
+There is no generic early STM shielding, original-source restoration or custom
+recursive INCLUDE. Org-looking content inside an STM string receives normal Org
+preparation. Propagate Org errors and accept its effective structure. Arbitrary
+original STM text is not always expressible unchanged in an ordinary paragraph.
+Independent =org-texmacs-parse-buffer= retains its existing parsing contract.
+
+* Filters, references and footnotes
+Standard options/AST filters can insert, delete, move and replace nodes. Org's
+identity-based ignore decisions and actual selected footnote definitions are
+adapted before ownership. Public Org queries supply reference targets, headline
+levels/numbers, table alignment and footnote relationships. TeXmacs lowering still
+creates native labels, references, footnotes and numbering bindings.
+
+Tables use Org alignment, including numeric inference after control-row removal.
+Unsupported width cookies fail explicitly. Source-native settings and consumed
+query results are owned snapshots; old private parser/file receipt replay retires.
+Source guards still detect covered source/style/initial/fragment configuration
+changes, without undoing callback modifications to the original source.
+
+Unsupported node-level string filters are detected and rejected before execution
+where the standard entry can detect them. Their results are never silently lost.
+Body/final-output filters run on final text. They are not STM AST transformations.
+
+Standard source export no longer accepts caption footnote nodes supplied by parser
+extensions or AST filters. Effective nodes reject explicitly after exclusions.
+Stock Org 9.8.10 caption note-looking text remains literal. Independent model/pure
+lowering retains anonymous long/short caption footnote conversion; native body,
+counter and page-placement limitations remain. Existing private PDF footnote
+destination repair is separate and retained. Native caption macro-package work
+is outside this release.
+
+* Org Cite
+The supported path uses the existing CSL processor's structured Org output with
+optional =citeproc=. Org owns bibliography acquisition, processor selection,
+citation filters, processing and applicable finalization in one export transaction.
+Real pinned Org-roam-organize integration covers managed UUIDs, dynamic bibliography
+and live INFO propagation without an extension-specific compatibility layer.
+
+The =basic= processor and arbitrary target-specific strings wrapped as =raw= are
+unsupported. They are not flattened into text or reparsed as TeXmacs. Other custom
+processors must return supported structured data. CSL styles remain bounded by the
+existing lowering subset; unsupported output structures fail explicitly.
+
+The base package does not require =citeproc=. Compiled examples include it and
+select a shipped local CSL style, with no online style acquisition during rendering.
+The bilingual generic/article examples use the standard document API and render
+TeXmacs/PDF from the same completed native document.
+Bibliography and CSL files are tangled from their canonical Org source. Chinese
+examples use the bundled en-US CSL locale fallback; Chinese bibliography
+localization is not asserted.
+
+* Text and native PDF
+Standard Org export returns a text string using reversible ISO-Latin-1 transport
+for TeXmacs Cork bytes. Source byte APIs convert the final filtered text back to
+native bytes; lossy conversion fails. Preserve native byte outputs without an
+additional coding conversion.
+
+Native PDF consumes the completed document directly, without a TeXmacs text/file
+round trip or repeated preparation. Unknown text filters and Cite finalizers can
+be conservatively rejected for structured consumers. The verified unchanged CSL
+finalizer is accepted; arbitrary callbacks are not replayed to detect effects.
+Nested exports, source checks, normal error propagation and private resource
+cleanup retain their scoped result-delivery contracts.
+
+* Validation scope
+Maintained checks cover core ownership, native STM/session/serialization, standard
+export/Cite, PDF document/rendering, real extension integration, strict compilation,
+lint and formatting. Example builds exercise English/Chinese generic/article
+inputs with local bibliography/style and retained source/configuration artifacts.
+Validation is recorded against the locked x86_64-linux Emacs 31.1, Org 9.8.10 and
+TeXmacs 2.1.5 environment. The declared Org 9.8 minimum, other platforms, arbitrary
+styles and GUI layout are not newly certified by these checks.

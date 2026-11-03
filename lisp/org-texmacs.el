@@ -4,7 +4,7 @@
 
 ;; Author: aRenCoco
 ;; Maintainer: aRenCoco
-;; Version: 0.6.0
+;; Version: 0.7.0
 ;; Package-Requires: ((emacs "31.1") (org "9.8"))
 ;; Keywords: outlines, tex
 ;; URL: https://github.com/ren-lingyu/org-texmacs
@@ -34,9 +34,10 @@
 ;;
 ;; Package-Requires declares minimum versions.  Recorded regressions used
 ;; Emacs 31.1 and Org 9.8.10; Nix selects dependencies from flake.lock.
-;; Org 9.8 separately passed API/signature checks and strict module compilation;
+;; Org 9.8 passed API/signature and strict compilation checks for an earlier version;
 ;; full ERT/native behavior regression on that minimum version is unverified.
 ;; Org-roam and its extensions are optional integration-test dependencies.
+;; CSL citations use the optional citeproc package through standard Org Cite.
 ;; TeXmacs is an external runtime dependency, checked by the setup command.
 ;;
 ;; Use `org-texmacs-tree' to derive an Org-compatible TeXmacs tree from a

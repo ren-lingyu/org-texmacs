@@ -5,7 +5,7 @@ builder tangles this BibTeX block into a temporary references.bib. Tangling copi
 source text; it does not evaluate the block. The generic entry includes this same file
 as literal Org source to show exactly where its bibliography came from.
 
-The final three entries demonstrate native string substitution, concatenation,
+The final three entries demonstrate BibTeX string substitution, concatenation,
 an unknown entry type and an explicitly selected cross-reference parent. They
 are illustrative documentation records, not additional external publications.
 
@@ -42,4 +42,35 @@ are illustrative documentation records, not additional external publications.
     year = {2026},
     url = {https://www.texmacs.org}
   }
+#+end_src
+
+* Local citation style
+The builder tangles this local style beside references.bib. Standard Org Cite
+uses it without downloading a style. Chinese examples retain their Org language
+and fonts, while CSL uses Org's bundled en-US locale fallback unless extra locale
+data is installed. This does not demonstrate Chinese CSL localization.
+
+#+begin_src xml :tangle references.csl
+  <?xml version="1.0" encoding="utf-8"?>
+  <style xmlns="http://purl.org/net/xbiblio/csl" version="1.0" class="in-text">
+    <info>
+      <title>Org TeXmacs examples</title>
+      <id>https://example.invalid/org-texmacs/examples</id>
+      <updated>2026-11-03T00:00:00+00:00</updated>
+    </info>
+    <citation>
+      <layout prefix="[" suffix="]" delimiter=", ">
+        <text variable="citation-number"/>
+      </layout>
+    </citation>
+    <bibliography>
+      <layout suffix=".">
+        <text variable="citation-number" suffix=". "/>
+        <names variable="author" suffix=". "><name/></names>
+        <text variable="title" font-style="italic" suffix=". "/>
+        <text variable="publisher" suffix=", "/>
+        <date variable="issued"><date-part name="year"/></date>
+      </layout>
+    </bibliography>
+  </style>
 #+end_src

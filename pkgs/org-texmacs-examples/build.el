@@ -4,7 +4,7 @@
 
 ;; The Nix builder provides canonical Org inputs in a writable directory.
 ;; Tangle declared configuration/bibliography, load only the selected build
-;; configuration, and export with protected Org INCLUDE composition.
+;; configuration, and consume one standard Org Export document snapshot.
 
 (require 'org-texmacs)
 
@@ -38,9 +38,14 @@
         (message
          "Tangling configuration and bibliography (without evaluation)")
         (org-babel-tangle-file configuration nil "emacs-lisp")
-        (org-babel-tangle-file bibliography-source nil "bibtex")
+        (org-babel-tangle-file bibliography-source)
         (unless (file-regular-p bibliography)
           (error "Bibliography was not generated: %s" bibliography))
+        (unless (file-regular-p
+                 (expand-file-name "references.csl"
+                                   (file-name-directory
+                                    bibliography)))
+          (error "Local CSL style was not generated"))
         (load (expand-file-name "common.el" configuration-directory)
               nil
               t)
@@ -56,19 +61,13 @@
           (insert-file-contents source)
           (setq buffer-file-name source)
           (org-mode)
-          (let* ((bibliography-sources
-                  (list
-                   (cons
-                    bibliography
-                    (with-temp-buffer
-                      (insert-file-contents bibliography)
-                      (buffer-string)))))
-                 (document
+          (let* ((document
                   (progn
-                    (message "Preparing %s with native Org INCLUDE"
-                             source)
-                    (org-texmacs-document-from-buffer-preprocessed
-                     (current-buffer) bibliography-sources nil nil))))
+                    (message
+                     "Preparing %s with standard Org Export and CSL"
+                     source)
+                    (org-texmacs-document-from-buffer
+                     (current-buffer)))))
             (message "Saving native TeXmacs document")
             (org-texmacs-document-save document (concat output ".tm"))
             (message "Rendering PDF from the same document snapshot")

@@ -8,6 +8,7 @@
 #+creator: org-texmacs examples
 #+options: toc:1 num:t author:t email:t date:t creator:t tags:not-in-toc
 #+bibliography: chapters/references.bib
+#+cite_export: csl chapters/references.csl
 
 #+begin_abstract
 This example is a real build input. Its prose, metadata, configuration listings,

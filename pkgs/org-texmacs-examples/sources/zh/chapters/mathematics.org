@@ -26,10 +26,10 @@
 (concat (big "int") (rsub "0") (rsup "1") "x" (rsup "2") " d x=" (frac "1" "3"))
 #+end_equation
 
-利用原生下标和分式, 还可以写出极限与导数的定义:
+利用原生下标, 分式和右侧 prime 节点, 还可以写出极限与导数的定义:
 
 #+begin_equation*
-(concat "lim" (rsub "h<rightarrow>0") (frac (concat "f" (around* "(" "x+h" ")") "-f" (around* "(" "x" ")")) "h") "=f'" (around* "(" "x" ")"))
+(concat "lim" (rsub "h<rightarrow>0") (frac (concat "f" (around* "(" "x+h" ")") "-f" (around* "(" "x" ")")) "h") "=f" (rprime "'") (around* "(" "x" ")"))
 #+end_equation*
 
 * 矩阵与多行公式

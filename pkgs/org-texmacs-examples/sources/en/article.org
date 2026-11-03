@@ -6,6 +6,7 @@
 #+description: Mathematical expressions, statements and native figures and tables in one article.
 #+options: toc:2 num:t
 #+bibliography: chapters/references.bib
+#+cite_export: csl chapters/references.csl
 
 #+begin_abstract
 This article combines mathematical exposition with native graphics and tables.

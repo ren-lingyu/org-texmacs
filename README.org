@@ -43,9 +43,9 @@ support boundary.
 Org's source buffer and live AST remain unchanged.
 
 * Version history
-This README documents Org TeXmacs =0.6.0=.
+This README documents Org TeXmacs =0.7.0=.
 See [[file:CHANGELOG.org][the changelog]] for version history and
-[[file:CHANGELOGS/v0.6.0.org][the v0.6.0 release notes]] for changes and upgrade instructions.
+[[file:CHANGELOGS/v0.7.0.org][the v0.7.0 release notes]] for changes and upgrade instructions.
 
 * Requirements
 - Emacs 31.1 or later and Org 9.8 or later, as declared by the package.
@@ -57,12 +57,13 @@ TeXmacs 2.1.5.  Nix selects dependency revisions from the project's =flake.lock=
 an existing local Org installation does not select those versions.  The package's
 Org 9.8 minimum passed a separate API/signature and strict compilation check
 for the earlier v0.5.0 implementation.  That result does not establish minimum-
-version behavior for the new model APIs.  Complete v0.6.0 ERT and native behavior
-regressions use Org 9.8.10; they have not been run on Org 9.8.  Other platforms
+version behavior for the current model and standard export APIs. Complete v0.7.0
+ERT and native behavior regressions use Org 9.8.10; they have not been run on Org 9.8.  Other platforms
 have not been validated.
 
-Org-roam and the three extensions described under [[*Optional real Org extension integration][Optional real Org extension integration]]
-are optional test dependencies, not package runtime requirements.
+=citeproc= is optional for CSL citations. Org-roam and Org-roam-organize are
+optional dependencies of the real standard Cite integration check. Historical
+multi-extension fixtures do not establish current standard backend compatibility.
 
 The Scheme service runs inside TeXmacs; a separate =guile= executable is
 not required to use the package.  Nix test drivers invoke Emacs directly.
@@ -156,7 +157,8 @@ On Linux, build the English and Chinese examples with:
 The =result/= link groups PDFs under =pdf/en/= and =pdf/zh/=, with native
 documents under =texmacs/en/= and =texmacs/zh/=.  File names match the Org
 entries: =index.org= uses the generic profile, and =article.org= uses the
-article profile for mathematics, statements, figures and tables.  Their PDFs
+article profile for mathematics, statements, figures and tables. Derivative
+notation uses native =rprime= nodes. Their PDFs
 link to each other through relative targets in the same language directory.
 The =.tm= files retain native source-based absolute file targets.  Org inputs
 and derived configuration/bibliography remain under
@@ -167,6 +169,11 @@ sandbox-enabled builder.  The example build uses its own Emacs package
 set with org-texmacs's =texmacs= dependency overridden to
 =texmacs-fandol-with-gotor-support=, which supplies explicit Fandol Chinese fonts
 through =TEXMACS_FONT_PATH= and native GoToR actions for local PDF file links.
+That example-only Emacs also includes =citeproc=. Standard Org Cite selects the
+local =references.csl= tangled from the canonical Org source; the base package
+keeps Cite optional. Chinese examples use the bundled en-US CSL locale fallback,
+without claiming Chinese bibliography localization. One standard document preparation supplies both native output formats. Babel evaluation is
+disabled for these illustrative sources; tangling/loading configuration is explicit.
 Reader support can depend on the backend: the user confirmed navigation works
 with Zathura's pdf-poppler backend after failure with pdf-mupdf.
 

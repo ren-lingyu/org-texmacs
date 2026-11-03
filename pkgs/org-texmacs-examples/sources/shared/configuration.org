@@ -28,8 +28,10 @@ configuration files are loaded; interactive snippets elsewhere are never run.
   (setq org-texmacs-pdf-file-links-as-absolute nil
         org-texmacs-link-org-files-as-pdf t)
 
-  ;; Bibliography input is explicit; never discover a user's global database.
-  (setq org-cite-global-bibliography nil)
+  ;; Standard Org Cite reads each document's local bibliography and CSL style.
+  ;; Example code is displayed, never evaluated during export preparation.
+  (setq org-cite-global-bibliography nil
+        org-export-use-babel nil)
 
   ;;; common.el ends here
 #+end_src

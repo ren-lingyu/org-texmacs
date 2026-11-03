@@ -9,14 +9,14 @@ as a separately edited .bib. This literal listing displays the canonical source:
 
 #+include: "references.org" src org
 
-The final illustrative records exercise native string declarations and
+The final illustrative records exercise BibTeX string declarations and
 concatenation, an @online entry and a cross-reference to an explicitly cited
 parent[cite:@native-child; @native-parent; @native-online]. These are documentation
-examples, not claims about external publications. TeXmacs parses and formats the
-selected records in its native plain style. Unknown entry types use native
-fallback formatting; fields such as @online URL may be ignored. This is not full
-BibLaTeX/Biber compatibility, and an uncited cross-reference parent is not added
-automatically.
+examples, not claims about external publications. Standard Org Cite and citeproc
+parse the bibliography and format structured Org output using the local references.csl style. TeXmacs lowers and renders that
+prepared structure; it does not run the retired native bibliography preparation.
+These inputs do not establish complete BibLaTeX/Biber compatibility. The selected
+CSL style determines which fields appear.
 
 ** Citations in formatted text and tables
 The heading and its alternate table-of-contents title above both contain a

@@ -51,9 +51,11 @@ loaded by the example builder:
   (setq org-texmacs-export-menu-keys
         '(:prefix ?T :buffer ?b :file ?f :pdf ?p))
   (require 'ox-texmacs)
-  (setq org-texmacs-export-discover-bibliography t)
+  ;; Install citeproc and select a local style with #+CITE_EXPORT: csl STYLE.csl.
 #+end_src
 
-The build supplies explicit bibliography snapshots instead of discovering a
-user's database. Fragment tags select paragraph roots, not the contents of
-explicit TeXmacs blocks. Private extensions are outside this configuration guide.
+The build tangles a local bibliography and selects chapters/references.csl
+through standard Org Cite. Its Emacs includes citeproc; the base package does not.
+Org owns preparation and recursive INCLUDE. The builder disables Babel evaluation
+so the displayed code is not executed during export. Fragment tags select
+paragraph roots, not the contents of explicit TeXmacs blocks. Private extensions are outside this configuration guide.

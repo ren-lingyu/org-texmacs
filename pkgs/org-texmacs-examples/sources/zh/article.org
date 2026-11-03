@@ -6,6 +6,7 @@
 #+description: 在同一篇文章中展示数学表达式, statement, 原生图形和表格.
 #+options: toc:2 num:t
 #+bibliography: chapters/references.bib
+#+cite_export: csl chapters/references.csl
 
 #+begin_abstract
 本文把数学叙述与原生图形, 表格组织在一起. Org 提供文档结构,

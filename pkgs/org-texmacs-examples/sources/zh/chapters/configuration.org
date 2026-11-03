@@ -43,8 +43,10 @@ package 显式构建这两个入口.
   (setq org-texmacs-export-menu-keys
         '(:prefix ?T :buffer ?b :file ?f :pdf ?p))
   (require 'ox-texmacs)
-  (setq org-texmacs-export-discover-bibliography t)
+  ;; 安装 citeproc, 并用 #+CITE_EXPORT: csl STYLE.csl 选择本地样式.
 #+end_src
 
-文档构建使用显式文献快照, 不发现用户的全局数据库.
+文档构建 tangle 本地文献库, 通过标准 Org Cite 选择 chapters/references.csl.
+示例的 Emacs 包含 citeproc, 基础 package 不强制依赖它.
+准备流程和递归 INCLUDE 由 Org 管理. 构建配置禁用 Babel 求值, 导出不执行所展示的代码.
 fragment-tags 控制段落入口, 不限制显式 TeXmacs 块内部结构. 本指南不承诺私有扩展 API.

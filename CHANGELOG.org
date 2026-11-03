@@ -8,10 +8,12 @@ Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
 * TODO v0.7.0
-Standard Org Export Integration is in development. The initial standard entry,
-structured handoff, STM adapter, standard context queries and Org Cite integration
-are implemented; remaining work is marked below. Independent models and pure
-TeXmacs document lowering remain separate from standard export preparation.
+:PROPERTIES:
+:CUSTOM_ID: v0.7.0
+:END:
+Standard Org Export Integration. Independent models and pure TeXmacs document
+lowering remain separate from standard export preparation.
+[[file:CHANGELOGS/v0.7.0.org][Detailed release notes]]
 
 ** Changed
 *** Standard Org Export backend
@@ -93,8 +95,11 @@ TeXmacs document lowering remain separate from standard export preparation.
   round trip, with explicit text-filter and Cite-finalizer compatibility rules.
 
 *** Documentation and regression coverage
-- [-] Document standard export, independent models, pure lowering and API
+- [X] Document standard export, independent models, pure lowering and API
   migrations, update examples, and verify native output and existing contracts.
+- Compiled English/Chinese generic/article examples use standard preparation,
+  example-only citeproc and a local CSL style instead of native BibTeX snapshots.
+  Derivative examples use the native right-prime structure.
 
 * DONE v0.6.0
 CLOSED: [2026-11-02 Mon 11:03]
