@@ -1,6 +1,15 @@
 # v0.7.0 Standard Org Export Integration: approved execution plan
 
-## Execution state: A-D human-delivered; E1 active
+## Execution state: A-D human-delivered; E1 accepted, awaiting delivery
+
+E1 passes all named checks/default737ERT+actual3 with156accepted input hashes
+in memory/standard-export-0.7.0-e1-inputs.json.15task paths, docs and complete-diff
+commit draft await human delivery. Verify that delivery before E2 source API/
+parallel preparation cleanup, then E3 examples/version/final release checks.
+E1's full-gate table regression is resolved through public Org alignment/width
+queries frozen into finite identity-remapped context; no preparation duplication.
+Original PDF layout assertions remain unchanged. Details/limits/retention:
+memory/standard-export-0.7.0-e1.md.
 
 Human B76f4763 matches parent/message/6paths/all144accepted hashes. C now passes
 formal12checks/709ERT with147accepted input hashes in

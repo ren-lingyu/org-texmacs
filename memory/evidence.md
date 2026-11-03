@@ -1,18 +1,35 @@
 # org-texmacs durable evidence
 
-## D human delivery and E1 baseline
+## E1 accepted candidate and D human delivery
 
-Human D7da08a9 matches expected C parent, exact14paths, prepared full message and
-all154accepted input hashes. Ordinary worktree/index clean at intake; no unchanged
-tests rerun. E1 isolated frontend experiment starts from a byte-identical154input
-copy of this delivered state; production files were unchanged at experiment start.
-E1 probes real standard command transactions/scopes, options ownership across
-prompts and final string-to-native-byte conversion before production migration.
-Six probes pass; scalar INFO metadata needs secondary-list wrapping, and actual
-file INFO needs Org's public plist merge plus a nonaliasing write-path copy.
-These exact causal cases now have maintained regressions, so no new raw archive
-is selected. Production candidate156inputs is under focused validation, not yet
-accepted; memory/standard-export-0.7.0-e1.md gives current findings and limits.
+Human D matches expected C parent, exact14paths/full prepared message/all154accepted
+input hashes, clean ordinary intake; unchanged D tests not rerun. E1 starts from
+that exact delivered source. Six command/scoping/options/byte/INFO probes pass.
+Formal E1 full-2 exits0 with all12named check attributes (11default+actual extension)
+accepted; Nix's banner says20flake checks while listing12check attributes.
+Default737ERT = core306/native348/Cite8/PDF-document40/PDF-render29/patched6,
+plus actual Organize3/3, zero unexpected. Strict byte/native compilation,
+lint/treefmt and aggregates pass. Final core output is focused-6(1.733064s);
+full-2 reruns native348(245.180096s), document40(100.469781s), render29(154.881168s),
+Cite8(9.117514s), patched6(2.907595s), actual3(4.029071s).
+All156root/isolated hashes match memory/standard-export-0.7.0-e1-inputs.json,
+SHA25698a3d11b1a912a9706463c67bbfb841d721777870f63dfca0f79ec44477e47ff.
+Only x86_64-linux/Emacs31.1/Org9.8.10/TeXmacs2.1.5; no new minimum9.8/other-platform/
+all-style/GUI/examples-build claim. Ordinary HEAD remains delivered D, index/lock
+untouched;15task paths and docs/draft await human E1 commit before E2.
+
+Full-1 exposed actual missing alignment after Org's ignored cookie row disappears
+from owned AST. Diagnostic native bodies lack cwith; C is28.56units left and R51,
+other coordinates match. Public Org cell-alignment queries in original INFO retain
+those values; snapshot finite per-table data, remap identities, lower without live
+queries. Original native coordinate assertions pass unchanged. Numeric inference,
+ignored-row/owned identity, repeated pure lowering after source changes and explicit
+width-cookie refusal have maintained core tests. Other causal findings: scalar rich
+INFO needs literal secondary-list shape; actual output-file INFO needs public plist
+merge and a nonaliasing write-path copy; narrowed subtree headings must remain
+accessible. Maintained tests plus delivered baseline/accepted hashes suffice; no
+independent raw archive selected. Details/failed-probe limits:
+memory/standard-export-0.7.0-e1.md.
 
 ## D accepted candidate and C human delivery
 

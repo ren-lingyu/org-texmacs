@@ -1,68 +1,53 @@
 # org-texmacs current memory
 
-## Current: A-D delivered; E1 interactive command migration active
+## Current: A-D delivered; E1 accepted, awaiting human delivery
 
-Controlling plan: memory/standard-export-0.7.0-plan.md. Human C054d6cf matches
-expected76f4763parent,14paths/message/all147accepted hashes; clean intake and no
-unchanged test rerun. Human D7da08a9 now matches expected C parent, exact14paths,
-prepared message and all154accepted hashes; ordinary worktree/index clean at intake.
-No unchanged gate rerun. E proceeds in reviewable nodes: E1 three interactive
-commands, E2 source convenience APIs/parallel preparation cleanup, E3 examples,
-version metadata/final docs/release checks. Each production node retains its
-human delivery gate. E1 isolated scope/options/text-byte/INFO probes pass6/6;
-production command migration, maintained tests and README/CHANGELOG are authored.
-Details and retention assessment: memory/standard-export-0.7.0-e1.md.
+Controlling plan: memory/standard-export-0.7.0-plan.md. Human D delivery matches
+expected C parent,14paths/message/all154accepted hashes and clean intake; no
+unchanged gate rerun. E1 now has15uncommitted task paths, ordinary index untouched.
+All156root/isolated input hashes match memory/standard-export-0.7.0-e1-inputs.json
+(SHA25698a3d11b1a912a9706463c67bbfb841d721777870f63dfca0f79ec44477e47ff).
+README/CHANGELOG and complete-worktree tmp/commit.md are synchronized. No ordinary
+staging/commit/tag/push. Wait for human E1 commit, verify exact parent/paths/message/
+accepted input hashes, then E2 source convenience APIs/parallel preparation cleanup.
+E3 examples/version/final docs/release checks follows its own human-delivery gate.
+Version remains0.6.0 and CHANGELOG TODO; v0.7.0 is not complete or released.
 
-D consumes existing CSL Org-return structures inside real org-export-as. Org
-owns bibliography, processor selection, options/AST filters and Cite scope;
-no custom processor, extension-specific adapter, duplicate preparation, third
-AST or native serialization/reparse. Basic and other target raw fail explicitly
-before body STM parsing, including secondary titles/captions/metadata. Native
-consumers admit only the unchanged/unadvised known CSL finalizer and format
-dispatch; unknown callbacks or incompatible text tails reject without probing.
-Org U+200B remains in the model and lowers to native zero-width spacing, verified
-by actual PDF text and equal word widths. STM strings remain opaque. CSL style/
-affix output is authoritative; no repair of processor-generated Org markup.
+Three interactive commands now use one genuine standard Org export transaction
+for all scopes, including visible-only. Org owns preparation/options/AST filters/
+Cite. Freeze mutable option graphs and selections before prompts; preserve function/
+opaque identities. Keep managed buffers and guarded local file writing. Actual
+output-file INFO uses Org's merger and a separate path string. Text consumers honor
+final filters then reversibly convert Latin1 transport; native PDF uses completed
+structured document and the established conservative tail-callback contract.
+Non-nil legacy discovery flag rejects before preparation/prompts with migration
+advice. Source APIs remain legacy until E2; independent core and pure lowering stay
+separate. No private preparation copy, third AST, STM round trip, recursive INCLUDE
+implementation or extension-specific production adapter.
 
-Formal full-2 exits0/all12isolated checks (11default + optional actual extension).
-Default724ERT = core301/native348/PDF-document34/PDF-render29/patched6/Cite6,
-plus actual integration2/2, all zero unexpected. Strict byte/native compilation,
-lint/treefmt and ERT aggregates pass on Emacs31.1/Org9.8.10/TeXmacs2.1.5/
-x86_64-linux. Full-1 runtime leaves passed; only README example escaping failed.
-Final docs/aggregate correction reran only treefmt+aggregate, not runtime tests.
-Every accepted154root/isolated hash matches memory/standard-export-0.7.0-d-inputs.json
-(SHA2567ae77dcb209a0156fadc31b10505dfada87dfb5307f27ba198e82d89daeda69b).
-No new other-platform/minimum9.8/all-CSL-style/GUI/examples-build claim.
+The first full gate exposed missing table alignment after Org ignores the cookie
+row. Freeze public Org cell alignment queries in original INFO, remap finite
+per-table data with AST identities and consume it in pure lowering. Preserve Org's
+numeric inference and explicitly reject width cookies via its public query. The
+original PDF coordinate/assertion test is unchanged and now passes. Standard
+narrowed subtree selection requires an accessible heading; documented and tested
+against actual Org errors. Scalar rich INFO strings become literal secondary lists
+without reparsing Org markup. Full causal evidence and retention assessment:
+memory/standard-export-0.7.0-e1.md; earlier CSL boundaries/pin/archive in D note.
 
-Actual Organize pin/contract/probe findings/retention are in
-memory/standard-export-0.7.0-d.md. Its normal real SQLite/mode/hooks/advice map UUID
-keys and propagate only selected bibliography in live Cite INFO, with native PDF,
-text/HTML and restoration tests. Historical multi-extension fixtures do not prove
-current standard integration. Selected comparison archive:
-archive/2026-11-02T20-32-35Z--054d6cf/MANIFEST.md. New zero-width evidence is
-sufficiently retained by maintained causal/native regressions plus exact baseline
-and accepted input identities; no further raw logs/PDF/temporary-tree archive.
-
-All D paths are human-delivered. E1 keeps existing managed-buffer and local
-file naming/overwrite guards, makes each consumer call standard preparation
-once, permits visible-only, and preserves captured selections/options around
-prompts. Native PDF uses structured result delivery; text consumes final string
-filters then reversibly converts Latin1 transport to native bytes. Non-nil legacy
-discovery flag must fail with migration advice, not silently suppress Org Cite.
-Keep old standalone APIs until E2 caller migration. Standard scalar INFO metadata
-is wrapped into secondary lists at ownership, never parsed as markup. Actual
-output metadata uses Org's public plist merger with a nonaliasing path copy.
-Scoped fmt passes13files/9changed;156production inputs copied exactly to isolated
-acceptance. First two focused attempts stop before ERT for overlong docstrings
-and an obsolete function-quote; both corrected. Focused-3 now runs core, selected
-command/native/PDF, CSL and real Organize. No ordinary staging/commit. Next inspect
-focused results, complete gates and per-node docs/draft/human E1 delivery.
+E1 full-2 exits0/all named checks pass:11default plus actual extension, default737ERT
+= core306/native348/Cite8/PDF-document40/PDF-render29/patched6, plus actual3/3,
+zero unexpected. Strict byte/native compilation, lint/treefmt and ERT aggregates
+pass on x86_64-linux/Emacs31.1/Org9.8.10/TeXmacs2.1.5. Core uses accepted focused-6
+output; other native/PDF/Cite/actual leaves rerun after the query/lowering change.
+No other-platform/minimum9.8/all-CSL-style/GUI/examples-build claim. Maintained
+causal/native tests plus delivered baseline and accepted identities suffice;
+no new raw logs/full temporary tree/PDF archive selected.
 
 User permits nix fmt/build/eval/flake check and variants throughout0.7.0plan.
-Disclose exact commands/scope/writes/network/timeouts, isolate experiments and
-review selective retention. No ordinary staging/commit/tag/push. Each production
-node syncs README/CHANGELOG/tmp/commit.md and awaits human delivery. Keep GAW
-current through the validated memory loop and selective checkpoints.
+Disclose exact commands/scope/writes/network/timeouts; isolate experiments and
+assess retention. Each production node syncs docs/draft then awaits human delivery.
+Keep GAW current through the validated memory loop and selective checkpoints.
 
 ## Earlier: v0.6.0 locally finalized and tagged; approved plan complete
 
