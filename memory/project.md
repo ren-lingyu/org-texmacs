@@ -1,7 +1,7 @@
 # org-texmacs current project model
 
-Final prerelease N0-N2 are human-delivered. N3 scripts are locally accepted,
-awaiting human delivery. Pure lowering uses native rsub/rsup with recursive
+Final prerelease N0-N3 are human-delivered. N3 6c7ac07 exact parent, eleven
+paths/message and all159hashes are verified. N4 real CSL trace is active. Pure lowering uses native rsub/rsup with recursive
 contents, local whitespace inheriting metadata restrictions and opaque neighboring
 STM roots. Effective :with-sub-superscript t/{}/nil is projected from final INFO;
 missing defaults to enabled for independent inputs. Disabled markers/braces retain

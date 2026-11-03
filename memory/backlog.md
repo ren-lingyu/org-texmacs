@@ -15,7 +15,8 @@ N2 is locally accepted: entity/options/ownership/native/PDF proof and
 645defaultERT+actual4/all12checks. N2 human delivery5ce20ef matches exact parent/
 paths/message/all159hashes. N3 script/options/layout work is locally accepted
 with653defaultERT+actual4/all12checks and documented final-Org clipping behavior.
-Human eleven-path N3 commit is next; N4 CSL trace follows exact delivery. LaTeX
+Human N3 delivery6c7ac07 matches exact parent/11paths/message/all159hashes.
+N4 real CSL trace is active; no LaTeX implementation before its conditional gate. LaTeX
 remains conditional future work.
 
 A-E3 are human-delivered. Final E3 f6aa2ae matches expected E2b parent/full message/

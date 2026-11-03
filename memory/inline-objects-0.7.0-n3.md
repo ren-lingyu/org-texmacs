@@ -2,7 +2,8 @@
 
 Baseline is verified human N2 5ce20ef; all159accepted input hashes/message/paths
 match and ordinary project/index was clean. N3 is now locally accepted; human
-delivery remains pending. The sections below preserve causal intermediate states;
+delivery6c7ac07 is verified against exact parent/11paths/message/all159hashes.
+The sections below preserve causal intermediate states;
 the final acceptance section controls current readiness. Adds only :with-sub-superscript projection and local pure
 subscript/superscript lowering. Missing option defaults to t; nil retains marker/
 braces and recursively lowers child objects, {} interprets bracketed nodes only.

@@ -1,5 +1,14 @@
 # org-texmacs durable evidence
 
+## N3 human delivery verified and N4 intake
+
+Human6c7ac07ba4f4c936abe99fb15d1915df6e211deb matches expected5ce20ef parent,
+exact11paths/message/all159accepted committed/worktree hashes. Ordinary worktree/
+index clean; no unchanged test rerun. A project association grounds delivery
+inspection only, not the earlier uncommitted runtime candidate. N4 CSL dataflow
+begins without a LaTeX conversion promise or independently triggered body scope.
+
+
 ## N3 native scripts accepted, human delivery pending
 
 Final653defaultERT+actual4/all12checks pass; native275 reruns corrected clipping
