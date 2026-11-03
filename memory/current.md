@@ -1,40 +1,34 @@
 # org-texmacs current memory
 
-## Current: E3 accepted; v0.7.0 development ready for human delivery
+## Current: v0.7.0 development plan fully human-delivered
 
-User-requested native prime polish is verified: EN/ZH derivative examples use
-rprime, both examples plus README/root summary updated. Four-artifact build and
-all12checks pass again; only treefmt reruns, runtime leaves unchanged. Updated
-E3 manifest/draft covers21paths/159inputs. Four final paths need manual restaging;
-existing19path index is preserved. See pending_stage_paths in E3 inputs JSON.
+A-E3 are delivered. Final E3 f6aa2ae matches expected E2b parent, full approved
+message/21paths/all159accepted committed and worktree hashes, including native
+rprime polish in both languages. Ordinary worktree/index and GAW clean at intake.
+No unchanged tests rerun. Final delivery association grounds this exact read-only
+verification, not retroactive uncommitted runtime provenance.
 
-A-E2b are human-delivered. E2b c596e09 exactly matched expected E2a parent/full
-message/37paths/all158accepted inputs; clean intake, no unchanged test rerun.
-Approved final-AST/STM/caption boundaries remain; independent models/pure lowering
-and native PDF anchor repair stay. E3 now completes examples/version/final docs.
+Implemented standard Org Export authority, owned final AST/STM and scoped result
+handoff, standard query/Cite integration and all source consumers; old parallel
+preparation retired. Approved Org-structure/STM and source caption subset remains.
+Independent model/pure lowering and native PDF anchor fix stay. E3 completes four
+EN/ZH generic/article examples, canonical Org-tangled CSL/BibTeX, example-only
+citeproc and same-document TM/PDF; source primes use native rprime.
 
-Lisp/Nix package versions and README declare0.7.0. All four EN/ZH generic/article
-examples use standard document/Cite preparation, example-only citeproc and local
-CSL tangled with BibTeX from canonical Org; same completed document supplies TM/PDF.
-No extra tracking rule or standalone CSL input. Example Babel evaluation disabled.
-Chinese CSL uses bundled en-US fallback, documented without localization claims.
-Detailed release notes/root summary complete; TODO0.7.0/CLOSED/tag/publication stay
-human-controlled. No release-state transition/tag/publication performed.
+Lisp/Nix package and README0.7.0, complete detailed release notes/root summary.
+Accepted verification remains637defaultERT+actual4/all12checks, four native example
+builds/pdfinfo, base package/version eval0.7.0. Final sample-only prime polish
+rebuilt examples/treefmt with identical runtime derivations reused. Exact inputs,
+message and delivery: memory/standard-export-0.7.0-e3-inputs.json. Current scope and
+limits: E3 note/project/goals/evidence. Chinese CSL uses documented en-US fallback;
+minimum Org9.8, other platforms, arbitrary styles and GUI layout are not certified.
 
-Final package/four-example builds and version eval pass. Full-1 passes default637
-ERT+actual4/all12checks; full-2 final example/docs snapshot passes with only treefmt
-rebuilt, identical runtime derivations cached. All159root/final-snapshot inputs
-match. Complete21path worktree diff reviewed, whitespace clean. Four late polish
-paths differ from the existing index; no ordinary Git write invoked by agent.
-Exact inputs/message/limits: memory/standard-export-0.7.0-e3-inputs.json.
-Draft tmp/commit.md is ready. Retention: maintained sources/manifests/facts suffice,
-no raw temporary tree/log/PDF archive. Details: memory/standard-export-0.7.0-e3.md.
-
-Next: user manually commits E3. Restage the four polish paths, then verify exact c596e09 parent/full message/21paths/
-all159accepted inputs, including unchanged files; no unchanged runtime rerun.
-Then report development delivery complete. Human may freeze/finalize version and
-perform tag/publication separately; do not infer those actions from commit alone.
-No minimum Org9.8/other-platform/GUI/all-style layout certification is claimed.
+No remaining approved implementation node. CHANGELOG remains TODOv0.7.0, no tag
+points at delivered HEAD during inspection, external publication not checked.
+Human controls freeze/finalize/CLOSED/tag/publication. Do not infer a state change
+or start external release actions from successful commit delivery. No ordinary
+Git write performed. Do not rerun unchanged checks merely for publication status.
+Retention: maintained sources/manifests/facts suffice; no new raw archive needed.
 
 Five main-module source TM/PDF byte/fresh-buffer/exclusive-file exports now use
 one genuine standard Org transaction and lazy backend loading. Core/model use

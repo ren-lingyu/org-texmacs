@@ -1,5 +1,18 @@
 # org-texmacs durable evidence
 
+## v0.7.0 final E3 human delivery verified
+
+f6aa2ae5588c183a0fb04f5e115347f68604c85e has exact expected E2b parent, complete
+approved message/21paths/all159accepted committed and worktree hashes, including
+native prime refinement. Ordinary index/worktree and GAW clean at intake. No
+unchanged runtime rerun;637defaultERT+actual4/all12checks and final four-example/
+package/version results remain grounded in their accepted candidate manifests.
+A project-parent association for this checkpoint grounds delivery equivalence
+inspection only, not earlier uncommitted runtime. Development A-E3 is delivered.
+CHANGELOG still TODOv0.7.0; no local tag points at HEAD in this inspection. External
+publication not checked and no state/tag/publication action performed. Human
+controls finalization. No new raw archive/skill change required.
+
 ## E3 native right-prime polish accepted
 
 User requests structured native prime in EN/ZH derivative examples. Replaced

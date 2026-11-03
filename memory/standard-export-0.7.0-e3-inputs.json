@@ -161,7 +161,7 @@
     "tests/texmacs-with-gotor-support/test.nix": "9fe3d6ea5cb0c14b082fc2f4827683ce7d0ed4dff0d253d7e4c31830b6ee6bc5",
     "tests/texmacs-with-gotor-support/test.py": "6b54e2f438b228f45e3dee4dc9205f31a4f2425549ca62917da184fb9f50d72d"
   },
-  "status": "accepted E3 candidate; human project commit pending",
+  "status": "human E3 delivery verified; v0.7.0 development plan delivered",
   "changed_paths": [
     "CHANGELOG.org",
     "CHANGELOGS/v0.7.0.org",
@@ -203,10 +203,6 @@
     "tests/standard-integration-probe/test.nix": "136d5f2ba62244eddfc0a497b78683f0e0895178bd8815a5464f20b779ec5de7",
     "tests/standard-integration-probe/test-overlay.nix": "e851cc50c57dd2293cc7656b34a51b8f0d95bd9b267c224f5178d1f8d1577815"
   },
-  "pending_stage_paths": [
-    "CHANGELOG.org",
-    "README.org",
-    "pkgs/org-texmacs-examples/sources/en/chapters/mathematics.org",
-    "pkgs/org-texmacs-examples/sources/zh/chapters/mathematics.org"
-  ]
+  "pending_stage_paths": [],
+  "delivery_commit": "f6aa2ae5588c183a0fb04f5e115347f68604c85e"
 }

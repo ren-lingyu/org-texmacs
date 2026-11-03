@@ -1,10 +1,12 @@
 # v0.7.0 Standard Org Export Integration: approved execution plan
 
-E2b human delivery is verified against expected parent/message/37paths/all158inputs.
-E3 examples/version/final docs now pass159-input acceptance:637defaultERT+actual4/
-all12checks, four example TM/PDF builds and package/version0.7.0. Native-prime polish brings the candidate to21paths; four latest changes need
-manual restaging before human E3 commit. TODO/CLOSED/
-tag/publication remain human-controlled; no release claim. See E3 note/current.
+A-E3 are human-delivered. Final E3 f6aa2ae matches expected E2b parent/full message/
+21paths/all159accepted inputs; worktree/index clean, no unchanged runtime rerun.
+Accepted637defaultERT+actual4/all12checks, four examples and package/version0.7.0
+remain. Development plan is complete; TODO/CLOSED/tag/publication stay human-owned.
+No tag points at inspected HEAD; external publication not verified. Current state:
+memory/current.md; final scope/evidence: E3 note/input manifest.
+
 
 
 ## Approved E2b caption scope

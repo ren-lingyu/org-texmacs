@@ -1,5 +1,15 @@
 # E3: examples and v0.7.0 release preparation accepted
 
+## Human delivery verified
+
+f6aa2ae matches expected E2b parent/full message/21paths/all159accepted committed
+and worktree hashes. Worktree/index and GAW clean at intake; no unchanged test
+rerun. Native prime refinement is included. All planned development nodes are
+human-delivered. Candidate staging/handoff statements below are historical.
+CHANGELOG remains TODO0.7.0; no tag at inspected HEAD, publication unverified.
+Human controls subsequent state/CLOSED/tag/publication. No further implementation
+node is pending. Exact accepted inputs/message/delivery are in E3 inputs JSON.
+
 ## Implementation and semantic boundary
 
 Baseline is verified human E2b c596e09. E3 updates Lisp/Nix0.7.0, README and a
@@ -61,9 +71,8 @@ source/build drivers and sufficient extracted facts/manifests make original raw
 prototype/log/PDF retention unnecessary; no new archive selected. No binary/cache/
 whole temporary tree copied into GAW. Source manifests are pure text.
 
-Verify manual E3 delivery against exact E2b parent/message/21paths/all159hashes;
-do not rerun unchanged checks. Then development is delivered, with human version
-state/tag/publication separate. Do not claim minimum Org9.8, other platforms,
+Manual E3 delivery is verified against exact E2b parent/message/21paths/all159hashes.
+Development is delivered, with human version state/tag/publication separate. Do not claim minimum Org9.8, other platforms,
 arbitrary styles or GUI layout were newly validated.
 
 ## Native prime example refinement
