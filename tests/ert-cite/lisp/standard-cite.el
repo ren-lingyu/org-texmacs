@@ -227,3 +227,105 @@
                 (lambda (word) (- (nth 3 word) (nth 1 word))) words)))
          (should (= (length words) 2))
          (should (< (abs (- (car widths) (cadr widths))) 0.01)))))))
+
+(ert-deftest org-texmacs-standard-csl-interactive-command-consumers ()
+  (org-texmacs-test--with-csl
+   (with-temp-buffer
+     (org-mode)
+     (setq buffer-file-name
+           (expand-file-name "source.org" default-directory))
+     (insert
+      csl-header
+      "[cite:@key]
+#+print_bibliography:
+")
+     (let ((org-export-use-babel nil)
+           (org-export-show-temporary-export-buffer nil)
+           (cite (symbol-function 'org-cite-csl-render-citation)))
+       (dolist (command
+                '(org-texmacs-export-as-texmacs
+                  org-texmacs-export-to-texmacs
+                  org-texmacs-export-to-pdf))
+         (let ((prepared 0)
+               (citations 0))
+           (let ((org-export-before-processing-functions
+                  (list (lambda (_) (cl-incf prepared)))))
+             (cl-letf (((symbol-function
+                         'org-cite-csl-render-citation)
+                        (lambda (&rest args)
+                          (cl-incf citations)
+                          (apply cite args))))
+               (let ((result (funcall command)))
+                 (cond
+                  ((bufferp result)
+                   (unwind-protect
+                       (should
+                        (string-match-p
+                         "Reference Alpha"
+                         (with-current-buffer result
+                           (buffer-string))))
+                     (kill-buffer result)))
+                  ((eq command 'org-texmacs-export-to-pdf)
+                   (should
+                    (string-match-p
+                     "Reference Alpha"
+                     (org-texmacs-test--pdf-text result))))
+                  (t
+                   (with-temp-buffer
+                     (insert-file-contents-literally result)
+                     (should
+                      (string-match-p
+                       "Reference Alpha" (buffer-string)))))))))
+           (should (= prepared 1))
+           (should (= citations 1))))))))
+
+(ert-deftest
+    org-texmacs-standard-csl-owned-bibliography-after-preparation
+    ()
+  (org-texmacs-test--with-csl
+   (with-temp-buffer
+     (org-mode)
+     (setq buffer-file-name
+           (expand-file-name "source.org" default-directory))
+     (insert
+      csl-header
+      "[cite:@key]
+#+print_bibliography:
+")
+     (let ((org-export-use-babel nil)
+           (original
+            (with-temp-buffer
+              (insert-file-contents csl-bibliography)
+              (buffer-string))))
+       (dolist (kind '(tm pdf))
+         (with-temp-file csl-bibliography
+           (insert original))
+         (let* ((consumer
+                 (if (eq kind 'pdf)
+                     'org-texmacs-document-pdf
+                   'org-texmacs-document-serialize))
+                (native (symbol-function consumer)))
+           (cl-letf (((symbol-function consumer)
+                      (lambda (document)
+                        (should
+                         (string-match-p
+                          "Reference Alpha"
+                          (prin1-to-string
+                           (org-texmacs-document-body document))))
+                        (with-temp-file csl-bibliography
+                          (insert "Changed external bibliography"))
+                        (funcall native document))))
+             (let ((file
+                    (if (eq kind 'pdf)
+                        (org-texmacs-export-to-pdf)
+                      (org-texmacs-export-to-texmacs))))
+               (if (eq kind 'pdf)
+                   (should
+                    (string-match-p
+                     "Reference Alpha"
+                     (org-texmacs-test--pdf-text file)))
+                 (with-temp-buffer
+                   (insert-file-contents-literally file)
+                   (should
+                    (string-match-p
+                     "Reference Alpha" (buffer-string)))))))))))))

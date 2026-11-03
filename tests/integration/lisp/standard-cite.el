@@ -179,3 +179,70 @@
         (should (string-match-p "TeXmacs" (org-export-as 'texmacs)))
         (should (equal before (buffer-string)))
         (should-not org-roam-organize--cite-export-in-progress)))))
+
+(ert-deftest
+    org-texmacs-integration-standard-organize-interactive-commands
+    ()
+  (org-texmacs-integration--with-standard-organize
+    (with-temp-buffer
+      (org-mode)
+      (setq
+       default-directory notes
+       buffer-file-name (expand-file-name "root.org" notes))
+      (insert
+       (format
+        "#+cite_export: csl fixture.csl
+[cite:@%s]
+#+print_bibliography:
+"
+        uuid))
+      (let ((org-export-use-babel nil)
+            (org-export-show-temporary-export-buffer nil)
+            (cite (symbol-function 'org-cite-csl-render-citation)))
+        (dolist (command
+                 '(org-texmacs-export-as-texmacs
+                   org-texmacs-export-to-texmacs
+                   org-texmacs-export-to-pdf))
+          (let ((prepared 0)
+                (citations 0))
+            (let ((org-export-before-processing-functions
+                   (list (lambda (_) (cl-incf prepared)))))
+              (cl-letf
+                  (((symbol-function 'org-cite-csl-render-citation)
+                    (lambda (citation style backend info)
+                      (cl-incf citations)
+                      (should
+                       org-roam-organize--cite-export-in-progress)
+                      (should
+                       (equal
+                        '("real-key")
+                        (org-cite-get-references citation t)))
+                      (should
+                       (equal
+                        (list bib) (plist-get info :bibliography)))
+                      (funcall cite citation style backend info))))
+                (let ((result (funcall command)))
+                  (cond
+                   ((bufferp result)
+                    (unwind-protect
+                        (should
+                         (string-search
+                          "Actual fixture reference"
+                          (with-current-buffer result
+                            (buffer-string))))
+                      (kill-buffer result)))
+                   ((eq command 'org-texmacs-export-to-pdf)
+                    (should
+                     (string-search
+                      "Actual fixture reference"
+                      (ucs-normalize-NFKC-string
+                       (org-texmacs-test--pdf-text result)))))
+                   (t
+                    (with-temp-buffer
+                      (insert-file-contents-literally result)
+                      (should
+                       (string-search
+                        "Actual fixture reference"
+                        (buffer-string)))))))))
+            (should (= prepared 1))
+            (should (= citations 1))))))))

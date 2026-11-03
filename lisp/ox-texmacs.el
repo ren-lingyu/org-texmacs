@@ -8,132 +8,145 @@
 ;; Register the TeXmacs backend and export commands without a menu by default.
 ;; Configure `org-texmacs-export-menu-keys' before the first require to add a
 ;; native dispatcher menu; later option changes do not refresh it.
-;; Commands consume the explicit source through one owned pipeline, with bounded
-;; full-document preprocessing and direct local selection.
-;; This frontend supports synchronous whole-buffer, subtree and active-region
-;; exports.
-;; The standard org-export-as entry consumes prepared ASTs through an independent
-;; handoff.  The legacy frontend commands retain their bounded route until their
-;; migration.  Standard preparation, STM and context queries use Org's live
-;; transaction; Cite support remains a follow-up node.
+;; Commands share one standard Org export transaction and the AST-first handoff.
+;; Org owns preparation, options, selection, filters and Cite.  Native PDF
+;; consumes the completed document directly; text filters run at the boundary.
+;; Synchronous whole-buffer, subtree, active-region and visible-only export
+;; are supported.  Body-only fragments and asynchronous export are rejected.
 
 ;;; Code:
 
 (require 'ox)
 (require 'org-texmacs)
-(require 'org-texmacs-preprocess)
 (require 'org-texmacs-export)
 
 (defcustom org-texmacs-export-discover-bibliography nil
-  "Enable explicit Org Cite bibliography discovery in frontend exports.
-This buffer-local boolean applies to full and selected exports independently
-of preprocessing.  Nil uses no automatic bibliography acquisition; upstream
-hooks may still perform their own external reads."
+  "Obsolete discovery flag; leave nil and configure standard Org Cite instead.
+Non-nil values are rejected by the standard frontend with migration advice."
   :type 'boolean
   :safe #'booleanp
   :group 'org-texmacs)
 (make-variable-buffer-local 'org-texmacs-export-discover-bibliography)
 
+(defun org-texmacs--export-copy-options (value)
+  "Own mutable VALUE data, preserving functions and opaque object identities.
+A memoized graph copy also preserves parent links in parsed Org metadata."
+  (let ((copies (make-hash-table :test #'eq)))
+    (cl-labels
+     ((copy
+       (item)
+       (cond
+        ((functionp item)
+         item)
+        ((gethash item copies))
+        ((stringp item)
+         (let ((new (substring-no-properties item)))
+           (puthash item new copies)
+           new))
+        ((consp item)
+         (let ((new (cons nil nil)))
+           (puthash item new copies)
+           (setcar new (copy (car item)))
+           (setcdr new (copy (cdr item)))
+           new))
+        ((recordp item)
+         item)
+        ((vectorp item)
+         (let ((new (copy-sequence item)))
+           (puthash item new copies)
+           (dotimes (index (length item))
+             (aset new index (copy (aref item index))))
+           new))
+        (t
+         item))))
+     (copy value))))
+
 (defun org-texmacs--export-check-options
     (async subtreep visible-only body-only ext-plist)
-  "Validate the bounded frontend's Org export arguments.
-Reject ASYNC, VISIBLE-ONLY and BODY-ONLY before conversion.
-Validate and copy restricted EXT-PLIST before prompts or workers.
-Return selection, options, discovery and full-document route before conversion.
-An active region selects the body; SUBTREEP still selects its configuration."
-  (when (or async visible-only body-only)
+  "Capture standard frontend arguments before prompts and workers.
+Reject ASYNC/BODY-ONLY and obsolete discovery settings.  Preserve SUBTREEP,
+VISIBLE-ONLY and EXT-PLIST semantics under the real Org export transaction."
+  (when (or async body-only)
     (user-error
-     "TeXmacs export supports synchronous buffer/subtree/region export"))
+     "TeXmacs export supports synchronous whole-document output"))
   (org-texmacs--export-interactive-source)
-  (unless (memq org-texmacs-export-discover-bibliography '(nil t))
+  (when org-texmacs-export-discover-bibliography
     (user-error
-     "Expected an explicit bibliography discovery boolean"))
-  (setq ext-plist
-        (condition-case err
-            (org-texmacs--context-external-options ext-plist)
-          (org-texmacs-document-error
-           (user-error "%s" (error-message-string err)))))
-  (let ((region
+     "Remove org-texmacs-export-discover-bibliography; configure standard Org Cite"))
+  (unless (and (proper-list-p ext-plist)
+               (zerop (% (length ext-plist) 2))
+               (cl-loop
+                for
+                (key _value)
+                on
+                ext-plist
+                by
+                #'cddr
+                always
+                (keywordp key)))
+    (user-error "Expected an Org export option plist"))
+  (let ((position (point))
+        (region
          (and (org-region-active-p)
-              (cons (region-beginning) (region-end)))))
+              (cons (region-beginning) (region-end))))
+        (options (org-texmacs--export-copy-options ext-plist)))
     (list
      (when subtreep
-       (if (buffer-narrowed-p)
-           (let ((position (point)))
-             (org-texmacs--export-source-copy
-              (current-buffer)
-              (lambda ()
-                (goto-char position)
-                (condition-case nil
-                    (org-back-to-heading t)
-                  (error
-                   (user-error "No subtree at point")))))
-             position)
-         (save-excursion
-           (condition-case nil
-               (org-back-to-heading t)
-             (error
-              (user-error "No subtree at point")))
-           (point))))
+       (org-texmacs--export-source-copy
+        (current-buffer)
+        (lambda ()
+          (goto-char position)
+          (condition-case nil
+              (org-back-to-heading t)
+            (error
+             (user-error "No subtree at point")))
+          (point))))
      region
-     ext-plist
-     org-texmacs-export-discover-bibliography
-     (not (or subtreep region (buffer-narrowed-p))))))
+     options
+     visible-only
+     position
+     (org-texmacs--standard-source-state))))
 
 (defun org-texmacs--export-byte-consumer (format selection)
-  "Return a checked byte consumer for FORMAT and captured SELECTION.
-FORMAT is tm or pdf.  Full documents use the bounded preprocessing provider;
-local selection uses direct preparation.  No failure changes the chosen route."
-  (let ((discover (nth 3 selection))
-        (full (nth 4 selection)))
-    (lambda (source sources subtree region options)
-      (with-current-buffer source
-        (cl-labels
-         ((check
-           ()
-           (unless (and (buffer-live-p source)
-                        (eq
-                         discover
-                         (buffer-local-value
-                          'org-texmacs-export-discover-bibliography
-                          source)))
-             (signal 'org-texmacs-document-error
-                     '("Frontend discovery configuration changed"))))
-          (consume
-           (input) (check)
-           (let* ((document (org-texmacs-document input))
-                  (bytes
-                   (if (eq format 'pdf)
-                       (org-texmacs-document-pdf document)
-                     (org-texmacs-document-serialize document))))
-             (check)
-             bytes)))
-         (check)
-         (let ((bytes
-                (cond
-                 (full
-                  (org-texmacs--preprocess-convert
-                   source #'consume sources options discover))
-                 (discover
-                  (org-texmacs--bibliography-convert
-                   source
-                   #'consume
-                   sources
-                   subtree
-                   region
-                   options
-                   nil
-                   t))
-                 (t
-                  (org-texmacs--prepare-buffer
-                   source
-                   #'consume
-                   sources
-                   subtree
-                   region
-                   options)))))
-           (check)
-           bytes))))))
+  "Return a standard byte consumer for FORMAT and captured SELECTION.
+Text uses the final Org string; PDF consumes the completed native document."
+  (unless (memq format '(tm pdf))
+    (user-error "Unknown TeXmacs output format"))
+  (lambda (source _sources subtree region options)
+    (with-current-buffer source
+      (cl-labels
+       ((check
+         () (org-texmacs--standard-check-source (nth 5 selection))
+         (when (buffer-local-value
+                'org-texmacs-export-discover-bibliography source)
+           (signal
+            'org-texmacs-document-error
+            '("Remove obsolete discovery flag; configure standard Org Cite")))))
+       (check)
+       (save-mark-and-excursion
+         (goto-char (nth 4 selection))
+         (let ((mark-active (and region t))
+               (transient-mark-mode
+                (if region
+                    t
+                  transient-mark-mode)))
+           (when region
+             (set-marker
+              (mark-marker)
+              (if (= (point) (car region))
+                  (cdr region)
+                (car region))))
+           (prog1 (if (eq format 'pdf)
+                      (org-texmacs--standard-consume
+                       'pdf (and subtree t) (nth 3 selection) options)
+                    (org-texmacs--standard-text-bytes
+                     (org-export-as
+                      'texmacs
+                      (and subtree t)
+                      (nth 3 selection)
+                      nil
+                      options)))
+             (check))))))))
 
 (defvar org-texmacs--export-managed-buffer nil
   "Frontend result record: buffer, original name and last modification tick.
@@ -187,14 +200,13 @@ A result relinquished by its user is never automatically reclaimed.")
 ;;;###autoload
 (defun org-texmacs-export-as-texmacs
     (&optional async subtreep visible-only body-only ext-plist)
-  "Export the current Org buffer to a managed readonly native .tm byte buffer.
-Reject non-nil ASYNC, VISIBLE-ONLY or BODY-ONLY.
-Existing narrowing bounds the exported body.
-EXT-PLIST accepts only the documented restricted configuration keys
-and is captured before preparation.  An active region selects the body.
-Full documents use bounded preprocessing; selections use direct preparation.
-The buffer-local discovery option independently enables bibliography reads.
-Non-nil SUBTREEP supplies subtree configuration and, without a region, its body.
+  "Export the current Org source to a managed readonly native .tm byte buffer.
+Use one standard Org export transaction.  SUBTREEP, VISIBLE-ONLY, active region,
+narrowing and EXT-PLIST follow Org semantics.  Capture selection and mutable
+option data before conversion; functions and opaque objects retain identity.
+Reject non-nil ASYNC or BODY-ONLY and obsolete discovery settings.
+Final text filters run before reversible Latin-1 transport conversion; output
+that cannot preserve native bytes fails explicitly.
 Reuse the frontend's untouched result, or create a uniquely named new result.
 User edits, renaming or takeover end automatic reuse.  Explicit-source results
 are independent.  Conversion or content commit failure preserves the old result.
@@ -246,16 +258,15 @@ Return the result buffer; its lifetime is independent of the Org source."
 ;;;###autoload
 (defun org-texmacs-export-to-texmacs
     (&optional async subtreep visible-only body-only ext-plist)
-  "Export the current Org buffer to Org's local .tm output path.
-Reject non-nil ASYNC, VISIBLE-ONLY or BODY-ONLY.
-Existing narrowing bounds the exported body.
-EXT-PLIST accepts only the documented restricted configuration keys
-and is captured before output naming.  An active region selects the body.
-Use `org-export-output-file-name'
-and overwrite an existing writable regular output after source checking.
-Non-nil SUBTREEP uses the containing subtree's configuration and output name.
-Full documents preprocess; selections prepare directly.  The buffer-local
-discovery option independently enables bibliography reads.  Return destination."
+  "Export the current Org source to Org's local .tm output path.
+Use standard preparation with SUBTREEP, VISIBLE-ONLY, region/narrowing and
+EXT-PLIST.
+Reject non-nil ASYNC or BODY-ONLY and obsolete discovery settings.
+Capture selection/options before output naming.  Org chooses the filename;
+overwrite writable regular outputs after source and destination checks.
+Pass the actual destination in INFO without aliasing the protected write path.
+Write reversible native bytes from final text output, without adding a newline.
+Return the destination."
   (interactive nil org-mode)
   (let ((selection
          (org-texmacs--export-check-options
@@ -267,16 +278,15 @@ discovery option independently enables bibliography reads.  Return destination."
 ;;;###autoload
 (defun org-texmacs-export-to-pdf
     (&optional async subtreep visible-only body-only ext-plist)
-  "Export the current Org buffer to Org's local PDF output path.
-Reject non-nil ASYNC, VISIBLE-ONLY or BODY-ONLY.
-Existing narrowing bounds the exported body.
-EXT-PLIST accepts only the documented restricted configuration keys
-and is captured before output naming.  An active region selects the body.
-Use `org-export-output-file-name'
-and overwrite an existing writable regular output after source checking.
-Non-nil SUBTREEP uses the containing subtree's configuration and output name.
-Full documents preprocess; selections prepare directly.  The buffer-local
-discovery option independently enables bibliography reads.  No PDF viewer runs."
+  "Export the current Org source directly to Org's local PDF output path.
+Use standard preparation with SUBTREEP, VISIBLE-ONLY, region/narrowing and
+EXT-PLIST.
+Reject non-nil ASYNC or BODY-ONLY and obsolete discovery settings.
+Capture selection/options before output naming.  Org chooses the filename;
+overwrite writable regular outputs after source and destination checks.
+Render the completed native document without a .tm text round trip.  Unsupported
+text filters/finalizers fail before their string-tail effects.  No viewer runs.
+Return the destination."
   (interactive nil org-mode)
   (let ((selection
          (org-texmacs--export-check-options
@@ -317,7 +327,8 @@ Do not add a newline or re-encode bytes.  File errors propagate; partial
 output may remain after write failure.  No backup or atomic replacement is used.
 Optional SUBTREE-POSITION freezes the selected source heading before prompts.
 REGION is the captured body range; naming still follows SUBTREE-POSITION.
-EXT-PLIST is owned by frontend validation; it cannot override output paths."
+EXT-PLIST is owned before prompts.  Org's plist merger supplies the actual
+output path in INFO; metadata mutations cannot redirect the final write."
   (let* ((source (current-buffer))
          (bounds (cons (point-min) (point-max)))
          (directory
@@ -377,24 +388,14 @@ EXT-PLIST is owned by frontend validation; it cannot override output paths."
             (org-texmacs--export-writable-target target source-file))
       (let ((bytes
              (funcall consumer
-                      source
-                      nil
-                      subtree-position
-                      region
-                      ext-plist)))
+                      source nil subtree-position region
+                      (org-combine-plists
+                       ext-plist
+                       (list
+                        :output-file
+                        (substring-no-properties target))))))
         (org-texmacs--export-writable-target target source-file)
         (org-texmacs--native-save-bytes bytes target t)))))
-
-(defun org-texmacs--export-reject-string-transcoding
-    (&rest _arguments)
-  "Reject Org's generic string transcoding for the TeXmacs backend."
-  (user-error
-   "Use the TeXmacs dispatcher actions or explicit org-texmacs source APIs"))
-
-(defun org-texmacs--export-reject-generic-preprocessing (backend)
-  "Reject generic preprocessing for TeXmacs BACKEND and its derivatives."
-  (when (org-export-derived-backend-p backend 'texmacs)
-    (org-texmacs--export-reject-string-transcoding)))
 
 (defcustom org-texmacs-export-menu-keys nil
   "Explicit dispatcher menu keys, configured before loading ox-texmacs.
@@ -474,7 +475,7 @@ Do not change existing backends, hooks, or the user's configuration."
             org-texmacs-export-to-texmacs
             org-texmacs-export-to-pdf)))))))
 
-;; Validate before replacing any backend or adding its generic export guard.
+;; Validate the menu before replacing the registered backend.
 (let ((menu
        (org-texmacs--export-menu-entry org-texmacs-export-menu-keys)))
   (org-export-define-backend
@@ -487,7 +488,7 @@ Do not change existing backends, hooks, or the user's configuration."
 ;; A previous load may have installed the old rejection hook.
 (remove-hook
  'org-export-before-processing-functions
- #'org-texmacs--export-reject-generic-preprocessing)
+ 'org-texmacs--export-reject-generic-preprocessing)
 
 (provide 'ox-texmacs)
 ;;; ox-texmacs.el ends here

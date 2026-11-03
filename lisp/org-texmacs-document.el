@@ -2901,7 +2901,16 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                  (org-texmacs--document-table-alignment contents))
                 (filtered (car plan))
                 (view node))
-           (setq alignment (cadr plan))
+           (setq alignment
+                 (if-let* ((query
+                            (plist-get info :texmacs-org-query)))
+                     (or (cdr
+                          (assq
+                           node (plist-get query :table-alignments)))
+                         (org-texmacs--document-fail
+                          node
+                          "Missing standard Org table alignment"))
+                   (cadr plan)))
            (when alignment
              ;; A format row must not hide a special column.  Reparent only
              ;; copied rows; prepared input and source identities stay intact.

@@ -34,6 +34,7 @@ STM islands must already be discovered so their Org parsing residue is opaque."
         targets
         notes
         headings
+        table-alignments
         references)
     (org-element-map
      tree t (lambda (node) (puthash node t reachable)) nil nil nil t)
@@ -45,7 +46,7 @@ STM islands must already be discovered so their Org parsing residue is opaque."
      ((walk
        (data &optional in-note)
        (org-element-map
-        data '(headline link footnote-reference)
+        data '(headline link footnote-reference table)
         (lambda (owned)
           (unless (gethash owned visited)
             (puthash owned t visited)
@@ -67,6 +68,33 @@ STM islands must already be discovered so their Org parsing residue is opaque."
                                (org-export-get-headline-number
                                 original info)))
                          headings)))
+                ('table
+                 (let ((row
+                        (cl-find-if
+                         (lambda (item)
+                           (eq
+                            (org-element-property
+                             :type item)
+                            'standard))
+                         (org-element-contents owned))))
+                   (push (cons
+                          owned
+                          (mapcar
+                           (lambda (cell)
+                             (when (org-export-table-cell-width
+                                    (gethash cell originals) info)
+                               (org-texmacs--prepared-fail
+                                "Unsupported Org table width cookie"))
+                             (pcase (org-export-table-cell-alignment
+                                     (gethash cell originals) info)
+                               ('left "l")
+                               ('center "c")
+                               ('right "r")
+                               (_
+                                (org-texmacs--prepared-fail
+                                 "Unsupported Org table alignment"))))
+                           (org-element-contents row)))
+                         table-alignments)))
                 ('link
                  (when (member
                         (org-element-property :type owned)
@@ -154,6 +182,7 @@ STM islands must already be discovered so their Org parsing residue is opaque."
      :targets (nreverse targets)
      :footnotes (nreverse notes)
      :headlines (nreverse headings)
+     :table-alignments (nreverse table-alignments)
      :references (nreverse references))))
 
 (provide 'org-texmacs-query)

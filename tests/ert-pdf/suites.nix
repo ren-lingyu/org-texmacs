@@ -4,6 +4,7 @@
     ./lisp/metadata.el
     ./lisp/document.el
     ./lisp/frontend.el
+    ./lisp/standard-frontend.el
     ./lisp/preprocess.el
     ./lisp/serialization.el
     ./lisp/special-blocks.el

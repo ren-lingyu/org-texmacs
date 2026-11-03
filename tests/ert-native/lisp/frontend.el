@@ -46,7 +46,7 @@
                  (lambda (&rest _)
                    (ert-fail
                     "Unsupported dispatcher option prompted"))))
-        (dolist (option '(async visible body))
+        (dolist (option '(async body))
           (cl-letf (((symbol-function 'org-export--dispatch-ui)
                      (lambda (&rest _)
                        (list
@@ -269,7 +269,8 @@
                      ((symbol-function
                        'org-texmacs-document-serialize)
                       (lambda (_document &rest _)
-                        (should (eq (current-buffer) source))
+                        (should (derived-mode-p 'org-mode))
+                        (should-not (eq (current-buffer) source))
                         bytes)))
              (let ((file
                     (expand-file-name "chosen.tm" test-directory)))
@@ -325,57 +326,79 @@
          (insert-file-contents-literally file)
          (should (equal "Keep" (buffer-string))))))))
 
-(ert-deftest org-texmacs-export-backend-full-provider-profile ()
-  (org-texmacs-test--with-bibliography-files
-   (insert "Text\n")
-   (setq-local org-odd-levels-only t)
-   (should-error
-    (org-texmacs-export-as-texmacs)
-    :type 'org-texmacs-document-error)
-   (should
-    (org-texmacs-input-p
-     (org-texmacs-prepare-buffer (current-buffer))))
-   (setq-local org-odd-levels-only nil)
-   (erase-buffer)
-   (insert (make-string 262145 ?a))
-   (should-error
-    (org-texmacs-export-as-texmacs)
-    :type 'org-texmacs-document-error)))
+(ert-deftest
+    org-texmacs-export-backend-standard-levels-and-source-size
+    ()
+  (org-texmacs-test--with-worker
+   (org-texmacs-test--with-bibliography-files
+    (insert "* Heading\nText\n") (setq-local org-odd-levels-only t)
+    (let ((org-export-use-babel nil)
+          (org-export-show-temporary-export-buffer nil))
+      (kill-buffer (org-texmacs-export-as-texmacs))
+      (setq-local org-odd-levels-only nil)
+      (erase-buffer)
+      (insert (make-string 262145 ?a))
+      (let ((output (org-texmacs-export-as-texmacs)))
+        (unwind-protect
+            (should
+             (> (with-current-buffer output
+                  (buffer-size))
+                262145))
+          (kill-buffer output)))))))
 
-(ert-deftest org-texmacs-export-backend-local-preprocessing-refusal ()
-  (org-texmacs-test--with-bibliography-files
-   (dolist
-       (text
-        '("* Mount\n:PROPERTIES:\n:ROAM_INCLUDE: missing-id\n:END:\nOld body\n"
-          "* Heading\n#+ROAM_INCLUDE: missing-id\n"
-          "* Heading\n#+INCLUDE: missing.org\n"))
-     (erase-buffer)
-     (insert text)
-     (goto-char (point-min))
-     (should-error
-      (org-texmacs-export-as-texmacs nil t)
-      :type 'org-texmacs-document-error))))
+(ert-deftest org-texmacs-export-backend-local-standard-preparation ()
+  (org-texmacs-test--with-worker
+   (org-texmacs-test--with-bibliography-files
+    (write-region "Included subtree sentinel\n" nil "part.org"
+                  nil
+                  'silent)
+    (insert
+     "* Heading\n:PROPERTIES:\n:CUSTOM_DATA: ignored\n:END:\n#+INCLUDE: part.org\n")
+    (goto-char (point-min))
+    (let ((org-export-use-babel nil)
+          (org-export-show-temporary-export-buffer nil)
+          (calls 0))
+      (let ((org-export-before-processing-functions
+             (list (lambda (_) (cl-incf calls)))))
+        (let ((output (org-texmacs-export-as-texmacs nil t)))
+          (unwind-protect
+              (should
+               (string-search
+                "Included subtree sentinel"
+                (with-current-buffer output
+                  (buffer-string))))
+            (kill-buffer output))))
+      (should (= calls 1))))))
 
-(ert-deftest org-texmacs-export-backend-discovery-disabled-and-invalid
+(ert-deftest
+    org-texmacs-export-backend-standard-discovery-and-obsolete-flag
     ()
   (org-texmacs-test--with-worker
    (org-texmacs-test--with-bibliography-files
     (insert "Text\n")
-    (let ((org-export-show-temporary-export-buffer nil))
+    (let ((org-export-use-babel nil)
+          (org-export-show-temporary-export-buffer nil)
+          (calls 0)
+          (collector
+           (symbol-function 'org-cite-list-bibliography-files)))
       (cl-letf (((symbol-function 'org-cite-list-bibliography-files)
-                 (lambda (&rest _)
-                   (ert-fail "Disabled discovery called collector")))
+                 (lambda (&rest args)
+                   (cl-incf calls)
+                   (apply collector args)))
                 ((symbol-function 'org-texmacs--bibliography-acquire)
                  (lambda (&rest _)
-                   (ert-fail "Disabled discovery acquired files"))))
-        (kill-buffer (org-texmacs-export-as-texmacs))))
-    (setq-local org-texmacs-export-discover-bibliography 'invalid)
-    (cl-letf (((symbol-function 'read-file-name)
-               (lambda (&rest _)
-                 (ert-fail "Invalid discovery prompted"))))
-      (should-error
-       (org-texmacs-export-to-texmacs)
-       :type 'user-error)))))
+                   (ert-fail
+                    "Standard frontend used independent discovery"))))
+        (kill-buffer (org-texmacs-export-as-texmacs)))
+      (should (> calls 0))
+      (dolist (obsolete '(t invalid))
+        (setq-local org-texmacs-export-discover-bibliography obsolete)
+        (cl-letf (((symbol-function 'read-file-name)
+                   (lambda (&rest _)
+                     (ert-fail "Obsolete discovery prompted"))))
+          (should-error
+           (org-texmacs-export-to-texmacs)
+           :type 'user-error)))))))
 
 (ert-deftest
     org-texmacs-export-backend-discovery-captured-before-prompt

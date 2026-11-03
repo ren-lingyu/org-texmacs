@@ -35,63 +35,53 @@
            "First[[:space:]]*1.*again[[:space:]]*1" text))
          (should-not (string-match-p "Footnotes\\|[?][?]" text)))))))
 
-(ert-deftest org-texmacs-cleanup-full-native-file-exports ()
+(ert-deftest org-texmacs-cleanup-full-standard-file-exports ()
   (org-texmacs-test--with-worker
    (org-texmacs-test--with-cleanup-source
-    ;; Native INCLUDE uses another private buffer; guards must inspect SOURCE.
     (setq-local org-export-with-toc nil)
     (dolist (modified '(nil t))
       (set-buffer-modified-p modified)
       (goto-char 3)
       (set-mark 2)
-      (dolist (discover '(nil t))
-        (setq-local org-texmacs-export-discover-bibliography discover)
-        (let ((before
-               (org-texmacs-test--document-buffer-state
-                (current-buffer)))
-              (file buffer-file-name)
-              (base default-directory))
-          (dolist (command
-                   '(org-texmacs-export-to-texmacs
-                     org-texmacs-export-to-pdf))
-            (let ((kinds
-                   (org-texmacs-test--observe-cleanup
-                    (lambda ()
-                      (let ((output (funcall command)))
-                        (should (file-regular-p output))
-                        (if (eq command 'org-texmacs-export-to-pdf)
-                            (should
-                             (string-match-p
-                              "Included cleanup sentinel"
-                              (org-texmacs-test--pdf-text output)))
-                          (with-temp-buffer
-                            (insert-file-contents output)
-                            (should
-                             (string-match-p
-                              "Included cleanup sentinel"
-                              (buffer-string))))))))))
-              (should (memq 'root kinds))
-              (should (memq 'include kinds))
-              (should
-               (eq (and (memq 'bibliography kinds) t) discover)))
-            (should
-             (equal
-              before
-              (org-texmacs-test--document-buffer-state
-               (current-buffer))))
-            (should (equal file buffer-file-name))
-            (should (equal base default-directory)))))))))
+      (let ((before
+             (org-texmacs-test--document-buffer-state
+              (current-buffer)))
+            (org-export-use-babel nil))
+        (dolist (command
+                 '(org-texmacs-export-to-texmacs
+                   org-texmacs-export-to-pdf))
+          (let ((phases
+                 (org-texmacs-test--observe-standard-cleanup
+                  (lambda ()
+                    (let ((file (funcall command)))
+                      (should (file-regular-p file))
+                      (if (eq command 'org-texmacs-export-to-pdf)
+                          (should
+                           (string-search
+                            "Included cleanup sentinel"
+                            (org-texmacs-test--pdf-text file)))
+                        (with-temp-buffer
+                          (insert-file-contents-literally file)
+                          (should
+                           (string-search
+                            "Included cleanup sentinel"
+                            (buffer-string))))))))))
+            (should (equal phases '(root prepared ast))))
+          (should
+           (equal
+            before
+            (org-texmacs-test--document-buffer-state
+             (current-buffer))))))))))
 
-(ert-deftest org-texmacs-cleanup-errors-preserve-output-and-source ()
+(ert-deftest
+    org-texmacs-cleanup-standard-errors-preserve-output-and-source
+    ()
   (org-texmacs-test--with-cleanup-source
-   (setq-local org-texmacs-export-discover-bibliography t)
-   (insert "Initially modified\n")
-   (set-mark 2)
+   (insert "Initially modified\n") (set-mark 2)
    (let ((before
           (org-texmacs-test--document-buffer-state (current-buffer)))
-         (file buffer-file-name)
-         (base default-directory))
-     (dolist (stage '(root include bibliography))
+         (org-export-use-babel nil))
+     (dolist (stage '(root prepared ast))
        (dolist (existing '(nil t))
          (dolist (entry
                   '((org-texmacs-export-to-texmacs . "source.tm")
@@ -100,8 +90,8 @@
              (delete-file (cdr entry)))
            (when existing
              (write-region "Keep" nil (cdr entry) nil 'silent))
-           (let ((kinds
-                  (org-texmacs-test--observe-cleanup
+           (let ((phases
+                  (org-texmacs-test--observe-standard-cleanup
                    (lambda ()
                      (should
                       (equal
@@ -111,19 +101,17 @@
                        '(org-texmacs-document-error
                          "Cleanup sentinel"))))
                    stage)))
-             (should (memq stage kinds)))
+             (should (memq stage phases)))
            (if existing
                (with-temp-buffer
                  (insert-file-contents-literally (cdr entry))
-                 (should (equal (buffer-string) "Keep")))
+                 (should (equal "Keep" (buffer-string))))
              (should-not (file-exists-p (cdr entry))))
            (should
             (equal
              before
              (org-texmacs-test--document-buffer-state
-              (current-buffer))))
-           (should (equal file buffer-file-name))
-           (should (equal base default-directory))))))))
+              (current-buffer))))))))))
 
 (ert-deftest org-texmacs-export-backend-registration-and-installation
     ()
@@ -158,7 +146,7 @@
                '(org-texmacs-export-as-texmacs
                  org-texmacs-export-to-texmacs
                  org-texmacs-export-to-pdf))
-        (dolist (index '(0 2 3 4))
+        (dolist (index '(0 3 4))
           (let ((arguments (make-list 5 nil)))
             (setcar (nthcdr index arguments) t)
             (should-error
@@ -333,7 +321,6 @@
     (setq buffer-file-name (expand-file-name "source.org"))
     (dolist (text
              '("#+INCLUDE: missing.org\n"
-               "#+SETUPFILE: missing.org\n"
                "#+begin_texmacs\n(math \"broken\"\n#+end_texmacs\n"))
       (erase-buffer)
       (insert text)
@@ -349,89 +336,77 @@
         (should-error (org-texmacs-export-as-texmacs))
         (should (equal buffers (buffer-list))))))))
 
-(ert-deftest org-texmacs-export-backend-local-route-and-discovery ()
+(ert-deftest org-texmacs-export-backend-selected-standard-preparation
+    ()
   (org-texmacs-test--with-worker
    (org-texmacs-test--with-bibliography-files
-    (write-region
-     "@book{external-key, title={LocalFrontendReference}}"
-     nil
-     "refs.bib"
-     nil
-     'silent)
-    (insert
-     "* Outside\nOther\n* Chosen\n[cite:@external-key]\n#+print_bibliography:\n")
+    (write-region "Included selection sentinel\n" nil "part.org"
+                  nil
+                  'silent)
+    (insert "* Outside\nOther\n* Chosen\n#+INCLUDE: part.org\n")
     (setq buffer-file-name (expand-file-name "source.org"))
-    (let ((org-cite-global-bibliography '("refs.bib"))
+    (let ((org-export-use-babel nil)
           (org-export-show-temporary-export-buffer nil)
-          (org-export-before-processing-functions
-           (list
-            (lambda (&rest _)
-              (ert-fail "Local export replayed preprocessing")))))
-      (goto-char (point-min))
-      (search-forward "* Chosen")
-      (beginning-of-line)
-      (should-error
-       (org-texmacs-export-as-texmacs nil t)
-       :type 'org-texmacs-document-error)
-      (setq-local org-texmacs-export-discover-bibliography t)
-      (dolist (scope '(subtree region narrowing))
-        (save-restriction
-          (goto-char (point-min))
-          (search-forward "* Chosen")
-          (beginning-of-line)
-          (let ((begin (point))
-                (transient-mark-mode t))
-            (pcase scope
-              ('region
-               (set-mark begin)
-               (goto-char (point-max))
-               (setq mark-active t))
-              ('narrowing (narrow-to-region begin (point-max))))
-            (let ((output
-                   (org-texmacs-export-as-texmacs
-                    nil (eq scope 'subtree))))
-              (unwind-protect
-                  (with-current-buffer output
-                    (should
-                     (string-match-p "bib-list" (buffer-string)))
+          (hooks 0))
+      (let ((org-export-before-processing-functions
+             (list (lambda (_) (cl-incf hooks)))))
+        (dolist (scope '(subtree region narrowing))
+          (save-mark-and-excursion
+            (save-restriction
+              (goto-char (point-min))
+              (search-forward "* Chosen")
+              (beginning-of-line)
+              (let ((begin (point))
+                    (transient-mark-mode t)
+                    (mark-active nil))
+                (pcase scope
+                  ('region
+                   (set-mark begin)
+                   (goto-char (point-max))
+                   (setq mark-active t))
+                  ('narrowing (narrow-to-region begin (point-max))))
+                (let ((output
+                       (org-texmacs-export-as-texmacs
+                        nil (eq scope 'subtree))))
+                  (unwind-protect
+                      (should
+                       (string-search
+                        "Included selection sentinel"
+                        (with-current-buffer output
+                          (buffer-string))))
                     (kill-buffer output)))
-              (let ((file
-                     (org-texmacs-export-to-texmacs
-                      nil (eq scope 'subtree))))
-                (with-temp-buffer
-                  (insert-file-contents-literally file)
+                (let ((file
+                       (org-texmacs-export-to-texmacs
+                        nil (eq scope 'subtree))))
+                  (with-temp-buffer
+                    (insert-file-contents-literally file)
+                    (should
+                     (string-search
+                      "Included selection sentinel"
+                      (buffer-string)))))
+                (let ((file
+                       (org-texmacs-export-to-pdf
+                        nil (eq scope 'subtree))))
                   (should
-                   (string-match-p "bib-list" (buffer-string)))))
-              (let ((file
-                     (org-texmacs-export-to-pdf
-                      nil (eq scope 'subtree))))
-                (should
-                 (string-match-p
-                  "LocalFrontendReference"
-                  (org-texmacs-test--pdf-text file)))))
-            (setq mark-active nil))))))))
+                   (string-search
+                    "Included selection sentinel"
+                    (org-texmacs-test--pdf-text file)))))))))
+      (should (= hooks 9))))))
 
-(ert-deftest org-texmacs-export-backend-dependency-and-option-waits ()
+(ert-deftest
+    org-texmacs-export-backend-owned-include-and-source-option-waits
+    ()
   (org-texmacs-test--with-worker
    (org-texmacs-test--with-bibliography-files
     (setq buffer-file-name (expand-file-name "source.org"))
-    (dolist (change '(include bibliography option source))
+    (dolist (change '(include option source))
       (dolist (format '(tm pdf))
+        (setq-local org-texmacs-export-discover-bibliography nil)
         (write-region "Original text\n" nil "part.org" nil 'silent)
-        (write-region
-         "@book{external-key, title={Original}, author={Doe, Jane}, year={2026}}\n"
-         nil
-         "refs.bib"
-         nil
-         'silent)
         (erase-buffer)
         (insert "#+INCLUDE: part.org\n")
-        (when (eq change 'bibliography)
-          (insert
-           "#+bibliography: refs.bib\n[cite:@external-key]\n#+print_bibliography:\n"))
-        (setq-local org-texmacs-export-discover-bibliography
-                    (eq change 'bibliography))
-        (let* ((source (current-buffer))
+        (let* ((org-export-use-babel nil)
+               (source (current-buffer))
                (file (concat "source." (symbol-name format)))
                (consumer
                 (if (eq format 'pdf)
@@ -439,14 +414,16 @@
                   'org-texmacs-document-serialize)))
           (write-region "Keep" nil file nil 'silent)
           (cl-letf (((symbol-function consumer)
-                     (lambda (_document)
+                     (lambda (document)
+                       (should
+                        (string-search
+                         "Original text"
+                         (prin1-to-string
+                          (org-texmacs-document-body document))))
                        (with-current-buffer source
                          (pcase change
                            ('include
                             (write-region "Changed" nil "part.org"
-                                          nil 'silent))
-                           ('bibliography
-                            (write-region "Changed" nil "refs.bib"
                                           nil 'silent))
                            ('option
                             (setq-local
@@ -457,15 +434,25 @@
                             (insert "Changed"))))
                        (encode-coding-string
                         "NativeBytes" 'us-ascii))))
-            (should-error
-             (funcall
-              (if (eq format 'pdf)
-                  'org-texmacs-export-to-pdf
-                'org-texmacs-export-to-texmacs))
-             :type 'org-texmacs-document-error))
+            (if (eq change 'include)
+                (funcall
+                 (if (eq format 'pdf)
+                     'org-texmacs-export-to-pdf
+                   'org-texmacs-export-to-texmacs))
+              (should-error
+               (funcall
+                (if (eq format 'pdf)
+                    'org-texmacs-export-to-pdf
+                  'org-texmacs-export-to-texmacs))
+               :type 'org-texmacs-document-error)))
           (with-temp-buffer
             (insert-file-contents-literally file)
-            (should (equal "Keep" (buffer-string))))))))))
+            (should
+             (equal
+              (if (eq change 'include)
+                  "NativeBytes"
+                "Keep")
+              (buffer-string))))))))))
 
 (ert-deftest org-texmacs-export-menu-first-load-default-and-require ()
   (org-texmacs-test--menu-fresh-process
@@ -695,10 +682,21 @@
        (let ((state
               (org-texmacs-test--document-buffer-state
                (current-buffer))))
-         (let ((output (org-texmacs-export-as-texmacs nil t)))
+         ;; Org cannot select a subtree whose heading is inaccessible.
+         (should-error
+          (org-export-as 'texmacs t)
+          :type 'outline-before-first-heading)
+         (dolist (command
+                  '(org-texmacs-export-as-texmacs
+                    org-texmacs-export-to-texmacs
+                    org-texmacs-export-to-pdf))
+           (should-error
+            (funcall command nil t)
+            :type 'outline-before-first-heading))
+         (let ((output (org-texmacs-export-as-texmacs)))
            (unwind-protect
                (with-current-buffer output
-                 (should
+                 (should-not
                   (string-match-p
                    "SubtreeTitleSentinel" (buffer-string)))
                  (should
@@ -707,14 +705,6 @@
                  (should-not
                   (string-match-p "Prefix\\|suffix" (buffer-string))))
              (kill-buffer output)))
-         (dolist (entry
-                  '((org-texmacs-export-to-texmacs . "tm")
-                    (org-texmacs-export-to-pdf . "pdf")))
-           (should
-            (equal
-             (funcall (car entry) nil t)
-             (expand-file-name (concat "subtree." (cdr entry))
-                               test-directory))))
          (should
           (equal
            (org-texmacs-export-to-texmacs)
@@ -765,13 +755,18 @@
            (org-texmacs-prepare-buffer
             (current-buffer) nil nil nil options)
            :type 'org-texmacs-document-error)
-          (dolist (command
-                   '(org-texmacs-export-as-texmacs
-                     org-texmacs-export-to-texmacs
-                     org-texmacs-export-to-pdf))
-            (should-error
-             (funcall command nil nil nil nil options)
-             :type 'user-error)))))))
+          ;; The standalone API retains its restricted value contract.
+          ;; Standard commands validate plist shape, leaving values to Org.
+          (when (or (not (proper-list-p options))
+                    (cl-oddp (length options))
+                    (not (keywordp (car options))))
+            (dolist (command
+                     '(org-texmacs-export-as-texmacs
+                       org-texmacs-export-to-texmacs
+                       org-texmacs-export-to-pdf))
+              (should-error
+               (funcall command nil nil nil nil options)
+               :type 'user-error))))))))
 
 (ert-deftest org-texmacs-overrides-native-menu-consumers-and-region ()
   (org-texmacs-test--with-worker

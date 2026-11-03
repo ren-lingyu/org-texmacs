@@ -217,8 +217,15 @@ Project supported options without repeating preparation or retaining full INFO."
         (when (memq key org-texmacs--context-rich-metadata)
           (org-texmacs--prepared-resolve (plist-get info key))
           (org-texmacs--prepared-reject-raw (plist-get info key)))
-        (setq projected
-              (plist-put projected key (plist-get info key)))))
+        (let ((value (plist-get info key)))
+          (setq projected
+                (plist-put
+                 projected key
+                 (if (and (memq
+                           key org-texmacs--context-rich-metadata)
+                          (stringp value))
+                     (list value)
+                   value))))))
     (setq projected
           (plist-put projected :texmacs-tab-width tab-width))
     (setq
@@ -351,12 +358,25 @@ Arbitrary functions are not replayed or predicted to be no-ops."
             "")
         (org-texmacs--standard-check-source prepared-state)))))
 
+(defun org-texmacs--standard-text-bytes (text)
+  "Convert final standard TEXT to native bytes without lossy substitution."
+  (unless (stringp text)
+    (signal 'org-texmacs-document-error
+            '("Expected standard TeXmacs text output")))
+  (let ((bytes (encode-coding-string text 'iso-latin-1-unix)))
+    (unless (equal
+             text (decode-coding-string bytes 'iso-latin-1-unix))
+      (signal
+       'org-texmacs-document-error
+       '("Text filter output is not reversible native Latin-1 transport")))
+    bytes))
+
 (defun org-texmacs--standard-consume
     (consumer &optional subtreep visible-only ext-plist)
   "Return a structured CONSUMER result from the current source once.
 CONSUMER is input, model, document or pdf.  Forward standard SUBTREEP,
 VISIBLE-ONLY and EXT-PLIST without selecting or merging configuration here.
-This private bridge does not migrate the legacy source APIs or frontend yet."
+Interactive commands share this bridge; legacy source APIs migrate separately."
   (unless (memq consumer '(input model document pdf))
     (signal 'org-texmacs-document-error
             '("Invalid structured export consumer")))

@@ -21,8 +21,17 @@ TeXmacs document lowering remain separate from standard export preparation.
   preserving AST-first TeXmacs construction.
 
 *** Public export API migration
-- [ ] Route interactive commands and feasible source-buffer convenience APIs
+- [-] Route interactive commands and feasible source-buffer convenience APIs
   through shared standard preparation, retaining their distinct result types.
+- Interactive commands now share standard preparation for all scopes, including
+  visible-only, and preserve managed buffers and guarded native file writing.
+- Breaking: non-nil =org-texmacs-export-discover-bibliography= is rejected;
+  configure standard Org Cite instead.  Interactive EXT-PLIST follows Org,
+  while explicit source adapters retain their legacy contracts during migration.
+- Final text filters feed reversible native byte output; lossy text conversion
+  fails explicitly.  PDF consumes the completed native document directly.
+- Preserve Org's table alignment after control-row pruning, including numeric
+  column inference; unsupported width cookies fail explicitly.
 - [ ] Consolidate, deprecate or remove redundant preparation and bibliography
   discovery variants, with explicit migration guidance for changed contracts.
 

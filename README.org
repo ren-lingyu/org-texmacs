@@ -241,8 +241,9 @@ fragment tree request starts the worker, as does document island parsing
 or opening a native session; source discovery alone does not.
 
 The core exposes ten customizable variables, shown in this example.  The
-optional =ox-texmacs= frontend adds =org-texmacs-export-discover-bibliography= and
-=org-texmacs-export-menu-keys=, described under [[*Org export dispatcher][Org export dispatcher]].
+optional =ox-texmacs= frontend adds =org-texmacs-export-menu-keys=, described
+under [[*Org export dispatcher][Org export dispatcher]].  Its old
+=org-texmacs-export-discover-bibliography= flag is obsolete; leave it nil.
 The example assumes the package is already on =load-path= and explicitly sets
 the source/straight defaults.  For a different installation path, copy its
 =:custom= section into the corresponding declaration above rather than
@@ -891,7 +892,8 @@ region, narrowed and visible-only selection, standard options and AST filters
 follow Org.  Standard Org Cite can consume structured output from the existing
 CSL processor.  Public convenience-command migration remains in development.
 Unsupported prepared structures fail explicitly.
-The dispatcher commands retain their bounded preparation until their migration.
+The three dispatcher commands now share this standard path.  Explicit
+source-buffer APIs retain their legacy preparation pending their migration.
 
 The adapter resolves deferred properties while the export buffer is live,
 copies the final tree, and parses complete STM once with TeXmacs.  Its model
@@ -989,7 +991,8 @@ effects it cannot preserve.  The tested CSL finalizer is allowed because it is
 an identity operation for this backend; advised or subsequently replaced
 finalizer/format-dispatch definitions are rejected.  Arbitrary callbacks are
 not executed to probe compatibility.  Text export runs the selected standard
-finalizer once.  Public convenience/PDF command migration is a later node.
+finalizer once.  Interactive commands use this shared preparation/result handoff;
+explicit source-buffer convenience API migration remains a later node.
 
 Standard preparation, AST filters, mutable export INFO and Org Cite processing
 must retain their export context; an AST-to-buffer round trip does not preserve
@@ -1015,11 +1018,11 @@ prompts or native waits reject results.  Direct APIs use explicit bibliography
 text snapshots.
 The opt-in discovery APIs below can acquire missing local =.bib= files.
 
-The legacy frontend below does not support =visible-only=, =body-only= fragments,
-async export or unrestricted preprocessing.  The initial standard entry above
-uses Org preparation and selection but still has the stated adapter limits;
-body-only fragments are explicitly rejected before preparation.  Publishing
-integration and async export are not claimed.
+The interactive frontend and standard entry use Org preparation and support
+=visible-only= within the stated adapter limits.  =body-only= fragments and
+async export are rejected before preparation.  The explicit source-buffer APIs
+below still use their legacy preparation contracts during migration.
+Publishing integration and async export are not claimed.
 Native PDF regression checks structure/text/reference semantics; it does not
 establish GUI layout or general pagination convergence.  Detailed supported and
 rejected cases remain part of the API contracts below.
@@ -1384,6 +1387,13 @@ without implicitly making header contents bold.  Leading and trailing rules
 are supported, but consecutive rules are rejected because their multiplicity
 has no lossless mapping in this subset.
 
+Standard export freezes Org's column alignment queries before copying the
+prepared tree.  This retains alignment cookies even when Org excludes their
+control row from output, and applies Org's numeric-column inference when no
+cookie overrides it.  Pure lowering uses those saved values without querying
+live Org state.  Width cookies remain unsupported and fail explicitly.
+
+The independent input/legacy source APIs use the following stricter contract.
 A table may have one independent alignment-format row anywhere in its body:
 
 #+begin_example
@@ -1742,7 +1752,8 @@ Use =org-texmacs-document-from-buffer-discover-bibliography= for a completed
 document or =org-texmacs-export-from-buffer-discover-bibliography= for native
 =.tm= bytes.  Both accept the existing optional =bibliography-sources=,
 =subtree-position=, =region= and =ext-plist= arguments.  Existing direct APIs
-retain their explicit snapshot behavior; frontend discovery is controlled separately by =org-texmacs-export-discover-bibliography=.
+retain their explicit snapshot behavior.  Interactive commands instead use
+standard Org Cite; the obsolete frontend discovery flag must remain nil.
 
 #+begin_src emacs-lisp
   (let ((org-cite-global-bibliography '("references.bib")))
@@ -2377,17 +2388,22 @@ itself is not rebound, and menu settings do not change export command semantics.
 The corresponding commands are =org-texmacs-export-as-texmacs=,
 =org-texmacs-export-to-texmacs= and =org-texmacs-export-to-pdf=.
 They accept Org's standard optional arguments =async subtreep visible-only
-body-only ext-plist=.  =subtreep= and the restricted =ext-plist= below are supported;
-=async=, =visible-only= and =body-only= must be nil and fail before conversion or
-file prompts when non-nil.  It exports a complete
-buffer, containing subtree or active region synchronously, respecting existing
-narrowing.  An active region takes precedence for body selection; =subtreep=
-still supplies subtree configuration and output naming.  File actions reuse
-=org-export-output-file-name=, like =ox-latex=: =#+EXPORT_FILE_NAME= takes
-precedence over the visiting source's file stem; a source with neither prompts
-for a name.  The helper enforces the =.tm= or =.pdf= suffix.  Relative paths
-use the captured source working directory.  =EXPORT_FILE_NAME= is output
-metadata and is consumed without appearing in the document body.
+body-only ext-plist=.  =async= and =body-only= must be nil and fail before
+preparation or prompts.  Full buffer, subtree, active region, narrowing and
+visible-only selection follow Org's standard semantics.  Selection and mutable
+option data are captured before prompts; functions and opaque objects retain
+identity.  Standard EXT-PLIST values and priority are interpreted by Org, not
+the legacy source API whitelist below.  Rich metadata accepts Org secondary
+objects or literal strings; strings are not reparsed as Org markup.
+With =subtreep=, the containing heading must be accessible within the current
+narrowing, as required by standard Org export.  Hiding that heading with
+narrowing raises Org's subtree selection error rather than widening the source.
+
+File actions use =org-export-output-file-name=: =#+EXPORT_FILE_NAME= and subtree
+output properties follow Org's naming rules, with the =.tm= or =.pdf= suffix.
+A source without an output name or visiting filename prompts.  Paths use the
+captured source directory.  The actual destination is passed in INFO as
+=:output-file= without aliasing the protected final write path.
 
 The frontend can overwrite an existing writable regular output at the same
 path without a separate confirmation.  It checks local targets before native
@@ -2409,7 +2425,7 @@ visiting a file or otherwise taking over the result end automatic reuse; the nex
 export creates a new result and preserves the old buffer.  Explicit-source
 results never enter frontend management.
 
-Conversion and source/dependency checks finish before result replacement.  A
+Conversion and source checks finish before result replacement.  A
 conversion or content-commit error preserves the previous content without a
 partial update.  After content commit, display failure keeps a reused buffer
 and its new content; display failure on a newly allocated result removes only
@@ -2419,51 +2435,42 @@ buffers with =no-conversion= coding and no visiting file.  Mode hooks do not run
 to clean up; the next export recreates a closed result.  Closing the Org source
 does not delete the result, and no dedicated cleanup command is provided.
 
-Full, unnarrowed exports with no subtree or active region use the bounded
-preprocessing provider: captured before-processing/before-parsing hooks, native
-INCLUDE and then the same structural preparation.  Its local path/UTF-8/alias
-checks, ordinary headline-level requirement, 64 KiB/include, depth eight,
-32 expansions and 256 KiB captured/final text budgets also apply to documents
-without INCLUDE.  Unsupported inputs fail; there is no direct-conversion fallback.
+Each action performs one real =org-export-as= transaction.  Org runs hooks,
+INCLUDE/SETUPFILE, macros/Babel, options, selection, AST filters and Cite for all
+scopes.  There is no separate full-document/local preparation route, project
+INCLUDE recursion, old protection framework or legacy INCLUDE size/depth budget.
+Org defines preparation warnings/errors.  Once preparation has supplied owned
+structures, later changes to consumed INCLUDE/bibliography files do not trigger
+custom file receipts, rediscovery or a second preparation.  This is not a
+filesystem-atomic snapshot; source/native-setting changes still reject results.
 
-Subtree, active region and narrowing retain direct preparation and existing
-selection/configuration precedence.  They do not run preprocessing hooks or
-expand INCLUDE; unresolved preprocessing directives and mounts fail explicitly.
-A caller with a completed working Org buffer can use the direct preparation or
-source APIs without running preprocessing again.  The frontend does not infer
-that a buffer has already been preprocessed.
+The =.tm= consumers run final standard text filters and convert the reversible
+ISO-Latin-1 transport to native bytes.  A filter result outside that transport
+fails explicitly rather than losing characters; use an AST/options filter for
+Unicode document content.  Native PDF consumes the completed document directly,
+with the effective text-filter/finalizer compatibility contract described above.
+Unsupported node-string filters are rejected before execution.
 
-Each action prepares once and runs native serialization or PDF rendering inside
-that route's source/configuration/dependency checks.  File naming uses the original
-source context, not a temporary working buffer.  The frontend does not run Org's
-generic string-transcoder, macro/Babel or full export lifecycle.
-The standard =org-export-as= route is separate from these legacy commands during
-migration; see the standard integration status above for its current support
-boundary.  Its guards reject unsupported body-only and node-string-filter
-contracts while leaving unrelated backends unchanged.  The old generic export
-rejection hook is removed.
-
-These commands pass no explicit bibliography snapshots.  The independent
-buffer-local boolean =org-texmacs-export-discover-bibliography= defaults to nil;
-set it to t to enable standard Org Cite discovery/acquisition for any of the
-three outputs, including direct subtree/region/narrowing exports.  It is captured
-before file prompts and checked during conversion; it is not an =ext-plist= key.
-With nil, citations needing unsupplied bibliography fail explicitly and this
-package does not invoke the collector or automatic file acquisition.  Upstream
-hooks and AST filters may still access their own external state.
+The old buffer-local =org-texmacs-export-discover-bibliography= flag no longer
+controls these commands.  Leave it nil: any non-nil value produces migration
+advice before preparation/output prompts.  Configure normal Org Cite bibliography,
+processor and style instead; the =basic= raw-output restriction still applies.
 
 #+begin_src emacs-lisp
-  (setq-local org-texmacs-export-discover-bibliography t)
+  (setq-local org-texmacs-export-discover-bibliography nil)
   (org-texmacs-export-to-texmacs)
 #+end_src
 
-Documents needing explicit text snapshots can use the existing Lisp source
-adapters with =BIBLIOGRAPHY-SOURCES=.  Unrestricted overrides, visible/body-only
-and async semantics remain future design work.  Loading =org-texmacs= alone
-does not register this menu or the standard export bridge, and no PDF viewer opens.
+The legacy explicit source adapters with =BIBLIOGRAPHY-SOURCES= still have their
+independent contracts during API migration.  Loading =org-texmacs= alone does
+not register the menu or backend, and no PDF viewer opens.
 
-*** Restricted external configuration
-The frontend's =ext-plist= argument accepts these existing configuration fields:
+*** Legacy source API configuration
+The following whitelist applies to the explicit source-buffer adapters, not to
+the three standard interactive commands.  Those commands delegate configuration
+to Org.  These legacy source-adapter contracts remain until caller migration.
+
+The legacy source adapters' =ext-plist= accepts these configuration fields:
 
 | Keys                                                                                                                 | Value type                                       |
 |----------------------------------------------------------------------------------------------------------------------+--------------------------------------------------|
@@ -2488,17 +2495,17 @@ file or subtree setting overrides them.  Unknown keys, duplicate keys, improper
 or cyclic lists and invalid value types fail before prompts or worker requests.
 Output paths, styles/initial values, hooks, filters, parser settings and
 bibliography sources and discovery are outside this plist.  The plist only changes
-effective configuration; preprocessing/discovery follow the selected frontend route.
-File naming retains the existing source/subtree policy.
+effective configuration for those legacy APIs; their explicit discovery and
+preprocessed variants retain their documented separate contracts.
 
 #+begin_src emacs-lisp
-  (org-texmacs-export-as-texmacs
-   nil nil nil nil '(:title "*A title*" :with-toc nil :section-numbers nil))
+  (org-texmacs-document-from-buffer
+   source-buffer nil nil nil '(:title "*A title*" :with-toc nil :section-numbers nil))
 #+end_src
 
 The explicit preparation/document/.tm/PDF byte/readonly buffer adapters accept
 =EXT-PLIST= as an optional fifth argument, after =REGION=.  Values are copied
-before conversion (and before frontend file prompts); later mutations of the
+before conversion; later mutations of the
 caller's plist, strings or tag lists affect only a subsequent conversion.
 Pure lowering consumes the completed owned INFO and never consults this caller.
 The explicit new-file saving adapters retain their existing signatures; callers
@@ -2514,6 +2521,10 @@ these consumers produce complete native =.tm=/PDF documents.  A future embeddabl
 fragment needs an explicit format and consumer contract.
 
 *** Narrowed source buffers
+Interactive commands delegate narrowing and visibility to Org as described
+above.  The following explicit source-adapter details retain their legacy
+contracts during migration.
+
 Existing narrowing is the outer body boundary.  Without an explicit region or
 subtree selection, export the accessible range, including partial ordinary text.
 With =subtreep=, intersect the selected subtree body with that boundary; omitted
@@ -2527,7 +2538,7 @@ come from the complete source snapshot.  The containing subtree heading can
 supply =EXPORT_*= properties even when narrowing hides that heading.  Explicit
 subtree positions must be inside the source's accessible range.  Targets outside
 the emitted body/dependencies still fail.  Direct APIs retain explicit dependency
-inputs; frontend discovery can acquire bibliography when enabled.
+inputs; explicit discovery variants can acquire bibliography.
 Unsupported preprocessing directives anywhere in the source remain rejected.
 
 The source is briefly widened only for a synchronous text copy inside a saved
@@ -2544,8 +2555,8 @@ contract.  Truncated TeXmacs islands retain the region preflight error boundary.
     (org-texmacs-export-to-texmacs))
 #+end_src
 
-=visible-only= remains unsupported: narrowing selects an accessible range,
-while folding/visibility needs a separate captured policy.
+The interactive commands now support =visible-only= through Org.  The legacy
+explicit source adapters have no visibility argument.
 
 *** Region export
 An active region selects its exact character range.  As in Org export, partial
@@ -2561,7 +2572,7 @@ from the same snapshot; unused out-of-region body and islands are not converted.
 Internal links must resolve to targets in the emitted body/dependencies.
 Citations require supplied bibliography data and one bibliography print inside
 the selected region.  Direct APIs use explicit text snapshots without opening
-dependency files; frontend discovery can acquire missing bibliography when enabled.
+dependency files; their explicit discovery variants acquire missing bibliography.
 
 If =subtreep= is also non-nil, its heading supplies the supported =EXPORT_*=
 configuration and output name, while the active region supplies the body.  A

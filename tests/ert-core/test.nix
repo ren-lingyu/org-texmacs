@@ -22,6 +22,7 @@ let
     ./lisp/standard-export.el
     ./lisp/standard-context.el
     ./lisp/standard-cite.el
+    ./lisp/standard-frontend.el
     ./lisp/special-blocks.el
     ./lisp/worker.el
   ];
