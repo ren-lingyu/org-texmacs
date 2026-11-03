@@ -1,0 +1,770 @@
+{
+  "baseline": "a44ec6a25ff8cc0fee2c27169d4e9aa5a41508e8",
+  "removed_private_definitions": [
+    "org-texmacs--bibliography-acquire",
+    "org-texmacs--bibliography-check-receipts",
+    "org-texmacs--bibliography-discover",
+    "org-texmacs--bibliography-file-attributes",
+    "org-texmacs--bibliography-file-bytes",
+    "org-texmacs--bibliography-globals",
+    "org-texmacs--bibliography-local-path",
+    "org-texmacs--bibliography-source-snapshot",
+    "org-texmacs--bibliography-view-copy",
+    "org-texmacs--context-base-options",
+    "org-texmacs--context-body-region",
+    "org-texmacs--context-check-wrapper-region",
+    "org-texmacs--context-export-properties",
+    "org-texmacs--context-external-options",
+    "org-texmacs--context-filter-apply",
+    "org-texmacs--context-filter-copy",
+    "org-texmacs--context-filter-properties",
+    "org-texmacs--context-filter-snapshot",
+    "org-texmacs--context-filter-state",
+    "org-texmacs--context-keywords",
+    "org-texmacs--context-merge-external",
+    "org-texmacs--context-merge-options",
+    "org-texmacs--context-option-alist",
+    "org-texmacs--context-option-value-p",
+    "org-texmacs--context-parse-alt-title",
+    "org-texmacs--context-prepare",
+    "org-texmacs--context-preserve-footnotes",
+    "org-texmacs--context-prune",
+    "org-texmacs--context-reachable",
+    "org-texmacs--context-rejected-keywords",
+    "org-texmacs--context-select-subtree",
+    "org-texmacs--context-selected-trees",
+    "org-texmacs--context-validate-info",
+    "org-texmacs--context-validate-options",
+    "org-texmacs--document-check-native-requests",
+    "org-texmacs--document-options",
+    "org-texmacs--document-prepare",
+    "org-texmacs--document-prepare-source",
+    "org-texmacs--filter-own-preparation",
+    "org-texmacs--prepare-buffer",
+    "org-texmacs--preprocess-compose",
+    "org-texmacs--preprocess-context",
+    "org-texmacs--preprocess-convert",
+    "org-texmacs--preprocess-fail",
+    "org-texmacs--preprocess-hooks",
+    "org-texmacs--preprocess-hooks-same-p",
+    "org-texmacs--preprocess-private-state",
+    "org-texmacs--preprocess-reject-generic",
+    "org-texmacs--preprocess-stage"
+  ],
+  "retired_tests": [
+    {
+      "path": "tests/ert-core/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-view-owned-and-invalid",
+      "reason": "removed bibliography discovery/private view, standard Cite and pure constructor coverage retained"
+    },
+    {
+      "path": "tests/ert-core/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-view-global-only-resolution",
+      "reason": "removed bibliography discovery/private view, standard Cite and pure constructor coverage retained"
+    },
+    {
+      "path": "tests/ert-core/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-view-rejects-document-disagreement",
+      "reason": "removed bibliography discovery/private view, standard Cite and pure constructor coverage retained"
+    },
+    {
+      "path": "tests/ert-core/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-auto-private-discovery",
+      "reason": "removed bibliography discovery/private view, standard Cite and pure constructor coverage retained"
+    },
+    {
+      "path": "tests/ert-core/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-auto-acquire-and-receipts",
+      "reason": "removed bibliography discovery/private view, standard Cite and pure constructor coverage retained"
+    },
+    {
+      "path": "tests/ert-core/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-auto-rejects-locations-and-files",
+      "reason": "removed bibliography discovery/private view, standard Cite and pure constructor coverage retained"
+    },
+    {
+      "path": "tests/ert-core/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-auto-rejects-dropped-declaration",
+      "reason": "removed bibliography discovery/private view, standard Cite and pure constructor coverage retained"
+    },
+    {
+      "path": "tests/ert-core/lisp/source.el",
+      "name": "org-texmacs-block-case-bibliography-shield",
+      "reason": "direct calls to removed private preparation: org-texmacs--bibliography-discover, org-texmacs--document-options"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-native-authority",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-source-snapshot-and-preflight",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-source-rechecks-worker-waits",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-preparation-retains-lowering-boundary",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-invalid-native-payload-stops-worker",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-native-parsing-and-worker-reuse",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-auto-default-api-is-explicit",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-auto-source-to-native",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-auto-explicit-priority-with-advice",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-auto-rejects-preprocessing-and-conflict",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-auto-masks-outside-restriction",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-auto-rejects-discovery-mutations",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-auto-rejects-acquisition-mutations",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-auto-rejects-native-wait-mutations",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-auto-rejects-before-byte-return",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-auto-rejects-native-dependency-stages",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-issue12-native-constructs",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-issue12-used-key-boundary",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-issue12-declared-source-ambiguity",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-issue12-native-reference-boundary",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-issue12-native-recovery-and-isolation",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-issue12-discovered-native-input",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-issue12-metadata-owned-after-worker-wait",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-issue12-native-failure-recovery",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-bibliography-issue12-native-behavior-controls",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-citations-inline-contexts",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-citations-unused-alt-title",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-citations-secondary-filter-and-selection",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-citations-expanded-context-preflight",
+      "reason": "retired source bibliography acquisition/receipt orchestration; explicit native constructor/converter replaces it"
+    },
+    {
+      "path": "tests/ert-native/lisp/document.el",
+      "name": "org-texmacs-citations-preflight-boundaries",
+      "reason": "removed source native-Cite preparation; standard Cite plus explicit native constructor/PDF replacements"
+    },
+    {
+      "path": "tests/ert-native/lisp/document.el",
+      "name": "org-texmacs-citations-footnote-order-and-stale-output",
+      "reason": "removed source native-Cite preparation; standard Cite plus explicit native constructor/PDF replacements"
+    },
+    {
+      "path": "tests/ert-native/lisp/document.el",
+      "name": "org-texmacs-citations-formatting-wait-and-payload-errors",
+      "reason": "removed source native-Cite preparation; standard Cite plus explicit native constructor/PDF replacements"
+    },
+    {
+      "path": "tests/ert-native/lisp/document.el",
+      "name": "org-texmacs-citations-native-output-and-ownership",
+      "reason": "removed source native-Cite preparation; standard Cite plus explicit native constructor/PDF replacements"
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-ast-filter-native-citation-and-owned-output",
+      "reason": "removed key-only AST-filter transaction; standard unrestricted AST filter/Cite tests retained"
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-ast-filter-missing-key-after-native-parse",
+      "reason": "removed key-only AST-filter transaction; standard unrestricted AST filter/Cite tests retained"
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-ast-filter-rejects-non-key-mutations",
+      "reason": "removed key-only AST-filter transaction; standard unrestricted AST filter/Cite tests retained"
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-ast-filter-validates-each-nil-return",
+      "reason": "removed key-only AST-filter transaction; standard unrestricted AST filter/Cite tests retained"
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-ast-filter-order-nil-and-core-only-backend",
+      "reason": "removed key-only AST-filter transaction; standard unrestricted AST filter/Cite tests retained"
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-ast-filter-error-unwinds-context",
+      "reason": "removed key-only AST-filter transaction; standard unrestricted AST filter/Cite tests retained"
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-ast-filter-selection-and-restored-footnotes",
+      "reason": "removed key-only AST-filter transaction; standard unrestricted AST filter/Cite tests retained"
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-ast-filter-settings-and-function-wait-checks",
+      "reason": "removed key-only AST-filter transaction; standard unrestricted AST filter/Cite tests retained"
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-ast-filter-backend-order-and-snapshot-context",
+      "reason": "removed key-only AST-filter transaction; standard unrestricted AST filter/Cite tests retained"
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-ast-filter-nil-return-remaps-keys",
+      "reason": "removed key-only AST-filter transaction; standard unrestricted AST filter/Cite tests retained"
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-ast-filter-rejects-buffer-context-switch",
+      "reason": "removed key-only AST-filter transaction; standard unrestricted AST filter/Cite tests retained"
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-ast-filter-escaped-tree-cannot-change-owned-preparation",
+      "reason": "removed key-only AST-filter transaction; standard unrestricted AST filter/Cite tests retained"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-original-and-working-snapshots",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-island-ranges-owned-before-filters",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-original-source-guard-before-working-parse",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-component-native-fixed-sources",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-component-hooks-generated-and-protected",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-component-rejects-marker-and-config-edits",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-component-rejects-files-and-parameters",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-component-native-guard-and-mode-hook-isolation",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-native-parameter-combinations",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-lines-protect-multiline-stm",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-selection-avoids-excluded-reads",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-native-reader-restored-after-failure",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-selected-same-file-native-cycle-policy",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-fixed-read-copies-and-parameter-errors",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-native-depth-and-invalid-utf8",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-literal-include-native-escaping",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-literal-lines-ignore-stm-spans",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-literal-code-never-executes",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-wrapper-target-errors-after-expansion",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-mixed-views-share-original-snapshot",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-mixed-reader-copies-and-relative-paths",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-wrapper-native-branch-semantics",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-native-body-selected-before-protection",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-nested-modes-and-helper-restoration",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-wrapper-budgets-and-dependency-guards",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-new-helper-identity-guard",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-source-to-native-and-owned-snapshots",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-bibliography-uuid-and-filters-once",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-discovery-off-and-old-api-defaults",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-whole-file-footnotes-and-generated-stm",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-rejects-selection-directory-and-odd-levels",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-rejects-source-and-hook-mutations",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-rejects-dependency-changes-at-native-stages",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-bounds-aliases-and-temporary-cleanup",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-rejects-include-read-mutations",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-budgets-and-hook-created-stm",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-selected-stm-native-readback",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-selected-external-footnote-stm",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-cross-directory-native-links-and-notes",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-cross-directory-final-bibliography-base",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-completed-working-buffer-context",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-cross-directory-partial-stm-rejected",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-included-native-body-matches-direct-source",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-mixed-literal-and-native-targets",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-pdf/lisp/preprocess.el",
+      "name": "org-texmacs-preprocess-cross-directory-stm-final-context",
+      "reason": "old independent provider lifecycle replaced by real standard public/alias composition and result-boundary tests"
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-context-does-not-enter-islands",
+      "reason": "Original opaque STM shielding is superseded by user Org-structure decision; native final-AST matrix retained."
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-context-rejects-preprocessing-without-reading",
+      "reason": "Standard preprocessing must execute, not be prohibited; standard generated-STM/setup/include checks replace private rejection."
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-context-rejects-unsupported-options",
+      "reason": "Private source option whitelist removed; standard option/filter and public invalid-plist-shape cases remain."
+    },
+    {
+      "path": "tests/ert-native/lisp/document.el",
+      "name": "org-texmacs-document-source-preflight",
+      "reason": "Custom source preflight order/INCLUDE rejection retired; standard preparation and target error/source-preservation tests remain."
+    },
+    {
+      "path": "tests/ert-native/lisp/document.el",
+      "name": "org-texmacs-document-formatter-parser-isolation",
+      "reason": "Private parser-regexp sandbox retired; pure formatter and standard backend/HTML isolation checks remain."
+    },
+    {
+      "path": "tests/ert-native/lisp/document.el",
+      "name": "org-texmacs-document-heading-settings-reject-malformed-values",
+      "reason": "Private parser-setting validator retired; Org prepares parser state; independent parser contracts and standard options remain."
+    },
+    {
+      "path": "tests/ert-native/lisp/document.el",
+      "name": "org-texmacs-document-source-rechecks-heading-settings",
+      "reason": "Consumed private parser receipts retired; frozen input/context and explicit original-source guards remain."
+    },
+    {
+      "path": "tests/ert-native/lisp/document.el",
+      "name": "org-texmacs-headline-file-options-without-export-environment",
+      "reason": "Test forbids export environment acquisition, now required; standard options/AST filter and metadata cases replace it."
+    },
+    {
+      "path": "tests/ert-native/lisp/special-blocks.el",
+      "name": "org-texmacs-issue13-stage2-opaque-preprocessing-and-dependencies",
+      "reason": "Original native-body shielding is superseded by user Org-structure decision; standard effective native blocks remain tested."
+    },
+    {
+      "path": "tests/ert-native/lisp/special-blocks.el",
+      "name": "org-texmacs-issue13-stage3-original-body-errors-before-worker",
+      "reason": "Original unpruned body authority/phase order retired; pure wrapper grammar and final AST body checks remain."
+    },
+    {
+      "path": "tests/ert-native/lisp/special-blocks.el",
+      "name": "org-texmacs-issue13-stage3-scope-and-complete-wrapper",
+      "reason": "Original wrapper span receipt rejects valid standard selections; standard selection and identifiable incomplete STM cases remain."
+    },
+    {
+      "path": "tests/ert-native/lisp/special-blocks.el",
+      "name": "org-texmacs-issue13-stage3-include-restored-notes-and-opaque-body",
+      "reason": "Private INCLUDE/opaque-body restoration policy retired; standard recursion, selected-note and native-body cases remain."
+    },
+    {
+      "path": "tests/ert-native/lisp/special-blocks.el",
+      "name": "org-texmacs-issue13-stage3-filter-cannot-replace-source-evidence",
+      "reason": "Rejecting legal final AST replacement contradicts standard filters; standard synthetic/moved native islands replace it."
+    },
+    {
+      "path": "tests/ert-native/lisp/frontend.el",
+      "name": "org-texmacs-narrowing-owned-notes-bibliography-and-islands",
+      "reason": "Legacy bibliography snapshots and full-source restore retired; standard selected footnotes/Cite plus native owned bibliography checks remain."
+    },
+    {
+      "path": "tests/ert-native/lisp/frontend.el",
+      "name": "org-texmacs-narrowing-subtree-intersection-and-region-priority",
+      "reason": "Legacy scope precedence differs from genuine Org; standard-source selection/matching-heading tests replace it."
+    },
+    {
+      "path": "tests/ert-native/lisp/frontend.el",
+      "name": "org-texmacs-region-invalid-boundaries-and-link-scope",
+      "reason": "Legacy original-span/forced preparation-lowering semantics retired; standard invalid-argument, final boundary and target-query tests remain."
+    },
+    {
+      "path": "tests/ert-native/lisp/frontend.el",
+      "name": "org-texmacs-region-owned-bibliography-and-resource-base",
+      "reason": "Legacy source bibliography snapshots retired; standard scoped Cite/source consumers and explicit native bibliography constructors remain."
+    },
+    {
+      "path": "tests/ert-native/lisp/frontend.el",
+      "name": "org-texmacs-subtree-links-and-invalid-scope-preflight",
+      "reason": "Legacy target/error phase policy retired; original-node standard target queries and source-selection argument checks remain."
+    },
+    {
+      "path": "tests/ert-native/lisp/frontend.el",
+      "name": "org-texmacs-subtree-owned-bibliography-and-resource-base",
+      "reason": "Legacy source bibliography snapshots retired; standard scoped Cite/source consumers and explicit native bibliography constructors remain."
+    },
+    {
+      "path": "tests/ert-core/lisp/source.el",
+      "name": "org-texmacs-block-case-preprocessing-shield",
+      "reason": "raw shielding/invalid native source survival is superseded by Org structure priority; standard final-AST STM/preprocessing matrix and independent parser contracts remain"
+    }
+  ],
+  "rewritten_pure_constructor_tests": [
+    {
+      "path": "tests/ert-core/lisp/document.el",
+      "name": "org-texmacs-document-named-table-caption-ownership",
+      "reason": "preserved ownership/handler assertions with explicit constructor data, without source preparation"
+    },
+    {
+      "path": "tests/ert-core/lisp/special-blocks.el",
+      "name": "org-texmacs-issue13-handler-snapshot-and-pure-defaults",
+      "reason": "preserved ownership/handler assertions with explicit constructor data, without source preparation"
+    },
+    {
+      "path": "tests/ert-native/lisp/document.el",
+      "name": "table lowering/native families and pure ambiguity checks",
+      "reason": "Retain original structural/native assertions using independent model plus explicit fixed input; standard alignment has separate maintained coverage."
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "name": "org-texmacs-fragment-issue10-object-and-delimiter-boundaries",
+      "reason": "Retain independent source parser contract with model-to-input constructor; standard Org structure boundary is separate."
+    }
+  ],
+  "renamed_tests": [
+    {
+      "path": "tests/ert-native/lisp/frontend.el",
+      "old_name": "org-texmacs-cleanup-local-discovery-and-direct-preparation",
+      "new_name": "org-texmacs-cleanup-legacy-discovery-standard-preparation",
+      "reason": "retain cleanup/tag selection assertions against actual standard Org semantics"
+    },
+    {
+      "path": "tests/ert-native/lisp/source.el",
+      "old_name": "org-texmacs-context-expands-snapshotted-tag-groups",
+      "new_name": "org-texmacs-context-standard-tag-selection",
+      "reason": "retain cleanup/tag selection assertions against actual standard Org semantics"
+    },
+    {
+      "path": "tests/caption-inline-footnotes/lisp/captions.el",
+      "old_name": "org-texmacs-caption-patched-private-snapshot-export",
+      "new_name": "org-texmacs-caption-patched-independent-model-output",
+      "reason": "retain native caption/session/pure model assertions; standard scoped export separately rejects absent Org numbering"
+    },
+    {
+      "path": "tests/caption-inline-footnotes/lisp/captions.el",
+      "old_name": "org-texmacs-caption-patched-statement-private-snapshot",
+      "new_name": "org-texmacs-caption-patched-statement-independent-model",
+      "reason": "retain native caption/session/pure model assertions; standard scoped export separately rejects absent Org numbering"
+    }
+  ],
+  "added_tests": [
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-native-bibliography-constructor-format-and-lower"
+    },
+    {
+      "path": "tests/ert-native/lisp/bibliography.el",
+      "name": "org-texmacs-native-bibliography-parser-and-owned-input"
+    },
+    {
+      "path": "tests/ert-native/lisp/preprocess.el",
+      "name": "org-texmacs-standard-legacy-preprocessed-generated-stm"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-standard-prepare-public-filters-and-ownership"
+    },
+    {
+      "path": "tests/ert-pdf/lisp/preprocess.el",
+      "name": "org-texmacs-standard-structured-errors-and-nested-input"
+    },
+    {
+      "path": "tests/ert-pdf/lisp/preprocess.el",
+      "name": "org-texmacs-standard-structured-legacy-wrappers-use-standard-only"
+    },
+    {
+      "path": "tests/ert-pdf/lisp/preprocess.el",
+      "name": "org-texmacs-standard-structured-output-consumers-lower-once"
+    },
+    {
+      "path": "tests/ert-pdf/lisp/preprocess.el",
+      "name": "org-texmacs-standard-structured-prepared-consumers-do-not-lower"
+    },
+    {
+      "path": "tests/ert-core/lisp/preprocess.el",
+      "name": "org-texmacs-standard-structured-source-migration-before-effects"
+    }
+  ],
+  "changed_existing_contracts": [
+    {
+      "path": "tests/caption-inline-footnotes/lisp/captions.el",
+      "name": "org-texmacs-caption-patched-scoped-export",
+      "reason": "all four scopes explicitly reject parsed caption notes when standard Org numbering omits affiliated keywords; no custom numbering"
+    },
+    {
+      "path": "tests/ert-native/lisp/frontend.el",
+      "reason": "author presentation fixtures enable with-author; Org footnote/link errors, scope empty definitions and owned-source guard expectations now follow standard transaction"
+    },
+    {
+      "path": "tests/ert-native/lisp/document.el",
+      "reason": "pure target validation/ambiguity/alignment/caption tests use owned explicit model input; independent contracts retained"
+    },
+    {
+      "path": "tests/ert-pdf/lisp/pdf.el",
+      "reason": "native bibliography layout/text/relocation/reload assertions retained using explicit constructor data; separate standard CSL/real extension tests cover Cite"
+    },
+    {
+      "path": "tests/integration/lisp/standard-cite.el",
+      "reason": "actual SQLite UUID/INFO/once-only tests extend source consumers to prepared input/document/current-document"
+    }
+  ],
+  "catalog_audit": {
+    "all_tracked_ert_baseline": 758,
+    "all_tracked_ert_candidate": 649,
+    "removed_names": 122,
+    "added_names": 13,
+    "retired": 118,
+    "renamed": 4,
+    "new": 9,
+    "stock_baseline": 739,
+    "stock_candidate": 630,
+    "patched_caption": 6,
+    "expected_default_total": 636,
+    "actual_standard_integration": 4,
+    "note": "catalog totals include optional legacy integration cases; not all catalog cases run by default"
+  }
+}

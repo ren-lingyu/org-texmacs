@@ -1,47 +1,41 @@
 # org-texmacs current memory
 
-## Current: A-E2a delivered; E2b structured consumers/cleanup active
+## Current: E2b accepted candidate; human project commit pending
 
-Controlling plan: memory/standard-export-0.7.0-plan.md. Human E2a a44ec6a matches
-expected E1 parent/15paths/full message/all158accepted hashes. Ordinary worktree/
-index and GAW clean at intake; no unchanged runtime rerun. Continue the already
-approved E2b structured source API migration and caller-first cleanup, then E3.
-Version0.6.0/TODO unchanged; no ordinary staging/commit/tag/push.
+Controlling plan: memory/standard-export-0.7.0-plan.md. Human E2a delivery is
+verified against expected parent/15paths/message/all158accepted hashes. E2b now
+passes complete acceptance; ordinary project index remains empty. No ordinary
+staging/commit/tag/push. Version0.6.0/TODO unchanged. User requests continued work
+and a complete progress update; report delivered, human E2b gate still applies.
 
-Inventory confirms private main preparation, document source preparation, context
-pruning/filter/option merge and preprocessed/discovery providers have no place in
-the standard export authority. Preserve pure ownership/lowering and the metadata
-schema, source naming helpers and pure footnote queries actually used independently.
-New architecture question before migration: current private input/model request
-always constructs a document. Public preparation should return owned prepared
-input without forcing target lowering. Probe whether input/model-only handoff can
-skip unnecessary lowering while retaining one genuine standard transaction, tail
-compatibility, source checks and nesting; document/text/PDF still require a complete
-native document. Do not introduce fallback preparation for old test assumptions.
-Details, migration/test coverage assessment: memory/standard-export-0.7.0-e2b.md.
-Four isolated prepared-consumer probes pass4/4(3.659545s); input/model can skip
-target lowering while text/document/PDF lower once. Normal completion and nested
-results/source checks remain. Production migration/cleanup is applied but not
-accepted. Focused-4 core passes274/274 after metadata declaration and fixture
-migration. Focused-2 combined native/PDF120s times out incomplete; failures remain.
-Isolated selected-inline-note probe exposes shared children in ignored originals
-and Org supplemental notes; adapter must skip ignore-list before strict ownership.
-Native settings must be captured from source, with separate copies for INFO and
-source guards. Follow-up shows ignore-list alone is insufficient: canonical Org
-definition selection must precede copying. Input-only five-scope probe passes,
-but document probe exposes inline object children in supplemental definitions;
-owned paragraph wrapping and empty-definition handling are under validation.
-Allowing shared text alone failed and was withdrawn. README migration rewrite
-is in progress; full gates and remaining native test migration are pending.
-User adopts Org structure priority and stops early parser development. The
-multiline INCLUDE counterexample remains evidence of standard preprocessing,
-not a protection gate. Do not continue parser candidates or repair cross-heading
-variants. No generic parser was added to production. Consume final AST, propagate
-Org errors and never restore deleted/rewritten STM. Complete native/PDF candidate
-results211/292,43/45,27/29 remain unaccepted. Continue E2b API/cleanup/docs and
-per-contract regression migration, then full Nix checks/diff/GAW/human delivery.
-E3 follows that human commit. See E2b decision note. Do not copy
-old preparation into test helpers merely to preserve the old test count.
+Structured source input/document/current-document and five deprecated wrappers
+share standard Org preparation. Input/model handoff skips target lowering;
+document/text/PDF lower once. Parallel options/selection/filter/INCLUDE/bibliography
+preparation is retired after caller migration. Org-selected canonical note bodies
+precede strict ownership; ignored shared alternatives are excluded. Inline note
+bodies receive owned paragraphs without reparse. Source settings/INFO have separate
+copies; base-buffer file identity/path normalization and inherited-property scratch
+marker isolation preserve source state. Independent model/input/lowering remain.
+
+User Org structure priority controls: final AST, complete STM within one effective
+owner, no cross-boundary joining/original restoration/early parser or INCLUDE
+interception. Native/PDF/worker contracts remain. Parsed caption notes for which
+Org9.8.10 gives no number explicitly fail standard source conversion; test-only
+parser patch does not extend numbering. Independent caption/native support stays.
+
+Full-2 clean isolation passes default636ERT plus actual Organize4, all12checks.
+Full-3 after README-only corrections passes; only treefmt rebuilt, identical runtime
+and lint/compile derivations reused. Complete37path diff reviewed, all158root inputs
+match the final checked snapshot. Exact inputs/expected human message and limits:
+memory/standard-export-0.7.0-e2b-inputs.json. Per-case test inventory:
+memory/standard-export-0.7.0-e2b-tests.json (118retired, fourrenamed, ninenew).
+Draft tmp/commit.md is from the complete worktree diff per adopted delivery plan.
+
+Next: user manually commits E2b. Verify exact E2a parent/full message/37paths/all158
+accepted hashes, including unchanged inputs; do not rerun unchanged gates. Then
+start E3 examples/version/final docs/release checks. No claim for other platforms,
+alternate minimum Org, GUI typesetting or example package build in E2b. Temporary
+logs/prototypes have no additional raw archival need; durable facts/manifests suffice.
 
 Five main-module source TM/PDF byte/fresh-buffer/exclusive-file exports now use
 one genuine standard Org transaction and lazy backend loading. Core/model use

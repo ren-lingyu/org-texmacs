@@ -15,7 +15,8 @@ commitment. E1 command migration is human-delivered and verified: default737ERT+
 all named checks. E2a five main-module source byte/output consumers are accepted
 with default745ERT+actual4/all12named checks and verified human delivery. E2b
 structured entries, old preprocessed/discovery variants and caller-based parallel
-preparation cleanup is active;
+preparation cleanup is accepted (636defaultERT+actual4/all12checks), awaiting
+human37path delivery before E3;
 E3 examples/version/final docs follows its human delivery gate. Table query and
 native layout regression are resolved within E1; no release completion claim.
 C freezes original-transaction query results

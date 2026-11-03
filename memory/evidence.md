@@ -1,5 +1,40 @@
 # org-texmacs durable evidence
 
+## E2b complete acceptance, human project delivery pending
+
+Locked x86_64-linux Emacs31.1/Org9.8.10/TeXmacs2.1.5. Full-2 exits0:
+core274/274(1.459363s), native273/273(179.245093s), Cite9/9(10.839345s),
+PDFdocument45/45(101.028082s), PDFrender29/29(146.870520s), patchedcaption6/6
+(cached from migration-5,2.680176s), actual SQLite/UUID Organize4/4(5.828909s).
+All12named Nix checks pass incl strict compile/package-lint/treefmt/native gotor.
+Full-3 exits0 after README-only review correction; only treefmt rebuilt, runtime
+and compile/lint derivations identical. No unchanged runtime rerun was needed.
+Exact158project inputs and two controlled actual-integration driver hashes are in
+memory/standard-export-0.7.0-e2b-inputs.json. Complete37path diff reviewed, diff
+whitespace clean and ordinary index empty.118retired/fourrenamed/ninenew tests
+are exhaustively audited in E2b tests JSON; all49retired private production
+identifiers have no remaining production reference. Pure/native/PDF assertions
+are retargeted to explicit constructor inputs, not replacement preparation.
+Source caption missing-number rejection is documented; pure support remains.
+No other-system/minimum-Org/GUI/example-build claim. Temporary artifacts need no
+raw archive; facts and input/test manifests suffice. Human E2b commit gates E3.
+
+## E2b candidate full-1, not accepted
+
+Locked Emacs31.1/Org9.8.10/TeXmacs2.1.5 x86_64-linux, clean158project-file snapshot
+plus controlled actual-integration driver. timeout600s full check exited1; native
+271/273, Cite9/9, PDFdocument45/45(100.661469s), PDFrender29/29(146.545223s),
+patched caption3/6; README table treefmt fails. Two native author fixtures contradict
+their output switch; corrected explicitly. Patch changes parser restriction only;
+Org get-footnote-number and first-reference call their mapper without affiliated
+keywords, so caption numbers are unavailable. Standard source refuses; independent
+model/pure lowering/native-session compatibility retained with retargeted checks.
+Focused corrections and subsequent full acceptance resolve these failures; see
+the acceptance record above.
+Earlier migration-4 focus4/4(2.524559s), actual Organize4/4(5.612014s), core274/274.
+No successful parser prototype enters production. Logs stay temporary; causal
+facts and per-case migration inventory suffice, no new immutable archive selected.
+
 ## E2b Org structure priority decision and rejected protection research
 
 User explicitly adopts final Org AST authority and stops generic early parser
@@ -13,7 +48,8 @@ The later opaque-parser-4 patch failed as JavaScript before any write/build and
 supplies no evidence. No generic parser or INCLUDE interception is in production.
 Retain facts and the minimal reproducible input in memory; no raw archive needed:
 original script/log bytes add no independent evidence after sufficient extraction.
-No production tests for rejected designs. Full acceptance remains pending.
+No production tests for rejected designs. The narrowed final-AST implementation
+now passes the acceptance gate above.
 
 ## E2a human delivery and E2b intake
 

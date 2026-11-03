@@ -1,6 +1,6 @@
 # org-texmacs current project model
 
-## v0.7.0 standard backend: A-E2a delivered; E2b active
+## v0.7.0 standard backend: A-E2a delivered; E2b accepted candidate
 
 User-approved E2b semantics: standard Org defines structure and content before STM
 recognition. Islands must be complete inside their effective Org owner; multiline
@@ -75,14 +75,23 @@ PDF/file ownership contracts are documented; actual new-file INFO cannot redirec
 writes. Consumed parser/property/dependency data do not need legacy receipt replay.
 All158accepted input hashes: memory/standard-export-0.7.0-e2a-inputs.json.
 Human E2a delivery matches E1 parent/15paths/message/all158accepted hashes, clean
-intake; no unchanged rerun. E2b structured entries/all legacy preprocessed/discovery
-variants/parallel preparation cleanup is active but not accepted. Four isolated
-probes establish input/model-only delivery without forced document lowering.
-Selected inline footnote supplemental copies expose valid Org sharing across
-ignored nodes; adapter must skip logical exclusions before strict copying.
-Native configuration must come from captured source, not working-buffer defaults.
-Independent pure
-input/lowering/core remain. Examples/version/final docs/release checks remain E3.
+intake; no unchanged rerun. E2b structured entries and deprecated source wrappers
+now share standard preparation; all duplicate preparation providers are retired.
+Input/model-only consumers skip target lowering; unsupported valid models can be
+prepared and fail only at target conversion. Canonical Org footnote selection and
+logical ignore-list exclusion precede strict ownership; supplemental inline bodies
+receive paragraphs without reparse. Native settings are captured from the source,
+separately owned by INFO; source guards cover text/mode/restriction/file identity/
+style/initial/fragment tags, without old consumed-setting receipt replay.
+
+All source bibliography text/discovery arguments require nil; standard Org owns
+Cite, preprocessing, URI registration and metadata precedence. Missing standard
+caption footnote numbers reject document conversion, including parser-only test
+patches; independent model/pure lowering caption AST support remains. Full E2b
+acceptance: default636ERT+actual4/all12checks,37changedpaths/158exactinputs. Human
+commit pending; manifests and per-case retirement inventory are in E2b memory.
+Independent pure input/lowering/core remain. Examples/version/final release checks
+remain E3, after this human delivery.
 Historical0.6descriptions below remain baseline evidence, not current standard
 backend support claims.
 

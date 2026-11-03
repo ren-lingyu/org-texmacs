@@ -1,19 +1,22 @@
 # v0.7.0 Standard Org Export Integration: approved execution plan
 
-## Execution state: A-E2a human-delivered; E2b active
+## Execution state: A-E2a human-delivered; E2b accepted, awaiting human commit
 
 Human E2a matches expected E1 parent/15paths/message/all158accepted hashes;
-clean intake, no unchanged rerun. E2b now migrates structured entries and old
-variants, then removes parallel preparation only after callers are accounted for.
+clean intake, no unchanged rerun. E2b migrated structured entries and old variants,
+then removed parallel preparation after all callers were accounted for.
 Prepared-only input/model result gate passes4/4, preserving one real standard
-transaction and independent core/pure lowering. Production acceptance is pending.
+transaction and independent core/pure lowering. Production acceptance passes
+636defaultERT+actual4/all12checks;37paths/158accepted input hashes. Human commit
+is pending, then E3. See E2b inputs/test migration manifests.
 Details: memory/standard-export-0.7.0-e2b.md.
 
 E2b user revision adopts Org structure priority and closes early generic parser
 research without production adoption. Final AST is authoritative; accept complete
 STM only within effective Org structure, propagate preprocessing errors and never
 recover original deleted/rewritten candidates. Independent core/pure APIs stay.
-Use the narrowed regression matrix in E2b. Full acceptance remains pending.
+The narrowed regression matrix is implemented and validated; no early parser was
+merged. Source-only caption numbering limitations are explicitly documented.
 
 E2a15task paths pass full-1/default745ERT+actual4/all12named checks. Exact158
 accepted input hashes: memory/standard-export-0.7.0-e2a-inputs.json. Docs and

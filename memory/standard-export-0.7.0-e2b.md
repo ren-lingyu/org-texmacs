@@ -1,5 +1,21 @@
 # E2b: structured source consumers and parallel preparation retirement
 
+## Accepted candidate and human gate
+
+Complete37path worktree diff reviewed, ordinary index untouched. default636ERT
+(core274/native273/Cite9/PDFdocument45/PDFrender29/patchedcaption6), actualstandard
+Organize4, all12Nixchecks pass. Full-2 runs final implementation/tests; full-3
+passes after README-only review corrections, unchanged runtime derivations cached.
+All158root input hashes equal final isolated snapshot. Exact manifest and expected
+human message: memory/standard-export-0.7.0-e2b-inputs.json. Test migration inventory:
+memory/standard-export-0.7.0-e2b-tests.json. tmp/commit.md contains complete-worktree
+Conventional Commit draft under the adopted exception; no ordinary staging.
+
+User manually commits E2b, then verify parent/message/37paths/all158hashes before
+E3. Keep version0.6.0/TODO now. Other platforms, alternate minimum Org, GUI layout
+and example build are not E2b claims. Full-1 failures below are diagnosed history,
+not current blockers. No raw archive needed beyond causal facts and text manifests.
+
 ## Controlling user decision: Org structure priority
 
 The user supersedes the earlier conditional early-protection gate. Standard Org
@@ -108,70 +124,48 @@ native bibliography target structures via explicit constructor inputs/native
 converters, and keep meaningful source-independent/worker/PDF evidence. Retire
 only documented obsolete semantics with standard/pure replacements accounted for.
 
-## Candidate validation in progress
+## Final implementation and diagnostic evidence
 
-Structured APIs and five deprecated wrappers now share standard preparation.
-Private main/document/context/preprocess/bibliography preparation is removed
-after caller migration; keep24-field INFO projection and actual pure naming,
-footnote and native bibliography lowering helpers. Initial98retired tests have
-a temporary per-case manifest; two pure ownership tests are rewritten, not retired.
-First focused candidate compiles, structured4/4; core259/275 (16unexpected).
-Missing backend SUBTITLE/KEYWORDS/DESCRIPTION declarations are a real INFO gap;
-add standard Org option declarations rather than custom merging. Prepared-only
-inputs no longer promise target-validation errors: document consumers own them.
-Old provider buffer cleanup tests must use standard transaction observations.
-No complete acceptance or documentation delivery yet; do not claim passing core.
+Source structured entries and deprecated wrappers now consume standard input.
+Canonical Org-selected supplemental footnote definitions precede strict copying;
+unselected shared alternatives are excluded, inline bodies receive owned paragraphs.
+Raw source identity is guarded; native settings are snapshot data, not replayed
+receipts. INFO owns a separate graph. Base-buffer paths normalize once; inherited
+property scratch markers are scoped so source marker state remains unchanged.
+Org metadata and registered URI semantics replace private precedence assumptions.
 
-Focused-4 core now274/274(1.401931s). Backend declarations restore standard
-metadata acquisition; standard nil/default INFO takes precedence over native
-initial defaults. Test target-validation is explicit document lowering.
-Focused-2 native/PDF combined120s times out incomplete, not a completed suite.
-Selected-inline-note probe shows Org-generated supplemental definitions share
-text children with ignored original subtrees. The old copy-then-ignore order
-falsely rejects valid prepared data. Candidate owner gains optional excluded-node
-handling, used only by prepared adapter to skip Org ignore-list before copying;
-independent constructor strict defaults stay unchanged. Validate this correction
-before depending on it. Source tab-width/formatter/handlers/link policy must be
-captured before Org working-copy defaults can replace them; INFO gets a separate
-mutable copy from the source guard. A shared plist tail caused spurious guard
-failures in focused-3; focused-4 fixes that and returns core to274/274.
+Default stock tests currently630 plus six patched caption cases; initial739stock
+baseline is intentionally reduced by per-case obsolete preparation retirement.
+118 obsolete tests retire, nine added and two renamed before caption retargeting;
+complete exact-name inventory is memory/standard-export-0.7.0-e2b-tests.json.
+Including the caption retargeting,118retire, fourrename and nineareadded; exact
+alltracked catalog758->649 (122removednames/13addednames). Only636aredefault;
+actual standard integration4 is separate. All49retired private definitions have
+no remaining production references. Pure model/native
+bibliography, original native structure/layout/PDF assertions remain maintained.
 
-Follow-up probes refine the footnote finding: ignore-list alone does not remove
-all alternate supplemental definitions. They share link nodes too; allowing
-shared text alone fails and is withdrawn. Query Org for canonical definitions
-before strict ownership and exclude unused alternatives; no relaxed public
-ownership or duplicated source preparation. Focused-8 input-only five-scope probe
-passes1/1 and core274/274, but a document follow-up exposes direct inline objects
-inside generated footnote-definition (not ordinary block children). A thin owned
-adapter paragraph wrapper is now under validation to preserve those identities
-before STM discovery and lowering. Org can also return empty text for an inline
-definition unavailable in subtree/region/narrowed scope; represent its empty
-reference body rather than guessing full-source restoration. Verify this support
-boundary and maintain regression coverage before adoption. Anonymous footnotes
-need numbering but no repeat-reference label; candidate keeps their previous
-native body shape while named references retain labels/collision checks.
-README migration rewrite is in progress; production remains unaccepted.
+Full-1 exact158-input clean snapshot fails: native271/273, Cite9/9, PDFdocument45/45,
+PDF rendering29/29, patched caption3/6; README table formatter also fails.
+Two native fixtures disable author but require it in output: explicitly enable it.
+Org9.8.10 footnote number/first-reference helpers traverse no affiliated keywords;
+test-only parser patch changes grammar only. Do not invent parallel numbering.
+Standard source conversion explicitly rejects missing frozen numbers. Two patched
+cases now use independent parse/model/input with the same native/session structure
+assertions; four-scope source case requires explicit refusal. Independent contracts
+remain; README/CHANGELOG document the source behavior change. No worker workaround.
+Migration-5 passes native2/2(0.092782s), patched6/6(2.680176s). Full-2 and full-3
+subsequently pass the complete acceptance gate described above.
 
-## Reopened architecture gate: valid native multiline directives
+Earlier evidence retained causally: prepared-only prototype4/4; core274/274; selected
+five-scope canonical footnote input and document probes pass after strict ownership
+fix; latest source multiline/final-AST4focus pass4/4; actual SQLite/UUID Organize
+integration4/4 with six source consumers and once-only preparation/Cite counts.
+Transient diagnostic failures and obsolete protection candidates are not gates.
+The controlled final snapshot contains only158project inputs plus two explicit
+actual-integration driver files, no early parser/focus experiments. Accepted input
+hashes bind that final snapshot to the reviewed worktree.
 
-Real native probe opaque-2 passes1/1(1.693552s): TeXmacs parses the complete
-input `(math "\n#+INCLUDE: missing.org\n")` into a native tree, and independent
-parse-buffer returns its island. Standard prepare-buffer instead tries to expand
-that INCLUDE and errors on missing.org before final AST construction. This is a
-real supported STM preservation gap, not an obsolete mock contract to retire.
-The quote in this example uses actual newline characters inside the STM string.
-
-Reopen the early-protection gate before depending on the production cleanup.
-Investigate minimal structural protection within Org's real transaction and its
-own recursive INCLUDE. Do not restore the old recursive provider, freeze original
-STM against legal macro/Babel generation, weaken AST-first, or copy Org prep.
-Inspect locked Org public include recursion and compare candidates in isolation;
-only adopt after proving root/included/literal/generated STM semantics, final
-AST/filter behavior, callback counts, nested/error cleanup and backend isolation.
-New exact-source native/PDF run completes: native211/292(81unexpected), document
-43/45(2unexpected), render27/29(2unexpected). These are unfinished test migration
-and actual gaps, not passing acceptance. Native bibliography constructor fixtures
-need consumed OPTIONS removed explicitly and all existing PDF assertions kept.
-No new raw archive selected yet: exact minimal counterexample and locked native
-environment suffice for reproduction; retain a maintained real regression once
-the protection decision is proved. User-facing README rewrite remains provisional.
+Minimal rejected protection counterexample: (math "\n#+INCLUDE: missing.org\n")
+with actual newline characters in the string. Native STM and independent parsing
+accept it; standard Org attempts INCLUDE and errors. Under the adopted semantics
+this is an accepted source-expression boundary, not a protection defect.
