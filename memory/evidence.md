@@ -1,5 +1,14 @@
 # org-texmacs durable evidence
 
+## Prerelease N2 human delivery verified
+
+Human5ce20ef5cc2db320799b4437723d7b72749c8c56 matches expected a34b574 parent,
+all10changed paths, full message and all159accepted committed/worktree hashes.
+Ordinary index/worktree clean; no unchanged runtime rerun. Any project-parent
+association grounds this exact delivery inspection, not later N3 experiments.
+N3 starts with native binding/mode evidence before production script changes.
+
+
 ## Prerelease N2 entity candidate accepted
 
 Ten-path candidate on verified human N1 passes native entity/literal encoding and

@@ -1,7 +1,7 @@
 # org-texmacs current project model
 
-Final prerelease N0/N1 are complete; N2 entities are locally accepted, awaiting
-human delivery. Plan: memory/inline-objects-0.7.0-plan.md; accepted N2 contract,
+Final prerelease N0-N2 are human-delivered; N2 5ce20ef matches exact parent,
+ten paths/message/all159input hashes. N3 script work is active. Plan: memory/inline-objects-0.7.0-plan.md; accepted N2 contract,
 evidence/limits: memory/inline-objects-0.7.0-n2.md. Captured Unicode-backed Org
 entity values lower to plain text or local math, with native encoding provenance
 preserved. Effective :with-entities nil preserves spelling including late nodes;

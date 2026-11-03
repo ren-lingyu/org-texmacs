@@ -1,24 +1,21 @@
 # org-texmacs current memory
 
-## Current: prerelease N2 entities accepted, human delivery pending
+## Current: prerelease N2 human-delivered, N3 script work active
 
-User-approved N0-N5 contract: memory/inline-objects-0.7.0-plan.md, including late
-node option semantics, native script binding and reliable repeatable converter
-gates. N0/N1 complete; N1 a34b574 exact delivery verified. N2 entity lowering,
-:with-entities projection, eight new tests and documentation are locally accepted.
-Native symbols versus literal encoding and local text/math mode are verified;
-e:nil applies to late filter/Cite nodes and pure input defaults stay fixed.
-Full checks:645defaultERT+actual4/all12named checks, with final README-only change
-rebuilding treefmt alone; all other runtime derivations identical and reused.
-No scripts/LaTeX/worker/model-island contract changes or broader support claims.
+User-approved N0-N5 contract: memory/inline-objects-0.7.0-plan.md. N0-N2 are
+human-delivered. N2 5ce20ef matches expected N1 parent, exact10paths/message and
+all159committed/worktree input hashes. Ordinary project/index clean at intake;
+no unchanged test rerun. Accepted N2 evidence remains645defaultERT+actual4/all12
+checks, native entity rendering and literal/option/ownership proof.
 
-Complete ten-path worktree candidate reviewed and whitespace clean; ordinary
-index remains empty. tmp/commit.md contains the requested feat(document) draft.
-Expected parent/message/paths/all159hashes: memory/inline-objects-0.7.0-n2-inputs.json.
-Wait for human N2 commit, verify exact delivery, then report progress and begin N3
-native scripts/options/binding. Do not begin N4 CSL conversion prematurely.
-Implementation/evidence/fixture failures/retention: memory/inline-objects-0.7.0-n2.md.
-No new raw archive necessary after maintained causal tests and exact extraction.
+N3 now starts with an isolated native script experiment: rsub/rsup text-mode base
+binding, consecutive/nested scripts, emphasis, heading/caption and neighboring
+opaque STM. Then implement singular :with-sub-superscript projection and pure
+lowering, fixed defaults versus explicit nil/{}, normal/late AST/Cite nodes,
+maintained tests/docs and full checks. Actual binding/layout is mandatory; matching
+tags alone are insufficient. N4 CSL/LaTeX work must wait for human N3 delivery.
+N2 receipt: memory/inline-objects-0.7.0-n2-inputs.json; native/retention/limits:
+memory/inline-objects-0.7.0-n2.md. No N3 implementation or runtime claim yet.
 Release remains0.7.0/NEXT; finalization/CLOSED/tag/publication are human-owned.
 
 A-E3 are delivered. Final E3 f6aa2ae matches expected E2b parent, full approved

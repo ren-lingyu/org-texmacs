@@ -1,7 +1,9 @@
 # N2 entity lowering: accepted native behavior and verification
 
 Baseline is verified N1 a34b574. N2 is implemented and locally accepted; human
-delivery is pending. INFO projects :with-entities. Pure lowering uses owned :utf-8 /
+delivery5ce20ef is verified against the exact parent, ten paths, message and
+all159accepted hashes. Candidate/handoff statements below are historical.
+INFO projects :with-entities. Pure lowering uses owned :utf-8 /
 :latex-math-p values; math entities get local native math, text stays text. Missing
 option defaults to enabled; explicit nil uses Org's source-independent interpreter
 and preserves brackets/post-blank. Late filter/Cite nodes obey effective INFO.

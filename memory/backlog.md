@@ -12,8 +12,9 @@ conditional conversion and release documentation. Unsupported cases are not
 implicitly added to scope. Original static review remains as amended evidence.
 N0/N1 are complete; N1 a34b574 delivery matches exact parent/path/blob/message.
 N2 is locally accepted: entity/options/ownership/native/PDF proof and
-645defaultERT+actual4/all12checks. Ten-path human delivery is next; N3 follows
-exact delivery verification. Scripts/LaTeX are still future nodes.
+645defaultERT+actual4/all12checks. N2 human delivery5ce20ef matches exact parent/
+paths/message/all159hashes. N3 native script/options work is active; LaTeX remains
+conditional future work.
 
 A-E3 are human-delivered. Final E3 f6aa2ae matches expected E2b parent/full message/
 21paths/all159accepted inputs; worktree/index clean, no unchanged runtime rerun.
