@@ -1,5 +1,125 @@
 ;;; standard-source.el --- Standard explicit source outputs -*- lexical-binding: t; -*-
 
+(ert-deftest org-texmacs-standard-script-native-binding-layout ()
+  (org-texmacs-test--with-worker
+   (with-temp-buffer
+     (org-mode)
+     (insert
+      "#+OPTIONS: toc:nil title:nil author:nil date:nil num:nil ^:t\n"
+      "The /first/ term is x_i^2.\n\nNested x^{a_b}.\n\n"
+      "Styled anchor.\n\nIsland (math (frac \"a\" \"b\"))_i^2 tail.\n\n"
+      "* Heading x_i^2\n#+CAPTION: Caption x_i^2\n| A |\n")
+     (let* ((org-export-filter-parse-tree-functions
+             (list
+              (lambda (tree _backend _info)
+                (org-element-map
+                 tree 'paragraph
+                 (lambda (node)
+                   (when (equal
+                          (substring-no-properties
+                           (or (car (org-element-contents node)) ""))
+                          "Styled anchor.\n")
+                     (org-element-set-contents
+                      node
+                      "Styled "
+                      (org-element-create 'bold nil "z")
+                      (org-element-create 'subscript nil "j")
+                      (org-element-create 'superscript nil "3")
+                      " tail.\n"))))
+                tree)))
+            (input (org-texmacs--standard-consume 'input))
+            (island
+             (copy-tree (cdar (org-texmacs-input-islands input))))
+            (document (org-texmacs-document input))
+            (pdf (expand-file-name "scripts.pdf" test-directory))
+            (tm (expand-file-name "scripts.tm" test-directory))
+            (reload
+             (expand-file-name "scripts-reload.pdf" test-directory)))
+       (should-not
+        (memq
+         'math
+         (flatten-tree (cadr (org-texmacs-document-body document)))))
+       (org-texmacs-document-save-pdf document pdf)
+       (org-texmacs-document-save document tm)
+       (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+       (should
+        (equal island (cdar (org-texmacs-input-islands input))))
+       (let ((words (org-texmacs-test--issue11-pdf-geometry pdf)))
+         (cl-labels
+          ((center (word) (/ (+ (nth 2 word) (nth 4 word)) 2.0))
+           (word
+            (text anchor)
+            (let ((found
+                   (cl-find-if
+                    (lambda (item)
+                      (and (equal (car item) text)
+                           (< (abs (- (center item) (center anchor)))
+                              12)
+                           (>= (nth 1 item) (nth 1 anchor))))
+                    words)))
+              (should found)
+              found))
+           (pair
+            (prefix base upper lower)
+            (let* ((anchor
+                    (cl-find prefix words :key #'car :test #'equal))
+                   (_ (should anchor))
+                   (base (word base anchor))
+                   (up (word upper anchor))
+                   (down (word lower anchor)))
+              (should (< (center up) (center base)))
+              (should (> (center down) (center base)))
+              (should (< (abs (- (nth 1 up) (nth 1 down))) 2))
+              (dolist (script (list up down))
+                (should (>= (nth 1 script) (- (nth 3 base) 1)))
+                (should
+                 (< (- (nth 4 script) (nth 2 script))
+                    (- (nth 4 base) (nth 2 base)))))))
+           (raster
+            (file)
+            (with-temp-buffer
+              (set-buffer-multibyte nil)
+              (should
+               (= 0
+                  (call-process "pdftoppm"
+                                nil
+                                t
+                                nil
+                                "-f"
+                                "1"
+                                "-singlefile"
+                                "-scale-to"
+                                "1200"
+                                "-gray"
+                                file)))
+              (buffer-string))))
+          (pair "The" "x" "2" "i")
+          (pair "Styled" "z" "3" "j")
+          (pair "Heading" "x" "2" "i")
+          (pair "Caption" "x" "2" "i")
+          (let* ((anchor
+                  (cl-find "Nested" words :key #'car :test #'equal))
+                 (x (word "x" anchor))
+                 (a (word "a" anchor))
+                 (b (word "b" anchor)))
+            (should (< (center a) (center x)))
+            (should (> (center b) (center a)))
+            (should (> (nth 1 b) (nth 1 a)))
+            (should
+             (< (- (nth 4 b) (nth 2 b)) (- (nth 4 a) (nth 2 a)))))
+          (let* ((anchor
+                  (cl-find "Island" words :key #'car :test #'equal))
+                 (a (word "a" anchor))
+                 (b (word "b" anchor))
+                 (up (word "2" anchor))
+                 (down (word "i" anchor))
+                 (middle (/ (+ (center a) (center b)) 2.0)))
+            (should (< (center up) middle))
+            (should (> (center down) middle))
+            (should (< (abs (- (nth 1 up) (nth 1 down))) 2))
+            (should (>= (nth 1 up) (max (nth 3 a) (nth 3 b)))))
+          (should (equal (raster pdf) (raster reload)))))))))
+
 (ert-deftest org-texmacs-standard-entity-native-layout-and-reload ()
   (org-texmacs-test--with-worker
    (with-temp-buffer

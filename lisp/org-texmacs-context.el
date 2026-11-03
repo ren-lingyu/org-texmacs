@@ -51,6 +51,7 @@
     :with-email
     :with-creator
     :with-entities
+    :with-sub-superscript
     :with-priority
     :with-toc
     :with-tags

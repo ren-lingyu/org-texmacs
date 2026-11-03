@@ -25,6 +25,7 @@ Block caching, on-demand fragment parsing, Scheme fontification and source
 editing remain available independently of whole-document model construction.
 
 Document conversion supports basic inline markup, Unicode-backed Org entities,
+recursive subscripts/superscripts,
 self-contained URI links,
 plain local file links with captured resource context,
 same-document headline/ID and dedicated-target links, anonymous and named
@@ -919,6 +920,9 @@ multiline STM is supported within one effective paragraph, inline footnote or
 valid native block.  An island cannot cross a heading, paragraph or block boundary
 to find its closing delimiter.  Identifiable incomplete, invalid or unassociated
 candidates fail explicitly.  Target-specific =raw= objects remain unsupported.
+Unclosed block markers, including markers cut by document selection, may be
+ordinary Org prose with script objects.  They follow that final interpretation;
+the exporter does not reconstruct an original native wrapper around them.
 
 Preprocessing may expand, rewrite, delete or generate STM.  Valid final STM is
 accepted; deleted or transformed original candidates are not restored.  Text such
@@ -938,6 +942,17 @@ or Cite processors.  Pure structured inputs enable entities by default; an expli
 =:with-entities nil= preserves their spelling without consulting dynamic settings.
 Missing or invalid representations fail explicitly.  The distinct =latex-fragment=
 input =$\cdot$= is not converted by entity support and remains unsupported.
+
+Org =subscript= and =superscript= objects lower to native =rsub= and =rsup=,
+including consecutive =x_i^2= and nested =x^{a_b}=.  Effective =^:t= enables them,
+=^:{}= interprets bracketed scripts only, and =^:nil= retains their markers and
+braces while recursively handling child Org markup.  These policies also apply
+to nodes generated later by AST filters or Cite processors; completed Org option
+rewrites are not repeated.  Pure structured inputs default to enabled scripts;
+explicit =:with-sub-superscript nil= and ={}= select the other policies.
+Script contents have local whitespace state, inherit title/metadata restrictions
+and do not switch surrounding prose to math mode.  Adjacent STM islands stay
+opaque; scripts attach outside their existing subtree.
 
 Org Cite owns bibliography acquisition, processor selection and citation/
 bibliography processing in this same transaction, after AST filters.  With the
@@ -2127,6 +2142,9 @@ also use test-only =pypdf= to resolve actual destinations and compare their
 positions with the corresponding text lines, including nearby zero-width anchors.
 Entity math tests separately compare rasterized output with independently authored
 native symbols and saved-document reloads, without fixed pixel snapshots.
+Script tests check base attachment, relative coordinates and size in prose,
+headings and captions, nested scripts, styled text and adjacent opaque STM,
+including saved-document reloads.
 The bounded update/print sequence does not guarantee convergence for every
 native layout.  GUI preview and broader visual layout
 coverage remain future work.

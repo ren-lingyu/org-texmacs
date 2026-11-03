@@ -11,6 +11,17 @@
   (push 'citation org-texmacs-test--cite-calls)
   (setq org-texmacs-test--cite-info info)
   (pcase org-texmacs-test--cite-result
+    ('scripts
+     (list
+      "x"
+      (org-element-create 'subscript nil "i")
+      (org-element-create 'superscript nil "2")
+      " y"
+      (org-element-create
+       'superscript
+       '(:use-brackets-p t)
+       "a"
+       (org-element-create 'subscript nil "b"))))
     ('entity
      (org-element-create
       'entity '(:name "alpha" :utf-8 "α" :latex-math-p t)))
@@ -74,6 +85,41 @@
             body 'math))
           (should
            (string-search "\\\\alpha" (prin1-to-string body))))))))
+
+(ert-deftest org-texmacs-standard-cite-late-script-options ()
+  (dolist (policy '(t {} nil))
+    (with-temp-buffer
+      (org-mode)
+      (insert "[cite:@key]\n")
+      (let* ((org-export-use-babel nil)
+             (org-export-with-sub-superscripts policy)
+             (org-cite-export-processors
+              '((t org-texmacs-test-structured)))
+             (org-texmacs-test--cite-result 'scripts)
+             (org-texmacs-test--cite-calls nil)
+             (input (org-texmacs--standard-consume 'input))
+             (body
+              (org-texmacs-document-body
+               (org-texmacs-document input))))
+        (should (equal org-texmacs-test--cite-calls '(citation)))
+        (should
+         (org-element-map
+          (org-texmacs-input-ast input) 'subscript #'identity))
+        (should
+         (= (length
+             (org-texmacs-test--caption-inline-footnote-nodes
+              body 'rsub))
+            (if (eq policy t)
+                2
+              0)))
+        (should
+         (= (length
+             (org-texmacs-test--caption-inline-footnote-nodes
+              body 'rsup))
+            (pcase policy
+              ('t 2)
+              ('{} 1)
+              (_ 0))))))))
 
 (ert-deftest org-texmacs-standard-cite-structured-protocol-once ()
   (dolist (org-texmacs-test--cite-result '(element secondary))

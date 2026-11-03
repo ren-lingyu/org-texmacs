@@ -1100,7 +1100,9 @@
     ()
   (with-temp-buffer
     (org-mode)
-    (setq-local org-export-with-author nil)
+    (setq-local
+     org-export-with-author nil
+     org-export-with-sub-superscripts t)
     (insert
      "* Kept\n#+begin_equation*\n\"kept\"\n#+end_equation*\n"
      "* Omitted\n#+begin_equation bad\n\n#+end_equation\n")
@@ -1130,11 +1132,23 @@
     (search-forward "\"kept")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
                (lambda (&rest _)
-                 (ert-fail "Clipped equation reached worker"))))
-      (should-error
-       (org-texmacs-document-from-buffer
-        (current-buffer) nil nil (cons (point-min) (point)))
-       :type 'org-texmacs-document-error))))
+                 (ert-fail "Org prose reached native parser"))))
+      ;; Org parses the unclosed marker as prose, not a native block. Its
+      ;; script object is now supported; do not restore the original wrapper.
+      (let* ((input
+              (org-texmacs-prepare-buffer
+               (current-buffer) nil nil (cons (point-min) (point))))
+             (body
+              (org-texmacs-document-body
+               (org-texmacs-document input))))
+        (should-not (org-texmacs-input-islands input))
+        (should-not
+         (org-element-map
+          (org-texmacs-input-ast input) 'special-block #'identity))
+        (should
+         (equal
+          (org-texmacs-test--caption-inline-footnote-nodes body 'rsub)
+          '((rsub "equation"))))))))
 
 (ert-deftest
     org-texmacs-issue13-stage2-parser-boundaries-and-outermost
@@ -1328,13 +1342,15 @@
         (current-buffer) nil nil (cons (point-min) (point)))))))
 
 (ert-deftest
-    org-texmacs-issue13-stage3-region-restored-wrapper-completeness
+    org-texmacs-issue13-stage3-region-final-org-wrapper-selection
     ()
   (dolist (section '("" "* Footnotes\n"))
     (dolist (reference '(nil t))
       (with-temp-buffer
         (org-mode)
-        (setq-local org-export-with-author nil)
+        (setq-local
+         org-export-with-author nil
+         org-export-with-sub-superscripts t)
         (insert
          (if reference
              "Text[fn:n].\n\n"
@@ -1344,19 +1360,34 @@
         (search-forward "| A |")
         (cl-letf (((symbol-function 'org-texmacs--worker-request)
                    (lambda (&rest _)
-                     (ert-fail
-                      "Incomplete dependency reached worker"))))
-          (if reference
-              (should-error
-               (org-texmacs-document-from-buffer
-                (current-buffer) nil nil (cons (point-min) (point)))
-               :type 'org-texmacs-document-error)
+                     (ert-fail "Org prose reached native parser"))))
+          (let* ((input
+                  (org-texmacs-prepare-buffer
+                   (current-buffer)
+                   nil
+                   nil
+                   (cons (point-min) (point))))
+                 (body
+                  (org-texmacs-document-body
+                   (org-texmacs-document input))))
+            (should-not (org-texmacs-input-islands input))
+            (should-not
+             (org-element-map
+              (org-texmacs-input-ast input)
+              'special-block
+              #'identity))
             (should
-             (org-texmacs-document-from-buffer
-              (current-buffer)
-              nil
-              nil
-              (cons (point-min) (point))))))))))
+             (equal
+              (org-texmacs-test--caption-inline-footnote-nodes
+               body 'rsub)
+              (and reference '((rsub "table")))))
+            (should
+             (eq
+              (not
+               (null
+                (org-texmacs-test--caption-inline-footnote-nodes
+                 body 'footnote)))
+              reference))))))))
 
 (ert-deftest org-texmacs-issue13-stage3-caption-subset-and-registry ()
   ;; Named notes, malformed citations and targets remain invalid caption objects.

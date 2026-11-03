@@ -1,5 +1,46 @@
 ;;; standard-export.el --- Standard native output regressions -*- lexical-binding: t; -*-
 
+(ert-deftest org-texmacs-standard-export-native-script-tree-and-island
+    ()
+  (org-texmacs-test--with-worker
+   (with-temp-buffer
+     (org-mode)
+     (insert
+      "#+OPTIONS: toc:nil title:nil author:nil date:nil ^:t\n"
+      "The /first/ term is x_i^2.\n\nNested x^{a_b}.\n\n"
+      "(math (frac \"a\" \"b\"))_i^2.\n")
+     (let* ((input (org-texmacs--standard-consume 'input))
+            (original
+             (copy-tree (cdar (org-texmacs-input-islands input))))
+            (document (org-texmacs-document input))
+            (expected
+             '(document
+               (concat
+                "The "
+                (em "first")
+                " "
+                "term is x"
+                (rsub "i")
+                (rsup "2")
+                ". ")
+               (concat "Nested x" (rsup (concat "a" (rsub "b"))) ". ")
+               (concat
+                (math (frac "a" "b")) (rsub "i") (rsup "2") ". ")))
+            (session (org-texmacs-session-open)))
+       (should (equal original '(math (frac "a" "b"))))
+       (should
+        (equal original (cdar (org-texmacs-input-islands input))))
+       (should
+        (equal (org-texmacs-document-stm-paths document) '((2 0))))
+       (unwind-protect
+           (progn
+             (org-texmacs-session-set-document session document)
+             (should
+              (equal
+               (org-texmacs--session-read session)
+               (org-texmacs-test--native-hex expected))))
+         (org-texmacs-session-close session))))))
+
 (ert-deftest org-texmacs-standard-export-native-entity-encoding ()
   (org-texmacs-test--with-worker
    (with-temp-buffer

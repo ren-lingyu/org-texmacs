@@ -1,5 +1,119 @@
 ;;; standard-export.el --- Standard export ownership regressions -*- lexical-binding: t; -*-
 
+(ert-deftest org-texmacs-standard-export-script-options-final-ast ()
+  (dolist (policy '(t {} nil))
+    (dolist (late '(nil t))
+      (with-temp-buffer
+        (org-mode)
+        (insert
+         (format
+          "#+OPTIONS: toc:nil title:nil author:nil date:nil ^:%s\n"
+          policy)
+         "Before x_i^2 y^{a_b} after.\n")
+        (let* ((org-export-use-babel nil)
+               (source (buffer-string))
+               (calls 0)
+               (org-export-filter-parse-tree-functions
+                (and late
+                     (list
+                      (lambda (tree _backend _info)
+                        (cl-incf calls)
+                        (org-element-set-contents
+                         (org-element-map
+                          tree 'paragraph #'identity nil t)
+                         "Before x"
+                         (org-element-create 'subscript nil "i")
+                         (org-element-create 'superscript nil "2")
+                         " y"
+                         (org-element-create
+                          'superscript
+                          '(:use-brackets-p t)
+                          "a"
+                          (org-element-create 'subscript nil "b"))
+                         " after.\n")
+                        tree))))
+               (input (org-texmacs--standard-consume 'input))
+               (body
+                (org-texmacs-document-body
+                 (org-texmacs-document input)))
+               (sub
+                (org-texmacs-test--caption-inline-footnote-nodes
+                 body 'rsub))
+               (sup
+                (org-texmacs-test--caption-inline-footnote-nodes
+                 body 'rsup))
+               (text
+                (apply #'concat
+                       (cl-remove-if-not
+                        #'stringp (flatten-tree body)))))
+          (should
+           (plist-member
+            (org-texmacs-input-info input)
+            :with-sub-superscript))
+          (should
+           (eq
+            policy
+            (plist-get
+             (org-texmacs-input-info input)
+             :with-sub-superscript)))
+          (should
+           (= calls
+              (if late
+                  1
+                0)))
+          (should (equal source (buffer-string)))
+          (should
+           (= (length sub)
+              (if (eq policy t)
+                  2
+                0)))
+          (should
+           (= (length sup)
+              (pcase policy
+                ('t 2)
+                ('{} 1)
+                (_ 0))))
+          (should
+           (equal
+            text
+            (pcase policy
+              ('t "Before xi2 yab after. ")
+              ('{} "Before x_i^2 ya_b after. ")
+              (_ "Before x_i^2 y^{a_b} after. ")))))))))
+
+(ert-deftest org-texmacs-standard-export-script-final-info-metadata ()
+  (dolist (policy '(t {} nil))
+    (with-temp-buffer
+      (org-mode)
+      (insert
+       "#+TITLE: Title x_i^2 y^{a_b}\n#+OPTIONS: toc:nil author:nil date:nil\nBody.\n")
+      (let* ((org-export-with-sub-superscripts t)
+             (org-export-use-babel nil)
+             (org-export-filter-parse-tree-functions
+              (list
+               (lambda (tree _backend info)
+                 (plist-put info :with-sub-superscript policy)
+                 tree)))
+             (input (org-texmacs--standard-consume 'input))
+             (body
+              (org-texmacs-document-body
+               (org-texmacs-document input))))
+        (should
+         (= (length
+             (org-texmacs-test--caption-inline-footnote-nodes
+              body 'rsub))
+            (if (eq policy t)
+                2
+              0)))
+        (should
+         (= (length
+             (org-texmacs-test--caption-inline-footnote-nodes
+              body 'rsup))
+            (pcase policy
+              ('t 2)
+              ('{} 1)
+              (_ 0))))))))
+
 (ert-deftest org-texmacs-standard-export-entity-options-and-late-nodes
     ()
   (dolist (enabled '(nil t))

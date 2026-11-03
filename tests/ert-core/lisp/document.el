@@ -6,6 +6,151 @@
 
 ;;; Code:
 
+(ert-deftest org-texmacs-document-script-owned-nested-spacing ()
+  (dolist (info '(nil (:with-sub-superscript t)))
+    (let* ((sub (org-element-create 'subscript nil "i"))
+           (leaf (copy-sequence "island"))
+           (ast
+            (org-element-create
+             'org-data nil
+             (org-element-create
+              'paragraph
+              nil
+              "The "
+              (org-element-create 'italic nil "first")
+              " term is x"
+              sub
+              (org-element-create 'superscript nil "2")
+              ". Nested x"
+              (org-element-create
+               'superscript
+               '(:use-brackets-p t)
+               "a"
+               (org-element-create 'subscript nil "b"))
+              ". "
+              leaf
+              (org-element-create
+               'subscript
+               (list :use-brackets-p t :post-blank 1)
+               " q ")
+              " after.")))
+           (input
+            (org-texmacs-input-create
+             ast info
+             :islands (list (cons leaf '(math (frac "a" "b"))))))
+           (before
+            (let ((print-circle t))
+              (prin1-to-string input)))
+           (org-export-with-sub-superscripts nil)
+           result)
+      (org-element-set-contents sub "changed")
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _)
+                   (ert-fail "Script invoked worker")))
+                ((symbol-function 'buffer-substring-no-properties)
+                 (lambda (&rest _) (ert-fail "Script read source")))
+                ((symbol-function 'org-element-interpret-data)
+                 (lambda (&rest _)
+                   (ert-fail "Script serialized Org"))))
+        (setq result (org-texmacs-document input))
+        (should (equal result (org-texmacs-document input))))
+      (should
+       (equal
+        (org-texmacs-document-body result)
+        '(document
+          (concat
+           "The "
+           (em "first")
+           " term is x"
+           (rsub "i")
+           (rsup "2")
+           ". Nested x"
+           (rsup (concat "a" (rsub "b")))
+           ". "
+           (math (frac "a" "b"))
+           (rsub " q ")
+           " "
+           "after."))))
+      (should
+       (equal (org-texmacs-document-stm-paths result) '((0 8))))
+      (should
+       (equal
+        before
+        (let ((print-circle t))
+          (prin1-to-string input)))))))
+
+(ert-deftest org-texmacs-document-script-disabled-structured-children
+    ()
+  (dolist (policy '(nil {}))
+    (let* ((ast
+            (org-element-create
+             'org-data nil
+             (org-element-create
+              'paragraph
+              nil
+              "x"
+              (org-element-create 'subscript nil "i")
+              (org-element-create 'superscript nil "2")
+              " y"
+              (org-element-create
+               'superscript
+               '(:use-brackets-p t)
+               (org-element-create 'bold nil "a")
+               (org-element-create 'subscript nil "b")))))
+           (input
+            (org-texmacs-input-create
+             ast (list :with-sub-superscript policy))))
+      (should
+       (equal
+        (org-texmacs-document-body (org-texmacs-document input))
+        (if policy
+            '(document
+              (concat
+               "x"
+               "_"
+               "i"
+               "^"
+               "2"
+               " y"
+               (rsup (concat (strong "a") "_" "b"))))
+          '(document
+            (concat
+             "x"
+             "_"
+             "i"
+             "^"
+             "2"
+             " y"
+             "^{"
+             (strong "a")
+             "_"
+             "b"
+             "}"))))))))
+
+(ert-deftest org-texmacs-document-script-metadata-guards ()
+  (dolist (child
+           (list
+            (org-element-create 'line-break nil)
+            (org-element-create
+             'link
+             '(:type "file" :path "/tmp/script.pdf") "Link")))
+    (let* ((ast
+            (org-element-create
+             'org-data nil
+             (org-element-create
+              'headline
+              (list
+               :level 1
+               :title
+               (list
+                "Heading x"
+                (org-element-create
+                 'superscript '(:use-brackets-p t) child))))))
+           (input (org-texmacs-input-create ast nil)))
+      (should-error
+       (org-texmacs-document input)
+       :type 'org-texmacs-document-error))))
+
 (ert-deftest org-texmacs-document-entity-owned-pure-options ()
   (dolist (info '(nil (:with-entities t) (:with-entities nil)))
     (let* ((value (copy-sequence "α"))

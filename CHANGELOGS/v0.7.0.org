@@ -78,7 +78,7 @@ counter and page-placement limitations remain. Existing private PDF footnote
 destination repair is separate and retained. Native caption macro-package work
 is outside this release.
 
-* Org entities
+* Org entities and scripts
 Unicode-backed =entity= objects lower to native text or local mathematical
 structures according to their captured Org properties. Examples include =\alpha=,
 =\cdot=, =\rightarrow= and text =\copy=. Literal =<alpha>= remains literal;
@@ -90,6 +90,21 @@ entities; explicit =:with-entities nil= preserves spelling. Lowering neither
 queries dynamic entity definitions nor starts a worker, and rejects missing or
 invalid representations. Native encoding, rendering and saved-document reload
 are checked against independently authored native symbols.
+
+Org =subscript= and =superscript= objects use native =rsub= and =rsup= with recursive
+contents, local whitespace and the surrounding text/math boundary intact.
+Consecutive =x_i^2= and nested =x^{a_b}= keep their intended base; adjacent STM
+islands remain opaque. Native layout checks cover prose with emphasis, styled
+bases, headings, captions and STM, including saved-document reloads.
+
+Effective =^:t= enables scripts, =^:{}= interprets bracketed scripts only, and
+=^:nil= preserves markers and braces while handling child Org markup recursively.
+Late filter/Cite nodes obey the same effective options without another preparation
+pass. Pure structured inputs enable scripts by default; explicit
+=:with-sub-superscript nil= or ={}= selects the corresponding policy.
+Unclosed block markers that Org interprets as ordinary prose, including after
+selection, can now export their script objects instead of failing on unsupported
+scripts. They are not native blocks; original wrapper completeness is not restored.
 
 Entity support does not interpret =latex-fragment= objects such as =$\cdot$=.
 Finite inline LaTeX conversion and CSL math-title compatibility remain separate
