@@ -1,5 +1,17 @@
 # org-texmacs durable evidence
 
+## N3 final-AST clipping counterexample
+
+New script native/layout/options cases pass. Full-1 exposes two legacy clipping
+assertions whose errors depended on unsupported ordinary subscript objects.
+Final AST has no native blocks/islands; isolated HTML controls agree for equation
+and two footnote forms. Adopt already approved Org-first semantics, not source
+restoration. Replace incidental-error expectations with explicit final-structure,
+no-native-parser and footnote-selection assertions; document the consequence.
+Full causal evidence and selected archive rationale: memory/inline-objects-0.7.0-n3.md.
+N3 full acceptance remains pending, not waived.
+
+
 ## Prerelease N2 human delivery verified
 
 Human5ce20ef5cc2db320799b4437723d7b72749c8c56 matches expected a34b574 parent,

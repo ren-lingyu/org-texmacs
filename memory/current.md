@@ -15,7 +15,15 @@ lowering, fixed defaults versus explicit nil/{}, normal/late AST/Cite nodes,
 maintained tests/docs and full checks. Actual binding/layout is mandatory; matching
 tags alone are insufficient. N4 CSL/LaTeX work must wait for human N3 delivery.
 N2 receipt: memory/inline-objects-0.7.0-n2-inputs.json; native/retention/limits:
-memory/inline-objects-0.7.0-n2.md. No N3 implementation or runtime claim yet.
+memory/inline-objects-0.7.0-n2.md. N3 native prototype passes2/2 and its render
+and base geometry were inspected. N3 code/tests/docs candidate now exists; focused
+8/8 focused checks pass. Full-1 failed two legacy native error expectations:
+clipped markers are ordinary Org prose with scripts, proved by final AST and
+standard HTML controls (three variants). Follow approved final-Org priority,
+replace incidental-error assertions with positive structure/no-parser checks and
+document behavior before repeating full acceptance. Minimal counterexample text
+archive selected; no complete N3 acceptance yet. Evidence/retention and exact stage:
+memory/inline-objects-0.7.0-n3.md. No final N3 support claim yet.
 Release remains0.7.0/NEXT; finalization/CLOSED/tag/publication are human-owned.
 
 A-E3 are delivered. Final E3 f6aa2ae matches expected E2b parent, full approved
