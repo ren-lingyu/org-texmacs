@@ -18,6 +18,17 @@
   "Reject incomplete or ambiguous prepared input with MESSAGE."
   (signal 'org-texmacs-document-error (list message)))
 
+(defun org-texmacs--prepared-reject-raw (data)
+  "Reject target-specific raw DATA before native input interpretation."
+  ;; `raw' is a pseudo object.  A raw-only map misses paragraph contents.
+  (when (org-element-map
+         data t
+         (lambda (node)
+           (and (consp node) (eq (org-element-type node) 'raw)))
+         nil t nil t)
+    (org-texmacs--prepared-fail
+     "Raw target output is unsupported; use a structured Org Cite processor")))
+
 (defun org-texmacs--prepared-resolve (data)
   "Resolve DATA properties while live, preserving explicit filter values.
 Some conditional deferred values survive the bulk resolver.  Public property
@@ -67,7 +78,7 @@ Optionally populate IDENTITIES with original-to-owned node associations."
 (defun org-texmacs--prepared-control-keywords (tree)
   "Remove consumed preparation/configuration directives from owned TREE.
 Their effective values already belong to Org INFO.  Keep positional KEYWORDS
-and bibliography declarations for their target-format consumers."
+while bibliography acquisition remains with standard Org Cite."
   (org-element-map
    tree 'keyword
    (lambda (node)
@@ -80,7 +91,8 @@ and bibliography declarations for their target-format consumers."
                "SETUPFILE"
                "INCLUDE"
                "BIND"
-               "CITE_EXPORT")))
+               "CITE_EXPORT"
+               "BIBLIOGRAPHY")))
        (org-element-extract-element node))))
   tree)
 
@@ -250,18 +262,16 @@ from potentially stale source positions.  No Org reparsing or export is done."
                     (and (eq (org-element-type node) 'headline)
                          (org-element-property
                           :footnote-section-p node)))))
+          ((eq (org-element-type node) 'raw)
+           (org-texmacs--prepared-reject-raw node))
           ((org-texmacs--native-body-kind node)
            (org-texmacs--native-body-check node)
            (let ((raw
                   (if (org-element-property :texmacs-source node)
                       (org-element-property :texmacs-source node)
                     (progn
-                      (when (org-element-map
-                             (org-element-contents
-                              node)
-                             'raw #'identity nil t)
-                        (org-texmacs--prepared-fail
-                         "Target raw cannot supply native STM input"))
+                      (org-texmacs--prepared-reject-raw
+                       (org-element-contents node))
                       (org-element-interpret-data
                        (org-element-contents node))))))
              (unless (and (stringp raw) (> (length raw) 0))
@@ -281,7 +291,23 @@ from potentially stale source positions.  No Org reparsing or export is done."
                     requests)))
            (mapc #'walk (org-element-contents node)))
           (t
-           (mapc #'walk (org-element-contents node)))))))
+           (mapc #'walk (org-element-contents node))))
+         (unless (and defer-notes
+                      (or (eq
+                           (org-element-type node)
+                           'footnote-definition)
+                          (org-element-property
+                           :footnote-section-p node)))
+           (dolist (key
+                    (remq
+                     :caption
+                     (copy-sequence
+                      (org-element-property :secondary node))))
+             (org-texmacs--prepared-reject-raw
+              (org-element-property key node)))
+           (dolist (line (org-element-property :caption node))
+             (org-texmacs--prepared-reject-raw (car line))
+             (org-texmacs--prepared-reject-raw (cdr line)))))))
      (walk tree))
     (nreverse requests)))
 

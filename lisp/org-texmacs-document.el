@@ -1883,7 +1883,20 @@ for consumers.  Final handlers must preserve contents identity and provenance."
            (setq value (substring value 1)))
          (when (> (length value) 0)
            (setcar space (= (aref value (1- (length value))) ?\s)))
-         (org-texmacs--document-create :body value)))
+         (org-texmacs--document-create
+          :body
+          ;; Org/Cite may insert zero-width emphasis delimiters.  Keep the
+          ;; model's Unicode text; lower it to native zero-width spacing.
+          ;; Native text rendering otherwise prints a visible <#200B>.
+          (if (string-search "\u200b" value)
+              (let ((parts (split-string value "\u200b" nil))
+                    output)
+                (dolist (part parts)
+                  (when output
+                    (push '(space "0em") output))
+                  (push part output))
+                (cons 'concat (nreverse output)))
+            value))))
       (island
        (node entry)
        (when (memq entry used-islands)

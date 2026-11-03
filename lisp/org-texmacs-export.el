@@ -15,6 +15,24 @@
 
 (require 'ox)
 (require 'oc)
+(require 'oc-csl)
+
+(defun org-texmacs--standard-unadvised-definition (name)
+  "Return function NAME's definition only when it has no advice."
+  (let (advised)
+    (advice-mapc
+     (lambda (_function _properties) (setq advised t)) name)
+    (unless advised
+      (symbol-function name))))
+
+(defconst org-texmacs--standard-csl-finalizer
+  (org-texmacs--standard-unadvised-definition 'org-cite-csl-finalizer)
+  "Known unadvised CSL finalizer captured when this module loads.")
+(defconst org-texmacs--standard-csl-format
+  (org-texmacs--standard-unadvised-definition
+   'org-cite-csl--output-format)
+  "Known unadvised CSL format dispatch captured when this module loads.")
+
 (require 'org-texmacs-input)
 (require 'org-texmacs-session)
 (require 'org-texmacs-fragment)
@@ -197,7 +215,8 @@ Project supported options without repeating preparation or retaining full INFO."
     (dolist (key keys)
       (when (plist-member info key)
         (when (memq key org-texmacs--context-rich-metadata)
-          (org-texmacs--prepared-resolve (plist-get info key)))
+          (org-texmacs--prepared-resolve (plist-get info key))
+          (org-texmacs--prepared-reject-raw (plist-get info key)))
         (setq projected
               (plist-put projected key (plist-get info key)))))
     (setq projected
@@ -256,6 +275,25 @@ Project supported options without repeating preparation or retaining full INFO."
        requests (org-texmacs-input-islands input))
       (org-texmacs--input-finalize input))))
 
+(defun org-texmacs--standard-compatible-finalizer-p (finalizer info)
+  "Whether FINALIZER is a known identity operation in native INFO.
+The standard CSL processor returns Org structures for this backend.  Its
+unmodified finalizer only changes LaTeX output.  Do not call arbitrary functions
+to predict their effects, or accept advice/redefinitions by their name alone."
+  (and (eq finalizer 'org-cite-csl-finalizer)
+       org-texmacs--standard-csl-finalizer
+       org-texmacs--standard-csl-format
+       (eq
+        (org-texmacs--standard-unadvised-definition finalizer)
+        org-texmacs--standard-csl-finalizer)
+       (eq
+        (org-texmacs--standard-unadvised-definition
+         'org-cite-csl--output-format)
+        org-texmacs--standard-csl-format)
+       (not
+        (org-export-derived-backend-p
+         (plist-get info :back-end) 'latex 'html))))
+
 (defun org-texmacs--standard-structured-tail (info)
   "Reject unproven string-tail effects for a structured consumer of INFO.
 Use the selected backend's effective callbacks, not global variable presence.
@@ -270,10 +308,13 @@ Arbitrary functions are not replayed or predicted to be no-ops."
   (when (plist-get info :with-cite-processors)
     (when-let* ((processor
                  (org-cite-get-processor (org-cite-processor info))))
-      (when (org-cite-processor-export-finalizer processor)
-        (signal
-         'org-texmacs-document-error
-         '("Unsupported Cite finalizer for native structured output"))))))
+      (when-let* ((finalizer
+                   (org-cite-processor-export-finalizer processor)))
+        (unless (org-texmacs--standard-compatible-finalizer-p
+                 finalizer info)
+          (signal
+           'org-texmacs-document-error
+           '("Unsupported Cite finalizer for native structured output")))))))
 
 (defun org-texmacs--standard-inner (_provisional info)
   "Build the native document from final standard INFO in its live transaction."

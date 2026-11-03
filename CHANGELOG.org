@@ -9,13 +9,13 @@ release notes.
 
 * TODO v0.7.0
 Standard Org Export Integration is in development. The initial standard entry,
-structured handoff, STM adapter and standard context queries are implemented;
-remaining work is marked below. Independent models and pure TeXmacs document
-lowering remain separate from standard export preparation.
+structured handoff, STM adapter, standard context queries and Org Cite integration
+are implemented; remaining work is marked below. Independent models and pure
+TeXmacs document lowering remain separate from standard export preparation.
 
 ** Changed
 *** Standard Org Export backend
-- [-] Make =org-export-as 'texmacs= a usable standard export entry, with Org
+- [X] Make =org-export-as 'texmacs= a usable standard export entry, with Org
   managing preparation, options, document selection, AST filters and Org Cite.
 - [-] Replace parallel export preparation with the standard Org flow while
   preserving AST-first TeXmacs construction.
@@ -42,19 +42,25 @@ lowering remain separate from standard export preparation.
   and footnote queries while retaining TeXmacs labels and native structures.
 
 *** Org Cite integration
-- [ ] Process citations and bibliographies through the standard Org Cite
-  protocol, with explicit processor and raw-output support boundaries.
-- [ ] Verify managed UUID citations, dynamic bibliographies and INFO propagation
-  through real =org-roam-organize= integration without package-specific adapters.
+- [X] Process citations and bibliographies through standard Org Cite using
+  structured output from the existing CSL processor; explicitly reject target
+  =raw= strings, including the currently unsupported =basic= processor.
+- [X] Verify managed UUID citations, dynamic bibliographies and identical live
+  INFO through real pinned =org-roam-organize= and CSL, including native PDF and
+  HTML, without package-specific adapters.
+- [X] Allow the verified unchanged CSL finalizer on native structured output;
+  reject unknown/advised/replaced finalizers without probing their effects.
+- [X] Preserve Org U+200B delimiters in the model and lower them to native
+  zero-width spacing, avoiding visible Unicode fallback markers in Cite output.
 
 *** Text and native PDF output
-- [ ] Return text from the standard exporter with verified native =.tm= byte
+- [X] Return text from the standard exporter with verified native =.tm= byte
   conversion and supported standard output filters.
-- [ ] Render native PDF from the shared completed document without a =.tm=
+- [X] Render native PDF from the shared completed document without a =.tm=
   round trip, with explicit text-filter and Cite-finalizer compatibility rules.
 
 *** Documentation and regression coverage
-- [ ] Document standard export, independent models, pure lowering and API
+- [-] Document standard export, independent models, pure lowering and API
   migrations, update examples, and verify native output and existing contracts.
 
 * DONE v0.6.0

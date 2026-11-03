@@ -2,6 +2,7 @@
   runCommand,
   ert-core,
   ert-native,
+  ert-cite,
   ert-pdf,
 }:
 
@@ -10,5 +11,6 @@ runCommand "org-texmacs-ert" { } ''
   mkdir -p "$out"
   ln -s ${ert-core} "$out/core"
   ln -s ${ert-native} "$out/native"
+  ln -s ${ert-cite} "$out/cite"
   ln -s ${ert-pdf} "$out/pdf"
 ''

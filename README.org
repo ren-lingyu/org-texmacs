@@ -888,8 +888,8 @@ including macro, Babel and recursive INCLUDE results.  Org logical exclusions
 are projected by identity before STM discovery, and consumed configuration
 directives remain represented by their effective INFO values.  Full, subtree,
 region, narrowed and visible-only selection, standard options and AST filters
-follow Org.  Cite support and public convenience-command migration remain in
-development.
+follow Org.  Standard Org Cite can consume structured output from the existing
+CSL processor.  Public convenience-command migration remains in development.
 Unsupported prepared structures fail explicitly.
 The dispatcher commands retain their bounded preparation until their migration.
 
@@ -910,6 +910,40 @@ Multiline STM still obeys Org block boundaries: indent headline-looking string
 lines to keep them inside a native block.  The adapter does not reparse the
 whole Org buffer or add an INCLUDE/protection pipeline.  Standalone
 =org-texmacs-parse-buffer= keeps its independent, non-export preparation.
+
+Org Cite owns bibliography acquisition, processor selection and citation/
+bibliography processing in this same transaction, after AST filters.  With the
+optional =citeproc= package installed, select the existing =csl= processor and a
+local CSL style, for example:
+
+#+begin_example
+  ,#+bibliography: references.bib
+  ,#+cite_export: csl /absolute/path/style.csl
+  Text [cite:@key].
+  ,#+print_bibliography:
+#+end_example
+
+For the TeXmacs backend, the tested CSL processor returns ordinary Org objects
+and elements, including bibliography targets, linked citations and rich affixes.
+The existing lowerer constructs their native TeXmacs structures.  U+200B
+emphasis delimiters stay in the Org model and become native zero-width spacing
+when rendering Org text; STM strings remain opaque.  Processor-generated Org
+markup is authoritative: for example, the tested Citeproc bracket layout can
+leave a bold affix's stars as literal text, while an unwrapped layout preserves
+bold.  The backend does not repair processor output or promise every style's
+formatting.  No TeXmacs processor, citation-key rewrite, independent bibliography
+discovery or serialized STM round trip is added.  Supported output remains bounded by the existing Org
+lowering subset; a CSL style that produces unsupported structures fails
+explicitly.  =citeproc= is an optional user dependency, not installed by the
+normal package wrapper.  The dedicated Cite check supplies it explicitly.
+
+The default =basic= processor is currently unsupported: its citations and
+bibliography return target-specific strings that Org wraps as =raw=.  A =raw=
+object is target code, not ordinary text or an STM tree.  It is rejected before
+native parsing; it is never silently flattened or reparsed as TeXmacs.  Custom
+processors may return supported Org elements or secondary strings.  Returning
+an arbitrary target string, including a string built through reentrant
+=org-export-data=, does not make it structured output.
 
 Reference targets, relative headline levels, numbering and footnote definitions
 are queried in the original standard export transaction, then remapped into the
@@ -950,14 +984,19 @@ newline.  Do not assume UTF-8 file export preserves these native bytes.
 
 A private per-call result handoff retains owned structures for native consumers
 without repeating preparation or reparsing =.tm=.  Native structured output
-currently rejects effective body/final-output filters and Cite finalizers whose
-string effects it cannot preserve.  It does not probe arbitrary callbacks by
-executing them.  Public convenience/PDF command migration is a later node.
+rejects effective body/final-output filters and Cite finalizers whose string
+effects it cannot preserve.  The tested CSL finalizer is allowed because it is
+an identity operation for this backend; advised or subsequently replaced
+finalizer/format-dispatch definitions are rejected.  Arbitrary callbacks are
+not executed to probe compatibility.  Text export runs the selected standard
+finalizer once.  Public convenience/PDF command migration is a later node.
 
 Standard preparation, AST filters, mutable export INFO and Org Cite processing
 must retain their export context; an AST-to-buffer round trip does not preserve
-it.  Existing optional integration evidence below uses older pinned revisions
-and does not establish compatibility with current =org-roam-organize=.
+it.  The separate standard Cite integration check below uses a pinned current
+=org-roam-organize= with a real SQLite database and its normal mode/hooks/advice.
+It verifies UUID citation-key changes, dynamic per-export bibliography and INFO
+propagation through CSL, native PDF and HTML without an extension adapter.
 
 * Document conversion and native sessions
 The document API separates source preparation, pure structural lowering and
@@ -1851,6 +1890,30 @@ rediscovery or filter replay.  Observations are not filesystem/database atomicit
 an ABA guarantee or a security sandbox.  No output file is published by this adapter.
 
 ** Optional real Org extension integration
+The standard Cite acceptance check is =tests/integration/standard-cite.nix=.
+It pins =org-roam-organize= revision
+=56fdaac6adab06deafc23357aec63ae2a497e09b= and uses project-locked Org-roam and
+=citeproc=.  With an appropriately overlaid =pkgs=, evaluate:
+
+#+begin_src nix
+  pkgs.callPackage ./tests/integration/standard-cite.nix {
+    testSupport = import ./tests/support;
+  }
+#+end_src
+
+This optional check runs real mode setup, SQLite queries, UUID-to-key AST
+filters and dynamic bibliography discovery in standard =org-export-as= scope.
+It checks single preparation/processor calls and identical live INFO, excludes
+unused managed bibliographies, renders PDF directly from the completed native
+document, and checks standard text/HTML export and source/global restoration.
+It has no production extension-specific adapter or business-logic mock.  The
+normal =ert-cite= flake check covers the standard CSL protocol, citation
+positions/affixes, text filters, finalizer compatibility and native PDF with
+local fixtures; it adds =citeproc= only to its test Emacs.
+
+The older multi-extension runner below exercises legacy convenience APIs and
+older pinned packages; it does not establish current standard integration.
+
 =tests/integration/default.nix= provides a separate ERT check.  Call it with
 =pkgs.callPackage= and explicitly supply an =emacs= containing this package
 and Org-roam, =testSupport= obtained with =import ./tests/support=, and =extensionSources=
@@ -2717,12 +2780,12 @@ expectations.  Fixed document/session fixtures run against the installed package
 tests do not read or parse this README.  Loading checks require every module
 and the adjacent Scheme service file.  The =ert-core= check covers cases without
 native execution, =ert-native= covers worker/session/serialization behavior,
-and PDF cases run in two independent checks: =ert-pdf-render= for the PDF
+=ert-cite= covers CSL and native PDF using test-only =citeproc=, and PDF cases run in two independent checks: =ert-pdf-render= for the PDF
 rendering suite and =ert-pdf-document= for document, frontend, preprocessing,
 serialization, special-block and worker PDF suites.  Both use the shared native
 PDF helpers and inspection tools.  =ert-pdf= aggregates their logs and test names,
 rejecting duplicate names across the two groups.  =ert= aggregates =ert-core=,
-=ert-native= and =ert-pdf= without running their cases again.  Each group can be
+=ert-native=, =ert-cite= and =ert-pdf= without running their cases again.  Each group can be
 built separately; complete flake checks include every group.  Nix may schedule
 independent groups concurrently, subject to its build limits.
 Nix checks the current system by default.  These commands may download
@@ -2740,8 +2803,9 @@ tests.  The separate =caption-inline-footnotes= check builds the locked Org
 9.8.10 with the adjacent test-only patch and exercises the public export pipeline.
 It does not change =packages.org-texmacs=, =packages.emacs= or the ordinary
 development environment.
-The real extension runner described above requires separately supplied pinned
-extension sources and is not part of the default flake checks.
+The legacy multi-extension runner requires caller-supplied pinned extension
+sources; the standard Cite runner fetches its declared fixed revision.  Both
+remain outside the default flake checks.
 
 The =tests/default.nix= entry uses =personal-nixpkgs='s =tests.mkChecks= to
 discover =test-overlay.nix= files and compose their =test.nix= drivers through
