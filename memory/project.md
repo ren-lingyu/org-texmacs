@@ -1,6 +1,6 @@
 # org-texmacs current project model
 
-## Cite declaration interface accepted; delivery pending
+## Cite declaration interface delivered
 
 The new follow-up supersedes the symbol-valued format below with a declaration
 list (PROCESSOR [BIBLIOGRAPHY-STYLE [CITATION-STYLE]]). Helper only conses texmacs
@@ -8,8 +8,8 @@ onto the declaration; standard Org Cite controls choice/callbacks and concrete
 processor interprets styles. Default INFO normalizes to (texmacs-native nil nil),
 then native bibliography callback defaults plain; alpha/abbrv pass through.
 No new parsing, dispatch, registration or ownership mechanism. Full INFO triples,
-actual native style request and direct CSL style declaration covered. Candidate
-is accepted but not human-delivered; all12checks/705ERT pass, with strict compile,
+actual native style request and direct CSL style declaration covered. Human21d5704 delivery matches exact9f7f7c4 parent/7paths/message/167hashes;
+worktree/index clean. All12checks/705ERT pass, with strict compile,
 lint/treefmt and actualOrganize5.167canonical hashes stable and index empty.
 Details/receipt: cite-processor-triplet-0.7.0.md. Current root TODO.
 

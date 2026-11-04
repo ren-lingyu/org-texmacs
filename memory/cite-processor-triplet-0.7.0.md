@@ -67,3 +67,10 @@ unstaged. Draft tmp/commit.md matches complete candidate, pending human delivery
 Single600s grant consumed. No additional project parent: accepted runtime tree is
 uncommitted, not identical to parent9f7f7c4. Maintained tests and semantic receipt
 suffice; no raw archive or temporary build directory retention needed.
+
+Human delivery verified:21d5704 matches exact9f7f7c4 parent, seven changed paths,
+complete approved message and all167committed plus current worktree hashes.
+Ordinary index/worktree clean, no tag at HEAD. No unchanged runtime checks rerun.
+This completes implementation, acceptance and human delivery; separate human
+freeze/publication decisions remain, root TODO. Exact delivered state justifies
+its GAW project-parent association; prior candidate checkpoint remains without one.

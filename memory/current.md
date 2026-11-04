@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Cite declaration interface accepted; human commit pending
+## Cite declaration interface delivered; development complete
 
 User adopts declaration lists without backend: (texmacs-native), native alpha/
 abbrv, complete (texmacs-native "alpha" nil), or nil delegate. Functional user
@@ -18,12 +18,14 @@ hashes stable, complete7path diff/whitespace reviewed, ordinary index empty.
 No runtime failure gate or repeated manual math experiments. Exact candidate,
 message, outputs, limits: cite-processor-triplet-0.7.0.md/-inputs.json.
 
-Next: user stages/commits reviewed7paths using tmp/commit.md, then verify exact
-parent9f7f7c4/paths/message/167committed hashes against receipt without repeating
-unchanged checks. No exact committed project state yet for runtime association;
-checkpoint needs no additional project parent. Root TODO; human freeze/DONE/tag/
-publication separate.600s grant consumed. No additional implementation required
-under this task, no new raw archive need beyond maintained tests/distilled receipt.
+Human21d5704 delivery verified exact9f7f7c4 parent/7paths/full message and all167
+committed/worktree hashes against accepted receipt; ordinary worktree/index clean.
+No unchanged runtime checks repeated. Delivery association now identifies the exact
+accepted committed tree; previous uncommitted checkpoint remains evidence-only.
+No remaining implementation or human commit gate under this task. Next separate
+human TODO->NEXT freeze decision, with DONE/tag/publication still separate.
+No tag at HEAD, no automatic release-state change.600s grant consumed; retained
+maintained tests/semantic receipt suffice, no additional raw archive required.
 
 ## Earlier symbol preference delivery (format superseded above)
 

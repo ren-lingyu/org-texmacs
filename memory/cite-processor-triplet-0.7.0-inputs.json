@@ -270,5 +270,10 @@
   },
   "unique_ert_total": 705,
   "log_sha256": "f24f42200fd2031a15b000f00d71716e6b5fa5e31915e54063d159d73cefad1f",
-  "check_log": "tmp/cite-triplet-final.log"
+  "check_log": "tmp/cite-triplet-final.log",
+  "delivery": {
+    "commit": "21d5704a5a563f8694eb5f6af3955356a80e001e",
+    "verified": "Exact parent, seven paths, full approved message, all 167 committed and worktree hashes; clean index/worktree; no tag at HEAD.",
+    "runtime_repeated": false
+  }
 }

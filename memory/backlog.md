@@ -2,8 +2,9 @@
 
 Current selected follow-up changes the preference to an Org Cite declaration
 list (without backend), retaining optional bibliography/citation style positions.
-7path candidate accepted, all12checks/705ERT and strict compile/lint/treefmt pass.
-167hashes stable, index empty. Human commit then separate freeze. No additional native/math/ownership
+Human21d5704 delivered exact parent/7paths/message/167hashes; clean worktree/index.
+All12checks/705ERT and strict compile/lint/treefmt pass; no unchanged rerun.
+Next separate human freeze. No additional native/math/ownership
 work selected; details cite-processor-triplet-0.7.0.md.
 
 Earlier symbol preference delivery (format superseded by current follow-up):
