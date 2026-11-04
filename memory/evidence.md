@@ -1,5 +1,18 @@
 # org-texmacs durable evidence
 
+N9 corrected final-2 full flake exits0/all12named checks:694defaultERT+actual5=699,
+zero unexpected; core318/native282/CSL11/document48/render29/caption6. Strict
+compilation/lint/treefmt and actual pinned Organize pass, with native UUID/dynamic
+bibliography/live INFO/once-only prep/PDF plus HTML; previous4CSL integration cases
+retained. Four EN/ZH generic/article TM/PDF builds and pdfinfo pass, four native
+math bibliography pages inspected.26path diff/whitespace/167input hashes verified.
+Initial example failure exposed inactive ALT_TITLE ownership accounting bug despite
+initial full-check pass; explicit target-field rule and regression fix it without
+key recollection or general guard waiver. Fixture-only normalization/title-case/
+TM-escaping issues documented separately. Exact candidate/outputs/asset hashes:
+native-cite-0.7.0-n9.md/-inputs.json. Human commit pending; root remains TODO.
+
+
 N8 full timeout600s flake check exits0/all11named checks,686unique defaultERT:
 312core/281native/10CSL/48PDF-document/29PDF-render/6caption. Native281 runs
 195.797533s, document48 runs117.567516s, render29 runs151.205520s. Core312 reuses

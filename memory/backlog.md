@@ -1,10 +1,11 @@
 # org-texmacs active backlog
 
-N7 delivery verified; N8 actual source snapshots/safe native styles accepted in
-worktree with686ERT/all11named checks. Human N8 commit is the next gate; verify
-native-cite-0.7.0-n8-inputs.json before N9 default/examples/real extension/full
-acceptance. No default switch, freeze, generic fragment conversion or native
-field/Unicode/math-recovery expansion in N8.
+Approved N6-N9 implementation is accepted through N9; human N9 commit is next,
+then exact native-cite-0.7.0-n9-inputs.json delivery verification and separate
+human freeze/publication decisions. Full12checks/699ERT and four native examples
+pass. No further development node selected. Deferred generic fragment conversion,
+advanced citation styles, broad fields/Unicode/math recovery remain separate work,
+not implicitly adopted or0.7.0 blockers. No automatic NEXT/DONE/tag/release.
 
 Earlier scope adoption (implementation state superseded above):
 

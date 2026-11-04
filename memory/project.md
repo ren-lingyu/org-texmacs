@@ -2,21 +2,27 @@
 
 ## Native Cite current implementation
 
-N7 is human-delivered; N8 worktree candidate is accepted, awaiting human delivery.
-Formal Org Cite carriers migrate through prepared and input ownership copies;
-minimal requests/results/prefix feed pure lowering without recollecting citations.
-N8 freezes effective bibliography files before native waits, parses captured text,
-formats via TeXmacs and retains source fingerprints checked through source export
-completion. Independent completed inputs do not need files after construction.
-Explicit texmacs-native source output is available in this candidate; default
-processor and examples remain N9. Existing independent model/island/native inputs
-and explicit CSL remain supported. No third AST, raw channel or parallel prep.
+N7/N8 human-delivered; N9 accepted worktree candidate awaits human delivery.
+Standard Org Export and Cite remain sole preparation/dispatch. Owned semantic
+carriers/requests migrate through prepared/input copies, native snapshots/style
+processing precede pure lowering, with source transaction completion guards.
+Independent model/island/native-input contracts stay dependency-free after input
+construction. No third AST/raw channel/parallel preparation/citation recollection.
 
-Native catalog and readable target/plain/bib-utils modules gate style loading;
-plain/alpha/abbrv and tm-* aliases verified, unknown styles rejected with healthy
-worker reuse. Native state restoration/nested transactions/math TM-PDF tested.
-Full11named checks/686ERT pass on locked x86_64-linux; current contract, receipt
-and next human gate: native-cite-0.7.0-n8.md/-inputs.json and current.md.
+TeXmacs now defaults stock Org ((t basic)) to texmacs-native through standard
+backend options; other custom alists/nil and declarations keep Org precedence.
+Explicit basic uses CITE_EXPORT or backend entry, since equal-value assignment
+intent is unobservable. HTML/LaTeX and explicit CSL remain. Owned unrendered
+ALT_TITLE requests are recognized from parent identity and actual TOC membership,
+retaining Org keys and strict checks for other unused associations.
+
+Native catalog/readable module guard, plain/alpha/abbrv/aliases, safe worker reuse,
+source snapshots and valid math TM/PDF remain. EN/ZH generic/article examples use
+native default/alpha without citeproc, with optional CSL fixture. Complete acceptance:
+12checks/699ERT including real Organize5, four examples and inspected bibliography
+pages. Scope/evidence/receipt: native-cite-0.7.0-n9.md/-inputs.json. Root TODO;
+human delivery/freeze/finalization remain. Native field/Unicode/recovery and
+final-AST generic LaTeX conversion limits remain unchanged.
 
 ## Earlier architecture experiments (before formal N6-N8 implementation)
 

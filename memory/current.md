@@ -1,40 +1,43 @@
 # org-texmacs current memory
 
-## Native Cite N8 delivered; N9 default and final integration active
+## Native Cite N9 accepted candidate; human delivery and release decisions next
 
-Follow native-cite-0.7.0-plan.md N6-N9 with per-node human commits. N7 delivery
-1824ac9 is verified (exact parent/11paths/message/all162hashes); user reports
-manual full flake check, distinct from our observed N7 scoped358ERT. N8 is human-delivered9d923e7, verified exact1824ac9 parent/16paths/full message/
-all166committed and worktree hashes; clean intake. Complete contract/evidence:
-native-cite-0.7.0-n8.md and -inputs.json. Draft: ordinary tmp/commit.md.
+Approved N6-N9 implementation is complete in the worktree; N9 awaits human commit.
+N8 human9d923e7 delivery is verified exact parent/16paths/message/166hashes with
+clean intake. No unchanged delivery tests repeated. N9 contract and exact candidate:
+native-cite-0.7.0-n9.md/-inputs.json; ordinary tmp/commit.md is the reviewed draft.
 
-N8 connects real bibliography snapshots to formal owned requests and native
-results. Freeze all effective local files before any STM/native wait; reject
-canonical aliases, unreadable/changed sources and lossy decoding. Guard source
-transactions through final text filters/PDF completion. Independent input and
-pure lowering never reread dependencies. Worker uses native catalog/readable
-module validation, data-only optional style, plain/alpha/abbrv and tm-* aliases;
-unknown styles cannot load or silently fall back. Native globals restored and
-same-worker error recovery checked. Default processor remains unchanged.
+Native default uses public backend :cite-export options expression, not dispatch
+advice or global mutation. Stock ((t basic)) becomes native; other alists/nil,
+file/subtree/EXT-PLIST and options filters follow Org semantics. Identical default
+assignment intent cannot be inferred; explicit basic uses CITE_EXPORT or backend
+entry. HTML/LaTeX/nested configuration and explicit CSL remain tested. Native
+requests/results stay owned; source snapshot, safe style and pure lowering contracts
+from N7/N8 remain. Inactive ALT_TITLE citations now explicitly account only for
+owned alternate-title fields outside actual TOC, retaining Org bibliography keys;
+other unused associations still fail. No independent citation scan or preparation.
 
-One authorized timeout600s full isolated flake check exits0/all11named checks:
-core312/native281/CSL10/PDF-document48/PDF-render29/caption6 =686ERT, zero
-unexpected. Strict compilation/lint/treefmt and aggregates pass. Both plain and
-alpha native math PDF previews inspected; TM reload text/geometry agree.
-All166source/build/test inputs still match final isolated snapshot. Full16path
-candidate/whitespace reviewed, ordinary index empty. No release state change:
-root TODO, no CLOSED/tag/publication. Native field/Unicode/math recovery limits
-remain documented independent issues; generic fragment B remains deferred.
+EN/ZH generic/article examples use native plain default/explicit alpha and valid
+Greek-subscript/fraction titles, no citeproc dependency; optional CSL fixture stays.
+Same document generates TM/PDF. README/root/detail synchronized, root remains TODO.
 
-N9 is now active: inspect standard Org processor precedence before selecting
-the fallback seam; then migrate examples and real extension/default regressions.
-N9 alone switches backend default respecting explicit standard choices, migrates
-examples, reruns real Org-roam-organize and full acceptance. Other platforms,
-minimum Org, real extension under native default and migrated examples are not
-claimed by N8. No ordinary staging/commit performed. User standing Nix command
-authority remains; N8's single600s grant was consumed, not reusable for N9.
-Narrow isolation evidence now has maintained native/Scheme tests; existing archive
-already holds fatal-loader counterexample, so no redundant new raw archive.
+Corrected final-2 full flake exits0/all12named checks:694defaultERT (core318/
+native282/CSL11/PDF-document48/PDF-render29/caption6) +actualOrganize5 =699, zero
+unexpected. Strict compile/lint/treefmt pass. Four example builds/pdfinfo succeed;
+all four bibliography-page previews inspected and native TM symbol/math structures
+verified. Full26path candidate/whitespace reviewed,167canonical hashes stable and
+ordinary index empty. Isolated flake differs only by explicit real integration
+check/format, production flake unchanged. No other-platform/minimum Org/full fields/
+Unicode/strict native math or deferred generic fragment support claimed.
+
+Next: human N9 commit, verify exact parent/paths/message/167hashes. Then report
+whether human re-freeze TODO->NEXT is desired; do not auto-change state, CLOSED,
+version, tag or publication. No further implementation node is authorized/needed
+under completed N6-N9. Single600s grants used; don't reuse for unrelated future work.
+Prior failed example exposed genuine inactive ALT_TITLE lifecycle gap, now covered
+by maintained regression; harness ligature/title-case/TM-escaping corrections are
+recorded separately. Existing maintained tests/source history and distilled facts
+suffice; no whole temporary tree or new redundant raw archive.
 
 ## Completed native Cite feasibility; report review, no production adoption
 
