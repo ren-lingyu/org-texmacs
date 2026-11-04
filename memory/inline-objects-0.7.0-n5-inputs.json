@@ -189,5 +189,9 @@
       "draft_basis": "Explicit user-selected final worktree candidate, not current index. Two changelog paths must be restaged by the user before delivery.",
       "prior_runtime_acceptance": "Prior recorded654defaultERT+actual4/all12checks still describes identical executable/test/config inputs; old final159-file snapshot is not claimed byte-identical to amended documentation."
     }
+  },
+  "delivery": {
+    "commit": "57ada9a57015c79576dfcb3e2abe71bdebc0c1e7",
+    "verification": "At intake, exact expected parent,4paths,full message and all159committed/worktree hashes matched; index/worktree clean. No unchanged tests rerun. Subsequent user-authorized TODO-only amendment is a separate candidate."
   }
 }

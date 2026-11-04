@@ -7,8 +7,9 @@ pages inspected. Key counterexamples: unknown formatter fallback, fatal missing
 module load, bibliography single-return identity replacement, omitted first-copy
 identity map failure. Preserved27text sources/results/fixtures/replay plus asset
 hashes at archive/2026-11-04T07-41-47Z--6c7ac07/MANIFEST.md; exact methods/limits in
-memory/native-cite-feasibility.md. No production/default/B/release changes. Root
-159hashes and all4human-staged N5 blobs/draft unchanged; full CI not rerun.
+memory/native-cite-feasibility.md. Native experiment made no production/default/B
+changes. Later N5 delivery57ada9a verified exact159hashes,4paths/message/parent;
+only subsequently authorized TODO headline is now unstaged. Full CI not rerun.
 
 Isolated bibliography architecture comparison complete, evidence-only. A120/B60/
 C30case/style records plus protocol/nested HTML/sort/font controls pass3experimental
@@ -23,9 +24,9 @@ memory/bibliography-comparison-experiment.md. N5 candidate/human gate unaffected
 N5 accepted:654defaultERT+actual4/all12checks, fresh Cite10 and final treefmt;
 exact native/PDF/integration derivatives reused unchanged. Four-path candidate
 records B deferral, upstream loss location and real retained-fragment rejection.
-No runtime library/config change; NEXT unchanged. The accepted4paths are now
-human-staged and verified; human commit/delivery verification remains. Method and
-exact source/message manifest:
+No runtime library/config change. Human57ada9a delivery matches exact parent,
+4paths/message/159hashes; clean intake. Separately authorized TODO-only amendment
+is pending, future Cite guide awaited. Method and exact delivery manifest:
 memory/inline-objects-0.7.0-n5.md and inline-objects-0.7.0-n5-inputs.json.
 
 
@@ -35,8 +36,8 @@ processing; dollar-cdot survives intact. Native converter handles positives but
 accepts repair/empty/placeholder negative outputs without a reliable failure
 contract. Registered parse-latex also repairs. No production support claim or
 new map/worker/preparation mechanism. Exact method, classification, artifacts and
-archive selection: memory/inline-objects-0.7.0-n4.md. N5 four-path documentation/refusal-regression candidate is accepted, awaiting
-human delivery; A remains delivered. Future
+archive selection: memory/inline-objects-0.7.0-n4.md. N5 four-path documentation/refusal-regression is delivered and verified;
+A remains delivered. Future
 B would cover only verified intact final-AST fragments, not BibLaTeX preservation.
 
 

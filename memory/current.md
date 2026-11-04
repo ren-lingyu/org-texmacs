@@ -1,33 +1,25 @@
 # org-texmacs current memory
 
-## N5 concise changelog amendment ready; NEXT preserved
+## N5 delivered; authorized TODO-only amendment ready
 
-User authorizes concise root/detailed0.7.0changelogs and tmp/commit.md based on the
-complete final diff. Both documents now retain support/limits and drop redundant
-experiment checklist/table; README and regression test untouched. New expected
-159hashes/message recorded in inline-objects-0.7.0-n5-inputs.json; amendment method
-and prior-runtime validation boundary in inline-objects-0.7.0-n5.md. No tests
-rerun for2prose-only changes; complete diff and both whitespace checks pass.
-Index remains the old4human-staged blobs;2changelogs now also unstaged (MM), so
-user restaging is needed before commit. Preserve index; verify delivery against
-new receipt, not old full-snapshot hashes. Native scope reopening remains only
-a reviewed proposal, not an implementation or version-state change.
+Human57ada9a matches N5 expected parent6c7ac07, exact4paths/full message and all159
+committed/worktree hashes; clean index/worktree at intake. N0-N5 delivery is now
+complete, B deferred. This verification grounds the delivered commit only, not
+retroactive runtime tests against its commit object. Receipt/method remain in
+inline-objects-0.7.0-n5-inputs.json and inline-objects-0.7.0-n5.md.
 
+After confirmation, user explicitly authorizes only CHANGELOG.org v0.7.0 NEXT to
+TODO and a commit draft, then will supply Cite development guidance. Exactly one
+headline changes; version body/detail/README/tests/libraries untouched. Draft:
+`docs(changelog): reopen v0.7.0 development`. Index remains empty, root changelog
+unstaged. Complete one-line diff/whitespace verified, no tests rerun. Exact new
+candidate/message/159hashes: cite-reopen-0.7.0-inputs.json. Direct requested state
+transition overrides generic skill human-only transition default; no inferred
+release authority. Finalization/CLOSED/tag/publication remain human-controlled.
 
-## Earlier read-only review: proposed scope reopening after N5 delivery
-
-User proposes preserving current staged N5 delivery, then changing NEXT back to
-TODO and curating changelog/new native Cite work; asks read-only review first.
-No ordinary file/state/index writes or implementation are authorized by this
-proposal. Historical v0.5.0 source confirms native BibTeX parse/plain formatting,
-not a standard native Org Cite processor. Recommend standardizing that existing
-capability within0.7.0, without restoring old citation collection/preparation.
-Current staged CSL-loss/fragment-refusal facts remain true; preserve N5 first.
-Root experiment checklists can become concise user-facing scope; keep B deferred,
-CSL optional-path boundaries and real migration changes. Native default policy,
-style/field/error boundaries and full integration acceptance need a separate plan.
-Original request fully distilled; no independently valuable raw capture needed.
-
+Next: human delivery of the one-line change; await user Cite guide before planning
+or implementing new features. Native feasibility is evidence, not an adopted new
+implementation/default. No native processor items or scope changes added now.
 
 ## Completed native Cite feasibility; report review, no production adoption
 
@@ -42,10 +34,9 @@ or default switch. Native unknown-style fallback/fatal module loading and first
 prepared-copy identity migration are decisive boundaries. Pure lowering and the
 standard Org preparation/Cite dispatch remain unchanged in production. No B reopening.
 
-Exact accepted N5 candidate unchanged; HEAD6c7ac07, all159hashes and4human-STAGED
-blobs match receipt, commit.md unchanged. Preserve human index. No project Git write,
-production/full-CI/release changes. Next: user report review and N5 human delivery;
-no native processor production implementation authorized by feasibility success.
+N5 delivery is now verified above. No native processor production implementation
+is authorized by feasibility success; the only new project change is the
+separately requested TODO headline. Future scope awaits the user guide.
 
 ## Completed isolated bibliography comparison, no production adoption
 
@@ -59,30 +50,17 @@ three successful experimental checks and archive provenance are distilled in
 memory/bibliography-comparison-experiment.md. Local report:
 tmp/bibliography-comparison-report.md. No full-product tests rerun or required
 for isolated-only files. Exact N5 four-path/all159hashes and draft remain unchanged,
-ordinary index was empty at that earlier completion. User has since staged its4paths;
-preserve them. Native feasibility above is now complete; N5 human delivery pending.
+ordinary index was empty at that earlier completion. N5 has since been delivered
+and verified; native feasibility remains separate evidence.
 
-## Current: N5 candidate accepted; human delivery gate
+## Completed prerelease inline compatibility N0-N5
 
-N0-N4 complete; mandatory A human-delivered through N3. N4 B deferred because
-native snippet conversion/recovery lacks an established reliable finite error
-contract. Cdot positive works, but that alone is not support. Four-layer trace
-locates other sampled losses before CSL title; final-AST-only future B never
-promises original BibLaTeX preservation. Evidence and selected immutable archive:
-memory/inline-objects-0.7.0-n4.md.
-
-N5 four-path candidate is implemented and accepted: real body/CSL retained-fragment
-refusal ERT plus README/CHANGELOG/release notes, no production converter change.
-654defaultERT+actual4/all12checks pass, fresh Cite10 with exact unchanged native/
-PDF/integration derivatives reused. Final checkbox-only change passes final
-fresh treefmt at original acceptance. Latest documentation amendment above changes
-only2changelogs; current receipt reflects new159hashes/message. Existing4staged
-blobs remain original and2paths need restaging. HEAD remains6c7ac07; full candidate
-diff/whitespace reviewed, updated draft prepared; human commit remains. Verify expected parent,
-exact4paths/message and all159hashes from memory/inline-objects-0.7.0-n5-inputs.json
-at next intake; do not rerun unchanged checks. Method/failed gates/limits and
-acceptance: memory/inline-objects-0.7.0-n5.md. No further implementation node.
-Version0.7.0 stays NEXT; DONE/CLOSED/tag/publication remain human controlled.
+Mandatory entity/script work is human-delivered through N3. N4 defers B because
+native recovery lacks a reliable finite error contract. N5 refusal regression and
+concise support-boundary documentation are human-delivered57ada9a. Prior runtime
+acceptance654defaultERT+actual4/all12checks and final treefmt remains unchanged;
+last2prose amendments had full diff/whitespace review only. No automatic release
+finalization follows. See inline-objects-0.7.0-n5.md for evidence boundaries.
 
 A-E3 are delivered. Final E3 f6aa2ae matches expected E2b parent, full approved
 message/21paths/all159accepted committed and worktree hashes, including native

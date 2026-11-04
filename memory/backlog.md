@@ -7,8 +7,8 @@ first-copy identity remap; owned snapshots/native fulfillment; native-validated
 style selection and explicit label prefix/collision contract. No implementation
 or default switch is adopted by feasibility success. Advanced styles/locators,
 Unicode, extended fields and native error recovery remain separate proposals.
-Results and minimal27text archive: memory/native-cite-feasibility.md. N5 human
-staging preserved, B deferred,0.7.0 NEXT and human release controls unchanged.
+Results and minimal27text archive: memory/native-cite-feasibility.md. N5 delivered;
+B deferred. User authorizes TODO-only reopening; await Cite guide before new scope.
 
 Isolated bibliography architecture comparison complete, evidence-only. A120/B60/
 C30case/style records plus protocol/nested HTML/sort/font controls pass3experimental
@@ -23,9 +23,9 @@ memory/bibliography-comparison-experiment.md. N5 candidate/human gate unaffected
 N5 accepted:654defaultERT+actual4/all12checks, fresh Cite10 and final treefmt;
 exact native/PDF/integration derivatives reused unchanged. Four-path candidate
 records B deferral, upstream loss location and real retained-fragment rejection.
-No runtime library/config change; NEXT unchanged. The accepted4paths are now
-human-staged and verified; human commit/delivery verification remains. Method and
-exact source/message manifest:
+No runtime library/config change. Human57ada9a delivery matches exact parent,
+4paths/message/159hashes; clean intake. Separately authorized TODO-only amendment
+is pending, future Cite guide awaited. Method and exact delivery manifest:
 memory/inline-objects-0.7.0-n5.md and inline-objects-0.7.0-n5-inputs.json.
 
 
@@ -35,8 +35,8 @@ processing; dollar-cdot survives intact. Native converter handles positives but
 accepts repair/empty/placeholder negative outputs without a reliable failure
 contract. Registered parse-latex also repairs. No production support claim or
 new map/worker/preparation mechanism. Exact method, classification, artifacts and
-archive selection: memory/inline-objects-0.7.0-n4.md. N5 four-path documentation/refusal-regression candidate is accepted, awaiting
-human delivery; A remains delivered. Future
+archive selection: memory/inline-objects-0.7.0-n4.md. N5 four-path documentation/refusal-regression is delivered and verified;
+A remains delivered. Future
 B would cover only verified intact final-AST fragments, not BibLaTeX preservation.
 
 

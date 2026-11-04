@@ -1,6 +1,6 @@
 # N5: conditional deferral, maintained refusal and final documentation
 
-## Accepted candidate, human delivery pending
+## Human-delivered candidate
 
 Baseline human N3 6c7ac07ba4f4c936abe99fb15d1915df6e211deb. Four changed paths:
 README.org, CHANGELOG.org, CHANGELOGS/v0.7.0.org and
@@ -75,7 +75,16 @@ Complete four-path diff and whitespace reviewed, final159root/snapshot equality,
 ordinary HEAD unchanged and index empty. No ordinary staging/commit performed.
 Worktree-based tmp/commit.md prepared per explicit node protocol; not a staged-
 diff claim. One coupled support-boundary documentation/regression commit is
-appropriate, no split needed (low difficulty). Human staging/commit remains;
-then verify exact parent/paths/message/all159hashes without rerunning unchanged
-checks. N0-N5 implementation complete only after this delivery gate. Release
+appropriate, no split needed (low difficulty). That historical candidate was subsequently delivered and verified below; no
+unchanged runtime checks were rerun. N0-N5 delivery gate is now complete. Release
 finalization and publication remain separately human controlled.
+
+## Verified human delivery and separate state-only follow-up
+
+Human57ada9a57015c79576dfcb3e2abe71bdebc0c1e7 matches expected6c7ac07 parent,
+exact4paths/full draft message/all159committed and worktree hashes. Index/worktree
+clean at intake. N0-N5 delivery is complete. No unchanged tests rerun; project
+association grounds this read-only delivery verification, not retroactive test
+execution against the commit object. User then separately authorizes only the
+root v0.7.0 NEXT->TODO headline and its draft; new candidate is isolated in
+cite-reopen-0.7.0-inputs.json. Await future Cite guide; no feature work starts.

@@ -1,5 +1,15 @@
 # org-texmacs project goals
 
+## Authorized state-only reopening after N5 completion
+
+N0-N5 is human-delivered and verified. User explicitly directs only the root
+v0.7.0 NEXT->TODO transition and commit draft after status confirmation, then
+will provide Cite development guidance. This specific transition is authorized;
+no new feature/default scope, changelog body, preparation change or release action
+is authorized yet. Preserve standard Org/Org Cite authority and AST-first. B stays
+deferred. Await guidance before further planning or production implementation.
+
+
 ## Approved final v0.7.0 prerelease inline compatibility work
 
 The user approves N0-N5 in memory/inline-objects-0.7.0-plan.md with all refinement
