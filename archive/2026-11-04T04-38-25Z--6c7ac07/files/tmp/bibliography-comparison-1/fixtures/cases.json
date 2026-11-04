@@ -1,0 +1,185 @@
+[
+  {
+    "id": "plain",
+    "category": "text",
+    "title": "English ABC 123, punctuation: yes!",
+    "csl": "English ABC 123, punctuation: yes!"
+  },
+  {
+    "id": "case",
+    "category": "text",
+    "title": "An {RNA} Study of {NASA}",
+    "csl": "An <span class=\"nocase\">RNA</span> Study of <span class=\"nocase\">NASA</span>"
+  },
+  {
+    "id": "punctuation",
+    "category": "text",
+    "title": "Quotes \"Hello\", hyphen -, en --, em ---, tilde ~",
+    "csl": "Quotes \"Hello\", hyphen -, en –, em —, tilde  "
+  },
+  {
+    "id": "escapes",
+    "category": "text",
+    "title": "Braces \\{x\\}, dollar \\$, backslash \\textbackslash{}",
+    "csl": "Braces {x}, dollar $, backslash \\"
+  },
+  {
+    "id": "greek-unicode",
+    "category": "unicode",
+    "title": "α β γ",
+    "csl": "α β γ"
+  },
+  {
+    "id": "chinese",
+    "category": "unicode",
+    "title": "中文数学标题",
+    "csl": "中文数学标题"
+  },
+  {
+    "id": "accent",
+    "category": "unicode",
+    "title": "Émile naïve Ångström",
+    "csl": "Émile naïve Ångström"
+  },
+  {
+    "id": "combining",
+    "category": "unicode",
+    "title": "é and é",
+    "csl": "é and é"
+  },
+  {
+    "id": "math-unicode",
+    "category": "unicode",
+    "title": "∀x ∈ ℝ: x ≤ ∞",
+    "csl": "∀x ∈ ℝ: x ≤ ∞"
+  },
+  {
+    "id": "bare-cdot",
+    "category": "latex",
+    "title": "\\cdot",
+    "csl": "\\cdot"
+  },
+  {
+    "id": "math-cdot",
+    "category": "latex",
+    "title": "$\\cdot$",
+    "csl": "$\\cdot$"
+  },
+  {
+    "id": "math-alpha",
+    "category": "latex",
+    "title": "$\\alpha$",
+    "csl": "$\\alpha$"
+  },
+  {
+    "id": "math-alpha-sub",
+    "category": "latex",
+    "title": "$\\alpha_i$",
+    "csl": "$\\alpha_i$"
+  },
+  {
+    "id": "math-cdot-sub",
+    "category": "latex",
+    "title": "$\\cdot_i$",
+    "csl": "$\\cdot_i$"
+  },
+  {
+    "id": "math-frac",
+    "category": "latex",
+    "title": "$\\frac{a}{b}$",
+    "csl": "$\\frac{a}{b}$"
+  },
+  {
+    "id": "math-product",
+    "category": "latex",
+    "title": "$A \\cdot B$",
+    "csl": "$A \\cdot B$"
+  },
+  {
+    "id": "math-parens",
+    "category": "latex",
+    "title": "\\( \\alpha_i \\)",
+    "csl": "\\( \\alpha_i \\)"
+  },
+  {
+    "id": "math-escaped",
+    "category": "latex",
+    "title": "$a+\\$+b$",
+    "csl": "$a+\\$+b$"
+  },
+  {
+    "id": "math-open",
+    "category": "latex",
+    "title": "$\\alpha_i",
+    "csl": "$\\alpha_i"
+  },
+  {
+    "id": "math-unknown",
+    "category": "latex",
+    "title": "$\\orgtexmacsunknown{a}$",
+    "csl": "$\\orgtexmacsunknown{a}$"
+  },
+  {
+    "id": "math-macro",
+    "category": "latex",
+    "title": "$\\newcommand{\\myop}{x}\\myop$",
+    "csl": "$\\newcommand{\\myop}{x}\\myop$"
+  },
+  {
+    "id": "stm-alpha",
+    "category": "stm",
+    "title": "(math \"α\")",
+    "csl": "(math \"α\")"
+  },
+  {
+    "id": "stm-rsub",
+    "category": "stm",
+    "title": "(math (rsub \"α\" \"i\"))",
+    "csl": "(math (rsub \"α\" \"i\"))"
+  },
+  {
+    "id": "stm-frac",
+    "category": "stm",
+    "title": "(math (frac \"a\" \"b\"))",
+    "csl": "(math (frac \"a\" \"b\"))"
+  },
+  {
+    "id": "stm-rsub-control",
+    "category": "stm",
+    "title": "(math (concat \"α\" (rsub \"i\")))",
+    "csl": "(math (concat \"α\" (rsub \"i\")))"
+  },
+  {
+    "id": "fields-extended",
+    "category": "fields",
+    "title": "Field Sentinel",
+    "csl": "Field Sentinel"
+  },
+  {
+    "id": "fields-traditional",
+    "category": "fields",
+    "title": "Field Sentinel",
+    "csl": "Field Sentinel",
+    "journal": true
+  },
+  {
+    "id": "fields-date",
+    "category": "fields",
+    "title": "Field Sentinel",
+    "csl": "Field Sentinel",
+    "date_only": true
+  },
+  {
+    "id": "fields-unknown",
+    "category": "fields",
+    "title": "Field Sentinel",
+    "csl": "Field Sentinel",
+    "unknown": true
+  },
+  {
+    "id": "math-case-protected",
+    "category": "latex",
+    "title": "An {RNA} Study of $A \\cdot B$",
+    "csl": "An <span class=\"nocase\">RNA</span> Study of $A \\cdot B$"
+  }
+]

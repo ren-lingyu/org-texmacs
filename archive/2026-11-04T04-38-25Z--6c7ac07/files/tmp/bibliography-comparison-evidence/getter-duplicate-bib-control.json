@@ -1,0 +1,7 @@
+{
+  "keys": [
+    "duplicate"
+  ],
+  "items": "((\"duplicate\" (title . \"Second\") (issued (date-parts (2026))) (blt-type . \"book\") (type . \"book\")))",
+  "note": "Parsebib hash coalesces duplicate source keys before getter validation"
+}

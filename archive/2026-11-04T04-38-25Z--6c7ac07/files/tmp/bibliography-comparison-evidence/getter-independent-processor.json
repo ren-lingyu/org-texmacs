@@ -1,0 +1,4 @@
+{
+  "citations": "(\"[[[citeproc_bib_item_1][Properties of $\\\\frac{a}{b}$]]]\")",
+  "bibliography": "(\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of $\\\\frac{a}{b}$]]\" (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+}

@@ -1,0 +1,302 @@
+[
+  {
+    "case": "plain",
+    "category": "text",
+    "source": "@article{plain,\n title={Properties of English ABC 123, punctuation: yes!},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"plain\" (document (bib-field \"title\" \"Properties of English ABC 123, punctuation: yes!\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-plain-plain\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of english abc 123, punctuation: yes! \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "case",
+    "category": "text",
+    "source": "@article{case,\n title={Properties of An {RNA} Study of {NASA}},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"case\" (document (bib-field \"title\" (concat \"Properties of An \" (keepcase \"RNA\") \" Study of \" (keepcase \"NASA\"))) (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-case-case\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of an RNA study of NASA. \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "punctuation",
+    "category": "text",
+    "source": "@article{punctuation,\n title={Properties of Quotes \"Hello\", hyphen -, en --, em ---, tilde ~},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"punctuation\" (document (bib-field \"title\" (concat \"Properties of Quotes \\\"Hello\\\", hyphen -, en \u0015, em \u0016, tilde \" (nbsp))) (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-punctuation-punctuation\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of quotes \\\"hello\\\", hyphen -, en \u0015, em \u0016, tilde \" (nbsp) \". \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "escapes",
+    "category": "text",
+    "source": "@article{escapes,\n title={Properties of Braces \\{x\\}, dollar \\$, backslash \\textbackslash{}},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"escapes\" (document (bib-field \"title\" \"Properties of Braces {x}, dollar $, backslash \\\\\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-escapes-escapes\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of braces {x}, dollar $, backslash \\\\. \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "greek-unicode",
+    "category": "unicode",
+    "source": "@article{greek-unicode,\n title={Properties of α β γ},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"greek-unicode\" (document (bib-field \"title\" \"Properties of <alpha> <beta> <gamma>\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-greek-unicode-greek-unicode\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of <alpha> <beta> <gamma>. \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "chinese",
+    "category": "unicode",
+    "source": "@article{chinese,\n title={Properties of 中文数学标题},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"chinese\" (document (bib-field \"title\" \"Properties of <#4E2D><#6587><#6570><#5B66><#6807><#9898>\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-chinese-chinese\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of <#4E2D><#6587><#6570><#5B66><#6807><#9898>. \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "accent",
+    "category": "unicode",
+    "source": "@article{accent,\n title={Properties of Émile naïve Ångström},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"accent\" (document (bib-field \"title\" \"Properties of Émile naïve Ångström\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-accent-accent\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of émile naïve ångström. \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "combining",
+    "category": "unicode",
+    "source": "@article{combining,\n title={Properties of é and é},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"combining\" (document (bib-field \"title\" \"Properties of e<#301> and é\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-combining-combining\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of e<#301> and é. \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-unicode",
+    "category": "unicode",
+    "source": "@article{math-unicode,\n title={Properties of ∀x ∈ ℝ: x ≤ ∞},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"math-unicode\" (document (bib-field \"title\" \"Properties of <forall>x <in> <bbb-R>: x <leq> <infty>\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-math-unicode-math-unicode\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of <forall>x <in> <bbb-R>: x <leq> <infty>. \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "bare-cdot",
+    "category": "latex",
+    "source": "@article{bare-cdot,\n title={Properties of \\cdot},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"bare-cdot\" (document (bib-field \"title\" \"Properties of <cdot>\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-bare-cdot-bare-cdot\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of <cdot>. \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-cdot",
+    "category": "latex",
+    "source": "@article{math-cdot,\n title={Properties of $\\cdot$},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"math-cdot\" (document (bib-field \"title\" (concat \"Properties of \" (math \"<cdot>\"))) (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-math-cdot-math-cdot\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of \" (math \"<cdot>\") \". \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 1,
+    "formatted-math": 1,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-alpha",
+    "category": "latex",
+    "source": "@article{math-alpha,\n title={Properties of $\\alpha$},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"math-alpha\" (document (bib-field \"title\" (concat \"Properties of \" (math \"<alpha>\"))) (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-math-alpha-math-alpha\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of \" (math \"<alpha>\") \". \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 1,
+    "formatted-math": 1,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-alpha-sub",
+    "category": "latex",
+    "source": "@article{math-alpha-sub,\n title={Properties of $\\alpha_i$},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"math-alpha-sub\" (document (bib-field \"title\" (concat \"Properties of \" (math (concat \"<alpha>\" (rsub \"i\"))))) (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-math-alpha-sub-math-alpha-sub\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of \" (math (concat \"<alpha>\" (rsub \"i\"))) \". \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 1,
+    "formatted-math": 1,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-cdot-sub",
+    "category": "latex",
+    "source": "@article{math-cdot-sub,\n title={Properties of $\\cdot_i$},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"math-cdot-sub\" (document (bib-field \"title\" (concat \"Properties of \" (math (concat \"<cdot>\" (rsub \"i\"))))) (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-math-cdot-sub-math-cdot-sub\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of \" (math (concat \"<cdot>\" (rsub \"i\"))) \". \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 1,
+    "formatted-math": 1,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-frac",
+    "category": "latex",
+    "source": "@article{math-frac,\n title={Properties of $\\frac{a}{b}$},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"math-frac\" (document (bib-field \"title\" (concat \"Properties of \" (math (frac \"a\" \"b\")))) (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-math-frac-math-frac\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of \" (math (frac \"a\" \"b\")) \". \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 1,
+    "formatted-math": 1,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-product",
+    "category": "latex",
+    "source": "@article{math-product,\n title={Properties of $A \\cdot B$},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"math-product\" (document (bib-field \"title\" (concat \"Properties of \" (math \"A<cdot>B\"))) (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-math-product-math-product\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of \" (math \"A<cdot>B\") \". \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 1,
+    "formatted-math": 1,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-parens",
+    "category": "latex",
+    "source": "@article{math-parens,\n title={Properties of \\( \\alpha_i \\)},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"math-parens\" (document (bib-field \"title\" (concat \"Properties of \" (math (concat \"<alpha>\" (rsub \"i\"))))) (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-math-parens-math-parens\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of \" (math (concat \"<alpha>\" (rsub \"i\"))) \". \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 1,
+    "formatted-math": 1,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-escaped",
+    "category": "latex",
+    "source": "@article{math-escaped,\n title={Properties of $a+\\$+b$},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"math-escaped\" (document (bib-field \"title\" (concat \"Properties of \" (math \"a+$+b\"))) (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-math-escaped-math-escaped\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of \" (math \"a+$+b\") \". \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 1,
+    "formatted-math": 1,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-open",
+    "category": "latex",
+    "source": "@article{math-open,\n title={Properties of $\\alpha_i},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"math-open\" (document (bib-field \"title\" (concat \"Properties of \" (math (concat \"<alpha>\" (rsub \"i\") \"}\")))) (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-math-open-math-open\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of \" (math (concat \"<alpha>\" (rsub \"i\") \"}\")) \". \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 1,
+    "formatted-math": 1,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-unknown",
+    "category": "latex",
+    "source": "@article{math-unknown,\n title={Properties of $\\orgtexmacsunknown{a}$},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"math-unknown\" (document (bib-field \"title\" (concat \"Properties of \" (math (orgtexmacsunknown \"a\")))) (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-math-unknown-math-unknown\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of \" (math (orgtexmacsunknown \"a\")) \". \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 1,
+    "formatted-math": 1,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-macro",
+    "category": "latex",
+    "source": "@article{math-macro,\n title={Properties of $\\newcommand{\\myop}{x}\\myop$},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"math-macro\" (document (bib-field \"title\" (concat \"Properties of \" (math (concat (assign \"myop\" (macro \"x\")) (myop))))) (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-math-macro-math-macro\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of \" (math (concat (assign \"myop\" (macro \"x\")) (myop))) \". \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 1,
+    "formatted-math": 1,
+    "repeat-equal": true
+  },
+  {
+    "case": "stm-alpha",
+    "category": "stm",
+    "source": "@article{stm-alpha,\n title={Properties of (math \"α\")},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"stm-alpha\" (document (bib-field \"title\" \"Properties of (math \\\"<alpha>\\\")\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-stm-alpha-stm-alpha\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of (math \\\"<alpha>\\\"). \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "stm-rsub",
+    "category": "stm",
+    "source": "@article{stm-rsub,\n title={Properties of (math (rsub \"α\" \"i\"))},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"stm-rsub\" (document (bib-field \"title\" \"Properties of (math (rsub \\\"<alpha>\\\" \\\"i\\\"))\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-stm-rsub-stm-rsub\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of (math (rsub \\\"<alpha>\\\" \\\"i\\\")). \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "stm-frac",
+    "category": "stm",
+    "source": "@article{stm-frac,\n title={Properties of (math (frac \"a\" \"b\"))},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"stm-frac\" (document (bib-field \"title\" \"Properties of (math (frac \\\"a\\\" \\\"b\\\"))\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-stm-frac-stm-frac\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of (math (frac \\\"a\\\" \\\"b\\\")). \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "stm-rsub-control",
+    "category": "stm",
+    "source": "@article{stm-rsub-control,\n title={Properties of (math (concat \"α\" (rsub \"i\")))},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"stm-rsub-control\" (document (bib-field \"title\" \"Properties of (math (concat \\\"<alpha>\\\" (rsub \\\"i\\\")))\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-stm-rsub-control-stm-rsub-control\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of (math (concat \\\"<alpha>\\\" (rsub \\\"i\\\"))). \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "fields-extended",
+    "category": "fields",
+    "source": "@article{fields-extended,\n title={Properties of Field Sentinel},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"fields-extended\" (document (bib-field \"title\" \"Properties of Field Sentinel\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-fields-extended-fields-extended\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of field sentinel. \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "fields-traditional",
+    "category": "fields",
+    "source": "@article{fields-traditional,\n title={Properties of Field Sentinel},\n author={Doe, Jane and Smith, John and {Research Group}},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026},\n journal={Journal Sentinel}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"fields-traditional\" (document (bib-field \"title\" \"Properties of Field Sentinel\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\") (bib-field \"journal\" \"Journal Sentinel\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-fields-traditional-fields-traditional\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of field sentinel. \" (newblock) (with \"font-shape\" \"italic\" \"Journal Sentinel\") \", 2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "fields-date",
+    "category": "fields",
+    "source": "@article{fields-date,\n title={Properties of Field Sentinel},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"fields-date\" (document (bib-field \"title\" \"Properties of Field Sentinel\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-fields-date-fields-date\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of field sentinel.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "fields-unknown",
+    "category": "fields",
+    "source": "@article{fields-unknown,\n title={Properties of Field Sentinel},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026},\n customfield={Custom Sentinel}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"fields-unknown\" (document (bib-field \"title\" \"Properties of Field Sentinel\") (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\") (bib-field \"customfield\" \"Custom Sentinel\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-fields-unknown-fields-unknown\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of field sentinel. \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 0,
+    "formatted-math": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-case-protected",
+    "category": "latex",
+    "source": "@article{math-case-protected,\n title={Properties of An {RNA} Study of $A \\cdot B$},\n author={Doe, Jane and Smith, John and {Research Group}},\n journaltitle={Journal Sentinel},\n date={2026-11-04},\n doi={10.1234/sentinel},\n url={https://example.org/paper},\n year={2026}\n}\n",
+    "parsed": "(document (bib-entry \"article\" \"math-case-protected\" (document (bib-field \"title\" (concat \"Properties of An \" (keepcase \"RNA\") \" Study of \" (math \"A<cdot>B\"))) (bib-field \"author\" (bib-names (bib-name \"Jane\" \"\" \"Doe\" \"\") (bib-name \"John\" \"\" \"Smith\" \"\") (bib-name \"\" \"\" (keepcase \"Research Group\") \"\"))) (bib-field \"journaltitle\" \"Journal Sentinel\") (bib-field \"date\" \"2026-11-04\") (bib-field \"doi\" \"10.1234/sentinel\") (bib-field \"url\" (slink \"https://example.org/paper\")) (bib-field \"year\" \"2026\"))))",
+    "formatted": "(bib-list \"1\" (document (concat (bibitem* \"1\") (label \"probe-math-case-protected-math-case-protected\") \"Jane Doe, John Smith\" (localize \", and \") \"Research Group. \" (newblock) \"Properties of an RNA study of \" (math \"A<cdot>B\") \". \" (newblock) \"2026.\" (newblock))))",
+    "parsed-math": 1,
+    "formatted-math": 1,
+    "repeat-equal": true
+  }
+]

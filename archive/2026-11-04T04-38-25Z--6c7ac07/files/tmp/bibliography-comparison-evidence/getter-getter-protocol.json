@@ -1,0 +1,42 @@
+[
+  {
+    "request": "itemids",
+    "output": "(\"key\")",
+    "repeat-equal": true
+  },
+  {
+    "request": "(\"key\")",
+    "output": "((\"key\" (type . \"article-journal\") (title . \"Sentinel\")))",
+    "repeat-equal": true
+  },
+  {
+    "request": "(\"key\" \"key\")",
+    "output": "((\"key\" (type . #1=\"article-journal\") (title . #2=\"Sentinel\")) (\"key\" (type . #1#) (title . #2#)))",
+    "repeat-equal": true
+  },
+  {
+    "request": "(\"missing\")",
+    "output": "(error \"Missing fixture key: missing\")",
+    "repeat-equal": true
+  },
+  {
+    "request": "(12)",
+    "output": "(error \"Invalid fixture request\")",
+    "repeat-equal": true
+  },
+  {
+    "request": "unknown",
+    "output": "(error \"Invalid fixture request\")",
+    "repeat-equal": true
+  },
+  {
+    "construction": "((\"key\" (type . \"book\") (title . \"One\")) (\"key\" (type . \"book\") (title . \"Two\")))",
+    "output": "(error \"Duplicate fixture key: key\")",
+    "repeat-equal": true
+  },
+  {
+    "construction": "((\"key\" (type . \"book\") (title . 12)))",
+    "output": "(error \"Invalid fixture item\")",
+    "repeat-equal": true
+  }
+]

@@ -1,0 +1,182 @@
+[
+  {
+    "case": "plain",
+    "expected-category": "text",
+    "csl": "ordinary normalization allowed; quote/dash/escape changes recorded separately; target getter same as baseline",
+    "native": "ordinary text normalization and inspected layout; not source-byte identity"
+  },
+  {
+    "case": "case",
+    "expected-category": "text",
+    "csl": "ordinary normalization allowed; quote/dash/escape changes recorded separately; target getter same as baseline",
+    "native": "ordinary text normalization and inspected layout; not source-byte identity"
+  },
+  {
+    "case": "punctuation",
+    "expected-category": "text",
+    "csl": "ordinary normalization allowed; quote/dash/escape changes recorded separately; target getter same as baseline",
+    "native": "ordinary text normalization and inspected layout; not source-byte identity"
+  },
+  {
+    "case": "escapes",
+    "expected-category": "text",
+    "csl": "ordinary normalization allowed; quote/dash/escape changes recorded separately; target getter same as baseline",
+    "native": "ordinary text normalization and inspected layout; not source-byte identity"
+  },
+  {
+    "case": "greek-unicode",
+    "expected-category": "unicode",
+    "csl": "data preserved; no general glyph guarantee from lowerability",
+    "native": "data preserved in native encoding and inspected glyph display"
+  },
+  {
+    "case": "chinese",
+    "expected-category": "unicode",
+    "csl": "data preserved; Chinese native display placeholder observed",
+    "native": "data preserved but native placeholder display, direct/Fandol control also affected"
+  },
+  {
+    "case": "accent",
+    "expected-category": "unicode",
+    "csl": "data preserved; no general glyph guarantee from lowerability",
+    "native": "data preserved in native encoding and inspected glyph display"
+  },
+  {
+    "case": "combining",
+    "expected-category": "unicode",
+    "csl": "data preserved; no general glyph guarantee from lowerability",
+    "native": "data preserved but native placeholder display, direct/Fandol control also affected"
+  },
+  {
+    "case": "math-unicode",
+    "expected-category": "unicode",
+    "csl": "data preserved; no general glyph guarantee from lowerability",
+    "native": "data preserved in native encoding and inspected glyph display"
+  },
+  {
+    "case": "bare-cdot",
+    "expected-category": "latex",
+    "csl": "JSON/getter -> entity -> local math; original Bib converter deletes command",
+    "native": "native symbol in text, inspected glyph"
+  },
+  {
+    "case": "math-cdot",
+    "expected-category": "latex",
+    "csl": "source preserved with direct JSON/getter; complete latex-fragment rejected by current lowering",
+    "native": "expected native math and inspected layout"
+  },
+  {
+    "case": "math-alpha",
+    "expected-category": "latex",
+    "csl": "source preserved with direct JSON/getter; complete latex-fragment rejected by current lowering",
+    "native": "expected native math and inspected layout"
+  },
+  {
+    "case": "math-alpha-sub",
+    "expected-category": "latex",
+    "csl": "source preserved with direct JSON/getter; complete latex-fragment rejected by current lowering",
+    "native": "expected native math and inspected layout"
+  },
+  {
+    "case": "math-cdot-sub",
+    "expected-category": "latex",
+    "csl": "source preserved with direct JSON/getter; complete latex-fragment rejected by current lowering",
+    "native": "expected native math and inspected layout"
+  },
+  {
+    "case": "math-frac",
+    "expected-category": "latex",
+    "csl": "source preserved with direct JSON/getter; complete latex-fragment rejected by current lowering",
+    "native": "expected native math and inspected layout"
+  },
+  {
+    "case": "math-product",
+    "expected-category": "latex",
+    "csl": "source preserved with direct JSON/getter; complete latex-fragment rejected by current lowering",
+    "native": "expected native math and inspected layout"
+  },
+  {
+    "case": "math-parens",
+    "expected-category": "latex",
+    "csl": "source preserved with direct JSON/getter; complete latex-fragment rejected by current lowering",
+    "native": "expected native math and inspected layout"
+  },
+  {
+    "case": "math-escaped",
+    "expected-category": "latex",
+    "csl": "source preserved with direct JSON/getter; complete latex-fragment rejected by current lowering",
+    "native": "expected native math and inspected layout"
+  },
+  {
+    "case": "math-open",
+    "expected-category": "latex",
+    "csl": "Org interprets dollar text plus entity/subscript; not a complete-fragment success",
+    "native": "accepted recovery adds closing brace; not success"
+  },
+  {
+    "case": "math-unknown",
+    "expected-category": "latex",
+    "csl": "source preserved with direct JSON/getter; complete latex-fragment rejected by current lowering",
+    "native": "accepted native placeholder; not success"
+  },
+  {
+    "case": "math-macro",
+    "expected-category": "latex",
+    "csl": "source preserved with direct JSON/getter; complete latex-fragment rejected by current lowering",
+    "native": "assign/macro result outside declared support; not success"
+  },
+  {
+    "case": "stm-alpha",
+    "expected-category": "stm",
+    "csl": "item preserved; internal title quotes changed; no island; literal display",
+    "native": "literal title text, no STM interpretation"
+  },
+  {
+    "case": "stm-rsub",
+    "expected-category": "stm",
+    "csl": "item preserved; internal title quotes changed; no island; literal display",
+    "native": "literal title text, no STM interpretation"
+  },
+  {
+    "case": "stm-frac",
+    "expected-category": "stm",
+    "csl": "item preserved; internal title quotes changed; no island; literal display",
+    "native": "literal title text, no STM interpretation"
+  },
+  {
+    "case": "stm-rsub-control",
+    "expected-category": "stm",
+    "csl": "item preserved; internal title quotes changed; no island; literal display",
+    "native": "literal title text, no STM interpretation"
+  },
+  {
+    "case": "fields-extended",
+    "expected-category": "fields",
+    "csl": "non-target fields retain existing Citeproc item semantics",
+    "native": "fields retained by parser; plain omits extended fields; journal/year controls work"
+  },
+  {
+    "case": "fields-traditional",
+    "expected-category": "fields",
+    "csl": "non-target fields retain existing Citeproc item semantics",
+    "native": "fields retained by parser; plain omits extended fields; journal/year controls work"
+  },
+  {
+    "case": "fields-date",
+    "expected-category": "fields",
+    "csl": "non-target fields retain existing Citeproc item semantics",
+    "native": "fields retained by parser; plain omits extended fields; journal/year controls work"
+  },
+  {
+    "case": "fields-unknown",
+    "expected-category": "fields",
+    "csl": "non-target fields retain existing Citeproc item semantics",
+    "native": "fields retained by parser; plain omits extended fields; journal/year controls work"
+  },
+  {
+    "case": "math-case-protected",
+    "expected-category": "latex",
+    "csl": "source preserved with direct JSON/getter; complete latex-fragment rejected by current lowering",
+    "native": "expected native math and inspected layout"
+  }
+]

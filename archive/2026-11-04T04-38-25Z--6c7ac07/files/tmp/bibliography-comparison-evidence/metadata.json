@@ -1,0 +1,660 @@
+{
+  "project_head": "6c7ac07ba4f4c936abe99fb15d1915df6e211deb",
+  "worktree": "exact accepted N5 four-file candidate, uncommitted",
+  "versions": {
+    "emacs": "31.1",
+    "org": "9.8.10",
+    "citeproc": "20260113.1047 (library header 0.9.4)",
+    "texmacs": "2.1.5",
+    "platform": "x86_64-linux"
+  },
+  "outputs": {
+    "csl": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl",
+    "getter": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter",
+    "native": "/nix/store/dmpmj4jxcn1rf7p1spvxbw3pv3lk5ih3-org-texmacs-bib-compare-native"
+  },
+  "assets": {
+    "csl/json-plain-bare-cdot.pdf": {
+      "bytes": 8263,
+      "sha256": "d9bc8acf87c7c591679930589d34d43a578fa920791e4d204b9d9698a15025e8",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-bare-cdot.pdf"
+    },
+    "csl/json-italic-stm-frac.png": {
+      "bytes": 16281,
+      "sha256": "85b0ad8c7dd4468e465bbdbade1910b9c245c793af971aea139e00ff5e020b13",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-stm-frac.png"
+    },
+    "csl/json-italic-stm-rsub.tm": {
+      "bytes": 392,
+      "sha256": "f8fac87af59836b0294c49472f5d11be6d156bf40329618964e370301e4e53cb",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-stm-rsub.tm"
+    },
+    "csl/json-italic-plain.tm": {
+      "bytes": 394,
+      "sha256": "9168d1ece5a28805f12e0acd61d7831bc2382e8715e80bdf59a77d319509bf94",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-plain.tm"
+    },
+    "csl/json-plain-stm-alpha.png": {
+      "bytes": 13065,
+      "sha256": "586bd5c391587541b67c349f65d12ee761e45402f54508515794a9e24d3f762d",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-stm-alpha.png"
+    },
+    "csl/json-plain-stm-rsub.pdf": {
+      "bytes": 14759,
+      "sha256": "1475750745a15c2d0f1746923495b0b248a92f823a850de91b6df9daaf035ba0",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-stm-rsub.pdf"
+    },
+    "csl/json-italic-math-unicode.tm": {
+      "bytes": 426,
+      "sha256": "6ca9b0ac46005d362e08ea5157c229dcb34d9bcdb2e3609299f89698b83933c3",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-math-unicode.tm"
+    },
+    "csl/json-italic-plain.png": {
+      "bytes": 19741,
+      "sha256": "903ceba6384ad1297dd2721127bbce343d21c3a9906c07cb4ed27302e4c702dc",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-plain.png"
+    },
+    "csl/json-italic-bare-cdot.png": {
+      "bytes": 10746,
+      "sha256": "d4f2dab7dad4abafbea2a9fb2206dec2f5084b5380aef585aa6ade75aec81d09",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-bare-cdot.png"
+    },
+    "csl/json-italic-stm-alpha.tm": {
+      "bytes": 366,
+      "sha256": "4e9144eab79a06b69484da11977fb1927e2da910e9e1d5104bbe8ff756ff7b3c",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-stm-alpha.tm"
+    },
+    "csl/json-plain-chinese.png": {
+      "bytes": 20786,
+      "sha256": "8f3fe45f3eaac3e11cb8050fc28cb5dfd44aa33cbb7eeb6ac0f0f8bf3b0dc296",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-chinese.png"
+    },
+    "csl/json-plain-stm-rsub-control.pdf": {
+      "bytes": 16299,
+      "sha256": "3aad298ef33a3a63f316084f1c282eac43f0907a3b4d39225c994c5eed9c38c5",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-stm-rsub-control.pdf"
+    },
+    "csl/json-italic-stm-alpha.pdf": {
+      "bytes": 14598,
+      "sha256": "3e719a249e6f81669890b3348a5fe36f88dcc3b93e9ab586ae5315363a670c8c",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-stm-alpha.pdf"
+    },
+    "csl/json-plain-stm-rsub.tm": {
+      "bytes": 349,
+      "sha256": "7d2e172209c0663792e636bd7df002a9acb271dd47ce8f5dc838fa6454efb7d5",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-stm-rsub.tm"
+    },
+    "csl/json-italic-stm-rsub-control.png": {
+      "bytes": 17572,
+      "sha256": "f715dacb1c15604b8633c06ce653cae4c39b6d80a86f84f18f7e86ab80c24bdc",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-stm-rsub-control.png"
+    },
+    "csl/json-plain-stm-frac.tm": {
+      "bytes": 331,
+      "sha256": "891645fbfa32ad7d418681d60a581073e34654806fa729e9d09f3e7598e4ea42",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-stm-frac.tm"
+    },
+    "csl/json-plain-chinese.pdf": {
+      "bytes": 13101,
+      "sha256": "3719ddb7aa14002738b1f6e43b50a649610f66fa63da9925f0e8db6ac9ea2d04",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-chinese.pdf"
+    },
+    "csl/json-italic-math-unicode.pdf": {
+      "bytes": 16679,
+      "sha256": "811829763297572a8d2e368b9c12cf680c9b28984b5c8a9f2a8c1a6835d2b33c",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-math-unicode.pdf"
+    },
+    "csl/json-italic-bare-cdot.pdf": {
+      "bytes": 10654,
+      "sha256": "ba2c52ce26069f6ae85d154b1241dfdecbc03114b92081785ddd3f6264959a6d",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-bare-cdot.pdf"
+    },
+    "csl/json-italic-stm-rsub-control.tm": {
+      "bytes": 410,
+      "sha256": "7523b8706eaf23cf35f5294ab04a23239ae420cb357265e638df273a58705009",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-stm-rsub-control.tm"
+    },
+    "csl/json-plain-math-unicode.tm": {
+      "bytes": 381,
+      "sha256": "7b9d1198ff17ee2894a41c79e9fd4381d93335c66c15a0530ddef709f52796dd",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-math-unicode.tm"
+    },
+    "csl/json-italic-chinese.png": {
+      "bytes": 21130,
+      "sha256": "12d2b4967df1f1eef8fa2edb50a6250c3d3023e56a0b31d89881136a26071f3a",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-chinese.png"
+    },
+    "csl/json-plain-math-unicode.png": {
+      "bytes": 13554,
+      "sha256": "d7b029327a332cdde4bd4f6dea55b7eec501ce5364e1220b762d1782f59bfd92",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-math-unicode.png"
+    },
+    "csl/json-italic-chinese.tm": {
+      "bytes": 432,
+      "sha256": "6382d5981739a6063ed064ffc2915d383765669e9cad01d76114a18cbe069b85",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-chinese.tm"
+    },
+    "csl/json-plain-plain.png": {
+      "bytes": 18709,
+      "sha256": "f8841974f55e97ab081bb0b7d0a631cb153758e66721ba04f62ab68c4f78744b",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-plain.png"
+    },
+    "csl/json-plain-stm-frac.png": {
+      "bytes": 15106,
+      "sha256": "3eae01cd38c41f703aadfdfcacacb8dd3b27a1a6cb77d6231ace539592b6f0b5",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-stm-frac.png"
+    },
+    "csl/json-italic-stm-frac.pdf": {
+      "bytes": 15632,
+      "sha256": "ace5df0e5f2173b75bb7d1db9db467652393ec238651778bca038258f57c1028",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-stm-frac.pdf"
+    },
+    "csl/json-plain-stm-rsub-control.tm": {
+      "bytes": 367,
+      "sha256": "7a9e208e352dfb96d6cb6b84e2c98723ac2c97ac430805cf1fc548eb7d8e6c0d",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-stm-rsub-control.tm"
+    },
+    "csl/json-italic-stm-rsub.png": {
+      "bytes": 16016,
+      "sha256": "f244c874b7a054f5272491fae8916a743b79a3e099373b4de8f299f2db8f165f",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-stm-rsub.png"
+    },
+    "csl/json-plain-bare-cdot.tm": {
+      "bytes": 311,
+      "sha256": "3936050976439bdb6fda52dae93da8fba4b8896f0111bfdcb47e63d4a6a403e2",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-bare-cdot.tm"
+    },
+    "csl/json-plain-plain.tm": {
+      "bytes": 351,
+      "sha256": "2dd810ec89eb861a2247ae53d8623964b84e81dfc69deca1049828ab785ece32",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-plain.tm"
+    },
+    "csl/json-plain-stm-rsub-control.png": {
+      "bytes": 16790,
+      "sha256": "80417deb8ff5e9663fcda4183ea6523cf9c6906e1c84606566bbebe262d3913a",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-stm-rsub-control.png"
+    },
+    "csl/json-plain-bare-cdot.png": {
+      "bytes": 10334,
+      "sha256": "f63691c7ee721864c68cb56f3b43de7888c7d14d65451db28588100b4baab741",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-bare-cdot.png"
+    },
+    "csl/json-italic-stm-alpha.png": {
+      "bytes": 13942,
+      "sha256": "79dbe2c733692acdfcccf62d83094643924c2ac8920b40c74c1b2fd1525412b2",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-stm-alpha.png"
+    },
+    "csl/json-plain-stm-alpha.pdf": {
+      "bytes": 11863,
+      "sha256": "9910fc8cb82d7ca9a19cf526f1a2badc4320bfb7275ce07f4a5edc76a3a6de16",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-stm-alpha.pdf"
+    },
+    "csl/json-plain-stm-frac.pdf": {
+      "bytes": 12806,
+      "sha256": "01b566014a5c91ac36201b79e2358eb76f4b5f3ecfa431c1b9512f4f0fc1e22a",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-stm-frac.pdf"
+    },
+    "csl/json-italic-stm-frac.tm": {
+      "bytes": 376,
+      "sha256": "42329d87a4502d4f67deb3570adea88dc2959b26920dac9c6028ee5a7938520f",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-stm-frac.tm"
+    },
+    "csl/json-plain-plain.pdf": {
+      "bytes": 12742,
+      "sha256": "ce3e42718bcc69249362dca83611e9ed2f1616b09666e7184c075001510eb170",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-plain.pdf"
+    },
+    "csl/json-italic-plain.pdf": {
+      "bytes": 16649,
+      "sha256": "a966aeca1a52dfd09689647e6e9027d53d9faedecadd11b80d81db5e99d30969",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-plain.pdf"
+    },
+    "csl/json-italic-stm-rsub.pdf": {
+      "bytes": 17686,
+      "sha256": "7e39a4c444dfef274e4edd311b1f5676e1096efed42f2b533714383388a3ae2a",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-stm-rsub.pdf"
+    },
+    "csl/json-plain-stm-alpha.tm": {
+      "bytes": 321,
+      "sha256": "299bfd68cbb2c6f0317e8b7a75e3775857ee6408aadb69e0e2b8b43a2b2b0a7b",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-stm-alpha.tm"
+    },
+    "csl/json-italic-stm-rsub-control.pdf": {
+      "bytes": 19476,
+      "sha256": "bd2e179c1fb535cdf6947ad0d0ade7737b4ecb072f00261e3cbbf8d0ce7f1b62",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-stm-rsub-control.pdf"
+    },
+    "csl/json-italic-math-unicode.png": {
+      "bytes": 14091,
+      "sha256": "96f1856f20710e7b827000bca83513f6509e7b68450e491a9b2b81bc89bfae26",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-math-unicode.png"
+    },
+    "csl/json-italic-chinese.pdf": {
+      "bytes": 15473,
+      "sha256": "f9ccbeba9b25baf74df83eb403faf7285cd980ecd36b86b4fe9951f8ccd8ee2c",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-chinese.pdf"
+    },
+    "csl/json-plain-chinese.tm": {
+      "bytes": 389,
+      "sha256": "6bef7ff996dedfb9c987a60ab89df86a4ad76fdf4e98cef36773f0cf21c0f4a5",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-chinese.tm"
+    },
+    "csl/json-plain-math-unicode.pdf": {
+      "bytes": 14100,
+      "sha256": "d077bc1e3f5e2bc23dac3ff31cd11a853523fd45b35546392bc746e6555e6385",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-math-unicode.pdf"
+    },
+    "csl/json-italic-bare-cdot.tm": {
+      "bytes": 354,
+      "sha256": "7727b659afcf4143ff2c72818b9f933816e5a15cc44fe91439e1cd581030443d",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-italic-bare-cdot.tm"
+    },
+    "csl/json-plain-stm-rsub.png": {
+      "bytes": 15147,
+      "sha256": "3e3ea8a24bd07b46b364967980dca389864ce6599c9286e32b356c365a61bf54",
+      "location": "/nix/store/axw0rfh38vax2h9q406jbd384p0xdcm7-org-texmacs-bib-compare-csl/json-plain-stm-rsub.png"
+    },
+    "getter/getter-plain-stm-alpha.tm": {
+      "bytes": 321,
+      "sha256": "db470ed09948739c82b1009e43fe4eddb87bb9d2bb76fdfbbe52c7fc482e87f2",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-stm-alpha.tm"
+    },
+    "getter/getter-plain-chinese.pdf": {
+      "bytes": 13101,
+      "sha256": "d0c0adddad239903329cb7e382d59f89e23b0d9f1237ae1f0a299516cc20c7a2",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-chinese.pdf"
+    },
+    "getter/getter-italic-stm-rsub.tm": {
+      "bytes": 392,
+      "sha256": "1cd1ba2521be90dfb9364323a5a4f1e15981f11b2a537115628e00465982e397",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-stm-rsub.tm"
+    },
+    "getter/getter-italic-stm-frac.png": {
+      "bytes": 16281,
+      "sha256": "85b0ad8c7dd4468e465bbdbade1910b9c245c793af971aea139e00ff5e020b13",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-stm-frac.png"
+    },
+    "getter/getter-plain-stm-rsub-control.png": {
+      "bytes": 16790,
+      "sha256": "80417deb8ff5e9663fcda4183ea6523cf9c6906e1c84606566bbebe262d3913a",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-stm-rsub-control.png"
+    },
+    "getter/getter-italic-chinese.png": {
+      "bytes": 21130,
+      "sha256": "12d2b4967df1f1eef8fa2edb50a6250c3d3023e56a0b31d89881136a26071f3a",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-chinese.png"
+    },
+    "getter/getter-italic-stm-rsub.pdf": {
+      "bytes": 17686,
+      "sha256": "ce8c031f06d6ec6a6a686e815817cb4e58edc0c276ec07ac8a75d81fdcc49da0",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-stm-rsub.pdf"
+    },
+    "getter/getter-italic-stm-frac.tm": {
+      "bytes": 376,
+      "sha256": "5556ea47640e1096bcaf7afa065918913850aadd412edf9ff60b4f2ae4624c52",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-stm-frac.tm"
+    },
+    "getter/getter-plain-stm-alpha.pdf": {
+      "bytes": 11863,
+      "sha256": "338f84f5ce4588e421d9c4835cf511e9a25fe8ca0d345c08818a928814e57c18",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-stm-alpha.pdf"
+    },
+    "getter/getter-plain-stm-alpha.png": {
+      "bytes": 13065,
+      "sha256": "586bd5c391587541b67c349f65d12ee761e45402f54508515794a9e24d3f762d",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-stm-alpha.png"
+    },
+    "getter/getter-plain-chinese.png": {
+      "bytes": 20786,
+      "sha256": "8f3fe45f3eaac3e11cb8050fc28cb5dfd44aa33cbb7eeb6ac0f0f8bf3b0dc296",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-chinese.png"
+    },
+    "getter/getter-plain-stm-frac.png": {
+      "bytes": 15106,
+      "sha256": "3eae01cd38c41f703aadfdfcacacb8dd3b27a1a6cb77d6231ace539592b6f0b5",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-stm-frac.png"
+    },
+    "getter/getter-italic-bare-cdot.tm": {
+      "bytes": 354,
+      "sha256": "9cfdeb4bbfc68915aa241b42ea872d2d52239d832e9eb48a0026150c8c420136",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-bare-cdot.tm"
+    },
+    "getter/getter-italic-plain.png": {
+      "bytes": 19178,
+      "sha256": "68f3b7da769a90606cd58b0bd881b2107d70cd005787a17c034d5f315b7c596c",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-plain.png"
+    },
+    "getter/getter-plain-stm-rsub.tm": {
+      "bytes": 349,
+      "sha256": "90ee2a41978e6499dcfcc0b57f44526e95af0de1a89202b98fdc15b9f9881516",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-stm-rsub.tm"
+    },
+    "getter/getter-plain-stm-frac.pdf": {
+      "bytes": 12806,
+      "sha256": "090a1515bc8097c9c2f5482f8be089e46553ca88ecb184be7610d5791d70a9e5",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-stm-frac.pdf"
+    },
+    "getter/getter-italic-stm-alpha.tm": {
+      "bytes": 366,
+      "sha256": "41aae0d08aa12b24f854f0ab981b5ca171be6421982c43cbb5e316fe79d0df64",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-stm-alpha.tm"
+    },
+    "getter/getter-plain-plain.pdf": {
+      "bytes": 12069,
+      "sha256": "db55bab8a355796dfe928d1727e1bf21b3c4c6804f0edb644049f57c1185d307",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-plain.pdf"
+    },
+    "getter/getter-plain-bare-cdot.tm": {
+      "bytes": 311,
+      "sha256": "1b1c511219ed256c66c02a0a04bee74ed9e2c32acfd5554ff40b9fa26427f34c",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-bare-cdot.tm"
+    },
+    "getter/getter-plain-math-unicode.png": {
+      "bytes": 13554,
+      "sha256": "d7b029327a332cdde4bd4f6dea55b7eec501ce5364e1220b762d1782f59bfd92",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-math-unicode.png"
+    },
+    "getter/getter-italic-stm-alpha.png": {
+      "bytes": 13942,
+      "sha256": "79dbe2c733692acdfcccf62d83094643924c2ac8920b40c74c1b2fd1525412b2",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-stm-alpha.png"
+    },
+    "getter/getter-plain-bare-cdot.pdf": {
+      "bytes": 8263,
+      "sha256": "25bb43dfc3ecb5f014e7b24ae1b433d5e06c2511242c811f83966ee59dbb9826",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-bare-cdot.pdf"
+    },
+    "getter/getter-italic-bare-cdot.png": {
+      "bytes": 10746,
+      "sha256": "d4f2dab7dad4abafbea2a9fb2206dec2f5084b5380aef585aa6ade75aec81d09",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-bare-cdot.png"
+    },
+    "getter/getter-italic-chinese.tm": {
+      "bytes": 432,
+      "sha256": "aa1219bf03bdd93dc10624807e90ed6ba8c17c669fbc6212001252f4e61b9674",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-chinese.tm"
+    },
+    "getter/getter-plain-stm-rsub-control.pdf": {
+      "bytes": 16299,
+      "sha256": "5bd5c0fc24ba1ff7fdaeba714226824881fa4fc0ed6f2a4adcde8e6a3be9c241",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-stm-rsub-control.pdf"
+    },
+    "getter/getter-italic-stm-rsub-control.pdf": {
+      "bytes": 19476,
+      "sha256": "821472547e6e79f1ae8ab0cdf12c7f5de8fcf377678b5082c18ef6068d5688f8",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-stm-rsub-control.pdf"
+    },
+    "getter/getter-plain-chinese.tm": {
+      "bytes": 389,
+      "sha256": "a83521b5d9fb95257b01c5d8c2a0f44907470ad031e311e267efac10631f5132",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-chinese.tm"
+    },
+    "getter/getter-plain-bare-cdot.png": {
+      "bytes": 10334,
+      "sha256": "f63691c7ee721864c68cb56f3b43de7888c7d14d65451db28588100b4baab741",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-bare-cdot.png"
+    },
+    "getter/getter-italic-stm-rsub-control.png": {
+      "bytes": 17572,
+      "sha256": "f715dacb1c15604b8633c06ce653cae4c39b6d80a86f84f18f7e86ab80c24bdc",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-stm-rsub-control.png"
+    },
+    "getter/getter-plain-stm-rsub.pdf": {
+      "bytes": 14759,
+      "sha256": "8013ee9db9e8fb579b126501170d65c718e69a51685a613439602482421489a8",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-stm-rsub.pdf"
+    },
+    "getter/getter-italic-plain.pdf": {
+      "bytes": 15684,
+      "sha256": "67a5e8324ba0b79edbf1156c60e0624c173ef015f6feb13141013ea37fc0dc87",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-plain.pdf"
+    },
+    "getter/getter-italic-stm-frac.pdf": {
+      "bytes": 15632,
+      "sha256": "5cf00e5f1e4af4371d54e1987b17b5ab61886d908dfb9a62d243e0fdc23b4418",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-stm-frac.pdf"
+    },
+    "getter/getter-italic-math-unicode.pdf": {
+      "bytes": 16679,
+      "sha256": "b12a35e7091fa4973b25b93db89197be0650cec2f8eaeabf00dabb84b537092c",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-math-unicode.pdf"
+    },
+    "getter/getter-italic-math-unicode.png": {
+      "bytes": 14091,
+      "sha256": "96f1856f20710e7b827000bca83513f6509e7b68450e491a9b2b81bc89bfae26",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-math-unicode.png"
+    },
+    "getter/getter-italic-stm-rsub.png": {
+      "bytes": 16016,
+      "sha256": "f244c874b7a054f5272491fae8916a743b79a3e099373b4de8f299f2db8f165f",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-stm-rsub.png"
+    },
+    "getter/getter-plain-math-unicode.tm": {
+      "bytes": 381,
+      "sha256": "b3a16fae1165a85d2920d5c4a3983a93916542e696ffc2966da0a874ffc4c1f2",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-math-unicode.tm"
+    },
+    "getter/getter-italic-stm-rsub-control.tm": {
+      "bytes": 410,
+      "sha256": "70590e051e92cfab0d925e20674c00fb3621c20dfe4beef3d31ef80a029d3803",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-stm-rsub-control.tm"
+    },
+    "getter/getter-italic-math-unicode.tm": {
+      "bytes": 426,
+      "sha256": "adaef2247e446c5fa5a2ed7c3f221a1fe554e737aa6739796b87422b32886612",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-math-unicode.tm"
+    },
+    "getter/getter-italic-chinese.pdf": {
+      "bytes": 15473,
+      "sha256": "1d2ae32490df4f750372c780e7aac5d14f066720cd14de65e937756eb120dde4",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-chinese.pdf"
+    },
+    "getter/getter-plain-stm-rsub-control.tm": {
+      "bytes": 367,
+      "sha256": "900742d6baf34b679d6c2a516f7f5cef62d6417ebd673755d77cc102d6d2669a",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-stm-rsub-control.tm"
+    },
+    "getter/getter-italic-bare-cdot.pdf": {
+      "bytes": 10654,
+      "sha256": "adf87c49fb5f646547ba43dcf8ec5b0e766f60a6bdb9df9b7affede3f8ef13f1",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-bare-cdot.pdf"
+    },
+    "getter/getter-plain-plain.tm": {
+      "bytes": 351,
+      "sha256": "3766b6578b72df02697e0e7d98b6cfca3e3cdeb77311fb64e3206bb3a78a60a4",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-plain.tm"
+    },
+    "getter/getter-plain-plain.png": {
+      "bytes": 18329,
+      "sha256": "8149ae6600f68862399832267afcf0f0445fcb9f40166e5e42a5075f4e1c7699",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-plain.png"
+    },
+    "getter/getter-plain-stm-frac.tm": {
+      "bytes": 331,
+      "sha256": "d8f898516351ca5fb24498815db879e69d547c751f80cb207fa9ce217c1ec855",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-stm-frac.tm"
+    },
+    "getter/getter-plain-stm-rsub.png": {
+      "bytes": 15147,
+      "sha256": "3e3ea8a24bd07b46b364967980dca389864ce6599c9286e32b356c365a61bf54",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-stm-rsub.png"
+    },
+    "getter/getter-italic-plain.tm": {
+      "bytes": 394,
+      "sha256": "105508053f0c0a0b9ad98e7a95a3b7cdd7068cca1c622a382ddf96716fc687a7",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-plain.tm"
+    },
+    "getter/getter-plain-math-unicode.pdf": {
+      "bytes": 14100,
+      "sha256": "ac92ac0b5b4a9d83eb50130ee7c3260242bc8f115a2baf4e079cee97ef3d188c",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-plain-math-unicode.pdf"
+    },
+    "getter/getter-italic-stm-alpha.pdf": {
+      "bytes": 14598,
+      "sha256": "05cdf257ef033ff5c1db67d5734ebca69133d32c46c9d8d9328629f0bbc13d84",
+      "location": "/nix/store/p1aaq8h9byvxif4cszn6w5bmva06nj96-org-texmacs-bib-compare-getter/getter-italic-stm-alpha.pdf"
+    },
+    "native/native-sorting.pdf": {
+      "bytes": 16408,
+      "sha256": "5c62d04bd0b3012cedff0a08c1efb43117437eba6bc41ad86c77d8675255a72b",
+      "location": "/nix/store/dmpmj4jxcn1rf7p1spvxbw3pv3lk5ih3-org-texmacs-bib-compare-native/native-sorting.pdf"
+    },
+    "native/native-page-1.png": {
+      "bytes": 196630,
+      "sha256": "178b078a153f42ca304aaf9093c38a15745710d5cd193a0f014f5aa0ede072ad",
+      "location": "/nix/store/dmpmj4jxcn1rf7p1spvxbw3pv3lk5ih3-org-texmacs-bib-compare-native/native-page-1.png"
+    },
+    "native/native-all.tm": {
+      "bytes": 9990,
+      "sha256": "ed5a6b10920d1484e4a77ba62725d115ddef0adcb592c02c7375f1ec6a884fe6",
+      "location": "/nix/store/dmpmj4jxcn1rf7p1spvxbw3pv3lk5ih3-org-texmacs-bib-compare-native/native-all.tm"
+    },
+    "native/native-page-2.png": {
+      "bytes": 249185,
+      "sha256": "6c823443e07b3d6e25793fa2bec2db53624264ebe27b468a5512683e7bd2786b",
+      "location": "/nix/store/dmpmj4jxcn1rf7p1spvxbw3pv3lk5ih3-org-texmacs-bib-compare-native/native-page-2.png"
+    },
+    "native/native-sorting.png": {
+      "bytes": 22097,
+      "sha256": "c52cab1a8742bbb0de386272a483257187d47bdc438bbaae2a77efb68f104bd7",
+      "location": "/nix/store/dmpmj4jxcn1rf7p1spvxbw3pv3lk5ih3-org-texmacs-bib-compare-native/native-sorting.png"
+    },
+    "native/native-all.png": {
+      "bytes": 169171,
+      "sha256": "31127eed2bb37a7d91fb79b240ca533acf46801c0988679bdccc9730872b7fc7",
+      "location": "/nix/store/dmpmj4jxcn1rf7p1spvxbw3pv3lk5ih3-org-texmacs-bib-compare-native/native-all.png"
+    },
+    "native/native-sorting.tm": {
+      "bytes": 503,
+      "sha256": "4730e0fc945a0f597184584be822fa93caf52cc785f0b8aaab5bfe213c6a20be",
+      "location": "/nix/store/dmpmj4jxcn1rf7p1spvxbw3pv3lk5ih3-org-texmacs-bib-compare-native/native-sorting.tm"
+    },
+    "native/native-font-control.pdf": {
+      "bytes": 23916,
+      "sha256": "b897f5b33cd9735ffa310ece08eac870cf1106135af97a823d0f5bd0447c312a",
+      "location": "/nix/store/dmpmj4jxcn1rf7p1spvxbw3pv3lk5ih3-org-texmacs-bib-compare-native/native-font-control.pdf"
+    },
+    "native/native-all.pdf": {
+      "bytes": 55214,
+      "sha256": "8e9a1caf27e0e3ba0d430476c27474ed2d84fe4a94bf86ea04c8f40e01a9e547",
+      "location": "/nix/store/dmpmj4jxcn1rf7p1spvxbw3pv3lk5ih3-org-texmacs-bib-compare-native/native-all.pdf"
+    },
+    "native/native-font-control.tm": {
+      "bytes": 1223,
+      "sha256": "62bd444dfb229af2a27ecece0ce55d79a168f84d783db44df3a2174ae922b158",
+      "location": "/nix/store/dmpmj4jxcn1rf7p1spvxbw3pv3lk5ih3-org-texmacs-bib-compare-native/native-font-control.tm"
+    },
+    "native/native-font-control.png": {
+      "bytes": 51878,
+      "sha256": "2e9162d858a3af192758878aed761a3194e151b3e24a7326dea60ace839afee8",
+      "location": "/nix/store/dmpmj4jxcn1rf7p1spvxbw3pv3lk5ih3-org-texmacs-bib-compare-native/native-font-control.png"
+    }
+  },
+  "fixtures_sha256": {
+    "accent.bib": "71581d4ab98dce0172f408d9d7b13e684f60b6c5da5604cac17afcf4367230db",
+    "accent.json": "493b868665dbebf1ba0ac99b1ce4d7456c1d93ea59e5d027085971a7354ac849",
+    "all.bib": "d37d96fe709e97b94542e83b13b7c174692c0016acff9e4b7968d87ce5e1b88c",
+    "bare-cdot.bib": "566e0b0c6a7cb4f43252a6e261c2dcbab1f58814cca2becbdfb2e236bef0ed77",
+    "bare-cdot.json": "1baf3db83ab4918697ee6b7984daa176cc3da576c0c7c615b94e7ee067d7e378",
+    "case.bib": "16eba2d0ce8f0a297da280c9400406d9d436eeae91d6202ad782674989f07279",
+    "case.json": "99dfdc529d249b994698b5348427988a03b03237a6ec75796cceedb7badc5f47",
+    "cases.json": "97b7f64b46251d648e550c829930798b4dc1a960a934885f1693a936f5ffacab",
+    "chinese.bib": "e97d47eb14109e37a6aa0ffc5cf51113fdc60cfc1629dfcce159a277e352988d",
+    "chinese.json": "b7cc8807797855bdcb34eab2c76473a08c37e112bba9cf99307e7cce9ca23ca6",
+    "combining.bib": "0edf6cb79a99631683d8b912a4c74fd1da59f3261f0dd2c15e91fa9422b2dc19",
+    "combining.json": "84b95726fbe559717a80f94ad7923291f6473950cbe9548bdaafd750a588a614",
+    "escapes.bib": "fd02c6ea87c0e0abbb7a10c958992534337494626e4ab9d8f40c4b1d0d0430e1",
+    "escapes.json": "bf33aa4827a30da7fce10dfe7d44836ba39d18cecab1f7f225673559293b1519",
+    "fields-date.bib": "c20cfe7e03581983e1eaa9a93874edcd2654d082aea52c22ebb56a591b8d3dd6",
+    "fields-date.json": "87997f6aa3d9e48b4ae266ffa593f5280c5ef6ea3d23158fafac05ba88f09bd1",
+    "fields-extended.bib": "09fcbf3cbc6a66ff7be3d4a255b1913f3cef4b95692c4718de0837c46a0dbb1f",
+    "fields-extended.json": "d85c6e36bbd88a6885bdd6b6ca84bfd0706860a451d439de9f190bc94ee3ce4f",
+    "fields-traditional.bib": "5cd12da495136328d9d29d0c46fd3772ab819d8641cb916b948e74f860593621",
+    "fields-traditional.json": "cfbcfa4f897bba2ed797f1513d3aa3e0978f67284a7a54521358a0e8ead41b02",
+    "fields-unknown.bib": "d42abc6f3b5d7f0929d18abca449c7e21b7ff809ba1f2aea6ce1440525f5a7a2",
+    "fields-unknown.json": "645fd0bb4f6581b2ac713287cd69d94f934c84530692b63ff77d87a26147efdd",
+    "greek-unicode.bib": "43596d5c17c2fc9e8830653a3cbdb50e14663bf3a81112d737c205c91d307aec",
+    "greek-unicode.json": "95875cbc5e553bab6cb7e03412b728109d413c2f0ece3ec00c338c54ca448150",
+    "italic.csl": "77565232c2b14ba23d877b8973976d4be824667b41ac7335e563523a49d288f6",
+    "math-alpha-sub.bib": "2e9cb2ae05f48ff4a23b9114dcf6b83ca58a66dd2eebafd4d1421dad7ee5d279",
+    "math-alpha-sub.json": "24100797b5dc90dfd0b4dda00a1d98b0b42feaedcda5ba8bb2aa51d7382e8daa",
+    "math-alpha.bib": "25bf0a012e0495e7a87e1ceaf739719678469c1517ae45acd3af2f9943d35e07",
+    "math-alpha.json": "71f239bc857e08babfb170de05fd25444364a069279e7265716ecc9d4a399bb4",
+    "math-case-protected.bib": "286ff99a564d11db7a42f1d41a9e0d303d63ec10a675513317c60645264f6239",
+    "math-case-protected.json": "c9b5807c2013618733c4a2673797fa1da4856630079febb368d4dc59df30a635",
+    "math-cdot-sub.bib": "6f7ad74978fdbf32eaf825c4958d826be3686eb975e62621b9e7e4566e78fc4c",
+    "math-cdot-sub.json": "e822cae32f9a091480de15839af60f4e103db92e59cc1fbd5930ffe721df3e11",
+    "math-cdot.bib": "0de75b43ff5543fe0972965b94c9a4c93b8b5483765fdb0d33295ae5164e17b7",
+    "math-cdot.json": "96632a672836692c30fc9bd31aad58faa7451e35b2ea2d5a673e40bdfc5e5b58",
+    "math-escaped.bib": "0e8cf719dace72afea7681c0b32444e02c96d0c491af2eef576262079df17027",
+    "math-escaped.json": "5ff2cc1b5ea3a7e55e49747faaa955110f702923680e03c877c7395b9e91963e",
+    "math-frac.bib": "0925903ae165388380e214309d977f9f929e7eef795876cdd059de879560cd6e",
+    "math-frac.json": "d35321769d8d1474750e364bea137281fc164e11ea81e608be12ea52034fcff6",
+    "math-macro.bib": "b5b85ee7e4d2ef216644aa622265243306d651763f6bf88a8676682eb22d9798",
+    "math-macro.json": "fb192f20c5a0ee568b995b903e7f648814c35f7f102923b32cb5b057b5e47fc7",
+    "math-open.bib": "dffaca05e47e89eea57be88b6e3787c9136b3388360e8e593072b8f71d9540f3",
+    "math-open.json": "c9967085945f72f586416d30053cfea7b60e275ea6b5eff8f454d164ada3a3bd",
+    "math-parens.bib": "02421db1376809d498f54071414c99730d941997e26450ca644968619e4356c7",
+    "math-parens.json": "05afe16438045663d2921825e4feda00bf9cf6951c60b972d1f7fed4b178a133",
+    "math-product.bib": "0f06fe54bd13922d5a379a3b41bb88af6eb26976723ab35c2281451da0c9eb93",
+    "math-product.json": "179ca8f1034a1e8233e0cc14c5b20910af239ad4cfd13fb8d4c97ce3cff8f300",
+    "math-unicode.bib": "ad516eaf55fe90aaf919e0c817a9669fd7d9a929698325e8e92aeb12a3bfa561",
+    "math-unicode.json": "7344d756f886b2a183d291462c07924b4192db8fe1a4f69ee4c58a0ff97b6863",
+    "math-unknown.bib": "d088e1256a0c7d13174235b65c92fc1f23c350261a5913f5258bfc5fcc794a41",
+    "math-unknown.json": "8c1b8a33125e47c546fc61203d43fd41025523ee3cef2306b25a3401518de046",
+    "plain.bib": "8eddf61db4f1fb4240573a5bceac3f23b102a0a7b62b84bff3de22b5274249b8",
+    "plain.csl": "415593904bf29b9b5334d4ebe6b9a9f36a09e289efd7500c8cec6eb222c9a374",
+    "plain.json": "97bf243730917797ee60d92c9009cee43caf9ba21ab52d543c11dd4856122ada",
+    "punctuation.bib": "eaf8159b96ddf01d721f1314a296de99d9eb295678c77b158073870c647776d6",
+    "punctuation.json": "452c44d97457928d0b8c1f05a16cd7c6cfb5ba68be923c0af7ea2c7f2e2baeaa",
+    "stm-alpha.bib": "606ad0e8904048e0673318c1059787b2cae0e837375825453f81545981503059",
+    "stm-alpha.json": "69fdf344ac272fe132974562b63b857627e6cc121ed224e4797357bd3da486fb",
+    "stm-frac.bib": "5ceddc9cb36ce89708846bfe3bb18564c4e8ada14ae4b670d9c1802e5b8d9850",
+    "stm-frac.json": "bda6c008ecae7b8635f960ba10a2418ace6bfa8d096dfba71905281dc05b0f23",
+    "stm-rsub-control.bib": "59ca3f54497c0762e9254725434a57a2a0641cb52eb9873933c2d1d5e6fb81b7",
+    "stm-rsub-control.json": "94dccfea622d959ac9398cbddd0a5c3ef352023dd191c00ed0aeac112c4f66b0",
+    "stm-rsub.bib": "c5bbebadf9f1e7cf46ba17645cb1ce8b57389ec25d48e242fced92df5b75f45f",
+    "stm-rsub.json": "e6815fd4da696ef7f72599408edf490cba34b4af8f946291a5f90d2f53c88196"
+  },
+  "drivers_sha256": {
+    "flake.nix": "13ba77a697069cf8a3667131cbb0f83832aaa879baec31553ceb366c6e64c9d1",
+    "experiment.nix": "8f4a3b48808988c2aefb9b999cf2ef372c5234021c755e42f88149ce619edbf8",
+    "probe-common.el": "34b549448a05562e93faef53f1f29852819fad516038e84e9a8ef7518f097b78",
+    "csl.el": "534d2b51e3169fb3ca0e65c41cc797c38c38b1de3e5c721c5e9b7680219ebb5b",
+    "getter.el": "37899dce6bba7cc9360d1bd98d25ac446fccb1ca551f701ce475fd769eaf3205",
+    "native.el": "08ac4b065cc507a14cdfd18d01ec53fb284985a854661abcaa4a913db98c277e",
+    "generate-fixtures.py": "948b64e40e9f4ea868dd7d2e89080e7bfb51ec6fb3b688ab8b5ec247030c91d2"
+  },
+  "visually_inspected_assets": [
+    {
+      "asset": "csl/json-plain-stm-frac.png",
+      "sha256": "3eae01cd38c41f703aadfdfcacacb8dd3b27a1a6cb77d6231ace539592b6f0b5",
+      "inspection": "viewed earlier-run image, byte-identical to accepted final asset"
+    },
+    {
+      "asset": "csl/json-italic-stm-frac.png",
+      "sha256": "85b0ad8c7dd4468e465bbdbade1910b9c245c793af971aea139e00ff5e020b13",
+      "inspection": "viewed earlier-run image, byte-identical to accepted final asset"
+    },
+    {
+      "asset": "native/native-font-control.png",
+      "sha256": "2e9162d858a3af192758878aed761a3194e151b3e24a7326dea60ace839afee8",
+      "inspection": "viewed earlier-run image, byte-identical to accepted final asset"
+    },
+    {
+      "asset": "native/native-sorting.png",
+      "sha256": "c52cab1a8742bbb0de386272a483257187d47bdc438bbaae2a77efb68f104bd7",
+      "inspection": "viewed earlier-run image, byte-identical to accepted final asset"
+    },
+    {
+      "asset": "native/native-page-1.png",
+      "sha256": "178b078a153f42ca304aaf9093c38a15745710d5cd193a0f014f5aa0ede072ad",
+      "inspection": "viewed accepted final image"
+    },
+    {
+      "asset": "native/native-page-2.png",
+      "sha256": "6c823443e07b3d6e25793fa2bec2db53624264ebe27b468a5512683e7bd2786b",
+      "inspection": "viewed accepted final image"
+    }
+  ]
+}

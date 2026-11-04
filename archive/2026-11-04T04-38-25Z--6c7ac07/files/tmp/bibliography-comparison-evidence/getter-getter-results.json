@@ -1,0 +1,2134 @@
+[
+  {
+    "case": "plain",
+    "category": "text",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of English ABC 123, punctuation: yes!",
+    "item-title": "Properties of english abc 123, punctuation: yes!",
+    "item-data": "((\"plain\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of english abc 123, punctuation: yes!\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of english abc 123, punctuation: yes!\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of English ABC 123, punctuation: yes!",
+        "output": "Properties of english abc 123, punctuation: yes!"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of english abc 123, punctuation: yes!]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of english abc 123, punctuation: yes!]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of english abc 123, punctuation: yes!\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of english abc 123, punctuation: yes!\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of english abc 123, punctuation: yes!\" \"#org-texmacs-org86ac1a6\") \"]\" \" \") (concat (label \"org-texmacs-org86ac1a6\") (hlink \"Properties of english abc 123, punctuation: yes!\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of english abc 123, punctuation: yes!\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of english abc 123, punctuation: yes!\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "pdf-text": "[Properties of english abc 123, punctuation: yes!] Properties of english abc 123, punctuation: yes! 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "plain",
+    "category": "text",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of English ABC 123, punctuation: yes!",
+    "item-title": "Properties of english abc 123, punctuation: yes!",
+    "item-data": "((\"plain\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of english abc 123, punctuation: yes!\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of english abc 123, punctuation: yes!\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of English ABC 123, punctuation: yes!",
+        "output": "Properties of english abc 123, punctuation: yes!"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of english abc 123, punctuation: yes!/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of english abc 123, punctuation: yes!]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of english abc 123, punctuation: yes!\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of english abc 123, punctuation: yes!\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of english abc 123, punctuation: yes!\") (concat \"\" #1# \"\")) \"#org-texmacs-org27c2726\") \"]\" \" \") (concat (label \"org-texmacs-org27c2726\") (concat \"\" #1# \"\") (em (hlink \"Properties of english abc 123, punctuation: yes!\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of english abc 123, punctuation: yes!\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of english abc 123, punctuation: yes!\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "pdf-text": "[Properties of english abc 123, punctuation: yes! ] Properties of english abc 123, punctuation: yes! 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "case",
+    "category": "text",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of An {RNA} Study of {NASA}",
+    "item-title": "Properties of an <span class=\"nocase\">RNA</span> study of <span class=\"nocase\">NASA</span>",
+    "item-data": "((\"case\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of an <span class=\\\"nocase\\\">RNA</span> study of <span class=\\\"nocase\\\">NASA</span>\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "(nil \"Properties of an \" ((#1=(nocase . t)) \"RNA\") \" study of \" ((#1#) \"NASA\"))",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of An {RNA} Study of {NASA}",
+        "output": "Properties of an <span class=\"nocase\">RNA</span> study of <span class=\"nocase\">NASA</span>"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of an RNA study of NASA]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of an RNA study of NASA]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of an RNA study of NASA\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of an RNA study of NASA\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of an RNA study of NASA\" \"#org-texmacs-org7907a79\") \"]\" \" \") (concat (label \"org-texmacs-org7907a79\") (hlink \"Properties of an RNA study of NASA\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of an RNA study of NASA\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of an RNA study of NASA\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "case",
+    "category": "text",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of An {RNA} Study of {NASA}",
+    "item-title": "Properties of an <span class=\"nocase\">RNA</span> study of <span class=\"nocase\">NASA</span>",
+    "item-data": "((\"case\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of an <span class=\\\"nocase\\\">RNA</span> study of <span class=\\\"nocase\\\">NASA</span>\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "(nil \"Properties of an \" ((#1=(nocase . t)) \"RNA\") \" study of \" ((#1#) \"NASA\"))",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of An {RNA} Study of {NASA}",
+        "output": "Properties of an <span class=\"nocase\">RNA</span> study of <span class=\"nocase\">NASA</span>"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of an RNA study of NASA/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of an RNA study of NASA]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of an RNA study of NASA\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of an RNA study of NASA\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of an RNA study of NASA\") (concat \"\" #1# \"\")) \"#org-texmacs-org581bdc7\") \"]\" \" \") (concat (label \"org-texmacs-org581bdc7\") (concat \"\" #1# \"\") (em (hlink \"Properties of an RNA study of NASA\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of an RNA study of NASA\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of an RNA study of NASA\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "punctuation",
+    "category": "text",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of Quotes \"Hello\", hyphen -, en --, em ---, tilde ~",
+    "item-title": "Properties of quotes \"hello\", hyphen -, en –, em –-, tilde",
+    "item-data": "((\"punctuation\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of quotes \\\"hello\\\", hyphen -, en –, em –-, tilde\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of quotes “hello”, hyphen -, en –, em –-, tilde\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of Quotes \"Hello\", hyphen -, en --, em ---, tilde ~",
+        "output": "Properties of quotes \"hello\", hyphen -, en –, em –-, tilde"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of quotes “hello”, hyphen -, en –, em –-, tilde]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of quotes “hello”, hyphen -, en –, em –-, tilde]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of quotes “hello”, hyphen -, en –, em –-, tilde\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of quotes “hello”, hyphen -, en –, em –-, tilde\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of quotes “hello”, hyphen -, en –, em –-, tilde\" \"#org-texmacs-orgffb5f65\") \"]\" \" \") (concat (label \"org-texmacs-orgffb5f65\") (hlink \"Properties of quotes “hello”, hyphen -, en –, em –-, tilde\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of quotes “hello”, hyphen -, en –, em –-, tilde\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of quotes “hello”, hyphen -, en –, em –-, tilde\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "punctuation",
+    "category": "text",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of Quotes \"Hello\", hyphen -, en --, em ---, tilde ~",
+    "item-title": "Properties of quotes \"hello\", hyphen -, en –, em –-, tilde",
+    "item-data": "((\"punctuation\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of quotes \\\"hello\\\", hyphen -, en –, em –-, tilde\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of quotes “hello”, hyphen -, en –, em –-, tilde\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of Quotes \"Hello\", hyphen -, en --, em ---, tilde ~",
+        "output": "Properties of quotes \"hello\", hyphen -, en –, em –-, tilde"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of quotes “hello”, hyphen -, en –, em –-, tilde/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of quotes “hello”, hyphen -, en –, em –-, tilde]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of quotes “hello”, hyphen -, en –, em –-, tilde\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of quotes “hello”, hyphen -, en –, em –-, tilde\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of quotes “hello”, hyphen -, en –, em –-, tilde\") (concat \"\" #1# \"\")) \"#org-texmacs-org93a0348\") \"]\" \" \") (concat (label \"org-texmacs-org93a0348\") (concat \"\" #1# \"\") (em (hlink \"Properties of quotes “hello”, hyphen -, en –, em –-, tilde\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of quotes “hello”, hyphen -, en –, em –-, tilde\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of quotes “hello”, hyphen -, en –, em –-, tilde\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "escapes",
+    "category": "text",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of Braces \\{x\\}, dollar \\$, backslash \\textbackslash{}",
+    "item-title": "Properties of braces {x}, dollar \\$, backslash",
+    "item-data": "((\"escapes\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of braces {x}, dollar \\\\$, backslash\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of braces {x}, dollar \\\\$, backslash\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of Braces \\{x\\}, dollar \\$, backslash \\textbackslash{}",
+        "output": "Properties of braces {x}, dollar \\$, backslash"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of braces {x}, dollar \\\\$, backslash]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of braces {x}, dollar \\\\$, backslash]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of braces {x}, dollar \\\\$, backslash\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of braces {x}, dollar \\\\$, backslash\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of braces {x}, dollar \\\\$, backslash\" \"#org-texmacs-orgbcb59ba\") \"]\" \" \") (concat (label \"org-texmacs-orgbcb59ba\") (hlink \"Properties of braces {x}, dollar \\\\$, backslash\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of braces {x}, dollar \\\\$, backslash\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of braces {x}, dollar \\\\$, backslash\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "escapes",
+    "category": "text",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of Braces \\{x\\}, dollar \\$, backslash \\textbackslash{}",
+    "item-title": "Properties of braces {x}, dollar \\$, backslash",
+    "item-data": "((\"escapes\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of braces {x}, dollar \\\\$, backslash\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of braces {x}, dollar \\\\$, backslash\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of Braces \\{x\\}, dollar \\$, backslash \\textbackslash{}",
+        "output": "Properties of braces {x}, dollar \\$, backslash"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of braces {x}, dollar \\\\$, backslash/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of braces {x}, dollar \\\\$, backslash]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of braces {x}, dollar \\\\$, backslash\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of braces {x}, dollar \\\\$, backslash\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of braces {x}, dollar \\\\$, backslash\") (concat \"\" #1# \"\")) \"#org-texmacs-orgee5864d\") \"]\" \" \") (concat (label \"org-texmacs-orgee5864d\") (concat \"\" #1# \"\") (em (hlink \"Properties of braces {x}, dollar \\\\$, backslash\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of braces {x}, dollar \\\\$, backslash\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of braces {x}, dollar \\\\$, backslash\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "greek-unicode",
+    "category": "unicode",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of α β γ",
+    "item-title": "Properties of α β γ",
+    "item-data": "((\"greek-unicode\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of α β γ\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of α β γ\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of α β γ",
+        "output": "Properties of α β γ"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of α β γ]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of α β γ]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of α β γ\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of α β γ\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of α β γ\" \"#org-texmacs-orgb3a9482\") \"]\" \" \") (concat (label \"org-texmacs-orgb3a9482\") (hlink \"Properties of α β γ\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of α β γ\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of α β γ\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "greek-unicode",
+    "category": "unicode",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of α β γ",
+    "item-title": "Properties of α β γ",
+    "item-data": "((\"greek-unicode\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of α β γ\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of α β γ\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of α β γ",
+        "output": "Properties of α β γ"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of α β γ/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of α β γ]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of α β γ\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of α β γ\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of α β γ\") (concat \"\" #1# \"\")) \"#org-texmacs-org2e75902\") \"]\" \" \") (concat (label \"org-texmacs-org2e75902\") (concat \"\" #1# \"\") (em (hlink \"Properties of α β γ\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of α β γ\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of α β γ\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "chinese",
+    "category": "unicode",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of 中文数学标题",
+    "item-title": "Properties of 中文数学标题",
+    "item-data": "((\"chinese\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of 中文数学标题\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of 中文数学标题\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of 中文数学标题",
+        "output": "Properties of 中文数学标题"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of 中文数学标题]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of 中文数学标题]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of 中文数学标题\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of 中文数学标题\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of 中文数学标题\" \"#org-texmacs-org2d7594a\") \"]\" \" \") (concat (label \"org-texmacs-org2d7594a\") (hlink \"Properties of 中文数学标题\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of 中文数学标题\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of 中文数学标题\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "pdf-text": "[Properties of <#4E2D><#6587><#6570><#5B66><#6807><#9898>] Properties of <#4E2D><#6587><#6570><#5B66><#6807><#9898> 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "chinese",
+    "category": "unicode",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of 中文数学标题",
+    "item-title": "Properties of 中文数学标题",
+    "item-data": "((\"chinese\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of 中文数学标题\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of 中文数学标题\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of 中文数学标题",
+        "output": "Properties of 中文数学标题"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of 中文数学标题/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of 中文数学标题]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of 中文数学标题\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of 中文数学标题\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of 中文数学标题\") (concat \"\" #1# \"\")) \"#org-texmacs-org6c7111a\") \"]\" \" \") (concat (label \"org-texmacs-org6c7111a\") (concat \"\" #1# \"\") (em (hlink \"Properties of 中文数学标题\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of 中文数学标题\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of 中文数学标题\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "pdf-text": "[Properties of <#4E2D><#6587><#6570><#5B66><#6807><#9898>] Properties of <#4E2D><#6587><#6570><#5B66><#6807><#9898> 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "accent",
+    "category": "unicode",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of Émile naïve Ångström",
+    "item-title": "Properties of émile naïve ångström",
+    "item-data": "((\"accent\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of émile naïve ångström\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of émile naïve ångström\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of Émile naïve Ångström",
+        "output": "Properties of émile naïve ångström"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of émile naïve ångström]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of émile naïve ångström]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of émile naïve ångström\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of émile naïve ångström\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of émile naïve ångström\" \"#org-texmacs-org6b39ec0\") \"]\" \" \") (concat (label \"org-texmacs-org6b39ec0\") (hlink \"Properties of émile naïve ångström\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of émile naïve ångström\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of émile naïve ångström\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "accent",
+    "category": "unicode",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of Émile naïve Ångström",
+    "item-title": "Properties of émile naïve ångström",
+    "item-data": "((\"accent\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of émile naïve ångström\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of émile naïve ångström\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of Émile naïve Ångström",
+        "output": "Properties of émile naïve ångström"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of émile naïve ångström/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of émile naïve ångström]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of émile naïve ångström\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of émile naïve ångström\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of émile naïve ångström\") (concat \"\" #1# \"\")) \"#org-texmacs-org25963d2\") \"]\" \" \") (concat (label \"org-texmacs-org25963d2\") (concat \"\" #1# \"\") (em (hlink \"Properties of émile naïve ångström\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of émile naïve ångström\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of émile naïve ångström\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "combining",
+    "category": "unicode",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of é and é",
+    "item-title": "Properties of é and é",
+    "item-data": "((\"combining\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of é and é\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of é and é\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of é and é",
+        "output": "Properties of é and é"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of é and é]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of é and é]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of é and é\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of é and é\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of é and é\" \"#org-texmacs-org025bdea\") \"]\" \" \") (concat (label \"org-texmacs-org025bdea\") (hlink \"Properties of é and é\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of é and é\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of é and é\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "combining",
+    "category": "unicode",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of é and é",
+    "item-title": "Properties of é and é",
+    "item-data": "((\"combining\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of é and é\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of é and é\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of é and é",
+        "output": "Properties of é and é"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of é and é/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of é and é]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of é and é\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of é and é\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of é and é\") (concat \"\" #1# \"\")) \"#org-texmacs-orgfdeee6f\") \"]\" \" \") (concat (label \"org-texmacs-orgfdeee6f\") (concat \"\" #1# \"\") (em (hlink \"Properties of é and é\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of é and é\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of é and é\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-unicode",
+    "category": "unicode",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of ∀x ∈ ℝ: x ≤ ∞",
+    "item-title": "Properties of ∀x ∈ ℝ: x ≤ ∞",
+    "item-data": "((\"math-unicode\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of ∀x ∈ ℝ: x ≤ ∞\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of ∀x ∈ ℝ: x ≤ ∞\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of ∀x ∈ ℝ: x ≤ ∞",
+        "output": "Properties of ∀x ∈ ℝ: x ≤ ∞"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of ∀x ∈ ℝ: x ≤ ∞]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of ∀x ∈ ℝ: x ≤ ∞]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of ∀x ∈ ℝ: x ≤ ∞\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of ∀x ∈ ℝ: x ≤ ∞\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of ∀x ∈ ℝ: x ≤ ∞\" \"#org-texmacs-org98b8981\") \"]\" \" \") (concat (label \"org-texmacs-org98b8981\") (hlink \"Properties of ∀x ∈ ℝ: x ≤ ∞\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of ∀x ∈ ℝ: x ≤ ∞\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of ∀x ∈ ℝ: x ≤ ∞\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "pdf-text": "[Properties of 8x 2 R: x \u0014 1] Properties of 8x 2 R: x \u0014 1 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-unicode",
+    "category": "unicode",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of ∀x ∈ ℝ: x ≤ ∞",
+    "item-title": "Properties of ∀x ∈ ℝ: x ≤ ∞",
+    "item-data": "((\"math-unicode\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of ∀x ∈ ℝ: x ≤ ∞\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of ∀x ∈ ℝ: x ≤ ∞\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of ∀x ∈ ℝ: x ≤ ∞",
+        "output": "Properties of ∀x ∈ ℝ: x ≤ ∞"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of ∀x ∈ ℝ: x ≤ ∞/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of ∀x ∈ ℝ: x ≤ ∞]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of ∀x ∈ ℝ: x ≤ ∞\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of ∀x ∈ ℝ: x ≤ ∞\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of ∀x ∈ ℝ: x ≤ ∞\") (concat \"\" #1# \"\")) \"#org-texmacs-org097471a\") \"]\" \" \") (concat (label \"org-texmacs-org097471a\") (concat \"\" #1# \"\") (em (hlink \"Properties of ∀x ∈ ℝ: x ≤ ∞\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of ∀x ∈ ℝ: x ≤ ∞\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of ∀x ∈ ℝ: x ≤ ∞\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "pdf-text": "[Properties of 8x 2 R: x \u0014 1] Properties of 8x 2 R: x \u0014 1 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "bare-cdot",
+    "category": "latex",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of \\cdot",
+    "item-title": "Properties of \\cdot",
+    "item-data": "((\"bare-cdot\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of \\\\cdot\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of \\\\cdot\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of \\cdot",
+        "output": "Properties of"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of \\\\cdot]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of \\\\cdot]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of \" (entity ((:value) (:name . \"cdot\") (:utf-8 . \"⋅\") (:type) (:path) (:use-brackets-p)) nil))) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (entity ((:value) (:name . \"cdot\") (:utf-8 . \"⋅\") (:type) (:path) (:use-brackets-p)) nil)))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat \"Properties of \" (math \"⋅\")) \"#org-texmacs-org9c22bed\") \"]\" \" \") (concat (label \"org-texmacs-org9c22bed\") (hlink (concat \"Properties of \" (math \"⋅\")) \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat \"Properties of \" (math \"⋅\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink (concat \"Properties of \" (math \"⋅\")) \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 2,
+    "pdf-text": "[Properties of \u0001] Properties of \u0001 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "bare-cdot",
+    "category": "latex",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of \\cdot",
+    "item-title": "Properties of \\cdot",
+    "item-data": "((\"bare-cdot\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of \\\\cdot\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of \\\\cdot\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of \\cdot",
+        "output": "Properties of"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of \\\\cdot/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of \\\\cdot]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of \" (entity ((:value) (:name . \"cdot\") (:utf-8 . \"⋅\") (:type) (:path) (:use-brackets-p)) nil))) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (entity ((:value) (:name . \"cdot\") (:utf-8 . \"⋅\") (:type) (:path) (:use-brackets-p)) nil)))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em (concat \"Properties of \" (math \"⋅\"))) (concat \"\" #1# \"\")) \"#org-texmacs-org5d2b564\") \"]\" \" \") (concat (label \"org-texmacs-org5d2b564\") (concat \"\" #1# \"\") (em (hlink (concat \"Properties of \" (math \"⋅\")) \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em (concat \"Properties of \" (math \"⋅\"))) (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink (concat \"Properties of \" (math \"⋅\")) \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 2,
+    "pdf-text": "[Properties of \u0001] Properties of \u0001 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-cdot",
+    "category": "latex",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of $\\cdot$",
+    "item-title": "Properties of $\\cdot$",
+    "item-data": "((\"math-cdot\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\cdot$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\cdot$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\cdot$",
+        "output": "Properties of $\\cdot$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of $\\\\cdot$]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of $\\\\cdot$]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\cdot$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\cdot$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 39)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-cdot",
+    "category": "latex",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of $\\cdot$",
+    "item-title": "Properties of $\\cdot$",
+    "item-data": "((\"math-cdot\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\cdot$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\cdot$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\cdot$",
+        "output": "Properties of $\\cdot$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of $\\\\cdot$/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of $\\\\cdot$]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\cdot$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\cdot$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 41)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-alpha",
+    "category": "latex",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of $\\alpha$",
+    "item-title": "Properties of $\\alpha$",
+    "item-data": "((\"math-alpha\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\alpha$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\alpha$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\alpha$",
+        "output": "Properties of $\\alpha$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of $\\\\alpha$]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of $\\\\alpha$]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\alpha$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\alpha$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 39)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-alpha",
+    "category": "latex",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of $\\alpha$",
+    "item-title": "Properties of $\\alpha$",
+    "item-data": "((\"math-alpha\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\alpha$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\alpha$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\alpha$",
+        "output": "Properties of $\\alpha$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of $\\\\alpha$/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of $\\\\alpha$]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\alpha$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\alpha$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 41)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-alpha-sub",
+    "category": "latex",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of $\\alpha_i$",
+    "item-title": "Properties of $\\alpha_i$",
+    "item-data": "((\"math-alpha-sub\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\alpha_i$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\alpha_i$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\alpha_i$",
+        "output": "Properties of $_i$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of $\\\\alpha_i$]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of $\\\\alpha_i$]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\alpha_i$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\alpha_i$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 39)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-alpha-sub",
+    "category": "latex",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of $\\alpha_i$",
+    "item-title": "Properties of $\\alpha_i$",
+    "item-data": "((\"math-alpha-sub\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\alpha_i$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\alpha_i$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\alpha_i$",
+        "output": "Properties of $_i$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of $\\\\alpha_i$/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of $\\\\alpha_i$]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\alpha_i$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\alpha_i$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 41)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-cdot-sub",
+    "category": "latex",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of $\\cdot_i$",
+    "item-title": "Properties of $\\cdot_i$",
+    "item-data": "((\"math-cdot-sub\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\cdot_i$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\cdot_i$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\cdot_i$",
+        "output": "Properties of $_i$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of $\\\\cdot_i$]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of $\\\\cdot_i$]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\cdot_i$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\cdot_i$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 39)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-cdot-sub",
+    "category": "latex",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of $\\cdot_i$",
+    "item-title": "Properties of $\\cdot_i$",
+    "item-data": "((\"math-cdot-sub\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\cdot_i$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\cdot_i$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\cdot_i$",
+        "output": "Properties of $_i$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of $\\\\cdot_i$/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of $\\\\cdot_i$]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\cdot_i$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\cdot_i$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 41)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-frac",
+    "category": "latex",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of $\\frac{a}{b}$",
+    "item-title": "Properties of $\\frac{a}{b}$",
+    "item-data": "((\"math-frac\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\frac{a}{b}$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\frac{a}{b}$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\frac{a}{b}$",
+        "output": "Properties of $a<span class=\"nocase\">b</span>$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of $\\\\frac{a}{b}$]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of $\\\\frac{a}{b}$]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\frac{a}{b}$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\frac{a}{b}$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 39)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-frac",
+    "category": "latex",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of $\\frac{a}{b}$",
+    "item-title": "Properties of $\\frac{a}{b}$",
+    "item-data": "((\"math-frac\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\frac{a}{b}$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\frac{a}{b}$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\frac{a}{b}$",
+        "output": "Properties of $a<span class=\"nocase\">b</span>$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of $\\\\frac{a}{b}$/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of $\\\\frac{a}{b}$]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\frac{a}{b}$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\frac{a}{b}$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 41)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-product",
+    "category": "latex",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of $A \\cdot B$",
+    "item-title": "Properties of $A \\cdot B$",
+    "item-data": "((\"math-product\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $A \\\\cdot B$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $A \\\\cdot B$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $A \\cdot B$",
+        "output": "Properties of $a  b$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of $A \\\\cdot B$]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of $A \\\\cdot B$]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$A \\\\cdot B$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$A \\\\cdot B$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 39)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-product",
+    "category": "latex",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of $A \\cdot B$",
+    "item-title": "Properties of $A \\cdot B$",
+    "item-data": "((\"math-product\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $A \\\\cdot B$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $A \\\\cdot B$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $A \\cdot B$",
+        "output": "Properties of $a  b$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of $A \\\\cdot B$/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of $A \\\\cdot B$]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$A \\\\cdot B$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$A \\\\cdot B$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 41)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-parens",
+    "category": "latex",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of \\( \\alpha_i \\)",
+    "item-title": "Properties of \\( \\alpha_i \\)",
+    "item-data": "((\"math-parens\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of \\\\( \\\\alpha_i \\\\)\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of \\\\( \\\\alpha_i \\\\)\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of \\( \\alpha_i \\)",
+        "output": "Properties of \\( _i \\)"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of \\\\( \\\\alpha_i \\\\)]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of \\\\( \\\\alpha_i \\\\)]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"\\\\( \\\\alpha_i \\\\)\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"\\\\( \\\\alpha_i \\\\)\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 39)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-parens",
+    "category": "latex",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of \\( \\alpha_i \\)",
+    "item-title": "Properties of \\( \\alpha_i \\)",
+    "item-data": "((\"math-parens\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of \\\\( \\\\alpha_i \\\\)\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of \\\\( \\\\alpha_i \\\\)\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of \\( \\alpha_i \\)",
+        "output": "Properties of \\( _i \\)"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of \\\\( \\\\alpha_i \\\\)/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of \\\\( \\\\alpha_i \\\\)]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"\\\\( \\\\alpha_i \\\\)\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"\\\\( \\\\alpha_i \\\\)\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 41)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-escaped",
+    "category": "latex",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of $a+\\$+b$",
+    "item-title": "Properties of $a+\\$+b$",
+    "item-data": "((\"math-escaped\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $a+\\\\$+b$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $a+\\\\$+b$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $a+\\$+b$",
+        "output": "Properties of $a+\\$+b$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of $a+\\\\$+b$]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of $a+\\\\$+b$]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of $a+\\\\\" (latex-fragment ((:value . \"$+b$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of $a+\\\\\" (latex-fragment ((:value . \"$+b$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 43)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-escaped",
+    "category": "latex",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of $a+\\$+b$",
+    "item-title": "Properties of $a+\\$+b$",
+    "item-data": "((\"math-escaped\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $a+\\\\$+b$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $a+\\\\$+b$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $a+\\$+b$",
+        "output": "Properties of $a+\\$+b$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of $a+\\\\$+b$/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of $a+\\\\$+b$]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of $a+\\\\\" (latex-fragment ((:value . \"$+b$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of $a+\\\\\" (latex-fragment ((:value . \"$+b$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 45)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-open",
+    "category": "latex",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of $\\alpha_i",
+    "item-title": "Properties of $\\alpha_i",
+    "item-data": "((\"math-open\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\alpha_i\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\alpha_i\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\alpha_i",
+        "output": "Properties of $_i"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of $\\\\alpha_i]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of $\\\\alpha_i]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of $\" (entity ((:value) (:name . \"alpha\") (:utf-8 . \"α\") (:type) (:path) (:use-brackets-p)) nil) (subscript ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"i\")))) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of $\" (entity ((:value) (:name . \"alpha\") (:utf-8 . \"α\") (:type) (:path) (:use-brackets-p)) nil) (subscript ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"i\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat \"Properties of $\" (math \"α\") (rsub \"i\")) \"#org-texmacs-org9fc07dd\") \"]\" \" \") (concat (label \"org-texmacs-org9fc07dd\") (hlink (concat \"Properties of $\" (math \"α\") (rsub \"i\")) \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat \"Properties of $\" (math \"α\") (rsub \"i\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink (concat \"Properties of $\" (math \"α\") (rsub \"i\")) \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 2,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-open",
+    "category": "latex",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of $\\alpha_i",
+    "item-title": "Properties of $\\alpha_i",
+    "item-data": "((\"math-open\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\alpha_i\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\alpha_i\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\alpha_i",
+        "output": "Properties of $_i"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of $\\\\alpha_i/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of $\\\\alpha_i]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of $\" (entity ((:value) (:name . \"alpha\") (:utf-8 . \"α\") (:type) (:path) (:use-brackets-p)) nil) (subscript ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"i\")))) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of $\" (entity ((:value) (:name . \"alpha\") (:utf-8 . \"α\") (:type) (:path) (:use-brackets-p)) nil) (subscript ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"i\"))))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em (concat \"Properties of $\" (math \"α\") (rsub \"i\"))) (concat \"\" #1# \"\")) \"#org-texmacs-orge3b2523\") \"]\" \" \") (concat (label \"org-texmacs-orge3b2523\") (concat \"\" #1# \"\") (em (hlink (concat \"Properties of $\" (math \"α\") (rsub \"i\")) \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em (concat \"Properties of $\" (math \"α\") (rsub \"i\"))) (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink (concat \"Properties of $\" (math \"α\") (rsub \"i\")) \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 2,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-unknown",
+    "category": "latex",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of $\\orgtexmacsunknown{a}$",
+    "item-title": "Properties of $\\orgtexmacsunknown{a}$",
+    "item-data": "((\"math-unknown\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\orgtexmacsunknown{a}$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\orgtexmacsunknown{a}$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\orgtexmacsunknown{a}$",
+        "output": "Properties of $a$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of $\\\\orgtexmacsunknown{a}$]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of $\\\\orgtexmacsunknown{a}$]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\orgtexmacsunknown{a}$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\orgtexmacsunknown{a}$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 39)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-unknown",
+    "category": "latex",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of $\\orgtexmacsunknown{a}$",
+    "item-title": "Properties of $\\orgtexmacsunknown{a}$",
+    "item-data": "((\"math-unknown\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\orgtexmacsunknown{a}$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\orgtexmacsunknown{a}$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\orgtexmacsunknown{a}$",
+        "output": "Properties of $a$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of $\\\\orgtexmacsunknown{a}$/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of $\\\\orgtexmacsunknown{a}$]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\orgtexmacsunknown{a}$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\orgtexmacsunknown{a}$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 41)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-macro",
+    "category": "latex",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of $\\newcommand{\\myop}{x}\\myop$",
+    "item-title": "Properties of $\\newcommand{\\myop}{x}\\myop$",
+    "item-data": "((\"math-macro\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\newcommand{\\\\myop}{x}\\\\myop$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\newcommand{\\\\myop}{x}\\\\myop$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\newcommand{\\myop}{x}\\myop$",
+        "output": "Properties of $x\\myop$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of $\\\\newcommand{\\\\myop}{x}\\\\myop$]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of $\\\\newcommand{\\\\myop}{x}\\\\myop$]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\newcommand{\\\\myop}{x}\\\\myop$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\newcommand{\\\\myop}{x}\\\\myop$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 39)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-macro",
+    "category": "latex",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of $\\newcommand{\\myop}{x}\\myop$",
+    "item-title": "Properties of $\\newcommand{\\myop}{x}\\myop$",
+    "item-data": "((\"math-macro\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of $\\\\newcommand{\\\\myop}{x}\\\\myop$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of $\\\\newcommand{\\\\myop}{x}\\\\myop$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of $\\newcommand{\\myop}{x}\\myop$",
+        "output": "Properties of $x\\myop$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of $\\\\newcommand{\\\\myop}{x}\\\\myop$/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of $\\\\newcommand{\\\\myop}{x}\\\\myop$]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\newcommand{\\\\myop}{x}\\\\myop$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of \" (latex-fragment ((:value . \"$\\\\newcommand{\\\\myop}{x}\\\\myop$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 41)",
+    "repeat-equal": true
+  },
+  {
+    "case": "stm-alpha",
+    "category": "stm",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of (math \"α\")",
+    "item-title": "Properties of (math \"α\")",
+    "item-data": "((\"stm-alpha\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of (math \\\"α\\\")\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of (math “α”)\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of (math \"α\")",
+        "output": "Properties of (math \"α\")"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of (math “α”)]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of (math “α”)]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of (math “α”)\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of (math “α”)\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of (math “α”)\" \"#org-texmacs-org399acac\") \"]\" \" \") (concat (label \"org-texmacs-org399acac\") (hlink \"Properties of (math “α”)\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of (math “α”)\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of (math “α”)\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "pdf-text": "[Properties of (math \u0010a\u0011)] Properties of (math \u0010a\u0011) 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "stm-alpha",
+    "category": "stm",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of (math \"α\")",
+    "item-title": "Properties of (math \"α\")",
+    "item-data": "((\"stm-alpha\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of (math \\\"α\\\")\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of (math “α”)\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of (math \"α\")",
+        "output": "Properties of (math \"α\")"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of (math “α”)/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of (math “α”)]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of (math “α”)\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of (math “α”)\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of (math “α”)\") (concat \"\" #1# \"\")) \"#org-texmacs-org2cf470b\") \"]\" \" \") (concat (label \"org-texmacs-org2cf470b\") (concat \"\" #1# \"\") (em (hlink \"Properties of (math “α”)\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of (math “α”)\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of (math “α”)\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "pdf-text": "[Properties of (math \u0010a\u0011)] Properties of (math \u0010a\u0011) 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "stm-rsub",
+    "category": "stm",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of (math (rsub \"α\" \"i\"))",
+    "item-title": "Properties of (math (rsub \"α\" \"i\"))",
+    "item-data": "((\"stm-rsub\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of (math (rsub \\\"α\\\" \\\"i\\\"))\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of (math (rsub “α” “i”))\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of (math (rsub \"α\" \"i\"))",
+        "output": "Properties of (math (rsub \"α\" \"i\"))"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of (math (rsub “α” “i”))]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of (math (rsub “α” “i”))]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of (math (rsub “α” “i”))\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of (math (rsub “α” “i”))\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of (math (rsub “α” “i”))\" \"#org-texmacs-orge897b06\") \"]\" \" \") (concat (label \"org-texmacs-orge897b06\") (hlink \"Properties of (math (rsub “α” “i”))\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of (math (rsub “α” “i”))\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of (math (rsub “α” “i”))\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "pdf-text": "[Properties of (math (rsub \u0010a\u0011 \u0010i\u0011))] Properties of (math (rsub \u0010a\u0011 \u0010i\u0011)) 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "stm-rsub",
+    "category": "stm",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of (math (rsub \"α\" \"i\"))",
+    "item-title": "Properties of (math (rsub \"α\" \"i\"))",
+    "item-data": "((\"stm-rsub\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of (math (rsub \\\"α\\\" \\\"i\\\"))\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of (math (rsub “α” “i”))\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of (math (rsub \"α\" \"i\"))",
+        "output": "Properties of (math (rsub \"α\" \"i\"))"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of (math (rsub “α” “i”))/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of (math (rsub “α” “i”))]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of (math (rsub “α” “i”))\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of (math (rsub “α” “i”))\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of (math (rsub “α” “i”))\") (concat \"\" #1# \"\")) \"#org-texmacs-org5fc74b1\") \"]\" \" \") (concat (label \"org-texmacs-org5fc74b1\") (concat \"\" #1# \"\") (em (hlink \"Properties of (math (rsub “α” “i”))\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of (math (rsub “α” “i”))\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of (math (rsub “α” “i”))\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "pdf-text": "[Properties of (math (rsub \u0010a\u0011 \u0010i\u0011))] Properties of (math (rsub \u0010a\u0011 \u0010i\u0011)) 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "stm-frac",
+    "category": "stm",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of (math (frac \"a\" \"b\"))",
+    "item-title": "Properties of (math (frac \"a\" \"b\"))",
+    "item-data": "((\"stm-frac\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of (math (frac \\\"a\\\" \\\"b\\\"))\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of (math (frac “a” “b”))\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of (math (frac \"a\" \"b\"))",
+        "output": "Properties of (math (frac \"a\" \"b\"))"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of (math (frac “a” “b”))]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of (math (frac “a” “b”))]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of (math (frac “a” “b”))\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of (math (frac “a” “b”))\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of (math (frac “a” “b”))\" \"#org-texmacs-org45b4b1e\") \"]\" \" \") (concat (label \"org-texmacs-org45b4b1e\") (hlink \"Properties of (math (frac “a” “b”))\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of (math (frac “a” “b”))\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of (math (frac “a” “b”))\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "pdf-text": "[Properties of (math (frac \u0010a\u0011 \u0010b\u0011))] Properties of (math (frac \u0010a\u0011 \u0010b\u0011)) 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "stm-frac",
+    "category": "stm",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of (math (frac \"a\" \"b\"))",
+    "item-title": "Properties of (math (frac \"a\" \"b\"))",
+    "item-data": "((\"stm-frac\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of (math (frac \\\"a\\\" \\\"b\\\"))\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of (math (frac “a” “b”))\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of (math (frac \"a\" \"b\"))",
+        "output": "Properties of (math (frac \"a\" \"b\"))"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of (math (frac “a” “b”))/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of (math (frac “a” “b”))]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of (math (frac “a” “b”))\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of (math (frac “a” “b”))\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of (math (frac “a” “b”))\") (concat \"\" #1# \"\")) \"#org-texmacs-orge942a82\") \"]\" \" \") (concat (label \"org-texmacs-orge942a82\") (concat \"\" #1# \"\") (em (hlink \"Properties of (math (frac “a” “b”))\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of (math (frac “a” “b”))\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of (math (frac “a” “b”))\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "pdf-text": "[Properties of (math (frac \u0010a\u0011 \u0010b\u0011))] Properties of (math (frac \u0010a\u0011 \u0010b\u0011)) 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "stm-rsub-control",
+    "category": "stm",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of (math (concat \"α\" (rsub \"i\")))",
+    "item-title": "Properties of (math (concat \"α\" (rsub \"i\")))",
+    "item-data": "((\"stm-rsub-control\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of (math (concat \\\"α\\\" (rsub \\\"i\\\")))\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of (math (concat “α” (rsub “i”)))\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of (math (concat \"α\" (rsub \"i\")))",
+        "output": "Properties of (math (concat \"α\" (rsub \"i\")))"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of (math (concat “α” (rsub “i”)))]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of (math (concat “α” (rsub “i”)))]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of (math (concat “α” (rsub “i”)))\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of (math (concat “α” (rsub “i”)))\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of (math (concat “α” (rsub “i”)))\" \"#org-texmacs-org65dd999\") \"]\" \" \") (concat (label \"org-texmacs-org65dd999\") (hlink \"Properties of (math (concat “α” (rsub “i”)))\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of (math (concat “α” (rsub “i”)))\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of (math (concat “α” (rsub “i”)))\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "pdf-text": "[Properties of (math (concat \u0010a\u0011 (rsub \u0010i\u0011)))] Properties of (math (concat \u0010a\u0011 (rsub \u0010i\u0011))) 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "stm-rsub-control",
+    "category": "stm",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of (math (concat \"α\" (rsub \"i\")))",
+    "item-title": "Properties of (math (concat \"α\" (rsub \"i\")))",
+    "item-data": "((\"stm-rsub-control\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of (math (concat \\\"α\\\" (rsub \\\"i\\\")))\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of (math (concat “α” (rsub “i”)))\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of (math (concat \"α\" (rsub \"i\")))",
+        "output": "Properties of (math (concat \"α\" (rsub \"i\")))"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of (math (concat “α” (rsub “i”)))/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of (math (concat “α” (rsub “i”)))]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of (math (concat “α” (rsub “i”)))\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of (math (concat “α” (rsub “i”)))\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of (math (concat “α” (rsub “i”)))\") (concat \"\" #1# \"\")) \"#org-texmacs-org838f320\") \"]\" \" \") (concat (label \"org-texmacs-org838f320\") (concat \"\" #1# \"\") (em (hlink \"Properties of (math (concat “α” (rsub “i”)))\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of (math (concat “α” (rsub “i”)))\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of (math (concat “α” (rsub “i”)))\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "pdf-text": "[Properties of (math (concat \u0010a\u0011 (rsub \u0010i\u0011)))] Properties of (math (concat \u0010a\u0011 (rsub \u0010i\u0011))) 1 ",
+    "repeat-equal": true
+  },
+  {
+    "case": "fields-extended",
+    "category": "fields",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of Field Sentinel",
+    "item-title": "Properties of field sentinel",
+    "item-data": "((\"fields-extended\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of field sentinel\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of field sentinel\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of Field Sentinel",
+        "output": "Properties of field sentinel"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of field sentinel]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of field sentinel]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of field sentinel\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of field sentinel\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of field sentinel\" \"#org-texmacs-orge027468\") \"]\" \" \") (concat (label \"org-texmacs-orge027468\") (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of field sentinel\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "fields-extended",
+    "category": "fields",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of Field Sentinel",
+    "item-title": "Properties of field sentinel",
+    "item-data": "((\"fields-extended\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of field sentinel\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of field sentinel\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of Field Sentinel",
+        "output": "Properties of field sentinel"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of field sentinel/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of field sentinel]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of field sentinel\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of field sentinel\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of field sentinel\") (concat \"\" #1# \"\")) \"#org-texmacs-org8fc5f45\") \"]\" \" \") (concat (label \"org-texmacs-org8fc5f45\") (concat \"\" #1# \"\") (em (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of field sentinel\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "fields-traditional",
+    "category": "fields",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of Field Sentinel",
+    "item-title": "Properties of field sentinel",
+    "item-data": "((\"fields-traditional\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of field sentinel\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of field sentinel\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of Field Sentinel",
+        "output": "Properties of field sentinel"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of field sentinel]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of field sentinel]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of field sentinel\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of field sentinel\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of field sentinel\" \"#org-texmacs-org2f59aff\") \"]\" \" \") (concat (label \"org-texmacs-org2f59aff\") (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of field sentinel\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "fields-traditional",
+    "category": "fields",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of Field Sentinel",
+    "item-title": "Properties of field sentinel",
+    "item-data": "((\"fields-traditional\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of field sentinel\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of field sentinel\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of Field Sentinel",
+        "output": "Properties of field sentinel"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of field sentinel/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of field sentinel]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of field sentinel\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of field sentinel\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of field sentinel\") (concat \"\" #1# \"\")) \"#org-texmacs-orgb0521a2\") \"]\" \" \") (concat (label \"org-texmacs-orgb0521a2\") (concat \"\" #1# \"\") (em (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of field sentinel\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "fields-date",
+    "category": "fields",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of Field Sentinel",
+    "item-title": "Properties of field sentinel",
+    "item-data": "((\"fields-date\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of field sentinel\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of field sentinel\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of Field Sentinel",
+        "output": "Properties of field sentinel"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of field sentinel]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of field sentinel]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of field sentinel\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of field sentinel\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of field sentinel\" \"#org-texmacs-org101dd82\") \"]\" \" \") (concat (label \"org-texmacs-org101dd82\") (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of field sentinel\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "fields-date",
+    "category": "fields",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of Field Sentinel",
+    "item-title": "Properties of field sentinel",
+    "item-data": "((\"fields-date\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of field sentinel\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of field sentinel\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of Field Sentinel",
+        "output": "Properties of field sentinel"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of field sentinel/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of field sentinel]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of field sentinel\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of field sentinel\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of field sentinel\") (concat \"\" #1# \"\")) \"#org-texmacs-org962e2f9\") \"]\" \" \") (concat (label \"org-texmacs-org962e2f9\") (concat \"\" #1# \"\") (em (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of field sentinel\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "fields-unknown",
+    "category": "fields",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of Field Sentinel",
+    "item-title": "Properties of field sentinel",
+    "item-data": "((\"fields-unknown\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of field sentinel\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of field sentinel\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of Field Sentinel",
+        "output": "Properties of field sentinel"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of field sentinel]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of field sentinel]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of field sentinel\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of field sentinel\"))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink \"Properties of field sentinel\" \"#org-texmacs-org2a8791a\") \"]\" \" \") (concat (label \"org-texmacs-org2a8791a\") (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\")))",
+    "normalized-lowered": "(document (concat \"[\" (hlink \"Properties of field sentinel\" \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\")))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "fields-unknown",
+    "category": "fields",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of Field Sentinel",
+    "item-title": "Properties of field sentinel",
+    "item-data": "((\"fields-unknown\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of field sentinel\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of field sentinel\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of Field Sentinel",
+        "output": "Properties of field sentinel"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of field sentinel/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of field sentinel]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of field sentinel\")) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of field sentinel\"))))))))))",
+    "islands": "nil",
+    "lowered": "(document (concat \"[\" (hlink (concat (concat \"\" #1=(space \"0em\") \"\") (em \"Properties of field sentinel\") (concat \"\" #1# \"\")) \"#org-texmacs-orgafaeb23\") \"]\" \" \") (concat (label \"org-texmacs-orgafaeb23\") (concat \"\" #1# \"\") (em (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\"))))",
+    "normalized-lowered": "(document (concat \"[\" (hlink (concat (concat \"\" (space #1=\"0em\") \"\") (em \"Properties of field sentinel\") (concat \"\" (space #1#) \"\")) \"#TARGET-1\") \"]\" \" \") (concat (label \"TARGET-1\") (concat \"\" (space #1#) \"\") (em (hlink \"Properties of field sentinel\" \"https://doi.org/10.1234/sentinel\"))))",
+    "math-count": 0,
+    "repeat-equal": true
+  },
+  {
+    "case": "math-case-protected",
+    "category": "latex",
+    "route": "getter",
+    "style": "plain",
+    "raw-title": "Properties of An {RNA} Study of $A \\cdot B$",
+    "item-title": "Properties of An {RNA} Study of $A \\cdot B$",
+    "item-data": "((\"math-case-protected\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of An {RNA} Study of $A \\\\cdot B$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of An {RNA} Study of $A \\\\cdot B$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of An {RNA} Study of $A \\cdot B$",
+        "output": "Properties of an <span class=\"nocase\">RNA</span> study of $a  b$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][Properties of An {RNA} Study of $A \\\\cdot B$]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>[[https://doi.org/10.1234/sentinel][Properties of An {RNA} Study of $A \\\\cdot B$]]\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"Properties of An {RNA} Study of \" (latex-fragment ((:value . \"$A \\\\cdot B$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) (link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of An {RNA} Study of \" (latex-fragment ((:value . \"$A \\\\cdot B$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 57)",
+    "repeat-equal": true
+  },
+  {
+    "case": "math-case-protected",
+    "category": "latex",
+    "route": "getter",
+    "style": "italic",
+    "raw-title": "Properties of An {RNA} Study of $A \\cdot B$",
+    "item-title": "Properties of An {RNA} Study of $A \\cdot B$",
+    "item-data": "((\"math-case-protected\" (URL . \"https://example.org/paper\") (container-title . \"Journal sentinel\") (title . \"Properties of An {RNA} Study of $A \\\\cdot B$\") (issued (date-parts (2026 11 4))) (blt-type . \"article\") (type . \"article-journal\") (author ((family . \"Doe\") (given . \"Jane\")) ((family . \"Smith\") (given . \"John\")) ((literal . \"Research Group\"))) (DOI . \"10.1234/sentinel\")))",
+    "internal-title": "\"Properties of An {RNA} Study of $A \\\\cdot B$\"",
+    "trace": [
+      {
+        "input": "Journal Sentinel",
+        "output": "Journal sentinel"
+      },
+      {
+        "input": "Properties of An {RNA} Study of $A \\cdot B$",
+        "output": "Properties of an <span class=\"nocase\">RNA</span> study of $a  b$"
+      }
+    ],
+    "rendered": [
+      {
+        "kind": "citation",
+        "value": "(\"[[[citeproc_bib_item_1][​/Properties of An {RNA} Study of $A \\\\cdot B$/​]]]\")"
+      },
+      {
+        "kind": "bibliography",
+        "value": "((\"<<citeproc_bib_item_1>>​/[[https://doi.org/10.1234/sentinel][Properties of An {RNA} Study of $A \\\\cdot B$]]/\") (max-offset . 0) (second-field-align) (entry-spacing . 1) (line-spacing . 1) (hanging-indent))"
+      }
+    ],
+    "ast": "(org-data ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((section ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"[\" (link ((:value) (:name) (:utf-8) (:type . \"fuzzy\") (:path . \"citeproc_bib_item_1\") (:use-brackets-p)) (\"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) (\"Properties of An {RNA} Study of \" (latex-fragment ((:value . \"$A \\\\cdot B$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil))) \"​\")) \"]\" \"\n\")) (paragraph ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((target ((:value . \"citeproc_bib_item_1\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil) \"​\" (italic ((:value) (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) ((link ((:value) (:name) (:utf-8) (:type . \"https\") (:path . \"//doi.org/10.1234/sentinel\") (:use-brackets-p)) (\"Properties of An {RNA} Study of \" (latex-fragment ((:value . \"$A \\\\cdot B$\") (:name) (:utf-8) (:type) (:path) (:use-brackets-p)) nil)))))))))))",
+    "islands": "nil",
+    "lower-error": "(org-texmacs-document-error \"Unsupported inline node\" latex-fragment 59)",
+    "repeat-equal": true
+  }
+]

@@ -1,0 +1,16 @@
+;;; csl.el --- A1/A2 actual bibliography routes -*- lexical-binding: t; -*-
+(ert-deftest bibliography-comparison-csl ()
+ (org-texmacs-test--with-worker
+  (let (records)
+   (message "VERSIONS Emacs=%s Org=%s Citeproc=%s" emacs-version (org-version) (getenv "BIB_COMPARE_CITEPROC_VERSION"))
+   (require 'find-func)
+   (let ((p (find-library-name "oc-csl")))
+    (with-temp-file (expand-file-name "oc-csl-source.el" (bc-out)) (insert (bc-read p))))
+   (dolist (fixture (bc-cases))
+    (dolist (style '("plain" "italic"))
+     (dolist (route '("bib" "json"))
+      (let* ((one (car (bc-run fixture route style)))
+             (two (car (bc-run fixture route style))))
+       (should (equal (bc-repeat-view one) (bc-repeat-view two)))
+       (push (append one '(:repeat-equal t)) records)))))
+   (bc-write "csl-results.json" (nreverse records)))))

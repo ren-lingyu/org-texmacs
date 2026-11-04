@@ -1,0 +1,35 @@
+Running 1 tests (2026-11-04 04:26:29+0000, selector `t')
+NATIVE plain error=nil
+NATIVE case error=nil
+NATIVE punctuation error=nil
+NATIVE escapes error=nil
+NATIVE greek-unicode error=nil
+NATIVE chinese error=nil
+NATIVE accent error=nil
+NATIVE combining error=nil
+NATIVE math-unicode error=nil
+NATIVE bare-cdot error=nil
+NATIVE math-cdot error=nil
+NATIVE math-alpha error=nil
+NATIVE math-alpha-sub error=nil
+NATIVE math-cdot-sub error=nil
+NATIVE math-frac error=nil
+NATIVE math-product error=nil
+NATIVE math-parens error=nil
+NATIVE math-escaped error=nil
+NATIVE math-open error=nil
+NATIVE math-unknown error=nil
+NATIVE math-macro error=nil
+NATIVE stm-alpha error=nil
+NATIVE stm-rsub error=nil
+NATIVE stm-frac error=nil
+NATIVE stm-rsub-control error=nil
+NATIVE fields-extended error=nil
+NATIVE fields-traditional error=nil
+NATIVE fields-date error=nil
+NATIVE fields-unknown error=nil
+NATIVE math-case-protected error=nil
+   passed  1/1  bibliography-comparison-native (11.415100 sec)
+
+Ran 1 tests, 1 results as expected, 0 unexpected (2026-11-04 04:26:41+0000, 11.415187 sec)
+
