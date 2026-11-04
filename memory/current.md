@@ -1,26 +1,25 @@
 # org-texmacs current memory
 
-## Current: N0-N4 complete; N5 conditional deferral closeout
+## Current: N5 candidate accepted; human delivery gate
 
-Mandatory A is human-delivered through N3 6c7ac07, with exact eleven paths/message/
-159input hashes verified. Accepted653defaultERT+actual4/all12checks remain valid.
-N4 isolated real CSL four-layer trace and native converter experiments complete.
-Dollar-cdot survives intact; other sampled losses occur in Citeproc's BibLaTeX
-bracket/command processing before CSL title, not sentence casing or lowering.
-Native cdot converts/renders correctly, but malformed/unknown inputs can return
-repaired, empty or placeholder trees without failure status. Parsing also repairs;
-no reliable finite conversion/rejection contract was established. B is deferred
-under the approved conditional gate. This is a bounded examined-API result, not
-an impossibility claim. No production converter/parallel Cite path is added.
+N0-N4 complete; mandatory A human-delivered through N3. N4 B deferred because
+native snippet conversion/recovery lacks an established reliable finite error
+contract. Cdot positive works, but that alone is not support. Four-layer trace
+locates other sampled losses before CSL title; final-AST-only future B never
+promises original BibLaTeX preservation. Evidence and selected immutable archive:
+memory/inline-objects-0.7.0-n4.md.
 
-User clarifies future B promises only verified intact final-AST fragments, not
-original BibLaTeX math preservation. N4 facts, classification/provenance and
-retention: memory/inline-objects-0.7.0-n4.md and selected archive manifest there.
-N5 now documents deferral, adds a real CSL retained-fragment refusal regression,
-synchronizes README/CHANGELOG/release notes and completes checks/diff review.
-Ordinary project/index clean before N5 edits. Human delivery remains mandatory;
-release0.7.0 stays NEXT, no DONE/CLOSED/tag/publication authority.
-Plan: memory/inline-objects-0.7.0-plan.md.
+N5 four-path candidate is implemented and accepted: real body/CSL retained-fragment
+refusal ERT plus README/CHANGELOG/release notes, no production converter change.
+654defaultERT+actual4/all12checks pass, fresh Cite10 with exact unchanged native/
+PDF/integration derivatives reused. Final checkbox-only change passes final
+fresh treefmt; all159root/snapshot hashes match. Ordinary index empty and HEAD
+unchanged6c7ac07. Complete diff/whitespace reviewed. tmp/commit.md contains the
+worktree-candidate draft; human staging/commit remains. Verify expected parent,
+exact4paths/message and all159hashes from memory/inline-objects-0.7.0-n5-inputs.json
+at next intake; do not rerun unchanged checks. Method/failed gates/limits and
+acceptance: memory/inline-objects-0.7.0-n5.md. No further implementation node.
+Version0.7.0 stays NEXT; DONE/CLOSED/tag/publication remain human controlled.
 
 A-E3 are delivered. Final E3 f6aa2ae matches expected E2b parent, full approved
 message/21paths/all159accepted committed and worktree hashes, including native
