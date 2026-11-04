@@ -1,5 +1,13 @@
 # org-texmacs durable evidence
 
+N7 final5scoped checks pass:301core (14new),10actualCSL,47PDF-document, strict
+compilation/package-lint/treefmt,358ERT total. This is not complete Nix/native/
+real-extension acceptance. Combined120s timeout at29PDF, no assertion failure;
+explicit one-run600s authorization then47pass102.986815s. Final README-wrap leaves
+4runtime/lint derivations identical; treefmt rebuilt. Complete11path/162hash and
+empty-index verification; receipt native-cite-0.7.0-n7-inputs.json. Rejected syntax,
+docwidth and invalid fixture gates in N7 note, no waived assertions or new raw archive.
+
 N6 root-only native scope registration is reviewed, not delivered:14added planned
 lines, existing TODO/metadata/completed items/N5 limits unchanged,158other hashes
 unchanged. No runtime/format checks for prose-only edit. Worktree draft/receipt:

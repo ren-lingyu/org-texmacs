@@ -168,5 +168,9 @@
     ],
     "message": "docs(changelog): plan native Org Cite compatibility restoration\n\n- 登记通过标准 `texmacs-native` processor 恢复原生文献处理的待办范围, 包括请求 ownership, 原生标签和纯 lowering 契约.\n- 规划原生 BibTeX 快照, `plain`/`alpha`/`abbrv` 样式选择及错误边界, 以及保留显式 CSL 和其他后端配置的默认行为.\n- 列出标准选择和 filters, 嵌套及失败恢复, 数学 TM/PDF, 真实扩展集成和双语示例迁移的验收事项.\n"
   },
-  "validation": "N6 root-only14-line pending-scope addition, complete diff/whitespace reviewed. TODO/header/CUSTOM_ID/link/completed items/N5 limits and all158other inputs unchanged. No new runtime/format/flake runs for prose registration. Index empty, explicit node worktree-draft protocol; human commit before N7."
+  "validation": "N6 root-only14-line pending-scope addition, complete diff/whitespace reviewed. TODO/header/CUSTOM_ID/link/completed items/N5 limits and all158other inputs unchanged. No new runtime/format/flake runs for prose registration. Index empty, explicit node worktree-draft protocol; human commit before N7.",
+  "delivery": {
+    "commit": "fd88165047d63a86358c72e8f3d9be36bb0e3d94",
+    "verification": "Exact6964f65 parent,root-only scope path,full message/all159committed and worktree hashes; clean intake. No unchanged tests rerun."
+  }
 }

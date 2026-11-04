@@ -20,6 +20,10 @@ No special extension adapter, third AST, generic fragment/B reopening, full
 BibLaTeX/styles/Unicode repair or source BIBLIOGRAPHY-SOURCES API restoration.
 This supersedes the earlier last-feature characterization of N0-N5 and D's
 then-unnecessary native processor decision, without reopening completed gates.
+User clarifies the blocking boundary: our unsafe loading, wrong associations,
+silent fallback or unreliable lifecycle must block; native extended-field choices,
+Unicode layout and mathematical recovery may remain documented separate issues.
+Do not transplant the whole experimental prototype into production.
 Existing CSL refusal/regression coverage remains. TODO re-freeze only after N9
 acceptance and explicit human direction; DONE/tag/publication stay manual.
 

@@ -66,8 +66,8 @@ rerun needed for planned-item prose.
 
 ## N7: formal processor and request ownership, fixed native fixtures
 
-Implementation locations: a lazily loaded Org Cite processor module (for example
-oc-texmacs-native.el, respecting Org loading convention), org-texmacs-export.el
+Implementation locations: the backend-loaded Org Cite processor module
+org-texmacs-cite-native.el and pure org-texmacs-cite.el contracts, org-texmacs-export.el
 standard-input, prepared-copy identity boundary, input/export context and pure
 bibliography consumer. Freeze actual field/function names during this node;
 do not adopt experimental x-* keys, cl-letf wrappers or temporary worker code.
@@ -104,7 +104,7 @@ preparation branch. No new generic model validity restrictions or islands change
 Test fixed native data through real standard processor callbacks and normal Org
 selection. Fixtures may replace the not-yet-implemented native fulfillment seam;
 never ship simulated bibliography output or publish a half-finished input as a
-completed document. Keep CSL default until N9; explicit native source integration
+completed document. Keep existing processor-selection behavior until N9; explicit native source integration
 is only advertised after N8, with interim unsupported operations failing clearly.
 Verify type/identity remaps, final owner and source/INFO/native mutation isolation,
 filters insert/copy/delete/replace/exclude, subtree/region/visible-only, inline
@@ -214,10 +214,11 @@ NEXT; DONE/tag/publication remain separate manual release decisions.
 
 ## Current execution state
 
-Initial coordinated plan checkpoint completed before any root edit. TODO-only
-6964f65 is verified human-delivered. N6 root-only scope candidate is ready with
-6unchecked items/14added lines, complete diff/whitespace reviewed and all158other
-tracked inputs unchanged. No runtime tests for prose-only registration. Exact
-candidate/message/parent/159hashes in native-cite-0.7.0-n6-inputs.json. Root state,
-identity/link/completed entries/N5 limits unchanged. Human commit pending; do not
-start N7 code before verifying it. README/detail/code/tests untouched in N6.
+N6 deliveredfd88165, exact prior parent/path/full message/159hashes verified.
+N7 accepted11path candidate pending human delivery. Formal processor module is
+org-texmacs-cite-native.el, registered when backend loads, so existing file
+allowlist and model independence are preserved. See native-cite-0.7.0-n7.md and
+-inputs.json. Scoped5checks/358ERT pass (301core/10CSL/47PDF), compile/lint/format.
+One PDF run explicitly authorized600s after initial120s timeout, no general
+future timeout extension. No prototype transplant, native IO/default change,
+B reopening or new parser/field/Unicode blocker. Human N7 commit before N8.

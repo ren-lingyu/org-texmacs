@@ -1,5 +1,13 @@
 # org-texmacs current project model
 
+N7 accepted working candidate adds formal native callbacks/request ownership,
+not yet real source bibliography or a changed default. Prepared identity map,
+existing input graph ownership and explicit native plan/results feed pure lowering
+without source citation recollection. Independent explicit native input/model/
+islands preserved. Pending request inputs inspectable; document needs completed
+result. Backend-loaded org-texmacs-cite-native follows existing tracking rules.
+Exact contract/human gate: native-cite-0.7.0-n7.md and -inputs.json.
+
 Native Cite restoration is now adopted work, not yet delivered capability.
 N6-N9 guide/plan: memory/native-cite-0.7.0-plan.md. Main57ada9a is functional
 baseline;6964f65 delivers TODO-only reopening, verified exact159hashes. N6 root

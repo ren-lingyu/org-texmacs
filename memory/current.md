@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Native Cite N6 plan adopted; scope registration before production
+## Native Cite N7 accepted; human delivery before N8
 
 User supplies formal native Org Cite compatibility restoration guide. Follow
 memory/native-cite-0.7.0-plan.md, N6-N9 with human commit gates. Functional baseline
@@ -18,14 +18,25 @@ requests, not rerun old citation collection. Default fallback precedence and saf
 module lookup are targeted implementation gates; do not copy temporary wrappers.
 No broad feasibility restart, B reopening or automatic freeze/finalization/release.
 
-N5 and TODO-only deliveries complete. Initial N6 plan checkpoint precedes root
-registration. N6 candidate now ready: CHANGELOG.org only,14new unchecked scope
-lines; TODO/header/identity/link/completed items/N5 boundaries unchanged. Draft
-`docs(changelog): plan native Org Cite compatibility restoration` in tmp/commit.md.
-Complete diff/whitespace and158unchanged other inputs verified; no runtime checks
-for prose-only registration. Index empty; no ordinary Git write. Exact parent/
-path/message/159hashes: native-cite-0.7.0-n6-inputs.json. Wait for human delivery
-before N7 production changes; one coherent docs(changelog) commit, no split needed.
+N6 humanfd88165 verified exact parent/path/message/all159hashes, clean intake.
+N7 candidate now accepted, human delivery pending. Contract/method/rejected gates:
+native-cite-0.7.0-n7.md. Formal standard processor is backend-loaded
+org-texmacs-cite-native (existing allowlist, no .gitignore edits), pure request
+schema in org-texmacs-cite, prepared identity projection, owned native plan/result
+and lowerer direct consumption. No prototype wrapper/temporary worker. Native
+source IO/style implementation/default remain N8/N9; pending inputs inspectable,
+documents require completed results. Latest user blocking-boundary steering is
+recorded in the N7 note; no native fields/Unicode/recovery scope expansion.
+
+Scoped5checks pass: strict compilation/lint/treefmt plus301core,10actualCSL and
+47PDF-document (358ERT). Combined120s timeout at29PDF was not an assertion error;
+user authorized this one PDF run600s, then47pass103s. No general long-timeout grant.
+Final snapshot7 README-wrap only;4runtime/lint derivations match snapshot6 exactly,
+treefmt rebuilt. Full default/native/real-extension acceptance remains N9.
+Complete11path diff/whitespace/162hashes reviewed, index empty, HEADfd88165. Draft
+feat(cite): add owned native Org Cite requests; receipt native-cite-0.7.0-n7-inputs.json.
+Next: human delivery verification before N8. No ordinary Git writes or release
+state changes; TODO0.7.0, B deferred, independent models/pure inputs preserved.
 
 ## Completed native Cite feasibility; report review, no production adoption
 
