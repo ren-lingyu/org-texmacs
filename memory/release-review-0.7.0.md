@@ -99,3 +99,25 @@ example names have no maintained references. Fresh actual-block Emacs validation
 16local links/5API migration/form checks and final treefmt pass; no runtime source
 change or repeat full suites. Source receipt/report/message refreshed, NEXT and
 human finalization remain unchanged. No raw archival need.
+
+Final tiny wording request: commented (org-texmacs-program "texmacs") and one Nix
+advice line replace three verbose comments/absolute placeholder. Exact snapshot
+delta is those comments only, whitespace clean, no executable/config behavior
+change or repeat gate. Canonical receipt refreshed; fold memory into next
+substantive checkpoint rather than checkpointing each wording adjustment.
+
+## Last read-only audit / DONE recommendation
+
+Current full diff four paths reviewed again, versions/release state/index checked.
+Receipt comparison shows only one README comment changed since accepted candidate;
+all166other hashes match, so no unchanged tests repeated. One overlooked wording
+ambiguity found at README2352: grouping INCLUDE/bibliography under retired custom
+file receipts obscures active native bibliography source integrity guards. Compare
+README1063, prepared-cite-check at prepared.el231 and native-source-final-text-
+filter-change-is-detected at tests/ert-core/lisp/native-cite-source.el173. Active
+exports do recheck fingerprints/bytes and reject .bib mutations; completed owned
+pure consumers don't access sources. Recommend clarify this paragraph, then DONE;
+no new functional failure or development work. Prior review's no-finding conclusion
+is superseded only on this documentation point. Read-only audit leaves production
+files untouched, root NEXT, no staging/tag/release. Current report/receipt capture
+recommendation and corrected comment hash. No raw archive need.

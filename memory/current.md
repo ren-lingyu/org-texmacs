@@ -1,5 +1,25 @@
 # org-texmacs current memory
 
+## Final read-only audit: clarify one README paragraph before DONE
+
+Latest user asks final audit/DONE recommendation, not more implementation. Current
+four-path candidate matches accepted receipt except one README example comment,
+now corrected to "When installed via Nix, leave this variable unchanged." All166
+other hashes match, version/header/NEXT/ID/single complete config/index verified.
+No repeated unchanged tests; prior705full ERT plus strict compile/lint/324core and
+validated config/treefmt remain implementation evidence.
+
+One previously missed documentation ambiguity: README2352 combines consumed
+INCLUDE/bibliography changes with retirement of custom file receipts, omitting
+active native Cite source guards. README1063 correctly says active bibliography
+changes reject export; prepared-cite-check reads fingerprints/bytes during the
+transaction, and final-text-filter-change regression covers it. Recommend clarify
+INCLUDE/legacy-provider retirement separately from active native .bib consistency
+checks and completed pure input consumers. No functional defect found or new
+feature scope. Current request is audit; production files left unchanged. Advise
+this small clarification before manual DONE. Older passed-review statements below
+precede this final finding. Report/receipt updated; no archive needed.
+
 ## Final v0.7.0 release review passed; human finalization pending
 
 User manually froze root TODO->NEXT, requests final docs/comments/version review,
@@ -40,6 +60,12 @@ old ten-core block and three minimal installation declarations, retain path/stra
 keyword guidance and parameter details afterward. Preserve user's comment edits.
 Actual block remains correct; fresh Emacs/16links/5migration checks/treefmt pass.
 Receipt/draft/report updated, only README delta, release state unchanged.
+
+Latest user wording edit simplifies the commented program example to "texmacs"
+plus one-line Nix advice. Exact delta against validated snapshot is comment-only;
+whitespace check passes, no runtime/format repetition needed. Receipt refreshed.
+Keep this tiny memory update for the next substantive checkpoint, not a standalone
+checkpoint for each wording edit.
 
 Next user reviews diff, optionally manually marks DONE with actual transition's
 UTC CLOSED and commits. Verify resulting source and any explicit human state/time
