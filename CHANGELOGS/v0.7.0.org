@@ -24,6 +24,21 @@ Source API =BIBLIOGRAPHY-SOURCES= must be nil. Configure standard Org Cite using
 The =org-texmacs-export-discover-bibliography= flag must be nil. Deprecated
 preprocessed/discovery names are thin standard wrappers, without independent
 acquisition or preparation. Their old non-nil discovery switches fail explicitly.
+Use the following replacements:
+
+| Deprecated name                                          | Replacement                              |
+|----------------------------------------------------------+------------------------------------------|
+| =org-texmacs-prepare-buffer-preprocessed=                | =org-texmacs-prepare-buffer=             |
+| =org-texmacs-document-from-buffer-preprocessed=          | =org-texmacs-document-from-buffer=       |
+| =org-texmacs-export-from-buffer-preprocessed=            | =org-texmacs-export-texmacs-from-buffer= |
+| =org-texmacs-document-from-buffer-discover-bibliography= | =org-texmacs-document-from-buffer=       |
+| =org-texmacs-export-from-buffer-discover-bibliography=   | =org-texmacs-export-texmacs-from-buffer= |
+
+Replace the function name and check its argument positions; the deprecated
+preprocessed names have no subtree/region arguments. The modern source APIs
+accept =BIBLIOGRAPHY-SOURCES= only as nil. Independent explicit native bibliography
+input construction remains available; that pure-input protocol is separate from
+source export.
 
 =EXT-PLIST= and file/subtree options follow Org priority and syntax. Scalar rich
 metadata supplied directly as an option stays literal; pass parsed secondary
@@ -63,7 +78,7 @@ creates native labels, references, footnotes and numbering bindings.
 Tables use Org alignment, including numeric inference after control-row removal.
 Unsupported width cookies fail explicitly. Source-native settings and consumed
 query results are owned snapshots; old private parser/file receipt replay retires.
-Source guards still detect covered source/style/initial/fragment configuration
+Source guards detect covered source/style/initial/fragment configuration
 changes, without undoing callback modifications to the original source.
 
 Unsupported node-level string filters are detected and rejected before execution
@@ -72,7 +87,8 @@ Body/final-output filters run on final text. They are not STM AST transformation
 
 Standard source export no longer accepts caption footnote nodes supplied by parser
 extensions or AST filters. Effective nodes reject explicitly after exclusions.
-Stock Org 9.8.10 caption note-looking text remains literal. Independent model/pure
+Stock Org 9.8.10 caption note-looking text remains literal. Put source-export
+footnotes in supported body positions instead. Independent model/pure
 lowering retains anonymous long/short caption footnote conversion; native body,
 counter and page-placement limitations remain. Existing private PDF footnote
 destination repair is separate and retained. Native caption macro-package work
@@ -115,11 +131,27 @@ processing remains authoritative. Entity and script options are supported
 independently.
 
 * Org Cite
-The CSL path uses the existing processor's structured Org output with
-optional =citeproc=. Org owns bibliography acquisition, processor selection,
-citation filters, processing and applicable finalization in one export transaction.
-Real pinned Org-roam-organize integration covers managed UUIDs, dynamic bibliography
-and live INFO propagation without an extension-specific compatibility layer.
+TeXmacs exports now default to =texmacs-native=, restoring native BibTeX
+bibliography processing through standard Org Cite. Org owns bibliography
+acquisition, processor selection, citation filters, processing and applicable
+finalization in one export transaction. Native parsing and formatting finish
+before pure lowering; no independent export preparation is restored.
+
+For a native =plain= bibliography, use standard Org input:
+
+#+begin_example
+  ,#+bibliography: references.bib
+  Text [cite:@one; @two]. Again [cite:@one].
+  ,#+print_bibliography:
+#+end_example
+
+To select another native bibliography style, add
+=#+cite_export: texmacs-native alpha= or configure the preference below.
+Existing explicit CSL selections remain valid, with optional =citeproc= and a
+local CSL style. CSL returns supported structured Org output for TeXmacs.
+Real pinned Org-roam-organize integration covers native and CSL processing,
+managed UUIDs, dynamic bibliography and live INFO propagation without an
+extension-specific compatibility layer.
 
 The =basic= processor and arbitrary target-specific strings wrapped as =raw= are
 unsupported. They are not flattened into text or reparsed as TeXmacs. Other custom
@@ -127,14 +159,15 @@ processors must return supported structured data. CSL styles remain bounded by t
 existing lowering subset; unsupported output structures fail explicitly.
 
 The =texmacs-native= processor prepares structured requests for bare default,
-multiple-key and repeated citations and one unadorned bibliography print.
-Unsupported styles, nonempty affixes/locators and print options fail explicitly.
+multiple-key and repeated citations. Citations require exactly one unadorned
+bibliography print; missing or multiple prints fail explicitly. Nondefault
+citation styles, nonempty affixes/locators and print options are unsupported.
 Carrier identities migrate through prepared AST and input copies.  Native label
 prefixes, selected entries and output belong to the owned input; pure lowering
 consumes that plan without recollecting citations, reading files or running a
 worker.  Independent explicit native bibliography inputs remain supported.
-Explicit =#+cite_export: texmacs-native plain= now snapshots local bibliography
-sources before native waits, parses them with TeXmacs and owns the native results.
+The native processor snapshots active local bibliography sources before native
+waits, parses them with TeXmacs and owns the native results.
 The native catalog and readable modules select =plain=, =alpha= and =abbrv=,
 including =tm-= aliases, without silent fallback or unchecked module loading.
 Missing/ambiguous keys, canonical source aliases, unavailable files/styles and
@@ -149,14 +182,19 @@ The TeXmacs backend provides =org-texmacs-cite-export-processor=, defaulting to
 its backend name: =(PROCESSOR BIBLIOGRAPHY-STYLE CITATION-STYLE)=, with both style
 positions optional or nil. For example, =(texmacs-native "alpha")= selects the
 native alpha bibliography style, and =(texmacs-native "alpha" nil)= retains the
-complete triplet. The native processor still supports only the default citation
-style. A nil value delegates selection entirely to standard Org Cite. An explicit
-backend entry takes precedence over the TeXmacs-specific declaration.
+complete triplet. The same declaration format accepts
+=(csl "/absolute/path/style.csl")= with optional =citeproc=. The native processor
+still supports only the default citation style. A nil value delegates selection
+entirely to standard Org Cite. An explicit backend entry takes precedence over
+the TeXmacs-specific declaration.
 
 Document/subtree CITE_EXPORT, external options and options filters retain standard
 Org precedence. The global =org-cite-export-processors= value is not modified,
-and HTML/LaTeX selection is unaffected. An explicit selection of the unsupported
-=basic= processor retains the existing raw output rejection.
+and HTML/LaTeX selection is unaffected. The preference is evaluated on each
+export, so it can be set before loading the backend or changed before subsequent
+exports. Activate, follow and insert processors are unaffected. An explicit
+selection of the unsupported =basic= processor retains the existing raw output
+rejection.
 
 Citations in an unrendered =ALT_TITLE= retain Org's bibliography keys while their
 owned requests are explicitly accounted for; they do not create additional visible
@@ -174,6 +212,7 @@ Neither the base package nor compiled examples requires =citeproc=. Generic
 examples use the native default, article examples select =alpha=, and a local
 explicit-CSL fixture remains available. Native math titles demonstrate Greek
 subscripts and fractions, without online style acquisition during rendering.
+Derivative examples use native =rprime= for the derivative prime.
 The bilingual generic/article examples use the standard document API and render
 TeXmacs/PDF from the same completed native document.
 Bibliography and optional CSL fixture files are tangled from their canonical Org

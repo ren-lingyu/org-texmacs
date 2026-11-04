@@ -7,135 +7,55 @@
 Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
-* TODO v0.7.0
+* DONE v0.7.0
+  CLOSED: [2026-11-04 Wed 18:45]
 :PROPERTIES:
 :CUSTOM_ID: v0.7.0
 :END:
-Standard Org Export Integration. Independent models and pure TeXmacs document
-lowering remain separate from standard export preparation.
-[[file:CHANGELOGS/v0.7.0.org][Detailed release notes]]
+Standard Org Export Integration.
+[[file:CHANGELOGS/v0.7.0.org][Detailed release notes and upgrade instructions]]
 
 ** Changed
-*** Standard Org Export backend
-- [X] Make =org-export-as 'texmacs= a usable standard export entry, with Org
-  managing preparation, options, document selection, AST filters and Org Cite.
-- [X] Replace parallel export preparation with the standard Org flow while
-  preserving AST-first TeXmacs construction.
-
-*** Public export API migration
-- [X] Route interactive commands and feasible source-buffer convenience APIs
-  through shared standard preparation, retaining their distinct result types.
-- Interactive commands now share standard preparation for all scopes, including
-  visible-only, and preserve managed buffers and guarded native file writing.
-- Breaking: non-nil =org-texmacs-export-discover-bibliography= is rejected;
-  configure standard Org Cite instead.  All source API EXT-PLIST values follow
-  Org; the old restricted option whitelist and citation-key-only filters retire.
-- Source TM/PDF bytes, fresh buffers and exclusive new-file exports now use one
-  standard transaction with lazy backend loading and owned options/selections.
-- Structured =prepare-buffer=, =document-from-buffer= and =document-current-buffer=
-  now use the same standard transaction. Preparation returns owned input without
-  forcing target lowering; document consumers validate target support.
-- Deprecated preprocessed/discovery names become thin standard wrappers; supplied
-  BibTeX text or non-nil discovery switches fail before preparation with guidance.
-- Breaking: all source API =BIBLIOGRAPHY-SOURCES= arguments must be nil; configure
-  standard Org Cite.  Combined explicit subtree/region selections require matching
-  headings at region start; ambient active regions do not select explicit exports.
-- Final text filters feed reversible native byte output; lossy text conversion
-  fails explicitly.  PDF consumes the completed native document directly.
-- Preserve Org's table alignment after control-row pruning, including numeric
-  column inference; unsupported width cookies fail explicitly.
-- [X] Consolidate deprecated wrappers and retire parallel options, selection,
-  filter, INCLUDE and bibliography preparation after caller migration.
-- Breaking: final Org structure takes priority over embedded STM syntax.
-  Preparation may rewrite, delete or generate candidates; original STM is not
-  restored or generically protected. Complete multiline STM is supported within
-  one effective Org owner; crossing structural boundaries fails when identifiable.
-- Effective Org metadata controls native language/description defaults; nil/empty
-  values clear those entries. Optional URI schemes follow Org registration.
-- Breaking: standard source export no longer supports caption footnote nodes
-  supplied by parser extensions or AST filters. Effective nodes fail explicitly;
-  stock Org note-looking caption text stays literal. Independent models and pure
-  lowering retain anonymous caption footnote AST support and native layout limits.
-- Org preparation errors propagate. Consumed settings are owned snapshots;
-  old private receipt replay, full-source restoration and preflight order retire.
-- Preserve independent model APIs, explicit native bibliography inputs, pure
-  lowering, native worker, serialization and PDF consumers.
+- =org-export-as 'texmacs= and source-buffer APIs use standard Org preparation,
+  selection, INCLUDE, macros, Babel, options/AST filters and Org Cite. Independent
+  models and pure document lowering retain their separate contracts.
+- TeXmacs exports default to =texmacs-native= citations without requiring
+  =citeproc=; explicit CSL and standard backend/document choices remain available.
+- Breaking: source API =BIBLIOGRAPHY-SOURCES= arguments and obsolete discovery
+  switches must be nil. Configure standard Org Cite instead.
+- Breaking: STM must be complete within its final Org structure. Preprocessing
+  may change STM; islands cannot span headings, paragraphs or block boundaries.
+- Breaking: standard source export rejects caption footnote AST nodes supplied
+  by extensions/filters. Stock Org caption note-looking text remains literal;
+  independent model and pure lowering support is unchanged.
+- CSL output follows the processor result; BibLaTeX mathematics may be lost
+  upstream. Inline LaTeX fragments and =basic=/=raw= output remain unsupported.
+- Body/final-output filters run on final text. Unsupported node-level string
+  filters fail explicitly; native PDF has a separate filter-compatibility boundary.
 
 ** Added
-*** Prepared AST and STM adaptation
-- [X] Construct owned mathematical-document models from the final Org AST and
-  a separate export context, preserving node identity and related mappings.
-- [X] Recognize complete STM from preprocessing results and structurally valid
-  filter-created nodes, including nodes without reliable source positions.
-- [X] Deliver prepared structures and completed native documents to text, API
-  and PDF consumers without repeating preparation or reparsing serialized STM.
+- Native Org Cite bibliography processing with =plain=, =alpha= and =abbrv=,
+  including verified mathematical BibTeX titles; unsupported citation styles,
+  affixes, bibliography options and unresolved keys fail explicitly.
+- =org-texmacs-cite-export-processor= accepts an Org Cite processor declaration
+  with optional bibliography/citation styles, defaulting to =(texmacs-native)=;
+  nil delegates entirely to standard Org Cite.
+- Native lowering for Org entities and recursive subscripts/superscripts,
+  respecting =e= and =^= export options without changing surrounding text mode.
+- Complete STM generated by preprocessing or supported AST filters, including
+  synthetic nodes without source coordinates.
+- Shared prepared input/native documents for text, structured APIs and direct
+  PDF rendering, without repeating preparation or reparsing serialized STM.
+- English/Chinese generic/article examples using native bibliography and valid
+  mathematical titles, with TeXmacs/PDF output from the same native document.
 
-*** Standard export semantics
-- [X] Reuse Org selection, INCLUDE, SETUPFILE, macros, Babel, hooks and options
-  filters, and allow legal AST insertion, deletion, movement and replacement.
-- [X] Support native visible-only selection and standard reference, numbering
-  and footnote queries while retaining TeXmacs labels and native structures.
+** Deprecated
+- Preprocessed/discovery source API names remain thin wrappers around the
+  standard source APIs. See the upgrade instructions for replacements.
 
-*** Org Cite integration
-- [X] Process citations and bibliographies through standard Org Cite using
-  structured output from the existing CSL processor; explicitly reject target
-  =raw= strings, including the currently unsupported =basic= processor.
-- [X] Verify managed UUID citations, dynamic bibliographies and identical live
-  INFO through real pinned =org-roam-organize= and CSL, including native PDF and
-  HTML, without package-specific adapters.
-- [X] Allow the verified unchanged CSL finalizer on native structured output;
-  reject unknown/advised/replaced finalizers without probing their effects.
-- [X] Preserve Org U+200B delimiters in the model and lower them to native
-  zero-width spacing, avoiding visible Unicode fallback markers in Cite output.
-- CSL export follows processor output; BibLaTeX mathematics may be altered or
-  lost before the backend receives the final Org AST.
-- [X] Restore native TeXmacs bibliography processing through a standard
-  =texmacs-native= Org Cite processor, without independent export preparation.
-- [X] Register native citation and bibliography callbacks for bare, multiple-key
-  and repeated citations; reject unsupported styles, affixes and print options.
-- [X] Own citation and bibliography request associations through prepared AST
-  copies, with explicit native label prefixes and pure document lowering.
-- [X] Reuse native BibTeX parsing and safely select =plain=, =alpha= and =abbrv=
-  styles from owned source snapshots; reject unsupported styles and unresolved
-  or ambiguous citation keys explicitly.
-- [X] Provide =org-texmacs-cite-export-processor= for a backend-specific Org Cite
-  declaration, defaulting to =(texmacs-native)=, with optional bibliography and
-  citation style positions; nil delegates to standard Org Cite. Preserve explicit
-  backend/document choices and other backends without requiring =citeproc=.
-- [X] Verify standard selection/filters, ownership, nested exports and failure
-  recovery, native mathematical TM/PDF output and real =org-roam-organize=
-  integration; retain explicit CSL and unsupported-fragment regressions.
-- [X] Migrate English/Chinese generic/article examples to native bibliography
-  with TM/PDF from the same document, retaining an explicit CSL fixture.
-
-*** Text and native PDF output
-- [X] Return text from the standard exporter with verified native =.tm= byte
-  conversion and supported standard output filters.
-- [X] Render native PDF from the shared completed document without a =.tm=
-  round trip, with explicit text-filter and Cite-finalizer compatibility rules.
-
-*** Org entities and scripts
-- [X] Lower Org =entity= objects to native text or local mathematical structures,
-  preserving the distinction between literal text and native symbols.
-- Honor =e:nil= for effective entities, including nodes generated later by AST
-  filters or Cite processors; independent inputs default to enabled entities.
-- Preserve native symbol encoding and local math without changing surrounding
-  text mode; missing or invalid entity representations fail explicitly.
-- [X] Lower =subscript= and =superscript= objects with verified native base
-  binding, nested contents and text/math boundaries, preserving opaque STM.
-- Honor =^:t=, =^:{}= and =^:nil= for remaining script objects, including late
-  AST/Cite output; pure input defaults stay fixed and script whitespace is local.
-- Unclosed block markers interpreted by Org as prose now export their script
-  objects, including after selection; no original native wrapper is restored.
-- Inline =latex-fragment= conversion remains deferred; retained fragments fail
-  explicitly, including intact CSL output. Entity support does not interpret them.
-
-*** Documentation and regression coverage
-- [X] Document standard export, independent models, pure lowering and API
-  migrations, update examples, and verify native output and existing contracts.
-- Compiled English/Chinese generic/article examples use standard preparation,
-  example-only citeproc and a local CSL style instead of native BibTeX snapshots.
-  Derivative examples use the native right-prime structure.
+** Fixed
+- Preserve Org table alignment after control-row removal, including numeric
+  column inference, and render Cite-generated U+200B without fallback glyphs.
 
 * DONE v0.6.0
 CLOSED: [2026-11-02 Mon 11:03]

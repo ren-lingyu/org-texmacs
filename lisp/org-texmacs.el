@@ -37,7 +37,9 @@
 ;; Org 9.8 passed API/signature and strict compilation checks for an earlier version;
 ;; full ERT/native behavior regression on that minimum version is unverified.
 ;; Org-roam and its extensions are optional integration-test dependencies.
-;; CSL citations use the optional citeproc package through standard Org Cite.
+;; Source exports use standard Org Export preparation and Org Cite.  The
+;; TeXmacs backend defaults to native bibliography processing; CSL citations
+;; use the optional citeproc package.  Pure model/lowering APIs stay independent.
 ;; TeXmacs is an external runtime dependency, checked by the setup command.
 ;;
 ;; Use `org-texmacs-tree' to derive an Org-compatible TeXmacs tree from a

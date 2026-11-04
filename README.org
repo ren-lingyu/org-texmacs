@@ -29,7 +29,7 @@ recursive subscripts/superscripts,
 self-contained URI links,
 plain local file links with captured resource context,
 same-document headline/ID and dedicated-target links, anonymous and named
-footnotes, standard Org Cite through the supported CSL processor,
+footnotes, standard Org Cite with native TeXmacs bibliography or optional CSL,
 list/container structures, rich metadata,
 relative headline sectioning, a static filtered TOC, static preformatted
 blocks, named/captioned basic rectangular tables and TeXmacs islands, as specified below.
@@ -42,7 +42,8 @@ Org's export dispatcher, with local output naming/reexports, subtree/region/
 narrowing scopes and standard Org export configuration.  GUI preview, cross-file
 reference resolution and live incremental Org/TeXmacs synchronization are outside the current
 support boundary.
-Org's source buffer and live AST remain unchanged.
+Source exports use Org's working copy. User callbacks can still modify the
+original source; covered changes fail source validation and are not undone.
 
 * Version history
 This README documents Org TeXmacs =0.7.0=.
@@ -186,90 +187,29 @@ or [[file:pkgs/org-texmacs-examples/sources/zh/index.org][the Chinese entry]]
 for the configuration examples and build details.
 
 ** With use-package
-Choose one of the following installation paths.  Configure the required Org
-version before loading Org TeXmacs; these examples do not select or replace
-your Org installation.  They assume =use-package= is already available.
+Configure the required Org version before loading Org TeXmacs. The example
+assumes =use-package= is already available and the package is on =load-path=.
+Use this single declaration, adapting its installation keywords as described
+below before evaluating it.
 
-For a source checkout, replace the directory below with its absolute path:
+*** Complete configuration
+The configuration combines core settings, native citations and the export menu.
+Menu keys belong in =:init= because =ox-texmacs= reads them on its first load;
+the Cite preference belongs in =:custom= and is read on each export. Use a fresh
+Emacs session if the backend was already loaded with different menu keys.
 
-#+name: example-use-package-local
-#+begin_src emacs-lisp
-  (use-package org-texmacs
-    :load-path "/path/to/org-texmacs/lisp/"
-    :ensure nil
-    :demand t)
-#+end_src
-
-For a package already made available on =load-path=, including a configured
-Nix installation, omit =:load-path=:
-
-#+name: example-use-package-installed
-#+begin_src emacs-lisp
-  (use-package org-texmacs
-    :ensure nil
-    :demand t)
-#+end_src
-
-=:ensure nil= prevents =use-package= from asking =package.el= to install the
-package, even when =use-package-always-ensure= is enabled.  If your initialized
-straight integration uses =straight-use-package-by-default=, also add
-=:straight nil= to either declaration above to keep that installation path.
-Do not add that keyword when straight integration is unavailable.
-
-*** Installing with straight.el
-After initializing straight.el and its use-package integration, use this
-explicit recipe instead of the local or already-installed declaration:
-
-#+name: example-use-package-straight
-#+begin_src emacs-lisp
-  (use-package org-texmacs
-    :straight
-    (org-texmacs :type git :host github
-                 :repo "ren-lingyu/org-texmacs"
-                :files ("lisp/org-texmacs*.el"
-                        "lisp/ox-texmacs.el"
-                        "lisp/org-texmacs-worker.scm"))
-    :ensure nil
-    :demand t)
-#+end_src
-
-The =:files= entry is essential: the Scheme service must be installed next
-to the Lisp libraries, not left only in the source repository.  Installing
-with straight may clone repositories and write build files.  It does not
-install the TeXmacs executable; install TeXmacs separately and make it
-available through =exec-path= or =org-texmacs-program=.
-
-This recipe does not by itself pin a release.  Use straight's
-[[https://github.com/radian-software/straight.el#version-lockfiles][version lockfiles]] to record the selected revision for reproducibility.
-For straight setup and recipe details, consult its
-[[https://github.com/radian-software/straight.el#integration-with-use-package][use-package integration documentation]].
-
-*** Loading and optional configuration
-=:demand t= loads the Lisp package immediately, even if use-package normally
-defers loading.  It does not start TeXmacs.  The first block cache miss or
-fragment tree request starts the worker, as does document island parsing
-or opening a native session; source discovery alone does not.
-
-The core exposes ten customizable variables, shown in this example.  The
-optional =ox-texmacs= frontend adds =org-texmacs-export-menu-keys=, described
-under [[*Org export dispatcher][Org export dispatcher]].  Its old
-=org-texmacs-export-discover-bibliography= flag is obsolete; leave it nil.
-The example assumes the package is already on =load-path= and explicitly sets
-the source/straight defaults.  For a different installation path, copy its
-=:custom= section into the corresponding declaration above rather than
-adding a second declaration.  The straight opt-out guidance above still applies.
-
-For a Nix installation, omit the =org-texmacs-program= entry to preserve
-the packaged absolute TeXmacs path.  Setting it to ="texmacs"= overrides
-that default and requires the executable to be found through =exec-path=.
-
-#+name: example-use-package-custom
+#+name: example-use-package-complete
 #+begin_src emacs-lisp
   (use-package org-texmacs
     :ensure nil
     :demand t
+    :init
+    (setq org-texmacs-export-menu-keys
+          '(:prefix ?T :buffer ?T :file ?t :pdf ?p))
     :custom
-    (org-texmacs-program "texmacs")
+    (org-texmacs-cite-export-processor '(texmacs-native "plain" nil))
+    ;; When installed via Nix, leave this variable unchanged.
+    ;; (org-texmacs-program "texmacs")
     (org-texmacs-worker-start-timeout 60)
     (org-texmacs-worker-request-timeout 10)
     (org-texmacs-format-headline-function
@@ -281,8 +221,69 @@ that default and requires the executable to be found through =exec-path=.
     (org-texmacs-edit-mode 'scheme-mode)
     (org-texmacs-fragment-tags
      '("math" "equation" "equation*" "eqnarray" "eqnarray*"
-       "align" "align*" "gather" "gather*" "eqsplit" "eqsplit*")))
+       "align" "align*" "gather" "gather*" "eqsplit" "eqsplit*"))
+    :config
+    (require 'ox-texmacs))
 #+end_src
+
+The executable defaults to =texmacs= through =exec-path= in a source installation;
+Nix supplies an absolute path, which this example preserves. From an Org buffer,
+=C-c C-e T T= exports a TeXmacs buffer, =T t= a TeXmacs file, and =T p= a PDF file.
+
+The complete Cite declaration selects the native processor, =plain= bibliography
+style and default citation style. Replace ="plain"= with ="alpha"= or ="abbrv"=
+for another supported bibliography style; keep the third position nil because the
+native processor supports only the default citation style. Setting the whole
+preference to nil delegates to standard Org Cite. Configure bibliography files
+with =#+bibliography:= and include =#+print_bibliography:= when citing.
+Document-level =#+cite_export:= retains standard precedence. See
+[[*Standard Org Export integration status][Standard Org Export integration status]] for CSL and citation limitations.
+
+*** Installation choices
+For a package already on =load-path=, including a configured Nix installation,
+use the declaration above as written. For a source checkout, add
+=:load-path "/path/to/org-texmacs/lisp/"= to that declaration, replacing the
+example path with the checkout's absolute =lisp/= directory.
+
+=:ensure nil= prevents =use-package= from asking =package.el= to install the
+package, even when =use-package-always-ensure= is enabled. If your initialized
+straight integration uses =straight-use-package-by-default=, add =:straight nil=
+for the local or already-installed package. Do not add that keyword when straight
+integration is unavailable.
+
+To install with straight.el, initialize straight and its use-package integration,
+then add the following keyword and recipe inside the same declaration instead
+of using =:load-path= or =:straight nil=:
+
+#+begin_example
+  :straight
+  (org-texmacs :type git :host github
+               :repo "ren-lingyu/org-texmacs"
+               :files ("lisp/org-texmacs*.el"
+                       "lisp/ox-texmacs.el"
+                       "lisp/org-texmacs-worker.scm"))
+#+end_example
+
+The =:files= entry is essential: the Scheme service must be installed next to
+the Lisp libraries. Installing with straight may clone repositories and write
+build files. It does not install the TeXmacs executable; install TeXmacs separately
+and use =exec-path= or =org-texmacs-program= to select it.
+
+The recipe does not pin a release. Use straight's
+[[https://github.com/radian-software/straight.el#version-lockfiles][version lockfiles]] to record the selected revision for reproducibility.
+For straight setup and recipe details, consult its
+[[https://github.com/radian-software/straight.el#integration-with-use-package][use-package integration documentation]].
+
+*** Configuration details
+=:demand t= loads the Lisp package immediately, even if use-package normally
+defers loading. Loading this configuration does not start TeXmacs. The first
+block cache miss or fragment tree request starts the worker, as does document
+island parsing or opening a native session; source discovery alone does not.
+
+The example covers the core options and the backend's Cite/menu settings.
+See [[*Org export dispatcher][Org export dispatcher]] for the export commands and menu
+configuration. The obsolete =org-texmacs-export-discover-bibliography= flag must
+remain nil; configure standard Org Cite instead.
 
 Both timeouts are positive numbers in seconds: =org-texmacs-worker-start-timeout=
 limits the startup wait, and =org-texmacs-worker-request-timeout= limits the
@@ -891,16 +892,16 @@ text on failure, and buffer construction starts only after successful output.
 An initialization failure removes the newly allocated buffer.
 
 * Standard Org Export integration status
-The independent core loop is implemented.  The initial standard backend now
-runs through =(org-export-as 'texmacs)= and consumes its prepared AST in the
-live export context.  It recognizes configured paragraph/direct-inline-footnote
-STM and native =texmacs=/=equation=/=equation*= bodies from the final AST,
+The standard backend runs through =(org-export-as 'texmacs)= and consumes its
+prepared AST in the live export context. It recognizes configured paragraph and
+direct-inline-footnote STM and native =texmacs=/=equation=/=equation*= bodies from the final AST,
 including macro, Babel and recursive INCLUDE results.  Org logical exclusions
 are projected by identity before STM discovery, and consumed configuration
 directives remain represented by their effective INFO values.  Full, subtree,
 region, narrowed and visible-only selection, standard options and AST filters
-follow Org.  Standard Org Cite can consume structured output from the existing
-CSL processor.  Public source preparation and document APIs use the same path.
+follow Org. Standard Org Cite uses the native processor by default and also
+supports structured output from the optional CSL processor. Public source
+preparation and document APIs use the same path.
 Unsupported prepared structures fail explicitly.
 The three dispatcher commands and five main-module source byte/buffer/new-file
 exports, structured preparation/document APIs and deprecated preprocessed/discovery
@@ -960,9 +961,17 @@ and do not switch surrounding prose to math mode.  Adjacent STM islands stay
 opaque; scripts attach outside their existing subtree.
 
 Org Cite owns bibliography acquisition, processor selection and citation/
-bibliography processing in this same transaction, after AST filters.  With the
-optional =citeproc= package installed, select the existing =csl= processor and a
-local CSL style, for example:
+bibliography processing in this same transaction, after AST filters. The default
+native processor uses the =plain= bibliography style without =citeproc=:
+
+#+begin_example
+  ,#+bibliography: references.bib
+  Text [cite:@key].
+  ,#+print_bibliography:
+#+end_example
+
+With the optional =citeproc= package installed, select the existing =csl=
+processor and a local CSL style, for example:
 
 #+begin_example
   ,#+bibliography: references.bib
@@ -1032,9 +1041,10 @@ Org precedence. For example, a document can select a native bibliography style:
 #+end_example
 
 Bare default citations, multiple keys and repeated citations are supported, with
-exactly one unadorned bibliography print. Nondefault citation styles, nonempty
-affixes/locators, print options and multiple prints fail explicitly. Request
-associations follow final Org nodes through ownership copies. Native labels,
+exactly one unadorned bibliography print; citations without that print fail.
+Nondefault citation styles, nonempty affixes/locators, print options and multiple
+prints fail explicitly. Request associations follow final Org nodes through
+ownership copies. Native labels,
 selected entries and output belong to the input; pure lowering does not
 recollect citations, read files or run a worker. Independent explicit native
 bibliography inputs remain supported. Org Cite keys from =ALT_TITLE= remain in
@@ -1243,8 +1253,10 @@ Each call captures native style/initial values, fragment tags and native output
 settings.  Org owns parser settings, source options and preparation dependencies;
 the prepared input owns their consumed results.  Source text, mode, restriction,
 identity, native style/initial or fragment-tag changes reject publication without retry.
-Consumed Org settings and dependency files are not re-read by a parallel receipt
-system.  Mutable closure state and arbitrary callback effects are not frozen.
+Consumed Org settings and preparation dependencies are not re-read by a parallel
+receipt system. Native Cite separately checks active bibliography sources until
+this source export completes. Mutable closure state and arbitrary callback effects
+are not frozen.
 
 Preparation uses private copies, without changing source text properties,
 point, mark, modified state or narrowing, or resetting the source's Org cache.
@@ -2134,6 +2146,8 @@ nonrepresentable output fails explicitly.  No serialized STM is reparsed.
 Source text/mode/restriction/identity and native-setting changes during native
 waits reject the export.  Already consumed parser, filter and dependency data
 are owned; later changes do not replay preparation or the old provider's receipts.
+Active native bibliography sources still undergo consistency checks until the
+source export completes. Completed independent consumers use the owned data.
 File export validates/copies the destination first and passes it in INFO without
 aliasing the protected write path.  It writes the checked native bytes only after
 export succeeds, without an extra newline or conversion.  Source-relative
@@ -2338,10 +2352,14 @@ Each action performs one real =org-export-as= transaction.  Org runs hooks,
 INCLUDE/SETUPFILE, macros/Babel, options, selection, AST filters and Cite for all
 scopes.  There is no separate full-document/local preparation route, project
 INCLUDE recursion, old protection framework or legacy INCLUDE size/depth budget.
-Org defines preparation warnings/errors.  Once preparation has supplied owned
-structures, later changes to consumed INCLUDE/bibliography files do not trigger
-custom file receipts, rediscovery or a second preparation.  This is not a
-filesystem-atomic snapshot; source/native-setting changes still reject results.
+Org defines preparation warnings/errors and owns INCLUDE acquisition. The backend
+does not re-expand INCLUDE, replay legacy dependency receipts or run a second
+preparation. During an active native Cite source export, bibliography sources
+are still checked for changes after native waits and text/PDF processing;
+changed or unavailable files reject the result. Completed independent input/
+document consumers use owned bibliography data without rereading those files.
+This is not a filesystem-atomic snapshot; source/native-setting checks also apply
+during source export.
 
 The =.tm= consumers run final standard text filters and convert the reversible
 ISO-Latin-1 transport to native bytes.  A filter result outside that transport
