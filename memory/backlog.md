@@ -1,5 +1,15 @@
 # org-texmacs active backlog
 
+Isolated bibliography architecture comparison complete, evidence-only. A120/B60/
+C30case/style records plus protocol/nested HTML/sort/font controls pass3experimental
+ERT drivers. CSL JSON/getter preserve math data; Citeproc internal title parsing
+smartquotes STM source, no islands. Native valid math is stronger structurally,
+but field-style coverage, recovery and Unicode display limit replacement. Select
+conclusion2 and keep production unchanged; future mapper/math-handoff/native-Cite/
+Unicode work is proposal-only. Detailed facts/limits/minimal immutable archive:
+memory/bibliography-comparison-experiment.md. N5 candidate/human gate unaffected.
+
+
 N5 accepted:654defaultERT+actual4/all12checks, fresh Cite10 and final treefmt;
 exact native/PDF/integration derivatives reused unchanged. Four-path candidate
 records B deferral, upstream loss location and real retained-fragment rejection.

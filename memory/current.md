@@ -1,14 +1,18 @@
 # org-texmacs current memory
 
-## Active isolated comparison, production candidate preserved
+## Completed isolated bibliography comparison, no production adoption
 
-User authorizes bibliography architecture experiments A/B/C only, not production
-changes or reopening B. Plan/scope: memory/bibliography-comparison-experiment.md.
-N5 four-path159hash candidate remains exactly accepted and awaiting human commit.
-Next: isolate CSL input conversion versus formatting (real .bib/direct JSON,
-plain/italic), fixture custom getter/protocol and scoped standard oc-csl handoff,
-then existing native BibTeX parse/format with real TM/PDF. Distinguish data/math/
-layout, record failures/repeatability and archive selected necessary text evidence.
+User's A/B/C comparison is complete and selectively archived. Conclusion2: CSL
+input data can preserve math through JSON/custom getter, but mathematical handoff
+is separate. citeproc-proc--parse-csl-var-val smartquotes STM source; no islands.
+Native valid math renders but recovery/field-style/Unicode display limits remain.
+Getter private Org injection and mixed-title braces prevent production adoption.
+No new feature implementation selected, no0.7.0 B reopening. Report,30case matrix,
+three successful experimental checks and archive provenance are distilled in
+memory/bibliography-comparison-experiment.md. Local report:
+tmp/bibliography-comparison-report.md. No full-product tests rerun or required
+for isolated-only files. Exact N5 four-path/all159hashes and draft remain unchanged,
+ordinary index empty. Next: user report review and pending N5 human delivery.
 
 ## Current: N5 candidate accepted; human delivery gate
 
