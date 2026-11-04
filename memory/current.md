@@ -1,5 +1,19 @@
 # org-texmacs current memory
 
+## Final v0.7.0 release review active
+
+User manually changed only root TODO->NEXT after delivered21d5704 and authorizes
+final review/corrections of documentation, comments, version consistency, concise
+user-visible root changelog and complete detailed release notes. Preserve NEXT,
+CUSTOM_ID/link; user will manually choose DONE after review. No CLOSED/tag/release
+action. Baseline current delivered implementation21d5704 vs v0.6.0 at8ae5647,
+plus human NEXT edit. Prior12checks/705ERT exact receipt remains valid for runtime.
+Use git-maintenance docs/changelog review; no scope/native behavior expansion.
+Initial concrete drift: root examples still claim example-only citeproc/CSL despite
+native-default migration; README overview only mentions CSL. Plan and audit record:
+release-review-0.7.0.md. No raw archival need; semantic conclusions and diff suffice.
+
+
 ## Cite declaration interface delivered; development complete
 
 User adopts declaration lists without backend: (texmacs-native), native alpha/
