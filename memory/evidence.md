@@ -1,5 +1,18 @@
 # org-texmacs durable evidence
 
+Declaration-list preference follow-up full authorized600s check exits0/all12checks:
+700defaultERT (324core/282native/11CSL/48document/29render/6caption) plus actual
+Organize5 =705unique, zero unexpected. Core/CSL outputs match focused passes;
+native211.820402s, document123.066443s, render159.469755s. Compile/lint/treefmt
+pass. Full triplet/1-2-3 slots/native defaultplain/alpha/abbrv/explicit CSL verified,
+all existing precedence and lifecycle regressions retained.167canonical hashes
+stable, reviewed7path complete diff/whitespace, empty ordinary index. No manual
+math rerun, registration/ownership/native semantic change or raw archive need.
+Exact uncommitted candidate/approved message/outputs/limits:
+cite-processor-triplet-0.7.0.md/-inputs.json. Human delivery pending; root TODO.
+
+Earlier symbol interface delivery evidence (format superseded above):
+
 Cite config cleanup full authorized600s flake exits0/all12checks,704uniqueERT:
 323core/282native/11CSL/48document/29render/6caption +actual5. Strict compile/lint/
 treefmt pass. Eight-case preference matrix, original config identity/content,

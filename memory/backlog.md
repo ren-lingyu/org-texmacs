@@ -1,5 +1,13 @@
 # org-texmacs active backlog
 
+Current selected follow-up changes the preference to an Org Cite declaration
+list (without backend), retaining optional bibliography/citation style positions.
+7path candidate accepted, all12checks/705ERT and strict compile/lint/treefmt pass.
+167hashes stable, index empty. Human commit then separate freeze. No additional native/math/ownership
+work selected; details cite-processor-triplet-0.7.0.md.
+
+Earlier symbol preference delivery (format superseded by current follow-up):
+
 Explicit Cite configuration cleanup is human-delivered9f7f7c4, exact parent/
 7paths/message/167hashes verified against its receipt, clean worktree/index.
 12checks/704ERT

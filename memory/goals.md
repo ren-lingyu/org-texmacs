@@ -1,5 +1,17 @@
 # org-texmacs project goals
 
+## Approved Cite declaration interface follow-up
+
+The preference now uses Org Cite's declaration list without backend:
+(texmacs-native), (texmacs-native "alpha"), (texmacs-native "abbrv"), or the
+complete (texmacs-native "alpha" nil); nil delegates. Optional bibliography and
+citation style positions pass unchanged through standard selection. No parallel
+style variable, symbol compatibility branch or preference-layer style parsing.
+Helper only prepends backend; Org Cite dispatches and concrete processor interprets
+style. Native citation-style support unchanged. Preserve all existing priorities,
+other-backend/nested isolation, ownership and raw refusal. User's initial Lisp
+functional edits retained. Exact candidate and acceptance: cite-processor-triplet-0.7.0.md. Root TODO; human commit and separate freeze/publication decisions.
+
 ## Approved explicit Cite configuration cleanup
 
 User supersedes N9 stock-value inference with one export-only defcustom,

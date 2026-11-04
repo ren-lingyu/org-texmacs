@@ -1,27 +1,31 @@
 # org-texmacs current memory
 
-## Cite declaration triplet follow-up active
+## Cite declaration interface accepted; human commit pending
 
-User adopts list declarations for org-texmacs-cite-export-processor, omitting only
-backend: (texmacs-native), (texmacs-native "alpha"), (texmacs-native "abbrv"),
-(texmacs-native "alpha" nil), or nil delegate. Complete Org declaration positions
-must survive into INFO :cite-export, not just processor name. Standard priority,
-explicit texmacs/derived entries, declarations/subtree/external/filter/nested
-isolation stay. No native citation-style expansion or registration/ownership work.
+User adopts declaration lists without backend: (texmacs-native), native alpha/
+abbrv, complete (texmacs-native "alpha" nil), or nil delegate. Functional user
+Lisp edits preserved;7path tests/docs/callers synchronized. Helper only prepends
+texmacs, Org Cite selects/calls processor and concrete processor interprets style.
+No parallel style variable/parser, new dispatcher, native citation-style expansion
+or ownership change. User motivation/responsibility recorded in memory, not added
+to public prose. Priorities/derived/backend/nested/global isolation retained.
 
-Intake main9f7f7c4 with user-only uncommitted lisp/org-texmacs-cite-native.el change:
-defcustom default/type/doc and cons backend onto declaration already implemented.
-Preserve functional edits; synchronize remaining callers/tests/comments/docs.
-Plan/details: cite-processor-triplet-0.7.0.md. Root TODO, human commit/freeze.
-Raw archive assessment: complete semantic extraction and retained baseline/user
-patch provenance suffice; no independent need for raw conversation capture.
+Full single authorized600s check exits0/all12checks/705uniqueERT:324core/282native/
+11CSL/48document/29render/6caption plus actualOrganize5. Strict compilation/lint/
+treefmt pass. Full INFO triplets and native plain/alpha/abbrv request handoff,
+actual native TM/text and explicit local CSL style declarations tested.167canonical
+hashes stable, complete7path diff/whitespace reviewed, ordinary index empty.
+No runtime failure gate or repeated manual math experiments. Exact candidate,
+message, outputs, limits: cite-processor-triplet-0.7.0.md/-inputs.json.
 
-Next full-triplet test helper and assertions, native callback/owned plan style
-handoff (default INFO nil becomes plain), actual native/CSL list bindings,
-README/root/detail. Scoped ERT then necessary compile/lint/fmt/full gate. Existing
-single600s grants consumed; new longer gate needs authority. No ordinary staging.
+Next: user stages/commits reviewed7paths using tmp/commit.md, then verify exact
+parent9f7f7c4/paths/message/167committed hashes against receipt without repeating
+unchanged checks. No exact committed project state yet for runtime association;
+checkpoint needs no additional project parent. Root TODO; human freeze/DONE/tag/
+publication separate.600s grant consumed. No additional implementation required
+under this task, no new raw archive need beyond maintained tests/distilled receipt.
 
-## Cite configuration cleanup delivered; development complete
+## Earlier symbol preference delivery (format superseded above)
 
 Human9f7f7c4 delivery matches exact22191a0 parent/7paths/full approved message/
 all167committed and worktree hashes; ordinary worktree/index clean. No unchanged
