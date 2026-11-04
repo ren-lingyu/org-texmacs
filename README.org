@@ -987,8 +987,26 @@ normal package wrapper.  The dedicated Cite check supplies it explicitly.
 
 The =texmacs-native= processor supports TeXmacs-native bibliography output
 through the same standard Org Cite transaction, without requiring =citeproc=.
-It is the TeXmacs default with Org's stock =((t basic))= configuration.
-A document can also select a native bibliography style explicitly:
+TeXmacs defaults to =texmacs-native=. Configure its export-only preference with
+=org-texmacs-cite-export-processor=; a nil value delegates entirely to standard
+Org Cite and does not itself disable citations:
+
+#+begin_src emacs-lisp
+  (setq org-texmacs-cite-export-processor 'texmacs-native)
+
+  ;; Alternatively, delegate to standard Org Cite:
+  (setq org-texmacs-cite-export-processor nil)
+#+end_src
+
+The preference is evaluated on each export, including changes after loading
+=ox-texmacs=. A non-nil value supplies a TeXmacs-specific choice ahead of Org's
+generic =t= fallback, even when =org-cite-export-processors= is nil. An explicit
+=texmacs= entry in that alist takes precedence. Org handles more-specific derived
+backend entries itself. The global alist is not modified; other backends keep
+their standard settings. Activate, follow and insert processors are unaffected.
+
+Document/subtree =CITE_EXPORT=, EXT-PLIST and options filters retain standard
+Org precedence. For example, a document can select a native bibliography style:
 
 #+begin_example
   ,#+bibliography: references.bib
@@ -996,15 +1014,6 @@ A document can also select a native bibliography style explicitly:
   Text [cite:@one; @two]. Again [cite:@one].
   ,#+print_bibliography:
 #+end_example
-
-The backend provides its default through standard Org export options. Document
-and subtree =CITE_EXPORT= declarations and EXT-PLIST follow Org precedence.
-Other =org-cite-export-processors= configurations, including nil and custom
-fallbacks, retain their standard meaning; HTML/LaTeX are unaffected. A configuration
-with no matching backend or fallback retains Org's disabled result. Since an
-assignment equal to =((t basic))= cannot reveal user intent, select =basic=
-explicitly with =#+cite_export: basic= or a =(texmacs basic)= entry. Options
-filters may update the effective processor under the usual Org INFO contract.
 
 Bare default citations, multiple keys and repeated citations are supported, with
 exactly one unadorned bibliography print. Nondefault citation styles, nonempty

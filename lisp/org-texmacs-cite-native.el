@@ -14,15 +14,25 @@
 (require 'ox)
 (require 'org-texmacs-cite)
 
+(defcustom org-texmacs-cite-export-processor 'texmacs-native
+  "Preferred Org Cite export processor for TeXmacs.
+When nil, use `org-cite-export-processors' without modification.
+A non-nil value supplies a TeXmacs choice unless an explicit backend entry wins.
+This controls export only; activate, follow and insert processors are unchanged."
+  :type
+  '(choice
+    (const :tag "Use Org Cite configuration" nil)
+    (symbol :tag "Processor"))
+  :group 'org-texmacs)
+
 (defun org-texmacs--cite-default-processors ()
-  "Return the TeXmacs default without altering Org's processor configuration.
-Replace only Org's stock ((t basic)) value.  Explicit document declarations,
-backend entries, other custom configurations and nil retain Org semantics.
-An explicit basic choice should use CITE_EXPORT or a backend-specific entry;
-assignment history cannot distinguish a value identical to the stock default."
-  (if (equal org-cite-export-processors '((t basic)))
-      '((t texmacs-native))
-    org-cite-export-processors))
+  "Return the effective Org Cite processor configuration for TeXmacs."
+  (if (or (null org-texmacs-cite-export-processor)
+          (assq 'texmacs org-cite-export-processors))
+      org-cite-export-processors
+    (cons
+     (list 'texmacs org-texmacs-cite-export-processor)
+     org-cite-export-processors)))
 
 (defun org-texmacs--cite-record (node request backend info)
   "Associate NODE with REQUEST in live INFO for BACKEND."

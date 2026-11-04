@@ -144,15 +144,19 @@ retain native structure and TM/PDF layout. Native field selection, Unicode/font
 coverage and malformed-math recovery remain limited by TeXmacs; no full BibLaTeX
 or strict math-validation guarantee is added.
 
-The TeXmacs backend replaces Org's stock =((t basic))= default with
-=texmacs-native= through its standard export options. Explicit document/subtree
-processor declarations, external options, custom processor alists and nil retain
-Org precedence. HTML and LaTeX selection remain unchanged. An assignment equal
-to the stock value has no distinguishable intent; use =#+cite_export: basic= or
-=(texmacs basic)= for explicit basic selection. Custom configurations with no
-matching backend/fallback retain Org's disabled result. Citations in an unrendered
-=ALT_TITLE= retain Org's bibliography keys while their owned requests are explicitly
-accounted for; they do not create additional visible output.
+The TeXmacs backend provides =org-texmacs-cite-export-processor=, defaulting to
+=texmacs-native=. A nil value delegates processor selection entirely to standard
+Org Cite. A non-nil value supplies a TeXmacs-specific processor choice unless an
+explicit backend entry takes precedence.
+
+Document/subtree CITE_EXPORT, external options and options filters retain standard
+Org precedence. The global =org-cite-export-processors= value is not modified,
+and HTML/LaTeX selection is unaffected. An explicit selection of the unsupported
+=basic= processor retains the existing raw output rejection.
+
+Citations in an unrendered =ALT_TITLE= retain Org's bibliography keys while their
+owned requests are explicitly accounted for; they do not create additional visible
+output.
 
 CSL export does not guarantee preservation of BibLaTeX mathematics. With the
 locked =citeproc 20260113.1047=, sampled command and fraction content is lost

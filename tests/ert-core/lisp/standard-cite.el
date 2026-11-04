@@ -62,6 +62,7 @@
       (insert "[cite:@key]\n")
       (let* ((org-export-use-babel nil)
              (org-export-with-entities enabled)
+             (org-texmacs-cite-export-processor nil)
              (org-cite-export-processors
               '((t org-texmacs-test-structured)))
              (org-texmacs-test--cite-result 'entity)
@@ -93,6 +94,7 @@
       (insert "[cite:@key]\n")
       (let* ((org-export-use-babel nil)
              (org-export-with-sub-superscripts policy)
+             (org-texmacs-cite-export-processor nil)
              (org-cite-export-processors
               '((t org-texmacs-test-structured)))
              (org-texmacs-test--cite-result 'scripts)
@@ -127,6 +129,7 @@
       (org-mode)
       (insert "[cite:@alias]\n#+print_bibliography:\n")
       (let ((org-export-use-babel nil)
+            (org-texmacs-cite-export-processor nil)
             (org-cite-export-processors
              '((t org-texmacs-test-structured)))
             (org-texmacs-test--cite-calls nil)
@@ -171,6 +174,7 @@
       (org-mode)
       (insert "[cite:@key]\n")
       (let ((org-export-use-babel nil)
+            (org-texmacs-cite-export-processor nil)
             (org-cite-export-processors
              '((t org-texmacs-test-structured)))
             (org-texmacs-test--cite-calls nil))
@@ -218,6 +222,7 @@
     (org-mode)
     (insert "[cite:@key]\n")
     (let ((org-export-use-babel nil)
+          (org-texmacs-cite-export-processor nil)
           (org-cite-export-processors
            '((t org-texmacs-test-finalized)))
           (org-texmacs-test--cite-result 'element)
@@ -235,6 +240,7 @@
     (org-mode)
     (insert "[cite:@key]\n")
     (let ((org-export-use-babel nil)
+          (org-texmacs-cite-export-processor nil)
           (org-cite-export-processors
            '((t org-texmacs-test-finalized)))
           (org-texmacs-test--cite-result 'element)
@@ -252,6 +258,7 @@
     (org-mode)
     (insert "[cite:@key]\n")
     (let ((org-export-use-babel nil)
+          (org-texmacs-cite-export-processor nil)
           (org-cite-export-processors
            '((t org-texmacs-test-structured)))
           (org-texmacs-test--cite-calls nil)
