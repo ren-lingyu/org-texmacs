@@ -6,8 +6,11 @@ User authorizes I native style mechanism and II mock standard Org Cite handoff
 independently; only then III real bibliography. No production changes/B reopening.
 Plan: memory/native-cite-feasibility.md. Exact N5 candidate unchanged; user has now
 staged its4paths, verified against accepted hashes; preserve the index. HEAD6c7ac07.
-Snapshot tmp/native-cite-feasibility-1. Next: I module/label/state/render proof;
-II legal carriers and original->prepared->owned identity with mock native data.
+Snapshot tmp/native-cite-feasibility-1. I native styles/labels/state/PDF and II
+mock carriers/ownership/nested/error gates independently pass. Detailed evidence
+and source changes in memory/native-cite-feasibility.md. III is now admitted:
+real bibliography snapshot/native processing with2styles, same standard callbacks
+and owned handoff; no production source or wire protocol changes.
 
 ## Completed isolated bibliography comparison, no production adoption
 
