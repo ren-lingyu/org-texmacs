@@ -1,5 +1,26 @@
 # org-texmacs current memory
 
+## Cite declaration triplet follow-up active
+
+User adopts list declarations for org-texmacs-cite-export-processor, omitting only
+backend: (texmacs-native), (texmacs-native "alpha"), (texmacs-native "abbrv"),
+(texmacs-native "alpha" nil), or nil delegate. Complete Org declaration positions
+must survive into INFO :cite-export, not just processor name. Standard priority,
+explicit texmacs/derived entries, declarations/subtree/external/filter/nested
+isolation stay. No native citation-style expansion or registration/ownership work.
+
+Intake main9f7f7c4 with user-only uncommitted lisp/org-texmacs-cite-native.el change:
+defcustom default/type/doc and cons backend onto declaration already implemented.
+Preserve functional edits; synchronize remaining callers/tests/comments/docs.
+Plan/details: cite-processor-triplet-0.7.0.md. Root TODO, human commit/freeze.
+Raw archive assessment: complete semantic extraction and retained baseline/user
+patch provenance suffice; no independent need for raw conversation capture.
+
+Next full-triplet test helper and assertions, native callback/owned plan style
+handoff (default INFO nil becomes plain), actual native/CSL list bindings,
+README/root/detail. Scoped ERT then necessary compile/lint/fmt/full gate. Existing
+single600s grants consumed; new longer gate needs authority. No ordinary staging.
+
 ## Cite configuration cleanup delivered; development complete
 
 Human9f7f7c4 delivery matches exact22191a0 parent/7paths/full approved message/
