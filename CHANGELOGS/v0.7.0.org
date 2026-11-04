@@ -107,8 +107,12 @@ selection, can now export their script objects instead of failing on unsupported
 scripts. They are not native blocks; original wrapper completeness is not restored.
 
 Entity support does not interpret =latex-fragment= objects such as =$\cdot$=.
-Finite inline LaTeX conversion and CSL math-title compatibility remain separate
-conditional work; they are not implied by this addition.
+Finite inline LaTeX conversion is deferred because native snippet conversion
+does not reliably distinguish faithful results from repaired or placeholder
+output. Remaining fragments fail explicitly, including intact CSL output.
+No additional LaTeX option projection is introduced; Org's earlier option
+processing remains authoritative. Entity and script options are supported
+independently.
 
 * Org Cite
 The supported path uses the existing CSL processor's structured Org output with
@@ -121,6 +125,14 @@ The =basic= processor and arbitrary target-specific strings wrapped as =raw= are
 unsupported. They are not flattened into text or reparsed as TeXmacs. Other custom
 processors must return supported structured data. CSL styles remain bounded by the
 existing lowering subset; unsupported output structures fail explicitly.
+
+CSL export does not guarantee preservation of BibLaTeX mathematics. With the
+locked =citeproc 20260113.1047=, sampled command and fraction content is lost
+during BibLaTeX-to-CSL conversion, before Org lowering. Intact fragments such
+as =$\cdot$= can survive but still hit the unsupported-fragment error above.
+The backend consumes the final AST without rereading the bibliography to recover
+lost mathematics. These observations are specific to the tested version and
+fixtures; they do not certify other processors or styles.
 
 The base package does not require =citeproc=. Compiled examples include it and
 select a shipped local CSL style, with no online style acquisition during rendering.

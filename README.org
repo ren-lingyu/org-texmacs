@@ -942,6 +942,10 @@ or Cite processors.  Pure structured inputs enable entities by default; an expli
 =:with-entities nil= preserves their spelling without consulting dynamic settings.
 Missing or invalid representations fail explicitly.  The distinct =latex-fragment=
 input =$\cdot$= is not converted by entity support and remains unsupported.
+Finite LaTeX conversion is deferred from v0.7.0.  Native snippet experiments
+converted intact examples correctly, but also accepted repaired, empty or
+placeholder results for malformed and unknown input without a reliable failure
+contract.  A serializable native tree alone is insufficient to enable conversion.
 
 Org =subscript= and =superscript= objects lower to native =rsub= and =rsup=,
 including consecutive =x_i^2= and nested =x^{a_b}=.  Effective =^:t= enables them,
@@ -979,6 +983,16 @@ discovery or serialized STM round trip is added.  Supported output remains bound
 lowering subset; a CSL style that produces unsupported structures fails
 explicitly.  =citeproc= is an optional user dependency, not installed by the
 normal package wrapper.  The dedicated Cite check supplies it explicitly.
+
+BibLaTeX math preservation is also outside this guarantee.  With the locked
+=citeproc= version =20260113.1047=, real title-field tests found that =$\cdot$=
+survives through CSL title, rendered Org and final AST as a =latex-fragment=,
+which this backend explicitly rejects.  Bare =\cdot= disappears, =$\alpha_i$=
+becomes =$_i$=, and =$\frac{a}{b}$= becomes =$ab$=.  These losses occur during
+BibLaTeX-to-CSL command/bracket processing, before title case handling and Org
+lowering.  The backend consumes that final structure and does not recover lost
+math from the bibliography file.  These observations concern the tested version
+and fixtures; they do not certify other Citeproc versions or styles.
 
 The default =basic= processor is currently unsupported: its citations and
 bibliography return target-specific strings that Org wraps as =raw=.  A =raw=

@@ -87,6 +87,8 @@ lowering remain separate from standard export preparation.
   reject unknown/advised/replaced finalizers without probing their effects.
 - [X] Preserve Org U+200B delimiters in the model and lower them to native
   zero-width spacing, avoiding visible Unicode fallback markers in Cite output.
+- CSL export follows processor output; BibLaTeX mathematics may be altered or
+  lost before the backend receives the final Org AST.
 
 *** Text and native PDF output
 - [X] Return text from the standard exporter with verified native =.tm= byte
@@ -94,7 +96,7 @@ lowering remain separate from standard export preparation.
 - [X] Render native PDF from the shared completed document without a =.tm=
   round trip, with explicit text-filter and Cite-finalizer compatibility rules.
 
-*** Prerelease inline mathematics
+*** Org entities and scripts
 - [X] Lower Org =entity= objects to native text or local mathematical structures,
   preserving the distinction between literal text and native symbols.
 - Honor =e:nil= for effective entities, including nodes generated later by AST
@@ -107,18 +109,8 @@ lowering remain separate from standard export preparation.
   AST/Cite output; pure input defaults stay fixed and script whitespace is local.
 - Unclosed block markers interpreted by Org as prose now export their script
   objects, including after selection; no original native wrapper is restored.
-- [ ] Honor effective entity, script and applicable LaTeX export options,
-  including nodes generated later by AST filters or Cite processors.
-- [ ] Trace real CSL bibliography titles and body controls through the final
-  Org AST, including entities, inline math, Greek scripts and fractions.
-- [ ] If CSL still requires inline LaTeX conversion, classify repeated native
-  converter results as correct, rejected or accepted with unconfirmed fidelity.
-- [ ] Add finite inline LaTeX conversion only if structural ownership, reliable
-  rejection of lossy recovery and actual native layout pass the acceptance gate;
-  otherwise document why it is unnecessary or deferred.
-- [ ] Verify native encoding, script layout, independent ownership and existing
-  export/PDF regressions; synchronize README and detailed release notes with
-  demonstrated support and remaining limitations.
+- Inline =latex-fragment= conversion remains deferred; retained fragments fail
+  explicitly, including intact CSL output. Entity support does not interpret them.
 
 *** Documentation and regression coverage
 - [X] Document standard export, independent models, pure lowering and API

@@ -1,6 +1,66 @@
 ;;; standard-cite.el --- Real CSL and native output -*- lexical-binding: t; -*-
 (require 'oc-csl)
 
+(ert-deftest
+    org-texmacs-standard-csl-retained-latex-fragment-is-explicitly-unsupported
+    ()
+  (org-texmacs-test--with-csl
+   (with-temp-file csl-bibliography
+     (insert
+      "@article{key, title={Properties of $\\cdot$}, author={Someone, A}, year={2026}}\n"))
+   (dolist (case '(body bibliography))
+     (with-temp-buffer
+       (org-mode)
+       (insert
+        "#+OPTIONS: e:t ^:t tex:t\n"
+        (if (eq case 'body)
+            "Entity \\cdot and fragment $\\cdot$.\n"
+          (concat csl-header "[cite:@key]\n#+print_bibliography:\n")))
+       (let* ((source (buffer-string))
+              (org-export-use-babel nil)
+              (processing 0)
+              (filters 0)
+              captured
+              (bridge (symbol-function 'org-texmacs--standard-input))
+              (org-export-before-processing-functions
+               (list (lambda (_) (cl-incf processing))))
+              (org-export-filter-parse-tree-functions
+               (list
+                (lambda (tree _backend _info)
+                  (cl-incf filters)
+                  tree))))
+         (cl-letf
+             (((symbol-function 'org-texmacs--standard-input)
+               (lambda (info state)
+                 (setq captured (funcall bridge info state))))
+              ((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _)
+                 (ert-fail
+                  "Unsupported LaTeX must not start native conversion"))))
+           (let ((error
+                  (should-error
+                   (org-export-as 'texmacs)
+                   :type 'org-texmacs-document-error)))
+             (should (equal (nth 1 error) "Unsupported inline node"))
+             (should (eq (nth 2 error) 'latex-fragment))))
+         (should (= processing 1))
+         (should (= filters 1))
+         (should (equal source (buffer-string)))
+         (let ((ast (org-texmacs-input-ast captured)))
+           (should
+            (equal
+             (org-element-map
+              ast 'latex-fragment
+              (lambda (node) (org-element-property :value node)))
+             (if (eq case 'body)
+                 '("$\\cdot$")
+               '("$\\cdot$" "$\\cdot$"))))
+           (should
+            (= (length (org-element-map ast 'entity #'identity))
+               (if (eq case 'body)
+                   1
+                 0)))))))))
+
 (ert-deftest org-texmacs-standard-csl-transaction-info-and-key-filter
     ()
   (org-texmacs-test--with-csl
