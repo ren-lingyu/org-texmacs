@@ -1,7 +1,8 @@
 # org-texmacs active backlog
 
-Explicit Cite configuration cleanup is accepted7path candidate, pending human
-commit/exact cite-processor-config-0.7.0-inputs.json verification.12checks/704ERT
+Explicit Cite configuration cleanup is human-delivered9f7f7c4, exact parent/
+7paths/message/167hashes verified against its receipt, clean worktree/index.
+12checks/704ERT
 pass. New preference supersedes stock-value inference; native semantics/ownership
 and deferred scopes unchanged. Then separate human freeze/publication decision.
 No further source implementation selected; root TODO.

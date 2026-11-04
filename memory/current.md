@@ -1,8 +1,10 @@
 # org-texmacs current memory
 
-## Cite configuration cleanup accepted; human delivery next
+## Cite configuration cleanup delivered; development complete
 
-One independent7path change against delivered22191a0 is accepted, not committed.
+Human9f7f7c4 delivery matches exact22191a0 parent/7paths/full approved message/
+all167committed and worktree hashes; ordinary worktree/index clean. No unchanged
+runtime checks repeated. Configuration cleanup is complete.
 Defcustom org-texmacs-cite-export-processor defaults native; nil delegates unchanged
 (not disable). Explicit texmacs entry wins; otherwise non-nil preference supplies
 backend choice before generic fallback even if global config nil. Standard Org
@@ -19,8 +21,7 @@ math experiments repeated or new math/field/style support claims. Exact contract
 fixture corrections, limits and receipt: cite-processor-config-0.7.0.md/-inputs.json.
 Draft ordinary tmp/commit.md from explicitly authorized whole worktree candidate.
 
-Next human commit and exact parent/7paths/message/167hash verification, then separate
-TODO->NEXT freeze decision. No automatic state/CLOSED/version/tag/release. Single
+Next separate human TODO->NEXT freeze decision; no source or commit gate remains. No automatic state/CLOSED/version/tag/release. Single
 600s grant consumed, not future blanket authority. No further source implementation
 needed under this cleanup. Semantic extraction and maintained regressions suffice;
 no independent raw archive needed. N6-N9 delivery remains historical baseline below.

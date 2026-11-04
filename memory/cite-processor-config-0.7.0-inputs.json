@@ -257,5 +257,9 @@
     "locked x86_64-linux only",
     "no repeat manual native math experiment; processing/ownership unchanged",
     "version remains TODO; ordinary index untouched; human commit/freeze"
-  ]
+  ],
+  "delivery": {
+    "commit": "9f7f7c467576cb1e13da3af66a0e27c7fa9a3581",
+    "verification": "exact parent/7paths/full message/all167committed and worktree hashes; clean worktree/index; TODO; no tag at HEAD"
+  }
 }

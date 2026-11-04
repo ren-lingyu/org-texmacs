@@ -9,7 +9,9 @@ actual delegated/backend CSL covered. Existing protocol assertions retained via
 explicit delegation.7paths/167canonical hashes/full diff verified, index empty.
 Source/library changes exclude registration, native semantics and ownership;
 no repeat native math visual experiment. Exact evidence/corrections/receipt:
-cite-processor-config-0.7.0.md/-inputs.json. Human commit pending; TODO unchanged.
+cite-processor-config-0.7.0.md/-inputs.json. Human9f7f7c4 delivery verified exact
+22191a0 parent/7paths/message/all167committed and worktree hashes, clean index/
+worktree. No unchanged runtime checks repeated; TODO and no tag at HEAD.
 
 
 N9 corrected final-2 full flake exits0/all12named checks:694defaultERT+actual5=699,

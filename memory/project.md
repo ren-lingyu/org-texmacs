@@ -10,7 +10,7 @@ processing precede pure lowering, with source transaction completion guards.
 Independent model/island/native-input contracts stay dependency-free after input
 construction. No third AST/raw channel/parallel preparation/citation recollection.
 
-The accepted configuration cleanup adds org-texmacs-cite-export-processor:
+The delivered configuration cleanup adds org-texmacs-cite-export-processor:
 native default; nil delegates unchanged. Explicit texmacs alist entry wins;
 otherwise non-nil preference supplies base backend entry before generic fallback,
 even with nil Org config. Org chooses derived entries and normal declaration/
@@ -18,7 +18,8 @@ external/filter precedence. No global mutation or value-origin inference.
 Native registration/semantics/ownership unchanged. HTML/LaTeX and explicit CSL
 remain; owned inactive ALT_TITLE rule from N9 still applies. Configuration cleanup
 contract/receipt: cite-processor-config-0.7.0.md/-inputs.json.12checks/704ERT pass,
-7path candidate pending human commit. N9 native examples/visual evidence remains.
+Human9f7f7c4 delivery verifies exact7paths/message/167hashes and22191a0 parent;
+worktree/index clean. N9 native examples/visual evidence remains.
 
 Native catalog/readable module guard, plain/alpha/abbrv/aliases, safe worker reuse,
 source snapshots and valid math TM/PDF remain. EN/ZH generic/article examples use
