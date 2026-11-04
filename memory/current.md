@@ -1,23 +1,26 @@
 # org-texmacs current memory
 
-## Current: prerelease N3 human-delivered, N4 CSL trace active
+## Current: N0-N4 complete; N5 conditional deferral closeout
 
-N0-N3 human-delivered. N3 6c7ac07 matches expected 5ce20ef parent, exact11paths/
-message and all159accepted committed/worktree input hashes. Project/index clean;
-no unchanged runtime rerun. Accepted evidence remains653defaultERT+actual4/all12
-checks, eight new cases, native binding/layout/reload and documented final-Org
-clipping semantics with archived HTML counterexample.
+Mandatory A is human-delivered through N3 6c7ac07, with exact eleven paths/message/
+159input hashes verified. Accepted653defaultERT+actual4/all12checks remain valid.
+N4 isolated real CSL four-layer trace and native converter experiments complete.
+Dollar-cdot survives intact; other sampled losses occur in Citeproc's BibLaTeX
+bracket/command processing before CSL title, not sentence casing or lowering.
+Native cdot converts/renders correctly, but malformed/unknown inputs can return
+repaired, empty or placeholder trees without failure status. Parsing also repairs;
+no reliable finite conversion/rejection contract was established. B is deferred
+under the approved conditional gate. This is a bounded examined-API result, not
+an impossibility claim. No production converter/parallel Cite path is added.
 
-Mandatory A is delivered. N4 now traces real .bib -> standard CSL -> final Org AST
-for bare cdot, inline cdot, alpha_i and frac controls in body and bibliography.
-Prepare once and inspect owned structure before pure lowering/native consumers.
-Only unmet actual CSL final-AST needs trigger the finite converter experiment;
-body-only needs do not independently expand scope. Upstream math loss is not
-recovered from .bib. Existing raw output remains refused. No production LaTeX
-conversion or new support claim without the N4 reliability/ownership/native gate.
-N5 conditional implementation or documented deferral follows N4 evidence; no new
-ordinary project changes yet. Plan: memory/inline-objects-0.7.0-plan.md.
-Release0.7.0/NEXT; finalization/CLOSED/tag/publication remain human-owned.
+User clarifies future B promises only verified intact final-AST fragments, not
+original BibLaTeX math preservation. N4 facts, classification/provenance and
+retention: memory/inline-objects-0.7.0-n4.md and selected archive manifest there.
+N5 now documents deferral, adds a real CSL retained-fragment refusal regression,
+synchronizes README/CHANGELOG/release notes and completes checks/diff review.
+Ordinary project/index clean before N5 edits. Human delivery remains mandatory;
+release0.7.0 stays NEXT, no DONE/CLOSED/tag/publication authority.
+Plan: memory/inline-objects-0.7.0-plan.md.
 
 A-E3 are delivered. Final E3 f6aa2ae matches expected E2b parent, full approved
 message/21paths/all159accepted committed and worktree hashes, including native

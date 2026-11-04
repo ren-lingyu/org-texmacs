@@ -76,6 +76,11 @@ packages, custom macros, arbitrary BibLaTeX fields or full LaTeX claim. No custo
 LaTeX parser, Citeproc internals/title-field recognition, .bib reread to restore
 lost data, replacement processor or parallel bibliography preparation.
 
+User follow-up clarifies B only guarantees verified finite complete fragments
+already preserved in final Org AST, not upstream BibLaTeX preservation. Trace
+BibLaTeX field -> CSL title -> Citeproc output -> final AST without processor
+changes; keep cdot and unknown/recovery controls in the native experiment.
+
 Explore capability/loading, math wrappers/tree shape, Cork/Unicode, ownership,
 copy/node identity, malformed input, unknown commands/macros and recovery loss.
 For every representative input classify: (1) success with expected structure AND

@@ -1,5 +1,16 @@
 # org-texmacs durable evidence
 
+N4 conditional inline-LaTeX gate is complete: B deferred. Actual four-layer CSL
+trace locates bare cdot/alpha/fraction loss during BibLaTeX-to-CSL bracket/command
+processing; dollar-cdot survives intact. Native converter handles positives but
+accepts repair/empty/placeholder negative outputs without a reliable failure
+contract. Registered parse-latex also repairs. No production support claim or
+new map/worker/preparation mechanism. Exact method, classification, artifacts and
+archive selection: memory/inline-objects-0.7.0-n4.md. N5 now closes documentation
+and a real CSL retained-fragment refusal regression; A remains delivered. Future
+B would cover only verified intact final-AST fragments, not BibLaTeX preservation.
+
+
 ## N3 human delivery verified and N4 intake
 
 Human6c7ac07ba4f4c936abe99fb15d1915df6e211deb matches expected5ce20ef parent,

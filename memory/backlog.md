@@ -1,5 +1,16 @@
 # org-texmacs active backlog
 
+N4 conditional inline-LaTeX gate is complete: B deferred. Actual four-layer CSL
+trace locates bare cdot/alpha/fraction loss during BibLaTeX-to-CSL bracket/command
+processing; dollar-cdot survives intact. Native converter handles positives but
+accepts repair/empty/placeholder negative outputs without a reliable failure
+contract. Registered parse-latex also repairs. No production support claim or
+new map/worker/preparation mechanism. Exact method, classification, artifacts and
+archive selection: memory/inline-objects-0.7.0-n4.md. N5 now closes documentation
+and a real CSL retained-fragment refusal regression; A remains delivered. Future
+B would cover only verified intact final-AST fragments, not BibLaTeX preservation.
+
+
 ## Approved final prerelease inline compatibility execution
 
 User approves memory/inline-objects-0.7.0-plan.md (N0-N5). A is mandatory;
@@ -16,8 +27,8 @@ N2 is locally accepted: entity/options/ownership/native/PDF proof and
 paths/message/all159hashes. N3 script/options/layout work is locally accepted
 with653defaultERT+actual4/all12checks and documented final-Org clipping behavior.
 Human N3 delivery6c7ac07 matches exact parent/11paths/message/all159hashes.
-N4 real CSL trace is active; no LaTeX implementation before its conditional gate. LaTeX
-remains conditional future work.
+N4 is complete; B is deferred under its reliability gate. N5 documents the limit
+and verifies retained-fragment refusal without introducing a converter.
 
 A-E3 are human-delivered. Final E3 f6aa2ae matches expected E2b parent/full message/
 21paths/all159accepted inputs; worktree/index clean, no unchanged runtime rerun.
