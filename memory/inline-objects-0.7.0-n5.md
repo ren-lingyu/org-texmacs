@@ -17,11 +17,35 @@ and source text preservation. The test does not assert upstream loss is required
 or add a fake processor, second preparation or rejected converter design test.
 
 README/release notes distinguish entity/script support from deferred LaTeX.
-Record the four-layer pinned Citeproc matrix and correct loss location, original
-BibLaTeX preservation non-guarantee and finite final-AST-only future scope.
-Root planned checkboxes are complete by documented deferral, not a conversion
-support claim. Version stays NEXT, no new CLOSED/tag/publication. No other version
+README records pinned Citeproc loss examples; concise release notes state the
+upstream loss boundary and original BibLaTeX preservation non-guarantee. Root
+entries state the deferred fragment outcome rather than experimental steps,
+without claiming conversion support. Version stays NEXT, no new CLOSED/tag/publication. No other version
 history, library, dependency or example changes.
+
+## User-approved documentation amendment after native feasibility review
+
+User now explicitly requests preserving NEXT, simplifying only CHANGELOG.org and
+CHANGELOGS/v0.7.0.org, then revising tmp/commit.md from the complete final diff.
+Remove repeated experiment/acceptance checklists and the long four-layer table;
+retain entity/scripts/options, upstream CSL loss/version boundary, fragment
+conversion deferral/rejection and no bibliography reread. No future native
+processor scope/default is added and B is not reopened. README and ERT unchanged.
+
+The new worktree candidate differs from the previously accepted159-file receipt
+only in those2changelogs. Complete4path HEAD-to-worktree diff reviewed; staged and
+unstaged diff --check pass. No new runtime tests/formatting: runtime inputs remain
+exactly accepted. The original full-check snapshot below is historical acceptance,
+not a byte-identical snapshot of the latest2prose amendments. Receipt is updated
+to latest159hashes/full message and explains this validation boundary.
+
+All4old staged blobs are deliberately preserved. Only the2changelogs are now MM;
+user must restage their final contents before human commit. Explicit complete-diff
+message authorization supersedes the generic staged-only draft default. Keep the
+same docs(cite) subject and describe concise changelog, README limits and maintained
+refusal regression. One coupled commit remains appropriate, split unnecessary,
+low difficulty. No ordinary Git state write. Native processor feasibility stays
+a separate future planning decision after N5 delivery.
 
 ## Verification
 

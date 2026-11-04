@@ -1,7 +1,7 @@
 {
   "project": {
     ".gitignore": "d5cd7c28f728b0facaf53a82ec716a8b52bd9eef2a6728c9a39905c382f35204",
-    "CHANGELOG.org": "1f20549495bfb965e91fc1fef50f1037203452376b62857a9ab1ab3ce7dfbda3",
+    "CHANGELOG.org": "684e52ea9e9b328c116ff0d62efa91296688efc8baa4544a59457cc752f45683",
     "CHANGELOGS/v0.1.0.org": "0ac600241de985bea57b884f26f506141450cba00c2af3acbfae331ddd1f1ca9",
     "CHANGELOGS/v0.2.0.org": "5b109960fc9958c57d4b36b666aae453bd8be7bb51bd2146111561f492fa3838",
     "CHANGELOGS/v0.2.1.org": "67aa35154dcbb3ba9fbca7d5f1c88ca2f55750b542d488b070357f6af19b3165",
@@ -10,7 +10,7 @@
     "CHANGELOGS/v0.4.0.org": "6307ac87f0a041dbc84c31cd3e8a3cb0147dc615d56eb6bec047b6ec682a4354",
     "CHANGELOGS/v0.5.0.org": "46319d968f9797f86ae8b3fed9a6abfc9470731cdb20b1f645056b5b692a0e39",
     "CHANGELOGS/v0.6.0.org": "0b4e815792e40e3d2794c659465382392df49143999beda231515cf36f65c686",
-    "CHANGELOGS/v0.7.0.org": "1bcedcf96a23de4555e269ae094d80f64a43c360376e9c248a990fb18964b4cf",
+    "CHANGELOGS/v0.7.0.org": "06acdb81912ff2014dce8b1312a3ccd50297585632661580cc923f61610124e7",
     "LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
     "README.org": "8aa2e030f14f2cabb6c3fde9ff065091867c246d9e218908195451343b6ffb45",
     "flake.lock": "ec36a6d3f3c69c85323f7a5e30f1e12a1d84fe7f9eef4649cf0c116b1a6114cc",
@@ -168,7 +168,7 @@
       "README.org",
       "tests/ert-cite/lisp/standard-cite.el"
     ],
-    "message": "docs(cite): document inline LaTeX limits and deferral\n\n- 记录真实 BibLaTeX 字段到 CSL title, Citeproc 输出和最终 Org AST 的数学内容变化, 明确上游损失及版本范围.\n- 根据原生 snippet 转换和错误恢复实验延期有限 LaTeX 支持, 明确只消费最终 AST, 不承诺保留原始 BibLaTeX 数学.\n- 添加正文及真实 CSL 保留完整 `latex-fragment` 的标准导出拒绝回归, 验证 preparation 仅执行一次, 源 buffer 保持不变且不启动原生转换.\n- 同步 README, CHANGELOG 和详细 release notes, 完成行内兼容性事项的记录.\n"
+    "message": "docs(cite): document inline LaTeX limits and deferral\n\n- 说明受测 Citeproc 版本在 BibLaTeX 到 CSL 转换中丢失数学信息的边界, 明确后端消费最终 AST 而不重新读取文献恢复内容.\n- 记录原生 snippet 转换缺少可靠错误拒绝契约导致的有限 LaTeX 支持延期, 区分 entity 和上下标支持与残留 `latex-fragment` 的明确拒绝.\n- 精简 CHANGELOG 和详细 release notes 中的实验过程及重复验收清单, 集中描述支持范围和剩余限制, 并在 README 记录具体转换结果.\n- 添加正文及真实 CSL 保留完整 `latex-fragment` 的标准导出拒绝回归, 验证 preparation 仅执行一次, 源 buffer 保持不变且不启动原生转换.\n"
   },
   "acceptance": {
     "full_log": "tmp/inline-objects-0.7.0/n5-full-3.log",
@@ -178,6 +178,16 @@
     "real_integration_ert": 4,
     "checks": 12,
     "new_ert": 1,
-    "n4_archive": "archive/2026-11-04T02-45-07Z--6c7ac07/MANIFEST.md"
+    "n4_archive": "archive/2026-11-04T02-45-07Z--6c7ac07/MANIFEST.md",
+    "documentation_amendment": {
+      "paths": [
+        "CHANGELOG.org",
+        "CHANGELOGS/v0.7.0.org"
+      ],
+      "scope": "User explicitly requests concise changelog and complete-diff message; keep NEXT, preserve existing index.",
+      "validation": "Complete HEAD-to-worktree four-path diff reviewed; staged and unstaged git diff --check pass; all other157tracked worktree hashes unchanged. No fresh product tests or formatter run for prose-only amendments.",
+      "draft_basis": "Explicit user-selected final worktree candidate, not current index. Two changelog paths must be restaged by the user before delivery.",
+      "prior_runtime_acceptance": "Prior recorded654defaultERT+actual4/all12checks still describes identical executable/test/config inputs; old final159-file snapshot is not claimed byte-identical to amended documentation."
+    }
   }
 }

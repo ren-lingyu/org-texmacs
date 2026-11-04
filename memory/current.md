@@ -1,5 +1,34 @@
 # org-texmacs current memory
 
+## N5 concise changelog amendment ready; NEXT preserved
+
+User authorizes concise root/detailed0.7.0changelogs and tmp/commit.md based on the
+complete final diff. Both documents now retain support/limits and drop redundant
+experiment checklist/table; README and regression test untouched. New expected
+159hashes/message recorded in inline-objects-0.7.0-n5-inputs.json; amendment method
+and prior-runtime validation boundary in inline-objects-0.7.0-n5.md. No tests
+rerun for2prose-only changes; complete diff and both whitespace checks pass.
+Index remains the old4human-staged blobs;2changelogs now also unstaged (MM), so
+user restaging is needed before commit. Preserve index; verify delivery against
+new receipt, not old full-snapshot hashes. Native scope reopening remains only
+a reviewed proposal, not an implementation or version-state change.
+
+
+## Earlier read-only review: proposed scope reopening after N5 delivery
+
+User proposes preserving current staged N5 delivery, then changing NEXT back to
+TODO and curating changelog/new native Cite work; asks read-only review first.
+No ordinary file/state/index writes or implementation are authorized by this
+proposal. Historical v0.5.0 source confirms native BibTeX parse/plain formatting,
+not a standard native Org Cite processor. Recommend standardizing that existing
+capability within0.7.0, without restoring old citation collection/preparation.
+Current staged CSL-loss/fragment-refusal facts remain true; preserve N5 first.
+Root experiment checklists can become concise user-facing scope; keep B deferred,
+CSL optional-path boundaries and real migration changes. Native default policy,
+style/field/error boundaries and full integration acceptance need a separate plan.
+Original request fully distilled; no independently valuable raw capture needed.
+
+
 ## Completed native Cite feasibility; report review, no production adoption
 
 I native styles and II mock standard Org Cite/ownership independently passed before
@@ -46,10 +75,10 @@ N5 four-path candidate is implemented and accepted: real body/CSL retained-fragm
 refusal ERT plus README/CHANGELOG/release notes, no production converter change.
 654defaultERT+actual4/all12checks pass, fresh Cite10 with exact unchanged native/
 PDF/integration derivatives reused. Final checkbox-only change passes final
-fresh treefmt; all159root/snapshot hashes match. User has now staged the4accepted
-paths, verified unchanged against receipt; HEAD remains6c7ac07. Complete diff/
-whitespace reviewed. tmp/commit.md contains the
-accepted-candidate draft; human commit remains. Verify expected parent,
+fresh treefmt at original acceptance. Latest documentation amendment above changes
+only2changelogs; current receipt reflects new159hashes/message. Existing4staged
+blobs remain original and2paths need restaging. HEAD remains6c7ac07; full candidate
+diff/whitespace reviewed, updated draft prepared; human commit remains. Verify expected parent,
 exact4paths/message and all159hashes from memory/inline-objects-0.7.0-n5-inputs.json
 at next intake; do not rerun unchanged checks. Method/failed gates/limits and
 acceptance: memory/inline-objects-0.7.0-n5.md. No further implementation node.
