@@ -1,5 +1,12 @@
 # org-texmacs active backlog
 
+v0.7.0 review and local finalization complete: human f16cc2f delivered exact
+accepted source/message, local v0.7.0 tag verified, clean worktree/index. No
+further adopted implementation/commit task. Remote/platform publication remains
+separate and unverified; deferred items aren't implicitly selected. Details and
+receipt release-review-0.7.0.md/-inputs.json. Earlier pending finalization below
+is historical.
+
 Final release-content review passed for four documentation/Commentary paths,
 no identified blocker. Root is human-frozen NEXT; user reviews diff and manually
 chooses DONE/UTC CLOSED then commit/tag/publication as separate steps. No further

@@ -1,50 +1,35 @@
 # org-texmacs current memory
 
-## v0.7.0 human DONE confirmed; staged finalization ready
+## v0.7.0 local finalization delivered and tagged
 
-User manually froze NEXT and authorizes final documentation/comment/version
-review, concise user-visible root and complete release notes. User subsequently
-requests one early complete use-package declaration, native/plain/nil preference
-in :custom, menu in :init, short Nix comment. All implemented and user wording
-preserved/corrected as requested. Current candidate is four uncommitted paths:
-CHANGELOG.org, CHANGELOGS/v0.7.0.org, README.org and main Commentary, against
-delivered21d5704. Root summary131->50lines, old API migrations/native Cite defaults
-and limitations documented; versions consistently0.7.0 without extra bump.
+Human f16cc2f delivery exactly matches accepted21d5704parent,4paths/full approved
+message and all167committed plus current worktree hashes. Ordinary index/worktree
+clean. Local v0.7.0 tag resolves to this exact commit; no remote/platform publication
+check performed. Root DONE with UTC CLOSED [2026-11-04 Wed18:45], valid Org planning,
+matching CUSTOM_ID and complete detailed release manuscript. Agent performed no
+ordinary staging/commit/tag/release action. No unchanged checks repeated.
 
-Last audit found three related README lifecycle ambiguities. User explicitly
-authorizes corrections and iterative re-review. Fixed document/source-byte/
-dispatcher explanations: standard preparation/INCLUDE and legacy receipts aren't
-replayed; active native Cite exports still check bibliography fingerprints and
-reject mutations/unavailability; completed independent consumers use owned data
-without rereading bibliography files. Implementation prepared-cite-check and
-maintained final-text-filter-change regression agree. Further review found no
-remaining issue; recommend human DONE, no new feature or native code change.
+Final review/corrections complete: concise user-visible root131->50lines, explicit
+API migrations/native defaults/limits, one early complete use-package declaration
+(native/plain/nil :custom, menu :init), short Nix path guidance. Three README source-
+lifecycle explanations distinguish retired preparation/legacy receipts from active
+native bibliography guards and completed pure consumers. Main change is Commentary;
+no runtime expression change from the accepted implementation, versions0.7.0.
 
-Fresh final full README configuration loads under -Q locked Emacs: native/plain/
-nil INFO, T/T/t/p menu,11fragment tags, packaged path preserved, no worker. Final
-Org checks16local links/5deprecated mappings/unchanged main executable forms pass;
-final treefmt exits0. Current code strict compilation/lint/324core already passed;
-exact delivered functional baseline12checks/705ERT remains evidence, not a fresh
-full native/PDF/integration run on the documentation candidate.167canonical hashes
-match reviewed content, complete4path diff/whitespace reviewed; user staged all4paths.
-Source receipt/report/draft reflect latest corrections. No new archive needed.
+Validation: exact delivered functional implementation12checks/705ERT; strict
+compilation/lint/324core for final source package; last documentation candidate
+fresh config load,16local links,5obsolete mappings, unchanged main executable forms
+and final treefmt pass. Human DONE/CLOSED was the sole subsequent source delta,
+parsed/verified in the staged candidate. No redundant full native/PDF/integration
+or math visual repetition, no new support certification for minimum Org9.8 runtime,
+other platforms/full fields/Unicode/math recovery/deferred LaTeX. Source receipt,
+outputs, limits and delivery: release-review-0.7.0.md/-inputs.json.
 
-User manually marked DONE and fully staged the reviewed four paths. Only
-NEXT->DONE plus CLOSED [2026-11-04 Wed 18:45] differs from accepted content;
-all167staged inputs equal worktree and other166hashes match. Clock observed
-18:45:46UTC, same minute; Org parser confirms indented CLOSED/DONE/CUSTOM_ID.
-Complete staged candidate/whitespace reviewed, no partial/unstaged changes.
-Suitable as one docs(changelog) commit; no repeated unchanged runtime checks.
-Draft tmp/commit.md now 'docs(changelog): finalize v0.7.0 release notes', includes
-human finalization. No ordinary index or history mutation by agent.
-
-Next user commits using final draft. Verify exact parent21d5704/4paths/message/
-167committed hashes against updated release-review-0.7.0-inputs.json without
-rerunning unchanged checks. DONE is local finalization, not publication; tag/
-release remain separate human actions. Current candidate isn't committed yet,
-so no new project-parent association. No remaining implementation/review issue.
-Details: release-review-0.7.0.md/-inputs.json. Prior NEXT/pending-state notes are
-historical; human DONE is verified current state.
+No remaining implementation/review/commit gate for0.7.0. Any remote push/platform
+publication or later development needs separate user direction; local tag is not
+publication proof. Current report/draft tmp/release-review-report.md and tmp/commit.md
+match delivered finalization. No new archive needed. Historical pending/TODO/NEXT
+statements below refer to earlier phases and are superseded by local DONE delivery.
 
 ## Cite declaration interface delivered; development complete
 

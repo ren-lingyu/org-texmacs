@@ -1,5 +1,14 @@
 # org-texmacs current project model
 
+## v0.7.0 locally finalized and tagged
+
+Human f16cc2f matches exact parent/four paths/message/167source hashes, including
+reviewed documentation/Commentary and DONE/CLOSED. Local v0.7.0 tag points here,
+worktree/index clean. No remaining implementation or review gate, no unchanged
+checks repeated. Prior runtime705ERT and final scoped/document acceptance remain;
+publication not checked. Delivery receipt release-review-0.7.0-inputs.json.
+Earlier frozen/pending candidate descriptions below are superseded.
+
 ## v0.7.0 frozen candidate; final content reviewed
 
 Root is human-frozen NEXT. Final four-path docs/Commentary candidate passed review;

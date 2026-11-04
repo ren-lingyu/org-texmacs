@@ -1,5 +1,12 @@
 # org-texmacs durable evidence
 
+Human f16cc2f finalization verified exact21d5704parent/4paths/full approved message
+and all167committed plus worktree hashes; ordinary index/worktree clean. Local
+v0.7.0 tag resolves to exact delivered commit. DONE/CLOSED/detail committed, no
+unchanged runtime gate repeated. Prior705functional/scoped324core/compile/lint and
+last config/Org-doc/treefmt proofs retain their explicit scopes; no online release
+verification or agent ordinary Git write. Receipt release-review-0.7.0-inputs.json.
+
 Final iterative review closes the README source-lifecycle finding in three related
 paragraphs. Source/owned-consumer distinction now matches native guards/regression.
 Fresh config/16local-links/5migration/form comparison and final treefmt pass;

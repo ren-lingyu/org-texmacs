@@ -1,5 +1,13 @@
 # org-texmacs project goals
 
+## v0.7.0 local finalization complete
+
+Finalization is human-delivered f16cc2f with DONE/UTC CLOSED and local v0.7.0 tag
+on the exact accepted commit, clean worktree/index. Review, implementation and
+commit gates complete; no further adopted development. Publication is separate
+and unverified. Details/receipt release-review-0.7.0.md/-inputs.json; prior NEXT/
+pending-finalization statuses below are historical.
+
 ## Final release review and human finalization
 
 User manually froze v0.7.0 to NEXT and authorizes final documentation/comment/

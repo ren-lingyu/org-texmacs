@@ -154,3 +154,14 @@ no split needed/low difficulty, no new runtime checks. Draft subject now finaliz
 v0.7.0 release notes, body covers human DONE/CLOSED and all actual four-path effects.
 Receipt now captures human DONE/staged hashes/message for exact delivery check.
 Ordinary commit/tag/release remain human, no new project parent before delivery.
+
+## Final human delivery
+
+Human f16cc2f exactly matches21d5704parent, four paths, full approved finalization
+message and all167committed/worktree hashes from the DONE candidate receipt.
+Ordinary index/worktree clean, local v0.7.0 tag resolves to this commit. No agent
+ordinary Git mutation or unchanged runtime checks. Root DONE/CLOSED/ID/detail file
+are committed; all review and commit gates complete. Local tag/DONE don't verify
+remote/platform publication; none inspected or performed. Receipt records exact
+delivery. This exact committed source now justifies GAW project-parent association.
+No remaining adopted work, new archive or automatic release task.
