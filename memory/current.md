@@ -1,5 +1,15 @@
 # org-texmacs current memory
 
+## Active isolated comparison, production candidate preserved
+
+User authorizes bibliography architecture experiments A/B/C only, not production
+changes or reopening B. Plan/scope: memory/bibliography-comparison-experiment.md.
+N5 four-path159hash candidate remains exactly accepted and awaiting human commit.
+Next: isolate CSL input conversion versus formatting (real .bib/direct JSON,
+plain/italic), fixture custom getter/protocol and scoped standard oc-csl handoff,
+then existing native BibTeX parse/format with real TM/PDF. Distinguish data/math/
+layout, record failures/repeatability and archive selected necessary text evidence.
+
 ## Current: N5 candidate accepted; human delivery gate
 
 N0-N4 complete; mandatory A human-delivered through N3. N4 B deferred because
