@@ -251,7 +251,7 @@
       "lisp/org-texmacs-prepared.el:231",
       "tests/ert-core/lisp/native-cite-source.el:173"
     ],
-    "unchanged_evidence": "Prior full 12checks/705ERT and scoped strict compilation/lint/324core remain. Only delta since accepted 167-input candidate is one example comment; exact comparison verified, no tests repeated.",
+    "unchanged_evidence": "Only README prose changed during the corrective pass; all 166 other source hashes remain unchanged. Prior full 12checks/705ERT and scoped strict compilation/lint/324core remain functional evidence. Fresh config/docs/treefmt checks pass; no full native/PDF/integration repetition.",
     "recommendation": "No remaining identified issue after authorized iterative documentation corrections; suitable for human DONE/UTC CLOSED, separate commit/tag/release.",
     "verification": "Fresh actual complete-config loading and Org docs checks pass; full INFO native/plain/nil, menu/Nix/no-worker, 16 local links, five API mappings, unchanged executable forms. Final treefmt exits 0. No native runtime code changes or repeated full suites."
   }
