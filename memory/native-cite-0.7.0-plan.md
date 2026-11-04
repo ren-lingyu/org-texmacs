@@ -214,11 +214,9 @@ NEXT; DONE/tag/publication remain separate manual release decisions.
 
 ## Current execution state
 
-N6 deliveredfd88165, exact prior parent/path/full message/159hashes verified.
-N7 accepted11path candidate pending human delivery. Formal processor module is
-org-texmacs-cite-native.el, registered when backend loads, so existing file
-allowlist and model independence are preserved. See native-cite-0.7.0-n7.md and
--inputs.json. Scoped5checks/358ERT pass (301core/10CSL/47PDF), compile/lint/format.
-One PDF run explicitly authorized600s after initial120s timeout, no general
-future timeout extension. No prototype transplant, native IO/default change,
-B reopening or new parser/field/Unicode blocker. Human N7 commit1824ac9 is now verified; N8 is active, no default switch.
+N6, N7 and N8 are human-delivered. N8 delivery9d923e7 matches exact1824ac9
+parent,16paths/full approved message/all166committed and worktree hashes; clean
+intake. Verification is read-only, not a repeat runtime check or retrospective
+runtime provenance. N8 accepted686ERT/all11named checks remains. N9 active:
+standard processor fallback precedence, default integration tests, native examples,
+real extension and complete final checks. No automatic NEXT/finalization.

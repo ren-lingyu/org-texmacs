@@ -1,11 +1,11 @@
 # org-texmacs current memory
 
-## Native Cite N8 accepted candidate; human delivery before N9
+## Native Cite N8 delivered; N9 default and final integration active
 
 Follow native-cite-0.7.0-plan.md N6-N9 with per-node human commits. N7 delivery
 1824ac9 is verified (exact parent/11paths/message/all162hashes); user reports
-manual full flake check, distinct from our observed N7 scoped358ERT. N8 is now
-accepted in the worktree, not committed. Complete contract/evidence:
+manual full flake check, distinct from our observed N7 scoped358ERT. N8 is human-delivered9d923e7, verified exact1824ac9 parent/16paths/full message/
+all166committed and worktree hashes; clean intake. Complete contract/evidence:
 native-cite-0.7.0-n8.md and -inputs.json. Draft: ordinary tmp/commit.md.
 
 N8 connects real bibliography snapshots to formal owned requests and native
@@ -26,7 +26,8 @@ candidate/whitespace reviewed, ordinary index empty. No release state change:
 root TODO, no CLOSED/tag/publication. Native field/Unicode/math recovery limits
 remain documented independent issues; generic fragment B remains deferred.
 
-Next: human N8 commit, then verify exact parent/paths/message/166hashes before N9.
+N9 is now active: inspect standard Org processor precedence before selecting
+the fallback seam; then migrate examples and real extension/default regressions.
 N9 alone switches backend default respecting explicit standard choices, migrates
 examples, reruns real Org-roam-organize and full acceptance. Other platforms,
 minimum Org, real extension under native default and migrated examples are not

@@ -277,5 +277,9 @@
   "visuals": {
     "native-cite-plain.png": "409d773840b9ab2e29770adabfc6c27acf9f4ef7a7766077110ec92b95886e0e",
     "native-cite-alpha.png": "ad605f17126661db1f9146850af2c80d697e1639fa81bf4a0783bbc49d3f769b"
+  },
+  "delivery": {
+    "commit": "9d923e778275d6f22def87ad06de27da232d4b0d",
+    "verification": "exact parent/paths/message/all166committed and worktree hashes; clean intake"
   }
 }
