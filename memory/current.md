@@ -1,5 +1,24 @@
 # org-texmacs current memory
 
+## Cite configuration interface cleanup active
+
+User explicitly adopts a separate v0.7.0 change after delivered N9 at22191a0.
+Replace stock-value inference with defcustom org-texmacs-cite-export-processor,
+default texmacs-native; nil delegates unchanged to standard Org Cite (not disable).
+Explicit texmacs entry wins; otherwise non-nil preference prepends backend choice
+even when Org config nil or generic t/csl. Preserve standard declarations/options/
+filters and derived-backend specificity; no global mutation/new dispatch/advice,
+processor registration/native semantics/ownership changes. Detailed contract and
+acceptance: cite-processor-config-0.7.0.md. Root stays TODO; one independent human
+commit, then separate freeze decision. Archive assessment: complete semantic
+extraction suffices; no independent need to capture raw conversation bytes.
+
+Next code/helper/matrix/load-order/derived-backend tests, adjust explicit CSL
+fallback regression with preference nil, README/root/detail. Focused affected ERT
+before compile/lint/fmt/full necessary checks. Existing native math visual evidence
+remains, no repeat manual parser experiments. Long600s grants from N9 consumed;
+any new longer gate requires authority. Ordinary index/history remain human.
+
 ## Native Cite N9 human-delivered; approved development complete
 
 Approved N6-N9 implementation is human-delivered through N9. Delivery22191a0
