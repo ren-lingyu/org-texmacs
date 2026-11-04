@@ -1,80 +1,43 @@
 # org-texmacs current memory
 
-## Final read-only audit: clarify one README paragraph before DONE
+## Final v0.7.0 review passed; suitable for human DONE
 
-Latest user asks final audit/DONE recommendation, not more implementation. Current
-four-path candidate matches accepted receipt except one README example comment,
-now corrected to "When installed via Nix, leave this variable unchanged." All166
-other hashes match, version/header/NEXT/ID/single complete config/index verified.
-No repeated unchanged tests; prior705full ERT plus strict compile/lint/324core and
-validated config/treefmt remain implementation evidence.
+User manually froze NEXT and authorizes final documentation/comment/version
+review, concise user-visible root and complete release notes. User subsequently
+requests one early complete use-package declaration, native/plain/nil preference
+in :custom, menu in :init, short Nix comment. All implemented and user wording
+preserved/corrected as requested. Current candidate is four uncommitted paths:
+CHANGELOG.org, CHANGELOGS/v0.7.0.org, README.org and main Commentary, against
+delivered21d5704. Root summary131->50lines, old API migrations/native Cite defaults
+and limitations documented; versions consistently0.7.0 without extra bump.
 
-One previously missed documentation ambiguity: README2352 combines consumed
-INCLUDE/bibliography changes with retirement of custom file receipts, omitting
-active native Cite source guards. README1063 correctly says active bibliography
-changes reject export; prepared-cite-check reads fingerprints/bytes during the
-transaction, and final-text-filter-change regression covers it. Recommend clarify
-INCLUDE/legacy-provider retirement separately from active native .bib consistency
-checks and completed pure input consumers. No functional defect found or new
-feature scope. Current request is audit; production files left unchanged. Advise
-this small clarification before manual DONE. Older passed-review statements below
-precede this final finding. Report/receipt updated; no archive needed.
+Last audit found three related README lifecycle ambiguities. User explicitly
+authorizes corrections and iterative re-review. Fixed document/source-byte/
+dispatcher explanations: standard preparation/INCLUDE and legacy receipts aren't
+replayed; active native Cite exports still check bibliography fingerprints and
+reject mutations/unavailability; completed independent consumers use owned data
+without rereading bibliography files. Implementation prepared-cite-check and
+maintained final-text-filter-change regression agree. Further review found no
+remaining issue; recommend human DONE, no new feature or native code change.
 
-## Final v0.7.0 release review passed; human finalization pending
+Fresh final full README configuration loads under -Q locked Emacs: native/plain/
+nil INFO, T/T/t/p menu,11fragment tags, packaged path preserved, no worker. Final
+Org checks16local links/5deprecated mappings/unchanged main executable forms pass;
+final treefmt exits0. Current code strict compilation/lint/324core already passed;
+exact delivered functional baseline12checks/705ERT remains evidence, not a fresh
+full native/PDF/integration run on the documentation candidate.167canonical hashes
+match final snapshot, complete4path diff/whitespace reviewed, ordinary index empty.
+Source receipt/report/draft reflect latest corrections. No new archive needed.
 
-User manually froze root TODO->NEXT, requests final docs/comments/version review,
-concise user-visible root and complete release manuscript, and will manually choose
-DONE after passed review. Intake delivered21d5704 plus only human NEXT edit.
-Current four-path uncommitted candidate: root summary131->50lines, obsolete
-citeproc-example text removed; detailed API replacement table/native example/
-configuration and limits completed; README native-default/mature backend/source
-callback behavior corrected; main Commentary native/CSL ownership description.
-All version metadata already0.7.0, no number change. Canonical root header,
-CUSTOM_ID/link and all v0.6.0-and-earlier content unchanged. NEXT retained, no
-candidate CLOSED, tag or release action. No identified release blocker.
-
-Current strict package compilation, lint/treefmt and324core pass. Final docs
-polish passes fresh treefmt,16local Org links and5deprecated API replacements.
-Emacs read/equal proves all executable Lisp forms equal delivered baseline;
-only non-doc file delta is Commentary. Previous12checks/705ERT on exact delivered
-implementation remain functional evidence, not a fresh complete current-snapshot
-run. No native/math visual or full native/PDF/integration rerun required for this
-scope.167canonical input hashes stable, four-path complete diff/whitespace reviewed,
-ordinary index empty. Receipt/details release-review-0.7.0.md/-inputs.json;
-readable report tmp/release-review-report.md, whole-diff draft tmp/commit.md.
-
-User additionally requested one integrated README configuration. Added named block
-example-use-package-complete (core options/native Cite/menu), installation/Nix and
-first-backend-load guidance. Actual fresh -Q Emacs executes it successfully: correct
-T/T/t/p menu, full native declaration,11tags, packaged path intact, no worker.
-User then adopts explicit (texmacs-native "plain" nil) in :custom, leaving only
-load-time menu setting in :init. Actual fresh Emacs confirms INFO includes plain;
-final treefmt passes and receipt/draft/report reflect this latest form.
-Only README changed since accepted review; final treefmt and links pass, receipt/
-report/message refreshed. Temporary driver accessor/nesting mistake corrected to
-actual Org API, no production workaround or new runtime change.
-
-User then requests only one complete configuration positioned earlier. README
-now has exactly one use-package declaration, first under With use-package; remove
-old ten-core block and three minimal installation declarations, retain path/straight
-keyword guidance and parameter details afterward. Preserve user's comment edits.
-Actual block remains correct; fresh Emacs/16links/5migration checks/treefmt pass.
-Receipt/draft/report updated, only README delta, release state unchanged.
-
-Latest user wording edit simplifies the commented program example to "texmacs"
-plus one-line Nix advice. Exact delta against validated snapshot is comment-only;
-whitespace check passes, no runtime/format repetition needed. Receipt refreshed.
-Keep this tiny memory update for the next substantive checkpoint, not a standalone
-checkpoint for each wording edit.
-
-Next user reviews diff, optionally manually marks DONE with actual transition's
-UTC CLOSED and commits. Verify resulting source and any explicit human state/time
-change separately; current receipt captures NEXT, so don't misclassify expected
-human finalization as arbitrary drift. DONE is not publication, no automatic tag/
-release. No additional implementation selected. Root is NEXT now; historical TODO
-statements below describe earlier phases. No raw archive need; distilled evidence
-and maintained history suffice. Current candidate has no exact committed identity;
-no new project-parent association until human delivery matches reviewed content.
+Next user reviews final diff and manually chooses DONE with actual transition's
+UTC CLOSED, then commit/tag/publication as separate human steps. Root remains
+NEXT, canonical header/CUSTOM_ID/link and historical entries untouched, no tag or
+release action. Verify expected manual state/time delta separately from NEXT
+receipt on delivery. No further implementation or blocking review issue remains.
+No exact committed identity exists for this candidate; no new project parent at
+acceptance checkpoint. Reference release-review-0.7.0.md/-inputs.json and ordinary
+tmp/release-review-report.md, tmp/commit.md. Historical TODO/pending findings in
+older notes are superseded by this final completed review.
 
 ## Cite declaration interface delivered; development complete
 

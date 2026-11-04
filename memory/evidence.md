@@ -1,5 +1,12 @@
 # org-texmacs durable evidence
 
+Final iterative review closes the README source-lifecycle finding in three related
+paragraphs. Source/owned-consumer distinction now matches native guards/regression.
+Fresh config/16local-links/5migration/form comparison and final treefmt pass;
+no further identified issue, recommend human DONE. No runtime code change, prior
+strict compile/lint/324core and full705functional evidence retained. Exact latest
+candidate and outputs: release-review-0.7.0-inputs.json; root NEXT, index empty.
+
 Final release review against delivered21d5704 vs v0.6.0 baseline8ae5647 passes:
 current package strict compilation/lint/treefmt and324core (2.617147s), final text
 polish treefmt and Org checks. Emacs read/equal verifies all executable main Lisp

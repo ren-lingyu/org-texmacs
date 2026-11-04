@@ -121,3 +121,23 @@ no new functional failure or development work. Prior review's no-finding conclus
 is superseded only on this documentation point. Read-only audit leaves production
 files untouched, root NEXT, no staging/tag/release. Current report/receipt capture
 recommendation and corrected comment hash. No raw archive need.
+
+## Corrected and accepted after iterative review
+
+User explicitly authorizes correction then repeat review, continuing fixes if any.
+Correct README dispatcher explanation plus two related document/source-byte API
+paragraphs: separate retired parallel preparation/INCLUDE/receipt behavior from
+active native bibliography fingerprint checks, and from completed pure consumers.
+Cross-check prepared-cite-check, its post-native/text/PDF call sites and maintained
+final-text-filter-change regression. No production code behavior change needed.
+No further inconsistency identified after re-review, including version/upgrade/
+Cite/style/STM/output scope. Recommend human DONE after reviewing final diff.
+
+Final actual config and Org checks pass: native/plain/nil INFO, T/T/t/p menu,
+11tags, Nix program intact, no worker,16local links,5migration pairs and identical
+executable main forms. Final treefmt passes. Prior strict compile/lint/324core and
+exact delivered705full ERT remain validation provenance; no redundant full suite
+or native math visual repetition.167canonical hashes/4paths/index stable. Snapshot,
+receipt/message/report updated. Current root NEXT, no CLOSED/tag/release action.
+This resolution supersedes the last audit's conditional DONE recommendation.
+No new archive or extra project parent for the uncommitted candidate.
