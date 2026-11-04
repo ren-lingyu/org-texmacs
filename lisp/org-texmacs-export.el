@@ -237,7 +237,12 @@ not an early exit across normal export advice or a second preparation pass."
                       visible-only
                       nil
                       ext-plist)
-        (org-texmacs--standard-check-source state)))))
+        (org-texmacs--standard-check-source state)
+        (when-let* ((input
+                     (plist-get
+                      org-texmacs--standard-transaction
+                      :input)))
+          (org-texmacs--prepared-cite-check input))))))
 
 (defun org-texmacs--standard-plain (text _info)
   "Return provisional plain TEXT for Org's standard traversal.
@@ -336,6 +341,8 @@ Project supported options without repeating preparation or retaining full INFO."
            (org-texmacs--source-capture-path (nth 5 state))
            :resource-base
            (org-texmacs--source-capture-path (nth 6 state)))))
+      (when native
+        (setq input (org-texmacs--prepared-cite-snapshot input)))
       (org-texmacs--prepared-parse
        requests (org-texmacs-input-islands input))
       (setq input (org-texmacs--input-finalize input))
@@ -404,6 +411,7 @@ Arbitrary functions are not replayed or predicted to be no-ops."
             (unless (memq consumer '(input model))
               (org-texmacs-document input)))
            (request (plist-get transaction :request)))
+      (plist-put transaction :input input)
       (when request
         (setf
          (plist-get request :input) input
@@ -419,7 +427,8 @@ Arbitrary functions are not replayed or predicted to be no-ops."
                 document)
                'iso-latin-1-unix)
             "")
-        (org-texmacs--standard-check-source prepared-state)))))
+        (org-texmacs--standard-check-source prepared-state)
+        (org-texmacs--prepared-cite-check input)))))
 
 (defun org-texmacs--standard-text-bytes (text)
   "Convert final standard TEXT to native bytes without lossy substitution."
@@ -564,8 +573,8 @@ Public source APIs and interactive commands share this bridge."
              ('pdf
               (org-texmacs-document-pdf
                (plist-get request :document))))
-      (org-texmacs--standard-check-source
-       (plist-get request :source)))))
+      (org-texmacs--standard-check-source (plist-get request :source))
+      (org-texmacs--prepared-cite-check (plist-get request :input)))))
 
 ;; The normal backend callbacks cannot see filters installed by later user
 ;; callbacks.  Narrow guards at public dispatch boundaries prevent execution

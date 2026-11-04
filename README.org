@@ -984,16 +984,45 @@ existing Org lowering subset; a CSL style that produces unsupported structures f
 explicitly.  =citeproc= is an optional user dependency, not installed by the
 normal package wrapper.  The dedicated Cite check supplies it explicitly.
 
-The =texmacs-native= processor provides structural request preparation for bare
-default citations, multiple keys and repeated citations, with exactly one
-unadorned bibliography print.  Unsupported styles, nonempty affixes and locators,
-print options and multiple prints fail explicitly.  Request associations follow
-the final Org nodes through ownership copies, without relying on source positions.
-Prepared inputs can retain these requests; document lowering requires completed,
-owned native bibliography results and does not recollect citations or read files.
-Real source bibliography acquisition is not yet available for this processor,
-and the default processor is unchanged.  Use the explicit CSL path above for
-source bibliography output.
+The =texmacs-native= processor supports TeXmacs-native bibliography output
+through the same standard Org Cite transaction, without requiring =citeproc=.
+Select it explicitly; the default processor is unchanged at this development
+stage:
+
+#+begin_example
+  ,#+bibliography: references.bib
+  ,#+cite_export: texmacs-native alpha
+  Text [cite:@one; @two]. Again [cite:@one].
+  ,#+print_bibliography:
+#+end_example
+
+Bare default citations, multiple keys and repeated citations are supported, with
+exactly one unadorned bibliography print. Nondefault citation styles, nonempty
+affixes/locators, print options and multiple prints fail explicitly. Request
+associations follow final Org nodes through ownership copies. Native labels,
+selected entries and output belong to the input; pure lowering does not
+recollect citations, read files or run a worker. Independent explicit native
+bibliography inputs remain supported.
+
+Native =plain= (the default bibliography style), =alpha= and =abbrv= are verified;
+=tm-= names select the corresponding native style, such as =tm-alpha=.
+The TeXmacs catalog and readable module files govern selection. Unknown or
+unavailable styles fail before module loading, with no fallback to =plain=.
+Unregistered external styles are unsupported. Style selection changes native
+bibliography labels/formatting; it does not implement additional Org Cite styles.
+
+Active bibliography sources must be readable local regular files. Canonical
+file aliases are rejected. All active sources are captured before native waits
+and decoded losslessly; source changes during preparation, text filters or PDF
+rendering reject the source export before its result is returned. Missing or
+ambiguous used keys fail explicitly. A completed owned input remains usable by
+pure document consumers after the source files become unavailable.
+
+Valid native BibTeX titles containing =$\alpha_i$= and =$\frac{a}{b}$= have
+structured native output. This does not promise full BibLaTeX/Biber compatibility,
+all extended fields, Unicode font coverage, or strict rejection of malformed
+mathematics: TeXmacs may recover invalid input. These native parser/layout limits
+are separate from the final-AST =latex-fragment= rejection above.
 
 BibLaTeX math preservation is also outside this guarantee.  With the locked
 =citeproc= version =20260113.1047=, real title-field tests found that =$\cdot$=

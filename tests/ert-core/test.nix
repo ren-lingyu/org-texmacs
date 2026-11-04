@@ -23,6 +23,7 @@ let
     ./lisp/standard-context.el
     ./lisp/standard-cite.el
     ./lisp/native-cite.el
+    ./lisp/native-cite-source.el
     ./lisp/standard-frontend.el
     ./lisp/special-blocks.el
     ./lisp/worker.el

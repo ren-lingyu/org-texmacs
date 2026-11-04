@@ -14,6 +14,8 @@
 (require 'org-texmacs-fragment)
 (require 'org-texmacs-worker)
 
+(declare-function org-texmacs--bibliography-format "org-texmacs")
+
 (defun org-texmacs--prepared-fail (message)
   "Reject incomplete or ambiguous prepared input with MESSAGE."
   (signal 'org-texmacs-document-error (list message)))
@@ -145,11 +147,161 @@ duplicate associations fail instead of being guessed from source coordinates."
              "Unmapped native citation carrier")))))
     (nreverse result)))
 
+(defun org-texmacs--prepared-bibliography-state (file)
+  "Return local FILE's resolved identity and change-sensitive attributes."
+  (unless (and (org-texmacs--document-local-file-path-p file)
+               (file-name-absolute-p file))
+    (org-texmacs--cite-fail
+     "Native bibliography requires an absolute local file"))
+  (let* ((file-name-handler-alist nil)
+         (identity (file-truename file))
+         (attributes (file-attributes identity 'integer)))
+    (unless (and attributes
+                 (file-regular-p identity)
+                 (file-readable-p identity))
+      (org-texmacs--cite-fail
+       "Native bibliography source is not a readable regular file"))
+    (list
+     identity
+     (nth 5 attributes)
+     (nth 6 attributes)
+     (nth 7 attributes)
+     (nth 10 attributes)
+     (nth 11 attributes))))
+
+(defun org-texmacs--prepared-bibliography-bytes (file)
+  "Read local FILE as bytes for snapshot capture or integrity checking."
+  (let ((file-name-handler-alist nil))
+    (with-temp-buffer
+      (set-buffer-multibyte nil)
+      (insert-file-contents-literally file)
+      (buffer-string))))
+
+(defun org-texmacs--prepared-cite-snapshot (input)
+  "Freeze active native bibliography files before any native wait for INPUT.
+Use only the standard processor's owned requests, never bibliography discovery."
+  (let* ((info (org-texmacs-input-info input))
+         (view
+          (org-texmacs--cite-view
+           (org-texmacs-input-ast input)
+           (plist-get info :texmacs-cite-requests)))
+         identities
+         snapshots)
+    (condition-case err
+        (dolist (file (plist-get view :files))
+          (let* ((state
+                  (org-texmacs--prepared-bibliography-state file))
+                 (identity (car state))
+                 (bytes
+                  (org-texmacs--prepared-bibliography-bytes file))
+                 (coding
+                  (or coding-system-for-read
+                      (detect-coding-string bytes t)
+                      'utf-8-unix))
+                 (text (decode-coding-string bytes coding)))
+            (when (member identity identities)
+              (org-texmacs--cite-fail
+               "Duplicate native bibliography source identity"))
+            (push identity identities)
+            (unless (and (equal
+                          state
+                          (org-texmacs--prepared-bibliography-state
+                           file))
+                         (equal
+                          bytes (encode-coding-string text coding)))
+              (org-texmacs--cite-fail
+               "Bibliography changed or could not be decoded losslessly"))
+            (push (list
+                   :path (substring-no-properties file)
+                   :state state
+                   :digest (secure-hash 'sha256 bytes)
+                   :text text)
+                  snapshots)))
+      (file-error
+       (signal 'org-texmacs-document-error
+               (list
+                "Cannot snapshot bibliography"
+                (error-message-string err)))))
+    (org-texmacs--input-with-info
+     input
+     (plist-put
+      (copy-sequence info)
+      :texmacs-bibliography-snapshots (nreverse snapshots)))))
+
+(defun org-texmacs--prepared-cite-check (input)
+  "Check INPUT's source fingerprints in an active source export transaction.
+Independent input/document consumers never call this file-reading guard."
+  (condition-case err
+      (dolist (snapshot
+               (plist-get
+                (org-texmacs-input-info input)
+                :texmacs-bibliography-snapshots))
+        (let ((file (plist-get snapshot :path)))
+          (unless (and (equal
+                        (plist-get snapshot :state)
+                        (org-texmacs--prepared-bibliography-state
+                         file))
+                       (equal
+                        (plist-get snapshot :digest)
+                        (secure-hash
+                         'sha256
+                         (org-texmacs--prepared-bibliography-bytes
+                          file)))
+                       (equal
+                        (plist-get snapshot :state)
+                        (org-texmacs--prepared-bibliography-state
+                         file)))
+            (org-texmacs--cite-fail
+             "Bibliography changed during native export"))))
+    (file-error
+     (signal 'org-texmacs-document-error
+             (list
+              "Bibliography became unavailable"
+              (error-message-string err))))))
+
 (defun org-texmacs--prepared-cite-fulfill (input)
-  "Return native request INPUT for the current preparation stage.
-Real bibliography acquisition is a separate native preparation capability.
-Pending requests can be inspected as input but cannot lower as a document."
-  input)
+  "Parse and format owned bibliography snapshots for native request INPUT."
+  (let* ((info (org-texmacs-input-info input))
+         (plan (plist-get info :texmacs-cite-plan))
+         (snapshots (plist-get info :texmacs-bibliography-snapshots)))
+    (if (null (plist-get plan :prints))
+        input
+      (org-texmacs--prepared-cite-check input)
+      (let ((sources
+             (mapcar
+              (lambda (snapshot)
+                (prog1 (cons
+                        (plist-get snapshot :path)
+                        (org-texmacs--worker-request
+                         (plist-get snapshot :text) 'bibliography))
+                  (org-texmacs--prepared-cite-check input)))
+              snapshots)))
+        (setq input
+              (org-texmacs--input-cite-result input sources nil))
+        (let* ((output
+                (org-texmacs--bibliography-format
+                 (plist-get
+                  (org-texmacs-input-info input)
+                  :texmacs-cite-plan)))
+               (result
+                (org-texmacs--input-cite-result
+                 input sources output)))
+          (org-texmacs--prepared-cite-check result)
+          ;; Keep only fingerprints after native interpretation; source text
+          ;; is not needed by independent pure consumers or later copies.
+          (org-texmacs--input-with-info
+           result
+           (plist-put
+            (copy-sequence (org-texmacs-input-info result))
+            :texmacs-bibliography-snapshots
+            (mapcar
+             (lambda (snapshot)
+               (org-texmacs--context-copy
+                (list
+                 :path (plist-get snapshot :path)
+                 :state (plist-get snapshot :state)
+                 :digest (plist-get snapshot :digest))))
+             snapshots))))))))
 
 (defun org-texmacs--prepared-footnote-bodies (tree)
   "Give supplemental inline definitions in owned TREE a paragraph body.

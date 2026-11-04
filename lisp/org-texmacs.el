@@ -217,12 +217,16 @@ preparation and conversion together, use `org-texmacs-document-from-buffer'."
 
 (defun org-texmacs--bibliography-format (plan)
   "Format explicit native bibliography PLAN at the worker boundary.
-This supports constructor-supplied native data; standard Org Cite does not
-call this formatter or acquire bibliography through it."
+Use PLAN's style, defaulting to plain for independent constructor inputs.
+Native standard preparation also uses this data-only formatting operation."
   (let* ((prefix (plist-get plan :prefix))
          (keys (plist-get plan :keys))
          (entries (plist-get plan :entries))
+         (style (or (plist-get plan :style) "plain"))
          body)
+    (unless (and (stringp style) (not (string-empty-p style)))
+      (signal 'org-texmacs-document-error
+              '("Invalid native bibliography style")))
     (cl-labels
      ((wire
        (node)
@@ -237,10 +241,11 @@ call this formatter or acquire bibliography through it."
      (let ((response
             (org-texmacs--worker-call
              (lambda (id)
-               (format "(format-bibliography %d %s %s)\n"
+               (format "(format-bibliography %d %s %s %s)\n"
                        id
                        (org-texmacs--scheme-string prefix)
-                       (wire entries))))))
+                       (wire entries)
+                       (org-texmacs--scheme-string style))))))
        (when (and (eq (car response) 'error)
                   (stringp (nth 2 response)))
          (signal 'org-texmacs-document-error (list (nth 2 response))))

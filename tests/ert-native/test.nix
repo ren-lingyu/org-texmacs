@@ -9,6 +9,7 @@
 let
   testFiles = [
     ./lisp/bibliography.el
+    ./lisp/native-cite.el
     ./lisp/metadata.el
     ./lisp/model-parser.el
     ./lisp/model-serialization.el
@@ -45,6 +46,7 @@ testSupport.mkErtCheck {
   ];
   tools = [ "texmacs" ];
   environment = {
+    ORG_TEXMACS_TEST_CITE_STYLE_SCHEME = ./scheme/native-cite-style.scm;
     ORG_TEXMACS_TEST_PROGRAM = lib.getExe' texmacs "texmacs";
   };
 }

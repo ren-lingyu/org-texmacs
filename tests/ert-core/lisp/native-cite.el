@@ -2,6 +2,8 @@
 
 (require 'org-texmacs-cite-native)
 
+(defvar org-texmacs-test--native-cite-fulfiller #'identity)
+
 (defun org-texmacs-test--native-cite-fill (input)
   "Complete INPUT with fixed native data, without reading bibliography files."
   (let* ((plan
@@ -72,7 +74,12 @@
           (search-forward "Outside tail")
           (beginning-of-line)
           (setq region (cons begin (point)))))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function
+                  'org-texmacs--prepared-cite-snapshot)
+                 #'identity)
+                ((symbol-function 'org-texmacs--prepared-cite-fulfill)
+                 org-texmacs-test--native-cite-fulfiller)
+                ((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _)
                    (ert-fail
                     "Mock native preparation started worker"))))
@@ -167,7 +174,7 @@
                    (org-element-put-property (car pair) :begin nil)
                    (org-element-put-property (car pair) :end nil))
                  (funcall bridge info state)))
-              ((symbol-function 'org-texmacs--prepared-cite-fulfill)
+              (org-texmacs-test--native-cite-fulfiller
                #'org-texmacs-test--native-cite-fill))
       (let ((input
              (org-texmacs-test--native-cite-prepare
@@ -302,11 +309,10 @@
     (should (equal org-cite-export-processors '((t basic))))))
 
 (ert-deftest org-texmacs-native-cite-nested-and-failure-retry ()
-  (let ((outer-fill
-         (symbol-function 'org-texmacs--prepared-cite-fulfill))
+  (let ((outer-fill #'identity)
         nested)
     (cl-letf
-        (((symbol-function 'org-texmacs--prepared-cite-fulfill)
+        ((org-texmacs-test--native-cite-fulfiller
           (lambda (input)
             (unless nested
               (progn
@@ -329,7 +335,7 @@
         (should-not
          (string-search "Mock two" (prin1-to-string body))))))
   (dolist (failure '(error quit))
-    (cl-letf (((symbol-function 'org-texmacs--prepared-cite-fulfill)
+    (cl-letf ((org-texmacs-test--native-cite-fulfiller
                (lambda (_)
                  (signal failure
                          '("Injected native preparation failure")))))
@@ -485,7 +491,10 @@
               (cl-incf filters)
               tree)
             org-export-filter-parse-tree-functions)
-      (cl-letf (((symbol-function 'org-texmacs--prepared-cite-fulfill)
+      (cl-letf (((symbol-function
+                  'org-texmacs--prepared-cite-snapshot)
+                 #'identity)
+                ((symbol-function 'org-texmacs--prepared-cite-fulfill)
                  #'org-texmacs-test--native-cite-fill)
                 ((symbol-function 'org-texmacs--bibliography-collect)
                  (lambda (&rest _)

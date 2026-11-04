@@ -115,7 +115,7 @@ processing remains authoritative. Entity and script options are supported
 independently.
 
 * Org Cite
-The supported path uses the existing CSL processor's structured Org output with
+The CSL path uses the existing processor's structured Org output with
 optional =citeproc=. Org owns bibliography acquisition, processor selection,
 citation filters, processing and applicable finalization in one export transaction.
 Real pinned Org-roam-organize integration covers managed UUIDs, dynamic bibliography
@@ -133,8 +133,16 @@ Carrier identities migrate through prepared AST and input copies.  Native label
 prefixes, selected entries and output belong to the owned input; pure lowering
 consumes that plan without recollecting citations, reading files or running a
 worker.  Independent explicit native bibliography inputs remain supported.
-Real source bibliography acquisition and the native default are not yet enabled;
-pending request inputs remain inspectable but cannot lower without native results.
+Explicit =#+cite_export: texmacs-native plain= now snapshots local bibliography
+sources before native waits, parses them with TeXmacs and owns the native results.
+The native catalog and readable modules select =plain=, =alpha= and =abbrv=,
+including =tm-= aliases, without silent fallback or unchecked module loading.
+Missing/ambiguous keys, canonical source aliases, unavailable files/styles and
+source mutations during export fail explicitly. Completed independent input
+consumers do not reread dependencies. Valid Greek-subscript and fraction titles
+retain native structure and TM/PDF layout. Native field selection, Unicode/font
+coverage and malformed-math recovery remain limited by TeXmacs; no full BibLaTeX
+or strict math-validation guarantee is added. The default processor is unchanged.
 
 CSL export does not guarantee preservation of BibLaTeX mathematics. With the
 locked =citeproc 20260113.1047=, sampled command and fraction content is lost

@@ -516,27 +516,54 @@
            ;; Elisp treats this unknown status as transport failure and stops worker.
            (lambda args (list 'session-fatal id "Session cleanup failed")))))
 
+(define (org-texmacs-bibliography-module-readable? name)
+  (url-exists? (url-complete
+                (url-unix "$GUILE_LOAD_PATH"
+                          (string-append "bibtex/" name ".scm")) "r")))
+
+(define (org-texmacs-bibliography-style requested)
+  ;; Registry names are native UI names.  The module/formatter identifier omits
+  ;; tm-.  Never let arbitrary input reach module-provide: a missing module can
+  ;; throw through C++ outside Scheme catch.  Use the loader's own search path,
+  ;; filtered for readable files, before native URL materialization.
+  (let* ((name (if (string-starts? requested "tm-")
+                   (substring requested 3) requested))
+         (registered (member (string-append "tm-" name) (bib-standard-styles))))
+    (and registered
+         (org-texmacs-bibliography-module-readable? name)
+         ;; The distributed native catalog builds on plain and bib-utils.
+         ;; Validate and load this common base before loading a selected style.
+         (org-texmacs-bibliography-module-readable? "plain")
+         (org-texmacs-bibliography-module-readable? "bib-utils")
+         name)))
+
 (define (org-texmacs-reply request)
   (cond
-   ((and (list? request) (= (length request) 4)
+   ((and (list? request) (memv (length request) '(4 5))
          (eq? (car request) 'format-bibliography)
-         (integer? (cadr request)) (> (cadr request) 0) (string? (caddr request)))
+         (integer? (cadr request)) (> (cadr request) 0) (string? (caddr request))
+         (or (= (length request) 4) (string? (list-ref request 4))))
     (let ((id (cadr request)))
       (catch #t
              (lambda ()
-               (let ((old-prefix bib-current-prefix) (old-style bib-style)
+               (let ((style (org-texmacs-bibliography-style
+                             (if (= (length request) 4) "plain" (list-ref request 4))))
+                     (old-prefix bib-current-prefix) (old-style bib-style)
                      (old-default bib-default-style))
-                 (dynamic-wind
-                     (lambda () #t)
-                     (lambda ()
-                       (module-provide '(bibtex plain))
-                       (let ((body (bib-process
-                                    (caddr request) "plain"
-                                    (org-texmacs-encode-body
-                                     (org-texmacs-wire-tree (list-ref request 3)) '(())))))
-                         (list 'ok id (org-texmacs-bibliography-source-tree body))))
-                     (lambda () (set! bib-current-prefix old-prefix) (set! bib-style old-style)
-                             (set! bib-default-style old-default)))))
+                 (if (not style)
+                     (list 'error id "Unknown or unavailable native bibliography style")
+                     (dynamic-wind
+                         (lambda () #t)
+                         (lambda ()
+                           (module-provide '(bibtex plain))
+                           (module-provide (list 'bibtex (string->symbol style)))
+                           (let ((body (bib-process
+                                        (caddr request) style
+                                        (org-texmacs-encode-body
+                                         (org-texmacs-wire-tree (list-ref request 3)) '(())))))
+                             (list 'ok id (org-texmacs-bibliography-source-tree body))))
+                         (lambda () (set! bib-current-prefix old-prefix) (set! bib-style old-style)
+                                 (set! bib-default-style old-default))))))
              (lambda args (list 'error id "Invalid bibliography formatting request")))))
    ((and (list? request) (= (length request) 3)
          (eq? (car request) 'parse-bibliography)

@@ -1,6 +1,7 @@
 {
   render = [ ./lisp/pdf.el ];
   document = [
+    ./lisp/native-cite.el
     ./lisp/metadata.el
     ./lisp/document.el
     ./lisp/frontend.el

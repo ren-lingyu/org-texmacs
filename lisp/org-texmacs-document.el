@@ -1172,7 +1172,7 @@ This validates target bindings, never recollects citation usage from an AST."
     (when (and (plist-get plan :prints)
                (not (plist-get info :texmacs-bibliography-output)))
       (org-texmacs--cite-fail
-       "Native bibliography processing is not yet available"))
+       "Missing prepared native bibliography output"))
     plan))
 
 (defun org-texmacs--bibliography-labels (body)
