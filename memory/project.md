@@ -2,7 +2,8 @@
 
 ## Native Cite current implementation
 
-N7/N8 human-delivered; N9 accepted worktree candidate awaits human delivery.
+N6-N9 are human-delivered. N9 delivery22191a0 matches exact9d923e7 parent,
+26paths/full approved message/all167committed and worktree hashes; clean intake.
 Standard Org Export and Cite remain sole preparation/dispatch. Owned semantic
 carriers/requests migrate through prepared/input copies, native snapshots/style
 processing precede pure lowering, with source transaction completion guards.
@@ -21,7 +22,8 @@ source snapshots and valid math TM/PDF remain. EN/ZH generic/article examples us
 native default/alpha without citeproc, with optional CSL fixture. Complete acceptance:
 12checks/699ERT including real Organize5, four examples and inspected bibliography
 pages. Scope/evidence/receipt: native-cite-0.7.0-n9.md/-inputs.json. Root TODO;
-human delivery/freeze/finalization remain. Native field/Unicode/recovery and
+Human freeze/finalization remain; no implementation node remains. Native
+field/Unicode/recovery and
 final-AST generic LaTeX conversion limits remain unchanged.
 
 ## Earlier architecture experiments (before formal N6-N8 implementation)

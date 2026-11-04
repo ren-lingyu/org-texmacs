@@ -1,8 +1,10 @@
 # org-texmacs current memory
 
-## Native Cite N9 accepted candidate; human delivery and release decisions next
+## Native Cite N9 human-delivered; approved development complete
 
-Approved N6-N9 implementation is complete in the worktree; N9 awaits human commit.
+Approved N6-N9 implementation is human-delivered through N9. Delivery22191a0
+matches exact9d923e7 parent/26paths/full approved message/all167committed and
+worktree hashes; ordinary index/worktree clean. No unchanged tests repeated.
 N8 human9d923e7 delivery is verified exact parent/16paths/message/166hashes with
 clean intake. No unchanged delivery tests repeated. N9 contract and exact candidate:
 native-cite-0.7.0-n9.md/-inputs.json; ordinary tmp/commit.md is the reviewed draft.
@@ -30,8 +32,8 @@ ordinary index empty. Isolated flake differs only by explicit real integration
 check/format, production flake unchanged. No other-platform/minimum Org/full fields/
 Unicode/strict native math or deferred generic fragment support claimed.
 
-Next: human N9 commit, verify exact parent/paths/message/167hashes. Then report
-whether human re-freeze TODO->NEXT is desired; do not auto-change state, CLOSED,
+Next: separate human decision whether to re-freeze TODO->NEXT. No remaining
+implementation/commit gate under N6-N9. Do not auto-change state, CLOSED,
 version, tag or publication. No further implementation node is authorized/needed
 under completed N6-N9. Single600s grants used; don't reuse for unrelated future work.
 Prior failed example exposed genuine inactive ALT_TITLE lifecycle gap, now covered

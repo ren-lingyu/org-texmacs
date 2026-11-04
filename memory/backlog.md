@@ -1,8 +1,9 @@
 # org-texmacs active backlog
 
-Approved N6-N9 implementation is accepted through N9; human N9 commit is next,
-then exact native-cite-0.7.0-n9-inputs.json delivery verification and separate
-human freeze/publication decisions. Full12checks/699ERT and four native examples
+Approved N6-N9 implementation is human-delivered through verified22191a0.
+Exact parent/26paths/message/167hashes match native-cite-0.7.0-n9-inputs.json;
+ordinary worktree/index clean. Next separate human freeze/publication decisions.
+Full12checks/699ERT and four native examples
 pass. No further development node selected. Deferred generic fragment conversion,
 advanced citation styles, broad fields/Unicode/math recovery remain separate work,
 not implicitly adopted or0.7.0 blockers. No automatic NEXT/DONE/tag/release.

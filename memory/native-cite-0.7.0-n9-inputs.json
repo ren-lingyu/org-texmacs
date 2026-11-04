@@ -328,5 +328,9 @@
     "native fields/Unicode/math recovery remain bounded",
     "stock ((t basic)) value replaced; explicit basic via document/backend entry",
     "version remains TODO; human commit/freeze/publication"
-  ]
+  ],
+  "delivery": {
+    "commit": "22191a0ddcea08aca1e1620a54ed698a6d2c5608",
+    "verification": "exact parent/26paths/full message/all167committed and worktree hashes; clean worktree/index; TODO; no tag at HEAD"
+  }
 }

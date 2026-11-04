@@ -10,7 +10,9 @@ Initial example failure exposed inactive ALT_TITLE ownership accounting bug desp
 initial full-check pass; explicit target-field rule and regression fix it without
 key recollection or general guard waiver. Fixture-only normalization/title-case/
 TM-escaping issues documented separately. Exact candidate/outputs/asset hashes:
-native-cite-0.7.0-n9.md/-inputs.json. Human commit pending; root remains TODO.
+native-cite-0.7.0-n9.md/-inputs.json. Human22191a0 now verified exact9d923e7
+parent/26paths/message/all167committed+worktree hashes, clean index/worktree.
+No unchanged runtime check repeated. Root TODO; no tag points at delivered HEAD.
 
 
 N8 full timeout600s flake check exits0/all11named checks,686unique defaultERT:

@@ -215,9 +215,10 @@ NEXT; DONE/tag/publication remain separate manual release decisions.
 ## Current execution state
 
 N6-N8 are human-delivered; N8 delivery9d923e7 matches exact1824ac9 parent,
-16paths/message/166hashes. N9 accepted26path worktree candidate: public backend
+16paths/message/166hashes. N9 human-delivered22191a0, verified exact26paths/
+message/167hashes: public backend
 processor fallback, native examples without citeproc, explicit inactive ALT_TITLE
 request accounting, full12checks/699ERT including actual integration5 and four
 native TM/PDF examples. Exact receipt: native-cite-0.7.0-n9-inputs.json. Root TODO.
-Next human N9 delivery and exact verification, then separate human freeze/release
-choices. No automatic NEXT/finalization or further implementation node.
+Next separate human freeze/release choices; ordinary worktree/index clean.
+No automatic NEXT/finalization or further implementation node.
