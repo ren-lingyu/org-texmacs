@@ -54,8 +54,10 @@ loaded by the example builder:
   ;; Install citeproc and select a local style with #+CITE_EXPORT: csl STYLE.csl.
 #+end_src
 
-The build tangles a local bibliography and selects chapters/references.csl
-through standard Org Cite. Its Emacs includes citeproc; the base package does not.
+The build tangles a local bibliography. Standard Org Cite uses the native default
+for the generic document and explicit =texmacs-native alpha= for the article.
+Neither the example build nor the base package requires citeproc; install it only
+for an explicit CSL selection.
 Org owns preparation and recursive INCLUDE. The builder disables Babel evaluation
 so the displayed code is not executed during export. Fragment tags select
 paragraph roots, not the contents of explicit TeXmacs blocks. Private extensions are outside this configuration guide.

@@ -6,7 +6,7 @@
 #+description: Mathematical expressions, statements and native figures and tables in one article.
 #+options: toc:2 num:t
 #+bibliography: chapters/references.bib
-#+cite_export: csl chapters/references.csl
+#+cite_export: texmacs-native alpha
 
 #+begin_abstract
 This article combines mathematical exposition with native graphics and tables.
@@ -36,6 +36,8 @@ Org-maintained source.
 * Actual article configuration
 #+include: "chapters/common.el" src emacs-lisp
 #+include: "chapters/profile.el" src emacs-lisp
+
+The native bibliography also typesets a mathematical title [cite:@native-math].
 
 * References
 :PROPERTIES:

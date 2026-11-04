@@ -14,6 +14,16 @@
 (require 'ox)
 (require 'org-texmacs-cite)
 
+(defun org-texmacs--cite-default-processors ()
+  "Return the TeXmacs default without altering Org's processor configuration.
+Replace only Org's stock ((t basic)) value.  Explicit document declarations,
+backend entries, other custom configurations and nil retain Org semantics.
+An explicit basic choice should use CITE_EXPORT or a backend-specific entry;
+assignment history cannot distinguish a value identical to the stock default."
+  (if (equal org-cite-export-processors '((t basic)))
+      '((t texmacs-native))
+    org-cite-export-processors))
+
 (defun org-texmacs--cite-record (node request backend info)
   "Associate NODE with REQUEST in live INFO for BACKEND."
   (unless (org-export-derived-backend-p backend 'texmacs)

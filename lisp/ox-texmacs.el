@@ -440,7 +440,9 @@ Do not change existing backends, hooks, or the user's configuration."
   (org-export-define-backend
    'texmacs (org-texmacs--standard-transcoders)
    :options-alist
-   '((:subtitle "SUBTITLE" nil nil parse)
+   '((:cite-export
+      "CITE_EXPORT" nil (org-texmacs--cite-default-processors))
+     (:subtitle "SUBTITLE" nil nil parse)
      (:keywords "KEYWORDS" nil nil space)
      (:description "DESCRIPTION" nil nil newline))
    :filters-alist

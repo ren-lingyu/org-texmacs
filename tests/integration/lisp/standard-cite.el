@@ -332,3 +332,91 @@
                        "Actual fixture reference" result)))))))
             (should (= prepared 1))
             (should (= citations 1))))))))
+
+(ert-deftest org-texmacs-integration-standard-organize-native-default
+    ()
+  (org-texmacs-integration--with-standard-organize
+    (with-temp-buffer
+      (org-mode)
+      (setq
+       default-directory notes
+       buffer-file-name (expand-file-name "root.org" notes))
+      (insert (format "[cite:@%s]\n#+print_bibliography:\n" uuid))
+      (let ((org-cite-export-processors '((t basic)))
+            (org-export-use-babel nil)
+            (before (buffer-string))
+            (prepared 0)
+            (citations 0)
+            (prints 0)
+            (globals (copy-tree org-cite-global-bibliography))
+            live
+            (cite
+             (symbol-function 'org-texmacs--cite-export-citation))
+            (print
+             (symbol-function
+              'org-texmacs--cite-export-bibliography)))
+        (let ((org-export-before-processing-functions
+               (list (lambda (_) (cl-incf prepared)))))
+          (cl-letf (((symbol-function
+                      'org-texmacs--cite-export-citation)
+                     (lambda (citation style backend info)
+                       (cl-incf citations)
+                       (setq live info)
+                       (should
+                        org-roam-organize--cite-export-in-progress)
+                       (should
+                        (eq
+                         (org-cite-processor info) 'texmacs-native))
+                       (should
+                        (equal
+                         '("real-key")
+                         (org-cite-get-references citation t)))
+                       (should
+                        (equal
+                         (list bib) (plist-get info :bibliography)))
+                       (funcall cite citation style backend info)))
+                    ((symbol-function
+                      'org-texmacs--cite-export-bibliography)
+                     (lambda (keys
+                              files style properties backend info)
+                       (cl-incf prints)
+                       (should (eq live info))
+                       (should (equal keys '("real-key")))
+                       (should (equal files (list bib)))
+                       (funcall print
+                                keys
+                                files
+                                style
+                                properties
+                                backend
+                                info))))
+            (let* ((input (org-texmacs--standard-consume 'input))
+                   (document (org-texmacs-document input))
+                   (body (org-texmacs-document-body document))
+                   (pdf
+                    (expand-file-name "native-organize.pdf"
+                                      test-directory)))
+              (should (memq 'with-bib (flatten-tree body)))
+              (should (memq 'cite (flatten-tree body)))
+              (should-not (string-search uuid (prin1-to-string body)))
+              (should-not
+               (string-search
+                "Unused reference" (prin1-to-string body)))
+              (org-texmacs-document-save
+               document
+               (expand-file-name "native-organize.tm" test-directory))
+              (org-texmacs-document-save-pdf document pdf)
+              (should
+               (string-search
+                "Actual fixture reference"
+                (ucs-normalize-NFKC-string
+                 (org-texmacs-test--pdf-text pdf)))))))
+        (should (= prepared 1))
+        (should (= citations 1))
+        (should (= prints 1))
+        (should (equal before (buffer-string)))
+        (should (equal globals org-cite-global-bibliography))
+        (should-not org-roam-organize--cite-export-in-progress)
+        (let ((html (org-export-as 'html nil nil t)))
+          (should (string-search "Actual fixture reference" html)))
+        (should (equal org-cite-export-processors '((t basic))))))))

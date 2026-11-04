@@ -171,11 +171,12 @@ sandbox-enabled builder.  The example build uses its own Emacs package
 set with org-texmacs's =texmacs= dependency overridden to
 =texmacs-fandol-with-gotor-support=, which supplies explicit Fandol Chinese fonts
 through =TEXMACS_FONT_PATH= and native GoToR actions for local PDF file links.
-That example-only Emacs also includes =citeproc=. Standard Org Cite selects the
-local =references.csl= tangled from the canonical Org source; the base package
-keeps Cite optional. Chinese examples use the bundled en-US CSL locale fallback,
-without claiming Chinese bibliography localization. One standard document preparation supplies both native output formats. Babel evaluation is
-disabled for these illustrative sources; tangling/loading configuration is explicit.
+Examples use the native Org Cite default for generic documents and explicit
+=texmacs-native alpha= for article documents, with valid mathematical BibTeX
+titles. Neither examples nor the base package requires =citeproc=. A local CSL
+fixture remains available for explicit CSL users. One standard document
+preparation supplies both native output formats. Babel evaluation is disabled
+for these illustrative sources; tangling/loading configuration is explicit.
 Reader support can depend on the backend: the user confirmed navigation works
 with Zathura's pdf-poppler backend after failure with pdf-mupdf.
 
@@ -986,8 +987,8 @@ normal package wrapper.  The dedicated Cite check supplies it explicitly.
 
 The =texmacs-native= processor supports TeXmacs-native bibliography output
 through the same standard Org Cite transaction, without requiring =citeproc=.
-Select it explicitly; the default processor is unchanged at this development
-stage:
+It is the TeXmacs default with Org's stock =((t basic))= configuration.
+A document can also select a native bibliography style explicitly:
 
 #+begin_example
   ,#+bibliography: references.bib
@@ -996,13 +997,24 @@ stage:
   ,#+print_bibliography:
 #+end_example
 
+The backend provides its default through standard Org export options. Document
+and subtree =CITE_EXPORT= declarations and EXT-PLIST follow Org precedence.
+Other =org-cite-export-processors= configurations, including nil and custom
+fallbacks, retain their standard meaning; HTML/LaTeX are unaffected. A configuration
+with no matching backend or fallback retains Org's disabled result. Since an
+assignment equal to =((t basic))= cannot reveal user intent, select =basic=
+explicitly with =#+cite_export: basic= or a =(texmacs basic)= entry. Options
+filters may update the effective processor under the usual Org INFO contract.
+
 Bare default citations, multiple keys and repeated citations are supported, with
 exactly one unadorned bibliography print. Nondefault citation styles, nonempty
 affixes/locators, print options and multiple prints fail explicitly. Request
 associations follow final Org nodes through ownership copies. Native labels,
 selected entries and output belong to the input; pure lowering does not
 recollect citations, read files or run a worker. Independent explicit native
-bibliography inputs remain supported.
+bibliography inputs remain supported. Org Cite keys from =ALT_TITLE= remain in
+the bibliography even when that title is outside the rendered table of contents;
+its owned request is accounted for without emitting an extra visible citation.
 
 Native =plain= (the default bibliography style), =alpha= and =abbrv= are verified;
 =tm-= names select the corresponding native style, such as =tm-alpha=.
@@ -1024,7 +1036,7 @@ all extended fields, Unicode font coverage, or strict rejection of malformed
 mathematics: TeXmacs may recover invalid input. These native parser/layout limits
 are separate from the final-AST =latex-fragment= rejection above.
 
-BibLaTeX math preservation is also outside this guarantee.  With the locked
+CSL export does not guarantee BibLaTeX math preservation.  With the locked
 =citeproc= version =20260113.1047=, real title-field tests found that =$\cdot$=
 survives through CSL title, rendered Org and final AST as a =latex-fragment=,
 which this backend explicitly rejects.  Bare =\cdot= disappears, =$\alpha_i$=
@@ -1034,7 +1046,7 @@ lowering.  The backend consumes that final structure and does not recover lost
 math from the bibliography file.  These observations concern the tested version
 and fixtures; they do not certify other Citeproc versions or styles.
 
-The default =basic= processor is currently unsupported: its citations and
+The =basic= processor is currently unsupported: its citations and
 bibliography return target-specific strings that Org wraps as =raw=.  A =raw=
 object is target code, not ordinary text or an STM tree.  It is rejected before
 native parsing; it is never silently flattened or reparsed as TeXmacs.  Custom
@@ -1096,7 +1108,8 @@ must retain their export context; an AST-to-buffer round trip does not preserve
 it.  The separate standard Cite integration check below uses a pinned current
 =org-roam-organize= with a real SQLite database and its normal mode/hooks/advice.
 It verifies UUID citation-key changes, dynamic per-export bibliography and INFO
-propagation through CSL, native PDF and HTML without an extension adapter.
+propagation through the native default and explicit CSL, native PDF and HTML
+without an extension adapter.
 
 * Document conversion and native sessions
 The document API separates source preparation, pure structural lowering and
@@ -1713,8 +1726,8 @@ including positionless synthetic nodes.  There is no citation-key-only filter
 restriction.  The final AST is authoritative; STM needs complete input obtainable
 from its effective structure or an explicit native-source property.
 
-Configure standard bibliography and =CITE_EXPORT= for the supported CSL processor,
-with optional =citeproc= installed.  Acquisition, processor selection, citation
+Configure standard bibliography for the native default, or use =CITE_EXPORT= to
+select native styles or CSL with optional =citeproc= installed.  Acquisition, processor selection, citation
 filters and processing belong to Org.  See [[*Standard Org Export integration status][Standard Org Export integration status]]
 for processor, raw-output and text-filter boundaries.  Do not supply BibTeX text
 snapshots to source APIs.  Pure document construction and lowering invoke no

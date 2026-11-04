@@ -41,11 +41,6 @@
         (org-babel-tangle-file bibliography-source)
         (unless (file-regular-p bibliography)
           (error "Bibliography was not generated: %s" bibliography))
-        (unless (file-regular-p
-                 (expand-file-name "references.csl"
-                                   (file-name-directory
-                                    bibliography)))
-          (error "Local CSL style was not generated"))
         (load (expand-file-name "common.el" configuration-directory)
               nil
               t)
@@ -61,13 +56,14 @@
           (insert-file-contents source)
           (setq buffer-file-name source)
           (org-mode)
-          (let* ((document
-                  (progn
-                    (message
-                     "Preparing %s with standard Org Export and CSL"
-                     source)
-                    (org-texmacs-document-from-buffer
-                     (current-buffer)))))
+          (let*
+              ((document
+                (progn
+                  (message
+                   "Preparing %s with standard Org Export and native Org Cite"
+                   source)
+                  (org-texmacs-document-from-buffer
+                   (current-buffer)))))
             (message "Saving native TeXmacs document")
             (org-texmacs-document-save document (concat output ".tm"))
             (message "Rendering PDF from the same document snapshot")

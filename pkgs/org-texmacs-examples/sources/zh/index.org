@@ -8,7 +8,6 @@
 #+creator: org-texmacs 案例
 #+options: toc:1 num:t author:t email:t date:t creator:t tags:not-in-toc
 #+bibliography: chapters/references.bib
-#+cite_export: csl chapters/references.csl
 
 #+begin_abstract
 这份案例本身就是构建输入. 正文, 文档信息, 配置代码, 文献与脚注共同生成一份原生文档.

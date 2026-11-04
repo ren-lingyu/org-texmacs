@@ -266,3 +266,25 @@
            body
            (org-texmacs-document-body
             (org-texmacs-document outer)))))))))
+
+(ert-deftest org-texmacs-native-default-real-source-and-text ()
+  (org-texmacs-test--with-worker
+   (let ((file (expand-file-name "references.bib" test-directory))
+         (org-cite-export-processors '((t basic)))
+         (org-export-use-babel nil))
+     (with-temp-file file
+       (insert org-texmacs-test--cite-bib))
+     (with-temp-buffer
+       (org-mode)
+       (insert
+        "#+bibliography: "
+        file
+        "\n[cite:@one; @two]\n#+print_bibliography:\n")
+       (let ((document
+              (org-texmacs-document-from-buffer (current-buffer))))
+         (should
+          (memq
+           'with-bib
+           (flatten-tree (org-texmacs-document-body document)))))
+       (should
+        (string-prefix-p "<TeXmacs|" (org-export-as 'texmacs)))))))

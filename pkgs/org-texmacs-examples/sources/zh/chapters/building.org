@@ -18,7 +18,7 @@ Org 输入和派生的 .el/.bib 放在 sources/<language>/<entry>/,
 package 使用 lib.fileset.toSource 收集自身 sources/ 下的输入.
 shared/ 保存公共配置, 文献和本地 CSL 样式, 构建时分别复制到 chapters/configuration-source.org 和
 chapters/references.org, 再将 .el/.bib 派生到同一目录. references.org 的 XML 块将 references.csl tangle 到相同目录,
-由标准 Org Cite 选择, 无须在线下载样式.
+仅作为显式 CSL 选择的可选 fixture; 当前构建采用 TeXmacs 提供的原生样式.
 配置展示直接包含这些局部文件.
 导出不执行源码展示或交互演示.
 

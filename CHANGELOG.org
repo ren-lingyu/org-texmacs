@@ -98,12 +98,12 @@ lowering remain separate from standard export preparation.
 - [X] Reuse native BibTeX parsing and safely select =plain=, =alpha= and =abbrv=
   styles from owned source snapshots; reject unsupported styles and unresolved
   or ambiguous citation keys explicitly.
-- [ ] Default =texmacs= exports to =texmacs-native= while respecting explicit Org
+- [X] Default =texmacs= exports to =texmacs-native= while respecting explicit Org
   Cite choices, optional CSL and other backends, without requiring =citeproc=.
-- [ ] Verify standard selection/filters, ownership, nested exports and failure
+- [X] Verify standard selection/filters, ownership, nested exports and failure
   recovery, native mathematical TM/PDF output and real =org-roam-organize=
   integration; retain explicit CSL and unsupported-fragment regressions.
-- [ ] Migrate English/Chinese generic/article examples to native bibliography
+- [X] Migrate English/Chinese generic/article examples to native bibliography
   with TM/PDF from the same document, retaining an explicit CSL fixture.
 
 *** Text and native PDF output

@@ -12,11 +12,13 @@ as a separately edited .bib. This literal listing displays the canonical source:
 The final illustrative records exercise BibTeX string declarations and
 concatenation, an @online entry and a cross-reference to an explicitly cited
 parent[cite:@native-child; @native-parent; @native-online]. These are documentation
-examples, not claims about external publications. Standard Org Cite and citeproc
-parse the bibliography and format structured Org output using the local references.csl style. TeXmacs lowers and renders that
-prepared structure; it does not run the retired native bibliography preparation.
-These inputs do not establish complete BibLaTeX/Biber compatibility. The selected
-CSL style determines which fields appear.
+examples, not claims about external publications. The mathematics title
+[cite:@native-math] contains a Greek subscript and fraction. Standard Org Cite
+passes structured requests to the native TeXmacs processor; TeXmacs parses and
+formats the owned bibliography with its own styles. The generic document uses
+the native plain default, while the article selects alpha explicitly. These
+inputs do not establish full BibLaTeX/Biber compatibility or strict validation
+of malformed mathematics. Native styles determine which fields appear.
 
 ** Citations in formatted text and tables
 The heading and its alternate table-of-contents title above both contain a

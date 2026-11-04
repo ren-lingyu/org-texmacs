@@ -28,7 +28,7 @@ configuration files are loaded; interactive snippets elsewhere are never run.
   (setq org-texmacs-pdf-file-links-as-absolute nil
         org-texmacs-link-org-files-as-pdf t)
 
-  ;; Standard Org Cite reads each document's local bibliography and CSL style.
+  ;; Standard Org Cite supplies local bibliography sources to the native processor.
   ;; Example code is displayed, never evaluated during export preparation.
   (setq org-cite-global-bibliography nil
         org-export-use-babel nil)

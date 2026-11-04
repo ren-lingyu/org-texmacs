@@ -142,7 +142,17 @@ source mutations during export fail explicitly. Completed independent input
 consumers do not reread dependencies. Valid Greek-subscript and fraction titles
 retain native structure and TM/PDF layout. Native field selection, Unicode/font
 coverage and malformed-math recovery remain limited by TeXmacs; no full BibLaTeX
-or strict math-validation guarantee is added. The default processor is unchanged.
+or strict math-validation guarantee is added.
+
+The TeXmacs backend replaces Org's stock =((t basic))= default with
+=texmacs-native= through its standard export options. Explicit document/subtree
+processor declarations, external options, custom processor alists and nil retain
+Org precedence. HTML and LaTeX selection remain unchanged. An assignment equal
+to the stock value has no distinguishable intent; use =#+cite_export: basic= or
+=(texmacs basic)= for explicit basic selection. Custom configurations with no
+matching backend/fallback retain Org's disabled result. Citations in an unrendered
+=ALT_TITLE= retain Org's bibliography keys while their owned requests are explicitly
+accounted for; they do not create additional visible output.
 
 CSL export does not guarantee preservation of BibLaTeX mathematics. With the
 locked =citeproc 20260113.1047=, sampled command and fraction content is lost
@@ -152,13 +162,14 @@ The backend consumes the final AST without rereading the bibliography to recover
 lost mathematics. These observations are specific to the tested version and
 fixtures; they do not certify other processors or styles.
 
-The base package does not require =citeproc=. Compiled examples include it and
-select a shipped local CSL style, with no online style acquisition during rendering.
+Neither the base package nor compiled examples requires =citeproc=. Generic
+examples use the native default, article examples select =alpha=, and a local
+explicit-CSL fixture remains available. Native math titles demonstrate Greek
+subscripts and fractions, without online style acquisition during rendering.
 The bilingual generic/article examples use the standard document API and render
 TeXmacs/PDF from the same completed native document.
-Bibliography and CSL files are tangled from their canonical Org source. Chinese
-examples use the bundled en-US CSL locale fallback; Chinese bibliography
-localization is not asserted.
+Bibliography and optional CSL fixture files are tangled from their canonical Org
+source. Chinese bibliography localization is not asserted.
 
 * Text and native PDF
 Standard Org export returns a text string using reversible ISO-Latin-1 transport

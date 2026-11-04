@@ -46,7 +46,8 @@ package 显式构建这两个入口.
   ;; 安装 citeproc, 并用 #+CITE_EXPORT: csl STYLE.csl 选择本地样式.
 #+end_src
 
-文档构建 tangle 本地文献库, 通过标准 Org Cite 选择 chapters/references.csl.
-示例的 Emacs 包含 citeproc, 基础 package 不强制依赖它.
+文档构建 tangle 本地文献库, generic 使用标准 Org Cite 的原生默认值,
+article 显式选择 =texmacs-native alpha=. 示例构建和基础 package 均不依赖 citeproc;
+只有显式选择 CSL 时才需要安装它.
 准备流程和递归 INCLUDE 由 Org 管理. 构建配置禁用 Babel 求值, 导出不执行所展示的代码.
 fragment-tags 控制段落入口, 不限制显式 TeXmacs 块内部结构. 本指南不承诺私有扩展 API.

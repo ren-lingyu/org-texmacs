@@ -5,7 +5,7 @@ builder tangles this BibTeX block into a temporary references.bib. Tangling copi
 source text; it does not evaluate the block. The generic entry includes this same file
 as literal Org source to show exactly where its bibliography came from.
 
-The final three entries demonstrate BibTeX string substitution, concatenation,
+Three entries demonstrate BibTeX string substitution, concatenation,
 an unknown entry type and an explicitly selected cross-reference parent. They
 are illustrative documentation records, not additional external publications.
 
@@ -22,6 +22,13 @@ are illustrative documentation records, not additional external publications.
     title = {The Thirteen Books of the Elements},
     publisher = {Dover Publications},
     year = {1956}
+  }
+
+  @book{native-math,
+    author = {Ada Example},
+    title = {Properties of $\alpha_i$ and $\frac{a}{b}$},
+    publisher = {Documentation Examples},
+    year = {2026}
   }
 
   @string{project = {TeXmacs}}
@@ -45,10 +52,13 @@ are illustrative documentation records, not additional external publications.
 #+end_src
 
 * Local citation style
-The builder tangles this local style beside references.bib. Standard Org Cite
-uses it without downloading a style. Chinese examples retain their Org language
-and fonts, while CSL uses Org's bundled en-US locale fallback unless extra locale
-data is installed. This does not demonstrate Chinese CSL localization.
+This optional CSL fixture is retained for users who install citeproc and select
+=#+cite_export: csl chapters/references.csl= explicitly. The four compiled examples
+use native TeXmacs styles and do not require citeproc. CSL output may lose BibLaTeX
+mathematics before the backend receives it; intact latex-fragment nodes remain
+unsupported. Native mathematics in the example above follows a separate parser.
+Chinese CSL output needs appropriate locale data; this fixture alone does not
+establish Chinese CSL localization.
 
 #+begin_src xml :tangle references.csl
   <?xml version="1.0" encoding="utf-8"?>

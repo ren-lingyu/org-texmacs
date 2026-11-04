@@ -21,8 +21,8 @@ and figure/table chapters are included by article.org, not compiled separately.
 The package collects its sources/ directory with lib.fileset.toSource. Shared
 configuration and bibliography/style sources live in shared/. The builder copies
 them to chapters/configuration-source.org and chapters/references.org, then
-tangles .el/.bib files beside them. The XML block tangles references.csl there;
-standard Org Cite selects it without downloads.
+tangles .el/.bib files beside them. The XML block retains references.csl as an
+optional explicit-CSL fixture; native styles are supplied by TeXmacs.
 Configuration listings include these local files.
 Source listings and interactive examples are not evaluated during export.
 

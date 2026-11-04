@@ -1175,6 +1175,25 @@ This validates target bindings, never recollects citation usage from an AST."
        "Missing prepared native bibliography output"))
     plan))
 
+(defun org-texmacs--bibliography-inactive-toc-citation-p
+    (node toc-labels)
+  "Whether owned citation NODE belongs to an unrendered ALT_TITLE.
+TOC-LABELS identifies the actual selected table-of-contents headlines.  Follow
+only NODE's ownership links; never recollect citations or alter Org's key list."
+  (let ((child node)
+        (parent (org-element-property :parent node))
+        seen)
+    (while (and parent (not (eq (org-element-type parent) 'headline)))
+      (when (memq parent seen)
+        (org-texmacs--cite-fail "Cyclic native citation ownership"))
+      (push parent seen)
+      (setq
+       child parent
+       parent (org-element-property :parent parent)))
+    (and parent
+         (memq child (org-element-property :ALT_TITLE parent))
+         (not (assq parent toc-labels)))))
+
 (defun org-texmacs--bibliography-labels (body)
   "Return every static label in owned native BODY, retaining duplicates.
 Dynamic label structures cannot satisfy the bibliography output contract."
@@ -3447,13 +3466,24 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                     (= (length used-blanks) (length post-blanks)))
          (signal 'org-texmacs-document-error
                  '("Unused preparation mappings")))
-       (when (and (plist-member info :texmacs-cite-requests)
-                  (or (/=
-                       (length used-citations)
-                       (length (plist-get citation-plan :citations)))
-                      (/=
-                       (length used-prints)
-                       (length (plist-get citation-plan :prints)))))
+       (when
+           (and
+            (plist-member info :texmacs-cite-requests)
+            (or
+             (/=
+              (+
+               (length used-citations)
+               (cl-count-if
+                (lambda (entry)
+                  (and
+                   (not (memq (car entry) used-citations))
+                   (org-texmacs--bibliography-inactive-toc-citation-p
+                    (car entry) toc-labels)))
+                (plist-get citation-plan :citations)))
+              (length (plist-get citation-plan :citations)))
+             (/=
+              (length used-prints)
+              (length (plist-get citation-plan :prints)))))
          (org-texmacs--cite-fail
           "Unused native citation request associations"))
        (when frozen-resolution

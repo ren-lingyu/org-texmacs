@@ -10,9 +10,10 @@ BibTeX 源码保存在 references.org 的代码块中, 不单独维护 .bib. 下
 
 最后几条演示记录使用字符串声明与拼接, @online 类型, 以及指向显式引用父条目的 crossref
 [cite:@native-child; @native-parent; @native-online]. 这些是文档演示数据, 不是外部出版物声明.
-标准 Org Cite 和 citeproc 读取文献库, 按本地 references.csl 生成结构化 Org 内容.
-TeXmacs 负责 lowering 与排版, 不再执行旧的原生文献准备流程.
-这些输入不代表完整 BibLaTeX/Biber 兼容; 实际显示哪些字段由 CSL 样式决定.
+数学标题 [cite:@native-math] 展示希腊字母下标与分式. 标准 Org Cite 将结构化请求交给
+TeXmacs 原生 processor, 由 TeXmacs 解析和格式化 owned 文献数据.
+generic 文档采用原生 plain 默认值, article 显式选择 alpha.
+这些输入不代表完整 BibLaTeX/Biber 兼容或错误数学的严格校验; 实际显示字段由原生样式决定.
 
 ** 格式文本与表格中的引用
 上方标题和目录中采用的 =ALT_TITLE= 都包含文献引用. 引用还可以放在

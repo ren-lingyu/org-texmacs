@@ -299,14 +299,14 @@
           (org-texmacs-test--native-cite-prepare "Plain text.\n"))
          (body (org-texmacs-test--native-cite-lower input)))
     (should-not (memq 'cite (flatten-tree body))))
-  (let ((org-cite-export-processors '((t basic))))
+  (let ((org-cite-export-processors '((texmacs basic))))
     (with-temp-buffer
       (org-mode)
       (insert "Text [cite:@one].\n")
       (should-error
        (org-texmacs--standard-consume 'input)
        :type 'org-texmacs-document-error))
-    (should (equal org-cite-export-processors '((t basic))))))
+    (should (equal org-cite-export-processors '((texmacs basic))))))
 
 (ert-deftest org-texmacs-native-cite-nested-and-failure-retry ()
   (let ((outer-fill #'identity)

@@ -6,7 +6,7 @@
 #+description: 在同一篇文章中展示数学表达式, statement, 原生图形和表格.
 #+options: toc:2 num:t
 #+bibliography: chapters/references.bib
-#+cite_export: csl chapters/references.csl
+#+cite_export: texmacs-native alpha
 
 #+begin_abstract
 本文把数学叙述与原生图形, 表格组织在一起. Org 提供文档结构,
@@ -32,6 +32,8 @@ PDF 中的相对链接指向本文旁边的 index.pdf. 两份文档分别独立�
 * 文章实际使用的配置
 #+include: "chapters/common.el" src emacs-lisp
 #+include: "chapters/profile.el" src emacs-lisp
+
+原生文献表也排版包含数学表达式的标题 [cite:@native-math].
 
 * 参考文献
 :PROPERTIES:

@@ -452,3 +452,21 @@
                    (should
                     (string-match-p
                      "Reference Alpha" (buffer-string)))))))))))))
+
+(ert-deftest org-texmacs-standard-csl-user-default-preserved ()
+  (org-texmacs-test--with-csl
+   (let ((org-cite-export-processors `((t csl ,csl-style)))
+         (org-export-use-babel nil))
+     (with-temp-buffer
+       (org-mode)
+       (insert
+        "#+bibliography: "
+        csl-bibliography
+        "\n[cite:@key]\n#+print_bibliography:\n")
+       (let* ((document
+               (org-texmacs-document-from-buffer (current-buffer)))
+              (body (org-texmacs-document-body document)))
+         (should
+          (string-search "Reference alpha" (prin1-to-string body)))
+         (should (memq 'hlink (flatten-tree body)))
+         (should-not (memq 'with-bib (flatten-tree body))))))))

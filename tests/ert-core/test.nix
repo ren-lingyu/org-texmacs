@@ -24,6 +24,7 @@ let
     ./lisp/standard-cite.el
     ./lisp/native-cite.el
     ./lisp/native-cite-source.el
+    ./lisp/native-cite-default.el
     ./lisp/standard-frontend.el
     ./lisp/special-blocks.el
     ./lisp/worker.el
