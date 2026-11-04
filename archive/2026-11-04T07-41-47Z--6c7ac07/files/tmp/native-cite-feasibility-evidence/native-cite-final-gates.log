@@ -1,0 +1,19 @@
+these 2 derivations will be built:
+  /nix/store/b3jr3wzjbnd9a6xyj7xl6xsiskfxhjbv-org-texmacs-native-cite-styles.drv
+  /nix/store/pxg301639dms1h0x9qwlfa90baz2vw52-org-texmacs-native-cite-handoff.drv
+building '/nix/store/pxg301639dms1h0x9qwlfa90baz2vw52-org-texmacs-native-cite-handoff.drv'...
+building '/nix/store/b3jr3wzjbnd9a6xyj7xl6xsiskfxhjbv-org-texmacs-native-cite-styles.drv'...
+org-texmacs-native-cite-handoff> Running 2 tests (2026-11-04 07:36:32+0000, selector `t')
+org-texmacs-native-cite-styles> Running 1 tests (2026-11-04 07:36:32+0000, selector `t')
+org-texmacs-native-cite-handoff>    passed  1/2  native-cite-initial-carrier-observation (0.118894 sec)
+org-texmacs-native-cite-handoff>    passed  2/2  native-cite-mock-owned-handoff (0.048060 sec)
+org-texmacs-native-cite-handoff> 
+org-texmacs-native-cite-handoff> Ran 2 tests, 2 results as expected, 0 unexpected (2026-11-04 07:36:32+0000, 0.167054 sec)
+org-texmacs-native-cite-handoff> 
+org-texmacs-native-cite-styles>    passed  1/1  native-cite-style-mechanism (4.130446 sec)
+org-texmacs-native-cite-styles> 
+org-texmacs-native-cite-styles> Ran 1 tests, 1 results as expected, 0 unexpected (2026-11-04 07:36:36+0000, 4.130530 sec)
+org-texmacs-native-cite-styles> 
+/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles
+/nix/store/kid5cyifynxzg1jb4yw36cil7bm2j4wq-org-texmacs-native-cite-handoff
+/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end

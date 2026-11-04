@@ -1,0 +1,269 @@
+[
+  {
+    "case": "base",
+    "body": "(document (concat \"First \" (with-bib #1=\"native-cite\" (cite \"one\")) \" \" \"followed. \") (concat \"Repeat \" (em (with-bib #1# (cite \"one\"))) \". Multiple \" (with-bib #1# (cite \"one\" \"two\")) \". \") (with-bib \"native-cite\" (bib-list \"2\" (document (concat (bibitem* \"1\") (label \"native-cite-one\") \"Mock one\") (concat (bibitem* \"2\") (label \"native-cite-two\") \"Mock two\")))) (concat \"After bibliography. \"))",
+    "requests": "((:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\" \"two\") :provider native) (:kind bibliography :keys (\"one\" \"two\") :files (\"/build/references.bib\") :style \"plain\" :provider native))",
+    "identity": [
+      {
+        "kind": "citation",
+        "post-blank": 1,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "bibliography",
+        "post-blank": 0,
+        "in-final": true
+      }
+    ]
+  },
+  {
+    "case": "no-document-processor",
+    "body": "(document (concat \"First \" (with-bib #1=\"native-cite\" (cite \"one\")) \" \" \"followed. \") (concat \"Repeat \" (em (with-bib #1# (cite \"one\"))) \". Multiple \" (with-bib #1# (cite \"one\" \"two\")) \". \") (with-bib \"native-cite\" (bib-list \"2\" (document (concat (bibitem* \"1\") (label \"native-cite-one\") \"Mock one\") (concat (bibitem* \"2\") (label \"native-cite-two\") \"Mock two\")))) (concat \"After bibliography. \"))",
+    "requests": "((:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\" \"two\") :provider native) (:kind bibliography :keys (\"one\" \"two\") :files nil :style \"plain\" :provider native))",
+    "identity": [
+      {
+        "kind": "citation",
+        "post-blank": 1,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "bibliography",
+        "post-blank": 0,
+        "in-final": true
+      }
+    ]
+  },
+  {
+    "case": "document-overrides",
+    "body": "(document (concat \"First \" (with-bib #1=\"native-cite\" (cite \"one\")) \" \" \"followed. \") (concat \"Repeat \" (em (with-bib #1# (cite \"one\"))) \". Multiple \" (with-bib #1# (cite \"one\" \"two\")) \". \") (with-bib \"native-cite\" (bib-list \"2\" (document (concat (bibitem* \"1\") (label \"native-cite-one\") \"Mock one\") (concat (bibitem* \"2\") (label \"native-cite-two\") \"Mock two\")))) (concat \"After bibliography. \"))",
+    "requests": "((:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\" \"two\") :provider native) (:kind bibliography :keys (\"one\" \"two\") :files (\"/build/references.bib\") :style \"plain\" :provider native))",
+    "identity": [
+      {
+        "kind": "citation",
+        "post-blank": 1,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "bibliography",
+        "post-blank": 0,
+        "in-final": true
+      }
+    ]
+  },
+  {
+    "case": "copy-filter",
+    "body": "(document (concat \"First \" (with-bib #1=\"native-cite\" (cite \"one\")) \" \" \"followed. \") (concat \"Repeat \" (em (with-bib #1# (cite \"one\"))) \". Multiple \" (with-bib #1# (cite \"one\" \"two\")) \". \") (with-bib \"native-cite\" (bib-list \"2\" (document (concat (bibitem* \"1\") (label \"native-cite-one\") \"Mock one\") (concat (bibitem* \"2\") (label \"native-cite-two\") \"Mock two\")))) (concat \"After bibliography. \"))",
+    "requests": "((:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\" \"two\") :provider native) (:kind bibliography :keys (\"one\" \"two\") :files (\"/build/references.bib\") :style \"plain\" :provider native))",
+    "identity": [
+      {
+        "kind": "citation",
+        "post-blank": 1,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "bibliography",
+        "post-blank": 0,
+        "in-final": true
+      }
+    ]
+  },
+  {
+    "case": "delete-filter",
+    "body": "(document (concat \"First \" (with-bib #1=\"native-cite\" (cite \"one\")) \" \" \"followed. \") (concat \"Repeat \" (em (with-bib #1# (cite \"one\"))) \". Multiple \" \". \") (with-bib \"native-cite\" (bib-list \"1\" (document (concat (bibitem* \"1\") (label \"native-cite-one\") \"Mock one\")))) (concat \"After bibliography. \"))",
+    "requests": "((:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\") :provider native) (:kind bibliography :keys (\"one\") :files (\"/build/references.bib\") :style \"plain\" :provider native))",
+    "identity": [
+      {
+        "kind": "citation",
+        "post-blank": 1,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "bibliography",
+        "post-blank": 0,
+        "in-final": true
+      }
+    ]
+  },
+  {
+    "case": "replace-filter",
+    "body": "(document (concat \"First \" (with-bib #1=\"native-cite\" (cite \"two\")) \" \" \"followed. \") (concat \"Repeat \" (em (with-bib #1# (cite \"two\"))) \". Multiple \" (with-bib #1# (cite \"two\" \"two\")) \". \") (with-bib \"native-cite\" (bib-list \"1\" (document (concat (bibitem* \"1\") (label \"native-cite-two\") \"Mock two\")))) (concat \"After bibliography. \"))",
+    "requests": "((:kind citation :keys (\"two\") :provider native) (:kind citation :keys (\"two\") :provider native) (:kind citation :keys (\"two\" \"two\") :provider native) (:kind bibliography :keys (\"two\") :files (\"/build/references.bib\") :style \"plain\" :provider native))",
+    "identity": [
+      {
+        "kind": "citation",
+        "post-blank": 1,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "bibliography",
+        "post-blank": 0,
+        "in-final": true
+      }
+    ]
+  },
+  {
+    "case": "subtree",
+    "body": "(document (concat \"First \" (with-bib #1=\"native-cite\" (cite \"one\")) \" \" \"followed. \") (concat \"Repeat \" (em (with-bib #1# (cite \"one\"))) \". Multiple \" (with-bib #1# (cite \"one\" \"two\")) \". \") (with-bib \"native-cite\" (bib-list \"2\" (document (concat (bibitem* \"1\") (label \"native-cite-one\") \"Mock one\") (concat (bibitem* \"2\") (label \"native-cite-two\") \"Mock two\")))) (concat \"After bibliography. \"))",
+    "requests": "((:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\" \"two\") :provider native) (:kind bibliography :keys (\"one\" \"two\") :files (\"/build/references.bib\") :style \"plain\" :provider native))",
+    "identity": [
+      {
+        "kind": "citation",
+        "post-blank": 1,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "bibliography",
+        "post-blank": 0,
+        "in-final": true
+      }
+    ]
+  },
+  {
+    "case": "visible",
+    "body": "(document (section \"Keep\") (concat \"First \" (with-bib #1=\"native-cite\" (cite \"one\")) \" \" \"followed. \") (concat \"Repeat \" (em (with-bib #1# (cite \"one\"))) \". Multiple \" (with-bib #1# (cite \"one\" \"two\")) \". \") (with-bib \"native-cite\" (bib-list \"2\" (document (concat (bibitem* \"1\") (label \"native-cite-one\") \"Mock one\") (concat (bibitem* \"2\") (label \"native-cite-two\") \"Mock two\")))) (concat \"After bibliography. \") (section \"Hidden\"))",
+    "requests": "((:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\" \"two\") :provider native) (:kind bibliography :keys (\"one\" \"two\") :files (\"/build/references.bib\") :style \"plain\" :provider native))",
+    "identity": [
+      {
+        "kind": "citation",
+        "post-blank": 1,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "bibliography",
+        "post-blank": 0,
+        "in-final": true
+      }
+    ]
+  },
+  {
+    "case": "default-other",
+    "body": "(document (concat \"First \" (with-bib #1=\"native-cite\" (cite \"one\")) \" \" \"followed. \") (concat \"Repeat \" (em (with-bib #1# (cite \"one\"))) \". Multiple \" (with-bib #1# (cite \"one\" \"two\")) \". \") (with-bib \"native-cite\" (bib-list \"2\" (document (concat (bibitem* \"1\") (label \"native-cite-one\") \"Mock one\") (concat (bibitem* \"2\") (label \"native-cite-two\") \"Mock two\")))) (concat \"After bibliography. \"))",
+    "requests": "((:kind citation :keys (\"one\") :provider other) (:kind citation :keys (\"one\") :provider other) (:kind citation :keys (\"one\" \"two\") :provider other) (:kind bibliography :keys (\"one\" \"two\") :files nil :style \"plain\" :provider other))",
+    "identity": [
+      {
+        "kind": "citation",
+        "post-blank": 1,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "bibliography",
+        "post-blank": 0,
+        "in-final": true
+      }
+    ]
+  },
+  {
+    "case": "orphan-request",
+    "error": "(error \"Orphan native request during prepared copy\")"
+  },
+  {
+    "case": "missing-first-remap",
+    "error": "(org-texmacs-document-error \"Opaque or deferred snapshot value\")"
+  },
+  {
+    "case": "unsupported-style",
+    "error": "(error \"Unsupported native citation style: (\\\"t\\\")\")"
+  },
+  {
+    "case": "missing-key",
+    "error": "(error \"Missing or ambiguous native key: missing\")"
+  },
+  {
+    "case": "failure",
+    "error": "(error \"Injected mock transaction failure\")"
+  },
+  {
+    "case": "quit",
+    "error": "(quit \"Injected mock transaction failure\")"
+  },
+  {
+    "case": "nested-isolation",
+    "outer": "(document (concat \"Outer \" (with-bib \"native-cite\" (cite \"one\")) \". \") (with-bib \"native-cite\" (bib-list \"1\" (document (concat (bibitem* \"1\") (label \"native-cite-one\") \"Mock one\")))))",
+    "inner": "(document (concat \"Inner \" (with-bib \"native-cite\" (cite \"two\")) \". \") (with-bib \"native-cite\" (bib-list \"1\" (document (concat (bibitem* \"1\") (label \"native-cite-two\") \"Mock two\")))))"
+  }
+]

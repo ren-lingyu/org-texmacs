@@ -1,0 +1,9 @@
+this derivation will be built:
+  /nix/store/69ql7hw71fdilaq4q68vhk06g0jn7xj4-org-texmacs-native-cite-end-to-end.drv
+building '/nix/store/69ql7hw71fdilaq4q68vhk06g0jn7xj4-org-texmacs-native-cite-end-to-end.drv'...
+org-texmacs-native-cite-end-to-end> Running 1 tests (2026-11-04 07:36:09+0000, selector `t')
+org-texmacs-native-cite-end-to-end>    passed  1/1  native-cite-real-end-to-end (6.154219 sec)
+org-texmacs-native-cite-end-to-end> 
+org-texmacs-native-cite-end-to-end> Ran 1 tests, 1 results as expected, 0 unexpected (2026-11-04 07:36:15+0000, 6.154299 sec)
+org-texmacs-native-cite-end-to-end> 
+/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end

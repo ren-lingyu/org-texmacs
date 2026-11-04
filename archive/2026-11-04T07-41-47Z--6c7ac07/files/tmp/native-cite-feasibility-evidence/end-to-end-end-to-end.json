@@ -1,0 +1,64 @@
+[
+  {
+    "style": "plain",
+    "source": "#+bibliography: /nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/references.bib\n#+cite_export: texmacs-native plain\nFirst [cite:@one] followed. Repeat /[cite:@one]/.\n\nMultiple [cite:@two; @one].\n\n#+print_bibliography:\nAfter bibliography.\n",
+    "text-output": "<TeXmacs|2.1.5>\n\n<style|generic>\n\n<\\body>\n  First <with-bib|native-cite|<cite|one>> followed. Repeat\n  <em|<with-bib|native-cite|<cite|one>>>.\\ \n\n  Multiple <with-bib|native-cite|<cite|two|one>>.\\ \n\n  <with-bib|native-cite|<\\bib-list|2>\n    <bibitem*|1><label|native-cite-one>Ada Alpha.\n    <newblock><with|font-shape|italic|An <math|\\<alpha\\><rsub|i>> result>.\n    <newblock>Press, 2026.<newblock>\n\n    <bibitem*|2><label|native-cite-two>Zoe Zulu.\n    <newblock><with|font-shape|italic|A <math|<frac|a|b>> result>.\n    <newblock>Press, 2025.<newblock>\n  </bib-list>>\n\n  After bibliography.\\ \n</body>\n\n<\\initial>\n  <\\collection>\n    <associate|language|english>\n  </collection>\n</initial>",
+    "body": "(document (concat \"First \" (with-bib #1=\"native-cite\" (cite \"one\")) \" \" \"followed. Repeat \" (em (with-bib #1# (cite \"one\"))) \". \") (concat \"Multiple \" (with-bib #1# (cite \"two\" \"one\")) \". \") (with-bib \"native-cite\" (bib-list \"2\" (document (concat (bibitem* \"1\") (label \"native-cite-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" (concat \"An \" (math (concat \"<alpha>\" (rsub \"i\"))) \" result\")) \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"2\") (label \"native-cite-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" (concat \"A \" (math (frac \"a\" \"b\")) \" result\")) \". \" (newblock) \"Press, 2025.\" (newblock))))) (concat \"After bibliography. \"))",
+    "bibliography": "((\"/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/references.bib\" document (bib-entry \"book\" \"one\" (document (bib-field \"title\" (concat \"An \" (math (concat \"<alpha>\" (rsub \"i\"))) \" result\")) (bib-field \"author\" (bib-names (bib-name \"Ada\" \"\" \"Alpha\" \"\"))) (bib-field \"year\" \"2026\") (bib-field \"publisher\" \"Press\"))) (bib-entry \"book\" \"two\" (document (bib-field \"title\" (concat \"A \" (math (frac \"a\" \"b\")) \" result\")) (bib-field \"author\" (bib-names (bib-name \"Zoe\" \"\" \"Zulu\" \"\"))) (bib-field \"year\" \"2025\") (bib-field \"publisher\" \"Press\")))))",
+    "requests": "((:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"two\" \"one\") :provider native) (:kind bibliography :keys (\"one\" \"two\") :files (\"/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/references.bib\") :style \"plain\" :provider native))",
+    "identity": [
+      {
+        "kind": "citation",
+        "post-blank": 1,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "bibliography",
+        "post-blank": 0,
+        "in-final": true
+      }
+    ],
+    "pdf-text": "First [1] followed. Repeat [ 1] . Multiple [2, 1]. [1] Ada Alpha. An [2] Zoe Zulu. A b result. Press, 2025. i result. Press, 2026. a After bibliography. 1 "
+  },
+  {
+    "style": "alpha",
+    "source": "#+bibliography: /nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/references.bib\n#+cite_export: texmacs-native alpha\nFirst [cite:@one] followed. Repeat /[cite:@one]/.\n\nMultiple [cite:@two; @one].\n\n#+print_bibliography:\nAfter bibliography.\n",
+    "text-output": "<TeXmacs|2.1.5>\n\n<style|generic>\n\n<\\body>\n  First <with-bib|native-cite|<cite|one>> followed. Repeat\n  <em|<with-bib|native-cite|<cite|one>>>.\\ \n\n  Multiple <with-bib|native-cite|<cite|two|one>>.\\ \n\n  <with-bib|native-cite|<\\bib-list|2>\n    <bibitem*|Alp26><label|native-cite-one>Ada Alpha.\n    <newblock><with|font-shape|italic|An <math|\\<alpha\\><rsub|i>> result>.\n    <newblock>Press, 2026.<newblock>\n\n    <bibitem*|Zul25><label|native-cite-two>Zoe Zulu.\n    <newblock><with|font-shape|italic|A <math|<frac|a|b>> result>.\n    <newblock>Press, 2025.<newblock>\n  </bib-list>>\n\n  After bibliography.\\ \n</body>\n\n<\\initial>\n  <\\collection>\n    <associate|language|english>\n  </collection>\n</initial>",
+    "body": "(document (concat \"First \" (with-bib #1=\"native-cite\" (cite \"one\")) \" \" \"followed. Repeat \" (em (with-bib #1# (cite \"one\"))) \". \") (concat \"Multiple \" (with-bib #1# (cite \"two\" \"one\")) \". \") (with-bib \"native-cite\" (bib-list \"2\" (document (concat (bibitem* \"Alp26\") (label \"native-cite-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" (concat \"An \" (math (concat \"<alpha>\" (rsub \"i\"))) \" result\")) \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"Zul25\") (label \"native-cite-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" (concat \"A \" (math (frac \"a\" \"b\")) \" result\")) \". \" (newblock) \"Press, 2025.\" (newblock))))) (concat \"After bibliography. \"))",
+    "bibliography": "((\"/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/references.bib\" document (bib-entry \"book\" \"one\" (document (bib-field \"title\" (concat \"An \" (math (concat \"<alpha>\" (rsub \"i\"))) \" result\")) (bib-field \"author\" (bib-names (bib-name \"Ada\" \"\" \"Alpha\" \"\"))) (bib-field \"year\" \"2026\") (bib-field \"publisher\" \"Press\"))) (bib-entry \"book\" \"two\" (document (bib-field \"title\" (concat \"A \" (math (frac \"a\" \"b\")) \" result\")) (bib-field \"author\" (bib-names (bib-name \"Zoe\" \"\" \"Zulu\" \"\"))) (bib-field \"year\" \"2025\") (bib-field \"publisher\" \"Press\")))))",
+    "requests": "((:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"one\") :provider native) (:kind citation :keys (\"two\" \"one\") :provider native) (:kind bibliography :keys (\"one\" \"two\") :files (\"/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/references.bib\") :style \"alpha\" :provider native))",
+    "identity": [
+      {
+        "kind": "citation",
+        "post-blank": 1,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "citation",
+        "post-blank": 0,
+        "in-final": true
+      },
+      {
+        "kind": "bibliography",
+        "post-blank": 0,
+        "in-final": true
+      }
+    ],
+    "pdf-text": "First [Alp26] followed. Repeat [ Alp26] . Multiple [Zul25, Alp26]. [Alp26] Ada Alpha. An i result. Press, 2026. a [Zul25] Zoe Zulu. A b result. Press, 2025. After bibliography. 1 "
+  }
+]

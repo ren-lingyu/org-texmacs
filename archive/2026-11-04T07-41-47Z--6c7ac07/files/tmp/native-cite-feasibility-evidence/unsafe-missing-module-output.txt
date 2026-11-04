@@ -1,0 +1,92 @@
+warning: guile hooks are not available
+Welcome to TeXmacs 2.1.5
+------------------------------------------------------------------------------
+kpsepath works with your TeX distribution
+kpsewhich works with your TeX distribution
+mktextfm works with your TeX distribution
+mktexpk works with your TeX distribution
+texhash works with your TeX distribution
+------------------------------------------------------------------------------
+Installation completed successfully !
+I will now start up the editor
+------------------------------------------------------------------------------
+TeXmacs] failed-error, u= {/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/progs:/build/org-texmacs-ert-CUSszb/config/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/ai/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/asymptote/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/axiom/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/caas/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/cadabra/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/cocoa5/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/code/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/coq/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/dratex/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/equation-editor/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/eukleides/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/feynmf/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/fricas/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/giac/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/gnuplot/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/graph/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/graphviz/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/gtybalt/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/jupyter/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/lisp/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/lush/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/macaulay2/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/maple/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/mathemagix/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/mathematica/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/matlab/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/maxima/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/mmi/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/mmshell/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/mupad/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/mycas/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/octave/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/pari/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/plantuml/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/python/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/qcl/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/r/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/reduce/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/sage/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/scilab/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/shell/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/sympy/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/texgraph/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/tikz/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/xypic/progs:/nix/store/7f00bvmi6s5j9xzyz4dl07vd469l242g-texmacs-2.1.5/share/TeXmacs/plugins/yacas/progs}/bibtex/missing-native-style.scm
+Throwing url could not be resolved
+-------------------------------------------------
+Error message:
+  url could not be resolved
+
+System information:
+  TeXmacs version  : 2.1.5
+  Built by         : 
+  Building date    : 2026-03-09T21:55:59
+  Operating system : linux-gnu
+  Vendor           : pc
+  Processor        : x86_64
+  Crash date       : Wed Nov 04 07:07:46 UTC 2026
+
+Editor status:
+  Root path          : [ 0 ]
+  Current path       : [ 0, 0, 0 ]
+  Shifted path       : [ 0, 0, 0 ]
+  Physical selection : [] -- []
+
+Backtrace of C++ stack:
+  texmacs.bin : () + 0x5a4a12
+  texmacs.bin : () + 0x3bef99
+  texmacs.bin : () + 0x4c3da2
+  texmacs.bin : () + 0x443fbc
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x52cdf
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x5241b
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_dapply() + 0x3c3
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_c_catch() + 0x177
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_catch_with_pre_unwind_handler() + 0x6a
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_dapply() + 0x62f
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x542f1
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x53faf
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_dapply() + 0xa7d
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_dynamic_wind() + 0x70
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x5440f
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x52f33
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x52f79
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_dapply() + 0xa7d
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_map() + 0x279
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x5440f
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x5241b
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_primitive_load() + 0x94
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x52c92
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_start_stack() + 0x6f
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_dapply() + 0x6bd
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x5181a
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_dapply() + 0xa7d
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_c_with_fluid() + 0x37
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x5440f
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_dapply() + 0xa7d
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_dynamic_wind() + 0x70
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x5440f
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x52f33
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_dapply() + 0xa7d
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_c_with_throw_handler() + 0x11d
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_c_catch() + 0x177
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_internal_catch() + 0x12
+  texmacs.bin : () + 0x40f71a
+  texmacs.bin : () + 0x493759
+  texmacs.bin : () + 0x87b8d0
+  texmacs.bin : () + 0x87bd4c
+  texmacs.bin : () + 0x87c84a
+  texmacs.bin : () + 0x87cb39
+  texmacs.bin : () + 0x35dc15
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x6e207
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : () + 0x40c92
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_c_catch() + 0x177
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_i_with_continuation_barrier() + 0xa4
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_c_with_continuation_barrier() + 0x43
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_i_with_guile_and_parent() + 0x39
+  /nix/store/acjzzcbkymrhwmw99dbg5wjywqm1klwd-guile-1.8.8/lib/libguile.so.17 : scm_boot_guile() + 0x36
+  texmacs.bin : () + 0x3610b2
+  /nix/store/pqyiidz5mi73wv5f91d48s9plcqyj5bz-glibc-2.44-57/lib/libc.so.6 : () + 0x2b391
+  /nix/store/pqyiidz5mi73wv5f91d48s9plcqyj5bz-glibc-2.44-57/lib/libc.so.6 : __libc_start_main() + 0x88
+  texmacs.bin : () + 0x359545
+
+-------------------------------------------------
+terminate called after throwing an instance of 'string'

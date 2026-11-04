@@ -1,0 +1,8 @@
+#+bibliography: /nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/references.bib
+#+cite_export: texmacs-native alpha
+First [cite:@one] followed. Repeat /[cite:@one]/.
+
+Multiple [cite:@two; @one].
+
+#+print_bibliography:
+After bibliography.

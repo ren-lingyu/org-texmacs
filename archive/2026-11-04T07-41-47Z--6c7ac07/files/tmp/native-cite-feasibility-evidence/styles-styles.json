@@ -1,0 +1,78 @@
+{
+  "catalog": [
+    "tm-plain",
+    "tm-abbrv",
+    "tm-abstract",
+    "tm-acm",
+    "tm-alpha",
+    "tm-elsart-num",
+    "tm-ieeetr",
+    "tm-siam",
+    "tm-unsrt"
+  ],
+  "bootstrap": "((ok \"plain\" \"plain\" raw (bib-list \"3\" (document (concat (bibitem* \"1\") (label \"native-probe-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"2\") (label \"native-probe-three\") \"Max Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"3\") (label \"native-probe-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock)))) (before (\"bib\" \"plain\" \"plain\")) (after (\"bib\" \"plain\" \"plain\"))) (ok \"alpha\" \"alpha\" raw (bib-list \"3\" (document (concat (bibitem* \"1\") (label \"native-probe-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"2\") (label \"native-probe-three\") \"Max Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"3\") (label \"native-probe-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock)))) (before (\"bib\" \"plain\" \"plain\")) (after (\"bib\" \"plain\" \"plain\"))))",
+  "cases": [
+    {
+      "result": "(ok \"plain\" \"plain\" loaded (bib-list \"3\" (document (concat (bibitem* \"1\") (label \"native-probe-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"2\") (label \"native-probe-three\") \"Max Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"3\") (label \"native-probe-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock)))) (before (\"bib\" \"plain\" \"plain\")) (after (\"bib\" \"plain\" \"plain\")))",
+      "repeat-equal": true
+    },
+    {
+      "result": "(ok \"alpha\" \"alpha\" loaded (bib-list \"3\" (document (concat (bibitem* \"Alp26\") (label \"native-probe-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"Mid24\") (label \"native-probe-three\") \"Max Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"Zul25\") (label \"native-probe-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock)))) (before (\"bib\" \"plain\" \"plain\")) (after (\"bib\" \"plain\" \"plain\")))",
+      "repeat-equal": true
+    },
+    {
+      "result": "(ok \"plain\" \"plain\" loaded (bib-list \"3\" (document (concat (bibitem* \"1\") (label \"native-probe-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"2\") (label \"native-probe-three\") \"Max Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"3\") (label \"native-probe-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock)))) (before (\"bib\" \"plain\" \"plain\")) (after (\"bib\" \"plain\" \"plain\")))",
+      "repeat-equal": true
+    },
+    {
+      "result": "(ok \"abbrv\" \"abbrv\" loaded (bib-list \"3\" (document (concat (bibitem* \"1\") (label \"native-probe-one\") \"A.\" (nbsp) \"Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"2\") (label \"native-probe-three\") \"M.\" (nbsp) \"Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"3\") (label \"native-probe-two\") \"Z.\" (nbsp) \"Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock)))) (before (\"bib\" \"plain\" \"plain\")) (after (\"bib\" \"plain\" \"plain\")))",
+      "repeat-equal": true
+    },
+    {
+      "result": "(ok \"plain\" \"plain\" loaded (bib-list \"3\" (document (concat (bibitem* \"1\") (label \"native-probe-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"2\") (label \"native-probe-three\") \"Max Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"3\") (label \"native-probe-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock)))) (before (\"bib\" \"plain\" \"plain\")) (after (\"bib\" \"plain\" \"plain\")))",
+      "repeat-equal": true
+    },
+    {
+      "result": "(ok \"tm-alpha\" \"tm-alpha\" raw (bib-list \"3\" (document (concat (bibitem* \"1\") (label \"native-probe-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"2\") (label \"native-probe-three\") \"Max Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"3\") (label \"native-probe-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock)))) (before (\"bib\" \"plain\" \"plain\")) (after (\"bib\" \"plain\" \"plain\")))",
+      "repeat-equal": true
+    },
+    {
+      "result": "(ok \"tm-alpha\" \"alpha\" loaded (bib-list \"3\" (document (concat (bibitem* \"Alp26\") (label \"native-probe-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"Mid24\") (label \"native-probe-three\") \"Max Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"Zul25\") (label \"native-probe-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock)))) (before (\"bib\" \"plain\" \"plain\")) (after (\"bib\" \"plain\" \"plain\")))",
+      "repeat-equal": true
+    },
+    {
+      "result": "(ok \"missing-native-style\" \"missing-native-style\" raw (bib-list \"3\" (document (concat (bibitem* \"1\") (label \"native-probe-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"2\") (label \"native-probe-three\") \"Max Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"3\") (label \"native-probe-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock)))) (before (\"bib\" \"plain\" \"plain\")) (after (\"bib\" \"plain\" \"plain\")))",
+      "repeat-equal": true
+    },
+    {
+      "result": "(error \"missing-native-style\" \"missing-native-style\" \"(misc-error #f \\\"~A ~S\\\" (\\\"Style is absent from native catalog\\\" \\\"missing-native-style\\\") #f)\" (before (\"bib\" \"plain\" \"plain\")) (after (\"bib\" \"plain\" \"plain\")))",
+      "repeat-equal": true
+    },
+    {
+      "result": "(ok \"plain\" \"plain\" loaded (bib-list \"3\" (document (concat (bibitem* \"1\") (label \"native-probe-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"2\") (label \"native-probe-three\") \"Max Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"3\") (label \"native-probe-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock)))) (before (\"bib\" \"plain\" \"plain\")) (after (\"bib\" \"plain\" \"plain\")))",
+      "repeat-equal": true
+    }
+  ],
+  "rendered": [
+    {
+      "style": "plain",
+      "body": "(bib-list \"3\" (document (concat (bibitem* \"1\") (label \"native-probe-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"2\") (label \"native-probe-three\") \"Max Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"3\") (label \"native-probe-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock))))",
+      "pdf-text": "Single [1]; multiple [3, 1]; repeated [1]. Detail [1, p. 7]. [1] Ada Alpha. First title. Press, 2026. [2] Max Middle. Uncited title. Press, 2024. [3] Zoe Zulu. Second title. Press, 2025. 1 "
+    },
+    {
+      "style": "alpha",
+      "body": "(bib-list \"3\" (document (concat (bibitem* \"Alp26\") (label \"native-probe-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"Mid24\") (label \"native-probe-three\") \"Max Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"Zul25\") (label \"native-probe-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock))))",
+      "pdf-text": "Single [Alp26]; multiple [Zul25, Alp26]; repeated [Alp26]. Detail [Alp26, p. 7]. [Alp26] Ada Alpha. First title. Press, 2026. [Mid24] Max Middle. Uncited title. Press, 2024. [Zul25] Zoe Zulu. Second title. Press, 2025. 1 "
+    },
+    {
+      "style": "abbrv",
+      "body": "(bib-list \"3\" (document (concat (bibitem* \"1\") (label \"native-probe-one\") \"A.\" (nbsp) \"Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"2\") (label \"native-probe-three\") \"M.\" (nbsp) \"Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"3\") (label \"native-probe-two\") \"Z.\" (nbsp) \"Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock))))",
+      "pdf-text": "Single [1]; multiple [3, 1]; repeated [1]. Detail [1, p. 7]. [1] A. Alpha. First title. Press, 2026. [2] M. Middle. Uncited title. Press, 2024. [3] Z. Zulu. Second title. Press, 2025. 1 "
+    },
+    {
+      "style": "alpha + document cite-sort",
+      "body": "(bib-list \"3\" (document (concat (bibitem* \"Alp26\") (label \"native-probe-one\") \"Ada Alpha. \" (newblock) (with \"font-shape\" \"italic\" \"First title\") \". \" (newblock) \"Press, 2026.\" (newblock)) (concat (bibitem* \"Mid24\") (label \"native-probe-three\") \"Max Middle. \" (newblock) (with \"font-shape\" \"italic\" \"Uncited title\") \". \" (newblock) \"Press, 2024.\" (newblock)) (concat (bibitem* \"Zul25\") (label \"native-probe-two\") \"Zoe Zulu. \" (newblock) (with \"font-shape\" \"italic\" \"Second title\") \". \" (newblock) \"Press, 2025.\" (newblock))))",
+      "pdf-text": "Sorted [Alp26, Zul25]. [Alp26] Ada Alpha. First title. Press, 2026. [Mid24] Max Middle. Uncited title. Press, 2024. [Zul25] Zoe Zulu. Second title. Press, 2025. 1 "
+    }
+  ]
+}

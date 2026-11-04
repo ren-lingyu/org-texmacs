@@ -1,0 +1,33 @@
+(use-modules (bibtex bib-utils) (bibtex plain) (generic document-edit))
+(define entries
+ '(document
+   (bib-entry "book" "one" (document (bib-field "title" "First title") (bib-field "author" (bib-names (bib-name "Ada" "" "Alpha" ""))) (bib-field "year" "2026") (bib-field "publisher" "Press")))
+   (bib-entry "book" "two" (document (bib-field "title" "Second title") (bib-field "author" (bib-names (bib-name "Zoe" "" "Zulu" ""))) (bib-field "year" "2025") (bib-field "publisher" "Press")))
+   (bib-entry "book" "three" (document (bib-field "title" "Uncited title") (bib-field "author" (bib-names (bib-name "Max" "" "Middle" ""))) (bib-field "year" "2024") (bib-field "publisher" "Press")))))
+(define (error-text args) (let ((p (open-output-string))) (write args p) (get-output-string p)))
+(define (attempt style load? normalize?)
+ (let ((before (list bib-current-prefix bib-style bib-default-style)) (body #f) (outcome #f)
+       (name (if (and normalize? (string-starts? style "tm-")) (substring style 3) style)))
+  (dynamic-wind
+   (lambda () #t)
+   (lambda ()
+    (set! outcome
+     (catch #t
+      (lambda ()
+       (if load?
+           (if (member (string-append "tm-" name) (bib-standard-styles))
+               (module-provide (list 'bibtex (string->symbol name)))
+               (error "Style is absent from native catalog" name)))
+       (set! body (bib-process "native-probe" name entries))
+       (list 'ok style name (if load? 'loaded 'raw) body))
+      (lambda args (list 'error style name (error-text args))))))
+   (lambda () (set! bib-current-prefix (car before)) (set! bib-style (cadr before)) (set! bib-default-style (caddr before))))
+  (append outcome (list (list 'before before) (list 'after (list bib-current-prefix bib-style bib-default-style))))))
+(define (run-styles output)
+ (let* ((catalog (bib-standard-styles))
+        (bootstrap (list (attempt "plain" #f #f) (attempt "alpha" #f #f)))
+        (cases '(("plain" #t #f) ("alpha" #t #f) ("plain" #t #f) ("abbrv" #t #f)
+                 ("plain" #t #f) ("tm-alpha" #f #f) ("tm-alpha" #t #t)
+                 ("missing-native-style" #f #f) ("missing-native-style" #t #f) ("plain" #t #f)))
+        (results (map (lambda (c) (list (apply attempt c) (apply attempt c))) cases)))
+  (call-with-output-file output (lambda (p) (write (list catalog entries bootstrap results) p) (newline p)))))

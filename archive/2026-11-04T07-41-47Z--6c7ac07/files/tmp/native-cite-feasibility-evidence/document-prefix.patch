@@ -1,0 +1,17 @@
+--- a/lisp/org-texmacs-document.el
++++ b/lisp/org-texmacs-document.el
+@@ -1149,6 +1149,14 @@
+                 (lambda (key)
+                   (member (concat prefix "-" key) static-labels))
+                 keys)))
++      ;; Isolated feasibility extension: respect an already-owned native
++      ;; transaction prefix, retaining the existing pure collision validation.
++      (when (plist-member info :x-native-prefix)
++        (setq prefix (plist-get info :x-native-prefix))
++        (unless (and (stringp prefix) (> (length prefix) 0))
++          (signal 'org-texmacs-document-error '("Invalid supplied native prefix")))
++        (when (cl-some (lambda (key) (member (concat prefix "-" key) static-labels)) keys)
++          (signal 'org-texmacs-document-error '("Native bibliography label collision"))))
+       (append
+        usage
+        (list

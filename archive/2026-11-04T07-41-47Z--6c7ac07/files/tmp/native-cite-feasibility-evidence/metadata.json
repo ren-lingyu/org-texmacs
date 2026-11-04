@@ -1,0 +1,182 @@
+{
+  "head": "6c7ac07ba4f4c936abe99fb15d1915df6e211deb",
+  "system": "x86_64-linux",
+  "emacs": "31.1",
+  "org": "9.8.10",
+  "texmacs": "2.1.5",
+  "flake_lock_sha256": "ec36a6d3f3c69c85323f7a5e30f1e12a1d84fe7f9eef4649cf0c116b1a6114cc",
+  "outputs": {
+    "styles": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles",
+    "handoff": "/nix/store/kid5cyifynxzg1jb4yw36cil7bm2j4wq-org-texmacs-native-cite-handoff",
+    "end-to-end": "/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end"
+  },
+  "copied_output_sources": [
+    {
+      "copy": "tmp/native-cite-feasibility-evidence/styles-styles.json",
+      "original": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/styles.json",
+      "sha256": "024bcf249b7e52082be1ac22699b2caaeab8dfb58296b28bb2adbfc000174436"
+    },
+    {
+      "copy": "tmp/native-cite-feasibility-evidence/styles-styles.sexp",
+      "original": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/styles.sexp",
+      "sha256": "0103c9826909c7e65e7db849745cfe348cc60c2cc966c7e290b3082b2851b0fa"
+    },
+    {
+      "copy": "tmp/native-cite-feasibility-evidence/styles-style-process-output.txt",
+      "original": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/style-process-output.txt",
+      "sha256": "f98c491156725bec759b6c319ca94155a66ec321e99c96921661a154984c0e6b"
+    },
+    {
+      "copy": "tmp/native-cite-feasibility-evidence/handoff-initial-handoff.json",
+      "original": "/nix/store/kid5cyifynxzg1jb4yw36cil7bm2j4wq-org-texmacs-native-cite-handoff/initial-handoff.json",
+      "sha256": "5688d362f5858f04cb82aa2f187a2dece739baf6e2f184d725e09b7a05f0b794"
+    },
+    {
+      "copy": "tmp/native-cite-feasibility-evidence/handoff-mock-handoff.json",
+      "original": "/nix/store/kid5cyifynxzg1jb4yw36cil7bm2j4wq-org-texmacs-native-cite-handoff/mock-handoff.json",
+      "sha256": "545f6e3b61cc6eb34aa7dd225b669633a12059dbf6061a95c188bf1323902aed"
+    },
+    {
+      "copy": "tmp/native-cite-feasibility-evidence/end-to-end-end-to-end.json",
+      "original": "/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/end-to-end.json",
+      "sha256": "e6eb82a6309d68f11c3fe8b6c1bdfda38d8eed4002b4092e0c13fafe0790c70e"
+    },
+    {
+      "copy": "tmp/native-cite-feasibility-evidence/end-to-end-references.bib",
+      "original": "/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/references.bib",
+      "sha256": "cdee0e50f75d653cee53e6cdf5a77f0f6b7934a1de046ec06f11e7a443eafd02"
+    },
+    {
+      "copy": "tmp/native-cite-feasibility-evidence/end-to-end-end-to-end-plain.org",
+      "original": "/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/end-to-end-plain.org",
+      "sha256": "c8669da23d0685a619c86fd7ec03cb4a27c7971dbd2edb710fb2387701dbb841"
+    },
+    {
+      "copy": "tmp/native-cite-feasibility-evidence/end-to-end-end-to-end-alpha.org",
+      "original": "/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/end-to-end-alpha.org",
+      "sha256": "cb91cce88c610792ce7a5b0345d81ada81882303f0864ecd2fecb71823113dbc"
+    },
+    {
+      "copy": "tmp/native-cite-feasibility-evidence/unsafe-missing-module-output.txt",
+      "original": "/nix/store/wsd8bxk9qd0qjk26vn54921dnvg3s4f7-org-texmacs-native-cite-styles/style-process-output.txt",
+      "sha256": "689834dc358d716b4ee37464294b718681338208e9a250cde58dc430e427253b"
+    }
+  ],
+  "binary_asset_metadata": [
+    {
+      "source": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/style-plain.tm",
+      "bytes": 724,
+      "sha256": "5f98497496ef4bac405526957e7986b0adf7366433b13976c684f34899a529d8",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/style-plain.pdf",
+      "bytes": 19045,
+      "sha256": "648ed5acaf716c7484369c3e9742663c181f259b5b7395debd232bc8771af28d",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/style-plain.png",
+      "bytes": 29939,
+      "sha256": "33f9698202d4d3c9adc2cfd9717f676663036868d0959597730a19e94aa501e8",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/style-alpha.tm",
+      "bytes": 736,
+      "sha256": "c3345dcc6f4924f216f1bf63abc090ea70cb54cb4b574372746f10e5278902d4",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/style-alpha.pdf",
+      "bytes": 20378,
+      "sha256": "66a7ab2bb0323c0c5a3bf5c874f7ed19bce7e6d33e83e50f918d53e64d0aff38",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/style-alpha.png",
+      "bytes": 36294,
+      "sha256": "d7e166f5e07391dbad17a2ef5babd4c0577695aa72707a5c6b9e12b446b5c97b",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/style-abbrv.tm",
+      "bytes": 736,
+      "sha256": "bba30f8f00536bcde8586a80db7ffaf8de594b7f69c332ca0bffda3f45d25498",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/style-abbrv.pdf",
+      "bytes": 18639,
+      "sha256": "b46e256187ff4a3a8bd0abf685dc42332fcdbb63ccb37bb4c1967dbffa412ae0",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/style-abbrv.png",
+      "bytes": 29027,
+      "sha256": "e0cbe484ab2df6d6839adacce16b6e2c99de195a9a2ac2ff98d41e3f3a1d1c7f",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/style-alpha-cite-sort.tm",
+      "bytes": 610,
+      "sha256": "6d6f4d1bbcac1987d0fac7a34c6ae7c76d6c536fd568af8a8f184bc3f5ea2a3b",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/style-alpha-cite-sort.pdf",
+      "bytes": 18608,
+      "sha256": "73e6052c6afa4a8cc41e6800b79dc4203a8785af40fc747984337c05df1e993d",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles/style-alpha-cite-sort.png",
+      "bytes": 30018,
+      "sha256": "9acba46044b6b8ea3e1ea2f0f786304581fc35cc166e1f77acd624eb224b1280",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/end-to-end-plain.tm",
+      "bytes": 688,
+      "sha256": "a46ae7fe7e6a5f70f4cb341affb85626294a2a2ecf555456acb561e750002ba7",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/end-to-end-plain.pdf",
+      "bytes": 21367,
+      "sha256": "06d963cc6e606ec12832b5345b96bfb06baf66283b5dbd1a75741cbd282964f9",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/end-to-end-plain.png",
+      "bytes": 26598,
+      "sha256": "46a9edbc87c81166258007afacfc73b565ba67348583c1470e1773dc64ed1adc",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/end-to-end-alpha.tm",
+      "bytes": 696,
+      "sha256": "380446844e368fc72c3d7339a9ff039c2c56745338bcb23f3890d3704b3fda81",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/end-to-end-alpha.pdf",
+      "bytes": 23451,
+      "sha256": "74e8828eeb2b4e6d0f5afaa6b1bfec3f75c0126c6e1eb99fa1eec4fc696700a6",
+      "retained": false
+    },
+    {
+      "source": "/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end/end-to-end-alpha.png",
+      "bytes": 32177,
+      "sha256": "48a3f73096d10c32a4bab7f15b182668460a6d82a0e35894dbd8e739007f1f43",
+      "retained": false
+    }
+  ],
+  "visual_review": "Six PNG pages inspected: styles plain/alpha/abbrv, alpha+cite-sort, real plain/alpha. First three and two real final PNG bytes match previously viewed builds exactly; cite-sort final repeated image matches inspected 5kny output. Bindings, label changes, alpha_i and fraction are visually correct. PDF text extraction loses/reorders glyphs; not a mathematical fidelity oracle. Binary assets intentionally not archived; rebuild for visual review.",
+  "main_preservation": "All159 baseline file SHA256s and4 human-staged blobs unchanged; commit.md SHA256 8071d8ac5b52ce64a468acfb1289c6ea88bae3edf68fc8fb100cad6308fbd7bd.",
+  "minimal_replay": {
+    "log": "tmp/native-cite-feasibility-evidence/native-cite-replay-gates.log",
+    "outputs_identical_to_final": true,
+    "notes": "HEAD reconstruction plus selected drivers and pure prefix insertion reproduces exactly the same three Nix output store paths. The only project-tree differences are the four staged N5 documentation/unused-Cite-test files."
+  }
+}

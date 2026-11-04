@@ -1,0 +1,74 @@
+[
+  {
+    "carrier": "semantic",
+    "error": null,
+    "associations": [
+      {
+        "kind": "citation",
+        "returned-present": true
+      },
+      {
+        "kind": "citation",
+        "returned-present": true
+      },
+      {
+        "kind": "citation",
+        "returned-present": true
+      },
+      {
+        "kind": "bibliography",
+        "returned-present": null
+      }
+    ],
+    "final": "#1=(org-data (:standard-properties [1 1 1 158 158 0 nil org-data nil nil nil 3 158 nil #<killed buffer> nil nil nil] :pre-blank 0 :path nil :CATEGORY nil) #2=(section (:standard-properties [1 1 1 158 158 0 nil first-section nil nil nil 1 158 nil #<killed buffer> nil nil #1#]) (keyword (:standard-properties [1 1 nil nil 32 0 nil top-comment nil nil nil nil nil nil #<killed buffer> nil nil #2#] :key \"BIBLIOGRAPHY\" :value \"references.bib\")) (keyword (:standard-properties [32 32 nil nil 68 0 nil nil nil nil nil nil nil nil #<killed buffer> nil nil #2#] :key \"CITE_EXPORT\" :value \"texmacs-native plain\")) #3=(paragraph (:standard-properties [68 68 68 136 136 0 nil nil nil nil nil nil nil nil #<killed buffer> nil nil #2#]) #(\"First \" 0 6 (:parent #3#)) (citation (:standard-properties [74 nil 80 84 85 0 #4=(:prefix :suffix) nil nil nil nil nil nil nil #<killed buffer> nil nil #3#] :style nil) #5=(citation-reference (:standard-properties [80 nil nil nil 84 0 #7=(:prefix :suffix) nil nil nil nil nil nil nil #<killed buffer> nil nil (citation (:standard-properties [74 nil 80 84 85 0 #4# nil nil nil nil nil nil nil #<killed buffer> nil nil nil] :style nil) #5#)] :key #9=\"one\"))) #(\". Again \" 0 8 (:parent #3#)) #6=(italic (:standard-properties [93 nil 94 105 106 0 nil nil nil nil nil nil nil nil #<killed buffer> nil nil #3#]) (citation (:standard-properties [94 nil 100 104 105 0 #4# nil nil nil nil nil nil nil #<killed buffer> nil nil #6#] :style nil) #8=(citation-reference (:standard-properties [100 nil nil nil 104 0 #7# nil nil nil nil nil nil nil #<killed buffer> nil nil (citation (:standard-properties [94 nil 100 104 105 0 #4# nil nil nil nil nil nil nil #<killed buffer> nil nil nil] :style nil) #8#)] :key #9#)))) #(\". Multiple \" 0 11 (:parent #3#)) (citation (:standard-properties [117 nil 123 133 134 0 #4# nil nil nil nil nil nil nil #<killed buffer> nil nil #3#] :style nil) #10=(citation-reference (:standard-properties [123 nil nil nil 128 0 #7# nil nil nil nil nil nil nil #<killed buffer> nil nil #11=(citation (:standard-properties [117 nil 123 133 134 0 #4# nil nil nil nil nil nil nil #<killed buffer> nil nil nil] :style nil) #10# #12=(citation-reference (:standard-properties [128 nil nil nil 133 0 #7# nil nil nil nil nil nil nil #<killed buffer> nil nil #11#] :key \"two\" :prefix (#(\" \" 0 1 (:parent #12#))))))] :key #9#)) #12#) #(\".\n\" 0 2 (:parent #3#))) (keyword (:standard-properties [nil nil nil nil nil 0 nil nil nil nil nil nil nil nil nil nil nil #2#] :key \"PRINT_BIBLIOGRAPHY\" :value \"\"))))",
+    "callback-count": 4
+  },
+  {
+    "carrier": "semantic-list",
+    "error": null,
+    "associations": [
+      {
+        "kind": "citation",
+        "returned-present": true
+      },
+      {
+        "kind": "citation",
+        "returned-present": true
+      },
+      {
+        "kind": "citation",
+        "returned-present": true
+      },
+      {
+        "kind": "bibliography",
+        "returned-present": true
+      }
+    ],
+    "final": "#1=(org-data (:standard-properties [1 1 1 158 158 0 nil org-data nil nil nil 3 158 nil #<killed buffer> nil nil nil] :pre-blank 0 :path nil :CATEGORY nil) #2=(section (:standard-properties [1 1 1 158 158 0 nil first-section nil nil nil 1 158 nil #<killed buffer> nil nil #1#]) (keyword (:standard-properties [1 1 nil nil 32 0 nil top-comment nil nil nil nil nil nil #<killed buffer> nil nil #2#] :key \"BIBLIOGRAPHY\" :value \"references.bib\")) (keyword (:standard-properties [32 32 nil nil 68 0 nil nil nil nil nil nil nil nil #<killed buffer> nil nil #2#] :key \"CITE_EXPORT\" :value \"texmacs-native plain\")) #3=(paragraph (:standard-properties [68 68 68 136 136 0 nil nil nil nil nil nil nil nil #<killed buffer> nil nil #2#]) #(\"First \" 0 6 (:parent #3#)) (citation (:standard-properties [74 nil 80 84 85 0 #4=(:prefix :suffix) nil nil nil nil nil nil nil #<killed buffer> nil nil #3#] :style nil) #5=(citation-reference (:standard-properties [80 nil nil nil 84 0 #7=(:prefix :suffix) nil nil nil nil nil nil nil #<killed buffer> nil nil (citation (:standard-properties [74 nil 80 84 85 0 #4# nil nil nil nil nil nil nil #<killed buffer> nil nil nil] :style nil) #5#)] :key #9=\"one\"))) #(\". Again \" 0 8 (:parent #3#)) #6=(italic (:standard-properties [93 nil 94 105 106 0 nil nil nil nil nil nil nil nil #<killed buffer> nil nil #3#]) (citation (:standard-properties [94 nil 100 104 105 0 #4# nil nil nil nil nil nil nil #<killed buffer> nil nil #6#] :style nil) #8=(citation-reference (:standard-properties [100 nil nil nil 104 0 #7# nil nil nil nil nil nil nil #<killed buffer> nil nil (citation (:standard-properties [94 nil 100 104 105 0 #4# nil nil nil nil nil nil nil #<killed buffer> nil nil nil] :style nil) #8#)] :key #9#)))) #(\". Multiple \" 0 11 (:parent #3#)) (citation (:standard-properties [117 nil 123 133 134 0 #4# nil nil nil nil nil nil nil #<killed buffer> nil nil #3#] :style nil) #10=(citation-reference (:standard-properties [123 nil nil nil 128 0 #7# nil nil nil nil nil nil nil #<killed buffer> nil nil #11=(citation (:standard-properties [117 nil 123 133 134 0 #4# nil nil nil nil nil nil nil #<killed buffer> nil nil nil] :style nil) #10# #12=(citation-reference (:standard-properties [128 nil nil nil 133 0 #7# nil nil nil nil nil nil nil #<killed buffer> nil nil #11#] :key \"two\" :prefix (#(\" \" 0 1 (:parent #12#))))))] :key #9#)) #12#) #(\".\n\" 0 2 (:parent #3#))) (keyword (:standard-properties [nil nil nil nil nil 0 nil nil nil nil nil nil nil nil nil nil nil #2#] :key \"PRINT_BIBLIOGRAPHY\" :value \"\"))))",
+    "callback-count": 4
+  },
+  {
+    "carrier": "other",
+    "error": "(org-texmacs-document-error \"Cyclic or multiply owned AST node\")",
+    "associations": [
+      {
+        "kind": "citation",
+        "returned-present": true
+      },
+      {
+        "kind": "citation",
+        "returned-present": true
+      },
+      {
+        "kind": "citation",
+        "returned-present": true
+      },
+      {
+        "kind": "bibliography",
+        "returned-present": null
+      }
+    ],
+    "final": "#1=(org-data (:standard-properties [1 1 1 158 158 0 nil org-data nil nil nil 3 158 nil #<killed buffer> nil nil nil] :pre-blank 0 :path nil :CATEGORY nil) #2=(section (:standard-properties [1 1 1 158 158 0 nil first-section nil nil nil 1 158 nil #<killed buffer> nil nil #1#]) (keyword (:standard-properties [1 1 nil nil 32 0 nil top-comment nil nil nil nil nil nil #<killed buffer> nil nil #2#] :key \"BIBLIOGRAPHY\" :value \"references.bib\")) (keyword (:standard-properties [32 32 nil nil 68 0 nil nil nil nil nil nil nil nil #<killed buffer> nil nil #2#] :key \"CITE_EXPORT\" :value \"texmacs-native plain\")) #3=(paragraph (:standard-properties [68 68 68 136 136 0 nil nil nil nil nil nil nil nil #<killed buffer> nil nil #2#]) #(\"First \" 0 6 (:parent #3#)) (bold (:standard-properties [nil nil nil nil nil 0 nil nil nil nil nil nil nil nil nil nil nil #3#]) #4=#(\"Mock native citation\" 0 20 (:parent #6=(bold (:standard-properties [nil nil nil nil nil 0 nil nil nil nil nil nil nil nil nil nil nil #3#]) #4#)))) #(\". Again \" 0 8 (:parent #3#)) #5=(italic (:standard-properties [93 nil 94 105 106 0 nil nil nil nil nil nil nil nil #<killed buffer> nil nil #3#]) (bold (:standard-properties [nil nil nil nil nil 0 nil nil nil nil nil nil nil nil nil nil nil #5#]) #4#)) #(\". Multiple \" 0 11 (:parent #3#)) #6# #(\".\n\" 0 2 (:parent #3#))) (special-block (:standard-properties [nil nil nil nil nil 0 nil nil nil nil nil nil nil nil nil nil nil #2#] :type \"texmacs\"))))",
+    "callback-count": 4
+  }
+]
