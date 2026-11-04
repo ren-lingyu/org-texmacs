@@ -14,7 +14,7 @@ CUSTOM_ID/link and all v0.6.0-and-earlier content unchanged. NEXT retained, no
 candidate CLOSED, tag or release action. No identified release blocker.
 
 Current strict package compilation, lint/treefmt and324core pass. Final docs
-polish passes fresh treefmt,16local Org links and5deprecated API replacements.
+polish passes fresh treefmt,17local Org links and5deprecated API replacements.
 Emacs read/equal proves all executable Lisp forms equal delivered baseline;
 only non-doc file delta is Commentary. Previous12checks/705ERT on exact delivered
 implementation remain functional evidence, not a fresh complete current-snapshot
@@ -22,6 +22,14 @@ run. No native/math visual or full native/PDF/integration rerun required for thi
 scope.167canonical input hashes stable, four-path complete diff/whitespace reviewed,
 ordinary index empty. Receipt/details release-review-0.7.0.md/-inputs.json;
 readable report tmp/release-review-report.md, whole-diff draft tmp/commit.md.
+
+User additionally requested one integrated README configuration. Added named block
+example-use-package-complete (core options/native Cite/menu), installation/Nix and
+first-backend-load guidance. Actual fresh -Q Emacs executes it successfully: correct
+T/T/t/p menu, full native declaration,11tags, packaged path intact, no worker.
+Only README changed since accepted review; final treefmt and links pass, receipt/
+report/message refreshed. Temporary driver accessor/nesting mistake corrected to
+actual Org API, no production workaround or new runtime change.
 
 Next user reviews diff, optionally manually marks DONE with actual transition's
 UTC CLOSED and commits. Verify resulting source and any explicit human state/time

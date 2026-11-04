@@ -59,3 +59,24 @@ Whole-diff draft follows user's established workflow: tmp/commit.md uses
 Exact source hashes/check outputs/log hashes/limits in release-review-0.7.0-inputs.json.
 No new raw archive needed. Uncommitted candidate is not exact HEAD; memory
 checkpoint has no new project parent, unlike earlier exact delivery verification.
+
+## Integrated configuration follow-up
+
+User asks whether README has a complete configuration, then explicitly requests
+one. Added Recommended complete configuration before Block formulas, named
+example-use-package-complete. One use-package declaration combines core settings,
+preload native Cite preference and menu keys, explicit backend require. Assumes
+installed/on-load-path package, reuses earlier checkout/straight guidance; don't
+stack earlier standalone declarations. Preserve Nix executable path, optional
+absolute override is commented; menu first-load/fresh-session rule and plain/
+alpha/abbrv/nil choices documented. Only README delta beyond accepted review.
+
+Fresh -Q locked Emacs reads this actual Org source block and executes it. Verified
+backend/menu T with T/t/p, full INFO (texmacs-native nil nil),11fragment tags,
+packaged program unchanged, no worker process. Initial temporary driver used
+nonexistent org-export-backend-menu-entry and wrong menu nesting; source inspection
+confirmed actual org-export-backend-menu, corrected driver passes. No production
+workaround. Fresh treefmt passes and final document links now17total; same5API
+migration/form comparisons pass. Strict compile/324core and prior705functional
+proof remain unchanged, not rerun unnecessarily. Input receipt and whole-diff
+commit draft/report updated; root NEXT/human finalization untouched. No raw archive.
