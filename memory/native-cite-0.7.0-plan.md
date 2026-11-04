@@ -211,3 +211,13 @@ native formatter; owned requests/results; pure lowering; explicit CSL/other
 backends intact; valid math native TM/PDF; explicit unknown-style/key/unsupported
 errors; no parallel preparation/third AST. Only then propose re-freezing TODO to
 NEXT; DONE/tag/publication remain separate manual release decisions.
+
+## Current execution state
+
+Initial coordinated plan checkpoint completed before any root edit. TODO-only
+6964f65 is verified human-delivered. N6 root-only scope candidate is ready with
+6unchecked items/14added lines, complete diff/whitespace reviewed and all158other
+tracked inputs unchanged. No runtime tests for prose-only registration. Exact
+candidate/message/parent/159hashes in native-cite-0.7.0-n6-inputs.json. Root state,
+identity/link/completed entries/N5 limits unchanged. Human commit pending; do not
+start N7 code before verifying it. README/detail/code/tests untouched in N6.

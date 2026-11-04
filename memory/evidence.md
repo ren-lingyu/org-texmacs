@@ -1,5 +1,11 @@
 # org-texmacs durable evidence
 
+N6 root-only native scope registration is reviewed, not delivered:14added planned
+lines, existing TODO/metadata/completed items/N5 limits unchanged,158other hashes
+unchanged. No runtime/format checks for prose-only edit. Worktree draft/receipt:
+native-cite-0.7.0-n6-inputs.json. Plan checkpoint preceded the ordinary edit.
+
+
 TODO-only6964f65 delivery verified exact57ada9a parent,path/full message and159
 committed/worktree hashes, clean intake, no unchanged tests rerun. User's new
 native restoration guide adopts formal work but provides no new runtime proof.

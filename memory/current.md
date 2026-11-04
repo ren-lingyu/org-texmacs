@@ -18,8 +18,14 @@ requests, not rerun old citation collection. Default fallback precedence and saf
 module lookup are targeted implementation gates; do not copy temporary wrappers.
 No broad feasibility restart, B reopening or automatic freeze/finalization/release.
 
-N5 and TODO-only deliveries complete. Next: checkpoint this plan, amend only
-CHANGELOG.org scope and draft, review/checkpoint receipt, wait for human commit.
+N5 and TODO-only deliveries complete. Initial N6 plan checkpoint precedes root
+registration. N6 candidate now ready: CHANGELOG.org only,14new unchecked scope
+lines; TODO/header/identity/link/completed items/N5 boundaries unchanged. Draft
+`docs(changelog): plan native Org Cite compatibility restoration` in tmp/commit.md.
+Complete diff/whitespace and158unchanged other inputs verified; no runtime checks
+for prose-only registration. Index empty; no ordinary Git write. Exact parent/
+path/message/159hashes: native-cite-0.7.0-n6-inputs.json. Wait for human delivery
+before N7 production changes; one coherent docs(changelog) commit, no split needed.
 
 ## Completed native Cite feasibility; report review, no production adoption
 
