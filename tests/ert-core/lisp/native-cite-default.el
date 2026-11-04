@@ -5,8 +5,8 @@
 (cl-defun
  org-texmacs-test--default-cite
  (configuration
-  &optional declaration options (preferred 'texmacs-native) empty)
- "Export CONFIGURATION/DECLARATION/OPTIONS using PREFERRED; return processor.
+  &optional declaration options (preferred '(texmacs-native)) empty)
+ "Export CONFIGURATION/DECLARATION/OPTIONS using PREFERRED; return full triplet.
 When EMPTY, test standard options/selection without invoking Cite finalizers."
  (let ((org-texmacs-cite-export-processor preferred)
        (before (copy-tree configuration))
@@ -36,7 +36,8 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
             info
             :back-end (org-export-get-backend 'texmacs))
            (org-cite-store-export-processor info)
-           (setq selected (org-cite-processor info)))
+           (setq selected
+                 (copy-sequence (plist-get info :cite-export))))
        (cl-letf (((symbol-function
                    'org-texmacs--prepared-cite-snapshot)
                   #'identity)
@@ -45,7 +46,9 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
                   #'identity)
                  ((symbol-function 'org-texmacs--standard-input)
                   (lambda (info state)
-                    (setq selected (org-cite-processor info))
+                    (setq selected
+                          (copy-sequence
+                           (plist-get info :cite-export)))
                     (funcall bridge info state))))
          (org-texmacs--standard-consume 'input nil nil options))))
    (should (eq configuration org-cite-export-processors))
@@ -54,47 +57,68 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
 
 (ert-deftest org-texmacs-native-default-standard-selection ()
   (should
-   (eq (org-texmacs-test--default-cite '((t basic))) 'texmacs-native))
-  (should (eq (org-texmacs-test--default-cite nil) 'texmacs-native))
+   (equal
+    (org-texmacs-test--default-cite '((t basic)))
+    '(texmacs-native nil nil)))
+  (should
+   (equal
+    (org-texmacs-test--default-cite nil) '(texmacs-native nil nil)))
   (should-not (org-texmacs-test--default-cite nil nil nil nil))
   (should
-   (eq
-    (org-texmacs-test--default-cite '((html basic))) 'texmacs-native))
+   (equal
+    (org-texmacs-test--default-cite '((html basic)))
+    '(texmacs-native nil nil)))
   (should-not
    (org-texmacs-test--default-cite '((html basic)) nil nil nil))
   (dolist (config
            '(((t org-texmacs-test-structured))
              ((texmacs org-texmacs-test-structured) (t basic))))
     (should
-     (eq
+     (equal
       (org-texmacs-test--default-cite config nil nil nil)
-      'org-texmacs-test-structured)))
+      '(org-texmacs-test-structured nil nil))))
   (should
-   (eq
+   (equal
     (org-texmacs-test--default-cite
      nil "texmacs-native alpha")
-    'texmacs-native))
+    '(texmacs-native "alpha" nil)))
   (should
-   (eq
+   (equal
     (org-texmacs-test--default-cite
      '((t basic)) "org-texmacs-test-structured")
-    'org-texmacs-test-structured))
+    '(org-texmacs-test-structured nil nil)))
   (should
-   (eq
+   (equal
     (org-texmacs-test--default-cite
      '((t basic)) nil '(:cite-export "org-texmacs-test-structured"))
-    'org-texmacs-test-structured))
+    '(org-texmacs-test-structured nil nil)))
   (should
-   (eq
+   (equal
     (org-texmacs-test--default-cite
      '((t basic))
      "texmacs-native"
      '(:cite-export "org-texmacs-test-structured"))
-    'texmacs-native)))
+    '(texmacs-native nil nil)))
+  (should
+   (equal
+    (org-texmacs-test--default-cite
+     '((t basic))
+     nil
+     '(:cite-export "texmacs-native abbrv")
+     '(texmacs-native "alpha"))
+    '(texmacs-native "abbrv" nil)))
+  (should
+   (equal
+    (org-texmacs-test--default-cite
+     '((t basic))
+     "texmacs-native abbrv"
+     '(:cite-export "texmacs-native plain")
+     '(texmacs-native "alpha"))
+    '(texmacs-native "abbrv" nil))))
 
 (ert-deftest org-texmacs-native-default-explicit-basic-still-rejected
     ()
-  (dolist (preferred '(texmacs-native csl nil))
+  (dolist (preferred '((texmacs-native) (csl) nil))
     (dolist (case '((((texmacs basic)) nil) (((t basic)) "basic")))
       (should-error
        (org-texmacs-test--default-cite
@@ -108,15 +132,18 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
             (when (eq backend 'texmacs)
               (plist-put
                info
-               :cite-export '(org-texmacs-test-structured nil nil)))
+               :cite-export
+               '(org-texmacs-test-structured "filter-bib" nil)))
             info))))
     (should
-     (eq
-      (org-texmacs-test--default-cite '((t basic)))
-      'org-texmacs-test-structured))))
+     (equal
+      (org-texmacs-test--default-cite
+       '((t basic)) nil nil '(texmacs-native "alpha"))
+      '(org-texmacs-test-structured "filter-bib" nil)))))
 
 (ert-deftest org-texmacs-native-default-other-backends-and-nesting ()
   (let ((org-cite-export-processors '((t basic)))
+        (org-texmacs-cite-export-processor '(texmacs-native "alpha"))
         (org-export-use-babel nil)
         processors)
     (with-temp-buffer
@@ -125,8 +152,10 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
       (let ((org-export-filter-options-functions
              (list
               (lambda (info backend)
-                (push
-                 (cons backend (org-cite-processor info)) processors)
+                (push (cons
+                       backend
+                       (copy-sequence (plist-get info :cite-export)))
+                      processors)
                 info))))
         (org-export-as 'html nil nil t)
         (org-export-as 'latex nil nil t)
@@ -144,20 +173,20 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
     (should
      (equal
       (nreverse processors)
-      '((html . basic)
-        (latex . basic)
-        (html . basic)
-        (texmacs . basic)
-        (texmacs . texmacs-native)
-        (html . basic))))
+      '((html basic nil nil)
+        (latex basic nil nil)
+        (html basic nil nil)
+        (texmacs basic nil nil)
+        (texmacs texmacs-native "alpha" nil)
+        (html basic nil nil))))
     (should (equal org-cite-export-processors '((t basic))))))
 
 (ert-deftest org-texmacs-native-default-subtree-declaration-wins ()
   (with-temp-buffer
     (org-mode)
     (insert
-     "#+bibliography: /fixture/refs.bib\n#+cite_export: texmacs-native\n"
-     "* Selected\n:PROPERTIES:\n:EXPORT_CITE_EXPORT: org-texmacs-test-structured\n:END:\n"
+     "#+bibliography: /fixture/refs.bib\n#+cite_export: texmacs-native alpha\n"
+     "* Selected\n:PROPERTIES:\n:EXPORT_CITE_EXPORT: org-texmacs-test-structured subtree-bib\n:END:\n"
      "[cite:@key]\n#+print_bibliography:\n* Other\nOutside.\n")
     (goto-char (point-min))
     (search-forward "* Selected")
@@ -170,10 +199,14 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
           (bridge (symbol-function 'org-texmacs--standard-input)))
       (cl-letf (((symbol-function 'org-texmacs--standard-input)
                  (lambda (info state)
-                   (setq selected (org-cite-processor info))
+                   (setq selected
+                         (copy-sequence
+                          (plist-get info :cite-export)))
                    (funcall bridge info state))))
         (org-texmacs--standard-consume 'input t))
-      (should (eq selected 'org-texmacs-test-structured)))))
+      (should
+       (equal
+        selected '(org-texmacs-test-structured "subtree-bib" nil))))))
 
 (ert-deftest org-texmacs-native-cite-inactive-alt-title-owned-request
     ()
@@ -208,23 +241,40 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
 
 (ert-deftest org-texmacs-cite-preference-configuration-matrix ()
   (dolist (case
-           '((texmacs-native ((t basic)) texmacs-native)
-             (texmacs-native ((t csl)) texmacs-native)
-             (texmacs-native nil texmacs-native)
-             (texmacs-native ((texmacs csl) (t basic)) csl)
-             (csl ((t basic)) csl)
-             (nil ((t basic)) basic)
-             (nil ((t csl)) csl)
+           '(((texmacs-native) ((t basic)) (texmacs-native nil nil))
+             ((texmacs-native "alpha")
+              ((t basic))
+              (texmacs-native "alpha" nil))
+             ((texmacs-native "abbrv")
+              nil
+              (texmacs-native "abbrv" nil))
+             ((texmacs-native "alpha" nil)
+              ((t csl))
+              (texmacs-native "alpha" nil))
+             ((texmacs-native) ((t csl)) (texmacs-native nil nil))
+             ((texmacs-native) nil (texmacs-native nil nil))
+             ((texmacs-native "alpha")
+              ((texmacs csl "backend.csl" "numeric") (t basic))
+              (csl "backend.csl" "numeric"))
+             ((csl "local.csl" "author-year")
+              ((t basic))
+              (csl "local.csl" "author-year"))
+             (nil ((t basic)) (basic nil nil))
+             (nil ((t csl "fallback.csl")) (csl "fallback.csl" nil))
              (nil nil nil)))
     (should
-     (eq
+     (equal
       (org-texmacs-test--default-cite
        (nth 1 case) nil nil (car case) t)
       (nth 2 case)))))
 
 (ert-deftest org-texmacs-cite-preference-keeps-original-configuration
     ()
-  (dolist (preferred '(nil texmacs-native csl))
+  (dolist (preferred
+           '(nil
+             (texmacs-native)
+             (texmacs-native "alpha" nil)
+             (csl "local.csl")))
     (dolist (configuration '(nil ((t csl)) ((texmacs basic) (t csl))))
       (let* ((org-texmacs-cite-export-processor preferred)
              (org-cite-export-processors (copy-tree configuration))
@@ -235,14 +285,14 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
         (should (equal before original))
         (if (or (null preferred) (assq 'texmacs original))
             (should (eq effective original))
-          (should (equal (car effective) (list 'texmacs preferred)))
+          (should (equal (car effective) (cons 'texmacs preferred)))
           (should (eq (cdr effective) original)))))))
 
 (ert-deftest org-texmacs-cite-preference-derived-backend-specificity
     ()
   (let ((org-export-registered-backends
          (copy-sequence org-export-registered-backends))
-        (org-texmacs-cite-export-processor 'texmacs-native)
+        (org-texmacs-cite-export-processor '(texmacs-native "alpha"))
         (org-export-use-babel nil))
     (org-export-define-derived-backend
      'org-texmacs-test-derived 'texmacs nil)
@@ -259,13 +309,17 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
           (let ((org-export-filter-options-functions
                  (list
                   (lambda (info _backend)
-                    (setq selected (org-cite-processor info))
+                    (setq selected
+                          (copy-sequence
+                           (plist-get info :cite-export)))
                     info))))
             (cl-letf (((symbol-function
                         'org-texmacs-document-serialize)
                        (lambda (_) "Text")))
               (org-export-as 'org-texmacs-test-derived)))
-          (should (eq selected 'org-texmacs-test-structured)))))))
+          (should
+           (equal
+            selected '(org-texmacs-test-structured nil nil))))))))
 
 (ert-deftest org-texmacs-cite-preference-standard-processor-errors ()
   (let ((org-cite--processors (copy-sequence org-cite--processors)))
@@ -273,8 +327,8 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
      'org-texmacs-test-no-export
      :follow #'ignore)
     (dolist (preferred
-             '(org-texmacs-test-unregistered
-               org-texmacs-test-no-export))
+             '((org-texmacs-test-unregistered)
+               (org-texmacs-test-no-export)))
       (should-error
        (org-texmacs-test--default-cite
         '((t basic)) nil nil preferred t)
@@ -282,27 +336,85 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
 
 (ert-deftest org-texmacs-cite-preference-preload-and-runtime-changes
     ()
-  (dolist (initial '(nil basic))
+  (dolist (initial '(nil (basic) (texmacs-native "alpha" nil)))
     (org-texmacs-test--menu-fresh-process
      `(progn
         (should-not (featurep 'ox-texmacs))
-        (setq org-texmacs-cite-export-processor ',initial)
-        (require 'ox-texmacs)
-        (should (eq org-texmacs-cite-export-processor ',initial))
+        (let ((configured ',initial))
+          (setq org-texmacs-cite-export-processor configured)
+          (require 'ox-texmacs)
+          (should (eq org-texmacs-cite-export-processor configured)))
         (let ((org-cite-export-processors '((t basic)))
               (org-export-use-babel nil)
               (bridge (symbol-function 'org-texmacs--standard-input))
               selected)
-          (dolist (preferred
-                   '(nil texmacs-native basic nil texmacs-native))
-            (setq org-texmacs-cite-export-processor preferred)
+          (dolist (case
+                   '((nil (basic nil nil))
+                     ((texmacs-native) (texmacs-native nil nil))
+                     ((texmacs-native "alpha")
+                      (texmacs-native "alpha" nil))
+                     ((texmacs-native "abbrv")
+                      (texmacs-native "abbrv" nil))
+                     ((texmacs-native "alpha" nil)
+                      (texmacs-native "alpha" nil))
+                     ((basic) (basic nil nil)) (nil (basic nil nil))))
+            (setq org-texmacs-cite-export-processor (car case))
             (with-temp-buffer
               (org-mode)
               (insert "Plain text.\n")
               (cl-letf (((symbol-function
                           'org-texmacs--standard-input)
                          (lambda (info state)
-                           (setq selected (org-cite-processor info))
+                           (setq selected
+                                 (copy-sequence
+                                  (plist-get info :cite-export)))
                            (funcall bridge info state))))
                 (org-texmacs--standard-consume 'input)))
-            (should (eq selected (or preferred 'basic)))))))))
+            (should (equal selected (cadr case)))))))))
+
+(ert-deftest
+    org-texmacs-cite-preference-native-bibliography-style-handoff
+    ()
+  (dolist (case
+           '(((texmacs-native) (texmacs-native nil nil) "plain")
+             ((texmacs-native "alpha")
+              (texmacs-native "alpha" nil)
+              "alpha")
+             ((texmacs-native "abbrv")
+              (texmacs-native "abbrv" nil)
+              "abbrv")
+             ((texmacs-native "alpha" nil)
+              (texmacs-native "alpha" nil)
+              "alpha")))
+    (with-temp-buffer
+      (org-mode)
+      (insert
+       "#+bibliography: /fixture/references.bib\nText [cite:@key].\n#+print_bibliography:\n")
+      (let ((org-texmacs-cite-export-processor (car case))
+            (org-cite-export-processors '((t basic)))
+            (org-export-use-babel nil)
+            (bridge (symbol-function 'org-texmacs--standard-input))
+            selected)
+        (cl-letf (((symbol-function 'org-texmacs--standard-input)
+                   (lambda (info state)
+                     (setq selected
+                           (copy-sequence
+                            (plist-get info :cite-export)))
+                     (funcall bridge info state)))
+                  ((symbol-function
+                    'org-texmacs--prepared-cite-snapshot)
+                   #'identity)
+                  ((symbol-function
+                    'org-texmacs--prepared-cite-fulfill)
+                   #'identity)
+                  ((symbol-function 'org-texmacs--worker-request)
+                   (lambda (&rest _)
+                     (ert-fail "Request fixture started worker"))))
+          (let* ((input (org-texmacs--standard-consume 'input))
+                 (plan
+                  (plist-get
+                   (org-texmacs-input-info input)
+                   :texmacs-cite-plan)))
+            (should (equal selected (nth 1 case)))
+            (should (equal (plist-get plan :style) (nth 2 case)))
+            (should (equal (plist-get plan :keys) '("key")))))))))

@@ -98,10 +98,10 @@ lowering remain separate from standard export preparation.
 - [X] Reuse native BibTeX parsing and safely select =plain=, =alpha= and =abbrv=
   styles from owned source snapshots; reject unsupported styles and unresolved
   or ambiguous citation keys explicitly.
-- [X] Provide =org-texmacs-cite-export-processor= for backend-specific processor
-  selection, defaulting to =texmacs-native=; nil delegates to standard Org Cite.
-  Preserve explicit backend/document choices and other backends without requiring
-  =citeproc=.
+- [X] Provide =org-texmacs-cite-export-processor= for a backend-specific Org Cite
+  declaration, defaulting to =(texmacs-native)=, with optional bibliography and
+  citation style positions; nil delegates to standard Org Cite. Preserve explicit
+  backend/document choices and other backends without requiring =citeproc=.
 - [X] Verify standard selection/filters, ownership, nested exports and failure
   recovery, native mathematical TM/PDF output and real =org-roam-organize=
   integration; retain explicit CSL and unsupported-fragment regressions.

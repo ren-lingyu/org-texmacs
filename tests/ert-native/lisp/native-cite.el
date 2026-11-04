@@ -274,17 +274,50 @@
          (org-export-use-babel nil))
      (with-temp-file file
        (insert org-texmacs-test--cite-bib))
-     (with-temp-buffer
-       (org-mode)
-       (insert
-        "#+bibliography: "
-        file
-        "\n[cite:@one; @two]\n#+print_bibliography:\n")
-       (let ((document
-              (org-texmacs-document-from-buffer (current-buffer))))
-         (should
-          (memq
-           'with-bib
-           (flatten-tree (org-texmacs-document-body document)))))
-       (should
-        (string-prefix-p "<TeXmacs|" (org-export-as 'texmacs)))))))
+     (dolist (case
+              '(((texmacs-native) (texmacs-native nil nil) "plain")
+                ((texmacs-native "alpha")
+                 (texmacs-native "alpha" nil)
+                 "alpha")
+                ((texmacs-native "abbrv")
+                 (texmacs-native "abbrv" nil)
+                 "abbrv")
+                ((texmacs-native "alpha" nil)
+                 (texmacs-native "alpha" nil)
+                 "alpha")))
+       (with-temp-buffer
+         (org-mode)
+         (insert
+          "#+bibliography: "
+          file
+          "\n[cite:@one; @two]\n#+print_bibliography:\n")
+         (let ((org-texmacs-cite-export-processor (car case))
+               (bridge (symbol-function 'org-texmacs--standard-input))
+               declaration
+               input)
+           (cl-letf
+               (((symbol-function 'org-texmacs--standard-input)
+                 (lambda (info state)
+                   (setq
+                    declaration (copy-sequence (plist-get info :cite-export))
+                    input (funcall bridge info state)))))
+             (let ((document
+                    (org-texmacs-document-from-buffer
+                     (current-buffer))))
+               (should
+                (memq
+                 'with-bib
+                 (flatten-tree
+                  (org-texmacs-document-body document)))))
+             (should (equal declaration (nth 1 case)))
+             (should
+              (equal
+               (plist-get
+                (plist-get
+                 (org-texmacs-input-info input)
+                 :texmacs-cite-plan)
+                :style)
+               (nth 2 case)))
+             (should
+              (string-prefix-p "<TeXmacs|" (org-export-as 'texmacs)))
+             (should (equal declaration (nth 1 case))))))))))

@@ -14,15 +14,28 @@
 (require 'ox)
 (require 'org-texmacs-cite)
 
-(defcustom org-texmacs-cite-export-processor 'texmacs-native
-  "Preferred Org Cite export processor for TeXmacs.
-When nil, use `org-cite-export-processors' without modification.
-A non-nil value supplies a TeXmacs choice unless an explicit backend entry wins.
-This controls export only; activate, follow and insert processors are unchanged."
+(defcustom org-texmacs-cite-export-processor '(texmacs-native)
+  "Preferred Org Cite export processor declaration for TeXmacs.
+When nil, delegate to `org-cite-export-processors'.
+A non-nil value is (PROCESSOR BIBLIOGRAPHY-STYLE CITATION-STYLE), without
+its backend name.  Both style positions are optional and may be nil.
+Explicit TeXmacs backend entries take precedence over this declaration.
+Only export is affected; activate, follow and insert processors are unchanged."
   :type
   '(choice
     (const :tag "Use Org Cite configuration" nil)
-    (symbol :tag "Processor"))
+    (list :tag "Processor" symbol)
+    (list
+     :tag
+     "Processor and bibliography style"
+     symbol
+     (choice (const nil) string))
+    (list
+     :tag
+     "Complete processor declaration"
+     symbol
+     (choice (const nil) string)
+     (choice (const nil) string)))
   :group 'org-texmacs)
 
 (defun org-texmacs--cite-default-processors ()
@@ -31,7 +44,7 @@ This controls export only; activate, follow and insert processors are unchanged.
           (assq 'texmacs org-cite-export-processors))
       org-cite-export-processors
     (cons
-     (list 'texmacs org-texmacs-cite-export-processor)
+     (cons 'texmacs org-texmacs-cite-export-processor)
      org-cite-export-processors)))
 
 (defun org-texmacs--cite-record (node request backend info)

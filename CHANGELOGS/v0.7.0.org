@@ -145,9 +145,13 @@ coverage and malformed-math recovery remain limited by TeXmacs; no full BibLaTeX
 or strict math-validation guarantee is added.
 
 The TeXmacs backend provides =org-texmacs-cite-export-processor=, defaulting to
-=texmacs-native=. A nil value delegates processor selection entirely to standard
-Org Cite. A non-nil value supplies a TeXmacs-specific processor choice unless an
-explicit backend entry takes precedence.
+=(texmacs-native)=. A non-nil value uses Org Cite's processor declaration without
+its backend name: =(PROCESSOR BIBLIOGRAPHY-STYLE CITATION-STYLE)=, with both style
+positions optional or nil. For example, =(texmacs-native "alpha")= selects the
+native alpha bibliography style, and =(texmacs-native "alpha" nil)= retains the
+complete triplet. The native processor still supports only the default citation
+style. A nil value delegates selection entirely to standard Org Cite. An explicit
+backend entry takes precedence over the TeXmacs-specific declaration.
 
 Document/subtree CITE_EXPORT, external options and options filters retain standard
 Org precedence. The global =org-cite-export-processors= value is not modified,

@@ -987,16 +987,32 @@ normal package wrapper.  The dedicated Cite check supplies it explicitly.
 
 The =texmacs-native= processor supports TeXmacs-native bibliography output
 through the same standard Org Cite transaction, without requiring =citeproc=.
-TeXmacs defaults to =texmacs-native=. Configure its export-only preference with
-=org-texmacs-cite-export-processor=; a nil value delegates entirely to standard
-Org Cite and does not itself disable citations:
+TeXmacs defaults to the declaration =(texmacs-native)=. Configure its export-only
+preference with =org-texmacs-cite-export-processor=. Choose one declaration:
 
 #+begin_src emacs-lisp
-  (setq org-texmacs-cite-export-processor 'texmacs-native)
+  ;; Native processor with its default plain bibliography style:
+  (setq org-texmacs-cite-export-processor '(texmacs-native))
 
-  ;; Alternatively, delegate to standard Org Cite:
+  ;; Alternative native bibliography styles:
+  (setq org-texmacs-cite-export-processor '(texmacs-native "alpha"))
+  (setq org-texmacs-cite-export-processor '(texmacs-native "abbrv"))
+
+  ;; The complete triplet is also accepted:
+  (setq org-texmacs-cite-export-processor '(texmacs-native "alpha" nil))
+
+  ;; Alternatively, delegate entirely to standard Org Cite:
   (setq org-texmacs-cite-export-processor nil)
 #+end_src
+
+A non-nil value is Org Cite's =(PROCESSOR BIBLIOGRAPHY-STYLE CITATION-STYLE)=
+declaration, omitting the already determined =texmacs= backend. Both style
+positions are optional and may be nil. Keep the list form even when specifying
+only the processor. The native processor currently supports only the default
+citation style; retaining the third position does not add citation-style support.
+With optional =citeproc= installed, a declaration such as
+='(csl "/absolute/path/style.csl")= selects CSL and its bibliography style.
+A nil preference delegates without itself disabling citations.
 
 The preference is evaluated on each export, including changes after loading
 =ox-texmacs=. A non-nil value supplies a TeXmacs-specific choice ahead of Org's

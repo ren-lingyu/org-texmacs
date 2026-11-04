@@ -455,22 +455,34 @@
 
 (ert-deftest org-texmacs-standard-csl-user-default-preserved ()
   (org-texmacs-test--with-csl
-   (dolist (preferred '(nil texmacs-native))
-     (let ((org-texmacs-cite-export-processor preferred)
-           (org-cite-export-processors
-            (if preferred
-                `((texmacs csl ,csl-style) (t basic))
-              `((t csl ,csl-style))))
-           (org-export-use-babel nil))
+   (dolist (setting
+            (list
+             (list nil `((t csl ,csl-style)))
+             (list
+              '(texmacs-native "alpha")
+              `((texmacs csl ,csl-style) (t basic)))
+             (list (list 'csl csl-style) '((t basic)))))
+     (let ((org-texmacs-cite-export-processor (car setting))
+           (org-cite-export-processors (cadr setting))
+           (org-export-use-babel nil)
+           declaration)
        (with-temp-buffer
          (org-mode)
          (insert
           "#+bibliography: "
           csl-bibliography
           "\n[cite:@key]\n#+print_bibliography:\n")
-         (let* ((document
+         (let* ((org-export-filter-options-functions
+                 (list
+                  (lambda (info _backend)
+                    (setq declaration
+                          (copy-sequence
+                           (plist-get info :cite-export)))
+                    info)))
+                (document
                  (org-texmacs-document-from-buffer (current-buffer)))
                 (body (org-texmacs-document-body document)))
+           (should (equal declaration (list 'csl csl-style nil)))
            (should
             (string-search "Reference alpha" (prin1-to-string body)))
            (should (memq 'hlink (flatten-tree body)))
