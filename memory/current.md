@@ -27,6 +27,9 @@ User additionally requested one integrated README configuration. Added named blo
 example-use-package-complete (core options/native Cite/menu), installation/Nix and
 first-backend-load guidance. Actual fresh -Q Emacs executes it successfully: correct
 T/T/t/p menu, full native declaration,11tags, packaged path intact, no worker.
+User then adopts explicit (texmacs-native "plain" nil) in :custom, leaving only
+load-time menu setting in :init. Actual fresh Emacs confirms INFO includes plain;
+final treefmt passes and receipt/draft/report reflect this latest form.
 Only README changed since accepted review; final treefmt and links pass, receipt/
 report/message refreshed. Temporary driver accessor/nesting mistake corrected to
 actual Org API, no production workaround or new runtime change.

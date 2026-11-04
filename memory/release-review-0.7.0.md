@@ -80,3 +80,11 @@ workaround. Fresh treefmt passes and final document links now17total; same5API
 migration/form comparisons pass. Strict compile/324core and prior705functional
 proof remain unchanged, not rerun unnecessarily. Input receipt and whole-diff
 commit draft/report updated; root NEXT/human finalization untouched. No raw archive.
+
+User confirms follow-up refinement: only menu in :init; export-time Cite preference
+in :custom, explicitly (texmacs-native "plain" nil). README explains every slot,
+changing only bibliography style for alpha/abbrv and keeping native citation style
+nil, whole-preference nil delegation unchanged. Fresh actual-block Emacs run
+passes with INFO (texmacs-native "plain" nil), menu/Nix/no-worker guarantees;
+final treefmt pass. Updated canonical receipt/message/report. No other project
+file change, no new runtime source behavior or release-state action.
