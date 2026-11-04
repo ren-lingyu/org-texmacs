@@ -1,5 +1,14 @@
 # org-texmacs current memory
 
+## Active native Cite feasibility, independent gates
+
+User authorizes I native style mechanism and II mock standard Org Cite handoff
+independently; only then III real bibliography. No production changes/B reopening.
+Plan: memory/native-cite-feasibility.md. Exact N5 candidate unchanged; user has now
+staged its4paths, verified against accepted hashes; preserve the index. HEAD6c7ac07.
+Snapshot tmp/native-cite-feasibility-1. Next: I module/label/state/render proof;
+II legal carriers and original->prepared->owned identity with mock native data.
+
 ## Completed isolated bibliography comparison, no production adoption
 
 User's A/B/C comparison is complete and selectively archived. Conclusion2: CSL
