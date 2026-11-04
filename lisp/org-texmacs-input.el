@@ -216,8 +216,94 @@ Unsupported semantic inputs retain their error until document lowering."
                static query)
             (org-texmacs-document-error
              (org-texmacs--resolution-create :failure (cdr err))))))
-    (org-texmacs--input-with-info input (org-texmacs-input-info input)
-                                  resolution)))
+    (setq input
+          (org-texmacs--input-with-info
+           input (org-texmacs-input-info input)
+           resolution))
+    (if (plist-member
+         (org-texmacs-input-info input)
+         :texmacs-cite-requests)
+        (org-texmacs--input-cite-plan input)
+      input)))
+
+(defun org-texmacs--input-cite-plan (input)
+  "Bind owned native requests in INPUT to a frozen structural output plan.
+Select only requested keys from already parsed dependencies.  No file access,
+processor calls, native formatting or independent citation collection occurs."
+  (let* ((info (org-texmacs-input-info input))
+         (view
+          (org-texmacs--cite-view
+           (org-texmacs-input-ast input)
+           (plist-get info :texmacs-cite-requests)))
+         (keys (plist-get view :keys))
+         (static
+          (org-texmacs--document-static-labels
+           (org-texmacs-input-islands input)))
+         (number 0)
+         prefix
+         selected)
+    (while (progn
+             (setq prefix
+                   (format "org-texmacs-bib-%d" (cl-incf number)))
+             (cl-some
+              (lambda (key)
+                (member (concat prefix "-" key) static))
+              keys)))
+    (when (or (org-texmacs-input-bibliography input)
+              (plist-get info :texmacs-bibliography-output))
+      (dolist (file (plist-get view :files))
+        (unless (assoc file (org-texmacs-input-bibliography input))
+          (org-texmacs--cite-fail
+           "Missing owned native bibliography source")))
+      (dolist (key keys)
+        (let (matches)
+          (dolist (source (org-texmacs-input-bibliography input))
+            (when (member (car source) (plist-get view :files))
+              (dolist (entry (cdr (cdr source)))
+                (when (and (consp entry)
+                           (eq (car entry) 'bib-entry)
+                           (equal (nth 2 entry) key))
+                  (push entry matches)))))
+          (unless (= (length matches) 1)
+            (org-texmacs--cite-fail
+             "Missing or ambiguous native bibliography key"))
+          (push (car matches) selected))))
+    (org-texmacs--input-with-info
+     input
+     (plist-put
+      (copy-sequence info)
+      :texmacs-cite-plan
+      (append
+       view
+       (list
+        :prefix prefix
+        :entries
+        (cons 'document (nreverse selected))))))))
+
+(defun org-texmacs--input-cite-result (input bibliography output)
+  "Own prepared native BIBLIOGRAPHY and OUTPUT for request-bearing INPUT.
+OUTPUT is the existing (PREFIX KEYS ENTRIES BODY) structural output view.
+This boundary neither reads source files nor runs native parsing/formatting."
+  (unless (plist-member
+           (org-texmacs-input-info input)
+           :texmacs-cite-requests)
+    (org-texmacs--cite-fail "Expected native citation requests"))
+  (unless (or (null output)
+              (and (proper-list-p output) (= (length output) 4)))
+    (org-texmacs--cite-fail
+     "Invalid native bibliography result view"))
+  (org-texmacs-input-create
+   (org-texmacs-input-ast input)
+   (plist-put
+    (copy-sequence (org-texmacs-input-info input))
+    :texmacs-bibliography-output output)
+   :islands (org-texmacs-input-islands input)
+   :post-blanks (org-texmacs-input-post-blanks input)
+   :style (org-texmacs-input-style input)
+   :initial (org-texmacs-input-initial input)
+   :source-file (org-texmacs-input-source-file input)
+   :resource-base (org-texmacs-input-resource-base input)
+   :bibliography bibliography))
 
 (defun org-texmacs--input-with-info (input info &optional resolution)
   "Finish private INPUT with owned INFO and optional frozen RESOLUTION.
@@ -277,6 +363,14 @@ establishes prepared data ownership.  Citation lowering also requires fixed
 INFO declaration identities and a prepared output view for bibliography print.
 The view binds prefix, key order, selected entry trees and source-semantic body;
 pure lowering verifies that it matches the current resolution plan.
+
+Standard native Cite inputs instead carry :texmacs-cite-requests in INFO.
+These are minimal node-associated requests, not full live export INFO.  Copy
+and validate their identities, then freeze a native plan without recollecting
+citations.  Native results bind the same prefix, keys and selected entries.
+Pending requests remain inspectable but cannot produce a document until their
+bibliography result is supplied.  Neither request ownership nor result
+attachment performs file access or native processing.
 
 Copy strings, lists and vectors, rebuild parent links, and remap references
 to AST nodes in INFO and the mappings.  Copy parsed title, subtitle, author

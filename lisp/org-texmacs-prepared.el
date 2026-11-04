@@ -103,6 +103,54 @@ remain supported by independent models and pure lowering, not source export."
         "Caption footnotes are unsupported in standard source export")))
    nil nil nil t))
 
+(defun org-texmacs--prepared-cite-requests
+    (tree requests ignored identities)
+  "Migrate native REQUESTS from live TREE through prepared IDENTITIES.
+Discard only associations excluded by Org's IGNORED decisions.  Detached or
+duplicate associations fail instead of being guessed from source coordinates."
+  (let ((nodes (make-hash-table :test #'eq))
+        seen
+        result)
+    (unless (proper-list-p requests)
+      (org-texmacs--cite-fail
+       "Expected native citation request alist"))
+    (org-element-map
+     tree t
+     (lambda (node)
+       (when (consp node)
+         (puthash node t nodes)))
+     nil nil nil t)
+    (dolist (pair requests)
+      (unless (and (consp pair)
+                   (gethash (car pair) nodes)
+                   (not (memq (car pair) seen)))
+        (org-texmacs--cite-fail
+         "Detached or duplicate native citation carrier"))
+      (push (car pair) seen)
+      (if-let* ((owned (gethash (car pair) identities)))
+          (push (cons owned (cdr pair)) result)
+        (let ((node (car pair))
+              excluded
+              ancestors)
+          (while node
+            (when (memq node ancestors)
+              (org-texmacs--cite-fail
+               "Cyclic citation carrier ancestry"))
+            (push node ancestors)
+            (when (memq node ignored)
+              (setq excluded t))
+            (setq node (org-element-property :parent node)))
+          (unless excluded
+            (org-texmacs--cite-fail
+             "Unmapped native citation carrier")))))
+    (nreverse result)))
+
+(defun org-texmacs--prepared-cite-fulfill (input)
+  "Return native request INPUT for the current preparation stage.
+Real bibliography acquisition is a separate native preparation capability.
+Pending requests can be inspected as input but cannot lower as a document."
+  input)
+
 (defun org-texmacs--prepared-footnote-bodies (tree)
   "Give supplemental inline definitions in owned TREE a paragraph body.
 Org may place inline objects directly in a supplemental footnote-definition.

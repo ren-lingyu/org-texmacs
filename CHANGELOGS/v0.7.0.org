@@ -126,6 +126,16 @@ unsupported. They are not flattened into text or reparsed as TeXmacs. Other cust
 processors must return supported structured data. CSL styles remain bounded by the
 existing lowering subset; unsupported output structures fail explicitly.
 
+The =texmacs-native= processor prepares structured requests for bare default,
+multiple-key and repeated citations and one unadorned bibliography print.
+Unsupported styles, nonempty affixes/locators and print options fail explicitly.
+Carrier identities migrate through prepared AST and input copies.  Native label
+prefixes, selected entries and output belong to the owned input; pure lowering
+consumes that plan without recollecting citations, reading files or running a
+worker.  Independent explicit native bibliography inputs remain supported.
+Real source bibliography acquisition and the native default are not yet enabled;
+pending request inputs remain inspectable but cannot lower without native results.
+
 CSL export does not guarantee preservation of BibLaTeX mathematics. With the
 locked =citeproc 20260113.1047=, sampled command and fraction content is lost
 during BibLaTeX-to-CSL conversion, before Org lowering. Intact fragments such

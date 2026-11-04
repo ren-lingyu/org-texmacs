@@ -18,6 +18,7 @@
 (require 'org-texmacs-source)
 (require 'org-texmacs-fragment)
 (require 'org-texmacs-context)
+(require 'org-texmacs-cite)
 (require 'ox)
 
 (defconst org-texmacs--document-markup-tags
@@ -1155,6 +1156,25 @@ files, native parsers or field semantics."
         :prefix prefix
         :entries (cons 'document (nreverse selected)))))))
 
+(defun org-texmacs--bibliography-native-plan (info static-labels)
+  "Consume the prepared native citation plan in INFO against STATIC-LABELS.
+This validates target bindings, never recollects citation usage from an AST."
+  (let* ((plan (plist-get info :texmacs-cite-plan))
+         (prefix (plist-get plan :prefix)))
+    (unless (and plan (stringp prefix) (not (string-empty-p prefix)))
+      (org-texmacs--cite-fail
+       "Missing prepared native citation plan"))
+    (when (cl-some
+           (lambda (key)
+             (member (concat prefix "-" key) static-labels))
+           (plist-get plan :keys))
+      (org-texmacs--cite-fail "Native bibliography label collision"))
+    (when (and (plist-get plan :prints)
+               (not (plist-get info :texmacs-bibliography-output)))
+      (org-texmacs--cite-fail
+       "Native bibliography processing is not yet available"))
+    plan))
+
 (defun org-texmacs--bibliography-labels (body)
   "Return every static label in owned native BODY, retaining duplicates.
 Dynamic label structures cannot satisfy the bibliography output contract."
@@ -1610,6 +1630,8 @@ for consumers.  Final handlers must preserve contents identity and provenance."
   (let*
       ((used-islands nil)
        (used-blanks nil)
+       (used-citations nil)
+       (used-prints nil)
        (style
         (org-texmacs--document-copy-style (or style '("generic"))))
        (initial (org-texmacs--document-copy-initial initial))
@@ -1664,8 +1686,11 @@ for consumers.  Final handlers must preserve contents identity and provenance."
       (signal 'org-texmacs-document-error
               (org-texmacs-resolution-failure resolution)))
     (setq citation-plan
-          (org-texmacs--bibliography-plan
-           ast islands info bibliography resolution static-labels))
+          (if (plist-member info :texmacs-cite-requests)
+              (org-texmacs--bibliography-native-plan
+               info static-labels)
+            (org-texmacs--bibliography-plan
+             ast islands info bibliography resolution static-labels)))
     (setq special-handlers
           (org-texmacs--document-copy-handlers
            (plist-get info :texmacs-special-block-handlers)))
@@ -2125,6 +2150,7 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                node "Unsupported citation context"))
             (unless (assq node (plist-get citation-plan :citations))
               (org-texmacs--document-fail node "Unprepared citation"))
+            (cl-pushnew node used-citations)
             (setcar space nil)
             (cons
              (org-texmacs--document-pack
@@ -3138,9 +3164,15 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                 (equal
                  (upcase (org-element-property :key node))
                  "PRINT_BIBLIOGRAPHY"))
+           (when (and (plist-member info :texmacs-cite-requests)
+                      (not
+                       (memq node (plist-get citation-plan :prints))))
+             (org-texmacs--document-fail
+              node "Unprepared native bibliography print"))
            (unless (memq context '(org-data section headline))
              (org-texmacs--document-fail
               node "Unsupported bibliography print context"))
+           (cl-pushnew node used-prints)
            (let ((output
                   (plist-get info :texmacs-bibliography-output)))
              (unless (and output
@@ -3415,6 +3447,15 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                     (= (length used-blanks) (length post-blanks)))
          (signal 'org-texmacs-document-error
                  '("Unused preparation mappings")))
+       (when (and (plist-member info :texmacs-cite-requests)
+                  (or (/=
+                       (length used-citations)
+                       (length (plist-get citation-plan :citations)))
+                      (/=
+                       (length used-prints)
+                       (length (plist-get citation-plan :prints)))))
+         (org-texmacs--cite-fail
+          "Unused native citation request associations"))
        (when frozen-resolution
          (let ((labels
                 (org-texmacs--document-output-labels

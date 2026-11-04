@@ -16,6 +16,7 @@
 (require 'ox)
 (require 'oc)
 (require 'oc-csl)
+(require 'org-texmacs-cite-native)
 
 (defun org-texmacs--standard-unadvised-definition (name)
   "Return function NAME's definition only when it has no advice."
@@ -262,17 +263,27 @@ The prepared AST remains authoritative; this is not STM text construction."
 Project supported options without repeating preparation or retaining full INFO."
   (let ((tree (plist-get info :parse-tree))
         (identities (make-hash-table :test #'eq))
+        ignored
         (keys org-texmacs--context-export-options)
+        (native (eq (org-cite-processor info) 'texmacs-native))
+        (original (plist-get info :parse-tree))
         projected)
     ;; Resolve through public access while live, never reparse working text.
     (org-texmacs--prepared-resolve tree)
-    (setq tree
-          (org-texmacs--prepared-copy
-           tree
-           (append
-            (plist-get info :ignore-list)
-            (org-texmacs--query-excluded-definitions tree info))
-           identities))
+    (setq ignored
+          (append
+           (plist-get info :ignore-list)
+           (org-texmacs--query-excluded-definitions tree info)))
+    (setq tree (org-texmacs--prepared-copy tree ignored identities))
+    (when native
+      (setq projected
+            (list
+             :texmacs-cite-requests
+             (org-texmacs--prepared-cite-requests
+              original
+              (plist-get info :texmacs-cite-requests)
+              ignored
+              identities))))
     (org-texmacs--prepared-footnote-bodies tree)
     (org-texmacs--prepared-check-caption-notes tree)
     (org-texmacs--prepared-control-keywords tree)
@@ -327,7 +338,10 @@ Project supported options without repeating preparation or retaining full INFO."
            (org-texmacs--source-capture-path (nth 6 state)))))
       (org-texmacs--prepared-parse
        requests (org-texmacs-input-islands input))
-      (org-texmacs--input-finalize input))))
+      (setq input (org-texmacs--input-finalize input))
+      (if native
+          (org-texmacs--prepared-cite-fulfill input)
+        input))))
 
 (defun org-texmacs--standard-compatible-finalizer-p (finalizer info)
   "Whether FINALIZER is a known identity operation in native INFO.

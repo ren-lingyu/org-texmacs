@@ -978,11 +978,22 @@ when rendering Org text; STM strings remain opaque.  Processor-generated Org
 markup is authoritative: for example, the tested Citeproc bracket layout can
 leave a bold affix's stars as literal text, while an unwrapped layout preserves
 bold.  The backend does not repair processor output or promise every style's
-formatting.  No TeXmacs processor, citation-key rewrite, independent bibliography
-discovery or serialized STM round trip is added.  Supported output remains bounded by the existing Org
-lowering subset; a CSL style that produces unsupported structures fails
+formatting.  No citation-key rewrite, independent bibliography discovery or
+serialized STM round trip is added.  Supported output remains bounded by the
+existing Org lowering subset; a CSL style that produces unsupported structures fails
 explicitly.  =citeproc= is an optional user dependency, not installed by the
 normal package wrapper.  The dedicated Cite check supplies it explicitly.
+
+The =texmacs-native= processor provides structural request preparation for bare
+default citations, multiple keys and repeated citations, with exactly one
+unadorned bibliography print.  Unsupported styles, nonempty affixes and locators,
+print options and multiple prints fail explicitly.  Request associations follow
+the final Org nodes through ownership copies, without relying on source positions.
+Prepared inputs can retain these requests; document lowering requires completed,
+owned native bibliography results and does not recollect citations or read files.
+Real source bibliography acquisition is not yet available for this processor,
+and the default processor is unchanged.  Use the explicit CSL path above for
+source bibliography output.
 
 BibLaTeX math preservation is also outside this guarantee.  With the locked
 =citeproc= version =20260113.1047=, real title-field tests found that =$\cdot$=
