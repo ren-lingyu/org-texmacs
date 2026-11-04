@@ -1,0 +1,98 @@
+Running 1 tests (2026-11-04 02:42:57+0000, selector `t')
+CONVERTER: warning: guile hooks are not available
+Welcome to TeXmacs 2.1.5
+------------------------------------------------------------------------------
+kpsepath works with your TeX distribution
+kpsewhich works with your TeX distribution
+mktextfm works with your TeX distribution
+mktexpk works with your TeX distribution
+texhash works with your TeX distribution
+------------------------------------------------------------------------------
+Installation completed successfully !
+I will now start up the editor
+------------------------------------------------------------------------------
+TeXmacs] convert-error, latex error, too little arguments for \frac
+TeXmacs] convert-error, latex error in $\frac{a}$
+TeXmacs] convert-error, latex error, too little arguments for \frac
+TeXmacs] convert-error, latex error in $\frac{a}$
+TeXmacs] convert-error, latex error, too little arguments for \frac
+TeXmacs] convert-error, latex error in $\frac{a}$
+TeXmacs] convert-error, latex error, too little arguments for \frac
+TeXmacs] convert-error, latex error in $\frac{a}$
+LATEX-PROBE-DONE
+
+CAPS (capabilities no yes)
+CONVERSION (ok 1 convert cdot "$\\cdot$" (math "<cdot>"))
+CONVERSION (ok 1 convert paren-cdot "\\(\\cdot\\)" (math "<cdot>"))
+CONVERSION (ok 1 convert greek "$\\alpha_i$" (math (concat "<alpha>" (rsub "i"))))
+CONVERSION (ok 1 convert fraction "$\\frac{a}{b}$" (math (frac "a" "b")))
+CONVERSION (ok 1 convert unicode "$α_i$" (math (concat "<alpha>" (rsub "i"))))
+CONVERSION (ok 1 convert missing-brace "$\\frac{a}{b$" (math (frac "a" "b")))
+CONVERSION (ok 1 convert missing-argument "$\\frac{a}$" (math ""))
+CONVERSION (ok 1 convert unknown "$\\orgtexmacsunknown{a}$" (math (orgtexmacsunknown "a")))
+CONVERSION (ok 1 convert missing-dollar "$\\alpha_i" (math (concat "<alpha>" (rsub "i"))))
+CONVERSION (ok 1 convert macro "$\\newcommand{\\myop}{x}\\myop$" (math (concat (assign "myop" (macro "x")) (myop))))
+CONVERSION (ok 1 parse cdot "$\\cdot$" (concat (tuple "\\begin-math") (tuple "\\cdot") (tuple "\\end-math")))
+CONVERSION (ok 1 parse paren-cdot "\\(\\cdot\\)" (concat (tuple "\\begin-math") (tuple "\\cdot") (tuple "\\end-math")))
+CONVERSION (ok 1 parse greek "$\\alpha_i$" (concat (tuple "\\begin-math") (concat (tuple "\\alpha") (tuple "\\<sub>" "i")) (tuple "\\end-math")))
+CONVERSION (ok 1 parse fraction "$\\frac{a}{b}$" (concat (tuple "\\begin-math") (tuple "\\frac" "a" "b") (tuple "\\end-math")))
+CONVERSION (ok 1 parse unicode "$α_i$" (concat (tuple "\\begin-math") (concat "<alpha>" (tuple "\\<sub>" "i")) (tuple "\\end-math")))
+CONVERSION (ok 1 parse missing-brace "$\\frac{a}{b$" (concat (tuple "\\begin-math") (tuple "\\frac" "a" (concat "b" (tuple "\\begin-math") "" (tuple "\\end-math"))) (tuple "\\end-math")))
+CONVERSION (ok 1 parse missing-argument "$\\frac{a}$" (concat (tuple "\\begin-math") (tuple "\\frac" "a") (tuple "\\end-math")))
+CONVERSION (ok 1 parse unknown "$\\orgtexmacsunknown{a}$" (concat (tuple "\\begin-math") (tuple "\\orgtexmacsunknown" "a") (tuple "\\end-math")))
+CONVERSION (ok 1 parse missing-dollar "$\\alpha_i" (concat (tuple "\\begin-math") (concat (tuple "\\alpha") (tuple "\\<sub>" "i")) (tuple "\\end-math")))
+CONVERSION (ok 1 parse macro "$\\newcommand{\\myop}{x}\\myop$" (concat (tuple "\\begin-math") (concat (tuple "\\def" "\\myop" "x") (tuple "\\myop")) (tuple "\\end-math")))
+CONVERSION (ok 2 convert cdot "$\\cdot$" (math "<cdot>"))
+CONVERSION (ok 2 convert paren-cdot "\\(\\cdot\\)" (math "<cdot>"))
+CONVERSION (ok 2 convert greek "$\\alpha_i$" (math (concat "<alpha>" (rsub "i"))))
+CONVERSION (ok 2 convert fraction "$\\frac{a}{b}$" (math (frac "a" "b")))
+CONVERSION (ok 2 convert unicode "$α_i$" (math (concat "<alpha>" (rsub "i"))))
+CONVERSION (ok 2 convert missing-brace "$\\frac{a}{b$" (math (frac "a" "b")))
+CONVERSION (ok 2 convert missing-argument "$\\frac{a}$" (math ""))
+CONVERSION (ok 2 convert unknown "$\\orgtexmacsunknown{a}$" (math (orgtexmacsunknown "a")))
+CONVERSION (ok 2 convert missing-dollar "$\\alpha_i" (math (concat "<alpha>" (rsub "i"))))
+CONVERSION (ok 2 convert macro "$\\newcommand{\\myop}{x}\\myop$" (math (concat (assign "myop" (macro "x")) (myop))))
+CONVERSION (ok 2 parse cdot "$\\cdot$" (concat (tuple "\\begin-math") (tuple "\\cdot") (tuple "\\end-math")))
+CONVERSION (ok 2 parse paren-cdot "\\(\\cdot\\)" (concat (tuple "\\begin-math") (tuple "\\cdot") (tuple "\\end-math")))
+CONVERSION (ok 2 parse greek "$\\alpha_i$" (concat (tuple "\\begin-math") (concat (tuple "\\alpha") (tuple "\\<sub>" "i")) (tuple "\\end-math")))
+CONVERSION (ok 2 parse fraction "$\\frac{a}{b}$" (concat (tuple "\\begin-math") (tuple "\\frac" "a" "b") (tuple "\\end-math")))
+CONVERSION (ok 2 parse unicode "$α_i$" (concat (tuple "\\begin-math") (concat "<alpha>" (tuple "\\<sub>" "i")) (tuple "\\end-math")))
+CONVERSION (ok 2 parse missing-brace "$\\frac{a}{b$" (concat (tuple "\\begin-math") (tuple "\\frac" "a" (concat "b" (tuple "\\begin-math") "" (tuple "\\end-math"))) (tuple "\\end-math")))
+CONVERSION (ok 2 parse missing-argument "$\\frac{a}$" (concat (tuple "\\begin-math") (tuple "\\frac" "a") (tuple "\\end-math")))
+CONVERSION (ok 2 parse unknown "$\\orgtexmacsunknown{a}$" (concat (tuple "\\begin-math") (tuple "\\orgtexmacsunknown" "a") (tuple "\\end-math")))
+CONVERSION (ok 2 parse missing-dollar "$\\alpha_i" (concat (tuple "\\begin-math") (concat (tuple "\\alpha") (tuple "\\<sub>" "i")) (tuple "\\end-math")))
+CONVERSION (ok 2 parse macro "$\\newcommand{\\myop}{x}\\myop$" (concat (tuple "\\begin-math") (concat (tuple "\\def" "\\myop" "x") (tuple "\\myop")) (tuple "\\end-math")))
+REPEAT convert cdot t
+REPEAT convert paren-cdot t
+REPEAT convert greek t
+REPEAT convert fraction t
+REPEAT convert unicode t
+REPEAT convert missing-brace t
+REPEAT convert missing-argument t
+REPEAT convert unknown t
+REPEAT convert missing-dollar t
+REPEAT convert macro t
+REPEAT parse cdot t
+REPEAT parse paren-cdot t
+REPEAT parse greek t
+REPEAT parse fraction t
+REPEAT parse unicode t
+REPEAT parse missing-brace t
+REPEAT parse missing-argument t
+REPEAT parse unknown t
+REPEAT parse missing-dollar t
+REPEAT parse macro t
+RENDERED convert-cdot
+RENDERED convert-paren-cdot
+RENDERED convert-greek
+RENDERED convert-fraction
+RENDERED convert-unicode
+RENDERED convert-missing-brace
+RENDERED convert-missing-argument
+RENDERED convert-unknown
+RENDERED convert-missing-dollar
+RENDERED convert-macro
+   passed  1/1  native-latex-snippet-fidelity (5.633860 sec)
+
+Ran 1 tests, 1 results as expected, 0 unexpected (2026-11-04 02:43:02+0000, 5.633942 sec)
+
