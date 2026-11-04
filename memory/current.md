@@ -14,7 +14,7 @@ CUSTOM_ID/link and all v0.6.0-and-earlier content unchanged. NEXT retained, no
 candidate CLOSED, tag or release action. No identified release blocker.
 
 Current strict package compilation, lint/treefmt and324core pass. Final docs
-polish passes fresh treefmt,17local Org links and5deprecated API replacements.
+polish passes fresh treefmt,16local Org links and5deprecated API replacements.
 Emacs read/equal proves all executable Lisp forms equal delivered baseline;
 only non-doc file delta is Commentary. Previous12checks/705ERT on exact delivered
 implementation remain functional evidence, not a fresh complete current-snapshot
@@ -33,6 +33,13 @@ final treefmt passes and receipt/draft/report reflect this latest form.
 Only README changed since accepted review; final treefmt and links pass, receipt/
 report/message refreshed. Temporary driver accessor/nesting mistake corrected to
 actual Org API, no production workaround or new runtime change.
+
+User then requests only one complete configuration positioned earlier. README
+now has exactly one use-package declaration, first under With use-package; remove
+old ten-core block and three minimal installation declarations, retain path/straight
+keyword guidance and parameter details afterward. Preserve user's comment edits.
+Actual block remains correct; fresh Emacs/16links/5migration checks/treefmt pass.
+Receipt/draft/report updated, only README delta, release state unchanged.
 
 Next user reviews diff, optionally manually marks DONE with actual transition's
 UTC CLOSED and commits. Verify resulting source and any explicit human state/time

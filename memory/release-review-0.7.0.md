@@ -88,3 +88,14 @@ nil, whole-preference nil delegation unchanged. Fresh actual-block Emacs run
 passes with INFO (texmacs-native "plain" nil), menu/Nix/no-worker guarantees;
 final treefmt pass. Updated canonical receipt/message/report. No other project
 file change, no new runtime source behavior or release-state action.
+
+Final user-selected organization: one complete declaration placed first under
+With use-package, before installation details. Remove old core-only block and
+three minimal installation declarations; present checkout/installed/straight as
+keywords to adapt inside the same full declaration. Preserve all needed installed
+Scheme-service/Nix/straight opt-out/pinning guidance and user's modified comments.
+Parameter details follow. Exactly one use-package org-texmacs occurrence; removed
+example names have no maintained references. Fresh actual-block Emacs validation,
+16local links/5API migration/form checks and final treefmt pass; no runtime source
+change or repeat full suites. Source receipt/report/message refreshed, NEXT and
+human finalization remain unchanged. No raw archival need.
