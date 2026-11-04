@@ -1,43 +1,39 @@
 # org-texmacs current memory
 
-## Native Cite N7 delivered; N8 source/style integration active
+## Native Cite N8 accepted candidate; human delivery before N9
 
-User supplies formal native Org Cite compatibility restoration guide. Follow
-memory/native-cite-0.7.0-plan.md, N6-N9 with human commit gates. Functional baseline
-N5 main57ada9a; actual intake6964f65 already delivers the one-line TODO transition,
-verified exact parent/path/message/all159committed/worktree hashes, clean index.
-Guide's NEXT statement is stale. Keep TODO/CUSTOM_ID/link and N5 limits; don't
-repeat state mutation. GAW plan checkpoint must precede root-only N6 unchecked
-scope registration. N6 human delivery precedes any production edits.
+Follow native-cite-0.7.0-plan.md N6-N9 with per-node human commits. N7 delivery
+1824ac9 is verified (exact parent/11paths/message/all162hashes); user reports
+manual full flake check, distinct from our observed N7 scoped358ERT. N8 is now
+accepted in the worktree, not committed. Complete contract/evidence:
+native-cite-0.7.0-n8.md and -inputs.json. Draft: ordinary tmp/commit.md.
 
-Adopt default texmacs-native eventually, with explicit CSL/user config/other
-backends preserved, formal carrier/request ownership and native styles. N7 fixed
-fixtures before N8 real input/style integration, then N9 default/examples/full
-acceptance. Production is not already native. Lowering must consume prepared
-requests, not rerun old citation collection. Default fallback precedence and safe
-module lookup are targeted implementation gates; do not copy temporary wrappers.
-No broad feasibility restart, B reopening or automatic freeze/finalization/release.
+N8 connects real bibliography snapshots to formal owned requests and native
+results. Freeze all effective local files before any STM/native wait; reject
+canonical aliases, unreadable/changed sources and lossy decoding. Guard source
+transactions through final text filters/PDF completion. Independent input and
+pure lowering never reread dependencies. Worker uses native catalog/readable
+module validation, data-only optional style, plain/alpha/abbrv and tm-* aliases;
+unknown styles cannot load or silently fall back. Native globals restored and
+same-worker error recovery checked. Default processor remains unchanged.
 
-N7 human1824ac9d89eaee07a18f382909133a858219b979 matches exactfd88165 parent,
-11paths/full message/all162committed/worktree hashes; clean intake. User reports
-manual nix flake check pass; record as user-reported, no invented logs/counts or
-actual-extension claim. N7 delivery complete. Prior scoped358ERT remains observed.
+One authorized timeout600s full isolated flake check exits0/all11named checks:
+core312/native281/CSL10/PDF-document48/PDF-render29/caption6 =686ERT, zero
+unexpected. Strict compilation/lint/treefmt and aggregates pass. Both plain and
+alpha native math PDF previews inspected; TM reload text/geometry agree.
+All166source/build/test inputs still match final isolated snapshot. Full16path
+candidate/whitespace reviewed, ordinary index empty. No release state change:
+root TODO, no CLOSED/tag/publication. Native field/Unicode/math recovery limits
+remain documented independent issues; generic fragment B remains deferred.
 
-N8 now active: fixed bibliography source snapshots and reliable transaction-end
-checks; no independent discovery/Org traversal. Native worker data-only optional
-style extension, native catalog and pre-loader readable-module validation; no
-static project style whitelist/fallback. Initial code inspection found native
-module-load -> list->module -> url-materialize throws on absent modules; use safe
-URL existence before loader. A narrow isolated flake probe will verify this new
-pre-loader boundary only, not repeat prior broad feasibility. Native plain/alpha/
-abbrv actual processing/layout and source/worker failures need maintained tests.
-Default remains unchanged until N9. Full explicit native field/Unicode/math
-recovery problems are documented independent limits, not broadened blockers.
-
-N7 note/receipt: native-cite-0.7.0-n7.md/-inputs.json. N8 must preserve its fixed
-fixtures while connecting real fulfillment; no production mock or temporary worker
-copy. Pure lowering never reads dependencies; source transactions may check owned
-fingerprints at completion. Pause before N9 for N8 review/checks/human delivery.
+Next: human N8 commit, then verify exact parent/paths/message/166hashes before N9.
+N9 alone switches backend default respecting explicit standard choices, migrates
+examples, reruns real Org-roam-organize and full acceptance. Other platforms,
+minimum Org, real extension under native default and migrated examples are not
+claimed by N8. No ordinary staging/commit performed. User standing Nix command
+authority remains; N8's single600s grant was consumed, not reusable for N9.
+Narrow isolation evidence now has maintained native/Scheme tests; existing archive
+already holds fatal-loader counterexample, so no redundant new raw archive.
 
 ## Completed native Cite feasibility; report review, no production adoption
 

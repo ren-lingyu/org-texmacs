@@ -1,20 +1,24 @@
 # org-texmacs current project model
 
-N7 accepted working candidate adds formal native callbacks/request ownership,
-not yet real source bibliography or a changed default. Prepared identity map,
-existing input graph ownership and explicit native plan/results feed pure lowering
-without source citation recollection. Independent explicit native input/model/
-islands preserved. Pending request inputs inspectable; document needs completed
-result. Backend-loaded org-texmacs-cite-native follows existing tracking rules.
-Exact contract/human gate: native-cite-0.7.0-n7.md and -inputs.json.
+## Native Cite current implementation
 
-Native Cite restoration is now adopted work, not yet delivered capability.
-N6-N9 guide/plan: memory/native-cite-0.7.0-plan.md. Main57ada9a is functional
-baseline;6964f65 delivers TODO-only reopening, verified exact159hashes. N6 root
-registration/human commit precedes code. Processor requests use original->prepared
-identity remap then existing ownership; pure consumer must avoid old source cite
-recollection. Native registry plus module loading safety and explicit default
-precedence are formal gates, not inherited guarantees from the prototype.
+N7 is human-delivered; N8 worktree candidate is accepted, awaiting human delivery.
+Formal Org Cite carriers migrate through prepared and input ownership copies;
+minimal requests/results/prefix feed pure lowering without recollecting citations.
+N8 freezes effective bibliography files before native waits, parses captured text,
+formats via TeXmacs and retains source fingerprints checked through source export
+completion. Independent completed inputs do not need files after construction.
+Explicit texmacs-native source output is available in this candidate; default
+processor and examples remain N9. Existing independent model/island/native inputs
+and explicit CSL remain supported. No third AST, raw channel or parallel prep.
+
+Native catalog and readable target/plain/bib-utils modules gate style loading;
+plain/alpha/abbrv and tm-* aliases verified, unknown styles rejected with healthy
+worker reuse. Native state restoration/nested transactions/math TM-PDF tested.
+Full11named checks/686ERT pass on locked x86_64-linux; current contract, receipt
+and next human gate: native-cite-0.7.0-n8.md/-inputs.json and current.md.
+
+## Earlier architecture experiments (before formal N6-N8 implementation)
 
 Native Org Cite integration is experimentally feasible, not production behavior.
 Standard callbacks can return semantic citation/PRINT_BIBLIOGRAPHY-list carriers

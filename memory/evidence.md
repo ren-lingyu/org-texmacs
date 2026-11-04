@@ -1,5 +1,16 @@
 # org-texmacs durable evidence
 
+N8 full timeout600s flake check exits0/all11named checks,686unique defaultERT:
+312core/281native/10CSL/48PDF-document/29PDF-render/6caption. Native281 runs
+195.797533s, document48 runs117.567516s, render29 runs151.205520s. Core312 reuses
+exact accepted focused output. Strict compilation/package-lint/treefmt pass;
+166input hashes unchanged after complete16path review and native preview inspection.
+Plain/alpha valid alpha_i/fraction layout and citation labels/reload geometry agree.
+No real extension/native default/examples or other-platform claim. Receipt/method:
+native-cite-0.7.0-n8-inputs.json and native-cite-0.7.0-n8.md. Human delivery pending.
+N7 delivery1824ac9 exact162hashes verified; user's manual full check is user-reported.
+
+
 N7 final5scoped checks pass:301core (14new),10actualCSL,47PDF-document, strict
 compilation/package-lint/treefmt,358ERT total. This is not complete Nix/native/
 real-extension acceptance. Combined120s timeout at29PDF, no assertion failure;

@@ -1,9 +1,12 @@
 # org-texmacs active backlog
 
-N6 deliveredfd88165; N7 accepted candidate awaits human commit. Then N8 actual
-bibliography snapshots/native safe style integration, then N9 default/examples/
-full regression. Scope and native external-limit/non-blocker distinction unchanged.
-Do not start N8 before verifying native-cite-0.7.0-n7-inputs.json delivery.
+N7 delivery verified; N8 actual source snapshots/safe native styles accepted in
+worktree with686ERT/all11named checks. Human N8 commit is the next gate; verify
+native-cite-0.7.0-n8-inputs.json before N9 default/examples/real extension/full
+acceptance. No default switch, freeze, generic fragment conversion or native
+field/Unicode/math-recovery expansion in N8.
+
+Earlier scope adoption (implementation state superseded above):
 
 User adopts native Cite restoration N6-N9 for0.7.0, replacing proposal-only status.
 N6 plan/root scope/human gate; N7 formal ownership with mock native fixtures;
