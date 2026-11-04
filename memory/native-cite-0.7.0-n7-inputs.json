@@ -216,5 +216,9 @@
     ],
     "validation_boundary": "Five scoped N7 checks, strict compilation,358ERT; not complete Nix/default/native/actual-extension acceptance. Final README-only wrap changes treefmt only; four other derivations exactly match runtime snapshot6. PDF47 rerun once under explicitly authorized600s after combined120s timeout at29/47, passes102.986815s. No unchanged runtime reruns for final docs. Full acceptance remains N9.",
     "retention": "Maintained source/regressions and this exact receipt suffice; no new independent experiment evidence to archive. Existing native feasibility archive immutable."
+  },
+  "delivery": {
+    "commit": "1824ac9d89eaee07a18f382909133a858219b979",
+    "verification": "Exact fd88165 parent,11paths/full message/all162committed and worktree hashes; clean intake. User reports manually running nix flake check successfully before commit. That is user-reported complete check success, not an agent-observed log/count/actual-extension result."
   }
 }

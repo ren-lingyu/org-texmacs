@@ -1,6 +1,6 @@
 # N7: native processor and structural request ownership
 
-## Accepted candidate, human delivery pending
+## Human-delivered candidate
 
 Human N6 fd88165047d63a86358c72e8f3d9be36bb0e3d94 is verified against exact prior
 parent6964f65,one changed root path/full message/all159committed/worktree hashes;
@@ -96,3 +96,12 @@ native-cite-0.7.0-n7-inputs.json. No ordinary staging/commit. Human delivery pen
 then N8 real source snapshots/native style/error integration, never default switch
 before its gates. README/root/detail honestly describe pending-native result input
 and unchanged default, not full native bibliography capability.
+
+## Human delivery verified
+
+Human1824ac9d89eaee07a18f382909133a858219b979 matches exact expectedfd88165 parent,
+11paths/full message/all162committed and worktree hashes. Index/worktree clean
+at intake. User reports manual nix flake check passes before commit; no actual
+log/derivation counts/extension execution are supplied, so do not invent them.
+Observed scoped acceptance above remains distinct. N8 may now start, default
+switch remains N9; no unchanged checks rerun merely for this verification.

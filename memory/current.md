@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Native Cite N7 accepted; human delivery before N8
+## Native Cite N7 delivered; N8 source/style integration active
 
 User supplies formal native Org Cite compatibility restoration guide. Follow
 memory/native-cite-0.7.0-plan.md, N6-N9 with human commit gates. Functional baseline
@@ -18,25 +18,26 @@ requests, not rerun old citation collection. Default fallback precedence and saf
 module lookup are targeted implementation gates; do not copy temporary wrappers.
 No broad feasibility restart, B reopening or automatic freeze/finalization/release.
 
-N6 humanfd88165 verified exact parent/path/message/all159hashes, clean intake.
-N7 candidate now accepted, human delivery pending. Contract/method/rejected gates:
-native-cite-0.7.0-n7.md. Formal standard processor is backend-loaded
-org-texmacs-cite-native (existing allowlist, no .gitignore edits), pure request
-schema in org-texmacs-cite, prepared identity projection, owned native plan/result
-and lowerer direct consumption. No prototype wrapper/temporary worker. Native
-source IO/style implementation/default remain N8/N9; pending inputs inspectable,
-documents require completed results. Latest user blocking-boundary steering is
-recorded in the N7 note; no native fields/Unicode/recovery scope expansion.
+N7 human1824ac9d89eaee07a18f382909133a858219b979 matches exactfd88165 parent,
+11paths/full message/all162committed/worktree hashes; clean intake. User reports
+manual nix flake check pass; record as user-reported, no invented logs/counts or
+actual-extension claim. N7 delivery complete. Prior scoped358ERT remains observed.
 
-Scoped5checks pass: strict compilation/lint/treefmt plus301core,10actualCSL and
-47PDF-document (358ERT). Combined120s timeout at29PDF was not an assertion error;
-user authorized this one PDF run600s, then47pass103s. No general long-timeout grant.
-Final snapshot7 README-wrap only;4runtime/lint derivations match snapshot6 exactly,
-treefmt rebuilt. Full default/native/real-extension acceptance remains N9.
-Complete11path diff/whitespace/162hashes reviewed, index empty, HEADfd88165. Draft
-feat(cite): add owned native Org Cite requests; receipt native-cite-0.7.0-n7-inputs.json.
-Next: human delivery verification before N8. No ordinary Git writes or release
-state changes; TODO0.7.0, B deferred, independent models/pure inputs preserved.
+N8 now active: fixed bibliography source snapshots and reliable transaction-end
+checks; no independent discovery/Org traversal. Native worker data-only optional
+style extension, native catalog and pre-loader readable-module validation; no
+static project style whitelist/fallback. Initial code inspection found native
+module-load -> list->module -> url-materialize throws on absent modules; use safe
+URL existence before loader. A narrow isolated flake probe will verify this new
+pre-loader boundary only, not repeat prior broad feasibility. Native plain/alpha/
+abbrv actual processing/layout and source/worker failures need maintained tests.
+Default remains unchanged until N9. Full explicit native field/Unicode/math
+recovery problems are documented independent limits, not broadened blockers.
+
+N7 note/receipt: native-cite-0.7.0-n7.md/-inputs.json. N8 must preserve its fixed
+fixtures while connecting real fulfillment; no production mock or temporary worker
+copy. Pure lowering never reads dependencies; source transactions may check owned
+fingerprints at completion. Pause before N9 for N8 review/checks/human delivery.
 
 ## Completed native Cite feasibility; report review, no production adoption
 

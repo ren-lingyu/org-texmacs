@@ -221,4 +221,4 @@ allowlist and model independence are preserved. See native-cite-0.7.0-n7.md and
 -inputs.json. Scoped5checks/358ERT pass (301core/10CSL/47PDF), compile/lint/format.
 One PDF run explicitly authorized600s after initial120s timeout, no general
 future timeout extension. No prototype transplant, native IO/default change,
-B reopening or new parser/field/Unicode blocker. Human N7 commit before N8.
+B reopening or new parser/field/Unicode blocker. Human N7 commit1824ac9 is now verified; N8 is active, no default switch.
