@@ -167,5 +167,9 @@
     ],
     "message": "docs(changelog): reopen v0.7.0 development\n\n- 将 `v0.7.0` 从 `NEXT` 改为 `TODO`, 为后续 Org Cite 开发重新开放版本范围.\n"
   },
-  "validation": "User explicitly authorizes only NEXT->TODO after state confirmation. Complete one-line diff/whitespace verified; no body,release-detail,code/test/README/lock change. Index empty; draft describes requested worktree candidate. No tests rerun."
+  "validation": "User explicitly authorizes only NEXT->TODO after state confirmation. Complete one-line diff/whitespace verified; no body,release-detail,code/test/README/lock change. Index empty; draft describes requested worktree candidate. No tests rerun.",
+  "delivery": {
+    "commit": "6964f6552560898c1ae37007e3dee4db88925147",
+    "verification": "Exact57ada9a parent,one-line path/full message/all159committed and worktree hashes; clean intake."
+  }
 }

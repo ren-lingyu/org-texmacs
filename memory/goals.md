@@ -1,14 +1,27 @@
 # org-texmacs project goals
 
-## Authorized state-only reopening after N5 completion
+## Approved native Org Cite compatibility restoration N6-N9
 
-N0-N5 is human-delivered and verified. User explicitly directs only the root
-v0.7.0 NEXT->TODO transition and commit draft after status confirmation, then
-will provide Cite development guidance. This specific transition is authorized;
-no new feature/default scope, changelog body, preparation change or release action
-is authorized yet. Preserve standard Org/Org Cite authority and AST-first. B stays
-deferred. Await guidance before further planning or production implementation.
+User adopts formal restoration guide, distilled in native-cite-0.7.0-plan.md.
+Restore v0.5 native bibliography as standard Org Cite processor, not old parallel
+preparation. Functional baseline is N5 main57ada9a; TODO-only6964f65 is delivered.
+First GAW plan checkpoint, then root-only N6 scope registration/human commit,
+N7 formal carriers/owned requests with fixed native data, N8 real snapshots/safe
+native plain/alpha/abbrv, N9 backend default/examples/full regression. Every node
+has human delivery; no producer code before N6 commit.
 
+Default texmacs-native only after prior gates; explicit CSL/standard user choices
+and other backends remain. Minimal request data and node identities, owned native
+results/prefix/provenance, first-copy remap, pure lowering without recollection,
+file/processor/worker/source access. Keep independent explicit native input/model/
+islands, Org authority and AST-first. Native registry/module validation blocks
+unchecked style loads or silent fallback; no Elisp style engine or hand whitelist.
+No special extension adapter, third AST, generic fragment/B reopening, full
+BibLaTeX/styles/Unicode repair or source BIBLIOGRAPHY-SOURCES API restoration.
+This supersedes the earlier last-feature characterization of N0-N5 and D's
+then-unnecessary native processor decision, without reopening completed gates.
+Existing CSL refusal/regression coverage remains. TODO re-freeze only after N9
+acceptance and explicit human direction; DONE/tag/publication stay manual.
 
 ## Approved final v0.7.0 prerelease inline compatibility work
 

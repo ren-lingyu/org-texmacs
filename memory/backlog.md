@@ -1,14 +1,21 @@
 # org-texmacs active backlog
 
+User adopts native Cite restoration N6-N9 for0.7.0, replacing proposal-only status.
+N6 plan/root scope/human gate; N7 formal ownership with mock native fixtures;
+N8 real bibliography/safe styles; N9 native default/explicit CSL and user choices/
+examples/full acceptance. See memory/native-cite-0.7.0-plan.md for exact scope,
+exclusions and per-node gates. Do not reopen generic fragment B or use old source
+preparation. TODO-only6964f65 is delivered; production unchanged from N5.
+
 Native Cite feasibility completed independently for styles/mock handoff, then
-real bibliography. Recommend a separately approved bounded implementation plan:
+real bibliography. Its recommendation is now approved by the guide above:
 standard processor/default bare citations/single print; projected requests and
 first-copy identity remap; owned snapshots/native fulfillment; native-validated
 style selection and explicit label prefix/collision contract. No implementation
 or default switch is adopted by feasibility success. Advanced styles/locators,
 Unicode, extended fields and native error recovery remain separate proposals.
 Results and minimal27text archive: memory/native-cite-feasibility.md. N5 delivered;
-B deferred. User authorizes TODO-only reopening; await Cite guide before new scope.
+B deferred. TODO-only reopening delivered; N6-N9 restoration is now adopted.
 
 Isolated bibliography architecture comparison complete, evidence-only. A120/B60/
 C30case/style records plus protocol/nested HTML/sort/font controls pass3experimental
@@ -25,7 +32,7 @@ exact native/PDF/integration derivatives reused unchanged. Four-path candidate
 records B deferral, upstream loss location and real retained-fragment rejection.
 No runtime library/config change. Human57ada9a delivery matches exact parent,
 4paths/message/159hashes; clean intake. Separately authorized TODO-only amendment
-is pending, future Cite guide awaited. Method and exact delivery manifest:
+is delivered; new Cite guide/plan now adopted. Method and exact delivery manifest:
 memory/inline-objects-0.7.0-n5.md and inline-objects-0.7.0-n5-inputs.json.
 
 

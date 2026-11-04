@@ -1,5 +1,13 @@
 # org-texmacs current project model
 
+Native Cite restoration is now adopted work, not yet delivered capability.
+N6-N9 guide/plan: memory/native-cite-0.7.0-plan.md. Main57ada9a is functional
+baseline;6964f65 delivers TODO-only reopening, verified exact159hashes. N6 root
+registration/human commit precedes code. Processor requests use original->prepared
+identity remap then existing ownership; pure consumer must avoid old source cite
+recollection. Native registry plus module loading safety and explicit default
+precedence are formal gates, not inherited guarantees from the prototype.
+
 Native Org Cite integration is experimentally feasible, not production behavior.
 Standard callbacks can return semantic citation/PRINT_BIBLIOGRAPHY-list carriers
 with INFO request associations; prepared-copy must first remap identities, then
@@ -9,7 +17,7 @@ Production still uses the existing CSL contract. Future native style/prefix inpu
 unsupported citation semantics, fields/Unicode/recovery remain explicit boundaries.
 No generic model/island change or parallel preparation was needed in isolation.
 Details: memory/native-cite-feasibility.md. N5 is delivered57ada9a; B deferred.
-User authorizes a separate TODO-only headline amendment; Cite guide still pending.
+TODO-only amendment delivered; the new guide adopts N6-N9, still pending code.
 
 Isolated bibliography architecture comparison complete, evidence-only. A120/B60/
 C30case/style records plus protocol/nested HTML/sort/font controls pass3experimental
@@ -26,7 +34,7 @@ exact native/PDF/integration derivatives reused unchanged. Four-path candidate
 records B deferral, upstream loss location and real retained-fragment rejection.
 No runtime library/config change. Human57ada9a delivery matches exact parent,
 4paths/message/159hashes; clean intake. Separately authorized TODO-only amendment
-is pending, future Cite guide awaited. Method and exact delivery manifest:
+is delivered; new Cite guide/plan now adopted. Method and exact delivery manifest:
 memory/inline-objects-0.7.0-n5.md and inline-objects-0.7.0-n5-inputs.json.
 
 

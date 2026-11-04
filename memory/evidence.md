@@ -1,5 +1,14 @@
 # org-texmacs durable evidence
 
+TODO-only6964f65 delivery verified exact57ada9a parent,path/full message and159
+committed/worktree hashes, clean intake, no unchanged tests rerun. User's new
+native restoration guide adopts formal work but provides no new runtime proof.
+Existing experimental4ERT is architecture evidence only; see native-cite-feasibility.md
+and immutable archive. New plan: native-cite-0.7.0-plan.md; actual code confirms
+first prepared identity map, existing input copy, old lowerer collection and fixed
+worker plain. Safe native module lookup/default configuration precedence need
+focused implementation checks. Production functional baseline remains57ada9a.
+
 Native Cite isolated feasibility passes4ERT/3checks: independent native styles
 and mock Org Cite/ownership gates, then real plain/alpha text/TM/PDF with native
 alpha_i/fraction. Minimal replay yields identical3Nix output paths. Six visual
@@ -26,7 +35,7 @@ exact native/PDF/integration derivatives reused unchanged. Four-path candidate
 records B deferral, upstream loss location and real retained-fragment rejection.
 No runtime library/config change. Human57ada9a delivery matches exact parent,
 4paths/message/159hashes; clean intake. Separately authorized TODO-only amendment
-is pending, future Cite guide awaited. Method and exact delivery manifest:
+is delivered; new Cite guide/plan now adopted. Method and exact delivery manifest:
 memory/inline-objects-0.7.0-n5.md and inline-objects-0.7.0-n5-inputs.json.
 
 

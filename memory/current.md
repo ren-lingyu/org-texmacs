@@ -1,25 +1,25 @@
 # org-texmacs current memory
 
-## N5 delivered; authorized TODO-only amendment ready
+## Native Cite N6 plan adopted; scope registration before production
 
-Human57ada9a matches N5 expected parent6c7ac07, exact4paths/full message and all159
-committed/worktree hashes; clean index/worktree at intake. N0-N5 delivery is now
-complete, B deferred. This verification grounds the delivered commit only, not
-retroactive runtime tests against its commit object. Receipt/method remain in
-inline-objects-0.7.0-n5-inputs.json and inline-objects-0.7.0-n5.md.
+User supplies formal native Org Cite compatibility restoration guide. Follow
+memory/native-cite-0.7.0-plan.md, N6-N9 with human commit gates. Functional baseline
+N5 main57ada9a; actual intake6964f65 already delivers the one-line TODO transition,
+verified exact parent/path/message/all159committed/worktree hashes, clean index.
+Guide's NEXT statement is stale. Keep TODO/CUSTOM_ID/link and N5 limits; don't
+repeat state mutation. GAW plan checkpoint must precede root-only N6 unchecked
+scope registration. N6 human delivery precedes any production edits.
 
-After confirmation, user explicitly authorizes only CHANGELOG.org v0.7.0 NEXT to
-TODO and a commit draft, then will supply Cite development guidance. Exactly one
-headline changes; version body/detail/README/tests/libraries untouched. Draft:
-`docs(changelog): reopen v0.7.0 development`. Index remains empty, root changelog
-unstaged. Complete one-line diff/whitespace verified, no tests rerun. Exact new
-candidate/message/159hashes: cite-reopen-0.7.0-inputs.json. Direct requested state
-transition overrides generic skill human-only transition default; no inferred
-release authority. Finalization/CLOSED/tag/publication remain human-controlled.
+Adopt default texmacs-native eventually, with explicit CSL/user config/other
+backends preserved, formal carrier/request ownership and native styles. N7 fixed
+fixtures before N8 real input/style integration, then N9 default/examples/full
+acceptance. Production is not already native. Lowering must consume prepared
+requests, not rerun old citation collection. Default fallback precedence and safe
+module lookup are targeted implementation gates; do not copy temporary wrappers.
+No broad feasibility restart, B reopening or automatic freeze/finalization/release.
 
-Next: human delivery of the one-line change; await user Cite guide before planning
-or implementing new features. Native feasibility is evidence, not an adopted new
-implementation/default. No native processor items or scope changes added now.
+N5 and TODO-only deliveries complete. Next: checkpoint this plan, amend only
+CHANGELOG.org scope and draft, review/checkpoint receipt, wait for human commit.
 
 ## Completed native Cite feasibility; report review, no production adoption
 
@@ -34,9 +34,9 @@ or default switch. Native unknown-style fallback/fatal module loading and first
 prepared-copy identity migration are decisive boundaries. Pure lowering and the
 standard Org preparation/Cite dispatch remain unchanged in production. No B reopening.
 
-N5 delivery is now verified above. No native processor production implementation
-is authorized by feasibility success; the only new project change is the
-separately requested TODO headline. Future scope awaits the user guide.
+Feasibility alone did not authorize production; the newly supplied guide now
+adopts N6-N9. Its independent experimental evidence remains bounded; maintained
+production contracts and regressions must be established from current source.
 
 ## Completed isolated bibliography comparison, no production adoption
 
