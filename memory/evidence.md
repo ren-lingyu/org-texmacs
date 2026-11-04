@@ -1,5 +1,17 @@
 # org-texmacs durable evidence
 
+Cite config cleanup full authorized600s flake exits0/all12checks,704uniqueERT:
+323core/282native/11CSL/48document/29render/6caption +actual5. Strict compile/lint/
+treefmt pass. Eight-case preference matrix, original config identity/content,
+preload/runtime repeated exports, nested preference isolation, more-specific
+derived entries with/without base config, standard unknown/capability errors and
+actual delegated/backend CSL covered. Existing protocol assertions retained via
+explicit delegation.7paths/167canonical hashes/full diff verified, index empty.
+Source/library changes exclude registration, native semantics and ownership;
+no repeat native math visual experiment. Exact evidence/corrections/receipt:
+cite-processor-config-0.7.0.md/-inputs.json. Human commit pending; TODO unchanged.
+
+
 N9 corrected final-2 full flake exits0/all12named checks:694defaultERT+actual5=699,
 zero unexpected; core318/native282/CSL11/document48/render29/caption6. Strict
 compilation/lint/treefmt and actual pinned Organize pass, with native UUID/dynamic

@@ -1,5 +1,18 @@
 # org-texmacs project goals
 
+## Approved explicit Cite configuration cleanup
+
+User supersedes N9 stock-value inference with one export-only defcustom,
+org-texmacs-cite-export-processor (native default; nil delegates unchanged).
+Explicit texmacs config wins; otherwise non-nil preference supplies a backend
+entry before generic fallback even if global Org config is nil. Preserve standard
+derived specificity and document/subtree/external/filter precedence. No global
+mutation, extra dispatch/advice, processor registration/native semantics/ownership
+change or alias. Exact scope/tests/docs: cite-processor-config-0.7.0.md. One
+independent human commit and separate freeze; root remains TODO. No new parser/
+math/style/field scope or repetition of native mathematical visual experiments.
+
+
 ## Approved native Org Cite compatibility restoration N6-N9
 
 User adopts formal restoration guide, distilled in native-cite-0.7.0-plan.md.

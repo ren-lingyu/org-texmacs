@@ -1,25 +1,31 @@
 # org-texmacs current memory
 
-## Cite configuration interface cleanup active
+## Cite configuration cleanup accepted; human delivery next
 
-User explicitly adopts a separate v0.7.0 change after delivered N9 at22191a0.
-Replace stock-value inference with defcustom org-texmacs-cite-export-processor,
-default texmacs-native; nil delegates unchanged to standard Org Cite (not disable).
-Explicit texmacs entry wins; otherwise non-nil preference prepends backend choice
-even when Org config nil or generic t/csl. Preserve standard declarations/options/
-filters and derived-backend specificity; no global mutation/new dispatch/advice,
-processor registration/native semantics/ownership changes. Detailed contract and
-acceptance: cite-processor-config-0.7.0.md. Root stays TODO; one independent human
-commit, then separate freeze decision. Archive assessment: complete semantic
-extraction suffices; no independent need to capture raw conversation bytes.
+One independent7path change against delivered22191a0 is accepted, not committed.
+Defcustom org-texmacs-cite-export-processor defaults native; nil delegates unchanged
+(not disable). Explicit texmacs entry wins; otherwise non-nil preference supplies
+backend choice before generic fallback even if global config nil. Standard Org
+handles derived specificity and document/subtree/external/filter precedence.
+Backend options declaration, processor registration and native/ownership paths
+unchanged; no global mutation, new alias, dispatch or advice. This supersedes N9
+stock-value inference. README/root/detail synchronized, old inference text removed.
 
-Next code/helper/matrix/load-order/derived-backend tests, adjust explicit CSL
-fallback regression with preference nil, README/root/detail. Focused affected ERT
-before compile/lint/fmt/full necessary checks. Existing native math visual evidence
-remains, no repeat manual parser experiments. Long600s grants from N9 consumed;
-any new longer gate requires authority. Ordinary index/history remain human.
+Full authorized600s flake exits0/all12named checks:699defaultERT (323core/282native/
+11CSL/48document/29render/6caption) +actualOrganize5 =704, zero unexpected.
+Strict compile/lint/treefmt pass.167canonical hashes match final snapshot,
+7path complete diff/whitespace reviewed, ordinary index untouched. No manual native
+math experiments repeated or new math/field/style support claims. Exact contract,
+fixture corrections, limits and receipt: cite-processor-config-0.7.0.md/-inputs.json.
+Draft ordinary tmp/commit.md from explicitly authorized whole worktree candidate.
 
-## Native Cite N9 human-delivered; approved development complete
+Next human commit and exact parent/7paths/message/167hash verification, then separate
+TODO->NEXT freeze decision. No automatic state/CLOSED/version/tag/release. Single
+600s grant consumed, not future blanket authority. No further source implementation
+needed under this cleanup. Semantic extraction and maintained regressions suffice;
+no independent raw archive needed. N6-N9 delivery remains historical baseline below.
+
+## Earlier N9 delivery (configuration superseded above)
 
 Approved N6-N9 implementation is human-delivered through N9. Delivery22191a0
 matches exact9d923e7 parent/26paths/full approved message/all167committed and

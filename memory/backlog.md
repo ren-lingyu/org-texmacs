@@ -1,5 +1,13 @@
 # org-texmacs active backlog
 
+Explicit Cite configuration cleanup is accepted7path candidate, pending human
+commit/exact cite-processor-config-0.7.0-inputs.json verification.12checks/704ERT
+pass. New preference supersedes stock-value inference; native semantics/ownership
+and deferred scopes unchanged. Then separate human freeze/publication decision.
+No further source implementation selected; root TODO.
+
+Earlier N6-N9 delivery:
+
 Approved N6-N9 implementation is human-delivered through verified22191a0.
 Exact parent/26paths/message/167hashes match native-cite-0.7.0-n9-inputs.json;
 ordinary worktree/index clean. Next separate human freeze/publication decisions.
