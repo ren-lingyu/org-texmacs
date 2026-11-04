@@ -141,3 +141,16 @@ or native math visual repetition.167canonical hashes/4paths/index stable. Snapsh
 receipt/message/report updated. Current root NEXT, no CLOSED/tag/release action.
 This resolution supersedes the last audit's conditional DONE recommendation.
 No new archive or extra project parent for the uncommitted candidate.
+
+## Human DONE and staged commit readiness
+
+User manually marks DONE and asks whether to commit. Four reviewed paths fully
+staged. Exact accepted content plus only NEXT->DONE and indented CLOSED at
+2026-11-04 Wed18:45; observed UTC clock18:45:46 agrees. Actual Org parser recognizes
+DONE, v0.7.0 CUSTOM_ID and CLOSED correctly. All167staged files match worktree,
+other166accepted hashes unchanged; no partial or unstaged changes. Complete staged
+transition and whitespace checked. Suitable as one cohesive docs(changelog) commit,
+no split needed/low difficulty, no new runtime checks. Draft subject now finalize
+v0.7.0 release notes, body covers human DONE/CLOSED and all actual four-path effects.
+Receipt now captures human DONE/staged hashes/message for exact delivery check.
+Ordinary commit/tag/release remain human, no new project parent before delivery.

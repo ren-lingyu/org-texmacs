@@ -1,6 +1,6 @@
 # org-texmacs current memory
 
-## Final v0.7.0 review passed; suitable for human DONE
+## v0.7.0 human DONE confirmed; staged finalization ready
 
 User manually froze NEXT and authorizes final documentation/comment/version
 review, concise user-visible root and complete release notes. User subsequently
@@ -26,18 +26,25 @@ Org checks16local links/5deprecated mappings/unchanged main executable forms pas
 final treefmt exits0. Current code strict compilation/lint/324core already passed;
 exact delivered functional baseline12checks/705ERT remains evidence, not a fresh
 full native/PDF/integration run on the documentation candidate.167canonical hashes
-match final snapshot, complete4path diff/whitespace reviewed, ordinary index empty.
+match reviewed content, complete4path diff/whitespace reviewed; user staged all4paths.
 Source receipt/report/draft reflect latest corrections. No new archive needed.
 
-Next user reviews final diff and manually chooses DONE with actual transition's
-UTC CLOSED, then commit/tag/publication as separate human steps. Root remains
-NEXT, canonical header/CUSTOM_ID/link and historical entries untouched, no tag or
-release action. Verify expected manual state/time delta separately from NEXT
-receipt on delivery. No further implementation or blocking review issue remains.
-No exact committed identity exists for this candidate; no new project parent at
-acceptance checkpoint. Reference release-review-0.7.0.md/-inputs.json and ordinary
-tmp/release-review-report.md, tmp/commit.md. Historical TODO/pending findings in
-older notes are superseded by this final completed review.
+User manually marked DONE and fully staged the reviewed four paths. Only
+NEXT->DONE plus CLOSED [2026-11-04 Wed 18:45] differs from accepted content;
+all167staged inputs equal worktree and other166hashes match. Clock observed
+18:45:46UTC, same minute; Org parser confirms indented CLOSED/DONE/CUSTOM_ID.
+Complete staged candidate/whitespace reviewed, no partial/unstaged changes.
+Suitable as one docs(changelog) commit; no repeated unchanged runtime checks.
+Draft tmp/commit.md now 'docs(changelog): finalize v0.7.0 release notes', includes
+human finalization. No ordinary index or history mutation by agent.
+
+Next user commits using final draft. Verify exact parent21d5704/4paths/message/
+167committed hashes against updated release-review-0.7.0-inputs.json without
+rerunning unchanged checks. DONE is local finalization, not publication; tag/
+release remain separate human actions. Current candidate isn't committed yet,
+so no new project-parent association. No remaining implementation/review issue.
+Details: release-review-0.7.0.md/-inputs.json. Prior NEXT/pending-state notes are
+historical; human DONE is verified current state.
 
 ## Cite declaration interface delivered; development complete
 
