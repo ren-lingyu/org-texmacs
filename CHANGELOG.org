@@ -7,7 +7,7 @@
 Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
-* NEXT v0.7.0
+* TODO v0.7.0
 :PROPERTIES:
 :CUSTOM_ID: v0.7.0
 :END:
