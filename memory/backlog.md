@@ -1,5 +1,13 @@
 # org-texmacs active backlog
 
+Final release-content review passed for four documentation/Commentary paths,
+no identified blocker. Root is human-frozen NEXT; user reviews diff and manually
+chooses DONE/UTC CLOSED then commit/tag/publication as separate steps. No further
+source implementation selected. Strict compile/lint/treefmt/324core plus targeted
+Org checks pass; unchanged executable forms retain prior705ERT functional proof.
+Review/receipt release-review-0.7.0.md/-inputs.json. Historical freeze proposals
+below are superseded by the actual manual NEXT and final-review decision.
+
 Current selected follow-up changes the preference to an Org Cite declaration
 list (without backend), retaining optional bibliography/citation style positions.
 Human21d5704 delivered exact parent/7paths/message/167hashes; clean worktree/index.

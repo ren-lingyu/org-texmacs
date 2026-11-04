@@ -1,5 +1,14 @@
 # org-texmacs project goals
 
+## Final release review and human finalization
+
+User manually froze v0.7.0 to NEXT and authorizes final documentation/comment/
+version audit and root/detail consolidation. Review passed, no identified blocker;
+version metadata already0.7.0. Four-path docs/Commentary candidate is pending human
+review/commit. User alone chooses DONE and UTC CLOSED; no tag/release action.
+No new feature or deferred work reopened. Root NEXT supersedes older TODO status
+below; evidence/scope release-review-0.7.0.md/-inputs.json.
+
 ## Approved Cite declaration interface follow-up
 
 The preference now uses Org Cite's declaration list without backend:

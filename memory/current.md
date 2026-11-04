@@ -1,18 +1,36 @@
 # org-texmacs current memory
 
-## Final v0.7.0 release review active
+## Final v0.7.0 release review passed; human finalization pending
 
-User manually changed only root TODO->NEXT after delivered21d5704 and authorizes
-final review/corrections of documentation, comments, version consistency, concise
-user-visible root changelog and complete detailed release notes. Preserve NEXT,
-CUSTOM_ID/link; user will manually choose DONE after review. No CLOSED/tag/release
-action. Baseline current delivered implementation21d5704 vs v0.6.0 at8ae5647,
-plus human NEXT edit. Prior12checks/705ERT exact receipt remains valid for runtime.
-Use git-maintenance docs/changelog review; no scope/native behavior expansion.
-Initial concrete drift: root examples still claim example-only citeproc/CSL despite
-native-default migration; README overview only mentions CSL. Plan and audit record:
-release-review-0.7.0.md. No raw archival need; semantic conclusions and diff suffice.
+User manually froze root TODO->NEXT, requests final docs/comments/version review,
+concise user-visible root and complete release manuscript, and will manually choose
+DONE after passed review. Intake delivered21d5704 plus only human NEXT edit.
+Current four-path uncommitted candidate: root summary131->50lines, obsolete
+citeproc-example text removed; detailed API replacement table/native example/
+configuration and limits completed; README native-default/mature backend/source
+callback behavior corrected; main Commentary native/CSL ownership description.
+All version metadata already0.7.0, no number change. Canonical root header,
+CUSTOM_ID/link and all v0.6.0-and-earlier content unchanged. NEXT retained, no
+candidate CLOSED, tag or release action. No identified release blocker.
 
+Current strict package compilation, lint/treefmt and324core pass. Final docs
+polish passes fresh treefmt,16local Org links and5deprecated API replacements.
+Emacs read/equal proves all executable Lisp forms equal delivered baseline;
+only non-doc file delta is Commentary. Previous12checks/705ERT on exact delivered
+implementation remain functional evidence, not a fresh complete current-snapshot
+run. No native/math visual or full native/PDF/integration rerun required for this
+scope.167canonical input hashes stable, four-path complete diff/whitespace reviewed,
+ordinary index empty. Receipt/details release-review-0.7.0.md/-inputs.json;
+readable report tmp/release-review-report.md, whole-diff draft tmp/commit.md.
+
+Next user reviews diff, optionally manually marks DONE with actual transition's
+UTC CLOSED and commits. Verify resulting source and any explicit human state/time
+change separately; current receipt captures NEXT, so don't misclassify expected
+human finalization as arbitrary drift. DONE is not publication, no automatic tag/
+release. No additional implementation selected. Root is NEXT now; historical TODO
+statements below describe earlier phases. No raw archive need; distilled evidence
+and maintained history suffice. Current candidate has no exact committed identity;
+no new project-parent association until human delivery matches reviewed content.
 
 ## Cite declaration interface delivered; development complete
 

@@ -1,5 +1,16 @@
 # org-texmacs current project model
 
+## v0.7.0 frozen candidate; final content reviewed
+
+Root is human-frozen NEXT. Final four-path docs/Commentary candidate passed review;
+root user-visible summary, complete API/Cite migration manuscript and accurate
+native defaults/source callbacks now agree with delivered21d5704 implementation.
+Versions already0.7.0, no runtime form change (Emacs comparison). Fresh strict
+compile/lint/treefmt/324core and Org documentation checks pass; prior705full ERT
+remain runtime evidence, not a fresh whole-snapshot run. User finalization/commit
+pending, no source implementation or blocker remains. Details/receipt:
+release-review-0.7.0.md/-inputs.json. Historical TODO below is superseded.
+
 ## Cite declaration interface delivered
 
 The new follow-up supersedes the symbol-valued format below with a declaration

@@ -1,5 +1,17 @@
 # org-texmacs durable evidence
 
+Final release review against delivered21d5704 vs v0.6.0 baseline8ae5647 passes:
+current package strict compilation/lint/treefmt and324core (2.617147s), final text
+polish treefmt and Org checks. Emacs read/equal verifies all executable main Lisp
+forms unchanged;16local links and5obsolete replacement pairs checked. Version
+header/Nix/README0.7.0 consistent; canonical root header/historical entries stable.
+Root candidate summary131->50lines, removes outdated citeproc-example claim; detailed
+notes own migrations/native config/limits. Four modified paths unstaged,167hashes
+stable, complete diff reviewed, no identified blocker. Prior12checks/705ERT on the
+exact delivered implementation remain evidence; no fresh full native/PDF run or
+broader support certification. User NEXT retained, DONE/CLOSED/tag/release manual.
+Exact current receipt and coverage: release-review-0.7.0.md/-inputs.json.
+
 Declaration-list preference follow-up full authorized600s check exits0/all12checks:
 700defaultERT (324core/282native/11CSL/48document/29render/6caption) plus actual
 Organize5 =705unique, zero unexpected. Core/CSL outputs match focused passes;

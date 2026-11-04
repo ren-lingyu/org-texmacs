@@ -24,3 +24,38 @@ backend. Version headers and Nix package already consistently use0.7.0; don't bu
 correct versions merely for release work. Root header matches adopted canonical
 Org profile. No original-byte archive needed for distilled request and maintained
 source evidence.
+
+## Completed review
+
+Four paths only: CHANGELOG.org, CHANGELOGS/v0.7.0.org, README.org and main
+Commentary. Root131->50lines, preserves notable user changes/Breaking guidance,
+removes checklist and contradicted example-only CSL/citeproc dependency claim.
+Detailed notes add five migration pairs/argument warning/native example/runtime
+preference and retained rejection scope. README fixes CSL-only overview/initial
+backend wording, native quickstart/print requirement, and unconditional source-
+buffer preservation claim (user callbacks may modify original; guards don't undo).
+Main Commentary now reflects native default plus optional CSL; versions untouched
+because already consistent0.7.0. All historical root entries/header/ID/link preserved.
+
+Scoped authorized120s build gate exits0: strict package compilation, package-lint,
+treefmt and324core. Last text-only wrapping/table polish only changes README and
+detailed notes; fresh final treefmt and document checks pass, runtime derivations
+unchanged. Org AST validates16local file/heading/ID links. All5migration pairs
+match runtime byte-obsolete-info; Emacs read/equal proves every main Lisp form
+equal delivered21d5704. Original temporary doc driver emitted a lexical-binding
+cookie warning, fixed in the final driver; no production warning/failure waiver.
+No full native/PDF/integration repetition: previous exact implementation705ERT
+acceptance remains, and no new behavior is claimed. Minimum Org9.8 runtime/other
+platforms/full fields/Unicode/math recovery remain accurately limited.
+
+Complete four-path diff, whitespace and167canonical hashes reviewed, index empty.
+No identified final release-content blocker. Root remains human NEXT with no
+candidate CLOSED; user will manually choose DONE/UTC actual transition time,
+commit/tag/release separately. Human DONE may intentionally change receipt root
+state/time; verify that separately from reviewed text, don't demand byte equality
+with NEXT for the approved state transition. No ordinary project staging/commit.
+Whole-diff draft follows user's established workflow: tmp/commit.md uses
+'docs(changelog): prepare v0.7.0 release notes'. Report tmp/release-review-report.md.
+Exact source hashes/check outputs/log hashes/limits in release-review-0.7.0-inputs.json.
+No new raw archive needed. Uncommitted candidate is not exact HEAD; memory
+checkpoint has no new project parent, unlike earlier exact delivery verification.
