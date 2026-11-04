@@ -1,16 +1,22 @@
 # org-texmacs current memory
 
-## Active native Cite feasibility, independent gates
+## Completed native Cite feasibility; report review, no production adoption
 
-User authorizes I native style mechanism and II mock standard Org Cite handoff
-independently; only then III real bibliography. No production changes/B reopening.
-Plan: memory/native-cite-feasibility.md. Exact N5 candidate unchanged; user has now
-staged its4paths, verified against accepted hashes; preserve the index. HEAD6c7ac07.
-Snapshot tmp/native-cite-feasibility-1. I native styles/labels/state/PDF and II
-mock carriers/ownership/nested/error gates independently pass. Detailed evidence
-and source changes in memory/native-cite-feasibility.md. III is now admitted:
-real bibliography snapshot/native processing with2styles, same standard callbacks
-and owned handoff; no production source or wire protocol changes.
+I native styles and II mock standard Org Cite/ownership independently passed before
+III real bibliography. Final3experimental checks/4ERT pass; plain/alpha real text,
+TM/PDF and alpha_i/fraction structures visually verified. Minimal replay yields
+identical3Nix outputs. Report tmp/native-cite-feasibility-report.md; durable source,
+result, remaining limits and concrete future seams in memory/native-cite-feasibility.md
+and archive/2026-11-04T07-41-47Z--6c7ac07/MANIFEST.md (27text captures).
+Recommend separate bounded processor implementation planning, not automatic adoption
+or default switch. Native unknown-style fallback/fatal module loading and first
+prepared-copy identity migration are decisive boundaries. Pure lowering and the
+standard Org preparation/Cite dispatch remain unchanged in production. No B reopening.
+
+Exact accepted N5 candidate unchanged; HEAD6c7ac07, all159hashes and4human-STAGED
+blobs match receipt, commit.md unchanged. Preserve human index. No project Git write,
+production/full-CI/release changes. Next: user report review and N5 human delivery;
+no native processor production implementation authorized by feasibility success.
 
 ## Completed isolated bibliography comparison, no production adoption
 
@@ -24,7 +30,8 @@ three successful experimental checks and archive provenance are distilled in
 memory/bibliography-comparison-experiment.md. Local report:
 tmp/bibliography-comparison-report.md. No full-product tests rerun or required
 for isolated-only files. Exact N5 four-path/all159hashes and draft remain unchanged,
-ordinary index empty. Next: user report review and pending N5 human delivery.
+ordinary index was empty at that earlier completion. User has since staged its4paths;
+preserve them. Native feasibility above is now complete; N5 human delivery pending.
 
 ## Current: N5 candidate accepted; human delivery gate
 
@@ -39,9 +46,10 @@ N5 four-path candidate is implemented and accepted: real body/CSL retained-fragm
 refusal ERT plus README/CHANGELOG/release notes, no production converter change.
 654defaultERT+actual4/all12checks pass, fresh Cite10 with exact unchanged native/
 PDF/integration derivatives reused. Final checkbox-only change passes final
-fresh treefmt; all159root/snapshot hashes match. Ordinary index empty and HEAD
-unchanged6c7ac07. Complete diff/whitespace reviewed. tmp/commit.md contains the
-worktree-candidate draft; human staging/commit remains. Verify expected parent,
+fresh treefmt; all159root/snapshot hashes match. User has now staged the4accepted
+paths, verified unchanged against receipt; HEAD remains6c7ac07. Complete diff/
+whitespace reviewed. tmp/commit.md contains the
+accepted-candidate draft; human commit remains. Verify expected parent,
 exact4paths/message and all159hashes from memory/inline-objects-0.7.0-n5-inputs.json
 at next intake; do not rerun unchanged checks. Method/failed gates/limits and
 acceptance: memory/inline-objects-0.7.0-n5.md. No further implementation node.

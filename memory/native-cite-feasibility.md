@@ -79,3 +79,65 @@ request names/arity/replies; production protocol untouched. Each variant scoped
 and stopped before pure lowering/native document consumers. Keep pure guards.
 No production implementation/default/release change follows merely from feasibility.
 
+## Completed III and final handoff: feasibility only, not adoption
+
+III real plain/alpha passes after the independent I/II gate above. Final direct
+text-entry build1ERT6.154219s; final I1ERT4.130446s, II2ERT0.167054s. Actual public
+org-export-as 'texmacs returns text from one standard preparation. The same owned
+input gives a pure document and native serialization equals reversible standard
+text output. Both in-transaction and subsequent pure lowering reject any worker
+protocol call. Native processing consumes standard callback keys/files/style;
+file text is snapshotted once before native waits. It does not traverse Org to
+collect citations or rediscover bibliography. Pure lowering's existing native
+usage/entry consistency validation is retained, not a preparation collector.
+
+Two real book titles alpha_i/fraction produce native math/rsub/frac with correct
+visually inspected plain numeric and alpha author/year-code labels, multiple/
+repeat/emphasis contexts, bibliography position and following text. Real scheme
+worker variant scopes module/bib-process style while preserving old wire arity/
+replies. This is an experimental style input, not a completed production protocol.
+Native source trees and request identities remain owned through attachment.
+
+Final output identities and original logs/JSON/fixtures are in metadata.json;
+main paths: /nix/store/9d62nm1glpjr6zdkn4n381n2g5iaar20-org-texmacs-native-cite-styles,
+/nix/store/kid5cyifynxzg1jb4yw36cil7bm2j4wq-org-texmacs-native-cite-handoff,
+/nix/store/ykhk1fz6yg89ig20pp0cnnfmwkpr2994-org-texmacs-native-cite-end-to-end.
+Minimal replay reconstructs committed runtime source plus the explicit prefix
+insertion/drivers, excluding only4unused N5 docs/Cite-test differences; Nix produces
+exactly the same3output paths (no additional runtime rerun needed). Six native
+pages reviewed; final PNG bytes match viewed earlier assets, including cite-sort.
+PDF text extraction loses/reorders math glyphs, so not used as a fidelity oracle.
+
+Standalone report: tmp/native-cite-feasibility-report.md. Selected27text files plus
+manifest are immutable at archive/2026-11-04T07-41-47Z--6c7ac07/MANIFEST.md. Includes
+minimal source/replay/config, byte-exact results/fixtures/logs, fatal loader original
+and pure prefix patch, binary provenance metadata; no whole build/dependency tree,
+release artifact or binary. Raw log/native diagnostic trailing whitespace retained
+for exactness; diff --check findings only there, not silently normalized. No
+additional project parent falsely associates the uncommitted prototype with HEAD.
+
+Recommend separately planning a bounded native processor implementation: standard
+registration/default bare citation/single print; INFO request projection and first
+prepared identity remap; owned file snapshots/native fulfillment before lowering;
+unified native-validated style input with tm-* normalization; explicit prefix and
+collision contract. Existing model/input/islands suffice. No formal implementation,
+default switch or support claim is authorized by experimental success itself.
+Unsupported Org citation styles/affixes/locators/multiple prints need deliberate
+contracts; cite-detail native capability is not an implemented Org locator mapping.
+Author-year package compatibility, Unicode/extended BibLaTeX fields and native
+math recovery remain separate limits, not fixes in this experiment. Real native
+nested worker interruption and comprehensive error/field/style support are not
+certified. Never infer arbitrary LaTeX support from two good titles.
+
+The initial other-carrier diagnostic uses an invalid shared mutable string graph;
+its error does not disprove all alternative legal carriers. Harness fixes included
+avoiding a default-other fixture accidentally including hidden missing keys and
+saved core entry points to prevent nested double-remap. These are not production
+failures or reasons to lower the architecture bar. Unknown native module crash is
+a real external boundary and its original counterexample is preserved.
+
+Final root159hashes, all4human-staged blobs and commit.md digest remain unchanged;
+HEAD unchanged. No production changes, ordinary Git writes, full product reruns,
+README/CHANGELOG edits, B reopening or release state change. N5 human delivery
+remains pending; NEXT0.7.0, finalization/tag/publication human-controlled. Next:
+user reviews this report; future formal native processor scope needs its own plan.

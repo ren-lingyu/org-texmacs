@@ -1,5 +1,15 @@
 # org-texmacs durable evidence
 
+Native Cite isolated feasibility passes4ERT/3checks: independent native styles
+and mock Org Cite/ownership gates, then real plain/alpha text/TM/PDF with native
+alpha_i/fraction. Minimal replay yields identical3Nix output paths. Six visual
+pages inspected. Key counterexamples: unknown formatter fallback, fatal missing
+module load, bibliography single-return identity replacement, omitted first-copy
+identity map failure. Preserved27text sources/results/fixtures/replay plus asset
+hashes at archive/2026-11-04T07-41-47Z--6c7ac07/MANIFEST.md; exact methods/limits in
+memory/native-cite-feasibility.md. No production/default/B/release changes. Root
+159hashes and all4human-staged N5 blobs/draft unchanged; full CI not rerun.
+
 Isolated bibliography architecture comparison complete, evidence-only. A120/B60/
 C30case/style records plus protocol/nested HTML/sort/font controls pass3experimental
 ERT drivers. CSL JSON/getter preserve math data; Citeproc internal title parsing
@@ -13,8 +23,9 @@ memory/bibliography-comparison-experiment.md. N5 candidate/human gate unaffected
 N5 accepted:654defaultERT+actual4/all12checks, fresh Cite10 and final treefmt;
 exact native/PDF/integration derivatives reused unchanged. Four-path candidate
 records B deferral, upstream loss location and real retained-fragment rejection.
-No runtime library/config change; NEXT unchanged, ordinary index empty. Human
-delivery verification remains. Method and exact source/message manifest:
+No runtime library/config change; NEXT unchanged. The accepted4paths are now
+human-staged and verified; human commit/delivery verification remains. Method and
+exact source/message manifest:
 memory/inline-objects-0.7.0-n5.md and inline-objects-0.7.0-n5-inputs.json.
 
 

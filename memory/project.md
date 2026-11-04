@@ -1,5 +1,16 @@
 # org-texmacs current project model
 
+Native Org Cite integration is experimentally feasible, not production behavior.
+Standard callbacks can return semantic citation/PRINT_BIBLIOGRAPHY-list carriers
+with INFO request associations; prepared-copy must first remap identities, then
+existing input ownership suffices. Native fulfillment precedes pure lowering.
+Native styles supply format/labels; document macros also govern citation display.
+Production still uses the existing CSL contract. Future native style/prefix input,
+unsupported citation semantics, fields/Unicode/recovery remain explicit boundaries.
+No generic model/island change or parallel preparation was needed in isolation.
+Details: memory/native-cite-feasibility.md. N5 four human-staged paths unchanged;
+B deferred,0.7.0 NEXT and human release controls unchanged.
+
 Isolated bibliography architecture comparison complete, evidence-only. A120/B60/
 C30case/style records plus protocol/nested HTML/sort/font controls pass3experimental
 ERT drivers. CSL JSON/getter preserve math data; Citeproc internal title parsing
@@ -13,8 +24,9 @@ memory/bibliography-comparison-experiment.md. N5 candidate/human gate unaffected
 N5 accepted:654defaultERT+actual4/all12checks, fresh Cite10 and final treefmt;
 exact native/PDF/integration derivatives reused unchanged. Four-path candidate
 records B deferral, upstream loss location and real retained-fragment rejection.
-No runtime library/config change; NEXT unchanged, ordinary index empty. Human
-delivery verification remains. Method and exact source/message manifest:
+No runtime library/config change; NEXT unchanged. The accepted4paths are now
+human-staged and verified; human commit/delivery verification remains. Method and
+exact source/message manifest:
 memory/inline-objects-0.7.0-n5.md and inline-objects-0.7.0-n5-inputs.json.
 
 

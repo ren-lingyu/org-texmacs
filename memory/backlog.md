@@ -1,5 +1,15 @@
 # org-texmacs active backlog
 
+Native Cite feasibility completed independently for styles/mock handoff, then
+real bibliography. Recommend a separately approved bounded implementation plan:
+standard processor/default bare citations/single print; projected requests and
+first-copy identity remap; owned snapshots/native fulfillment; native-validated
+style selection and explicit label prefix/collision contract. No implementation
+or default switch is adopted by feasibility success. Advanced styles/locators,
+Unicode, extended fields and native error recovery remain separate proposals.
+Results and minimal27text archive: memory/native-cite-feasibility.md. N5 human
+staging preserved, B deferred,0.7.0 NEXT and human release controls unchanged.
+
 Isolated bibliography architecture comparison complete, evidence-only. A120/B60/
 C30case/style records plus protocol/nested HTML/sort/font controls pass3experimental
 ERT drivers. CSL JSON/getter preserve math data; Citeproc internal title parsing
@@ -13,8 +23,9 @@ memory/bibliography-comparison-experiment.md. N5 candidate/human gate unaffected
 N5 accepted:654defaultERT+actual4/all12checks, fresh Cite10 and final treefmt;
 exact native/PDF/integration derivatives reused unchanged. Four-path candidate
 records B deferral, upstream loss location and real retained-fragment rejection.
-No runtime library/config change; NEXT unchanged, ordinary index empty. Human
-delivery verification remains. Method and exact source/message manifest:
+No runtime library/config change; NEXT unchanged. The accepted4paths are now
+human-staged and verified; human commit/delivery verification remains. Method and
+exact source/message manifest:
 memory/inline-objects-0.7.0-n5.md and inline-objects-0.7.0-n5-inputs.json.
 
 
