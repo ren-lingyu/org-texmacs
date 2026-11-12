@@ -1,5 +1,31 @@
 # org-texmacs current memory
 
+## Stage A cross-file Org ID link support — intake adopted
+
+User adopts the Stage A guide (cross-file `id:` link document-level lowering)
+after v0.7.0 local finalization. Read-only review completed; intake plan recorded
+in memory/external-id-links-plan.md. No ordinary source changes yet.
+
+Adopted: consume `org-export-resolve-id-link`'s external filename result in the
+standard export transaction, freeze it as an owned link-node→file association,
+and reuse existing file resolution/provenance/native file-link policies. Original
+ID identity stays in the owned Org AST; external targets provide document-level
+navigation only. Internal ID links keep existing reference/hlink behavior.
+Same-file excluded targets and current-file file-level ID remain errors; independent
+pure input does not discover external IDs.
+
+Review-verified: query snapshot internal-only branch, input ownership remap via
+`org-texmacs--model-copy-data`, document-resolution `:targets`/files split, inline
+hlink+file-paths reuse, and native file-target reuse. Org 9.8.10 resolver returns a
+`:id-alist` path relative to `default-directory` (== captured resource-base in the
+normal flow) or an absolute possibly `~`-abbreviated fallback path; both forms and
+symlink/truename same-file identity still need a runtime probe before implementation.
+
+Next action (A1): run the bounded resolver path-base and same-file probe, then
+implement query snapshot `:external-files` and document-resolution external branch
+with real Org ID integration tests. Stage B and precise cross-document navigation
+remain separate and are not adopted.
+
 ## v0.7.0 local finalization delivered and tagged
 
 Human f16cc2f delivery exactly matches accepted21d5704parent,4paths/full approved

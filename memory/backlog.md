@@ -1147,6 +1147,34 @@ overlap and precedence with Org objects, complex-container/region boundaries,
 large-document performance, and relevant Org-version behavior. Inline caches
 or augmented live ASTs require separate evidence and adoption.
 
+### Precise cross-document ID navigation
+
+Status: **deferred-candidate**; not adopted by Stage A.
+
+Stage A (cross-file Org ID link support) implements document-level lowering of
+external Org ID links. The original object identity remains in the owned Org
+AST, so precise navigation can be added later without losing the ID.
+
+Document-level navigation is a current lowering boundary, not a redefinition of
+Org ID semantics. TeXmacs natively supports `file.tm#label` navigation. Future
+work may establish a stable cross-document Org-ID-to-STM-label contract.
+
+The existing GoToR patch (`pkgs/texmacs-with-gotor-support/local-pdf-gotor.patch`)
+recognizes bare local PDF paths and emits page-zero `/Fit` destinations. Remote
+named destinations additionally require a stable STM-label-to-PDF-destination
+contract, which does not exist yet.
+
+Possible research order (not adopted):
+
+```text
+C1. Native cross-document anchor and stable label feasibility.
+C2. Stable PDF named destinations and GoToR feasibility.
+C3. org-texmacs integration based on established contracts.
+```
+
+No anchor protocol, renderer extension or implementation of this candidate is
+adopted by Stage A.
+
 ### AUTHORING-01: Editing assistance
 
 Status: **re-adoption-required** for general editing assistance. Bounded STM
@@ -1164,10 +1192,13 @@ memory/font-lock-implementation.md and memory/release-0.5.0.md.
 
 Examples include checkbox and explicit list-counter semantics, advanced table
 features, arbitrary Org elements, dynamic source execution and nested footnotes.
-Broader citation/bibliography variants, file resources and cross-file ID lookup
-remain separately scoped; current local links, named notes and bare default
-citations/plain bibliography are already implemented. Continue to reject
-unsupported cases explicitly; unsupported syntax alone does not adopt work.
+Broader citation/bibliography variants and file resources remain separately
+scoped; current local links, named notes and bare default citations/plain
+bibliography are already implemented. Cross-file ID lookup is now Stage A
+adopted for document-level lowering via the standard Org export transaction
+(see memory/external-id-links-plan.md); precise cross-document ID navigation
+remains a deferred candidate. Continue to reject unsupported cases explicitly;
+unsupported syntax alone does not adopt work.
 
 ## Historical provenance
 
