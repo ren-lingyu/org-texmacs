@@ -265,6 +265,24 @@ restoration and worker lifecycle tests keep their original expectations.
 - User-reported local success is recorded; the agent's own full flake run
   above independently confirms the same content.
 
+## Retention assessment
+
+User-supplied review material for this round: one B1 diff
+(`tmp/2026-11-12T23:36:26+08:00.diff`, 5 paths: CHANGELOG.org, README.org,
+`lisp/org-texmacs-document.el`, `tests/ert-core/lisp/document.el`,
+`tests/ert-core/lisp/standard-export.el`). The B2 patch and the standalone
+follow-up test patch are not present in the worktree, so no byte-exact
+capture is claimed for them.
+
+Retention decision: no archive snapshot. The effective B1 content and the
+revised B2 content are fully preserved by the staged ordinary candidate (whose
+content hashes are in `memory/link-navigation-fallback-inputs.json`), by the
+maintained tests that express the regressions, and by this record, which keeps
+the design reasons, the discarded alternatives and the two test revisions.
+Losing the historical diffs would not impair interpretation, reproduction or
+handoff. The B1 diff remains an ignored `tmp/` artifact; no byte-exactness
+claim is made for material not read in full.
+
 ## Next
 
 Await human ordinary commit (suggested subject
