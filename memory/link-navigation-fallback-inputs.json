@@ -1,0 +1,70 @@
+{
+  "kind": "link-navigation-fallback-stage-B-candidate",
+  "revision": "validated-candidate",
+  "baseline": {
+    "ordinary": "246283110e9cdfeaad8a1d616fca46413af47510",
+    "subject": "feat(export): support cross-file Org ID links",
+    "gaw": "56cea3a3e44093937f45a1df2daa1825902600a0"
+  },
+  "captured": "2026-11-13T00:00:00Z",
+  "candidate": {
+    "changed-paths": [
+      "CHANGELOG.org",
+      "README.org",
+      "lisp/org-texmacs-document.el",
+      "lisp/org-texmacs-input.el",
+      "lisp/org-texmacs-query.el",
+      "tests/ert-core/lisp/document.el",
+      "tests/ert-core/lisp/standard-export.el",
+      "tests/ert-native/lisp/document.el",
+      "tests/ert-native/lisp/frontend.el",
+      "tests/ert-native/lisp/special-blocks.el"
+    ],
+    "diff-stat": "10 files changed, 685 insertions(+), 331 deletions(-)",
+    "full-diff-sha256": "9f39046cfc157a5c7826c93ab8d274751e8605fdd6faf7ae3ce97f2690a6b934",
+    "content-sha256": {
+      "CHANGELOG.org": "eec0adb3a600a5542772cac309ac69daafb29b6883923cc7e5b7347c64b5bf22",
+      "README.org": "251ecee50522aad093cd43a4e14a40fbc10402e13d354659143952a71659993a",
+      "lisp/org-texmacs-document.el": "daada9b3d13464ac3f59e63ff57e7445b0ccf2b2d2d313f32671e215a92af7d2",
+      "lisp/org-texmacs-input.el": "a73341cd4760aed929081b0a77147389b41ea22111d97d629ba5db0a09c9b920",
+      "lisp/org-texmacs-query.el": "461705ffe94bae1e10520c93e49b18a8ae20f764c19dca8995fdcf1cba581913",
+      "tests/ert-core/lisp/document.el": "41b3977510c00f2859da85e3e786b810ed15610defb3172f5008b5a4357de02e",
+      "tests/ert-core/lisp/standard-export.el": "7bb67bf847f68aace9dd7fd05e3554b6e448587e4ad42eadd5b4f1e1ab89cb4f",
+      "tests/ert-native/lisp/document.el": "c7a8fd3ca816f93259ce75b9356d0308ba570cb8be619fae0baf77cc477c32cb",
+      "tests/ert-native/lisp/frontend.el": "f6a8a7f9382cae0c2bb77963fa7bf2e1be980db7be82e74ac522eff242c69758",
+      "tests/ert-native/lisp/special-blocks.el": "85f8257ee8e5aad8075a44942562287d715abc8da4074ec1b3c59ed9ee4b8e71"
+    }
+  },
+  "validation": {
+    "status": "agent-executed on exactly this content (index == worktree)",
+    "commands": [
+      "nix flake check -L --no-write-lock-file --max-jobs 2 (exit 0, all checks passed)"
+    ],
+    "ert-counts": {
+      "ert-core": "346/346",
+      "ert-native": "285/285",
+      "ert-pdf-document": "48/48",
+      "ert-pdf-render": "30/30",
+      "ert-cite": "11/11",
+      "caption-inline-footnotes": "6/6"
+    },
+    "other-checks": {
+      "package-lint": "/nix/store/dc22rihy8ip71nhv5vbgjsrrn7r7rpr0-org-texmacs-package-lint",
+      "treefmt": "/nix/store/zcl8ar71fyz3mdq4wd10w470518dwqih-treefmt-check",
+      "texmacs-with-gotor-support": "/nix/store/jf4w48nwwpbm3gfciff546qc0r06manw-texmacs-gotor-regression"
+    },
+    "user-report": "User confirmed local build and tests pass after applying B1 plus the complete revised B2.",
+    "environment": {
+      "emacs": "31.1",
+      "org": "9.8.10",
+      "texmacs": "2.1.5 (baseline and patched)",
+      "inspector": "python3/pypdf"
+    }
+  },
+  "stage-a-evidence": "Unchanged and not re-run: Stage A isolated patched external-ID GoToR probe (/GoToR ../target/target.pdf [0 /Fit]) and cross-file ID regressions remain in the suites.",
+  "notes": {
+    "index-state": "Ordinary index contains exactly these 10 staged paths; worktree has no unstaged tracked changes; agent performed no staging.",
+    "delivery": "Not committed. Ordinary commit, version, tag, push and release remain user decisions.",
+    "unverified": "Other platforms, other Org/TeXmacs versions, GUI readers, native encoding of restricted-character file paths (explicitly unsupported)."
+  }
+}

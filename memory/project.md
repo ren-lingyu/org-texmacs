@@ -1,5 +1,21 @@
 # org-texmacs current project model
 
+## Link navigation fallback: validated candidate (uncommitted)
+
+On top of delivered Stage A (2462831), an uncommitted 10-path candidate makes
+structural link lowering keep visible content when no supported navigation
+target/action can be constructed. Descriptions use ordinary inline lowering;
+bare links use Org's parsed `:raw-link`; no outer hlink/reference/file
+provenance is added and the original AST/model is unchanged. Standard export
+records unresolved identities in `:unavailable-links`; independent input falls
+back for unresolved, ambiguous, excluded or context-less targets. Stage A
+cross-file ID behavior, path-base capture, provenance and native file-link
+policies are unchanged. Structural validation and native file-target character
+restrictions still apply. Validation: full flake check exit 0 (core 346/346,
+native 285/285). Records:
+memory/link-navigation-fallback-implementation.md/-inputs.json. Human commit
+pending.
+
 ## Stage A cross-file ID links: delivered support
 
 Human-delivered 2462831 (parent f16cc2f, 13 paths, verified byte-equal to the

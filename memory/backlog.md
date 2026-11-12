@@ -1177,6 +1177,25 @@ C3. org-texmacs integration based on established contracts.
 No anchor protocol, renderer extension or implementation of this candidate is
 adopted by Stage A.
 
+### Native file-target adaptation beyond the restricted character set
+
+Status: **deferred-candidate**; not adopted by Stage B.
+
+Stage B makes structural link lowering keep visible content when no navigation
+target is available, but it does not relax the native file-target restrictions.
+`org-texmacs--native-file-target` still rejects targets containing `#`, `?`,
+`*`, `$`, `|`, backslash or square brackets because TeXmacs may interpret them
+as navigation or URL syntax, and the structural document keeps the raw path.
+A legal local filename containing such characters can therefore lower but not
+reach native navigation.
+
+Possible future work (not adopted): study the actual TeXmacs URL/link syntax
+and escaping rules, then decide whether native targets can be encoded without
+ambiguity; alternatively define an explicit silent-navigation-downgrade
+boundary at the native layer. The user states current real usage does not hit
+these paths, so this does not block Stage B delivery. No consumer-specific
+native fallback, worker change, renderer change or GoToR change is adopted.
+
 ### AUTHORING-01: Editing assistance
 
 Status: **re-adoption-required** for general editing assistance. Bounded STM
@@ -1198,11 +1217,14 @@ Broader citation/bibliography variants and file resources remain separately
 scoped; current local links, named notes and bare default citations/plain
 bibliography are already implemented. Cross-file ID lookup is human-delivered
 for Stage A document-level lowering via the standard Org export transaction
-(ordinary commit 2462831; memory/external-id-links-implementation.md).
-Stage B (unsupported Org link text fallback) is a separate future task and is
-not adopted; precise cross-document ID navigation remains a deferred
-candidate. Continue to reject unsupported cases explicitly; unsupported
-syntax alone does not adopt work.
+(ordinary commit 2462831; memory/external-id-links-implementation.md). Stage B
+link navigation fallback is implemented as a validated, uncommitted candidate
+(memory/link-navigation-fallback-implementation.md); its deferred parts —
+relaxing native file-target character restrictions and a general
+TeXmacs-URL-syntax/filename study — remain unadopted. Precise cross-document ID
+navigation remains a deferred candidate. Continue to reject unsupported cases
+explicitly where no visible-content fallback applies; unsupported syntax alone
+does not adopt work.
 
 ## Historical provenance
 
