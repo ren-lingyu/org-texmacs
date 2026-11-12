@@ -1,5 +1,34 @@
 # org-texmacs current memory
 
+## Stage A cross-file ID links — review-round candidate validated
+
+User review accepted the overall design and required: live path-base
+interpretation (Org's `:id-alist` is relative to the working copy's
+`default-directory`), preserved file/id validation, snapshot/ownership and
+selection/model regressions, Org ID fixture isolation, PDF output placement
+and GoToR re-verification. All implemented; full flake acceptance exits 0:
+ert-core 339/339, ert-native 283/283, ert-pdf-document 48/48,
+ert-pdf-render 30/30, ert-cite/caption/package-lint/treefmt/gotor-regression
+pass. Patched-GoToR probe re-verified: /GoToR ../target/target.pdf [0 /Fit],
+relative preserved, internal /label0 kept.
+
+Path base now: relative resolver spellings keep their form only when the live
+working-copy base equals captured resource-base; a diverged base (standard
+hook moving the working copy) is interpreted against the live base and frozen
+absolute after an existence check; unverifiable bases are rejected. File links
+with nil paths keep their original validation error; external ID links keep
+nonempty-ID validation. Fixture isolation now covers org-id-track-globally/
+checksum/extra-files/agenda-files so no user knowledge base is touched.
+
+Ordinary index still holds the earlier 11-path pre-review candidate (staged by
+the user); the worktree carries the 13-path review-round candidate. Receipt
+memory/external-id-links-inputs.json (revision review-round-2); implementation
+memory/external-id-links-implementation.md.
+
+Next gate: human review and ordinary commit decision (index reconciliation
+included). Agent performs no staging/commit/version/tag/release action.
+Stage B and precise cross-document navigation remain separate.
+
 ## Stage A cross-file ID links — candidate implemented and validated
 
 Runtime/tests/docs candidate complete in the ordinary worktree (11 paths,

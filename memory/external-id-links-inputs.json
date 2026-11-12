@@ -1,28 +1,31 @@
 {
   "kind": "external-id-links-stage-A-candidate",
+  "revision": "review-round-2",
   "baseline": {
     "ordinary": "f16cc2f8131a7514754886119210099ad5fd943d",
-    "gaw": "7721c2598f9032db901f49e4c3de106362c782ef"
+    "gaw": "4fad5bc671b4ab7f3a510371b11bfe0d873f2942"
   },
-  "captured": "2026-11-12T06:22:00Z",
-  "full-diff-sha256": "bb88ca6975670a4b7bb01901be9c57405aa73382c39130bfb9a196bc08817182",
+  "captured": "2026-11-12T06:55:00Z",
+  "full-diff-sha256": "64e9563094b1a185784c28ea861914712d71be6b587bc2498ec4dad982afeeb0",
   "worktree-files": {
     "CHANGELOG.org": "6d93114d9dc604147c433a76bd8ef246dedf9e7f2e98f29a70d1ae3c3faee224",
     "README.org": "6017582d473ae68191e5ca5c22350d2a13b4ffabe6f02b062a9999d77f0e7b62",
-    "lisp/org-texmacs-document.el": "c2291f0066ccc1f8ee9c4fdc018abcd19a34c2c4b92a0df72efe23444ff03bc2",
+    "lisp/org-texmacs-document.el": "df28457d7e5102f740eb61923c3c31b0fe18792d45f8e105b81a19c5bc4c7c42",
     "lisp/org-texmacs-export.el": "d8cf7593903deb9f25e0c3119dd5aad80062965db07a707766e975dd1fb0f4cc",
     "lisp/org-texmacs-input.el": "1fabe0e0dbbee04ef9cea1acd81b999073e3c205d8141f1876100be49f5619c0",
-    "lisp/org-texmacs-query.el": "4846ca997cf47cbd28528c71eedc63e7c27b1d6388c09483be34e19666b6156b",
-    "tests/ert-core/lisp/standard-export.el": "b081975d83422eac421bb9604d0222a51ad19e29112e2f3ae2be4a798a57b426",
+    "lisp/org-texmacs-query.el": "af42157d9f4897499d81dae1b1554c9a9324c7f96c23571965327bc4c427c6b1",
+    "tests/ert-core/lisp/document.el": "d6ed80c82398258cbaaed0f595311a69113912aaae4e0d1c6eae58f296becd01",
+    "tests/ert-core/lisp/model-serialization.el": "bda93a4cc03e51c0debd23a4e3dead8f121faeb47266af58ff5159e3c0b09f84",
+    "tests/ert-core/lisp/standard-export.el": "a0315643723ca00afcc69ce0de1f76d5ec3d8fd4450bc44bc41ca97db73bfd8b",
     "tests/ert-native/lisp/document.el": "d3ad7d4e87c96754e3d99bc69b489707028e0ab7cf0a3c8df1d99283bea37a01",
     "tests/ert-native/lisp/standard-context.el": "2edea59e6dbbb6ceb36d877e5e2ee6abe5f464ce2056274e6710544c055e0232",
-    "tests/ert-pdf/lisp/pdf.el": "aedfe701b2947ccbaa2fcc115302d6709af6a0d4afee90c7aa36e259fe92fbe2",
-    "tests/support/common.el": "0faaf529d75abbd85f104b01ca018f2414ce86359dfe739a661989a8416973d9"
+    "tests/ert-pdf/lisp/pdf.el": "c8378e8c8cc95ba0a2a4eb9ac8a65712af9b73a50c4a1b4596c43f5ed3aa2a1d",
+    "tests/support/common.el": "ce2412289fb9c3c61038f1142ac121c9aef5f8e407d8f90f1bd0cd9eef5a266e"
   },
   "probe": {
     "directory": "tmp/external-id-probe",
     "report": "tmp/external-id-probe/REPORT.org",
     "emacs-only-result": "/nix/store/7phlw1nhgpj7yjkljknkniwkknfzsns5-org-texmacs-external-id-probe",
-    "gotor-result": "/nix/store/n0s0n1yrnh99jk7bcp2rnbxjss1mh1ww-org-texmacs-external-id-gotor-probe"
+    "gotor-result": "/nix/store/j5sdm11v95jy3kcidysp1xmvpmv7x3lq-org-texmacs-external-id-gotor-probe"
   }
 }

@@ -1,5 +1,16 @@
 # org-texmacs durable evidence
 
+Stage A external-ID review-round candidate (uncommitted, full flake acceptance
+exits 0): live path-base interpretation added — Org's `:id-alist` is relative
+to the working copy's `default-directory`; diverged bases are interpreted
+against the live base with an existence check and frozen absolute, and
+unverifiable bases are rejected. File/id validation preservation fixed.
+ERT 339core/283native/48document/30render pass; baseline PDF annotations show
+relative `../target/target.pdf` with the output next to the source file;
+patched-GoToR probe re-verified `/S /GoToR /F ../target/target.pdf
+/D [0 /Fit]`. Details/limits/receipt:
+memory/external-id-links-implementation.md/-inputs.json.
+
 Stage A external-ID candidate (uncommitted, full flake acceptance exits 0):
 standard export freezes `org-export-resolve-id-link` external filenames in a
 `:external-files` query mapping, ownership remaps them, and document resolution

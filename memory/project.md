@@ -1,5 +1,22 @@
 # org-texmacs current project model
 
+## Stage A cross-file ID links: review-round validated candidate (uncommitted)
+
+The ordinary worktree carries a 13-path review-round candidate that adds
+document-level lowering of cross-file =id:= links through the standard Org
+export transaction, reusing existing file resolution/provenance/native
+file-link policies. External resolver spellings are interpreted in live
+preparation against the export working copy's =default-directory=; the frozen
+target keeps its relative form only when that base equals the captured
+resource base, otherwise an absolute verified path or an explicit rejection.
+Full flake acceptance passes (ERT counts in
+memory/external-id-links-implementation.md). Original ID identity stays in the
+owned Org AST; precise cross-document navigation remains unsupported.
+Same-file excluded targets and current-file file-level IDs remain errors;
+independent pure input does not discover external ID locations. Candidate is
+not yet human-committed; support claims in user documentation are part of the
+candidate. Receipt: memory/external-id-links-inputs.json (review-round-2).
+
 ## Stage A cross-file ID links: validated candidate (uncommitted)
 
 The ordinary worktree carries an 11-path candidate that adds document-level
