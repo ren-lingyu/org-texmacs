@@ -1,31 +1,81 @@
 {
-  "kind": "external-id-links-stage-A-candidate",
-  "revision": "review-round-2",
+  "kind": "external-id-links-stage-A-final",
+  "revision": "final-committed",
   "baseline": {
-    "ordinary": "f16cc2f8131a7514754886119210099ad5fd943d",
-    "gaw": "4fad5bc671b4ab7f3a510371b11bfe0d873f2942"
+    "ordinary": "f16cc2f8131a7514754886119210099ad5fd943d"
   },
-  "captured": "2026-11-12T06:55:00Z",
-  "full-diff-sha256": "64e9563094b1a185784c28ea861914712d71be6b587bc2498ec4dad982afeeb0",
-  "worktree-files": {
+  "delivery": {
+    "commit": "246283110e9cdfeaad8a1d616fca46413af47510",
+    "parent": "f16cc2f8131a7514754886119210099ad5fd943d",
+    "subject": "feat(export): support cross-file Org ID links",
+    "captured": "2026-11-12T09:40:00Z"
+  },
+  "changed-paths": [
+    "CHANGELOG.org",
+    "README.org",
+    "lisp/org-texmacs-document.el",
+    "lisp/org-texmacs-export.el",
+    "lisp/org-texmacs-input.el",
+    "lisp/org-texmacs-query.el",
+    "tests/ert-core/lisp/document.el",
+    "tests/ert-core/lisp/model-serialization.el",
+    "tests/ert-core/lisp/standard-export.el",
+    "tests/ert-native/lisp/document.el",
+    "tests/ert-native/lisp/standard-context.el",
+    "tests/ert-pdf/lisp/pdf.el",
+    "tests/support/common.el"
+  ],
+  "committed-blobs": {
     "CHANGELOG.org": "6d93114d9dc604147c433a76bd8ef246dedf9e7f2e98f29a70d1ae3c3faee224",
-    "README.org": "6017582d473ae68191e5ca5c22350d2a13b4ffabe6f02b062a9999d77f0e7b62",
-    "lisp/org-texmacs-document.el": "df28457d7e5102f740eb61923c3c31b0fe18792d45f8e105b81a19c5bc4c7c42",
-    "lisp/org-texmacs-export.el": "d8cf7593903deb9f25e0c3119dd5aad80062965db07a707766e975dd1fb0f4cc",
+    "README.org": "6619ebcf1495c0d3ca475a5693f85db8c5051634577b72c38a33f640a61a5dd4",
+    "lisp/org-texmacs-document.el": "58ebd945a23930ed80696476f194993beee59ea0e308a16615bf7f4304f4eb11",
+    "lisp/org-texmacs-export.el": "4de8d3b9e08693f2f9f465a8babd9d6f736237cd0f020271dd7ca9c69cce5f9f",
     "lisp/org-texmacs-input.el": "1fabe0e0dbbee04ef9cea1acd81b999073e3c205d8141f1876100be49f5619c0",
-    "lisp/org-texmacs-query.el": "af42157d9f4897499d81dae1b1554c9a9324c7f96c23571965327bc4c427c6b1",
-    "tests/ert-core/lisp/document.el": "d6ed80c82398258cbaaed0f595311a69113912aaae4e0d1c6eae58f296becd01",
-    "tests/ert-core/lisp/model-serialization.el": "bda93a4cc03e51c0debd23a4e3dead8f121faeb47266af58ff5159e3c0b09f84",
-    "tests/ert-core/lisp/standard-export.el": "a0315643723ca00afcc69ce0de1f76d5ec3d8fd4450bc44bc41ca97db73bfd8b",
+    "lisp/org-texmacs-query.el": "24837c571ffcc998ba0bd6deeda91497391a25c3afc3fed13ff328c9311acbf0",
+    "tests/ert-core/lisp/document.el": "60a8086828198122ed7f703e22892b188d56cf3dacc44ffdad22fa5ae0d1db15",
+    "tests/ert-core/lisp/model-serialization.el": "44d12dbe3236d9d0c871e4f323cbfa51143efe6f1e5a5878d22ffb867a93dbd1",
+    "tests/ert-core/lisp/standard-export.el": "885071a503ef564ba05c503674ac2e7738ad4ae6141f0f2be779c00d82fdf038",
     "tests/ert-native/lisp/document.el": "d3ad7d4e87c96754e3d99bc69b489707028e0ab7cf0a3c8df1d99283bea37a01",
     "tests/ert-native/lisp/standard-context.el": "2edea59e6dbbb6ceb36d877e5e2ee6abe5f464ce2056274e6710544c055e0232",
-    "tests/ert-pdf/lisp/pdf.el": "c8378e8c8cc95ba0a2a4eb9ac8a65712af9b73a50c4a1b4596c43f5ed3aa2a1d",
+    "tests/ert-pdf/lisp/pdf.el": "c0574ff5df0ef61a3e3032d2933fc77db4403a28c30c3eb95fb5ef3ac00a5493",
     "tests/support/common.el": "ce2412289fb9c3c61038f1142ac121c9aef5f8e407d8f90f1bd0cd9eef5a266e"
   },
-  "probe": {
-    "directory": "tmp/external-id-probe",
-    "report": "tmp/external-id-probe/REPORT.org",
-    "emacs-only-result": "/nix/store/7phlw1nhgpj7yjkljknkniwkknfzsns5-org-texmacs-external-id-probe",
-    "gotor-result": "/nix/store/j5sdm11v95jy3kcidysp1xmvpmv7x3lq-org-texmacs-external-id-gotor-probe"
+  "validation": {
+    "commands": [
+      "nix flake check -L --no-write-lock-file --max-jobs 2 (exit 0, all checks pass)",
+      "nix build --no-write-lock-file --max-jobs 2 -L path:/home/lingyu/Projects/org-texmacs/tmp/external-id-probe#checks.x86_64-linux.external-id-gotor (exit 0)"
+    ],
+    "ert-counts": {
+      "ert-core": "341/341",
+      "ert-native": "283/283",
+      "ert-pdf-document": "48/48",
+      "ert-pdf-render": "30/30",
+      "ert-cite": "11/11",
+      "caption-inline-footnotes": "6/6"
+    },
+    "package-lint": "pass",
+    "treefmt": "pass",
+    "gotor-renderer-regression": "pass (maintained texmacs-with-gotor-support check)",
+    "external-id-gotor-probe": {
+      "result": "/nix/store/3xgmgvqxgzxwdpdncad5r8a3lrjvgigd-org-texmacs-external-id-gotor-probe",
+      "action": "/S /GoToR",
+      "file": "../target/target.pdf",
+      "destination": "[0 /Fit]",
+      "internal-link": "/label0",
+      "relative-preserved": true,
+      "no-uri-action-for-external-target": true,
+      "body-unchanged-by-render": true
+    },
+    "environment": {
+      "emacs": "31.1",
+      "org": "9.8.10",
+      "texmacs": "2.1.5 (baseline and patched GoToR)",
+      "inspector": "python3/pypdf"
+    }
+  },
+  "notes": {
+    "validation-source-identity": "The full flake check and the GoToR probe ran against the worktree content whose per-file SHA256 values equal the committed blobs above; the commit itself introduced no content delta.",
+    "user-report": "User additionally reported the final revision patch tests as passing; agent-independent runs above confirm the same source.",
+    "baseline-renderer": "The ordinary ert-pdf suite uses the baseline TeXmacs renderer: the external-ID PDF test asserts /URI annotations with ../target/target.pdf. GoToR evidence comes from the isolated patched probe above, not from the ordinary PDF suite."
   }
 }

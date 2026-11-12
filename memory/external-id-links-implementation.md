@@ -1,221 +1,219 @@
 # Cross-file Org ID link support — Stage A implementation
 
-## Status
+## Delivery status
 
-Stage A candidate implemented and validated in the ordinary worktree after
-the user's review-round requirements (13 changed paths, uncommitted; the
-ordinary index still holds the earlier 11-path pre-review candidate staged by
-the user). Baseline ordinary `f16cc2f8131a7514754886119210099ad5fd943d`.
-Full flake acceptance passes. Human review/commit gate remains; the agent
-performed no ordinary staging/commit/version/tag/release action.
+Stage A is human-delivered as ordinary commit
+`246283110e9cdfeaad8a1d616fca46413af47510`
+("feat(export): support cross-file Org ID links"), parent
+`f16cc2f8131a7514754886119210099ad5fd943d`, 13 paths, 1115 insertions /
+92 deletions. Every committed blob's SHA256 equals the worktree content the
+agent validated (full flake check exit 0; isolated patched GoToR probe
+passed), so the commit introduced no content delta beyond the validated
+candidate. Ordinary worktree/index clean. No tag/version/release/publication
+action. Receipt: `memory/external-id-links-inputs.json` (revision
+final-committed).
 
 ## Implemented contract
 
-External cross-file `id:` links resolve through Org's standard
-`org-export-resolve-id-link` during live preparation. The frozen file target is
-associated with the owned link node in the query snapshot, flows through input
-ownership, and enters the ordinary file-target resolution/lowering/provenance
-and native output policies. The original link identity stays `(:type "id"
-:path ORIGINAL-ID)` in the owned Org AST; the link node is never rewritten to a
-file link. Internal ID links keep the existing reference/hlink behavior.
-External file-level and headline IDs both lower to a document-level hlink to
-the target file, without anchors.
+Org ID links keep their object-level reference semantics. Standard Org export
+uses `org-export-resolve-id-link`, which returns an internal headline or an
+external filename. Internal ID targets keep the existing internal reference
+resolution and label allocation. External ID targets (file-level and headline
+IDs) currently lower to document-level file links; a headline ID points to its
+file, not to the headline's position. This is a lowering boundary, not a
+redefinition of Org ID semantics. The original `:type "id"` and `:path`
+identity stays in the owned Org AST.
 
-## Path base (review finding, fixed)
+## Query snapshot and ownership
 
-Org builds `:id-alist` values with `(file-relative-name file)` against the
-export working copy's `default-directory`, not necessarily the captured
-resource base. `org-texmacs--query-external-id-path` therefore interprets the
-resolver spelling in live preparation:
+`org-texmacs--query-snapshot` (live preparation) adds a private
+`:external-files` plist field, `((OWNED-ID-LINK-NODE . FILE-PATH) ...)`,
+distinct from `:targets` (internal AST targets). External ID targets never
+enter internal reference allocation. Input ownership copies/remaps the mapping
+through the existing `org-texmacs--model-copy-data` node-identity mechanism;
+the prepared input freezes the file target and retains no requeryable ID
+database state.
 
-- Absolute result: used as-is after a single leading `~` expansion.
-- Relative result with the live working-copy base equal to the captured
-  `resource-base` (expanded, trailing-slash normalized): the raw relative
-  spelling is kept.
-- Relative result with diverged bases: interpret against the live base and
-  verify with a filesystem existence check; freeze the absolute path. If the
-  captured base still identifies the file, keep the raw spelling. If neither
-  base identifies the file, reject with
-  "External ID target path base cannot be determined".
+`org-texmacs--document-resolve` validates the frozen mapping before use:
+proper list; each key is a link node reachable in the owned AST with type
+`"id"`; each value is a local file path; keys are unique; an entry must not
+also map to an internal `:targets` target. Validation checks owned AST link
+identity, not membership in the final rendered links, so legally retained but
+unrendered structures are not wrongly rejected.
 
-No path interpretation or filesystem lookup happens in pure lowering. The
-same-file identity check (`file-equal-p` against the captured source-file) runs
-after this interpretation. Regression coverage: non-default buffer
-`default-directory`, a standard `org-export-before-processing-functions` hook
-that moves the working-copy directory, direct helper rebase and unverifiable-
-base rejection tests.
+## Path base: final mechanism and review history
 
-## Validation preservation (review finding, fixed)
+Org builds `:id-alist` during tree-property collection via
+`(file-relative-name file)`, whose base is the export working copy's
+`default-directory` at that moment. The frozen path must be interpreted
+against the directory in effect when Org collected it — not the query-snapshot
+or native-consumer directory.
 
-`org-texmacs--document-resolve` enters the shared file-target check whenever
-the link kind is `"file"` or an external association exists, so an ordinary
-file link with a nil/empty path keeps its original
-"Unsupported file link or resource context" failure instead of skipping
-validation. Internal-path nonempty-string validation now applies to
-external ID links as well, regardless of the frozen association.
+Review history:
 
-## Runtime changes
+- First candidate treated the resolver spelling as relative to the captured
+  resource base. Review found the base is actually the working copy's
+  `default-directory`, and that nil-path ordinary file links and external ID
+  path validation had regressed.
+- Second candidate added working-copy base support, but inferred the base by
+  checking which of two candidate directories contains a file with the given
+  relative spelling (`file-exists-p` heuristic). That heuristic is unsound: the
+  same relative path can exist in both directories, and existence cannot prove
+  which file Org's resolver actually selected; a late working-copy directory
+  change can make both checks mislead.
+- Final revision removes the heuristic and captures the base at the correct
+  lifecycle stage through existing public Org dispatch boundaries. New helper
+  `org-texmacs--standard-capture-id-base` runs at the first standard dispatch
+  after tree-property collection: with Cite enabled, in
+  `org-texmacs--standard-cite` before Cite callbacks execute; with Cite
+  disabled, in `org-texmacs--standard-data` when DATA is the collected root
+  tree. The scoped transaction stores `:id-resolution-tree` (the prepared tree
+  root identity, so nested exports or later transcoding cannot overwrite the
+  capture) and `:id-resolution-base` (the captured
+  `default-directory`, when `:id-alist` is present). No advice on Org private
+  preparation, no copied Org preparation.
 
-- `lisp/org-texmacs-query.el`:
-  - `org-texmacs--query-external-base-p`: expanded, trailing-slash-normalized
-    comparison of the live working-copy `default-directory` with the captured
-    `resource-base`; no filesystem lookup.
-  - `org-texmacs--query-external-id-path`: `~` expansion, the three-way base
-    interpretation above, and the same-file rejection.
-  - `org-texmacs--query-snapshot` takes captured `source-file` and
-    `resource-base`; the `id:` branch accepts a filename result (which comes
-    only from Org's `:id-alist`; unresolved IDs signal `org-link-broken`) and
-    stores it in a new `:external-files` alist keyed by the owned link node.
-- `lisp/org-texmacs-export.el`: `org-texmacs--standard-input` computes the
-  captured source-file/resource-base once and passes them to the snapshot and
-  to `org-texmacs--input-own`.
-- `lisp/org-texmacs-document.el`: `org-texmacs--document-resolve` consumes
-  `:external-files` for `"id"` links and pushes them into the resolution
-  `files` list through the same `org-texmacs--document-local-file-path-p` /
-  resource-base validation as ordinary file links; a link in both
-  `:external-files` and `:targets` is rejected; the validation-entry fix above.
-  External targets never enter `resolved`/`:targets` or label allocation.
-- `lisp/org-texmacs-input.el`: docstring only — standard inputs carry frozen
-  `:texmacs-org-query` including external ID file targets; the existing
-  `org-texmacs--model-copy-data` ownership remaps them without a new copy path.
+Final interpretation rules (`org-texmacs--query-external-id-path`):
 
-Layering kept: filesystem identity (`file-equal-p`, `expand-file-name`, the
-existence verification) happens only in live preparation; pure lowering
-consumes the frozen string. No change to model/parse/prepared core, worker
-protocol, GoToR patch, native session policies or ordinary file-link semantics.
+1. Interpret a relative filename against the captured ID-resolution base.
+2. When that base matches the source resource base, keep the relative spelling.
+3. When they differ, freeze the correctly interpreted absolute path.
+4. Absolute filenames keep absolute semantics.
+5. A relative filename without a reliable base fails explicitly
+   ("External ID target path base cannot be determined").
 
-## Tests
+Same-file identity comparison runs on the correctly interpreted target
+(`(equal absolute (expand-file-name source-file "/"))` or `file-equal-p`) and
+keeps the local file identity check. The completed input owns only the
+determined file target; no live transaction root or directory capture is
+retained for lowering.
 
-New (all maintained):
+Distinction kept throughout: ID-resolution base (collection-time working-copy
+directory), source resource base (captured buffer directory), and later
+current directories (never consulted).
+
+## Document lowering and native policies
+
+External ID targets enter `org-texmacs-resolution-files` and reuse ordinary
+file-link validation, structured description lowering, bare-link path display,
+`hlink` construction and file target provenance. The structural document keeps
+the original `.org` path. Native consumers apply the captured
+`org-texmacs-link-org-files-as-pdf` and
+`org-texmacs-pdf-file-links-as-absolute` policies through the existing
+provenance adaptation. No ID-specific native rendering; no change to the
+original Org AST, source/model round-trip, Org link following, user-authored
+STM, or ordinary URI targets; existing `.tm`/session/PDF policies unchanged.
+
+## Current error boundaries
+
+Still errors: unresolved IDs (`org-link-broken` propagation); the current
+source file's own file-level ID; an ID whose location is the current source
+file but whose object is outside the effective exported AST (e.g. excluded
+`noexport` heading); paths/contexts outside the local file-target contract;
+invalid or inconsistent frozen external mappings; independent pure input
+without a pre-determined external target; other unsupported Org link types.
+The exporter never builds target documents or checks target PDF existence; no
+self-PDF fallback and no document-root anchor are introduced.
+
+## Maintained regression coverage
+
+New or updated tests (final committed source):
 
 - `tests/ert-core/lisp/standard-export.el`:
-  - `org-texmacs-standard-export-resolves-external-id-links` — real Org ID
-    locations over real files: file-level + headline external, structured
-    description, bare link showing the resolved path, explicit file link
-    coexistence, internal reference retained, five file-provenance paths whose
-    target leaves are asserted directly.
-  - `org-texmacs-standard-export-preserves-external-id-identity` — owned AST
-    keeps `:type "id"` / original `:path` for two independent links to one
-    target; both have owned external associations.
-  - `org-texmacs-standard-export-rejects-same-file-id-links` — `noexport`
-    same-file ID stays an error.
-  - `org-texmacs-standard-export-rejects-file-level-self-id` — current-file
-    file-level ID stays an error.
-  - `org-texmacs-standard-export-unresolved-id-still-fails` — unresolved ID
-    keeps Org's `org-link-broken` propagation.
-  - `org-texmacs-standard-export-external-id-alt-default-directory` — the
-    resolver path is relative to the buffer's non-default captured
-    default-directory and still names the target.
-  - `org-texmacs-standard-export-external-id-hook-base-change` — a standard
-    before-processing hook moves the working-copy directory; the frozen target
-    is a correct absolute path, not a silent wrong relative one.
-  - `org-texmacs-query-external-id-path-rebases-diverged-base` and
-    `...-rejects-unverifiable-base` — direct helper unit tests for the rebase
-    and rejection boundaries.
-  - `org-texmacs-standard-export-external-id-snapshot-frozen` — the
-    association key is the final owned AST link node; after mutating the ID
-    database, caller default-directory and file-link Custom values, repeated
-    lowering is unchanged and never requeries the resolver/ID database or
-    starts a worker.
-  - `org-texmacs-standard-export-external-id-subtree` — a valid external ID in
-    a subtree export.
-  - `org-texmacs-standard-export-external-id-subtree-same-file` — an ID
-    pointing at another headline of the same file outside the subtree stays an
-    error.
-  - `org-texmacs-standard-export-external-id-include` — an INCLUDE-introduced
-    cross-file ID link resolves to the file target.
-- `tests/ert-core/lisp/model-serialization.el`:
-  - `org-texmacs-model-serialize-preserves-external-id-link` — the independent
-    model round-trips the original `id:` link without file-path or suffix
-    invention, and neither parse nor serialize queries the ID database.
+  `org-texmacs-standard-export-resolves-external-id-links` (file-level +
+  headline external, structured description, bare display, file-link
+  coexistence, internal reference, provenance target leaves),
+  `...-preserves-external-id-identity`,
+  `...-rejects-same-file-id-links`,
+  `...-rejects-file-level-self-id`,
+  `...-unresolved-id-still-fails`,
+  `...-external-id-alt-default-directory`,
+  `...-external-id-hook-base-change` (Cite-disabled early base change),
+  `...-external-id-late-base-change` (Cite-enabled; colliding same-spelling
+  decoy; nested standard export inside a Cite callback; return-to-resource
+  and move-away modes),
+  `org-texmacs-query-external-id-path-rebases-diverged-base` (known base
+  needs no existence heuristic; the target file does not even exist),
+  `org-texmacs-query-external-id-path-rejects-unverifiable-base` (existence
+  does not establish the collection base),
+  `...-external-id-snapshot-frozen` (owned key identity, no resolver/ID
+  database/worker requery, captured native policy assertions, repeated
+  lowering),
+  `...-external-id-subtree`, `...-external-id-subtree-same-file`,
+  `...-external-id-include`.
 - `tests/ert-core/lisp/document.el`:
-  - `org-texmacs-document-pure-input-ignores-id-database` — independent pure
-    input does not discover an ambient ID location and keeps the error.
+  `org-texmacs-document-pure-input-ignores-id-database`,
+  `org-texmacs-document-validates-frozen-external-id-mapping` (duplicate
+  keys, nil/empty values, wrong link type, detached key, internal/external
+  conflict).
+- `tests/ert-core/lisp/model-serialization.el`:
+  `org-texmacs-model-serialize-preserves-external-id-link` (round-trip keeps
+  the `id:` link, no path/suffix invention, no ID database query).
 - `tests/ert-native/lisp/standard-context.el`:
-  - `org-texmacs-standard-context-external-id-native-file-policy` — real
-    standard preparation; `.tm`/session consumers apply the captured
-    `.org`→`.pdf` policy to the external ID target, description unchanged,
-    structural body unchanged.
+  `org-texmacs-standard-context-external-id-native-file-policy` (`.tm`/session
+  suffix policy on the external target, description and body unchanged).
 - `tests/ert-pdf/lisp/pdf.el`:
-  - `org-texmacs-pdf-external-id-link-policies` (pdf-links) — end-to-end
-    actual PDF with the output file saved next to the source Org file:
-    default policies give relative `../target/target.pdf` URI annotations; the
-    target PDF is neither built nor required to exist; the structural document
-    retains the `.org` target.
-- `tests/support/common.el`: shared `org-texmacs-test--with-id-files` and
-  `org-texmacs-test--register-id-locations` helpers. The fixture isolates
+  `org-texmacs-pdf-external-id-link-policies` (pdf-links; baseline renderer
+  `/URI` annotations `../target/target.pdf`, output PDF next to the source
+  Org file, target PDF not built).
+- `tests/support/common.el`: isolated ID fixture helpers covering
   `org-id-locations`, `org-id-locations-file`, `org-id-files`,
-  `org-id-track-globally` (t, so the unresolved fallback scan runs against
-  private inputs only), `org-id--locations-checksum`, `org-id-extra-files`,
-  `org-agenda-files` and `org-export-use-babel`; fixtures never touch a user
-  knowledge base, and temp files/buffers are cleaned up.
-- Renamed `org-texmacs-document-rejects-ambiguous-and-external-id-links` to
-  `org-texmacs-document-rejects-ambiguous-and-unresolved-id-links` in
-  `tests/ert-native/lisp/document.el`; its independent-input external-ID case
-  remains an error and is now described as such.
+  `org-id-track-globally`, `org-id--locations-checksum`,
+  `org-id-extra-files`, `org-agenda-files`, `org-export-use-babel`; no user
+  knowledge base is touched.
+- Renamed `org-texmacs-document-rejects-ambiguous-and-unresolved-id-links`
+  (`tests/ert-native/lisp/document.el`) clarifies the independent-input
+  contract.
 
-## Validation performed
+## Validation evidence
 
-Exact authorized commands:
+Agent-executed against the same source as the committed blobs:
 
 ```sh
-timeout 600 nix build --no-write-lock-file --max-jobs 2 -L \
-  .#checks.x86_64-linux.ert-core                          # 339/339 pass
-timeout 900 nix build --no-write-lock-file --max-jobs 2 -L \
-  .#checks.x86_64-linux.ert-native                        # 283/283 pass
-timeout 900 nix build --no-write-lock-file --max-jobs 2 -L \
-  .#checks.x86_64-linux.ert-pdf-document                  # 48/48 pass
-timeout 900 nix build --no-write-lock-file --max-jobs 2 -L \
-  .#checks.x86_64-linux.ert-pdf-render                    # 30/30 pass
-timeout 1800 nix flake check -L --no-write-lock-file --max-jobs 2
-                                                          # all checks pass
+nix flake check -L --no-write-lock-file --max-jobs 2   # exit 0
 ```
 
-The full flake check covers ert-core/ert-native/ert-pdf-document/
-ert-pdf-render/ert-cite/caption-inline-footnotes/package-lint/treefmt and the
-maintained texmacs-with-gotor-support renderer regression. During the review
-round, one core failure was diagnosed and fixed: binding
-`org-id-track-globally` to nil made Org's unresolved-ID fallback error early
-instead of scanning; the fixture now allows the scan with fully private
-inputs, restoring the `org-link-broken` contract.
+ERT counts: core 341/341, native 283/283, pdf-document 48/48, pdf-render
+30/30, cite 11/11, caption-inline-footnotes 6/6; package-lint, treefmt and the
+maintained texmacs-with-gotor-support renderer regression pass. Environment:
+Emacs 31.1, Org 9.8.10, TeXmacs 2.1.5.
 
-Environment: Emacs 31.1, Org 9.8.10, TeXmacs 2.1.5 (baseline and patched),
-Python/pypdf inspector. Unverified: other platforms, other Org/TeXmacs
-versions, GUI reader click-through, and any hook that changes the working-copy
-directory after Org collects `:id-alist` (the pathological mid-export case is
-covered by the rejection boundary, not by a realistic hook regression).
+PDF evidence distinction: the ordinary PDF integration suite uses the baseline
+renderer; `org-texmacs-pdf-external-id-link-policies` verifies `/URI` file
+annotations, which are the correct baseline evidence and are not GoToR. The
+combined end-to-end evidence (Org external ID -> standard resolution ->
+org-texmacs lowering -> patched TeXmacs -> actual GoToR annotation) comes from
+the isolated probe `tmp/external-id-probe` (`external-id-gotor` check):
+`/S /GoToR`, `/F ../target/target.pdf`, `/D [0 /Fit]`, relative preserved, no
+URI action for the external target, internal link keeps `/label0`, rendered
+body unchanged. Result
+`/nix/store/3xgmgvqxgzxwdpdncad5r8a3lrjvgigd-org-texmacs-external-id-gotor-probe`
+(run against the final lisp; patch override identical to the production
+texmacs-with-gotor-support derivation, cache-hit).
 
-## Isolated evidence
+Validation boundaries: other platforms, other Org/TeXmacs versions, GUI PDF
+reader click-through, arbitrary user callback mutations and any hook that
+moves the working copy between `:id-alist` collection and the capture dispatch
+remain unverified (the final capture design closes the realistic Cite and
+root-transcoding windows; such mid-window mutation is not covered by a
+realistic hook regression). User-reported success of the final revision patch
+is additionally recorded; the agent runs above independently confirm the same
+source.
 
-`memory/external-id-links-probe.md` records the resolver path-base, same-file,
-symlink and `~` observations. A second isolated check
-(`tmp/external-id-probe`, `external-id-gotor`) rendered the external-ID
-document with the patched GoToR renderer (identical override to production,
-cache-hit build) and inspected the actual PDF:
+## Retention assessment
 
-```text
-/S /GoToR  /F ../target/target.pdf  /D [0 /Fit]
-```
+User-supplied review materials (`tmp/2026-11-12T14:25:14+08:00.diff`,
+`tmp/2026-11-12T17:01:47+08:00.diff`,
+`org-texmacs-stage-a-path-base-revision.patch`) are historical candidates:
+the effective implementation is fully preserved by the ordinary commit,
+maintained tests, this memory and the final receipt. The substantive issues,
+counter-examples and the final fix are recorded above. No raw archive is
+selected; the patch file itself is not present in the repository anymore and
+no byte-exact capture claim is made for it.
 
-Relative target preserved, no URI action for the external target, the
-internal ID link keeps its `/label0` destination, and the completed document
-body is unchanged by rendering. Re-verified with the review-round lisp; result
-`/nix/store/j5sdm11v95jy3kcidysp1xmvpmv7x3lq-org-texmacs-external-id-gotor-probe`.
-The baseline-renderer PDF annotation test
-(`org-texmacs-pdf-external-id-link-policies`) remains in the ordinary suite.
+## Next
 
-No raw archive selected (project convention; see probe memory).
-
-## Ordinary state
-
-The ordinary index contains the earlier 11-path pre-review candidate (staged
-outside the agent's actions); the worktree carries the 13-path review-round
-candidate on top. Candidate full-diff SHA256 and per-file hashes:
-`memory/external-id-links-inputs.json`. No agent staging/commit performed.
-
-## Next gate
-
-Human review and ordinary commit decision (including how to reconcile the
-index state). If the committed tree differs from this candidate in runtime
-behavior, tests or verification inputs, re-scope validation. Stage B and
-precise cross-document navigation remain separate.
+Stage A delivery verification is complete. Stage B (unsupported Org link
+fallback) and the precise cross-document ID navigation candidate remain
+separate and are not adopted. No release-state, version, tag, push or
+publication action follows automatically.

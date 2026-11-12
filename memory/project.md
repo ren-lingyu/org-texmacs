@@ -1,5 +1,28 @@
 # org-texmacs current project model
 
+## Stage A cross-file ID links: delivered support
+
+Human-delivered 2462831 (parent f16cc2f, 13 paths, verified byte-equal to the
+validated candidate). Current support:
+
+- Standard source export resolves cross-file =id:= links through
+  =org-export-resolve-id-link=; external file-level and headline ID targets
+  provide document-level navigation only.
+- The external target is frozen in the private =:external-files= query mapping
+  and enters ordinary file resolution/lowering/provenance; the original ID
+  identity remains in the owned Org AST.
+- The ID filename interpretation base is captured at the first standard
+  dispatch after tree-property collection (Cite-enabled: before Cite
+  callbacks; Cite-disabled: at root transcoding); no later directory or
+  consumer directory influences the frozen target.
+- Independent pure input does not discover external ID locations; same-file
+excluded targets, current-file file-level IDs, unresolved IDs and invalid
+frozen mappings remain errors.
+- Existing file-link native policies (.org->.pdf, relative/absolute PDF
+paths) apply unchanged.
+
+Details/limits/receipt: memory/external-id-links-implementation.md/-inputs.json.
+
 ## Stage A cross-file ID links: review-round validated candidate (uncommitted)
 
 The ordinary worktree carries a 13-path review-round candidate that adds

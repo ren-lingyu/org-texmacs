@@ -1,5 +1,21 @@
 # org-texmacs durable evidence
 
+Stage A external-ID delivery: human commit 2462831 (parent f16cc2f, 13 paths,
+1115/92) is byte-equal to the validated candidate; full flake acceptance
+exit 0 (core 341/341, native 283/283, pdf-document 48/48, pdf-render 30/30,
+cite 11/11, caption 6/6, package-lint/treefmt/gotor-regression pass) and the
+isolated patched GoToR probe pass against the same source. Final design
+replaces the file-existence base heuristic with a lifecycle capture
+(org-texmacs--standard-capture-id-base) because two directories can hold the
+same relative spelling and existence cannot prove Org's selected file; late
+Cite-callback directory changes, colliding decoy filenames, nested exports and
+return-to-resource regressions prove the fix. Baseline-renderer PDF evidence
+is /URI ../target/target.pdf; patched-renderer evidence is
+/S /GoToR /F ../target/target.pdf /D [0 /Fit] (isolated probe, result
+/nix/store/3xgmgvqxgzxwdpdncad5r8a3lrjvgigd-org-texmacs-external-id-gotor-probe).
+Receipt memory/external-id-links-inputs.json; design/review history
+memory/external-id-links-implementation.md.
+
 Stage A external-ID review-round candidate (uncommitted, full flake acceptance
 exits 0): live path-base interpretation added — Org's `:id-alist` is relative
 to the working copy's `default-directory`; diverged bases are interpreted

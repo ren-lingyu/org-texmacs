@@ -1150,7 +1150,7 @@ or augmented live ASTs require separate evidence and adoption.
 ### Precise cross-document ID navigation
 
 Status: **deferred-candidate**; not adopted by Stage A. Stage A's document-level
-lowering is implemented as an uncommitted validated candidate
+lowering is human-delivered as ordinary commit 2462831
 (memory/external-id-links-implementation.md).
 
 Stage A (cross-file Org ID link support) implements document-level lowering of
@@ -1196,11 +1196,13 @@ Examples include checkbox and explicit list-counter semantics, advanced table
 features, arbitrary Org elements, dynamic source execution and nested footnotes.
 Broader citation/bibliography variants and file resources remain separately
 scoped; current local links, named notes and bare default citations/plain
-bibliography are already implemented. Cross-file ID lookup is now Stage A
-adopted for document-level lowering via the standard Org export transaction
-(see memory/external-id-links-plan.md); precise cross-document ID navigation
-remains a deferred candidate. Continue to reject unsupported cases explicitly;
-unsupported syntax alone does not adopt work.
+bibliography are already implemented. Cross-file ID lookup is human-delivered
+for Stage A document-level lowering via the standard Org export transaction
+(ordinary commit 2462831; memory/external-id-links-implementation.md).
+Stage B (unsupported Org link text fallback) is a separate future task and is
+not adopted; precise cross-document ID navigation remains a deferred
+candidate. Continue to reject unsupported cases explicitly; unsupported
+syntax alone does not adopt work.
 
 ## Historical provenance
 

@@ -1,5 +1,16 @@
 # org-texmacs project goals
 
+## Stage A cross-file ID links adopted and delivered
+
+After v0.7.0 local finalization, the user adopted Stage A: cross-file =id:=
+links resolve through the standard Org export transaction and lower to
+document-level file links, reusing existing file resolution, provenance and
+native file-link policies. Object-level ID semantics and the original owned
+link identity are preserved; precise cross-document navigation is not adopted.
+Human-delivered 2462831; receipt memory/external-id-links-inputs.json.
+Stage B (unsupported-link text fallback) and the precise cross-document
+navigation candidate remain separate and unadopted.
+
 ## v0.7.0 local finalization complete
 
 Finalization is human-delivered f16cc2f with DONE/UTC CLOSED and local v0.7.0 tag

@@ -1,5 +1,26 @@
 # org-texmacs current memory
 
+## Stage A cross-file ID links — human-delivered and verified
+
+Human commit 246283110e9cdfeaad8a1d616fca46413af47510
+("feat(export): support cross-file Org ID links") on parent f16cc2f delivers
+the final Stage A candidate: 13 paths, 1115 insertions/92 deletions. All
+committed blobs match the agent-validated worktree byte-for-byte; ordinary
+worktree/index clean. Full flake acceptance exit 0 (core 341/341, native
+283/283, pdf-document 48/48, pdf-render 30/30, cite 11/11, caption 6/6,
+package-lint/treefmt/gotor-regression pass) and the isolated patched GoToR
+probe pass against the same source. Final path-base design captures the ID
+resolution base through existing Org dispatch boundaries
+(org-texmacs--standard-capture-id-base), no file-existence heuristic.
+
+Delivery receipt: memory/external-id-links-inputs.json (final-committed);
+implementation/design/review history: memory/external-id-links-implementation.md;
+probe evidence: memory/external-id-links-probe.md.
+
+No release-state, version, tag, push or publication action follows.
+Stage B (unsupported Org link fallback) and the precise cross-document ID
+navigation candidate remain separate and are not adopted.
+
 ## Stage A cross-file ID links — review-round candidate validated
 
 User review accepted the overall design and required: live path-base
