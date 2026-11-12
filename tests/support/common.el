@@ -766,4 +766,64 @@ guard and inspection view.  Keep object spaces and literal/STM whitespace."
                 (objects (org-element-contents node)))))))))
      (clone (walk (org-texmacs-model-ast model))))))
 
+(defun org-texmacs-test--register-id-locations (alist)
+  "Install isolated org-id-locations from ALIST of (FILE . IDS)."
+  (setq org-id-locations
+        (org-id-alist-to-hash
+         (mapcar
+          (lambda (entry)
+            (cons
+             (abbreviate-file-name (file-truename (car entry)))
+             (copy-sequence (cdr entry))))
+          alist)))
+  (setq org-id-files
+        (mapcar
+         (lambda (entry)
+           (abbreviate-file-name (file-truename (car entry))))
+         alist)))
+
+(defmacro org-texmacs-test--with-id-files (source-text &rest body)
+  "Create isolated source/target Org files and register target IDs.
+SOURCE-TEXT becomes notes/source/source.org; notes/target/target.org carries a
+file-level ID and a headline ID.  BODY sees `source', `target', `directory' and
+`source-text' bound.  org-id-locations/org-id-locations-file/org-id-files and
+the related tracking/scan state are isolated for the dynamic extent, so
+fixtures never touch a user knowledge base."
+  (declare (indent 1) (debug t))
+  `(let*
+       ((directory (make-temp-file "org-texmacs-id-" t))
+        (source
+         (expand-file-name "notes/source/source.org" directory))
+        (target
+         (expand-file-name "notes/target/target.org" directory))
+        (source-text ,source-text)
+        (org-id-locations nil)
+        (org-id-locations-file (expand-file-name "ids" directory))
+        (org-id-files nil)
+        ;; org-id-find's unresolved fallback may call
+        ;; org-id-update-id-locations; allow that scan but keep every
+        ;; input private (nil agenda/extra, isolated files and locations).
+        (org-id-track-globally t)
+        (org-id--locations-checksum nil)
+        (org-id-extra-files nil)
+        (org-agenda-files nil)
+        (org-export-use-babel nil))
+     (unwind-protect
+         (progn
+           (make-directory (file-name-directory source) t)
+           (make-directory (file-name-directory target) t)
+           (let ((coding-system-for-write 'utf-8-unix))
+             (write-region
+              ":PROPERTIES:\n:ID: target-file-id\n:END:\n#+TITLE: Target\n\n* Target headline\n:PROPERTIES:\n:ID: target-headline-id\n:END:\n"
+              nil
+              target
+              nil
+              'silent)
+             (write-region source-text nil source nil 'silent))
+           (org-texmacs-test--register-id-locations
+            (list
+             (cons target '("target-file-id" "target-headline-id"))))
+           ,@body)
+       (delete-directory directory t))))
+
 ;;; common.el ends here

@@ -7,8 +7,18 @@
 Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
+* TODO *unreleased*
+** Added
+- Cross-file Org =id:= links resolve through standard Org export and reuse
+  ordinary file-link lowering, provenance and native output policies. External
+  file-level and headline IDs currently provide document-level navigation;
+  precise navigation to a target position in another exported document is not
+  yet supported. The existing =.org= to =.pdf= target conversion and PDF path
+  policies apply to resolved external ID targets. Same-file excluded targets
+  and current-file file-level IDs remain errors.
+
 * DONE v0.7.0
-  CLOSED: [2026-11-04 Wed 18:45]
+CLOSED: [2026-11-04 Wed 18:45]
 :PROPERTIES:
 :CUSTOM_ID: v0.7.0
 :END:

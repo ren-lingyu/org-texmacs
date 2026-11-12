@@ -889,3 +889,543 @@
         (should-error
          (org-export-as 'texmacs)
          :type 'org-texmacs-document-error)))))
+
+(defun org-texmacs-test--body-hlinks (node)
+  "Return (TARGET DESCRIPTION) for every hlink node in structural NODE."
+  (cond
+   ((stringp node)
+    nil)
+   ((and (consp node) (eq (car node) 'hlink))
+    (cons
+     (list (nth 2 node) (nth 1 node))
+     (org-texmacs-test--body-hlinks (nth 1 node))))
+   ((consp node)
+    (cl-mapcan #'org-texmacs-test--body-hlinks (cdr node)))
+   (t
+    nil)))
+
+(ert-deftest org-texmacs-standard-export-resolves-external-id-links ()
+  (org-texmacs-test--with-id-files
+   (concat
+    "#+TITLE: Source\n#+OPTIONS: toc:nil author:nil date:nil\n\n"
+    "* Local headline\n:PROPERTIES:\n:ID: source-local-id\n:END:\n\n"
+    "Local [[id:source-local-id][Local]].\n\n"
+    "Local [[id:source-local-id]].\n\n"
+    "External [[id:target-file-id][File target]].\n\n"
+    "External [[id:target-headline-id][Headline target]].\n\n"
+    "Formatted [[id:target-file-id][*Target* document]].\n\n"
+    "Bare [[id:target-file-id]].\n\n"
+    "File [[file:../target/target.org][Explicit file target]].\n")
+   (with-temp-buffer
+     (org-mode)
+     (insert source-text)
+     (setq
+      buffer-file-name source
+      default-directory (file-name-directory source))
+     (let* ((document
+             (org-texmacs-document-from-buffer (current-buffer)))
+            (hlinks
+             (org-texmacs-test--body-hlinks
+              (org-texmacs-document-body document))))
+       ;; External file-level and headline IDs lower to the same file target.
+       (should
+        (member '("../target/target.org" "File target") hlinks))
+       (should
+        (member '("../target/target.org" "Headline target") hlinks))
+       ;; Structured descriptions are preserved, not flattened to text.
+       (should
+        (cl-some
+         (lambda (hlink)
+           (and (equal (car hlink) "../target/target.org")
+                (consp (cadr hlink))
+                (member 'strong (flatten-tree (cadr hlink)))))
+         hlinks))
+       ;; Bare external ID displays the resolved path.
+       (should
+        (member
+         '("../target/target.org" "../target/target.org") hlinks))
+       ;; Ordinary file link shares the same file target.
+       (should
+        (member
+         '("../target/target.org" "Explicit file target") hlinks))
+       ;; Internal ID link still produces a reference-based hlink.
+       (should
+        (cl-some
+         (lambda (hlink)
+           (and (equal (cadr hlink) "Local")
+                (stringp (car hlink))
+                (string-prefix-p "#org-texmacs-" (car hlink))))
+         hlinks))
+       ;; External targets carry file provenance.
+       (should
+        (= (length (org-texmacs-document-file-paths document)) 5))
+       (dolist (path (org-texmacs-document-file-paths document))
+         (should (consp path)))
+       ;; Every provenance path names the matching hlink target leaf.
+       (should
+        (equal
+         (org-texmacs-test--file-target-leaves document)
+         (list
+          "../target/target.org"
+          "../target/target.org"
+          "../target/target.org"
+          "../target/target.org"
+          "../target/target.org")))))))
+
+(ert-deftest
+    org-texmacs-standard-export-preserves-external-id-identity
+    ()
+  (org-texmacs-test--with-id-files
+   (concat
+    "#+TITLE: Source\n#+OPTIONS: toc:nil author:nil date:nil\n\n"
+    "A [[id:target-file-id][first]].\n"
+    "B [[id:target-file-id][second]].\n")
+   (with-temp-buffer
+     (org-mode)
+     (insert source-text)
+     (setq
+      buffer-file-name source
+      default-directory (file-name-directory source))
+     (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
+            (links
+             (org-element-map
+              (org-texmacs-input-ast input) 'link
+              (lambda (link)
+                (and (equal
+                      (org-element-property
+                       :path link)
+                      "target-file-id")
+                     link)))))
+       (should (= (length links) 2))
+       (dolist (link links)
+         (should (equal (org-element-property :type link) "id"))
+         (should
+          (equal (org-element-property :path link) "target-file-id")))
+       ;; Both links have an owned external file association.
+       (let ((external
+              (plist-get
+               (plist-get
+                (org-texmacs-input-info input)
+                :texmacs-org-query)
+               :external-files)))
+         (should (= (length external) 2))
+         (dolist (link links)
+           (should
+            (equal
+             (cdr (assq link external)) "../target/target.org"))))))))
+
+(ert-deftest org-texmacs-standard-export-rejects-same-file-id-links ()
+  (org-texmacs-test--with-id-files
+   (concat
+    "#+TITLE: Same\n#+OPTIONS: toc:nil author:nil date:nil\n\n"
+    "* Visible\nSee [[id:hidden-id][Hidden]].\n\n"
+    "* Hidden :noexport:\n:PROPERTIES:\n:ID: hidden-id\n:END:\n")
+   ;; Register the excluded same-file ID to the source file.
+   (org-texmacs-test--register-id-locations
+    (append
+     (list (cons source '("hidden-id")))
+     (list (cons target '("target-file-id" "target-headline-id")))))
+   (with-temp-buffer
+     (org-mode)
+     (insert source-text)
+     (setq
+      buffer-file-name source
+      default-directory (file-name-directory source))
+     (should-error
+      (org-texmacs-prepare-buffer (current-buffer))
+      :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-standard-export-rejects-file-level-self-id ()
+  (org-texmacs-test--with-id-files
+   (concat
+    ":PROPERTIES:\n:ID: source-file-id\n:END:\n"
+    "#+TITLE: Self\n#+OPTIONS: toc:nil author:nil date:nil\n\n"
+    "See [[id:source-file-id][Self]].\n")
+   (org-texmacs-test--register-id-locations
+    (append
+     (list (cons source '("source-file-id")))
+     (list (cons target '("target-file-id" "target-headline-id")))))
+   (with-temp-buffer
+     (org-mode)
+     (insert source-text)
+     (setq
+      buffer-file-name source
+      default-directory (file-name-directory source))
+     (should-error
+      (org-texmacs-prepare-buffer (current-buffer))
+      :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-standard-export-unresolved-id-still-fails ()
+  (org-texmacs-test--with-id-files
+   (concat
+    "#+TITLE: Source\n#+OPTIONS: toc:nil author:nil date:nil\n\n"
+    "See [[id:no-such-id][Missing]].\n")
+   (with-temp-buffer
+     (org-mode)
+     (insert source-text)
+     (setq
+      buffer-file-name source
+      default-directory (file-name-directory source))
+     ;; Keep Org's real unresolved fallback, but exclude unrelated visiting
+     ;; Org buffers from its database rescan even in interactive ERT.
+     (let ((list-buffers (symbol-function 'org-buffer-list)))
+       (cl-letf (((symbol-function 'org-buffer-list)
+                  (lambda (&rest args)
+                    (unless (equal args '(files t))
+                      (apply list-buffers args)))))
+         (should-error
+          (org-texmacs-prepare-buffer (current-buffer))
+          :type 'org-link-broken))))))
+
+(defun org-texmacs-test--file-target-leaves (document)
+  "Return the target leaf at each file provenance path in DOCUMENT."
+  (mapcar
+   (lambda (path)
+     (let ((node (org-texmacs-document-body document)))
+       (dolist (index (butlast path))
+         (setq node (nth (1+ index) node)))
+       (should (equal (car (last path)) 1))
+       (should (eq (car node) 'hlink))
+       (should (= (length node) 3))
+       (should (stringp (nth 2 node)))
+       (nth 2 node)))
+   (org-texmacs-document-file-paths document)))
+
+(ert-deftest
+    org-texmacs-standard-export-external-id-alt-default-directory
+    ()
+  (org-texmacs-test--with-id-files
+   (concat
+    "#+TITLE: Source\n#+OPTIONS: toc:nil author:nil date:nil\n\n"
+    "See [[id:target-file-id][File]].\n")
+   (let ((other
+          (file-name-as-directory
+           (expand-file-name "alt" directory))))
+     (make-directory other t)
+     (with-temp-buffer
+       (org-mode)
+       (insert source-text)
+       (setq
+        buffer-file-name source
+        default-directory other)
+       (let* ((document
+               (org-texmacs-document-from-buffer (current-buffer)))
+              (hlinks
+               (org-texmacs-test--body-hlinks
+                (org-texmacs-document-body document)))
+              (relative (file-relative-name target other)))
+         ;; The resolver path is relative to the captured resource base,
+         ;; which is the buffer's non-default default-directory.
+         (should (member (list relative "File") hlinks))
+         (should (equal (expand-file-name relative other) target))
+         (should
+          (equal
+           (org-texmacs-test--file-target-leaves
+            document)
+           (list relative))))))))
+
+(ert-deftest org-texmacs-standard-export-external-id-hook-base-change
+    ()
+  (org-texmacs-test--with-id-files
+   (concat
+    "#+TITLE: Source\n#+OPTIONS: toc:nil author:nil date:nil\n\n"
+    "See [[id:target-file-id][File]].\n")
+   (let ((other
+          (file-name-as-directory
+           (expand-file-name "hook" directory))))
+     (make-directory other t)
+     (with-temp-buffer
+       (org-mode)
+       (insert source-text)
+       (setq
+        buffer-file-name source
+        default-directory (file-name-directory source))
+       (let ((org-export-process-citations nil)
+             (org-export-before-processing-functions
+              (list
+               (lambda (_backend)
+                 ;; Standard hooks may move the export working copy.
+                 (setq default-directory other)))))
+         (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
+                (external
+                 (plist-get
+                  (plist-get
+                   (org-texmacs-input-info input)
+                   :texmacs-org-query)
+                  :external-files))
+                (frozen (cdar external)))
+           ;; Live preparation interprets the resolver spelling against the
+           ;; hook-changed working-copy base and freezes a correct absolute
+           ;; path; the wrong captured base is not applied silently.
+           (should (file-name-absolute-p frozen))
+           (should
+            (equal
+             (file-truename frozen) (file-truename target)))))))))
+
+(ert-deftest org-texmacs-standard-export-external-id-late-base-change
+    ()
+  (dolist (return-to-resource '(nil t))
+    (org-texmacs-test--with-id-files
+     (concat
+      "#+TITLE: Source\n#+OPTIONS: toc:nil author:nil date:nil\n\n"
+      "See [[id:target-file-id][File]] and [cite:@key].\n")
+     (let* ((resource (file-name-directory source))
+            (collection
+             (if return-to-resource
+                 (file-name-directory target)
+               resource))
+            (late
+             (if return-to-resource
+                 resource
+               (file-name-as-directory
+                (expand-file-name "decoy/source" directory))))
+            (spelling (file-relative-name target collection))
+            (decoy (expand-file-name spelling late))
+            (expected
+             (if return-to-resource
+                 target
+               spelling))
+            (org-cite--processors
+             (copy-sequence org-cite--processors))
+            (org-export-process-citations t)
+            (org-texmacs-cite-export-processor nil)
+            (org-cite-export-processors
+             '((t org-texmacs-test-id-base)))
+            (org-export-before-processing-functions
+             (list
+              (lambda
+                (_backend)
+                (setq default-directory collection))))
+            (calls 0))
+       (make-directory late t)
+       (make-directory (file-name-directory decoy) t)
+       (with-temp-file decoy
+         (insert "#+TITLE: Not the ID target\n"))
+       (should (file-exists-p target))
+       (should (file-exists-p decoy))
+       (should-not (file-equal-p target decoy))
+       (org-cite-register-processor
+        'org-texmacs-test-id-base
+        :cite-styles '((("nil")))
+        :export-citation
+        (lambda (_citation _style _backend info)
+          ;; A real Cite callback runs after Org has collected :id-alist.
+          (should
+           (equal
+            (cdr
+             (assoc "target-file-id" (plist-get info :id-alist)))
+            spelling))
+          (should (equal default-directory collection))
+          (cl-incf calls)
+          (setq default-directory late)
+          ;; A nested standard export must not replace the outer capture.
+          (let ((org-export-process-citations nil)
+                (org-export-before-processing-functions nil))
+            (with-temp-buffer
+              (org-mode)
+              (setq default-directory late)
+              (insert "[[id:target-file-id][Nested]].\n")
+              (should
+               (equal
+                (org-texmacs-test--file-target-leaves
+                 (org-texmacs-document-from-buffer (current-buffer)))
+                (list (file-relative-name target late))))))
+          (org-element-create 'bold nil "Citation")))
+       (with-temp-buffer
+         (org-mode)
+         (insert source-text)
+         (setq
+          buffer-file-name source
+          default-directory resource)
+         (let ((document
+                (org-texmacs-document-from-buffer (current-buffer))))
+           (should (= calls 1))
+           (should
+            (equal
+             (org-texmacs-test--file-target-leaves
+              document)
+             (list expected)))
+           (should
+            (equal (expand-file-name expected resource) target))))))))
+
+(ert-deftest org-texmacs-query-external-id-path-rebases-diverged-base
+    ()
+  (let* ((directory (make-temp-file "org-texmacs-id-base-" t))
+         (other
+          (file-name-as-directory
+           (expand-file-name "other" directory)))
+         (target
+          (expand-file-name "notes/target/target.org" directory)))
+    (unwind-protect
+        (let ((default-directory "/unrelated/"))
+          ;; A known interpretation base needs no file-existence heuristic.
+          (should-not (file-exists-p target))
+          (should
+           (equal
+            target
+            (org-texmacs--query-external-id-path
+             "../notes/target/target.org" nil directory other)))
+          (should
+           (equal
+            target
+            (org-texmacs--query-external-id-path
+             target nil directory nil)))
+          (should
+           (equal
+            "notes/target/target.org"
+            (org-texmacs--query-external-id-path
+             "notes/target/target.org" nil directory directory)))
+          (should-error
+           (org-texmacs--query-external-id-path
+            "../notes/target/target.org" target directory other)
+           :type 'org-texmacs-document-error))
+      (delete-directory directory t))))
+
+(ert-deftest
+    org-texmacs-query-external-id-path-rejects-unverifiable-base
+    ()
+  (let* ((directory (make-temp-file "org-texmacs-id-base-" t))
+         (target (expand-file-name "target.org" directory)))
+    (unwind-protect
+        (progn
+          (with-temp-file target
+            (insert "#+TITLE: Target\n"))
+          (let ((default-directory
+                 (file-name-as-directory directory)))
+            ;; Existence does not establish where Org collected the path.
+            (should-error
+             (org-texmacs--query-external-id-path
+              "target.org" nil directory nil)
+             :type 'org-texmacs-document-error)))
+      (delete-directory directory t))))
+
+(ert-deftest org-texmacs-standard-export-external-id-snapshot-frozen
+    ()
+  (org-texmacs-test--with-id-files
+   (concat
+    "#+TITLE: Source\n#+OPTIONS: toc:nil author:nil date:nil\n\n"
+    "See [[id:target-file-id][File]].\n")
+   (let* ((input
+           (with-temp-buffer
+             (org-mode)
+             (insert source-text)
+             (setq
+              buffer-file-name source
+              default-directory (file-name-directory source))
+             (org-texmacs-prepare-buffer (current-buffer))))
+          (external
+           (plist-get
+            (plist-get
+             (org-texmacs-input-info input)
+             :texmacs-org-query)
+            :external-files))
+          (owned-links
+           (org-element-map
+            (org-texmacs-input-ast input) 'link #'identity))
+          (document (org-texmacs-document input))
+          (body (copy-tree (org-texmacs-document-body document))))
+     ;; The association key is the final owned AST link node.
+     (should (= (length external) 1))
+     (should (memq (caar external) owned-links))
+     ;; Later global state changes and repeated lowering cannot requery Org
+     ;; or the ID database, start a worker, or change the frozen target.
+     (cl-letf (((symbol-function 'org-export-resolve-id-link)
+                (lambda (&rest _)
+                  (ert-fail "External ID resolver requery")))
+               ((symbol-function 'org-id-find-id-file)
+                (lambda (&rest _) (ert-fail "ID database requery")))
+               ((symbol-function 'org-id-find)
+                (lambda (&rest _) (ert-fail "ID database requery")))
+               ((symbol-function 'org-texmacs--worker-call)
+                (lambda (&rest _)
+                  (ert-fail "Repeated lowering started a worker"))))
+       (org-texmacs-test--register-id-locations
+        (list (cons target '("other-id"))))
+       (let ((org-texmacs-link-org-files-as-pdf nil)
+             (org-texmacs-pdf-file-links-as-absolute t)
+             (default-directory "/unrelated/"))
+         (should
+          (equal
+           body
+           (org-texmacs-document-body (org-texmacs-document input))))
+         (let ((again (org-texmacs-document input)))
+           (should (equal body (org-texmacs-document-body again)))
+           (should
+            (eq
+             (org-texmacs-document-link-org-files-as-pdf document)
+             (org-texmacs-document-link-org-files-as-pdf again)))
+           (should
+            (eq
+             (org-texmacs-document-pdf-file-links-as-absolute
+              document)
+             (org-texmacs-document-pdf-file-links-as-absolute
+              again)))))))))
+
+(ert-deftest org-texmacs-standard-export-external-id-subtree ()
+  (org-texmacs-test--with-id-files
+   (concat
+    "#+TITLE: Source\n#+OPTIONS: toc:nil author:nil date:nil\n\n"
+    "* Selected\nSee [[id:target-file-id][File]].\n\n* Other\n")
+   (with-temp-buffer
+     (org-mode)
+     (insert source-text)
+     (setq
+      buffer-file-name source
+      default-directory (file-name-directory source))
+     (goto-char (point-min))
+     (search-forward "* Selected")
+     (beginning-of-line)
+     (let* ((document
+             (org-texmacs-document-from-buffer
+              (current-buffer) nil (point))))
+       (should
+        (member
+         '("../target/target.org" "File")
+         (org-texmacs-test--body-hlinks
+          (org-texmacs-document-body document))))))))
+
+(ert-deftest org-texmacs-standard-export-external-id-subtree-same-file
+    ()
+  (org-texmacs-test--with-id-files
+   (concat
+    "#+TITLE: Source\n#+OPTIONS: toc:nil author:nil date:nil\n\n"
+    "* Selected\nSee [[id:other-id][Other]].\n\n"
+    "* Other\n:PROPERTIES:\n:ID: other-id\n:END:\n")
+   (org-texmacs-test--register-id-locations
+    (list
+     (cons target '("target-file-id" "target-headline-id"))
+     (cons source '("other-id"))))
+   (with-temp-buffer
+     (org-mode)
+     (insert source-text)
+     (setq
+      buffer-file-name source
+      default-directory (file-name-directory source))
+     (goto-char (point-min))
+     (search-forward "* Selected")
+     (beginning-of-line)
+     (should-error
+      (org-texmacs-prepare-buffer (current-buffer) nil (point))
+      :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-standard-export-external-id-include ()
+  (org-texmacs-test--with-id-files
+   (concat
+    "#+TITLE: Main\n#+OPTIONS: toc:nil author:nil date:nil\n\n"
+    "#+INCLUDE: \"../part.org\"\n")
+   (let ((part (expand-file-name "notes/part.org" directory)))
+     (with-temp-file part
+       (insert "* Included\nSee [[id:target-file-id][File]].\n"))
+     (with-temp-buffer
+       (org-mode)
+       (insert source-text)
+       (setq
+        buffer-file-name source
+        default-directory (file-name-directory source))
+       (let ((document
+              (org-texmacs-document-from-buffer (current-buffer))))
+         (should
+          (member
+           '("../target/target.org" "File")
+           (org-texmacs-test--body-hlinks
+            (org-texmacs-document-body document)))))))))

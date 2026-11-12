@@ -1494,4 +1494,55 @@
               (cl-every
                (lambda (link) (alist-get 'target link)) links)))))))))
 
+(ert-deftest org-texmacs-pdf-external-id-link-policies ()
+  :tags
+  '(pdf-links)
+  (org-texmacs-test--with-worker
+   (org-texmacs-test--with-id-files
+    (concat
+     "#+TITLE: Source\n#+OPTIONS: toc:nil title:nil author:nil date:nil\n\n"
+     "External [[id:target-file-id][File target]].\n"
+     "Headline [[id:target-headline-id][Headline target]].\n")
+    (with-temp-buffer
+      (org-mode)
+      (insert source-text)
+      (setq
+       buffer-file-name source
+       default-directory (file-name-directory source))
+      ;; Default file-link policies: .org -> .pdf, PDF targets stay relative.
+      (let ((org-texmacs-link-org-files-as-pdf t)
+            (org-texmacs-pdf-file-links-as-absolute nil))
+        (let*
+            ((document
+              (org-texmacs-document-from-buffer (current-buffer)))
+             (before (copy-tree (org-texmacs-document-body document)))
+             ;; The output PDF sits next to the source Org file, so the
+             ;; relative target is consistent with the output location.
+             (file
+              (expand-file-name "external-id.pdf"
+                                (file-name-directory source))))
+          ;; The target PDF is not built or checked for existence.
+          (should-not
+           (file-exists-p
+            (expand-file-name "target.pdf"
+                              (file-name-directory target))))
+          ;; The structural document retains the source .org target.
+          (should
+           (member
+            "../target/target.org"
+            (flatten-tree (org-texmacs-document-body document))))
+          (org-texmacs-document-save-pdf document file)
+          (should (file-exists-p file))
+          (let ((links
+                 (alist-get
+                  'links
+                  (org-texmacs-test--pdf-note-inspect file t))))
+            ;; Described hlinks render one annotation per text run.
+            (should (>= (length links) 2))
+            (dolist (link links)
+              (should
+               (equal "../target/target.pdf" (alist-get 'uri link)))))
+          (should
+           (equal before (org-texmacs-document-body document)))))))))
+
 ;;; pdf.el ends here

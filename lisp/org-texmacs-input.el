@@ -367,7 +367,11 @@ pure lowering verifies that it matches the current resolution plan.
 Standard native Cite inputs instead carry :texmacs-cite-requests in INFO.
 These are minimal node-associated requests, not full live export INFO.  Copy
 and validate their identities, then freeze a native plan without recollecting
-citations.  Native results bind the same prefix, keys and selected entries.
+citations.  Standard inputs also carry :texmacs-org-query with frozen Org
+query results, including resolved cross-file ID file targets; these are
+copied and remapped like other identity-keyed mappings and are never
+re-collected during lowering.  Native results bind the same prefix, keys and
+selected entries.
 Pending requests remain inspectable but cannot produce a document until their
 bibliography result is supplied.  Neither request ownership nor result
 attachment performs file access or native processing.

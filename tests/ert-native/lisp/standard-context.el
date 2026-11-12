@@ -118,3 +118,55 @@
          "<TeXmacs|"
          (org-texmacs-document-serialize
           (org-texmacs-document input))))))))
+
+(ert-deftest
+    org-texmacs-standard-context-external-id-native-file-policy
+    ()
+  (org-texmacs-test--with-worker
+   (org-texmacs-test--with-id-files
+    (concat
+     "#+TITLE: Source\n#+OPTIONS: toc:nil title:nil author:nil date:nil\n\n"
+     "External [[id:target-file-id][File target]].\n")
+    (with-temp-buffer
+      (org-mode)
+      (insert source-text)
+      (setq
+       buffer-file-name source
+       default-directory (file-name-directory source))
+      (dolist (pdf '(nil t))
+        (let* ((org-texmacs-link-org-files-as-pdf pdf)
+               (document
+                (org-texmacs-document-from-buffer (current-buffer)))
+               (before
+                (copy-tree (org-texmacs-document-body document)))
+               (expected
+                (expand-file-name (if pdf
+                                      "../target/target.pdf"
+                                    "../target/target.org")
+                                  (file-name-directory source)))
+               (bytes (org-texmacs-document-serialize document))
+               (session (org-texmacs-session-open)))
+          (unwind-protect
+              (progn
+                ;; Native .tm consumer applies the captured suffix policy to
+                ;; the external ID target; the description stays unchanged.
+                (should
+                 (string-match-p (regexp-quote expected) bytes))
+                (should (string-match-p "File target" bytes))
+                ;; Structural document retains the raw .org target.
+                (should
+                 (equal before (org-texmacs-document-body document)))
+                ;; Session consumer reads the same converted target.
+                (org-texmacs-session-set-document session document)
+                (should
+                 (equal
+                  (org-texmacs--session-read session)
+                  (org-texmacs-test--native-hex
+                   (list
+                    'document
+                    (list
+                     'concat
+                     "External "
+                     (list 'hlink "File target" expected)
+                     ". "))))))
+            (org-texmacs-session-close session))))))))

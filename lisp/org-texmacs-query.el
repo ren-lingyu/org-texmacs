@@ -58,11 +58,78 @@ definition before ownership, rather than copying all alternatives first."
        (unless (memq node selected)
          node)))))
 
+(defun org-texmacs--query-external-base-p (id-base resource-base)
+  "Whether ID-BASE and RESOURCE-BASE have the same directory spelling.
+Compare normalized absolute paths without filesystem or symlink lookup."
+  (and resource-base
+       (let ((file-name-handler-alist nil))
+         (equal
+          (file-name-as-directory (expand-file-name id-base "/"))
+          (file-name-as-directory
+           (expand-file-name resource-base "/"))))))
+
+(defun org-texmacs--query-external-id-path
+    (path source-file resource-base id-base)
+  "Validate and own an external ID target PATH from Org's resolver.
+ID-BASE is the captured interpretation base for Org's collected :id-alist,
+not the current directory at query time.  SOURCE-FILE is the captured source
+identity, or nil.  Preserve a relative spelling when ID-BASE matches
+RESOURCE-BASE; otherwise freeze the correctly interpreted absolute path.
+Reject an unknown relative base or a target in the current source file."
+  (unless (and (stringp path) (> (length path) 0))
+    (org-texmacs--prepared-fail "Invalid external ID target"))
+  (let* ((file-name-handler-alist nil)
+         (owned (substring-no-properties path))
+         (owned
+          (if (string-prefix-p "~" owned)
+              (expand-file-name owned "/")
+            owned)))
+    (unless (org-texmacs--document-local-file-path-p owned)
+      (org-texmacs--prepared-fail
+       "Unsupported external ID file target"))
+    (let*
+        ((relative (not (file-name-absolute-p owned)))
+         (absolute
+          (if relative
+              (progn
+                (unless (and (org-texmacs--document-local-file-path-p
+                              id-base)
+                             (file-name-absolute-p id-base))
+                  (org-texmacs--prepared-fail
+                   "External ID target path base cannot be determined"))
+                (expand-file-name owned id-base))
+            (expand-file-name owned "/"))))
+      (unless (org-texmacs--document-local-file-path-p absolute)
+        (org-texmacs--prepared-fail
+         "Unsupported external ID file target"))
+      (when (and source-file
+                 (or (equal
+                      absolute (expand-file-name source-file "/"))
+                     (file-equal-p absolute source-file)))
+        (org-texmacs--prepared-fail
+         "External ID target resolves to the current source file"))
+      (if (and relative
+               (not
+                (org-texmacs--query-external-base-p
+                 id-base resource-base)))
+          absolute
+        owned))))
+
 (defun org-texmacs--query-snapshot
-    (tree info identities &optional discover-note)
+    (tree
+     info
+     identities
+     source-file
+     resource-base
+     id-base
+     &optional
+     discover-note)
   "Freeze Org query results for adapted TREE using live INFO and IDENTITIES.
 IDENTITIES maps original Org nodes to their adapted owned nodes.  Query original
 nodes in the actual transaction; copied INFO retains old identity caches.
+SOURCE-FILE and RESOURCE-BASE are the captured source identity and resource
+base.  ID-BASE is the captured interpretation base of Org's :id-alist.
+Reject same-file targets during live preparation.
 STM islands must already be discovered so their Org parsing residue is opaque."
   (let ((reachable (make-hash-table :test #'eq))
         (originals (make-hash-table :test #'eq))
@@ -77,6 +144,7 @@ STM islands must already be discovered so their Org parsing residue is opaque."
              (and (org-element-property :footnote-section-p node)
                   node)))))
         targets
+        external-files
         notes
         headings
         table-alignments
@@ -144,21 +212,34 @@ STM islands must already be discovered so their Org parsing residue is opaque."
                  (when (member
                         (org-element-property :type owned)
                         '("fuzzy" "id" "custom-id"))
-                   (let* ((original-target
-                           (if (equal
-                                (org-element-property
-                                 :type owned)
-                                "fuzzy")
+                   (let* ((type (org-element-property :type owned))
+                          (original-target
+                           (if (equal type "fuzzy")
                                (org-export-resolve-fuzzy-link
                                 original info)
                              (org-export-resolve-id-link
                               original info)))
                           (target
                            (gethash original-target identities)))
-                     (unless (and target (gethash target reachable))
+                     (cond
+                      ((and target (gethash target reachable))
+                       (push (cons owned target) targets))
+                      ((and (equal type "id")
+                            (stringp original-target))
+                       ;; A filename result comes only from Org's :id-alist
+                       ;; (the resolver signals org-link-broken otherwise).
+                       ;; Reject same-file targets here in live preparation.
+                       (push (cons
+                              owned
+                              (org-texmacs--query-external-id-path
+                               original-target
+                               source-file
+                               resource-base
+                               id-base))
+                             external-files))
+                      (t
                        (org-texmacs--prepared-fail
-                        "Org target is outside the rendered mathematical document"))
-                     (push (cons owned target) targets))))
+                        "Org target is outside the rendered mathematical document"))))))
                 ('footnote-reference
                  (when in-note
                    (org-texmacs--prepared-fail
@@ -218,6 +299,7 @@ STM islands must already be discovered so their Org parsing residue is opaque."
               references)))
     (list
      :targets (nreverse targets)
+     :external-files (nreverse external-files)
      :footnotes (nreverse notes)
      :headlines (nreverse headings)
      :table-alignments (nreverse table-alignments)

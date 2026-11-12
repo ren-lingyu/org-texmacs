@@ -667,8 +667,10 @@ The mutable Org cache remains local and is never returned."
     (ast islands static-labels resource-base &optional query)
   "Validate local Org links in AST without allocating final references.
 ISLANDS are opaque.  STATIC-LABELS reserves user-authored STM labels.
-Return node-identity mappings only; never
-read a source buffer, query an ID database or invoke an export consumer."
+QUERY may supply frozen standard Org resolutions, including external ID file
+targets; these are consumed without new lookups.  Return node-identity
+mappings only; never read a source buffer, query an ID database or invoke an
+export consumer."
   (let ((definitions
          (unless query
            (org-texmacs--context-footnote-definitions ast islands)))
@@ -830,6 +832,37 @@ read a source buffer, query an ID database or invoke an export consumer."
      (setq
       links (nreverse links)
       order (nreverse order))
+     (when-let* ((external-files (plist-get query :external-files)))
+       (unless (proper-list-p external-files)
+         (org-texmacs--document-fail
+          ast "Invalid frozen external ID mapping"))
+       (let ((reachable (make-hash-table :test #'eq))
+             (seen (make-hash-table :test #'eq)))
+         (org-element-map
+          ast
+          'link
+          (lambda (node) (puthash node t reachable))
+          nil
+          nil
+          nil
+          t)
+         (dolist (entry external-files)
+           (unless (and (consp entry)
+                        (gethash (car entry) reachable)
+                        (equal
+                         (org-element-property
+                          :type (car entry))
+                         "id")
+                        (org-texmacs--document-local-file-path-p
+                         (cdr entry))
+                        (not (gethash (car entry) seen)))
+             (org-texmacs--document-fail
+              ast "Invalid frozen external ID mapping"))
+           (when (assq (car entry) (plist-get query :targets))
+             (org-texmacs--document-fail
+              (car entry)
+              "External ID target also maps to an internal target"))
+           (puthash (car entry) t seen))))
      (let ((cells (make-hash-table :test #'equal)))
        (unless query
          (dolist (node order)
@@ -852,51 +885,59 @@ read a source buffer, query an ID database or invoke an export consumer."
            (let* ((type (org-element-property :type link))
                   (path (org-element-property :path link))
                   (kind (and (stringp type) (downcase type)))
+                  (external
+                   (and query
+                        (equal kind "id")
+                        (cdr
+                         (assq
+                          link (plist-get query :external-files)))))
                   (target
                    (when (member kind '("custom-id" "id" "fuzzy"))
                      (unless (and (stringp path) (> (length path) 0))
                        (org-texmacs--document-fail
                         link "Invalid internal link path"))
-                     (if query
-                         (or (cdr
-                              (assq link (plist-get query :targets)))
-                             (org-texmacs--document-fail
-                              link "Missing frozen Org target"))
-                       (pcase kind
-                         ("custom-id"
-                          (choose link (lookup path custom-ids)))
-                         ("id" (choose link (lookup path ids)))
-                         ("fuzzy"
-                          (let* ((search
-                                  (org-export-string-to-search-cell
-                                   path))
-                                 (matches
-                                  (cl-mapcan
-                                   (lambda (cell)
-                                     (copy-sequence
-                                      (gethash cell cells)))
-                                   search))
-                                 (preferred
-                                  (cl-remove-if
-                                   (lambda (node)
-                                     (eq
-                                      (org-element-type node)
-                                      'headline))
-                                   matches))
-                                 (chosen
-                                  (choose
-                                   link
-                                   (mapcar
-                                    (lambda (node) (cons nil node))
-                                    (or preferred matches)))))
-                            (unless (eq
-                                     chosen
-                                     (org-export-resolve-fuzzy-link
-                                      link org-info))
-                              (org-texmacs--document-fail
-                               link
-                               "Inconsistent Org link resolution"))
-                            chosen)))))))
+                     (unless external
+                       (if query
+                           (or (cdr
+                                (assq
+                                 link (plist-get query :targets)))
+                               (org-texmacs--document-fail
+                                link "Missing frozen Org target"))
+                         (pcase kind
+                           ("custom-id"
+                            (choose link (lookup path custom-ids)))
+                           ("id" (choose link (lookup path ids)))
+                           ("fuzzy"
+                            (let* ((search
+                                    (org-export-string-to-search-cell
+                                     path))
+                                   (matches
+                                    (cl-mapcan
+                                     (lambda (cell)
+                                       (copy-sequence
+                                        (gethash cell cells)))
+                                     search))
+                                   (preferred
+                                    (cl-remove-if
+                                     (lambda (node)
+                                       (eq
+                                        (org-element-type node)
+                                        'headline))
+                                     matches))
+                                   (chosen
+                                    (choose
+                                     link
+                                     (mapcar
+                                      (lambda (node) (cons nil node))
+                                      (or preferred matches)))))
+                              (unless (eq
+                                       chosen
+                                       (org-export-resolve-fuzzy-link
+                                        link org-info))
+                                (org-texmacs--document-fail
+                                 link
+                                 "Inconsistent Org link resolution"))
+                              chosen))))))))
              (when target
                (when (and (eq (org-element-type target) 'table)
                           (null
@@ -906,28 +947,33 @@ read a source buffer, query an ID database or invoke an export consumer."
                   link
                   "Uncaptioned table reference requires a description"))
                (push (cons link target) resolved))
-             (when (equal kind "file")
-               (unless (and (org-texmacs--document-local-file-path-p
-                             path)
-                            (null
-                             (org-element-property
-                              :search-option link))
-                            (null
-                             (org-element-property :application link))
-                            (or
-                             (null resource-base)
-                             (org-texmacs--document-local-file-path-p
-                              resource-base)))
-                 (org-texmacs--document-fail
-                  link "Unsupported file link or resource context"))
-               (let ((file-name-handler-alist nil))
-                 (unless (or (file-name-absolute-p path)
-                             resource-base)
+             (let ((file-path
+                    (cond
+                     (external
+                      external)
+                     ((equal kind "file")
+                      path))))
+               (when (or external (equal kind "file"))
+                 (unless (and
+                          (org-texmacs--document-local-file-path-p
+                           file-path)
+                          (null
+                           (org-element-property :search-option link))
+                          (null
+                           (org-element-property :application link))
+                          (or (null resource-base)
+                              (org-texmacs--document-local-file-path-p
+                               resource-base)))
                    (org-texmacs--document-fail
-                    link
-                    "Relative file link requires a resource base")))
-               (push
-                (cons link (substring-no-properties path)) files))))))
+                    link "Unsupported file link or resource context"))
+                 (let ((file-name-handler-alist nil))
+                   (unless (or (file-name-absolute-p file-path)
+                               resource-base)
+                     (org-texmacs--document-fail
+                      link
+                      "Relative file link requires a resource base")))
+                 (push (cons link (substring-no-properties file-path))
+                       files)))))))
      (org-texmacs--resolution-create
       :links
       (mapcar

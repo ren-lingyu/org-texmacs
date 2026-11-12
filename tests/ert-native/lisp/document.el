@@ -743,11 +743,13 @@
           (cl-position target paragraph :test #'equal))))))
 
 (ert-deftest
-    org-texmacs-document-rejects-ambiguous-and-external-id-links
+    org-texmacs-document-rejects-ambiguous-and-unresolved-id-links
     ()
   (dolist
       (source
        '("#+OPTIONS: toc:nil\n* Alpha\n* Alpha\n[[*Alpha]]\n"
+         ;; Independent pure input cannot resolve a cross-file ID: an ID not
+         ;; present in the owned AST stays an error rather than a file target.
          "#+OPTIONS: toc:nil\n[[id:external-id]]\n"
          "#+OPTIONS: toc:nil\n#+EXCLUDE_TAGS: hidden\n* Hidden :hidden:\n:PROPERTIES:\n:CUSTOM_ID: gone\n:END:\n* Visible\n[[#gone]]\n"))
     (with-temp-buffer

@@ -397,4 +397,36 @@
          (org-texmacs--worker-serialize-stm cycle)
          :type 'org-texmacs-model-serialization-error)))))
 
+(ert-deftest org-texmacs-model-serialize-preserves-external-id-link ()
+  (let ((text "#+TITLE: T\n[[id:external-id][Target]].\n"))
+    (cl-letf (((symbol-function 'org-texmacs--worker-call)
+               (lambda (&rest _)
+                 (ert-fail "ID round trip needs no native process")))
+              ((symbol-function 'org-id-find)
+               (lambda (&rest _)
+                 (ert-fail "Model parsing queried the ID database")))
+              ((symbol-function 'org-id-find-id-file)
+               (lambda (&rest _)
+                 (ert-fail "Model parsing queried the ID database"))))
+      (let* ((model (org-texmacs-test--parse-model-text text))
+             (before (org-texmacs-test--model-meaning model))
+             (output (org-texmacs-model-serialize model)))
+        ;; The original id: identity round-trips; no file path or suffix
+        ;; conversion is invented by the model layer.
+        (should
+         (string-match-p
+          (regexp-quote "[[id:external-id][Target]]") output))
+        (should-not (string-match-p "external-id.org" output))
+        (should-not (string-match-p "external-id.pdf" output))
+        (should
+         (equal
+          before
+          (org-texmacs-test--model-meaning
+           (org-texmacs-test--parse-model-text output))))
+        (should
+         (equal
+          output
+          (org-texmacs-model-serialize
+           (org-texmacs-test--parse-model-text output))))))))
+
 ;;; model-serialization.el ends here

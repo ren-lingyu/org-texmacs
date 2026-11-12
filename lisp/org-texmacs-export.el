@@ -79,16 +79,48 @@ their string result when consuming the prepared AST."
   (org-texmacs--standard-node-filters info)
   tree)
 
+(defun org-texmacs--standard-capture-id-base (info)
+  "Capture the directory for Org's collected ID filenames in INFO once.
+Call at the first standard dispatch after tree-property collection, before
+Cite callbacks or, with Cite disabled, before root-tree transcoding.  The
+root identity binds the capture to this transaction's prepared tree."
+  (let ((tree (plist-get info :parse-tree)))
+    (when (and org-texmacs--standard-transaction
+               (org-texmacs--standard-backend-p
+                (plist-get info :back-end))
+               (eq (org-element-type tree) 'org-data)
+               (plist-member info :id-alist)
+               (not
+                (plist-get
+                 org-texmacs--standard-transaction
+                 :id-resolution-tree)))
+      (setf
+       (plist-get
+        org-texmacs--standard-transaction
+        :id-resolution-tree)
+       tree
+       (plist-get
+        org-texmacs--standard-transaction
+        :id-resolution-base)
+       (when (plist-get info :id-alist)
+         (org-texmacs--source-capture-path default-directory))))))
+
 (defun org-texmacs--standard-data (function data info)
   "Call Org transcoder FUNCTION for DATA/INFO after checking effective filters.
 This catches reentrant transcoding and later INFO updates.  Other backends pass
 through unchanged.  No Org preparation or transcoder implementation is copied."
   (org-texmacs--standard-node-filters info)
+  ;; Without Cite, Org immediately transcodes the collected root tree.  Do
+  ;; not use a later transcoding call to infer a missing Cite-time capture.
+  (when (and (not (plist-get info :with-cite-processors))
+             (eq data (plist-get info :parse-tree)))
+    (org-texmacs--standard-capture-id-base info))
   (funcall function data info))
 
 (defun org-texmacs--standard-cite (info)
-  "Check INFO after AST filters and before Cite callbacks execute."
-  (org-texmacs--standard-node-filters info))
+  "Check INFO and capture ID filename context before Cite callbacks execute."
+  (org-texmacs--standard-node-filters info)
+  (org-texmacs--standard-capture-id-base info))
 
 (defun org-texmacs--standard-copy-options (value)
   "Own mutable VALUE data, preserving functions and opaque object identities.
@@ -228,7 +260,9 @@ not an early exit across normal export advice or a second preparation pass."
              :consumer
              (or (plist-get request :consumer) 'text)
              :source state
-             :request request)))
+             :request request
+             :id-resolution-tree nil
+             :id-resolution-base nil)))
       (when request
         (setf (plist-get request :claimed) t))
       (prog1 (funcall function
@@ -311,11 +345,29 @@ Project supported options without repeating preparation or retaining full INFO."
            projected
            (org-texmacs--standard-copy-options (nth 10 state))))
     (let*
-        ((requests
+        ((source-file
+          (org-texmacs--source-capture-path (nth 5 state)))
+         (resource-base
+          (org-texmacs--source-capture-path (nth 6 state)))
+         (id-resolution-base
+          (when (eq
+                 (plist-get info :parse-tree)
+                 (plist-get
+                  org-texmacs--standard-transaction
+                  :id-resolution-tree))
+            (plist-get
+             org-texmacs--standard-transaction
+             :id-resolution-base)))
+         (requests
           (org-texmacs--prepared-discover tree (nth 9 state) t))
          (query
           (prog1 (org-texmacs--query-snapshot
-                  tree info identities
+                  tree
+                  info
+                  identities
+                  source-file
+                  resource-base
+                  id-resolution-base
                   (lambda (definition)
                     (setq requests
                           (append
@@ -328,8 +380,7 @@ Project supported options without repeating preparation or retaining full INFO."
          ;; allocate labels only after all actual native trees are available.
          (input
           (org-texmacs--input-own
-           tree
-           (plist-put projected :texmacs-org-query query)
+           tree (plist-put projected :texmacs-org-query query)
            :islands
            (mapcar
             (lambda (request)
@@ -337,10 +388,8 @@ Project supported options without repeating preparation or retaining full INFO."
             requests)
            :style (nth 7 state)
            :initial (nth 8 state)
-           :source-file
-           (org-texmacs--source-capture-path (nth 5 state))
-           :resource-base
-           (org-texmacs--source-capture-path (nth 6 state)))))
+           :source-file source-file
+           :resource-base resource-base)))
       (when native
         (setq input (org-texmacs--prepared-cite-snapshot input)))
       (org-texmacs--prepared-parse

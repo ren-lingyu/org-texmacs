@@ -1254,4 +1254,74 @@
      :type 'org-texmacs-document-error)))
 
 
+(ert-deftest org-texmacs-document-pure-input-ignores-id-database ()
+  (let* ((directory (make-temp-file "org-texmacs-pure-id-" t))
+         (file (expand-file-name "target.org" directory)))
+    (with-temp-file file
+      (insert
+       ":PROPERTIES:\n:ID: ambient-id\n:END:\n#+TITLE: Target\n"))
+    (unwind-protect
+        (let ((org-id-locations
+               (org-id-alist-to-hash
+                (list
+                 (list
+                  (abbreviate-file-name (file-truename file))
+                  "ambient-id"))))
+              (org-id-locations-file
+               (expand-file-name "ids" directory))
+              (org-id-files (list file))
+              (org-id-track-globally nil))
+          (with-temp-buffer
+            (org-mode)
+            (insert
+             "#+OPTIONS: toc:nil\n[[id:ambient-id][Ambient]].\n")
+            ;; Independent pure input does not discover external ID locations
+            ;; from the live database; the link stays an internal error.
+            (should-error
+             (org-texmacs-document
+              (org-texmacs-test--input-from-model
+               (org-texmacs-parse-buffer (current-buffer))))
+             :type 'org-texmacs-document-error)))
+      (delete-directory directory t))))
+
+(ert-deftest org-texmacs-document-validates-frozen-external-id-mapping
+    ()
+  (let* ((id
+          (org-element-create
+           'link '(:type "id" :path "external-id")))
+         (uri
+          (org-element-create
+           'link '(:type "https" :path "//example.org")))
+         (detached
+          (org-element-create 'link '(:type "id" :path "detached")))
+         (ast
+          (org-element-create
+           'org-data nil
+           (org-element-create 'paragraph nil id " " uri)))
+         (valid (cons id "target.org")))
+    (cl-labels
+     ((lower
+       (entries &optional targets)
+       (org-texmacs-document
+        (org-texmacs-input-create
+         ast
+         (list
+          :texmacs-org-query
+          (list :external-files entries :targets targets))
+         :resource-base "/tmp/"))))
+     (should (org-texmacs-document-p (lower (list valid))))
+     (dolist (entries
+              (list
+               (list valid valid)
+               (list (cons id nil))
+               (list (cons id ""))
+               (list valid (cons uri "other.org"))
+               (list valid (cons detached "other.org"))))
+       (should-error
+        (lower entries)
+        :type 'org-texmacs-document-error))
+     (should-error
+      (lower (list valid) (list (cons id id)))
+      :type 'org-texmacs-document-error))))
+
 ;;; document.el ends here

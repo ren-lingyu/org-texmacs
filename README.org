@@ -39,8 +39,8 @@ fontification and source editing through Org's existing edit workflow.
 Independent consumers provide native =.tm= serialization, new-file saving and
 PDF rendering.  The optional =ox-texmacs= frontend connects these consumers to
 Org's export dispatcher, with local output naming/reexports, subtree/region/
-narrowing scopes and standard Org export configuration.  GUI preview, cross-file
-reference resolution and live incremental Org/TeXmacs synchronization are outside the current
+narrowing scopes and standard Org export configuration.  GUI preview, precise cross-document
+reference navigation and live incremental Org/TeXmacs synchronization are outside the current
 support boundary.
 Source exports use Org's working copy. User callbacks can still modify the
 original source; covered changes fail source validation and are not undone.
@@ -1639,9 +1639,31 @@ links without descriptions become TeXmacs =reference= nodes.  Resolution uses
 Org search-cell matching and priorities within the owned effective document.
 Named objects and dedicated targets take precedence over headline titles;
 multiple distinct matches at the effective priority are errors for used links.
-Missing targets fail explicitly.  No source buffer or global Org ID database is
-queried.  Named basic tables retain the caption rules above; cross-file IDs,
-plain-text search fallback and other protocols remain unsupported.
+Missing targets fail explicitly.  Independent pure input construction and
+pure document lowering do not read a source buffer or query a global Org ID
+database.  Named basic tables retain the caption rules above; plain-text
+search fallback and other protocols remain unsupported.
+
+Cross-file =id:= links are supported through the standard Org export
+transaction.  Org resolves an ID to an internal headline or an external file.
+Internal targets retain the existing native reference semantics.  External ID
+targets are captured during preparation and use the same file-target
+resolution, lowering, provenance and native output policies as ordinary Org
+file links.  External ID links currently lower to document-level file links.
+The original target identity is preserved in the owned Org AST, but navigation
+to the corresponding position in another exported document is not yet
+supported.  Both external file-level IDs and external headline IDs are
+supported within this document-level navigation boundary.  A link description
+is lowered normally.  Without a description, the resolved file path is
+displayed.  Relative ID filenames are interpreted using the directory captured
+for Org's ID location collection; if it differs from the source resource base,
+the resolved target is frozen as an absolute path.  Later changes to the export
+working directory do not select a different file.  The exporter neither builds
+nor checks the existence of the target PDF.  Unresolved IDs and unsupported
+targets remain errors.  A file-level ID on the current source document, and an
+ID whose location is the current source file but whose object is outside the
+effective exported AST (for example an excluded =noexport= heading), remain
+errors rather than self-file links.
 
 Statements (including =proof=), =equation= / =equation*=, the four figure/table
 wrappers and ordinary =texmacs= blocks accept exactly one nonempty =#+NAME=.
@@ -1706,6 +1728,8 @@ Both booleans are captured during document preparation; changing them later does
 not alter a prepared input or completed document.  Pure AST inputs use fixed
 defaults unless their INFO supplies =:texmacs-pdf-file-links-as-absolute= or
 =:texmacs-link-org-files-as-pdf=.  The structural body always retains raw targets.
+Resolved cross-file =id:= targets enter the same =file-paths= provenance and
+follow the same suffix and path policies as ordinary file links.
 
 The bridge does not open or inspect resources, inline images, or consult the
 caller's current directory.  The original document remains unchanged.  File searches
@@ -2193,7 +2217,8 @@ PDF rendering preserves relative Org file targets by default.  Set
 them against the captured source resource base.  The independent
 =org-texmacs-link-org-files-as-pdf= setting controls =.org= to =.pdf= target
 conversion for all native consumers and defaults to =t=.  Neither setting
-checks whether the linked file exists or builds it.  Serialized =.tm= files
+checks whether the linked file exists or builds it.  Resolved cross-file =id=
+targets follow the same policies.  Serialized =.tm= files
 retain absolute file targets, so re-rendering them in TeXmacs can produce
 different file-link targets from direct PDF export.
 
