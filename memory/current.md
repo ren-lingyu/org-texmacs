@@ -1,5 +1,24 @@
 # org-texmacs current memory
 
+## Stage A cross-file ID links — candidate implemented and validated
+
+Runtime/tests/docs candidate complete in the ordinary worktree (11 paths,
+uncommitted; index clean). Full flake acceptance exits 0:
+ert-core 329/329, ert-native 283/283, ert-pdf-document 48/48,
+ert-pdf-render 30/30, ert-cite/caption/package-lint/treefmt/gotor-regression
+pass. New maintained tests cover real Org ID resolution, identity preservation,
+same-file/self-file rejection, unresolved propagation, native suffix policy and
+actual PDF annotations. Isolated patched-GoToR probe shows the external ID
+link becomes /GoToR ../target/target.pdf [0 /Fit]. No raw archive selected.
+
+Implementation record/limits/receipt:
+memory/external-id-links-implementation.md/-inputs.json; probe evidence
+memory/external-id-links-probe.md; plan memory/external-id-links-plan.md.
+
+Next gate: human review and ordinary commit decision. Agent performs no
+staging/commit/version/tag/release action. Stage B and precise cross-document
+navigation remain separate and are not adopted.
+
 ## Stage A cross-file Org ID link support — intake adopted
 
 User adopts the Stage A guide (cross-file `id:` link document-level lowering)

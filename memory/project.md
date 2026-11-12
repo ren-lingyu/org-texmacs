@@ -1,5 +1,18 @@
 # org-texmacs current project model
 
+## Stage A cross-file ID links: validated candidate (uncommitted)
+
+The ordinary worktree carries an 11-path candidate that adds document-level
+lowering of cross-file =id:= links through the standard Org export transaction,
+reusing existing file resolution/provenance/native file-link policies. Full
+flake acceptance passes (all checks; ERT counts in
+memory/external-id-links-implementation.md). Original ID identity stays in the
+owned Org AST; precise cross-document navigation remains unsupported.
+Same-file excluded targets and current-file file-level IDs remain errors;
+independent pure input does not discover external ID locations. Candidate is
+not yet human-committed; support claims in user documentation are part of the
+candidate. Receipt: memory/external-id-links-inputs.json.
+
 ## v0.7.0 locally finalized and tagged
 
 Human f16cc2f matches exact parent/four paths/message/167source hashes, including

@@ -1149,7 +1149,9 @@ or augmented live ASTs require separate evidence and adoption.
 
 ### Precise cross-document ID navigation
 
-Status: **deferred-candidate**; not adopted by Stage A.
+Status: **deferred-candidate**; not adopted by Stage A. Stage A's document-level
+lowering is implemented as an uncommitted validated candidate
+(memory/external-id-links-implementation.md).
 
 Stage A (cross-file Org ID link support) implements document-level lowering of
 external Org ID links. The original object identity remains in the owned Org

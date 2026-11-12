@@ -1,5 +1,14 @@
 # org-texmacs durable evidence
 
+Stage A external-ID candidate (uncommitted, full flake acceptance exits 0):
+standard export freezes `org-export-resolve-id-link` external filenames in a
+`:external-files` query mapping, ownership remaps them, and document resolution
+feeds them through the ordinary file-target validation/provenance/native
+policies. ERT 329core/283native/48document/30render pass; actual PDF annotations
+show relative `../target/target.pdf`; isolated patched-GoToR probe shows
+`/S /GoToR /F ../target/target.pdf /D [0 /Fit]`. Details/limits/receipt:
+memory/external-id-links-implementation.md/-inputs.json.
+
 Stage A external-ID resolver probe (isolated flake, Org 9.8.10, exit 0):
 `org-export-resolve-id-link` external results come from `:id-alist` as
 `(file-relative-name file)`, relative to the export buffer's `default-directory`
