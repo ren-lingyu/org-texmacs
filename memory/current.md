@@ -1,5 +1,41 @@
 # org-texmacs current memory
 
+## Native single-reference citation detail — human-delivered and verified
+
+Delivered as f1b132b→1c0eae02187e668199a00cd58aa62cc32f46e5bb
+("feat(cite): support native single-reference citation details"): 11 paths,
++244/−100. Single-key default-style citations accept a plain-text reference
+suffix (`[cite:@key, chapter 1]`, `[cite:@key p. 7]`) and lower to native
+`(with-bib PREFIX (cite-detail "key" "chapter 1"))`, reusing the existing
+bibliography label. Previously such input failed with "Unsupported native
+citation reference or locator".
+
+`org-texmacs--cite-group` is now the single validator for both citation input
+paths (standard Org Cite processor requests and independent AST-based
+collection); `org-texmacs--cite-detail` owns normalization (trim, drop one
+optional leading comma, reject empty/multiline). Requests carry
+`:kind :keys :detail`; request/carrier consistency checks compare keys and
+detail (stale detail fails). Bibliography selection stays key-based; detail
+takes no part in labels. Bare single/multi-key citations keep `cite`.
+Unchanged: Org preparation/processor ownership, owned input, pure lowering
+without file/worker access, `plain`/`alpha`/`abbrv` selection.
+
+Intentionally unsupported: multi-key details (native `cite-detail` is
+single-key), reference prefixes, global affixes, rich/structured suffixes,
+non-default citation styles, CSL locator parsing. These are adopted scope
+boundaries, not unfinished acceptance items.
+
+Agent-executed `nix flake check` on the delivered content exits 0: core
+347/347, native 285/285, pdf-document 48/48, pdf-render 31/31, cite 11/11,
+caption 6/6, package-lint/treefmt/gotor-regression pass; the examples package
+builds and both en/zh index PDFs contain the "chapter 1" detail. User also
+reported the patch passed local tests. Worktree/index clean.
+
+Receipt memory/native-cite-detail-inputs.json (final-committed); record
+memory/native-cite-detail-implementation.md.
+
+No version bump, tag, push or release action follows; no next feature selected.
+
 ## Stage B link navigation fallback — human-delivered and verified
 
 Stage B (visible-content fallback when no structural navigation target is

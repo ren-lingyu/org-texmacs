@@ -1,0 +1,80 @@
+{
+  "kind": "native-cite-detail",
+  "revision": "final-committed",
+  "baseline": {
+    "ordinary": "f1b132b1f545dd394b65fef8ab824f22beb40290",
+    "subject": "feat(export): preserve link content when navigation is unavailable",
+    "gaw": "e606d23e03e0201ad407112771c139564ba98d6c"
+  },
+  "delivery": {
+    "commit": "1c0eae02187e668199a00cd58aa62cc32f46e5bb",
+    "parent": "f1b132b1f545dd394b65fef8ab824f22beb40290",
+    "subject": "feat(cite): support native single-reference citation details",
+    "changed-paths": 11,
+    "diff-stat": "11 files changed, 244 insertions(+), 100 deletions(-)",
+    "captured": "2026-11-13T01:40:00Z"
+  },
+  "candidate": {
+    "changed-paths": [
+      "CHANGELOG.org",
+      "README.org",
+      "lisp/org-texmacs-cite-native.el",
+      "lisp/org-texmacs-cite.el",
+      "lisp/org-texmacs-document.el",
+      "pkgs/org-texmacs-examples/sources/en/chapters/bibliography.org",
+      "pkgs/org-texmacs-examples/sources/zh/chapters/bibliography.org",
+      "tests/ert-core/lisp/bibliography.el",
+      "tests/ert-core/lisp/native-cite.el",
+      "tests/ert-native/lisp/native-cite.el",
+      "tests/ert-pdf/lisp/pdf.el"
+    ],
+    "full-diff-sha256": "c51df1e388bc16771778eff5d143dd1c7ce9eef494a3ff4b83787c40619c3a60",
+    "content-sha256": {
+      "CHANGELOG.org": "9095a6efca21299751a00c97cf4b6e3efac8cadc89a2c37bb25d9a5c7529cdcb",
+      "README.org": "4f7290291ecd54be46d1c3710c7878655c9e2d3dbbba8c08bd47481b2fd0f26a",
+      "lisp/org-texmacs-cite-native.el": "b07df9f16cfa203677f4ef89daa310a41b144456bff9608b43465111d0003bc5",
+      "lisp/org-texmacs-cite.el": "ae962f6588c9f63d855efcd376cf23e9e75b48fe36f855a64b6cb746528905dc",
+      "lisp/org-texmacs-document.el": "1f3c84e3c0abbe612974a04ca014b4e516b5de96b92acb76e54d04b706aceb13",
+      "pkgs/org-texmacs-examples/sources/en/chapters/bibliography.org": "d8731f86ff4a40678382857b1600bc46511a9aafa2e999366da831ace95e6c0e",
+      "pkgs/org-texmacs-examples/sources/zh/chapters/bibliography.org": "b6e80582217e11693300644b643d0308ca85e0393b90b155fcbef6ceed15f7da",
+      "tests/ert-core/lisp/bibliography.el": "1efe3b714deba1ebed9146268c30c51e05d3a64f6fac4384595d19d11eda9233",
+      "tests/ert-core/lisp/native-cite.el": "67d431caccf2eb234acb6d8b26b402f5690ca0cf7866c0d9a39f7dd4c41fd236",
+      "tests/ert-native/lisp/native-cite.el": "f3d0d1c3cd8af9e6c5ebe097dff0ce65c4f7503faba3bc617d7b4d1ad99ec794",
+      "tests/ert-pdf/lisp/pdf.el": "885c2fb1baaf80c706f535fbdc4ac4d12d08f9587f74c7866bf2658b6fedc0c6"
+    }
+  },
+  "validation": {
+    "status": "agent-executed on the delivered content (worktree equals commit, clean)",
+    "commands": [
+      "nix flake check -L --no-write-lock-file --max-jobs 2 (exit 0, all checks passed)"
+    ],
+    "ert-counts": {
+      "ert-core": "347/347",
+      "ert-native": "285/285",
+      "ert-pdf-document": "48/48",
+      "ert-pdf-render": "31/31",
+      "ert-cite": "11/11",
+      "caption-inline-footnotes": "6/6"
+    },
+    "other-checks": {
+      "package-lint": "/nix/store/7b2m6g530dsjgxc4kqn0dg7s2vylldw0-org-texmacs-package-lint",
+      "treefmt": "/nix/store/q0lnk0dgsl4hrrkbbij25ml1bm8pnv5m-treefmt-check",
+      "texmacs-with-gotor-support": "/nix/store/jf4w48nwwpbm3gfciff546qc0r06manw-texmacs-gotor-regression",
+      "org-texmacs-examples": "/nix/store/zv7lald9fs3cfijwxjc9g8jsf1y6jqjb-org-texmacs-examples"
+    },
+    "examples-render-evidence": "en/index.pdf and zh/index.pdf both contain the new 'chapter 1' detail text; en/article.pdf and zh/article.pdf unaffected.",
+    "user-report": "User confirmed the patch applied and local tests passed.",
+    "environment": {
+      "emacs": "31.1",
+      "org": "9.8.10",
+      "texmacs": "2.1.5 (baseline and patched)"
+    }
+  },
+  "notes": {
+    "consistency": "Verification was executed against the delivered commit content: the repository was clean with HEAD 1c0eae0, so no separate candidate-to-commit comparison was needed beyond confirming the clean worktree.",
+    "index-state": "Ordinary index and worktree clean.",
+    "delivery": "Committed as 1c0eae0. No version bump, tag, push or release action.",
+    "scope": "Single-key default-style plain-text reference suffix to native cite-detail; multi-key details, rich suffixes, prefixes and non-default styles remain unsupported by design.",
+    "unverified": "Other platforms, other Org/TeXmacs versions, CSL locator semantics, non-default citation styles."
+  }
+}

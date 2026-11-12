@@ -1,5 +1,32 @@
 # org-texmacs current project model
 
+## Citation detail: delivered support
+
+Human-delivered 1c0eae0 (parent f1b132b, 11 paths). Current citation model:
+
+- Standard export: Org Cite calls the `texmacs-native` processor, which records
+  a request against the citation carrier identity; `org-texmacs--cite-view`
+  builds usage from those requests only.
+- Independent input: `org-texmacs--bibliography-collect` collects usage from the
+  explicitly supplied owned AST; no source discovery.
+- Both paths share one citation-group contract: `org-texmacs--cite-group`
+  returns `(:keys KEYS :detail DETAIL)`. Detail is plain text for a single-key
+  default-style citation, normalized by `org-texmacs--cite-detail` (trim, drop
+  one leading comma, reject empty/multiline); requests carry
+  `:kind :keys :detail` and are checked against the carrier for keys and detail.
+- Bibliography entries are selected by keys only; detail never affects entry
+  selection, deduplication or label allocation.
+- Lowering is one shared native path: bare groups use `(with-bib PREFIX (cite
+  KEY...))`; a group with detail uses `(with-bib PREFIX (cite-detail KEY
+  DETAIL))`. Native bibliography reference validation covers both `cite` and
+  `cite-detail` labels.
+- Unsupported by design: multi-key details, reference prefixes, global affixes,
+  rich/structured suffixes, non-default citation styles, CSL locator parsing.
+  Earlier documented "bare citations only / nonempty affixes fail" statements
+  describe the historical pre-detail behavior and are superseded here.
+
+Details/receipt: memory/native-cite-detail-implementation.md/-inputs.json.
+
 ## Link navigation fallback: delivered support
 
 Human-delivered f1b132b (parent 2462831, 10 paths, byte-identical to the
@@ -1221,7 +1248,10 @@ eight-file diff. This bounded capability is included in v0.4.0.
   Native Cork text is converted to UTF-8 while ASCII source notation is retained.
   Native prefix/style/default-style values are restored on success/error.
   Formatting domain errors preserve the worker; invalid payloads stop it.
-- Styles, nonempty affixes and print options/multiple locations remain unsupported.
+- Styles, citation-level affixes and print options/multiple locations remain
+  unsupported. This historical node accepted no reference suffix at all; the
+  current model accepts a single-key plain-text reference suffix as native
+  `cite-detail` (see the citation-detail section above).
   The original paragraph/inline-footnote-only placement scope is superseded by
   the delivered expansion above. No dependency-field name
   blacklist: native style owns interpretation/omission. Native dangling references

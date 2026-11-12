@@ -1,5 +1,19 @@
 # org-texmacs project goals
 
+## Native single-reference citation detail adopted and delivered
+
+The user adopted native citation detail for single-reference citations: a
+plain-text Org reference suffix becomes TeXmacs' own `cite-detail` inside
+`with-bib` (no custom macro, string concatenation or self-implemented citation
+rendering). Both citation input paths — standard Org Cite processor requests
+and the independent explicit AST-based collector — share one citation-group
+interpretation (`:keys` + optional `:detail`) and one validator, while
+remaining two input constructions for a single lowering core. Bibliography
+selection stays key-based. Intentionally out of scope: multi-key details
+(native interface is single-key), reference/global affixes, rich suffixes,
+non-default citation styles, CSL locator parsing. Human-delivered 1c0eae0;
+receipt memory/native-cite-detail-inputs.json.
+
 ## Stage B visible-content link fallback adopted and delivered
 
 The user adopted Stage B: org-texmacs lowers Org link expression into TeXmacs

@@ -1,5 +1,19 @@
 # org-texmacs durable evidence
 
+Native single-reference citation detail delivery: human commit 1c0eae0 (parent
+f1b132b, 11 paths, +244/−100) with clean worktree/index. Agent-executed full
+flake check on that content exits 0: core 347/347 (was 346), native 285/285,
+pdf-document 48/48, pdf-render 31/31 (was 30), cite 11/11, caption 6/6,
+package-lint/treefmt/gotor-regression pass; `org-texmacs-examples` builds and
+both en/zh index PDFs contain the new "chapter 1" detail. User separately
+reported the patch passed local tests. Design facts from source review:
+`org-texmacs--cite-group` is the shared validator for standard processor
+requests and independent AST collection; `org-texmacs--cite-detail` trims,
+drops one leading comma and rejects empty/multiline; requests carry
+`:kind :keys :detail` and a stale detail fails; lowering emits
+`(with-bib PREFIX (cite-detail KEY DETAIL))` and native label validation covers
+`cite-detail`. Receipt memory/native-cite-detail-inputs.json (final-committed).
+
 Stage B link-navigation-fallback delivery: human commit f1b132b (parent
 2462831, 10 paths, +685/−331) is byte-identical to the validated candidate
 (all 10 blob SHA256 values and the baseline..HEAD diff SHA256

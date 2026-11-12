@@ -1,5 +1,14 @@
 # org-texmacs active backlog
 
+Current delivery state: native single-reference citation detail is
+human-delivered 1c0eae0 (see memory/native-cite-detail-implementation.md);
+Stage B link navigation fallback f1b132b; Stage A cross-file ID links 2462831.
+No open implementation/commit gate from these. Remaining deferred topics are
+listed under "Deferred candidates": multi-key citation details and other rich
+citation affixes, precise cross-document ID navigation, and native file-target
+character restrictions. None is implicitly selected; no next feature has been
+adopted.
+
 v0.7.0 review and local finalization complete: human f16cc2f delivered exact
 accepted source/message, local v0.7.0 tag verified, clean worktree/index. No
 further adopted implementation/commit task. Remote/platform publication remains
@@ -1176,6 +1185,25 @@ C3. org-texmacs integration based on established contracts.
 
 No anchor protocol, renderer extension or implementation of this candidate is
 adopted by Stage A.
+
+### Citation details beyond a single plain-text reference suffix
+
+Status: **deferred-candidate**; not adopted. The delivered support
+(1c0eae0, memory/native-cite-detail-implementation.md) covers one plain-text
+suffix on a single-key default-style citation, lowered to native `cite-detail`.
+
+Deliberately not adopted with it:
+
+- Details on multi-key groups. TeXmacs' native `cite-detail` qualifies one key,
+  so a group of qualified references needs separately adopted grouping,
+  separator and layout semantics.
+- Reference prefixes, citation-level prefixes/suffixes.
+- Rich suffixes containing Org markup or other structured objects.
+- Non-default Org Cite citation styles with detail.
+- CSL locator-term parsing, localization or any citation-processor change.
+
+These are scope boundaries, not pending acceptance items for the delivered
+feature. Adopting any of them requires a separate design decision.
 
 ### Native file-target adaptation beyond the restricted character set
 
