@@ -4,6 +4,7 @@
 :END:
 数学记号与结构清晰的源文件相辅相成[cite:@knuth1984],
 也可以组合引用排版资料与古典数学著作[cite:@knuth1984; @euclid1956].
+单个引用也可以附带章节定位信息[cite:@knuth1984, chapter 1].
 BibTeX 源码保存在 references.org 的代码块中, 不单独维护 .bib. 下面以字面源码展示原始文件:
 
 #+include: "references.org" src org

@@ -64,15 +64,10 @@ Only export is affected; activate, follow and insert processors are unchanged."
   "Return a structural CITATION carrier for STYLE, BACKEND and INFO."
   (unless (and (null (car style)) (null (cdr style)))
     (org-texmacs--cite-fail "Unsupported native citation style"))
-  (let* ((keys (org-texmacs--cite-keys citation))
+  (let* ((group (org-texmacs--cite-group citation))
          (node (org-element-copy citation)))
     (org-texmacs--cite-record
-     node
-     (list
-      :kind 'citation
-      :keys
-      (mapcar #'substring-no-properties keys))
-     backend info)))
+     node (append (list :kind 'citation) group) backend info)))
 
 (defun org-texmacs--cite-export-bibliography
     (keys files style properties backend info)

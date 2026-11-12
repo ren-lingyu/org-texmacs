@@ -1036,15 +1036,21 @@ Org precedence. For example, a document can select a native bibliography style:
 #+begin_example
   ,#+bibliography: references.bib
   ,#+cite_export: texmacs-native alpha
-  Text [cite:@one; @two]. Again [cite:@one].
+  Text [cite:@one; @two]. Again [cite:@one, chapter 1].
   ,#+print_bibliography:
 #+end_example
 
-Bare default citations, multiple keys and repeated citations are supported, with
+Default citations, multiple bare keys and repeated citations are supported, with
 exactly one unadorned bibliography print; citations without that print fail.
-Nondefault citation styles, nonempty affixes/locators, print options and multiple
-prints fail explicitly. Request associations follow final Org nodes through
-ownership copies. Native labels,
+A single-key citation can carry a plain-text reference suffix, such as
+=[cite:@one, chapter 1]= or =[cite:@one p. 7]=. It becomes native
+=cite-detail= inside =with-bib=, retaining its bibliography label and link.
+Surrounding whitespace and one optional leading comma are removed; the native
+style supplies the citation punctuation. No CSL locator parsing or localization
+is performed. Nondefault citation styles, nonempty prefixes, citation-level
+suffixes, rich or multiline reference suffixes, details in multiple-key groups,
+print options and multiple prints fail explicitly. Request associations follow
+final Org nodes through ownership copies. Native labels,
 selected entries and output belong to the input; pure lowering does not
 recollect citations, read files or run a worker. Independent explicit native
 bibliography inputs remain supported. Org Cite keys from =ALT_TITLE= remain in
@@ -1295,7 +1301,7 @@ The supported Org subset is deliberately small:
 | Same-document headline/ID or dedicated-target link                  | =hlink= or =reference= with generated =label= target            |
 | Anonymous inline footnote directly in a paragraph                   | =footnote= containing a body =document=                         |
 | Named footnote with inline or separate definition                   | First-use =footnote=; repeated superscript =reference=          |
-| Bare default citation in a supported text context                   | =with-bib= / =cite= with resolved bibliography keys             |
+| Default citation in a supported text context                        | =with-bib= / =cite= or single-key =cite-detail=                 |
 | One option-free =PRINT_BIBLIOGRAPHY= keyword                        | =with-bib= / native =bib-list= at the declaration position      |
 | Relative headline levels 1 through 5                                | Five numbered or starred TeXmacs sectioning tags                |
 | Headlines below the configured =H= depth                            | Nested =itemize= structures without discarding body content     |
@@ -1430,7 +1436,7 @@ Caption belongs to the outer wrapper.  It supports the existing long/short,
 markup and link subset, including file-link provenance.  Caption text resembling
 STM remains ordinary Org text and does not create native parse requests.
 Anonymous inline footnote ASTs use the caption compatibility rules below;
-bare default citations use the bibliography rules below.  Targets remain
+default citations use the bibliography rules below.  Targets remain
 unsupported.  Omitted caption
 passes =""= to the native environment; numbered variants still show their native
 Figure/Table number.  One outer =NAME= is accepted.  Explicit empty =#+CAPTION:=, =ATTR_*=,
@@ -1568,7 +1574,7 @@ Basic tables accept =#+NAME:= and =#+CAPTION:=.  A captioned table becomes
 =(big-table TABULAR CAPTION)=; TeXmacs supplies its table counter and caption
 layout.  Multiple caption lines are joined with spaces.  Optional short
 captions use =caption-detailed= with long and short bodies.  Captions retain
-the supported inline text/markup, bare default citations and URI/internal/file
+the supported inline text/markup, default citations and URI/internal/file
 links; STM fragment discovery does not enter captions.  Their literal text
 uses ordinary Org encoding.  Other affiliated keywords, repeated names and
 empty captions are explicit errors.

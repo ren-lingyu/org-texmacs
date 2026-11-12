@@ -9,6 +9,11 @@ release notes.
 
 * TODO *unreleased*
 ** Added
+- Default single-key citations accept plain-text reference suffixes such as
+  =[cite:@key, chapter 1]= and lower to native =cite-detail=, preserving the
+  bibliography binding. Standard Org Cite and independent explicit inputs use
+  the same contract; multi-key details, rich suffixes and other affixes remain
+  unsupported.
 - Cross-file Org =id:= links resolve through standard Org export and reuse
   ordinary file-link lowering, provenance and native output policies. External
   file-level and headline IDs currently provide document-level navigation;

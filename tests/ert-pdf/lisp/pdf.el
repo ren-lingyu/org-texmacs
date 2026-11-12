@@ -622,7 +622,7 @@
        (org-mode)
        (insert
         "#+bibliography: refs.bib\n"
-        "Group [cite:@a; @b]. Repeat [cite:@a].\n\n#+print_bibliography:\n")
+        "Group [cite:@a; @b]. Repeat [cite:@a]. Detail [cite:@a, chapter 1].\n\n#+print_bibliography:\n")
        (org-texmacs-document-save-pdf
         (org-texmacs-test--native-bib-document
          (org-texmacs-parse-buffer (current-buffer))
@@ -631,6 +631,7 @@
      (let ((text (org-texmacs-test--pdf-text file)))
        (should (string-match-p "Group *\\[1, *2\\]" text))
        (should (string-match-p "Repeat *\\[1\\]" text))
+       (should (string-match-p "Detail *\\[1, *chapter 1\\]" text))
        (dolist (title '("FirstTitleSentinel" "SecondTitleSentinel"))
          (should
           (= 1
@@ -639,6 +640,71 @@
               (split-string text "[^[:alnum:]]+" t)
               :test #'equal))))
        (should-not (string-match-p "UnusedTitleSentinel" text))))))
+
+(ert-deftest org-texmacs-pdf-native-citation-detail-and-reload ()
+  (org-texmacs-test--with-worker
+   (let ((bib (expand-file-name "detail.bib" test-directory))
+         (org-texmacs-document-style '("generic"))
+         (org-export-use-babel nil))
+     (with-temp-file bib
+       (insert
+        "@book{key,author={Ada Alpha},title={ReferencePayload},year={2024},publisher={Example}}\n"))
+     (dolist (style '("plain" "alpha" "abbrv"))
+       (let* ((directory
+               (make-temp-file (expand-file-name "detail-"
+                                                 test-directory)
+                               t))
+              (pdf (expand-file-name "direct.pdf" directory))
+              (tm (expand-file-name "saved.tm" directory))
+              (reload (expand-file-name "reload.pdf" directory)))
+         (with-temp-buffer
+           (org-mode)
+           (insert
+            "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+            "#+bibliography: "
+            bib
+            "\n#+cite_export: texmacs-native "
+            style
+            "\nBare [cite:@key]. Detailed [cite:@key, chapter 1].\n"
+            "\n#+begin_texmacs\n(new-page)\n#+end_texmacs\n\n#+print_bibliography:\n")
+           (let ((document
+                  (org-texmacs-document-from-buffer
+                   (current-buffer))))
+             (org-texmacs-document-save document tm)
+             (org-texmacs-document-save-pdf document pdf)))
+         (org-texmacs-test--issue11-reload-pdf tm reload directory)
+         (should
+          (equal
+           (org-texmacs-test--pdf-text pdf)
+           (org-texmacs-test--pdf-text reload)))
+         (dolist (file (list pdf reload))
+           (let* ((text (org-texmacs-test--pdf-text file))
+                  (inspection
+                   (org-texmacs-test--pdf-note-inspect file))
+                  (reference
+                   (org-texmacs-test--pdf-note-text
+                    inspection "ReferencePayload"))
+                  (page (alist-get 'page reference))
+                  (citations
+                   (cl-remove-if-not
+                    (lambda (link)
+                      (let ((target (alist-get 'target link)))
+                        (and target
+                             (= (alist-get 'page target) page)
+                             (< (alist-get 'page link) page))))
+                    (alist-get 'links inspection))))
+             (should (string-match "Bare *\\[\\([^],]+\\)\\]" text))
+             (let ((label (match-string 1 text)))
+               (should
+                (string-match-p
+                 (concat
+                  "Detailed *\\["
+                  (regexp-quote label)
+                  ", *chapter 1\\]")
+                 text)))
+             (should-not (string-match-p "[?]\\|\\[cite:" text))
+             (should (> page 1))
+             (should (>= (length citations) 2)))))))))
 
 (ert-deftest org-texmacs-pdf-native-basic ()
   (org-texmacs-test--with-worker

@@ -4,6 +4,7 @@
 :END:
 Readable notation and a structured source belong together[cite:@knuth1984].
 A group can include a classical source[cite:@knuth1984; @euclid1956].
+A single reference can also carry a chapter locator[cite:@knuth1984, chapter 1].
 The bibliography is maintained as a BibTeX source block in references.org, not
 as a separately edited .bib. This literal listing displays the canonical source:
 

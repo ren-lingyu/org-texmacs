@@ -28,8 +28,30 @@
   "Whether KEY is supported by the native citation contract."
   (and (stringp key) (string-match-p "\\`[-A-Za-z0-9_:.+]+\\'" key)))
 
-(defun org-texmacs--cite-keys (citation)
-  "Validate bare CITATION and return its ordered reference keys."
+(defun org-texmacs--cite-detail (suffix)
+  "Return owned native detail text for parsed reference SUFFIX, or nil.
+Only plain text on one line is supported.  An optional leading comma is
+citation punctuation, supplied by TeXmacs' `render-cite-detail' instead.
+Do not interpret locator terms, infer page numbers or flatten Org objects."
+  (unless (org-texmacs--cite-affix-empty-p suffix)
+    (unless (and (proper-list-p suffix) (cl-every #'stringp suffix))
+      (org-texmacs--cite-fail "Unsupported native citation detail"))
+    (let ((detail (mapconcat #'substring-no-properties suffix "")))
+      (when (string-match-p "[\r\n]" detail)
+        (org-texmacs--cite-fail
+         "Unsupported multiline citation detail"))
+      (setq detail (string-trim detail))
+      (when (string-prefix-p "," detail)
+        (setq detail (string-trim (substring detail 1))))
+      (when (string-empty-p detail)
+        (org-texmacs--cite-fail "Empty native citation detail"))
+      detail)))
+
+(defun org-texmacs--cite-group (citation)
+  "Validate CITATION and return owned (:keys KEYS :detail DETAIL).
+KEYS retain reference order.  DETAIL is nil for a bare group or a plain
+reference suffix for a single-key citation.  The native `cite-detail'
+macro does not represent a group of independently qualified references."
   (unless (and (eq (org-element-type citation) 'citation)
                (null (org-element-property :style citation))
                (org-texmacs--cite-affix-empty-p
@@ -39,20 +61,27 @@
                (org-element-contents citation))
     (org-texmacs--cite-fail
      "Unsupported native citation style or affixes"))
-  (mapcar
-   (lambda (reference)
-     (let ((key (org-element-property :key reference)))
-       (unless (and (eq
-                     (org-element-type reference) 'citation-reference)
-                    (org-texmacs--cite-key-p key)
-                    (org-texmacs--cite-affix-empty-p
-                     (org-element-property :prefix reference))
-                    (org-texmacs--cite-affix-empty-p
-                     (org-element-property :suffix reference)))
-         (org-texmacs--cite-fail
-          "Unsupported native citation reference or locator"))
-       key))
-   (org-element-contents citation)))
+  (let (keys
+        detail)
+    (dolist (reference (org-element-contents citation))
+      (let ((key (org-element-property :key reference)))
+        (unless (and (eq
+                      (org-element-type reference)
+                      'citation-reference)
+                     (org-texmacs--cite-key-p key)
+                     (org-texmacs--cite-affix-empty-p
+                      (org-element-property :prefix reference)))
+          (org-texmacs--cite-fail
+           "Unsupported native citation reference"))
+        (push (substring-no-properties key) keys)
+        (when-let* ((suffix
+                     (org-texmacs--cite-detail
+                      (org-element-property :suffix reference))))
+          (unless (= (length (org-element-contents citation)) 1)
+            (org-texmacs--cite-fail
+             "Native citation detail requires exactly one reference"))
+          (setq detail suffix))))
+    (list :keys (nreverse keys) :detail detail)))
 
 (defun org-texmacs--cite-request-p (request fields)
   "Whether REQUEST is a plist with exactly the unique keyword FIELDS."
@@ -99,11 +128,17 @@ Only supplied carriers are interpreted; membership checks also visit metadata."
           (org-texmacs--cite-fail "Invalid native citation keys"))
         (pcase (plist-get request :kind)
           ('citation
-           (unless (and (org-texmacs--cite-request-p
-                         request '(:kind :keys))
-                        (equal keys (org-texmacs--cite-keys node)))
-             (org-texmacs--cite-fail "Stale native citation request"))
-           (push (cons node keys) citations)
+           (let ((group (org-texmacs--cite-group node)))
+             (unless (and (org-texmacs--cite-request-p
+                           request
+                           '(:kind :keys :detail))
+                          (equal keys (plist-get group :keys))
+                          (equal
+                           (plist-get request :detail)
+                           (plist-get group :detail)))
+               (org-texmacs--cite-fail
+                "Stale native citation request"))
+             (push (cons node group) citations))
            (dolist (key keys)
              (unless (member key wanted)
                (setq wanted (append wanted (list key))))))

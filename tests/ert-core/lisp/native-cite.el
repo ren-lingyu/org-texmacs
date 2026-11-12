@@ -214,12 +214,42 @@
       (should (string-search "Mock two" (prin1-to-string body)))
       (should-not (string-search "missing" (prin1-to-string body))))))
 
+(ert-deftest org-texmacs-native-cite-single-reference-detail ()
+  (let*
+      ((input
+        (org-texmacs-test--native-cite-prepare
+         "First [cite:@one, chapter 1]. Again [cite:@one p. 7]. Bare [cite:@two; @one].\n#+print_bibliography:\n"))
+       (requests
+        (plist-get
+         (org-texmacs-input-info input)
+         :texmacs-cite-requests))
+       (ready (org-texmacs-test--native-cite-fill input))
+       (body (org-texmacs-test--native-cite-lower ready))
+       (text (prin1-to-string body)))
+    (should (equal (plist-get (cdar requests) :keys) '("one")))
+    (should (equal (plist-get (cdar requests) :detail) "chapter 1"))
+    (should (equal (plist-get (cdr (nth 1 requests)) :detail) "p. 7"))
+    (should-not (plist-get (cdr (nth 2 requests)) :detail))
+    (should
+     (string-search "(cite-detail \"one\" \"chapter 1\")" text))
+    (should (string-search "(cite-detail \"one\" \"p. 7\")" text))
+    (should (string-search "(cite \"two\" \"one\")" text))
+    (should (= 2 (length (org-texmacs--bibliography-labels body))))
+    (aset (plist-get (cdar requests) :detail) 0 ?X)
+    (should
+     (equal body (org-texmacs-test--native-cite-lower ready)))))
+
 (ert-deftest org-texmacs-native-cite-unsupported-requests ()
   (dolist
       (text
        '("[cite/t:@one]\n#+print_bibliography:\n"
          "[cite:see; @one]\n#+print_bibliography:\n"
-         "[cite:@one p. 7]\n#+print_bibliography:\n"
+         "[cite:see @one]\n#+print_bibliography:\n"
+         "[cite:@one, /chapter/ 1]\n#+print_bibliography:\n"
+         "[cite:@one p. 7; @two]\n#+print_bibliography:\n"
+         "[cite:@one; @two p. 7]\n#+print_bibliography:\n"
+         "[cite:@one; extra]\n#+print_bibliography:\n"
+         "[cite:@one,]\n#+print_bibliography:\n"
          "[cite:@one]\n"
          "[cite:@one]\n#+print_bibliography:\n#+print_bibliography:\n"
          "[cite:@one]\n#+print_bibliography: :keyword test\n"))
@@ -234,7 +264,7 @@
      :type 'org-texmacs-document-error)))
 
 (ert-deftest org-texmacs-native-cite-carrier-errors ()
-  (dolist (fault '(detached duplicate stale))
+  (dolist (fault '(detached duplicate stale stale-detail))
     (let ((bridge (symbol-function 'org-texmacs--standard-input)))
       (cl-letf (((symbol-function 'org-texmacs--standard-input)
                  (lambda (info state)
@@ -249,12 +279,13 @@
                          info
                          :texmacs-cite-requests (cons pair requests)))
                        ('stale
-                        (setcar
-                         (plist-get (cdr pair) :keys) "wrong"))))
+                        (setcar (plist-get (cdr pair) :keys) "wrong"))
+                       ('stale-detail
+                        (plist-put (cdr pair) :detail "chapter 2"))))
                    (funcall bridge info state))))
         (should-error
          (org-texmacs-test--native-cite-prepare
-          "[cite:@one]\n#+print_bibliography:\n")
+          "[cite:@one, chapter 1]\n#+print_bibliography:\n")
          :type 'org-texmacs-document-error))))
   (should
    (org-texmacs-input-p

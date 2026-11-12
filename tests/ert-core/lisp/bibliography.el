@@ -109,6 +109,10 @@
                 "1"
                 (document (label "p-key") (cite "missing")))
                (bib-list
+                "1"
+                (document
+                 (label "p-key") (cite-detail "missing" "chapter 1")))
+               (bib-list
                 "1" (document (label "p-key") (reference "missing")))
                (bib-list
                 "1"

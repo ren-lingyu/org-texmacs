@@ -35,10 +35,20 @@
        (insert org-texmacs-test--cite-bib))
      (dolist (style '("plain" "alpha" "abbrv" "tm-alpha" "plain"))
        (let* ((input (org-texmacs-test--cite-source file style))
+              (detailed
+               (org-texmacs-test--cite-source
+                file style
+                "@one, chapter 1"))
               (body
                (org-texmacs-document-body
                 (org-texmacs-document input)))
               (text (prin1-to-string body)))
+         (should
+          (string-search
+           "(cite-detail \"one\" \"chapter 1\")"
+           (prin1-to-string
+            (org-texmacs-document-body
+             (org-texmacs-document detailed)))))
          (should (memq 'with-bib (flatten-tree body)))
          (should (memq 'rsub (flatten-tree body)))
          (should (memq 'frac (flatten-tree body)))

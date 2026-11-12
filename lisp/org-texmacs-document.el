@@ -1044,14 +1044,7 @@ entry identities are resolved later against owned native ASTs."
          'org-texmacs-document-error
          '("Bibliography declaration needs explicit source data"))))
     (cl-labels
-     ((affix-empty
-       (value)
-       (and (proper-list-p value)
-            (cl-every
-             (lambda (part)
-               (and (stringp part) (string-blank-p part)))
-             value)))
-      (toc-title-p
+     ((toc-title-p
        (node)
        ;; Match static TOC selection: relative depth and UNNUMBERED:notoc.
        (let ((level (org-element-property :level node)))
@@ -1100,35 +1093,11 @@ entry identities are resolved later against owned native ASTs."
                        table-cell))
               (org-texmacs--document-fail
                node "Unsupported citation context"))
-            (unless (and (null (org-element-property :style node))
-                         (affix-empty
-                          (org-element-property :prefix node))
-                         (affix-empty
-                          (org-element-property :suffix node))
-                         (org-element-contents node))
-              (org-texmacs--document-fail
-               node "Unsupported citation style or affixes"))
-            (let (group)
-              (dolist (reference (org-element-contents node))
-                (let ((key (org-element-property :key reference)))
-                  (unless (and (eq
-                                (org-element-type reference)
-                                'citation-reference)
-                               (stringp key)
-                               (string-match-p
-                                "\\`[-A-Za-z0-9_:.+]+\\'" key)
-                               (affix-empty
-                                (org-element-property
-                                 :prefix reference))
-                               (affix-empty
-                                (org-element-property
-                                 :suffix reference)))
-                    (org-texmacs--document-fail
-                     node "Unsupported citation reference"))
-                  (unless (member key keys)
-                    (setq keys (append keys (list key))))
-                  (push key group)))
-              (push (cons node (nreverse group)) citations)))
+            (let ((group (org-texmacs--cite-group node)))
+              (dolist (key (plist-get group :keys))
+                (unless (member key keys)
+                  (setq keys (append keys (list key)))))
+              (push (cons node group) citations)))
            ('keyword
             (pcase (upcase (org-element-property :key node))
               ("BIBLIOGRAPHY"
@@ -1293,6 +1262,16 @@ resolve against labels actually generated for this bibliography."
               (signal 'org-texmacs-document-error
                       '("Unsupported native bibliography context")))
             (walk (nth 2 node) (cadr node)))
+           ('cite-detail
+            (unless (and (= (length node) 3)
+                         (stringp (cadr node))
+                         (member
+                          (concat
+                           current-prefix "-" (cadr node))
+                          labels))
+              (signal 'org-texmacs-document-error
+                      '("Unresolved native bibliography reference")))
+            (walk (nth 2 node) current-prefix))
            ((or 'cite 'reference 'pageref)
             (unless (and (cdr node)
                          (cl-every
@@ -1672,8 +1651,9 @@ references with anonymous inline or named inline/separate definitions.
 Emit named bodies once at first use and share labels for repeated references.
 Caption contexts also accept anonymous inline footnote ASTs, including their
 existing native layout limitations; no caption STM discovery is performed.
-Bare default citations also support headings and emitted alternate TOC titles,
-basic emphasis, table cells and long/short captions on supported containers.
+Default citations, including single-key plain-text details, support headings
+and emitted alternate TOC titles, basic emphasis, table cells and long/short
+captions on supported containers.
 Reject nested footnotes, list checkboxes and
 explicit counters; description terms use the existing inline subset.
 Collapse ordinary spaces, tabs and soft newlines across Org inline text
@@ -2251,26 +2231,36 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                        table-cell))
               (org-texmacs--document-fail
                node "Unsupported citation context"))
-            (unless (assq node (plist-get citation-plan :citations))
-              (org-texmacs--document-fail node "Unprepared citation"))
-            (cl-pushnew node used-citations)
-            (setcar space nil)
-            (cons
-             (org-texmacs--document-pack
-              'with-bib
-              (list
-               (org-texmacs--document-create
-                :body (plist-get citation-plan :prefix))
+            (let* ((group
+                    (cdr
+                     (assq
+                      node (plist-get citation-plan :citations))))
+                   (keys (plist-get group :keys))
+                   (detail (plist-get group :detail)))
+              (unless group
+                (org-texmacs--document-fail
+                 node "Unprepared citation"))
+              (cl-pushnew node used-citations)
+              (setcar space nil)
+              (cons
                (org-texmacs--document-pack
-                'cite
-                (mapcar
-                 (lambda
-                   (key)
-                   (org-texmacs--document-create :body key))
-                 (cdr
-                  (assq
-                   node (plist-get citation-plan :citations)))))))
-             (blank node space)))
+                'with-bib
+                (list
+                 (org-texmacs--document-create
+                  :body (plist-get citation-plan :prefix))
+                 (if detail
+                     (org-texmacs--document-pack
+                      'cite-detail
+                      (list
+                       (org-texmacs--document-create :body (car keys))
+                       (org-texmacs--document-create :body detail)))
+                   (org-texmacs--document-pack
+                    'cite
+                    (mapcar
+                     (lambda (key)
+                       (org-texmacs--document-create :body key))
+                     keys)))))
+               (blank node space))))
            ((and (consp node) (eq (org-element-type node) 'timestamp))
             (let ((raw (org-element-property :raw-value node)))
               (unless (and (eq context 'date)
