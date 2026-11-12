@@ -28,7 +28,7 @@
     (strike-through . strike-through))
   "TeXmacs tags for recursively lowered Org inline markup.")
 
-(defconst org-texmacs--supported-link-types
+(defconst org-texmacs--supported-uri-link-types
   '("http" "https" "mailto" "ftp" "ftps")
   "Org link types accepted as self-contained URI targets.")
 
@@ -665,10 +665,11 @@ The mutable Org cache remains local and is never returned."
 
 (defun org-texmacs--document-resolve
     (ast islands static-labels resource-base &optional query)
-  "Validate local Org links in AST without allocating final references.
+  "Resolve available Org navigation targets without allocating final references.
 ISLANDS are opaque.  STATIC-LABELS reserves user-authored STM labels.
 QUERY may supply frozen standard Org resolutions, including external ID file
-targets; these are consumed without new lookups.  Return node-identity
+targets and explicitly unavailable links; consume these without new lookups.
+Unavailable navigation leaves the link without a target.  Return node-identity
 mappings only; never read a source buffer, query an ID database or invoke an
 export consumer."
   (let ((definitions
@@ -761,20 +762,12 @@ export consumer."
                   (lambda (child) (scan child ancestors))
                   (org-element-contents node))))))))
       (choose
-       (node candidates)
+       (candidates)
        (let ((matches
               (cl-delete-duplicates
                (mapcar #'cdr candidates)
                :test #'eq)))
-         (cond
-          ((null matches)
-           (org-texmacs--document-fail
-            node "Unresolved internal link"))
-          ((cdr matches)
-           (org-texmacs--document-fail
-            node "Ambiguous internal link"))
-          (t
-           (car matches)))))
+         (and (null (cdr matches)) (car matches))))
       (lookup
        (key mapping)
        (cl-remove-if-not
@@ -832,12 +825,17 @@ export consumer."
      (setq
       links (nreverse links)
       order (nreverse order))
-     (when-let* ((external-files (plist-get query :external-files)))
-       (unless (proper-list-p external-files)
-         (org-texmacs--document-fail
-          ast "Invalid frozen external ID mapping"))
-       (let ((reachable (make-hash-table :test #'eq))
+     (when query
+       (let ((targets (plist-get query :targets))
+             (external-files (plist-get query :external-files))
+             (unavailable (plist-get query :unavailable-links))
+             (reachable (make-hash-table :test #'eq))
              (seen (make-hash-table :test #'eq)))
+         (unless (and (proper-list-p targets)
+                      (proper-list-p external-files)
+                      (proper-list-p unavailable))
+           (org-texmacs--document-fail
+            ast "Invalid frozen Org link mapping"))
          (org-element-map
           ast
           'link
@@ -846,6 +844,19 @@ export consumer."
           nil
           nil
           t)
+         (dolist (entry targets)
+           (unless (and (consp entry)
+                        (gethash (car entry) reachable)
+                        (member
+                         (org-element-property
+                          :type (car entry))
+                         '("id" "custom-id" "fuzzy"))
+                        (consp (cdr entry))
+                        (org-element-type (cdr entry))
+                        (not (gethash (car entry) seen)))
+             (org-texmacs--document-fail
+              ast "Invalid frozen internal link mapping"))
+           (puthash (car entry) t seen))
          (dolist (entry external-files)
            (unless (and (consp entry)
                         (gethash (car entry) reachable)
@@ -857,12 +868,19 @@ export consumer."
                          (cdr entry))
                         (not (gethash (car entry) seen)))
              (org-texmacs--document-fail
-              ast "Invalid frozen external ID mapping"))
-           (when (assq (car entry) (plist-get query :targets))
+              ast
+              "Invalid or conflicting frozen external ID mapping"))
+           (puthash (car entry) t seen))
+         (dolist (link unavailable)
+           (unless (and (gethash link reachable)
+                        (member
+                         (org-element-property :type link)
+                         '("id" "custom-id" "fuzzy"))
+                        (not (gethash link seen)))
              (org-texmacs--document-fail
-              (car entry)
-              "External ID target also maps to an internal target"))
-           (puthash (car entry) t seen))))
+              ast
+              "Invalid or conflicting frozen unavailable link mapping"))
+           (puthash link t seen))))
      (let ((cells (make-hash-table :test #'equal)))
        (unless query
          (dolist (node order)
@@ -882,31 +900,38 @@ export consumer."
                :parse-tree ast
                :resolve-fuzzy-link-cache (copy-hash-table cells))))
          (dolist (link links)
-           (let* ((type (org-element-property :type link))
-                  (path (org-element-property :path link))
-                  (kind (and (stringp type) (downcase type)))
-                  (external
-                   (and query
-                        (equal kind "id")
-                        (cdr
-                         (assq
-                          link (plist-get query :external-files)))))
-                  (target
-                   (when (member kind '("custom-id" "id" "fuzzy"))
-                     (unless (and (stringp path) (> (length path) 0))
-                       (org-texmacs--document-fail
-                        link "Invalid internal link path"))
-                     (unless external
-                       (if query
+           (let*
+               ((type (org-element-property :type link))
+                (path (org-element-property :path link))
+                (kind (and (stringp type) (downcase type)))
+                (external
+                 (and query
+                      (equal kind "id")
+                      (cdr
+                       (assq
+                        link (plist-get query :external-files)))))
+                (target
+                 (when (member kind '("custom-id" "id" "fuzzy"))
+                   (unless (stringp path)
+                     (org-texmacs--document-fail
+                      link "Invalid internal link path"))
+                   (unless external
+                     (if query
+                         (unless (memq
+                                  link
+                                  (plist-get
+                                   query
+                                   :unavailable-links))
                            (or (cdr
                                 (assq
                                  link (plist-get query :targets)))
                                (org-texmacs--document-fail
-                                link "Missing frozen Org target"))
+                                link "Missing frozen Org target")))
+                       (unless (string-empty-p path)
                          (pcase kind
                            ("custom-id"
-                            (choose link (lookup path custom-ids)))
-                           ("id" (choose link (lookup path ids)))
+                            (choose (lookup path custom-ids)))
+                           ("id" (choose (lookup path ids)))
                            ("fuzzy"
                             (let* ((search
                                     (org-export-string-to-search-cell
@@ -926,26 +951,29 @@ export consumer."
                                      matches))
                                    (chosen
                                     (choose
-                                     link
                                      (mapcar
                                       (lambda (node) (cons nil node))
                                       (or preferred matches)))))
-                              (unless (eq
+                              (when (and
+                                     chosen
+                                     (not
+                                      (eq
                                        chosen
                                        (org-export-resolve-fuzzy-link
-                                        link org-info))
+                                        link org-info))))
                                 (org-texmacs--document-fail
                                  link
                                  "Inconsistent Org link resolution"))
-                              chosen))))))))
-             (when target
-               (when (and (eq (org-element-type target) 'table)
-                          (null
-                           (org-element-property :caption target))
-                          (null (org-element-contents link)))
-                 (org-texmacs--document-fail
-                  link
-                  "Uncaptioned table reference requires a description"))
+                              chosen)))))))))
+             ;; A target outside the rendered tree has no allocated label.
+             ;; A bare uncaptioned table cannot supply reference text.
+             (when (and target
+                        (memq target order)
+                        (not
+                         (and (eq (org-element-type target) 'table)
+                              (null
+                               (org-element-property :caption target))
+                              (null (org-element-contents link)))))
                (push (cons link target) resolved))
              (let ((file-path
                     (cond
@@ -953,9 +981,7 @@ export consumer."
                       external)
                      ((equal kind "file")
                       path))))
-               (when (or external (equal kind "file"))
-                 (unless (and
-                          (org-texmacs--document-local-file-path-p
+               (when (and (org-texmacs--document-local-file-path-p
                            file-path)
                           (null
                            (org-element-property :search-option link))
@@ -963,15 +989,10 @@ export consumer."
                            (org-element-property :application link))
                           (or (null resource-base)
                               (org-texmacs--document-local-file-path-p
-                               resource-base)))
-                   (org-texmacs--document-fail
-                    link "Unsupported file link or resource context"))
-                 (let ((file-name-handler-alist nil))
-                   (unless (or (file-name-absolute-p file-path)
-                               resource-base)
-                     (org-texmacs--document-fail
-                      link
-                      "Relative file link requires a resource base")))
+                               resource-base))
+                          (let ((file-name-handler-alist nil))
+                            (or (file-name-absolute-p file-path)
+                                resource-base)))
                  (push (cons link (substring-no-properties file-path))
                        files)))))))
      (org-texmacs--resolution-create
@@ -1978,6 +1999,23 @@ for consumers.  Final handlers must preserve contents identity and provenance."
              (push entry used-blanks))
            (unless (equal value "")
              (list (text value space))))))
+      (link-text
+       (node ancestors space)
+       ;; Drop only the outer navigation wrapper.  Description parts retain
+       ;; their own provenance and share the enclosing whitespace state.
+       (append
+        (if (org-element-contents node)
+            (inlines
+             (org-element-contents node)
+             'link
+             (cons node ancestors)
+             space)
+          (let ((raw (org-element-property :raw-link node)))
+            (unless (and (stringp raw) (> (length raw) 0))
+              (org-texmacs--document-fail
+               node "Missing raw text for link fallback"))
+            (list (text raw space))))
+        (blank node space)))
       (inline
         (node context ancestors space)
         (let ((entry (assq node islands)))
@@ -2275,76 +2313,78 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                      node
                      (org-texmacs-resolution-links resolution)))))
               (unless (and (stringp type)
-                           (stringp path)
-                           (or reference
-                               file
-                               (member
-                                (downcase type)
-                                org-texmacs--supported-link-types)))
+                           (> (length type) 0)
+                           (stringp path))
                 (org-texmacs--document-fail
-                 node "Unsupported link type or path"))
-              (when (and file (cadr space))
-                (org-texmacs--document-fail
-                 node "Unsupported file link in title or metadata"))
-              (let* ((uri
-                      (and (not reference)
-                           (or file
-                               (concat
-                                (substring-no-properties type)
-                                ":"
-                                (substring-no-properties path)))))
-                     (parts
-                      (and (org-element-contents node)
-                           (inlines
-                            (org-element-contents node)
-                            'link
-                            (cons node ancestors)
-                            space)))
-                     (body
-                      (cond
-                       ((null parts)
-                        (setcar space nil)
-                        (and uri
-                             (org-texmacs--document-create
-                              :body (copy-sequence uri))))
-                       ((null (cdr parts))
-                        (car parts))
-                       (t
-                        (org-texmacs--document-pack 'concat parts)))))
-                (cons
-                 (if file
-                     (let ((result
-                            (org-texmacs--document-pack
-                             'hlink
-                             (list
-                              body
-                              (org-texmacs--document-create
-                               :body file)))))
-                       (org-texmacs--document-create
-                        :body
-                        (org-texmacs-document-body result)
-                        :stm-paths
-                        (org-texmacs-document-stm-paths result)
-                        :file-paths
-                        (append
-                         (org-texmacs-document-file-paths result)
-                         (list (list 1)))))
-                   (if (and reference (null parts))
-                       (org-texmacs--document-pack
-                        'reference
-                        (list
+                 node "Invalid link type or path"))
+              (if (or (and file (cadr space))
+                      (not
+                       (or reference
+                           file
+                           (member
+                            (downcase type)
+                            org-texmacs--supported-uri-link-types))))
+                  (link-text node ancestors space)
+                (let* ((uri
+                        (and (not reference)
+                             (or file
+                                 (concat
+                                  (substring-no-properties type)
+                                  ":"
+                                  (substring-no-properties path)))))
+                       (parts
+                        (and (org-element-contents node)
+                             (inlines
+                              (org-element-contents node)
+                              'link
+                              (cons node ancestors)
+                              space)))
+                       (body
+                        (cond
+                         ((null parts)
+                          (setcar space nil)
+                          (and uri
+                               (org-texmacs--document-create
+                                :body (copy-sequence uri))))
+                         ((null (cdr parts))
+                          (car parts))
+                         (t
+                          (org-texmacs--document-pack
+                           'concat parts)))))
+                  (cons
+                   (if file
+                       (let ((result
+                              (org-texmacs--document-pack
+                               'hlink
+                               (list
+                                body
+                                (org-texmacs--document-create
+                                 :body file)))))
                          (org-texmacs--document-create
-                          :body reference)))
-                     (org-texmacs--document-pack
-                      'hlink
-                      (list
-                       body
-                       (org-texmacs--document-create
-                        :body
-                        (if reference
-                            (concat "#" reference)
-                          uri))))))
-                 (blank node space)))))
+                          :body
+                          (org-texmacs-document-body result)
+                          :stm-paths
+                          (org-texmacs-document-stm-paths result)
+                          :file-paths
+                          (append
+                           (org-texmacs-document-file-paths result)
+                           (list (list 1)))))
+                     (if (and reference (null parts))
+                         (org-texmacs--document-pack
+                          'reference
+                          (list
+                           (org-texmacs--document-create
+                            :body reference)))
+                       (org-texmacs--document-pack
+                        'hlink
+                        (list
+                         body
+                         (org-texmacs--document-create
+                          :body
+                          (if reference
+                              (concat "#" reference)
+                            uri))))))
+                   (blank node space))))))
            ((and (consp node) (eq (org-element-type node) 'target))
             (unless (eq context 'paragraph)
               (org-texmacs--document-fail

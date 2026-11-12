@@ -1318,7 +1318,7 @@ The supported Org subset is deliberately small:
 
 Heading text may contain supported emphasis, literal inline code and bare
 default citations, but not explicit line breaks.  This is not a general Org
-exporter: unsupported links and footnotes, advanced table semantics, other
+exporter: unsupported footnotes, advanced table semantics, other
 blocks, unrecognized keywords, drawers and affiliated metadata outside the
 object-specific NAME/CAPTION rules below are rejected.
 Empty headline titles and =H= values outside 0 through 5 are rejected.
@@ -1600,9 +1600,10 @@ neither include nor activate the patch.
 Fuzzy links resolve named tables before headline titles.  Referenced captioned
 tables place their private label inside the caption, after the native table
 counter binding; undescribed links use =reference= and described links use
-=hlink=.  An uncaptioned named table has an invisible anchor and requires a
-link description.  No table number is invented for it.  Ambiguous referenced
-names or collisions with dedicated targets fail explicitly.  Maintained native
+=hlink=.  A described link to an uncaptioned named table can use an invisible
+anchor; a bare link falls back to text.  No table number is invented for it.
+Independent input falls back for ambiguous referenced names or collisions with
+dedicated targets; standard export consumes Org's selection.  Maintained native
 PDF checks cover two caption counters, displayed references and caption geometry
 against an independent native reference; arbitrary styles and pagination remain
 outside this bounded verification.
@@ -1630,6 +1631,15 @@ may contain supported inline markup; without a description the URI is
 displayed.  Targets are assembled from Org's type/path without additional
 escaping or prose whitespace normalization.  Conversion does not open or
 download targets, invoke export handlers, or embed linked images.
+Parsed Org links without an available structural navigation target fall back to
+their normally lowered descriptions, or to the AST's =:raw-link= text when
+there is no description.  The fallback adds no hyperlink for the outer link
+and does not change the owned Org AST or Org link following.  It uses the
+parser's raw-link value (which may already reflect abbreviation expansion
+and escaping), not a reconstruction of source syntax.  This includes broken
+links, irrespective of =org-export-with-broken-links=, and unsupported target
+forms.  Other Org backends and Org link following retain their own behavior.
+Invalid AST or frozen resolution data still fail explicitly.
 Same-document =[[#CUSTOM_ID]]=, =[[id:ID]]=, =[[*Headline]]= and fuzzy
 =[[Headline]]= links in body text and headline titles resolve against visible
 headings in the prepared AST.  Fuzzy links also resolve =<<dedicated targets>>=
@@ -1638,11 +1648,12 @@ Explicit descriptions become internal =hlink= bodies;
 links without descriptions become TeXmacs =reference= nodes.  Resolution uses
 Org search-cell matching and priorities within the owned effective document.
 Named objects and dedicated targets take precedence over headline titles;
-multiple distinct matches at the effective priority are errors for used links.
-Missing targets fail explicitly.  Independent pure input construction and
-pure document lowering do not read a source buffer or query a global Org ID
-database.  Named basic tables retain the caption rules above; plain-text
-search fallback and other protocols remain unsupported.
+independent input falls back to text for multiple distinct matches at the
+effective priority or missing targets.  Standard export consumes Org's
+selection rather than imposing a separate uniqueness check.  Independent pure
+input construction and pure document lowering do not read a source buffer or
+query a global Org ID database.  Named basic tables retain the caption rules
+above; navigation by plain-text search or other protocols remains unsupported.
 
 Cross-file =id:= links are supported through the standard Org export
 transaction.  Org resolves an ID to an internal headline or an external file.
@@ -1659,11 +1670,11 @@ displayed.  Relative ID filenames are interpreted using the directory captured
 for Org's ID location collection; if it differs from the source resource base,
 the resolved target is frozen as an absolute path.  Later changes to the export
 working directory do not select a different file.  The exporter neither builds
-nor checks the existence of the target PDF.  Unresolved IDs and unsupported
-targets remain errors.  A file-level ID on the current source document, and an
-ID whose location is the current source file but whose object is outside the
-effective exported AST (for example an excluded =noexport= heading), remain
-errors rather than self-file links.
+nor checks the existence of the target PDF.  Unresolved IDs and unavailable
+targets fall back to their visible content.  A file-level ID on the current
+source document, and an ID whose location is the current source file but
+whose object is outside the effective exported AST (for example an excluded
+=noexport= heading), fall back rather than becoming self-file links.
 
 Statements (including =proof=), =equation= / =equation*=, the four figure/table
 wrappers and ordinary =texmacs= blocks accept exactly one nonempty =#+NAME=.
@@ -1671,7 +1682,8 @@ Every such named block gets a label, including unreferenced and unnumbered
 objects.  Custom handlers do not acquire NAME support.  Figure/table identity
 belongs to the outer wrapper; affiliated metadata on its inner body is rejected.
 Repeated NAME declarations on one object are errors; separate objects may share
-an unused name, but a link matching both is ambiguous.  Region/narrowing exports
+an unused name.  Independent input falls back for an ambiguous link; standard
+export uses Org's selection.  Region/narrowing exports
 must include the NAME and the complete block, and excluded objects do not supply
 targets or cause unrelated metadata errors.
 
@@ -1702,7 +1714,8 @@ the exporter accepts structural references without judging their displayed value
 Native placement/readback/PDF-link checks cover the pinned =generic= and =article=
 styles; arbitrary STM roots and other installed styles have no universal layout
 guarantee.  No counter, float-layout or caption-footnote workaround is inserted.
-Internal links in document metadata and =ALT_TITLE= remain outside this node.
+Internal links in document metadata and =ALT_TITLE= without allocated targets
+fall back to visible content.
 
 Plain local file links, including implicit =[[./notes.org]]= and absolute
 file links, are supported in body text.  A description becomes the =hlink=
@@ -1710,7 +1723,8 @@ display body; otherwise the raw path is displayed.  The document body retains
 the raw path, while =file-paths= identifies its target leaf with zero-based
 child indices.  These paths remain separate from STM provenance and propagate
 through supported inline and block containers.  Relative paths require an
-explicit captured =resource-base=; absolute paths need no implicit base.
+explicit captured =resource-base= for navigation; absolute paths need no
+implicit base.  Without a required base, the link falls back to visible text.
 
 The native bridge translates only marked file targets on its own body copy,
 then applies ordinary literal native encoding.  The captured
@@ -1734,7 +1748,8 @@ follow the same suffix and path policies as ordinary file links.
 The bridge does not open or inspect resources, inline images, or consult the
 caller's current directory.  The original document remains unchanged.  File searches
 such as =file:notes.org::#target=, application hints, tilde targets, remote
-resources, and file links in titles/metadata are unsupported.  Native string
+resources, and file links in titles/metadata fall back to visible text.
+Native string
 navigation also rejects targets containing =#=, =?=, =*=, =$=, =|=, backslash,
 or square brackets, because these may be interpreted as navigation or URL
 syntax.  Such paths can remain in a structural result but fail native preflight.

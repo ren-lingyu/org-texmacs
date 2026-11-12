@@ -904,6 +904,46 @@
    (t
     nil)))
 
+(ert-deftest
+    org-texmacs-standard-export-unsupported-link-visible-content
+    ()
+  (let ((org-export-use-babel nil)
+        (org-link-parameters (copy-tree org-link-parameters)))
+    (org-link-set-parameters
+     "shell"
+     :follow
+     (lambda (&rest _) (ert-fail "Followed a shell link"))
+     :export
+     (lambda (&rest _) (ert-fail "Called a shell export handler")))
+    (cl-labels
+     ((lower
+       (source)
+       (with-temp-buffer
+         (org-mode)
+         (insert
+          "#+OPTIONS: toc:nil title:nil author:nil date:nil\n\n"
+          source)
+         (org-texmacs-document-from-buffer (current-buffer))))
+      (visible-text
+       (body)
+       (apply #'concat
+              (cl-remove-if-not #'stringp (flatten-tree body)))))
+     (let*
+         ((document
+           (lower
+            "A [[shell:echo][*Important* note]] [[shell:echo]] B.\n"))
+          (plain (lower "A *Important* note shell:echo B.\n"))
+          (body (org-texmacs-document-body document))
+          (expected (org-texmacs-document-body plain)))
+       (should (equal (visible-text body) (visible-text expected)))
+       (should
+        (equal
+         (org-texmacs-test--caption-inline-footnote-nodes
+          body 'strong)
+         '((strong "Important"))))
+       (should-not (org-texmacs-test--body-hlinks body))
+       (should-not (org-texmacs-document-file-paths document))))))
+
 (ert-deftest org-texmacs-standard-export-resolves-external-id-links ()
   (org-texmacs-test--with-id-files
    (concat
@@ -1014,7 +1054,39 @@
             (equal
              (cdr (assq link external)) "../target/target.org"))))))))
 
-(ert-deftest org-texmacs-standard-export-rejects-same-file-id-links ()
+(defun org-texmacs-test--assert-unavailable-id-link (input expected)
+  "Assert INPUT owns an unavailable ID link with visible EXPECTED text."
+  (let* ((query
+          (plist-get
+           (org-texmacs-input-info input)
+           :texmacs-org-query))
+         (links
+          (org-element-map
+           (org-texmacs-input-ast input) 'link #'identity))
+         (unavailable (plist-get query :unavailable-links)))
+    (should (= (length unavailable) 1))
+    (should (memq (car unavailable) links))
+    (should
+     (equal (org-element-property :type (car unavailable)) "id"))
+    (should-not (plist-get query :external-files))
+    (should-not (plist-get query :targets))
+    (cl-letf (((symbol-function 'org-export-resolve-id-link)
+               (lambda (&rest _)
+                 (ert-fail "Requeried unavailable ID")))
+              ((symbol-function 'org-id-find)
+               (lambda (&rest _) (ert-fail "Requeried ID database")))
+              ((symbol-function 'org-texmacs--worker-call)
+               (lambda (&rest _)
+                 (ert-fail "Fallback started a worker"))))
+      (let* ((document (org-texmacs-document input))
+             (body (org-texmacs-document-body document)))
+        (should (member expected (flatten-tree body)))
+        (should-not (org-texmacs-test--body-hlinks body))
+        (should-not (memq 'reference (flatten-tree body)))
+        (should-not (org-texmacs-document-file-paths document))
+        (should (equal document (org-texmacs-document input)))))))
+
+(ert-deftest org-texmacs-standard-export-same-file-id-fallback ()
   (org-texmacs-test--with-id-files
    (concat
     "#+TITLE: Same\n#+OPTIONS: toc:nil author:nil date:nil\n\n"
@@ -1031,11 +1103,11 @@
      (setq
       buffer-file-name source
       default-directory (file-name-directory source))
-     (should-error
-      (org-texmacs-prepare-buffer (current-buffer))
-      :type 'org-texmacs-document-error))))
+     (org-texmacs-test--assert-unavailable-id-link
+      (org-texmacs-prepare-buffer (current-buffer)) "Hidden"))))
 
-(ert-deftest org-texmacs-standard-export-rejects-file-level-self-id ()
+(ert-deftest org-texmacs-standard-export-file-level-self-id-fallback
+    ()
   (org-texmacs-test--with-id-files
    (concat
     ":PROPERTIES:\n:ID: source-file-id\n:END:\n"
@@ -1051,11 +1123,10 @@
      (setq
       buffer-file-name source
       default-directory (file-name-directory source))
-     (should-error
-      (org-texmacs-prepare-buffer (current-buffer))
-      :type 'org-texmacs-document-error))))
+     (org-texmacs-test--assert-unavailable-id-link
+      (org-texmacs-prepare-buffer (current-buffer)) "Self"))))
 
-(ert-deftest org-texmacs-standard-export-unresolved-id-still-fails ()
+(ert-deftest org-texmacs-standard-export-unresolved-id-fallback ()
   (org-texmacs-test--with-id-files
    (concat
     "#+TITLE: Source\n#+OPTIONS: toc:nil author:nil date:nil\n\n"
@@ -1073,9 +1144,39 @@
                   (lambda (&rest args)
                     (unless (equal args '(files t))
                       (apply list-buffers args)))))
-         (should-error
-          (org-texmacs-prepare-buffer (current-buffer))
-          :type 'org-link-broken))))))
+         (dolist (policy '(nil t mark))
+           (let ((org-export-with-broken-links policy))
+             (org-texmacs-test--assert-unavailable-id-link
+              (org-texmacs-prepare-buffer (current-buffer))
+              "Missing"))))))))
+
+(ert-deftest org-texmacs-standard-export-unavailable-internal-links ()
+  (with-temp-buffer
+    (org-mode)
+    (insert
+     "#+OPTIONS: toc:nil author:nil date:nil\n\n"
+     "A [[#gone][*Gone*]] [[missing-target]] B.\n\n"
+     "* Present\n:PROPERTIES:\n:CUSTOM_ID: present\n:END:\n"
+     "[[#present][Here]]\n")
+    (let* ((org-export-with-broken-links nil)
+           (input (org-texmacs-prepare-buffer (current-buffer)))
+           (query
+            (plist-get
+             (org-texmacs-input-info input)
+             :texmacs-org-query))
+           (unavailable (plist-get query :unavailable-links))
+           (document (org-texmacs-document input))
+           (body (org-texmacs-document-body document))
+           (hlinks (org-texmacs-test--body-hlinks body)))
+      (should (= (length unavailable) 2))
+      (should (= (length hlinks) 1))
+      (should (equal (cadar hlinks) "Here"))
+      (should (member "Gone" (flatten-tree body)))
+      (should (member "missing-target" (flatten-tree body)))
+      (should (memq 'strong (flatten-tree body)))
+      ;; The backend's handling must not change other Org exports.
+      (require 'ox-ascii)
+      (should-error (org-export-as 'ascii) :type 'user-error))))
 
 (defun org-texmacs-test--file-target-leaves (document)
   "Return the target leaf at each file provenance path in DOCUMENT."
@@ -1275,15 +1376,12 @@
             "notes/target/target.org"
             (org-texmacs--query-external-id-path
              "notes/target/target.org" nil directory directory)))
-          (should-error
+          (should-not
            (org-texmacs--query-external-id-path
-            "../notes/target/target.org" target directory other)
-           :type 'org-texmacs-document-error))
+            "../notes/target/target.org" target directory other)))
       (delete-directory directory t))))
 
-(ert-deftest
-    org-texmacs-query-external-id-path-rejects-unverifiable-base
-    ()
+(ert-deftest org-texmacs-query-external-id-path-unavailable-base ()
   (let* ((directory (make-temp-file "org-texmacs-id-base-" t))
          (target (expand-file-name "target.org" directory)))
     (unwind-protect
@@ -1293,10 +1391,9 @@
           (let ((default-directory
                  (file-name-as-directory directory)))
             ;; Existence does not establish where Org collected the path.
-            (should-error
+            (should-not
              (org-texmacs--query-external-id-path
-              "target.org" nil directory nil)
-             :type 'org-texmacs-document-error)))
+              "target.org" nil directory nil))))
       (delete-directory directory t))))
 
 (ert-deftest org-texmacs-standard-export-external-id-snapshot-frozen
@@ -1404,9 +1501,9 @@
      (goto-char (point-min))
      (search-forward "* Selected")
      (beginning-of-line)
-     (should-error
+     (org-texmacs-test--assert-unavailable-id-link
       (org-texmacs-prepare-buffer (current-buffer) nil (point))
-      :type 'org-texmacs-document-error))))
+      "Other"))))
 
 (ert-deftest org-texmacs-standard-export-external-id-include ()
   (org-texmacs-test--with-id-files

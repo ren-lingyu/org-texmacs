@@ -804,7 +804,7 @@
           "HTTPS://example.org/<alpha>\t%20")))))
     (should-not (eq path (nth 2 (nth 1 (nth 1 body)))))
     (should (equal path "//example.org/<alpha>\t%20")))
-  (dolist (type '("file" "fuzzy" "id" "custom-id" "news" nil))
+  (dolist (type '(nil ""))
     (let ((ast
            (org-element-create
             'org-data nil
@@ -816,6 +816,57 @@
                :type type
                :path "x"
                :raw-link "https://example.org"))))))
+      (should-error
+       (org-texmacs-test--lower ast)
+       :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-document-unsupported-link-visible-content ()
+  (let* ((described
+          (org-element-create
+           'link
+           '(:type "news" :path "ignored" :post-blank 1)
+           (org-element-create 'bold nil "Important") " note"))
+         (bare
+          (org-element-create
+           'link
+           '(:type
+             "news"
+             :path "different"
+             :raw-link "news:raw text"
+             :post-blank 1)))
+         (ast
+          (org-element-create
+           'org-data nil
+           (org-element-create
+            'paragraph nil "Before " described bare "after.")))
+         (plain
+          (org-element-create
+           'org-data nil
+           (org-element-create
+            'paragraph
+            nil
+            "Before "
+            (org-element-create 'bold nil "Important")
+            " note"
+            (copy-sequence " ")
+            "news:raw text"
+            (copy-sequence " ")
+            "after.")))
+         (document (org-texmacs-test--lower ast)))
+    (should
+     (equal
+      (org-texmacs-document-body document)
+      (org-texmacs-document-body (org-texmacs-test--lower plain))))
+    (should-not (org-texmacs-document-file-paths document))
+    (should-not (org-texmacs-document-stm-paths document)))
+  (dolist (raw '(nil "" 42))
+    (let ((ast
+           (org-element-create
+            'org-data nil
+            (org-element-create
+             'paragraph nil
+             (org-element-create
+              'link (list :type "news" :path "x" :raw-link raw))))))
       (should-error
        (org-texmacs-test--lower ast)
        :type 'org-texmacs-document-error))))
@@ -1024,14 +1075,7 @@
 
 (ert-deftest org-texmacs-document-rejects-unsupported-source ()
   (dolist (source
-           '("[[file:notes.org][link]]\n"
-             "[[./notes.org]]\n"
-             "[[file:/ssh:host:/tmp/notes.org]]\n"
-             "[[file:notes.org::heading]]\n"
-             "[[file+emacs:notes.org]]\n"
-             "[[#target]]\n"
-             "[[id:missing]]\n"
-             "A[fn:named]\n"
+           '("A[fn:named]\n"
              "# comment\n"
              "#+title: Title\n"
              "* COMMENT Task\n"
@@ -1045,6 +1089,36 @@
       (should-error
        (org-texmacs-test--lower (org-element-parse-buffer))
        :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-document-unavailable-link-content ()
+  (dolist (case
+           '(("[[file:notes.org][link]]" . "link")
+             ("[[./notes.org]]" . "./notes.org")
+             ("[[file:/ssh:host:/tmp/notes.org]]"
+              .
+              "file:/ssh:host:/tmp/notes.org")
+             ("[[file:notes.org::heading]]"
+              .
+              "file:notes.org::heading")
+             ("[[file+emacs:notes.org]]" . "file+emacs:notes.org")
+             ("[[#target]]" . "#target")
+             ("[[id:missing]]" . "id:missing")
+             ("[[unresolved]]" . "unresolved")))
+    (with-temp-buffer
+      (org-mode)
+      (insert (car case) "\n")
+      (let* ((document
+              (org-texmacs-test--lower (org-element-parse-buffer)))
+             (body (org-texmacs-document-body document)))
+        (should-not (memq 'hlink (flatten-tree body)))
+        (should-not (memq 'reference (flatten-tree body)))
+        (should-not (org-texmacs-document-file-paths document))
+        (should
+         (equal
+          (string-trim
+           (apply #'concat
+                  (cl-remove-if-not #'stringp (flatten-tree body))))
+          (cdr case)))))))
 
 (ert-deftest org-texmacs-document-rejects-invalid-mappings ()
   (let* ((leaf (copy-sequence "x"))
@@ -1275,13 +1349,37 @@
             (org-mode)
             (insert
              "#+OPTIONS: toc:nil\n[[id:ambient-id][Ambient]].\n")
-            ;; Independent pure input does not discover external ID locations
-            ;; from the live database; the link stays an internal error.
-            (should-error
-             (org-texmacs-document
-              (org-texmacs-test--input-from-model
-               (org-texmacs-parse-buffer (current-buffer))))
-             :type 'org-texmacs-document-error)))
+            ;; Even a registered ambient ID stays a text-only fallback in
+            ;; independent input.  Neither preparation nor lowering may query
+            ;; the live ID database.
+            (cl-letf (((symbol-function 'org-id-find)
+                       (lambda (&rest _)
+                         (ert-fail
+                          "Pure input queried the ID database")))
+                      ((symbol-function 'org-id-find-id-file)
+                       (lambda (&rest _)
+                         (ert-fail
+                          "Pure input queried the ID database")))
+                      ((symbol-function 'org-export-resolve-id-link)
+                       (lambda (&rest _)
+                         (ert-fail
+                          "Pure input queried Org ID resolution"))))
+              (let* ((document
+                      (org-texmacs-document
+                       (org-texmacs-test--input-from-model
+                        (org-texmacs-parse-buffer (current-buffer)))))
+                     (body (org-texmacs-document-body document)))
+                (should-not (memq 'hlink (flatten-tree body)))
+                (should-not (memq 'reference (flatten-tree body)))
+                (should-not
+                 (org-texmacs-document-file-paths document))
+                (should
+                 (equal
+                  (string-trim
+                   (apply #'concat
+                          (cl-remove-if-not
+                           #'stringp (flatten-tree body))))
+                  "Ambient."))))))
       (delete-directory directory t))))
 
 (ert-deftest org-texmacs-document-validates-frozen-external-id-mapping
@@ -1323,5 +1421,48 @@
      (should-error
       (lower (list valid) (list (cons id id)))
       :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-document-validates-frozen-unavailable-links
+    ()
+  (let* ((link
+          (org-element-create
+           'link
+           '(:type "id" :path "missing" :raw-link "id:missing")))
+         (uri
+          (org-element-create
+           'link '(:type "https" :path "//example.org")))
+         (ast
+          (org-element-create
+           'org-data nil
+           (org-element-create 'paragraph nil link " " uri))))
+    (cl-labels
+     ((lower
+       (query)
+       (org-texmacs-document
+        (org-texmacs-input-create
+         ast
+         (list :texmacs-org-query query)
+         :resource-base "/tmp/"))))
+     (let ((document (lower (list :unavailable-links (list link)))))
+       (should
+        (member
+         "id:missing"
+         (flatten-tree (org-texmacs-document-body document))))
+       (should-not (org-texmacs-document-file-paths document)))
+     (dolist (query
+              (list
+               '(:targets nil)
+               (list :unavailable-links (list link link))
+               (list :unavailable-links (list uri))
+               (list
+                :unavailable-links (list link)
+                :external-files (list (cons link "other.org")))
+               (list
+                :unavailable-links (list link)
+                :targets (list (cons link ast)))
+               (list :targets (list (cons link nil)))))
+       (should-error
+        (lower query)
+        :type 'org-texmacs-document-error)))))
 
 ;;; document.el ends here

@@ -91,31 +91,37 @@
        "\n"
        (org-texmacs-test--stage4-block "theorem" "Same")
        (org-texmacs-test--stage4-block "lemma" "Same"))
-      (if (equal link "")
-          (let ((ids
-                 (org-texmacs--document-output-labels
-                  (org-texmacs-document-body
-                   (org-texmacs-document
-                    (org-texmacs-test--input-from-model
-                     (org-texmacs-parse-buffer (current-buffer))))))))
-            (should (= 2 (length ids)))
-            (should-not (equal (car ids) (cadr ids))))
-        (should-error
-         (org-texmacs-document
-          (org-texmacs-test--input-from-model
-           (org-texmacs-parse-buffer (current-buffer))))
-         :type 'org-texmacs-document-error))))
+      (let* ((document
+              (org-texmacs-document
+               (org-texmacs-test--input-from-model
+                (org-texmacs-parse-buffer (current-buffer)))))
+             (body (org-texmacs-document-body document))
+             (ids (org-texmacs--document-output-labels body)))
+        (should (= 2 (length ids)))
+        (should-not (equal (car ids) (cadr ids)))
+        (unless (equal link "")
+          (should-not (memq 'reference (flatten-tree body)))
+          (should-not (memq 'hlink (flatten-tree body)))
+          (should
+           (member
+            (if (equal link "[[Same]]")
+                "Same"
+              "Describe")
+            (flatten-tree body)))))))
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
     (insert
      (org-texmacs-test--stage4-block "theorem" "Spot")
      "<<Spot>> [[Spot]]\n")
-    (should-error
-     (org-texmacs-document
-      (org-texmacs-test--input-from-model
-       (org-texmacs-parse-buffer (current-buffer))))
-     :type 'org-texmacs-document-error)))
+    (let* ((document
+            (org-texmacs-document
+             (org-texmacs-test--input-from-model
+              (org-texmacs-parse-buffer (current-buffer)))))
+           (body (org-texmacs-document-body document)))
+      (should (member "Spot" (flatten-tree body)))
+      (should-not (memq 'reference (flatten-tree body)))
+      (should-not (memq 'hlink (flatten-tree body))))))
 
 (ert-deftest org-texmacs-issue13-stage4-slug-and-allocation-collision
     ()
@@ -233,11 +239,13 @@
     (insert
      "#+NAME: Raw\n#+begin_texmacs\n(document \"<<Fake>>\")\n#+end_texmacs\n[[Fake]]\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (&rest _)
-                 (ert-fail "Fake target escaped opacity"))))
-      (should-error
-       (org-texmacs-document-from-buffer (current-buffer))
-       :type 'org-texmacs-document-error)))
+               (lambda (raw &rest _) (read raw))))
+      (let* ((document
+              (org-texmacs-document-from-buffer (current-buffer)))
+             (body (org-texmacs-document-body document)))
+        (should (member "Fake" (flatten-tree body)))
+        (should-not (memq 'reference (flatten-tree body)))
+        (should-not (memq 'hlink (flatten-tree body))))))
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
@@ -258,7 +266,7 @@
            'special-block (list :type "theorem" :name "Same")))
          (link
           (org-element-create
-           'link (list :type "fuzzy" :path "Same")))
+           'link (list :type "fuzzy" :path "Same" :raw-link "Same")))
          (ast
           (org-element-create
            'org-data
@@ -267,10 +275,11 @@
            b
            (org-element-create 'paragraph nil link)))
          (input (org-texmacs-input-create ast nil)))
-    ;; Structurally equal, distinct targets must remain ambiguous.
-    (should-error
-     (org-texmacs-document input)
-     :type 'org-texmacs-document-error)
+    ;; Structurally equal, distinct targets remain ambiguous; do not choose one.
+    (let ((body
+           (org-texmacs-document-body (org-texmacs-document input))))
+      (should (member "Same" (flatten-tree body)))
+      (should-not (memq 'reference (flatten-tree body))))
     (org-element-set-contents
      ast a
      (org-element-create 'paragraph nil link))
@@ -710,10 +719,7 @@
                 ((format "Caption metadata: %S" metadata))
                 (should-error
                  (org-texmacs-document-from-buffer (current-buffer))
-                 :type
-                 (if (string-search "Missing" metadata)
-                     'org-link-broken
-                   'org-texmacs-document-error)))))
+                 :type 'org-texmacs-document-error))))
           (when (and (eq (car err) 'org-texmacs-document-error)
                      (string-match-p "CAPTION\\[" metadata))
             (should

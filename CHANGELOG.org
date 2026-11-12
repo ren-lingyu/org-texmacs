@@ -14,8 +14,13 @@ release notes.
   file-level and headline IDs currently provide document-level navigation;
   precise navigation to a target position in another exported document is not
   yet supported. The existing =.org= to =.pdf= target conversion and PDF path
-  policies apply to resolved external ID targets. Same-file excluded targets
-  and current-file file-level IDs remain errors.
+  policies apply to resolved external ID targets.
+- Org links without an available structural navigation target retain their
+  descriptions or parsed raw-link text instead of aborting TeXmacs document
+  lowering. This includes unsupported link types and forms, unresolved or
+  excluded targets, and independent inputs without required resolution context.
+  Successful navigation and native file-target constraints are unchanged.
+  Invalid AST and frozen resolution data remain errors.
 
 * DONE v0.7.0
 CLOSED: [2026-11-04 Wed 18:45]

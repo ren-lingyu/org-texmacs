@@ -720,14 +720,22 @@
     ()
   (let* ((link
           (org-element-create
-           'link '(:type "file" :path "relative.pdf")))
+           'link
+           '(:type
+             "file"
+             :path "relative.pdf"
+             :raw-link "file:relative.pdf")))
          (ast
           (org-element-create
            'org-data nil
            (org-element-create 'paragraph nil link))))
-    (should-error
-     (org-texmacs-document (org-texmacs-input-create ast nil))
-     :type 'org-texmacs-document-error)
+    (let ((document
+           (org-texmacs-document (org-texmacs-input-create ast nil))))
+      (should
+       (equal
+        (org-texmacs-document-body document)
+        '(document (concat "file:relative.pdf"))))
+      (should-not (org-texmacs-document-file-paths document)))
     (org-element-put-property link :path "/absolute.pdf")
     (should
      (equal
@@ -746,9 +754,12 @@
       (insert source "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  #'org-texmacs-test--parse-fixture-stm))
-        (should-error
-         (org-texmacs-document-from-buffer (current-buffer))
-         :type 'org-texmacs-document-error)))))
+        (let* ((document
+                (org-texmacs-document-from-buffer (current-buffer)))
+               (body (org-texmacs-document-body document)))
+          (should (org-texmacs-document-p document))
+          (should-not (memq 'hlink (flatten-tree body)))
+          (should-not (org-texmacs-document-file-paths document)))))))
 
 (ert-deftest
     org-texmacs-file-links-native-readback-and-preflight-preservation

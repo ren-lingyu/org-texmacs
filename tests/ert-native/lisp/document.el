@@ -742,27 +742,54 @@
        (< (cl-position link paragraph :test #'equal)
           (cl-position target paragraph :test #'equal))))))
 
-(ert-deftest
-    org-texmacs-document-rejects-ambiguous-and-unresolved-id-links
+(ert-deftest org-texmacs-document-ambiguous-and-unresolved-id-fallback
     ()
-  (dolist
-      (source
-       '("#+OPTIONS: toc:nil\n* Alpha\n* Alpha\n[[*Alpha]]\n"
-         ;; Independent pure input cannot resolve a cross-file ID: an ID not
-         ;; present in the owned AST stays an error rather than a file target.
-         "#+OPTIONS: toc:nil\n[[id:external-id]]\n"
-         "#+OPTIONS: toc:nil\n#+EXCLUDE_TAGS: hidden\n* Hidden :hidden:\n:PROPERTIES:\n:CUSTOM_ID: gone\n:END:\n* Visible\n[[#gone]]\n"))
+  (dolist (case
+           '(("#+OPTIONS: toc:nil\n* Alpha\n* Alpha\n[[*Alpha]]\n"
+              .
+              "*Alpha")
+             ("#+OPTIONS: toc:nil\n[[id:external-id]]\n"
+              .
+              "id:external-id")
+             ("#+OPTIONS: toc:nil\n* Visible\n[[#gone]]\n"
+              .
+              "#gone")))
     (with-temp-buffer
       (org-mode)
       (setq-local org-export-with-author nil)
-      (insert source)
-      (let ((before (buffer-string)))
-        (should-error
-         (org-texmacs-document
-          (org-texmacs-test--input-from-model
-           (org-texmacs-parse-buffer (current-buffer))))
-         :type 'org-texmacs-document-error)
+      (insert (car case))
+      (let* ((before (buffer-string))
+             (document
+              (org-texmacs-document
+               (org-texmacs-test--input-from-model
+                (org-texmacs-parse-buffer (current-buffer)))))
+             (body (org-texmacs-document-body document)))
+        (should (member (cdr case) (flatten-tree body)))
+        (should-not (memq 'reference (flatten-tree body)))
+        (should-not (memq 'hlink (flatten-tree body)))
+        (should-not (org-texmacs-document-file-paths document))
         (should (equal before (buffer-string)))))))
+
+(ert-deftest org-texmacs-document-excluded-custom-id-fallback ()
+  (with-temp-buffer
+    (org-mode)
+    (setq-local org-export-with-author nil)
+    (insert
+     "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+     "#+EXCLUDE_TAGS: hidden\n"
+     "* Hidden :hidden:\n:PROPERTIES:\n:CUSTOM_ID: gone\n:END:\n"
+     "* Visible\n[[#gone]]\n")
+    (let* ((source (buffer-string))
+           (document
+            (org-texmacs-document-from-buffer (current-buffer)))
+           (body (flatten-tree (org-texmacs-document-body document))))
+      (should (member "Visible" body))
+      (should-not (member "Hidden" body))
+      (should (member "#gone" body))
+      (should-not (memq 'reference body))
+      (should-not (memq 'hlink body))
+      (should-not (org-texmacs-document-file-paths document))
+      (should (equal source (buffer-string))))))
 
 (ert-deftest org-texmacs-document-reference-native-readback ()
   (org-texmacs-test--with-worker
@@ -790,23 +817,21 @@
                  document)))))
          (org-texmacs-session-close session))))))
 
-(ert-deftest
-    org-texmacs-document-reference-preflight-before-island-request
-    ()
+(ert-deftest org-texmacs-document-unavailable-reference-with-island ()
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
     (insert
-     "[[id:external-id][missing]]\n"
+     "[[missing-target][missing]]\n"
      "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (&rest _)
-                 (ert-fail "Broken link requested an island"))))
-      (let ((failure
-             (should-error
-              (org-texmacs-document-from-buffer (current-buffer))
-              :type 'org-link-broken)))
-        (should (equal (cadr failure) "external-id"))))))
+               #'org-texmacs-test--parse-fixture-stm))
+      (let* ((document
+              (org-texmacs-document-from-buffer (current-buffer)))
+             (body (org-texmacs-document-body document)))
+        (should (member "missing" (flatten-tree body)))
+        (should-not (memq 'hlink (flatten-tree body)))
+        (should (org-texmacs-document-stm-paths document))))))
 
 (ert-deftest
     org-texmacs-document-reference-low-headline-and-target-priority
@@ -875,9 +900,14 @@
                      (concat
                       (hlink
                        "(math \"hidden\")" "ftps://example.org")))))
-               (should-error
-                (org-texmacs-document-from-buffer (current-buffer))
-                :type 'org-texmacs-document-error)))
+               (let ((body
+                      (org-texmacs-document-body
+                       (org-texmacs-document-from-buffer
+                        (current-buffer)))))
+                 (should (member "link" (flatten-tree body)))
+                 (should
+                  (member
+                   "ftps://example.org" (flatten-tree body))))))
            (should (equal before (mapcar #'symbol-value variables)))
            (should (equal source (buffer-string)))))))))
 
@@ -2266,15 +2296,11 @@
       '(document (tabular (tformat (table (row (cell "x"))))))))))
 
 (ert-deftest org-texmacs-document-named-table-rejects-before-worker ()
-  (dolist
-      (source
-       '("[[t]]\n\n#+name: t\n| x |\n"
-         "#+EXCLUDE_TAGS: hidden\n[[t][T]]\n* Hidden :hidden:\n#+name: t\n| x |\n"
-         "#+name: t\n#+attr_html: :class hidden\n| x |\n"
-         "#+caption: C\n#+attr_texmacs: float\n| x |\n"
-         "#+caption:\n| x |\n"
-         "#+caption: [[missing]]\n| x |\n"
-         "#+caption: [cite:@k]\n| x |\n"))
+  (dolist (source
+           '("#+name: t\n#+attr_html: :class hidden\n| x |\n"
+             "#+caption: C\n#+attr_texmacs: float\n| x |\n"
+             "#+caption:\n| x |\n"
+             "#+caption: [cite:@k]\n| x |\n"))
     (with-temp-buffer
       (org-mode)
       (setq-local org-export-with-author nil)
@@ -2287,12 +2313,28 @@
            ((format "Named-table source: %s" source))
            (should-error
             (org-texmacs-document-from-buffer (current-buffer))
-            :type
-            (if (or (string-search "#+EXCLUDE_TAGS:" source)
-                    (string-search "[[missing]]" source))
-                'org-link-broken
-              'org-texmacs-document-error))))
+            :type 'org-texmacs-document-error)))
         (should (equal before (buffer-string)))))))
+
+(ert-deftest org-texmacs-document-unavailable-table-reference-fallback
+    ()
+  (dolist
+      (case
+       '(("[[t]]\n\n#+name: t\n| x |\n" . "t")
+         ("#+EXCLUDE_TAGS: hidden\n[[t][T]]\n* Hidden :hidden:\n#+name: t\n| x |\n"
+          .
+          "T")
+         ("#+caption: [[missing]]\n| x |\n" . "missing")))
+    (with-temp-buffer
+      (org-mode)
+      (setq-local org-export-with-author nil)
+      (insert (car case))
+      (let* ((document
+              (org-texmacs-document-from-buffer (current-buffer)))
+             (body (org-texmacs-document-body document)))
+        (should (member (cdr case) (flatten-tree body)))
+        (should-not (memq 'reference (flatten-tree body)))
+        (should-not (memq 'hlink (flatten-tree body)))))))
 
 (ert-deftest org-texmacs-document-named-table-native-and-provenance ()
   (org-texmacs-test--with-worker
@@ -2555,7 +2597,7 @@
         (setq-local org-export-with-author nil)
         (insert "Text (math \"x\")\n")
         (when (eq outcome 'unsupported)
-          (insert "\n[[file:unsupported.org::#target][link]]\n"))
+          (insert "\n#+attr_html: :class test\nParagraph\n"))
         (put-text-property 1 3 'org-texmacs-test-property "retained")
         (goto-char 3)
         (set-mark 2)
@@ -3034,7 +3076,7 @@
             (org-texmacs-document-from-buffer (current-buffer)))
            (let ((old (org-texmacs--session-read session)))
              (dolist (case
-                      '(("[[file:unsupported.org::#target][link]]\n"
+                      '(("#+attr_html: :class test\nParagraph\n"
                          .
                          org-texmacs-document-error)
                         ("(math 1)\n" . org-texmacs-parse-error)))
