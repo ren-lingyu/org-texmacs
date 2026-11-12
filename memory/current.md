@@ -1,14 +1,18 @@
 # org-texmacs current memory
 
-## Stage B link navigation fallback — validated candidate, awaiting delivery
+## Stage B link navigation fallback — human-delivered and verified
 
 Stage B (visible-content fallback when no structural navigation target is
-available) is implemented as an uncommitted 10-path ordinary candidate on
-baseline 2462831: +685/−331. Agent-run `nix flake check` exits 0 on exactly
-this content: core 346/346, native 285/285, pdf-document 48/48, pdf-render
-30/30, cite 11/11, caption 6/6, package-lint/treefmt/gotor-regression pass.
-User separately confirmed local build/tests after applying B1 plus complete
-revised B2.
+available) is human-delivered as f1b132b1f545dd394b65fef8ab824f22beb40290
+(parent 2462831), subject "feat(export): preserve link content when navigation
+is unavailable": 10 paths, +685/−331. Committed blobs and the baseline..HEAD
+diff SHA256 equal the validated candidate receipt, so the delivery is
+byte-identical and no test was re-run; worktree/index clean.
+
+Validation on that exact content (agent-run): `nix flake check` exit 0 — core
+346/346, native 285/285, pdf-document 48/48, pdf-render 30/30, cite 11/11,
+caption 6/6, package-lint/treefmt/gotor-regression pass. User separately
+confirmed local build/tests after applying B1 plus complete revised B2.
 
 Final contract: descriptions lower through existing inline lowering (keeping
 their own structure/provenance), bare links use Org's parsed `:raw-link`, no
@@ -27,15 +31,12 @@ the pure-input ID test moved from expecting an error to asserting fallback plus
 no ID-database query; the excluded-CUSTOM_ID fixture was split into a genuine
 pure-input miss and a standard-export exclusion case.
 
-Receipt memory/link-navigation-fallback-inputs.json (validated-candidate);
+Receipt memory/link-navigation-fallback-inputs.json (final-committed);
 record memory/link-navigation-fallback-implementation.md.
 
-Next: human ordinary commit (suggested subject
-"feat(export): preserve link content when navigation is unavailable"; one
-commit for B1+B2+test revisions), then delivery verification. Note the 10
-candidate paths are already staged in the ordinary index by the user; the
-agent did not stage, commit, tag or publish. Stage C and deferred native
-file-target work remain unadopted.
+No release-state, version, tag, push or publication action follows.
+Stage C (precise cross-document ID navigation) and deferred native file-target
+character work remain separate and unadopted.
 
 ## Stage A cross-file ID links — human-delivered and verified
 

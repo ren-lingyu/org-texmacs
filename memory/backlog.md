@@ -1218,7 +1218,7 @@ scoped; current local links, named notes and bare default citations/plain
 bibliography are already implemented. Cross-file ID lookup is human-delivered
 for Stage A document-level lowering via the standard Org export transaction
 (ordinary commit 2462831; memory/external-id-links-implementation.md). Stage B
-link navigation fallback is implemented as a validated, uncommitted candidate
+link navigation fallback is human-delivered as f1b132b
 (memory/link-navigation-fallback-implementation.md); its deferred parts —
 relaxing native file-target character restrictions and a general
 TeXmacs-URL-syntax/filename study — remain unadopted. Precise cross-document ID

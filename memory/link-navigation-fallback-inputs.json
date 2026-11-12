@@ -1,6 +1,6 @@
 {
   "kind": "link-navigation-fallback-stage-B-candidate",
-  "revision": "validated-candidate",
+  "revision": "final-committed",
   "baseline": {
     "ordinary": "246283110e9cdfeaad8a1d616fca46413af47510",
     "subject": "feat(export): support cross-file Org ID links",
@@ -63,8 +63,17 @@
   },
   "stage-a-evidence": "Unchanged and not re-run: Stage A isolated patched external-ID GoToR probe (/GoToR ../target/target.pdf [0 /Fit]) and cross-file ID regressions remain in the suites.",
   "notes": {
-    "index-state": "Ordinary index contains exactly these 10 staged paths; worktree has no unstaged tracked changes; agent performed no staging.",
-    "delivery": "Not committed. Ordinary commit, version, tag, push and release remain user decisions.",
+    "index-state": "Ordinary worktree/index clean after delivery; no extra tracked or untracked changes.",
+    "delivery": "Human-delivered as f1b132b; committed content is byte-identical to the validated candidate, so no test was re-run.",
     "unverified": "Other platforms, other Org/TeXmacs versions, GUI readers, native encoding of restricted-character file paths (explicitly unsupported)."
+  },
+  "delivery": {
+    "commit": "f1b132b1f545dd394b65fef8ab824f22beb40290",
+    "parent": "246283110e9cdfeaad8a1d616fca46413af47510",
+    "subject": "feat(export): preserve link content when navigation is unavailable",
+    "changed-paths": 10,
+    "diff-stat": "10 files changed, 685 insertions(+), 331 deletions(-)",
+    "verified-equal": "committed blob SHA256 values and the baseline..HEAD diff SHA256 all equal the receipt values",
+    "captured": "2026-11-13T00:30:00Z"
   }
 }

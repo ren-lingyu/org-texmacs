@@ -1,6 +1,6 @@
 # org-texmacs project goals
 
-## Stage B visible-content link fallback adopted and implemented
+## Stage B visible-content link fallback adopted and delivered
 
 The user adopted Stage B: org-texmacs lowers Org link expression into TeXmacs
 structure and does not validate whether source links resolve. Unsupported or
@@ -9,8 +9,8 @@ the parsed `:raw-link` text instead of aborting; the Org AST/model, Org link
 following, other backends and native target adaptation are unchanged. B1 (common
 fallback) and B2 (navigation-unavailable resolution) are one user-visible
 feature; native file-target character relaxation and precise cross-document
-navigation remain unadopted. Validated candidate, human commit pending;
-record memory/link-navigation-fallback-implementation.md.
+navigation remain unadopted. Human-delivered f1b132b; receipt
+memory/link-navigation-fallback-inputs.json.
 
 ## Stage A cross-file ID links adopted and delivered
 

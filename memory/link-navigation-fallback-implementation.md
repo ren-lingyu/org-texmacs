@@ -2,12 +2,15 @@
 
 ## Status
 
-Stage B is implemented and validated as an uncommitted ordinary candidate on
-baseline `246283110e9cdfeaad8a1d616fca46413af47510` (Stage A delivery). The
-staged index and the worktree are identical (10 paths, +685/−331). Agent-run
-`nix flake check` exits 0 against exactly this content. Awaiting the human
-ordinary commit; the agent performed no ordinary staging/commit/version/tag/
-release action. Candidate receipt: `memory/link-navigation-fallback-inputs.json`.
+Stage B is human-delivered as ordinary commit
+`f1b132b1f545dd394b65fef8ab824f22beb40290`
+("feat(export): preserve link content when navigation is unavailable"), parent
+`246283110e9cdfeaad8a1d616fca46413af47510` (Stage A delivery), 10 paths,
++685/−331. Every committed blob's SHA256 and the baseline-to-HEAD diff SHA256
+(`9f39046c…6b934`) equal the validated candidate receipt values, so delivery is
+byte-identical and no test was re-run. Ordinary worktree/index clean. No tag,
+version, release or publication action. Receipt:
+`memory/link-navigation-fallback-inputs.json`, revision `final-committed`.
 
 ## Adopted scope and principle
 
@@ -285,8 +288,7 @@ claim is made for material not read in full.
 
 ## Next
 
-Await human ordinary commit (suggested subject
-`feat(export): preserve link content when navigation is unavailable`, single
-commit for B1+B2+test revisions). Then verify delivery byte-equality against
-the receipt and record a delivery checkpoint. Stage C and the deferred
-native file-target work remain unadopted.
+Stage B delivery verification is complete. Stage C (precise cross-document
+ID navigation) and the deferred native file-target character work remain
+separate and unadopted; no release-state, version, tag, push or publication
+action follows automatically.

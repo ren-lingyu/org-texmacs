@@ -1,16 +1,16 @@
 # org-texmacs durable evidence
 
-Stage B link-navigation-fallback candidate (uncommitted, agent-run full flake
-check exit 0 on the exact 10-path content): core 346/346 (+5: visible-content
-fallback, unavailable content, frozen unavailable mapping validation,
-standard-export visible content, standard unavailable internal links), native
-285/285 (+2: excluded CUSTOM_ID via standard export, uncaptioned table
-reference fallback), pdf-document 48/48, pdf-render 30/30, cite 11/11,
-caption 6/6, package-lint/treefmt/gotor-regression pass. Fallback contract:
-description via existing inline lowering, bare link via parsed `:raw-link`, no
-outer navigation/provenance; only `org-link-broken` becomes unavailable.
-Structural validation and native file-target restrictions unchanged; Stage A
-evidence not re-run. Receipt memory/link-navigation-fallback-inputs.json.
+Stage B link-navigation-fallback delivery: human commit f1b132b (parent
+2462831, 10 paths, +685/−331) is byte-identical to the validated candidate
+(all 10 blob SHA256 values and the baseline..HEAD diff SHA256
+9f39046c…6b934 match the receipt), so no check was re-run. Validation on that
+content: full flake check exit 0 — core 346/346, native 285/285, pdf-document
+48/48, pdf-render 30/30, cite 11/11, caption 6/6,
+package-lint/treefmt/gotor-regression pass. Fallback contract: description via
+existing inline lowering, bare link via parsed `:raw-link`, no outer
+navigation/provenance; only `org-link-broken` becomes unavailable. Structural
+validation and native file-target restrictions unchanged; Stage A evidence not
+re-run. Receipt memory/link-navigation-fallback-inputs.json (final-committed).
 
 Stage A external-ID delivery: human commit 2462831 (parent f16cc2f, 13 paths,
 1115/92) is byte-equal to the validated candidate; full flake acceptance
