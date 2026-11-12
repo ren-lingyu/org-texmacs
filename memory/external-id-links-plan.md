@@ -167,16 +167,23 @@ protocol change; GoToR patch extension; `.org.gpg` suffix extension; general
 output relocation/path policy redesign; next version number / freeze / tag /
 publication decisions.
 
-## Pending verification before implementation (A1)
+## Verified by isolated probe (A1)
 
-1. Runtime probe of the resolver path base across the scenarios above; confirm
-   relative-vs-absolute forms and the `default-directory`/resource-base equality.
-2. Same-file detection under symlink alias and truename differences.
-3. `~`-abbreviation behavior of the fallback path.
-4. Existing `org-texmacs-document-rejects-ambiguous-and-external-id-links` is
-   driven by `org-texmacs-parse-buffer` (independent model), so its external-ID
-   case is the independent pure-input rejection; keep/rename it, do not delete,
-   and cover true standard-resolution success in a new integration test.
+All four pending items below are now confirmed by `memory/external-id-links-probe.md`
+(standalone flake, Org 9.8.10, exit 0):
+
+1. Resolver path base: the `:id-alist` value is `(file-relative-name file)`,
+   relative to the export buffer's `default-directory`, which equals the captured
+   `resource-base` in every probed scenario (normal, alt default-directory,
+   explicit source-buffer API).
+2. Same-file detection: `noexport` same-file IDs and current-file file-level IDs
+   resolve to a path whose `expand-file-name` maps back to the source file; under
+   a symlink alias the resolver result expands to `file-truename`, not
+   `buffer-file-name`, so live-preparation comparison needs truename identity.
+3. `~` abbreviation: the `:id-alist` value never contains `~`; only the raw
+   `org-id-find-id-file` fallback keeps `~/...`. Expand a leading `~` once in
+   live preparation.
+4. Existing test finding unchanged.
 
 ## Notes
 

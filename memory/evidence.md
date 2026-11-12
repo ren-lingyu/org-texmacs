@@ -1,5 +1,15 @@
 # org-texmacs durable evidence
 
+Stage A external-ID resolver probe (isolated flake, Org 9.8.10, exit 0):
+`org-export-resolve-id-link` external results come from `:id-alist` as
+`(file-relative-name file)`, relative to the export buffer's `default-directory`
+which equals captured `resource-base`; external file-level and headline IDs both
+return the file path with no anchor; same-file and current-file file-level IDs
+resolve back to the source file; a symlink alias expands to `file-truename` not
+`buffer-file-name`; the `:id-alist` value never contains `~` while the raw
+`org-id-find-id-file` fallback keeps `~/...`. Method/facts/limits/archive decision:
+memory/external-id-links-probe.md; plan memory/external-id-links-plan.md.
+
 Human f16cc2f finalization verified exact21d5704parent/4paths/full approved message
 and all167committed plus worktree hashes; ordinary index/worktree clean. Local
 v0.7.0 tag resolves to exact delivered commit. DONE/CLOSED/detail committed, no
