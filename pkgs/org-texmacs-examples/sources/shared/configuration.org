@@ -55,7 +55,9 @@ configuration files are loaded; interactive snippets elsewhere are never run.
   ;; SPDX-License-Identifier: GPL-3.0-or-later
 
   ;; Explicit equation/texmacs blocks remain independent of paragraph discovery.
-  (setq org-texmacs-document-style '("article")
+  ;; Opt in to typed references and supply the native macros explicitly.
+  (setq org-texmacs-document-style '("article" "smart-ref")
+        org-texmacs-typed-references t
         org-texmacs-fragment-tags '("math"))
 
   (defun org-texmacs-examples-headline

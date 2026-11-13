@@ -218,6 +218,7 @@ Emacs session if the backend was already loaded with different menu keys.
     (org-texmacs-document-initial nil)
     (org-texmacs-pdf-file-links-as-absolute nil)
     (org-texmacs-link-org-files-as-pdf t)
+    (org-texmacs-typed-references nil)
     (org-texmacs-edit-mode 'scheme-mode)
     (org-texmacs-fragment-tags
      '("math" "equation" "equation*" "eqnarray" "eqnarray*"
@@ -296,6 +297,11 @@ default style is =("generic")= and the default initial environment is empty.
 These values are copied into each prepared input and document result; changing
 them affects only later buffer conversions.  A native session applies the
 captured style and initial environment together with that result's body.
+
+=org-texmacs-typed-references= defaults to nil.  Opt in to native typed
+references by setting it to t and selecting a style that defines the relevant
+macros (for example, =("generic" "smart-ref")=).  See
+[[*Optional typed references][Optional typed references]] for the supported target types.
 
 Use an absolute executable path instead of ="texmacs"= when needed.  Set
 it before the first parse; changing it does not replace an existing worker.
@@ -1651,7 +1657,8 @@ Same-document =[[#CUSTOM_ID]]=, =[[id:ID]]=, =[[*Headline]]= and fuzzy
 headings in the prepared AST.  Fuzzy links also resolve =<<dedicated targets>>=
 directly in paragraphs, which take precedence over same-named headings.
 Explicit descriptions become internal =hlink= bodies;
-links without descriptions become TeXmacs =reference= nodes.  Resolution uses
+links without descriptions become TeXmacs =reference= nodes by default (or
+typed references when enabled, as described below).  Resolution uses
 Org search-cell matching and priorities within the owned effective document.
 Named objects and dedicated targets take precedence over headline titles;
 independent input falls back to text for multiple distinct matches at the
@@ -1715,13 +1722,77 @@ Labels are placed inside equation/statement scope and inside figure/table
 caption scope, including absent captions.  A named ordinary STM block instead
 uses an external =surround= weak anchor for the whole block.  Its contents stay
 opaque; the anchor does not identify or promise the number of an internal native
-object.  TeXmacs determines all reference text, including unnumbered environments:
+object.  TeXmacs determines reference text, including unnumbered environments:
 the exporter accepts structural references without judging their displayed value.
 Native placement/readback/PDF-link checks cover the pinned =generic= and =article=
 styles; arbitrary STM roots and other installed styles have no universal layout
 guarantee.  No counter, float-layout or caption-footnote workaround is inserted.
 Internal links in document metadata and =ALT_TITLE= without allocated targets
 fall back to visible content.
+
+*** Optional typed references
+Set both options explicitly to use native typed reference presentation:
+
+#+begin_src emacs-lisp
+  (setq org-texmacs-typed-references t
+        org-texmacs-document-style '("generic" "smart-ref"))
+#+end_src
+
+The default policy is nil, preserving plain =reference= nodes.  With t, the
+resolved target's Org structure, not its NAME, label spelling or rendered
+number, selects a native unary reference tag.  The supported mapping is:
+
+| Resolved target                                                                                                                                                            | Native reference tag     |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------|
+| Numbered headline, within effective sectioning depth                                                                                                                       | =section-ref=            |
+| =equation=                                                                                                                                                                 | =eq-ref=                 |
+| =figure= wrapper                                                                                                                                                           | =figure-ref=             |
+| =table= wrapper or captioned Org table                                                                                                                                     | =table-ref=              |
+| =corollary= statement                                                                                                                                                      | =cor-ref=                |
+| =theorem=, =proposition=, =lemma=, =axiom=, =definition=, =notation=, =conjecture=, =remark=, =example=, =note=, =warning=, =convention=, =exercise=, =problem= statements | Corresponding =TYPE-ref= |
+
+All numbered headline levels use =section-ref=.  Unnumbered headlines,
+headlines lowered as list items, =proof=, starred equation/figure/table
+wrappers, dedicated targets and ordinary named STM blocks retain plain
+=reference=.  Other fallback behavior is unchanged.  Explicit descriptions
+still become =hlink=, including links to typed targets.  File links, citations,
+footnotes, TOC page references and authored STM are not changed by this policy.
+
+For example, =[[eq:main]]= in the example above becomes =eq-ref= when typed
+references are enabled; =[[eq:main][the main equation]]= still becomes =hlink=.
+When a theorem target is named =eq:main= instead, its bare link becomes
+=theorem-ref=.  Labels and destinations are allocated by the existing resolution
+process, independently of presentation.
+
+The selected style must supply the native macros.  TeXmacs' bundled =smart-ref=
+package provides the default typed tags; the exporter neither inserts that
+package nor validates style dependencies.  Style-dependent numbering,
+localization, displayed type names and reference hyperlinks remain native
+TeXmacs behavior.  No guarantee is made that every custom style assigns a
+number to every supported structure.
+
+Standard preparation captures the boolean policy and the effective definition
+of the private =org-texmacs--document-reference-tag= selector.  A selector
+takes a normalized type symbol and returns a native unary tag symbol.  For
+example, the following optional advice retains plain equation references:
+
+#+begin_src emacs-lisp
+  (defun my-org-texmacs-reference-tag (original type)
+    (if (eq type 'equation)
+        'reference
+      (funcall original type)))
+
+  (advice-add 'org-texmacs--document-reference-tag
+              :around #'my-org-texmacs-reference-tag)
+#+end_src
+
+This private extension point has no stable compatibility promise.  Advice
+should be side-effect-free; later advice changes affect new prepared inputs,
+not existing ones.  Mutable state captured by a function is not frozen.
+Independent =org-texmacs-input-create= uses the fixed nil policy unless
+=:texmacs-typed-references= in INFO is explicitly t.  The private
+=:texmacs-reference-tag-function= INFO key can supply a selector; omitted
+selectors capture the effective definition of the same internal function.
 
 Plain local file links, including implicit =[[./notes.org]]= and absolute
 file links, are supported in body text.  A description becomes the =hlink=

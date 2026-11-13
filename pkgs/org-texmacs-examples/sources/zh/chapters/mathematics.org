@@ -1,4 +1,7 @@
 * 标量与初等表达式
+:PROPERTIES:
+:CUSTOM_ID: scalar-expressions
+:END:
 行内公式可以包含下标 (math (concat "a" (rsub "n"))), 幂次
 (math (concat "x" (rsup "2"))) 和希腊字母 (math "<alpha>+<beta>").
 
@@ -65,7 +68,7 @@
 #+name: norm-positive
 #+caption: 非负性
 #+begin_statement theorem
-定义 [[norm-definition]] 中的量非负, 并且仅在零向量处取零.
+[[norm-definition]] 中的量非负, 并且仅在零向量处取零.
 #+end_statement
 
 #+begin_statement proof
@@ -83,8 +86,10 @@
 #+end_statement
 
 #+begin_statement remark
-定理 [[norm-positive]] 的引用标识属于整条陈述. 题注和正文保留为不同的原生结构.
+[[norm-positive]] 的引用标识属于整条陈述. 题注和正文保留为不同的原生结构.
 本案例不为一个公式阵列内部的各行引入独立编号.
+初等记法见 [[#scalar-expressions]]. 引用类型由实际解析到的目标结构决定,
+而不是由标识的命名决定.
 #+end_statement
 
 #+begin_statement exercise

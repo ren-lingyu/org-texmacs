@@ -1465,4 +1465,191 @@
         (lower query)
         :type 'org-texmacs-document-error)))))
 
+(ert-deftest org-texmacs-document-typed-reference-independent-input ()
+  (let* ((target
+          (org-element-create
+           'special-block
+           '(:type "theorem" :name "definition:object")
+           (org-element-create 'paragraph nil "Statement.")))
+         (link
+          (org-element-create
+           'link '(:type "fuzzy" :path "definition:object")))
+         (ast
+          (org-element-create
+           'org-data nil
+           (org-element-create 'paragraph nil link) target))
+         (org-texmacs-typed-references t)
+         (plain (org-texmacs-input-create ast nil))
+         (typed
+          (org-texmacs-input-create
+           ast '(:texmacs-typed-references t)))
+         (advice (lambda (_type) 'custom-theorem-ref))
+         advised)
+    ;; Independent construction never reads ambient Custom policy.  The
+    ;; deliberately misleading NAME must not determine the reference type.
+    (should
+     (memq
+      'reference
+      (flatten-tree
+       (org-texmacs-document-body (org-texmacs-document plain)))))
+    (unwind-protect
+        (progn
+          (advice-add
+           'org-texmacs--document-reference-tag
+           :override advice)
+          (setq advised
+                (org-texmacs-input-create
+                 ast '(:texmacs-typed-references t)))
+          (should
+           (memq
+            'theorem-ref
+            (flatten-tree
+             (org-texmacs-document-body
+              (org-texmacs-document typed))))))
+      (advice-remove 'org-texmacs--document-reference-tag advice))
+    (let* ((org-texmacs-typed-references nil)
+           (document (org-texmacs-document advised))
+           (body (org-texmacs-document-body document))
+           (id
+            (cdar
+             (org-texmacs-resolution-labels
+              (org-texmacs-input-resolution advised)))))
+      (should
+       (equal
+        (org-texmacs-test--caption-inline-footnote-nodes
+         body 'custom-theorem-ref)
+        (list (list 'custom-theorem-ref id))))
+      (should (equal document (org-texmacs-document advised)))
+      (should
+       (equal (org-texmacs-document-style document) '("generic"))))
+    (should-error
+     (org-texmacs-input-create ast '(:texmacs-typed-references yes))
+     :type 'org-texmacs-document-error)
+    (dolist (bad '(nil t "theorem-ref" (theorem-ref) :theorem-ref))
+      (should-error
+       (org-texmacs-document
+        (org-texmacs-input-create
+         ast
+         (list
+          :texmacs-typed-references t
+          :texmacs-reference-tag-function
+          (lambda (_type) bad))))
+       :type 'org-texmacs-document-error))))
+
+(ert-deftest org-texmacs-document-typed-reference-headline-policies ()
+  (with-temp-buffer
+    (org-mode)
+    (insert
+     "#+OPTIONS: H:5 toc:nil num:2 title:nil author:nil date:nil\n"
+     "[[#one]] [[#two]] [[#three]] [[#four]] [[#five]] [[#six]] [[#star]] [[spot]]\n\n"
+     "<<spot>>\n\n")
+    (cl-loop
+     for
+     name
+     in
+     '("one" "two" "three" "four" "five" "six")
+     for
+     level
+     from
+     1
+     do
+     (insert
+      (make-string level ?*)
+      " "
+      name
+      "\n:PROPERTIES:\n"
+      ":CUSTOM_ID: "
+      name
+      "\n:END:\n"))
+    (insert
+     "* Unnumbered\n:PROPERTIES:\n:CUSTOM_ID: star\n:UNNUMBERED: t\n:END:\n")
+    (let* ((org-texmacs-typed-references t)
+           (input (org-texmacs-prepare-buffer (current-buffer)))
+           (body
+            (org-texmacs-document-body (org-texmacs-document input)))
+           (links
+            (org-texmacs-resolution-links
+             (org-texmacs-input-resolution input))))
+      (should (= (length links) 8))
+      (dolist (entry links)
+        (let* ((path (org-element-property :path (car entry)))
+               (tag
+                (if (member path '("one" "two"))
+                    'section-ref
+                  'reference)))
+          (should
+           (member
+            (list tag (cdr entry))
+            (org-texmacs-test--caption-inline-footnote-nodes
+             body tag))))))
+    ;; The same structures at the maximum numbered sectioning depth.
+    (goto-char (point-min))
+    (search-forward "num:2")
+    (replace-match "num:t" t t)
+    (let* ((org-texmacs-typed-references t)
+           (input (org-texmacs-prepare-buffer (current-buffer)))
+           (body
+            (org-texmacs-document-body (org-texmacs-document input)))
+           (links
+            (org-texmacs-resolution-links
+             (org-texmacs-input-resolution input))))
+      (should (= (length links) 8))
+      (dolist (entry links)
+        (let* ((path (org-element-property :path (car entry)))
+               (tag
+                (if (member path '("one" "two" "three" "four" "five"))
+                    'section-ref
+                  'reference)))
+          (should
+           (member
+            (list tag (cdr entry))
+            (org-texmacs-test--caption-inline-footnote-nodes
+             body tag))))))))
+
+(ert-deftest org-texmacs-document-typed-reference-standard-snapshot ()
+  (with-temp-buffer
+    (org-mode)
+    (insert
+     "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+     "[[Object]] [[Object][Explicit]]\n\n"
+     (org-texmacs-test--stage4-block "theorem" "Object"))
+    (let* ((org-texmacs-typed-references t)
+           (org-texmacs-document-style '("article"))
+           (input (org-texmacs-prepare-buffer (current-buffer)))
+           (document (org-texmacs-document input))
+           (advice (lambda (_type) 'reference))
+           advised)
+      (unwind-protect
+          (progn
+            (advice-add
+             'org-texmacs--document-reference-tag
+             :override advice)
+            (setq advised
+                  (org-texmacs-prepare-buffer (current-buffer)))
+            (should (equal document (org-texmacs-document input))))
+        (advice-remove 'org-texmacs--document-reference-tag advice))
+      (setq org-texmacs-typed-references nil)
+      (should (equal document (org-texmacs-document input)))
+      (should
+       (equal (org-texmacs-document-style document) '("article")))
+      (should
+       (equal
+        (org-texmacs-document-style
+         (org-texmacs-document advised))
+        '("article")))
+      (dolist (candidate
+               (list
+                advised
+                (org-texmacs-prepare-buffer (current-buffer))))
+        (let ((body
+               (org-texmacs-test--stable-reference-body
+                (org-texmacs-document candidate))))
+          (should (memq 'reference (flatten-tree body)))
+          (should-not (memq 'theorem-ref (flatten-tree body)))
+          (should (memq 'hlink (flatten-tree body)))))
+      (should
+       (memq
+        'theorem-ref
+        (flatten-tree (org-texmacs-document-body document)))))))
+
 ;;; document.el ends here

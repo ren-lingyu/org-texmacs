@@ -127,6 +127,13 @@ Internal intermediate ownership boundary; see `org-texmacs-input-create'."
        info
        (list
         :texmacs-date-timestamp-text-function 'org-texmacs--document-date-timestamp-text))))
+   (unless (plist-member info :texmacs-reference-tag-function)
+     (setq
+      info
+      (append
+       info
+       (list
+        :texmacs-reference-tag-function 'org-texmacs--document-reference-tag))))
    (while info
      (let ((key (pop info))
            (value (pop info)))
@@ -134,10 +141,15 @@ Internal intermediate ownership boundary; see `org-texmacs-input-create'."
          (signal 'org-texmacs-document-error
                  '("Invalid or duplicate options key")))
        (push key seen)
+       (when (and (eq key :texmacs-typed-references)
+                  (not (memq value '(nil t))))
+         (signal 'org-texmacs-document-error
+                 '("Invalid typed reference policy")))
        (when (memq
               key
               '(:texmacs-format-headline-function
-                :texmacs-date-timestamp-text-function))
+                :texmacs-date-timestamp-text-function
+                :texmacs-reference-tag-function))
          (setq value (indirect-function value))
          (unless (functionp value)
            (signal 'org-texmacs-document-error
@@ -151,7 +163,8 @@ Internal intermediate ownership boundary; see `org-texmacs-input-create'."
                 ((memq
                   key
                   '(:texmacs-format-headline-function
-                    :texmacs-date-timestamp-text-function))
+                    :texmacs-date-timestamp-text-function
+                    :texmacs-reference-tag-function))
                  value)
                 ((eq key :texmacs-special-block-handlers)
                  (org-texmacs--document-copy-handlers value))
@@ -384,8 +397,11 @@ of long/short secondary strings.  Reject cyclic or multiply owned AST nodes,
 detached/duplicate mapping keys, deferred values and opaque objects.
 Discard Org's source buffer and parent bookkeeping.  INFO must be a plist
 with unique keyword keys; nil selects fixed lowering defaults.  A supplied
-headline formatter, private date timestamp converter and private special-block
-handlers are resolved now and retained as opaque functions.  Handler registry
+headline formatter, private date timestamp converter, private reference tag
+selector and private special-block handlers are resolved now and retained as
+opaque functions.  :texmacs-typed-references in INFO is a boolean policy
+(default nil); :texmacs-reference-tag-function selects its unary native tag
+for a supported type.  No style is added or checked.  Handler registry
 strings and list structure are independently owned;
 mutable state captured by a user closure is not frozen.  Never mutate the
 returned input, its accessors' values, or arguments from a formatter.

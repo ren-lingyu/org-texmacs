@@ -18,6 +18,10 @@ override matching global initial defaults.
 The index retains the default generic style. The companion article uses article,
 a test-prefix headline formatter and math-only paragraph fragment discovery.
 Explicit equation and TeXmacs blocks still work.
+The index retains plain references; the article explicitly enables typed
+references and includes the bundled smart-ref style package. A bare link to
+a numbered heading, mathematical statement, equation, figure or table uses
+its target structure; an explicit link description remains unchanged.
 
 ** File links between the compiled documents
 The shared configuration keeps PDF file links relative and maps a terminal .org

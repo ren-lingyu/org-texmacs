@@ -7,7 +7,7 @@
 #+end_texmacs
 #+end_figure
 
-Figure [[rectangle]] is a native graphics tree. There is exactly one TeXmacs
+[[rectangle]] is a native graphics tree. There is exactly one TeXmacs
 block inside the wrapper; explanatory prose stays outside it. The caption
 citation demonstrates placement and is not a source attribution for the drawing.
 
@@ -21,7 +21,7 @@ citation demonstrates placement and is not a source attribution for the drawing.
 | y        |     3 |      9 |
 #+end_table
 
-Table [[org-values]] uses an ordinary Org table as its single body. A second
+[[org-values]] uses an ordinary Org table as its single body. A second
 table uses explicit native table data instead:
 
 #+name: native-values
@@ -38,7 +38,7 @@ table uses explicit native table data instead:
 #+end_table
 
 The exporter supplies the outer native table wrappers around the table data.
-The cell formatting and mathematical cell contents in Table [[native-values]]
+The cell formatting and mathematical cell contents in [[native-values]]
 stay native. Paragraph fragment discovery does not scan ordinary Org table cells.
 
 * Unnumbered variants and subsequent counters
@@ -69,6 +69,6 @@ double-column floats.
 | CAPTION | Displayed title |
 #+end_table
 
-Table [[last-table]] allows the reader to inspect numbering after starred
+[[last-table]] allows the reader to inspect numbering after starred
 environments. References identify complete objects, not individual cells or
 graphics primitives. No external image import or float placement is requested.

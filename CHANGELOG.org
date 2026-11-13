@@ -9,6 +9,13 @@ release notes.
 
 * TODO *unreleased*
 ** Added
+- Optional =org-texmacs-typed-references= selects native typed reference tags
+  from resolved internal Org target structures. Supported numbered headings,
+  equations, figures, tables and formal statements use the corresponding
+  native macros; the default remains plain =reference=. Described links and
+  other reference behavior are unchanged. The prepared input captures the
+  policy and private tag selector. Enable =smart-ref= or an equivalent style
+  explicitly; the exporter does not add or validate style dependencies.
 - Default single-key citations accept plain-text reference suffixes such as
   =[cite:@key, chapter 1]= and lower to native =cite-detail=, preserving the
   bibliography binding. Standard Org Cite and independent explicit inputs use

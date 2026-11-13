@@ -1,4 +1,7 @@
 * Scalars and elementary expressions
+:PROPERTIES:
+:CUSTOM_ID: scalar-expressions
+:END:
 Inline notation can contain indices (math (concat "a" (rsub "n"))), powers
 (math (concat "x" (rsup "2"))) and Greek letters (math "<alpha>+<beta>").
 
@@ -66,7 +69,7 @@ For a vector (math (concat "v=" (around* "(" "x,y" ")"))), define
 #+name: norm-positive
 #+caption: Non-negativity
 #+begin_statement theorem
-The quantity in Definition [[norm-definition]] is nonnegative and vanishes
+The quantity in [[norm-definition]] is nonnegative and vanishes
 exactly at the zero vector.
 #+end_statement
 
@@ -85,9 +88,11 @@ For any real scalar (math "c"), the norm is homogeneous:
 #+end_statement
 
 #+begin_statement remark
-Theorem [[norm-positive]] has one reference identity for the whole statement.
+[[norm-positive]] has one reference identity for the whole statement.
 Caption and body remain separate native structures. This collection does not
 introduce separately numbered rows inside one equation array.
+See [[#scalar-expressions]] for elementary notation. The label's name does
+not select the reference type; the resolved target's structure does.
 #+end_statement
 
 #+begin_statement exercise

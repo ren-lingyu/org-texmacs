@@ -188,7 +188,8 @@ A memoized graph copy also preserves parent links in parsed Org metadata."
      :texmacs-format-headline-function org-texmacs-format-headline-function
      :texmacs-special-block-handlers org-texmacs--document-special-block-handlers
      :texmacs-pdf-file-links-as-absolute org-texmacs-pdf-file-links-as-absolute
-     :texmacs-link-org-files-as-pdf org-texmacs-link-org-files-as-pdf))))
+     :texmacs-link-org-files-as-pdf org-texmacs-link-org-files-as-pdf
+     :texmacs-typed-references org-texmacs-typed-references))))
 
 (defun org-texmacs--standard-check-source (state &optional selecting)
   "Reject source changes across native waits using captured STATE.

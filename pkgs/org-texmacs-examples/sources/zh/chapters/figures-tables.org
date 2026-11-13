@@ -7,7 +7,7 @@
 #+end_texmacs
 #+end_figure
 
-图 [[rectangle]] 的内容是一棵原生 graphics 树. figure 内部只有一个 texmacs 块,
+[[rectangle]] 的内容是一棵原生 graphics 树. figure 内部只有一个 texmacs 块,
 解释文字放在外层封装之外. 图中保留英文标记, 中文题注属于 Org 正文.
 题注中的引用只演示放置位置, 不表示绘图取自该文献.
 
@@ -21,7 +21,7 @@
 | y    |    3 |    9 |
 #+end_table
 
-表 [[org-values]] 使用普通 Org 表格作为唯一主体. 另一种方式是直接提供原生表格数据:
+[[org-values]] 使用普通 Org 表格作为唯一主体. 另一种方式是直接提供原生表格数据:
 
 #+name: native-values
 #+caption: 由 STM 提供内容的表格
@@ -36,7 +36,7 @@
 #+end_texmacs
 #+end_table
 
-导出器在原生表格数据外补齐表格封装. 表 [[native-values]] 的单元格格式与数学内容仍由 TeXmacs 解释.
+导出器在原生表格数据外补齐表格封装. [[native-values]] 的单元格格式与数学内容仍由 TeXmacs 解释.
 普通 Org 表格单元格不参与段落数学片段发现.
 
 * 无编号形式与后续计数
@@ -66,5 +66,5 @@
 | CAPTION | 可见题注 |
 #+end_table
 
-表 [[last-table]] 便于检查无编号环境之后的计数行为.
+[[last-table]] 便于检查无编号环境之后的计数行为.
 引用目标是完整图表, 不是单个单元格或图元. 本案例不请求外部图片导入或浮动位置控制.

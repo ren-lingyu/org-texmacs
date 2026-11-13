@@ -228,6 +228,16 @@ URI links or authored STM.  Document preparation captures this setting."
   :type 'boolean
   :group 'org-texmacs)
 
+(defcustom org-texmacs-typed-references nil
+  "Whether to generate typed references for resolved internal Org links.
+When non-nil, undescribed links to supported target structures use native
+typed reference tags.  Other links retain their existing behavior.
+The selected document style must provide these tags, for example through
+TeXmacs' smart-ref package.  Preparation captures this setting; the
+exporter neither changes nor checks the style."
+  :type 'boolean
+  :group 'org-texmacs)
+
 (defun org-texmacs--document-file-link-options (info)
   "Return fixed absolute-PDF and Org-to-PDF policies from INFO.
 Omitted keys select fixed defaults, never current dynamic settings."
@@ -1312,6 +1322,50 @@ resolve against labels actually generated for this bibliography."
                (and (wholenump numbering)
                     (<= relative numbering)))))))
 
+(defun org-texmacs--document-reference-type (target numbered-headline)
+  "Return TARGET's supported reference type, or nil.
+NUMBERED-HEADLINE is non-nil only for a numbered sectioning target.
+Classify the Org target, not its name, label or rendered number."
+  (pcase (org-element-type target)
+    ('headline (and numbered-headline 'section))
+    ('table (and (org-element-property :caption target) 'table))
+    ('special-block
+     (or (pcase (org-texmacs--native-body-kind target)
+           ('equation 'equation))
+         (pcase (org-texmacs--figure-table-kind target)
+           ('figure 'figure)
+           ('table 'table))
+         (let ((tag (org-texmacs--document-statement-tag target)))
+           (and (not (eq tag 'proof)) tag))))))
+
+(defun org-texmacs--document-reference-tag (type)
+  "Return a unary native reference tag for supported TYPE.
+TYPE is a normalized reference type.  This private presentation function
+may be advised; preparation captures its effective definition.  The
+caller supplies the label and retains ownership of the reference tree."
+  (pcase type
+    ('corollary 'cor-ref)
+    ('equation 'eq-ref)
+    ((or 'theorem
+         'proposition
+         'lemma
+         'axiom
+         'definition
+         'notation
+         'conjecture
+         'remark
+         'example
+         'note
+         'warning
+         'convention
+         'exercise
+         'problem
+         'section
+         'figure
+         'table)
+     (intern (concat (symbol-name type) "-ref")))
+    (_ 'reference)))
+
 (defun org-texmacs--document-copy-style (style)
   "Validate and copy TeXmacs STYLE identifier strings."
   (unless (and (proper-list-p style)
@@ -1616,8 +1670,8 @@ layer must split text at fragment boundaries and mask foreign markup before
 constructing this input.
 This function never discovers or parses fragments.  Every mapping must be
 consumed exactly once; each mapped root contributes one output child.
-INFO fixes metadata, headline/TOC output policies and formatter for this
-conversion.
+INFO fixes metadata, headline/TOC output policies, formatters and internal
+reference presentation for this conversion.
 When omitted, use fixed default policies and the default formatter, without
 reading dynamic export settings.  Custom formatters should be side-effect-free.
 STYLE is a nonempty list of TeXmacs style identifiers, defaulting to
@@ -1715,6 +1769,8 @@ for consumers.  Final handlers must preserve contents identity and provenance."
        (preformatted-tab-width nil)
        (headline-formatter nil)
        (date-formatter nil)
+       (typed-references nil)
+       (reference-formatter nil)
        (special-handlers nil)
        (static-labels (org-texmacs--document-static-labels islands))
        (info
@@ -1777,7 +1833,16 @@ for consumers.  Final handlers must preserve contents identity and provenance."
      (if (memq :texmacs-date-timestamp-text-function info)
          (plist-get info :texmacs-date-timestamp-text-function)
        (indirect-function 'org-texmacs--document-date-timestamp-text))
+     typed-references (plist-get info :texmacs-typed-references)
+     reference-formatter
+     (if (plist-member info :texmacs-reference-tag-function)
+         (plist-get info :texmacs-reference-tag-function)
+       (indirect-function 'org-texmacs--document-reference-tag))
      toc-setting (and (memq :with-toc info) (plist-get info :with-toc)))
+    (unless (and (memq typed-references '(nil t))
+                 (functionp reference-formatter))
+      (signal 'org-texmacs-document-error
+              '("Invalid reference presentation options")))
     (unless (and (wholenump headline-limit)
                  (<= headline-limit 5)
                  (integerp preformatted-tab-width)
@@ -2361,7 +2426,7 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                            (list (list 1)))))
                      (if (and reference (null parts))
                          (org-texmacs--document-pack
-                          'reference
+                          (internal-reference-tag node)
                           (list
                            (org-texmacs--document-create
                             :body reference)))
@@ -2609,6 +2674,34 @@ for consumers.  Final handlers must preserve contents identity and provenance."
              (and (plist-get info :texmacs-org-query)
                   (org-element-property :footnote-section-p node)))
             (> (relative-level node) headline-limit)))
+      (internal-reference-tag
+       (link)
+       (if (not typed-references)
+           'reference
+         (let* ((target
+                 (cdr
+                  (assq
+                   link (org-texmacs-resolution-targets resolution))))
+                (type
+                 (and target
+                      (org-texmacs--document-reference-type
+                       target
+                       (and (eq (org-element-type target) 'headline)
+                            (not (low-headline-p target))
+                            (org-texmacs--document-numbered-headline-p
+                             target (relative-level target) info)))))
+                (tag
+                 (if type
+                     (funcall reference-formatter type)
+                   'reference)))
+           (unless (and (symbolp tag)
+                        tag (not (eq tag t)) (not (keywordp tag))
+                        (string-match-p
+                         "\\`[A-Za-z][A-Za-z0-9_*-]*\\'"
+                         (symbol-name tag)))
+             (org-texmacs--document-fail
+              link "Invalid reference tag"))
+           tag)))
       (headline-parts
        (node toc ancestors)
        (let ((raw (org-element-property :raw-value node)))
