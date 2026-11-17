@@ -1,0 +1,5 @@
+* Target
+:PROPERTIES:
+:ID: target-id
+:END:
+Body.

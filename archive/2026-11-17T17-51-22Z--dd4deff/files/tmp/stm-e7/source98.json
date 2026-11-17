@@ -1,0 +1,12 @@
+{
+  "org_version": "9.8",
+  "source_repository": "https://github.com/bzg/org-mode",
+  "source_ref": "release_9.8",
+  "source_commit": "89df5bf46ba214db44eea898cc7cacc0b27fd760",
+  "narHash": "sha256-+B/jG8uHl7oXrvMJO12PI6RL6FKoEphxzUw7p+SEAUQ=",
+  "resolved_source": "/nix/store/ngz8wc2kq5589cjaw61z4ypnhdbc88cp-source",
+  "version_metadata_generated": true,
+  "autoloads_generated": true,
+  "runtime_emacs": "/nix/store/hgxynx6q814yvi1kym1vmccfrr3xicdm-emacs-with-packages-31.1/bin/emacs",
+  "org98_main_project_sources_modified": false
+}

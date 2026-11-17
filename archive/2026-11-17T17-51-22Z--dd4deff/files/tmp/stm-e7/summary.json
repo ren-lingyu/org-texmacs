@@ -1,0 +1,9 @@
+{
+  "org98_registered_roundtrip_cases": 24,
+  "org98_real_export_cases": 21,
+  "expected_export_errors": 2,
+  "semantic_assertions_passed": true,
+  "editor_cases": 6,
+  "editor_native_parser_forbidden": true,
+  "minimum_version_increase_justified": false
+}
