@@ -1,0 +1,8 @@
+{
+  "cases": 78,
+  "native_requests": 37,
+  "native_invalid_rejections": 7,
+  "opaque_without_callbacks": 26,
+  "native_matching_cases": 20,
+  "scope_cleanup": true
+}
