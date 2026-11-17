@@ -130,3 +130,10 @@ removal and editor adaptation; synchronized docs/examples/regressions. Do not
 copy experimental scripts unchanged into production or mark features delivered.
 No new major architectural contradiction was discovered; scope is not frozen
 merely because these representative minimum-version probes passed.
+
+## Interface review completed
+
+The later pre-development closing decision freezes exact interfaces, writer/error
+rules, context normalization and six core nodes in stm-fragment-core-plan.md.
+This supersedes remaining-review tasks above without rewriting experimental
+observations. Formal node 1 starts as a tmp candidate; main remains unchanged.

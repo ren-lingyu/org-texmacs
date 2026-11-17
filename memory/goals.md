@@ -1,9 +1,13 @@
 # org-texmacs project goals
 
+Frozen next-version interfaces, writer/error domain, context migration and six
+core development gates: stm-fragment-core-plan.md. Implement node 1 in a tmp
+candidate without changing main; exploratory review is closed. Current main's
+capabilities remain v0.7.1 until a candidate is separately delivered.
+
 E7 adopts direct removal of bare STM discovery and its old span API contracts.
 Model structural validity stays broader than source expressibility; explicit
-representation failure is permitted without mutation. Migration and remaining
-interface review: stm-fragment-e7.md. These are not yet implemented.
+representation failure is permitted without mutation. Migration decisions: stm-fragment-e7.md; final interfaces: stm-fragment-core-plan.md. These are not yet implemented.
 
 ## Adopted STM fragment evolution
 

@@ -1,21 +1,17 @@
 # org-texmacs active backlog
 
-## Selected design investigation
+## Selected implementation plan
 
-STM fragment architecture: E7 settled direct bare-syntax removal, old discovery
-contract retirement and layered model/source validity. Org 9.8 representative
-probes support retaining the minimum. Next interface review: new signatures,
-writer/error domain and :fragment-tags model-context migration. Then candidate
-scope/development-node review; no formal implementation is authorized yet.
-Fontification needs explicit new-carrier adaptation; native-block editing stays.
-OTP is the final non-blocking candidate AFTER v0.8.0 core implementation and
-validation, becoming a v0.9.0 priority candidate if deferred. It is not an E7
-interface blocker, core acceptance gate or E8 replacement; new inline editing
-is not a core prerequisite. Detailed boundaries and inclusion conditions:
-stm-fragment-evolution.md (OTP consumer boundary and release scheduling). Details/evidence:
-stm-fragment-e7.md. Earlier bare-policy/old-API undecided statements are superseded.
-See stm-fragment-evolution.md for contracts and experiment acceptance. This
-supersedes older no-next-feature statements for planning, not implementation.
+E0–E7 feasibility and compatibility review is closed. Interfaces, pure-writer
+encoding/error boundaries and one-way :fragment-tags removal are frozen in
+stm-fragment-core-plan.md. Implement its six dependency-ordered core nodes,
+starting with scoped object integration in a tmp candidate; ordinary main and
+release metadata stay unchanged. No extra preparatory experiment is a gate.
+E7's bare/discovery removal and layered model/source decisions remain adopted.
+Necessary fontification and native-block editing preservation are core work.
+OTP is the final nonblocking candidate after v0.8.0 core validation; if deferred,
+it is a v0.9.0 priority candidate, not an E7 blocker or E8 substitute. Details:
+stm-fragment-evolution.md. Earlier unselected/interface-review text is superseded.
 
 
 Current delivery state: native single-reference citation detail is

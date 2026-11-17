@@ -12,13 +12,12 @@ sampled real standard Export feasibility with isolated gate/whitespace adaptatio
 See stm-fragment-e5.md and stm-fragment-e6.md. E7 user decisions remove bare
 recognition/old discovery contracts and accept layered model/source validity.
 Representative Org 9.8 roundtrip/real Export probes pass; no minimum increase is
-justified. Next: finish E7 new interface signatures, writer/error domain and
-context migration review (stm-fragment-e7.md), then review/freeze v0.8.0 core
-scope/development nodes. Core implementation and validation precede the final
-non-blocking OTP evaluation; defer it to a v0.9.0 priority candidate if needed.
-OTP does not gate core release or replace E8. No OTP probe or delivery is claimed.
-Detailed scheduling/boundaries: stm-fragment-evolution.md.
-Formal source implementation remains unauthorized.
+justified. The remaining interface/writer/context decisions and six core development gates
+are frozen in stm-fragment-core-plan.md. Next: implement node 1 directly in a
+validated tmp candidate, keeping ordinary main unchanged. No further preparatory
+experiment is required unless implementation exposes a new architecture conflict.
+OTP remains the final nonblocking candidate after core validation, with v0.9.0
+priority fallback; it is not an E8 replacement. No OTP probe/delivery is claimed.
 Adopted design: stm-fragment-evolution.md.
 
 ## Native single-reference citation detail — human-delivered and verified

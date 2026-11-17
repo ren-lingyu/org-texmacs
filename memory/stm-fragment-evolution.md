@@ -4,11 +4,10 @@
 
 Source: the user's architecture handoff supplied in this conversation after
 v0.7.1 finalization. These are adopted goals and constraints, not implemented
-capabilities. The planning name v0.8.0 is provisional. Ordinary source changes,
-release metadata changes and lifecycle/history operations are not authorized.
-The current task changes roadmap priorities only and authorizes memory
-maintenance, not further experiments or formal implementation. Earlier E0–E7
-results remain in their experiment topics.
+capabilities. The v0.8.0 core interfaces and six implementation gates are now frozen in
+stm-fragment-core-plan.md. The user requested node 1 immediately after the plan
+checkpoint. Keep main and release metadata unchanged; use a tmp implementation
+candidate. Earlier E0–E7 findings remain evidence, not new experimental tasks.
 The handoff is sufficiently distilled here; raw duplication has no independent
 retention value. No experiment result is inferred from the handoff.
 
@@ -101,17 +100,17 @@ Decision required; distinguish lexical boundary recognition from native parsing.
 - E7: compatibility/API migration, old bare STM, editing/fontification/examples
   and integrations. E8: performance/cache/cleanup after correctness.
 
-Prioritize E0–E2 now, then E3–E6; use E7/E8 when needed. Formal development needs
-working nonrecursive objects, lexical isolation, AST-only roundtrip, preserved
-ownership/islands, no unresolved export conflict and initial migration analysis.
-Only external semantic conflicts require user decisions, not routine helpers.
+E0–E7 are complete for feasibility/compatibility purposes. The core plan now
+owns the concrete interface decisions, node dependencies and acceptance gates.
+Do not reopen exploration absent a new conflict found during implementation.
+Only external semantic conflicts need user decisions, not routine helpers.
 
 ## Open policy and later consumers
 
 E7 user decisions: remove bare inline STM recognition directly and retire the
 old at-point/map/tree/span/tag-snapshot contracts rather than silently repurpose
-them. Native blocks remain unchanged. New AST/source function signatures remain
-for interface review. All structurally valid model trees stay valid; verified
+them. Native blocks remain unchanged. Frozen AST/source signatures and writer/context rules are in
+stm-fragment-core-plan.md. All structurally valid model trees stay valid; verified
 source representability is a separate promise and contextual failure is allowed.
 See stm-fragment-e7.md for migration, diagnostics and minimum-version evidence.
 Prototype hooks/anchor details remain implementation choices. No hidden worker
@@ -160,65 +159,20 @@ independent requirements; no automatic package-wide minimum increase or private
 Org 10.0 API adoption. Concrete rendering format/backend, public OTP API,
 scheduling/cache/overlay protocol and final v0.9.0 scope remain undecided.
 
-Order: complete remaining E7 interface/writer/error/context review; review/freeze
-v0.8.0 CORE scope and development nodes; implement under separate authorization;
-validate core and prepare release (including necessary E8 correctness/cache/
-resource/performance work); then evaluate OTP and decide inclusion or deferral.
-E8 remains core validation, not an alias for OTP. OTP non-delivery never blocks
-an otherwise accepted v0.8.0 core release.
+Order: implement the frozen six-node core plan; validate core (including
+necessary E8 checks); evaluate OTP last and decide inclusion or deferral.
+OTP non-delivery never blocks an otherwise accepted v0.8.0 core release.
 
 No new README syntax claims or changelog delivered entries before implementation;
 register future scope only after experiments support it and scope is reviewed.
 
-## E5/E6 plan revision after E4
+## Completed investigation and implementation handoff
 
-Candidate v0.8.0 scope is not frozen. E0–E4 support local native-compatible object
-recognition, scoped registration, independent AST/source conversion and reuse of
-the existing model owner/islands/copy/replacement. Do not default to full-source
-masking, repairing native emphasis ambiguities, parallel graph ownership,
-additional canonical ASTs or OTP/Org-10 prerequisites. U+FFFC remains a prototype
-anchor, not a selected contract. E4's conservative writer limitation does not
-establish Scheme/STM expressibility limits; preserve its original observations.
-
-E5 must investigate scheme-string, STM wire transport, Scheme write,
-texmacs->stm and stm-snippet->texmacs before extending a pure writer. Separate
-generation from independent validation. Compare model structural validity,
-writer acceptance, actual Scheme reader results, actual native STM parser results
-and final Org semantic roundtrip. Exercise unusual symbols, strings/controls,
-Unicode, nesting, invalid/cyclic and atomic inputs. Classify invalid model,
-valid-but-unrepresentable, implementation limitation and native incompatibility
-separately. Require no input mutation, deterministic output, meaningful whitespace
-and island-position stability, and normalized-output idempotence. E3's whitespace
-normalized signature alone is insufficient.
-
-Model/AST conversion must remain worker-independent. Native serialization can
-serve as a comparison oracle, not a hidden conversion dependency. If adequate
-pure output cannot be established, report representable-domain versus optional
-native source-output alternatives; changing conversion dependencies needs user
-decision. Independent acceptance reparsing is allowed, conversion by reparsing
-is not. Do not implement a full STM parser in Elisp.
-
-E6 must execute real org-export-as 'texmacs, not simulate preparation. Verify
-registration/transcoders and the entire standard parsing/filter/Cite lifecycle:
-INCLUDE/SETUPFILE, macros, controlled Babel, selection, options/parse-tree filters,
-fragment/parent deletion/modification/insertion, native Cite requests and identity,
-external IDs, typed references and native blocks. Consume only final effective
-AST; never restore source spans or copy preparation/recursive INCLUDE. Exercise
-both nested-backend directions, sequential backends, exception recovery and batch
-without minor mode, including advice/worker/resource cleanup.
-
-Then E7 compatibility review must settle bare STM, fragment-tags/discovery APIs,
-coexistence, error API, writer domain and minimum versions before scope freeze.
-No published changelog/version edits follow from probes. OTP remains a separate
-optional consumer. If later needed, pin an upstream Org development commit rather
-than relying on unstable rolling ELPA archives; Org-10 OLP is not tested here.
-
-## Candidate core after E5/E6 investigation
-
-Proposed core remains scoped stm-fragment object integration, bidirectional
-extended-AST/model adapters using existing ownership, explicit compound carriers,
-verified normalization/representation and real standard Export integration.
-Details/results: stm-fragment-e5.md and stm-fragment-e6.md. Bounded feasibility
-is not full-domain acceptance; formal writer/error policy and E7 compatibility
-review precede scope freeze. Do not promote prototype limitations into permanent
-syntax restrictions or add hidden worker requirements.
+E0–E7 support local native-compatible objects, existing ownership/islands,
+pure writer feasibility and real standard Export integration. Detailed bounded
+observations remain in their individual topics, including the E4 writer limits
+and E5/E6 counterexamples. Full-source masking, a parallel copier, hidden worker
+conversion and native emphasis repair are not default implementation tasks.
+The frozen plan owns the initial output domain, representation errors, context
+migration and formal regression gates; no experiment success is a delivered
+feature or release-state change.
