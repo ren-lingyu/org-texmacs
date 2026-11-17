@@ -3,9 +3,10 @@
 ## Selected design investigation
 
 STM fragment architecture: E4 feasibility supports reuse of the existing
-model owner/islands/copy/replacement for both AST directions. Next E5: complete
-normalization/representability probes, especially the non-reparsing writer,
-escaping and whitespace; E6 standard Export follows. E4 details and limitations:
+model owner/islands/copy/replacement for both AST directions. Next E5: investigate Scheme/native serialization before refining a pure
+writer, preserving worker-independent conversion and separating generation from
+validation. E6 must test actual standard Export. E7 compatibility precedes
+candidate v0.8.0 scope freeze. E4 details and limitations:
 stm-fragment-e4.md. Migration, minimum versions and OTP remain open.
 See stm-fragment-evolution.md for contracts and experiment acceptance. This
 supersedes older no-next-feature statements for planning, not implementation.

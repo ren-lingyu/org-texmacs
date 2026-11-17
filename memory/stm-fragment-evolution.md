@@ -6,7 +6,8 @@ Source: the user's architecture handoff supplied in this conversation after
 v0.7.1 finalization. These are adopted goals and constraints, not implemented
 capabilities. The planning name v0.8.0 is provisional. Ordinary source changes,
 release metadata changes and lifecycle/history operations are not authorized.
-The current task authorizes memory organization and isolated E0–E2 experiments.
+The current task authorizes planning maintenance and isolated E5/E6 experiments;
+E0–E4 results are recorded in their experiment topics.
 The handoff is sufficiently distilled here; raw duplication has no independent
 retention value. No experiment result is inferred from the handoff.
 
@@ -120,3 +121,46 @@ versus whole-package minimum only after identifying and verifying actual APIs.
 Update metadata/docs/checks together if a minimum increase is later adopted.
 No new README syntax claims or changelog delivered entries before implementation;
 register future scope only after experiments support it and scope is reviewed.
+
+## E5/E6 plan revision after E4
+
+Candidate v0.8.0 scope is not frozen. E0–E4 support local native-compatible object
+recognition, scoped registration, independent AST/source conversion and reuse of
+the existing model owner/islands/copy/replacement. Do not default to full-source
+masking, repairing native emphasis ambiguities, parallel graph ownership,
+additional canonical ASTs or OTP/Org-10 prerequisites. U+FFFC remains a prototype
+anchor, not a selected contract. E4's conservative writer limitation does not
+establish Scheme/STM expressibility limits; preserve its original observations.
+
+E5 must investigate scheme-string, STM wire transport, Scheme write,
+texmacs->stm and stm-snippet->texmacs before extending a pure writer. Separate
+generation from independent validation. Compare model structural validity,
+writer acceptance, actual Scheme reader results, actual native STM parser results
+and final Org semantic roundtrip. Exercise unusual symbols, strings/controls,
+Unicode, nesting, invalid/cyclic and atomic inputs. Classify invalid model,
+valid-but-unrepresentable, implementation limitation and native incompatibility
+separately. Require no input mutation, deterministic output, meaningful whitespace
+and island-position stability, and normalized-output idempotence. E3's whitespace
+normalized signature alone is insufficient.
+
+Model/AST conversion must remain worker-independent. Native serialization can
+serve as a comparison oracle, not a hidden conversion dependency. If adequate
+pure output cannot be established, report representable-domain versus optional
+native source-output alternatives; changing conversion dependencies needs user
+decision. Independent acceptance reparsing is allowed, conversion by reparsing
+is not. Do not implement a full STM parser in Elisp.
+
+E6 must execute real org-export-as 'texmacs, not simulate preparation. Verify
+registration/transcoders and the entire standard parsing/filter/Cite lifecycle:
+INCLUDE/SETUPFILE, macros, controlled Babel, selection, options/parse-tree filters,
+fragment/parent deletion/modification/insertion, native Cite requests and identity,
+external IDs, typed references and native blocks. Consume only final effective
+AST; never restore source spans or copy preparation/recursive INCLUDE. Exercise
+both nested-backend directions, sequential backends, exception recovery and batch
+without minor mode, including advice/worker/resource cleanup.
+
+Then E7 compatibility review must settle bare STM, fragment-tags/discovery APIs,
+coexistence, error API, writer domain and minimum versions before scope freeze.
+No published changelog/version edits follow from probes. OTP remains a separate
+optional consumer. If later needed, pin an upstream Org development commit rather
+than relying on unstable rolling ELPA archives; Org-10 OLP is not tested here.

@@ -8,7 +8,9 @@ of the final candidate passed nix flake check and package/example builds;
 results reused cache except for treefmt, which ran and passed. Remote publication
 has not been verified. E4 sampled conversion/ownership experiments reuse the
 existing owner, islands, model-copy and replacement; no parallel model manager
-is needed. Next: E5 writer coverage and normalized representability, then E6.
+is needed. Next: E5 Scheme/native/pure writer comparison with separate generation and
+validation, then E6 actual standard Export lifecycle. Scope freeze waits for
+E5/E6 and E7 compatibility review.
 See stm-fragment-e4.md. Reverse AST conversion is parse-free; its conservative
 writer and prototype anchor convention are not final support promises.
 Formal source implementation remains unauthorized.
