@@ -5,8 +5,8 @@
 E0–E7 feasibility and compatibility review is closed. Interfaces, pure-writer
 encoding/error boundaries and one-way :fragment-tags removal are frozen in
 stm-fragment-core-plan.md. Implement its six dependency-ordered core nodes,
-starting with scoped object integration in a tmp candidate; ordinary main and
-release metadata stay unchanged. No extra preparatory experiment is a gate.
+starting with scoped object integration in the ordinary worktree; commits require separate authorization and
+release metadata stays unchanged. No extra preparatory experiment is a gate.
 E7's bare/discovery removal and layered model/source decisions remain adopted.
 Necessary fontification and native-block editing preservation are core work.
 OTP is the final nonblocking candidate after v0.8.0 core validation; if deferred,

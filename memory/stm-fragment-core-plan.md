@@ -6,8 +6,8 @@ The user closed the exploratory phase after E0–E7 and requested interface/scop
 freeze followed immediately by node 1. This is the current implementation plan;
 older open-interface and experiment-priority statements are superseded here.
 The project snapshot actually audited is this checkpoint's additional project
-parent (released v0.7.1). Main stays unchanged: initial implementation candidates,
-tests and review patches live in the validated ignored project tmp directory.
+parent (released v0.7.1). Implement directly in the ordinary project worktree. Review actual Git diffs;
+tmp is only for temporary data and experiments. Ordinary commits remain human-owned.
 No ordinary project staging/commit, version or release-state change is included.
 No new preparatory experiment is required absent a new architectural conflict.
 The handoff's decisions are distilled here; duplicating its raw text adds no
@@ -167,3 +167,19 @@ or resource meaning. Their validation, graph copying and identity remapping stay
 After core stability/validation, evaluate OTP last as a nonblocking independent
 consumer; separate review before any MVP. Defer to the v0.9.0 priority candidate
 if bounded implementation is unsuitable. See evolution topic for its conditions.
+
+## Source syntax snapshot clarification
+
+The extended org-data root carries :org-texmacs-syntax, an independently owned
+plist of :heading-settings and :link-settings using existing context shapes.
+It is conversion metadata, excluded from document semantics. Capture it before
+scoped registry changes. AST-to-model merges with explicit context: overlapping
+syntax fields must be equal or signal model-error. The owned model AST drops
+this metadata; model context is authoritative. Model-to-AST copies it back when
+complete. Missing metadata never prevents pure AST/model operations; source
+serialization requiring it fails explicitly rather than reading ambient syntax.
+Shared pure capture helpers belong in a syntax module; no parallel graph copier.
+
+Each node uses actual worktree diffs and its own tests. Do not archive ordinary
+source patches already represented by project history. The old tmp patch is an
+optional starting point, not a mandatory delivery workflow.

@@ -14,7 +14,7 @@ recognition/old discovery contracts and accept layered model/source validity.
 Representative Org 9.8 roundtrip/real Export probes pass; no minimum increase is
 justified. The remaining interface/writer/context decisions and six core development gates
 are frozen in stm-fragment-core-plan.md. Next: implement node 1 directly in a
-validated tmp candidate, keeping ordinary main unchanged. No further preparatory
+ordinary project worktree, without automatically committing. No further preparatory
 experiment is required unless implementation exposes a new architecture conflict.
 OTP remains the final nonblocking candidate after core validation, with v0.9.0
 priority fallback; it is not an E8 replacement. No OTP probe/delivery is claimed.

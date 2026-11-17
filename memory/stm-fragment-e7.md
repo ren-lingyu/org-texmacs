@@ -136,4 +136,4 @@ merely because these representative minimum-version probes passed.
 The later pre-development closing decision freezes exact interfaces, writer/error
 rules, context normalization and six core nodes in stm-fragment-core-plan.md.
 This supersedes remaining-review tasks above without rewriting experimental
-observations. Formal node 1 starts as a tmp candidate; main remains unchanged.
+observations. Formal node 1 develops directly in the ordinary worktree, with human commits.

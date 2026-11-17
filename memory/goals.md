@@ -1,8 +1,8 @@
 # org-texmacs project goals
 
 Frozen next-version interfaces, writer/error domain, context migration and six
-core development gates: stm-fragment-core-plan.md. Implement node 1 in a tmp
-candidate without changing main; exploratory review is closed. Current main's
+core development gates: stm-fragment-core-plan.md. Implement node 1 directly in the ordinary
+worktree without automatically committing; exploratory review is closed. Current main's
 capabilities remain v0.7.1 until a candidate is separately delivered.
 
 E7 adopts direct removal of bare STM discovery and its old span API contracts.

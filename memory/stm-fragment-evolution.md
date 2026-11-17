@@ -6,8 +6,7 @@ Source: the user's architecture handoff supplied in this conversation after
 v0.7.1 finalization. These are adopted goals and constraints, not implemented
 capabilities. The v0.8.0 core interfaces and six implementation gates are now frozen in
 stm-fragment-core-plan.md. The user requested node 1 immediately after the plan
-checkpoint. Keep main and release metadata unchanged; use a tmp implementation
-candidate. Earlier E0–E7 findings remain evidence, not new experimental tasks.
+checkpoint. Develop directly in the ordinary worktree; keep release metadata unchanged. Earlier E0–E7 findings remain evidence, not new experimental tasks.
 The handoff is sufficiently distilled here; raw duplication has no independent
 retention value. No experiment result is inferred from the handoff.
 
