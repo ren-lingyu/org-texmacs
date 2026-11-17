@@ -1,0 +1,10 @@
+{
+  "matrix_cases": 9,
+  "all_model_signature_roundtrips_pass": true,
+  "parse_requests": 24,
+  "direct_input_ownership_checks_pass": true,
+  "atomic_representation_failure_preserves_model": true,
+  "caption_parent_guard_pass": true,
+  "worker_cleanup_pass": true,
+  "reverse_parsers_and_parallel_copier_forbidden": true
+}
