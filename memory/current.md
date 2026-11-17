@@ -6,13 +6,12 @@ Local v0.7.1 tag resolves to main HEAD; release documentation and version
 metadata are finalized, and the ordinary worktree is clean. Agent verification
 of the final candidate passed nix flake check and package/example builds;
 results reused cache except for treefmt, which ran and passed. Remote publication
-has not been verified. E4 sampled conversion/ownership experiments reuse the
-existing owner, islands, model-copy and replacement; no parallel model manager
-is needed. Next: E5 Scheme/native/pure writer comparison with separate generation and
-validation, then E6 actual standard Export lifecycle. Scope freeze waits for
-E5/E6 and E7 compatibility review.
-See stm-fragment-e4.md. Reverse AST conversion is parse-free; its conservative
-writer and prototype anchor convention are not final support promises.
+has not been verified. E5 establishes bounded pure-writer/normalization feasibility
+with explicit unresolved symbol and Org-context representation cases; E6 confirms
+sampled real standard Export feasibility with isolated gate/whitespace adaptation.
+See stm-fragment-e5.md and stm-fragment-e6.md. Next: E7 compatibility and formal
+writer-domain/error policy review before candidate v0.8.0 scope freeze. No hidden
+worker dependency or all-valid-tree serialization promise is adopted.
 Formal source implementation remains unauthorized.
 Adopted design: stm-fragment-evolution.md.
 

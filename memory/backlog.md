@@ -2,12 +2,13 @@
 
 ## Selected design investigation
 
-STM fragment architecture: E4 feasibility supports reuse of the existing
-model owner/islands/copy/replacement for both AST directions. Next E5: investigate Scheme/native serialization before refining a pure
-writer, preserving worker-independent conversion and separating generation from
-validation. E6 must test actual standard Export. E7 compatibility precedes
-candidate v0.8.0 scope freeze. E4 details and limitations:
-stm-fragment-e4.md. Migration, minimum versions and OTP remain open.
+STM fragment architecture: E5/E6 bounded feasibility findings are recorded in
+stm-fragment-e5.md and stm-fragment-e6.md. Before scope freeze, E7 must review
+bare STM/discovery APIs/coexistence/editing and the formal writer-domain/error
+policy, including two unresolved symbol cases and Org container representation
+failures. Production integration must handle lowering contexts and explicit
+post-blank nodes. Minimum versions, output delimiter configuration and OTP remain
+open; no formal source implementation is selected yet.
 See stm-fragment-evolution.md for contracts and experiment acceptance. This
 supersedes older no-next-feature statements for planning, not implementation.
 

@@ -164,3 +164,13 @@ coexistence, error API, writer domain and minimum versions before scope freeze.
 No published changelog/version edits follow from probes. OTP remains a separate
 optional consumer. If later needed, pin an upstream Org development commit rather
 than relying on unstable rolling ELPA archives; Org-10 OLP is not tested here.
+
+## Candidate core after E5/E6 investigation
+
+Proposed core remains scoped stm-fragment object integration, bidirectional
+extended-AST/model adapters using existing ownership, explicit compound carriers,
+verified normalization/representation and real standard Export integration.
+Details/results: stm-fragment-e5.md and stm-fragment-e6.md. Bounded feasibility
+is not full-domain acceptance; formal writer/error policy and E7 compatibility
+review precede scope freeze. Do not promote prototype limitations into permanent
+syntax restrictions or add hidden worker requirements.

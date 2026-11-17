@@ -1,5 +1,11 @@
 # org-texmacs durable evidence
 
+E5 distinguishes actual Scheme/native readers and confirms bounded pure-writer
+and Org normalization behavior with explicit counterexamples (stm-fragment-e5.md).
+E6 executes real standard Export filters/Cite/selection/nesting and demonstrates
+necessary inline-context/whitespace adaptations (stm-fragment-e6.md). These are
+isolated feasibility results, not delivered features or full-domain acceptance.
+
 E4 reuses existing model authority/ownership in sampled bidirectional AST
 conversions, identity remapping and replacement. Atomic representation failure
 preserves a valid model; caption parents normalize via existing owner rules.
