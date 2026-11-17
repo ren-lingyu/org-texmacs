@@ -1,5 +1,12 @@
 # org-texmacs durable evidence
 
+Final v0.7.1 candidate: agent-executed nix flake check and nix build --no-link
+.#org-texmacs .#org-texmacs-examples both exited 0. Cached results were reused;
+treefmt ran and passed. This covers the updated version metadata and dependency
+lock on x86_64-linux, not other systems. The local tag was subsequently verified
+at main HEAD; exact source provenance is the additional project parent of this
+checkpoint. No remote publication is established.
+
 ## Mathematical notation boundary evidence
 
 The delivered bilingual example correction distinguishes native multiplication

@@ -1,29 +1,12 @@
 # org-texmacs current memory
 
-## Current HEAD after 0.7.0
+## Current release state
 
-HEAD is `0dff32aa22c35b1eda87871ce9a8b4ab023bbabc` on `main`. Since the
-last recorded delivery (`1c0eae0`), three commits are present:
-
-- `6cdf44b` (`feat(document): support optional typed internal references`,
-  15 paths, +621/−23): feature and regression coverage, README/changelog and
-  bilingual example updates. The change is opt-in and requires a style that
-  defines the selected native tags; the commit message records those limits.
-- `c4b759e` (`fix(examples): correct native mathematical notation`, 2 paths,
-  +29/−19): bilingual mathematics examples updated; no Lisp implementation
-  path changed.
-- `0dff32a` (`build(flake): update nixpkgs and personal-nixpkgs root inputs`,
-  1 path, +6/−87): `flake.lock` updated.
-
-This is commit-level state and scope, not a prose restatement of source
-behavior. Typed-reference tests have user-reported passing feedback after PDF fixes.
-See goals.md, project.md and evidence.md for rationale and validation limits.
-The bilingual mathematical notation fix is delivered, with user-reported
-passing example build after the explicit equation* adjustment (evidence.md).
-No full check of the latest lock is established here. The ordinary
-worktree has a user edit in `CHANGELOG.org`; preserve it during release review.
-Release readiness for 0.7.1 remains to be assessed after reviewing that draft
-against the changes since 0.7.0 and the repository's release procedure.
+Local v0.7.1 tag resolves to main HEAD; release documentation and version
+metadata are finalized, and the ordinary worktree is clean. Agent verification
+of the final candidate passed nix flake check and package/example builds;
+results reused cache except for treefmt, which ran and passed. Remote publication
+has not been verified. No next implementation objective is selected.
 
 ## Native single-reference citation detail — human-delivered and verified
 
@@ -59,8 +42,6 @@ reported the patch passed local tests. Worktree/index clean.
 Receipt memory/native-cite-detail-inputs.json (final-committed); record
 memory/native-cite-detail-implementation.md.
 
-No version bump, tag, push or release action follows; no next feature selected.
-
 ## Stage B link navigation fallback — human-delivered and verified
 
 Stage B (visible-content fallback when no structural navigation target is
@@ -95,7 +76,6 @@ pure-input miss and a standard-export exclusion case.
 Receipt memory/link-navigation-fallback-inputs.json (final-committed);
 record memory/link-navigation-fallback-implementation.md.
 
-No release-state, version, tag, push or publication action follows.
 Stage C (precise cross-document ID navigation) and deferred native file-target
 character work remain separate and unadopted.
 
@@ -116,9 +96,7 @@ Delivery receipt: memory/external-id-links-inputs.json (final-committed);
 implementation/design/review history: memory/external-id-links-implementation.md;
 probe evidence: memory/external-id-links-probe.md.
 
-No release-state, version, tag, push or publication action follows.
-Stage B (unsupported Org link fallback) and the precise cross-document ID
-navigation candidate remain separate and are not adopted.
+Precise cross-document ID navigation remains unadopted.
 
 ## Stage A cross-file ID links — review-round candidate validated
 
