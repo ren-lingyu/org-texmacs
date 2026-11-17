@@ -2,11 +2,10 @@
 
 ## Selected design investigation
 
-STM fragment architecture: E2-prime supports the local object-parser path;
-proceed to E3 object integration and source/AST roundtrip. No sampled failure
-requires prescanning/masking. Opaque Org ownership and structure boundaries
-remain mandatory. Evidence/limits: stm-fragment-e2-prime.md. E4–E6, migration,
-minimum versions and OTP remain open.
+STM fragment architecture: E3 feasibility supports scoped registration and
+independent extended-AST/source roundtrip, with explicit graph-copy adaptation.
+Next E4: validate anchors, secondary ownership, whitespace and model conversion;
+see stm-fragment-e3.md. E5/E6, migration, minimum versions and OTP remain open.
 See stm-fragment-evolution.md for contracts and experiment acceptance. This
 supersedes older no-next-feature statements for planning, not implementation.
 

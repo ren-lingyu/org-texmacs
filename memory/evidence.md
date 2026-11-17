@@ -1,5 +1,10 @@
 # org-texmacs durable evidence
 
+E3 extended Org AST feasibility and native-copy limitations: stm-fragment-e3.md.
+Local registration, secondary-string preservation, direct AST construction and
+sampled source roundtrip passed; a copy adapter preserves caption identity and
+parent relationships that native copy alone does not. No worker/model was used.
+
 E2-prime native-compatible scoped object-parser feasibility is confirmed for
 the sampled matrix, without masking; stm-fragment-e2-prime.md records actual
 runs, strict/opaque boundaries and pending E3–E6 validation.
