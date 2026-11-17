@@ -7,7 +7,8 @@
 Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
-* NEXT v0.7.1
+* DONE v0.7.1
+CLOSED: [2026-11-17 Tue 12:17]
 :PROPERTIES:
 :CUSTOM_ID: v0.7.1
 :END:

@@ -48,9 +48,9 @@ Source exports use Org's working copy. User callbacks can still modify the
 original source; covered changes fail source validation and are not undone.
 
 * Version history
-This README documents Org TeXmacs =0.7.0=.
+This README documents Org TeXmacs =0.7.1=.
 See [[file:CHANGELOG.org][the changelog]] for version history and
-[[file:CHANGELOGS/v0.7.0.org][the v0.7.0 release notes]] for changes and upgrade instructions.
+[[file:CHANGELOGS/v0.7.1.org][the v0.7.1 release notes]] for changes and upgrade instructions.
 
 * Requirements
 - Emacs 31.1 or later and Org 9.8 or later, as declared by the package.
