@@ -2,10 +2,11 @@
 
 ## Selected design investigation
 
-STM fragment architecture: E2-prime native compatibility is selected next.
-Prefer local Org object-parser extension; prescanning/masking requires a concrete
-failure. Preserve opaque code/verbatim and structural boundaries; E3 follows
-the feasibility result, with E4–E6 still pending. Migration, minimum versions and OTP remain open.
+STM fragment architecture: E2-prime supports the local object-parser path;
+proceed to E3 object integration and source/AST roundtrip. No sampled failure
+requires prescanning/masking. Opaque Org ownership and structure boundaries
+remain mandatory. Evidence/limits: stm-fragment-e2-prime.md. E4–E6, migration,
+minimum versions and OTP remain open.
 See stm-fragment-evolution.md for contracts and experiment acceptance. This
 supersedes older no-next-feature statements for planning, not implementation.
 

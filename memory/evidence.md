@@ -1,5 +1,9 @@
 # org-texmacs durable evidence
 
+E2-prime native-compatible scoped object-parser feasibility is confirmed for
+the sampled matrix, without masking; stm-fragment-e2-prime.md records actual
+runs, strict/opaque boundaries and pending E3–E6 validation.
+
 STM fragment E0–E2 exploratory results and limits: stm-fragment-e0-e2.md.
 Native lexical/parser separation is confirmed; recognition-only emphasis
 isolation is refuted; scoped protection remains conditional.

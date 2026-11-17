@@ -6,9 +6,11 @@ Local v0.7.1 tag resolves to main HEAD; release documentation and version
 metadata are finalized, and the ordinary worktree is clean. Agent verification
 of the final candidate passed nix flake check and package/example builds;
 results reused cache except for treefmt, which ran and passed. Remote publication
-has not been verified. STM E0–E2 first probes are recorded in stm-fragment-e0-e2.md. Next: E2-prime native compatibility via local object-parser extension;
-use prescanning/masking only for concrete failures, then E3. Opaque Org regions
-and structure boundaries retain priority; formal implementation is not authorized.
+has not been verified. E2-prime native-compatible local parser extension passed
+the sampled feasibility matrix without masking. Next: E3 object integration and
+source/AST roundtrip; see stm-fragment-e2-prime.md for evidence and limitations.
+Opaque Org ownership and structure boundaries remain mandatory; formal source
+implementation is not authorized.
 Adopted design: stm-fragment-evolution.md.
 
 ## Native single-reference citation detail — human-delivered and verified
