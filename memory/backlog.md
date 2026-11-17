@@ -7,8 +7,12 @@ contract retirement and layered model/source validity. Org 9.8 representative
 probes support retaining the minimum. Next interface review: new signatures,
 writer/error domain and :fragment-tags model-context migration. Then candidate
 scope/development-node review; no formal implementation is authorized yet.
-Fontification needs explicit new-carrier adaptation; native-block editing stays,
-while OTP and new inline editing are not core prerequisites. Details/evidence:
+Fontification needs explicit new-carrier adaptation; native-block editing stays.
+OTP is the final non-blocking candidate AFTER v0.8.0 core implementation and
+validation, becoming a v0.9.0 priority candidate if deferred. It is not an E7
+interface blocker, core acceptance gate or E8 replacement; new inline editing
+is not a core prerequisite. Detailed boundaries and inclusion conditions:
+stm-fragment-evolution.md (OTP consumer boundary and release scheduling). Details/evidence:
 stm-fragment-e7.md. Earlier bare-policy/old-API undecided statements are superseded.
 See stm-fragment-evolution.md for contracts and experiment acceptance. This
 supersedes older no-next-feature statements for planning, not implementation.

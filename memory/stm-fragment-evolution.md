@@ -6,8 +6,9 @@ Source: the user's architecture handoff supplied in this conversation after
 v0.7.1 finalization. These are adopted goals and constraints, not implemented
 capabilities. The planning name v0.8.0 is provisional. Ordinary source changes,
 release metadata changes and lifecycle/history operations are not authorized.
-The current task authorizes E7 compatibility review, minimum-version/editor
-probes and memory maintenance; earlier results remain in their experiment topics.
+The current task changes roadmap priorities only and authorizes memory
+maintenance, not further experiments or formal implementation. Earlier E0–E7
+results remain in their experiment topics.
 The handoff is sufficiently distilled here; raw duplication has no independent
 retention value. No experiment result is inferred from the handoff.
 
@@ -116,11 +117,56 @@ See stm-fragment-e7.md for migration, diagnostics and minimum-version evidence.
 Prototype hooks/anchor details remain implementation choices. No hidden worker
 fallback is introduced by a representation failure.
 
-OTP preview is a separate candidate consumer, not a prerequisite. OLP API and
-Org 10.0 claims in the handoff are unverified here. Do not assume a stable
-renderer registry or predeclare an unreleased dependency. Decide optional-module
-versus whole-package minimum only after identifying and verifying actual APIs.
-Update metadata/docs/checks together if a minimum increase is later adopted.
+## OTP consumer boundary and release scheduling
+
+OTP (Org TeXmacs Preview) is an independent consumer of the established STM
+fragment/AST facilities, displaying TeXmacs-native typesetting in an Org buffer.
+It does not determine core AST structure, introduce a second authoritative
+parser/math AST, or take over full-document Export. A single preview may consume
+an already parsed STM tree directly without constructing a whole document model.
+It may reuse a native worker, without adding hidden worker dependencies to pure
+AST/model conversion. Preview cache, scheduling and overlay/image lifecycle are
+separate from model ownership.
+
+Candidate v0.8.0 core remains scoped recognition/registration/interpretation,
+bidirectional existing-owner adapters, writer/representability/normalization,
+standard Export/filters/Cite, bare/discovery API migration, necessary editing/
+fontification and formal tests/docs/examples/build checks. OTP is not part of
+core acceptance or core scope freeze.
+
+After core implementation is stable and principal regressions/release preparation
+pass, evaluate OTP as the LAST non-blocking candidate. A bounded isolated probe
+should test fragment API sufficiency, independent native rendering to an Emacs
+image, a simple overlay preview/clear cycle, cleanup on buffer close/render error,
+and any extra scheduling/cache/dependency requirements. No full-source rescan,
+whole Export transaction or generic preview framework is a prerequisite.
+This experiment has not been executed and no preview is delivered.
+
+Only consider a minimal v0.8.0 OTP after separate review: core architecture/APIs
+stay stable; the module is independent and inert when disabled; preview, clear,
+error recovery and maintainable regressions are feasible at bounded complexity;
+no package-wide Org 10.0-pre requirement, complex async scheduler or persistent
+cache is needed. Experiment success does not authorize implementation or expand
+release scope. If these conditions are not met, release a ready v0.8.0 core and
+make OTP a PRIORITY CANDIDATE for v0.9.0. Neither release promises every preview
+feature. Later candidates include automatic/incremental preview, cancellation,
+cache, overlays/resources and interaction with Org editing/preview commands.
+
+OLP is a mechanism to investigate, not an assumed shared framework or renderer
+registry. Distinguish public reusable APIs, internal ideas and LaTeX-specific
+parts by actual inspection. Core Org 9.8 evidence is not displaced by speculative
+preview needs. If newer APIs are needed, first consider an optional module with
+independent requirements; no automatic package-wide minimum increase or private
+Org 10.0 API adoption. Concrete rendering format/backend, public OTP API,
+scheduling/cache/overlay protocol and final v0.9.0 scope remain undecided.
+
+Order: complete remaining E7 interface/writer/error/context review; review/freeze
+v0.8.0 CORE scope and development nodes; implement under separate authorization;
+validate core and prepare release (including necessary E8 correctness/cache/
+resource/performance work); then evaluate OTP and decide inclusion or deferral.
+E8 remains core validation, not an alias for OTP. OTP non-delivery never blocks
+an otherwise accepted v0.8.0 core release.
+
 No new README syntax claims or changelog delivered entries before implementation;
 register future scope only after experiments support it and scope is reviewed.
 
