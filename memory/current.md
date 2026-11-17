@@ -6,8 +6,9 @@ Local v0.7.1 tag resolves to main HEAD; release documentation and version
 metadata are finalized, and the ordinary worktree is clean. Agent verification
 of the final candidate passed nix flake check and package/example builds;
 results reused cache except for treefmt, which ran and passed. Remote publication
-has not been verified. STM fragment design organization and isolated E0–E2 experiments are selected;
-formal implementation is not authorized. See stm-fragment-evolution.md.
+has not been verified. STM E0–E2 first probes are recorded in stm-fragment-e0-e2.md. Next: finish E2
+container/opaque precedence before E3; formal implementation is not authorized.
+Adopted design: stm-fragment-evolution.md.
 
 ## Native single-reference citation detail — human-delivered and verified
 

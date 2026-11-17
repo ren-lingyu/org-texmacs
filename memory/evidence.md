@@ -1,5 +1,9 @@
 # org-texmacs durable evidence
 
+STM fragment E0–E2 exploratory results and limits: stm-fragment-e0-e2.md.
+Native lexical/parser separation is confirmed; recognition-only emphasis
+isolation is refuted; scoped protection remains conditional.
+
 Final v0.7.1 candidate: agent-executed nix flake check and nix build --no-link
 .#org-texmacs .#org-texmacs-examples both exited 0. Cached results were reused;
 treefmt ran and passed. This covers the updated version metadata and dependency
