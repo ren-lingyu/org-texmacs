@@ -1,5 +1,26 @@
 # org-texmacs current memory
 
+## Current HEAD after 0.7.0
+
+HEAD is `0dff32aa22c35b1eda87871ce9a8b4ab023bbabc` on `main`. Since the
+last recorded delivery (`1c0eae0`), three commits are present:
+
+- `6cdf44b` (`feat(document): support optional typed internal references`,
+  15 paths, +621/−23): feature and regression coverage, README/changelog and
+  bilingual example updates. The change is opt-in and requires a style that
+  defines the selected native tags; the commit message records those limits.
+- `c4b759e` (`fix(examples): correct native mathematical notation`, 2 paths,
+  +29/−19): bilingual mathematics examples updated; no Lisp implementation
+  path changed.
+- `0dff32a` (`build(flake): update nixpkgs and personal-nixpkgs root inputs`,
+  1 path, +6/−87): `flake.lock` updated.
+
+This is commit-level state and scope, not a prose restatement of source
+behavior. No validation of these three commits is recorded here. The ordinary
+worktree has a user edit in `CHANGELOG.org`; preserve it during release review.
+Release readiness for 0.7.1 remains to be assessed after reviewing that draft
+against the changes since 0.7.0 and the repository's release procedure.
+
 ## Native single-reference citation detail — human-delivered and verified
 
 Delivered as f1b132b→1c0eae02187e668199a00cd58aa62cc32f46e5bb
