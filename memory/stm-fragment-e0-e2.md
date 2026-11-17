@@ -88,12 +88,27 @@ been proven, but no complete viable E2 adapter is claimed.
 
 ## Next action and policy
 
-Continue E2 with scoped protection at genuine Org parser container boundaries,
-opaque-span precedence and malformed candidates adjacent to code/table/link
-boundaries, then E3 object construction. Do not begin formal source implementation
+Reassess E2 with the post-probe native-compatible contract below. Prefer a
+local Org object-parser extension, adding prescanning or masking only for a
+concrete remaining failure, then proceed to E3 object construction. Do not begin formal source implementation
 or claim E3–E6 acceptance. No exact minimum-version conclusion follows from one
 Org version. For later OLP experiments the user permits replacing emacsPackages.org
 with emacsPackages.elpaDevelPackages.org; if its source is unreliable, consulting
 ~/emarccs only for building Org from upstream/mirror source and overlaying
 emacsPackages.org is allowed; do not copy its directory/configuration structure.
 No development Org fetch or OLP test was performed in E0–E2.
+
+## Post-probe design decision
+
+The user narrowed the contract after these probes: native latex-fragment allowed
+positions and successful composition rules are the minimum target. Repairing
+Org's own emphasis ambiguities is not required. Recognition-only failure on the
+recorded native-conflicting emphasis examples therefore does not independently
+show project-contract failure. Masking is a demonstrated candidate technique,
+not a mandatory implementation. These examples remain exploratory evidence,
+not unconditional must-pass regression cases. Original observations above are
+unchanged. Once recognized, STM interiors retain lexical isolation, native
+validation, strict errors, no whitelist and no silent fallback. Opaque Org
+objects and structure boundaries retain priority, including for malformed
+candidate-shaped text. E2-prime must establish context through actual Org parsing,
+not unconditional full-source scanning.

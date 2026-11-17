@@ -2,8 +2,10 @@
 
 ## Selected design investigation
 
-STM fragment architecture: E0–E2 isolated probes are selected now; E3–E6 follow
-only from supported results. Migration, minimum versions and OTP remain open.
+STM fragment architecture: E2-prime native compatibility is selected next.
+Prefer local Org object-parser extension; prescanning/masking requires a concrete
+failure. Preserve opaque code/verbatim and structural boundaries; E3 follows
+the feasibility result, with E4–E6 still pending. Migration, minimum versions and OTP remain open.
 See stm-fragment-evolution.md for contracts and experiment acceptance. This
 supersedes older no-next-feature statements for planning, not implementation.
 

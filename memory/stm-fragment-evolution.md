@@ -40,15 +40,19 @@ Default normalized output is \((...)\): distinct opening/closing delimiters
 avoid some single-dollar restrictions. Require structured equivalence, unchanged
 STM content and idempotence. Output-delimiter configuration is deferred.
 
-Containers follow the target Org version's actual latex-fragment restrictions,
-not a parallel whitelist. Org owns document structure and opaque code/verbatim/
-source regions; allowed explicit STM carriers take precedence over conflicting
-inline markup; their interiors are not recursively parsed as Org. Fragments may
-not cross effective container boundaries. These requirements still need probes,
-especially recursive emphasis, tables, secondary strings and opaque regions.
+Initial containers and composition rules follow native latex-fragment in the
+target Org version, not a parallel whitelist. Native combinations that parse
+successfully are the minimum compatibility target. An allowed position does not
+mean every fragment containing * composes successfully with outer emphasis.
+Org-TeXmacs is not required to repair existing native parser nesting ambiguities
+or boundary failures. Naturally supported extra combinations may be retained
+without promising universal long-term support for them. Once completely
+recognized, a fragment's interior is owned by STM lexical/native parsing and is
+not recursively interpreted as Org markup. Org document boundaries and opaque
+code/verbatim/source regions retain priority; no fragment crosses its structure.
 
 Strictness has two stages: source adaptation rejects recognized but incomplete
-$(`/\((` starts within legal contexts; AST conversion uses the native STM parser
+$( / \(( starts recognized in legal non-opaque contexts; AST conversion uses the native STM parser
 and rejects invalid/multiple trees. Direct AST input does not undergo source
 scanning. Editing may remain incomplete; no strict/lenient option is adopted.
 Use Org literal mechanisms for delimiter text first; dedicated escaping remains
@@ -79,9 +83,12 @@ Decision required; distinguish lexical boundary recognition from native parsing.
 - E1: minimal executable delimiter scanner, nesting/strings/escapes, delimiter
   text inside strings, adjacent fragments, malformed/multiple datum and trailing
   text, unknown tags; separately test native acceptance where safely available.
-- E2: compare recognition alone with scoped interval protection/adaptation;
-  test outer emphasis, inner markup/link-like characters, opaque contexts,
-  container boundaries, strict errors and effect on neighboring Org objects.
+- E2: exploratory recognition/masking comparisons are retained as evidence.
+  E2-prime now tests native-compatible paragraph/emphasis/secondary-string
+  combinations, STM-string close delimiters, opaque precedence and strict
+  lexical/native errors using a local object-parser extension first. Investigate
+  prescanning/masking only after a concrete failure; do not scan all source just
+  to force malformed STM detection inside Org-owned opaque content.
 - E3: extended-object registration versus local pseudo-objects; native Org
   traversal/interpretation/copy/cache/reentrancy and source/AST roundtrip.
 - E4: AST-first model/island conversion and reverse reconstruction, direct
