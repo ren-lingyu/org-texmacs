@@ -1,0 +1,92 @@
+#+title: Org TeXmacs v0.7.1 Release Notes
+
+* Overview
+Changes since v0.7.0. This version adds optional native typed references,
+single-reference citation details, cross-file Org ID links and visible-content
+fallback for links without a navigation target. It also corrects mathematical
+notation in the English and Chinese examples.
+
+* Upgrade from v0.7.0
+Typed references are opt-in; existing configurations continue to generate plain
+=reference= nodes. Enable both the policy and an appropriate document style to
+use native typed references:
+
+#+begin_src emacs-lisp
+  (setq org-texmacs-typed-references t
+        org-texmacs-document-style '("generic" "smart-ref"))
+#+end_src
+
+Links without an available navigation target now export their visible content
+instead of failing solely because navigation is unavailable. Workflows that
+relied on export failure to detect such links should review them separately.
+Malformed AST and invalid frozen resolution data still fail explicitly.
+
+* Optional typed internal references
+With =org-texmacs-typed-references= enabled, resolved same-document internal
+links without descriptions select native reference macros from the actual Org
+target structure, rather than its name or label prefix. Supported numbered
+headings use =section-ref=; equations use =eq-ref=; figures, tables and supported
+formal statements use their corresponding native macros, including =cor-ref=
+for corollaries.
+
+Unnumbered structures, =proof=, dedicated targets and ordinary named STM blocks
+retain plain =reference=. Explicit link descriptions continue to use =hlink=.
+Target resolution and label allocation are unchanged. File links, citations,
+footnotes, TOC page references and authored STM are outside this policy.
+
+The selected style must define the native macros. Supply =smart-ref= or a
+compatible style explicitly; the exporter neither inserts a style package nor
+validates its dependencies. TeXmacs owns reference names, numbering, localization,
+hyperlinks and final layout.
+
+Preparation captures the policy and the effective private tag selector.
+=org-texmacs--document-reference-tag= may be advised, but is not a stable public
+extension API. Later advice changes affect new prepared inputs; mutable state
+captured by a function is not frozen. Independent =org-texmacs-input-create=
+defaults to plain references unless INFO explicitly enables
+=:texmacs-typed-references=; its private =:texmacs-reference-tag-function= option
+can supply the selector.
+
+* Native citation details
+Default-style single-key citations accept a plain-text reference suffix, for
+example =[cite:@key, chapter 1]= or =[cite:@key p. 7]=. The suffix becomes native
+=cite-detail= inside the existing bibliography binding. Bibliography selection
+and labels remain key-based; bare single-key and multi-key citations keep their
+existing behavior.
+
+Standard Org Cite and independent explicit native inputs share the same detail
+contract. Details are opaque plain text, not parsed CSL locators. Multi-key
+details, rich suffixes, reference prefixes, citation-level affixes and non-default
+citation styles remain unsupported.
+
+* Cross-file Org ID links
+Standard Org export can resolve external =id:= targets and lower them through
+the existing file-link path. File-level and headline IDs in another file provide
+document-level navigation. Precise navigation to a position inside another
+exported document remains unsupported.
+
+Existing Org-to-PDF conversion, PDF path policies and file provenance apply to
+resolved external targets. Export does not build the target document or promise
+that its PDF exists. Independent inputs do not query the Org ID database to
+discover missing resolution context.
+
+* Links without navigation targets
+When no structural navigation target is available, a link retains its description
+through ordinary inline lowering, or its parsed raw-link text when undescribed.
+This covers unsupported link types/forms, unresolved or excluded targets and
+independent inputs lacking the required resolution context.
+
+Successful navigation retains its existing behavior. This fallback does not
+relax native file-target character restrictions or structural validation.
+
+* Mathematical example corrections
+The English and Chinese mathematics examples now distinguish native multiplication
+(=*=) from function application (a space). Corrections cover scalar products,
+the quadratic formula, sums, square expansions, function application, absolute
+value delimiters and differential notation.
+
+The norm homogeneity formula now uses an explicit =equation*= block. Its previous
+inline form could be split by Org markup parsing and fail with
+=STM crosses an Org object boundary=. This is an example-input correction;
+strict STM object-boundary validation remains in place. It does not imply that
+all inline multiplication fails or introduce general automatic escaping.

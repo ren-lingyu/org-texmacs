@@ -7,7 +7,18 @@
 Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
-* TODO *unreleased*
+* NEXT v0.7.1
+:PROPERTIES:
+:CUSTOM_ID: v0.7.1
+:END:
+[[file:CHANGELOGS/v0.7.1.org][Detailed release notes and upgrade instructions]]
+
+** Fixed
+- Correct native mathematical notation in the English and Chinese examples,
+  distinguishing multiplication from function application. Move the norm
+  homogeneity formula into an explicit equation block to avoid an Org markup
+  boundary conflict during export.
+
 ** Added
 - Optional =org-texmacs-typed-references= selects native typed reference tags
   from resolved internal Org target structures. Supported numbered headings,

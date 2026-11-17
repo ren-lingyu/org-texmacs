@@ -28,8 +28,10 @@ Document conversion supports basic inline markup, Unicode-backed Org entities,
 recursive subscripts/superscripts,
 self-contained URI links,
 plain local file links with captured resource context,
-same-document headline/ID and dedicated-target links, anonymous and named
-footnotes, standard Org Cite with native TeXmacs bibliography or optional CSL,
+cross-file Org ID links with document-level navigation,
+same-document headline/ID and dedicated-target links with optional typed references,
+anonymous and named footnotes, standard Org Cite with native TeXmacs bibliography,
+single-key citation details or optional CSL,
 list/container structures, rich metadata,
 relative headline sectioning, a static filtered TOC, static preformatted
 blocks, named/captioned basic rectangular tables and TeXmacs islands, as specified below.
