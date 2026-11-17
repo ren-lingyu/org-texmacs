@@ -1,0 +1,9 @@
+{
+  "total_roundtrip_comparisons": 48,
+  "registered_roundtrip_passes": 24,
+  "pseudo_object_traversal_misses": 22,
+  "independent_secondary_mutations": 5,
+  "worker_started": false,
+  "live_cache_and_cleanup_passed": true,
+  "pseudo_opaque_cases_without_fragments": 2
+}
