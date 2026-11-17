@@ -6,11 +6,12 @@ Local v0.7.1 tag resolves to main HEAD; release documentation and version
 metadata are finalized, and the ordinary worktree is clean. Agent verification
 of the final candidate passed nix flake check and package/example builds;
 results reused cache except for treefmt, which ran and passed. Remote publication
-has not been verified. E3 scoped extended-AST feasibility is supported by the
-sampled registration/copy/secondary-string/roundtrip experiments. Next: E4 island
-model integration; see stm-fragment-e3.md. Native copy alone is insufficient for
-caption identity and ordinary child parents; preserve these findings in E4.
-Formal source implementation is not authorized.
+has not been verified. E4 sampled conversion/ownership experiments reuse the
+existing owner, islands, model-copy and replacement; no parallel model manager
+is needed. Next: E5 writer coverage and normalized representability, then E6.
+See stm-fragment-e4.md. Reverse AST conversion is parse-free; its conservative
+writer and prototype anchor convention are not final support promises.
+Formal source implementation remains unauthorized.
 Adopted design: stm-fragment-evolution.md.
 
 ## Native single-reference citation detail — human-delivered and verified

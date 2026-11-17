@@ -1,5 +1,10 @@
 # org-texmacs durable evidence
 
+E4 reuses existing model authority/ownership in sampled bidirectional AST
+conversions, identity remapping and replacement. Atomic representation failure
+preserves a valid model; caption parents normalize via existing owner rules.
+Evidence and writer/anchor limitations: stm-fragment-e4.md.
+
 E3 extended Org AST feasibility and native-copy limitations: stm-fragment-e3.md.
 Local registration, secondary-string preservation, direct AST construction and
 sampled source roundtrip passed; a copy adapter preserves caption identity and

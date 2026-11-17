@@ -2,10 +2,11 @@
 
 ## Selected design investigation
 
-STM fragment architecture: E3 feasibility supports scoped registration and
-independent extended-AST/source roundtrip, with explicit graph-copy adaptation.
-Next E4: validate anchors, secondary ownership, whitespace and model conversion;
-see stm-fragment-e3.md. E5/E6, migration, minimum versions and OTP remain open.
+STM fragment architecture: E4 feasibility supports reuse of the existing
+model owner/islands/copy/replacement for both AST directions. Next E5: complete
+normalization/representability probes, especially the non-reparsing writer,
+escaping and whitespace; E6 standard Export follows. E4 details and limitations:
+stm-fragment-e4.md. Migration, minimum versions and OTP remain open.
 See stm-fragment-evolution.md for contracts and experiment acceptance. This
 supersedes older no-next-feature statements for planning, not implementation.
 
