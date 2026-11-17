@@ -1,5 +1,13 @@
 # org-texmacs active backlog
 
+## Selected design investigation
+
+STM fragment architecture: E0–E2 isolated probes are selected now; E3–E6 follow
+only from supported results. Migration, minimum versions and OTP remain open.
+See stm-fragment-evolution.md for contracts and experiment acceptance. This
+supersedes older no-next-feature statements for planning, not implementation.
+
+
 Current delivery state: native single-reference citation detail is
 human-delivered 1c0eae0 (see memory/native-cite-detail-implementation.md);
 Stage B link navigation fallback f1b132b; Stage A cross-file ID links 2462831.

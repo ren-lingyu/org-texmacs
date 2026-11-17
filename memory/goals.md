@@ -1,5 +1,13 @@
 # org-texmacs project goals
 
+## Adopted STM fragment evolution
+
+Preserve AST-first ownership and standard Export authority while introducing
+explicit STM carriers and independent bidirectional AST conversions. Adopted
+constraints, motivation and open policies: stm-fragment-evolution.md. These
+are design decisions; feasibility and implementation remain unverified.
+
+
 ## Delivered typed-reference decisions
 
 Use resolved Org structure, never NAME/label prefixes, to avoid repeating

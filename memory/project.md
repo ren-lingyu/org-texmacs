@@ -1,5 +1,12 @@
 # org-texmacs current project model
 
+## Planned STM architecture (not implemented)
+
+The adopted extended Org AST / island model conversion boundaries and source
+syntax are specified in stm-fragment-evolution.md. Current v0.7.1 still uses
+bare STM discovery; the plan does not change current supported behavior.
+
+
 ## Delivered typed-reference architecture
 
 org-texmacs--document-reference-type classifies; org-texmacs--document-reference-tag
