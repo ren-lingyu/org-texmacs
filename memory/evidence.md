@@ -1,5 +1,9 @@
 # org-texmacs durable evidence
 
+E7 actually loads fixed Org 9.8 sources and passes representative E3/E6 probes;
+editor baseline confirms new-carrier fontification still needs adaptation.
+Sources, provenance, limits and user-adopted migration: stm-fragment-e7.md.
+
 E5 distinguishes actual Scheme/native readers and confirms bounded pure-writer
 and Org normalization behavior with explicit counterexamples (stm-fragment-e5.md).
 E6 executes real standard Export filters/Cite/selection/nesting and demonstrates

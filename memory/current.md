@@ -9,9 +9,11 @@ results reused cache except for treefmt, which ran and passed. Remote publicatio
 has not been verified. E5 establishes bounded pure-writer/normalization feasibility
 with explicit unresolved symbol and Org-context representation cases; E6 confirms
 sampled real standard Export feasibility with isolated gate/whitespace adaptation.
-See stm-fragment-e5.md and stm-fragment-e6.md. Next: E7 compatibility and formal
-writer-domain/error policy review before candidate v0.8.0 scope freeze. No hidden
-worker dependency or all-valid-tree serialization promise is adopted.
+See stm-fragment-e5.md and stm-fragment-e6.md. E7 user decisions remove bare
+recognition/old discovery contracts and accept layered model/source validity.
+Representative Org 9.8 roundtrip/real Export probes pass; no minimum increase is
+justified. Next: review new interface signatures, writer/error domain and context
+migration, then explicitly review scope/development nodes. stm-fragment-e7.md.
 Formal source implementation remains unauthorized.
 Adopted design: stm-fragment-evolution.md.
 

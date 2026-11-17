@@ -1,5 +1,10 @@
 # org-texmacs project goals
 
+E7 adopts direct removal of bare STM discovery and its old span API contracts.
+Model structural validity stays broader than source expressibility; explicit
+representation failure is permitted without mutation. Migration and remaining
+interface review: stm-fragment-e7.md. These are not yet implemented.
+
 ## Adopted STM fragment evolution
 
 Preserve AST-first ownership and standard Export authority while introducing

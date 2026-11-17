@@ -1,5 +1,8 @@
 # org-texmacs current project model
 
+Planned compatibility migration and pure interface boundaries are recorded in
+stm-fragment-e7.md. Current main still implements v0.7.1 bare/span behavior.
+
 ## Planned STM architecture (not implemented)
 
 The adopted extended Org AST / island model conversion boundaries and source

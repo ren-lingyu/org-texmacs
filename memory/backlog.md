@@ -2,13 +2,14 @@
 
 ## Selected design investigation
 
-STM fragment architecture: E5/E6 bounded feasibility findings are recorded in
-stm-fragment-e5.md and stm-fragment-e6.md. Before scope freeze, E7 must review
-bare STM/discovery APIs/coexistence/editing and the formal writer-domain/error
-policy, including two unresolved symbol cases and Org container representation
-failures. Production integration must handle lowering contexts and explicit
-post-blank nodes. Minimum versions, output delimiter configuration and OTP remain
-open; no formal source implementation is selected yet.
+STM fragment architecture: E7 settled direct bare-syntax removal, old discovery
+contract retirement and layered model/source validity. Org 9.8 representative
+probes support retaining the minimum. Next interface review: new signatures,
+writer/error domain and :fragment-tags model-context migration. Then candidate
+scope/development-node review; no formal implementation is authorized yet.
+Fontification needs explicit new-carrier adaptation; native-block editing stays,
+while OTP and new inline editing are not core prerequisites. Details/evidence:
+stm-fragment-e7.md. Earlier bare-policy/old-API undecided statements are superseded.
 See stm-fragment-evolution.md for contracts and experiment acceptance. This
 supersedes older no-next-feature statements for planning, not implementation.
 

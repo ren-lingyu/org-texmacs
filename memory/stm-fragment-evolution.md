@@ -6,8 +6,8 @@ Source: the user's architecture handoff supplied in this conversation after
 v0.7.1 finalization. These are adopted goals and constraints, not implemented
 capabilities. The planning name v0.8.0 is provisional. Ordinary source changes,
 release metadata changes and lifecycle/history operations are not authorized.
-The current task authorizes planning maintenance and isolated E5/E6 experiments;
-E0–E4 results are recorded in their experiment topics.
+The current task authorizes E7 compatibility review, minimum-version/editor
+probes and memory maintenance; earlier results remain in their experiment topics.
 The handoff is sufficiently distilled here; raw duplication has no independent
 retention value. No experiment result is inferred from the handoff.
 
@@ -107,12 +107,14 @@ Only external semantic conflicts require user decisions, not routine helpers.
 
 ## Open policy and later consumers
 
-Old bare STM compatibility/removal/deprecation and fragment-tags/discovery API
-migration are undecided pending E7. Parser extension, scoped advice/protection,
-registration method and minimum-version changes remain evidence-driven.
-Prototype Org 9.8.10 first, then verify APIs at declared Org 9.8 minimum; version
-increases are acceptable when justified, not automatic from the development
-version. Do not duplicate large Org internals merely to preserve compatibility.
+E7 user decisions: remove bare inline STM recognition directly and retire the
+old at-point/map/tree/span/tag-snapshot contracts rather than silently repurpose
+them. Native blocks remain unchanged. New AST/source function signatures remain
+for interface review. All structurally valid model trees stay valid; verified
+source representability is a separate promise and contextual failure is allowed.
+See stm-fragment-e7.md for migration, diagnostics and minimum-version evidence.
+Prototype hooks/anchor details remain implementation choices. No hidden worker
+fallback is introduced by a representation failure.
 
 OTP preview is a separate candidate consumer, not a prerequisite. OLP API and
 Org 10.0 claims in the handoff are unverified here. Do not assume a stable
