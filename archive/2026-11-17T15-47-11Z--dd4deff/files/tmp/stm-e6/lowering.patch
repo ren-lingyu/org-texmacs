@@ -1,0 +1,12 @@
+--- lisp/org-texmacs-document.el
++++ org-texmacs-document.el
+@@ -2066,8 +2066,7 @@
+         (let ((entry (assq node islands)))
+           (cond
+            (entry
+-            (unless (and (stringp node)
+-                         (memq context '(paragraph footnote)))
++            (unless (stringp node)
+               (org-texmacs--document-fail
+                node "Island outside paragraph or footnote text"))
+             ;; An island is opaque, even if its root is an atomic string.

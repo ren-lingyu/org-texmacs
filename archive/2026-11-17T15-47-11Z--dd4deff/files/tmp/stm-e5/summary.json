@@ -1,0 +1,16 @@
+{
+  "writer_cases": 38,
+  "native_and_project_parser_equal": {
+    "scheme-write": 19,
+    "texmacs-to-stm": 33,
+    "pure-elisp": 29,
+    "pure-stm": 36
+  },
+  "normalization_cases": 48,
+  "normalization_passes": 46,
+  "context_representation_failures": 2,
+  "models_unchanged": true,
+  "invalid_model_rejections": 3,
+  "pure_writer_buffer_independent": true,
+  "raw_anchor_whitespace_and_order_equal": true
+}

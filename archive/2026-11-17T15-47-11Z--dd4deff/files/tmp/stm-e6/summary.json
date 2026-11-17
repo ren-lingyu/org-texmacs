@@ -1,0 +1,8 @@
+{
+  "real_org_export_cases": 21,
+  "expected_failures": 2,
+  "semantic_assertions_passed": true,
+  "nested_both_directions": true,
+  "cross_file_id": true,
+  "cleanup_passed": true
+}

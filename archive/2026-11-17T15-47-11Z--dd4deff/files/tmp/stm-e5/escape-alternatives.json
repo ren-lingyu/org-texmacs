@@ -1,0 +1,1 @@
+[{"source":"(math \"a\\|b\")","result":"Invalid STM source: \"Invalid STM source\""},{"source":"(math \"a\\]b\")","result":"Invalid STM source: \"Invalid STM source\""},{"source":"(math \"a\\x7cb\")","result":"(math \"ax7cb\")"},{"source":"(math \"a\\x5d;b\")","result":"(math \"ax5d;b\")"},{"source":"(math \"a\\u007cb\")","result":"Invalid STM source: \"Invalid STM source\""}]
