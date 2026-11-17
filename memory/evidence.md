@@ -1,5 +1,39 @@
 # org-texmacs durable evidence
 
+## Mathematical notation boundary evidence
+
+The delivered bilingual example correction distinguishes native multiplication
+(*) from function application (space); adjacent variables can have different
+semantics. It corrects scalar products, quadratic/sum/square formulas, function
+application, absolute-value delimiters and differential notation.
+User testimony supplied during maintenance reports an initial example build
+failure, STM crosses an Org object boundary, for the norm homogeneity formula
+as inline STM with *. Moving this formula to explicit equation* yielded a
+user-reported passing example build. This fixes example input, preserving strict
+exporter object-boundary checking. Not every inline * necessarily fails: Org's
+parsing of adjacent text determines the object boundary. No general inline STM
+escaping or automatic repair capability is adopted.
+No complete execution logs or exact inputs are available here; no build was run
+by the agent and no result is asserted for the later dependency lock. The
+additional project parent identifies the delivered example fix, separately from
+the checkpoint's first-parent memory history. Existing source and regressions
+suffice for recovery; no independent raw archive copy is needed.
+
+
+## Typed-reference evidence
+
+User feedback supplied for this maintenance reports passing tests after the
+complete typed-reference patch and PDF assertion fixes. Definition's Unicode ﬁ
+ligature required normalized text matching. Native eq-ref can have several PDF
+hyperlink annotations; one annotation per reference is not a valid assumption.
+Committed ERT provides regression coverage, not evidence of execution here.
+No complete logs/input snapshot accompany the testimony: no counts, exact
+environment or full flake-check success are inferred. The subsequent lock update
+is outside that feedback's scope. No builds/tests were run during maintenance.
+The additional project parent identifies the delivery; it is separate from the
+first-parent memory predecessor.
+
+
 Native single-reference citation detail delivery: human commit 1c0eae0 (parent
 f1b132b, 11 paths, +244/−100) with clean worktree/index. Agent-executed full
 flake check on that content exits 0: core 347/347 (was 346), native 285/285,

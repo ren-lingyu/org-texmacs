@@ -1,5 +1,19 @@
 # org-texmacs current project model
 
+## Delivered typed-reference architecture
+
+org-texmacs--document-reference-type classifies; org-texmacs--document-reference-tag
+selects native tags. Existing resolution/label allocation retain target identity.
+Numbered headings use section-ref, equations eq-ref, figures/tables their native
+macros and supported statements native type references; corollary uses cor-ref.
+Unnumbered structures, proof, dedicated targets and ordinary named STM blocks
+fall back to reference. Descriptions remain hlink. README owns the full mapping.
+Standard preparation captures policy and effective selector definition.
+Independent org-texmacs-input-create defaults to plain unless INFO opts in.
+Later advice changes do not alter prepared inputs; mutable closure state is not
+thereby frozen. TeXmacs owns style loading, numbering and presentation.
+
+
 ## Citation detail: delivered support
 
 Human-delivered 1c0eae0 (parent f1b132b, 11 paths). Current citation model:

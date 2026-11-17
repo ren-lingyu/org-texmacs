@@ -1,5 +1,22 @@
 # org-texmacs project goals
 
+## Delivered typed-reference decisions
+
+Use resolved Org structure, never NAME/label prefixes, to avoid repeating
+smart-ref naming inference. Org-TeXmacs selects native tags; TeXmacs owns names,
+numbering, localization, hyperlinks and layout. No reference redefinition,
+custom renderer or TeXmacs source changes are adopted. The nil default preserves
+existing documents; opt-in affects supported same-document bare internal links.
+Descriptions and unsupported targets retain existing lowering.
+
+Style configuration is caller-owned: supply smart-ref or compatible macros.
+No injection or transitive dependency validation is adopted, permitting custom
+styles without exporter knowledge of their dependency graph. Classification is
+separate from private adviceable tag selection; no stable callback API, public
+mapping table or generic presentation framework is adopted. These are delivered
+decisions, not future work.
+
+
 ## Native single-reference citation detail adopted and delivered
 
 The user adopted native citation detail for single-reference citations: a

@@ -16,7 +16,11 @@ last recorded delivery (`1c0eae0`), three commits are present:
   1 path, +6/−87): `flake.lock` updated.
 
 This is commit-level state and scope, not a prose restatement of source
-behavior. No validation of these three commits is recorded here. The ordinary
+behavior. Typed-reference tests have user-reported passing feedback after PDF fixes.
+See goals.md, project.md and evidence.md for rationale and validation limits.
+The bilingual mathematical notation fix is delivered, with user-reported
+passing example build after the explicit equation* adjustment (evidence.md).
+No full check of the latest lock is established here. The ordinary
 worktree has a user edit in `CHANGELOG.org`; preserve it during release review.
 Release readiness for 0.7.1 remains to be assessed after reviewing that draft
 against the changes since 0.7.0 and the repository's release procedure.
