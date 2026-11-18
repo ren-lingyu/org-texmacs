@@ -489,7 +489,7 @@ retain their structure and spacing while their island trees hold the parsed STM.
 For migration, wrap previously bare STM in an explicit carrier and use
 =stm-fragment= nodes in supplied island mappings. Construct the complete model
 with =org-texmacs-parse-buffer= or =org-texmacs-model-create=. These replace
-the temporary Extended Org AST entry points introduced during Node 1.
+the temporary source-recognition entry points introduced during Node 1.
 
 Native block boundaries follow Org syntax.  An unindented headline ends its
 section, so a block opener before that headline cannot enclose text after it.
@@ -594,12 +594,14 @@ borrowed from an existing tree; the result owns its own copy.  The original
 model and its locators remain valid on success and failure.  Obtain new keys
 from the new model; old-model keys cannot address it.
 
-Replacing a root with any structurally valid STM tree, including an atomic
-string, produces a valid model.  If the root is not recognized at that Org
-position under captured syntax, serialization signals
-=org-texmacs-model-serialization-error=.  It never silently uses old source
-text instead.  Invalid locators, paths or replacement trees signal
-=org-texmacs-model-error=; path diagnostics use AST and STM child paths.
+Root replacement follows the ordinary structural validation rules. Atomic
+STM string roots have no special prohibition or support guarantee. Successful
+replacement can still leave an island that cannot be represented in Org
+source. Serialization signals =org-texmacs-model-serialization-error= if it
+cannot represent the replacement at its Org position under the captured
+syntax. It never falls back to the original STM source. Invalid locators,
+paths or replacement trees signal
+=org-texmacs-model-error=, with diagnostics using AST and STM child paths.
 
 Org text residues and source coordinates retain their original-source meaning
 after a replacement.  They do not describe the new mathematical content; use
@@ -1082,39 +1084,39 @@ This example returns a document result; it starts TeXmacs to parse its islands:
 
 The supported Org subset is deliberately small:
 
-| Org input                                                           | TeXmacs body structure                                          |
-|---------------------------------------------------------------------+-----------------------------------------------------------------|
-| Document / section container                                        | =document= / transparent contents                               |
-| Paragraph / plain text                                              | =concat=, or a bare STM island / prose whitespace normalization |
-| Bold                                                                | =strong=                                                        |
-| Italic / underline / strike-through                                 | =em= / =underline= / =strike-through=                           |
-| Inline code / verbatim                                              | =verbatim= with literal inline text                             |
-| Explicit line break in paragraph contents                           | =next-line=                                                     |
-| Supported self-contained URI link                                   | =hlink= with separate display body and target                   |
-| Plain local file link in body text                                  | =hlink= plus typed file-target provenance                       |
-| Same-document headline/ID or dedicated-target link                  | =hlink= or =reference= with generated =label= target            |
-| Anonymous inline footnote directly in a paragraph                   | =footnote= containing a body =document=                         |
-| Named footnote with inline or separate definition                   | First-use =footnote=; repeated superscript =reference=          |
-| Default citation in a supported text context                        | =with-bib= / =cite= or single-key =cite-detail=                 |
-| One option-free =PRINT_BIBLIOGRAPHY= keyword                        | =with-bib= / native =bib-list= at the declaration position      |
-| Relative headline levels 1 through 5                                | Five numbered or starred TeXmacs sectioning tags                |
-| Headlines below the configured =H= depth                            | Nested =itemize= structures without discarding body content     |
-| Filtered headline table of contents                                 | Static =table-of-contents= with =toc-N=/links/page references   |
-| Title / subtitle / author / email / date / creator                  | Native fields in a leading =doc-data=                           |
-| Language / description                                              | Initial =language= / hidden =global-subject=                    |
-| Abstract blocks / keyword declarations                              | Independent =abstract-data= / =abstract-keywords= in order      |
-| Unordered / ordered / description list                              | =itemize= / =enumerate= / =description= with body =document=    |
-| Quote / center block                                                | =quotation= / =center= with body =document=                     |
-| Example / fixed-width / source block                                | Static =code= containing a line-wise =document=                 |
-| Basic rectangular Org table                                         | =tabular= / =tformat= / =table= / =row= / =cell=                |
-| Named/captioned basic table                                         | Private anchors and native =big-table= / =caption-detailed=     |
-| Recognized paragraph / inline-footnote fragment                     | One parsed STM subtree                                          |
-| =texmacs= special block                                             | One parsed STM subtree, even for a string or =document= root    |
-| Formal statement special block                                      | Native statement environment with recursive body =document=     |
-| =equation= / =equation*= special block                              | One raw STM datum in a numbered / unnumbered native formula     |
-| Explicit =figure= / =table= special block (including starred forms) | Native =big-figure= / =big-table=, with outer caption and name  |
-| COMMENT / comment block                                             | Removed before structural preflight                             |
-| Task, archive and select/exclude filtering                          | Org policy applied before STM worker requests                   |
+| Org input                                                           | TeXmacs body structure                                         |
+|---------------------------------------------------------------------+----------------------------------------------------------------|
+| Document / section container                                        | =document= / transparent contents                              |
+| Paragraph / plain text                                              | =concat= or one standalone STM island / prose normalization    |
+| Bold                                                                | =strong=                                                       |
+| Italic / underline / strike-through                                 | =em= / =underline= / =strike-through=                          |
+| Inline code / verbatim                                              | =verbatim= with literal inline text                            |
+| Explicit line break in paragraph contents                           | =next-line=                                                    |
+| Supported self-contained URI link                                   | =hlink= with separate display body and target                  |
+| Plain local file link in body text                                  | =hlink= plus typed file-target provenance                      |
+| Same-document headline/ID or dedicated-target link                  | =hlink= or =reference= with generated =label= target           |
+| Anonymous inline footnote directly in a paragraph                   | =footnote= containing a body =document=                        |
+| Named footnote with inline or separate definition                   | First-use =footnote=; repeated superscript =reference=         |
+| Default citation in a supported text context                        | =with-bib= / =cite= or single-key =cite-detail=                |
+| One option-free =PRINT_BIBLIOGRAPHY= keyword                        | =with-bib= / native =bib-list= at the declaration position     |
+| Relative headline levels 1 through 5                                | Five numbered or starred TeXmacs sectioning tags               |
+| Headlines below the configured =H= depth                            | Nested =itemize= structures without discarding body content    |
+| Filtered headline table of contents                                 | Static =table-of-contents= with =toc-N=/links/page references  |
+| Title / subtitle / author / email / date / creator                  | Native fields in a leading =doc-data=                          |
+| Language / description                                              | Initial =language= / hidden =global-subject=                   |
+| Abstract blocks / keyword declarations                              | Independent =abstract-data= / =abstract-keywords= in order     |
+| Unordered / ordered / description list                              | =itemize= / =enumerate= / =description= with body =document=   |
+| Quote / center block                                                | =quotation= / =center= with body =document=                    |
+| Example / fixed-width / source block                                | Static =code= containing a line-wise =document=                |
+| Basic rectangular Org table                                         | =tabular= / =tformat= / =table= / =row= / =cell=               |
+| Named/captioned basic table                                         | Private anchors and native =big-table= / =caption-detailed=    |
+| Recognized paragraph / inline-footnote fragment                     | One parsed STM subtree                                         |
+| =texmacs= special block                                             | One parsed STM subtree, even for a string or =document= root   |
+| Formal statement special block                                      | Native statement environment with recursive body =document=    |
+| =equation= / =equation*= special block                              | One raw STM datum in a numbered / unnumbered native formula    |
+| Explicit =figure= / =table= special block (including starred forms) | Native =big-figure= / =big-table=, with outer caption and name |
+| COMMENT / comment block                                             | Removed before structural preflight                            |
+| Task, archive and select/exclude filtering                          | Org policy applied before STM worker requests                  |
 
 Heading text may contain supported emphasis, literal inline code and bare
 default citations, but not explicit line breaks.  This is not a general Org
@@ -1275,22 +1277,24 @@ whitespace rule: it is not a preformatted code block.  Nonbreaking spaces
 are not collapsed.  Conversion does not merge adjacent text slots; a slot
 may become empty when its whitespace duplicates a preceding slot.
 
-A bare STM paragraph contains exactly one registered fragment object; every
-other direct child must be an ordinary string containing only spaces, tabs,
-CR or LF (empty strings are allowed).  No other Org object is permitted.
-Such paragraphs emit the complete island directly, without an additional
-=concat=; the island's internal tree and text remain unchanged.
-This rule applies in ordinary body text, statement and quote/center containers, separate
-footnote definitions and later list paragraphs.  Inline footnote bodies use
-the same bare rule inside their existing body =document=, including restored
-named definitions.  A leading list paragraph keeps its existing
-list-marker/=concat= structure and is not promoted.
+A standalone STM-island paragraph contains exactly one registered fragment
+object. All other direct children, if any, are ordinary strings containing
+only spaces, tabs, CR or LF. Empty strings are allowed. Write the fragment
+with an explicit STM carrier.
+
+Without a list marker, the paragraph emits the complete island directly,
+without an additional =concat=, preserving its internal tree and text.
+This rule applies in ordinary body text, statement and quote/center
+containers, separate footnote definitions and later list paragraphs.
+Inline footnote bodies follow the same standalone rule inside their body
+=document=, including restored named definitions. A leading list paragraph
+retains its list-marker/=concat= structure.
 
 Other paragraphs keep their existing =concat= and whitespace semantics.
 Direct fragment roots =equation=, =eqnarray=, =align=, =gather=, =eqsplit= and
-their starred forms are rejected in such paragraphs and non-bare inline
-footnote bodies, including leading list paragraphs: use a standalone body
-or a TeXmacs special block instead.
+their starred forms require a standalone STM-island paragraph, a standalone
+inline footnote body or a TeXmacs special block. Leading list paragraphs
+retain their list marker and cannot host one of these display roots.
 The exporter does not split mixed paragraphs automatically or inspect nested
 STM to infer display layout.  Ordinary =math= mixtures remain supported;
 arbitrary custom-root layout remains governed by TeXmacs.  Native STM parsing
@@ -1634,7 +1638,7 @@ omitted while needed definitions are retained.  Missing or ambiguous named
 definitions, nested footnotes and footnotes in headings, emphasis, table
 cells or link descriptions are rejected.
 Outside captions, direct text in inline definitions and paragraphs in separate definitions use
-explicit STM carriers.  Inline bodies follow the bare-island
+explicit STM carriers. Inline bodies follow the standalone STM-island
 and mixed-display boundaries described above; their STM roots and local file
 targets retain provenance and are emitted only at first use.  Definition selection follows Org's standard queries. An outside inline
 definition may yield an empty body in a selected scope; the exporter does not

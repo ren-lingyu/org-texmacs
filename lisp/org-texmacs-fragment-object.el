@@ -11,7 +11,8 @@
 ;; of native STM validation and never starts a worker.
 ;;
 ;; Use `org-texmacs--call-with-ast-context' for Org traversal, copy and
-;; interpretation of extended ASTs.  Org's copy semantics are not model ownership.
+;; interpretation of temporary Org recognition trees.
+;; Model ownership has its own guarantees beyond Org's copy semantics.
 
 ;;; Code:
 
@@ -21,7 +22,7 @@
 (require 'org-texmacs-syntax)
 
 (defvar org-texmacs--fragment-object-active nil
-  "Non-nil in a synchronous extended-AST transaction.
+  "Non-nil during scoped STM carrier recognition.
 Export integration may suspend this binding for another backend.")
 
 (defvar org-texmacs--fragment-object-incomplete-ok nil
@@ -89,7 +90,7 @@ Signal `org-texmacs-parse-error' for a recognized incomplete carrier."
        (buffer-substring-no-properties (+ start offset) end)))))
 
 (defun org-texmacs--fragment-object-parser (original &rest arguments)
-  "Adapt ORIGINAL with ARGUMENTS only in an extended-AST transaction.
+  "Adapt ORIGINAL with ARGUMENTS during scoped STM carrier recognition.
 Org owns the dispatch, opaque regions, recursive nesting and narrowing.
 Org 9.8.10 org-element--parse-objects narrows to BEG/END before calling the
 object lexer, including secondary strings; point-max is that container bound."
@@ -161,12 +162,12 @@ This does not certify native STM validity or safe embedding in every container."
 
 (defun org-texmacs--call-with-ast-context
     (function &optional incomplete-ok)
-  "Call zero-argument FUNCTION with scoped extended Org AST support.
+  "Call zero-argument FUNCTION with scoped STM carrier recognition.
 Register nonrecursive `stm-fragment' wherever Org permits `latex-fragment'.
 INCOMPLETE-OK lets the editor skip unfinished carriers.
 Bind the registry, restrictions and interpreter locally; restore parser advice
 on normal, nested and exceptional exits.  Disable live Org caching within the
-scope so extended objects cannot enter another backend's cache.  Loading this
+scope so STM fragment objects cannot enter another backend's cache. Loading this
 module alone changes no parser or backend.  Never start a native worker."
   (let* ((org-texmacs--fragment-object-org-context
           (or org-texmacs--fragment-object-org-context
@@ -229,13 +230,13 @@ module alone changes no parser or backend.  Never start a native worker."
         (funcall function)))))
 
 (defun org-texmacs--ast-parse-buffer (source-buffer)
-  "Return an independent extended Org AST for complete SOURCE-BUFFER.
+  "Return a temporary Org recognition tree for the complete SOURCE-BUFFER.
 Require a live Org buffer.  Preserve its point, mark, text, properties and
 narrowing.  Use effective Org syntax, ignoring narrowing as body selection.
 Store independent :org-texmacs-syntax metadata on the root; this is not
 document content and never retains a live source buffer.
-The caller owns the returned mutable AST, including native secondary strings;
-no live source buffer is needed afterward.  Preserve Org's native parent forms.
+The caller owns the returned tree, including native secondary strings.
+Preserve Org's native parent forms and keep the tree usable without its buffer.
 Never run Export preparation, STM validation, file lookup or a native worker.
 Malformed recognized carriers signal `org-texmacs-parse-error'.  Invalid buffer
 arguments signal `org-texmacs-model-error'.  Custom Org callbacks are not
