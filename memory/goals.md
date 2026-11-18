@@ -15,8 +15,8 @@ ownership, consumer-specific support, and standard Export authority.
 
 See stm-fragment-architecture-revision.md for the decision, the core plan
 for Nodes 2–6, and stm-fragment-evolution.md for adopted source syntax and
-historical evidence. Node 1 recognition is delivered. E7 bare/span retirement
-and the later retirement of string island keys are pending implementation.
+historical evidence. Explicit carrier recognition, object-island ownership
+and bare/span retirement are delivered. See current.md for acceptance status.
 
 ## Delivered typed-reference decisions
 

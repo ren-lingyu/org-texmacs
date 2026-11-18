@@ -10,8 +10,8 @@ a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baselin
 v0.7.1 remains the released baseline. Node 1 is delivered under the former
 plan: scoped source recognition and temporary Org AST parsing with syntax
 capture. Its eight delivered files matched the tested input. Core 374/374,
-package/lint/treefmt passed under the tests then run. There is no comprehensive
-native/PDF/example acceptance for the revised scope. See stm-fragment-node1.md.
+package/lint/treefmt passed in that node's validation. See
+stm-fragment-node1.md for its historical evidence.
 
 The architecture revision restores the complete Model as the logical
 mathematical-document tree. Owned stm-fragment objects key inline islands.
@@ -26,34 +26,42 @@ The user committed Node 3's pure STM writer, detached interpretation, and
 known-tree validation by island count, order, and structural path. An
 earlier checkpoint associates the delivered Node 3 project baseline.
 
-Node 4's unified cutover is delivered at the additional project parent of
-this checkpoint. Public Model parsing, construction, serialization and
-standard Export use object islands and explicit carriers. The delivered
+An earlier checkpoint associates the delivered Node 4 unified cutover.
+Public Model parsing, construction, serialization and standard Export use object islands and explicit carriers. The delivered
 candidate passed the complete x86_64-linux flake check, including native,
 PDF document and PDF render tests. Three lingering bare PDF fixtures were
 migrated before submission, with their semantic assertions preserved.
 The four English/Chinese examples contain verified native math structures.
 
-Node 5 is in the ordinary worktree awaiting the human commit. The legacy
-span/discovery module, public functions and tag option are gone. Model
-construction and serialization share the object-island path. Obsolete
-:fragment-tags constructor data is validated and discarded; Model copies
-also normalize prior contexts. Scheme fontification uses scoped, local
-paragraph recognition for explicit payloads, including supported nested
-inline objects. An editing-only tolerance for unfinished carriers leaves
-formal parsing strict. Native block editing and opaque Org regions retain
-their existing behavior.
+Node 5 is delivered at this checkpoint's additional project parent.
+Legacy discovery and span APIs are retired. The parser, Model constructor
+and serializer share object-island paths. Legacy :fragment-tags constructor
+data is validated and discarded. Scheme fontification uses local scoped
+paragraph recognition, including supported nested inline objects. The PDF
+package-loading fixture was corrected before Node 5 was committed.
 
-Node 5 verification with Org 9.8.10 and TeXmacs 2.1.5 includes Nix core
-(348/348), Cite, package build, package-lint, treefmt and all four example
-builds. Native ERT was run in four isolated batches. One fresh-load editor
-fixture was migrated after its initial failure and passed on focused rerun,
-covering all 279 cases in total. The complete flake/PDF integration suite
-has not been rerun against this candidate. The draft is tmp/commit.md.
-Wait for the human commit before the Node 6 integrated review.
-The pre-revision Node 2 review remains historical.
-OTP remains a final nonblocking candidate after core validation, with v0.9.0
-priority fallback. No OTP probe or delivery is claimed.
+Node 6 integrated acceptance passed for the x86_64-linux candidate with
+Emacs 31.1, Org 9.8.10 and TeXmacs 2.1.5. The final offline flake check
+reused completed build results for the code suites. The logs report
+core 348/348, Cite 11/11, native 279/279, PDF document 49/49 and PDF render
+31/31. The final documentation treefmt check built and passed. All four
+English/Chinese example builds have PDF artifacts and native fraction,
+root, subscript and superscript structures in the appropriate .tm files.
+
+E8 acceptance includes the maintained local fontification, cache isolation,
+nested scope recovery and failure cleanup tests. A bounded compiled-package
+probe with a stubbed native request used 128 and 512 generated paragraphs.
+It observed exactly one acquisition request and one owned island per
+fragment, no requests during normalization, an unchanged source tick,
+and restored Org registry and parser definitions. These observations
+concern the tested synthetic inputs. A prepared description term also
+retained STM provenance through lowering.
+
+The Node 6 candidate diff documents current behavior in README and records
+a TODO v0.8.0 development summary in CHANGELOG. The draft is tmp/commit.md.
+Wait for the human documentation commit. The completed core acceptance
+allows a separate decision on whether to evaluate the nonblocking OTP
+candidate. Release state, version metadata and publication remain separate.
 
 ## Native single-reference citation detail — human-delivered and verified
 

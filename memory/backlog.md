@@ -5,17 +5,13 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
-## Selected implementation plan
+## Selected work
 
-Continue Nodes 2–6 under stm-fragment-core-plan.md. Node 1 is delivered and
-verified. Next review actual Node 1 interface callers and integrate recognized
-objects into the complete Model. The former independent Extended Org AST
-adapter plan and string anchor direction are superseded by
-stm-fragment-architecture-revision.md. Bare/span retirement and one-way
-:fragment-tags normalization remain adopted. E0–E7 are historical evidence.
-OTP remains a final nonblocking candidate after core acceptance, with v0.9.0
-priority fallback. Necessary editing/fontification and E8 core validation
-remain separate.
+The six v0.8.0 core nodes reached integrated acceptance. The final
+README/CHANGELOG documentation commit is pending. See current.md for evidence
+and the core plan for the scope of the completed work. OTP remains the final
+nonblocking candidate and may be considered separately, with v0.9.0 priority
+fallback if deferred. Publication requires its own release process.
 
 Current delivery state: native single-reference citation detail is
 human-delivered 1c0eae0 (see memory/native-cite-detail-implementation.md);

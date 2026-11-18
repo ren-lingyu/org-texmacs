@@ -5,20 +5,20 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
-## STM architecture transition (Node 1 delivered)
+## Delivered STM carrier and Model architecture
 
-Node 1 provides scoped explicit carrier recognition and a public parser
-returning a temporary Org AST with unparsed stm-fragment objects and root
-syntax metadata. The existing native Org AST, parsed islands and context
-together implement the complete mathematical-document Model. Current Model
-parsing, serialization and lowering still have legacy string island paths.
-Standard Export still uses its existing discovery.
+The complete mathematical-document Model combines native Org AST, parsed STM
+islands and explicit syntax/source context. Non-block islands use owned
+stm-fragment objects, native blocks use their Org block keys, and parsed trees
+are the sole mathematical authority. Finished fragments omit source payloads.
+Public construction uses org-texmacs-parse-buffer or org-texmacs-model-create.
+The two temporary Node 1 APIs and the older bare discovery APIs are retired.
 
-The adopted target retains owned stm-fragment objects as non-block keys,
-strips their redundant source fields and keeps parsed trees as the sole
-mathematics authority. Node 2 Model integration and public interface review
-are pending. See stm-fragment-architecture-revision.md and the current
-stm-fragment-core-plan.md.
+Standard Export consumes scoped recognition from the final prepared Org AST.
+Model serialization uses a pure writer over the owned trees and verifies the
+normalized Org structure. Paragraph fontification shares the scoped recognizer
+with an editing-only tolerance for incomplete carriers. See the architecture
+revision for the decisions and current.md for integrated acceptance.
 
 ## Delivered typed-reference architecture
 

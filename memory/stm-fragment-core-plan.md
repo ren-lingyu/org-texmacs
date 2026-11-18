@@ -2,11 +2,12 @@
 
 ## Status and authority
 
-Node 1 was delivered under the original freeze. This plan governs Nodes 2–6
-under stm-fragment-architecture-revision.md, which partially supersedes the
-original interface freeze. E0–E7 retain their original evidence. Develop in
-the ordinary worktree and review actual diffs. Ordinary commits remain
-human-owned. This memory revision grants no source implementation authorization.
+This is the accepted v0.8.0 implementation plan, preserved with its historical
+node descriptions. Nodes 1–5 have been delivered and Node 6 has passed
+integrated acceptance. See current.md and project.md for the current status.
+The public Node 1 recognition APIs were retired in the Node 4 cutover.
+The architecture revision superseded the original interface freeze.
+E0–E7 retain their original evidence.
 
 ## Model and public interface boundaries
 
