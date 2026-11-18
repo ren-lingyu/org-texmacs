@@ -8,9 +8,10 @@ a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baselin
 ## Selected work
 
 All six v0.8.0 core nodes are delivered and reached integrated acceptance.
-See current.md for evidence and the core plan for the completed scope. OTP remains the final
-nonblocking candidate and may be considered separately, with v0.9.0 priority
-fallback if deferred. Publication requires its own release process.
+See current.md for evidence and the core plan for the completed scope.
+OTP is deferred from v0.8.0 and remains a priority candidate for v0.9.0.
+Review org-latex-preview API reuse after the formal Org 10.0 release.
+Publication requires its own release process.
 
 Current delivery state: native single-reference citation detail is
 human-delivered 1c0eae0 (see memory/native-cite-detail-implementation.md);

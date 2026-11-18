@@ -157,8 +157,9 @@ or resource meaning. Their validation, graph copying and identity remapping stay
    builds, package-lint/treefmt and necessary E8 cache, cleanup and bounded
    performance checks. Synchronize README and API migration documentation
    with delivered capabilities. Use Org >=9.8.10 and Emacs >=31.1. Release
-   metadata, tags and publication remain separate. Evaluate OTP after core
-   validation as a final nonblocking candidate.
+   metadata, tags and publication remain separate. OTP is deferred from
+   v0.8.0. Revisit potential org-latex-preview API reuse after the formal
+   Org 10.0 release.
 
 ### Required structure checks for subsequent implementation
 

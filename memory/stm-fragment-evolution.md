@@ -129,23 +129,17 @@ standard Export/filters/Cite, bare/discovery API migration, necessary editing/
 fontification and formal tests/docs/examples/build checks. OTP is not part of
 core acceptance or core scope freeze.
 
-After core implementation is stable and principal regressions/release preparation
-pass, evaluate OTP as the LAST non-blocking candidate. A bounded isolated probe
-should test fragment API sufficiency, independent native rendering to an Emacs
-image, a simple overlay preview/clear cycle, cleanup on buffer close/render error,
-and any extra scheduling/cache/dependency requirements. No full-source rescan,
-whole Export transaction or generic preview framework is a prerequisite.
-This experiment has not been executed and no preview is delivered.
+After core acceptance, the user confirmed that OTP stays deferred from
+v0.8.0 and remains a priority candidate for v0.9.0. Reassess potential
+org-latex-preview API reuse after Org 10.0 is formally released. The reason
+for waiting is to evaluate the released API and avoid tying OTP to interfaces
+from the Org development branch.
 
-Only consider a minimal v0.8.0 OTP after separate review: core architecture/APIs
-stay stable; the module is independent and inert when disabled; preview, clear,
-error recovery and maintainable regressions are feasible at bounded complexity;
-no package-wide Org 10.0-pre requirement, complex async scheduler or persistent
-cache is needed. Experiment success does not authorize implementation or expand
-release scope. If these conditions are not met, release a ready v0.8.0 core and
-make OTP a PRIORITY CANDIDATE for v0.9.0. Neither release promises every preview
-feature. Later candidates include automatic/incremental preview, cancellation,
-cache, overlays/resources and interaction with Org editing/preview commands.
+The preview probe is still pending. When OTP is revisited, test fragment API sufficiency,
+independent native rendering to an Emacs image, overlay preview and clearing,
+cleanup on buffer close or rendering failure, and requirements for scheduling,
+caching and dependencies. Later candidates include automatic or incremental
+preview, cancellation and interaction with Org editing and preview commands.
 
 OLP is a mechanism to investigate, not an assumed shared framework or renderer
 registry. Distinguish public reusable APIs, internal ideas and LaTeX-specific
@@ -154,10 +148,6 @@ preview needs. If newer APIs are needed, first consider an optional module with
 independent requirements; no automatic package-wide minimum increase or private
 Org 10.0 API adoption. Concrete rendering format/backend, public OTP API,
 scheduling/cache/overlay protocol and final v0.9.0 scope remain undecided.
-
-Order: continue the revised six-node core plan; validate core (including
-necessary E8 checks); evaluate OTP last and decide inclusion or deferral.
-OTP non-delivery never blocks an otherwise accepted v0.8.0 core release.
 
 No new README syntax claims or changelog delivered entries before implementation;
 register future scope only after experiments support it and scope is reviewed.

@@ -57,10 +57,11 @@ and restored Org registry and parser definitions. These observations
 concern the tested synthetic inputs. A prepared description term also
 retained STM provenance through lowering.
 
-The Node 6 documentation is delivered at this checkpoint's additional
-project parent. README documents the STM migration and CHANGELOG contains
+An earlier checkpoint associates the delivered Node 6 documentation.
+README documents the STM migration and CHANGELOG contains
 the TODO v0.8.0 development summary. All six core nodes are delivered.
-OTP remains a separate nonblocking candidate after core acceptance.
+OTP is deferred from v0.8.0. Revisit potential org-latex-preview API reuse
+after Org 10.0 is formally released. See stm-fragment-evolution.md.
 Release state, version metadata and publication remain separate.
 
 ## Native single-reference citation detail — human-delivered and verified
