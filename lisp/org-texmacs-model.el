@@ -450,36 +450,9 @@ nested data.  Signal `org-texmacs-model-error' for invalid inputs."
   (signal 'org-texmacs-model-error
           (list (format "%s at AST path %S" message path))))
 
-(defun org-texmacs--model-snapshot (model &optional context)
-  "Validate MODEL and return detached (AST ISLANDS PATHS) for projection.
-Reuse model ownership and island validation.  Also check existing parents rather
-than silently repairing a damaged snapshot.  PATHS indexes all structural nodes,
-including secondary strings, captions and native island body residue.
-With CONTEXT non-nil, append owned syntax context as a fourth result."
-  (unless (and (org-texmacs-model-p model)
-               (consp (org-texmacs-model-ast model))
-               (eq (car (org-texmacs-model-ast model)) 'org-data))
-    (org-texmacs--model-path-error
-     "Expected a mathematical-document model" nil))
-  (let* ((owner (org-texmacs--model-owner-create))
-         (paths (make-hash-table :test #'eq))
-         ast
-         islands)
-    (condition-case err
-        (progn
-          (setq ast
-                (org-texmacs--model-copy-node
-                 owner (org-texmacs-model-ast model) nil))
-          (org-texmacs--model-finish-owner owner)
-          (setq islands
-                (org-texmacs--model-copy-mapping
-                 owner
-                 (org-texmacs-model-islands model)
-                 #'org-texmacs--model-copy-stree))
-          (org-texmacs--model-check-islands ast islands))
-      (org-texmacs-model-error
-       (org-texmacs--model-path-error
-        (error-message-string err) nil)))
+(defun org-texmacs--model-node-paths (ast)
+  "Index structural nodes of AST by identity, including secondary values."
+  (let ((paths (make-hash-table :test #'eq)))
     (cl-labels
      ((sequence
        (children path)
@@ -519,6 +492,39 @@ With CONTEXT non-nil, append owned syntax context as a fourth result."
           (sequence
            (cdr line) (append path (list :caption index :short)))))))
      (walk ast nil))
+    paths))
+
+(defun org-texmacs--model-snapshot (model &optional context)
+  "Validate MODEL and return detached (AST ISLANDS PATHS) for projection.
+Reuse model ownership and island validation.  Also check existing parents rather
+than silently repairing a damaged snapshot.  PATHS indexes all structural nodes,
+including secondary strings, captions and native island body residue.
+With CONTEXT non-nil, append owned syntax context as a fourth result."
+  (unless (and (org-texmacs-model-p model)
+               (consp (org-texmacs-model-ast model))
+               (eq (car (org-texmacs-model-ast model)) 'org-data))
+    (org-texmacs--model-path-error
+     "Expected a mathematical-document model" nil))
+  (let* ((owner (org-texmacs--model-owner-create))
+         paths
+         ast
+         islands)
+    (condition-case err
+        (progn
+          (setq ast
+                (org-texmacs--model-copy-node
+                 owner (org-texmacs-model-ast model) nil))
+          (org-texmacs--model-finish-owner owner)
+          (setq islands
+                (org-texmacs--model-copy-mapping
+                 owner
+                 (org-texmacs-model-islands model)
+                 #'org-texmacs--model-copy-stree))
+          (org-texmacs--model-check-islands ast islands))
+      (org-texmacs-model-error
+       (org-texmacs--model-path-error
+        (error-message-string err) nil)))
+    (setq paths (org-texmacs--model-node-paths ast))
     (maphash
      (lambda (old new)
        (let ((actual (org-element-property-raw :parent old))

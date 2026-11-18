@@ -429,4 +429,79 @@
           (org-texmacs-model-serialize
            (org-texmacs-test--parse-model-text output))))))))
 
+(defun org-texmacs-test--parse-object-model (source)
+  "Build an object-island fixture using a stub for native STM parsing."
+  (with-temp-buffer
+    (org-mode)
+    (insert source)
+    (cl-letf (((symbol-function 'org-texmacs--worker-request) #'read))
+      (org-texmacs--parse-buffer-model (current-buffer) t))))
+
+(ert-deftest org-texmacs-object-serialization-is-pure-and-idempotent
+    ()
+  (let*
+      ((model
+        (org-texmacs-test--parse-object-model
+         (concat
+          "* Title $(math \"title\")$\n"
+          "Before $(math \"x\")$$(math \"x\")$  after.\n\n"
+          "[[https://example.test][Before $(math \"link\")$ after]]\n\n"
+          "#+caption[$(math \"short\")$]: $(math \"long\")$\n"
+          "#+name: block\n#+begin_texmacs\n(math \"block\")\n#+end_texmacs\n")))
+       (first
+        (car (rassoc '(math "x") (org-texmacs-model-islands model))))
+       (changed
+        (org-texmacs-model-replace-stm model first '(0) "changed"))
+       output)
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _)
+                 (ert-fail "serialization parsed STM natively")))
+              ((symbol-function 'org-texmacs--worker-serialize-stm)
+               (lambda (&rest _)
+                 (ert-fail
+                  "serialization started the native writer"))))
+      (should
+       (string-match-p
+        (regexp-quote "\\((math \"x\")\\)\\((math \"x\")\\)  after.")
+        (org-texmacs--serialize-object-model model)))
+      (setq output (org-texmacs--serialize-object-model changed))
+      (should
+       (string-match-p
+        (regexp-quote
+         "Before \\((math \"changed\")\\)\\((math \"x\")\\)  after.")
+        output))
+      (should (string-match-p (regexp-quote "#+name: block") output))
+      (dolist (entry (org-texmacs-model-islands changed))
+        (should-not (org-element-property :stm-source (car entry)))))
+    (let ((again (org-texmacs-test--parse-object-model output)))
+      (should (= 7 (length (org-texmacs-model-islands again))))
+      (should
+       (equal output (org-texmacs--serialize-object-model again))))))
+
+(ert-deftest
+    org-texmacs-object-serialization-reports-representation-failures
+    ()
+  (dolist (fixture
+           '(("| $(math \"x\")$ |\n" "a|b" org-container)
+             ("[[https://example.test][$(math \"x\")$]]\n"
+              "a]]b"
+              org-container)
+             ("$(math \"x\")$\n"
+              (math (bad\ tag "x"))
+              unsupported-symbol)))
+    (let* ((model
+            (org-texmacs-test--parse-object-model (car fixture)))
+           (key (caar (org-texmacs-model-islands model)))
+           (new (cadr fixture))
+           (changed
+            (org-texmacs-model-replace-stm
+             model key (and (stringp new) '(0)) new))
+           (before (org-texmacs-model-inspect changed)))
+      (let ((err
+             (should-error
+              (org-texmacs--serialize-object-model changed)
+              :type 'org-texmacs-model-serialization-error)))
+        (should (eq (plist-get (nth 2 err) :reason) (nth 2 fixture))))
+      (should (equal before (org-texmacs-model-inspect changed))))))
+
 ;;; model-serialization.el ends here

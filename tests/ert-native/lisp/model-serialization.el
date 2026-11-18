@@ -137,4 +137,32 @@
        (when (buffer-live-p output)
          (kill-buffer output))))))
 
+(ert-deftest org-texmacs-object-writer-native-round-trip ()
+  (org-texmacs-test--with-worker
+   (dolist (tree
+            (append
+             (list
+              '(custom-tag)
+              '(math (sqrt "α中😀"))
+              '(math "quote \" slash \\ and a\\)b\n\r\t")
+              (list 'math (string 0 1 7 8 27 127)))
+             (mapcar
+              (lambda (tag) (list (intern tag) "x"))
+              '("a-b"
+                "a_b"
+                "a*"
+                "+"
+                "-"
+                "."
+                "1"
+                "1e2"
+                "#t"
+                ":tag"
+                "a\\b"
+                "a(b)"
+                "foo?"))))
+     (let ((source (org-texmacs--serialize-stm-source tree nil)))
+       (should-not (string-match-p "[\r\n\t]" source))
+       (should (equal tree (org-texmacs--worker-request source)))))))
+
 ;;; model-serialization.el ends here
