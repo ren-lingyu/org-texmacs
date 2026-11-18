@@ -406,4 +406,66 @@
             "retained parameter"))
           (should-not (org-element-contents (car entry))))))))
 
+(ert-deftest org-texmacs-model-object-parser-acquires-structural-keys
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert
+     "* Heading $(math \"title\")$\n"
+     "Before $(math \"body\")$  after.\n"
+     "~$(math \"opaque\")$~ (math \"bare\")\n\n"
+     "#+caption: $(math \"caption\")$\n"
+     "#+begin_texmacs\n(math \"block\")\n#+end_texmacs\n")
+    (let (requests)
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (raw)
+                   (let ((parsed (read raw)))
+                     (push (cadr parsed) requests)
+                     parsed))))
+        (let* ((source (buffer-string))
+               (model
+                (org-texmacs--parse-buffer-model (current-buffer) t))
+               (islands (org-texmacs-model-islands model))
+               (body (car (rassoc '(math "body") islands)))
+               (caption (car (rassoc '(math "caption") islands)))
+               (block (car (rassoc '(math "block") islands))))
+          (should (equal source (buffer-string)))
+          (should
+           (equal
+            (sort requests #'string<)
+            '("block" "body" "caption" "title")))
+          (should (eq (org-element-type body) 'stm-fragment))
+          (should (equal (org-element-property :post-blank body) 2))
+          (should (eq (org-element-parent caption) block))
+          (should (eq (org-element-type block) 'special-block))
+          (should-not (org-element-property :stm-source body))
+          (should-not
+           (org-element-property
+            :org-texmacs-syntax (org-texmacs-model-ast model)))
+          (should
+           (plist-member
+            (org-texmacs-model-context model)
+            :link-settings))
+          (should-not
+           (plist-member
+            (org-texmacs-model-context model)
+            :fragment-tags)))))))
+
+(ert-deftest
+    org-texmacs-model-object-parser-guards-source-across-waits
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "$(math \"x\")$\n")
+    (let ((source (current-buffer)))
+      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (_raw)
+                   (with-current-buffer source
+                     (goto-char (point-max))
+                     (insert "Edited"))
+                   '(math "x"))))
+        (should-error
+         (org-texmacs--parse-buffer-model source t)
+         :type 'org-texmacs-model-error)))))
+
 ;;; model-parser.el ends here

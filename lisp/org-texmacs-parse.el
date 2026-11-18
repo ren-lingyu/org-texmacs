@@ -15,6 +15,7 @@
 (require 'org-texmacs-syntax)
 (require 'org-texmacs-source)
 (require 'org-texmacs-fragment)
+(require 'org-texmacs-fragment-object)
 (require 'org-texmacs-worker)
 
 (defun org-texmacs--parse-copy (value)
@@ -82,6 +83,36 @@ Return records (NODE-BEGIN CONTENTS-BEGIN CONTENTS-END RAW-SOURCE)."
       (org-texmacs--native-body-source node)))
    (org-texmacs--native-body-blocks
     (org-element-parse-buffer 'element))))
+
+(defun org-texmacs--parse-block-request (node blocks)
+  "Collect the native body request for NODE from protected BLOCKS."
+  (let ((record (assq (org-element-property :begin node) blocks)))
+    (unless (and record
+                 (equal
+                  (nth 1 record)
+                  (org-element-property :contents-begin node))
+                 (equal
+                  (nth 2 record)
+                  (org-element-property :contents-end node)))
+      (signal 'org-texmacs-model-error
+              '("Native block protection changed its structure")))
+    ;; The STM tree owns the body. Preserve the wrapper and affiliation.
+    (org-element-set-contents node)
+    (list node (nth 3 record) nil)))
+
+(defun org-texmacs--parse-object-requests (ast blocks)
+  "Collect source requests from recognized AST and captured native BLOCKS."
+  (org-texmacs-call-with-ast-context
+   (lambda ()
+     (org-element-map
+      ast '(stm-fragment special-block)
+      (lambda (node)
+        (cond
+         ((eq (org-element-type node) 'stm-fragment)
+          (list node (org-element-property :stm-source node) nil))
+         ((org-texmacs--native-body-kind node)
+          (org-texmacs--parse-block-request node blocks))))
+      nil nil nil t))))
 
 (defun org-texmacs--parse-associate (ast blocks spans source)
   "Associate AST with captured BLOCKS and inline SPANS from SOURCE.
@@ -160,23 +191,8 @@ content and affiliation."
        (when (consp node)
          (cond
           ((org-texmacs--native-body-kind node)
-           (let ((record
-                  (assq (org-element-property :begin node) blocks)))
-             (unless (and record
-                          (equal
-                           (nth 1 record)
-                           (org-element-property
-                            :contents-begin node))
-                          (equal
-                           (nth 2 record)
-                           (org-element-property :contents-end node)))
-               (signal
-                'org-texmacs-model-error
-                '("Native block protection changed its structure")))
-             (register node (nth 3 record) nil)
-             ;; The tree, not protected text or old Org parsing residue,
-             ;; owns the mathematical body.  Keep wrapper properties.
-             (org-element-set-contents node)))
+           (push
+            (org-texmacs--parse-block-request node blocks) requests))
           ((or (eq (org-element-type node) 'paragraph)
                (and (eq (org-element-type node) 'footnote-reference)
                     (eq (org-element-property :type node) 'inline)))
@@ -190,9 +206,11 @@ content and affiliation."
               '("Unassociated STM source spans")))
     (nreverse requests)))
 
-(defun org-texmacs--parse-prepare (source settings links tags base)
+(defun org-texmacs--parse-prepare
+    (source settings links tags base &optional object-islands)
   "Return (AST REQUESTS) for SOURCE under fixed SETTINGS, LINKS, TAGS and BASE.
-Protect raw native bodies and recognized inline spans before the full parse.
+Protect raw native bodies before the full parse.  With OBJECT-ISLANDS, use
+scoped recognition of explicit carriers; otherwise protect legacy spans.
 No Model, export selection, dependency acquisition or native operation runs
 here."
   (let ((org-link-parameters
@@ -231,23 +249,30 @@ here."
                 (nth 1 record) (nth 2 record)
                 (replace-regexp-in-string
                  "[^ \t\r\n]" "x" (nth 3 record)))))
-           (let ((spans
-                  (org-texmacs--fragment-collect
-                   tags
-                   (lambda ()
-                     (org-texmacs--parse-initialize
-                      settings links tags base)))))
-             (dolist (span spans)
-               (org-texmacs--parse-mask
-                (org-texmacs-fragment-span-begin span)
-                (org-texmacs-fragment-span-end span)
-                (org-texmacs--fragment-mask
-                 (org-texmacs-fragment-span-source span))))
-             (let ((ast (org-element-parse-buffer)))
-               (list
-                ast
-                (org-texmacs--parse-associate
-                 ast blocks spans source))))))))))
+           (if object-islands
+               (let ((ast
+                      (org-texmacs-ast-parse-buffer
+                       (current-buffer))))
+                 (list
+                  ast
+                  (org-texmacs--parse-object-requests ast blocks)))
+             (let ((spans
+                    (org-texmacs--fragment-collect
+                     tags
+                     (lambda ()
+                       (org-texmacs--parse-initialize
+                        settings links tags base)))))
+               (dolist (span spans)
+                 (org-texmacs--parse-mask
+                  (org-texmacs-fragment-span-begin span)
+                  (org-texmacs-fragment-span-end span)
+                  (org-texmacs--fragment-mask
+                   (org-texmacs-fragment-span-source span))))
+               (let ((ast (org-element-parse-buffer)))
+                 (list
+                  ast
+                  (org-texmacs--parse-associate
+                   ast blocks spans source)))))))))))
 
 ;;;###autoload
 (defun org-texmacs-parse-buffer (source-buffer)
@@ -271,6 +296,12 @@ external callbacks are not rolled back.  Native parse/transport errors retain
 their existing conditions; structural/snapshot failures use
 `org-texmacs-model-error'.  User-defined native Org parser callbacks are not
 sandboxed.  Core constructor/inspection operations do not need this worker."
+  (org-texmacs--parse-buffer-model source-buffer))
+
+(defun org-texmacs--parse-buffer-model
+    (source-buffer &optional object-islands)
+  "Parse SOURCE-BUFFER into an owned Model.
+With OBJECT-ISLANDS, acquire explicit carriers for the internal object path."
   (unless (and (bufferp source-buffer) (buffer-live-p source-buffer))
     (signal 'org-texmacs-model-error
             '("Expected a live Org source buffer")))
@@ -283,7 +314,9 @@ sandboxed.  Core constructor/inspection operations do not need this worker."
            (bounds (cons (point-min) (point-max)))
            (file (buffer-file-name (buffer-base-buffer)))
            (directory default-directory)
-           (tags (org-texmacs--fragment-tags))
+           (tags
+            (unless object-islands
+              (org-texmacs--fragment-tags)))
            (settings (org-texmacs--parse-settings))
            (links (org-texmacs--parse-links))
            (source
@@ -316,7 +349,8 @@ sandboxed.  Core constructor/inspection operations do not need this worker."
                         (equal
                          file (buffer-file-name (buffer-base-buffer)))
                         (equal directory default-directory)
-                        (equal tags (org-texmacs--fragment-tags))
+                        (or object-islands
+                            (equal tags (org-texmacs--fragment-tags)))
                         (equal settings (org-texmacs--parse-settings))
                         (equal links (org-texmacs--parse-links)))
              (signal
@@ -329,7 +363,8 @@ sandboxed.  Core constructor/inspection operations do not need this worker."
                 settings
                 links
                 tags
-                (plist-get context :resource-base)))
+                (plist-get context :resource-base)
+                object-islands))
               islands)
          (check)
          (dolist (request (cadr prepared))
@@ -352,10 +387,13 @@ sandboxed.  Core constructor/inspection operations do not need this worker."
                     (org-texmacs--model-copy-stree tree))
                    islands)))
          (check)
-         (org-texmacs-model-create
-          (car prepared)
-          :islands (nreverse islands)
-          :context context))))))
+         (if object-islands
+             (org-texmacs--model-own
+              (car prepared) (nreverse islands) context t)
+           (org-texmacs-model-create
+            (car prepared)
+            :islands (nreverse islands)
+            :context context)))))))
 
 
 (provide 'org-texmacs-parse)
