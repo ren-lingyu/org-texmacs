@@ -402,7 +402,8 @@ The internal buffer-local variable =org-texmacs--font-lock-enabled= defaults to
 binding to =nil= suppresses it globally.  Changes to this override schedule normal refontification.  These internal interfaces may
 change; disabling presentation restores ordinary Org fontification.
 
-Inside a =texmacs= special block, =C-c '= (=org-edit-special=) opens an Org
+Inside a native =texmacs=, =equation= or =equation*= block,
+=C-c '= (=org-edit-special=) opens an Org
 source-edit buffer. The same command opens an editor for a recognized
 inline STM fragment. The editor contains only the STM payload and preserves
 the original =$...$= or =\(...\)= carrier and surrounding Org text on write-back.
@@ -417,10 +418,14 @@ source text and the editing buffer in place for correction or cancellation.
 The check is lexical only. Native STM validation still happens during parsing
 or Export, and the surrounding Org structure is parsed by Org in those paths.
 
+Native block editing preserves the block delimiters, parameters and affiliated
+keywords. Saving and exiting reject a line matching the current block's
+closing delimiter. The editor accepts string roots as well as compound
+expressions. Model parsing and Export validate the STM body.
+
 In the original Org buffer, =TAB=, line indentation and region indentation
-use Scheme indentation within native =texmacs= block bodies. Block delimiters
-remain Org syntax. Editing and indentation work independently of STM
-fontification.
+use Scheme indentation within all three native STM block bodies. Editing
+and indentation work independently of STM fontification.
 
 Org Src resolves the Scheme major mode for STM editing, indentation and
 embedded fontification. The default is Emacs's bundled =scheme-mode=. Migrate

@@ -182,20 +182,14 @@
        (setq editor (current-buffer))
        (should (equal "(math \"x\")" (buffer-string)))
        (org-edit-src-abort)))
-    (dolist
-        (text
-         '("~$(math \"x\")$~\n"
-           "Before $(math \"x\")$ after.\n"
-           "#+begin_equation\n(math \"x\" $(math \"y\")$)\n#+end_equation\n"
-           "#+begin_equation*\n(math \"x\" $(math \"y\")$)\n#+end_equation*\n"))
+    (dolist (text
+             '("~$(math \"x\")$~\n" "Before $(math \"x\")$ after.\n"))
       (org-texmacs-test--with-edit-source
        text
        (search-forward
         (cond
          ((string-prefix-p "Before" text)
           "after")
-         ((string-prefix-p "#+begin" text)
-          "\"y\"")
          (t
           "x")))
        (should
@@ -203,25 +197,33 @@
          'delegated
          (org-texmacs--edit-special (lambda () 'delegated))))))))
 
+(defmacro org-texmacs-test--with-native-edit-source (text &rest body)
+  "Exercise TEXT and BODY with KIND bound to each native STM block name."
+  (declare (indent 1))
+  `(dolist (kind '("texmacs" "equation" "equation*"))
+     (org-texmacs-test--with-edit-source ,text ,@body)))
+
 (ert-deftest org-texmacs-edit-block-roundtrip ()
   :tags
   '(block-editing)
-  (org-texmacs-test--with-edit-source
-   "Before\n#+begin_TEXMACS\n(document\n  (math \"x\"))\n#+end_TEXMACS\nAfter\n"
-   (search-forward "(math")
-   (let ((before (buffer-string)))
-     (org-edit-special)
-     (setq editor (current-buffer))
-     (should (derived-mode-p 'scheme-mode))
-     (should (org-src-edit-buffer-p))
-     (goto-char (point-min))
-     (search-forward "x")
-     (replace-match "y" t t)
-     (org-edit-src-exit)
-     (should (eq (current-buffer) source))
-     (should
-      (equal
-       (buffer-string) (string-replace "\"x\"" "\"y\"" before))))))
+  (org-texmacs-test--with-native-edit-source
+      (format
+       "Before\n\n#+name: example\n#+caption: Math\n#+BeGiN_%s parameter\n(document\n  (math \"x\"))\n#+eNd_%s\nAfter\n"
+       (upcase kind) kind)
+    (search-forward "(math")
+    (let ((before (buffer-string)))
+      (org-edit-special)
+      (setq editor (current-buffer))
+      (should (derived-mode-p 'scheme-mode))
+      (should (org-src-edit-buffer-p))
+      (goto-char (point-min))
+      (search-forward "x")
+      (replace-match "y" t t)
+      (org-edit-src-exit)
+      (should (eq (current-buffer) source))
+      (should
+       (equal
+        (buffer-string) (string-replace "\"x\"" "\"y\"" before))))))
 
 (ert-deftest org-texmacs-edit-block-indent-line ()
   :tags
@@ -236,104 +238,114 @@
             (indent-according-to-mode)
             (buffer-string))))
     (should-not (equal text expected))
-    (org-texmacs-test--with-edit-source
-     (concat
-      "Before\n#+begin_texmacs\n" text "#+end_texmacs\nAfter\n")
-     (setq-local org-texmacs--font-lock-enabled nil)
-     (search-forward "(math")
-     (org-indent-line)
-     (should
-      (equal
-       (buffer-string)
-       (concat
-        "Before\n#+begin_texmacs\n"
-        expected
-        "#+end_texmacs\nAfter\n"))))))
+    (org-texmacs-test--with-native-edit-source
+        (concat
+         (format "Before\n#+begin_%s\n" kind)
+         text
+         (format "#+end_%s\nAfter\n" kind))
+      (setq-local org-texmacs--font-lock-enabled nil)
+      (search-forward "(math")
+      (org-indent-line)
+      (should
+       (equal
+        (buffer-string)
+        (concat
+         (format "Before\n#+begin_%s\n" kind)
+         expected
+         (format "#+end_%s\nAfter\n" kind)))))))
 
 (ert-deftest org-texmacs-edit-block-unchanged-and-abort ()
   :tags
   '(block-editing)
   (dolist (wrapper
-           '(("#+begin_texmacs\n" "#+end_texmacs\n")
-             ("- Item\n  #+BEGIN_TEXMACS\n" "  #+END_TEXMACS\n")
-             ("#+begin_quote\n#+begin_texmacs\n"
-              "#+end_texmacs\n#+end_quote\n")))
+           '(("#+begin_%s\n" "#+end_%s\n")
+             ("- Item\n  #+BEGIN_%s\n" "  #+END_%s\n")
+             ("#+begin_quote\n#+begin_%s\n"
+              "#+end_%s\n#+end_quote\n")))
     (dolist (abort '(nil t))
-      (org-texmacs-test--with-edit-source
-       (concat
-        (car wrapper)
-        "  (document\n    \"line\n  literal\")\n"
-        (cadr wrapper))
-       (search-forward "(document")
-       (let ((before (buffer-string)))
-         (org-edit-special)
-         (setq editor (current-buffer))
-         (when abort
-           (goto-char (point-max))
-           (insert "CHANGED"))
-         (if abort
-             (org-edit-src-abort)
-           (org-edit-src-exit))
-         (should (equal before (buffer-string))))))))
+      (org-texmacs-test--with-native-edit-source
+          (concat
+           (format (car wrapper) kind)
+           "  (document\n    \"line\n  literal\")\n"
+           (format (cadr wrapper) kind))
+        (search-forward "(document")
+        (let ((before (buffer-string)))
+          (org-edit-special)
+          (setq editor (current-buffer))
+          (when abort
+            (goto-char (point-max))
+            (insert "CHANGED"))
+          (if abort
+              (org-edit-src-abort)
+            (org-edit-src-exit))
+          (should (equal before (buffer-string))))))))
 
 (ert-deftest org-texmacs-edit-block-empty ()
   :tags
   '(block-editing)
-  (org-texmacs-test--with-edit-source
-   "#+begin_texmacs\n#+end_texmacs\n"
-   (org-edit-special)
-   (setq editor (current-buffer))
-   (should (equal (buffer-string) ""))
-   (insert "(math \"x\")\n")
-   (org-edit-src-exit)
-   (should
-    (equal
-     (buffer-string)
-     "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n"))))
+  (org-texmacs-test--with-native-edit-source (format
+                                              "#+begin_%s\n#+end_%s\n"
+                                              kind kind)
+    (org-edit-special)
+    (setq editor (current-buffer))
+    (should (equal (buffer-string) ""))
+    (insert "(math \"x\")\n")
+    (org-edit-src-exit)
+    (should
+     (equal
+      (buffer-string)
+      (format "#+begin_%s\n(math \"x\")\n#+end_%s\n" kind kind)))))
 
 (ert-deftest org-texmacs-edit-block-save-and-reuse ()
   :tags
   '(block-editing)
-  (org-texmacs-test--with-edit-source
-   "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n"
-   (forward-line)
-   (org-edit-special)
-   (setq editor (current-buffer))
-   (goto-char (point-min))
-   (search-forward "x")
-   (replace-match "y" t t)
-   ;; Org's save command normally also saves the source file.  Isolate that
-   ;; unrelated I/O while retaining the real write-back and overlay lifecycle.
-   (cl-letf (((symbol-function 'save-buffer) #'ignore))
-     (org-edit-src-save))
-   (with-current-buffer source
-     (should (string-match-p "\"y\"" (buffer-string))))
-   (switch-to-buffer source)
-   (goto-char (point-min))
-   (forward-line)
-   (let ((org-src-ask-before-returning-to-edit-buffer nil))
-     (org-edit-special))
-   (should (eq editor (current-buffer)))
-   (org-edit-src-exit)))
+  (org-texmacs-test--with-native-edit-source
+      (format "#+begin_%s\n\"x\"\n#+end_%s\n" kind kind)
+    (forward-line)
+    (org-edit-special)
+    (setq editor (current-buffer))
+    (goto-char (point-min))
+    (search-forward "x")
+    (replace-match "y" t t)
+    ;; Org's save command normally also saves the source file.  Isolate that
+    ;; unrelated I/O while retaining the real write-back and overlay lifecycle.
+    (cl-letf (((symbol-function 'save-buffer) #'ignore))
+      (org-edit-src-save))
+    (with-current-buffer source
+      (should
+       (equal
+        (format "#+begin_%s\n\"y\"\n#+end_%s\n"
+                kind
+                kind)
+        (buffer-string))))
+    (switch-to-buffer source)
+    (goto-char (point-min))
+    (forward-line)
+    (let ((org-src-ask-before-returning-to-edit-buffer nil))
+      (org-edit-special))
+    (should (eq editor (current-buffer)))
+    (org-edit-src-exit)))
 
 (ert-deftest org-texmacs-edit-block-reject-closing-line ()
   :tags
   '(block-editing)
-  (org-texmacs-test--with-edit-source
-   "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n"
-   (let ((before (buffer-string)))
-     (org-edit-special)
-     (setq editor (current-buffer))
-     (goto-char (point-max))
-     (insert "#+END_TEXMACS\n")
-     (should-error (org-edit-src-exit) :type 'user-error)
-     (should (buffer-live-p editor))
-     (should
-      (equal
-       before
-       (with-current-buffer source
-         (buffer-string))))
-     (org-edit-src-abort))))
+  (org-texmacs-test--with-native-edit-source
+      (format "#+begin_%s\n(math \"x\")\n#+end_%s\n" kind kind)
+    (let ((before (buffer-string)))
+      (org-edit-special)
+      (setq editor (current-buffer))
+      (goto-char (point-max))
+      (insert (format "  #+END_%s\t\n" (upcase kind)))
+      (dolist (command '(org-edit-src-save org-edit-src-exit))
+        (should-error (funcall command) :type 'user-error)
+        (should (eq editor (current-buffer)))
+        (should (buffer-modified-p))
+        (should
+         (equal
+          before
+          (with-current-buffer source
+            (buffer-string)))))
+      (org-edit-src-abort))))
 
 (ert-deftest org-texmacs-edit-block-native-tab-and-region ()
   :tags
@@ -346,78 +358,93 @@
             (indent-region (point-min) (point-max))
             (buffer-string))))
     (dolist (region '(nil t))
-      (org-texmacs-test--with-edit-source
-       (concat
-        "Before\n#+begin_texmacs\n" body "#+end_texmacs\nAfter\n")
-       (search-forward "(document") (beginning-of-line)
-       (if region
-           (let ((begin (point)))
-             (search-forward "#+end_texmacs")
-             (beginning-of-line)
-             (org-indent-region begin (point)))
-         (forward-line)
-         (org-cycle)
-         (forward-line)
-         (org-cycle))
-       (should
-        (equal
-         (buffer-string)
-         (concat
-          "Before\n#+begin_texmacs\n"
-          expected
-          "#+end_texmacs\nAfter\n")))))))
+      (org-texmacs-test--with-native-edit-source
+          (concat
+           (format "Before\n#+begin_%s\n" kind)
+           body
+           (format "#+end_%s\nAfter\n" kind))
+        (search-forward "(document")
+        (beginning-of-line)
+        (if region
+            (let ((begin (point)))
+              (search-forward (format "#+end_%s" kind))
+              (beginning-of-line)
+              (org-indent-region begin (point)))
+          (forward-line)
+          (org-cycle)
+          (forward-line)
+          (org-cycle))
+        (should
+         (equal
+          (buffer-string)
+          (concat
+           (format "Before\n#+begin_%s\n" kind)
+           expected
+           (format "#+end_%s\nAfter\n" kind))))))))
 
 (ert-deftest org-texmacs-edit-block-container-indent-and-string ()
   :tags
   '(block-editing)
-  (org-texmacs-test--with-edit-source
-   "- Item\n  #+begin_texmacs\n  (document\n(math \"x\")\n  \"first\n literal\")\n  #+end_texmacs\n"
-   (search-forward "(math")
-   (org-indent-line)
-   (beginning-of-line)
-   (should (>= (current-indentation) 2))
-   (search-forward "literal")
-   (org-indent-line)
-   (beginning-of-line)
-   (should (looking-at " literal"))
-   (should
-    (string-prefix-p "- Item\n  #+begin_texmacs\n" (buffer-string)))
-   (should (string-suffix-p "  #+end_texmacs\n" (buffer-string)))))
+  (org-texmacs-test--with-native-edit-source
+      (format
+       "- Item\n  #+begin_%s\n  (document\n  (math \"x\")\n  \"first\n   literal\")\n  #+end_%s\n"
+       kind kind)
+    (search-forward "(math")
+    (should (org-texmacs--edit-context))
+    (org-indent-line)
+    (beginning-of-line)
+    (should (>= (current-indentation) 2))
+    (search-forward "literal")
+    (org-indent-line)
+    (beginning-of-line)
+    (should (looking-at "   literal"))
+    (should
+     (string-prefix-p
+      (format "- Item\n  #+begin_%s\n" kind) (buffer-string)))
+    (should
+     (string-suffix-p (format "  #+end_%s\n" kind) (buffer-string)))))
 
 (ert-deftest org-texmacs-edit-block-read-only-and-narrowing ()
   :tags
   '(block-editing)
-  (org-texmacs-test--with-edit-source
-   "Before\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\nAfter\n"
-   (search-forward "(math")
-   (let ((before (buffer-string))
-         (buffer-read-only t))
-     (should-error (org-edit-special) :type 'buffer-read-only)
-     (should-error (org-indent-line) :type 'buffer-read-only)
-     (should (equal before (buffer-string))))
-   (save-restriction
-     (beginning-of-line)
-     (narrow-to-region (point) (line-end-position))
-     (should-error (org-edit-special) :type 'user-error)
-     (should-not editor))))
+  (org-texmacs-test--with-native-edit-source
+      (format "Before\n#+begin_%s\n(math \"x\")\n#+end_%s\nAfter\n"
+              kind kind)
+    (search-forward "(math")
+    (let ((before (buffer-string))
+          (buffer-read-only t))
+      (should-error (org-edit-special) :type 'buffer-read-only)
+      (should-error (org-indent-line) :type 'buffer-read-only)
+      (should (equal before (buffer-string))))
+    (save-restriction
+      (beginning-of-line)
+      (narrow-to-region (point) (line-end-position))
+      (should-error (org-edit-special) :type 'user-error)
+      (should-not editor))))
 
 (ert-deftest org-texmacs-edit-block-independent-of-export ()
   :tags
   '(block-editing)
-  (org-texmacs-test--with-edit-source
-   "#+begin_texmacs\n(math \"[[link]] *not Org*\")\n#+end_texmacs\n"
-   (setq-local org-texmacs--font-lock-enabled nil)
-   (cl-letf (((symbol-function 'org-texmacs--worker-request)
-              (lambda (&rest _)
-                (ert-fail "Unexpected worker request")))
-             ((symbol-function 'org-babel-get-src-block-info)
-              (lambda (&rest _)
-                (ert-fail "Unexpected Babel request"))))
-     (let ((before (buffer-string)))
-       (org-edit-special)
-       (setq editor (current-buffer))
-       (org-edit-src-exit)
-       (should (equal before (buffer-string)))))))
+  (org-texmacs-test--with-native-edit-source
+      (format
+       "#+begin_%s\n(math \"[[link]] *not Org* $(math child)$\")\n#+end_%s\n"
+       kind kind)
+    (setq-local org-texmacs--font-lock-enabled nil)
+    (search-forward "child")
+    (should-not (org-texmacs--edit-fragment-at-point))
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _)
+                 (ert-fail "Unexpected worker request")))
+              ((symbol-function 'org-babel-get-src-block-info)
+               (lambda (&rest _)
+                 (ert-fail "Unexpected Babel request")))
+              ((symbol-function 'org-export-as)
+               (lambda (&rest _) (ert-fail "Unexpected export"))))
+      (let ((before (buffer-string)))
+        (org-edit-special)
+        (setq editor (current-buffer))
+        (org-edit-src-exit)
+        (should (equal before (buffer-string)))))))
 
 (ert-deftest org-texmacs-edit-other-org-contexts ()
   :tags
@@ -430,11 +457,12 @@
    (should (derived-mode-p 'scheme-mode))
    (should-not org-texmacs--edit-ready)
    (org-edit-src-abort))
-  (with-temp-buffer
-    (org-mode)
-    (insert "#+begin_other\ntext\n#+end_other\n")
-    (goto-char (point-min))
-    (should-error (org-edit-special) :type 'user-error)))
+  (dolist (kind '("other" "statement" "figure"))
+    (with-temp-buffer
+      (org-mode)
+      (insert (format "#+begin_%s\ntext\n#+end_%s\n" kind kind))
+      (goto-char (point-min))
+      (should-error (org-edit-special) :type 'user-error))))
 
 (ert-deftest org-texmacs-edit-mode-unavailable-or-failing ()
   :tags
@@ -444,25 +472,25 @@
     (dolist (mode
              '(org-texmacs-test--missing-scheme-mode
                org-texmacs-test--failing-scheme-mode))
-      (org-texmacs-test--with-edit-source
-       "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n"
-       (let ((major-mode-remap-alist (list (cons 'scheme-mode mode)))
-             (before (buffer-string))
-             (tick (buffer-chars-modified-tick))
-             (buffers (buffer-list)))
-         (should-error (org-edit-special) :type 'user-error)
-         (should (eq source (current-buffer)))
-         (goto-char (point-min))
-         (forward-line)
-         (should-error (org-indent-line))
-         (should (equal before (buffer-string)))
-         (should (= tick (buffer-chars-modified-tick)))
-         (should-not
-          (cl-some
-           (lambda (buffer)
-             (with-current-buffer buffer
-               (org-src-edit-buffer-p)))
-           (cl-set-difference (buffer-list) buffers))))))))
+      (org-texmacs-test--with-native-edit-source
+          (format "#+begin_%s\n(math \"x\")\n#+end_%s\n" kind kind)
+        (let ((major-mode-remap-alist (list (cons 'scheme-mode mode)))
+              (before (buffer-string))
+              (tick (buffer-chars-modified-tick))
+              (buffers (buffer-list)))
+          (should-error (org-edit-special) :type 'user-error)
+          (should (eq source (current-buffer)))
+          (goto-char (point-min))
+          (forward-line)
+          (should-error (org-indent-line))
+          (should (equal before (buffer-string)))
+          (should (= tick (buffer-chars-modified-tick)))
+          (should-not
+           (cl-some
+            (lambda (buffer)
+              (with-current-buffer buffer
+                (org-src-edit-buffer-p)))
+            (cl-set-difference (buffer-list) buffers))))))))
 
 (ert-deftest org-texmacs-edit-block-indent-point-and-failure ()
   :tags

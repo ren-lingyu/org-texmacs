@@ -45,7 +45,8 @@
 ;; Use `org-texmacs-tree' to derive an Org-compatible TeXmacs tree from a
 ;; native TeXmacs special block, with lazy parsing and Org-managed caching.
 ;; Parse explicit inline STM through the mathematical-document model.
-;; Use Org's source-edit workflow for TeXmacs blocks and inline STM fragments.
+;; Use Org's source-edit workflow for texmacs, equation and equation* blocks
+;; and inline STM fragments.
 ;; Org Src resolves the Scheme major mode for editing, block indentation and
 ;; embedded fontification.
 ;; Use `org-texmacs-model-create' to own a native Org AST and already parsed

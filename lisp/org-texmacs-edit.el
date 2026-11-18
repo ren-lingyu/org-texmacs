@@ -16,7 +16,7 @@
 (require 'org-src)
 
 (defvar-local org-texmacs--edit-base 0
-  "Minimum indentation of a TeXmacs block in its Org container.")
+  "Minimum indentation of a native STM block in its Org container.")
 
 (defvar-local org-texmacs--edit-indent-function nil
   "Native Scheme line indentation function in the current edit buffer.")
@@ -27,6 +27,9 @@
 (defvar-local org-texmacs--edit-fragment-source nil
   "Last known source payload of the STM fragment being edited.")
 
+(defvar-local org-texmacs--edit-block-end-regexp nil
+  "Closing line of the native STM block being edited.")
+
 (defun org-texmacs--edit-check-mode ()
   "Return the Scheme mode resolved by Org Src, or signal a user error."
   (let ((mode (org-src-get-lang-mode "scheme")))
@@ -36,8 +39,13 @@
        mode))
     mode))
 
+(defun org-texmacs--edit-block-end-pattern (kind)
+  "Return a regexp matching the native STM block KIND's closing line."
+  (concat
+   "^[ \t]*#\\+end_" (regexp-quote (symbol-name kind)) "[ \t]*$"))
+
 (defun org-texmacs--edit-context ()
-  "Return (BLOCK BODY-BEGIN BODY-END INDENT) for the current TeXmacs block.
+  "Return (BLOCK BODY-BEGIN BODY-END INDENT) for the current native STM block.
 Return nil outside a complete, accessible native special block.  Delimiters
 are located only after Org has identified the block; no STM is parsed."
   (when (derived-mode-p 'org-mode)
@@ -45,9 +53,9 @@ are located only after Org has identified the block; no STM is parsed."
             (org-element-lineage
              (org-element-at-point) '(special-block) t))
            (begin (and node (org-element-post-affiliated node)))
-           (end (and node (org-element-property :end node))))
-      (when (and node
-                 (org-texmacs--block-p node)
+           (end (and node (org-element-property :end node)))
+           (kind (org-texmacs--native-body-kind node)))
+      (when (and kind
                  begin
                  end
                  (<= (point-min) begin)
@@ -60,14 +68,18 @@ are located only after Org has identified the block; no STM is parsed."
             (goto-char begin)
             (setq base (current-indentation))
             (when (looking-at
-                   "[ \t]*#\\+begin_texmacs\\(?:[ \t].*\\)?$")
+                   (concat
+                    "[ \t]*#\\+begin_"
+                    (regexp-quote (symbol-name kind))
+                    "\\(?:[ \t].*\\)?$"))
               (forward-line)
               (setq body-begin (point))
               (goto-char end)
               (skip-chars-backward " \t\r\n" body-begin)
               (beginning-of-line)
               (when (and (>= (point) body-begin)
-                         (looking-at "[ \t]*#\\+end_texmacs[ \t]*$"))
+                         (looking-at
+                          (org-texmacs--edit-block-end-pattern kind)))
                 (setq body-end (point))
                 (list node body-begin body-end base)))))))))
 
@@ -157,9 +169,20 @@ are located only after Org has identified the block; no STM is parsed."
         (user-error "Could not initialize STM fragment editing"))
       (setq-local org-src--preserve-indentation t))))
 
-(defun org-texmacs--edit-fragment-write-back
-    (original &rest arguments)
-  "Validate an STM payload before calling ORIGINAL with ARGUMENTS."
+(defun org-texmacs--edit-write-back (original &rest arguments)
+  "Check STM edits before calling ORIGINAL with ARGUMENTS."
+  (when (and org-src--allow-write-back
+             org-texmacs--edit-block-end-regexp)
+    ;; Check before Org changes the modified flag or allocates its write buffer.
+    (save-match-data
+      (org-with-wide-buffer
+       (goto-char (point-min))
+       (let ((case-fold-search t))
+         (when (re-search-forward org-texmacs--edit-block-end-regexp
+                                  nil
+                                  t)
+           (user-error
+            "STM body contains its Org block closing line"))))))
   (if (not
        (and org-texmacs--edit-fragment-source
             org-src--allow-write-back))
@@ -209,6 +232,9 @@ are located only after Org has identified the block; no STM is parsed."
              (begin (nth 1 context))
              (end (nth 2 context))
              (base (nth 3 context))
+             (end-regexp
+              (org-texmacs--edit-block-end-pattern
+               (org-texmacs--native-body-kind datum)))
              (text (buffer-substring-no-properties begin end)))
         ;; Empty special blocks lack contents positions.  Keep their native
         ;; type while supplying the exact editing area to Org.
@@ -223,14 +249,9 @@ are located only after Org has identified the block; no STM is parsed."
            (erase-buffer)
            (insert text)
            (org-texmacs--edit-initialize mode base)
+           (setq-local org-texmacs--edit-block-end-regexp end-regexp)
            (set-buffer-modified-p nil))
-         (lambda ()
-           (let ((case-fold-search t))
-             (when (re-search-forward "^[ \t]*#\\+end_texmacs[ \t]*$"
-                                      nil
-                                      t)
-               (user-error
-                "TeXmacs body contains an Org block closing line")))))
+         t)
         (unless org-texmacs--edit-ready
           (org-edit-src-abort)
           (user-error "Could not initialize TeXmacs Scheme editing"))
@@ -311,7 +332,7 @@ Compute the result privately before changing the source."
       (apply original begin end arguments))))
 
 (defun org-texmacs--edit-tab (&rest _arguments)
-  "Handle Org TAB inside a TeXmacs special-block body."
+  "Handle Org TAB inside a native STM special-block body."
   (let ((context (org-texmacs--edit-context)))
     (when (and context
                (<= (nth 1 context) (point))
@@ -320,12 +341,8 @@ Compute the result privately before changing the source."
       t)))
 
 (advice-add 'org-edit-special :around #'org-texmacs--edit-special)
-(advice-add
- 'org-edit-src-save
- :around #'org-texmacs--edit-fragment-write-back)
-(advice-add
- 'org-edit-src-exit
- :around #'org-texmacs--edit-fragment-write-back)
+(advice-add 'org-edit-src-save :around #'org-texmacs--edit-write-back)
+(advice-add 'org-edit-src-exit :around #'org-texmacs--edit-write-back)
 (advice-add
  'org-indent-line
  :around #'org-texmacs--edit-org-indent-line)
