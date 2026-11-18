@@ -64,6 +64,10 @@ The separate Scheme mode migration is also delivered. Org Src resolves the
 mode for STM editing, indentation and embedded fontification, and
 `org-texmacs-edit-mode` was removed. See stm-scheme-language-dispatch.md
 for validation and the remaining real Tree-sitter evidence gap.
+Inline STM fragment editing through Org Src is delivered. Both carriers
+preserve their delimiters, and save and exit validate one compound payload
+before write-back. Core ERT 353/353 passed, and the user reported that
+their tests and builds passed, including examples. See stm-fragment-editing.md.
 OTP is deferred from v0.8.0. Revisit potential org-latex-preview API reuse
 after Org 10.0 is formally released. See stm-fragment-evolution.md.
 Release state, version metadata and publication remain separate.
