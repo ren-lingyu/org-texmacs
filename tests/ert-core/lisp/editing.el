@@ -239,20 +239,33 @@
     (goto-char (point-min))
     (should-error (org-edit-special) :type 'user-error)))
 
-(ert-deftest org-texmacs-edit-mode-optional-unavailable ()
+(ert-deftest org-texmacs-edit-mode-unavailable-or-failing ()
   :tags
   '(block-editing)
-  (org-texmacs-test--with-edit-source
-   "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n"
-   (let ((org-texmacs-edit-mode 'scheme-ts-mode)
-         (before (buffer-string)))
-     (cl-letf (((symbol-function 'treesit-ready-p)
-                (lambda (&rest _) nil)))
-       (should-error (org-edit-special) :type 'user-error)
-       (forward-line)
-       (should-error (org-indent-line) :type 'user-error))
-     (should (eq source (current-buffer)))
-     (should (equal before (buffer-string))))))
+  (cl-letf (((symbol-function 'org-texmacs-test--failing-scheme-mode)
+             (lambda () (error "Scheme mode initialization failed"))))
+    (dolist (mode
+             '(org-texmacs-test--missing-scheme-mode
+               org-texmacs-test--failing-scheme-mode))
+      (org-texmacs-test--with-edit-source
+       "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n"
+       (let ((major-mode-remap-alist (list (cons 'scheme-mode mode)))
+             (before (buffer-string))
+             (tick (buffer-chars-modified-tick))
+             (buffers (buffer-list)))
+         (should-error (org-edit-special) :type 'user-error)
+         (should (eq source (current-buffer)))
+         (goto-char (point-min))
+         (forward-line)
+         (should-error (org-indent-line))
+         (should (equal before (buffer-string)))
+         (should (= tick (buffer-chars-modified-tick)))
+         (should-not
+          (cl-some
+           (lambda (buffer)
+             (with-current-buffer buffer
+               (org-src-edit-buffer-p)))
+           (cl-set-difference (buffer-list) buffers))))))))
 
 (ert-deftest org-texmacs-edit-block-indent-point-and-failure ()
   :tags
@@ -273,26 +286,60 @@
        (should-error (org-indent-line)))
      (should (equal before (buffer-string))))))
 
-(ert-deftest org-texmacs-edit-mode-option-dispatch ()
-  :tags '(block-editing)
-  ;; Dispatch/availability control only: the pinned environment does not ship
-  ;; scheme-ts-mode or the Scheme grammar.  This is not a native TS-mode test.
-  (org-texmacs-test--with-edit-source
-   "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n"
-   (let ((org-texmacs-edit-mode 'scheme-ts-mode)
-         (calls 0))
-     (cl-letf (((symbol-function 'treesit-ready-p)
-                (lambda (&rest _) t))
-               ((symbol-function 'scheme-ts-mode)
-                (lambda ()
-                  (cl-incf calls)
-                  (scheme-mode))))
-       (forward-line)
-       (org-indent-line)
-       (org-edit-special)
-       (setq editor (current-buffer))
-       (should (= calls 2))
-       (org-edit-src-abort)))))
+(define-derived-mode
+ org-texmacs-test-scheme-mode
+ scheme-mode
+ "STM test"
+ (setq-local indent-line-function (lambda () (indent-line-to 4)))
+ (font-lock-add-keywords
+  nil '(("\\_<math\\_>" . 'font-lock-warning-face))
+  'prepend))
+
+(ert-deftest org-texmacs-edit-mode-org-src-dispatch ()
+  :tags
+  '(block-editing)
+  (dolist (mapping '(language remap))
+    (org-texmacs-test--with-edit-source
+     "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n"
+     (if (eq mapping 'language)
+         (setq-local org-src-lang-modes
+                     (cons
+                      '("scheme" . org-texmacs-test-scheme)
+                      org-src-lang-modes))
+       (setq-local major-mode-remap-alist
+                   '((scheme-mode . org-texmacs-test-scheme-mode))))
+     (should
+      (eq
+       (org-src-get-lang-mode "scheme")
+       'org-texmacs-test-scheme-mode))
+     (forward-line)
+     (org-indent-line)
+     (should (= (current-indentation) 4))
+     (org-edit-special)
+     (setq editor (current-buffer))
+     (should (eq major-mode 'org-texmacs-test-scheme-mode))
+     (org-edit-src-abort))
+    (dolist (carrier '("$(math \"x\")$\n" "\\((math \"x\")\\)\n"))
+      (org-texmacs-test--with-font-lock
+       carrier
+       (if (eq mapping 'language)
+           (setq-local org-src-lang-modes
+                       (cons
+                        '("scheme" . org-texmacs-test-scheme)
+                        org-src-lang-modes))
+         (setq-local major-mode-remap-alist
+                     '((scheme-mode . org-texmacs-test-scheme-mode))))
+       (font-lock-flush) (font-lock-ensure)
+       (let* ((math (org-texmacs-test--font-lock-position "math"))
+              (face (get-text-property math 'face)))
+         (should (memq 'font-lock-warning-face (ensure-list face)))
+         (should (get-text-property math 'syntax-table))
+         (dolist (position
+                  (list (point-min) (1- (line-end-position))))
+           (should-not
+            (memq
+             'font-lock-warning-face
+             (ensure-list (get-text-property position 'face))))))))))
 
 (ert-deftest org-texmacs-font-lock-default-and-ownership ()
   (org-texmacs-test--with-font-lock
@@ -317,6 +364,39 @@
      (should (equal undo buffer-undo-list))
      (should (= 4 (point)))
      (should (equal mark (mark t))))))
+
+(ert-deftest org-texmacs-font-lock-scheme-mode-failure ()
+  (cl-letf (((symbol-function 'org-texmacs-test--failing-scheme-mode)
+             (lambda () (error "Scheme mode initialization failed")))
+            ((symbol-function 'backtrace-to-string)
+             (lambda (&rest _) "Intentional mode failure")))
+    (dolist (mode
+             '(org-texmacs-test--missing-scheme-mode
+               org-texmacs-test--failing-scheme-mode))
+      (org-texmacs-test--with-font-lock
+       "Outside *bold*. $(math \"x\")$\n"
+       (setq-local major-mode-remap-alist
+                   (list (cons 'scheme-mode mode)))
+       (let ((before
+              (buffer-substring-no-properties
+               (point-min) (point-max)))
+             (tick (buffer-chars-modified-tick)))
+         (dotimes (_ 2)
+           (font-lock-flush)
+           (font-lock-ensure))
+         (should
+          (memq
+           'bold
+           (ensure-list
+            (get-text-property
+             (org-texmacs-test--font-lock-position "bold") 'face))))
+         (should (eq major-mode 'org-mode))
+         (should
+          (equal
+           before
+           (buffer-substring-no-properties (point-min) (point-max))))
+         (should (= tick (buffer-chars-modified-tick)))
+         (should-not (buffer-modified-p)))))))
 
 (ert-deftest org-texmacs-font-lock-opaque-and-disable ()
   (org-texmacs-test--with-font-lock

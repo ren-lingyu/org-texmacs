@@ -44,13 +44,15 @@ PDF file links should resolve against the source directory and retain .org:
 #+end_src
 
 ** Interactive settings, shown without execution
-Editing mode and export-menu keys configure a session; PDF pages cannot prove
-their interactive behavior. This optional init-file snippet is not tangled or
-loaded by the example builder:
+Org Src resolves Scheme for STM editing, indentation and fontification.
+Emacs uses its bundled =scheme-mode= by default. The optional remapping below
+requires =scheme-ts-mode= and its Scheme Tree-sitter grammar, and may also affect
+other Scheme buffers. The example builder does not load this snippet:
 
 #+begin_src emacs-lisp
   (require 'org-texmacs)
-  (setq org-texmacs-edit-mode 'scheme-mode)
+  ;; Optional, after installing the mode and grammar:
+  ;; (add-to-list 'major-mode-remap-alist '(scheme-mode . scheme-ts-mode))
   ;; Set before the first require of ox-texmacs; use available menu keys.
   (setq org-texmacs-export-menu-keys
         '(:prefix ?T :buffer ?b :file ?f :pdf ?p))

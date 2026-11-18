@@ -12,22 +12,6 @@
 
 (require 'org-texmacs-source)
 (require 'org-src)
-(require 'scheme)
-
-(declare-function scheme-ts-mode "scheme-ts-mode")
-
-(defcustom org-texmacs-edit-mode 'scheme-mode
-  "Major mode used to edit and indent TeXmacs special-block bodies.
-The default `scheme-mode' is bundled with Emacs.  Selecting `scheme-ts-mode'
-requires that mode and its Scheme Tree-sitter grammar to be installed by the
-user.  Missing optional support signals an error; nothing is installed or
-silently substituted.  Existing edit buffers retain their mode until closed.
-This option does not change STM fontification, parsing or export support."
-  :type
-  '(choice
-    (const :tag "Scheme" scheme-mode)
-    (const :tag "Scheme (Tree-sitter)" scheme-ts-mode))
-  :group 'org-texmacs)
 
 (defvar-local org-texmacs--edit-base 0
   "Minimum indentation of a TeXmacs block in its Org container.")
@@ -39,21 +23,13 @@ This option does not change STM fontification, parsing or export support."
   "Non-nil when a TeXmacs edit buffer has been initialized successfully.")
 
 (defun org-texmacs--edit-check-mode ()
-  "Return the selected editing mode, or explain unavailable support."
-  (pcase org-texmacs-edit-mode
-    ('scheme-mode #'scheme-mode)
-    ('scheme-ts-mode
-     (unless (and (or (fboundp 'scheme-ts-mode)
-                      (require 'scheme-ts-mode nil t))
-                  (fboundp 'scheme-ts-mode)
-                  (fboundp 'treesit-ready-p)
-                  (treesit-ready-p 'scheme t))
-       (user-error
-        "TeXmacs editing needs scheme-ts-mode and its Scheme grammar"))
-     #'scheme-ts-mode)
-    (_
-     (user-error "Unsupported TeXmacs editing mode: %S"
-                 org-texmacs-edit-mode))))
+  "Return the Scheme mode resolved by Org Src, or signal a user error."
+  (let ((mode (org-src-get-lang-mode "scheme")))
+    (unless (fboundp mode)
+      (user-error
+       "TeXmacs editing needs the configured Scheme mode %S"
+       mode))
+    mode))
 
 (defun org-texmacs--edit-context ()
   "Return (BLOCK BODY-BEGIN BODY-END INDENT) for the current TeXmacs block.

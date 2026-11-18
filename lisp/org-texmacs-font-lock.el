@@ -168,12 +168,17 @@ Use local Org object parsing and allow incomplete carriers during editing."
 The Org helper assumes a preceding character for indentation.  A staging
 newline handles islands at accessible buffer start without touching source."
   (let ((source (buffer-substring-no-properties begin end))
+        (languages org-src-lang-modes)
+        (remaps major-mode-remap-alist)
         result)
     (with-temp-buffer
       (delay-mode-hooks
         (org-mode))
       (insert "\n" source)
-      (org-src-font-lock-fontify-block "scheme" 2 (point-max))
+      ;; Resolve Scheme using the source buffer's language settings.
+      (let ((org-src-lang-modes languages)
+            (major-mode-remap-alist remaps))
+        (org-src-font-lock-fontify-block "scheme" 2 (point-max)))
       (setq result (buffer-substring 2 (point-max))))
     (let ((position 0)
           next)

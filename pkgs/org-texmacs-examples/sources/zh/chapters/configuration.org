@@ -36,12 +36,14 @@ package 显式构建这两个入口.
 #+end_src
 
 ** 只展示, 不执行的交互设置
-编辑模式与导出菜单用于编辑会话, 无法仅凭 PDF 验证交互行为.
-以下可选初始化代码不会被本构建 tangle 或加载:
+Org Src 为 STM 编辑、缩进和高亮选择 Scheme 模式, 默认使用 Emacs 自带的 =scheme-mode=.
+下面的可选映射需要安装 =scheme-ts-mode= 和 Scheme Tree-sitter grammar,
+也会影响其他 Scheme buffer. 以下初始化代码不会被本构建加载:
 
 #+begin_src emacs-lisp
   (require 'org-texmacs)
-  (setq org-texmacs-edit-mode 'scheme-mode)
+  ;; 安装模式和 grammar 后可以启用:
+  ;; (add-to-list 'major-mode-remap-alist '(scheme-mode . scheme-ts-mode))
   ;; 在首次加载 ox-texmacs 前设置, 并选择当前会话中可用的菜单键.
   (setq org-texmacs-export-menu-keys
         '(:prefix ?T :buffer ?b :file ?f :pdf ?p))

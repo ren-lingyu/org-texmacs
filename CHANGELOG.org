@@ -26,6 +26,9 @@ release notes.
   discovery, parsing and span APIs.
   Use the Model API to access parsed islands. See
   [[file:README.org::*Migrating bare fragments][migration guidance]].
+- *Breaking:* Remove =org-texmacs-edit-mode=. STM editing, indentation and
+  embedded fontification use Org Src's Scheme mode resolution. Select a
+  different mode with =org-src-lang-modes= or Emacs major-mode remapping.
 
 ** Added
 - Recognize explicit STM fragments in supported native Org contexts,

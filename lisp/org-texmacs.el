@@ -45,9 +45,8 @@
 ;; Use `org-texmacs-tree' to derive an Org-compatible TeXmacs tree from a
 ;; native TeXmacs special block, with lazy parsing and Org-managed caching.
 ;; Parse explicit inline STM through the mathematical-document model.
-;; Loading enables Scheme fontification of embedded STM in Org buffers.
-;; Use Org's source-edit workflow for TeXmacs blocks; `org-texmacs-edit-mode'
-;; selects the editing/indentation major mode, defaulting to `scheme-mode'.
+;; Use Org's source-edit workflow for TeXmacs blocks.  Org Src resolves the
+;; Scheme major mode for block editing, indentation and embedded fontification.
 ;; Use `org-texmacs-model-create' to own a native Org AST and already parsed
 ;; STM islands independently of document lowering.  The model module can be
 ;; loaded alone without export preparation or a native worker.
