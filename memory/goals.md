@@ -1,9 +1,13 @@
 # org-texmacs project goals
 
+Current v0.8.0 minimum: Org >=9.8.10, Emacs >=31.1. The user chose this
+maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
+9.8 successes remain historical evidence; separate 9.8 regression is no longer
+a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
+
 Frozen next-version interfaces, writer/error domain, context migration and six
-core development gates: stm-fragment-core-plan.md. Implement node 1 directly in the ordinary
-worktree without automatically committing; exploratory review is closed. Current main's
-capabilities remain v0.7.1 until a candidate is separately delivered.
+core development gates: stm-fragment-core-plan.md. Node 1 is human-delivered; next is Node 2 planning from the delivered source.
+Exploratory review is closed. Later adapter/writer/Export changes remain pending.
 
 E7 adopts direct removal of bare STM discovery and its old span API contracts.
 Model structural validity stays broader than source expressibility; explicit

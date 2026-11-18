@@ -1,11 +1,17 @@
 # org-texmacs active backlog
 
+Current v0.8.0 minimum: Org >=9.8.10, Emacs >=31.1. The user chose this
+maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
+9.8 successes remain historical evidence; separate 9.8 regression is no longer
+a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
+
 ## Selected implementation plan
 
 E0–E7 feasibility and compatibility review is closed. Interfaces, pure-writer
 encoding/error boundaries and one-way :fragment-tags removal are frozen in
-stm-fragment-core-plan.md. Implement its six dependency-ordered core nodes,
-starting with scoped object integration in the ordinary worktree; commits require separate authorization and
+stm-fragment-core-plan.md. Continue its six dependency-ordered core nodes.
+Node 1 is human-committed and verified against its final tested input; plan
+Node 2 from the delivered HEAD. Development uses the ordinary worktree; commits require separate authorization and
 release metadata stays unchanged. No extra preparatory experiment is a gate.
 E7's bare/discovery removal and layered model/source decisions remain adopted.
 Necessary fontification and native-block editing preservation are core work.

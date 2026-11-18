@@ -1,21 +1,24 @@
 # org-texmacs current memory
 
+Current v0.8.0 minimum: Org >=9.8.10, Emacs >=31.1. The user chose this
+maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
+9.8 successes remain historical evidence; separate 9.8 regression is no longer
+a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
+
 ## Current release state
 
-Local v0.7.1 tag resolves to main HEAD; release documentation and version
-metadata are finalized, and the ordinary worktree is clean. Agent verification
-of the final candidate passed nix flake check and package/example builds;
-results reused cache except for treefmt, which ran and passed. Remote publication
-has not been verified. E5 establishes bounded pure-writer/normalization feasibility
-with explicit unresolved symbol and Org-context representation cases; E6 confirms
-sampled real standard Export feasibility with isolated gate/whitespace adaptation.
-See stm-fragment-e5.md and stm-fragment-e6.md. E7 user decisions remove bare
-recognition/old discovery contracts and accept layered model/source validity.
-Representative Org 9.8 roundtrip/real Export probes pass; no minimum increase is
-justified. The remaining interface/writer/context decisions and six core development gates
-are frozen in stm-fragment-core-plan.md. Next: implement node 1 directly in a
-ordinary project worktree, without automatically committing. No further preparatory
-experiment is required unless implementation exposes a new architecture conflict.
+v0.7.1 remains the released baseline. Node 1 and the Org >=9.8.10 minimum
+maintenance decision are now human-committed; ordinary worktree/index are clean.
+All eight changed committed files match the final tested Nix source snapshot
+byte-for-byte. The introducing delivery checkpoint associates the exact delivered
+project commit as an additional parent; no tests were rerun for an unchanged tree.
+Core 374/374, package/lint/treefmt passed; earlier actual Org 9.8 probes remain
+historical evidence, not a current support gate. See stm-fragment-node1.md.
+Scoped object parsing, independent ASTs and owned root syntax snapshots are
+available; old discovery/model-parser/Export paths remain unchanged. Native Org
+narrowing bounds scanning, and generic Org copying can share custom root metadata.
+Next: plan Node 2 from the delivered source, reusing existing owner/islands and
+implementing syntax/context consistency rules. No Node 2 implementation is claimed.
 OTP remains the final nonblocking candidate after core validation, with v0.9.0
 priority fallback; it is not an E8 replacement. No OTP probe/delivery is claimed.
 Adopted design: stm-fragment-evolution.md.

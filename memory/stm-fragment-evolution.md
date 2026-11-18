@@ -1,5 +1,10 @@
 # STM fragment evolution: adopted design and experiment plan
 
+Current v0.8.0 minimum: Org >=9.8.10, Emacs >=31.1. The user chose this
+maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
+9.8 successes remain historical evidence; separate 9.8 regression is no longer
+a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
+
 ## Authority and state
 
 Source: the user's architecture handoff supplied in this conversation after

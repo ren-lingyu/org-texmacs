@@ -160,8 +160,7 @@ or resource meaning. Their validation, graph copying and identity remapping stay
 6. Integrated acceptance. tests/README/examples/build definitions as needed,
    dependent on 1–5. Synchronize implemented behavior and migration documentation;
    core/native/PDF/example/format checks plus necessary E8 cache, cleanup and
-   bounded performance checks. Keep minimum Org 9.8/Emacs 31.1 unless a concrete
-   conflict arises; no package-wide Org10-pre. Do not advance release state,
+   bounded performance checks. Require Org >=9.8.10 and Emacs >=31.1; no package-wide Org10-pre. Do not advance release state,
    version or tag under this plan. Review each node as its own valid candidate.
 
 After core stability/validation, evaluate OTP last as a nonblocking independent
@@ -183,3 +182,11 @@ Shared pure capture helpers belong in a syntax module; no parallel graph copier.
 Each node uses actual worktree diffs and its own tests. Do not archive ordinary
 source patches already represented by project history. The old tmp patch is an
 optional starting point, not a mandatory delivery workflow.
+
+## Minimum version maintenance decision
+
+The user raised the v0.8.0 minimum from Org 9.8 to 9.8.10 to bound maintenance
+scope. Emacs stays >=31.1. This does not refute E7's successful Org 9.8 probes
+or establish incompatibility. Preserve those historical results unchanged; no
+new 9.8 compatibility layer or separate 9.8 regression gate is required. Current
+minimum-version acceptance uses Org 9.8.10. No Org 10.0 dependency is adopted.

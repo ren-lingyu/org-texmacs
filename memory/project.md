@@ -1,18 +1,23 @@
 # org-texmacs current project model
 
+Current v0.8.0 minimum: Org >=9.8.10, Emacs >=31.1. The user chose this
+maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
+9.8 successes remain historical evidence; separate 9.8 regression is no longer
+a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
+
 Frozen next-version interfaces, writer/error domain, context migration and six
-core development gates: stm-fragment-core-plan.md. Implement node 1 directly in the ordinary
-worktree without automatically committing; exploratory review is closed. Current main's
-capabilities remain v0.7.1 until a candidate is separately delivered.
+core development gates: stm-fragment-core-plan.md. Node 1 is human-delivered; next is Node 2 planning from the delivered source.
+Exploratory review is closed. Later adapter/writer/Export changes remain pending.
 
 Planned compatibility migration and pure interface boundaries are recorded in
 stm-fragment-e7.md. Current main still implements v0.7.1 bare/span behavior.
 
-## Planned STM architecture (not implemented)
+## STM architecture transition (Node 1 delivered)
 
 The adopted extended Org AST / island model conversion boundaries and source
-syntax are specified in stm-fragment-evolution.md. Current v0.7.1 still uses
-bare STM discovery; the plan does not change current supported behavior.
+syntax are specified in stm-fragment-evolution.md. Node 1 adds independent
+explicit-carrier AST parsing; existing model parsing and Export still use the
+legacy discovery path pending later nodes.
 
 
 ## Delivered typed-reference architecture
