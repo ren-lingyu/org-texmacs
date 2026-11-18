@@ -7,9 +7,8 @@ a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baselin
 
 ## Selected work
 
-The six v0.8.0 core nodes reached integrated acceptance. The final
-README/CHANGELOG documentation commit is pending. See current.md for evidence
-and the core plan for the scope of the completed work. OTP remains the final
+All six v0.8.0 core nodes are delivered and reached integrated acceptance.
+See current.md for evidence and the core plan for the completed scope. OTP remains the final
 nonblocking candidate and may be considered separately, with v0.9.0 priority
 fallback if deferred. Publication requires its own release process.
 

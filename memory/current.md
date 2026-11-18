@@ -33,7 +33,7 @@ PDF document and PDF render tests. Three lingering bare PDF fixtures were
 migrated before submission, with their semantic assertions preserved.
 The four English/Chinese examples contain verified native math structures.
 
-Node 5 is delivered at this checkpoint's additional project parent.
+An earlier checkpoint associates the delivered Node 5 implementation.
 Legacy discovery and span APIs are retired. The parser, Model constructor
 and serializer share object-island paths. Legacy :fragment-tags constructor
 data is validated and discarded. Scheme fontification uses local scoped
@@ -57,11 +57,11 @@ and restored Org registry and parser definitions. These observations
 concern the tested synthetic inputs. A prepared description term also
 retained STM provenance through lowering.
 
-The Node 6 candidate diff documents current behavior in README and records
-a TODO v0.8.0 development summary in CHANGELOG. The draft is tmp/commit.md.
-Wait for the human documentation commit. The completed core acceptance
-allows a separate decision on whether to evaluate the nonblocking OTP
-candidate. Release state, version metadata and publication remain separate.
+The Node 6 documentation is delivered at this checkpoint's additional
+project parent. README documents the STM migration and CHANGELOG contains
+the TODO v0.8.0 development summary. All six core nodes are delivered.
+OTP remains a separate nonblocking candidate after core acceptance.
+Release state, version metadata and publication remain separate.
 
 ## Native single-reference citation detail — human-delivered and verified
 
