@@ -88,3 +88,15 @@ snapshot, all eight equal. This transfers the existing core/lint/package/format
 evidence to the delivered content without rerunning unchanged tests. Next is
 Node 2 planning; keep pending adapters, source writer and Export integration
 separate from delivered Node 1. No source patch archive was created.
+
+## Subsequent architecture revision
+
+Node 1 delivered the independent Extended Org AST parsing entry under the
+original freeze. Its scoped parser and registration, native location rules,
+exception recovery, source state protection and syntax capture remain
+delivered. Reuse those recognition mechanisms. The complete Model is the
+long-term mathematical-document AST. The public role of the delivered
+entry and the treatment of :value require a later implementation review.
+Historical Node 1 validation covers the delivered code. The revised object
+island contract is pending implementation. See stm-fragment-architecture-revision.md
+and stm-fragment-core-plan.md.

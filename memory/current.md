@@ -7,21 +7,25 @@ a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baselin
 
 ## Current release state
 
-v0.7.1 remains the released baseline. Node 1 and the Org >=9.8.10 minimum
-maintenance decision are now human-committed; ordinary worktree/index are clean.
-All eight changed committed files match the final tested Nix source snapshot
-byte-for-byte. The introducing delivery checkpoint associates the exact delivered
-project commit as an additional parent; no tests were rerun for an unchanged tree.
-Core 374/374, package/lint/treefmt passed; earlier actual Org 9.8 probes remain
-historical evidence, not a current support gate. See stm-fragment-node1.md.
-Scoped object parsing, independent ASTs and owned root syntax snapshots are
-available; old discovery/model-parser/Export paths remain unchanged. Native Org
-narrowing bounds scanning, and generic Org copying can share custom root metadata.
-Next: plan Node 2 from the delivered source, reusing existing owner/islands and
-implementing syntax/context consistency rules. No Node 2 implementation is claimed.
-OTP remains the final nonblocking candidate after core validation, with v0.9.0
-priority fallback; it is not an E8 replacement. No OTP probe/delivery is claimed.
-Adopted design: stm-fragment-evolution.md.
+v0.7.1 remains the released baseline. Node 1 is delivered under the former
+plan: scoped source recognition and temporary Org AST parsing with syntax
+capture. Its eight delivered files matched the tested input. Core 374/374,
+package/lint/treefmt passed under the tests then run. There is no comprehensive
+native/PDF/example acceptance for the revised scope. See stm-fragment-node1.md.
+
+The subsequent architecture revision restores the complete Model as the
+logical mathematical-document tree. The revised target uses owned
+stm-fragment objects with no :stm-source or :value as non-block island keys.
+Parsed trees own mathematical content. String island keys will be retired.
+The existing source discovery, Model parser/serializer and standard Export
+have yet to migrate. Node 2 is unimplemented.
+
+Start with stm-fragment-architecture-revision.md for the adopted rationale
+and stm-fragment-core-plan.md for execution. Next: audit actual Node 1 public
+callers, README and tests and plan Model integration and the transition for
+serializer/lowering consumers. The former Node 2 review is historical.
+OTP remains a final nonblocking candidate after core validation, with v0.9.0
+priority fallback. No OTP probe or delivery is claimed.
 
 ## Native single-reference citation detail — human-delivered and verified
 

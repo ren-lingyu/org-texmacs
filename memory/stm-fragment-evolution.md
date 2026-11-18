@@ -7,39 +7,33 @@ a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baselin
 
 ## Authority and state
 
-Source: the user's architecture handoff supplied in this conversation after
-v0.7.1 finalization. These are adopted goals and constraints, not implemented
-capabilities. The v0.8.0 core interfaces and six implementation gates are now frozen in
-stm-fragment-core-plan.md. The user requested node 1 immediately after the plan
-checkpoint. Develop directly in the ordinary worktree; keep release metadata unchanged. Earlier E0–E7 findings remain evidence, not new experimental tasks.
-The handoff is sufficiently distilled here; raw duplication has no independent
-retention value. No experiment result is inferred from the handoff.
+Node 1 delivered under the original plan. The subsequent design decision in
+stm-fragment-architecture-revision.md governs the interpretation of past
+prototypes. Follow stm-fragment-core-plan.md for Nodes 2–6. E0–E7 retain the
+observations established under their original assumptions.
 
 ## Adopted boundaries and reasons
 
-Preserve the AST-first framework: native Org structure + native STM trees +
-identity-based islands + explicit captured context, without a third canonical
-AST or custom mathematical semantic objects. Each stage is independently usable:
-source -> extended Org AST -> complete model -> transformed model -> extended
-Org AST -> normalized source. Model-to-AST conversion must not use source text
-as an intermediate. Direct AST and already-parsed-tree constructors remain pure,
-owned and independent of source parsing, export preparation or workers.
+The v0.6.0 architecture remains: one logical mathematical-document tree
+implemented as a native Org AST plus identity-keyed parsed STM islands and
+explicit context. Source recognition and native parsing construct the Model.
+General transformations operate directly on the Model. Normalized Org source
+and TeXmacs lowering consume it. Direct construction from parsed trees is pure.
 
-stm-fragment is a nonrecursive extended Org object carrying STM source. During
-conversion the island's parsed STM tree becomes authoritative; no second equally
-authoritative source/object representation is required in the complete model.
-Reverse conversion reconstructs the object directly without parsing known trees.
-First evaluate existing string-leaf anchors for position, order, whitespace,
-post-blank, identity and reverse reconstruction; change anchors only if needed.
+The temporary nonrecursive stm-fragment recognition object may carry STM
+source. The owned Model uses the object itself as a non-block island key,
+keeps its Org structure and :post-blank, and strips :stm-source and :value.
+Parsed island content is authoritative. String keys and placeholder anchors
+were superseded, including for direct constructors. Native block keys retain
+their existing semantics.
 
 Accept $(...)$ and \((...)\), each enclosing exactly one complete compound STM
 tree. Parentheses belong to STM; the outer delimiters belong to source syntax.
 No tag whitelist, automatic math/concat wrappers, language guessing, LaTeX
 fallback or silent plain-text recovery. Unknown tags enter native parsing.
 Ordinary $x$ and \(x\) retain Org's interpretation, without promising LaTeX
-export support. Valid atomic trees remain legal in direct models even though
-this fragment syntax cannot express them; report representation failure without
-changing the model or wrapping its tree.
+export support. Atomic string roots have no support guarantee or dedicated
+prohibition. Compound string leaves remain ordinary STM data.
 
 Default normalized output is \((...)\): distinct opening/closing delimiters
 avoid some single-dollar restrictions. Require structured equivalence, unchanged
@@ -57,7 +51,7 @@ not recursively interpreted as Org markup. Org document boundaries and opaque
 code/verbatim/source regions retain priority; no fragment crosses its structure.
 
 Strictness has two stages: source adaptation rejects recognized but incomplete
-$( / \(( starts recognized in legal non-opaque contexts; AST conversion uses the native STM parser
+$( / \(( starts recognized in legal non-opaque contexts; Model acquisition uses the native STM parser
 and rejects invalid/multiple trees. Direct AST input does not undergo source
 scanning. Editing may remain incomplete; no strict/lenient option is adopted.
 Use Org literal mechanisms for delimiter text first; dedicated escaping remains
@@ -72,7 +66,7 @@ stm-fragment. Batch behavior must not require an interactive minor mode; nested
 exports must isolate resources. Do not masquerade as persistent latex-fragment.
 Existing texmacs/equation/equation* block semantics remain unchanged.
 
-## Experiments and acceptance
+## Historical feasibility experiments
 
 Use v0.7.1 read-only, isolated HOME/XDG/temp and batch Emacs without user init.
 Record exact Emacs/Org (including loaded path)/TeXmacs versions, configuration,
@@ -109,30 +103,28 @@ owns the concrete interface decisions, node dependencies and acceptance gates.
 Do not reopen exploration absent a new conflict found during implementation.
 Only external semantic conflicts need user decisions, not routine helpers.
 
-## Open policy and later consumers
+## Migration and evidence boundaries
 
-E7 user decisions: remove bare inline STM recognition directly and retire the
-old at-point/map/tree/span/tag-snapshot contracts rather than silently repurpose
-them. Native blocks remain unchanged. Frozen AST/source signatures and writer/context rules are in
-stm-fragment-core-plan.md. All structurally valid model trees stay valid; verified
-source representability is a separate promise and contextual failure is allowed.
-See stm-fragment-e7.md for migration, diagnostics and minimum-version evidence.
-Prototype hooks/anchor details remain implementation choices. No hidden worker
-fallback is introduced by a representation failure.
+E7 adopted direct retirement of bare recognition and its at-point/map/tree/
+span/tag-snapshot contracts. Preserve native blocks and the separate one-way
+:fragment-tags input normalization. Its earlier public adapter proposal is
+superseded. Node 1's recognition API remains delivered pending caller review.
+See the core plan for current Model invariants and output failure boundaries.
+E4's string anchor and E6's separate blank sibling were prototype choices.
+Use the ownership and whitespace findings to assess the object representation.
 
 ## OTP consumer boundary and release scheduling
 
-OTP (Org TeXmacs Preview) is an independent consumer of the established STM
-fragment/AST facilities, displaying TeXmacs-native typesetting in an Org buffer.
+OTP (Org TeXmacs Preview) is an independent consumer of the established parsed STM trees and source recognition facilities, displaying TeXmacs-native typesetting in an Org buffer.
 It does not determine core AST structure, introduce a second authoritative
 parser/math AST, or take over full-document Export. A single preview may consume
 an already parsed STM tree directly without constructing a whole document model.
 It may reuse a native worker, without adding hidden worker dependencies to pure
-AST/model conversion. Preview cache, scheduling and overlay/image lifecycle are
+Model operations. Preview cache, scheduling and overlay/image lifecycle are
 separate from model ownership.
 
 Candidate v0.8.0 core remains scoped recognition/registration/interpretation,
-bidirectional existing-owner adapters, writer/representability/normalization,
+object-island Model construction, writer/representability/normalization,
 standard Export/filters/Cite, bare/discovery API migration, necessary editing/
 fontification and formal tests/docs/examples/build checks. OTP is not part of
 core acceptance or core scope freeze.
@@ -163,7 +155,7 @@ independent requirements; no automatic package-wide minimum increase or private
 Org 10.0 API adoption. Concrete rendering format/backend, public OTP API,
 scheduling/cache/overlay protocol and final v0.9.0 scope remain undecided.
 
-Order: implement the frozen six-node core plan; validate core (including
+Order: continue the revised six-node core plan; validate core (including
 necessary E8 checks); evaluate OTP last and decide inclusion or deferral.
 OTP non-delivery never blocks an otherwise accepted v0.8.0 core release.
 
@@ -177,6 +169,6 @@ pure writer feasibility and real standard Export integration. Detailed bounded
 observations remain in their individual topics, including the E4 writer limits
 and E5/E6 counterexamples. Full-source masking, a parallel copier, hidden worker
 conversion and native emphasis repair are not default implementation tasks.
-The frozen plan owns the initial output domain, representation errors, context
+The revised core plan owns the initial output domain, representation errors, context
 migration and formal regression gates; no experiment success is a delivered
 feature or release-state change.

@@ -5,22 +5,18 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
-Frozen next-version interfaces, writer/error domain, context migration and six
-core development gates: stm-fragment-core-plan.md. Node 1 is human-delivered; next is Node 2 planning from the delivered source.
-Exploratory review is closed. Later adapter/writer/Export changes remain pending.
-
-E7 adopts direct removal of bare STM discovery and its old span API contracts.
-Model structural validity stays broader than source expressibility; explicit
-representation failure is permitted without mutation. Migration decisions: stm-fragment-e7.md; final interfaces: stm-fragment-core-plan.md. These are not yet implemented.
-
 ## Adopted STM fragment evolution
 
-Preserve AST-first ownership and standard Export authority while introducing
-explicit STM carriers and independent bidirectional AST conversions. Adopted
-constraints, motivation and open policies: stm-fragment-evolution.md. These
-are design decisions; experiment topics record bounded feasibility, while
-formal implementation remains undelivered.
+Continue the v0.6.0 logical single-tree mathematics Model with physically
+separate identity-keyed STM islands. Use explicit carriers to improve source
+recognition and retain owned stm-fragment objects as non-block island keys.
+Model → Model is the structural transformation path. Preserve AST-first
+ownership, consumer-specific support, and standard Export authority.
 
+See stm-fragment-architecture-revision.md for the decision, the core plan
+for Nodes 2–6, and stm-fragment-evolution.md for adopted source syntax and
+historical evidence. Node 1 recognition is delivered. E7 bare/span retirement
+and the later retirement of string island keys are pending implementation.
 
 ## Delivered typed-reference decisions
 

@@ -5,20 +5,20 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
-Frozen next-version interfaces, writer/error domain, context migration and six
-core development gates: stm-fragment-core-plan.md. Node 1 is human-delivered; next is Node 2 planning from the delivered source.
-Exploratory review is closed. Later adapter/writer/Export changes remain pending.
-
-Planned compatibility migration and pure interface boundaries are recorded in
-stm-fragment-e7.md. Current main still implements v0.7.1 bare/span behavior.
-
 ## STM architecture transition (Node 1 delivered)
 
-The adopted extended Org AST / island model conversion boundaries and source
-syntax are specified in stm-fragment-evolution.md. Node 1 adds independent
-explicit-carrier AST parsing; existing model parsing and Export still use the
-legacy discovery path pending later nodes.
+Node 1 provides scoped explicit carrier recognition and a public parser
+returning a temporary Org AST with unparsed stm-fragment objects and root
+syntax metadata. The existing native Org AST, parsed islands and context
+together implement the complete mathematical-document Model. Current Model
+parsing, serialization and lowering still have legacy string island paths.
+Standard Export still uses its existing discovery.
 
+The adopted target retains owned stm-fragment objects as non-block keys,
+strips their redundant source fields and keeps parsed trees as the sole
+mathematics authority. Node 2 Model integration and public interface review
+are pending. See stm-fragment-architecture-revision.md and the current
+stm-fragment-core-plan.md.
 
 ## Delivered typed-reference architecture
 

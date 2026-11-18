@@ -2,72 +2,63 @@
 
 ## Status and authority
 
-The user closed the exploratory phase after E0–E7 and requested interface/scope
-freeze followed immediately by node 1. This is the current implementation plan;
-older open-interface and experiment-priority statements are superseded here.
-The project snapshot actually audited is this checkpoint's additional project
-parent (released v0.7.1). Implement directly in the ordinary project worktree. Review actual Git diffs;
-tmp is only for temporary data and experiments. Ordinary commits remain human-owned.
-No ordinary project staging/commit, version or release-state change is included.
-No new preparatory experiment is required absent a new architectural conflict.
-The handoff's decisions are distilled here; duplicating its raw text adds no
-independent evidence value. E0–E7 records retain their original observations.
+Node 1 was delivered under the original freeze. This plan governs Nodes 2–6
+under stm-fragment-architecture-revision.md, which partially supersedes the
+original interface freeze. E0–E7 retain their original evidence. Develop in
+the ordinary worktree and review actual diffs. Ordinary commits remain
+human-owned. This memory revision grants no source implementation authorization.
 
-## Public interfaces — frozen responsibilities and signatures
+## Model and public interface boundaries
 
-- `(org-texmacs-call-with-ast-context function)`: run a zero-argument FUNCTION
-  with scoped stm-fragment registration, restrictions, parser and interpreter;
-  return its result. Use this for generic Org traversal/copy/interpretation of
-  extended ASTs. Nested calls and exceptional exits restore the prior environment.
-  The scope is synchronous; no permanent backend/parser registration or hooks.
-- `(org-texmacs-ast-parse-buffer source-buffer)`: return a fresh extended Org
-  org-data AST for the complete live Org buffer. Preserve text/properties, point,
-  mark and narrowing. Capture effective native Org syntax in the parsing
-  transaction; do not run Export preparation, file acquisition or STM worker.
-  Fragment :stm-source contains exactly the compound datum text, :value the
-  input carrier; native :begin/:end/:post-blank remain structural metadata.
-  The returned AST is caller-owned mutable data, independent of the source.
-- `(org-texmacs-ast-to-model ast &key islands context)`: pure ownership adapter.
-  ISLANDS maps original AST node identities to already parsed STM trees; require
-  a mapping for every stm-fragment and native body being consumed. No automatic
-  parsing of missing values. Copy through the existing owner; replace fragments
-  with island anchors and remove authoritative raw fragment content. Preserve
-  ordinary structure, caption/secondary references and existing island checks.
-  Return a read-only owned model. Extra/detached/duplicate mappings are errors.
-- `(org-texmacs-model-to-ast model)`: return an independent mutable extended
-  org-data AST directly from a validated model, using its known trees and the
-  pure writer. No source parse or worker. Nonrepresentable inline tree fails
-  without modifying MODEL. Native block semantics and affiliation are retained.
-- `(org-texmacs-ast-serialize ast)`: independent extended-AST to normalized Org
-  string. Use scoped interpretation and lexical/Org structural checks, without
-  constructing a full model or parsing STM natively. :stm-source must satisfy
-  lexical single-compound syntax; this interface does not certify native STM
-  validity. Output is deterministic and idempotent within its supported domain.
-- Existing `(org-texmacs-parse-buffer source-buffer)` keeps its model result,
-  snapshot/source guards and explicit native STM parsing role. It orchestrates
-  the new source AST entry, native parsing requests and ownership adapter.
-- Existing `(org-texmacs-model-create ast &key islands context)` remains the
-  low-level pure direct constructor for ordinary Org AST anchors and known STM
-  trees. It does not implicitly interpret unparsed stm-fragment objects.
-  Existing model-copy/island/replacement retain their validity/ownership rules.
-- Existing model-serialize and model-to-buffer keep their signatures/results.
-  They compose reverse conversion and normalized source output; new paths are
-  worker-independent. No redundant public single-tree model constructor: supply
-  a tree in ISLANDS or consume it directly in a future preview consumer.
+Org-TeXmacs AST means the complete mathematical-document Model, logically one
+tree and physically native Org AST + identity-keyed parsed STM islands +
+explicit syntax/source context. Org is canonical authoring source. Structural
+inspection, copy, replacement and other transformations operate on the Model.
+Temporary unparsed recognition results help construct it.
 
-Parsing buffer source, generic Org copy, and model ownership are distinct:
-Org's copy is not a replacement for the model owner. A caller-built extended AST
-is accepted without source scanning; source spans are not authorities for it.
-No live buffer is required after AST/model construction. Direct AST/model input
-never triggers Export preparation or source-file lookup.
+- Delivered Node 1 APIs: org-texmacs-call-with-ast-context supplies scoped
+  registration, recognition and interpretation; org-texmacs-ast-parse-buffer
+  returns the complete buffer's Org recognition tree with unparsed STM
+  objects and root syntax snapshot. Its preservation and strict lexical
+  contracts remain delivered. Review callers, tests and README before deciding
+  its public role, internalization, naming or replacement and handling :value.
+- Public complete-AST basis: org-texmacs-model-create (ast &key islands context),
+  model-copy, model-replace-stm, model-inspect and existing model-serialize /
+  model-to-buffer. Keep direct parsed-tree construction independent of workers.
+  Review org-texmacs-parse-buffer as the existing source-to-Model entry and retain
+  its result type, source guards and explicit native parse boundary.
+- The public ast-to-model / model-to-ast pair and standalone ast-serialize for
+  an unparsed Extended Org AST are superseded requirements. Internal helpers
+  may serve concrete consumers. General Model transformations need no
+  projection or mathematical source roundtrip.
+
+## Model representation
+
+Each non-block island key is an owned nonrecursive stm-fragment Org node.
+Native block keys retain their existing semantics. Every recognized island has
+an associated parsed STM tree, the unique authority for its mathematical
+contents. Reject string keys, including in direct model-create input, without
+a compatibility branch or placeholder characters. Ordinary Org text is legal.
+
+Strip :stm-source and :value on the owned stm-fragment only. Retain required
+Org structure, including :post-blank, and rebuild identity, parent and
+secondary/caption relationships with the existing model owner. Validate the
+complete owned result and preserve caller inputs on success and failure. Do
+not assume a generic Org copy owns arbitrary custom property values.
+
+Atomic STM string roots have no support guarantee and no special prohibition.
+Add no dedicated handling, acceptance gate or required diagnostic. Compound
+STM string leaves retain their existing semantics. Model validity and output
+support remain separate.
 
 ## Initial pure writer domain and error protocol
 
 No tag whitelist. Compound structure follows existing model validation: non-nil
 symbol head, proper finite child list, children strings or such compounds.
-Atomic strings remain valid model trees; inline compound carriers cannot express
-an atomic island and do not add math/concat wrappers. Native blocks keep their
-existing representation contracts rather than inheriting inline-only rejection.
+Generate from the current parsed island tree, independent of the original
+carrier or an anchor string. Do not add math/concat wrappers. Native blocks
+keep their own representation contracts. Atomic roots remain unspecified
+under the Model policy above.
 
 Initial label encoding accepts nonempty printable ASCII symbol names without
 whitespace or DEL/control characters. Backslash and parentheses are escaped with
@@ -94,7 +85,7 @@ Errors keep existing condition families and human-readable first data item:
   org-texmacs-parse-error; transport retains org-texmacs-worker-error.
 - Valid model but unavailable source representation:
   org-texmacs-model-serialization-error. Add a diagnostic plist after the message
-  with :reason (atomic-fragment, unsupported-symbol, org-container or
+  with :reason (unsupported-symbol, org-container or
   unsupported-context), :path (snapshot-local structural path when available)
   and :tag (symbol when relevant). No live source identity is required.
 
@@ -124,64 +115,74 @@ checks and serialize/fontification initialization. Keep heading-settings,
 link-settings, source-file and resource-base: each still has independent syntax
 or resource meaning. Their validation, graph copying and identity remapping stay.
 
-## Frozen core nodes and acceptance gates
+## Six implementation nodes and acceptance gates
 
-1. Scoped object integration. New dedicated fragment-object module (do not
-   overload the existing stree/pseudo-tree ast module), core parse-error and
-   Org interfaces. Deliver call-with-ast-context and ast-parse-buffer, local
-   registry/restrictions, nonrecursive parser/interpreter and worker-free lexical
-   scanner. Gate: unknown roots/both carriers, native successful containers,
-   title/caption/link-description, opaque precedence, strict incomplete errors,
-   no cross-structure scan, nested/exception/backend restoration, cache isolation,
-   source-state preservation and traversal/copy. Native STM validation is node 2.
-2. Existing-owner adapters. model/parse/source modules; implement ast-to-model
-   and model-to-ast ownership integration. Depends on 1; reverse writer portion
-   completes with 3. Gate: independent known-tree construction/copy/replacement,
-   no double authority, secondary/caption identity, no parse/worker on pure paths,
-   adjacent anchor/post-blank stability, failure does not change valid models.
-3. Writer and normalization. serialize plus the fragment interpreter, dependent
-   on 1/2. Implement pure encoding, ast-serialize, model source output, structured
-   diagnostics and context-safe output checks. Gate: maintained actual native
-   roundtrip across accepted encoding classes, explicit rejection classes,
-   atomic/source distinction, exact whitespace/tree/structure/idempotence and
-   no hidden worker. Native validation is an acceptance test, not implementation.
-4. Standard Export. export/ox/document/input/Cite paths, dependent on 1–3.
-   Consume final prepared/filtered AST, register transcoder and reuse existing
-   ownership/discovery. Include E6's lowering-context and separated post-blank
-   fixes. Gate: real org-export-as texmacs selection/INCLUDE/macros/Babel/filter
-   add/change/delete, Cite/ID/typed references/blocks, nested backends and cleanup;
-   never restore original source or duplicate Org preparation.
-5. Legacy removal and fontification. fragment/main/font-lock/parse/serialize/
-   tests; dependent on 1–4 before integrated acceptance. Remove old bare/span
-   public contracts and tag context paths, connect worker-free new recognition
-   to Scheme highlighting, tolerate incomplete editing and retain block editing.
-   Gate: no accidental bare discovery, opaque regions intact, source/tick stable,
-   no worker in fontification, documented breaking API migration.
-6. Integrated acceptance. tests/README/examples/build definitions as needed,
-   dependent on 1–5. Synchronize implemented behavior and migration documentation;
-   core/native/PDF/example/format checks plus necessary E8 cache, cleanup and
-   bounded performance checks. Require Org >=9.8.10 and Emacs >=31.1; no package-wide Org10-pre. Do not advance release state,
-   version or tag under this plan. Review each node as its own valid candidate.
+1. **Scoped source recognition — delivered.** Reuse carrier recognition,
+   local parser/object registration, interpreter, native container and opaque
+   rules, source state protection, syntax capture and existing verification.
+   Later interface/attribute review does not change the historical delivery.
+2. **Complete Model construction — next, unimplemented.** Audit public
+   Node 1 callers and review migration before source edits. Feed temporary
+   fragment source to the native parser at the acquisition boundary. Reuse
+   owner/constructor for parsed-tree input, object association, materializing
+   syntax context and cleaning copied payload fields. Update Model validation
+   and its fixtures for object keys, including explicit string-key rejection
+   and continuation of native blocks. Audit serializer/lowering consumers now
+   so staged work and regressions are coordinated with Nodes 3–5. Existing
+   parsed-tree construction, validation, copy and replacement stay independent
+   of source buffers and parsers.
+3. **Pure writer and Model serialization.** Review existing model-serialize
+   worker use and structural roundtrip guard. Emit the current parsed trees at
+   object positions, using the E5 encoding evidence and explicit syntax
+   context. Independent native roundtrip tests validate supported compound
+   classes. Test representation failures, structure, references, meaningful
+   whitespace, island position/order and normalization idempotence. Retain
+   native blocks and default backslash carrier. No public reverse adapter gate.
+4. **Standard Export and lowering.** Keep the real org-export-as texmacs
+   lifecycle. Consume the final prepared/filtered AST, including newly added
+   or changed fragments. Review lowering's string/context guards and handle
+   object islands directly. Test object :post-blank with existing post-blanks
+   before choosing a whitespace strategy; E6's separate text sibling solved
+   a prototype-specific issue. Check tab/space fidelity separately where
+   required. Cover selection, INCLUDE/SETUPFILE, macros/Babel, filter edits,
+   Cite, ID, typed references, native blocks, nested backends and failure
+   cleanup. Never restore deleted source or duplicate Org preparation.
+5. **Legacy removal and editing.** Retire bare discovery and span/tag APIs
+   and remove remaining string-island branches, with no legacy mode. Audit
+   direct constructor examples and callers. Adapt worker-free fontification,
+   preserve incomplete editing and block editing, and document breaking
+   changes. Retain the distinct one-way :fragment-tags input policy above.
+6. **Integrated acceptance.** Core/native, standard Export, PDF and example
+   builds, package-lint/treefmt and necessary E8 cache, cleanup and bounded
+   performance checks. Synchronize README and API migration documentation
+   with delivered capabilities. Use Org >=9.8.10 and Emacs >=31.1. Release
+   metadata, tags and publication remain separate. Evaluate OTP after core
+   validation as a final nonblocking candidate.
 
-After core stability/validation, evaluate OTP last as a nonblocking independent
-consumer; separate review before any MVP. Defer to the v0.9.0 priority candidate
-if bounded implementation is unsuitable. See evolution topic for its conditions.
+### Required structure checks for subsequent implementation
 
-## Source syntax snapshot clarification
+Cover a single fragment, adjacent and equal-looking distinct fragments, old
+keys failing on a copied Model, replacement identity remapping, and rejection
+of detached, duplicate and overlapping mappings. Exercise paragraphs, titles,
+long/short captions, link descriptions, inline footnotes and other confirmed
+Org containers. Check actual object type, parent, secondary/caption references
+and :post-blank. Verify owned objects have neither :stm-source nor :value,
+mutation never aliases inputs or earlier Models, and serialization uses the
+current island tree. Guard known-tree copy/replacement against reparsing.
+Reject using plain text as an island key while still accepting it as Org
+text. Add no atomic-root contract tests. Exercise compound string leaves.
 
-The extended org-data root carries :org-texmacs-syntax, an independently owned
-plist of :heading-settings and :link-settings using existing context shapes.
-It is conversion metadata, excluded from document semantics. Capture it before
-scoped registry changes. AST-to-model merges with explicit context: overlapping
-syntax fields must be equal or signal model-error. The owned model AST drops
-this metadata; model context is authoritative. Model-to-AST copies it back when
-complete. Missing metadata never prevents pure AST/model operations; source
-serialization requiring it fails explicitly rather than reading ambient syntax.
-Shared pure capture helpers belong in a syntax module; no parallel graph copier.
+## Source syntax and context
 
-Each node uses actual worktree diffs and its own tests. Do not archive ordinary
-source patches already represented by project history. The old tmp patch is an
-optional starting point, not a mandatory delivery workflow.
+Node 1 captures :org-texmacs-syntax on the recognition root. During Model
+construction, transfer owned heading/link settings into Model context, removing
+the redundant root property from the owned AST. Reuse org-texmacs-syntax.el.
+Where explicit context accompanies the snapshot, distinguish absent from nil,
+require equality for overlapping syntax fields and report conflicts as model
+errors. Preserve explicit source-file/resource-base. Pure Model operations can
+work without a snapshot. Output requiring syntax uses captured context and
+explicitly fails when it is insufficient; ambient state does not fill gaps.
+The property need not roundtrip via a public projection.
 
 ## Minimum version maintenance decision
 

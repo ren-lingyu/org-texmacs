@@ -7,18 +7,15 @@ a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baselin
 
 ## Selected implementation plan
 
-E0–E7 feasibility and compatibility review is closed. Interfaces, pure-writer
-encoding/error boundaries and one-way :fragment-tags removal are frozen in
-stm-fragment-core-plan.md. Continue its six dependency-ordered core nodes.
-Node 1 is human-committed and verified against its final tested input; plan
-Node 2 from the delivered HEAD. Development uses the ordinary worktree; commits require separate authorization and
-release metadata stays unchanged. No extra preparatory experiment is a gate.
-E7's bare/discovery removal and layered model/source decisions remain adopted.
-Necessary fontification and native-block editing preservation are core work.
-OTP is the final nonblocking candidate after v0.8.0 core validation; if deferred,
-it is a v0.9.0 priority candidate, not an E7 blocker or E8 substitute. Details:
-stm-fragment-evolution.md. Earlier unselected/interface-review text is superseded.
-
+Continue Nodes 2–6 under stm-fragment-core-plan.md. Node 1 is delivered and
+verified. Next review actual Node 1 interface callers and integrate recognized
+objects into the complete Model. The former independent Extended Org AST
+adapter plan and string anchor direction are superseded by
+stm-fragment-architecture-revision.md. Bare/span retirement and one-way
+:fragment-tags normalization remain adopted. E0–E7 are historical evidence.
+OTP remains a final nonblocking candidate after core acceptance, with v0.9.0
+priority fallback. Necessary editing/fontification and E8 core validation
+remain separate.
 
 Current delivery state: native single-reference citation detail is
 human-delivered 1c0eae0 (see memory/native-cite-detail-implementation.md);
