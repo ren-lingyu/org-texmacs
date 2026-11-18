@@ -13,32 +13,37 @@ capture. Its eight delivered files matched the tested input. Core 374/374,
 package/lint/treefmt passed under the tests then run. There is no comprehensive
 native/PDF/example acceptance for the revised scope. See stm-fragment-node1.md.
 
-The subsequent architecture revision restores the complete Model as the
-logical mathematical-document tree. The revised target uses owned
-stm-fragment objects with no :stm-source or :value as non-block island keys.
-Parsed trees own mathematical content. String island keys will be retired.
-The existing source discovery, Model parser/serializer and standard Export
-have yet to migrate. Node 2 transaction preparation is in progress.
+The architecture revision restores the complete Model as the logical
+mathematical-document tree. Owned stm-fragment objects key inline islands.
+The parsed STM tree is authoritative. Complete Model fragments retain
+structural attributes and omit temporary source properties.
 
 Start with stm-fragment-architecture-revision.md for the adopted rationale
-and stm-fragment-core-plan.md for execution. The caller and consumer audit is
-in stm-fragment-node2-interface-audit.md. The updated core plan records the unified cutover and both Node 1 API
-retirements. The user committed the independent parser transaction work:
-requests complete before Model construction and serializer revalidation
-attaches known trees before constructing its validation Model.
-The user committed both the standard Export request completion boundary
-and the pure object-island ownership preparation. The exact audited project
-baseline is an additional parent of this checkpoint. Public callers still
-follow the previous contract until coordinated cutover.
+and stm-fragment-core-plan.md for execution. The caller and consumer audit
+is in stm-fragment-node2-interface-audit.md. Node 2 prepared the transaction
+completion boundary, owned object keys, and private explicit acquisition.
+The user committed Node 3's pure STM writer, detached interpretation, and
+known-tree validation by island count, order, and structural path. The
+additional project parent is the verified delivered Node 3 baseline.
 
-The current uncommitted parser diff routes explicit carriers through an
-internal acquisition path to the object-island Model owner. Native block
-protection and source guards are shared. Tests stub the native request and
-cover title/body/caption, native blocks, opacity, bare input and source
-changes across waits. Core ERT passed 381/381, with Nix package build,
-package-lint and treefmt. Full native/PDF/example checks were not run.
-Pending submission: tmp/commit.md. Wait for the human commit, then develop
-the pure writer and serializer. The public cutover remains pending.
+Node 4's unified cutover is in the ordinary worktree awaiting the human
+commit. Public Model parsing, construction, serialization, and standard
+Export now use object islands. Standard Export consumes final prepared AST
+fragments. Scope native block bodies out of inline recognition after Org
+parses their affiliation. Default headline formatting carries STM paths
+through title assembly; object post-blank uses the normal lowering mechanism.
+The two temporary public Node 1 APIs retire at this cutover. Legacy discovery
+and fontification cleanup remains Node 5.
+
+Node 4 candidate validation with Org 9.8.10 and TeXmacs 2.1.5 includes Nix
+core 386/386, Cite 11/11, package build, package-lint, treefmt, and all four
+English/Chinese example builds. Their TeXmacs outputs contain the expected
+inline fraction, root, subscript and superscript structures. All 287 native
+ERT cases passed across four isolated Emacs batches. The additional Nix PDF
+document suite stopped after 45 of 49 cases at the client timeout, so full
+PDF suite acceptance is still pending. The validation is for the worktree
+candidate. The draft is tmp/commit.md. Wait for the human commit before
+Node 5; keep the complete node as the submission boundary.
 The pre-revision Node 2 review remains historical.
 OTP remains a final nonblocking candidate after core validation, with v0.9.0
 priority fallback. No OTP probe or delivery is claimed.
