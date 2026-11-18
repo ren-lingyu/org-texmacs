@@ -7,6 +7,34 @@
 Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
+* TODO v0.8.0
+** Changed
+- *Breaking:* Use =$(...)$= or =\((...)\)= to carry a compound STM tree
+  in Org. Bare S-expressions follow ordinary Org parsing. Native STM blocks
+  keep their block syntax.
+- *Breaking:* Direct Model and prepared-input constructors require
+  =stm-fragment= object keys from the supplied AST for inline associations. Use
+  =org-texmacs-parse-buffer= for Org source or =org-texmacs-model-create=
+  for a native Org AST and already parsed STM trees.
+- *Breaking:* Normalized Org output emits explicit =\((...)\)= carriers.
+  Serialization uses the stored trees without a native worker and reports
+  STM or Org representations it cannot emit losslessly.
+- *Breaking:* v0.8.0 requires Org 9.8.10 or later.
+
+** Removed
+- *Breaking:* Remove =org-texmacs-fragment-tags= and the bare fragment
+  discovery, parsing and span APIs.
+  Use the Model API to access parsed islands. See
+  [[file:README.org::*Migrating bare fragments][migration guidance]].
+
+** Added
+- Recognize explicit STM fragments in supported native Org contexts,
+  including heading titles, captions, link descriptions and table cells.
+  Standard Export consumes the final prepared AST. A filter can create a
+  =stm-fragment= object with a complete compound tree in =:stm-source=.
+- Apply Scheme fontification to explicit STM in paragraphs, including
+  supported emphasis and link descriptions, without starting TeXmacs.
+
 * DONE v0.7.1
 CLOSED: [2026-11-17 Tue 12:17]
 :PROPERTIES:

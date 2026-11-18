@@ -9,8 +9,8 @@ remain the canonical authoring input, with no external =.tm= file required.
 
 The independent core constructs owned models, exposes readable structure,
 copies snapshots, replaces STM subtrees and generates normalized Org text or
-editable buffers.  Complete models expose parsed STM trees; source discovery
-and other construction intermediates can defer parsing.  Structural validity,
+editable buffers. Complete models expose parsed STM trees at native block
+and explicit inline fragment positions. Structural validity,
 syntax expressibility and serialization support are separate contracts.
 The native expression trees are structural representations, not a formal
 mathematical semantics system.
@@ -21,8 +21,8 @@ structural lowering and native consumers for TeXmacs/PDF.
 Shared ownership does not make a bare =org-texmacs-model= a supported argument
 to the existing =org-texmacs-document= prepared-input API.  Use the established
 export preparation entries for that consumer.
-Block caching, Scheme fontification and source
-editing remain available independently of whole-document model construction.
+Block caching, Scheme fontification and source editing work independently of
+whole-document model construction.
 
 Document conversion supports basic inline markup, Unicode-backed Org entities,
 recursive subscripts/superscripts,
@@ -48,9 +48,9 @@ Source exports use Org's working copy. User callbacks can still modify the
 original source; covered changes fail source validation and are not undone.
 
 * Version history
-This README documents Org TeXmacs =0.7.1=.
-See [[file:CHANGELOG.org][the changelog]] for version history and
-[[file:CHANGELOGS/v0.7.1.org][the v0.7.1 release notes]] for changes and upgrade instructions.
+This README documents development toward =v0.8.0=. See
+[[file:CHANGELOG.org][the changelog]] for the development summary and
+[[file:CHANGELOGS/v0.7.1.org][the v0.7.1 release notes]] for the latest release.
 
 * Requirements
 - Emacs 31.1 or later and Org 9.8.10 or later, as declared by the package.
@@ -58,12 +58,7 @@ See [[file:CHANGELOG.org][the changelog]] for version history and
 - Unix-domain socket support in both Emacs and TeXmacs.
 
 Recorded regressions on =x86_64-linux= used Emacs 31.1, Org 9.8.10 and
-TeXmacs 2.1.5.  Nix selects dependency revisions from the project's =flake.lock=;
-an existing local Org installation does not select those versions.  For the v0.8.0 development cycle, Org 9.8.10 is the minimum
-supported and tested baseline. This is a maintenance scope decision, not a
-finding that Org 9.8 is incompatible. Earlier Org 9.8 experiment results remain
-historical evidence; separate regression runs on that version are no longer
-required. Other platforms have not been validated.
+TeXmacs 2.1.5. Nix selects dependency revisions from the project's =flake.lock=.
 
 =citeproc= is optional for CSL citations. Org-roam and Org-roam-organize are
 optional dependencies of the real standard Cite integration check. Historical
@@ -377,10 +372,12 @@ does not cache the old result.  Obtain a fresh block and call again.
 Wrap one compound STM tree in =$(...)$= or =\((...)\)= for model parsing and
 standard Export. For example, write =\((math (frac "1" "2"))\)= in prose or
 a link description. Any root tag can reach the native STM parser. Native
-Org container boundaries and opaque regions still apply.
+Org container boundaries and opaque regions still apply. A recognized
+incomplete carrier signals =org-texmacs-parse-error= during formal conversion.
 
 ** Migrating bare fragments
-Wrap older bare fragments in either explicit carrier. The
+For example, change bare =(math (frac "1" "2"))= to
+=\((math (frac "1" "2"))\)=. The
 =org-texmacs-fragment-tags= option, span accessors, and
 =org-texmacs-fragment-at-point=, =org-texmacs-fragment-map= and
 =org-texmacs-fragment-tree= APIs have been removed. To consume parsed
@@ -392,12 +389,10 @@ of native =texmacs= blocks.
 * Embedded STM editing
 Loading =org-texmacs= enables Scheme fontification in existing and new Org
 buffers for explicit STM payloads in paragraphs and TeXmacs special-block
-bodies. Paragraph fontification follows Org's supported inline nesting.  Font Lock must itself be enabled.  STM regions
-use Scheme string and parenthesis syntax; Org link, emphasis and hiding
-properties inside them are suppressed.  Other Org text keeps normal behavior.
-This is lexical presentation, not STM validation or support for arbitrary
-Scheme syntax, evaluation or Org Babel execution.  Export recognition and
-native STM parsing are unchanged.
+bodies. Paragraph fontification follows Org's supported inline nesting.
+With Font Lock enabled, STM regions use Scheme string and parenthesis syntax.
+The fontifier suppresses Org link, emphasis and hiding properties within the
+STM payload. Formal STM validation happens during Model parsing or Export.
 
 The implementation processes affected paragraph/block contexts rather than
 copying the whole document on each edit.  Incomplete STM while typing is not an
@@ -453,10 +448,9 @@ references or invoke document lowering.  The caller supplies the island
 associations; this entry does not prove source-recognition completeness.
 
 Model validity is independent of the exporter's Org support and of Org
-serialization support.  Legal comments, drawers, unused footnotes and excluded
-headlines can remain in the AST.  A structurally valid tree at an island can
-have a root that current inline recognition would not recognize.  That does
-not invalidate the model or trigger implicit source parsing.
+serialization support. Legal comments, drawers, unused footnotes and excluded
+headlines can remain in the AST. Serialization may reject a structurally
+valid island when its STM symbol encoding or Org container cannot represent it.
 
 The STM tree is authoritative for mathematical content.  Its Org key retains
 the wrapper and affiliated structure; old raw mathematical text is not a
@@ -634,8 +628,9 @@ an inline fraction, inspects the new model and opens normalized Org output:
 The source buffer has already been destroyed when the transformation runs.
 The original model still contains =1/2=; the new model contains =1/sqrt(2)=.
 Path =(0 1)= selects the first =math= child, then the second =frac= child.
-Parsing and final STM serialization use TeXmacs, while copying, tree access,
-replacement and inspection operate directly on the stored structures.
+Parsing STM source uses TeXmacs. Copying, tree access, replacement, inspection
+and normalized Org serialization operate on the stored structures without a
+native worker.
 
 * Normalized Org serialization
 =org-texmacs-model-serialize MODEL= returns normalized Org text.
@@ -1419,9 +1414,8 @@ Org's parsed =unordered=, =ordered= and =descriptive= list types map to
 =itemize=, =enumerate= and =description=.  Each TeXmacs list contains one
 body =document=; =item= or =item*= starts the first paragraph of each item,
 while later paragraphs and nested lists remain separate body children.
-Description terms use =item*= and the supported inline subset; an untagged
-item in the same list uses =item=.  STM discovery remains limited to item
-body paragraphs and does not scan description terms.
+Description terms use =item*= and the supported inline subset, including
+explicit STM carriers. An untagged item in the same list uses =item=.
 Checkboxes and explicit =[@N]= counters are rejected.
 
 =quote= and =center= each contain a body =document=, preserving multiple
