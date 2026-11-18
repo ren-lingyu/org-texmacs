@@ -31,6 +31,7 @@ these native source-semantic trees are separate from the Org AST and islands."
  (ast nil :read-only t)
  (info nil :read-only t)
  (islands nil :read-only t)
+ (pending-requests nil :read-only t)
  (post-blanks nil :read-only t)
  (style nil :read-only t)
  (initial nil :read-only t)
@@ -90,6 +91,7 @@ checks ambiguity only for keys actually used by the document."
   info
   &key
   islands
+  (pending-requests nil pending-p)
   post-blanks
   (style '("generic"))
   initial
@@ -97,7 +99,13 @@ checks ambiguity only for keys actually used by the document."
   resource-base
   bibliography)
  "Copy AST, INFO and context without allocating reference identities.
-Internal intermediate ownership boundary; see `org-texmacs-input-create'."
+With PENDING-REQUESTS supplied, own the identity-keyed request alist instead
+of parsed ISLANDS.  The private result has no MODEL until requests complete.
+See `org-texmacs-input-create' for the completed input contract."
+ (when (and pending-p islands)
+   (signal
+    'org-texmacs-document-error
+    '("Cannot own pending requests and parsed islands together")))
  (unless (and (consp ast) (eq (car ast) 'org-data))
    (signal 'org-texmacs-document-error
            '("Expected a prepared Org document AST")))
@@ -177,19 +185,32 @@ Internal intermediate ownership boundary; see `org-texmacs-input-create'."
    (org-texmacs--model-finish-owner owner)
    (let* ((new-islands
            (org-texmacs--model-copy-mapping
-            owner islands #'org-texmacs--document-copy-stree))
+            owner
+            (if pending-p
+                pending-requests
+              islands)
+            (if pending-p
+                (lambda (request)
+                  (org-texmacs--model-copy-data owner request))
+              #'org-texmacs--document-copy-stree)))
           (_
            (org-texmacs--model-check-islands
             new-ast new-islands 'org-texmacs-document-error))
           (model
-           (org-texmacs--model-create
-            :ast new-ast
-            :islands new-islands)))
+           (unless pending-p
+             (org-texmacs--model-create
+              :ast new-ast
+              :islands new-islands))))
      (org-texmacs--input-create
       :model model
       :ast new-ast
       :info new-info
-      :islands new-islands
+      :islands
+      (unless pending-p
+        new-islands)
+      :pending-requests
+      (when pending-p
+        new-islands)
       :style (org-texmacs--document-copy-style style)
       :initial (org-texmacs--document-copy-initial initial)
       :source-file (org-texmacs--source-copy-path source-file)
@@ -318,22 +339,28 @@ This boundary neither reads source files nor runs native parsing/formatting."
    :resource-base (org-texmacs-input-resource-base input)
    :bibliography bibliography))
 
-(defun org-texmacs--input-with-info (input info &optional resolution)
+(defun org-texmacs--input-with-info
+    (input info &optional resolution model)
   "Finish private INPUT with owned INFO and optional frozen RESOLUTION.
-Reuse owned AST identities; callers must not expose unfinished inputs."
+Reuse owned AST identities.  MODEL, when supplied, completes pending islands."
   (org-texmacs--input-create
-   :model (org-texmacs-input-model input)
+   :model (or model (org-texmacs-input-model input))
    :ast (org-texmacs-input-ast input)
    :info info
-   :islands (org-texmacs-input-islands input)
+   :islands
+   (if model
+       (org-texmacs-model-islands model)
+     (org-texmacs-input-islands input))
+   :pending-requests
+   (unless model
+     (org-texmacs-input-pending-requests input))
    :post-blanks (org-texmacs-input-post-blanks input)
    :style (org-texmacs-input-style input)
    :initial (org-texmacs-input-initial input)
    :source-file (org-texmacs-input-source-file input)
    :resource-base (org-texmacs-input-resource-base input)
    :bibliography (org-texmacs-input-bibliography input)
-   :resolution
-   (or resolution (org-texmacs-input-resolution input))))
+   :resolution (or resolution (org-texmacs-input-resolution input))))
 
 ;;;###autoload
 (cl-defun

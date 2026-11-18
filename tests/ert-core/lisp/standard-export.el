@@ -415,6 +415,65 @@
        (org-texmacs--standard-consume 'document)
        :type 'org-texmacs-document-error))))
 
+(ert-deftest
+    org-texmacs-standard-export-completes-requests-before-model
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "Left (math \"first\") and (math \"second\") right.\n")
+    (let ((finish (symbol-function 'org-texmacs--prepared-complete))
+          (calls 0)
+          (fail-second t)
+          (first-tree (list 'math (copy-sequence "first")))
+          complete)
+      (cl-letf (((symbol-function 'org-texmacs--prepared-complete)
+                 (lambda (input)
+                   (should-not (org-texmacs-input-model input))
+                   (should-not (org-texmacs-input-islands input))
+                   (should
+                    (= 2
+                       (length
+                        (org-texmacs-input-pending-requests input))))
+                   (setq complete (funcall finish input))))
+                ((symbol-function 'org-texmacs--worker-request)
+                 (lambda (source)
+                   (cl-incf calls)
+                   (if (= calls 1)
+                       (progn
+                         (should (equal source "(math \"first\")"))
+                         first-tree)
+                     (should (equal source "(math \"second\")"))
+                     (aset (cadr first-tree) 0 ?X)
+                     (when fail-second
+                       (signal 'org-texmacs-parse-error
+                               '("Second request failed")))
+                     '(math "second")))))
+        (should-error
+         (org-texmacs--standard-consume 'input)
+         :type 'org-texmacs-parse-error)
+        (should (= calls 2))
+        (should-not complete)
+        (setcar (cdr first-tree) (copy-sequence "first"))
+        (setq
+         calls 0
+         fail-second nil)
+        (let* ((input (org-texmacs--standard-consume 'input))
+               (islands (org-texmacs-input-islands input)))
+          (should
+           (eq
+            (org-texmacs-input-model complete)
+            (org-texmacs-input-model input)))
+          (should-not (org-texmacs-input-pending-requests input))
+          (should
+           (eq
+            islands
+            (org-texmacs-model-islands
+             (org-texmacs-input-model complete))))
+          (should
+           (equal
+            (mapcar #'cdr islands)
+            '((math "first") (math "second")))))))))
+
 (ert-deftest org-texmacs-standard-export-positionless-island-ownership
     ()
   (with-temp-buffer

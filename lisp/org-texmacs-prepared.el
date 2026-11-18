@@ -560,25 +560,36 @@ from potentially stale source positions.  No Org reparsing or export is done."
      (walk tree))
     (nreverse requests)))
 
-(defun org-texmacs--prepared-parse (requests islands)
-  "Fill private owned ISLANDS from already discovered REQUESTS.
-The caller must own the complete input/context before the first native wait.
-No intermediate input or placeholder island may be exposed to consumers."
-  (cl-mapc
-   (lambda (request island)
-     (let ((parsed
-            (org-texmacs--worker-request
-             (copy-sequence (nth 1 request))))
-           (tag (nth 2 request)))
-       (when (and tag
-                  (not
-                   (and (consp parsed)
-                        (symbolp (car parsed))
-                        (equal tag (symbol-name (car parsed))))))
-         (signal 'org-texmacs-parse-error
-                 '("TeXmacs root differs from fragment tag")))
-       (setcdr island (org-texmacs--document-copy-stree parsed))))
-   requests islands))
+(defun org-texmacs--prepared-complete (input)
+  "Parse owned requests and return INPUT with a complete Model.
+Each request already carries its owned Org key.  Preserve request order and
+copy each result before any subsequent native wait."
+  (let* ((islands
+          (mapcar
+           (lambda (request)
+             (let ((parsed
+                    (org-texmacs--worker-request
+                     (copy-sequence (nth 1 request))))
+                   (tag (nth 2 request)))
+               (when (and tag
+                          (not
+                           (and (consp parsed)
+                                (symbolp (car parsed))
+                                (equal
+                                 tag (symbol-name (car parsed))))))
+                 (signal 'org-texmacs-parse-error
+                         '("TeXmacs root differs from fragment tag")))
+               (cons
+                (car request)
+                (org-texmacs--document-copy-stree parsed))))
+           (org-texmacs-input-pending-requests input)))
+         (model
+          (org-texmacs--model-create
+           :ast
+           (org-texmacs-input-ast input)
+           :islands islands)))
+    (org-texmacs--input-with-info
+     input (org-texmacs-input-info input) nil model)))
 
 (provide 'org-texmacs-prepared)
 ;;; org-texmacs-prepared.el ends here

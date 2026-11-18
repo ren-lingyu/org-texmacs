@@ -376,25 +376,19 @@ Project supported options without repeating preparation or retaining full INFO."
                            (org-texmacs--prepared-discover
                             definition (nth 9 state))))))
             (org-texmacs--prepared-affiliation tree)))
-         ;; As in the independent parser, placeholders exist only inside an
-         ;; unpublished ownership transaction.  Freeze context before waits;
-         ;; allocate labels only after all actual native trees are available.
+         ;; Freeze the input and remap request keys before any native wait.
          (input
           (org-texmacs--input-own
-           tree (plist-put projected :texmacs-org-query query)
-           :islands
-           (mapcar
-            (lambda (request)
-              (cons (car request) '(concat "")))
-            requests)
+           tree
+           (plist-put projected :texmacs-org-query query)
+           :pending-requests requests
            :style (nth 7 state)
            :initial (nth 8 state)
            :source-file source-file
            :resource-base resource-base)))
       (when native
         (setq input (org-texmacs--prepared-cite-snapshot input)))
-      (org-texmacs--prepared-parse
-       requests (org-texmacs-input-islands input))
+      (setq input (org-texmacs--prepared-complete input))
       (setq input (org-texmacs--input-finalize input))
       (if native
           (org-texmacs--prepared-cite-fulfill input)
