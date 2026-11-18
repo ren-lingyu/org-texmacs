@@ -37,6 +37,9 @@ release notes.
   =stm-fragment= object with a complete compound tree in =:stm-source=.
 - Apply Scheme fontification to explicit STM in paragraphs, including
   supported emphasis and link descriptions, without starting TeXmacs.
+- Edit a recognized inline STM fragment with =C-c '=. Org Src edits only
+  the payload, preserves the original carrier, and checks for a single
+  lexically complete compound expression before saving or exiting.
 
 * DONE v0.7.1
 CLOSED: [2026-11-17 Tue 12:17]

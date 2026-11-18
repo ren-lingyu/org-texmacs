@@ -1,15 +1,17 @@
-;;; org-texmacs-edit.el --- Scheme editing for TeXmacs blocks -*- lexical-binding: t; package-lint-main-file: "org-texmacs.el"; -*-
+;;; org-texmacs-edit.el --- Scheme editing for embedded STM -*- lexical-binding: t; package-lint-main-file: "org-texmacs.el"; -*-
 
 ;; Copyright (C) 2026 aRenCoco
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;;; Commentary:
 
-;; Reuse Org source-edit buffers and Scheme indentation for native TeXmacs
-;; special blocks.  This does not turn blocks into Babel source blocks.
+;; Reuse Org source-edit buffers for STM carriers and native TeXmacs blocks.
+;; Provide Scheme indentation within native TeXmacs block bodies.
 
 ;;; Code:
 
+(require 'cl-lib)
+(require 'org-texmacs-fragment-object)
 (require 'org-texmacs-source)
 (require 'org-src)
 
@@ -21,6 +23,9 @@
 
 (defvar-local org-texmacs--edit-ready nil
   "Non-nil when a TeXmacs edit buffer has been initialized successfully.")
+
+(defvar-local org-texmacs--edit-fragment-source nil
+  "Last known source payload of the STM fragment being edited.")
 
 (defun org-texmacs--edit-check-mode ()
   "Return the Scheme mode resolved by Org Src, or signal a user error."
@@ -87,11 +92,117 @@ are located only after Org has identified the block; no STM is parsed."
    indent-region-function nil
    org-texmacs--edit-ready t))
 
+(defun org-texmacs--edit-fragment-at-point ()
+  "Return the recognized STM carrier at point, including its source bounds."
+  (when (derived-mode-p 'org-mode)
+    (save-match-data
+      (org-with-wide-buffer
+       (org-texmacs--call-with-ast-context
+        (lambda ()
+          (let ((element (org-element-at-point)))
+            ;; The local context parser can descend into raw native block
+            ;; bodies, which are opaque to the STM carrier recognizer.
+            (unless (cl-some
+                     (lambda (ancestor)
+                       (and (org-texmacs--native-body-kind ancestor)
+                            (>= (point)
+                                (org-element-post-affiliated
+                                 ancestor))))
+                     (org-element-lineage element nil t))
+              (let ((node (org-element-context element)))
+                (when (and (eq (org-element-type node) 'stm-fragment)
+                           (<= (org-element-begin node) (point))
+                           (< (point)
+                              (- (org-element-end node)
+                                 (org-element-property
+                                  :post-blank node))))
+                  node)))))
+        t)))))
+
+(defun org-texmacs--edit-fragment (node)
+  "Open an Org Src editor for the exact STM payload of NODE."
+  (barf-if-buffer-read-only)
+  (let* ((start (org-element-begin node))
+         (source (org-element-property :stm-source node))
+         (offset
+          (if (eq (char-after start) ?$)
+              1
+            2))
+         (begin (+ start offset))
+         (end (+ begin (length source))))
+    (unless (and (<= (point-min) start)
+                 (<= (+ end offset) (point-max)))
+      (user-error
+       "STM carrier extends outside the accessible source"))
+    (let ((mode (org-texmacs--edit-check-mode))
+          (datum
+           (org-element-create
+            'stm-fragment
+            (list
+             :begin start
+             :contents-begin begin
+             :contents-end end))))
+      (org-src--edit-element
+       datum (format "*Org STM: %s*" (buffer-name))
+       (lambda ()
+         ;; Restore the literal payload after Org's initial dedenting.
+         (erase-buffer)
+         (insert source)
+         (funcall mode)
+         (setq-local org-texmacs--edit-fragment-source source)
+         (set-buffer-modified-p nil))
+       t)
+      (unless org-texmacs--edit-fragment-source
+        (org-edit-src-abort)
+        (user-error "Could not initialize STM fragment editing"))
+      (setq-local org-src--preserve-indentation t))))
+
+(defun org-texmacs--edit-fragment-write-back
+    (original &rest arguments)
+  "Validate an STM payload before calling ORIGINAL with ARGUMENTS."
+  (if (not
+       (and org-texmacs--edit-fragment-source
+            org-src--allow-write-back))
+      (apply original arguments)
+    (let ((editor (current-buffer))
+          (payload
+           (org-with-wide-buffer
+            (buffer-substring-no-properties (point-min) (point-max))))
+          (expected org-texmacs--edit-fragment-source)
+          (begin org-src--beg-marker)
+          (end org-src--end-marker))
+      (with-temp-buffer
+        ;; Use the same lexical rules as recognition, with synthetic delimiters.
+        (insert "$" payload "$")
+        (unless (condition-case nil
+                    (= (car
+                        (org-texmacs--fragment-object-scan
+                         (point-min) (point-max)))
+                       (point-max))
+                  (org-texmacs-parse-error
+                   nil))
+          (user-error "Expected one complete compound STM datum")))
+      (with-current-buffer (org-src-source-buffer)
+        (barf-if-buffer-read-only)
+        (unless (<= (point-min) begin end (point-max))
+          (user-error
+           "STM payload extends outside the accessible source"))
+        (unless (equal
+                 expected (buffer-substring-no-properties begin end))
+          (user-error "STM payload changed in the source buffer")))
+      (prog1 (apply original arguments)
+        (when (buffer-live-p editor)
+          (with-current-buffer editor
+            (setq org-texmacs--edit-fragment-source payload)))))))
+
 (defun org-texmacs--edit-special (original &rest arguments)
-  "Edit a TeXmacs block, or apply ORIGINAL to ARGUMENTS normally."
+  "Edit embedded STM, or apply ORIGINAL to ARGUMENTS normally."
   (let ((context (org-texmacs--edit-context)))
     (if (not context)
-        (apply original arguments)
+        (let ((fragment (org-texmacs--edit-fragment-at-point)))
+          (if fragment
+              (org-texmacs--edit-fragment fragment)
+            (apply original arguments)))
       (barf-if-buffer-read-only)
       (let* ((mode (org-texmacs--edit-check-mode))
              (datum (org-element-copy (car context)))
@@ -209,6 +320,12 @@ Compute the result privately before changing the source."
       t)))
 
 (advice-add 'org-edit-special :around #'org-texmacs--edit-special)
+(advice-add
+ 'org-edit-src-save
+ :around #'org-texmacs--edit-fragment-write-back)
+(advice-add
+ 'org-edit-src-exit
+ :around #'org-texmacs--edit-fragment-write-back)
 (advice-add
  'org-indent-line
  :around #'org-texmacs--edit-org-indent-line)

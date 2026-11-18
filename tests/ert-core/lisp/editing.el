@@ -6,6 +6,203 @@
 
 ;;; Code:
 
+(ert-deftest org-texmacs-edit-fragment-lifecycle ()
+  (dolist (carrier '(("$" . "$") ("\\(" . "\\)")))
+    (let* ((open (car carrier))
+           (close (cdr carrier))
+           (payload "(math \"first\n literal\")")
+           (original
+            (concat "Before " open payload close "  after.\n")))
+      (org-texmacs-test--with-edit-source
+       original
+       (search-forward "first")
+       (let ((before (buffer-chars-modified-tick)))
+         (org-edit-special)
+         (setq editor (current-buffer))
+         (should (derived-mode-p 'scheme-mode))
+         (should (org-src-edit-buffer-p))
+         (should (equal payload (buffer-string)))
+         (org-edit-src-exit)
+         (should (equal original (buffer-string)))
+         (should (= before (buffer-chars-modified-tick))))
+       (goto-char (point-min))
+       (search-forward "first")
+       (org-edit-special)
+       (setq editor (current-buffer))
+       (goto-char (point-min))
+       (search-forward "first")
+       (replace-match "saved" t t)
+       (cl-letf (((symbol-function 'save-buffer) #'ignore))
+         (org-edit-src-save))
+       (switch-to-buffer source)
+       (should
+        (equal
+         (string-replace "first" "saved" original) (buffer-string)))
+       (goto-char (point-min))
+       (search-forward "saved")
+       (let ((org-src-ask-before-returning-to-edit-buffer nil))
+         (org-edit-special))
+       (should (eq editor (current-buffer)))
+       (goto-char (point-min))
+       (search-forward "saved")
+       (replace-match "discard" t t)
+       (org-edit-src-abort)
+       (should
+        (equal
+         (string-replace "first" "saved" original) (buffer-string)))
+       (goto-char (point-min))
+       (search-forward "saved")
+       (org-edit-special)
+       (setq editor (current-buffer))
+       (goto-char (point-min))
+       (search-forward "saved")
+       (replace-match "exited" t t)
+       (org-edit-src-exit)
+       (should
+        (equal
+         (string-replace "first" "exited" original)
+         (buffer-string)))))))
+
+(ert-deftest org-texmacs-edit-fragment-validates-save-and-exit ()
+  (let ((original "Before $ (text) $ $(math \"x\")$ after.\n"))
+    (org-texmacs-test--with-edit-source
+     original
+     (search-forward "math")
+     (org-edit-special)
+     (setq editor (current-buffer))
+     (dolist (invalid
+              '(""
+                "plain"
+                " (math \"x\")"
+                "(math \"x\") "
+                "(math \"x\""
+                "(math \"open)"
+                "(math \"x\\\")"
+                "(math \"x\"))"
+                "(a) (b)"))
+       (erase-buffer)
+       (insert invalid)
+       (dolist (command '(org-edit-src-save org-edit-src-exit))
+         (should-error (funcall command) :type 'user-error)
+         (should (eq editor (current-buffer)))
+         (should (buffer-modified-p))
+         (should (equal invalid (buffer-string)))
+         (should
+          (equal
+           original
+           (with-current-buffer source
+             (buffer-string))))))
+     (let ((valid
+            "(unknown (nested \"quoted \\\" text \\\\ and )\"))"))
+       (erase-buffer)
+       (insert valid)
+       (org-edit-src-exit)
+       (should
+        (equal
+         (string-replace "(math \"x\")" valid original)
+         (buffer-string)))))))
+
+(ert-deftest org-texmacs-edit-fragment-source-protection ()
+  (let ((original "Before $ (text) $ $(math \"x\")$ after.\n"))
+    (org-texmacs-test--with-edit-source
+     original
+     (search-forward "math")
+     (let ((buffer-read-only t))
+       (should-error (org-edit-special) :type 'buffer-read-only))
+     (save-restriction
+       (narrow-to-region (1- (point)) (line-end-position))
+       (should-error (org-edit-special) :type 'user-error))
+     (let ((major-mode-remap-alist
+            '((scheme-mode
+               . org-texmacs-test--fragment-failing-mode))))
+       (cl-letf (((symbol-function
+                   'org-texmacs-test--fragment-failing-mode)
+                  (lambda () (error "Intentional mode failure"))))
+         (should-error (org-edit-special) :type 'user-error)))
+     (should (eq source (current-buffer)))
+     (should (equal original (buffer-string)))
+     (goto-char (point-min))
+     (search-forward "math")
+     (org-edit-special)
+     (setq editor (current-buffer))
+     (goto-char (point-min))
+     (search-forward "\"x\"")
+     (replace-match "\"edit\"" t t)
+     (with-current-buffer source
+       (setq buffer-read-only t))
+     (unwind-protect
+         (should-error (org-edit-src-exit) :type 'buffer-read-only)
+       (with-current-buffer source
+         (setq buffer-read-only nil)))
+     (with-current-buffer source
+       (narrow-to-region (point-min) (+ (point-min) 4)))
+     (unwind-protect
+         (should-error (org-edit-src-exit) :type 'user-error)
+       (with-current-buffer source
+         (widen)))
+     (should (eq editor (current-buffer)))
+     (with-current-buffer source
+       (goto-char (point-min))
+       (search-forward "\"x\"")
+       (should-error
+        (replace-match "\"outside\"" t t)
+        :type 'user-error)
+       ;; Simulate a source change made by a program bypassing Org's overlay.
+       (let ((inhibit-modification-hooks t))
+         (replace-match "\"outside\"" t t)))
+     (should-error (org-edit-src-save) :type 'user-error)
+     (should-error (org-edit-src-exit) :type 'user-error)
+     (should (eq editor (current-buffer)))
+     (org-edit-src-abort)
+     (should
+      (equal
+       (string-replace "\"x\"" "\"outside\"" original)
+       (buffer-string))))))
+
+(ert-deftest org-texmacs-edit-fragment-org-contexts ()
+  (cl-letf (((symbol-function 'org-texmacs--worker-request)
+             (lambda (&rest _)
+               (ert-fail "Unexpected worker request")))
+            ((symbol-function 'org-babel-get-src-block-info)
+             (lambda (&rest _) (ert-fail "Unexpected Babel request")))
+            ((symbol-function 'org-export-as)
+             (lambda (&rest _) (ert-fail "Unexpected export"))))
+    (dolist (container
+             '("* Title %s here\n"
+               "*Consider %s here.*\n"
+               "| %s | tail |\n"
+               "Text [fn::%s] end.\n"
+               "[[https://example.invalid][%s]]\n"
+               "#+caption: %s\n| a |\n"
+               "#+caption[%s]: Long caption\n| a |\n"))
+      (org-texmacs-test--with-edit-source
+       (format container "\\((math \"x\")\\)")
+       (search-forward "math")
+       (org-edit-special)
+       (setq editor (current-buffer))
+       (should (equal "(math \"x\")" (buffer-string)))
+       (org-edit-src-abort)))
+    (dolist
+        (text
+         '("~$(math \"x\")$~\n"
+           "Before $(math \"x\")$ after.\n"
+           "#+begin_equation\n(math \"x\" $(math \"y\")$)\n#+end_equation\n"
+           "#+begin_equation*\n(math \"x\" $(math \"y\")$)\n#+end_equation*\n"))
+      (org-texmacs-test--with-edit-source
+       text
+       (search-forward
+        (cond
+         ((string-prefix-p "Before" text)
+          "after")
+         ((string-prefix-p "#+begin" text)
+          "\"y\"")
+         (t
+          "x")))
+       (should
+        (eq
+         'delegated
+         (org-texmacs--edit-special (lambda () 'delegated))))))))
+
 (ert-deftest org-texmacs-edit-block-roundtrip ()
   :tags
   '(block-editing)
