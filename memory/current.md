@@ -60,6 +60,10 @@ retained STM provenance through lowering.
 An earlier checkpoint associates the delivered Node 6 documentation.
 README documents the STM migration and CHANGELOG contains
 the TODO v0.8.0 development summary. All six core nodes are delivered.
+The separate Scheme mode migration is also delivered. Org Src resolves the
+mode for STM editing, indentation and embedded fontification, and
+`org-texmacs-edit-mode` was removed. See stm-scheme-language-dispatch.md
+for validation and the remaining real Tree-sitter evidence gap.
 OTP is deferred from v0.8.0. Revisit potential org-latex-preview API reuse
 after Org 10.0 is formally released. See stm-fragment-evolution.md.
 Release state, version metadata and publication remain separate.

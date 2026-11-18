@@ -9,6 +9,8 @@ a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baselin
 
 All six v0.8.0 core nodes are delivered and reached integrated acceptance.
 See current.md for evidence and the core plan for the completed scope.
+The separate Scheme mode migration is delivered. See
+stm-scheme-language-dispatch.md for its acceptance and validation limits.
 OTP is deferred from v0.8.0 and remains a priority candidate for v0.9.0.
 Review org-latex-preview API reuse after the formal Org 10.0 release.
 Publication requires its own release process.
