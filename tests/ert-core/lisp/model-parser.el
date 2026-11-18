@@ -341,6 +341,47 @@
          (org-texmacs-parse-buffer source)
          :type 'org-texmacs-model-error)))))
 
+(ert-deftest org-texmacs-model-parse-publishes-only-complete-requests
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "(math \"first\") (math \"second\")\n")
+    (let ((create (symbol-function 'org-texmacs-model-create))
+          (calls 0)
+          (fail-second t)
+          (first-tree (list 'math (copy-sequence "first")))
+          published)
+      (cl-letf (((symbol-function 'org-texmacs-model-create)
+                 (lambda (&rest args)
+                   (should (= calls 2))
+                   (setq published (apply create args))))
+                ((symbol-function 'org-texmacs--worker-request)
+                 (lambda (_raw)
+                   (cl-incf calls)
+                   (if (= calls 1)
+                       first-tree
+                     (aset (cadr first-tree) 0 ?X)
+                     (when fail-second
+                       (signal 'org-texmacs-parse-error
+                               '("Second request failed")))
+                     '(math "second")))))
+        (should-error
+         (org-texmacs-parse-buffer (current-buffer))
+         :type 'org-texmacs-parse-error)
+        (should (= calls 2))
+        (should-not published)
+        (setcar (cdr first-tree) (copy-sequence "first"))
+        (setq
+         calls 0
+         fail-second nil)
+        (should
+         (eq (org-texmacs-parse-buffer (current-buffer)) published))
+        (should
+         (equal
+          (mapcar
+           #'cdr (org-texmacs-model-islands published))
+          '((math "first") (math "second"))))))))
+
 (ert-deftest
     org-texmacs-model-parse-raw-block-parameters-are-not-target-policy
     ()

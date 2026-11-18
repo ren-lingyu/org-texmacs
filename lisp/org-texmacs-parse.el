@@ -85,18 +85,13 @@ Return records (NODE-BEGIN CONTENTS-BEGIN CONTENTS-END RAW-SOURCE)."
 
 (defun org-texmacs--parse-associate (ast blocks spans source)
   "Associate AST with captured BLOCKS and inline SPANS from SOURCE.
-The current private buffer contains equal-length protection.  Return
-(ISLANDS REQUESTS); requests reference the island cells that will be filled
-after native parsing.  Keep all ordinary Org content and affiliation."
+The current private buffer contains equal-length protection.  Return requests
+of the form (NODE SOURCE TAG), keyed by identity in AST.  Keep ordinary Org
+content and affiliation."
   (let ((remaining spans)
-        islands
         requests)
     (cl-labels
-     ((register
-       (key raw tag)
-       (let ((entry (cons key '(concat ""))))
-         (push entry islands)
-         (push (list entry raw tag) requests)))
+     ((register (key raw tag) (push (list key raw tag) requests))
       (inline
         (node)
         (let ((begin (org-element-property :contents-begin node))
@@ -193,13 +188,13 @@ after native parsing.  Keep all ordinary Org content and affiliation."
     (when remaining
       (signal 'org-texmacs-model-error
               '("Unassociated STM source spans")))
-    (list (nreverse islands) (nreverse requests))))
+    (nreverse requests)))
 
-(defun org-texmacs--parse-prepare
-    (source settings links tags base context)
-  "Build detached structural input for SOURCE under fixed syntax CONTEXT.
+(defun org-texmacs--parse-prepare (source settings links tags base)
+  "Return (AST REQUESTS) for SOURCE under fixed SETTINGS, LINKS, TAGS and BASE.
 Protect raw native bodies and recognized inline spans before the full parse.
-No export selection, dependency acquisition or native operation runs here."
+No Model, export selection, dependency acquisition or native operation runs
+here."
   (let ((org-link-parameters
          (mapcar
           (lambda (name)
@@ -248,22 +243,11 @@ No export selection, dependency acquisition or native operation runs here."
                 (org-texmacs-fragment-span-end span)
                 (org-texmacs--fragment-mask
                  (org-texmacs-fragment-span-source span))))
-             (let* ((ast (org-element-parse-buffer))
-                    (prepared
-                     (org-texmacs--parse-associate
-                      ast blocks spans source))
-                    (model
-                     (org-texmacs-model-create
-                      ast
-                      :islands (car prepared)
-                      :context context)))
+             (let ((ast (org-element-parse-buffer)))
                (list
-                model
-                (cl-mapcar
-                 (lambda (request owned-entry)
-                   (list owned-entry (nth 1 request) (nth 2 request)))
-                 (cadr prepared)
-                 (org-texmacs-model-islands model)))))))))))
+                ast
+                (org-texmacs--parse-associate
+                 ast blocks spans source))))))))))
 
 ;;;###autoload
 (defun org-texmacs-parse-buffer (source-buffer)
@@ -345,9 +329,8 @@ sandboxed.  Core constructor/inspection operations do not need this worker."
                 settings
                 links
                 tags
-                (plist-get context :resource-base)
-                context))
-              (model (car prepared)))
+                (plist-get context :resource-base)))
+              islands)
          (check)
          (dolist (request (cadr prepared))
            (check)
@@ -363,10 +346,17 @@ sandboxed.  Core constructor/inspection operations do not need this worker."
                               (equal tag (symbol-name (car tree))))))
                (signal 'org-texmacs-parse-error
                        '("TeXmacs root differs from fragment tag")))
-             (setcdr
-              (car request) (org-texmacs--model-copy-stree tree))))
+             ;; Own each result before the next native wait.
+             (push (cons
+                    (car request)
+                    (org-texmacs--model-copy-stree tree))
+                   islands)))
          (check)
-         model)))))
+         (org-texmacs-model-create
+          (car prepared)
+          :islands (nreverse islands)
+          :context context))))))
+
 
 (provide 'org-texmacs-parse)
 ;;; org-texmacs-parse.el ends here

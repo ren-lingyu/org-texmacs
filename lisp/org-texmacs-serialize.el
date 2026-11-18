@@ -407,22 +407,29 @@ Associate recognized SOURCES with known trees; do not invoke the STM parser."
            (plist-get context :heading-settings)
            (plist-get context :link-settings)
            (plist-get context :fragment-tags)
-           (plist-get context :resource-base) context))
-         (model (car prepared)))
-    (dolist (request (cadr prepared))
-      (let ((tree
-             (gethash (string-trim (nth 1 request)) sources
-                      :missing)))
-        (when (eq tree :missing)
-          (org-texmacs--serialize-fail
-           "Output introduces a new STM island"))
-        (setcdr (car request) (org-texmacs--model-copy-stree tree))))
-    (let ((snapshot (org-texmacs--model-snapshot model)))
-      (unless (equal
-               expected
-               (apply #'org-texmacs--serialize-signature snapshot))
-        (org-texmacs--serialize-fail
-         "Org output would change model structure")))))
+           (plist-get context :resource-base)))
+         (islands
+          (mapcar
+           (lambda (request)
+             (let ((tree
+                    (gethash (string-trim (nth 1 request)) sources
+                             :missing)))
+               (when (eq tree :missing)
+                 (org-texmacs--serialize-fail
+                  "Output introduces a new STM island"))
+               (cons (car request) tree)))
+           (cadr prepared)))
+         (model
+          (org-texmacs-model-create
+           (car prepared)
+           :islands islands
+           :context context))
+         (snapshot (org-texmacs--model-snapshot model)))
+    (unless (equal
+             expected
+             (apply #'org-texmacs--serialize-signature snapshot))
+      (org-texmacs--serialize-fail
+       "Org output would change model structure"))))
 
 ;;;###autoload
 (defun org-texmacs-model-serialize (model)
