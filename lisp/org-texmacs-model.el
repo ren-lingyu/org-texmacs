@@ -13,6 +13,7 @@
 ;;; Code:
 
 (require 'org-texmacs-core)
+(require 'org-texmacs-source)
 
 (autoload 'org-texmacs-parse-buffer "org-texmacs-parse")
 (autoload 'org-texmacs-model-inspect "org-texmacs-inspect")
@@ -49,6 +50,7 @@ owns supplied resolved data; it does not infer settings or interpret options.")
  "Private copying transaction shared with export input ownership."
  (nodes (make-hash-table :test #'eq))
  pending
+ (object-islands nil)
  (error-type 'org-texmacs-model-error)
  excluded-nodes
  (secondary-normalizer #'identity)
@@ -174,6 +176,11 @@ properties after all structural identities have been registered."
          (lambda (key value _owner)
            (cond
             ((memq key '(:parent :buffer :deferred :secondary)))
+            ((and (org-texmacs--model-owner-object-islands owner)
+                  (or (and (eq (car old) 'stm-fragment)
+                           (memq key '(:stm-source :value)))
+                      (and (not parent)
+                           (eq key :org-texmacs-syntax)))))
             ((eq key :caption)
              (org-element-put-property
               new key
@@ -293,16 +300,36 @@ All keys must be distinct registered nodes.  Return keys in the copied tree."
      entries)))
 
 (defun org-texmacs--model-check-islands
-    (ast islands &optional error-type)
-  "Reject overlapping island associations in owned AST and ISLANDS.
+    (ast islands &optional error-type object-islands)
+  "Validate island associations in owned AST and ISLANDS.
+With OBJECT-ISLANDS, require typed object keys and complete fragment mappings.
 Inspect contents, captions and secondary properties without reading source."
   (let ((keys (make-hash-table :test #'eq)))
     (dolist (entry islands)
-      (puthash (car entry) t keys))
+      (let ((node (car entry)))
+        (when (and object-islands
+                   (not
+                    (or (eq (org-element-type node) 'stm-fragment)
+                        (org-texmacs--native-body-kind node))))
+          (signal
+           (or error-type 'org-texmacs-model-error)
+           '("Expected a fragment or native block island key")))
+        (puthash node t keys)))
     (cl-labels
      ((walk
        (node enclosing)
        (let ((island (gethash node keys)))
+         (when (and object-islands
+                    (eq (org-element-type node) 'stm-fragment))
+           (unless (and island
+                        (null (org-element-contents node))
+                        (let ((blank
+                               (org-element-property-raw
+                                :post-blank node)))
+                          (or (null blank) (wholenump blank))))
+             (signal
+              (or error-type 'org-texmacs-model-error)
+              '("Expected a mapped nonrecursive STM fragment"))))
          (when (and island enclosing)
            (signal (or error-type 'org-texmacs-model-error)
                    '("Overlapping STM islands")))
@@ -321,6 +348,75 @@ Inspect contents, captions and secondary properties without reading source."
              (dolist (child (cdr line))
                (walk child enclosing)))))))
      (walk ast nil))))
+
+(defun org-texmacs--model-copy-context (owner context keys)
+  "Validate and copy CONTEXT for OWNER, permitting unique KEYS."
+  (unless (and (proper-list-p context) (zerop (% (length context) 2)))
+    (org-texmacs--model-fail owner "Expected a syntax context plist"))
+  (let (seen)
+    (cl-loop
+     for (key _value) on context by #'cddr do
+     (unless (and (memq key keys) (not (memq key seen)))
+       (org-texmacs--model-fail
+        owner "Invalid or duplicate syntax context key"))
+     (push key seen)))
+  (org-texmacs--model-copy-data owner context))
+
+(defun org-texmacs--model-own-object-context (owner ast context)
+  "Merge already owned CONTEXT with the validated syntax snapshot on AST."
+  (let ((syntax
+         (org-texmacs--model-copy-context
+          owner
+          (org-element-property-raw :org-texmacs-syntax ast)
+          '(:heading-settings :link-settings)))
+        result)
+    (cl-loop
+     for
+     (key value)
+     on
+     context
+     by
+     #'cddr
+     unless
+     (eq key :fragment-tags)
+     do
+     (setq result (plist-put result key value)))
+    (cl-loop
+     for (key value) on syntax by #'cddr do
+     (if (plist-member result key)
+         (unless (equal (plist-get result key) value)
+           (org-texmacs--model-fail
+            owner (format "Conflicting captured syntax: %s" key)))
+       (setq result (plist-put result key value))))
+    result))
+
+(defun org-texmacs--model-own
+    (ast islands context &optional object-islands)
+  "Own AST, ISLANDS and CONTEXT in one pure transaction.
+OBJECT-ISLANDS selects the internal object construction path before cutover."
+  (unless (and (consp ast) (eq (car ast) 'org-data))
+    (signal 'org-texmacs-model-error
+            '("Expected an Org org-data AST")))
+  (let* ((owner
+          (org-texmacs--model-owner-create
+           :object-islands object-islands))
+         (copy (org-texmacs--model-copy-node owner ast nil))
+         (mapping
+          (org-texmacs--model-copy-mapping
+           owner islands #'org-texmacs--model-copy-stree))
+         (owned-context
+          (org-texmacs--model-copy-context
+           owner context org-texmacs--model-context-keys)))
+    (org-texmacs--model-finish-owner owner)
+    (org-texmacs--model-check-islands copy mapping nil object-islands)
+    (org-texmacs--model-create
+     :ast copy
+     :islands mapping
+     :context
+     (if object-islands
+         (org-texmacs--model-own-object-context
+          owner ast owned-context)
+       owned-context))))
 
 ;;;###autoload
 (cl-defun
@@ -347,34 +443,7 @@ inexpressible under current Org recognition syntax.  No parser, source buffer,
 worker, document lowering, reference allocation or formatter is consulted.
 Return a read-only snapshot: callers must not modify accessor results or
 nested data.  Signal `org-texmacs-model-error' for invalid inputs."
- (unless (and (consp ast) (eq (car ast) 'org-data))
-   (signal 'org-texmacs-model-error
-           '("Expected an Org org-data AST")))
- (unless (and (proper-list-p context) (zerop (% (length context) 2)))
-   (signal 'org-texmacs-model-error
-           '("Expected a syntax context plist")))
- (let* ((owner (org-texmacs--model-owner-create))
-        (copy (org-texmacs--model-copy-node owner ast nil))
-        (mapping
-         (org-texmacs--model-copy-mapping
-          owner islands #'org-texmacs--model-copy-stree))
-        seen)
-   (let ((options context))
-     (while options
-       (let ((key (pop options)))
-         (pop options)
-         (unless (and (memq key org-texmacs--model-context-keys)
-                      (not (memq key seen)))
-           (signal 'org-texmacs-model-error
-                   '("Invalid or duplicate syntax context key")))
-         (push key seen))))
-   (org-texmacs--model-finish-owner owner)
-   (org-texmacs--model-check-islands copy mapping)
-   (org-texmacs--model-create
-    :ast copy
-    :islands mapping
-    :context
-    (org-texmacs--model-copy-data owner context))))
+ (org-texmacs--model-own ast islands context))
 
 (defun org-texmacs--model-path-error (message path)
   "Report structural MESSAGE at native AST PATH without source coordinates."

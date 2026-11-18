@@ -329,4 +329,117 @@
        (org-texmacs-document updated))
       '(document (math "x"))))))
 
+(ert-deftest org-texmacs-model-owns-fragment-objects ()
+  (let* ((first
+          (org-element-create
+           'stm-fragment
+           '(:stm-source
+             "(math \"old\")"
+             :value "$(math \"old\")$"
+             :post-blank 2)))
+         (second (org-element-create 'stm-fragment '(:post-blank 2)))
+         (paragraph
+          (org-element-create
+           'paragraph
+           (list :peers (vector first second)) first second "after"))
+         (caption (org-element-create 'stm-fragment nil))
+         (block
+          (org-element-create
+           'special-block
+           (list
+            :type "texmacs"
+            :caption
+            (list (cons nil (list caption))))))
+         (ast (org-element-create 'org-data nil paragraph block))
+         (tree (list 'math (copy-sequence "x")))
+         (model
+          (org-texmacs--model-own
+           ast
+           (list
+            (cons first tree)
+            (cons second tree)
+            (cons caption tree)
+            (cons block '(equation "y")))
+           nil t))
+         (owned (org-texmacs-model-islands model))
+         (key (caar owned))
+         (other (caadr owned))
+         (copy (org-texmacs-model-copy model))
+         (updated (org-texmacs-model-replace-stm model key '(0) "z")))
+    (should (eq (org-element-type key) 'stm-fragment))
+    (should-not (eq first key))
+    (should-not (eq key other))
+    (should (eq (org-element-parent key) (org-element-parent other)))
+    (should
+     (eq
+      key
+      (aref
+       (org-element-property :peers (org-element-parent key)) 0)))
+    (should
+     (eq
+      (car (nth 3 owned)) (org-element-parent (car (nth 2 owned)))))
+    (should (equal (org-element-property :post-blank key) 2))
+    (should-not (plist-member (cadr key) :stm-source))
+    (should-not (plist-member (cadr key) :value))
+    (should (org-element-property :stm-source first))
+    (aset (cadr tree) 0 ?w)
+    (should (equal (org-texmacs-model-island model key) '(math "x")))
+    (should-error
+     (org-texmacs-model-island copy key)
+     :type 'org-texmacs-model-error)
+    (should
+     (equal (cdar (org-texmacs-model-islands updated)) '(math "z")))
+    (should
+     (equal (cdar (org-texmacs-model-islands copy)) '(math "x")))))
+
+(ert-deftest org-texmacs-model-object-path-requires-valid-mappings ()
+  (let* ((fragment (org-element-create 'stm-fragment nil))
+         (text (copy-sequence "literal"))
+         (ast
+          (org-element-create
+           'org-data nil
+           (org-element-create 'paragraph nil fragment text)))
+         (entry (cons fragment '(math "x"))))
+    (dolist (mapping
+             (list
+              nil
+              (list entry entry)
+              (list entry (cons text '(math "x")))
+              (list
+               (cons
+                (org-element-create 'stm-fragment nil) '(math "x")))))
+      (should-error
+       (org-texmacs--model-own ast mapping nil t)
+       :type 'org-texmacs-model-error))
+    (should
+     (org-texmacs-model-p
+      (org-texmacs--model-own ast (list entry) nil t)))))
+
+(ert-deftest org-texmacs-model-object-path-transfers-owned-syntax ()
+  (let* ((links (list :types (list (copy-sequence "test"))))
+         (ast
+          (org-element-create
+           'org-data
+           (list :org-texmacs-syntax (list :link-settings links))))
+         (model
+          (org-texmacs--model-own
+           ast nil
+           '(:heading-settings nil :fragment-tags ("math")) t))
+         (context (org-texmacs-model-context model)))
+    (should-not
+     (org-element-property
+      :org-texmacs-syntax (org-texmacs-model-ast model)))
+    (should-not (plist-member context :fragment-tags))
+    (should (plist-member context :heading-settings))
+    (should (equal (plist-get context :link-settings) links))
+    (should
+     (org-texmacs-model-p
+      (org-texmacs--model-own ast nil (list :link-settings links) t)))
+    (should-error
+     (org-texmacs--model-own ast nil '(:link-settings nil) t)
+     :type 'org-texmacs-model-error)
+    (aset (car (plist-get links :types)) 0 ?X)
+    (should
+     (equal (plist-get context :link-settings) '(:types ("test"))))))
+
 ;;; model.el ends here
