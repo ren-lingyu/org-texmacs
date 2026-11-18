@@ -12,7 +12,8 @@ See current.md for evidence and the core plan for the completed scope.
 The separate Scheme mode migration is delivered. See
 stm-scheme-language-dispatch.md for its acceptance and validation limits.
 Inline STM fragment editing is delivered. See stm-fragment-editing.md.
-Any extension to equation or equation* editing requires separate review.
+Native equation and equation* block editing and indentation are delivered.
+See stm-native-block-editing.md.
 OTP is deferred from v0.8.0 and remains a priority candidate for v0.9.0.
 Review org-latex-preview API reuse after the formal Org 10.0 release.
 Publication requires its own release process.
