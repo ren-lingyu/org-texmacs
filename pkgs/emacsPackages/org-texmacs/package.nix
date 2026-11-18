@@ -5,6 +5,7 @@
   org,
   texmacs,
 }:
+assert lib.assertMsg (lib.versionAtLeast org.version "9.8.10") "org-texmacs requires Org >= 9.8.10";
 melpaBuild (finalAttrs_: {
   inherit src;
 

@@ -53,18 +53,17 @@ See [[file:CHANGELOG.org][the changelog]] for version history and
 [[file:CHANGELOGS/v0.7.1.org][the v0.7.1 release notes]] for changes and upgrade instructions.
 
 * Requirements
-- Emacs 31.1 or later and Org 9.8 or later, as declared by the package.
+- Emacs 31.1 or later and Org 9.8.10 or later, as declared by the package.
 - TeXmacs with headless mode (=-H=) and its embedded Scheme runtime.
 - Unix-domain socket support in both Emacs and TeXmacs.
 
 Recorded regressions on =x86_64-linux= used Emacs 31.1, Org 9.8.10 and
 TeXmacs 2.1.5.  Nix selects dependency revisions from the project's =flake.lock=;
-an existing local Org installation does not select those versions.  The package's
-Org 9.8 minimum passed a separate API/signature and strict compilation check
-for the earlier v0.5.0 implementation.  That result does not establish minimum-
-version behavior for the current model and standard export APIs. Complete v0.7.0
-ERT and native behavior regressions use Org 9.8.10; they have not been run on Org 9.8.  Other platforms
-have not been validated.
+an existing local Org installation does not select those versions.  For the v0.8.0 development cycle, Org 9.8.10 is the minimum
+supported and tested baseline. This is a maintenance scope decision, not a
+finding that Org 9.8 is incompatible. Earlier Org 9.8 experiment results remain
+historical evidence; separate regression runs on that version are no longer
+required. Other platforms have not been validated.
 
 =citeproc= is optional for CSL citations. Org-roam and Org-roam-organize are
 optional dependencies of the real standard Cite integration check. Historical
@@ -2741,3 +2740,23 @@ participate in formatting.  Patch files, =LICENSE= and =flake.lock= are excluded
 Git flake inputs omit untracked files.  When checking new files before staging,
 use an explicit =path:.= flake input, such as
 =nix flake check --no-write-lock-file path:.=.
+
+* Extended Org AST API
+The independent AST entry point recognizes explicit STM carriers such as
+=$(math "x")$= and =\((math "x")\)=.  It does not change the existing
+model parser, fragment discovery or Export entry points yet.
+
+=(org-texmacs-ast-parse-buffer SOURCE-BUFFER)= returns a caller-owned complete
+Org AST with nonrecursive =stm-fragment= objects.  It preserves the source
+buffer state and does not start TeXmacs or run Export preparation.  Recognition
+uses native Org LaTeX-fragment positions and composition rules; code, verbatim
+and literal blocks remain opaque.  Recognized incomplete carriers signal
+=org-texmacs-parse-error=.  Native STM validation is a separate conversion step.
+
+Use =(org-texmacs-call-with-ast-context FUNCTION)= around generic Org traversal,
+copy and interpretation of these ASTs.  Registration is synchronous and local;
+Org copy is not a model ownership guarantee: its custom root metadata values
+may be shared with the original AST.  The root =:org-texmacs-syntax=
+metadata owns captured heading and link syntax, independently of the source
+buffer.  It is not document content.  Full normalized source output and model
+adapters are separate facilities, not provided by these two entry points.

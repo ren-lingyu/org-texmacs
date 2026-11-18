@@ -12,44 +12,14 @@
 ;;; Code:
 
 (require 'org-texmacs-model)
+(require 'org-texmacs-syntax)
 (require 'org-texmacs-source)
 (require 'org-texmacs-fragment)
 (require 'org-texmacs-worker)
 
-(defconst org-texmacs--parse-syntax-variables
-  '(org-todo-regexp
-    org-todo-keywords
-    org-todo-keywords-1
-    org-done-keywords
-    org-odd-levels-only
-    org-priority-regexp
-    org-priority-highest
-    org-priority-lowest
-    org-priority-default
-    org-footnote-section
-    org-emph-re
-    org-verbatim-re
-    org-match-substring-regexp
-    org-match-substring-with-braces-regexp
-    org-entities-user
-    org-list-allow-alphabetical
-    org-plain-list-ordered-item-terminator
-    org-element-affiliated-keywords
-    org-element-dual-keywords
-    org-element-parsed-keywords
-    org-element-multiple-keywords
-    org-element-secondary-value-alist
-    org-element-keyword-translation-alist
-    org-target-link-regexp
-    org-target-link-regexps)
-  "Effective native syntax retained independently of export configuration.
-Only bound variables are captured.  Link types and abbreviations are handled
-separately; link follow/export handlers are not syntax and are not captured.")
-
 (defun org-texmacs--parse-copy (value)
   "Own resolved syntax VALUE without callbacks or buffer access."
-  (org-texmacs--model-copy-data
-   (org-texmacs--model-owner-create) value))
+  (org-texmacs--syntax-copy value))
 
 (defun org-texmacs--parse-location (path)
   "Capture source PATH, retaining a model-domain error for invalid context."
@@ -57,27 +27,6 @@ separately; link follow/export handlers are not syntax and are not captured.")
       (org-texmacs--source-capture-path path)
     (org-texmacs-document-error
      (signal 'org-texmacs-model-error (cdr err)))))
-
-(defun org-texmacs--parse-settings ()
-  "Capture effective native Org syntax as explicit variable/value pairs."
-  (mapcar
-   (lambda (symbol)
-     (cons symbol (org-texmacs--parse-copy (symbol-value symbol))))
-   (cl-remove-if-not #'boundp org-texmacs--parse-syntax-variables)))
-
-(defun org-texmacs--parse-links ()
-  "Capture link names and abbreviations without retaining handler functions."
-  (unless (and (proper-list-p org-link-parameters)
-               (cl-every
-                (lambda (entry)
-                  (and (consp entry) (stringp (car entry))))
-                org-link-parameters))
-    (signal 'org-texmacs-model-error '("Invalid Org link registry")))
-  (org-texmacs--parse-copy
-   (list
-    :types (mapcar #'car org-link-parameters)
-    :global org-link-abbrev-alist
-    :local org-link-abbrev-alist-local)))
 
 (defun org-texmacs--parse-initialize (settings links tags base)
   "Install owned SETTINGS, LINKS, TAGS and resource BASE in a private buffer.

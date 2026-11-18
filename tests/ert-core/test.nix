@@ -17,6 +17,7 @@ let
     ./lisp/document.el
     ./lisp/editing.el
     ./lisp/frontend.el
+    ./lisp/fragment-object.el
     ./lisp/preprocess.el
     ./lisp/source.el
     ./lisp/standard-export.el

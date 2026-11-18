@@ -5,7 +5,7 @@
 ;; Author: aRenCoco
 ;; Maintainer: aRenCoco
 ;; Version: 0.7.1
-;; Package-Requires: ((emacs "31.1") (org "9.8"))
+;; Package-Requires: ((emacs "31.1") (org "9.8.10"))
 ;; Keywords: outlines, tex
 ;; URL: https://github.com/ren-lingyu/org-texmacs
 ;; SPDX-License-Identifier: GPL-3.0-or-later
@@ -34,8 +34,8 @@
 ;;
 ;; Package-Requires declares minimum versions.  Recorded regressions used
 ;; Emacs 31.1 and Org 9.8.10; Nix selects dependencies from flake.lock.
-;; Org 9.8 passed API/signature and strict compilation checks for an earlier version;
-;; full ERT/native behavior regression on that minimum version is unverified.
+;; Org 9.8.10 is the minimum support baseline for the v0.8.0 development cycle.
+;; This maintenance scope decision does not imply that Org 9.8 is incompatible.
 ;; Org-roam and its extensions are optional integration-test dependencies.
 ;; Source exports use standard Org Export preparation and Org Cite.  The
 ;; TeXmacs backend defaults to native bibliography processing; CSL citations
@@ -80,6 +80,7 @@
 
 (require 'org-texmacs-core)
 (require 'org-texmacs-ast)
+(require 'org-texmacs-fragment-object)
 (require 'org-texmacs-source)
 (require 'org-texmacs-fragment)
 (require 'org-texmacs-font-lock)
