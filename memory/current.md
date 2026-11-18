@@ -23,27 +23,34 @@ and stm-fragment-core-plan.md for execution. The caller and consumer audit
 is in stm-fragment-node2-interface-audit.md. Node 2 prepared the transaction
 completion boundary, owned object keys, and private explicit acquisition.
 The user committed Node 3's pure STM writer, detached interpretation, and
-known-tree validation by island count, order, and structural path. The
-additional project parent is the verified delivered Node 3 baseline.
+known-tree validation by island count, order, and structural path. An
+earlier checkpoint associates the delivered Node 3 project baseline.
 
-Node 4's unified cutover is in the ordinary worktree awaiting the human
-commit. Public Model parsing, construction, serialization, and standard
-Export now use object islands. Standard Export consumes final prepared AST
-fragments. Scope native block bodies out of inline recognition after Org
-parses their affiliation. Default headline formatting carries STM paths
-through title assembly; object post-blank uses the normal lowering mechanism.
-The two temporary public Node 1 APIs retire at this cutover. Legacy discovery
-and fontification cleanup remains Node 5.
+Node 4's unified cutover is delivered at the additional project parent of
+this checkpoint. Public Model parsing, construction, serialization and
+standard Export use object islands and explicit carriers. The delivered
+candidate passed the complete x86_64-linux flake check, including native,
+PDF document and PDF render tests. Three lingering bare PDF fixtures were
+migrated before submission, with their semantic assertions preserved.
+The four English/Chinese examples contain verified native math structures.
 
-Node 4 candidate validation with Org 9.8.10 and TeXmacs 2.1.5 includes Nix
-core 386/386, Cite 11/11, package build, package-lint, treefmt, and all four
-English/Chinese example builds. Their TeXmacs outputs contain the expected
-inline fraction, root, subscript and superscript structures. All 287 native
-ERT cases passed across four isolated Emacs batches. The additional Nix PDF
-document suite stopped after 45 of 49 cases at the client timeout, so full
-PDF suite acceptance is still pending. The validation is for the worktree
-candidate. The draft is tmp/commit.md. Wait for the human commit before
-Node 5; keep the complete node as the submission boundary.
+Node 5 is in the ordinary worktree awaiting the human commit. The legacy
+span/discovery module, public functions and tag option are gone. Model
+construction and serialization share the object-island path. Obsolete
+:fragment-tags constructor data is validated and discarded; Model copies
+also normalize prior contexts. Scheme fontification uses scoped, local
+paragraph recognition for explicit payloads, including supported nested
+inline objects. An editing-only tolerance for unfinished carriers leaves
+formal parsing strict. Native block editing and opaque Org regions retain
+their existing behavior.
+
+Node 5 verification with Org 9.8.10 and TeXmacs 2.1.5 includes Nix core
+(348/348), Cite, package build, package-lint, treefmt and all four example
+builds. Native ERT was run in four isolated batches. One fresh-load editor
+fixture was migrated after its initial failure and passed on focused rerun,
+covering all 279 cases in total. The complete flake/PDF integration suite
+has not been rerun against this candidate. The draft is tmp/commit.md.
+Wait for the human commit before the Node 6 integrated review.
 The pre-revision Node 2 review remains historical.
 OTP remains a final nonblocking candidate after core validation, with v0.9.0
 priority fallback. No OTP probe or delivery is claimed.
