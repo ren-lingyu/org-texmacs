@@ -18,12 +18,28 @@ logical mathematical-document tree. The revised target uses owned
 stm-fragment objects with no :stm-source or :value as non-block island keys.
 Parsed trees own mathematical content. String island keys will be retired.
 The existing source discovery, Model parser/serializer and standard Export
-have yet to migrate. Node 2 is unimplemented.
+have yet to migrate. Node 2 transaction preparation is in progress.
 
 Start with stm-fragment-architecture-revision.md for the adopted rationale
-and stm-fragment-core-plan.md for execution. Next: audit actual Node 1 public
-callers, README and tests and plan Model integration and the transition for
-serializer/lowering consumers. The former Node 2 review is historical.
+and stm-fragment-core-plan.md for execution. The caller and consumer audit is
+in stm-fragment-node2-interface-audit.md. The updated core plan records the unified cutover and both Node 1 API
+retirements. The user committed the independent parser transaction work:
+requests complete before Model construction and serializer revalidation
+attaches known trees before constructing its validation Model.
+The user committed both the standard Export request completion boundary
+and the pure object-island ownership preparation. The exact audited project
+baseline is an additional parent of this checkpoint. Public callers still
+follow the previous contract until coordinated cutover.
+
+The current uncommitted parser diff routes explicit carriers through an
+internal acquisition path to the object-island Model owner. Native block
+protection and source guards are shared. Tests stub the native request and
+cover title/body/caption, native blocks, opacity, bare input and source
+changes across waits. Core ERT passed 381/381, with Nix package build,
+package-lint and treefmt. Full native/PDF/example checks were not run.
+Pending submission: tmp/commit.md. Wait for the human commit, then develop
+the pure writer and serializer. The public cutover remains pending.
+The pre-revision Node 2 review remains historical.
 OTP remains a final nonblocking candidate after core validation, with v0.9.0
 priority fallback. No OTP probe or delivery is claimed.
 

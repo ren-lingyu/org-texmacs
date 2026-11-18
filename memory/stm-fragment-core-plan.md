@@ -184,6 +184,33 @@ work without a snapshot. Output requiring syntax uses captured context and
 explicitly fails when it is insufficient; ambient state does not fill gaps.
 The property need not roundtrip via a public projection.
 
+## Implementation and cutover gates
+
+Develop, test and review Nodes 2–4 in order. Activate the public object-key
+contract, explicit carrier recognition and API retirement together in Node 4.
+Independent intermediate submissions must preserve the public paths exercised
+at that point. If necessary, review the nodes as units of one cumulative
+cutover submission. Each node has local validation. Stop at a tested,
+self-contained submission, draft its message and wait for the human commit.
+
+- Node 2 prepares internal equivalents of the Node 1 recognition and scope
+  functions. Node 4 removes both public names and their autoload and README
+  claims without aliases. Review temporary recognition :value separately.
+  Model parse and prepared input publish only once every native request has
+  succeeded and is associated one-to-one with its intended key. Structurally
+  valid placeholders are not completion evidence. Known-tree construction
+  is pure. Preserve ownership and Cite/metadata identity ordering.
+- Node 3 renders from the known tree with identity-local data on a detached
+  snapshot. Re-recognize Org under captured syntax, match request count,
+  order and structural paths against the output records, attach known
+  trees, normalize through the complete Model rules and compare. Metadata
+  and raw carrier text cannot stand in for identity or shape. Validate
+  whitespace, affiliation and incremental normalization.
+- Node 4 migrates required bare STM fixtures and examples in the same batch
+  as recognition. Verify representative STM output subtrees and positions,
+  not only build status. Node 5 finishes retiring the old discovery surface
+  and fontification. Node 6 covers the full example and PDF suite.
+
 ## Minimum version maintenance decision
 
 The user raised the v0.8.0 minimum from Org 9.8 to 9.8.10 to bound maintenance
