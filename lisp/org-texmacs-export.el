@@ -17,6 +17,7 @@
 (require 'oc)
 (require 'oc-csl)
 (require 'org-texmacs-cite-native)
+(require 'org-texmacs-fragment-object)
 
 (defun org-texmacs--standard-unadvised-definition (name)
   "Return function NAME's definition only when it has no advice."
@@ -36,7 +37,6 @@
 
 (require 'org-texmacs-input)
 (require 'org-texmacs-session)
-(require 'org-texmacs-fragment)
 (require 'org-texmacs-prepared)
 (require 'org-texmacs-query)
 
@@ -181,7 +181,6 @@ A memoized graph copy also preserves parent links in parsed Org metadata."
    (substring-no-properties default-directory)
    (org-texmacs--document-copy-style org-texmacs-document-style)
    (org-texmacs--document-copy-initial org-texmacs-document-initial)
-   (org-texmacs--fragment-tags)
    (org-texmacs--standard-copy-options
     (list
      :texmacs-tab-width tab-width
@@ -206,9 +205,8 @@ Do not roll back changes made by arbitrary callbacks."
                 (nth 3 current) (nth 3 state)
                 (nth 4 current) (nth 4 state)))
              ;; Presentation data in the last field has already been consumed.
-             ;; Keep source/style/initial/fragment guards without receipt replay.
-             (equal
-              (cl-subseq state 0 10) (cl-subseq current 0 10)))))
+             ;; Keep source and presentation guards without receipt replay.
+             (equal (cl-subseq state 0 9) (cl-subseq current 0 9)))))
       (signal
        'org-texmacs-document-error
        '("Standard export source or native settings changed")))))
@@ -224,12 +222,14 @@ Do not roll back changes made by arbitrary callbacks."
 Forward standard arguments.  Structured requests use a scoped result container,
 not an early exit across normal export advice or a second preparation pass."
   (if (not (org-texmacs--standard-backend-p backend))
-      (funcall function
-               backend
-               subtreep
-               visible-only
-               body-only
-               ext-plist)
+      (org-texmacs--call-without-ast-context
+       (lambda ()
+         (funcall function
+                  backend
+                  subtreep
+                  visible-only
+                  body-only
+                  ext-plist)))
     (when body-only
       (user-error
        "TeXmacs body-only output has no supported fragment contract"))
@@ -266,12 +266,11 @@ not an early exit across normal export advice or a second preparation pass."
              :id-resolution-base nil)))
       (when request
         (setf (plist-get request :claimed) t))
-      (prog1 (funcall function
-                      backend
-                      subtreep
-                      visible-only
-                      nil
-                      ext-plist)
+      (prog1 (org-texmacs--call-with-ast-context
+              (lambda ()
+                (funcall
+                 function
+                 backend subtreep visible-only nil ext-plist)))
         (org-texmacs--standard-check-source state)
         (when-let* ((input
                      (plist-get
@@ -296,7 +295,10 @@ The prepared AST remains authoritative; this is not STM text construction."
    (mapcar
     (lambda (type) (cons type #'org-texmacs--standard-contents))
     (delete-dups
-     (append org-element-all-elements org-element-all-objects nil)))))
+     (append
+      org-element-all-elements
+      org-element-all-objects
+      (list 'stm-fragment))))))
 
 (defun org-texmacs--standard-input (info state)
   "Own the prepared tree from standard INFO and source STATE.
@@ -344,7 +346,7 @@ Project supported options without repeating preparation or retaining full INFO."
     (setq projected
           (append
            projected
-           (org-texmacs--standard-copy-options (nth 10 state))))
+           (org-texmacs--standard-copy-options (nth 9 state))))
     (let*
         ((source-file
           (org-texmacs--source-capture-path (nth 5 state)))
@@ -359,8 +361,7 @@ Project supported options without repeating preparation or retaining full INFO."
             (plist-get
              org-texmacs--standard-transaction
              :id-resolution-base)))
-         (requests
-          (org-texmacs--prepared-discover tree (nth 9 state) t))
+         (requests (org-texmacs--prepared-discover tree t))
          (query
           (prog1 (org-texmacs--query-snapshot
                   tree
@@ -370,11 +371,11 @@ Project supported options without repeating preparation or retaining full INFO."
                   resource-base
                   id-resolution-base
                   (lambda (definition)
-                    (setq requests
-                          (append
-                           requests
-                           (org-texmacs--prepared-discover
-                            definition (nth 9 state))))))
+                    (setq
+                     requests
+                     (append
+                      requests
+                      (org-texmacs--prepared-discover definition)))))
             (org-texmacs--prepared-affiliation tree)))
          ;; Freeze the input and remap request keys before any native wait.
          (input

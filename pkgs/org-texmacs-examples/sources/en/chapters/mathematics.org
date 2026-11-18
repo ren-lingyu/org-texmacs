@@ -2,8 +2,8 @@
 :PROPERTIES:
 :CUSTOM_ID: scalar-expressions
 :END:
-Inline notation can contain indices (math (concat "a" (rsub "n"))), powers
-(math (concat "x" (rsup "2"))) and Greek letters (math "<alpha>+<beta>").
+Inline notation can contain indices \((math (concat "a" (rsub "n")))\), powers
+\((math (concat "x" (rsup "2")))\) and Greek letters \((math "<alpha>+<beta>")\).
 
 #+name: quadratic
 #+begin_equation
@@ -64,8 +64,8 @@ paragraph discovery setting does not prevent this block from being parsed.
 #+name: norm-definition
 #+caption: The Euclidean norm
 #+begin_statement definition
-For a vector (math (concat "v=" (around* "(" "x,y" ")"))), define
-(math (concat "N " (around* "(" "v" ")") "=" (sqrt (concat "x" (rsup "2") "+y" (rsup "2"))))).
+For a vector \((math (concat "v=" (around* "(" "x,y" ")")))\), define
+\((math (concat "N " (around* "(" "v" ")") "=" (sqrt (concat "x" (rsup "2") "+y" (rsup "2")))))\).
 #+end_statement
 
 #+name: norm-positive
@@ -85,7 +85,7 @@ are zero, and the nonnegative square root preserves this condition.
 #+end_statement
 
 #+begin_statement lemma
-For any real scalar (math "c"), the norm is homogeneous:
+For any real scalar \((math "c")\), the norm is homogeneous:
 
 #+begin_equation*
 (concat "N " (around* "(" "c*v" ")") "=" (around* "|" "c" "|") "*N " (around* "(" "v" ")"))
@@ -101,6 +101,6 @@ not select the reference type; the resolved target's structure does.
 #+end_statement
 
 #+begin_statement exercise
-Use the definition to evaluate the norm of (math (around* "(" "3,4" ")")),
+Use the definition to evaluate the norm of \((math (around* "(" "3,4" ")"))\),
 then explain why homogeneity also holds for negative scalars.
 #+end_statement

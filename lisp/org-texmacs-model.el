@@ -423,14 +423,15 @@ OBJECT-ISLANDS selects the internal object construction path before cutover."
  org-texmacs-model-create (ast &key islands context)
  "Own native Org AST, parsed STM ISLANDS and explicit CONTEXT.
 AST must be a fully resolved org-data tree, not Org's live cache.  ISLANDS
-maps distinct AST node identities to parsed STM trees (strings or proper
-symbol-tagged trees).  Trees are authoritative for the mathematical content;
+maps distinct stm-fragment or native block identities to parsed STM trees.
+Trees are authoritative for the mathematical content;
 Org nodes retain the structural wrapper and affiliation.  Nested island
 contents cannot overlap.  Secondary strings and captions belong to the AST.
 
 CONTEXT is a unique-keyword plist of resolved syntax/source data with keys
 :fragment-tags, :heading-settings, :link-settings, :source-file or
 :resource-base.
+Validate and discard legacy :fragment-tags input.
 Do not supply export INFO, style, initial, formatted bibliography or output
 references.  No context is inferred from the current buffer.
 Copy strings, lists and vectors, rebuild parents and
@@ -443,7 +444,7 @@ inexpressible under current Org recognition syntax.  No parser, source buffer,
 worker, document lowering, reference allocation or formatter is consulted.
 Return a read-only snapshot: callers must not modify accessor results or
 nested data.  Signal `org-texmacs-model-error' for invalid inputs."
- (org-texmacs--model-own ast islands context))
+ (org-texmacs--model-own ast islands context t))
 
 (defun org-texmacs--model-path-error (message path)
   "Report structural MESSAGE at native AST PATH without source coordinates."
@@ -520,7 +521,7 @@ With CONTEXT non-nil, append owned syntax context as a fourth result."
                  owner
                  (org-texmacs-model-islands model)
                  #'org-texmacs--model-copy-stree))
-          (org-texmacs--model-check-islands ast islands))
+          (org-texmacs--model-check-islands ast islands nil t))
       (org-texmacs-model-error
        (org-texmacs--model-path-error
         (error-message-string err) nil)))
@@ -590,7 +591,7 @@ Signal `org-texmacs-model-error' if NODE is not an island in MODEL."
   "Return a new snapshot replacing MODEL island NODE's PATH with REPLACEMENT.
 NODE is a snapshot-local island key.  PATH is a proper list of zero-based
 STM child indices, excluding each tag; nil replaces the whole island tree.
-REPLACEMENT is a structured STM tree, including a possible atomic string.
+REPLACEMENT is a structured STM tree.
 Own every mutable input, rebuild Org parents and island identities, and leave
 MODEL and its locators untouched on success or failure.  Old nodes cannot
 locate islands in the result.  No source coordinates, text round trips,

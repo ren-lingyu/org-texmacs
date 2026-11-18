@@ -102,7 +102,7 @@ Return records (NODE-BEGIN CONTENTS-BEGIN CONTENTS-END RAW-SOURCE)."
 
 (defun org-texmacs--parse-object-requests (ast blocks)
   "Collect source requests from recognized AST and captured native BLOCKS."
-  (org-texmacs-call-with-ast-context
+  (org-texmacs--call-with-ast-context
    (lambda ()
      (org-element-map
       ast '(stm-fragment special-block)
@@ -251,7 +251,7 @@ here."
                  "[^ \t\r\n]" "x" (nth 3 record)))))
            (if object-islands
                (let ((ast
-                      (org-texmacs-ast-parse-buffer
+                      (org-texmacs--ast-parse-buffer
                        (current-buffer))))
                  (list
                   ast
@@ -279,9 +279,9 @@ here."
   "Parse complete Org SOURCE-BUFFER into an independent mathematical model.
 Capture full source and effective syntax without changing point, mark, text,
 properties or narrowing.  Original narrowing does not select a model body.
-Parse recognized texmacs/equation/equation* blocks and configured paragraph
-and direct inline-footnote fragments with the native STM worker.  Preserve
-unrecognized contexts as ordinary Org, including titles, captions and code.
+Parse explicit STM fragment carriers and native texmacs/equation/equation*
+blocks using the native STM worker.  Use Org's LaTeX-fragment positions and
+composition rules.  Preserve opaque Org regions as ordinary Org.
 
 Keep comments, drawers, all footnote definitions and export-excluded content.
 Do not run INCLUDE, Babel, export preprocessing/filters, Cite processors,
@@ -296,7 +296,7 @@ external callbacks are not rolled back.  Native parse/transport errors retain
 their existing conditions; structural/snapshot failures use
 `org-texmacs-model-error'.  User-defined native Org parser callbacks are not
 sandboxed.  Core constructor/inspection operations do not need this worker."
-  (org-texmacs--parse-buffer-model source-buffer))
+  (org-texmacs--parse-buffer-model source-buffer t))
 
 (defun org-texmacs--parse-buffer-model
     (source-buffer &optional object-islands)
@@ -388,12 +388,12 @@ With OBJECT-ISLANDS, acquire explicit carriers for the internal object path."
                    islands)))
          (check)
          (if object-islands
-             (org-texmacs--model-own
-              (car prepared) (nreverse islands) context t)
-           (org-texmacs-model-create
-            (car prepared)
-            :islands (nreverse islands)
-            :context context)))))))
+             (org-texmacs-model-create
+              (car prepared)
+              :islands (nreverse islands)
+              :context context)
+           (org-texmacs--model-own
+            (car prepared) (nreverse islands) context)))))))
 
 
 (provide 'org-texmacs-parse)

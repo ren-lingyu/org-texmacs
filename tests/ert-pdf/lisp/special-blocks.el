@@ -226,7 +226,7 @@
           tag
           "Title *Bold*\n#+begin_"
           tag
-          "\nFirst (math \"x+y\").\n\nSecond paragraph.\n#+end_"
+          "\nFirst $(math \"x+y\")$.\n\nSecond paragraph.\n#+end_"
           tag
           "\n"
           "[["

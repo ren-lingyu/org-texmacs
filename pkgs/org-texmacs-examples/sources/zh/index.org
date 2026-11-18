@@ -22,9 +22,9 @@
 
 * 阅读这组案例
 Org 是唯一的规范源文件. 普通正文可以包含 *强调*, /斜体/, =代码=, 以及
-(math (concat "x=" (frac "1" "2"))) 这样的行内公式.
+\((math (concat "x=" (frac "1" "2")))\) 这样的行内公式.
 同一个具名脚注可以重复引用[fn:source][fn:source], 匿名脚注也能包含数学表达式
-[fn::例如, (math (sqrt "2")) 是无理数.].
+[fn::例如, \((math (sqrt "2"))\) 是无理数.].
 
 可以访问 [[https://www.texmacs.org][TeXmacs 项目网站]] 了解原生排版工具.
 

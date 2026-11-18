@@ -10,18 +10,22 @@
 ;; Org parsing outside a synchronous scope.  Lexical recognition is independent
 ;; of native STM validation and never starts a worker.
 ;;
-;; Use `org-texmacs-call-with-ast-context' for Org traversal, copy and
+;; Use `org-texmacs--call-with-ast-context' for Org traversal, copy and
 ;; interpretation of extended ASTs.  Org's copy semantics are not model ownership.
 
 ;;; Code:
 
 (require 'org)
 (require 'org-texmacs-core)
+(require 'org-texmacs-source)
 (require 'org-texmacs-syntax)
 
 (defvar org-texmacs--fragment-object-active nil
   "Non-nil in a synchronous extended-AST transaction.
 Export integration may suspend this binding for another backend.")
+
+(defvar org-texmacs--fragment-object-org-context nil
+  "Org settings to restore for another backend inside a TeXmacs export.")
 
 (defconst org-texmacs--fragment-object-syntax-table
   (let ((table (make-syntax-table)))
@@ -104,10 +108,25 @@ object lexer, including secondary strings; point-max is that container bound."
             :begin start
             :end (+ end post)
             :post-blank post
-            :value
-            (buffer-substring-no-properties start end)
             :stm-source (cadr span)))))
     (apply original arguments)))
+
+(defun org-texmacs--fragment-object-parse-elements
+    (original
+     beg end mode structure granularity visible-only accumulator)
+  "Let ORIGINAL parse native block bodies without STM carrier recognition.
+Org parses a block's affiliation before descending into its body."
+  (let ((org-texmacs--fragment-object-active
+         (and org-texmacs--fragment-object-active
+              (not (org-texmacs--native-body-kind accumulator)))))
+    (funcall original
+             beg
+             end
+             mode
+             structure
+             granularity
+             visible-only
+             accumulator)))
 
 (defun org-texmacs--fragment-object-interpreter (node _contents)
   "Normalize the lexically complete STM carrier NODE.
@@ -130,15 +149,23 @@ This does not certify native STM validity or safe embedding in every container."
          (signal (car err) (cdr err))))
       text)))
 
-;;;###autoload
-(defun org-texmacs-call-with-ast-context (function)
+(defun org-texmacs--call-with-ast-context (function)
   "Call zero-argument FUNCTION with scoped extended Org AST support.
 Register nonrecursive `stm-fragment' wherever Org permits `latex-fragment'.
 Bind the registry, restrictions and interpreter locally; restore parser advice
 on normal, nested and exceptional exits.  Disable live Org caching within the
 scope so extended objects cannot enter another backend's cache.  Loading this
 module alone changes no parser or backend.  Never start a native worker."
-  (let* ((org-texmacs--fragment-object-active t)
+  (let* ((org-texmacs--fragment-object-org-context
+          (or org-texmacs--fragment-object-org-context
+              (list
+               org-element-all-objects
+               org-element-object-restrictions
+               org-element-use-cache
+               (and (fboundp 'org-element-stm-fragment-interpreter)
+                    (symbol-function
+                     'org-element-stm-fragment-interpreter)))))
+         (org-texmacs--fragment-object-active t)
          (org-element-use-cache nil)
          (org-element-all-objects
           (cons
@@ -154,27 +181,41 @@ module alone changes no parser or backend.  Never start a native worker."
                    'stm-fragment (remq 'stm-fragment (cdr entry))))
                entry))
            org-element-object-restrictions))
-         (install
-          (not
-           (advice-member-p
-            #'org-texmacs--fragment-object-parser
-            'org-element-latex-fragment-parser))))
-    (when install
-      (advice-add
-       'org-element-latex-fragment-parser
-       :around #'org-texmacs--fragment-object-parser))
+         installed)
     (unwind-protect
-        (cl-letf (((symbol-function
-                    'org-element-stm-fragment-interpreter)
-                   #'org-texmacs--fragment-object-interpreter))
-          (funcall function))
-      (when install
-        (advice-remove
-         'org-element-latex-fragment-parser
-         #'org-texmacs--fragment-object-parser)))))
+        (progn
+          (dolist (binding
+                   '((org-element-latex-fragment-parser
+                      . org-texmacs--fragment-object-parser)
+                     (org-element--parse-elements
+                      . org-texmacs--fragment-object-parse-elements)))
+            (unless (advice-member-p (cdr binding) (car binding))
+              (advice-add (car binding) :around (cdr binding))
+              (push binding installed)))
+          (cl-letf (((symbol-function
+                      'org-element-stm-fragment-interpreter)
+                     #'org-texmacs--fragment-object-interpreter))
+            (funcall function)))
+      (dolist (binding installed)
+        (advice-remove (car binding) (cdr binding))))))
 
-;;;###autoload
-(defun org-texmacs-ast-parse-buffer (source-buffer)
+(defun org-texmacs--call-without-ast-context (function)
+  "Call FUNCTION with the Org settings outside the current fragment scope."
+  (if (not org-texmacs--fragment-object-org-context)
+      (funcall function)
+    (pcase-let* ((`(,objects ,restrictions ,cache ,interpreter)
+                  org-texmacs--fragment-object-org-context)
+                 (org-texmacs--fragment-object-active nil)
+                 (org-texmacs--fragment-object-org-context nil)
+                 (org-element-all-objects objects)
+                 (org-element-object-restrictions restrictions)
+                 (org-element-use-cache cache))
+      (cl-letf (((symbol-function
+                  'org-element-stm-fragment-interpreter)
+                 interpreter))
+        (funcall function)))))
+
+(defun org-texmacs--ast-parse-buffer (source-buffer)
   "Return an independent extended Org AST for complete SOURCE-BUFFER.
 Require a live Org buffer.  Preserve its point, mark, text, properties and
 narrowing.  Use effective Org syntax, ignoring narrowing as body selection.
@@ -185,7 +226,7 @@ no live source buffer is needed afterward.  Preserve Org's native parent forms.
 Never run Export preparation, STM validation, file lookup or a native worker.
 Malformed recognized carriers signal `org-texmacs-parse-error'.  Invalid buffer
 arguments signal `org-texmacs-model-error'.  Custom Org callbacks are not
-sandboxed.  Use `org-texmacs-call-with-ast-context' for later Org operations."
+sandboxed.  Use `org-texmacs--call-with-ast-context' for later Org operations."
   (unless (and (bufferp source-buffer)
                (buffer-live-p source-buffer)
                (with-current-buffer source-buffer
@@ -198,7 +239,7 @@ sandboxed.  Use `org-texmacs-call-with-ast-context' for later Org operations."
         (save-match-data
           (widen)
           (let ((syntax (org-texmacs--syntax-capture)))
-            (org-texmacs-call-with-ast-context
+            (org-texmacs--call-with-ast-context
              (lambda ()
                (let ((ast (org-element-parse-buffer)))
                  ;; Org resolves deferred values before returning.  Drop its

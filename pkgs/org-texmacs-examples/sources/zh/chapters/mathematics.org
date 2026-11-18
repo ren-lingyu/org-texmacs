@@ -2,8 +2,8 @@
 :PROPERTIES:
 :CUSTOM_ID: scalar-expressions
 :END:
-行内公式可以包含下标 (math (concat "a" (rsub "n"))), 幂次
-(math (concat "x" (rsup "2"))) 和希腊字母 (math "<alpha>+<beta>").
+行内公式可以包含下标 \((math (concat "a" (rsub "n")))\), 幂次
+\((math (concat "x" (rsup "2")))\) 和希腊字母 \((math "<alpha>+<beta>")\).
 
 #+name: quadratic
 #+begin_equation
@@ -63,8 +63,8 @@
 #+name: norm-definition
 #+caption: 欧几里得范数
 #+begin_statement definition
-对向量 (math (concat "v=" (around* "(" "x,y" ")"))), 定义
-(math (concat "N " (around* "(" "v" ")") "=" (sqrt (concat "x" (rsup "2") "+y" (rsup "2"))))).
+对向量 \((math (concat "v=" (around* "(" "x,y" ")")))\), 定义
+\((math (concat "N " (around* "(" "v" ")") "=" (sqrt (concat "x" (rsup "2") "+y" (rsup "2")))))\).
 #+end_statement
 
 #+name: norm-positive
@@ -83,7 +83,7 @@
 #+end_statement
 
 #+begin_statement lemma
-对任意实数 (math "c"), 范数满足齐次性:
+对任意实数 \((math "c")\), 范数满足齐次性:
 
 #+begin_equation*
 (concat "N " (around* "(" "c*v" ")") "=" (around* "|" "c" "|") "*N " (around* "(" "v" ")"))
@@ -98,5 +98,5 @@
 #+end_statement
 
 #+begin_statement exercise
-计算向量 (math (around* "(" "3,4" ")")) 的范数, 并解释负数倍下的齐次性.
+计算向量 \((math (around* "(" "3,4" ")"))\) 的范数, 并解释负数倍下的齐次性.
 #+end_statement

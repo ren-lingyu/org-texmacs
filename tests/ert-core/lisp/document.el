@@ -9,7 +9,7 @@
 (ert-deftest org-texmacs-document-script-owned-nested-spacing ()
   (dolist (info '(nil (:with-sub-superscript t)))
     (let* ((sub (org-element-create 'subscript nil "i"))
-           (leaf (copy-sequence "island"))
+           (leaf (org-element-create 'stm-fragment nil))
            (ast
             (org-element-create
              'org-data nil
@@ -163,7 +163,7 @@
               :latex-math-p t
               :use-brackets-p t
               :post-blank 1)))
-           (leaf (copy-sequence "island"))
+           (leaf (org-element-create 'stm-fragment nil))
            (ast
             (org-element-create
              'org-data nil
@@ -437,7 +437,7 @@
               " "
               "")))
     (dolist (blank '("" " \t\r\n"))
-      (let* ((leaf (copy-sequence "island"))
+      (let* ((leaf (org-element-create 'stm-fragment nil))
              (ast
               (org-element-create
                'org-data nil
@@ -480,8 +480,8 @@
           before
           (let ((print-circle t))
             (prin1-to-string (org-texmacs-input-ast input))))))))
-  ;; A mapped whitespace leaf is still an island, not ignorable Org whitespace.
-  (let* ((leaf (copy-sequence " "))
+  ;; A mapped fragment is an island even when it has no source properties.
+  (let* ((leaf (org-element-create 'stm-fragment nil))
          (ast
           (org-element-create
            'org-data nil
@@ -501,7 +501,7 @@
             "\u00a0"
             (org-element-create 'bold nil "")
             (org-element-create 'line-break nil)))
-    (let* ((leaf (copy-sequence "island"))
+    (let* ((leaf (org-element-create 'stm-fragment nil))
            (ast
             (org-element-create
              'org-data nil
@@ -512,8 +512,8 @@
       (should (eq (caadr (org-texmacs-document-body result)) 'concat))
       (should
        (equal (org-texmacs-document-stm-paths result) '((0 1))))))
-  (let* ((one (copy-sequence "one"))
-         (two (copy-sequence "two"))
+  (let* ((one (org-element-create 'stm-fragment nil))
+         (two (org-element-create 'stm-fragment nil))
          (ast
           (org-element-create
            'org-data nil
@@ -529,7 +529,7 @@
      (equal (org-texmacs-document-stm-paths result) '((0 0) (0 2)))))
   ;; An unused target can disappear from output, but still makes the source
   ;; paragraph non-bare.  Do not decide eligibility from lowered parts alone.
-  (let* ((leaf (copy-sequence "island"))
+  (let* ((leaf (org-element-create 'stm-fragment nil))
          (target (org-element-create 'target '(:value "unused")))
          (ast
           (org-element-create
@@ -543,7 +543,7 @@
       (org-texmacs-document-body result)
       '(document (concat "" (math "x")))))
     (should (equal (org-texmacs-document-stm-paths result) '((0 1)))))
-  (let* ((leaf (copy-sequence "one"))
+  (let* ((leaf (org-element-create 'stm-fragment nil))
          (ast
           (org-element-create
            'org-data nil
@@ -572,7 +572,7 @@
               "\u00a0"
               (org-element-create 'bold nil "")
               (org-element-create 'target '(:value "unused"))))
-      (let* ((leaf (copy-sequence "island"))
+      (let* ((leaf (org-element-create 'stm-fragment nil))
              (ast
               (org-element-create
                'org-data
@@ -582,8 +582,8 @@
          (org-texmacs-test--lower
           ast (list (cons leaf (list tag "x"))))
          :type 'org-texmacs-document-error))))
-  (let* ((one (copy-sequence "one"))
-         (two (copy-sequence "two"))
+  (let* ((one (org-element-create 'stm-fragment nil))
+         (two (org-element-create 'stm-fragment nil))
          (ast
           (org-element-create
            'org-data nil
@@ -593,7 +593,7 @@
       ast (list (cons one '(math "x")) (cons two '(equation "y"))))
      :type 'org-texmacs-document-error))
   ;; A wrapper is authored STM, not an invitation to inspect or rewrite inside it.
-  (let* ((leaf (copy-sequence "island"))
+  (let* ((leaf (org-element-create 'stm-fragment nil))
          (tree '(with "mode" "math" (equation "x")))
          (ast
           (org-element-create
@@ -735,7 +735,7 @@
        :type 'org-texmacs-document-error))))
 
 (ert-deftest org-texmacs-document-whitespace-island-boundary ()
-  (let* ((foreign (copy-sequence "island"))
+  (let* ((foreign (org-element-create 'stm-fragment nil))
          (native '(concat " \tSTM\n" (em "  untouched  ")))
          (ast
           (org-element-create
@@ -907,7 +907,7 @@
 (ert-deftest
     org-texmacs-document-named-footnote-label-collision-and-empty
     ()
-  (let* ((island (copy-sequence "island"))
+  (let* ((island (org-element-create 'stm-fragment nil))
          (reference
           (org-element-create
            'footnote-reference '(:type standard :label "n")))
@@ -940,7 +940,7 @@
            (append
             org-texmacs-test--fragment-strees
             '((with "mode" "math" "x") "atomic" " " "")))
-    (let* ((leaf (copy-sequence "island"))
+    (let* ((leaf (org-element-create 'stm-fragment nil))
            (note
             (org-element-create
              'footnote-reference '(:type inline) " \t" leaf "\r\n"))
@@ -974,7 +974,7 @@
   '(issue10)
   (dolist (tag org-texmacs--document-display-math-tags)
     (dolist (label '(nil "n"))
-      (let* ((leaf (copy-sequence "island"))
+      (let* ((leaf (org-element-create 'stm-fragment nil))
              (note
               (org-element-create
                'footnote-reference
@@ -1004,7 +1004,7 @@
 
 (ert-deftest org-texmacs-document-island-paths-and-copies ()
   (let* ((ordinary (copy-sequence "<alpha>"))
-         (foreign (copy-sequence "<alpha>"))
+         (foreign (org-element-create 'stm-fragment nil))
          (paragraph
           (org-element-create 'paragraph nil ordinary foreign "\n"))
          (block
@@ -1121,7 +1121,7 @@
           (cdr case)))))))
 
 (ert-deftest org-texmacs-document-rejects-invalid-mappings ()
-  (let* ((leaf (copy-sequence "x"))
+  (let* ((leaf (org-element-create 'stm-fragment nil))
          (ast
           (org-element-create
            'org-data nil

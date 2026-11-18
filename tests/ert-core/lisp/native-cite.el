@@ -483,14 +483,14 @@
            "Text [cite:@one].\n\nIsland.\n\n#+print_bibliography:\n"))
          (ast (org-texmacs-input-ast input))
          (paragraphs (org-element-map ast 'paragraph #'identity))
+         (fragment (org-element-create 'stm-fragment nil))
+         (_ (org-element-set-contents (cadr paragraphs) fragment))
          (with-static
           (org-texmacs-input-create
-           ast (org-texmacs-input-info input)
+           ast
+           (org-texmacs-input-info input)
            :islands
-           (list
-            (cons
-             (car (org-element-contents (cadr paragraphs)))
-             '(label "org-texmacs-bib-1-one"))))))
+           (list (cons fragment '(label "org-texmacs-bib-1-one"))))))
     (should
      (equal
       "org-texmacs-bib-2"

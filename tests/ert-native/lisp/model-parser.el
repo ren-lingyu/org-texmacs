@@ -17,7 +17,7 @@
        (insert
         "* COMMENT Kept :noexport:\n"
         ":PROPERTIES:\n:ANY_PROPERTY: retained\n:END:\n"
-        "Body (math (frac \"α\" \"2\")).\n\n"
+        "Body $(math (frac \"α\" \"2\"))$.\n\n"
         "#+begin_texmacs\n\"原子 <alpha>\"\n#+end_texmacs\n\n"
         "#+begin_equation\n(frac \"1\" \"2\")\n#+end_equation\n")
        (let ((state
@@ -56,7 +56,7 @@
   (org-texmacs-test--with-worker
    (dolist
        (text
-        '("(math 7)\n"
+        '("$(math 7)$\n"
           "* COMMENT Excluded\n#+begin_texmacs\n(math 7)\n#+end_texmacs\n"))
      (with-temp-buffer
        (org-mode)
@@ -68,7 +68,7 @@
      (should (process-live-p worker))
      (with-temp-buffer
        (org-mode)
-       (insert "(math \"recovered\")\n")
+       (insert "$(math \"recovered\")$\n")
        (should
         (equal
          (cdar
@@ -84,8 +84,8 @@
    (with-temp-buffer
      (org-mode)
      (insert
-      "* A\nBody[fn::Inline (math \"中\\\"\\\\\")].\n\n"
-      "[fn:unused] Not selected (math (sqrt \"x\")).\n")
+      "* A\nBody[fn::Inline $(math \"中\\\"\\\\\")$].\n\n"
+      "[fn:unused] Not selected $(math (sqrt \"x\"))$.\n")
      (let ((model (org-texmacs-parse-buffer (current-buffer))))
        (should
         (equal

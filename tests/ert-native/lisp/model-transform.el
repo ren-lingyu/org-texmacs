@@ -30,7 +30,7 @@
              (org-mode)
              (insert
               "# Keep\n* COMMENT Heading\n"
-              "Before (math (frac \"1\" \"2\")).\n\n"
+              "Before $(math (frac \"1\" \"2\"))$.\n\n"
               "#+CAPTION: Caption *kept*\n#+begin_texmacs\n"
               "(math \"old\")\n#+end_texmacs\n")
              (org-texmacs-parse-buffer (current-buffer))))
@@ -73,14 +73,14 @@
    (let* ((model
            (with-temp-buffer
              (org-mode)
-             (insert "Before (math \"old\").\n")
+             (insert "Before $(math \"old\")$.\n")
              (org-texmacs-parse-buffer (current-buffer))))
           (changed
            (org-texmacs-model-replace-stm
             model
             (caar (org-texmacs-model-islands model))
             nil
-            '(frac "1" "2"))))
+            '(bad\ tag "1" "2"))))
      (should (org-texmacs-model-inspect changed))
      (should (org-texmacs-model-copy changed))
      (cl-letf (((symbol-function 'org-texmacs--worker-call)
@@ -91,19 +91,18 @@
         :type 'org-texmacs-model-serialization-error))
      (should
       (equal
-       (cdar (org-texmacs-model-islands changed)) '(frac "1" "2")))
+       (cdar (org-texmacs-model-islands changed))
+       '(bad\ tag "1" "2")))
      (should
       (equal
        (cdar (org-texmacs-model-islands model)) '(math "old"))))))
 
-(ert-deftest org-texmacs-model-native-root-change-with-captured-tags
-    ()
+(ert-deftest org-texmacs-model-native-root-change-without-tag-list ()
   (org-texmacs-test--with-worker
    (let* ((model
            (with-temp-buffer
              (org-mode)
-             (setq-local org-texmacs-fragment-tags '("math" "frac"))
-             (insert "Before (math \"old\").\n")
+             (insert "Before $(math \"old\")$.\n")
              (org-texmacs-parse-buffer (current-buffer))))
           (changed
            (org-texmacs-model-replace-stm
@@ -111,7 +110,6 @@
             (caar (org-texmacs-model-islands model))
             nil
             '(frac "1" "2"))))
-     (let ((org-texmacs-fragment-tags '("math" "frac")))
-       (org-texmacs-test--transformed-round-trip changed)))))
+     (org-texmacs-test--transformed-round-trip changed))))
 
 ;;; model-transform.el ends here

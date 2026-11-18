@@ -20,8 +20,8 @@
             (reload (expand-file-name "reload.pdf" directory))
             (payload
              (if (eq kind 'bare)
-                 "(equation* \"x=1\")"
-               "Before (math (frac \"1\" \"2\")) after"))
+                 "$(equation* \"x=1\")$"
+               "Before $(math (frac \"1\" \"2\"))$ after"))
             (inline
              (pcase kind
                ('anonymous (concat "A[fn::" payload "].\n"))
@@ -320,7 +320,7 @@
                 (if block
                     (concat
                      "#+begin_texmacs\n" text "\n#+end_texmacs\n")
-                  (concat text " \t\n"))))
+                  (concat "$" text "$ \t\n"))))
               (let ((document
                      (org-texmacs-document-from-buffer
                       (current-buffer))))
@@ -379,9 +379,9 @@
        (insert
         "#+OPTIONS: toc:nil title:nil author:nil date:nil\n#+begin_texmacs\n"
         text
-        "\n#+end_texmacs\n\n"
+        "\n#+end_texmacs\n\n$"
         text
-        "\n")
+        "$\n")
        (let ((document
               (org-texmacs-document-from-buffer (current-buffer))))
          (org-texmacs-document-save document tm)

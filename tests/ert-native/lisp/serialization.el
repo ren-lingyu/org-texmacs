@@ -440,7 +440,7 @@
              (file-name-as-directory test-directory))
        (insert
         "#+OPTIONS: toc:nil\n#+TITLE: Export\nCafé 中 <alpha> [[./file.org][File]].\n"
-        "(math \"<alpha>\")\n")
+        "$(math \"<alpha>\")$\n")
        (goto-char 4)
        (set-mark 6)
        (let ((state
@@ -630,7 +630,7 @@
    (dolist (directive '("#+INCLUDE: missing.org\n"))
      (with-temp-buffer
        (org-mode)
-       (insert directive "(math \"x\")\n")
+       (insert directive "$(math \"x\")$\n")
        (let ((file
               (expand-file-name "unsupported.tm" test-directory)))
          (cl-letf (((symbol-function 'org-texmacs--worker-request)

@@ -10,7 +10,7 @@
 
 (defun org-texmacs-test--inspection-model ()
   "Return a small independently owned model for inspection tests."
-  (let* ((leaf (copy-sequence "old STM source"))
+  (let* ((leaf (org-element-create 'stm-fragment nil))
          (paragraph
           (org-element-create 'paragraph nil "Before " leaf ".\n")))
     (org-texmacs-model-create
@@ -48,14 +48,11 @@
         nil (paragraph nil "Before " (stm (frac "1" "2")) ".\n"))))
     (should (eq ast (org-texmacs-model-ast model)))
     (should (eq parent (org-element-parent leaf)))
-    (should (equal leaf "old STM source"))
+    (should (eq (org-element-type leaf) 'stm-fragment))
     ;; The view can be edited without mutating the read-only model snapshot.
     (aset (nth 2 (nth 2 projection)) 0 ?X)
     (aset (cadr (cadr (nth 3 (nth 2 projection)))) 0 ?9)
-    (should
-     (equal
-      (org-element-contents parent)
-      '("Before " "old STM source" ".\n")))
+    (should (eq leaf (nth 1 (org-element-contents parent))))
     (should
      (equal
       (cdar (org-texmacs-model-islands model)) '(frac "1" "2")))))
@@ -63,8 +60,8 @@
 (ert-deftest
     org-texmacs-model-inspect-secondary-caption-and-block-ownership
     ()
-  (let* ((title-leaf (copy-sequence "stale title STM"))
-         (caption-leaf (copy-sequence "stale caption STM"))
+  (let* ((title-leaf (org-element-create 'stm-fragment nil))
+         (caption-leaf (org-element-create 'stm-fragment nil))
          (short (org-element-create 'italic nil "Short"))
          (block
           (org-element-create
@@ -92,7 +89,7 @@
            (list
             (cons title-leaf '(new-root "标题"))
             (cons block '(math (sqrt "x")))
-            (cons caption-leaf "atomic caption"))))
+            (cons caption-leaf '(math "caption")))))
          (view (org-texmacs-model-inspect model))
          (heading-view (nth 2 view))
          (block-view (nth 2 heading-view)))
@@ -107,7 +104,7 @@
     (should
      (equal
       (plist-get (cadr block-view) :caption)
-      '((:long ((stm "atomic caption")) :short ((italic nil "Short")))
+      '((:long ((stm (math "caption"))) :short ((italic nil "Short")))
         (:long nil :short nil))))
     (should (equal (cddr block-view) '((stm (math (sqrt "x"))))))
     (should-not (string-match-p "stale" (prin1-to-string view)))
@@ -123,7 +120,7 @@
 (ert-deftest
     org-texmacs-model-inspect-custom-secondary-and-native-properties
     ()
-  (let* ((text (copy-sequence "secondary island"))
+  (let* ((text (org-element-create 'stm-fragment nil))
          (node
           (org-element-create
            'unfamiliar-org-node
@@ -157,7 +154,7 @@
   ;; This valid supplied association need not be expressible by source discovery.
   (let* ((block
           (org-element-create
-           'src-block '(:language "scheme" :value "old STM source")))
+           'special-block '(:type "texmacs" :value "old STM source")))
          (model
           (org-texmacs-model-create
            (org-element-create 'org-data nil block)
@@ -166,7 +163,8 @@
      (equal
       (org-texmacs-model-inspect model)
       '(org-data
-        nil (src-block (:language "scheme") (stm (math "current"))))))
+        nil
+        (special-block (:type "texmacs") (stm (math "current"))))))
     (should
      (equal
       (org-element-property

@@ -361,7 +361,7 @@
     (setq-local org-export-with-author nil)
     (insert
      "#+NAME: Outer\n#+begin_theorem\nSee [[Inner]].\n\n"
-     "#+NAME: Inner\n#+begin_lemma\n[[file:note.pdf][File]] (math \"x\")\n"
+     "#+NAME: Inner\n#+begin_lemma\n[[file:note.pdf][File]] $(math \"x\")$\n"
      "#+end_lemma\n#+end_theorem\n[[Outer][Back]]\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
                (lambda (raw &rest _) (read raw))))
@@ -485,7 +485,7 @@
     (org-mode)
     (setq-local org-export-with-author nil)
     (insert
-     "#+NAME: Custom\n#+begin_custom\n(math \"x\")\n#+end_custom\n")
+     "#+NAME: Custom\n#+begin_custom\n$(math \"x\")$\n#+end_custom\n")
     (let ((org-texmacs--document-special-block-handlers
            (list
             (cons
@@ -553,7 +553,7 @@
     (with-temp-buffer
       (org-mode)
       (setq-local org-export-with-author nil)
-      (insert "#+begin_custom\n(math \"x\")\n#+end_custom\n")
+      (insert "#+begin_custom\n$(math \"x\")$\n#+end_custom\n")
       (let* ((org-export-filter-parse-tree-functions
               (and filtered (list (lambda (&rest _) nil))))
              (registry
@@ -639,10 +639,10 @@
     (org-mode)
     (setq-local org-export-with-author nil)
     (insert
-     "* Kept\n#+begin_theorem\nFirst (math \"one\")[fn:n].\n\n"
+     "* Kept\n#+begin_theorem\nFirst $(math \"one\")$[fn:n].\n\n"
      "#+begin_texmacs\n(math \"two\")\n#+end_texmacs\n#+end_theorem\n"
-     "* Omitted\n#+begin_theorem\n(math \"omitted\")\n#+end_theorem\n"
-     "[fn:n] #+begin_statement remark\nNote (math \"note\").\n#+end_statement\n")
+     "* Omitted\n#+begin_theorem\n$(math \"omitted\")$\n#+end_theorem\n"
+     "[fn:n] #+begin_statement remark\nNote $(math \"note\")$.\n#+end_statement\n")
     ;; A separate note may contain an ordinary recursive block, but the block
     ;; marker must start its own line rather than follow [fn:n] as text.
     (goto-char (point-min))
@@ -684,7 +684,7 @@
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
-    (insert "#+begin_theorem\n(math \"x\")\n#+end_theorem\n")
+    (insert "#+begin_theorem\n$(math \"x\")$\n#+end_theorem\n")
     (let ((source (current-buffer)))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _)
@@ -1050,7 +1050,7 @@
     (org-mode)
     (setq-local org-export-with-author nil)
     (insert
-     "#+BIBLIOGRAPHY: refs.bib\n#+begin_unknown\n(math \"body\")\n#+end_unknown\n")
+     "#+BIBLIOGRAPHY: refs.bib\n#+begin_unknown\n$(math \"body\")$\n#+end_unknown\n")
     (let (requests)
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (_source &optional operation)

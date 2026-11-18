@@ -4,9 +4,11 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
-     (write-region "(math \"Included\")\n" nil "part.org" nil 'silent)
+     (write-region "$(math \"Included\")$\n" nil "part.org"
+                   nil
+                   'silent)
      (insert
-      "#+MACRO: island (math \"Macro\")\n{{{island}}}\n\n#+INCLUDE: part.org\n")
+      "#+MACRO: island $(math \"Macro\")$\n{{{island}}}\n\n#+INCLUDE: part.org\n")
      (let ((source (current-buffer))
            (before (buffer-string)))
        (dolist (function

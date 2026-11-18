@@ -123,7 +123,7 @@
         expected)
     (with-temp-buffer
       (org-mode)
-      (insert "* Heading\nText (math \"x\")\n")
+      (insert "* Heading\nText $(math \"x\")$\n")
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (_source) '(math "x"))))
         (setq

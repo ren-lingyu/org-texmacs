@@ -24,9 +24,9 @@ also retains its position; proximity does not bind it to this abstract.
 
 * Reading the collection
 Org is the canonical source. Ordinary *strong text*, /emphasis/, =literal code=
-and inline mathematics such as (math (concat "x=" (frac "1" "2"))) can share
+and inline mathematics such as \((math (concat "x=" (frac "1" "2")))\) can share
 a paragraph. A named note can be cited twice[fn:source][fn:source]. An anonymous
-note can contain mathematics[fn::For instance, (math (sqrt "2")) is irrational.].
+note can contain mathematics[fn::For instance, \((math (sqrt "2"))\) is irrational.].
 
 Read about TeXmacs at [[https://www.texmacs.org][the TeXmacs project]].
 

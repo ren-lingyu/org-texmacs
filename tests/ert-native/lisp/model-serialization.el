@@ -61,12 +61,12 @@
              "#+TITLE: Native model\n# Kept comment\n\n"
              "* COMMENT Heading :noexport:\n"
              ":PROPERTIES:\n:CUSTOM_PROPERTY: kept\n:END:\n"
-             "Before (math (frac \"α\" \"中\")).\n\n"
-             "A[fn::Note (math (sqrt \"x\"))].\n\n"
+             "Before $(math (frac \"α\" \"中\"))$.\n\n"
+             "A[fn::Note $(math (sqrt \"x\"))$].\n\n"
              "#+CAPTION: Caption *kept*\n"
              "#+begin_TeXmAcS extra parameters\n"
              "(math \"old block\")\n#+end_TeXmAcS\n\n"
-             "[fn:unused] Retained (math \"unused\").\n")))
+             "[fn:unused] Retained $(math \"unused\")$.\n")))
           (before (org-texmacs-test--model-meaning model))
           output)
      (cl-letf (((symbol-function 'org-texmacs--document-lower)
@@ -124,7 +124,7 @@
   (org-texmacs-test--with-worker
    (let* ((model
            (org-texmacs-test--native-model
-            "Before (math (frac \"1\" \"2\")).\n"))
+            "Before $(math (frac \"1\" \"2\"))$.\n"))
           output)
      (unwind-protect
          (progn

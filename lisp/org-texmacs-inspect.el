@@ -136,9 +136,9 @@ third canonical AST."
        (let ((entry (gethash node islands)))
          (cond
           ((stringp node)
-           (if entry
-               (list 'stm (cdr entry))
-             (substring-no-properties node)))
+           (substring-no-properties node))
+          ((and entry (eq (org-element-type node) 'stm-fragment))
+           (list 'stm (cdr entry)))
           (t
            (append
             (list (org-element-type node) (properties node))

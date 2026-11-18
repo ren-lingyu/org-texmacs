@@ -14,7 +14,7 @@
     (insert
      "#+OPTIONS: toc:nil\n"
      "* 中\n"
-     "Text *bold* <alpha> (math \"α <alpha>\") end.\n\n"
+     "Text *bold* <alpha> $(math \"α <alpha>\")$ end.\n\n"
      "#+begin_texmacs\n"
      "(with \"mode\" \"math\" (frac \"中\" \"2\"))\n"
      "#+end_texmacs\n")
@@ -26,7 +26,7 @@
          (with-temp-buffer
            (org-mode)
            (setq-local org-export-with-author nil)
-           (insert "Text (math \"α\")\n")
+           (insert "Text $(math \"α\")$\n")
            (org-texmacs-document-from-buffer (current-buffer)))))
     (let ((session (org-texmacs-session-open)))
       (unwind-protect

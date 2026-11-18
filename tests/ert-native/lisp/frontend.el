@@ -867,7 +867,7 @@
     (with-temp-buffer
       (org-mode)
       (setq-local org-export-with-author nil)
-      (insert "Body (math \"x\").\n")
+      (insert "Body $(math \"x\")$.\n")
       (narrow-to-region 8 12)
       (let ((state
              (org-texmacs-test--document-buffer-state
@@ -1072,7 +1072,7 @@
      (org-mode)
      (setq-local org-export-with-author nil)
      (insert
-      "[fn:n] Note (math \"x\").\n\n* Keep\nBody[fn:n].\n"
+      "[fn:n] Note $(math \"x\")$.\n\n* Keep\nBody[fn:n].\n"
       "* Skip :skip:\n#+begin_texmacs\n(math\n#+end_texmacs\n")
      (let* ((options
              (list
@@ -1186,8 +1186,8 @@
      (org-mode)
      (setq-local org-export-with-author nil)
      (insert
-      "#+OPTIONS: toc:nil\n[fn:before] Note (math \"x\").\n\n* Main\n"
-      "Selected (math \"y\") [fn:before] [fn:local] [fn:inline].\n\n"
+      "#+OPTIONS: toc:nil\n[fn:before] Note $(math \"x\")$.\n\n* Main\n"
+      "Selected $(math \"y\")$ [fn:before] [fn:local] [fn:inline].\n\n"
       "[fn:local] LocalNoteSentinel.\n\n"
       "* Outside\nOutside[fn:inline:InlineNoteSentinel].\n"
       "#+begin_texmacs\n(math\n#+end_texmacs\n")
@@ -1351,8 +1351,8 @@
      (org-mode)
      (setq-local org-export-with-author nil)
      (insert
-      "#+OPTIONS: toc:nil\n[fn:before] Before (math \"x\").\n\n"
-      "* Chosen\nSelected (math \"y\") [fn:before] [fn:inline].\n"
+      "#+OPTIONS: toc:nil\n[fn:before] Before $(math \"x\")$.\n\n"
+      "* Chosen\nSelected $(math \"y\")$ [fn:before] [fn:inline].\n"
       "* Outside\nElse[fn:inline:Owned *inline* body.].\n"
       "#+begin_texmacs\n(math\n#+end_texmacs\n")
      (goto-char (point-min))

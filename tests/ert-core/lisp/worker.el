@@ -105,7 +105,7 @@
        :type 'org-texmacs-document-error))))
 
 (ert-deftest org-texmacs-test-input-ownership-and-mapping ()
-  (let* ((leaf (copy-sequence "island"))
+  (let* ((leaf (org-element-create 'stm-fragment nil))
          (bold (org-element-create 'bold nil "B"))
          (paragraph (org-element-create 'paragraph nil leaf bold))
          (ast (org-element-create 'org-data nil paragraph))
@@ -139,7 +139,8 @@
     (should
      (eq
       (plist-get (org-texmacs-input-info input) :parse-tree) new-ast))
-    (aset leaf 0 ?X)
+    (org-element-put-property leaf :post-blank 2)
+    (should-not (org-element-property :post-blank new-leaf))
     (aset (cadr stree) 0 ?y)
     (aset blanks 0 ?\s)
     (aset (car (plist-get info :custom)) 0 ?X)

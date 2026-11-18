@@ -10,7 +10,7 @@
 
 (defun org-texmacs-test--transform-model ()
   "Return a supplied model with secondary objects and forward references."
-  (let* ((leaf (copy-sequence "old inline"))
+  (let* ((leaf (org-element-create 'stm-fragment nil))
          (paragraph (org-element-create 'paragraph nil leaf))
          (caption (org-element-create 'italic nil "Caption"))
          (block
@@ -124,17 +124,9 @@
       block))
     (should (eq (org-element-parent caption) block))
     ;; Deliberate test-only mutation proves independence, not supported usage.
-    (aset
-     (car
-      (plist-get (org-texmacs-model-context copy) :fragment-tags))
-     0 ?X)
     (aset (cadr (cdar (org-texmacs-model-islands copy))) 0 ?X)
-    (should
-     (equal
-      (plist-get
-       (org-texmacs-model-context model)
-       :fragment-tags)
-      '("math")))
+    (should-not
+     (plist-member (org-texmacs-model-context copy) :fragment-tags))
     (should
      (equal
       (cdar (org-texmacs-model-islands model)) '(math "inline")))))
@@ -193,35 +185,21 @@
      :type 'org-texmacs-model-error)
     (should (org-texmacs-model-copy changed))))
 
-(ert-deftest
-    org-texmacs-model-replace-stm-root-atom-and-borrowed-subtree
-    ()
+(ert-deftest org-texmacs-model-replace-stm-with-borrowed-subtree ()
   (let* ((model (org-texmacs-test--transform-model))
          (node (caar (org-texmacs-model-islands model)))
          (borrowed
           (cadr (cdr (nth 1 (org-texmacs-model-islands model)))))
          (changed
-          (org-texmacs-model-replace-stm model node nil borrowed))
-         (atom-model
-          (org-texmacs-model-replace-stm
-           changed
-           (caar (org-texmacs-model-islands changed))
-           nil
-           "atom 中")))
+          (org-texmacs-model-replace-stm model node nil borrowed)))
     (should
      (equal
       (cdar (org-texmacs-model-islands changed))
       '(frac "1" (sqrt "x"))))
-    (should
-     (equal (cdar (org-texmacs-model-islands atom-model)) "atom 中"))
     (org-texmacs-test--models-disjoint model changed)
-    (org-texmacs-test--models-disjoint changed atom-model)
     (should-error
      (org-texmacs-model-replace-stm
-      atom-model
-      (caar (org-texmacs-model-islands atom-model))
-      '(0)
-      "x")
+      changed (caar (org-texmacs-model-islands changed)) '(0 0) "x")
      :type 'org-texmacs-model-error)))
 
 (ert-deftest

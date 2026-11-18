@@ -7,7 +7,7 @@
    (with-temp-buffer
      (org-mode)
      (insert
-      "* Selected\nFirst[fn:n], again[fn:n].\n** Destination\n[[*Destination]].\n* Other\n\n[fn:n] External (math (sqrt \"x\")).\n")
+      "* Selected\nFirst[fn:n], again[fn:n].\n** Destination\n[[*Destination]].\n* Other\n\n[fn:n] External $(math (sqrt \"x\"))$.\n")
      (goto-char (point-min))
      (let* ((org-export-use-babel nil)
             (input (org-texmacs--standard-consume 'input t))
@@ -43,7 +43,7 @@
         "#+TITLE: Setup title\n#+OPTIONS: toc:nil num:nil author:nil date:nil\n"))
      (with-temp-file leaf
        (insert
-        "omittedtoken\n* Included\n[[file:asset.pdf][asset]] (math (sqrt \"x\")).\n"))
+        "omittedtoken\n* Included\n[[file:asset.pdf][asset]] $(math (sqrt \"x\"))$.\n"))
      (with-temp-file middle
        (insert
         "#+INCLUDE: \"sub/leaf.org\" :lines \"2-\" :minlevel 2\n"))

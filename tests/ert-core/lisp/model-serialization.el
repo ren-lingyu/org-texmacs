@@ -63,7 +63,7 @@
       (setq parsed
             (org-texmacs-test--parse-model-text
              (concat
-              "Before (math \"inline\").\n\n"
+              "Before $(math \"inline\")$.\n\n"
               "#+CAPTION: Caption\n#+begin_texmacs\n"
               "(math \"old\")\n#+end_texmacs\n"))))
     (let* ((replacement
@@ -71,7 +71,7 @@
              (lambda (entry)
                (cons
                 (car entry)
-                (if (consp (car entry))
+                (if (eq (org-element-type (car entry)) 'special-block)
                     '(frac "new" "2")
                   (cdr entry))))
              (org-texmacs-model-islands parsed)))
@@ -80,17 +80,17 @@
              (org-texmacs-model-ast parsed)
              :islands replacement
              :context
-             (org-texmacs-model-context parsed)))
-           calls)
+             (org-texmacs-model-context parsed))))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _)
                    (ert-fail "Output guard reparsed STM")))
                 ((symbol-function 'org-texmacs--worker-serialize-stm)
-                 (lambda (tree)
-                   (push tree calls)
-                   (prin1-to-string tree))))
+                 (lambda (&rest _)
+                   (ert-fail "Serialization invoked a worker"))))
         (let ((output (org-texmacs-model-serialize model)))
-          (should (= (length calls) 2))
+          (should
+           (string-match-p
+            (regexp-quote "\\((math \"inline\")\\)") output))
           (should (string-match-p "frac \"new\" \"2\"" output))
           (should-not (string-match-p "old" output))
           (should
@@ -144,7 +144,7 @@
   (let* ((base (org-texmacs-test--parse-model-text "Text.\n"))
          (context (org-texmacs-model-context base)))
     (dolist (position '(paragraph headline))
-      (let* ((leaf (copy-sequence "old"))
+      (let* ((leaf (org-element-create 'stm-fragment nil))
              (node
               (if (eq position 'headline)
                   (org-element-create
@@ -159,8 +159,8 @@
                 (cons
                  leaf
                  (if (eq position 'headline)
-                     '(math "title")
-                   '(frac "1" "2")))))))
+                     '(math (bad\ tag "title"))
+                   '(bad\ tag "2")))))))
         (cl-letf (((symbol-function
                     'org-texmacs--worker-serialize-stm)
                    (lambda (&rest _)
@@ -219,7 +219,7 @@
             (org-element-create
              'org-data nil
              (org-element-create
-              'paragraph nil "(math \"unmapped\")\n"))
+              'paragraph nil "$(math \"unmapped\")$\n"))
             :context context)))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _)

@@ -159,9 +159,13 @@ Options are not interpreted; no selection, hooks, Cite or source preparation."
      syntax
      "\n")))
 
-(defun org-texmacs-test--issue13-input (handler &optional islands)
-  "Build an owned custom-block input using HANDLER and optional ISLANDS."
-  (let* ((paragraph (org-element-create 'paragraph nil "Text"))
+(defun org-texmacs-test--issue13-input (handler &optional tree)
+  "Build an owned custom-block input using HANDLER and optional STM TREE."
+  (let* ((fragment
+          (when tree
+            (org-element-create 'stm-fragment nil)))
+         (paragraph
+          (org-element-create 'paragraph nil (or fragment "Text")))
          (block
           (org-element-create
            'special-block '(:type "custom") paragraph))
@@ -171,9 +175,8 @@ Options are not interpreted; no selection, hooks, Cite or source preparation."
      (list
       :texmacs-special-block-handlers (list (cons "custom" handler)))
      :islands
-     (and islands
-          (list
-           (cons (car (org-element-contents paragraph)) islands))))))
+     (when fragment
+       (list (cons fragment tree))))))
 
 (defconst org-texmacs-test--issue13-stage3-graphic
   '(with

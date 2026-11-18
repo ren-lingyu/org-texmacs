@@ -56,7 +56,7 @@
           (org-element-create
            'link '(:type "file" :path "asset.pdf")))
          (bold (org-element-create 'bold nil file))
-         (island (copy-sequence "STM"))
+         (island (org-element-create 'stm-fragment nil))
          (ast
           (org-element-create
            'org-data nil

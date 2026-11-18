@@ -381,8 +381,16 @@ If text changes while waiting for the worker, the call reports an error and
 does not cache the old result.  Obtain a fresh block and call again.
 
 * Fragment formulas
-** Usage
-Write fragments directly in paragraph text using a configured TeXmacs root:
+** Explicit carriers
+Wrap one compound STM tree in =$(...)$= or =\((...)\)= for model parsing and
+standard Export. For example, write =\((math (frac "1" "2"))\)= in prose or
+a link description. Any root tag can reach the native STM parser. Native
+Org container boundaries and opaque regions still apply.
+
+** Legacy discovery syntax
+The span commands and editor highlighting below still use the configured
+bare source syntax. Model parsing and standard Export consume explicit
+carriers.
 
 #+begin_src org
   A (math (frac "1" "2")) B
@@ -646,18 +654,19 @@ Org source buffer, using native STM parsing without document lowering.
 
 #+begin_src emacs-lisp
   (require 'org-texmacs-model)
-  (let* ((leaf (copy-sequence "island"))
+  (let* ((fragment (org-element-create 'stm-fragment nil))
          (ast (org-element-create
-               'org-data nil (org-element-create 'paragraph nil leaf)))
+               'org-data nil (org-element-create 'paragraph nil fragment)))
          (model (org-texmacs-model-create
-                 ast :islands (list (cons leaf '(math (frac "1" "2")))))))
+                 ast :islands (list (cons fragment '(math (frac "1" "2")))))))
     (org-texmacs-model-islands model))
 #+end_src
 
 =org-texmacs-model-create AST :islands ISLANDS :context CONTEXT= copies the
 =org-data= AST, rebuilds parent links and remaps identity-keyed islands to the
-owned nodes.  Secondary strings and captions are included.  Each island value
-is a parsed STM tree, including a possible atomic string leaf.  Invalid trees,
+owned nodes.  Use a nonrecursive =stm-fragment= object for an inline island and
+the native block node for a block island. Secondary strings and captions are
+included. Each island value is a parsed STM tree. Invalid trees,
 cycles, multiply owned nodes, detached or duplicate keys, overlapping islands,
 deferred properties and opaque runtime objects signal =org-texmacs-model-error=.
 The constructor does not scan source text, start a worker, allocate output
@@ -679,7 +688,8 @@ Read-only structure slots do not enforce deep immutability.
 
 CONTEXT is an explicit plist of resolved syntax/source data.  Its accepted keys
 are =:fragment-tags=, =:heading-settings=, =:link-settings=, =:source-file= and
-=:resource-base=.  Values are owned without reading ambient settings or files.
+=:resource-base=. The constructor validates and discards legacy
+=:fragment-tags= inputs. Values are owned without reading ambient settings or files.
 The model does not capture export INFO, style, initial environment, bibliography
 output or reference allocation.
 
@@ -695,13 +705,18 @@ It does not interpret narrowing as body selection or run export pruning.
     (org-texmacs-model-islands model))
 #+end_src
 
-The adapter recognizes the existing =texmacs=, =equation= and =equation*= raw
-blocks and configured paragraph/direct-inline-footnote fragments.  Titles,
-captions, emphasis, table cells and code retain ordinary Org interpretation;
-STM-looking text in those contexts does not become an island.  Block parameters
-and affiliated properties are preserved without applying TeXmacs lowering's
-restrictions.  Raw block parsing residue is removed after association; its STM
-tree owns the mathematical content.
+Use an explicit =$(math "x")$= or =\((math "x")\)= carrier for inline STM.
+Recognition follows Org's native LaTeX-fragment placement and composition rules,
+including supported titles, captions, link descriptions and table cells.
+Opaque Org regions and bare S-expressions retain their ordinary Org
+interpretation. The adapter also recognizes raw =texmacs=, =equation= and
+=equation*= blocks with their parameters and affiliation. The owned fragments
+retain their structure and spacing while their island trees hold the parsed STM.
+
+For migration, wrap previously bare STM in an explicit carrier and use
+=stm-fragment= nodes in supplied island mappings. Construct the complete model
+with =org-texmacs-parse-buffer= or =org-texmacs-model-create=. These replace
+the temporary Extended Org AST entry points introduced during Node 1.
 
 Native block boundaries follow Org syntax.  An unindented headline ends its
 section, so a block opener before that headline cannot enclose text after it.
@@ -859,7 +874,7 @@ The first output profile requires the recorded syntax context captured by
 =org-texmacs-parse-buffer=.  A model constructed from supplied native structures
 must also supply suitable context to serialize; omitting it does not invalidate
 the model.  Plain Org strings do not carry all buffer-local syntax settings.
-The buffer convenience entry installs the captured syntax, fragment tags, link
+The buffer convenience entry installs the captured syntax, link
 names/abbreviations and resource directory before inserting text.  It keeps
 currently available link handlers; the model does not retain old handler code.
 The new buffer does not visit the original file or run mode hooks, INCLUDE,
@@ -868,20 +883,17 @@ SETUPFILE, Babel, Cite processors or export filters.
 Supported output includes native headings/sections, paragraphs and common inline
 objects, lists, footnotes, keywords, comments, property drawers, static code,
 ordinary tables and containers.  STM islands must occupy native
-=texmacs=/=equation=/=equation*= blocks or the recognized paragraph/direct-inline-
-footnote positions.  Supplied islands in titles, captions or other positions can
-remain valid models while their serialization fails explicitly.  Unknown Org
+=texmacs=/=equation=/=equation*= blocks or a representable inline Org position.
+Serialization emits the =\((...)\)= carrier. A supplied island can remain
+valid when its STM tree cannot be embedded in a particular Org container.  Unknown Org
 extension types and properties that native Org syntax cannot preserve also fail.
 
 Serialization restores authoritative trees on an independent Org copy and uses
 =org-element-interpret-data=.  Block metadata and captions remain attached;
 old mathematical source and parsing residue cannot overwrite current trees.
-STM output uses TeXmacs's native =texmacs->stm= serializer through a separate
-worker operation, with native source round-trip validation.  It escapes actual
-newlines, returns and tabs to produce single-line source; leaf contents remain
-unchanged when parsed.  Tags that cannot round-trip through native STM source
-are rejected.  Unicode string leaves and source-expressible Unicode tag names
-are preserved.  Models without islands need no native process.
+A pure writer encodes STM strings and supported tags without a native worker.
+It escapes actual newlines, returns and tabs to produce single-line source.
+Unrepresentable STM symbols or Org placements report serialization errors.
 
 The generated Org text is parsed privately under the captured syntax to check
 structure and island placement, associating already known STM trees without
@@ -893,15 +905,15 @@ The independent test comparison and normalization-idempotence checks do not use
 the human inspection view as their semantic definition.
 
 Invalid models signal =org-texmacs-model-error=.  Unsupported or lossy output
-signals =org-texmacs-model-serialization-error= with an AST path; transport
-failures retain =org-texmacs-worker-error=.  Serialization returns no partial
+signals =org-texmacs-model-serialization-error=. Island diagnostics can carry
+the reason, AST path and STM tag. Serialization returns no partial
 text on failure, and buffer construction starts only after successful output.
 An initialization failure removes the newly allocated buffer.
 
 * Standard Org Export integration status
 The standard backend runs through =(org-export-as 'texmacs)= and consumes its
-prepared AST in the live export context. It recognizes configured paragraph and
-direct-inline-footnote STM and native =texmacs=/=equation=/=equation*= bodies from the final AST,
+prepared AST in the live export context. It consumes explicit STM fragments
+and native =texmacs=/=equation=/=equation*= bodies from the final AST,
 including macro, Babel and recursive INCLUDE results.  Org logical exclusions
 are projected by identity before STM discovery, and consumed configuration
 directives remain represented by their effective INFO values.  Full, subtree,
@@ -918,8 +930,9 @@ The adapter resolves deferred properties while the export buffer is live,
 copies the final tree, and parses complete STM once with TeXmacs.  Its model
 owns the Org nodes and island mappings without retaining full INFO or relying
 on source positions.  Legal AST filters can insert, delete, move and replace
-supported nodes.  Adjacent text leaves can supply synthetic inline STM; a
-synthetic native block can supply structured contents or a complete
+supported nodes. A filter can supply inline STM through a =stm-fragment=
+object carrying complete =:stm-source= text. A synthetic native block can
+supply structured contents or a complete
 =:texmacs-source= string property.  That explicit property supplies its native
 body, while the Org node retains its type and affiliation.
 
@@ -2112,8 +2125,9 @@ The default =org-texmacs-format-headline-function= is
 =org-texmacs-format-headline-default-function=.  It joins a strong TODO/DONE
 keyword, literal priority cookie, lowered title parts and a literal tag
 string, separated by spaces.  One part is returned directly; multiple parts
-get one =concat= wrapper without merging adjacent strings.  TODO and DONE
-use the same presentation.  All new leaves use Org literal encoding semantics.
+get one =concat= wrapper without merging adjacent strings. TODO and DONE use
+the same presentation. Default formatting preserves authored STM provenance in
+the title. Metadata added by the formatter uses Org literal encoding.
 
 Custom formatters receive six arguments:
 
@@ -2740,23 +2754,3 @@ participate in formatting.  Patch files, =LICENSE= and =flake.lock= are excluded
 Git flake inputs omit untracked files.  When checking new files before staging,
 use an explicit =path:.= flake input, such as
 =nix flake check --no-write-lock-file path:.=.
-
-* Extended Org AST API
-The independent AST entry point recognizes explicit STM carriers such as
-=$(math "x")$= and =\((math "x")\)=.  It does not change the existing
-model parser, fragment discovery or Export entry points yet.
-
-=(org-texmacs-ast-parse-buffer SOURCE-BUFFER)= returns a caller-owned complete
-Org AST with nonrecursive =stm-fragment= objects.  It preserves the source
-buffer state and does not start TeXmacs or run Export preparation.  Recognition
-uses native Org LaTeX-fragment positions and composition rules; code, verbatim
-and literal blocks remain opaque.  Recognized incomplete carriers signal
-=org-texmacs-parse-error=.  Native STM validation is a separate conversion step.
-
-Use =(org-texmacs-call-with-ast-context FUNCTION)= around generic Org traversal,
-copy and interpretation of these ASTs.  Registration is synchronous and local;
-Org copy is not a model ownership guarantee: its custom root metadata values
-may be shared with the original AST.  The root =:org-texmacs-syntax=
-metadata owns captured heading and link syntax, independently of the source
-buffer.  It is not document content.  Full normalized source output and model
-adapters are separate facilities, not provided by these two entry points.

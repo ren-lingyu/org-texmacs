@@ -557,22 +557,21 @@ Associate recognized SOURCES with known trees; do not invoke the STM parser."
 (defun org-texmacs-model-serialize (model)
   "Return normalized Org text for supported MODEL, preserving its structure.
 Require recorded syntax context, as captured by `org-texmacs-parse-buffer'.
-Only native blocks and paragraph/direct-inline-footnote island positions are
-expressible in this first profile.  Native STM source uses single-line control
-escapes, preserving leaf contents.  Other valid models may be unsupported.
+Emit explicit STM carriers and native blocks from the current island trees.
+Source representability depends on the STM encoding and Org container.
 
 Operate on an independent copy.  Recheck Org under recorded syntax, reusing
-known STM trees without worker parsing.  Native STM serialization verifies
-its source boundary.  No lowering, export preparation, Cite, Babel or file
+known STM trees without invoking a worker.  No lowering, export preparation,
+Cite, Babel or file
 acquisition runs.  Unsupported output signals
 `org-texmacs-model-serialization-error'; invalid models signal
-`org-texmacs-model-error'.  Native transport errors keep their conditions.
+`org-texmacs-model-error'.
 Return no partial text on failure."
-  (org-texmacs--serialize-model model))
+  (org-texmacs--serialize-object-model model))
 
 (defun org-texmacs--serialize-object-model (model)
   "Serialize MODEL with object islands through the internal pure path."
-  (org-texmacs-call-with-ast-context
+  (org-texmacs--call-with-ast-context
    (lambda () (org-texmacs--serialize-model model t))))
 
 (defun org-texmacs--serialize-model (model &optional object-islands)
@@ -623,7 +622,7 @@ allocating the output buffer; clean up a new buffer on initialization failure."
   (unless (or (null name) (stringp name))
     (org-texmacs--serialize-fail "Expected an Org buffer name"))
   (let* ((text (org-texmacs-model-serialize model))
-         (context (org-texmacs--serialize-context model))
+         (context (org-texmacs--serialize-context model t))
          (buffer (generate-new-buffer (or name "*org-texmacs-org*")))
          complete)
     (unwind-protect

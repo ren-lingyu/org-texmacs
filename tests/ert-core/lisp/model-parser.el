@@ -64,13 +64,13 @@
     (with-temp-buffer
       (org-mode)
       (insert
-       "Before (math (frac \"1\" \"2\")).\n\n"
-       "A[fn::Inside (math \"note\")].\n\n"
+       "Before $(math (frac \"1\" \"2\"))$.\n\n"
+       "A[fn::Inside $(math \"note\")$].\n\n"
        "#+NAME: raw\n#+CAPTION: Caption (math \"ordinary\")\n"
        "#+begin_TeXmAcS extra parameters\n"
        "(math \"raw\n * not a headline\n#+INCLUDE: not-read.org\")\n"
        "#+end_TeXmAcS\n\n"
-       "[fn:unused] Another (math \"unused\").\n")
+       "[fn:unused] Another $(math \"unused\")$.\n")
       (let ((state
              (org-texmacs-test--document-buffer-state
               (current-buffer))))
@@ -162,7 +162,7 @@
      "| Cell (math \"cell\") |\n\n"
      "#+CAPTION: Caption (math \"caption\")\n| Data |\n\n"
      "#+begin_src scheme\n(math \"code\")\n#+end_src\n\n"
-     "Plain (math \"recognized\").\n")
+     "Plain $(math \"recognized\")$.\n")
     (let (calls)
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (raw &optional _syntax)
@@ -189,7 +189,7 @@
       (setq-local org-link-abbrev-alist-local
                   '(("local" . "model-test:%s")))
       (insert
-       "*** FINISHED Heading\n[[local:item][Link]] (math \"x\").\n")
+       "*** FINISHED Heading\n[[local:item][Link]] $(math \"x\")$.\n")
       (let ((regexes
              (list
               org-link-types-re
@@ -231,11 +231,10 @@
 (ert-deftest
     org-texmacs-model-parse-guards-source-and-syntax-across-waits
     ()
-  (dolist (change
-           '(text mode bounds file directory tags headings links))
+  (dolist (change '(text mode bounds file directory headings links))
     (with-temp-buffer
       (org-mode)
-      (insert "(math \"x\")\n")
+      (insert "$(math \"x\")$\n")
       (let ((source (current-buffer)))
         (cl-letf (((symbol-function 'org-texmacs--worker-request)
                    (lambda (_raw &optional _syntax)
@@ -250,8 +249,6 @@
                           (setq buffer-file-name
                                 "/tmp/model-changed.org"))
                          ('directory (setq default-directory "/tmp/"))
-                         ('tags
-                          (setq-local org-texmacs-fragment-tags nil))
                          ('headings
                           (setq-local org-odd-levels-only
                                       (not org-odd-levels-only)))
@@ -270,7 +267,7 @@
 (ert-deftest org-texmacs-model-parse-ignores-export-only-settings ()
   (with-temp-buffer
     (org-mode)
-    (insert "(math \"x\")\n")
+    (insert "$(math \"x\")$\n")
     (let ((source (current-buffer)))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (_raw &optional _syntax)
@@ -287,7 +284,7 @@
         (progn
           (with-current-buffer source
             (org-mode)
-            (insert "(math \"x\")\n"))
+            (insert "$(math \"x\")$\n"))
           (cl-letf (((symbol-function 'org-texmacs--worker-request)
                      (lambda (&rest _)
                        (kill-buffer source)
@@ -311,12 +308,7 @@
         (kill-buffer source))))
   (with-temp-buffer
     (org-mode)
-    (insert "(math \"x\")\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (&rest _) '(frac "1" "2"))))
-      (should-error
-       (org-texmacs-parse-buffer (current-buffer))
-       :type 'org-texmacs-parse-error))
+    (insert "$(math \"x\")$\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
                (lambda (&rest _)
                  (signal 'org-texmacs-parse-error '("Invalid")))))
@@ -345,7 +337,7 @@
     ()
   (with-temp-buffer
     (org-mode)
-    (insert "(math \"first\") (math \"second\")\n")
+    (insert "$(math \"first\")$ $(math \"second\")$\n")
     (let ((create (symbol-function 'org-texmacs-model-create))
           (calls 0)
           (fail-second t)

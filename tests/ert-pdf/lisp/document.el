@@ -102,7 +102,7 @@
     ()
   :tags
   '(issue11)
-  (let* ((leaf (copy-sequence "island"))
+  (let* ((leaf (org-element-create 'stm-fragment nil))
          (link
           (org-element-create
            'link '(:type "file" :path "asset.pdf")))
@@ -140,7 +140,7 @@
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)
-     (insert "Before (equation \"x\") after.\n")
+     (insert "Before $(equation \"x\")$ after.\n")
      (let ((before
             (org-texmacs-test--document-buffer-state
              (current-buffer)))

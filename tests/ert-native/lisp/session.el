@@ -79,7 +79,7 @@
            (should (org-texmacs--session-live-p session))
            (with-temp-buffer
              (org-mode)
-             (insert "Text (math \"α <alpha>\")\n")
+             (insert "Text $(math \"α <alpha>\")$\n")
              (let* ((document
                      (org-texmacs-document-from-buffer
                       (current-buffer)))

@@ -140,19 +140,15 @@
     (org-element-set-contents caption '("Changed"))
     (should
      (equal (cdar (org-texmacs-model-islands model)) '(frac "1" "2")))
-    (should
-     (equal
-      (plist-get
-       (org-texmacs-model-context model)
-       :fragment-tags)
-      '("math")))
+    (should-not
+     (plist-member (org-texmacs-model-context model) :fragment-tags))
     (should (equal (org-element-contents new-title) '("Title")))
     (should (equal (org-element-contents new-caption) '("Caption")))))
 
 (ert-deftest
     org-texmacs-model-construction-does-not-check-expressibility
     ()
-  (let* ((leaf (copy-sequence "(math old)"))
+  (let* ((leaf (org-element-create 'stm-fragment nil))
          (heading
           (org-element-create
            'headline (list :level 1 :title (list leaf))))
@@ -183,16 +179,7 @@
        (org-element-property
         :title
         (car
-         (org-element-contents (org-texmacs-model-ast model))))))))
-  ;; Atomic STM trees are valid too; no source spelling is consulted.
-  (let* ((block
-          (org-element-create 'special-block '(:type "texmacs")))
-         (model
-          (org-texmacs-model-create
-           (org-element-create 'org-data nil block)
-           :islands (list (cons block "atom 中")))))
-    (should
-     (equal (cdar (org-texmacs-model-islands model)) "atom 中"))))
+         (org-element-contents (org-texmacs-model-ast model)))))))))
 
 (ert-deftest org-texmacs-model-remaps-forward-property-references ()
   (let* ((first (org-element-create 'paragraph nil "First"))
@@ -208,12 +195,16 @@
         (cadr children))))))
 
 (ert-deftest org-texmacs-model-rejects-invalid-island-ownership ()
-  (let* ((leaf (copy-sequence "island"))
-         (paragraph (org-element-create 'paragraph nil leaf))
+  (let* ((leaf (org-element-create 'stm-fragment nil))
+         (text (copy-sequence "literal"))
+         (paragraph (org-element-create 'paragraph nil leaf text))
          (ast (org-element-create 'org-data nil paragraph)))
     (dolist (mapping
              (list
-              (list (cons (copy-sequence "island") '(math "x")))
+              (list (cons leaf '(math "x")) (cons text '(math "x")))
+              (list
+               (cons
+                (org-element-create 'stm-fragment nil) '(math "x")))
               (list
                (cons leaf '(math "x")) (cons leaf '(math "y")))
               (list (cons leaf '(math 7)))
@@ -231,7 +222,7 @@
        :type 'org-texmacs-model-error))))
 
 (ert-deftest org-texmacs-model-block-caption-is-outside-opaque-body ()
-  (let* ((caption (copy-sequence "caption island"))
+  (let* ((caption (org-element-create 'stm-fragment nil))
          (block
           (org-element-create
            'special-block
@@ -300,7 +291,7 @@
      :type 'org-texmacs-document-error)))
 
 (ert-deftest org-texmacs-model-and-export-share-owned-identities ()
-  (let* ((leaf (copy-sequence "island"))
+  (let* ((leaf (org-element-create 'stm-fragment nil))
          (ast
           (org-element-create
            'org-data nil

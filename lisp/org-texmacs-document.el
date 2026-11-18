@@ -252,26 +252,38 @@ Omitted keys select fixed defaults, never current dynamic settings."
               '("Invalid file link policies")))
     (cons absolute pdf)))
 
+(defun org-texmacs--document-headline-components
+    (todo priority title-parts tags wrap)
+  "Add headline metadata around TITLE-PARTS, applying WRAP to added trees."
+  (append
+   (when todo
+     (list (funcall wrap (list 'strong todo)) (funcall wrap " ")))
+   (when priority
+     (list
+      (funcall wrap
+               (concat "[#" (org-priority-to-string priority) "]"))
+      (funcall wrap " ")))
+   title-parts
+   (when tags
+     (list
+      (funcall wrap " ") (funcall wrap (org-make-tag-string tags))))))
+
 (defun org-texmacs-format-headline-default-function
     (todo _todo-type priority title-parts tags _info)
   "Return a fresh text title stree without side effects.
 TODO becomes strong text, PRIORITY a literal cookie, and TAGS an explicit
 tag string.  Preserve TITLE-PARTS without merging adjacent text."
   (let ((parts
-         (append
-          (and todo (list (list 'strong todo) " "))
-          (and priority
-               (list
-                (concat
-                 "[#"
-                 (org-priority-to-string priority) "]")
-                " "))
-          title-parts
-          (and tags (list " " (org-make-tag-string tags))))))
+         (org-texmacs--document-headline-components
+          todo priority title-parts tags #'identity)))
     (org-texmacs--document-copy-stree
      (if (= (length parts) 1)
          (car parts)
        (cons 'concat parts)))))
+
+(defconst org-texmacs--document-default-headline-formatter
+  (symbol-function 'org-texmacs-format-headline-default-function)
+  "Default formatter definition for provenance-preserving lowering.")
 
 (defun org-texmacs--document-date-timestamp-text (raw)
   "Return RAW date metadata timestamp text unchanged.
@@ -2066,13 +2078,11 @@ for consumers.  Final handlers must preserve contents identity and provenance."
         (let ((entry (assq node islands)))
           (cond
            (entry
-            (unless (and (stringp node)
-                         (memq context '(paragraph footnote)))
+            (unless (eq (org-element-type node) 'stm-fragment)
               (org-texmacs--document-fail
-               node "Island outside paragraph or footnote text"))
-            ;; An island is opaque, even if its root is an atomic string.
+               node "Expected an STM fragment"))
             (setcar space nil)
-            (list (island node entry)))
+            (cons (island node entry) (blank node space)))
            ((stringp node)
             (list (text node space)))
            ((and (consp node) (eq (org-element-type node) 'entity))
@@ -2520,7 +2530,7 @@ for consumers.  Final handlers must preserve contents identity and provenance."
          ;; itself lower to an empty or whitespace-only atomic string.
          (dolist (child contents)
            (cond
-            ((and (stringp child) (assq child islands))
+            ((assq child islands)
              (if bare
                  (setq other t)
                (setq bare child)))
@@ -2531,7 +2541,7 @@ for consumers.  Final handlers must preserve contents identity and provenance."
          (if (and bare (not other) (not marker))
              (island bare (assq bare islands))
            (dolist (child contents)
-             (let ((entry (and (stringp child) (assq child islands))))
+             (let ((entry (assq child islands)))
                (when (and entry
                           (consp (cdr entry))
                           (memq
@@ -2750,23 +2760,43 @@ for consumers.  Final handlers must preserve contents identity and provenance."
        (let* ((parts (headline-parts node toc ancestors))
               (todo
                (and (plist-get info :with-todo-keywords)
-                    (org-element-property :todo-keyword node))))
-         (org-texmacs--document-create
-          :body
-          (org-texmacs--document-copy-stree
-           (funcall headline-formatter
-                    (and todo (substring-no-properties todo))
-                    (and todo (org-element-property :todo-type node))
-                    (and (plist-get info :with-priority)
-                         (org-element-property :priority node))
-                    (mapcar #'org-texmacs-document-body parts)
-                    (and (if toc
-                             (eq (plist-get info :with-tags) t)
-                           (plist-get info :with-tags))
-                         (mapcar
-                          #'substring-no-properties
-                          (org-element-property :tags node)))
-                    info)))))
+                    (org-element-property :todo-keyword node)))
+              (priority
+               (and (plist-get info :with-priority)
+                    (org-element-property :priority node)))
+              (tags
+               (and (if toc
+                        (eq (plist-get info :with-tags) t)
+                      (plist-get info :with-tags))
+                    (mapcar
+                     #'substring-no-properties
+                     (org-element-property :tags node)))))
+         (if (eq
+              (indirect-function headline-formatter)
+              org-texmacs--document-default-headline-formatter)
+             (let ((components
+                    (org-texmacs--document-headline-components
+                     (and todo (substring-no-properties todo))
+                     priority
+                     parts
+                     tags
+                     (lambda
+                       (tree)
+                       (org-texmacs--document-create :body tree)))))
+               (if (cdr components)
+                   (org-texmacs--document-pack 'concat components)
+                 (car components)))
+           (org-texmacs--document-create
+            :body
+            (org-texmacs--document-copy-stree
+             (funcall
+              headline-formatter
+              (and todo (substring-no-properties todo))
+              (and todo (org-element-property :todo-type node))
+              priority
+              (mapcar #'org-texmacs-document-body parts)
+              tags
+              info))))))
       (toc-entry
        (mapping ancestors)
        (let* ((node (car mapping))

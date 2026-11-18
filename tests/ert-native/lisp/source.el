@@ -141,7 +141,7 @@
      "#+AUTHOR: Author\n"
      "#+DATE: 2026\n"
      "#+OPTIONS: author:nil\n"
-     "Body (math \"x\")\n")
+     "Body $(math \"x\")$\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
                (lambda (source)
                  (should (equal source "(math \"x\")"))
@@ -269,7 +269,7 @@
     (org-mode)
     (setq-local org-export-with-author nil)
     (insert
-     "#+OPTIONS: todo:nil tags:nil toc:nil\n* TODO Title :tag:\n(math \"x\")\n")
+     "#+OPTIONS: todo:nil tags:nil toc:nil\n* TODO Title :tag:\n$(math \"x\")$\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
                (lambda (_source)
                  (setq-local
@@ -306,16 +306,7 @@
         (should-not
          (string-match-p
           "code\\|bold\\|link"
-          (org-texmacs-fragment-span-source (car spans)))))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (_source) '(math "accepted"))))
-        (should
-         (= (length
-             (org-texmacs-document-stm-paths
-              (org-texmacs-document
-               (org-texmacs-test--input-from-model
-                (org-texmacs-parse-buffer (current-buffer))))))
-            1)))))
+          (org-texmacs-fragment-span-source (car spans)))))))
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
@@ -357,9 +348,9 @@
           (should-error
            (org-texmacs-fragment-at-point 1)
            :type 'org-texmacs-error)
-          (should-error
-           (org-texmacs-document-from-buffer (current-buffer))
-           :type 'org-texmacs-error))
+          (should-not
+           (org-texmacs-model-islands
+            (org-texmacs-parse-buffer (current-buffer)))))
         (should
          (equal
           before

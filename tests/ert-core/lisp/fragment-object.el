@@ -9,15 +9,15 @@
     (delay-mode-hooks
       (org-mode))
     (insert source)
-    (org-texmacs-ast-parse-buffer (current-buffer))))
+    (org-texmacs--ast-parse-buffer (current-buffer))))
 
 (defun org-texmacs-object-test--fragments (ast)
-  (org-texmacs-call-with-ast-context
+  (org-texmacs--call-with-ast-context
    (lambda ()
      (org-element-map ast 'stm-fragment #'identity nil nil nil t))))
 
 (defun org-texmacs-object-test--render (ast)
-  (org-texmacs-call-with-ast-context
+  (org-texmacs--call-with-ast-context
    (lambda () (org-element-interpret-data ast))))
 
 (ert-deftest org-texmacs-object-carriers-and-native-fallback ()
@@ -211,10 +211,10 @@
               (symbol-function
                'org-element-stm-fragment-interpreter))))
     (should-error
-     (org-texmacs-call-with-ast-context
+     (org-texmacs--call-with-ast-context
       (lambda ()
         (should (memq 'stm-fragment org-element-all-objects))
-        (org-texmacs-call-with-ast-context
+        (org-texmacs--call-with-ast-context
          (lambda ()
            (should
             (= 1 (cl-count 'stm-fragment org-element-all-objects)))
@@ -259,7 +259,7 @@
            (= 1
               (length
                (org-texmacs-object-test--fragments
-                (org-texmacs-ast-parse-buffer (current-buffer))))))
+                (org-texmacs--ast-parse-buffer (current-buffer))))))
           (should (equal before (org-element-context)))
           (should org-element-use-cache))))))
 
@@ -282,7 +282,7 @@
             (tick (buffer-chars-modified-tick))
             (property-tick (buffer-modified-tick))
             (modified (buffer-modified-p)))
-        (setq ast (org-texmacs-ast-parse-buffer (current-buffer)))
+        (setq ast (org-texmacs--ast-parse-buffer (current-buffer)))
         (should
          (equal-including-properties
           before (buffer-substring (point-min) (point-max))))
@@ -294,7 +294,7 @@
         (should (= property-tick (buffer-modified-tick)))
         (should (eq modified (buffer-modified-p)))))
     (should (= 2 (length (org-texmacs-object-test--fragments ast))))
-    (org-texmacs-call-with-ast-context
+    (org-texmacs--call-with-ast-context
      (lambda ()
        (org-element-map
         ast t
@@ -306,7 +306,7 @@
      (string-match-p "Title" (org-texmacs-object-test--render ast)))))
 
 (ert-deftest org-texmacs-object-org-copy-is-traversable ()
-  (org-texmacs-call-with-ast-context
+  (org-texmacs--call-with-ast-context
    (lambda ()
      (let* ((ast
              (org-texmacs-object-test--parse
@@ -325,7 +325,7 @@
     ()
   (dolist (source '("(x) (y)" "\"atomic\"" "(x"))
     (should-error
-     (org-texmacs-call-with-ast-context
+     (org-texmacs--call-with-ast-context
       (lambda ()
         (org-element-interpret-data
          (org-element-create
@@ -333,7 +333,7 @@
      :type 'org-texmacs-parse-error)))
 
 (ert-deftest org-texmacs-object-direct-ast-without-source-buffer ()
-  (org-texmacs-call-with-ast-context
+  (org-texmacs--call-with-ast-context
    (lambda ()
      (let* ((node
              (org-element-create
@@ -351,11 +351,11 @@
 
 (ert-deftest org-texmacs-object-rejects-invalid-buffer ()
   (should-error
-   (org-texmacs-ast-parse-buffer nil)
+   (org-texmacs--ast-parse-buffer nil)
    :type 'org-texmacs-model-error)
   (with-temp-buffer
     (should-error
-     (org-texmacs-ast-parse-buffer (current-buffer))
+     (org-texmacs--ast-parse-buffer (current-buffer))
      :type 'org-texmacs-model-error)))
 
 
@@ -368,7 +368,7 @@
       (setq-local org-link-abbrev-alist-local
                   '(("demo" . "https://example.test/%s")))
       (insert "$(x)$\n")
-      (setq ast (org-texmacs-ast-parse-buffer (current-buffer)))
+      (setq ast (org-texmacs--ast-parse-buffer (current-buffer)))
       (setq captured (org-element-property :org-texmacs-syntax ast))
       (should
        (equal
@@ -402,7 +402,7 @@
           (chars (buffer-chars-modified-tick))
           (modified (buffer-modified-p)))
       (should-error
-       (org-texmacs-ast-parse-buffer (current-buffer))
+       (org-texmacs--ast-parse-buffer (current-buffer))
        :type 'org-texmacs-parse-error)
       (should (equal-including-properties text (buffer-string)))
       (should (= position (point)))
@@ -414,7 +414,7 @@
       (should (equal bounds (cons (point-min) (point-max)))))))
 
 (ert-deftest org-texmacs-object-suspended-context-is-native ()
-  (org-texmacs-call-with-ast-context
+  (org-texmacs--call-with-ast-context
    (lambda ()
      (with-temp-buffer
        (delay-mode-hooks
@@ -478,7 +478,7 @@
                   (list (list "demo" "X" nil "X" "X" "X" "X")))
       (setq source-heading org-entities-user)
       (insert "* Title $(x)$\n")
-      (setq ast (org-texmacs-ast-parse-buffer (current-buffer)))
+      (setq ast (org-texmacs--ast-parse-buffer (current-buffer)))
       (let* ((snapshot (org-element-property :org-texmacs-syntax ast))
              (owned
               (cdr
@@ -489,7 +489,7 @@
         (should-not (eq (car source-heading) (car owned)))
         (setcar (car owned) "copied")
         (should (equal "demo" (caar source-heading)))))
-    (org-texmacs-call-with-ast-context
+    (org-texmacs--call-with-ast-context
      (lambda ()
        (let* ((snapshot
                (org-element-property :org-texmacs-syntax ast))
@@ -524,10 +524,10 @@
       (should
        (eq
         'done
-        (org-texmacs-call-with-ast-context
+        (org-texmacs--call-with-ast-context
          (lambda ()
            (condition-case nil
-               (org-texmacs-call-with-ast-context
+               (org-texmacs--call-with-ast-context
                 (lambda () (error "inner")))
              (error
               nil))
@@ -569,7 +569,7 @@
     (kill-buffer dead)
     (dolist (input (list 42 "not a buffer" dead))
       (should-error
-       (org-texmacs-ast-parse-buffer input)
+       (org-texmacs--ast-parse-buffer input)
        :type 'org-texmacs-model-error))))
 
 ;;; fragment-object.el ends here

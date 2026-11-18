@@ -8,7 +8,7 @@
      (insert
       "#+OPTIONS: toc:nil title:nil author:nil date:nil ^:t\n"
       "The /first/ term is x_i^2.\n\nNested x^{a_b}.\n\n"
-      "(math (frac \"a\" \"b\"))_i^2.\n")
+      "$(math (frac \"a\" \"b\"))$_i^2.\n")
      (let* ((input (org-texmacs--standard-consume 'input))
             (original
              (copy-tree (cdar (org-texmacs-input-islands input))))
@@ -81,20 +81,20 @@
   (org-texmacs-test--with-worker
    (dolist
        (pair
-        '(("Left (math (sqrt \"x\")) right.\n" . (math (sqrt "x")))
-          ("(math \"first line\nsecond line\")\n"
+        '(("Left $(math (sqrt \"x\"))$ right.\n" . (math (sqrt "x")))
+          ("$(math \"first line\nsecond line\")$\n"
            .
            (math "first line\nsecond line"))
-          ("Note[fn::(math \"first line\nsecond line\")].\n"
+          ("Note[fn::$(math \"first line\nsecond line\")$].\n"
            .
            (math "first line\nsecond line"))
-          ("#+TITLE: ~literal~\n(math (sqrt \"x\"))\n"
+          ("#+TITLE: ~literal~\n$(math (sqrt \"x\"))$\n"
            .
            (math (sqrt "x")))
-          ("(math \"*bold* [[https://example.org][link]] ~literal~\")\n"
+          ("$(math \"*bold* [[https://example.org][link]] ~literal~\")$\n"
            .
            (math "*bold* [[https://example.org][link]] ~literal~"))
-          ("Note[fn::(math (sqrt \"x\"))].\n" . (math (sqrt "x")))
+          ("Note[fn::$(math (sqrt \"x\"))$].\n" . (math (sqrt "x")))
           ("#+begin_texmacs\n(document \"a\n  b\")\n#+end_texmacs\n"
            .
            (document "a\n  b"))
@@ -135,15 +135,15 @@
    (let* ((leaf (expand-file-name "leaf.org" test-directory))
           (middle (expand-file-name "middle.org" test-directory)))
      (with-temp-file leaf
-       (insert "(math (sqrt \"include\"))\n"))
+       (insert "$(math (sqrt \"include\"))$\n"))
      (with-temp-file middle
        (insert "#+INCLUDE: \"leaf.org\"\n"))
      (dolist
          (pair
-          '(("#+MACRO: m (math (sqrt \"macro\"))\n{{{m}}}\n"
+          '(("#+MACRO: m $(math (sqrt \"macro\"))$\n{{{m}}}\n"
              .
              (math (sqrt "macro")))
-            ("#+begin_src emacs-lisp :exports results :results raw\n\"(math (sqrt \\\"babel\\\"))\"\n#+end_src\n"
+            ("#+begin_src emacs-lisp :exports results :results raw\n\"$(math (sqrt \\\"babel\\\"))$\"\n#+end_src\n"
              .
              (math (sqrt "babel")))
             ("#+INCLUDE: \"middle.org\"\n"
@@ -172,7 +172,7 @@
                native))
      (with-temp-buffer
        (org-mode)
-       (insert "(math \"old\")\n")
+       (insert "$(math \"old\")$\n")
        (let* ((org-export-use-babel nil)
               (org-export-filter-parse-tree-functions
                (list
@@ -181,7 +181,10 @@
                    (car (org-element-map tree 'paragraph #'identity))
                    (if (eq kind 'inline)
                        (org-element-create
-                        'paragraph nil "(math (sqrt \"final\"))")
+                        'paragraph nil
+                        (org-element-create
+                         'stm-fragment
+                         '(:stm-source "(math (sqrt \"final\"))")))
                      (org-element-create
                       'special-block
                       '(:type
@@ -200,7 +203,7 @@
   (org-texmacs-test--with-worker
    (dolist
        (text
-        '("(math #t)\n"
+        '("$(math #t)$\n"
           "#+begin_texmacs\n(math \"x\") (math \"y\")\n#+end_texmacs\n"))
      (with-temp-buffer
        (org-mode)

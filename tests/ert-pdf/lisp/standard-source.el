@@ -7,7 +7,7 @@
      (insert
       "#+OPTIONS: toc:nil title:nil author:nil date:nil num:nil ^:t\n"
       "The /first/ term is x_i^2.\n\nNested x^{a_b}.\n\n"
-      "Styled anchor.\n\nIsland (math (frac \"a\" \"b\"))_i^2 tail.\n\n"
+      "Styled anchor.\n\nIsland $(math (frac \"a\" \"b\"))$_i^2 tail.\n\n"
       "* Heading x_i^2\n#+CAPTION: Caption x_i^2\n| A |\n")
      (let* ((org-export-filter-parse-tree-functions
              (list
