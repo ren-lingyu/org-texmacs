@@ -10,7 +10,7 @@
 
 ;;; Code:
 
-(require 'org-texmacs-fragment)
+(require 'org-texmacs-fragment-object)
 (require 'org-src)
 
 (defvar font-lock-beg)
@@ -138,39 +138,30 @@ local element lookup, not a full-source copy or export discovery request."
          font-lock-end (max font-lock-end (nth 2 context)))))
     (or (/= begin font-lock-beg) (/= end font-lock-end))))
 
-(defun org-texmacs--font-lock-paragraph-spans (begin end tags)
-  "Discover presentation spans within one paragraph BEGIN to END using TAGS.
-Use the existing masking and boundary scanner in a private local Org view.
-Incomplete input is an editing state, not an export error."
-  (when tags
-    (let ((source (buffer-substring-no-properties begin end))
-          (buffer (current-buffer))
-          (tick (buffer-chars-modified-tick)))
-      (with-temp-buffer
-        (let ((org-element-use-cache nil)
-              (org-inhibit-startup t))
-          (delay-mode-hooks
-            (org-mode))
-          ;; Preserve paragraph context even if list/footnote prefixes were
-          ;; outside CONTENTS-BEGIN and the first characters look structural.
-          (insert "x " source)
-          (condition-case nil
-              (mapcar
-               (lambda (span)
-                 (cons
-                  (org-texmacs-fragment-span-begin span)
-                  (org-texmacs-fragment-span-end span)))
-               (org-texmacs--fragment-scan-paragraph
-                (org-element-create
-                 'paragraph
-                 (list :contents-begin 3 :contents-end (point-max)))
-                buffer
-                tick
-                (- begin 3)
-                tags
-                (concat "(" (regexp-opt tags))))
-            (org-texmacs-error
-             nil)))))))
+(defun org-texmacs--font-lock-paragraph-spans (begin end)
+  "Return STM payload bounds in the Org paragraph from BEGIN to END.
+Use local Org object parsing and allow incomplete carriers during editing."
+  (when (save-excursion
+          (goto-char begin)
+          (re-search-forward (regexp-opt '("$(" "\\((")) end t))
+    (org-texmacs--call-with-ast-context
+     (lambda ()
+       (org-element-map
+        (org-element--parse-objects
+         begin end nil (org-element-restriction 'paragraph))
+        'stm-fragment
+        (lambda (node)
+          (let* ((carrier (org-element-begin node))
+                 (start
+                  (+ carrier
+                     (if (eq (char-after carrier) ?$)
+                         1
+                       2))))
+            (cons
+             start
+             (+ start
+                (length (org-element-property :stm-source node))))))))
+     t)))
 
 (defun org-texmacs--font-lock-scheme (begin end)
   "Apply native Scheme presentation to BEGIN through END via a private view.
@@ -209,12 +200,7 @@ LOUDLY is passed to the original Org fontifier.  Never parse STM natively."
       (let ((contexts
              (and org-texmacs--font-lock-enabled
                   org-src-fontify-natively
-                  (org-texmacs--font-lock-contexts begin end)))
-            (tags
-             (condition-case nil
-                 (org-texmacs--fragment-tags)
-               (org-texmacs-error
-                nil))))
+                  (org-texmacs--font-lock-contexts begin end))))
         (funcall org-texmacs--font-lock-original begin end loudly)
         (dolist (context contexts)
           (let* ((cb (nth 3 context))
@@ -222,8 +208,7 @@ LOUDLY is passed to the original Org fontifier.  Never parse STM natively."
                  (spans
                   (if (eq (car context) 'block)
                       (list (cons cb ce))
-                    (org-texmacs--font-lock-paragraph-spans
-                     cb ce tags))))
+                    (org-texmacs--font-lock-paragraph-spans cb ce))))
             (when spans
               (with-silent-modifications
                 (dolist (span spans)
@@ -341,8 +326,6 @@ Only invalidate here: watchers run before the new binding becomes visible."
 (add-variable-watcher
  'org-texmacs--font-lock-enabled
  #'org-texmacs--font-lock-variable-changed)
-(add-variable-watcher
- 'org-texmacs-fragment-tags #'org-texmacs--font-lock-variable-changed)
 
 ;; Loading the package also covers existing Org buffers.  Private parsing
 ;; views created with delayed mode hooks never install presentation machinery.

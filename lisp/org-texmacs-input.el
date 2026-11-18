@@ -115,7 +115,7 @@ See `org-texmacs-input-create' for the completed input contract."
  (let* ((owner
          (org-texmacs--model-owner-create
           :error-type 'org-texmacs-document-error
-          :object-islands t
+          :strip-fragment-source t
           :caption-reader #'org-texmacs--document-caption-lines))
         (new-ast (org-texmacs--model-copy-node owner ast nil))
         new-info
@@ -196,7 +196,7 @@ See `org-texmacs-input-create' for the completed input contract."
               #'org-texmacs--document-copy-stree)))
           (_
            (org-texmacs--model-check-islands
-            new-ast new-islands 'org-texmacs-document-error t))
+            new-ast new-islands 'org-texmacs-document-error))
           (model
            (unless pending-p
              (org-texmacs--model-create

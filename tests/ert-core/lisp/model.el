@@ -154,7 +154,7 @@
            'headline (list :level 1 :title (list leaf))))
          (ast (org-element-create 'org-data nil heading))
          (model
-          (cl-letf (((symbol-function 'org-texmacs--fragment-collect)
+          (cl-letf (((symbol-function 'org-texmacs--parse-prepare)
                      (lambda (&rest _)
                        (ert-fail "Rescanned supplied AST")))
                     ((symbol-function 'org-texmacs--worker-request)
@@ -344,14 +344,14 @@
          (ast (org-element-create 'org-data nil paragraph block))
          (tree (list 'math (copy-sequence "x")))
          (model
-          (org-texmacs--model-own
+          (org-texmacs-model-create
            ast
+           :islands
            (list
             (cons first tree)
             (cons second tree)
             (cons caption tree)
-            (cons block '(equation "y")))
-           nil t))
+            (cons block '(equation "y")))))
          (owned (org-texmacs-model-islands model))
          (key (caar owned))
          (other (caadr owned))
@@ -400,11 +400,11 @@
                (cons
                 (org-element-create 'stm-fragment nil) '(math "x")))))
       (should-error
-       (org-texmacs--model-own ast mapping nil t)
+       (org-texmacs-model-create ast :islands mapping)
        :type 'org-texmacs-model-error))
     (should
      (org-texmacs-model-p
-      (org-texmacs--model-own ast (list entry) nil t)))))
+      (org-texmacs-model-create ast :islands (list entry))))))
 
 (ert-deftest org-texmacs-model-object-path-transfers-owned-syntax ()
   (let* ((links (list :types (list (copy-sequence "test"))))
@@ -413,9 +413,9 @@
            'org-data
            (list :org-texmacs-syntax (list :link-settings links))))
          (model
-          (org-texmacs--model-own
-           ast nil
-           '(:heading-settings nil :fragment-tags ("math")) t))
+          (org-texmacs-model-create
+           ast
+           :context '(:heading-settings nil :fragment-tags ("math"))))
          (context (org-texmacs-model-context model)))
     (should-not
      (org-element-property
@@ -423,11 +423,27 @@
     (should-not (plist-member context :fragment-tags))
     (should (plist-member context :heading-settings))
     (should (equal (plist-get context :link-settings) links))
+    (let* ((legacy (append context '(:fragment-tags ("math"))))
+           (old
+            (org-texmacs--model-create
+             :ast
+             (org-texmacs-model-ast model)
+             :context legacy))
+           (copy (org-texmacs-model-copy old)))
+      (should (equal (org-texmacs-model-context copy) context))
+      (should
+       (equal
+        (plist-get
+         (org-texmacs-model-context old)
+         :fragment-tags)
+        '("math"))))
     (should
      (org-texmacs-model-p
-      (org-texmacs--model-own ast nil (list :link-settings links) t)))
+      (org-texmacs-model-create
+       ast
+       :context (list :link-settings links))))
     (should-error
-     (org-texmacs--model-own ast nil '(:link-settings nil) t)
+     (org-texmacs-model-create ast :context '(:link-settings nil))
      :type 'org-texmacs-model-error)
     (aset (car (plist-get links :types)) 0 ?X)
     (should

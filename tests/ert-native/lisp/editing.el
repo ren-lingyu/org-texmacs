@@ -15,7 +15,7 @@
           (rename-buffer
            (generate-new-buffer-name "font-lock-existing"))
           (org-mode)
-          (insert "(math \"x\")\n")
+          (insert "$(math \"x\")$\n")
           (let ((noninteractive nil))
             (font-lock-mode 1))
           (require 'org-texmacs)
@@ -27,7 +27,9 @@
            (eq
             (default-value 'org-texmacs--font-lock-enabled) ,enabled))
           (font-lock-ensure)
-          (let ((face (get-text-property 8 'face)))
+          (goto-char (point-min))
+          (search-forward "\"x\"")
+          (let ((face (get-text-property (- (point) 2) 'face)))
             (should
              (eq
               (and (memq

@@ -435,7 +435,7 @@
     (org-mode)
     (insert source)
     (cl-letf (((symbol-function 'org-texmacs--worker-request) #'read))
-      (org-texmacs--parse-buffer-model (current-buffer) t))))
+      (org-texmacs-parse-buffer (current-buffer)))))
 
 (ert-deftest org-texmacs-object-serialization-is-pure-and-idempotent
     ()
@@ -463,8 +463,8 @@
       (should
        (string-match-p
         (regexp-quote "\\((math \"x\")\\)\\((math \"x\")\\)  after.")
-        (org-texmacs--serialize-object-model model)))
-      (setq output (org-texmacs--serialize-object-model changed))
+        (org-texmacs-model-serialize model)))
+      (setq output (org-texmacs-model-serialize changed))
       (should
        (string-match-p
         (regexp-quote
@@ -475,8 +475,7 @@
         (should-not (org-element-property :stm-source (car entry)))))
     (let ((again (org-texmacs-test--parse-object-model output)))
       (should (= 7 (length (org-texmacs-model-islands again))))
-      (should
-       (equal output (org-texmacs--serialize-object-model again))))))
+      (should (equal output (org-texmacs-model-serialize again))))))
 
 (ert-deftest
     org-texmacs-object-serialization-reports-representation-failures
@@ -499,7 +498,7 @@
            (before (org-texmacs-model-inspect changed)))
       (let ((err
              (should-error
-              (org-texmacs--serialize-object-model changed)
+              (org-texmacs-model-serialize changed)
               :type 'org-texmacs-model-serialization-error)))
         (should (eq (plist-get (nth 2 err) :reason) (nth 2 fixture))))
       (should (equal before (org-texmacs-model-inspect changed))))))

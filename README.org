@@ -21,7 +21,7 @@ structural lowering and native consumers for TeXmacs/PDF.
 Shared ownership does not make a bare =org-texmacs-model= a supported argument
 to the existing =org-texmacs-document= prepared-input API.  Use the established
 export preparation entries for that consumer.
-Block caching, on-demand fragment parsing, Scheme fontification and source
+Block caching, Scheme fontification and source
 editing remain available independently of whole-document model construction.
 
 Document conversion supports basic inline markup, Unicode-backed Org entities,
@@ -221,9 +221,6 @@ Emacs session if the backend was already loaded with different menu keys.
     (org-texmacs-link-org-files-as-pdf t)
     (org-texmacs-typed-references nil)
     (org-texmacs-edit-mode 'scheme-mode)
-    (org-texmacs-fragment-tags
-     '("math" "equation" "equation*" "eqnarray" "eqnarray*"
-       "align" "align*" "gather" "gather*" "eqsplit" "eqsplit*"))
     :config
     (require 'ox-texmacs))
 #+end_src
@@ -279,7 +276,7 @@ For straight setup and recipe details, consult its
 *** Configuration details
 =:demand t= loads the Lisp package immediately, even if use-package normally
 defers loading. Loading this configuration does not start TeXmacs. The first
-block cache miss or fragment tree request starts the worker, as does document
+block cache miss or Model parse with STM islands starts the worker, as does document
 island parsing or opening a native session; source discovery alone does not.
 
 The example covers the core options and the backend's Cite/menu settings.
@@ -306,10 +303,6 @@ macros (for example, =("generic" "smart-ref")=).  See
 
 Use an absolute executable path instead of ="texmacs"= when needed.  Set
 it before the first parse; changing it does not replace an existing worker.
-The tag list preserves all 11 default entries.  Replace it with ='("math")=
-for math-only discovery, or =nil= to disable fragment discovery without
-disabling block parsing.  Obtain fresh spans after changing the tag list.
-
 After loading, run =M-x org-texmacs-check-setup=.  Missing executables are
 reported there and checked again before a worker is started.  A passing
 setup check confirms basic capabilities, not successful headless startup
@@ -362,8 +355,7 @@ current buffer.  Its body must be accessible under the current narrowing.
 The Org wrapper name is case-insensitive: =#+begin_texmacs=,
 =#+BEGIN_texmacs=, =#+begin_TEXMACS= and =#+BEGIN_TEXMACS= are equivalent,
 as are mixed-case names and their closing markers.  The original source and
-Org block type spelling are preserved.  STM contents and inline fragment tag
-names retain their case-sensitive native meaning.
+Org block type spelling are preserved.  STM tags retain their case-sensitive native meaning.
 After editing, obtain the element again; do not retain a block from an old
 parse or pass an element from another buffer.
 
@@ -387,232 +379,20 @@ standard Export. For example, write =\((math (frac "1" "2"))\)= in prose or
 a link description. Any root tag can reach the native STM parser. Native
 Org container boundaries and opaque regions still apply.
 
-** Legacy discovery syntax
-The span commands and editor highlighting below still use the configured
-bare source syntax. Model parsing and standard Export consume explicit
-carriers.
-
-#+begin_src org
-  A (math (frac "1" "2")) B
-
-  An equation (equation* (frac "a" "b")) can share its paragraph with text.
-
-  A formula group (align*
-    (tformat (table (row (cell "x") (cell "=1"))
-                    (row (cell "y") (cell "=2"))))) continues here.
-#+end_src
-
-Line breaks inside the group are supported, but a blank line would cross
-the paragraph boundary and prevent recognition of that fragment.  These
-examples describe source and AST structure, not display placement or numbering.
-
-Fragments are also recognized in direct plain text of anonymous =[fn::...]=
-and named =[fn:name:...]= inline footnote definitions.  Org determines the
-body and delimiter boundaries.  Discovery does not enter emphasis, links,
-code or verbatim objects inside a footnote; an adjacent fragment remains
-eligible.  Configured-root candidates that cannot finish within the inline
-footnote body, or use unsupported reader punctuation, signal an error rather
-than silently becoming literal text.  The ordinary paragraph stop rule above
-is unchanged.  STM strings containing brackets or newlines must still obey
-Org's footnote grammar; the exporter does not repair footnote delimiters.
-
-Source discovery returns an =org-texmacs-fragment-span=, not an Org node or a
-parsed TeXmacs tree.  Parsing that span returns a fresh pseudo tree with the
-same root tag as the source.  Its children have Org parent links, but the
-root is not attached to the span or paragraph.
-
-| API                                             | Result                                               |
-|-------------------------------------------------+------------------------------------------------------|
-| =(org-texmacs-fragment-at-point &optional POS)= | Span covering POS (default: point), or nil           |
-| =(org-texmacs-fragment-map BEGIN END FUNCTION)= | Callback results for complete spans, in source order |
-| =(org-texmacs-fragment-tree SPAN)=              | Independently parsed, Org-compatible TeXmacs tree    |
-
-This self-contained example inspects a span and traverses its tree.  Unlike
-block cache hits, repeated fragment tree calls parse again and return different
-tree objects:
-
-#+name: example-fragment-tree
-#+begin_src emacs-lisp
-  (progn
-    (require 'org-texmacs)
-    (with-temp-buffer
-      (org-mode)
-      (insert "A (math (frac \"1\" \"2\")) B\n")
-      (goto-char (point-min))
-      (search-forward "(math")
-      (let* ((span (org-texmacs-fragment-at-point))
-             (tree (org-texmacs-fragment-tree span)))
-        (list (org-texmacs-fragment-span-source span)
-              (org-element-map tree '(math frac) #'org-element-type)
-              (eq tree (org-texmacs-fragment-tree span))))))
-  ;; => ("(math (frac \"1\" \"2\"))" (math frac) nil)
-#+end_src
-
-Scanning alone does not start TeXmacs:
-
-#+name: example-fragment-map
-#+begin_src emacs-lisp
-  (progn
-    (require 'org-texmacs)
-    (with-temp-buffer
-      (org-mode)
-      (insert "A (math \"x\") B (math (sqrt \"y\")) C\n")
-      (org-texmacs-fragment-map (point-min) (point-max)
-                              #'org-texmacs-fragment-span-source)))
-  ;; => ("(math \"x\")" "(math (sqrt \"y\"))")
-#+end_src
-
-Passing =#'org-texmacs-fragment-tree= as the callback instead parses each span.
-Callbacks run in the source buffer, with point and narrowing restored after
-each call.  They must not edit source, kill or switch the current buffer, or
-change its major mode or fragment tag configuration.  Detected changes stop
-traversal with an error; completed callback effects are not rolled back.
-
-** Span lifetime and positions
-Treat spans and their source strings as read-only.  Accessors such as
-=org-texmacs-fragment-span-begin= and =org-texmacs-fragment-span-end= expose the
-half-open range =[begin, end)=: begin is included, end is not.  Position and
-region arguments must be accessible integer positions in an Org buffer.
-Region filtering includes only complete spans; it never truncates a formula.
-
-Pass a span to =org-texmacs-fragment-tree= in its original buffer.  Any character
-edit, even elsewhere in the buffer or subsequently undone, invalidates it.
-Obtain a fresh span after editing.  Text property changes alone do not
-invalidate spans.  Bounds and raw source are checked before parsing and again
-after waiting for the worker, so stale results are not returned.
-
-=org-texmacs-fragment-span-tag= records the root name as a string, and
-=org-texmacs-fragment-span-tags= records a copied configuration snapshot.
-Treat both as read-only.  Obtain fresh spans after changing
-=org-texmacs-fragment-tags=: tree calls and map callbacks check the complete
-list by value, including order, before and after processing.  No change
-history is tracked, so restoring an equal value is accepted.
-
-Scanning treats the current narrowing as the document boundary and never
-widens implicitly.  If narrowing cuts into an Org container, context outside
-that boundary is not available; widen first when full-document context is
-needed.  A previously obtained span must remain fully accessible when parsed.
-
-** Configuring entry tags
-The default =org-texmacs-fragment-tags= is:
-
-#+begin_src emacs-lisp
-  '("math" "equation" "equation*" "eqnarray" "eqnarray*" "align" "align*"
-    "gather" "gather*" "eqsplit" "eqsplit*")
-#+end_src
-
-This is a literal, case-sensitive entry list, not a list of all valid TeXmacs
-tags.  It accepts dynamic and explicitly buffer-local bindings.  An empty
-list disables fragment discovery; duplicates do not duplicate results and
-list order does not control matching.  Values must be proper lists of
-nonempty strings.  Names start with an ASCII letter and continue with ASCII
-letters, digits or ~- _ . * + ? ! : / < > =~.  Reader-escaped names are not
-supported; invalid configuration signals =org-texmacs-error= before parsing.
-
-For math-only discovery in the current Org buffer:
-
-#+begin_src emacs-lisp
-  (setq-local org-texmacs-fragment-tags '("math"))
-#+end_src
-
-Use =setq= for the default in buffers without a local value, or a =let=
-binding for a scoped operation.  The package does not automatically mark
-this option safe for file-local variables.  Obtain and parse spans under
-the same configuration; an old span is not a way to bypass a changed entry list.
-
-This example demonstrates a buffer-local list, a temporary override and
-disabled scanning.  Discovery does not parse or start TeXmacs:
-
-#+name: example-fragment-config
-#+begin_src emacs-lisp
-  (progn
-    (require 'org-texmacs)
-    (with-temp-buffer
-      (org-mode)
-      (insert "A (math (sqrt \"x\")) B (equation* \"y\") C\n")
-      (setq-local org-texmacs-fragment-tags '("equation*"))
-      (list
-       (org-texmacs-fragment-map (point-min) (point-max)
-                                #'org-texmacs-fragment-span-tag)
-       (let ((org-texmacs-fragment-tags '("math")))
-         (org-texmacs-fragment-map (point-min) (point-max)
-                                  #'org-texmacs-fragment-span-tag))
-       (let ((org-texmacs-fragment-tags nil))
-         (org-texmacs-fragment-map (point-min) (point-max) #'identity))
-       org-texmacs-fragment-tags)))
-  ;; => (("equation*") ("math") nil ("equation*"))
-#+end_src
-
-Adding a custom entry name only enables discovery.  It does not register a
-TeXmacs environment or establish its argument, layout or rendering semantics.
-The entry list is not recursive: =sqrt= above remains a child of =math=
-without needing its own entry.
-
-** Recognition limits
-Configured roots are recognized in paragraph text, including paragraphs in
-list items and quote blocks, and direct text of inline footnote bodies.
-They need not occupy a whole paragraph or footnote body.  Headline text, table cells, native objects such as emphasis,
-link descriptions and code/verbatim, source blocks, and TeXmacs special-block
-bodies are excluded.
-
-The entry list does not restrict children inside a fragment, or roots and
-contents of a =#+begin_texmacs= block.  Block contents are never split into
-fragments, and block parsing and caching do not consult this option.  After
-accepting a fragment the scanner skips its interior; an unconfigured outer
-tag does not itself hide configured candidates inside it.
-
-Use TeXmacs special blocks for standalone complex content such as tables,
-images or code, which are not additional default fragment entry points.
-The following example parses paragraph fragments and a block through the
-same worker without discovering fragments inside the block:
-
-#+name: example-fragment-block
-#+begin_src emacs-lisp
-  (progn
-    (require 'org-texmacs)
-    (with-temp-buffer
-      (org-mode)
-      (insert "A (math \"x\") B (equation* \"y\")\n\n"
-              "A group (align*\n"
-              " (tformat (table (row (cell \"x\") (cell \"=1\"))\n"
-              "                 (row (cell \"y\") (cell \"=2\"))))) ends here.\n\n"
-              "#+begin_texmacs\n(with \"mode\" \"math\" (math \"z\"))\n"
-              "#+end_texmacs\n")
-      (let ((roots
-             (org-texmacs-fragment-map
-              (point-min) (point-max)
-              (lambda (span)
-                (org-element-type (org-texmacs-fragment-tree span))))))
-        (goto-char (point-min))
-        (search-forward "#+begin_texmacs")
-        (list roots
-              (let ((org-texmacs-fragment-tags nil))
-                (org-element-type (org-texmacs-tree (org-element-at-point))))))))
-  ;; => ((math equation* align*) with)
-#+end_src
-
-Nested lists, strings, escaped quotes/backslashes and newlines within one
-paragraph are supported.  The scanner is not a full Scheme reader: outside
-strings, comments and reader punctuation such as =;=, =#=, single quote,
-backtick, comma, vertical bar and backslash are unsupported.  An unsupported
-or unclosed candidate is not returned, and scanning stops for the remainder
-of that paragraph; the next paragraph is scanned normally.  Balanced source
-can still be rejected by the worker, for example =(math 1)=.
-
-Fragment spans and trees are derived data only.  Org's native parser is not
-extended: it can still interpret =*bold*= or links inside a formula string.
-Other Org consumers do not automatically gain TeXmacs boundary semantics.
-Source text remains canonical; generic Org parse/interpret is not guaranteed
-to reconstruct it character for character.
-
-Each discovery call scans a private copy of the accessible buffer before
-region filtering.  There is no fragment cache or incremental synchronization,
-and large-document performance has not been validated.
+** Migrating bare fragments
+Wrap older bare fragments in either explicit carrier. The
+=org-texmacs-fragment-tags= option, span accessors, and
+=org-texmacs-fragment-at-point=, =org-texmacs-fragment-map= and
+=org-texmacs-fragment-tree= APIs have been removed. To consume parsed
+fragments, use =org-texmacs-parse-buffer= and inspect the resulting
+=org-texmacs-model-islands=. Query an individual owned key with
+=org-texmacs-model-island=. Use =org-texmacs-tree= for on-demand parsing
+of native =texmacs= blocks.
 
 * Embedded STM editing
-Loading =org-texmacs= enables Scheme fontification for recognized paragraph
-fragments, direct inline footnote fragments and TeXmacs special-block bodies in
-existing and new Org buffers.  Font Lock must itself be enabled.  STM regions
+Loading =org-texmacs= enables Scheme fontification in existing and new Org
+buffers for explicit STM payloads in paragraphs and TeXmacs special-block
+bodies. Paragraph fontification follows Org's supported inline nesting.  Font Lock must itself be enabled.  STM regions
 use Scheme string and parenthesis syntax; Org link, emphasis and hiding
 properties inside them are suppressed.  Other Org text keeps normal behavior.
 This is lexical presentation, not STM validation or support for arbitrary
@@ -624,8 +404,7 @@ copying the whole document on each edit.  Incomplete STM while typing is not an
 export error in the editor.  There is no dedicated command or Customize option.
 The internal buffer-local variable =org-texmacs--font-lock-enabled= defaults to
 =t=; a =nil= local binding suppresses STM presentation, and setting its default
-binding to =nil= suppresses it globally.  Changes to this override or fragment
-entry tags schedule normal refontification.  These internal interfaces may
+binding to =nil= suppresses it globally.  Changes to this override schedule normal refontification.  These internal interfaces may
 change; disabling presentation restores ordinary Org fontification.
 
 Inside a =texmacs= special block, =C-c '= (=org-edit-special=) opens an Org
@@ -843,7 +622,7 @@ an inline fraction, inspects the new model and opens normalized Org output:
   (let* ((model
           (with-temp-buffer
             (org-mode)
-            (insert "* Example\nThe value is (math (frac \"1\" \"2\")).\n")
+            (insert "* Example\nThe value is $(math (frac \"1\" \"2\"))$.\n")
             (org-texmacs-parse-buffer (current-buffer))))
          (node (caar (org-texmacs-model-islands model)))
          (changed
@@ -1175,7 +954,7 @@ without an extension adapter.
 * Document conversion and native sessions
 The document API separates source preparation, pure structural lowering and
 native consumers.  A completed document can update an explicit native session,
-serialize to =.tm= or render PDF.  The block and fragment APIs remain available
+serialize to =.tm= or render PDF.  The native block API remains available
 as independent parsing interfaces.
 
 Load =(require 'ox-texmacs)= to register the backend and export commands.
@@ -1275,10 +1054,10 @@ and marks their target leaves in =file-paths=.  The native bridge uses the
 captured resource base to translate these leaves in a separate body copy;
 source file identity never chooses or overrides that base.
 
-Each call captures native style/initial values, fragment tags and native output
+Each call captures native style/initial values and native output
 settings.  Org owns parser settings, source options and preparation dependencies;
 the prepared input owns their consumed results.  Source text, mode, restriction,
-identity, native style/initial or fragment-tag changes reject publication without retry.
+identity, native style/initial changes reject publication without retry.
 Consumed Org settings and preparation dependencies are not re-read by a parallel
 receipt system. Native Cite separately checks active bibliography sources until
 this source export completes. Mutable closure state and arbitrary callback effects
@@ -1299,7 +1078,7 @@ This example returns a document result; it starts TeXmacs to parse its islands:
     (org-mode)
     (insert "#+OPTIONS: toc:nil\n"
             "* 中\n"
-            "Text *bold* <alpha> (math \"α <alpha>\") end.\n\n"
+            "Text *bold* <alpha> $(math \"α <alpha>\")$ end.\n\n"
             "#+begin_texmacs\n"
             "(with \"mode\" \"math\" (frac \"中\" \"2\"))\n"
             "#+end_texmacs\n")
@@ -1349,14 +1128,14 @@ blocks, unrecognized keywords, drawers and affiliated metadata outside the
 object-specific NAME/CAPTION rules below are rejected.
 Empty headline titles and =H= values outside 0 through 5 are rejected.
 Headings below =H= use the list mapping above.
-Fragment discovery can support
+The Model can represent
 contexts that this whole-document conversion does not support.
 
 Formal statements use Org special blocks with recursively converted Org bodies:
 
 #+begin_example
   ,#+begin_statement theorem
-  First paragraph with *markup* and (math "x").
+  First paragraph with *markup* and $(math "x")$.
 
   ,#+begin_texmacs
   (equation* (concat "x=" (frac "1" "2")))
@@ -1501,12 +1280,11 @@ whitespace rule: it is not a preformatted code block.  Nonbreaking spaces
 are not collapsed.  Conversion does not merge adjacent text slots; a slot
 may become empty when its whitespace duplicates a preceding slot.
 
-A bare STM paragraph contains exactly one registered island text leaf; every
+A bare STM paragraph contains exactly one registered fragment object; every
 other direct child must be an ordinary string containing only spaces, tabs,
 CR or LF (empty strings are allowed).  No other Org object is permitted.
 Such paragraphs emit the complete island directly, without an additional
-=concat=; the island's internal tree and text remain unchanged.  Recognition
-still uses =org-texmacs-fragment-tags=; no separate display-tag option is added.
+=concat=; the island's internal tree and text remain unchanged.
 This rule applies in ordinary body text, statement and quote/center containers, separate
 footnote definitions and later list paragraphs.  Inline footnote bodies use
 the same bare rule inside their existing body =document=, including restored
@@ -1549,8 +1327,7 @@ Basic Org pipe tables lower structurally to
 =(tabular (tformat FORMATTING... (table (row (cell BODY) ...)...)))=.
 Cells use the same inline subset as other text contexts, including markup,
 literal inline code and self-contained URI links.  Empty cells remain empty
-=cell= bodies.  Fragment discovery does not enter table cells, so STM-looking
-text remains ordinary literal text.
+=cell= bodies. Explicit STM fragments can appear in cell content.
 
 Tables must contain at least one rectangular data row with at least one cell.
 Org rule rows become =1ln= top or bottom borders on adjacent TeXmacs rows; a
@@ -1595,7 +1372,7 @@ Basic tables accept =#+NAME:= and =#+CAPTION:=.  A captioned table becomes
 layout.  Multiple caption lines are joined with spaces.  Optional short
 captions use =caption-detailed= with long and short bodies.  Captions retain
 the supported inline text/markup, default citations and URI/internal/file
-links; STM fragment discovery does not enter captions.  Their literal text
+links and explicit STM fragments. Their literal text
 uses ordinary Org encoding.  Other affiliated keywords, repeated names and
 empty captions are explicit errors.
 
@@ -1605,7 +1382,7 @@ supplies an anonymous inline =footnote-reference= AST, both long and short
 captions can convert it using the existing =(footnote (document ...))= mapping.
 This applies to naked Org tables and all four figure/table wrappers.  Named
 references, named inline definitions and nested notes remain unsupported there.
-Caption text and note bodies do not acquire STM fragment discovery.
+Explicit fragments in supported caption and note contexts use the same carrier syntax.
 Standard source export does not support caption footnote nodes, including nodes
 created by a parser extension or AST filter. They are explicitly rejected after
 effective exclusions, before native parsing. This withdraws the earlier extended
@@ -1863,7 +1640,7 @@ omitted while needed definitions are retained.  Missing or ambiguous named
 definitions, nested footnotes and footnotes in headings, emphasis, table
 cells or link descriptions are rejected.
 Outside captions, direct text in inline definitions and paragraphs in separate definitions use
-normal configured fragment discovery.  Inline bodies follow the bare-island
+explicit STM carriers.  Inline bodies follow the bare-island
 and mixed-display boundaries described above; their STM roots and local file
 targets retain provenance and are emitted only at first use.  Definition selection follows Org's standard queries. An outside inline
 definition may yield an empty body in a selected scope; the exporter does not
@@ -2585,7 +2362,7 @@ the buffer even if the update fails.  It requires that no session is active:
 #+begin_src emacs-lisp
   (let ((document (with-temp-buffer
                     (org-mode)
-                    (insert "Text (math \"α\")\n")
+                    (insert "Text $(math \"α\")$\n")
                     (org-texmacs-document-from-buffer (current-buffer)))))
     (let ((session (org-texmacs-session-open)))
       (unwind-protect
@@ -2639,8 +2416,7 @@ through TeXmacs parser recovery.
 
 These checks do not validate all tag names or argument counts.  TeXmacs can
 accept unknown tags and unusual arities; parser success does not guarantee
-mathematical meaning or correct rendering.  Fragment tree calls additionally
-require the returned root to match the source span's tag.  Support for starred
+mathematical meaning or correct rendering. Support for starred
 and unstarred formula environments means preserving their AST, not providing
 equation numbering or validating layout.
 
@@ -2660,16 +2436,16 @@ after the current worker stops.  Worker exit and Emacs shutdown clean up its
 socket directory.  For development, =(org-texmacs--worker-stop)= stops it
 explicitly; this is an internal function, not a stable public command.
 
-| Condition                         | Meaning                                                                    |
-|-----------------------------------+----------------------------------------------------------------------------|
-| =org-texmacs-error=               | Base error; invalid input/configuration, stale span or inaccessible source |
-| =org-texmacs-parse-error=         | Invalid STM source or a fragment root tag mismatch                         |
-| =org-texmacs-worker-error=        | Startup, communication or response failure                                 |
-| =org-texmacs-document-error=      | Unsupported document input or changed source/configuration                 |
-| =org-texmacs-encoding-error=      | Invalid native encoding input                                              |
-| =org-texmacs-session-error=       | Invalid/stale session or native body operation failure                     |
-| =org-texmacs-serialization-error= | Native document serialization failure                                      |
-| =org-texmacs-rendering-error=     | Native PDF rendering failure                                               |
+| Condition                         | Meaning                                                                 |
+|-----------------------------------+-------------------------------------------------------------------------|
+| =org-texmacs-error=               | Base error; invalid input/configuration, changed or inaccessible source |
+| =org-texmacs-parse-error=         | Invalid STM source or malformed explicit carrier                        |
+| =org-texmacs-worker-error=        | Startup, communication or response failure                              |
+| =org-texmacs-document-error=      | Unsupported document input or changed source/configuration              |
+| =org-texmacs-encoding-error=      | Invalid native encoding input                                           |
+| =org-texmacs-session-error=       | Invalid/stale session or native body operation failure                  |
+| =org-texmacs-serialization-error= | Native document serialization failure                                   |
+| =org-texmacs-rendering-error=     | Native PDF rendering failure                                            |
 
 All these conditions inherit from =org-texmacs-error=.  Parse errors leave
 the worker available for the next request.  Transport failures and request
@@ -2693,9 +2469,8 @@ Run from the repository root:
 
 Checks include byte compilation, package-lint and ERT, including real headless
 TeXmacs parsing, worker lifecycle, Org block cache integration, fragment source
-boundaries, configuration snapshots and span validity checks.  All 11 default
-entry tags have real parser tests, including multi-row formula groups; these
-check AST preservation and parent links, not numbering or rendered output.  A missing
+boundaries and captured syntax. Native checks include multi-row formula groups.
+A missing
 TeXmacs executable fails the integration tests instead of skipping them.
 Document tests cover structural lowering, source-dependent native encoding,
 session updates and failure recovery, with independent native readback

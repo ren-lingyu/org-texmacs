@@ -43,7 +43,7 @@ configuration files are loaded; interactive snippets elsewhere are never run.
   ;; SPDX-License-Identifier: GPL-3.0-or-later
 
   ;; common.el is loaded first. The index retains the generic style,
-  ;; headline formatter and fragment discovery defaults.
+  ;; headline formatter defaults.
 
   ;;; generic.el ends here
 #+end_src
@@ -54,11 +54,9 @@ configuration files are loaded; interactive snippets elsewhere are never run.
 
   ;; SPDX-License-Identifier: GPL-3.0-or-later
 
-  ;; Explicit equation/texmacs blocks remain independent of paragraph discovery.
   ;; Opt in to typed references and supply the native macros explicitly.
   (setq org-texmacs-document-style '("article" "smart-ref")
-        org-texmacs-typed-references t
-        org-texmacs-fragment-tags '("math"))
+        org-texmacs-typed-references t)
 
   (defun org-texmacs-examples-headline
       (_todo _todo-type _priority title-parts _tags _info)

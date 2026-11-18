@@ -44,10 +44,7 @@
 ;;
 ;; Use `org-texmacs-tree' to derive an Org-compatible TeXmacs tree from a
 ;; native TeXmacs special block, with lazy parsing and Org-managed caching.
-;; Discover paragraph source spans with `org-texmacs-fragment-at-point' or
-;; `org-texmacs-fragment-map', using `org-texmacs-fragment-tags' as entry names.
-;; Use `org-texmacs-fragment-tree' to parse a fragment source span on demand,
-;; without caching or changing Org's native object parser.
+;; Parse explicit inline STM through the mathematical-document model.
 ;; Loading enables Scheme fontification of embedded STM in Org buffers.
 ;; Use Org's source-edit workflow for TeXmacs blocks; `org-texmacs-edit-mode'
 ;; selects the editing/indentation major mode, defaulting to `scheme-mode'.
@@ -82,7 +79,6 @@
 (require 'org-texmacs-ast)
 (require 'org-texmacs-fragment-object)
 (require 'org-texmacs-source)
-(require 'org-texmacs-fragment)
 (require 'org-texmacs-font-lock)
 (require 'org-texmacs-edit)
 (require 'org-texmacs-worker)
@@ -156,42 +152,6 @@ worker failures.  Failed parses are never cached."
         (let ((tree (org-texmacs--stree-to-org stree)))
           (org-element-cache-store-key block 'org-texmacs-tree tree)
           tree)))))
-
-;;;###autoload
-(defun org-texmacs-fragment-tree (span)
-  "Return the Org-compatible TeXmacs tree derived from fragment SPAN.
-
-Obtain SPAN with `org-texmacs-fragment-at-point' or `org-texmacs-fragment-map'.
-It must belong to the current Org buffer and be fully accessible under the
-current narrowing.  Obtain another span after any character edit, including
-edits outside its range, or changes to `org-texmacs-fragment-tags'.
-Text property changes alone do not invalidate it.
-
-Synchronously parse the current raw source using the same persistent worker
-as `org-texmacs-tree', then convert its stree with the shared AST adapter.
-Every call requests a new parse; no fragment cache or edit hooks are used.
-Recheck the span after waiting, rejecting changed source or configuration.
-
-Return a fresh pseudo tree with the source root tag and Org parent links
-inside the tree.  Do not attach it to SPAN or an Org paragraph.  Strings are
-copied by the adapter; neither source nor native Org AST is modified.  Parser
-success does not imply valid tag arities, mathematical meaning or rendering.
-
-Signal `org-texmacs-error' for invalid or stale spans, inaccessible bounds or
-source changes during parsing, `org-texmacs-parse-error' for invalid STM or a
-root tag mismatch, and `org-texmacs-worker-error' for worker failures."
-  (let* ((source (org-texmacs--fragment-source span))
-         (stree (org-texmacs--worker-request source)))
-    ;; Waiting may run timers that edit/kill the buffer or change narrowing.
-    (org-texmacs--fragment-source span)
-    (unless (and (consp stree)
-                 (symbolp (car stree))
-                 (equal
-                  (symbol-name (car stree))
-                  (org-texmacs-fragment-span-tag span)))
-      (signal 'org-texmacs-parse-error
-              '("TeXmacs root differs from fragment tag")))
-    (org-texmacs--stree-to-org stree)))
 
 ;;;###autoload
 (defun org-texmacs-document (input)

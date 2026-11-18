@@ -1116,8 +1116,6 @@
                (org-texmacs--native-body-blocks
                 (org-element-parse-buffer)))
               1))
-          (should-not
-           (org-texmacs--fragment-collect org-texmacs-fragment-tags))
           (cl-letf (((symbol-function 'org-texmacs--worker-request)
                      (lambda (raw &rest _)
                        (push raw requests)
@@ -1241,8 +1239,6 @@
      (= (length
          (org-texmacs--native-body-blocks (org-element-parse-buffer)))
         1))
-    (should-not
-     (org-texmacs--fragment-collect org-texmacs-fragment-tags))
     (let (requests)
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (raw &rest _)

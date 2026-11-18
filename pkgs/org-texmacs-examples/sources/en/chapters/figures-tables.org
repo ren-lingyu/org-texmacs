@@ -39,7 +39,7 @@ table uses explicit native table data instead:
 
 The exporter supplies the outer native table wrappers around the table data.
 The cell formatting and mathematical cell contents in [[native-values]]
-stay native. Paragraph fragment discovery does not scan ordinary Org table cells.
+stay native. Ordinary Org table cells can also contain explicit STM carriers.
 
 * Unnumbered variants and subsequent counters
 The starred forms select native unnumbered environments; they do not request

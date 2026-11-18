@@ -99,7 +99,7 @@ Object post-blank spaces are compared separately; text whitespace is retained.")
            (when reason
              (list (list :reason reason :path path :tag tag))))))
 
-(defun org-texmacs--serialize-context (model &optional object-islands)
+(defun org-texmacs--serialize-context (model)
   "Own and validate MODEL's recorded syntax for this output profile.
 Require explicit syntax captured by the buffer adapter, never ambient options."
   (unless (org-texmacs-model-p model)
@@ -113,8 +113,6 @@ Require explicit syntax captured by the buffer adapter, never ambient options."
     (unless (and (proper-list-p context)
                  (plist-member context :heading-settings)
                  (plist-member context :link-settings)
-                 (or object-islands
-                     (plist-member context :fragment-tags))
                  (proper-list-p settings)
                  (proper-list-p links)
                  (zerop (% (length links) 2))
@@ -143,7 +141,7 @@ Require explicit syntax captured by the buffer adapter, never ambient options."
                  (proper-list-p (plist-get links :local)))
       (org-texmacs--serialize-fail
        "Recorded Org syntax context is required"
-       nil (and object-islands 'unsupported-context)))
+       nil 'unsupported-context))
     (dolist (setting settings)
       (unless (and (consp setting)
                    (memq
@@ -151,8 +149,7 @@ Require explicit syntax captured by the buffer adapter, never ambient options."
                    (not (memq (car setting) seen)))
         (org-texmacs--serialize-fail "Unsupported syntax setting"
                                      nil
-                                     (and object-islands
-                                          'unsupported-context)))
+                                     'unsupported-context))
       (push (car setting) seen))
     (unless (equal
              (sort (copy-sequence seen)
@@ -165,71 +162,36 @@ Require explicit syntax captured by the buffer adapter, never ambient options."
                      (string-lessp (symbol-name a) (symbol-name b)))))
       (org-texmacs--serialize-fail "Incomplete recorded Org syntax"
                                    nil
-                                   (and object-islands
-                                        'unsupported-context)))
+                                   'unsupported-context))
     (unless (or (null (plist-get context :resource-base))
                 (and (stringp (plist-get context :resource-base))
                      (file-name-absolute-p
                       (plist-get context :resource-base))))
       (org-texmacs--serialize-fail "Invalid resource base"
                                    nil
-                                   (and object-islands
-                                        'unsupported-context)))
-    (unless object-islands
-      (let ((org-texmacs-fragment-tags
-             (plist-get context :fragment-tags)))
-        (org-texmacs--fragment-tags)))
+                                   'unsupported-context))
     context))
 
-(defun org-texmacs--serialize-preflight
-    (ast islands paths tags &optional object-islands)
-  "Check AST and ISLANDS against the selected output syntax."
+(defun org-texmacs--serialize-preflight (ast islands paths)
+  "Check AST and ISLANDS against supported Org output syntax."
   (dolist (entry islands)
-    (let* ((key (car entry))
-           (parent (org-element-parent key))
-           (tree (cdr entry)))
-      (unless (and (or object-islands
-                       (not
-                        (cl-some
-                         #'org-texmacs--native-body-kind
-                         (org-element-lineage key))))
-                   (cond
-                    ((and object-islands
-                          (eq (org-element-type key) 'stm-fragment))
-                     t)
-                    ((and (not object-islands) (stringp key))
-                     (and (or (eq
-                               (org-element-type parent) 'paragraph)
-                              (and (eq
-                                    (org-element-type parent)
-                                    'footnote-reference)
-                                   (eq
-                                    (org-element-property
-                                     :type parent)
-                                    'inline)))
-                          (consp tree)
-                          (member (symbol-name (car tree)) tags)))
-                    (t
-                     (and (org-texmacs--native-body-kind key)
-                          (let ((parameters
-                                 (org-element-property
-                                  :parameters key)))
-                            (or (null parameters)
-                                (and (stringp parameters)
-                                     (not
-                                      (string-match-p
-                                       "[\r\n]" parameters)))))))))
-        (org-texmacs--serialize-fail
-         "Island is not expressible at this location"
-         (gethash key paths) (and object-islands 'org-container)))))
+    (let ((key (car entry)))
+      (when (org-texmacs--native-body-kind key)
+        (let ((parameters (org-element-property :parameters key)))
+          (unless (or (null parameters)
+                      (and (stringp parameters)
+                           (not
+                            (string-match-p "[\r\n]" parameters))))
+            (org-texmacs--serialize-fail
+             "Island is not expressible at this location"
+             (gethash key paths) 'org-container))))))
   (cl-labels
    ((walk
      (node)
      (when (consp node)
        (let ((type (org-element-type node)))
          (unless (and (or (memq type org-texmacs--serialize-types)
-                          (and object-islands
-                               (eq type 'stm-fragment)))
+                          (eq type 'stm-fragment))
                       (or (eq type 'org-data)
                           (fboundp
                            (intern
@@ -257,7 +219,6 @@ Retain currently available link handlers, without storing them in the model."
     (org-texmacs--parse-initialize
      (plist-get context :heading-settings)
      links
-     (plist-get context :fragment-tags)
      (plist-get context :resource-base))
     (setq-local org-link-parameters
                 (mapcar
@@ -428,43 +389,23 @@ This private output guard is independent of the human inspection projection."
         (cdr entry))))
    nil nil nil t))
 
-(defun org-texmacs--serialize-render
-    (ast islands context &optional paths)
+(defun org-texmacs--serialize-render (ast islands context paths)
   "Restore AST ISLANDS structurally and interpret Org using CONTEXT.
-Return (TEXT SOURCES). With PATHS, SOURCES is an ordered object record list."
+Return (TEXT SOURCES), where SOURCES is an ordered object record list."
   (let ((blocks (make-hash-table :test #'eq))
         (object-sources (make-hash-table :test #'eq))
-        (sources (make-hash-table :test #'equal))
         (interpreter
          (symbol-function 'org-element-special-block-interpreter)))
     (dolist (entry islands)
       (let* ((key (car entry))
              (source
-              (if paths
-                  (org-texmacs--serialize-stm-source
-                   (cdr entry) (gethash key paths))
-                (org-texmacs--worker-serialize-stm (cdr entry)))))
-        (if paths
-            (puthash key source object-sources)
-          (puthash (string-trim source) (cdr entry) sources))
-        (cond
-         ((and paths (eq (org-element-type key) 'stm-fragment))
-          (org-element-put-property key :stm-source source))
-         ((stringp key)
-          (let* ((parent (org-element-parent key))
-                 (replacement (copy-sequence source)))
-            (org-element-put-property replacement :parent parent)
-            (apply #'org-element-set-contents
-                   parent
-                   (mapcar
-                    (lambda (child)
-                      (if (eq child key)
-                          replacement
-                        child))
-                    (org-element-contents parent)))))
-         (t
+              (org-texmacs--serialize-stm-source
+               (cdr entry) (gethash key paths))))
+        (puthash key source object-sources)
+        (if (eq (org-element-type key) 'stm-fragment)
+            (org-element-put-property key :stm-source source)
           (org-element-set-contents key)
-          (puthash key source blocks)))))
+          (puthash key source blocks))))
     (cl-letf (((symbol-function
                 'org-element-special-block-interpreter)
                (lambda (node contents)
@@ -491,10 +432,8 @@ Return (TEXT SOURCES). With PATHS, SOURCES is an ordered object record list."
           (org-texmacs--serialize-initialize context)
           (list
            (or (org-element-interpret-data ast) "")
-           (if paths
-               (org-texmacs--serialize-object-records
-                ast islands paths object-sources)
-             sources)))))))
+           (org-texmacs--serialize-object-records
+            ast islands paths object-sources)))))))
 
 (defun org-texmacs--serialize-match-objects (ast requests records)
   "Attach known trees to AST REQUESTS by matching ordered output RECORDS."
@@ -510,7 +449,7 @@ Return (TEXT SOURCES). With PATHS, SOURCES is an ordered object record list."
          (unless (and (equal path (nth 0 record))
                       (eq (org-element-type node) (nth 1 record))
                       (equal
-                       (string-trim (nth 1 request)) (nth 2 record)))
+                       (string-trim (cdr request)) (nth 2 record)))
            (org-texmacs--serialize-fail
             "Org output changed an STM island"
             path 'org-container))
@@ -518,7 +457,7 @@ Return (TEXT SOURCES). With PATHS, SOURCES is an ordered object record list."
      requests records)))
 
 (defun org-texmacs--serialize-check-output
-    (text sources context expected &optional object-islands)
+    (text sources context expected)
   "Check serialized TEXT under CONTEXT against EXPECTED structure.
 Associate recognized SOURCES with known trees; do not invoke the STM parser."
   (let* ((prepared
@@ -526,32 +465,19 @@ Associate recognized SOURCES with known trees; do not invoke the STM parser."
            text
            (plist-get context :heading-settings)
            (plist-get context :link-settings)
-           (plist-get context :fragment-tags)
-           (plist-get context :resource-base) object-islands))
+           (plist-get context :resource-base)))
          (islands
-          (if object-islands
-              (org-texmacs--serialize-match-objects
-               (car prepared) (cadr prepared) sources)
-            (mapcar
-             (lambda (request)
-               (let ((tree
-                      (gethash (string-trim (nth 1 request)) sources
-                               :missing)))
-                 (when (eq tree :missing)
-                   (org-texmacs--serialize-fail
-                    "Output introduces a new STM island"))
-                 (cons (car request) tree)))
-             (cadr prepared))))
+          (org-texmacs--serialize-match-objects
+           (car prepared) (cadr prepared) sources))
          (model
-          (org-texmacs--model-own
-           (car prepared) islands context object-islands))
+          (org-texmacs--model-own (car prepared) islands context))
          (snapshot (org-texmacs--model-snapshot model)))
     (unless (equal
              expected
              (apply #'org-texmacs--serialize-signature snapshot))
       (org-texmacs--serialize-fail
        "Org output would change model structure"
-       nil (and object-islands 'org-container)))))
+       nil 'org-container))))
 
 ;;;###autoload
 (defun org-texmacs-model-serialize (model)
@@ -567,17 +493,12 @@ acquisition runs.  Unsupported output signals
 `org-texmacs-model-serialization-error'; invalid models signal
 `org-texmacs-model-error'.
 Return no partial text on failure."
-  (org-texmacs--serialize-object-model model))
-
-(defun org-texmacs--serialize-object-model (model)
-  "Serialize MODEL with object islands through the internal pure path."
   (org-texmacs--call-with-ast-context
-   (lambda () (org-texmacs--serialize-model model t))))
+   (lambda () (org-texmacs--serialize-model model))))
 
-(defun org-texmacs--serialize-model (model &optional object-islands)
+(defun org-texmacs--serialize-model (model)
   "Serialize MODEL through the selected internal representation."
-  (let* ((context
-          (org-texmacs--serialize-context model object-islands))
+  (let* ((context (org-texmacs--serialize-context model))
          (settings (plist-get context :heading-settings)))
     (cl-progv
      (mapcar #'car settings) (mapcar #'cdr settings)
@@ -585,23 +506,17 @@ Return no partial text on failure."
             (ast (nth 0 snapshot))
             (islands (nth 1 snapshot))
             (paths (nth 2 snapshot)))
-       (when object-islands
-         (org-texmacs--model-check-islands ast islands nil t))
-       (org-texmacs--serialize-preflight
-        ast islands paths (plist-get context :fragment-tags)
-        object-islands)
+       (org-texmacs--serialize-preflight ast islands paths)
        (condition-case err
            (let* ((expected
                    (org-texmacs--serialize-signature
                     ast islands paths))
                   (rendered
                    (org-texmacs--serialize-render
-                    ast islands context
-                    (and object-islands paths)))
+                    ast islands context paths))
                   (text (car rendered)))
              (org-texmacs--serialize-check-output
-              text (cadr rendered) context expected
-              object-islands)
+              text (cadr rendered) context expected)
              (substring-no-properties text))
          ((org-texmacs-model-serialization-error
            org-texmacs-worker-error)
@@ -609,8 +524,7 @@ Return no partial text on failure."
          (error
           (org-texmacs--serialize-fail (error-message-string err)
                                        nil
-                                       (and object-islands
-                                            'org-container))))))))
+                                       'org-container)))))))
 
 ;;;###autoload
 (defun org-texmacs-model-to-buffer (model &optional name)
@@ -622,7 +536,7 @@ allocating the output buffer; clean up a new buffer on initialization failure."
   (unless (or (null name) (stringp name))
     (org-texmacs--serialize-fail "Expected an Org buffer name"))
   (let* ((text (org-texmacs-model-serialize model))
-         (context (org-texmacs--serialize-context model t))
+         (context (org-texmacs--serialize-context model))
          (buffer (generate-new-buffer (or name "*org-texmacs-org*")))
          complete)
     (unwind-protect

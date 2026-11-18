@@ -296,7 +296,7 @@
 
 (ert-deftest org-texmacs-font-lock-default-and-ownership ()
   (org-texmacs-test--with-font-lock
-   "Before (math \"STRING\") after.\n"
+   "Before $(math \"STRING\")$ after.\n"
    (let ((text (buffer-string))
          (tick (buffer-chars-modified-tick))
          (undo buffer-undo-list)
@@ -316,16 +316,11 @@
      (should-not (buffer-modified-p))
      (should (equal undo buffer-undo-list))
      (should (= 4 (point)))
-     (should (equal mark (mark t)))
-     (should
-      (= 1
-         (length
-          (org-texmacs-fragment-map
-           (point-min) (point-max) #'identity)))))))
+     (should (equal mark (mark t))))))
 
 (ert-deftest org-texmacs-font-lock-opaque-and-disable ()
   (org-texmacs-test--with-font-lock
-   "Outside *NORMAL*.\n\n(math \"*BOLD* [[https://example.org][TEXT]]\")\n"
+   "Outside *NORMAL*.\n\n$(math \"*BOLD* [[https://example.org][TEXT]]\")$\n"
    (setq-local org-hide-emphasis-markers t)
    (font-lock-flush)
    (font-lock-ensure)
@@ -349,31 +344,28 @@
 
 (ert-deftest org-texmacs-font-lock-discovery-boundaries ()
   (org-texmacs-test--with-font-lock
-   "* Heading (math \"HEAD\")\n\n| (math \"TABLE\") |\n\n*em (math \"EMPH\")* =(math \"CODE\")= [[https://example.org][(math \"LINK\")]].\n\n#+begin_src text\n(math \"SOURCE\")\n#+end_src\n\nText (math \"PARA\"). [fn::Note (math \"NOTE\")].\n\n#+BeGiN_TeXmAcS\n(unknown \"BLOCK\")\n#+eNd_TeXmAcS\n\n#+begin_quote\n(math \"QUOTE\")\n#+end_quote\n\n- (math \"LIST\")\n\n[fn:n] (math \"DEFINITION\")\n"
-   (dolist (word '("PARA" "NOTE" "BLOCK" "QUOTE" "LIST" "DEFINITION"))
+   "* Heading $(math \"HEAD\")$\n\n| $(math \"TABLE\")$ |\n\n*em $(math \"EMPH\")$* =$(math \"CODE\")$= [[https://example.org][$(math \"LINK\")$]].\n\n#+begin_src text\n$(math \"SOURCE\")$\n#+end_src\n\nText $(math \"PARA\")$. [fn::Note $(math \"NOTE\")$].\n\n#+BeGiN_TeXmAcS\n(unknown \"BLOCK\")\n#+eNd_TeXmAcS\n\n#+begin_quote\n$(math \"QUOTE\")$\n#+end_quote\n\n- $(math \"LIST\")$\n\n[fn:n] $(math \"DEFINITION\")$\n"
+   (dolist (word
+            '("PARA"
+              "NOTE"
+              "BLOCK"
+              "QUOTE"
+              "LIST"
+              "DEFINITION"
+              "EMPH"
+              "LINK"))
      (should (org-texmacs-test--font-lock-string-p word)))
-   (dolist (word '("HEAD" "TABLE" "EMPH" "CODE" "LINK" "SOURCE"))
+   (dolist (word '("HEAD" "TABLE" "CODE" "SOURCE"))
      (should-not (org-texmacs-test--font-lock-string-p word)))))
 
-(ert-deftest org-texmacs-font-lock-roots-and-configuration ()
+(ert-deftest
+    org-texmacs-font-lock-explicit-carriers-and-arbitrary-roots
+    ()
   (org-texmacs-test--with-font-lock
-   (concat
-    (mapconcat (lambda (tag)
-                 (format "(%s \"VALUE-%s\")" tag tag))
-               org-texmacs-fragment-tags
-               "\n\n")
-    "\n\n(custom \"CUSTOM\")\n")
-   (dolist (tag org-texmacs-fragment-tags)
-     (should
-      (org-texmacs-test--font-lock-string-p (concat "VALUE-" tag))))
-   (should-not (org-texmacs-test--font-lock-string-p "CUSTOM"))
-   (setq-local org-texmacs-fragment-tags '("custom"))
-   (font-lock-ensure)
-   (should (org-texmacs-test--font-lock-string-p "CUSTOM"))
-   (should-not (org-texmacs-test--font-lock-string-p "VALUE-math"))
-   (setq-local org-texmacs-fragment-tags '(42))
-   (font-lock-ensure)
-   (should-not (org-texmacs-test--font-lock-string-p "CUSTOM"))))
+   "Before $(unknown \"DOLLAR\")$ and \\((other \"BACKSLASH\")\\).\n\n(math \"BARE\")\n"
+   (should (org-texmacs-test--font-lock-string-p "DOLLAR"))
+   (should (org-texmacs-test--font-lock-string-p "BACKSLASH"))
+   (should-not (org-texmacs-test--font-lock-string-p "BARE"))))
 
 (ert-deftest org-texmacs-font-lock-edit-old-block-context ()
   (org-texmacs-test--with-font-lock
@@ -395,7 +387,7 @@
 
 (ert-deftest org-texmacs-font-lock-incomplete-local-recovery ()
   (org-texmacs-test--with-font-lock
-   "Good (math \"GOOD\").\n\n[fn::Broken (math \"BAD\"].\n\n(math\n \"MULTI\")\n"
+   "Good $(math \"GOOD\")$.\n\n[fn::Broken $(math \"BAD\"].\n\n$(math\n \"MULTI\")$\n"
    (should (org-texmacs-test--font-lock-string-p "GOOD"))
    (should (org-texmacs-test--font-lock-string-p "MULTI"))
    (goto-char (org-texmacs-test--font-lock-position "\"GOOD\""))
@@ -410,10 +402,10 @@
 (ert-deftest org-texmacs-font-lock-narrowing-mode-and-buffer-isolation
     ()
   (org-texmacs-test--with-font-lock
-   "(math \"OUTSIDE\")\n\n(math \"INSIDE\")\n"
+   "$(math \"OUTSIDE\")$\n\n$(math \"INSIDE\")$\n"
    (let ((source (current-buffer)))
      (org-texmacs-test--with-font-lock
-      "(math \"OTHER\")\n"
+      "$(math \"OTHER\")$\n"
       (setq-local org-texmacs--font-lock-enabled nil)
       (font-lock-ensure)
       (should-not (org-texmacs-test--font-lock-string-p "OTHER")))
@@ -439,7 +431,7 @@
 
 (ert-deftest org-texmacs-font-lock-local-work-and-no-native-process ()
   (org-texmacs-test--with-font-lock
-   (apply #'concat (make-list 512 "Text (math \"VALUE\") end.\n\n"))
+   (apply #'concat (make-list 512 "Text $(math \"VALUE\")$ end.\n\n"))
    (let ((maximum 0)
          (calls 0)
          (original
@@ -449,11 +441,11 @@
      (should original)
      (cl-letf (((symbol-function
                  'org-texmacs--font-lock-paragraph-spans)
-                (lambda (begin end tags)
+                (lambda (begin end)
                   (setq
                    maximum (max maximum (- end begin))
                    calls (1+ calls))
-                  (funcall original begin end tags)))
+                  (funcall original begin end)))
                ((symbol-function 'org-texmacs--worker-request)
                 (lambda (&rest _)
                   (ert-fail "Fontification started a worker"))))
@@ -472,7 +464,7 @@
         (progn
           (set-default 'org-texmacs--font-lock-enabled nil)
           (org-texmacs-test--with-font-lock
-           "(math \"GLOBAL\")\n"
+           "$(math \"GLOBAL\")$\n"
            (should-not
             (org-texmacs-test--font-lock-string-p "GLOBAL"))
            (set-default 'org-texmacs--font-lock-enabled t)

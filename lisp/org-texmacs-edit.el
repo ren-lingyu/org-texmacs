@@ -10,7 +10,7 @@
 
 ;;; Code:
 
-(require 'org-texmacs-fragment)
+(require 'org-texmacs-source)
 (require 'org-src)
 (require 'scheme)
 

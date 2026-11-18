@@ -16,7 +16,6 @@
 (require 'org-texmacs-core)
 (require 'org-texmacs-model)
 (require 'org-texmacs-source)
-(require 'org-texmacs-fragment)
 (require 'org-texmacs-context)
 (require 'org-texmacs-cite)
 (require 'ox)
@@ -1676,10 +1675,8 @@ Wrap a first concat with surround.  Otherwise prepend a separate paragraph."
   "Lower prepared Org AST and ISLANDS to a structural document result.
 
 AST must be an `org-data' snapshot.  ISLANDS is an identity-keyed alist
-of (NODE . STREE): NODE is a complete TeXmacs special block or a standalone
-plain-text child of a paragraph or inline footnote body.  A preparation
-layer must split text at fragment boundaries and mask foreign markup before
-constructing this input.
+of (NODE . STREE).  NODE is a native STM block or a nonrecursive
+`stm-fragment' object.  Its STM tree has already been parsed.
 This function never discovers or parses fragments.  Every mapping must be
 consumed exactly once; each mapped root contributes one output child.
 INFO fixes metadata, headline/TOC output policies, formatters and internal

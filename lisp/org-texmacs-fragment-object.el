@@ -24,6 +24,9 @@
   "Non-nil in a synchronous extended-AST transaction.
 Export integration may suspend this binding for another backend.")
 
+(defvar org-texmacs--fragment-object-incomplete-ok nil
+  "Non-nil during fontification, when incomplete carriers may be skipped.")
+
 (defvar org-texmacs--fragment-object-org-context nil
   "Org settings to restore for another backend inside a TeXmacs export.")
 
@@ -90,26 +93,33 @@ Signal `org-texmacs-parse-error' for a recognized incomplete carrier."
 Org owns the dispatch, opaque regions, recursive nesting and narrowing.
 Org 9.8.10 org-element--parse-objects narrows to BEG/END before calling the
 object lexer, including secondary strings; point-max is that container bound."
-  (if (and org-texmacs--fragment-object-active
-           (or (looking-at-p (regexp-quote "$("))
-               (looking-at-p (regexp-quote "\\(("))))
-      (save-match-data
-        (let* ((start (point))
-               (span
-                (org-texmacs--fragment-object-scan start (point-max)))
-               (end (car span))
-               (post
-                (save-excursion
-                  (goto-char end)
-                  (skip-chars-forward " \t"))))
-          (org-element-create
-           'stm-fragment
-           (list
-            :begin start
-            :end (+ end post)
-            :post-blank post
-            :stm-source (cadr span)))))
-    (apply original arguments)))
+  (or (when (and org-texmacs--fragment-object-active
+                 (or (looking-at-p (regexp-quote "$("))
+                     (looking-at-p (regexp-quote "\\(("))))
+        (save-match-data
+          (let* ((start (point))
+                 (span
+                  (condition-case err
+                      (org-texmacs--fragment-object-scan
+                       start (point-max))
+                    (org-texmacs-parse-error
+                     (unless
+                         org-texmacs--fragment-object-incomplete-ok
+                       (signal (car err) (cdr err)))))))
+            (when span
+              (let* ((end (car span))
+                     (post
+                      (save-excursion
+                        (goto-char end)
+                        (skip-chars-forward " \t"))))
+                (org-element-create
+                 'stm-fragment
+                 (list
+                  :begin start
+                  :end (+ end post)
+                  :post-blank post
+                  :stm-source (cadr span))))))))
+      (apply original arguments)))
 
 (defun org-texmacs--fragment-object-parse-elements
     (original
@@ -149,9 +159,11 @@ This does not certify native STM validity or safe embedding in every container."
          (signal (car err) (cdr err))))
       text)))
 
-(defun org-texmacs--call-with-ast-context (function)
+(defun org-texmacs--call-with-ast-context
+    (function &optional incomplete-ok)
   "Call zero-argument FUNCTION with scoped extended Org AST support.
 Register nonrecursive `stm-fragment' wherever Org permits `latex-fragment'.
+INCOMPLETE-OK lets the editor skip unfinished carriers.
 Bind the registry, restrictions and interpreter locally; restore parser advice
 on normal, nested and exceptional exits.  Disable live Org caching within the
 scope so extended objects cannot enter another backend's cache.  Loading this
@@ -166,6 +178,7 @@ module alone changes no parser or backend.  Never start a native worker."
                     (symbol-function
                      'org-element-stm-fragment-interpreter)))))
          (org-texmacs--fragment-object-active t)
+         (org-texmacs--fragment-object-incomplete-ok incomplete-ok)
          (org-element-use-cache nil)
          (org-element-all-objects
           (cons

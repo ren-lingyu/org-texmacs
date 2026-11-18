@@ -415,8 +415,7 @@
                      (push (cadr parsed) requests)
                      parsed))))
         (let* ((source (buffer-string))
-               (model
-                (org-texmacs--parse-buffer-model (current-buffer) t))
+               (model (org-texmacs-parse-buffer (current-buffer)))
                (islands (org-texmacs-model-islands model))
                (body (car (rassoc '(math "body") islands)))
                (caption (car (rassoc '(math "caption") islands)))
@@ -457,7 +456,7 @@
                      (insert "Edited"))
                    '(math "x"))))
         (should-error
-         (org-texmacs--parse-buffer-model source t)
+         (org-texmacs-parse-buffer source)
          :type 'org-texmacs-model-error)))))
 
 ;;; model-parser.el ends here

@@ -2779,7 +2779,6 @@
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
-    (setq-local org-texmacs-fragment-tags nil)
     (insert "$(custom-tag \"x\")$\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
                (lambda (source) (read source))))

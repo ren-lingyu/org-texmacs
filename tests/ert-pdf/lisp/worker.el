@@ -20,7 +20,7 @@
                org-texmacs-core
                org-texmacs-ast
                org-texmacs-source
-               org-texmacs-fragment
+               org-texmacs-fragment-object
                org-texmacs-font-lock
                org-texmacs-edit
                org-texmacs-document
@@ -38,11 +38,7 @@
       (expand-file-name "org-texmacs-worker.scm" directory)))
     (should (file-readable-p org-texmacs--worker-scheme-file)))
   (dolist (function
-           '(org-texmacs-fragment-at-point
-             org-texmacs-fragment-map
-             org-texmacs-fragment-tree
-             org-texmacs-fragment-span-p
-             org-texmacs-document
+           '(org-texmacs-document
              org-texmacs-document-current-buffer
              org-texmacs-document-from-buffer
              org-texmacs-prepare-buffer

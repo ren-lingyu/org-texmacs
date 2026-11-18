@@ -633,27 +633,6 @@
       (should-not org-texmacs--standard-request))))
 
 (ert-deftest
-    org-texmacs-standard-export-ignores-legacy-fragment-settings
-    ()
-  (with-temp-buffer
-    (org-mode)
-    (insert "$(math \"x\")$\n")
-    (let ((source (current-buffer))
-          (org-texmacs-fragment-tags '("math"))
-          (org-export-use-babel nil))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (_text)
-                   (with-current-buffer source
-                     (setq org-texmacs-fragment-tags '("other")))
-                   '(math "x"))))
-        (should
-         (equal
-          (cdar
-           (org-texmacs-input-islands
-            (org-texmacs--standard-consume 'input)))
-          '(math "x")))))))
-
-(ert-deftest
     org-texmacs-standard-export-fragment-positions-and-spacing
     ()
   (with-temp-buffer

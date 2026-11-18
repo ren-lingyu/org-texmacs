@@ -11,7 +11,7 @@
 ** 当前文档的配置
 #+include: "profile.el" src emacs-lisp
 
-入口保留默认 generic 样式. 配套文章使用 article, 测试用标题前缀和 math-only 段落发现.
+入口保留默认 generic 样式. 配套文章使用 article, 标题带有测试前缀.
 显式 equation 与 texmacs 块仍然可以使用.
 入口保留普通引用; 配套文章显式启用 typed references, 并加载原生 smart-ref 样式包.
 指向编号标题, 数学陈述, 公式, 插图或表格的无描述链接根据目标结构选择引用类型;
@@ -53,4 +53,4 @@ package 显式构建这两个入口.
 article 显式选择 =texmacs-native alpha=. 示例构建和基础 package 均不依赖 citeproc;
 只有显式选择 CSL 时才需要安装它.
 准备流程和递归 INCLUDE 由 Org 管理. 构建配置禁用 Babel 求值, 导出不执行所展示的代码.
-fragment-tags 控制段落入口, 不限制显式 TeXmacs 块内部结构. 本指南不承诺私有扩展 API.
+行内 STM 使用显式 carrier. 本指南不承诺私有扩展 API.

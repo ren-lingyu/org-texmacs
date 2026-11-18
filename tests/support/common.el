@@ -242,17 +242,6 @@ Options are not interpreted; no selection, hooks, Cite or source preparation."
     (beginning-of-line)
     (org-element-at-point)))
 
-(defun org-texmacs-test--fragment-sources (&optional begin end)
-  "Return fragment sources in the accessible buffer or between BEGIN and END."
-  (org-texmacs-fragment-map
-   (or begin (point-min))
-   (or end (point-max))
-   #'org-texmacs-fragment-span-source))
-
-(defun org-texmacs-test--first-fragment ()
-  "Return the first fragment span in the accessible Org buffer."
-  (car (org-texmacs-fragment-map (point-min) (point-max) #'identity)))
-
 (defconst org-texmacs-test--fragment-strees
   '((math (frac "1" (sqrt "x")))
     (equation (frac "1" (sqrt "x")))
@@ -344,7 +333,6 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
      (point-min)
      (point-max)
      major-mode
-     (org-texmacs--fragment-tags)
      (org-texmacs--document-heading-settings)
      (org-texmacs--document-link-settings)
      (org-texmacs-test--document-settings))))

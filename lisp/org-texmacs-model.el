@@ -50,7 +50,7 @@ owns supplied resolved data; it does not infer settings or interpret options.")
  "Private copying transaction shared with export input ownership."
  (nodes (make-hash-table :test #'eq))
  pending
- (object-islands nil)
+ (strip-fragment-source nil)
  (error-type 'org-texmacs-model-error)
  excluded-nodes
  (secondary-normalizer #'identity)
@@ -176,7 +176,8 @@ properties after all structural identities have been registered."
          (lambda (key value _owner)
            (cond
             ((memq key '(:parent :buffer :deferred :secondary)))
-            ((and (org-texmacs--model-owner-object-islands owner)
+            ((and (org-texmacs--model-owner-strip-fragment-source
+                   owner)
                   (or (and (eq (car old) 'stm-fragment)
                            (memq key '(:stm-source :value)))
                       (and (not parent)
@@ -300,17 +301,15 @@ All keys must be distinct registered nodes.  Return keys in the copied tree."
      entries)))
 
 (defun org-texmacs--model-check-islands
-    (ast islands &optional error-type object-islands)
+    (ast islands &optional error-type)
   "Validate island associations in owned AST and ISLANDS.
-With OBJECT-ISLANDS, require typed object keys and complete fragment mappings.
+Require typed object keys and complete fragment mappings.
 Inspect contents, captions and secondary properties without reading source."
   (let ((keys (make-hash-table :test #'eq)))
     (dolist (entry islands)
       (let ((node (car entry)))
-        (when (and object-islands
-                   (not
-                    (or (eq (org-element-type node) 'stm-fragment)
-                        (org-texmacs--native-body-kind node))))
+        (unless (or (eq (org-element-type node) 'stm-fragment)
+                    (org-texmacs--native-body-kind node))
           (signal
            (or error-type 'org-texmacs-model-error)
            '("Expected a fragment or native block island key")))
@@ -319,8 +318,7 @@ Inspect contents, captions and secondary properties without reading source."
      ((walk
        (node enclosing)
        (let ((island (gethash node keys)))
-         (when (and object-islands
-                    (eq (org-element-type node) 'stm-fragment))
+         (when (eq (org-element-type node) 'stm-fragment)
            (unless (and island
                         (null (org-element-contents node))
                         (let ((blank
@@ -362,7 +360,7 @@ Inspect contents, captions and secondary properties without reading source."
      (push key seen)))
   (org-texmacs--model-copy-data owner context))
 
-(defun org-texmacs--model-own-object-context (owner ast context)
+(defun org-texmacs--model-own-context (owner ast context)
   "Merge already owned CONTEXT with the validated syntax snapshot on AST."
   (let ((syntax
          (org-texmacs--model-copy-context
@@ -390,16 +388,13 @@ Inspect contents, captions and secondary properties without reading source."
        (setq result (plist-put result key value))))
     result))
 
-(defun org-texmacs--model-own
-    (ast islands context &optional object-islands)
-  "Own AST, ISLANDS and CONTEXT in one pure transaction.
-OBJECT-ISLANDS selects the internal object construction path before cutover."
+(defun org-texmacs--model-own (ast islands context)
+  "Own AST, ISLANDS and CONTEXT in one pure transaction."
   (unless (and (consp ast) (eq (car ast) 'org-data))
     (signal 'org-texmacs-model-error
             '("Expected an Org org-data AST")))
   (let* ((owner
-          (org-texmacs--model-owner-create
-           :object-islands object-islands))
+          (org-texmacs--model-owner-create :strip-fragment-source t))
          (copy (org-texmacs--model-copy-node owner ast nil))
          (mapping
           (org-texmacs--model-copy-mapping
@@ -408,15 +403,12 @@ OBJECT-ISLANDS selects the internal object construction path before cutover."
           (org-texmacs--model-copy-context
            owner context org-texmacs--model-context-keys)))
     (org-texmacs--model-finish-owner owner)
-    (org-texmacs--model-check-islands copy mapping nil object-islands)
+    (org-texmacs--model-check-islands copy mapping)
     (org-texmacs--model-create
      :ast copy
      :islands mapping
      :context
-     (if object-islands
-         (org-texmacs--model-own-object-context
-          owner ast owned-context)
-       owned-context))))
+     (org-texmacs--model-own-context owner ast owned-context))))
 
 ;;;###autoload
 (cl-defun
@@ -444,7 +436,7 @@ inexpressible under current Org recognition syntax.  No parser, source buffer,
 worker, document lowering, reference allocation or formatter is consulted.
 Return a read-only snapshot: callers must not modify accessor results or
 nested data.  Signal `org-texmacs-model-error' for invalid inputs."
- (org-texmacs--model-own ast islands context t))
+ (org-texmacs--model-own ast islands context))
 
 (defun org-texmacs--model-path-error (message path)
   "Report structural MESSAGE at native AST PATH without source coordinates."
@@ -521,7 +513,7 @@ With CONTEXT non-nil, append owned syntax context as a fourth result."
                  owner
                  (org-texmacs-model-islands model)
                  #'org-texmacs--model-copy-stree))
-          (org-texmacs--model-check-islands ast islands nil t))
+          (org-texmacs--model-check-islands ast islands))
       (org-texmacs-model-error
        (org-texmacs--model-path-error
         (error-message-string err) nil)))
@@ -555,7 +547,9 @@ With CONTEXT non-nil, append owned syntax context as a fourth result."
             (org-texmacs--model-path-error
              "Invalid or duplicate syntax context key" nil))
           (push key seen))
-         (list (org-texmacs--model-copy-data owner value)))))))
+         (list
+          (org-texmacs--model-own-context
+           owner ast (org-texmacs--model-copy-data owner value))))))))
 
 ;;;###autoload
 (defun org-texmacs-model-copy (model)

@@ -16,7 +16,7 @@ override matching global initial defaults.
 #+include: "profile.el" src emacs-lisp
 
 The index retains the default generic style. The companion article uses article,
-a test-prefix headline formatter and math-only paragraph fragment discovery.
+a test-prefix headline formatter and typed internal references.
 Explicit equation and TeXmacs blocks still work.
 The index retains plain references; the article explicitly enables typed
 references and includes the bundled smart-ref style package. A bare link to
@@ -63,5 +63,5 @@ for the generic document and explicit =texmacs-native alpha= for the article.
 Neither the example build nor the base package requires citeproc; install it only
 for an explicit CSL selection.
 Org owns preparation and recursive INCLUDE. The builder disables Babel evaluation
-so the displayed code is not executed during export. Fragment tags select
-paragraph roots, not the contents of explicit TeXmacs blocks. Private extensions are outside this configuration guide.
+so the displayed code is not executed during export. Inline STM uses explicit
+carriers. Private extensions are outside this configuration guide.
