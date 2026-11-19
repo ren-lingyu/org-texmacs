@@ -7,7 +7,6 @@
 ;;; Code:
 
 (ert-deftest org-texmacs-issue13-stage4-org-native-api ()
-  (should (equal (org-version) "9.8.10"))
   (with-temp-buffer
     (org-mode)
     (insert

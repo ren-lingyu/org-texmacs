@@ -2524,6 +2524,7 @@ The =ert= aggregate uses stock Org and includes direct-AST caption-footnote
 tests. The separate =emacsPackages-org-texmacs-caption-inline-footnotes=
 check builds the locked Org 9.8.10 with the adjacent test-only patch and
 checks the pure-model support and standard source-export rejection boundary.
+The check is available when the Emacs package set provides Org 9.8.10.
 It does not change =packages.org-texmacs=, =packages.emacs= or the ordinary
 development environment.
 The default flake checks include the standard Cite integration suite and
