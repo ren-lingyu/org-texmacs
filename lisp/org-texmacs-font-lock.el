@@ -5,11 +5,12 @@
 
 ;;; Commentary:
 
-;; Present recognized STM as embedded Scheme without changing Org source or
-;; export discovery.  All entry points and the default-on override are internal.
+;; Present native STM block bodies and recognized paragraph fragments as Scheme.
+;; All entry points and the default-on override are internal.
 
 ;;; Code:
 
+(require 'cl-lib)
 (require 'org-texmacs-fragment-object)
 (require 'org-src)
 
@@ -30,29 +31,34 @@ This does not enable Font Lock itself or change accepted export syntax.")
   "Markers delimiting an old owned context affected by a character edit.")
 
 (defun org-texmacs--font-lock-contexts (begin end)
-  "Return paragraph and TeXmacs block contexts intersecting BEGIN through END.
+  "Return paragraph and native STM block contexts between BEGIN and END.
 Each entry is (TYPE BEGIN END CONTENTS-BEGIN CONTENTS-END).  Use Org's
 local element lookup, not a full-source copy or export discovery request."
   (save-excursion
     (goto-char begin)
     (let (contexts)
       (while (< (point) end)
-        (let* ((position (point))
-               (node (org-element-at-point))
-               (block (org-element-lineage node '(special-block) t))
-               (type (org-element-type node))
-               (target
-                (cond
-                 ((and block (org-texmacs--block-p block))
-                  block)
-                 ((eq type 'paragraph)
-                  node)
-                 ((memq type '(plain-list item footnote-definition))
-                  (save-excursion
-                    (end-of-line)
-                    (org-element-lineage
-                     (org-element-context) '(paragraph) t)))))
-               (next (and node (org-element-property :end node))))
+        (let*
+            ((position (point))
+             (node (org-element-at-point))
+             ;; Org may see markup-shaped STM text as a nested block.
+             (block
+              (cl-find-if
+               #'org-texmacs--native-body-kind
+               (reverse (org-element-lineage node nil t))))
+             (type (org-element-type node))
+             (target
+              (cond
+               (block
+                block)
+               ((eq type 'paragraph)
+                node)
+               ((memq type '(plain-list item footnote-definition))
+                (save-excursion
+                  (end-of-line)
+                  (org-element-lineage
+                   (org-element-context) '(paragraph) t)))))
+             (next (and node (org-element-property :end node))))
           (cond
            (target
             (let ((b (org-element-property :begin target))

@@ -599,7 +599,9 @@
              '(org-texmacs-test--missing-scheme-mode
                org-texmacs-test--failing-scheme-mode))
       (org-texmacs-test--with-font-lock
-       "Outside *bold*. $(math \"x\")$\n"
+       "Outside *bold*. $(math \"x\")$\n\n#+begin_equation\n\"EQBODY\"\n#+end_equation\n\n#+begin_equation*\n\"STAR_BODY\"\n#+end_equation*\n"
+       (should (org-texmacs-test--font-lock-string-p "EQBODY"))
+       (should (org-texmacs-test--font-lock-string-p "STAR_BODY"))
        (setq-local major-mode-remap-alist
                    (list (cons 'scheme-mode mode)))
        (let ((before
@@ -616,6 +618,12 @@
             (get-text-property
              (org-texmacs-test--font-lock-position "bold") 'face))))
          (should (eq major-mode 'org-mode))
+         (dolist (word '("EQBODY" "STAR_BODY"))
+           (should-not (org-texmacs-test--font-lock-string-p word))
+           (should-not
+            (get-text-property
+             (org-texmacs-test--font-lock-position word)
+             'syntax-table)))
          (should
           (equal
            before
@@ -672,23 +680,119 @@
    (should (org-texmacs-test--font-lock-string-p "BACKSLASH"))
    (should-not (org-texmacs-test--font-lock-string-p "BARE"))))
 
-(ert-deftest org-texmacs-font-lock-edit-old-block-context ()
+(ert-deftest org-texmacs-font-lock-native-block-bodies ()
+  (cl-letf (((symbol-function 'org-texmacs--worker-request)
+             (lambda (&rest _)
+               (ert-fail "Fontification started a worker")))
+            ((symbol-function 'org-texmacs-model-create)
+             (lambda (&rest _)
+               (ert-fail "Fontification constructed a Model")))
+            ((symbol-function 'org-export-as)
+             (lambda (&rest _)
+               (ert-fail "Fontification started Export"))))
+    (dolist (kind '("texmacs" "equation" "equation*"))
+      (org-texmacs-test--with-font-lock
+       (format
+        "- Item\n  #+NAME: block\n  #+BeGiN_%s\n  (math \"*STRONG* [[https://example.org][LINK]] $(math CARRIER)$\")\n  #+eNd_%s\n"
+        (upcase kind) kind)
+       (goto-char (org-texmacs-test--font-lock-position "STRONG"))
+       (push-mark (1+ (point)) t t)
+       (let ((before
+              (buffer-substring-no-properties
+               (point-min) (point-max)))
+             (tick (buffer-chars-modified-tick))
+             (undo buffer-undo-list)
+             (position (point))
+             (mark-position (mark)))
+         (setq-local org-hide-emphasis-markers t)
+         (font-lock-flush)
+         (font-lock-ensure)
+         (dolist (word '("STRONG" "LINK" "CARRIER"))
+           (let ((pos (org-texmacs-test--font-lock-position word)))
+             (should (org-texmacs-test--font-lock-string-p word))
+             (should (get-text-property pos 'syntax-table))
+             (dolist (prop
+                      '(keymap mouse-face invisible org-emphasis))
+               (should-not (get-text-property pos prop)))))
+         (let ((paren (org-texmacs-test--font-lock-position "(math")))
+           (should (get-text-property paren 'syntax-table))
+           (should (= 4 (syntax-class (syntax-after paren)))))
+         (dolist (marker '("#+NAME:" "#+BeGiN_" "#+eNd_"))
+           (let ((pos (org-texmacs-test--font-lock-position marker)))
+             (should (get-text-property pos 'face))
+             (should-not (get-text-property pos 'syntax-table))))
+         (should
+          (equal
+           before
+           (buffer-substring-no-properties (point-min) (point-max))))
+         (should (= tick (buffer-chars-modified-tick)))
+         (should-not (buffer-modified-p))
+         (should (eq undo buffer-undo-list))
+         (should (= position (point)))
+         (should (= mark-position (mark)))))
+      (org-texmacs-test--with-font-lock
+       (format
+        "#+begin_quote\n#+begin_%s\n\"ATOMIC\"\n#+end_%s\n#+end_quote\n\n#+begin_%s\n#+end_%s\n"
+        kind kind kind kind)
+       (should (org-texmacs-test--font-lock-string-p "ATOMIC"))
+       (goto-char (point-max))
+       (forward-line -2)
+       (should-not
+        (text-property-not-all
+         (point) (point-max) 'org-texmacs--font-lock-owner nil))))))
+
+(ert-deftest org-texmacs-font-lock-native-block-opaque-from-interior
+    ()
   (org-texmacs-test--with-font-lock
-   "Before.\n\n#+begin_texmacs\n(unknown \"BLOCK\")\n#+end_texmacs\n\nAfter.\n"
-   (should (org-texmacs-test--font-lock-string-p "BLOCK"))
-   (goto-char (org-texmacs-test--font-lock-position "#+end_texmacs"))
-   (delete-region (point) (line-end-position))
-   (font-lock-ensure
-    (line-beginning-position) (min (point-max) (1+ (point))))
-   (should-not (org-texmacs-test--font-lock-string-p "BLOCK"))
-   (insert "#+end_texmacs")
-   (font-lock-ensure (line-beginning-position) (line-end-position))
-   (should (org-texmacs-test--font-lock-string-p "BLOCK"))
-   (goto-char
-    (org-texmacs-test--font-lock-position "#+begin_texmacs"))
-   (delete-region (point) (line-end-position))
-   (font-lock-ensure)
-   (should-not (org-texmacs-test--font-lock-string-p "BLOCK"))))
+   "#+begin_equation*\n\"Start\n#+begin_figure\ntext $(math INNER)$\n#+end_figure\nend\"\n#+end_equation*\n\n#+begin_statement\n(rest \"RAW\") and $(math \"INLINE\")$\n#+end_statement\n"
+   (let ((inner (org-texmacs-test--font-lock-position "INNER")))
+     (should
+      (eq
+       'block
+       (caar (org-texmacs--font-lock-contexts inner (1+ inner))))))
+   (should (org-texmacs-test--font-lock-string-p "INNER"))
+   (should-not (org-texmacs-test--font-lock-string-p "RAW"))
+   (should (org-texmacs-test--font-lock-string-p "INLINE"))))
+
+(ert-deftest org-texmacs-font-lock-edit-old-block-context ()
+  (dolist (kind '("texmacs" "equation" "equation*"))
+    (let ((open (concat "#+begin_" kind))
+          (close (concat "#+end_" kind)))
+      (org-texmacs-test--with-font-lock
+       (format "Before.\n\n%s\n(unknown \"BLOCK\")\n%s\n\nAfter.\n"
+               open
+               close)
+       (should (org-texmacs-test--font-lock-string-p "BLOCK"))
+       (dolist (marker (list close open))
+         (goto-char (org-texmacs-test--font-lock-position marker))
+         (delete-region (point) (line-end-position))
+         (font-lock-ensure
+          (line-beginning-position) (min (point-max) (1+ (point))))
+         (should-not (org-texmacs-test--font-lock-string-p "BLOCK"))
+         (let ((body (org-texmacs-test--font-lock-position "BLOCK")))
+           (should-not (get-text-property body 'syntax-table))
+           (should-not
+            (get-text-property body 'org-texmacs--font-lock-owner)))
+         (insert marker)
+         (font-lock-ensure
+          (line-beginning-position) (line-end-position))
+         (should (org-texmacs-test--font-lock-string-p "BLOCK")))
+       (font-lock-mode -1)
+       (should-not
+        (get-text-property
+         (org-texmacs-test--font-lock-position "BLOCK")
+         'syntax-table))
+       (let ((noninteractive nil))
+         (font-lock-mode 1))
+       (font-lock-ensure)
+       (should (org-texmacs-test--font-lock-string-p "BLOCK"))
+       (text-mode)
+       (should-not
+        (text-property-not-all
+         (point-min)
+         (point-max)
+         'org-texmacs--font-lock-owner
+         nil))))))
 
 (ert-deftest org-texmacs-font-lock-incomplete-local-recovery ()
   (org-texmacs-test--with-font-lock
@@ -787,15 +891,19 @@
       (set-default 'org-texmacs--font-lock-enabled original))))
 
 (ert-deftest org-texmacs-font-lock-restricted-block-header ()
-  (org-texmacs-test--with-font-lock
-   "#+begin_texmacs\n(math \"BODY\")\n#+end_texmacs\n"
-   (let ((font-lock-dont-widen t))
-     (goto-char (point-min))
-     (narrow-to-region (point-min) (line-end-position))
-     (font-lock-flush)
-     (font-lock-ensure)
-     (should-not
-      (text-property-not-all
-       (point-min) (point-max) 'org-texmacs--font-lock-owner nil)))))
+  (dolist (kind '("texmacs" "equation" "equation*"))
+    (org-texmacs-test--with-font-lock
+     (format "#+begin_%s\n(math \"BODY\")\n#+end_%s\n" kind kind)
+     (let ((font-lock-dont-widen t))
+       (goto-char (point-min))
+       (narrow-to-region (point-min) (line-end-position))
+       (font-lock-flush)
+       (font-lock-ensure)
+       (should-not
+        (text-property-not-all
+         (point-min)
+         (point-max)
+         'org-texmacs--font-lock-owner
+         nil))))))
 
 ;;; editing.el ends here

@@ -42,6 +42,8 @@ release notes.
   lexically complete compound expression before saving or exiting.
 - Extend Org Src editing and Scheme indentation to =equation= and =equation*=
   blocks, with write-back protection for the corresponding closing lines.
+- Apply Scheme fontification to =equation= and =equation*= block bodies,
+  retaining Org highlighting for their delimiters and affiliated keywords.
 
 * DONE v0.7.1
 CLOSED: [2026-11-17 Tue 12:17]

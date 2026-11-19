@@ -387,8 +387,10 @@ of native =texmacs= blocks.
 
 * Embedded STM editing
 Loading =org-texmacs= enables Scheme fontification in existing and new Org
-buffers for explicit STM payloads in paragraphs and TeXmacs special-block
-bodies. Paragraph fontification follows Org's supported inline nesting.
+buffers for explicit STM payloads in paragraphs and for the bodies of native
+=texmacs=, =equation= and =equation*= blocks. Block delimiters and affiliated
+keywords retain Org highlighting. Paragraph fontification follows Org's
+supported inline nesting.
 With Font Lock and =org-src-fontify-natively= enabled, STM payloads use the
 selected Scheme mode's syntax and highlighter.
 The fontifier suppresses Org link, emphasis and hiding properties within the
