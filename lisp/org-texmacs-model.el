@@ -591,8 +591,9 @@ MODEL and its locators untouched on success or failure.  Old nodes cannot
 locate islands in the result.  No source coordinates, text round trips,
 parser, worker or document lowering are used.
 
-Root changes need only be structurally valid.  Serialization may subsequently
-signal unsupported syntax without invalidating this result.  Source text and
+Root replacement uses ordinary structural validation.  Atomic STM string
+roots are outside the supported replacement contract.  Serialization may
+reject a structurally valid result.  Source text and
 coordinates retained on Org nodes describe the original source, not the new
 STM content.  Use island identities and AST paths, never those coordinates,
 to address the result.  Signal `org-texmacs-model-error' for invalid arguments."

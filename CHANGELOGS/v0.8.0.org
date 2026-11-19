@@ -1,0 +1,134 @@
+#+title: Org TeXmacs v0.8.0 Release Notes (Draft)
+
+* Overview
+Changes since v0.7.1. Explicit inline STM carriers give Org a distinct object
+for each embedded expression. The mathematical-document Model owns the Org
+structure and the parsed STM trees. This draft also covers normalized Org
+output, Org Src editing for inline and block STM, and incremental Scheme
+fontification.
+
+* Upgrade from v0.7.1
+** Requirements and inline source
+*Breaking:* The minimum Org version is 9.8.10 for both source installations
+and the Nix package. The minimum Emacs version remains 31.1.
+
+*Breaking:* Wrap each previously bare inline STM expression in an explicit
+carrier. For example, =(math "x")= becomes =$(math "x")$= or
+=\((math "x")\)=. A carrier holds exactly one complete compound STM tree.
+Bare S-expressions follow ordinary Org parsing. Existing =texmacs=,
+=equation= and =equation*= block delimiters retain their syntax.
+
+** Lisp callers and island keys
+*Breaking:* Remove uses of =org-texmacs-fragment-tags=, the fragment span
+accessors, =org-texmacs-fragment-at-point=, =org-texmacs-fragment-map= and
+=org-texmacs-fragment-tree=. Use =org-texmacs-parse-buffer= for complete Org
+source and =org-texmacs-model-islands= to obtain the parsed island mappings.
+=org-texmacs-model-island= queries a tree using its key from that Model.
+=org-texmacs-tree= remains available for on-demand parsing of a native
+=texmacs= block.
+
+*Breaking:* Callers supplying inline islands to =org-texmacs-model-create=
+or =org-texmacs-input-create= must use a nonrecursive =stm-fragment= object
+from the supplied Org AST as each inline island key. Supply one parsed STM
+tree per fragment. Native block keys are their corresponding Org block
+nodes. Migrate old string keys to object keys before calling a constructor.
+The Model constructor validates and discards a legacy =:fragment-tags=
+context entry. Inline recognition is based on the carrier syntax.
+
+** Normalized output and Scheme configuration
+*Breaking:* =org-texmacs-model-serialize= and =org-texmacs-model-to-buffer=
+emit explicit =\((...)\)= carriers for inline islands. Update consumers
+that expect the previous bare output format.
+
+*Breaking:* Remove =org-texmacs-edit-mode= from the Emacs configuration.
+The default Org Src mapping uses the bundled =scheme-mode=. To select a
+different mode, use =org-src-lang-modes= or Emacs major-mode remapping.
+For example, once =scheme-ts-mode= and its Scheme grammar are available:
+
+#+begin_src emacs-lisp
+  (add-to-list 'major-mode-remap-alist '(scheme-mode . scheme-ts-mode))
+#+end_src
+
+These settings may also affect other Scheme buffers and Org source blocks.
+The selected mode supplies the syntax, highlighting and indentation rules.
+
+* Explicit STM and the mathematical-document Model
+Carrier recognition follows Org's supported LaTeX-fragment placement and
+composition, including supported titles, captions, link descriptions,
+footnotes and table cells. The lexical scanner determines where the
+compound datum ends, and the native STM parser validates its content
+during conversion. Explicit carriers accept any root tag at recognition
+time. A recognized incomplete carrier signals =org-texmacs-parse-error=
+during formal conversion.
+
+The Model consists of owned native Org structure, identity-keyed parsed
+STM islands and captured syntax or source context. The Org node locates
+the island, and its parsed tree supplies the mathematical content. Owned
+fragments omit temporary =:stm-source= and =:value= properties. A constructor,
+copy or STM replacement owns its data independently. Obtain fresh island
+keys from the returned snapshot, and treat accessors' results and their
+nested data as read-only.
+
+=org-texmacs-parse-buffer= reads the complete Org source and uses the
+native STM parser. Direct construction from an Org AST and parsed STM
+trees, inspection, copying and replacement operate on structured data
+without a worker. Standard Export uses Org's final prepared AST, including
+selection, filters and Cite processing. A parse-tree filter can add a
+nonrecursive =stm-fragment= with a complete compound datum in =:stm-source=.
+=org-texmacs-document= consumes prepared input from
+=org-texmacs-prepare-buffer= or =org-texmacs-input-create=.
+
+* Normalized Org serialization
+A pure STM writer emits the current island trees without acquiring a native
+worker. Output is checked by re-reading the Org structure under the
+captured syntax and matching it against the known island associations.
+For direct Model construction, supply suitable syntax context if the
+result will be serialized.
+
+Model construction and source representation have distinct requirements.
+Unsupported STM symbol spellings or a lossy placement in an Org container
+can cause =org-texmacs-model-serialization-error= even for a structurally
+valid Model. Invalid Models signal =org-texmacs-model-error=. Serialization
+uses current island data and returns no partial output on failure. Atomic
+STM string roots are outside the Model replacement support contract.
+
+* Interactive editing
+=C-c '= opens a recognized STM fragment or a native =texmacs=, =equation=
+or =equation*= body in an Org Src Scheme buffer. =C-c '= in that buffer
+writes back and exits, =C-c C-k= cancels, and =C-x C-s= uses Org Src saving.
+Fragment write-back preserves the original carrier and checks for a single
+lexically complete compound datum before saving or exiting. A lexical
+failure or a source payload conflict leaves the editor open for correction
+or cancellation. Native STM and Org container validation occur during
+conversion.
+
+All three native block bodies support Scheme indentation with TAB, line
+indentation and region indentation in the Org buffer. Block editing
+preserves delimiters, parameters and affiliation, including when editing
+an empty body or a string root. Writing a line matching the current
+block's closing delimiter is rejected before save or exit.
+
+* Scheme fontification and incremental refresh
+With Font Lock and =org-src-fontify-natively= enabled, Org Src applies
+Scheme presentation to explicit paragraph fragments and native STM
+block bodies. Org retains presentation for carrier and block delimiters
+and affiliated keywords. The fontifier works independently of native STM
+validation and accepts incomplete editing input for presentation.
+
+A local edit can extend Org's refresh into neighboring STM. Scheme
+presentation is restored over Org's actual refresh range, and the resulting
+range is reported to JIT Lock. Adjacent STM contexts retain independent
+invalidation ranges.
+
+* Known limits
+- Inline carriers use Org's native object composition and stay within the
+  effective container. Code and other opaque Org regions keep their native
+  interpretation.
+- Dedicated Scheme fontification for heading titles, captions and table
+  cells is outside the supported presentation scope. Recognition in those
+  contexts can still be used by Model parsing and Export.
+- Display roots such as =equation= require a standalone STM island in a
+  supported body position or a native block. Mixed prose with those display
+  roots remains outside the lowering profile.
+- Interactive TeXmacs preview in the Org buffer is outside this development
+  scope.

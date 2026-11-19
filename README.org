@@ -50,7 +50,8 @@ original source; covered changes fail source validation and are not undone.
 * Version history
 This README documents development toward =v0.8.0=. See
 [[file:CHANGELOG.org][the changelog]] for the development summary and
-[[file:CHANGELOGS/v0.7.1.org][the v0.7.1 release notes]] for the latest release.
+[[file:CHANGELOGS/v0.8.0.org][the draft upgrade notes]] for the changes since
+[[file:CHANGELOGS/v0.7.1.org][the v0.7.1 release]].
 
 * Requirements
 - Emacs 31.1 or later and Org 9.8.10 or later, as declared by the package.
@@ -516,8 +517,7 @@ retain their structure and spacing while their island trees hold the parsed STM.
 
 For migration, wrap previously bare STM in an explicit carrier and use
 =stm-fragment= nodes in supplied island mappings. Construct the complete model
-with =org-texmacs-parse-buffer= or =org-texmacs-model-create=. These replace
-the temporary source-recognition entry points introduced during Node 1.
+with =org-texmacs-parse-buffer= or =org-texmacs-model-create=.
 
 Native block boundaries follow Org syntax.  An unindented headline ends its
 section, so a block opener before that headline cannot enclose text after it.
@@ -1009,8 +1009,9 @@ Construct one with =org-texmacs-input-create AST INFO :islands ... :post-blanks 
 or use =org-texmacs-prepare-buffer SOURCE-BUFFER= for standard Org preparation.
 Preparation returns owned input without invoking document lowering or formatting;
 valid Org structure may still be unsupported by the document consumer.
-The constructor requires an already parsed =org-data= snapshot.  Island mappings
-must use identities from that AST and contain parsed strees, not STM strings.
+The constructor requires an already parsed =org-data= snapshot. Island mappings
+pair =stm-fragment= objects or native STM block nodes from that AST with parsed
+STM trees. Every =stm-fragment= object requires a mapping.
 It copies the AST and options, rebuilds parent links, and remaps mapping keys.
 Deferred properties, cyclic/multiply owned AST nodes, opaque data and detached
 or duplicate mappings are rejected.  A formatter remains an opaque function;

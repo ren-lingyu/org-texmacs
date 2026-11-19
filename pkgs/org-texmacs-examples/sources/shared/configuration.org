@@ -17,7 +17,7 @@ configuration files are loaded; interactive snippets elsewhere are never run.
   ;; Full documents can take longer than interactive parse requests.
   (setq org-texmacs-worker-request-timeout 120)
 
-  ;; Keep page geometry explicit; retain the packaged executable and edit mode.
+  ;; Set page geometry and paragraph indentation explicitly.
   (setq org-texmacs-document-initial
         '(("page-type" . "a4")
           ("font-base-size" . "10")

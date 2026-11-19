@@ -63,7 +63,7 @@ separately; link follow/export handlers are not syntax and are not captured.")
     :local org-link-abbrev-alist-local)))
 
 (defun org-texmacs--syntax-capture ()
-  "Capture native syntax as nonsemantic extended AST root metadata."
+  "Capture native syntax for the temporary Org recognition tree's root."
   (list
    :heading-settings (org-texmacs--parse-settings)
    :link-settings (org-texmacs--parse-links)))

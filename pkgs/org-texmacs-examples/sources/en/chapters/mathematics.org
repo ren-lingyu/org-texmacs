@@ -43,8 +43,7 @@ The limit and derivative can be written with native subscripts, fractions and a 
 (concat "A=" (matrix (tformat (table (row (cell "1") (cell "2")) (row (cell "3") (cell "4"))))))
 #+end_equation
 
-An explicit native block can carry a multiline formula. The article profile's
-paragraph discovery setting does not prevent this block from being parsed.
+An explicit native TeXmacs block can carry a multiline formula.
 
 #+begin_texmacs
 (eqnarray*

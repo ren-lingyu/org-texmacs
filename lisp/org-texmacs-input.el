@@ -379,8 +379,9 @@ Reuse owned AST identities.  MODEL, when supplied, completes pending islands."
  "Own AST, INFO, mappings and context, then freeze reference identities.
 AST must be a fully parsed `org-data' tree, not Org's live cache.  Do not
 resolve deferred properties, read buffers, discover STM or run a formatter.
-ISLANDS maps AST node identities to already parsed text strees; POST-BLANKS
-maps inline node identities to trailing spaces/tabs.  See the preparation
+ISLANDS maps stm-fragment and native STM block identities from AST to parsed
+STM trees.  Every stm-fragment requires a mapping.  POST-BLANKS maps inline
+node identities to trailing spaces/tabs.  See the preparation
 contract of `org-texmacs--document-lower'.  Unsupported lowering is diagnosed
 by `org-texmacs-document', not by invoking it during this copy.
 
