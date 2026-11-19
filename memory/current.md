@@ -71,6 +71,9 @@ their tests and builds passed, including examples. See stm-fragment-editing.md.
 Native STM block editing and Scheme indentation now cover texmacs, equation
 and equation*. Core ERT 353/353 passed. The user reported passing tests and
 builds, including examples. See stm-native-block-editing.md.
+Scheme fontification now covers all three native STM block bodies. Local
+delimiter edits clear and restore the owned body presentation. Core ERT
+355/355 passed. See stm-native-block-fontification.md.
 OTP is deferred from v0.8.0. Revisit potential org-latex-preview API reuse
 after Org 10.0 is formally released. See stm-fragment-evolution.md.
 Release state, version metadata and publication remain separate.
