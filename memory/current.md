@@ -7,6 +7,13 @@ a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baselin
 
 ## Current release state
 
+The user completed the v0.8.0 DONE transition, committed the release
+metadata and created the local v0.8.0 tag. The tag resolves to the
+release commit and contains the final notes and matching Lisp and Nix
+versions. The offline 0.8.0 package build, package-lint and treefmt passed
+before the DONE transition. Remote tag and GitHub Release publication
+have not been verified.
+
 v0.7.1 remains the released baseline. Node 1 is delivered under the former
 plan: scoped source recognition and temporary Org AST parsing with syntax
 capture. Its eight delivered files matched the tested input. Core 374/374,
@@ -58,8 +65,8 @@ concern the tested synthetic inputs. A prepared description term also
 retained STM provenance through lowering.
 
 An earlier checkpoint associates the delivered Node 6 documentation.
-README documents the STM migration and CHANGELOG contains
-the TODO v0.8.0 development summary. All six core nodes are delivered.
+That change documented the STM migration and introduced the v0.8.0
+development summary. All six core nodes are delivered.
 The separate Scheme mode migration is also delivered. Org Src resolves the
 mode for STM editing, indentation and embedded fontification, and
 `org-texmacs-edit-mode` was removed. See stm-scheme-language-dispatch.md
