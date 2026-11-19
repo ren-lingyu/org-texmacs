@@ -794,6 +794,80 @@
          'org-texmacs--font-lock-owner
          nil))))))
 
+(ert-deftest org-texmacs-font-lock-jit-region-extension ()
+  (dolist (extend '(t nil))
+    (org-texmacs-test--with-font-lock
+     "Insert here: .\n\nInline $(math \"INLINE\")$.\n\n#+begin_texmacs\n(math \"TEXMACS_BODY\")\n#+end_texmacs\n\n#+begin_equation\n(math \"EQUATION_BODY\")\n#+end_equation\n\n#+begin_equation*\n(math \"STAR_BODY\")\n#+end_equation*\n\nTail.\n"
+     (let ((words
+            '("TEXMACS_BODY" "EQUATION_BODY" "STAR_BODY" "INLINE"))
+           (native org-texmacs--font-lock-original)
+           (wrapper font-lock-fontify-region-function)
+           requested
+           native-input
+           native-contexts
+           native-bounds
+           result)
+       (dolist (word words)
+         (should (org-texmacs-test--font-lock-string-p word)))
+       (goto-char (org-texmacs-test--font-lock-position "."))
+       (insert "\\(  \\)")
+       (let ((target
+              (org-texmacs-test--font-lock-position "STAR_BODY"))
+             (org-texmacs--font-lock-original
+              (lambda (begin end loudly)
+                (setq
+                 native-input (cons begin end)
+                 native-contexts
+                 (mapcar
+                  #'car (org-texmacs--font-lock-contexts begin end))
+                 native-bounds (funcall native begin end loudly))))
+             (font-lock-fontify-region-function
+              (lambda (begin end loudly)
+                (setq
+                 requested (cons begin end)
+                 result (funcall wrapper begin end loudly)))))
+         ;; Force a native extension from the edited LaTeX paragraph into
+         ;; an already fontified block beyond the initial wrapper bounds.
+         (when extend
+           (add-hook 'font-lock-extend-region-functions
+                     (lambda ()
+                       (when (< font-lock-end target)
+                         (setq font-lock-end target)
+                         t))
+                     t t))
+         (jit-lock-fontify-now
+          (line-beginning-position) (line-end-position))
+         (ert-info
+          ((format
+            "JIT %S, native input %S (%S), native bounds %S, wrapper result %S"
+            requested
+            native-input
+            native-contexts
+            native-bounds
+            result))
+          (should (eq (car native-bounds) 'jit-lock-bounds))
+          (when extend
+            (should
+             (< (cdr native-input) target (cddr native-bounds))))
+          (should (equal native-contexts '(paragraph)))
+          (should
+           (<= (cddr native-bounds)
+               (org-texmacs-test--font-lock-position "Tail")))
+          (dolist (word words)
+            (let ((pos (org-texmacs-test--font-lock-position word)))
+              (should (eq (get-text-property pos 'fontified) t))
+              (should
+               (equal
+                (list
+                 word
+                 (and (get-text-property
+                       pos 'org-texmacs--font-lock-owner)
+                      t)
+                 (and (get-text-property pos 'syntax-table) t))
+                (list word t t)))
+              (should (org-texmacs-test--font-lock-string-p word))))
+          (should (equal result native-bounds))))))))
+
 (ert-deftest org-texmacs-font-lock-incomplete-local-recovery ()
   (org-texmacs-test--with-font-lock
    "Good $(math \"GOOD\")$.\n\n[fn::Broken $(math \"BAD\"].\n\n$(math\n \"MULTI\")$\n"

@@ -199,7 +199,7 @@ newline handles islands at accessible buffer start without touching source."
 
 (defun org-texmacs--font-lock-region (begin end &optional loudly)
   "Fontify BEGIN through END with Org, then opaque embedded Scheme spans.
-LOUDLY is passed to the original Org fontifier.  Never parse STM natively."
+Return the actual JIT Lock bounds.  LOUDLY is passed to the Org fontifier."
   (save-excursion
     (save-match-data
       (let ((font-lock-beg begin)
@@ -208,11 +208,22 @@ LOUDLY is passed to the original Org fontifier.  Never parse STM natively."
         (setq
          begin font-lock-beg
          end font-lock-end))
-      (let ((contexts
-             (and org-texmacs--font-lock-enabled
-                  org-src-fontify-natively
-                  (org-texmacs--font-lock-contexts begin end))))
-        (funcall org-texmacs--font-lock-original begin end loudly)
+      (let*
+          ((native
+            (funcall org-texmacs--font-lock-original
+                     begin
+                     end
+                     loudly))
+           ;; Native Font Lock runs all region extenders before unfontifying.
+           (bounds
+            (if (eq (car-safe native) 'jit-lock-bounds)
+                (cdr native)
+              (cons begin end)))
+           (contexts
+            (and org-texmacs--font-lock-enabled
+                 org-src-fontify-natively
+                 (org-texmacs--font-lock-contexts
+                  (car bounds) (cdr bounds)))))
         (dolist (context contexts)
           (let* ((cb (nth 3 context))
                  (ce (nth 4 context))
@@ -228,18 +239,14 @@ LOUDLY is passed to the original Org fontifier.  Never parse STM natively."
                   (org-unfontify-region (car span) (cdr span))
                   (org-texmacs--font-lock-scheme
                    (car span) (cdr span)))
-                ;; Include block delimiters so their deletion invalidates the
-                ;; formerly owned body, even though delimiters keep Org faces.
+                ;; Track each context through delimiter edits.  A shared
+                ;; font-lock-multiline property would join adjacent contexts.
                 (put-text-property
                  (nth 1 context)
                  (nth 2 context)
                  'org-texmacs--font-lock-owner
-                 (list t))
-                (put-text-property
-                 (nth 1 context)
-                 (nth 2 context)
-                 'font-lock-multiline
-                 t)))))))))
+                 (list t))))))
+        (cons 'jit-lock-bounds bounds)))))
 
 (defun org-texmacs--font-lock-before-change (begin end)
   "Remember owned context bounds before an edit between BEGIN and END."

@@ -8,6 +8,10 @@ Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
 * TODO v0.8.0
+** Fixed
+- Restore STM Scheme highlighting across the actual region refreshed by Org
+  Font Lock after a local edit, including adjacent native STM block bodies.
+
 ** Changed
 - *Breaking:* Use =$(...)$= or =\((...)\)= to carry a compound STM tree
   in Org. Bare S-expressions follow ordinary Org parsing. Native STM blocks
