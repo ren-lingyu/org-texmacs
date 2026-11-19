@@ -60,9 +60,8 @@ for changes and upgrade instructions since [[file:CHANGELOGS/v0.7.1.org][v0.7.1]
 Recorded regressions on =x86_64-linux= used Emacs 31.1, Org 9.8.10 and
 TeXmacs 2.1.5. Nix selects dependency revisions from the project's =flake.lock=.
 
-=citeproc= is optional for CSL citations. Org-roam and Org-roam-organize are
-optional dependencies of the real standard Cite integration check. Historical
-multi-extension fixtures do not establish current standard backend compatibility.
+=citeproc= is optional for CSL citations. The standard Cite integration check
+uses Org-roam and a pinned revision of Org-roam-organize.
 
 The Scheme service runs inside TeXmacs; a separate =guile= executable is
 not required to use the package.  Nix test drivers invoke Emacs directly.
@@ -70,12 +69,12 @@ not required to use the package.  Nix test drivers invoke Emacs directly.
 * Loading the package
 ** From a source checkout
 Keep all =org-texmacs*.el= files, =ox-texmacs.el= and
-=org-texmacs-worker.scm= together in the checkout's =lisp/= directory.
+=org-texmacs-worker.scm= together in the checkout's =elisp/src/= directory.
 Add that directory to Emacs's =load-path=, replacing
 the example path below:
 
 #+begin_src emacs-lisp
-  (add-to-list 'load-path "/path/to/org-texmacs/lisp/")
+  (add-to-list 'load-path "/path/to/org-texmacs/elisp/src/")
   (require 'org-texmacs)
 #+end_src
 
@@ -127,9 +126,11 @@ the shell's Emacs, set =org-texmacs-program= to its executable path before the
 first worker operation.  The compiled examples select it through their own
 package override, as described below.
 
-Package definitions live under =pkgs/=, with Lisp supplied explicitly from
-=lisp/= and example sources collected from =pkgs/org-texmacs-examples/sources/=
-using =lib.fileset.toSource=.  The flake uses =personal-nixpkgs=
+The Lisp package is defined in =elisp/default.nix= and integrated into Nixpkgs
+by the overlay under =pkgs/emacsPackages/org-texmacs/=. The build collects Lisp
+and Scheme sources from =elisp/src/=, and the examples package collects Org
+sources from =pkgs/org-texmacs-examples/sources/=. Both use
+=lib.fileset.toSource=. The flake uses =personal-nixpkgs=
 for flake, package-overlay and test-check composition; its =nixpkgs= input follows
 the project's =nixpkgs=.
 
@@ -235,8 +236,8 @@ Document-level =#+cite_export:= retains standard precedence. See
 *** Installation choices
 For a package already on =load-path=, including a configured Nix installation,
 use the declaration above as written. For a source checkout, add
-=:load-path "/path/to/org-texmacs/lisp/"= to that declaration, replacing the
-example path with the checkout's absolute =lisp/= directory.
+=:load-path "/path/to/org-texmacs/elisp/src/"= to that declaration, replacing the
+example path with the absolute path to the checkout's =elisp/src/= directory.
 
 =:ensure nil= prevents =use-package= from asking =package.el= to install the
 package, even when =use-package-always-ensure= is enabled. If your initialized
@@ -252,9 +253,9 @@ of using =:load-path= or =:straight nil=:
   :straight
   (org-texmacs :type git :host github
                :repo "ren-lingyu/org-texmacs"
-               :files ("lisp/org-texmacs*.el"
-                       "lisp/ox-texmacs.el"
-                       "lisp/org-texmacs-worker.scm"))
+               :files ("elisp/src/org-texmacs*.el"
+                       "elisp/src/ox-texmacs.el"
+                       "elisp/src/org-texmacs-worker.scm"))
 #+end_example
 
 The =:files= entry is essential: the Scheme service must be installed next to
@@ -969,7 +970,7 @@ requests lower once; pure lowering can explicitly reject otherwise valid models.
 
 Standard preparation, AST filters, mutable export INFO and Org Cite processing
 must retain their export context; an AST-to-buffer round trip does not preserve
-it.  The separate standard Cite integration check below uses a pinned current
+it. The standard Cite integration check below uses a pinned revision of
 =org-roam-organize= with a real SQLite database and its normal mode/hooks/advice.
 It verifies UUID citation-key changes, dynamic per-export bibliography and INFO
 propagation through the native default and explicit CSL, native PDF and HTML
@@ -1423,7 +1424,7 @@ consume extra footnote numbers.  GUI/PDF visibility, numbering, directory entrie
 and page placement are not guaranteed.  The exporter preserves the native AST;
 it does not split notes into separate references/anchors or predict float layout.
 The test-only Org patch and isolated check live together in
-=tests/caption-inline-footnotes/=.  They exercise independent parsing, native lowering and standard source rejection;
+=elisp/tests/caption-inline-footnotes/=.  They exercise independent parsing, native lowering and standard source rejection;
 the default package, default ERT and normal installation still use stock Org and
 neither include nor activate the patch.
 
@@ -1740,31 +1741,26 @@ required.  Org owns recursive INCLUDE and its file/selection policies.
   (org-texmacs-export-texmacs-from-buffer source-buffer)
 #+end_src
 
-** Optional real Org extension integration
-The standard Cite acceptance check is =tests/integration/standard-cite.nix=.
+** Real Org extension integration
+The standard Cite acceptance suite runs as the
+=emacsPackages-org-texmacs-standard-cite-integration= flake check.
 It pins =org-roam-organize= revision
 =56fdaac6adab06deafc23357aec63ae2a497e09b= and uses project-locked Org-roam and
-=citeproc=.  With an appropriately overlaid =pkgs=, evaluate:
+=citeproc=. To run this check on its own:
 
-#+begin_src nix
-  pkgs.callPackage ./tests/integration/standard-cite.nix {
-    testSupport = import ./tests/support;
-  }
+#+begin_src sh
+  nix build --no-link --no-write-lock-file .#checks.x86_64-linux.emacsPackages-org-texmacs-standard-cite-integration
 #+end_src
 
-This optional check runs real mode setup, SQLite queries, UUID-to-key AST
+This check runs real mode setup, SQLite queries, UUID-to-key AST
 filters and dynamic bibliography discovery in standard =org-export-as= scope.
 It checks single preparation/processor calls and identical live INFO, excludes
 unused managed bibliographies, renders PDF directly from the completed native
 document, and checks standard text/HTML export and source/global restoration.
-It has no production extension-specific adapter or business-logic mock.  The
-normal =ert-cite= flake check covers the standard CSL protocol, citation
-positions/affixes, text filters, finalizer compatibility and native PDF with
-local fixtures; it adds =citeproc= only to its test Emacs.
-
-The historical multi-extension fixtures under =tests/integration/= exercised the
-retired preparation provider and do not establish current standard compatibility.
-The maintained standard Cite check above is the actual extension acceptance case.
+It has no production extension-specific adapter or business-logic mock. The
+=ert-cite= suite uses local fixtures to cover standard CSL processing, citation
+positions and affixes, text filters, finalizer compatibility, and native PDF.
+Its Emacs wrapper includes =citeproc=.
 
 The locked native semantic audit also exercises static code line/blank-line
 geometry, multiparagraph and nested lists, two table caption counters and
@@ -2487,15 +2483,17 @@ Run from the repository root:
   nix build --no-link --no-write-lock-file .#org-texmacs
   # Build Emacs with the package and its Lisp dependencies.
   nix build --no-link --no-write-lock-file .#emacs
-  # Run one ERT group, or use checks.x86_64-linux.ert for all groups.
-  nix build --no-link --no-write-lock-file .#checks.x86_64-linux.ert-core
+  # Run one ERT group, or select emacsPackages-org-texmacs-ert
+  # for core, native, Cite, and PDF.
+  nix build --no-link --no-write-lock-file .#checks.x86_64-linux.emacsPackages-org-texmacs-ert-core
   # Test the native GoToR renderer independently of Org and font wrappers.
-  nix build --no-link --no-write-lock-file .#checks.x86_64-linux.texmacs-with-gotor-support
+  nix build --no-link --no-write-lock-file .#checks.x86_64-linux.texmacs-with-gotor-support-gotor-regression
 #+end_src
 
-Checks include byte compilation, package-lint and ERT, including real headless
-TeXmacs parsing, worker lifecycle, Org block cache integration, fragment source
-boundaries and captured syntax. Native checks include multi-row formula groups.
+The package build runs package-lint in its check phase and byte-compiles the
+Lisp libraries. ERT checks cover real headless TeXmacs parsing, worker
+lifecycle, Org block cache integration, fragment source boundaries and
+captured syntax. Native checks include multi-row formula groups.
 A missing
 TeXmacs executable fails the integration tests instead of skipping them.
 Document tests cover structural lowering, source-dependent native encoding,
@@ -2516,30 +2514,32 @@ Nix checks the current system by default.  These commands may download
 dependencies and write Nix store/cache data; they do not update the lockfile,
 and the build command does not create a =result= link.
 
-The =texmacs-with-gotor-support= check compares original and patched native PDF
+The =texmacs-with-gotor-support-gotor-regression= check compares original and patched native PDF
 actions, including relative/absolute paths, Unicode filenames, URI/internal-link
 controls and relocation.  It also checks that the source guard accepts unrelated
 renderer changes and rejects changed link dispatch or repeated patching.  It
 uses neither org-texmacs nor a font wrapper and does not test GUI navigation.
 
-The default ERT check uses stock Org and includes direct-AST caption-footnote
-tests.  The separate =caption-inline-footnotes= check builds the locked Org
-9.8.10 with the adjacent test-only patch and checks the distinct pure-model
-support and standard source-export rejection boundary.
+The =ert= aggregate uses stock Org and includes direct-AST caption-footnote
+tests. The separate =emacsPackages-org-texmacs-caption-inline-footnotes=
+check builds the locked Org 9.8.10 with the adjacent test-only patch and
+checks the pure-model support and standard source-export rejection boundary.
 It does not change =packages.org-texmacs=, =packages.emacs= or the ordinary
 development environment.
-The legacy multi-extension runner requires caller-supplied pinned extension
-sources; the standard Cite runner fetches its declared fixed revision.  Both
-remain outside the default flake checks.
+The default flake checks include the standard Cite integration suite and
+fetch its pinned extension source.
 
-The =tests/default.nix= entry uses =personal-nixpkgs='s =tests.mkChecks= to
-discover =test-overlay.nix= files and compose their =test.nix= drivers through
-=callPackage=.  The optional integration runner has no test overlay and remains
-outside that discovery.  Project-specific runtimes, source files and shared test
-support enter through explicit Nix arguments; Lisp runners use the supplied
-paths without searching parent directories.
+The =elisp/default.nix= package description uses =tests.mkChecks= to discover
+its =elisp/tests/= suites and expose them through =passthru.tests=. The TeXmacs
+GoToR package owns its regression in the same way. =tests/default.nix= collects
+package tests from =legacyPackages= and discovers flake-level directories
+containing =test-overlay.nix=. Package checks appear under
+=checks.<system>.<package-path>-<test>=, with hyphens between the package path
+components.
+Test runtimes, sources and shared support enter through explicit Nix arguments;
+Lisp runners use supplied paths without searching parent directories.
 
-The shared =tests/support/mk-ert-check.nix= driver runs ERT in an isolated HOME,
+The shared =elisp/tests/support/mk-ert-check.nix= driver runs ERT in an isolated HOME,
 streams combined output to the Nix build log and saves =ert.log= and
 =test-names.txt= in each ERT result.  Pipeline failure remains a failed check.
 Required test tools must be present in the Nix check environment; missing inputs,

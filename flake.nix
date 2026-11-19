@@ -22,19 +22,14 @@
         ];
         lpkgs = import ./pkgs {
           inherit llib;
-          inherit (specialArgs) src;
+          inherit (specialArgs) source;
         };
-
         specialArgs = {
-          src = lib.fileset.toSource {
-            root = ./elisp;
-            fileset = lib.fileset.unions [ ./elisp ];
-          };
+          source = ./elisp;
         };
       })
       (
         {
-          src,
           llib,
           lpkgs,
           config,
@@ -72,8 +67,8 @@
                 };
 
                 checks = import ./tests {
-                  inherit src pkgs llib;
-                  emacs = pkgs.emacs-with-org-texmacs;
+                  inherit lib llib;
+                  packages = pkgs.legacyPackages;
                 };
 
                 devShells = {

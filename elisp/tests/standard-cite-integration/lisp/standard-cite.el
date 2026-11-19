@@ -155,7 +155,7 @@
        buffer-file-name (expand-file-name "root.org" notes))
       (insert
        (format
-        "#+cite_export: csl fixture.csl\n[cite:@%s] (math \"x\")\n#+print_bibliography:\n"
+        "#+cite_export: csl fixture.csl\n[cite:@%s] \\((math \"x\")\\)\n#+print_bibliography:\n"
         uuid))
       (let ((org-export-use-babel nil)
             (before (buffer-string)))

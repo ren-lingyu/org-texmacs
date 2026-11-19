@@ -7,26 +7,24 @@
   texmacs,
   poppler-utils,
 }:
-let
-  emacs = emacsPackages.emacsWithPackages (ep: [
-    ep.org-texmacs
-    ep.citeproc
-  ]);
-in
 testSupport.mkErtCheck {
   inherit
     runCommand
     coreutils
     lib
-    emacs
     testSupport
     ;
+  emacs = emacsPackages.emacsWithPackages (_: [
+    emacsPackages.org-texmacs
+    emacsPackages.citeproc
+  ]);
   name = "org-texmacs-ert-cite";
   testFiles = [ ./lisp/standard-cite.el ];
   helpers = [
     testSupport.common
     testSupport.native
     testSupport.pdf
+    testSupport.csl
     ./support.el
   ];
   nativeBuildInputs = [

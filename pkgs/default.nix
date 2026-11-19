@@ -1,8 +1,11 @@
-{ llib, src }: {
+{ llib, source }: {
   overlays = llib.packages.mkOverlays {
     root = ./.;
     overlayFile = "overlay.nix";
-    extraArgs = { inherit src; };
+    extraArgs = {
+      inherit source;
+      mkChecks = llib.tests.mkChecks;
+    };
     groups = {
       emacsPackages = {
         include = [ "emacsPackages" ];

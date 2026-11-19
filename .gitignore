@@ -17,25 +17,32 @@
 !/CHANGELOGS/*.org
 
 !/elisp/
-!/elisp/org-texmacs-*.el
-!/elisp/org-texmacs-worker.scm
-!/elisp/org-texmacs.el
-!/elisp/ox-texmacs.el
+!/elisp/default.nix
+!/elisp/package-lint.el
+!/elisp/src/
+!/elisp/src/org-texmacs-*.el
+!/elisp/src/org-texmacs-worker.scm
+!/elisp/src/org-texmacs.el
+!/elisp/src/ox-texmacs.el
+!/elisp/tests/
+!/elisp/tests/**/
+!/elisp/tests/**/*.el
+!/elisp/tests/**/*.nix
+!/elisp/tests/**/*.patch
+!/elisp/tests/**/*.py
+!/elisp/tests/**/*.scm
 
 !/pkgs/
 !/pkgs/**/
 !/pkgs/**/*.el
 !/pkgs/**/*.nix
 !/pkgs/**/*.patch
+!/pkgs/**/*.py
 !/pkgs/org-texmacs-examples/sources/**/*.org
 
 !/tests/
 !/tests/**/
-!/tests/**/*.el
 !/tests/**/*.nix
-!/tests/**/*.patch
-!/tests/**/*.py
-!/tests/**/*.scm
 
 *#
 **/tmp/

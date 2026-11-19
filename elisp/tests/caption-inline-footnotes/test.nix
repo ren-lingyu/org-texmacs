@@ -9,9 +9,11 @@
   testSupport,
 }:
 let
+  inherit (emacsPackages) org;
+
   # ELPA unpacks its input during installPhase, not unpackPhase.
   patchedSource =
-    assert lib.getVersion emacsPackages.org == "9.8.10";
+    assert lib.getVersion org == "9.8.10";
     runCommand "org-9.8.10.tar"
       {
         nativeBuildInputs = [
@@ -20,15 +22,15 @@ let
         ];
       }
       ''
-        tar -xf ${emacsPackages.org.src}
+        tar -xf ${org.src}
         patch --batch --fuzz=0 -d org-9.8.10 -p1 < ${./org-caption-inline-footnote.patch}
         tar --sort=name --mtime=@1 --owner=0 --group=0 --numeric-owner \
           -cf "$out" org-9.8.10
       '';
-  org = emacsPackages.org.overrideAttrs (_: {
+  patchedOrg = org.overrideAttrs (_: {
     src = patchedSource;
   });
-  testPackage = emacsPackages.org-texmacs.override { inherit org; };
+  testPackage = emacsPackages.org-texmacs.overrideAttrs { packageRequires = [ patchedOrg ]; };
   emacs = emacsPackages.emacsWithPackages (_: [ testPackage ]);
   testFiles = [ ./lisp/captions.el ];
 in
@@ -50,7 +52,7 @@ testSupport.mkErtCheck {
   tools = [ "texmacs" ];
   environment = {
     ORG_TEXMACS_TEST_PROGRAM = lib.getExe' texmacs "texmacs";
-    ORG_TEXMACS_TEST_PATCHED_ORG = org;
+    ORG_TEXMACS_TEST_PATCHED_ORG = patchedOrg;
     ORG_TEXMACS_TEST_PATCHED_PACKAGE = testPackage;
   };
 }

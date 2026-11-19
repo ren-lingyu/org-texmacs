@@ -8,7 +8,7 @@
   testSupport,
 }:
 let
-  # Explicit optional replay; these extensions are not default runtime inputs.
+  # Pin the external extension used by this integration check.
   organize = builtins.fetchTree {
     type = "github";
     owner = "ren-lingyu";
@@ -16,10 +16,10 @@ let
     rev = "56fdaac6adab06deafc23357aec63ae2a497e09b";
     narHash = "sha256-rZBPdTRUmPKrk0JWkF5ukQs9qjPzo6600Vct2P3Ac9A=";
   };
-  emacs = emacsPackages.emacsWithPackages (ep: [
-    ep.org-texmacs
-    ep.org-roam
-    ep.citeproc
+  emacs = emacsPackages.emacsWithPackages (_: [
+    emacsPackages.org-texmacs
+    emacsPackages.org-roam
+    emacsPackages.citeproc
   ]);
 in
 testSupport.mkErtCheck {
@@ -36,7 +36,7 @@ testSupport.mkErtCheck {
     testSupport.common
     testSupport.native
     testSupport.pdf
-    ../ert-cite/support.el
+    testSupport.csl
   ];
   emacsArgs = [
     "-L"
