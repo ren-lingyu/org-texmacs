@@ -5,6 +5,40 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
+## Current source, package, and check layout
+
+The Emacs Lisp libraries, export backend, and Scheme worker share
+`elisp/src/`. It is the checkout load path and the MELPA source fileset.
+`elisp/default.nix` constructs the package with `melpaBuild`, includes
+the adjacent Scheme service, declares the Org dependency, and runs
+`elisp/package-lint.el` in the package's `checkPhase`. The Emacs package
+overlay passes named inputs through `callPackage`, enforces the minimum
+Org version, and patches in the selected TeXmacs executable. The examples
+select their renderer through the existing package override.
+
+Package tests are exposed through `passthru.tests`. The Emacs package
+owns `elisp/tests/`, passes a finite `emacsPackages` set with its final
+derivation, and provides shared ERT helpers through `testSupport`.
+The default `standard-cite-integration` suite uses pinned real
+Org-roam-organize plus Org-roam and Citeproc, shares `testSupport.csl`
+with `ert-cite`, and uses an explicit STM carrier in its PDF/HTML fixture.
+The obsolete top-level multi-extension suite is removed.
+
+`tests/default.nix` collects package tests from the exported
+`legacyPackages` tree and publishes flattened package-path-prefixed flake
+check names. The `ert` aggregate still depends on core, native, Cite and
+PDF. `mkChecks` discovers child overlays and selects suite attributes by
+directory name. An overlay at the scan root is ignored. The GoToR suite
+therefore lives at `pkgs/texmacs-with-gotor-support/tests/gotor-regression/`
+and exports `gotor-regression` from that child. Its renderer patch remains
+bound to reviewed TeXmacs 2.1.5.
+
+The caption patch suite targets the Org 9.8.10 ELPA source and is exposed
+only when the scoped Org package has that version. Its discovered namespace
+is empty for other versions. Generic ERT checks exercise Org's behavior
+without an exact release assertion, including the core fuzzy-link and
+reference allocation test. The package minimum remains Org 9.8.10.
+
 ## Delivered STM carrier and Model architecture
 
 The complete mathematical-document Model combines native Org AST, parsed STM
@@ -640,7 +674,7 @@ breakdown, shared workers, removed passes/cases or speed claim. Potential local
 inspection reuse and independent parallel sharding require further design and
 measurements. Single long cases still only report their result on completion.
 
-## Latest flake foundation API adaptation
+## Earlier flake foundation API adaptation
 
 Current user-selected migration calls personal-nixpkgs.lib.mkFlake and uses its
 perSystem.nixpkgs.overlays option. Updated project pkgs/default.nix calls
@@ -656,7 +690,7 @@ x86_64-linux. That gate did not run compilation/ERT/formatting. The later target
 PDF gate above validates59cases after the user's50-file formatting change;
 other suites have no fresh runtime gate for those changes.
 
-## personal-nixpkgs test composition migration
+## Earlier personal-nixpkgs test composition migration
 
 The user replaced inline package construction with pkgs/ overlays and an
 emacs-with-org-texmacs runtime. Tests now use llib.tests.mkChecks, root tests/,

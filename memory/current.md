@@ -5,6 +5,22 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
+## Source and check migration delivered
+
+The user committed the package-owned source and test layout and the
+follow-up Org version-check fix. See `project.md` for the current entry
+points and discovery rules. The ordinary project worktree and index were
+clean when delivery was confirmed.
+
+The user confirmed that the fixed standard Cite integration suite passed.
+After the layout migration, the user's `nix flake check` on x86_64-linux
+exited 0, enumerating 11 checks including standard Cite integration and
+the GoToR regression. Its output reported running zero flake checks, so
+it establishes discovery and a successful check result with existing
+outputs, without a fresh test execution on that invocation. Other
+systems were omitted. The subsequent Org version-check fix was statically
+reviewed. A fresh downstream run with Org 10.0-pre was not observed.
+
 ## Current release state
 
 The user completed the v0.8.0 DONE transition, committed the release
