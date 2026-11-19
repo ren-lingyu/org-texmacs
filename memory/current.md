@@ -74,6 +74,9 @@ builds, including examples. See stm-native-block-editing.md.
 Scheme fontification now covers all three native STM block bodies. Local
 delimiter edits clear and restore the owned body presentation. Core ERT
 355/355 passed. See stm-native-block-fontification.md.
+The delivered incremental fontification repair restores STM presentation
+across the actual Org refresh range and keeps adjacent contexts locally
+invalidated. Core ERT 356/356 passed. See stm-font-lock-region-bounds.md.
 OTP is deferred from v0.8.0. Revisit potential org-latex-preview API reuse
 after Org 10.0 is formally released. See stm-fragment-evolution.md.
 Release state, version metadata and publication remain separate.
