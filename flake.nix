@@ -27,8 +27,8 @@
 
         specialArgs = {
           src = lib.fileset.toSource {
-            root = ./lisp;
-            fileset = lib.fileset.unions [ ./lisp ];
+            root = ./elisp;
+            fileset = lib.fileset.unions [ ./elisp ];
           };
         };
       })

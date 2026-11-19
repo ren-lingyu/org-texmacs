@@ -16,11 +16,11 @@
 !/CHANGELOGS/
 !/CHANGELOGS/*.org
 
-!/lisp/
-!/lisp/org-texmacs-*.el
-!/lisp/org-texmacs-worker.scm
-!/lisp/org-texmacs.el
-!/lisp/ox-texmacs.el
+!/elisp/
+!/elisp/org-texmacs-*.el
+!/elisp/org-texmacs-worker.scm
+!/elisp/org-texmacs.el
+!/elisp/ox-texmacs.el
 
 !/pkgs/
 !/pkgs/**/
