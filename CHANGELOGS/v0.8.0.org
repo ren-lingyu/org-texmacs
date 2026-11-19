@@ -1,11 +1,11 @@
-#+title: Org TeXmacs v0.8.0 Release Notes (Draft)
+#+title: Org TeXmacs v0.8.0 Release Notes
 
 * Overview
 Changes since v0.7.1. Explicit inline STM carriers give Org a distinct object
 for each embedded expression. The mathematical-document Model owns the Org
-structure and the parsed STM trees. This draft also covers normalized Org
-output, Org Src editing for inline and block STM, and incremental Scheme
-fontification.
+structure and the parsed STM trees. v0.8.0 adds worker-free normalized Org
+output, Org Src editing for inline STM and native equation blocks, and Scheme
+fontification for the additional native block bodies.
 
 * Upgrade from v0.7.1
 ** Requirements and inline source
@@ -130,5 +130,4 @@ invalidation ranges.
 - Display roots such as =equation= require a standalone STM island in a
   supported body position or a native block. Mixed prose with those display
   roots remains outside the lowering profile.
-- Interactive TeXmacs preview in the Org buffer is outside this development
-  scope.
+- Interactive TeXmacs preview in the Org buffer remains unsupported.

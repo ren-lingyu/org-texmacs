@@ -4,7 +4,7 @@
 
 ;; Author: aRenCoco
 ;; Maintainer: aRenCoco
-;; Version: 0.7.1
+;; Version: 0.8.0
 ;; Package-Requires: ((emacs "31.1") (org "9.8.10"))
 ;; Keywords: outlines, tex
 ;; URL: https://github.com/ren-lingyu/org-texmacs
@@ -34,7 +34,7 @@
 ;;
 ;; Package-Requires declares minimum versions.  Recorded regressions used
 ;; Emacs 31.1 and Org 9.8.10; Nix selects dependencies from flake.lock.
-;; Org 9.8.10 is the minimum support baseline for the v0.8.0 development cycle.
+;; Org 9.8.10 is the minimum supported Org version for v0.8.0.
 ;; This maintenance scope decision does not imply that Org 9.8 is incompatible.
 ;; Org-roam and its extensions are optional integration-test dependencies.
 ;; Source exports use standard Org Export preparation and Org Cite.  The

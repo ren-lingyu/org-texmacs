@@ -7,8 +7,12 @@
 Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
-* TODO v0.8.0
-[[file:CHANGELOGS/v0.8.0.org][Draft release notes and upgrade instructions]]
+* DONE v0.8.0
+CLOSED: [2026-11-19 Thu 12:09]
+:PROPERTIES:
+:CUSTOM_ID: v0.8.0
+:END:
+[[file:CHANGELOGS/v0.8.0.org][Detailed release notes and upgrade instructions]]
 
 ** Fixed
 - Restore STM Scheme highlighting across the actual region refreshed by Org

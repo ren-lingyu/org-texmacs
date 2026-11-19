@@ -10,8 +10,8 @@ melpaBuild (finalAttrs_: {
   inherit src;
 
   pname = "org-texmacs";
-  version = "0.7.1";
-  melpaVersion = "0.7.1";
+  version = "0.8.0";
+  melpaVersion = "0.8.0";
 
   files = ''(:defaults "org-texmacs-worker.scm")'';
 
