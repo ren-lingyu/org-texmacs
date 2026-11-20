@@ -2548,11 +2548,12 @@ fetch its pinned extension source.
 The experimental =org-10pre-texmacs= package uses a private build of
 =bzg/org-mode= pinned to =fd6546e1a9dddedd913a4adaf2ea76eea65c7f67=.
 Use the flake package or select =emacsPackages.org-10pre-texmacs= after
-applying =overlays.emacsPackages=. To use your own Org package, call
-=pkgs.emacsPackages.org-10pre-texmacs.override { org = myOrg; }=.
-The override selects Org for the variant's private scope, including
-=citeproc= and =org-roam= in the Cite test environments. The compatibility
-patch also applies to overrides. Its tested scope is the pinned snapshot.
+applying =overlays.emacsPackages=. The package accepts =org= and =texmacs=
+through =.override=. The =org= argument selects Org for the variant's private
+scope, including =citeproc= and =org-roam= in the Cite test environments.
+The =texmacs= argument selects the default executable and the package used
+by tests that require TeXmacs. The compatibility patch also applies to Org
+overrides. Its tested scope is the pinned snapshot.
 
 The default =nix flake check= includes the checks for both Org 9.8.10 and
 the pinned Org 10.0pre variant. The caption footnote patch check applies
