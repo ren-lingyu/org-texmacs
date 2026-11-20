@@ -88,8 +88,7 @@ including treefmt. Each version passed core (358), native (279), Cite (11),
 PDF document and render (49 + 31), and standard Cite integration (5). The
 variant SETUPFILE suite passed 5/5, checked the loaded package paths, and
 was collected by default. The stock scope alone included the caption patch
-check. The tested snapshot included the new files from the worktree. The
-project candidate remains uncommitted.
+check. The tested snapshot included the new files from the worktree.
 
 Final pre-commit review matched the user's diff baseline and strengthened the
 existing cycle test. The native and Model AST roots agree on the main file
@@ -99,7 +98,9 @@ All five SETUPFILE cases pass. The production changes in this follow-up are
 docstrings and matching patch context. README distinguishes the Nixpkgs
 overlay from the variant's private Emacs scope override. The full final
 `nix flake check -L` passed on x86_64-linux with both packages' checks.
-The reviewed worktree is ahead of the staged candidate by these final edits.
+The user committed the compatibility change. The project-parent snapshot
+matches the reviewed baseline plus the five final edits across all 17
+changed files. The project worktree is clean.
 
 ## Current release state
 

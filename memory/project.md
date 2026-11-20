@@ -40,7 +40,7 @@ without an exact release assertion, including the core fuzzy-link and
 reference allocation test. The package minimum remains Org 9.8.10.
 
 The shared `overlays.emacsPackages` exposes both stock Org TeXmacs and the
-Org 10 compatibility candidate. The variant has a private `overrideScope`
+Org 10 compatibility variant. The variant has a private `overrideScope`
 and a variant-only patch under `pkgs/emacsPackages/org-10pre-texmacs/`.
 It defaults to a private Org build at commit
 `fd6546e1a9dddedd913a4adaf2ea76eea65c7f67`, the downstream revision that
