@@ -113,6 +113,12 @@ user's flake check reused those outputs. The committed overlay matches the
 reviewed source. README describes the private scope and its override boundary.
 The final README wording was checked statically. The project worktree is clean.
 
+The user committed the TeXmacs override fix for the Org 10 variant. The
+outer package function now accepts `texmacs` and passes it explicitly to
+the inner package construction. The committed README describes both public
+override arguments. This wiring was verified statically. The project
+worktree is clean.
+
 ## Current release state
 
 The user completed the v0.8.0 DONE transition, committed the release
