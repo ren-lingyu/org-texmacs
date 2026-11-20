@@ -1,20 +1,46 @@
-{ }: final_: prev_: {
+{ extraArgs }: final_: prev_: {
   org-10pre-texmacs = final_.callPackage (
     { org }:
     let
       compatPackages = final_.overrideScope (_: _: { inherit org; });
     in
-    compatPackages.org-texmacs.overrideAttrs (
-      finalAttrs: old: {
-        patches = (old.patches or [ ]) ++ [ ./org-10pre-compat.patch ];
-        passthru = old.passthru // {
-          tests = old.passthru.tests // {
-            ert-setupfile = compatPackages.callPackage ./tests/ert-setupfile.nix {
-              org-texmacs = finalAttrs.finalPackage;
+    compatPackages.callPackage (
+      {
+        lib,
+        mkChecks,
+        melpaBuild,
+        emacsWithPackages,
+        citeproc,
+        package-lint,
+        runCommand,
+        coreutils,
+        gnutar,
+        patch,
+        poppler-utils,
+        python3,
+        org,
+        org-roam,
+        texmacs,
+      }@args:
+      assert lib.assertMsg (lib.versionAtLeast org.version "9.8.10") "org-texmacs requires Org >= 9.8.10";
+      (import extraArgs.source args).overrideAttrs (
+        finalAttrs_: old_: {
+          patches = [ ./org-10pre-compat.patch ];
+          postPatch = builtins.concatStringsSep " " [
+            "substituteInPlace org-texmacs-core.el"
+            "--replace-fail"
+            "'(defcustom org-texmacs-program \"texmacs\"'"
+            "'(defcustom org-texmacs-program \"${lib.getExe' texmacs "texmacs"}\"'"
+          ];
+          passthru = old_.passthru // {
+            tests = old_.passthru.tests // {
+              ert-setupfile = compatPackages.callPackage ./tests/ert-setupfile.nix {
+                org-texmacs = finalAttrs_.finalPackage;
+              };
             };
           };
-        };
-      }
-    )
+        }
+      )
+    ) { inherit (extraArgs) mkChecks; }
   ) { org = final_.callPackage ./org-source.nix { }; };
 }
