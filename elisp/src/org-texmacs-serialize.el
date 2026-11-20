@@ -486,10 +486,12 @@ Require recorded syntax context, as captured by `org-texmacs-parse-buffer'.
 Emit explicit STM carriers and native blocks from the current island trees.
 Source representability depends on the STM encoding and Org container.
 
-Operate on an independent copy.  Recheck Org under recorded syntax, reusing
-known STM trees without invoking a worker.  No lowering, export preparation,
-Cite, Babel or file
-acquisition runs.  Unsupported output signals
+Operate on an independent copy and reuse known STM trees.  Validation
+reparses the output with recorded settings and Org's native handling of
+file-level configuration.  For Org 10, changes to files referenced by
+`#+SETUPFILE' can affect whether the output is representable.  Serialization
+skips STM workers, lowering, Export preparation, Cite and Babel.
+Unsupported output signals
 `org-texmacs-model-serialization-error'; invalid models signal
 `org-texmacs-model-error'.
 Return no partial text on failure."
@@ -530,9 +532,10 @@ Return no partial text on failure."
 (defun org-texmacs-model-to-buffer (model &optional name)
   "Serialize MODEL into a new editable Org buffer and return it.
 Optional NAME defaults to `*org-texmacs-org*'; never reuse another buffer or
-visit the original file.  Install captured syntax and resource base without
-mode hooks, INCLUDE or SETUPFILE processing.  Serialize successfully before
-allocating the output buffer; clean up a new buffer on initialization failure."
+visit the original file.  Validate serialized syntax before allocating the
+output buffer, including any `#+SETUPFILE' reads during Org 10 validation.
+Initialize the new buffer with captured syntax and resource base and skip
+mode hooks and export preparation.  Clean up on initialization failure."
   (unless (or (null name) (stringp name))
     (org-texmacs--serialize-fail "Expected an Org buffer name"))
   (let* ((text (org-texmacs-model-serialize model))

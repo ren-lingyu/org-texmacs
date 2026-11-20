@@ -7,6 +7,18 @@
 Notable user-visible changes, newest first. Version links lead to complete
 release notes.
 
+* TODO *unreleased*
+** Added
+- Select the =org-10pre-texmacs= Nix package or the variant from
+  =overlays.emacsPackages= to use Org TeXmacs with the experimental Org
+  10.0pre snapshot
+  =fd6546e1a9dddedd913a4adaf2ea76eea65c7f67=. The snapshot-specific patch
+  adapts heading TODO recognition and file-local link abbreviations. Org
+  10 can read external =#+SETUPFILE= declarations during Model parsing and
+  serialization validation. The default package uses Org 9.8.10, and the
+  default flake checks cover both variants. See the
+  [[file:README.org::*Org 10.0pre compatibility variant][variant build and test commands]].
+
 * DONE v0.8.0
 CLOSED: [2026-11-19 Thu 12:09]
 :PROPERTIES:

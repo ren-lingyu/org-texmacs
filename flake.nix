@@ -58,7 +58,7 @@
                 legacyPackages = pkgs.legacyPackages;
 
                 packages = {
-                  org-texmacs = pkgs.emacsPackages.org-texmacs;
+                  inherit (pkgs.emacsPackages) org-texmacs org-10pre-texmacs;
                   emacs = pkgs.emacs-with-org-texmacs;
                   texmacs-fandol = pkgs.texmacs-fandol;
                   texmacs-with-gotor-support = pkgs.texmacs-with-gotor-support;

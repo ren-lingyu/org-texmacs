@@ -112,10 +112,10 @@ Return records (NODE-BEGIN CONTENTS-BEGIN CONTENTS-END RAW-SOURCE)."
       nil nil nil t))))
 
 (defun org-texmacs--parse-prepare (source settings links base)
-  "Return (AST REQUESTS) for SOURCE under fixed SETTINGS, LINKS and BASE.
+  "Return (AST REQUESTS) for SOURCE using captured SETTINGS and LINKS at BASE.
 Protect raw native bodies before recognizing explicit carriers.
-No Model, export selection, dependency acquisition or native operation runs
-here."
+Org 10 may resolve effective file-level syntax again through `#+SETUPFILE'.
+Preparation skips Org Export processing and calls no STM worker."
   (let ((org-link-parameters
          (mapcar
           (lambda (name)
@@ -169,11 +169,13 @@ blocks using the native STM worker.  Use Org's LaTeX-fragment positions and
 composition rules.  Preserve opaque Org regions as ordinary Org.
 
 Keep comments, drawers, all footnote definitions and export-excluded content.
+The Org 10 compatibility variant may read `#+SETUPFILE' for native syntax.
 Do not run INCLUDE, Babel, export preprocessing/filters, Cite processors,
 bibliography acquisition/formatting, reference resolution or document lowering.
 Native block parameters and affiliation are retained without target validation.
 Parsed STM trees own island content; raw block parsing residue is discarded.
-The returned model needs no live source buffer or worker.
+The returned model owns its parsed syntax and needs no live source buffer,
+setup file or worker for inspection.
 
 Capture syntax/source CONTEXT explicitly and reject source, mode, narrowing,
 location or effective syntax changes across native waits.  Source changes by

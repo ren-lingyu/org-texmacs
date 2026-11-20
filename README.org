@@ -58,7 +58,8 @@ for changes and upgrade instructions since [[file:CHANGELOGS/v0.7.1.org][v0.7.1]
 - Unix-domain socket support in both Emacs and TeXmacs.
 
 Recorded regressions on =x86_64-linux= used Emacs 31.1, Org 9.8.10 and
-TeXmacs 2.1.5. Nix selects dependency revisions from the project's =flake.lock=.
+TeXmacs 2.1.5. The default Nix =org-texmacs= package uses Org 9.8.10 from
+the locked Nixpkgs input.
 
 =citeproc= is optional for CSL citations. The standard Cite integration check
 uses Org-roam and a pinned revision of Org-roam-organize.
@@ -100,11 +101,12 @@ This Emacs includes the package and its Lisp dependencies.  The development
 environment also includes TeXmacs.  Evaluate =(require 'org-texmacs)= before
 using the API.
 
-The flake exposes six named package outputs and no default package:
+The flake exposes these named package outputs:
 
 | Output                                       | Contents                                                      |
 |----------------------------------------------+---------------------------------------------------------------|
 | =packages.org-texmacs=                       | Lisp package with the adjacent Scheme service                 |
+| =packages.org-10pre-texmacs=                 | Org TeXmacs built in an Org 10.0pre Emacs package scope       |
 | =packages.emacs=                             | Emacs with Org TeXmacs and its Lisp dependencies              |
 | =packages.texmacs-fandol=                    | TeXmacs with explicit Fandol Chinese fonts                    |
 | =packages.texmacs-with-gotor-support=        | TeXmacs with native GoToR actions for local PDF file links    |
@@ -134,18 +136,19 @@ sources from =pkgs/org-texmacs-examples/sources/=. Both use
 for flake, package-overlay and test-check composition; its =nixpkgs= input follows
 the project's =nixpkgs=.
 
-Two public overlays allow downstream package sets to select these additions:
+The public Nixpkgs overlays provide these additions:
 
-| Overlay                  | Addition                     |
-|--------------------------+------------------------------|
-| =overlays.emacsPackages= | =emacsPackages.org-texmacs=  |
-| =overlays.texmacs=       | =texmacs-with-gotor-support= |
+| Overlay                  | Additions                                                         |
+|--------------------------+-------------------------------------------------------------------|
+| =overlays.emacsPackages= | =emacsPackages.org-texmacs= and =emacsPackages.org-10pre-texmacs= |
+| =overlays.texmacs=       | =texmacs-with-gotor-support=                                      |
 
-Both are nixpkgs overlays, applied when constructing a nixpkgs package set.
-=overlays.emacsPackages= extends the Emacs package machinery; it is not a
-direct Emacs package-scope overlay for =overrideScope=.  They can be selected
-independently or together.  The Emacs wrapper, font wrappers and examples remain
-available through the named flake package outputs above.
+Pass =overlays.emacsPackages= in the Nixpkgs =overlays= list when importing
+Nixpkgs. It takes the full Nixpkgs package sets. The function passed to
+=emacsPackages.overrideScope= takes Emacs package scopes instead. The
+Org 10 variant uses that inner interface to build its private Emacs scope.
+The Emacs wrapper, font wrappers and examples are available through the
+named flake package outputs above.
 
 *** Compiled examples
 On Linux, build the English and Chinese examples with:
@@ -527,11 +530,17 @@ the adapter does not reinterpret its headings as mathematical data.
 
 Comments, arbitrary property drawers, unreferenced footnote definitions,
 excluded headlines and other native Org structures remain in the model.
-INCLUDE, SETUPFILE and bibliography declarations remain source syntax here;
-the adapter does not acquire files, run Babel, export hooks/filters or Cite
-processors, format bibliography, resolve output references or invoke lowering.
+The default Org 9.8.10 adapter keeps INCLUDE, SETUPFILE and bibliography
+declarations as source syntax without acquiring files. Model construction
+skips Babel, export hooks and filters, Cite processors, bibliography formatting,
+output reference resolution and lowering.
 It parses every recognized island, including those in export-excluded content.
 Consequently, invalid STM there also fails model construction.
+The [[*Org 10.0pre compatibility variant][experimental Org 10.0pre variant]]
+can follow =#+SETUPFILE= while Org collects file-level syntax. Org resolves
+nested paths and detects cycles using the source file identity. The Model
+retains the declarations in its AST and owns the resolved syntax and STM
+trees after construction.
 
 The syntax snapshot stores bound native heading/TODO/level/priority settings,
 the parser's emphasis/list/affiliation/secondary conventions, source radio-link
@@ -681,8 +690,13 @@ the model.  Plain Org strings do not carry all buffer-local syntax settings.
 The buffer convenience entry installs the captured syntax, link
 names/abbreviations and resource directory before inserting text.  It keeps
 currently available link handlers; the model does not retain old handler code.
-The new buffer does not visit the original file or run mode hooks, INCLUDE,
-SETUPFILE, Babel, Cite processors or export filters.
+The new buffer is independent of the original file. Its initialization skips
+mode hooks and export processing.
+With the experimental Org 10.0pre variant, Org can follow =#+SETUPFILE= while
+reparsing the serialized content for validation. Its result can depend on
+the current setup files, while the existing Model keeps its captured
+syntax. The editable buffer itself has no visiting file. A later parse of
+that buffer uses its own file identity and the installed resource directory.
 
 Supported output includes native headings/sections, paragraphs and common inline
 objects, lists, footnotes, keywords, comments, property drawers, static code,
@@ -2520,8 +2534,8 @@ controls and relocation.  It also checks that the source guard accepts unrelated
 renderer changes and rejects changed link dispatch or repeated patching.  It
 uses neither org-texmacs nor a font wrapper and does not test GUI navigation.
 
-The =ert= aggregate uses stock Org and includes direct-AST caption-footnote
-tests. The separate =emacsPackages-org-texmacs-caption-inline-footnotes=
+The =ert= aggregates include the shared direct-AST caption-footnote tests.
+The separate =emacsPackages-org-texmacs-caption-inline-footnotes=
 check builds the locked Org 9.8.10 with the adjacent test-only patch and
 checks the pure-model support and standard source-export rejection boundary.
 The check is available when the Emacs package set provides Org 9.8.10.
@@ -2530,6 +2544,33 @@ development environment.
 The default flake checks include the standard Cite integration suite and
 fetch its pinned extension source.
 
+*** Org 10.0pre compatibility variant
+The experimental =org-10pre-texmacs= package uses a private build of
+=bzg/org-mode= pinned to =fd6546e1a9dddedd913a4adaf2ea76eea65c7f67=.
+Use the flake package or select =emacsPackages.org-10pre-texmacs= after
+applying =overlays.emacsPackages=. To use your own Org package, call
+=pkgs.emacsPackages.org-10pre-texmacs.override { org = myOrg; }=.
+The override selects Org for the variant and its tests. The compatibility
+patch is applied in both cases and has been tested against the pinned
+snapshot.
+
+The default =nix flake check= includes the checks for both Org 9.8.10 and
+the pinned Org 10.0pre variant. The caption footnote patch check applies
+only to Org 9.8.10. The variant's separate =ert-setupfile= suite checks the
+loaded Org and Org TeXmacs packages, nested setup files, Model ownership
+and serialization. To build the variant or run its checks separately, use
+the package outputs below.
+
+#+begin_src sh
+  nix build --no-link --no-write-lock-file .#org-10pre-texmacs
+  nix build --no-link --no-write-lock-file .#org-10pre-texmacs.tests.ert-core \
+    .#org-10pre-texmacs.tests.ert-native .#org-10pre-texmacs.tests.ert-cite \
+    .#org-10pre-texmacs.tests.ert-pdf \
+    .#org-10pre-texmacs.tests.standard-cite-integration \
+    .#org-10pre-texmacs.tests.ert-setupfile
+#+end_src
+
+*** Test discovery
 The =elisp/default.nix= package description uses =tests.mkChecks= to discover
 its =elisp/tests/= suites and expose them through =passthru.tests=. The TeXmacs
 GoToR package owns its regression in the same way. =tests/default.nix= collects

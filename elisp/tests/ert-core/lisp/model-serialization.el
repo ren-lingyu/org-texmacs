@@ -305,13 +305,12 @@
     (let ((org-link-parameters
            (cons '("saved-type" :follow ignore) org-link-parameters)))
       (with-temp-buffer
+        (insert
+         "#+TODO: READY | FINISHED\n"
+         "#+LINK: saved saved-type:%s\n"
+         "*** FINISHED Title\n[[saved:item][Link]]\n")
         (org-mode)
-        (setq-local org-todo-regexp "\\(READY\\|FINISHED\\)")
-        (setq-local org-done-keywords '("FINISHED"))
         (setq-local org-odd-levels-only t)
-        (setq-local org-link-abbrev-alist-local
-                    '(("saved" . "saved-type:%s")))
-        (insert "*** FINISHED Title\n[[saved:item][Link]]\n")
         (setq model (org-texmacs-parse-buffer (current-buffer)))))
     (should
      (equal

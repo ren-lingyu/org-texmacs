@@ -1,0 +1,162 @@
+--- a/org-texmacs-context.el
++++ b/org-texmacs-context.el
+@@ -10,6 +10,7 @@
+ 
+ ;;; Code:
+ 
++(require 'org)
+ (require 'org-texmacs-core)
+ (require 'org-texmacs-source)
+ 
+--- a/org-texmacs-core.el
++++ b/org-texmacs-core.el
+@@ -92,7 +92,6 @@
+     (org-priority-regexp . variable)
+     (org-link-parameters . variable)
+     (org-link-abbrev-alist . variable)
+-    (org-link-abbrev-alist-local . variable)
+     (org-link-types-re . variable)
+     (org-link-angle-re . variable)
+     (org-link-plain-re . variable)
+--- a/org-texmacs-syntax.el
++++ b/org-texmacs-syntax.el
+@@ -41,15 +41,23 @@
+   (org-texmacs--model-copy-data
+    (org-texmacs--model-owner-create) value))
+ 
+-(defun org-texmacs--parse-settings ()
+-  "Capture effective native Org syntax as explicit variable/value pairs."
++(defun org-texmacs--parse-settings (org-data)
++  "Capture effective native Org syntax, including TODO settings from ORG-DATA."
+   (mapcar
+    (lambda (symbol)
+-     (cons symbol (org-texmacs--syntax-copy (symbol-value symbol))))
++     (cons symbol
++           (org-texmacs--syntax-copy
++            (pcase symbol
++              ('org-todo-regexp (org-element-property :todo-regexp org-data))
++              ('org-todo-keywords (default-value 'org-todo-keywords))
++              ('org-todo-keywords-1
++               (org-element-property :todo-keywords org-data))
++              ('org-done-keywords (org-element-property :done-keywords org-data))
++              (_ (symbol-value symbol))))))
+    (cl-remove-if-not #'boundp org-texmacs--parse-syntax-variables)))
+ 
+-(defun org-texmacs--parse-links ()
+-  "Capture link names and abbreviations without retaining handler functions."
++(defun org-texmacs--parse-links (org-data)
++  "Capture link names and ORG-DATA abbreviations without link handlers."
+   (unless (and (proper-list-p org-link-parameters)
+                (cl-every
+                 (lambda (entry)
+@@ -60,13 +68,15 @@
+    (list
+     :types (mapcar #'car org-link-parameters)
+     :global org-link-abbrev-alist
+-    :local org-link-abbrev-alist-local)))
++    :local (org-element-property :link-abbrevs org-data))))
+ 
+ (defun org-texmacs--syntax-capture ()
+-  "Capture native syntax for the temporary Org recognition tree's root."
+-  (list
+-   :heading-settings (org-texmacs--parse-settings)
+-   :link-settings (org-texmacs--parse-links)))
++  "Capture effective native syntax for the current source buffer."
++  (save-match-data
++    (let ((org-data (org-element-org-data-parser)))
++      (list
++       :heading-settings (org-texmacs--parse-settings org-data)
++       :link-settings (org-texmacs--parse-links org-data)))))
+ 
+ (provide 'org-texmacs-syntax)
+ ;;; org-texmacs-syntax.el ends here
+--- a/org-texmacs-parse.el
++++ b/org-texmacs-parse.el
+@@ -35,10 +35,9 @@
+     (set
+      (make-local-variable (car setting))
+      (org-texmacs--parse-copy (cdr setting))))
+-  (setq-local org-link-abbrev-alist-local
+-              (org-texmacs--parse-copy (plist-get links :local)))
++  ;; Org 10 resolves file-local abbreviations from the source's #+LINK.
+   (setq-local org-link-abbrev-alist
+               (org-texmacs--parse-copy (plist-get links :global)))
+   (setq-local org-link-parameters
+               (mapcar
+                (lambda (name) (list (copy-sequence name)))
+@@ -112,7 +111,8 @@
+       nil nil nil t))))
+ 
+-(defun org-texmacs--parse-prepare (source settings links base)
++(defun org-texmacs--parse-prepare (source settings links base source-file)
+   "Return (AST REQUESTS) for SOURCE using captured SETTINGS and LINKS at BASE.
++Use SOURCE-FILE as the current file for Org's SETUPFILE cycle detection.
+ Protect raw native bodies before recognizing explicit carriers.
+ Org 10 may resolve effective file-level syntax again through `#+SETUPFILE'.
+ Preparation skips Org Export processing and calls no STM worker."
+@@ -145,7 +145,9 @@
+            (org-mode))
+          (org-texmacs--parse-initialize settings links base)
+          (insert source)
+-         (let ((blocks (org-texmacs--parse-blocks)))
++         ;; Give Org file identity during parsing without visiting the file.
++         (let* ((buffer-file-name source-file)
++                (blocks (org-texmacs--parse-blocks)))
+            (dolist (record blocks)
+              (when (nth 1 record)
+                (org-texmacs--parse-mask
+@@ -195,8 +197,9 @@
+            (bounds (cons (point-min) (point-max)))
+            (file (buffer-file-name (buffer-base-buffer)))
+            (directory default-directory)
+-           (settings (org-texmacs--parse-settings))
+-           (links (org-texmacs--parse-links))
++           (syntax (org-texmacs--syntax-capture))
++           (settings (plist-get syntax :heading-settings))
++           (links (plist-get syntax :link-settings))
+            (source
+             (save-restriction
+               (widen)
+@@ -226,8 +229,7 @@
+                         (equal
+                          file (buffer-file-name (buffer-base-buffer)))
+                         (equal directory default-directory)
+-                        (equal settings (org-texmacs--parse-settings))
+-                        (equal links (org-texmacs--parse-links)))
++                        (equal syntax (org-texmacs--syntax-capture)))
+              (signal
+               'org-texmacs-model-error
+               '("Source or syntax changed during model parsing"))))))
+@@ -237,7 +239,8 @@
+                 source
+                 settings
+                 links
+-                (plist-get context :resource-base)))
++                (plist-get context :resource-base)
++                (plist-get context :source-file)))
+               islands)
+          (check)
+          (dolist (request (cadr prepared))
+--- a/org-texmacs-serialize.el
++++ b/org-texmacs-serialize.el
+@@ -465,7 +465,8 @@
+            text
+            (plist-get context :heading-settings)
+            (plist-get context :link-settings)
+-           (plist-get context :resource-base)))
++           (plist-get context :resource-base)
++           (plist-get context :source-file)))
+          (islands
+           (org-texmacs--serialize-match-objects
+            (car prepared) (cadr prepared) sources))
+--- a/org-texmacs-document.el
++++ b/org-texmacs-document.el
+@@ -3763,7 +3763,7 @@
+    (list
+     org-link-parameters
+     org-link-abbrev-alist
+-    org-link-abbrev-alist-local)))
++    (org-element-property :link-abbrevs (org-element-org-data)))))
+ 
+ (defun org-texmacs--document-normalize-table (document)
+   "Validate and wrap raw table DOCUMENT, retaining its original STM root."

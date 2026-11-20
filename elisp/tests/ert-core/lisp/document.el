@@ -1177,10 +1177,11 @@
 
 (ert-deftest org-texmacs-document-heading-settings-parser-parity ()
   (with-temp-buffer
-    (let ((org-todo-keywords '((sequence "WAIT" "|" "FINISHED"))))
-      (org-mode))
+    (insert
+     "#+TODO: WAIT | FINISHED\n"
+     "* WAIT [#A] A *bold* title :tag:\n*** FINISHED Done\n")
+    (org-mode)
     (setq-local org-odd-levels-only t)
-    (insert "* WAIT [#A] A *bold* title :tag:\n*** FINISHED Done\n")
     (cl-labels
      ((properties
        ()
@@ -1208,6 +1209,33 @@
          (org-texmacs--document-use-heading-settings settings)
          (insert source)
          (should (equal (properties) expected)))))))
+
+(ert-deftest org-texmacs-document-file-link-settings-parser-parity ()
+  (dolist (org-element-use-cache '(nil t))
+    (with-temp-buffer
+      (let ((org-link-abbrev-alist
+             '(("demo" . "http://global.test/%s"))))
+        (insert
+         "#+LINK: demo https://example.test/%s\n\n[[demo:item]]\n")
+        (org-mode)
+        (goto-char (point-max))
+        (forward-line -1)
+        ;; Populate the element cache when enabled before reading the context.
+        (org-element-at-point)
+        (let* ((ast (org-texmacs--ast-parse-buffer (current-buffer)))
+               (link (org-element-map ast 'link #'identity nil t))
+               (syntax (org-element-property :org-texmacs-syntax ast))
+               (links (plist-get syntax :link-settings))
+               (expected '(("demo" . "https://example.test/%s"))))
+          (should (equal (org-element-property :type link) "https"))
+          (should
+           (equal
+            (org-element-property :path link) "//example.test/item"))
+          (should (equal (plist-get links :local) expected))
+          (should
+           (equal
+            (cdr (org-texmacs--document-link-settings))
+            (list org-link-abbrev-alist expected))))))))
 
 (ert-deftest org-texmacs-document-heading-settings-copy-isolation ()
   (with-temp-buffer

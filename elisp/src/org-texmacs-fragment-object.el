@@ -237,7 +237,8 @@ Store independent :org-texmacs-syntax metadata on the root; this is not
 document content and never retains a live source buffer.
 The caller owns the returned tree, including native secondary strings.
 Preserve Org's native parent forms and keep the tree usable without its buffer.
-Never run Export preparation, STM validation, file lookup or a native worker.
+The Org 10 compatibility variant may read `#+SETUPFILE' while resolving
+Org syntax.  Recognition skips Export preparation, STM validation and workers.
 Malformed recognized carriers signal `org-texmacs-parse-error'.  Invalid buffer
 arguments signal `org-texmacs-model-error'.  Custom Org callbacks are not
 sandboxed.  Use `org-texmacs--call-with-ast-context' for later Org operations."

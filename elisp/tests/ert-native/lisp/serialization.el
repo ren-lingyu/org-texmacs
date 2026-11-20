@@ -534,7 +534,7 @@
                            (setq-local org-priority-regexp "Changed"))
                           ('links
                            (setq-local
-                            org-link-abbrev-alist-local
+                            org-link-abbrev-alist
                             '(("x" . "https://example.org"))))
                           ('narrowing (narrow-to-region 1 3))
                           ('mode (setq major-mode 'fundamental-mode))

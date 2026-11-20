@@ -916,7 +916,7 @@
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
-    (setq-local org-link-abbrev-alist-local
+    (setq-local org-link-abbrev-alist
                 '(("short" . "https://example.org/%s")))
     (insert "[[short:page][Page]]\n")
     (should
@@ -928,7 +928,7 @@
     (insert "$(math \"x\")$\n")
     (cl-letf (((symbol-function 'org-texmacs--worker-request)
                (lambda (&rest _)
-                 (setq-local org-link-abbrev-alist-local nil)
+                 (setq-local org-link-abbrev-alist nil)
                  '(math "x"))))
       (should
        (org-texmacs-document-p
@@ -2674,7 +2674,7 @@
                                           (not org-odd-levels-only)))
                              ('link
                               (setq-local
-                               org-link-abbrev-alist-local
+                               org-link-abbrev-alist
                                '(("changed"
                                   .
                                   "https://example.org/%s"))))

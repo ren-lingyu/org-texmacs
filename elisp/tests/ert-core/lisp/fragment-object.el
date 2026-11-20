@@ -365,8 +365,8 @@
     (with-temp-buffer
       (delay-mode-hooks
         (org-mode))
-      (setq-local org-link-abbrev-alist-local
-                  '(("demo" . "https://example.test/%s")))
+      (setq-local org-link-abbrev-alist
+                  (list (cons "demo" "https://example.test/%s")))
       (insert "$(x)$\n")
       (setq ast (org-texmacs--ast-parse-buffer (current-buffer)))
       (setq captured (org-element-property :org-texmacs-syntax ast))
@@ -374,16 +374,69 @@
        (equal
         (plist-get
          (plist-get captured :link-settings)
-         :local)
-        org-link-abbrev-alist-local))
-      (setcdr (car org-link-abbrev-alist-local) "changed")
+         :global)
+        org-link-abbrev-alist))
+      (setcdr (car org-link-abbrev-alist) "changed")
       (should
        (equal
         (cdr
-         (car (plist-get (plist-get captured :link-settings) :local)))
+         (car
+          (plist-get (plist-get captured :link-settings) :global)))
         "https://example.test/%s")))
     (should (plist-member captured :heading-settings))
     (should (= 1 (length (org-texmacs-object-test--fragments ast))))))
+
+(ert-deftest org-texmacs-object-owned-file-link-syntax-snapshot ()
+  (dolist (org-element-use-cache '(nil t))
+    (with-temp-buffer
+      (let ((org-link-abbrev-alist
+             '(("global" . "https://global.test/%s")))
+            (expected '(("demo" . "https://example.test/%s"))))
+        (insert "#+LINK: demo https://example.test/%s\n\n$(x)$\n")
+        (org-mode)
+        (goto-char (- (point-max) 2))
+        (set-mark (1- (point)))
+        (setq mark-active t)
+        (narrow-to-region (line-beginning-position) (point-max))
+        (set-buffer-modified-p nil)
+        (let ((text
+               (save-restriction
+                 (widen)
+                 (buffer-string)))
+              (position (point))
+              (m (mark))
+              (bounds (cons (point-min) (point-max)))
+              (tick (buffer-modified-tick)))
+          (cl-labels
+           ((capture
+             ()
+             (plist-get
+              (org-element-property
+               :org-texmacs-syntax
+               (org-texmacs--ast-parse-buffer (current-buffer)))
+              :link-settings)))
+           (let* ((links (capture))
+                  (local (plist-get links :local)))
+             (should (plist-member links :local))
+             (should (equal local expected))
+             (should
+              (equal (plist-get links :global) org-link-abbrev-alist))
+             (should-not (assoc "demo" (plist-get links :global)))
+             (aset (cdar local) 0 ?X)
+             (setcdr (car local) "changed")
+             (should (equal (plist-get (capture) :local) expected))))
+          (should
+           (equal-including-properties
+            text
+            (save-restriction
+              (widen)
+              (buffer-string))))
+          (should (= position (point)))
+          (should (= m (mark)))
+          (should mark-active)
+          (should (equal bounds (cons (point-min) (point-max))))
+          (should (= tick (buffer-modified-tick)))
+          (should-not (buffer-modified-p)))))))
 
 (ert-deftest org-texmacs-object-error-preserves-source-state ()
   (with-temp-buffer

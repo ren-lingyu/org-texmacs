@@ -179,63 +179,105 @@
 
 (ert-deftest org-texmacs-model-parse-effective-heading-and-link-syntax
     ()
-  (let ((org-link-parameters
-         (cons '("model-test" :follow ignore) org-link-parameters)))
-    (with-temp-buffer
-      (org-mode)
-      (setq-local org-todo-regexp "\\(READY\\|FINISHED\\)")
-      (setq-local org-done-keywords '("FINISHED"))
-      (setq-local org-odd-levels-only t)
-      (setq-local org-link-abbrev-alist-local
-                  '(("local" . "model-test:%s")))
-      (insert
-       "*** FINISHED Heading\n[[local:item][Link]] $(math \"x\")$.\n")
-      (let ((regexes
-             (list
-              org-link-types-re
-              org-link-plain-re
-              org-element--object-regexp))
-            model)
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   (lambda (_raw &optional _syntax) '(math "x"))))
-          (setq model (org-texmacs-parse-buffer (current-buffer))))
-        (let* ((ast (org-texmacs-model-ast model))
-               (heading
-                (org-element-map ast 'headline #'identity nil t))
-               (link (org-element-map ast 'link #'identity nil t))
-               (context (org-texmacs-model-context model)))
-          (should (= (org-element-property :level heading) 2))
-          (should
-           (eq (org-element-property :todo-type heading) 'done))
-          (should
-           (equal
-            (org-element-property :todo-keyword heading) "FINISHED"))
-          (should
-           (equal (org-element-property :type link) "model-test"))
-          (should (equal (org-element-property :path link) "item"))
-          (should
-           (assoc
-            'org-todo-regexp (plist-get context :heading-settings)))
-          (should
-           (member
-            "model-test"
-            (plist-get (plist-get context :link-settings) :types))))
-        (should
-         (equal
-          regexes
-          (list
-           org-link-types-re
-           org-link-plain-re
-           org-element--object-regexp)))))))
+  (let ((default-headings "* TODO Parent\n*** DONE Child\n"))
+    (cl-labels
+     ((headings
+       (ast)
+       (org-element-map
+        ast 'headline
+        (lambda (node)
+          (mapcar
+           (lambda (key) (org-element-property key node))
+           '(:level :todo-keyword :todo-type)))))
+      (link-target
+       (ast)
+       (let ((node (org-element-map ast 'link #'identity nil t)))
+         (list
+          (org-element-property :type node)
+          (org-element-property :path node)))))
+     (dolist (declared '(nil t))
+       (let (expected
+             model)
+         (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                    (lambda (_raw &optional _syntax) '(math "x"))))
+           (with-temp-buffer
+             (when declared
+               (insert
+                "#+TODO: READY | FINISHED\n#+TODO: REVIEW | ACCEPTED\n"))
+             (insert
+              "#+LINK: local https://example.test/%s\n"
+              (if declared
+                  "* READY Parent\n*** FINISHED Child\n*** REVIEW Check\n*** ACCEPTED Last\n"
+                default-headings)
+              "[[local:item][Link]] $(math \"x\")$.\n")
+             (org-mode)
+             (setq-local org-odd-levels-only t)
+             (let ((regexes
+                    (list
+                     org-link-types-re
+                     org-link-plain-re
+                     org-element--object-regexp))
+                   (native (org-element-parse-buffer)))
+               (setq expected (headings native))
+               (if declared
+                   (should
+                    (equal
+                     expected
+                     '((1 "READY" todo)
+                       (2 "FINISHED" done)
+                       (2 "REVIEW" todo)
+                       (2 "ACCEPTED" done))))
+                 (should
+                  (equal (mapcar #'caddr expected) '(todo done))))
+               (should
+                (equal
+                 (link-target native)
+                 '("https" "//example.test/item")))
+               (setq model
+                     (org-texmacs-parse-buffer (current-buffer)))
+               (should
+                (equal
+                 regexes
+                 (list
+                  org-link-types-re
+                  org-link-plain-re
+                  org-element--object-regexp)))))
+           (let* ((ast (org-texmacs-model-ast model))
+                  (context (org-texmacs-model-context model))
+                  (links (plist-get context :link-settings)))
+             (should (equal (headings ast) expected))
+             (should
+              (equal
+               (link-target ast) '("https" "//example.test/item")))
+             (should
+              (equal
+               (plist-get links :local)
+               '(("local" . "https://example.test/%s"))))
+             (should (member "https" (plist-get links :types))))
+           (let ((output (org-texmacs-model-to-buffer model)))
+             (unwind-protect
+                 (let ((ast
+                        (org-texmacs-model-ast
+                         (org-texmacs-parse-buffer output))))
+                   (should (equal (headings ast) expected))
+                   (should
+                    (equal
+                     (link-target ast)
+                     '("https" "//example.test/item"))))
+               (kill-buffer output)))))))))
 
 (ert-deftest
     org-texmacs-model-parse-guards-source-and-syntax-across-waits
     ()
-  (dolist (change '(text mode bounds file directory headings links))
+  (dolist (change
+           '(text mode bounds file directory headings links registry))
     (with-temp-buffer
       (org-mode)
       (insert "$(math \"x\")$\n")
-      (let ((source (current-buffer)))
+      (let ((source (current-buffer))
+            (org-link-abbrev-alist
+             (list (cons "original" "https://example.test/%s")))
+            (org-link-parameters (copy-tree org-link-parameters)))
         (cl-letf (((symbol-function 'org-texmacs--worker-request)
                    (lambda (_raw &optional _syntax)
                      (with-current-buffer source
@@ -253,11 +295,13 @@
                           (setq-local org-odd-levels-only
                                       (not org-odd-levels-only)))
                          ('links
-                          (setq-local
-                           org-link-abbrev-alist-local
-                           '(("changed"
-                              .
-                              "https://example.org/%s"))))))
+                          (setcdr
+                           (car org-link-abbrev-alist)
+                           "https://changed.test/%s"))
+                         ('registry
+                          (push '("model-wait-test"
+                                  :follow ignore)
+                                org-link-parameters))))
                      '(math "x"))))
           (should-error
            (org-texmacs-parse-buffer source)
