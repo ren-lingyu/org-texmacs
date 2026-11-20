@@ -19,7 +19,77 @@ the GoToR regression. Its output reported running zero flake checks, so
 it establishes discovery and a successful check result with existing
 outputs, without a fresh test execution on that invocation. Other
 systems were omitted. The subsequent Org version-check fix was statically
-reviewed. A fresh downstream run with Org 10.0-pre was not observed.
+reviewed.
+
+The subsequent downstream `ert-core` log identified Org 10.0pre and
+reported 353/356 passing. The failures are heading-settings parser parity,
+model parsing under effective heading and link settings, and model
+serialization under captured TODO and link settings. The parity fixture
+already loses its TODO keywords in direct Org parsing before replay.
+The model parser reports a nil TODO type, and the serialization fixture
+already yields a fuzzy link in its first parse.
+
+Org upstream 8bcb5756518149e33dd25dbb0e4e45c978789c22 moved TODO
+parser inputs from buffer variables to properties on the org-data root.
+Org upstream 6db5248d73368b43639c89c77c5e409fd1731dae moved in-buffer
+link abbreviations to org-data and deprecated org-link-abbrev-alist-local.
+The original Org TeXmacs syntax capture and replay used the older
+variables. The user identified the failing downstream Org source as
+bzg/org-mode fd6546e1a9dddedd913a4adaf2ea76eea65c7f67, matching the Org
+entry in the downstream lockfile. That revision is fetched by fixed
+revision without a new flake input. The downstream package provides a
+reference for MELPA autoload generation.
+
+The worktree contains an opt-in `org-10pre-texmacs` compatibility variant
+distributed by the shared Emacs overlay. Its `org` parameter defaults to a
+private pinned build and can be overridden by downstream users. The
+authorized GitHub archive prefetch confirmed
+that the unpacked archive has the same NAR hash as the downstream lock
+entry. The isolated Emacs scope builds the pinned Org package and its
+Org TeXmacs variant without adding a flake input. The compatibility patch
+captures parser-root TODO and link data, keeps file and global link
+abbreviations distinct during replay, and explicitly loads Org where the
+new org-element loading boundary requires it. Shared fixtures use Org
+declarations or the supported link abbreviation option.
+
+The follow-up revision adds shared file-level link ownership and parser
+parity coverage, tests native TODO status with and without declarations
+and with multiple sequences, and checks model reparse after source-buffer
+disposal. The native wait guards cover in-place global link changes,
+registry changes, buffer-local heading policy, and source edits. The Org 10
+capture also preserves match data; it uses fresh parser-root data without a
+new syntax cache. The public package and test Emacs paths were checked against
+the compiled variant and the expected pinned Org store output. The caption
+suite is available only on the stock package. The user now wants default
+flake checks to cover both packages for routine development. The collector
+uses both packages' `passthru.tests` without a variant exclusion.
+
+Before the overlay consolidation, both Org TeXmacs packages, the examples,
+and stock `nix flake check` passed on x86_64-linux. Variant core (358), native
+(279), Cite (11), PDF document (49), PDF render (31), and standard Cite
+integration (5) passed. Stock core also
+passed 358/358. The pinned Org 10 parser requests SETUPFILE reads through
+its native keyword collector during syntax capture, confirmed with a stub
+for `org-file-contents`. README qualifies the variant's model and
+serialization behavior. The source-state probe preserved text, point, mark,
+narrowing, modification state and match data. The tests do not cover a
+generated buffer after a subsequent change to ambient default TODO keywords.
+After consolidation, offline Nix evaluation confirmed the stock and pinned
+Org dependencies and the downstream override. The SETUPFILE follow-up found
+that a real visited main file and its private parsing buffer resolved a
+cycle differently. The variant now supplies the captured source-file
+identity during private parsing and serialization validation, preserving
+Org's native cycle detection. The new variant suite covers nested relative
+setup files, a cycle through the main file, changes across worker waits,
+owned syntax after file changes, and serialization with stable or changed
+external configuration. Full worktree-snapshot Nix acceptance passed on
+x86_64-linux for both packages, examples, and every default flake check,
+including treefmt. Each version passed core (358), native (279), Cite (11),
+PDF document and render (49 + 31), and standard Cite integration (5). The
+variant SETUPFILE suite passed 5/5, checked the loaded package paths, and
+was collected by default. The stock scope alone included the caption patch
+check. The tested snapshot included the new files from the worktree. The
+project candidate remains uncommitted.
 
 ## Current release state
 

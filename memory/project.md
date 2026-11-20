@@ -39,6 +39,31 @@ is empty for other versions. Generic ERT checks exercise Org's behavior
 without an exact release assertion, including the core fuzzy-link and
 reference allocation test. The package minimum remains Org 9.8.10.
 
+The shared `overlays.emacsPackages` exposes both stock Org TeXmacs and the
+Org 10 compatibility candidate. The variant has a private `overrideScope`
+and a variant-only patch under `pkgs/emacsPackages/org-10pre-texmacs/`.
+It defaults to a private Org build at commit
+`fd6546e1a9dddedd913a4adaf2ea76eea65c7f67`, the downstream revision that
+exposed the incompatibility. The outer `callPackage` takes `org` explicitly
+so downstream `.override { org = ...; }` changes the variant and test scope
+together. The stock Nix package uses Org 9.8.10. Default flake checks
+collect both package variants. Shared fixtures use `#+TODO` and `#+LINK`
+declarations, keeping file-link abbreviations distinct from the
+global option. The patch reads Org 10's parser-root properties and retains
+the declarations in private parse input so Org applies native precedence.
+Variant model guards re-read syntax around every worker wait. A check that
+applies an Org source patch is exposed only on its targeted Org version.
+The pinned Org 10 parser follows SETUPFILE while resolving deferred
+parser-root properties, including during model syntax capture and
+serialization validation. The private parsing buffer temporarily supplies
+the Model's source-file identity for Org's native cycle detection and uses
+the recorded resource base for relative paths. The Model owns the resolved
+AST, captured syntax and STM trees after construction. Serialization can read
+the current setup files again and must preserve the original structure or
+reject the output. The editable result has no visiting file; a later parse
+uses that buffer's own identity. The variant's `ert-setupfile` suite exercises
+this boundary with real local setup files and verifies the loaded Org scope.
+
 ## Delivered STM carrier and Model architecture
 
 The complete mathematical-document Model combines native Org AST, parsed STM
