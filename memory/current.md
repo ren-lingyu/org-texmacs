@@ -102,6 +102,17 @@ The user committed the compatibility change. The project-parent snapshot
 matches the reviewed baseline plus the five final edits across all 17
 changed files. The project worktree is clean.
 
+The subsequent committed packaging refactor calls the shared package definition from
+the private Emacs scope. It retains the Org override and resolves Cite test
+dependencies in that scope. The pinned variant and its checks have the same
+derivations as the accepted project commit. Read-only inspection of all seven
+test Emacs wrappers found only the pinned Org in their package load paths.
+Citeproc and Org-roam also depend on that Org derivation. All seven existing
+build logs pass, including the SETUPFILE runtime identity assertion. The
+user's flake check reused those outputs. The committed overlay matches the
+reviewed source. README describes the private scope and its override boundary.
+The final README wording was checked statically. The project worktree is clean.
+
 ## Current release state
 
 The user completed the v0.8.0 DONE transition, committed the release

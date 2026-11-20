@@ -44,9 +44,11 @@ Org 10 compatibility variant. The variant has a private `overrideScope`
 and a variant-only patch under `pkgs/emacsPackages/org-10pre-texmacs/`.
 It defaults to a private Org build at commit
 `fd6546e1a9dddedd913a4adaf2ea76eea65c7f67`, the downstream revision that
-exposed the incompatibility. The outer `callPackage` takes `org` explicitly
-so downstream `.override { org = ...; }` changes the variant and test scope
-together. The stock Nix package uses Org 9.8.10. Default flake checks
+exposed the incompatibility. The outer `callPackage` takes `org` explicitly,
+so downstream `.override { org = ...; }` selects Org for the private scope.
+The variant calls the shared package definition in that scope. Citeproc and
+Org-roam test dependencies resolve there too. The stock Nix package uses
+Org 9.8.10. Default flake checks
 collect both package variants. Shared fixtures use `#+TODO` and `#+LINK`
 declarations, keeping file-link abbreviations distinct from the
 global option. The patch reads Org 10's parser-root properties and retains
