@@ -91,6 +91,16 @@ was collected by default. The stock scope alone included the caption patch
 check. The tested snapshot included the new files from the worktree. The
 project candidate remains uncommitted.
 
+Final pre-commit review matched the user's diff baseline and strengthened the
+existing cycle test. The native and Model AST roots agree on the main file
+path, TODO sequences, TODO and done keywords, and file-local abbreviations.
+The fixture checks the exact contents so duplicate collection cannot pass.
+All five SETUPFILE cases pass. The production changes in this follow-up are
+docstrings and matching patch context. README distinguishes the Nixpkgs
+overlay from the variant's private Emacs scope override. The full final
+`nix flake check -L` passed on x86_64-linux with both packages' checks.
+The reviewed worktree is ahead of the staged candidate by these final edits.
+
 ## Current release state
 
 The user completed the v0.8.0 DONE transition, committed the release
