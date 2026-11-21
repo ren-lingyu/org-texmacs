@@ -58,8 +58,7 @@ matching the text to the writer output. Codec roundtrip and native parity
 are tested separately. Native output consumes structured document fields
 and provenance through the worker wire format. The original guidance and
 diff add no independent archival evidence beyond the staged baseline,
-maintained tests and existing archived native experiments. The follow-up
-is in the ordinary worktree outside the staged baseline. Scoped nix fmt
+maintained tests and existing archived native experiments. Scoped nix fmt
 and default nix flake check passed on x86_64-linux. The follow-up check
 reused unaffected outputs and rebuilt both native suites (280 each)
 after the final testcase adjustment. Examples evaluated as flake outputs.
@@ -79,6 +78,13 @@ Scoped formatting and the final default flake check passed on x86_64-linux.
 Both Org variants passed 281 native tests, including the corrected cases,
 the bibliography failure regression and the STM native differential.
 The check used successful core, Cite and PDF results for unchanged inputs.
+
+The user committed Phase 1 on main as "feat(stm)!: decouple STM source
+handling from TeXmacs". The ordinary worktree and index were clean at
+delivery. The commit includes the final diagnostic wording adjusted after
+flake check. A read-only Git whitespace check passed on the recorded
+commit. The earlier Nix result applies to the candidate before that
+diagnostic-only change.
 
 ## Source and check migration delivered
 

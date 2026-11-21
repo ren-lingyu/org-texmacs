@@ -5,7 +5,7 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
-## STM codec in the Phase 1 worktree
+## STM codec delivered in Phase 1
 
 The pure Elisp STM codec is shared by whole-source Model parsing, prepared
 Org Export islands, the block tree cache and normalized Org serialization.
