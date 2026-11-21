@@ -11,10 +11,14 @@ The pure Elisp STM codec is shared by whole-source Model parsing, prepared
 Org Export islands, the block tree cache and normalized Org serialization.
 It implements a native text subset. Text representability is checked
 independently of the Model's owned STM tree shape. Serialization renders the
-authoritative islands and verifies their decoded trees along with the
-reparsed Org structure and carrier paths. The core uses no TeXmacs process.
-Native bibliography, document encoding, sessions and PDF still use the
-existing runtime. The worker protocol retains its own payload validation.
+authoritative islands and reparses Org to check structure and carrier text.
+It reuses the known trees after verifying carrier count, order, AST path,
+type and the canonical payload. The codec's own roundtrip and its agreement
+with the native parser are regression checks. Native two-pass decoding
+implements the semantics of supported hand-written escapes. The core uses
+no TeXmacs process. Native bibliography, document encoding, sessions and
+PDF still use the existing runtime. Document output consumes structured
+trees and provenance through the worker wire format.
 
 ## Current source, package, and check layout
 
