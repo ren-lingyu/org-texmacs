@@ -28,12 +28,16 @@ prototype is evidence only; its grammar was not adopted. Unsupported old
 writer spellings may be rejected. No migration tool or compatibility layer
 is in scope.
 
-The next activity is Phase A syntax selection and native differential
-validation. Only after it passes, migrate Model parse, prepared STM completion,
-`org-texmacs-tree`, and Model serialization. Keep Model ownership and native
-backend paths. Phase C verifies the public Model transformation and Org
-roundtrip without a TeXmacs executable. The cross-version carrier probe
-remains deferred until a candidate output grammar warrants it.
+Phase A selected ASCII tags with a leading letter and subsequent letters,
+digits, underscore, hyphen or asterisk, excluding the Lisp symbol nil.
+Quoted Unicode strings follow the native two-pass decoding of quote and
+backslash and support LF, CR and tab. Writer output uses the native escapes
+and rejects unrepresentable trees without changing Model validity.
+Both Org configurations passed the 360 core and 280 native ERT cases,
+including the differential with the real TeXmacs parser. The format check
+passed after applying the reported formatting changes.
+The next gate migrates all four production STM entry points and verifies
+the public Model roundtrip without a TeXmacs executable.
 
 ## Source and check migration delivered
 
