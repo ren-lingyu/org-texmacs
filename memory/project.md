@@ -5,6 +5,17 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
+## STM codec in the Phase 1 worktree
+
+The pure Elisp STM codec is shared by whole-source Model parsing, prepared
+Org Export islands, the block tree cache and normalized Org serialization.
+It implements a native text subset. Text representability is checked
+independently of the Model's owned STM tree shape. Serialization renders the
+authoritative islands and verifies their decoded trees along with the
+reparsed Org structure and carrier paths. The core uses no TeXmacs process.
+Native bibliography, document encoding, sessions and PDF still use the
+existing runtime. The worker protocol retains its own payload validation.
+
 ## Current source, package, and check layout
 
 The Emacs Lisp libraries, export backend, and Scheme worker share
@@ -55,7 +66,7 @@ collect both package variants. Shared fixtures use `#+TODO` and `#+LINK`
 declarations, keeping file-link abbreviations distinct from the
 global option. The patch reads Org 10's parser-root properties and retains
 the declarations in private parse input so Org applies native precedence.
-Variant model guards re-read syntax around every worker wait. A check that
+Variant model guards re-read syntax around private Org parsing. A check that
 applies an Org source patch is exposed only on its targeted Org version.
 The pinned Org 10 parser follows SETUPFILE while resolving deferred
 parser-root properties, including during model syntax capture and

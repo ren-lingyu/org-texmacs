@@ -1,5 +1,25 @@
 # org-texmacs durable evidence
 
+## Phase 1 STM codec acceptance
+
+The working-tree candidate used the locked inputs and included the new
+untracked codec in a filtered source snapshot. On x86_64-linux both Org
+9.8.10 and the pinned Org 10.0-pre passed core (360), native (280), Cite
+(11), PDF document (49), PDF rendering (31), and standard Cite integration
+(5). Both packages, compiled examples and all default checks passed,
+including treefmt, the stock caption patch suite (6), and the scoped Org
+10 SETUPFILE suite (5). Other systems were not tested.
+
+The native differential exercises the same source with the Elisp reader and
+TeXmacs parser and checks canonical output with both readers. It covers
+combinations of Unicode, quote, backslash and whitespace, native serializer
+output, and alternative supported source spellings. The core roundtrip
+test compares semantic Models after replacement, with a nonexistent TeXmacs
+executable and traps on native startup and calls. The archived release
+experiments explain why native two-pass string semantics were selected.
+
+## Earlier feasibility and release evidence
+
 E7 actually loads fixed Org 9.8 sources and passes representative E3/E6 probes;
 editor baseline confirms new-carrier fontification still needs adaptation.
 Sources, provenance, limits and user-adopted migration: stm-fragment-e7.md.

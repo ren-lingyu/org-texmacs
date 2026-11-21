@@ -36,8 +36,18 @@ and rejects unrepresentable trees without changing Model validity.
 Both Org configurations passed the 360 core and 280 native ERT cases,
 including the differential with the real TeXmacs parser. The format check
 passed after applying the reported formatting changes.
-The next gate migrates all four production STM entry points and verifies
-the public Model roundtrip without a TeXmacs executable.
+Phase 1 is implemented and verified in the ordinary worktree. Whole-source
+Model parsing, prepared Export islands and block-tree access share the
+Elisp reader. Org serialization uses the writer and reparses the emitted
+islands before comparing Model structure. Source checks still bracket
+private Org parsing. Native bibliography, encoding, sessions and PDF retain
+their worker paths. The independent core regression runs parse, replacement,
+serialization and reparse with a nonexistent TeXmacs executable.
+
+The x86_64-linux worktree-snapshot Nix gate passed both package builds,
+compiled examples and all default checks, including treefmt. The project
+changes are unstaged. Phase 2 can address test organization and the Nix
+runtime closure after review of this candidate.
 
 ## Source and check migration delivered
 
