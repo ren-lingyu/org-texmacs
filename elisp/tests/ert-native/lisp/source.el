@@ -171,9 +171,9 @@
      "#+begin_texmacs\n(frac \"1\" \"2)\n#+end_texmacs\n"
      "* DONE Kept\nVisible\n")
     (let ((source (buffer-string)))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (&rest _)
-                   (ert-fail "Filtered STM reached worker"))))
+                   (ert-fail "Filtered STM reached STM reader"))))
         (should
          (equal
           (org-texmacs-document-body
@@ -194,9 +194,9 @@
      "#+begin_texmacs\n(frac \"1\" \"2)\n#+end_texmacs\n"
      "** Hidden child\n"
      "* Open\nVisible\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+    (cl-letf (((symbol-function 'org-texmacs--stm-read)
                (lambda (&rest _)
-                 (ert-fail "Archived STM reached worker"))))
+                 (ert-fail "Archived STM reached STM reader"))))
       (should
        (equal
         (org-texmacs-document-body
@@ -217,9 +217,9 @@
      "** Rejected :keep:drop:\n"
      "#+begin_texmacs\n(frac \"1\" \"2)\n#+end_texmacs\n"
      "** Sibling\nHidden\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+    (cl-letf (((symbol-function 'org-texmacs--stm-read)
                (lambda (&rest _)
-                 (ert-fail "Excluded STM reached worker"))))
+                 (ert-fail "Excluded STM reached STM reader"))))
       (should
        (equal
         (org-texmacs-document-body
@@ -357,8 +357,7 @@
          (org-texmacs-document input))
         home)))))
 
-(ert-deftest org-texmacs-source-location-invalidates-worker-snapshot
-    ()
+(ert-deftest org-texmacs-source-location-invalidates-stm-snapshot ()
   (dolist (change '(file directory file-in-place directory-in-place))
     (with-temp-buffer
       (org-mode)
@@ -370,7 +369,7 @@
       (let ((source (current-buffer))
             (tick (buffer-chars-modified-tick))
             (before (buffer-string)))
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
                    (lambda (&rest _)
                      (with-current-buffer source
                        (pcase change
@@ -427,7 +426,7 @@
               (request-id org-texmacs--worker-request-id)
               (concat-node (nth 2 (org-element-contents tree)))
               (frac-node (nth 1 (org-element-contents concat-node))))
-         (should (= request-id 1))
+         (should (= request-id 0))
          (should
           (equal
            (org-texmacs--org-to-stree tree)
@@ -448,7 +447,7 @@
          (should (equal (buffer-string) text))
          (should (= (point) position))
          (should (= (buffer-chars-modified-tick) tick))
-         (cl-letf (((symbol-function 'org-texmacs--worker-request)
+         (cl-letf (((symbol-function 'org-texmacs--stm-read)
                     (lambda (_source)
                       (ert-fail "Cache hit must not parse again"))))
            (should
@@ -465,7 +464,7 @@
        (setq-local org-export-with-author nil)
        (insert "#+begin_texmacs\n(frac \"1\" \"2\")\n#+end_texmacs\n")
        (org-texmacs-tree (org-texmacs-test--first-block))
-       (let ((process org-texmacs--worker-process))
+       (progn
          (goto-char (point-min))
          (search-forward "\"2\"")
          (replace-match "\"3\"" t t)
@@ -480,7 +479,7 @@
              (org-texmacs--org-to-stree
               (org-texmacs-tree block))
              '(frac "1" "3")))
-           (should (= org-texmacs--worker-request-id 2)))
+           (should-not (org-texmacs--worker-live-p)))
          ;; Remove the closing parenthesis.  Org still has a special block,
          ;; but the strict reader must reject its STM body.
          (goto-char (point-min))
@@ -496,17 +495,17 @@
                (org-element-cache-get-key
                 block 'org-texmacs-tree org-texmacs--cache-miss)
                org-texmacs--cache-miss)))
-           (should (= org-texmacs--worker-request-id 4)))
+           (should-not (org-texmacs--worker-live-p)))
          (insert ")")
          (should
           (equal
            (org-texmacs--org-to-stree
             (org-texmacs-tree (org-texmacs-test--first-block)))
            '(frac "1" "3")))
-         (should (= org-texmacs--worker-request-id 5))
-         (should (eq process org-texmacs--worker-process)))))))
+         (should-not (org-texmacs--worker-live-p))
+         (should (= org-texmacs--worker-request-id 0)))))))
 
-(ert-deftest org-texmacs-test-tree-blocks-share-worker ()
+(ert-deftest org-texmacs-test-tree-blocks-cache-independently ()
   (org-texmacs-test--with-worker
    (let ((org-element-use-cache t))
      (with-temp-buffer
@@ -515,9 +514,8 @@
        (insert
         "#+begin_texmacs\n(frac \"1\" \"2\")\n#+end_texmacs\n\n"
         "#+begin_texmacs\n(sqrt \"x\")\n#+end_texmacs\n")
-       (let* ((first
-               (org-texmacs-tree (org-texmacs-test--first-block)))
-              (process org-texmacs--worker-process))
+       (let ((first
+              (org-texmacs-tree (org-texmacs-test--first-block))))
          (goto-char (point-max))
          (search-backward "#+begin_texmacs")
          (should
@@ -528,7 +526,7 @@
          (should
           (eq
            first (org-texmacs-tree (org-texmacs-test--first-block))))
-         (should (= org-texmacs--worker-request-id 2))
-         (should (eq process org-texmacs--worker-process)))))))
+         (should-not (org-texmacs--worker-live-p))
+         (should (= org-texmacs--worker-request-id 0)))))))
 
 ;;; source.el ends here

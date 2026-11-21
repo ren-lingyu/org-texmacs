@@ -428,53 +428,58 @@
           (org-texmacs-model-serialize
            (org-texmacs-test--parse-model-text output))))))))
 
-(defun org-texmacs-test--parse-object-model (source)
-  "Build an object-island fixture using a stub for native STM parsing."
-  (with-temp-buffer
-    (org-mode)
-    (insert source)
-    (cl-letf (((symbol-function 'org-texmacs--worker-request) #'read))
-      (org-texmacs-parse-buffer (current-buffer)))))
-
 (ert-deftest org-texmacs-object-serialization-is-pure-and-idempotent
     ()
-  (let*
-      ((model
-        (org-texmacs-test--parse-object-model
-         (concat
-          "* Title $(math \"title\")$\n"
-          "Before $(math \"x\")$$(math \"x\")$  after.\n\n"
-          "[[https://example.test][Before $(math \"link\")$ after]]\n\n"
-          "#+caption[$(math \"short\")$]: $(math \"long\")$\n"
-          "#+name: block\n#+begin_texmacs\n(math \"block\")\n#+end_texmacs\n")))
-       (first
-        (car (rassoc '(math "x") (org-texmacs-model-islands model))))
-       (changed
-        (org-texmacs-model-replace-stm model first '(0) "changed"))
-       output)
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+  (let ((org-texmacs-program
+         "/nonexistent/org-texmacs-test-executable"))
+    (cl-letf (((symbol-function 'org-texmacs--worker-call)
                (lambda (&rest _)
-                 (ert-fail "serialization parsed STM natively")))
-              ((symbol-function 'org-texmacs--worker-serialize-stm)
-               (lambda (&rest _)
-                 (ert-fail
-                  "serialization started the native writer"))))
-      (should
-       (string-match-p
-        (regexp-quote "\\((math \"x\")\\)\\((math \"x\")\\)  after.")
-        (org-texmacs-model-serialize model)))
-      (setq output (org-texmacs-model-serialize changed))
-      (should
-       (string-match-p
-        (regexp-quote
-         "Before \\((math \"changed\")\\)\\((math \"x\")\\)  after.")
-        output))
-      (should (string-match-p (regexp-quote "#+name: block") output))
-      (dolist (entry (org-texmacs-model-islands changed))
-        (should-not (org-element-property :stm-source (car entry)))))
-    (let ((again (org-texmacs-test--parse-object-model output)))
-      (should (= 7 (length (org-texmacs-model-islands again))))
-      (should (equal output (org-texmacs-model-serialize again))))))
+                 (ert-fail "Model attempted native I/O")))
+              ((symbol-function 'org-texmacs--worker-start)
+               (lambda (&rest _) (ert-fail "Model started TeXmacs"))))
+      (let*
+          ((model
+            (org-texmacs-test--parse-model-text
+             (concat
+              "* COMMENT Title $(math \"title\")$ :noexport:\n"
+              "Before $(math \"x\")$$(math \"x\")$  after.\n\n"
+              "A[fn::Note $(math \"note\")$].\n\n"
+              "[[https://example.test][Before $(math \"link\")$ after]]\n\n"
+              "| $(math \"cell\")$ |\n\n"
+              "#+caption[$(math \"short\")$]: $(math \"long\")$\n"
+              "#+name: block\n#+begin_texmacs\n(math \"block\")\n#+end_texmacs\n\n"
+              "#+begin_equation\n(math \"equation\")\n#+end_equation\n\n"
+              "#+begin_equation*\n\"atom\"\n#+end_equation*\n\n"
+              "[fn:unused] Retained $(math \"unused\")$.\n")))
+           (first
+            (car
+             (rassoc '(math "x") (org-texmacs-model-islands model))))
+           (changed
+            (org-texmacs-model-replace-stm
+             model first '(0) "changed"))
+           (output
+            (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                       (lambda (&rest _)
+                         (ert-fail "Serialization reread STM text"))))
+              (org-texmacs-model-serialize changed)))
+           (again (org-texmacs-test--parse-model-text output)))
+        (should (= 12 (length (org-texmacs-model-islands again))))
+        (should
+         (equal
+          (org-texmacs-test--model-meaning changed)
+          (org-texmacs-test--model-meaning again)))
+        (should (equal output (org-texmacs-model-serialize again)))
+        (should
+         (string-match-p
+          (regexp-quote
+           "Before \\((math \"changed\")\\)\\((math \"x\")\\)  after.")
+          output))
+        (should
+         (string-match-p (regexp-quote "#+name: block") output))
+        (should (string-match-p (regexp-quote "[fn:unused]") output)))
+      (should-error
+       (org-texmacs-test--parse-model-text "$(math 123)$\n")
+       :type 'org-texmacs-parse-error))))
 
 (ert-deftest
     org-texmacs-object-serialization-reports-representation-failures
@@ -487,8 +492,7 @@
              ("$(math \"x\")$\n"
               (math (bad\ tag "x"))
               unsupported-symbol)))
-    (let* ((model
-            (org-texmacs-test--parse-object-model (car fixture)))
+    (let* ((model (org-texmacs-test--parse-model-text (car fixture)))
            (key (caar (org-texmacs-model-islands model)))
            (new (cadr fixture))
            (changed

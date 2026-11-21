@@ -129,7 +129,7 @@
         (setq
          input (org-texmacs-prepare-buffer (current-buffer))
          expected (org-texmacs-document-from-buffer (current-buffer)))))
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+    (cl-letf (((symbol-function 'org-texmacs--stm-read)
                (lambda (&rest _)
                  (ert-fail "Prepared input must not parse again"))))
       (should (equal (org-texmacs-document input) expected)))))

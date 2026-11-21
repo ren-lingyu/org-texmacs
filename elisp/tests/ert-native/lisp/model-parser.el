@@ -54,6 +54,7 @@
 
 (ert-deftest org-texmacs-model-parse-native-errors-preserve-worker ()
   (org-texmacs-test--with-worker
+   (org-texmacs--worker-request "(math \"ready\")")
    (dolist
        (text
         '("$(math 7)$\n"

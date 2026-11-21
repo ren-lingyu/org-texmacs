@@ -273,9 +273,9 @@ For straight setup and recipe details, consult its
 
 *** Configuration details
 =:demand t= loads the Lisp package immediately, even if use-package normally
-defers loading. Loading this configuration does not start TeXmacs. The first
-block cache miss or Model parse with STM islands starts the worker, as does document
-island parsing or opening a native session; source discovery alone does not.
+defers loading. Loading this configuration and reading or writing STM source
+require no TeXmacs executable. Native bibliography, document encoding, PDF
+generation and sessions can start the shared worker.
 
 The example covers the core options and the backend's Cite/menu settings.
 See [[*Org export dispatcher][Org export dispatcher]] for the export commands and menu
@@ -300,11 +300,11 @@ macros (for example, =("generic" "smart-ref")=).  See
 [[*Optional typed references][Optional typed references]] for the supported target types.
 
 Use an absolute executable path instead of ="texmacs"= when needed.  Set
-it before the first parse; changing it does not replace an existing worker.
+it before the first worker operation; changing it does not replace an existing worker.
 After loading, run =M-x org-texmacs-check-setup=.  Missing executables are
 reported there and checked again before a worker is started.  A passing
 setup check confirms basic capabilities, not successful headless startup
-or socket communication; an actual parse checks those paths.
+or socket communication; a native operation checks those paths.
 
 * Block formulas
 Write official STM/Scheme data in an Org special block:
@@ -367,15 +367,26 @@ Body edits invalidate the derived value.  Unrelated edits, including changes
 before a block, may also invalidate it; the cache is best-effort and does not
 provide a persistent block identity.  No real-time Org edit hooks are used.
 
-If text changes while waiting for the worker, the call reports an error and
-does not cache the old result.  Obtain a fresh block and call again.
+* STM text syntax
+Model parsing, standard Org Export preparation and =org-texmacs-tree= use
+the same pure Emacs Lisp reader. Model serialization uses the corresponding
+writer. The codec implements a subset of native TeXmacs STM text syntax.
+
+An STM datum is a quoted string or a parenthesized compound with a
+case-sensitive tag matching =[A-Za-z][A-Za-z0-9_*-]*= and zero or more
+whitespace-separated STM arguments. The tag =nil= is reserved by the Model's
+tree representation. Strings accept printable Unicode, native quote and
+backslash escapes, and newline, carriage return and tab. The writer emits
+these three whitespace characters as =\n=, =\r= and =\t=. Bare atoms,
+comments, quoted or escaped tags, and other control characters are outside
+the supported subset.
+Org carriers impose their own placement and delimiter rules.
 
 * Fragment formulas
 ** Explicit carriers
 Wrap one compound STM tree in =$(...)$= or =\((...)\)= for model parsing and
 standard Export. For example, write =\((math (frac "1" "2"))\)= in prose or
-a link description. Any root tag can reach the native STM parser. Native
-Org container boundaries and opaque regions still apply. A recognized
+a link description. Org container boundaries and opaque regions still apply. A recognized
 incomplete carrier signals =org-texmacs-parse-error= during formal conversion.
 
 ** Migrating bare fragments
@@ -456,7 +467,7 @@ Load =(require 'org-texmacs-model)= to construct an independent snapshot from
 an already parsed native Org AST and STM trees.  This module does not load the
 document lowering layer, export frontend or worker.  Its autoloaded
 =org-texmacs-parse-buffer= adapter can construct a complete model from an explicit
-Org source buffer, using native STM parsing without document lowering.
+Org source buffer, without TeXmacs or document lowering.
 
 #+begin_src emacs-lisp
   (require 'org-texmacs-model)
@@ -500,7 +511,7 @@ output or reference allocation.
 
 For buffer construction, =org-texmacs-parse-buffer SOURCE-BUFFER= captures the
 complete unnarrowed source and its effective syntax settings.  It restores the
-original narrowing before private parsing or native waits, preserves source
+original narrowing before private parsing, preserves source
 text, point and mark, and returns a model independent of the source lifetime.
 It does not interpret narrowing as body selection or run export pruning.
 
@@ -551,11 +562,9 @@ Regex regeneration stays within private bindings.  This is not a sandbox for
 user-defined callbacks used by native Org syntax, such as link abbreviations.
 
 Source text, mode, narrowing, file/resource identity and effective syntax are
-checked before and after native waits and before return.  A changed or killed
+checked around private Org parsing and before return. A changed or killed
 source signals =org-texmacs-model-error= without rolling back external edits.
-Invalid native STM retains =org-texmacs-parse-error= and transport failures retain
-=org-texmacs-worker-error=.  This does not change the existing export adapter's
-selection, preflight order, bibliography or output contracts.
+Invalid or unsupported STM signals =org-texmacs-parse-error=.
 
 Existing export inputs reuse this model's ownership machinery.  Their
 =org-texmacs-input-model= accessor holds the same owned AST and islands exposed
@@ -667,9 +676,8 @@ an inline fraction, inspects the new model and opens normalized Org output:
 The source buffer has already been destroyed when the transformation runs.
 The original model still contains =1/2=; the new model contains =1/sqrt(2)=.
 Path =(0 1)= selects the first =math= child, then the second =frac= child.
-Parsing STM source uses TeXmacs. Copying, tree access, replacement, inspection
-and normalized Org serialization operate on the stored structures without a
-native worker.
+Parsing, copying, inspecting, replacing STM subtrees and writing normalized Org
+all work without a TeXmacs executable.
 
 * Normalized Org serialization
 =org-texmacs-model-serialize MODEL= returns normalized Org text.
@@ -714,11 +722,12 @@ It escapes actual newlines, returns and tabs to produce single-line source.
 Unrepresentable STM symbols or Org placements report serialization errors.
 
 The generated Org text is parsed privately under the captured syntax to check
-structure and island placement, associating already known STM trees without
-calling the STM parser again.  The check preserves semantic attributes, order,
-object spacing and literal/STM text, while allowing source-coordinate and
-element-spacing differences.  This conservative profile can reject additional
-structures whose native Org interpretation would change the model.
+structure and island placement. Validation matches each recovered carrier's STM
+text against the writer output before reusing the original island tree. The
+check preserves semantic attributes, order, object spacing and literal text
+while allowing source-coordinate and element-spacing differences. This profile
+can reject additional structures whose native Org interpretation would change
+the model.
 The independent test comparison and normalization-idempotence checks do not use
 the human inspection view as their semantic definition.
 
@@ -745,7 +754,7 @@ exports, structured preparation/document APIs and deprecated preprocessed/discov
 wrappers share this standard path.  No parallel source preparation is used.
 
 The adapter resolves deferred properties while the export buffer is live,
-copies the final tree, and parses complete STM once with TeXmacs.  Its model
+copies the final tree, and parses complete STM with the shared Elisp reader.  Its model
 owns the Org nodes and island mappings without retaining full INFO or relying
 on source positions.  Legal AST filters can insert, delete, move and replace
 supported nodes. A filter can supply inline STM through a =stm-fragment=
@@ -1049,7 +1058,7 @@ its accessible Org body, independently of the caller's current buffer.
 The argument must be a live buffer object, not a buffer name or file path.
 It rejects non-Org buffers.  Existing narrowing bounds the body; complete source
 selection and preparation are managed by Org in a standard export transaction.
-The adapter parses the final STM islands with the shared worker, owns input and
+The adapter parses the final STM islands with the Elisp reader, owns input and
 lowers it once into a document result:
 
 | Accessor                                    | Result                                                          |
@@ -1067,8 +1076,8 @@ Paths use zero-based child indices, excluding the tag.  Keep all fields
 together and treat the result and all nested data as read-only.  It is not
 a native TeXmacs tree, an Org AST, or a complete TeXmacs file document.
 The call does not mutate source text or Org's live AST, and does not cache
-the result.  It checks for source and relevant configuration changes while
-waiting for the worker; call it again after editing.
+the result. It checks for source and relevant configuration changes during
+preparation and native operations; call it again after editing.
 
 For the current buffer, use =(org-texmacs-document-current-buffer)=.
 This is a thin wrapper around =(org-texmacs-document-from-buffer (current-buffer))=.
@@ -1107,10 +1116,10 @@ Preparation uses private copies, without changing source text properties,
 point, mark, modified state or narrowing, or resetting the source's Org cache.
 It does not undo edits made by the user while waiting.  The returned document
 does not retain its source buffer and remains usable after that buffer dies.
-Construction may start the shared worker to parse STM, but does not open a
-native session, render content or write an exported document file.
+Native bibliography processing may start the shared worker during
+construction.
 
-This example returns a document result; it starts TeXmacs to parse its islands:
+This example returns a structural document result using the Elisp STM reader.
 
 #+name: example-document
 #+begin_src emacs-lisp
@@ -1159,7 +1168,7 @@ The supported Org subset is deliberately small:
 | =equation= / =equation*= special block                              | One raw STM datum in a numbered / unnumbered native formula    |
 | Explicit =figure= / =table= special block (including starred forms) | Native =big-figure= / =big-table=, with outer caption and name |
 | COMMENT / comment block                                             | Removed before structural preflight                            |
-| Task, archive and select/exclude filtering                          | Org policy applied before STM worker requests                  |
+| Task, archive and select/exclude filtering                          | Org policy applied before STM parsing                          |
 
 Heading text may contain supported emphasis, literal inline code and bare
 default citations, but not explicit line breaks.  This is not a general Org
@@ -1340,7 +1349,7 @@ inline footnote body or a TeXmacs special block. Leading list paragraphs
 retain their list marker and cannot host one of these display roots.
 The exporter does not split mixed paragraphs automatically or inspect nested
 STM to infer display layout.  Ordinary =math= mixtures remain supported;
-arbitrary custom-root layout remains governed by TeXmacs.  Native STM parsing
+arbitrary custom-root layout remains governed by TeXmacs.  STM parsing
 may precede this rejection, but serialization, PDF rendering and output-file
 writing do not.  Native tests compare the same root in matched contexts;
 different native environments need not share numbering or layout.
@@ -1674,7 +1683,7 @@ reference.  The first reference emits the body with a generated label;
 later references emit a superscript reference to the same label.  Separate
 definitions support the documented paragraph, list, container, static block
 and table subset.  Unreferenced separate definitions are omitted, including
-their worker requests.  Definitions needed after headline filtering are
+their STM islands. Definitions needed after headline filtering are
 recovered from the same parsed snapshot; no source-buffer fallback is used.
 The source's =org-footnote-section= is captured, and its special heading is
 omitted while needed definitions are retained.  Missing or ambiguous named
@@ -1814,7 +1823,7 @@ entries.
 Disabling a field only omits its presentation, never the heading or body.
 Tags retain their explicit order without inheritance.  =#+SELECT_TAGS=,
 =#+EXCLUDE_TAGS= and =#+FILETAGS= participate in Org's headline selection;
-comments are always removed.  Filtering happens before worker requests, so
+comments are always removed. Filtering happens before STM parsing, so
 discarded subtrees cannot trigger STM parse errors.  Supported configuration
 keywords are consumed instead of becoming body nodes.
 
@@ -2389,7 +2398,7 @@ validates and encodes all fields before mutation, then replaces style, explicit
 initial environment and body before verifying native readback.  TeXmacs may
 normalize the style package list; initial values are compared as an unordered
 key/value mapping.  No =.tm=, =.stm= or =.tmml= document intermediate is used.
-Closing returns =nil= and leaves the worker available for parsing.
+Closing returns =nil= and leaves the worker available for other native requests.
 
 This self-contained example returns =t= after a successful update and closes
 the buffer even if the update fails.  It requires that no session is active:
@@ -2442,13 +2451,11 @@ and source export use the independent consumers described above; these operation
 do not update a native session.
 
 * Worker behavior and errors
-The first parse request or session open starts one shared headless TeXmacs
-process.  All buffers use it sequentially,
+The first native operation starts one shared headless TeXmacs process.  All buffers use it sequentially,
 with one Unix socket connection per synchronous request.
-STM source is read as data, never evaluated as Scheme code.  The worker first
-requires exactly one complete datum of the supported stree shape, then uses
-TeXmacs's parser.  Empty or malformed input is rejected rather than accepted
-through TeXmacs parser recovery.
+The native interoperability tests also exercise the worker's STM parser.
+It checks for one complete datum of the supported tree shape before
+passing the text to TeXmacs.
 
 These checks do not validate all tag names or argument counts.  TeXmacs can
 accept unknown tags and unusual arities; parser success does not guarantee
@@ -2485,7 +2492,7 @@ explicitly; this is an internal function, not a stable public command.
 
 All these conditions inherit from =org-texmacs-error=.  Parse errors leave
 the worker available for the next request.  Transport failures and request
-cancellation stop it; a later parse or session open starts a new worker.
+cancellation stop it; a later native operation starts a new worker.
 Old session handles stay invalid.  Failed parses are
 never cached.  Reentrant requests are rejected; there is no asynchronous queue.
 

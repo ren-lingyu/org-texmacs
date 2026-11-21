@@ -449,4 +449,46 @@
     (should
      (equal (plist-get context :link-settings) '(:types ("test"))))))
 
+(ert-deftest org-texmacs-stm-pure-roundtrip ()
+  (dolist (tree
+           (list
+            ""
+            "原子"
+            '(tuple)
+            '(math (frac "1" "2"))
+            (list 'math "α中😀" "\\\\\"\\" "\\\n\r\t\\n")))
+    (let ((source (org-texmacs--stm-write tree)))
+      (should (equal (org-texmacs--stm-read source) tree))
+      (should
+       (equal
+        (org-texmacs--stm-write
+         (org-texmacs--stm-read source))
+        source)))))
+
+(ert-deftest org-texmacs-stm-rejects-unsupported-syntax ()
+  (dolist (source
+           '("(tag . (\"x\"))"
+             "'(tag \"x\")"
+             "(tag #1=\"x\")"
+             "(tag 1)"
+             "(1tag \"x\")"
+             "(nil \"x\")"
+             "(tag [\"x\"])"
+             "(tag \"\\017\")"
+             "(tag \"x\") ; comment"
+             "(tag) (tag)"
+             "(tag \"x\""))
+    (should-error
+     (org-texmacs--stm-read source)
+     :type 'org-texmacs-parse-error)
+    (should (equal (org-texmacs--stm-read "(tag)") '(tag))))
+  (dolist (tree
+           (list
+            '(\123 "x")
+            (list (make-symbol "math") "x")
+            (list 'math (string 0))))
+    (should-error
+     (org-texmacs--stm-write tree)
+     :type 'org-texmacs-model-serialization-error)))
+
 ;;; model.el ends here

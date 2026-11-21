@@ -249,7 +249,7 @@
       (org-mode)
       (insert
        "Before\n\n#+begin_texmacs\n(sqrt \"x\")\n#+end_texmacs\n")
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (source)
                    (should (equal source "(sqrt \"x\")\n"))
                    (cl-incf calls)
@@ -267,7 +267,7 @@
           (should (<= 1 calls 2)))))))
 
 (ert-deftest org-texmacs-test-tree-rejects-wrong-block ()
-  (cl-letf (((symbol-function 'org-texmacs--worker-request)
+  (cl-letf (((symbol-function 'org-texmacs--stm-read)
              (lambda (_source)
                (ert-fail "Invalid block must not start parsing"))))
     (dolist (node
@@ -286,9 +286,9 @@
       (insert "#+begin_texmacs\n(sqrt \"x\")\n#+end_texmacs\n")
       (let ((block (org-texmacs-test--first-block)))
         (cl-letf
-            (((symbol-function 'org-texmacs--worker-request)
+            (((symbol-function 'org-texmacs--stm-read)
               (lambda (_source)
-                ;; Simulate an edit from a timer during process waiting.
+                ;; Edit during acquisition and ensure the old tree stays uncached.
                 (goto-char (point-min))
                 (search-forward "\"x\"")
                 (replace-match "\"y\"" t t)

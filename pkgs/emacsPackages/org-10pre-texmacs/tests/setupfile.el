@@ -33,10 +33,7 @@ When CYCLE is non-nil, make the nested file refer back to the main file."
             (when cycle
               (insert "#+SETUPFILE: ../../main.org\n")))
           (setq source (find-file-noselect main))
-          (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                     (lambda (_source &optional _syntax)
-                       '(math "x"))))
-            (funcall function source nested)))
+          (funcall function source nested))
       (when (buffer-live-p source)
         (kill-buffer source))
       (delete-directory root t))))
@@ -166,20 +163,19 @@ When CYCLE is non-nil, make the nested file refer back to the main file."
              expected))))))
    t))
 
-(ert-deftest org-texmacs-setupfile-rechecks-syntax-across-worker-wait
+(ert-deftest org-texmacs-setupfile-rechecks-syntax-after-private-parse
     ()
   (org-texmacs-setupfile-test--with-source
    (lambda (source nested)
-     (let (requested)
-       (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                  (lambda (_source &optional _syntax)
-                    (setq requested t)
-                    (org-texmacs-setupfile-test--change-config nested)
-                    '(math "x"))))
+     (let ((prepare (symbol-function 'org-texmacs--parse-prepare)))
+       (cl-letf (((symbol-function 'org-texmacs--parse-prepare)
+                  (lambda (&rest args)
+                    (prog1 (apply prepare args)
+                      (org-texmacs-setupfile-test--change-config
+                       nested)))))
          (should-error
           (org-texmacs-parse-buffer source)
-          :type 'org-texmacs-model-error))
-       (should requested)))))
+          :type 'org-texmacs-model-error))))))
 
 (ert-deftest org-texmacs-setupfile-serialization-and-owned-model ()
   (org-texmacs-setupfile-test--with-source

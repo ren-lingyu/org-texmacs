@@ -7,7 +7,7 @@
 ;;; Commentary:
 
 ;; Restore authoritative islands on an owned Org copy, interpret native syntax,
-;; and check the output boundary without reparsing known STM trees as input.
+;; and reparse the rendered Org to check the structure and STM carrier text.
 
 ;;; Code:
 
@@ -332,48 +332,15 @@ This private output guard is independent of the human inspection projection."
    (walk ast)))
 
 (defun org-texmacs--serialize-stm-source (tree path)
-  "Write validated STM TREE for PATH without a worker or the Lisp printer."
-  (let ((case-fold-search nil))
-    (cl-labels
-     ((write-node
-       (node)
-       (if (stringp node)
-           (concat
-            "\""
-            (mapconcat (lambda (ch)
-                         (pcase ch
-                           (?\\ (make-string 4 ?\\))
-                           (?\" (concat (make-string 3 ?\\) "\""))
-                           (?\n "\\n")
-                           (?\r "\\r")
-                           (?\t "\\t")
-                           (_ (char-to-string ch))))
-                       node
-                       "")
-            "\"")
-         (let* ((tag (car node))
-                (name (symbol-name tag)))
-           (unless (and (string-match-p "\\`[!-~]+\\'" name)
-                        (not (string-match-p "[\"'`,;|]" name)))
-             (org-texmacs--serialize-fail "Unsupported STM symbol"
-                                          path
-                                          'unsupported-symbol
-                                          tag))
-           (concat
-            "("
-            (when (string-match-p "\\`[0-9:#]" name)
-              "\\'")
-            (replace-regexp-in-string "[\\\\()]"
-                                      (lambda (match)
-                                        (concat "\\" match))
-                                      name
-                                      t t)
-            (mapconcat (lambda (child)
-                         (concat " " (write-node child)))
-                       (cdr node)
-                       "")
-            ")")))))
-     (write-node tree))))
+  "Write STM TREE and report representation failures at AST PATH."
+  (condition-case err
+      (org-texmacs--stm-write tree)
+    (org-texmacs-model-serialization-error
+     (let ((details (nth 2 err)))
+       (org-texmacs--serialize-fail (cadr err)
+                                    path
+                                    (plist-get details :reason)
+                                    (plist-get details :value))))))
 
 (defun org-texmacs--serialize-object-records
     (ast islands paths sources)
@@ -436,7 +403,7 @@ Return (TEXT SOURCES), where SOURCES is an ordered object record list."
             ast islands paths object-sources)))))))
 
 (defun org-texmacs--serialize-match-objects (ast requests records)
-  "Attach known trees to AST REQUESTS by matching ordered output RECORDS."
+  "Reuse the trees in RECORDS after checking AST REQUESTS in order."
   (unless (= (length requests) (length records))
     (org-texmacs--serialize-fail "Org output changed the island count"
                                  nil
@@ -459,7 +426,7 @@ Return (TEXT SOURCES), where SOURCES is an ordered object record list."
 (defun org-texmacs--serialize-check-output
     (text sources context expected)
   "Check serialized TEXT under CONTEXT against EXPECTED structure.
-Associate recognized SOURCES with known trees; do not invoke the STM parser."
+Check the placement and text of recognized SOURCES before reusing trees."
   (let* ((prepared
           (org-texmacs--parse-prepare
            text
@@ -486,9 +453,9 @@ Require recorded syntax context, as captured by `org-texmacs-parse-buffer'.
 Emit explicit STM carriers and native blocks from the current island trees.
 Source representability depends on the STM encoding and Org container.
 
-Operate on an independent copy and reuse known STM trees.  Validation
-reparses the output with recorded settings and Org's native handling of
-file-level configuration.  For Org 10, changes to files referenced by
+Operate on an independent copy.  Validation reparses the output with recorded
+settings and Org's native handling of file-level configuration.  It checks the
+Org structure and STM carrier text.  For Org 10, changes to files referenced by
 `#+SETUPFILE' can affect whether the output is representable.  Serialization
 skips STM workers, lowering, Export preparation, Cite and Babel.
 Unsupported output signals
@@ -520,8 +487,7 @@ Return no partial text on failure."
              (org-texmacs--serialize-check-output
               text (cadr rendered) context expected)
              (substring-no-properties text))
-         ((org-texmacs-model-serialization-error
-           org-texmacs-worker-error)
+         (org-texmacs-model-serialization-error
           (signal (car err) (cdr err)))
          (error
           (org-texmacs--serialize-fail (error-message-string err)

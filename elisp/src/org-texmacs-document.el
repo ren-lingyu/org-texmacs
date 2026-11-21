@@ -413,8 +413,7 @@ value exists; explicit nil/empty removes its corresponding default."
   "Validate and copy text stree NODE without sharing strings or conses.
 ANCESTORS detects cycles; repeated, non-cyclic subtrees are copied separately.
 Retain the document error condition at this consumer boundary."
-  (org-texmacs--model-copy-stree
-   node 'org-texmacs-document-error ancestors))
+  (org-texmacs--stm-copy node 'org-texmacs-document-error ancestors))
 
 (defun org-texmacs--document-output-labels (body)
   "Collect only static label strings in validated BODY, retaining duplicates."

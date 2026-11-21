@@ -108,7 +108,7 @@
        (let ((source (buffer-string))
              (source-buffer (current-buffer))
              (parser (symbol-function 'org-element-parse-buffer))
-             (worker (symbol-function 'org-texmacs--worker-request))
+             (reader (symbol-function 'org-texmacs--stm-read))
              private
              requests
              document
@@ -118,10 +118,10 @@
                       (unless (eq (current-buffer) source-buffer)
                         (setq private t))
                       (apply parser args)))
-                   ((symbol-function 'org-texmacs--worker-request)
+                   ((symbol-function 'org-texmacs--stm-read)
                     (lambda (raw &rest args)
                       (push raw requests)
-                      (apply worker raw args))))
+                      (apply reader raw args))))
            (setq input
                  (org-texmacs-test--input-from-model
                   (org-texmacs-parse-buffer (current-buffer)))

@@ -29,9 +29,9 @@
           (org-mode-hook
            (list (lambda () (ert-fail "Ran private mode hook"))))
           model)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (&rest _)
-                   (ert-fail "No islands need a worker")))
+                   (ert-fail "No islands need parsing")))
                 ((symbol-function 'org-texmacs--document-lower)
                  (lambda (&rest _) (ert-fail "Ran lowering")))
                 ((symbol-function 'org-texmacs--context-prepare)
@@ -74,7 +74,7 @@
       (let ((state
              (org-texmacs-test--document-buffer-state
               (current-buffer))))
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
                    (lambda (raw &optional _syntax)
                      (push raw calls)
                      (read raw))))
@@ -120,7 +120,7 @@
       (let ((state
              (org-texmacs-test--document-buffer-state
               (current-buffer))))
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
                    (lambda (&rest _)
                      (ert-fail
                       "An incomplete Org block is not an island"))))
@@ -164,7 +164,7 @@
      "#+begin_src scheme\n(math \"code\")\n#+end_src\n\n"
      "Plain $(math \"recognized\")$.\n")
     (let (calls)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (raw &optional _syntax)
                    (push raw calls)
                    (read raw))))
@@ -267,7 +267,7 @@
                (kill-buffer output)))))))))
 
 (ert-deftest
-    org-texmacs-model-parse-guards-source-and-syntax-across-waits
+    org-texmacs-model-parse-guards-source-and-syntax-during-parsing
     ()
   (dolist (change
            '(text mode bounds file directory headings links registry))
@@ -278,7 +278,7 @@
             (org-link-abbrev-alist
              (list (cons "original" "https://example.test/%s")))
             (org-link-parameters (copy-tree org-link-parameters)))
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
                    (lambda (_raw &optional _syntax)
                      (with-current-buffer source
                        (pcase change
@@ -313,7 +313,7 @@
     (org-mode)
     (insert "$(math \"x\")$\n")
     (let ((source (current-buffer)))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (_raw &optional _syntax)
                    (with-current-buffer source
                      (setq-local org-export-with-toc
@@ -329,7 +329,7 @@
           (with-current-buffer source
             (org-mode)
             (insert "$(math \"x\")$\n"))
-          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+          (cl-letf (((symbol-function 'org-texmacs--stm-read)
                      (lambda (&rest _)
                        (kill-buffer source)
                        '(math "x"))))
@@ -353,7 +353,7 @@
   (with-temp-buffer
     (org-mode)
     (insert "$(math \"x\")$\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+    (cl-letf (((symbol-function 'org-texmacs--stm-read)
                (lambda (&rest _)
                  (signal 'org-texmacs-parse-error '("Invalid")))))
       (should-error
@@ -385,18 +385,16 @@
     (let ((create (symbol-function 'org-texmacs-model-create))
           (calls 0)
           (fail-second t)
-          (first-tree (list 'math (copy-sequence "first")))
           published)
       (cl-letf (((symbol-function 'org-texmacs-model-create)
                  (lambda (&rest args)
                    (should (= calls 2))
                    (setq published (apply create args))))
-                ((symbol-function 'org-texmacs--worker-request)
+                ((symbol-function 'org-texmacs--stm-read)
                  (lambda (_raw)
                    (cl-incf calls)
                    (if (= calls 1)
-                       first-tree
-                     (aset (cadr first-tree) 0 ?X)
+                       '(math "first")
                      (when fail-second
                        (signal 'org-texmacs-parse-error
                                '("Second request failed")))
@@ -406,7 +404,6 @@
          :type 'org-texmacs-parse-error)
         (should (= calls 2))
         (should-not published)
-        (setcar (cdr first-tree) (copy-sequence "first"))
         (setq
          calls 0
          fail-second nil)
@@ -453,7 +450,7 @@
      "#+caption: $(math \"caption\")$\n"
      "#+begin_texmacs\n(math \"block\")\n#+end_texmacs\n")
     (let (requests)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (raw)
                    (let ((parsed (read raw)))
                      (push (cadr parsed) requests)
@@ -487,13 +484,13 @@
             :fragment-tags)))))))
 
 (ert-deftest
-    org-texmacs-model-object-parser-guards-source-across-waits
+    org-texmacs-model-object-parser-guards-source-during-parsing
     ()
   (with-temp-buffer
     (org-mode)
     (insert "$(math \"x\")$\n")
     (let ((source (current-buffer)))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (_raw)
                    (with-current-buffer source
                      (goto-char (point-max))

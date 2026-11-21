@@ -40,7 +40,7 @@
 ;; Source exports use standard Org Export preparation and Org Cite.  The
 ;; TeXmacs backend defaults to native bibliography processing; CSL citations
 ;; use the optional citeproc package.  Pure model/lowering APIs stay independent.
-;; TeXmacs is an external runtime dependency, checked by the setup command.
+;; Native output uses TeXmacs, whose availability the setup command checks.
 ;;
 ;; Use `org-texmacs-tree' to derive an Org-compatible TeXmacs tree from a
 ;; native TeXmacs special block, with lazy parsing and Org-managed caching.
@@ -119,8 +119,8 @@ with its contents accessible under the current narrowing.  Obtain it again
 after editing, for example with `org-element-at-point' at the block opening.
 The caller is responsible for supplying an element from the correct buffer.
 
-On a cache miss, synchronously parse the raw STM source with the shared
-TeXmacs worker and convert the stree to an Org pseudo tree.  Cache the result
+On a cache miss, parse the raw STM with the shared Elisp reader and convert
+the stree to an Org pseudo tree.  Cache the result
 through Org's custom element cache with default invalidation.  Unrelated
 edits may also invalidate this best-effort cache.  No edit hooks are installed.
 
@@ -130,8 +130,7 @@ atomic TeXmacs string yields an unpropertized string.  BLOCK remains a native
 Org special block, and the source text is not modified.
 
 Signal `org-texmacs-error' for invalid input or text changed during parsing,
-`org-texmacs-parse-error' for invalid STM, and `org-texmacs-worker-error' for
-worker failures.  Failed parses are never cached."
+and `org-texmacs-parse-error' for invalid STM.  Failed parses are never cached."
   (unless (org-texmacs--block-p block)
     (signal 'org-texmacs-error '("Expected a TeXmacs special block")))
   (let ((cached
@@ -142,9 +141,7 @@ worker failures.  Failed parses are never cached."
       (let* ((buffer (current-buffer))
              (tick (buffer-chars-modified-tick))
              (source (org-texmacs--block-source block))
-             (stree (org-texmacs--worker-request source)))
-        ;; Waiting for process output may run timers that edit or kill buffer.
-        ;; This guards one synchronous call, without tracking block identities.
+             (stree (org-texmacs--stm-read source)))
         (unless (and (buffer-live-p buffer)
                      (eq (current-buffer) buffer)
                      (= tick (buffer-chars-modified-tick)))

@@ -143,11 +143,10 @@
      (org-texmacs-input-p
       (org-texmacs-test--native-source-input bib-file)))))
 
-(ert-deftest org-texmacs-native-source-freezes-before-stm-wait ()
+(ert-deftest org-texmacs-native-source-freezes-before-stm-parsing ()
   (org-texmacs-test--with-native-source
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (_source &optional syntax)
-                 (should-not syntax)
+    (cl-letf (((symbol-function 'org-texmacs--stm-read)
+               (lambda (_source)
                  (with-temp-file bib-file
                    (insert "Changed during STM parse"))
                  '(math "x"))))
@@ -156,6 +155,7 @@
         bib-file
         "Text [cite:@one].\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n#+print_bibliography:\n")
        :type 'org-texmacs-document-error))
+    (should (= parse-calls 0))
     (should (= format-calls 0))))
 
 (ert-deftest org-texmacs-native-source-changes-during-format ()

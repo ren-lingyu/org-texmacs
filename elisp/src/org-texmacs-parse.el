@@ -15,7 +15,6 @@
 (require 'org-texmacs-syntax)
 (require 'org-texmacs-source)
 (require 'org-texmacs-fragment-object)
-(require 'org-texmacs-worker)
 
 (defun org-texmacs--parse-copy (value)
   "Own resolved syntax VALUE without callbacks or buffer access."
@@ -165,7 +164,7 @@ Preparation skips Org Export processing and calls no STM worker."
 Capture full source and effective syntax without changing point, mark, text,
 properties or narrowing.  Original narrowing does not select a model body.
 Parse explicit STM fragment carriers and native texmacs/equation/equation*
-blocks using the native STM worker.  Use Org's LaTeX-fragment positions and
+blocks with the shared Elisp STM reader.  Use Org's LaTeX-fragment positions and
 composition rules.  Preserve opaque Org regions as ordinary Org.
 
 Keep comments, drawers, all footnote definitions and export-excluded content.
@@ -177,12 +176,11 @@ Parsed STM trees own island content; raw block parsing residue is discarded.
 The returned model owns its parsed syntax and needs no live source buffer,
 setup file or worker for inspection.
 
-Capture syntax/source CONTEXT explicitly and reject source, mode, narrowing,
-location or effective syntax changes across native waits.  Source changes by
-external callbacks are not rolled back.  Native parse/transport errors retain
-their existing conditions; structural/snapshot failures use
-`org-texmacs-model-error'.  User-defined native Org parser callbacks are not
-sandboxed.  Core constructor/inspection operations do not need this worker."
+Capture syntax/source CONTEXT explicitly and reject changes to the source,
+mode, narrowing, location or effective syntax during parsing.  Source changes
+by external Org callbacks are not rolled back.  Invalid STM signals
+`org-texmacs-parse-error'; structural/snapshot failures use
+`org-texmacs-model-error'.  Parsing requires no TeXmacs executable."
   (unless (and (bufferp source-buffer) (buffer-live-p source-buffer))
     (signal 'org-texmacs-model-error
             '("Expected a live Org source buffer")))
@@ -241,16 +239,9 @@ sandboxed.  Core constructor/inspection operations do not need this worker."
               islands)
          (check)
          (dolist (request (cadr prepared))
-           (check)
-           (let ((tree
-                  (org-texmacs--worker-request
-                   (copy-sequence (cdr request)))))
-             (check)
-             ;; Own each result before the next native wait.
-             (push (cons
-                    (car request)
-                    (org-texmacs--model-copy-stree tree))
-                   islands)))
+           (push (cons
+                  (car request) (org-texmacs--stm-read (cdr request)))
+                 islands))
          (check)
          (org-texmacs-model-create
           (car prepared)

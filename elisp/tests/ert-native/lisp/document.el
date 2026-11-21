@@ -29,7 +29,7 @@
       (insert "\nBody[fn::BodyNote].\n")
       (let ((source (buffer-string))
             requests)
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
                    (lambda (raw &rest _)
                      (push raw requests)
                      (read raw))))
@@ -386,7 +386,7 @@
       (advice-remove
        'org-texmacs--document-date-timestamp-text advice))))
 
-(ert-deftest org-texmacs-document-date-worker-wait-snapshot ()
+(ert-deftest org-texmacs-document-date-stm-snapshot ()
   :tags
   '(issue4-closure)
   (let ((advice (lambda (_raw) "ChangedDate")))
@@ -395,7 +395,7 @@
           (org-mode)
           (setq-local org-export-with-author nil)
           (insert "#+DATE: <2026-10-14>\n$(math \"x\")$\n")
-          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+          (cl-letf (((symbol-function 'org-texmacs--stm-read)
                      (lambda (&rest _)
                        (advice-add
                         'org-texmacs--document-date-timestamp-text
@@ -1185,7 +1185,7 @@
       (setq-local org-export-with-author nil)
       (insert
        "A[fn:n] repeat[fn:n].\n\n[fn:n] [[file:note.txt][File]] $(math \"x\")$\n\nSecond.\n")
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (source)
                    (push source requests)
                    '(math "x"))))
@@ -1194,6 +1194,8 @@
     (cl-letf (((symbol-function 'org-footnote-get-definition)
                (lambda (&rest _)
                  (ert-fail "Owned input read buffer")))
+              ((symbol-function 'org-texmacs--stm-read)
+               (lambda (&rest _) (ert-fail "Owned input reread STM")))
               ((symbol-function 'org-texmacs--worker-request)
                (lambda (&rest _)
                  (ert-fail "Owned input started worker"))))
@@ -1313,7 +1315,7 @@
                (symbol-function 'org-export-get-footnote-definition)))
           (when (eq scope 'narrowed)
             (narrow-to-region begin end))
-          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+          (cl-letf (((symbol-function 'org-texmacs--stm-read)
                      (lambda (raw)
                        (push raw requests)
                        (read raw)))
@@ -1349,7 +1351,10 @@
           (should (member "" raw-definitions))
         (should-not (member "" raw-definitions)))
       ;; Source is dead.  Neither interpretation nor conversion may revisit it.
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                 (lambda (&rest _)
+                   (ert-fail "Owned lowering reread STM")))
+                ((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _)
                    (ert-fail "Owned lowering requested worker")))
                 ((symbol-function 'org-export-get-footnote-definition)
@@ -1379,7 +1384,7 @@
     (setq-local org-export-with-author nil)
     (insert "A[fn::$(math \"hidden\")$] $(math \"visible\")$\n")
     (let (requests)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (source)
                    (push source requests)
                    (if (string-match-p "hidden" source)
@@ -2455,7 +2460,7 @@
     (insert
      "Before $(math \"*fake* [[link]]\")$$(math \"α\")$ after.\n")
     (let ((requests nil))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (source)
                    (push (substring-no-properties source) requests)
                    (list
@@ -2557,7 +2562,7 @@
       (with-temp-buffer
         (let ((caller (current-buffer))
               (calls 0))
-          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+          (cl-letf (((symbol-function 'org-texmacs--stm-read)
                      (lambda (_source)
                        (setq calls (1+ calls))
                        (set-buffer caller)
@@ -2592,7 +2597,7 @@
          :type 'org-texmacs-document-error)))))
 
 (ert-deftest org-texmacs-document-preserves-buffer-state-on-exit ()
-  (dolist (outcome '(success unsupported parse-error worker-error))
+  (dolist (outcome '(success unsupported parse-error))
     (dolist (modified '(nil t))
       (with-temp-buffer
         (org-mode)
@@ -2616,17 +2621,13 @@
             (let* ((caller (current-buffer))
                    (caller-before
                     (org-texmacs-test--document-buffer-state caller)))
-              (cl-letf (((symbol-function
-                          'org-texmacs--worker-request)
+              (cl-letf (((symbol-function 'org-texmacs--stm-read)
                          (lambda (&rest _)
                            (set-buffer caller)
                            (pcase outcome
                              ('unsupported '(math "x"))
                              ('parse-error
                               (signal 'org-texmacs-parse-error
-                                      '("fixture")))
-                             ('worker-error
-                              (signal 'org-texmacs-worker-error
                                       '("fixture")))
                              (_ '(math "x"))))))
                 (if (eq outcome 'success)
@@ -2638,8 +2639,7 @@
                    :type
                    (pcase outcome
                      ('unsupported 'org-texmacs-document-error)
-                     ('parse-error 'org-texmacs-parse-error)
-                     (_ 'org-texmacs-worker-error))))
+                     ('parse-error 'org-texmacs-parse-error))))
                 (should (eq caller (current-buffer)))
                 (should
                  (equal-including-properties
@@ -2650,6 +2650,66 @@
            (equal-including-properties
             before
             (org-texmacs-test--document-buffer-state source))))))))
+
+(ert-deftest
+    org-texmacs-document-preserves-buffer-state-on-bibliography-worker-error
+    ()
+  (let ((bib-file
+         (make-temp-file
+          "org-texmacs-bibliography-"
+          nil
+          ".bib"
+          "@book{one,title={One},author={Ada Alpha},year={2026}}\n")))
+    (unwind-protect
+        (with-temp-buffer
+          (org-mode)
+          (insert
+           "#+cite_export: texmacs-native plain\n#+bibliography: "
+           bib-file
+           "\nText [cite:@one].\n#+print_bibliography:\n")
+          (goto-char 3)
+          (set-mark 2)
+          (setq mark-active t)
+          (set-buffer-modified-p nil)
+          (let* ((source (current-buffer))
+                 (source-state
+                  (org-texmacs-test--document-buffer-state source)))
+            (with-temp-buffer
+              (org-mode)
+              (insert "Unrelated caller\n")
+              (set-mark (point-max))
+              (narrow-to-region 2 (point-max))
+              (goto-char 3)
+              (let* ((caller (current-buffer))
+                     (caller-state
+                      (org-texmacs-test--document-buffer-state
+                       caller))
+                     (failure
+                      '(org-texmacs-worker-error
+                        "Injected bibliography worker failure")))
+                (cl-letf (((symbol-function
+                            'org-texmacs--worker-request)
+                           (lambda (_source &optional operation)
+                             (should (eq operation 'bibliography))
+                             (set-buffer source)
+                             (signal (car failure) (cdr failure)))))
+                  (should
+                   (equal
+                    (should-error
+                     (org-texmacs-document-from-buffer source)
+                     :type 'org-texmacs-worker-error)
+                    failure)))
+                (should (eq (current-buffer) caller))
+                (should
+                 (equal-including-properties
+                  caller-state
+                  (org-texmacs-test--document-buffer-state caller)))
+                (should
+                 (equal-including-properties
+                  source-state
+                  (org-texmacs-test--document-buffer-state
+                   source)))))))
+      (delete-file bib-file))))
 
 (ert-deftest
     org-texmacs-document-rechecks-explicit-source-after-switch
@@ -2663,7 +2723,7 @@
         (with-temp-buffer
           (let ((caller (current-buffer))
                 (calls 0))
-            (cl-letf (((symbol-function 'org-texmacs--worker-request)
+            (cl-letf (((symbol-function 'org-texmacs--stm-read)
                        (lambda (&rest _)
                          (setq calls (1+ calls))
                          (with-current-buffer source
@@ -2710,7 +2770,7 @@
     (let ((source (current-buffer)))
       (with-temp-buffer
         (let ((caller (current-buffer)))
-          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+          (cl-letf (((symbol-function 'org-texmacs--stm-read)
                      (lambda (&rest _)
                        (with-current-buffer source
                          (setq-local
@@ -2759,7 +2819,7 @@
       (setq-local org-export-with-author nil)
       (insert "$(math \"x\")$ $(math \"y\")$\n")
       (let ((calls 0))
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
                    (lambda (_source)
                      (setq calls (1+ calls))
                      (pcase change
@@ -2793,9 +2853,9 @@
     (org-mode)
     (setq-local org-export-with-author nil)
     (insert "(math \"x\")\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+    (cl-letf (((symbol-function 'org-texmacs--stm-read)
                (lambda (&rest _)
-                 (ert-fail "Bare text reached the native parser"))))
+                 (ert-fail "Bare text reached the STM reader"))))
       (let ((result
              (org-texmacs-document-from-buffer (current-buffer))))
         (should
@@ -2825,9 +2885,9 @@
            (document (math "中")))))
        (should
         (equal (org-texmacs-document-stm-paths result) '((1 1) (2))))
-       (should (= org-texmacs--worker-request-id 2))
+       (should (= org-texmacs--worker-request-id 0))
        (should (equal source (buffer-string)))
-       (should (org-texmacs--worker-live-p))))))
+       (should-not (org-texmacs--worker-live-p))))))
 
 (ert-deftest org-texmacs-document-source-real-error-and-repair ()
   (org-texmacs-test--with-worker
@@ -2952,8 +3012,8 @@
             (position (point))
             (document
              (org-texmacs-document-from-buffer (current-buffer)))
-            (process org-texmacs--worker-process)
             (session (org-texmacs-session-open))
+            (process org-texmacs--worker-process)
             (expected
              '(document
                (concat
@@ -3273,7 +3333,7 @@
           (org-texmacs-format-headline-function
            #'org-texmacs-format-headline-default-function))
       (cl-letf
-          (((symbol-function 'org-texmacs--worker-request)
+          (((symbol-function 'org-texmacs--stm-read)
             (lambda (_)
               (setq
                org-export-with-todo-keywords nil

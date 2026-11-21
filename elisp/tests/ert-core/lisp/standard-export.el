@@ -304,9 +304,9 @@
                   (org-export-raw-string "TARGET")
                   "\")")))
               tree))))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (_source)
-                   (ert-fail "Target raw reached native parser"))))
+                   (ert-fail "Target raw reached STM reader"))))
         (should-error
          (org-texmacs--standard-consume 'input)
          :type 'org-texmacs-document-error)))))
@@ -424,7 +424,6 @@
     (let ((finish (symbol-function 'org-texmacs--prepared-complete))
           (calls 0)
           (fail-second t)
-          (first-tree (list 'math (copy-sequence "first")))
           complete)
       (cl-letf (((symbol-function 'org-texmacs--prepared-complete)
                  (lambda (input)
@@ -435,15 +434,14 @@
                        (length
                         (org-texmacs-input-pending-requests input))))
                    (setq complete (funcall finish input))))
-                ((symbol-function 'org-texmacs--worker-request)
+                ((symbol-function 'org-texmacs--stm-read)
                  (lambda (source)
                    (cl-incf calls)
                    (if (= calls 1)
                        (progn
                          (should (equal source "(math \"first\")"))
-                         first-tree)
+                         '(math "first"))
                      (should (equal source "(math \"second\")"))
-                     (aset (cadr first-tree) 0 ?X)
                      (when fail-second
                        (signal 'org-texmacs-parse-error
                                '("Second request failed")))
@@ -453,7 +451,6 @@
          :type 'org-texmacs-parse-error)
         (should (= calls 2))
         (should-not complete)
-        (setcar (cdr first-tree) (copy-sequence "first"))
         (setq
          calls 0
          fail-second nil)
@@ -499,7 +496,7 @@
                  final-node)
                 (setq final-tree tree)
                 tree))))
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
                    (lambda (text)
                      (cl-incf calls)
                      (should (equal text "(math \"new\")"))
@@ -547,7 +544,7 @@
                :ignore-list
                (last (org-element-map tree 'paragraph #'identity)))
               tree))))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (_text) (ert-fail "Ignored STM parsed"))))
         (setq captured (org-texmacs--standard-consume 'input)))
       (should-not (org-texmacs-input-islands captured))
@@ -606,9 +603,10 @@
       (org-mode)
       (insert text)
       (let ((org-export-use-babel nil))
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
                    (lambda (_source)
-                     (ert-fail "Invalid boundary started worker"))))
+                     (ert-fail
+                      "Invalid boundary reached STM reader"))))
           (should-error
            (org-texmacs--standard-consume 'input)
            :type 'org-texmacs-parse-error))))))
@@ -621,7 +619,7 @@
     (insert "$(math \"x\")$\n")
     (let ((source (buffer-string))
           (org-export-use-babel nil))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (_source)
                    (signal 'org-texmacs-parse-error
                            '("Invalid native data")))))
@@ -710,7 +708,7 @@
           (ordinary-cache org-element-use-cache)
           (worker-calls nil)
           nested-output)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (source)
                    (push source worker-calls)
                    (read source))))

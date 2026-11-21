@@ -13,6 +13,7 @@
 ;;; Code:
 
 (require 'org-texmacs-core)
+(require 'org-texmacs-stm)
 (require 'org-texmacs-source)
 
 (autoload 'org-texmacs-parse-buffer "org-texmacs-parse")
@@ -59,31 +60,6 @@ owns supplied resolved data; it does not infer settings or interpret options.")
 (defun org-texmacs--model-fail (owner message)
   "Signal OWNER's error condition with MESSAGE."
   (signal (org-texmacs--model-owner-error-type owner) (list message)))
-
-(defun org-texmacs--model-copy-stree
-    (tree &optional error-type ancestors)
-  "Validate and copy STM TREE without native parsing.
-ERROR-TYPE defaults to `org-texmacs-model-error'.  ANCESTORS detects cycles;
-noncyclic repeated subtrees are copied independently."
-  (cond
-   ((stringp tree)
-    (substring-no-properties tree))
-   ((and (consp tree)
-         (car tree)
-         (symbolp (car tree))
-         (proper-list-p tree)
-         (not (memq tree ancestors)))
-    (cons
-     (car tree)
-     (mapcar
-      (lambda (child)
-        (org-texmacs--model-copy-stree child
-                                       error-type
-                                       (cons tree ancestors)))
-      (cdr tree))))
-   (t
-    (signal (or error-type 'org-texmacs-model-error)
-            '("Invalid island stree")))))
 
 (defun org-texmacs--model-copy-data (owner value &optional ancestors)
   "Copy resolved VALUE, remapping known Org identities through OWNER.
@@ -398,7 +374,7 @@ Inspect contents, captions and secondary properties without reading source."
          (copy (org-texmacs--model-copy-node owner ast nil))
          (mapping
           (org-texmacs--model-copy-mapping
-           owner islands #'org-texmacs--model-copy-stree))
+           owner islands #'org-texmacs--stm-copy))
          (owned-context
           (org-texmacs--model-copy-context
            owner context org-texmacs--model-context-keys)))
@@ -512,7 +488,7 @@ With CONTEXT non-nil, append owned syntax context as a fourth result."
                 (org-texmacs--model-copy-mapping
                  owner
                  (org-texmacs-model-islands model)
-                 #'org-texmacs--model-copy-stree))
+                 #'org-texmacs--stm-copy))
           (org-texmacs--model-check-islands ast islands))
       (org-texmacs-model-error
        (org-texmacs--model-path-error
@@ -632,7 +608,7 @@ to address the result.  Signal `org-texmacs-model-error' for invalid arguments."
            visited (append visited (list index)))))
       (let ((owned
              (condition-case err
-                 (org-texmacs--model-copy-stree replacement)
+                 (org-texmacs--stm-copy replacement)
                (org-texmacs-model-error
                 (org-texmacs--model-path-error
                  (error-message-string err) visited)))))

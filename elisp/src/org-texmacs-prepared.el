@@ -434,16 +434,13 @@ Use fragment source and block bodies from the final nodes."
 
 (defun org-texmacs--prepared-complete (input)
   "Parse owned requests and return INPUT with a complete Model.
-Each request already carries its owned Org key.  Preserve request order and
-copy each result before any subsequent native wait."
+Read STM with the same codec as whole-source Model parsing.
+Preserve the order and owned Org keys of the requests."
   (let* ((islands
           (mapcar
            (lambda (request)
              (cons
-              (car request)
-              (org-texmacs--document-copy-stree
-               (org-texmacs--worker-request
-                (copy-sequence (cadr request))))))
+              (car request) (org-texmacs--stm-read (cadr request))))
            (org-texmacs-input-pending-requests input)))
          (model
           (org-texmacs--model-create

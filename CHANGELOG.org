@@ -19,6 +19,14 @@ release notes.
   default flake checks cover both variants. See the
   [[file:README.org::*Org 10.0pre compatibility variant][variant build and test commands]].
 
+** Changed
+- Parse and serialize a shared subset of native TeXmacs STM syntax in Emacs
+  Lisp. Model parsing, editing and normalized Org output work without the
+  TeXmacs executable. Standard Export preparation and =org-texmacs-tree=
+  use the same reader. Some previously accepted STM spellings, including
+  tags starting with a digit or colon, now report a parse error. See
+  [[file:README.org::*STM text syntax][the supported syntax]] for tag and string limits.
+
 * DONE v0.8.0
 CLOSED: [2026-11-19 Thu 12:09]
 :PROPERTIES:

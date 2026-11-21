@@ -139,30 +139,46 @@
 
 (ert-deftest org-texmacs-object-writer-native-round-trip ()
   (org-texmacs-test--with-worker
-   (dolist (tree
-            (append
-             (list
-              '(custom-tag)
-              '(math (sqrt "α中😀"))
-              '(math "quote \" slash \\ and a\\)b\n\r\t")
-              (list 'math (string 0 1 7 8 27 127)))
-             (mapcar
-              (lambda (tag) (list (intern tag) "x"))
-              '("a-b"
-                "a_b"
-                "a*"
-                "+"
-                "-"
-                "."
-                "1"
-                "1e2"
-                "#t"
-                ":tag"
-                "a\\b"
-                "a(b)"
-                "foo?"))))
+   (dolist (tree '("atomic" (custom-tag) (math (sqrt "α中😀"))))
      (let ((source (org-texmacs--serialize-stm-source tree nil)))
        (should-not (string-match-p "[\r\n\t]" source))
        (should (equal tree (org-texmacs--worker-request source)))))))
+
+(ert-deftest org-texmacs-stm-native-differential ()
+  (org-texmacs-test--with-worker
+   ;; Check canonical writer output directly against TeXmacs.
+   (let ((atoms '("" "α中😀" "\\" "\"" "\n" "\r" "\t" "n")))
+     (dolist (left atoms)
+       (dolist (right atoms)
+         (let* ((tree (list 'math (concat left right)))
+                (source (org-texmacs--stm-write tree)))
+           (should (equal (org-texmacs--worker-request source) tree))
+           (should (equal (org-texmacs--stm-read source) tree))))))
+   (dolist (tree
+            '("原子"
+              (a-b (a_b (a* (a0))))
+              (tuple)
+              (math (frac "1" "2"))
+              (math "quote \" slash \\ tail\n\r\t")))
+     (let ((source (org-texmacs--worker-serialize-stm tree)))
+       (should
+        (equal
+         (org-texmacs--stm-read source)
+         (org-texmacs--worker-request source)))))
+   ;; Check reader semantics independently of either writer.
+   (dolist (counts '((4 . 1) (8 . 2)))
+     (let* ((source (concat "\"" (make-string (car counts) ?\\) "\""))
+            (expected (make-string (cdr counts) ?\\)))
+       (should (equal (org-texmacs--worker-request source) expected))
+       (should (equal (org-texmacs--stm-read source) expected))))
+   (dolist (source
+            '("(math \"quote \\\" slash \\\\ tail\")"
+              "  (\tMath\t(Frac \"α\" \"β\")\n \"\") \t\n"
+              "\"line one\nline two\tend\""
+              "(math \"literal <alpha> <less> <gtr>\")"))
+     (should
+      (equal
+       (org-texmacs--stm-read source)
+       (org-texmacs--worker-request source))))))
 
 ;;; model-serialization.el ends here

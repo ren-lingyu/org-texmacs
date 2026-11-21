@@ -64,8 +64,11 @@
                      (lambda (&rest _) (ert-fail "Lower allocated")))
                     ((symbol-function 'org-export-resolve-fuzzy-link)
                      (lambda (&rest _) (ert-fail "Lower resolved")))
-                    ((symbol-function 'org-texmacs--worker-request)
+                    ((symbol-function 'org-texmacs--stm-read)
                      (lambda (&rest _) (ert-fail "Lower parsed")))
+                    ((symbol-function 'org-texmacs--worker-request)
+                     (lambda (&rest _)
+                       (ert-fail "Lower requested native work")))
                     ((symbol-function 'buffer-substring-no-properties)
                      (lambda (&rest _)
                        (ert-fail "Lower read source"))))
@@ -417,7 +420,7 @@
              parsed
              (calls 0)
              input)
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
                    (lambda (raw &rest _)
                      (setq parsed t)
                      (read raw)))
@@ -588,9 +591,10 @@
               (lambda (_b c _i)
                 (setq calls (1+ calls))
                 (list 'custom c)))))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (&rest _)
-                   (ert-fail "Prose-only block started a worker"))))
+                   (ert-fail
+                    "Prose-only block requested STM parsing"))))
         (let ((input (org-texmacs-prepare-buffer (current-buffer))))
           (should (= calls 0))
           (should-not
@@ -607,6 +611,7 @@
     org-texmacs-issue13-native-final-handler-error-and-recovery
     ()
   (org-texmacs-test--with-worker
+   (org-texmacs--worker-request "(math \"ready\")")
    (with-temp-buffer
      (org-mode)
      (setq-local org-export-with-author nil)
@@ -659,7 +664,7 @@
               requests)
           (when (eq scope 'narrow)
             (narrow-to-region start end))
-          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+          (cl-letf (((symbol-function 'org-texmacs--stm-read)
                      (lambda (source &rest _)
                        (push source requests)
                        (read source))))
@@ -680,13 +685,13 @@
                   (string-match-p "omitted" request))
                 requests)))))))))
 
-(ert-deftest org-texmacs-issue13-source-change-during-wait ()
+(ert-deftest org-texmacs-issue13-source-change-during-stm-parsing ()
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
     (insert "#+begin_theorem\n$(math \"x\")$\n#+end_theorem\n")
     (let ((source (current-buffer)))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (&rest _)
                    (with-current-buffer source
                      (goto-char (point-max))
@@ -881,7 +886,7 @@
     (let ((begin (point))
           (end (point-max))
           (before (buffer-string)))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (&rest _)
                    (ert-fail "Plain selection requested STM"))))
         (dolist (region (list (cons begin end) (cons (1+ begin) end)))
@@ -903,24 +908,37 @@
 
 (ert-deftest org-texmacs-statement-caption-errors-and-worker-boundary
     ()
-  (dolist (caption '("[[Missing]]" "[cite:@missing]" "<<Target>>"))
+  (cl-letf (((symbol-function 'org-texmacs--worker-request)
+             (lambda (_raw &optional operation)
+               (unless (eq operation 'bibliography)
+                 (ert-fail "Caption error submitted body STM"))
+               '(document))))
+    (dolist (caption '("[[Missing]]" "[cite:@missing]" "<<Target>>"))
+      (with-temp-buffer
+        (org-mode)
+        (setq-local org-export-with-author nil)
+        (insert
+         "#+BIBLIOGRAPHY: refs.bib\n#+CAPTION: "
+         caption
+         "\n"
+         "#+begin_theorem\n#+begin_texmacs\n(math \"body\")\n#+end_texmacs\n#+end_theorem\n")
+        (should-error
+         (org-texmacs-document-from-buffer
+          (current-buffer) '(("refs.bib" . "")))
+         :type 'org-texmacs-document-error)))
     (with-temp-buffer
       (org-mode)
       (setq-local org-export-with-author nil)
       (insert
-       "#+BIBLIOGRAPHY: refs.bib\n#+CAPTION: "
-       caption
-       "\n"
+       "#+CAPTION[Short]: Long\n"
        "#+begin_theorem\n#+begin_texmacs\n(math \"body\")\n#+end_texmacs\n#+end_theorem\n")
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (_raw &optional operation)
-                   (unless (eq operation 'bibliography)
-                     (ert-fail "Caption error submitted body STM"))
-                   '(document))))
-        (should-error
-         (org-texmacs-document-from-buffer
-          (current-buffer) '(("refs.bib" . "")))
-         :type 'org-texmacs-document-error))))
+      (let ((failure
+             (should-error
+              (org-texmacs-document-from-buffer (current-buffer))
+              :type 'org-texmacs-document-error)))
+        (should
+         (string-match-p
+          "short caption" (error-message-string failure))))))
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
@@ -1055,13 +1073,26 @@
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (_source &optional operation)
                    (push operation requests)
-                   (unless (eq operation 'bibliography)
-                     (ert-fail "Body request escaped preflight"))
                    '(document))))
-        (should-error
-         (org-texmacs-document-from-buffer
-          (current-buffer) '(("refs.bib" . "")))
-         :type 'org-texmacs-document-error)
+        (cl-letf
+            (((symbol-function 'org-texmacs--stm-read)
+              (lambda (_source)
+                (ert-fail
+                 "Preflight unexpectedly reached the STM reader"))))
+          (should-error
+           (org-texmacs-document-from-buffer
+            (current-buffer) '(("refs.bib" . "")))
+           :type 'org-texmacs-document-error))
+        (should-not requests)
+        ;; Exercise the special-block rejection through the supported API too.
+        (let ((failure
+               (should-error
+                (org-texmacs-document-from-buffer (current-buffer))
+                :type 'org-texmacs-document-error)))
+          (should
+           (string-match-p
+            "Unsupported special-block type"
+            (error-message-string failure))))
         (should-not requests)))))
 
 (ert-deftest
@@ -1085,7 +1116,7 @@
                  (plist-get info :texmacs-special-block-preflight))
                 (setq calls (1+ calls))
                 (list 'custom c)))))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (&rest _)
                    (setq parsed t)
                    '(math "x"))))
@@ -1116,7 +1147,7 @@
                (org-texmacs--native-body-blocks
                 (org-element-parse-buffer)))
               1))
-          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+          (cl-letf (((symbol-function 'org-texmacs--stm-read)
                      (lambda (raw &rest _)
                        (push raw requests)
                        '(concat "α=" (frac "1" "2")))))
@@ -1185,7 +1216,7 @@
               requests)
           (when (eq scope 'narrow)
             (narrow-to-region start end))
-          (cl-letf (((symbol-function 'org-texmacs--worker-request)
+          (cl-letf (((symbol-function 'org-texmacs--stm-read)
                      (lambda (raw &rest _)
                        (push raw requests)
                        "kept")))
@@ -1198,9 +1229,9 @@
             (should (equal requests '("\"kept\"\n")))))))
     (goto-char (point-min))
     (search-forward "\"kept")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+    (cl-letf (((symbol-function 'org-texmacs--stm-read)
                (lambda (&rest _)
-                 (ert-fail "Org prose reached native parser"))))
+                 (ert-fail "Org prose reached STM reader"))))
       ;; Org parses the unclosed marker as prose, not a native block. Its
       ;; script object is now supported; do not restore the original wrapper.
       (let* ((input
@@ -1240,7 +1271,7 @@
          (org-texmacs--native-body-blocks (org-element-parse-buffer)))
         1))
     (let (requests)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (raw &rest _)
                    (push raw requests)
                    "outer")))
@@ -1252,7 +1283,7 @@
     (insert
      "- Item\n\n  #+begin_equation*\n  \"list\"\n  #+end_equation*\n")
     (let (requests)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (raw &rest _)
                    (push raw requests)
                    "list")))
@@ -1274,7 +1305,7 @@
      "[fn:n]\n#+begin_equation*\n\"note\"\n#+end_equation*\n")
     (goto-char (point-min))
     (let (requests)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (raw &rest _)
                    (push raw requests)
                    "note")))
@@ -1300,20 +1331,20 @@
                (lambda (node)
                  (org-element-put-property node :key "changed")))
               ast))))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (&rest _)
-                   (ert-fail "Mutated raw AST reached worker"))))
+                   (ert-fail "Mutated raw AST reached STM reader"))))
         (should-error
          (org-texmacs-document-from-buffer (current-buffer))
          :type 'org-texmacs-document-error)))))
 
-(ert-deftest org-texmacs-issue13-stage2-wait-source-guard ()
+(ert-deftest org-texmacs-issue13-stage2-stm-source-guard ()
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
     (insert "#+begin_equation\n\"x\"\n#+end_equation\n")
     (let ((source (current-buffer)))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (&rest _)
                    (with-current-buffer source
                      (goto-char (point-max))
@@ -1372,7 +1403,7 @@
        kind
        "\n")
       (let (requests)
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
                    (lambda (source &rest _)
                      (push source requests)
                      (read source))))
@@ -1400,9 +1431,9 @@
      "#+begin_table\n| A |\n\n# extra\n#+end_table\n")
     (goto-char (point-min))
     (search-forward "| A |")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+    (cl-letf (((symbol-function 'org-texmacs--stm-read)
                (lambda (&rest _)
-                 (ert-fail "Excluded wrapper reached worker"))))
+                 (ert-fail "Excluded wrapper reached STM reader"))))
       (should
        (org-texmacs-document-from-buffer
         (current-buffer) nil nil (cons (point-min) (point)))))))
