@@ -48,17 +48,21 @@ The initial x86_64-linux worktree-snapshot Nix gate passed both package builds,
 compiled examples and all default checks, including treefmt. The staged Phase 1
 diff matched the user's named 2026-11-21T22:10:36+08:00 baseline byte for byte.
 
-The follow-up architecture revision keeps native two-pass decoding and adds
-hand-written slash runs whose expected values distinguish it from a single
-pass. Serialization still reparses the rendered Org and compares carrier
+The follow-up architecture revision keeps native two-pass decoding. The
+independently constructed four- and eight-backslash fixtures exercise
+canonical spellings and distinguish their native semantics from a single
+pass. Alternative native spellings do not expand the maintenance contract.
+Serialization still reparses the rendered Org and compares carrier
 count, order, path, type and STM text. It reuses the original tree after
 matching the text to the writer output. Codec roundtrip and native parity
 are tested separately. Native output consumes structured document fields
 and provenance through the worker wire format. The original guidance and
 diff add no independent archival evidence beyond the staged baseline,
 maintained tests and existing archived native experiments. The follow-up
-is in the ordinary worktree outside the staged baseline and awaits Nix
-revalidation.
+is in the ordinary worktree outside the staged baseline. Scoped nix fmt
+and default nix flake check passed on x86_64-linux. The follow-up check
+reused unaffected outputs and rebuilt both native suites (280 each)
+after the final testcase adjustment. Examples evaluated as flake outputs.
 
 ## Source and check migration delivered
 

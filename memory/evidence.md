@@ -18,6 +18,15 @@ test compares semantic Models after replacement, with a nonexistent TeXmacs
 executable and traps on native startup and calls. The archived release
 experiments explain why native two-pass string semantics were selected.
 
+The follow-up architecture revision passed default nix flake check on
+x86_64-linux after formatting. A second invocation rebuilt both native
+suites after keeping only four- and eight-backslash canonical fixtures
+in the independent slash-run comparison. Both suites passed 280 tests,
+including the native differential. Other checks reused the successful
+results of the preceding invocation, which included 360 core and 80 PDF
+cases per Org configuration. The example output evaluated during the
+check and was not separately built for this follow-up.
+
 ## Earlier feasibility and release evidence
 
 E7 actually loads fixed Org 9.8 sources and passes representative E3/E6 probes;

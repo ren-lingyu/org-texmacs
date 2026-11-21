@@ -272,6 +272,11 @@ dialect, an old-writer compatibility layer, or a source migration tool.
 Canonical output suffices. Multiline layout and a dedicated formatter are
 outside this round.
 
+Keep the native subset sized for actual use. Choose simple, deterministic
+canonical escaping with native regression coverage. Equivalent native
+spellings outside that profile do not warrant additional reader logic.
+Verify native semantics for the accepted spellings in tests.
+
 ## Export consumer direction and current scope
 
 Long term, `ox-texmacs` should be a standard Org Export consumer and cooperate
