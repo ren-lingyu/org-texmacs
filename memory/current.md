@@ -64,6 +64,22 @@ and default nix flake check passed on x86_64-linux. The follow-up check
 reused unaffected outputs and rebuilt both native suites (280 each)
 after the final testcase adjustment. Examples evaluated as flake outputs.
 
+The final Phase 1 test review separates STM reader and native worker
+assertions. Statement caption failures guard worker requests and allow
+bibliography; special-block rejection checks the legacy argument boundary
+and the supported source entry independently. The legacy explicit
+bibliography argument is rejected before source preparation. The supported
+entry uses a short-caption failure and verifies the unknown-block diagnostic.
+A separate
+failure at the real bibliography request boundary verifies that the
+original error propagates and both caller and source buffer state are
+preserved. The owned lowering and bibliography snapshot checks monitor
+their respective boundaries independently. This review changes only tests.
+Scoped formatting and the final default flake check passed on x86_64-linux.
+Both Org variants passed 281 native tests, including the corrected cases,
+the bibliography failure regression and the STM native differential.
+The check used successful core, Cite and PDF results for unchanged inputs.
+
 ## Source and check migration delivered
 
 The user committed the package-owned source and test layout and the
