@@ -5,6 +5,26 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
+## STM reader isolation evidence
+
+The STM reader isolation experiments used the released `v0.8.0` flake
+and left production source unchanged. See [the archive manifest](../archive/2026-11-21T13-05-57Z--94f660f/MANIFEST.md)
+for the pinned flake, probe, exact reports, and per-experiment retention
+decisions. Emacs 31.1 pure roundtrips, lexical rejection, and ownership passed.
+The generic printer did not produce accepted syntax for the control fixture.
+The native comparison used Org 9.8.10 and TeXmacs 2.1.5. The release writer's
+escaped quote and backslash source reads successfully in both readers but
+produces different strings. Its numeric and colon-tag spellings can also
+produce different labels. Native parsing rejects the tested octal controls
+and accepts a trailing comment that the candidate rejects.
+
+The silent difference on ordinary escaped strings stops call-site migration.
+Resolve the legacy string spelling before adopting a canonical grammar. A
+limited explicit incompatibility is acceptable for uncommon spellings, but
+different trees from the same source must not pass unnoticed. The optional
+Org carrier comparison was deferred because the canonical output spelling
+remains undecided. The archived flake and probe are the reproduction inputs.
+
 ## Source and check migration delivered
 
 The user committed the package-owned source and test layout and the
