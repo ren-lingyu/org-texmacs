@@ -246,9 +246,11 @@ appropriate boundary. Leaving the original Org buffer does not itself require
 immediate STM parsing. Core validity is independent of the TeXmacs document-
 lowering subset: unsupported target Org structures must not by themselves
 prevent core construction. Valid caller-supplied STM trees must not force a
-parser restart. Native TeXmacs parsing is an expected core dependency; document
-export is not implied by that dependency. STM initially supplies structure,
-not formal mathematical semantics.
+parser restart. The first STM reader/writer development round must make core
+parse, transformation, and Org serialization executable without TeXmacs.
+Native bibliography, document encoding, sessions, and PDF keep their
+existing backend boundaries. STM supplies structure, not formal mathematical
+semantics.
 
 ## Intended independent core capabilities
 
@@ -260,11 +262,15 @@ not formal mathematical semantics.
 - Mathematical-document AST -> semantically equivalent normalized Org text or
   buffer, without requiring original whitespace, line breaks or spelling.
 
-Prefer native Org and TeXmacs parsers/serializers. The user's org-fmt inspiration
-suggests structural equivalence and normalization idempotence for round-trip
-validation; no particular native API or org-fmt implementation has been
-investigated in this intake. Normalized STM serialization is sufficient;
-multiline layout and a dedicated STM formatter are not required.
+Use native Org parsing. Implement a documented subset of native TeXmacs STM
+text syntax in pure Emacs Lisp. The TeXmacs parser defines the semantics of
+every accepted source. On every writable tree, both readers must read back
+the original tree from the new writer's output. The implementation may use
+a restricted Lisp reader with semantic adaptation or a dedicated STM reader.
+Reject unsupported source or trees explicitly. Do not create a private
+dialect, an old-writer compatibility layer, or a source migration tool.
+Canonical output suffices. Multiline layout and a dedicated formatter are
+outside this round.
 
 ## Export consumer direction and current scope
 

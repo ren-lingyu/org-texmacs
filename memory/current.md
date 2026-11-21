@@ -18,12 +18,22 @@ produces different strings. Its numeric and colon-tag spellings can also
 produce different labels. Native parsing rejects the tested octal controls
 and accepts a trailing comment that the candidate rejects.
 
-The silent difference on ordinary escaped strings stops call-site migration.
-Resolve the legacy string spelling before adopting a canonical grammar. A
-limited explicit incompatibility is acceptable for uncommon spellings, but
-different trees from the same source must not pass unnoticed. The optional
-Org carrier comparison was deferred because the canonical output spelling
-remains undecided. The archived flake and probe are the reproduction inputs.
+The user revised Phase A to implement a subset of native STM syntax in pure
+Emacs Lisp. Start with TeXmacs's `texmacs->stm` output, then compare candidate
+and native decoding of the same inputs. Verify that the candidate writer
+round-trips through both readers. Use the archived cases for quotes,
+backslashes, special tags, and controls to distinguish native spellings from
+Elisp-only interpretations. Plain `prin1-to-string` is insufficient. The
+prototype is evidence only; its grammar was not adopted. Unsupported old
+writer spellings may be rejected. No migration tool or compatibility layer
+is in scope.
+
+The next activity is Phase A syntax selection and native differential
+validation. Only after it passes, migrate Model parse, prepared STM completion,
+`org-texmacs-tree`, and Model serialization. Keep Model ownership and native
+backend paths. Phase C verifies the public Model transformation and Org
+roundtrip without a TeXmacs executable. The cross-version carrier probe
+remains deferred until a candidate output grammar warrants it.
 
 ## Source and check migration delivered
 
