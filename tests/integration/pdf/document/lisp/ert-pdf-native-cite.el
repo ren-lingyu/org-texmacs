@@ -61,9 +61,10 @@
                              "-png"
                              pdf
                              (file-name-sans-extension pdf))))
-           (org-texmacs-test--issue11-reload-pdf
+           (org-texmacs-test--pdf-render-from-saved-tm
             tm reload test-directory)
-           (org-texmacs-test--issue11-compare-pdfs pdf reload)
+           (org-texmacs-test--pdf-compare-text-and-geometry
+            pdf reload)
            (let ((text (org-texmacs-test--pdf-text pdf)))
              (dolist (word
                       '("First"

@@ -23,7 +23,8 @@
           (reload (expand-file-name "reload.pdf" test-directory)))
        (org-texmacs-document-save document tm)
        (org-texmacs-document-save-pdf document pdf)
-       (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+       (org-texmacs-test--pdf-render-from-saved-tm
+        tm reload test-directory)
        (let ((text (org-texmacs-test--pdf-text pdf))
              (loaded (org-texmacs-test--pdf-text reload)))
          (dolist (token '("ChildTitle" "ParentTitle" "NativeTitle"))

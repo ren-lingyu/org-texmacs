@@ -44,11 +44,13 @@
                    (org-texmacs-document-save document tm)
                    (org-texmacs-document-save-pdf document pdf))
                (org-texmacs-document-save-pdf document reference)))))
-       (org-texmacs-test--issue11-compare-pdfs pdf reference)
+       (org-texmacs-test--pdf-compare-text-and-geometry pdf reference)
        (should-not
         (string-match-p
          "math\\|frac\\|equation" (org-texmacs-test--pdf-text pdf)))
-       (org-texmacs-test--issue11-reload-pdf tm reload directory)
-       (org-texmacs-test--issue11-compare-pdfs pdf reload)))))
+       (org-texmacs-test--pdf-render-from-saved-tm
+        tm reload directory)
+       (org-texmacs-test--pdf-compare-text-and-geometry
+        pdf reload)))))
 
 ;;; ert-pdf-pdf.el ends here

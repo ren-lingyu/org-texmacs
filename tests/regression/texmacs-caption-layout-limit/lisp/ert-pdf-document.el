@@ -49,8 +49,7 @@
          (org-texmacs-document-save document tm)
          (org-texmacs-document-save-pdf document pdf)
          (let ((text (org-texmacs-test--pdf-text pdf))
-               (geometry
-                (org-texmacs-test--issue11-pdf-geometry pdf)))
+               (geometry (org-texmacs-test--pdf-words-tolerant pdf)))
            (message
             "Known native caption-footnote layout limit (%s): %s"
             style text)
@@ -74,9 +73,10 @@
                (push (list style token) missing)))
            (should (string-match-p "Table 1\\. CapA" text))
            (should (string-match-p "Figure 1\\. CapB" text)))
-         (org-texmacs-test--issue11-reload-pdf
+         (org-texmacs-test--pdf-render-from-saved-tm
           tm reload test-directory)
-         (org-texmacs-test--issue11-compare-pdfs pdf reload))))
+         (org-texmacs-test--pdf-compare-text-and-geometry
+          pdf reload))))
     ;; Pinned native layout loses these bodies despite exact STM readback.
     ;; This records the native limit, not exporter acceptance of data loss.
     (should

@@ -46,9 +46,12 @@
                  (if block
                      block-pdf
                    pdf)))))
-          (org-texmacs-test--issue11-compare-pdfs pdf block-pdf)
-          (org-texmacs-test--issue11-reload-pdf tm reload directory)
-          (org-texmacs-test--issue11-compare-pdfs pdf reload)))))))
+          (org-texmacs-test--pdf-compare-text-and-geometry
+           pdf block-pdf)
+          (org-texmacs-test--pdf-render-from-saved-tm
+           tm reload directory)
+          (org-texmacs-test--pdf-compare-text-and-geometry
+           pdf reload)))))))
 
 (ert-deftest org-texmacs-pdf-issue11-original-equation-layout ()
   :tags
@@ -101,7 +104,7 @@
               (org-texmacs-document-from-buffer (current-buffer))))
          (org-texmacs-document-save document tm)
          (org-texmacs-document-save-pdf document pdf)))
-     (let* ((words (org-texmacs-test--issue11-pdf-geometry pdf))
+     (let* ((words (org-texmacs-test--pdf-words-tolerant pdf))
             (zeros
              (cl-remove-if-not
               (lambda (w) (equal (car w) "0")) words))
@@ -114,7 +117,8 @@
         (<= (abs (- (cadr (nth 0 zeros)) (cadr (nth 2 zeros)))) 1.0))
        (should (<= (abs (- (cadr one) (cadr two))) 1.0))
        (should (> (cadr one) (+ (cadr (nth 1 zeros)) 50))))
-     (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
-     (org-texmacs-test--issue11-compare-pdfs pdf reload))))
+     (org-texmacs-test--pdf-render-from-saved-tm
+      tm reload test-directory)
+     (org-texmacs-test--pdf-compare-text-and-geometry pdf reload))))
 
 ;;; ert-pdf-pdf.el ends here

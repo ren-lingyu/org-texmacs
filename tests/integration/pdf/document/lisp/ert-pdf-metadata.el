@@ -19,7 +19,7 @@
                                  test-directory)))
          (org-texmacs-document-save document tm)
          (org-texmacs-document-save-pdf document pdf)
-         (org-texmacs-test--issue11-reload-pdf
+         (org-texmacs-test--pdf-render-from-saved-tm
           tm reload test-directory)
          (dolist (file (list pdf reload))
            (let ((text (org-texmacs-test--pdf-text file))

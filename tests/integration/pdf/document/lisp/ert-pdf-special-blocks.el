@@ -41,9 +41,9 @@
           (= 4 (length (org-texmacs-document-stm-paths document))))
          (org-texmacs-document-save document tm)
          (org-texmacs-document-save-pdf document pdf)
-         (org-texmacs-test--issue11-reload-pdf
+         (org-texmacs-test--pdf-render-from-saved-tm
           tm reload test-directory)
-         (org-texmacs-test--issue11-compare-pdfs pdf reload)
+         (org-texmacs-test--pdf-compare-text-and-geometry pdf reload)
          (dolist (file (list pdf reload))
            (let ((text (org-texmacs-test--pdf-text file))
                  (links (org-texmacs-test--pdf-links file)))
@@ -150,7 +150,8 @@
                              test-directory)))
        (org-texmacs-document-save document tm)
        (org-texmacs-document-save-pdf document pdf)
-       (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+       (org-texmacs-test--pdf-render-from-saved-tm
+        tm reload test-directory)
        (dolist (file (list pdf reload))
          ;; Poppler may extract a font ligature as a compatibility character,
          ;; for example U+FB01 in Definition.  Normalize only the test's text.

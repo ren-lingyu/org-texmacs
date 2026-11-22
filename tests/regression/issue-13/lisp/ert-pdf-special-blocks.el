@@ -85,7 +85,7 @@
            (org-texmacs-session-close session))
          (org-texmacs-document-save document tm)
          (org-texmacs-document-save-pdf document pdf)
-         (org-texmacs-test--issue11-reload-pdf
+         (org-texmacs-test--pdf-render-from-saved-tm
           tm reload test-directory)
          (dolist (file (list pdf reload))
            ;; Only the first, numbered equation has a required numeric value.
@@ -117,7 +117,8 @@
                     "\\.html#\\([0-9]+\\)\\'" destination))
                   (should
                    (member (match-string 1 destination) pages)))))))
-         (org-texmacs-test--issue11-compare-pdfs pdf reload))))))
+         (org-texmacs-test--pdf-compare-text-and-geometry
+          pdf reload))))))
 
 (ert-deftest
     org-texmacs-issue13-stage4-exporter-native-links-and-provenance
@@ -186,7 +187,7 @@
            (org-texmacs-session-close session))
          (org-texmacs-document-save document tm)
          (org-texmacs-document-save-pdf document pdf)
-         (org-texmacs-test--issue11-reload-pdf
+         (org-texmacs-test--pdf-render-from-saved-tm
           tm reload test-directory)
          (dolist (file (list pdf reload))
            (let ((links (org-texmacs-test--pdf-links file)))
@@ -204,7 +205,8 @@
                  (should entry)
                  (should
                   (string-match-p "\\.html#2\\'" (cdr entry)))))))
-         (org-texmacs-test--issue11-compare-pdfs pdf reload))))))
+         (org-texmacs-test--pdf-compare-text-and-geometry
+          pdf reload))))))
 
 (ert-deftest
     org-texmacs-issue13-source-real-islands-and-native-statements
@@ -255,7 +257,8 @@
             :stm-paths
             '((0 0 1)))
            reference)
-          (org-texmacs-test--issue11-compare-pdfs pdf reference)
+          (org-texmacs-test--pdf-compare-text-and-geometry
+           pdf reference)
           (let ((case-fold-search t))
             ;; PDF text may retain font ligatures (Deﬁnition).  Require the
             ;; native title/counter, not merely acceptance of an unknown tag.
@@ -273,9 +276,9 @@
                    (expand-file-name (concat
                                       (symbol-name tag) "-reload.pdf")
                                      test-directory)))
-              (org-texmacs-test--issue11-reload-pdf
+              (org-texmacs-test--pdf-render-from-saved-tm
                tm reload test-directory)
-              (org-texmacs-test--issue11-compare-pdfs
+              (org-texmacs-test--pdf-compare-text-and-geometry
                pdf reload)))))))))
 
 (ert-deftest
@@ -342,14 +345,16 @@
            :stm-paths
            '((0 0) (1 0) (2 0) (3 0 0 0)))
           reference)
-         (org-texmacs-test--issue11-compare-pdfs pdf reference)
+         (org-texmacs-test--pdf-compare-text-and-geometry
+          pdf reference)
          (let ((text (org-texmacs-test--pdf-text pdf)))
            (should (string-match-p "(1)" text))
            (should (string-match-p "(2)" text))
            (should-not (string-match-p "(3)" text)))
-         (org-texmacs-test--issue11-reload-pdf
+         (org-texmacs-test--pdf-render-from-saved-tm
           tm reload test-directory)
-         (org-texmacs-test--issue11-compare-pdfs pdf reload))))))
+         (org-texmacs-test--pdf-compare-text-and-geometry
+          pdf reload))))))
 
 (ert-deftest org-texmacs-issue13-stage3-native-prevalidation ()
   (org-texmacs-test--with-worker
@@ -422,8 +427,9 @@
             (should (string-match-p pattern text))))
          (should-not
           (string-match-p "Figure 4\\.\\|Table 4\\." text)))
-       (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
-       (org-texmacs-test--issue11-compare-pdfs pdf reload)
+       (org-texmacs-test--pdf-render-from-saved-tm
+        tm reload test-directory)
+       (org-texmacs-test--pdf-compare-text-and-geometry pdf reload)
        (cl-mapc
         (lambda (a b) (should (<= (abs (- a b)) 1)))
         (org-texmacs-test--issue13-stage3-graphic-ink pdf)
@@ -495,10 +501,11 @@
            :style
            (list style))
           reference)
-         (org-texmacs-test--issue11-compare-pdfs pdf reference)
-         (org-texmacs-test--issue11-reload-pdf
+         (org-texmacs-test--pdf-compare-text-and-geometry
+          pdf reference)
+         (org-texmacs-test--pdf-render-from-saved-tm
           tm reload test-directory)
-         (org-texmacs-test--issue11-compare-pdfs pdf reload)
+         (org-texmacs-test--pdf-compare-text-and-geometry pdf reload)
          (should
           (equal
            (org-texmacs-test--issue13-stage3-graphic-ink pdf)

@@ -6,7 +6,7 @@ Rasterize using existing Poppler, excluding the label's word box."
   (let* ((word
           (cl-find
            "Diagram"
-           (org-texmacs-test--issue11-pdf-geometry pdf)
+           (org-texmacs-test--pdf-words-tolerant pdf)
            :key #'car
            :test #'equal))
          (box (cdr word))

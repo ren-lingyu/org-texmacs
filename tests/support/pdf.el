@@ -1,13 +1,14 @@
 ;;; pdf.el --- Repository ERT pdf fixtures -*- lexical-binding: t; -*-
 
-(defun org-texmacs-test--issue11-compare-pdfs (actual expected)
-  "Check text and per-word geometry of ACTUAL and EXPECTED in matched contexts."
+(defun org-texmacs-test--pdf-compare-text-and-geometry
+    (actual expected)
+  "Check that ACTUAL and EXPECTED match in text and per-word geometry."
   (should
    (equal
     (org-texmacs-test--pdf-text actual)
     (org-texmacs-test--pdf-text expected)))
-  (let ((words (org-texmacs-test--issue11-pdf-geometry actual))
-        (reference (org-texmacs-test--issue11-pdf-geometry expected)))
+  (let ((words (org-texmacs-test--pdf-words-tolerant actual))
+        (reference (org-texmacs-test--pdf-words-tolerant expected)))
     (should (= (length words) (length reference)))
     (cl-mapc
      (lambda (a b)
@@ -18,8 +19,8 @@
         (cdr b)))
      words reference)))
 
-(defun org-texmacs-test--issue11-pdf-geometry (pdf)
-  "Return PDF word text and boxes, tolerating native math control characters.
+(defun org-texmacs-test--pdf-words-tolerant (pdf)
+  "Return word text and bounding boxes from PDF, tolerating math controls.
 Poppler can emit XML-invalid controls in mathematical glyph text; match its
 bounded word records rather than interpreting the whole output as XML."
   (with-temp-buffer
@@ -42,8 +43,9 @@ bounded word records rather than interpreting the whole output as XML."
       (should words)
       (nreverse words))))
 
-(defun org-texmacs-test--issue11-reload-pdf (tm pdf directory)
-  "Render saved TM to PDF in an independent native process under DIRECTORY."
+(defun org-texmacs-test--pdf-render-from-saved-tm (tm pdf directory)
+  "Open saved document TM in a fresh TeXmacs process and render it to PDF.
+Use DIRECTORY for the script and temporary TeXmacs configuration."
   (let* ((script (expand-file-name "reload.scm" directory))
          (process-environment (copy-sequence process-environment))
          process)
@@ -54,13 +56,13 @@ bounded word records rather than interpreting the whole output as XML."
         (insert
          "(use-modules (generic document-edit))\n"
          (format
-          "(begin (catch #t (lambda () (load-buffer (system->url %S)) (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer)) (update-forced) (print-to-file (system->url %S)) (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer)) (update-forced) (print-to-file (system->url %S)) (display \"ISSUE11-RELOAD-OK\\n\")) (lambda args (display \"ISSUE11-RELOAD-ERROR\") (write args))) (quit-TeXmacs))\n"
+          "(begin (catch #t (lambda () (load-buffer (system->url %S)) (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer)) (update-forced) (print-to-file (system->url %S)) (do ((pass 0 (+ pass 1))) ((= pass 3)) (update-current-buffer)) (update-forced) (print-to-file (system->url %S)) (display \"PDF-RENDER-FROM-SAVED-TM-OK\\n\")) (lambda args (display \"PDF-RENDER-FROM-SAVED-TM-ERROR\") (write args))) (quit-TeXmacs))\n"
           tm pdf pdf))))
     (unwind-protect
         (with-temp-buffer
           (setq process
                 (make-process
-                 :name "org-texmacs-test-issue11-reload"
+                 :name "org-texmacs-test-pdf-render-from-saved-tm"
                  :buffer (current-buffer)
                  :connection-type 'pipe
                  :coding 'utf-8-unix
@@ -82,7 +84,8 @@ bounded word records rather than interpreting the whole output as XML."
            (should-not (process-live-p process))
            (should (= 0 (process-exit-status process)))
            (should
-            (string-match-p "ISSUE11-RELOAD-OK" (buffer-string))))
+            (string-match-p
+             "PDF-RENDER-FROM-SAVED-TM-OK" (buffer-string))))
           (should (file-exists-p pdf)))
       (when (and process (process-live-p process))
         (delete-process process)))))

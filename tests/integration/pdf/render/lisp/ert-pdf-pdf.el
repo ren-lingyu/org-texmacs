@@ -498,7 +498,8 @@
                    (current-buffer))))
              (org-texmacs-document-save document tm)
              (org-texmacs-document-save-pdf document pdf)))
-         (org-texmacs-test--issue11-reload-pdf tm reload directory)
+         (org-texmacs-test--pdf-render-from-saved-tm
+          tm reload directory)
          (should
           (equal
            (org-texmacs-test--pdf-text pdf)
@@ -670,7 +671,8 @@
             (string-suffix-p
              ".html#2" (cdr (assoc "InternalLink" links))))
            (should-not (assoc "TargetBody" links))))
-       (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+       (org-texmacs-test--pdf-render-from-saved-tm
+        tm reload test-directory)
        (let ((links (org-texmacs-test--pdf-links reload)))
          (should (equal uri (cdr (assoc "ExternalLink" links))))
          (should
@@ -751,7 +753,7 @@
                   (expand-file-name "links-native-reload.pdf"
                                     test-directory)))
              (org-texmacs-document-save document tm)
-             (org-texmacs-test--issue11-reload-pdf
+             (org-texmacs-test--pdf-render-from-saved-tm
               tm reload test-directory)
              (should
               (equal
@@ -1177,7 +1179,8 @@
                    (org-element-restriction 'headline)))))
              (org-texmacs-document-save document tm)
              (org-texmacs-document-save-pdf document pdf)))
-         (org-texmacs-test--issue11-reload-pdf tm reload directory)
+         (org-texmacs-test--pdf-render-from-saved-tm
+          tm reload directory)
          (should
           (equal
            (org-texmacs-test--pdf-text pdf)

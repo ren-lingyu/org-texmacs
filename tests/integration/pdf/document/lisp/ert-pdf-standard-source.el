@@ -41,10 +41,11 @@
          (flatten-tree (cadr (org-texmacs-document-body document)))))
        (org-texmacs-document-save-pdf document pdf)
        (org-texmacs-document-save document tm)
-       (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+       (org-texmacs-test--pdf-render-from-saved-tm
+        tm reload test-directory)
        (should
         (equal island (cdar (org-texmacs-input-islands input))))
-       (let ((words (org-texmacs-test--issue11-pdf-geometry pdf)))
+       (let ((words (org-texmacs-test--pdf-words-tolerant pdf)))
          (cl-labels
           ((center (word) (/ (+ (nth 2 word) (nth 4 word)) 2.0))
            (word
@@ -154,7 +155,8 @@
        (org-texmacs-document-save-pdf document actual)
        (org-texmacs-document-save-pdf expected reference)
        (org-texmacs-document-save document tm)
-       (org-texmacs-test--issue11-reload-pdf tm reload test-directory)
+       (org-texmacs-test--pdf-render-from-saved-tm
+        tm reload test-directory)
        ;; Math fonts do not reliably extract as Unicode. Compare actual ink to
        ;; independently authored native symbols, also after a saved TM reload.
        (cl-labels
