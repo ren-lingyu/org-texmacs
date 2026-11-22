@@ -18,6 +18,10 @@
 
 !/elisp/
 !/elisp/default.nix
+!/elisp/org10pre/
+!/elisp/org10pre/**/
+!/elisp/org10pre/**/*.el
+!/elisp/org10pre/**/*.patch
 !/elisp/package-lint.el
 !/elisp/src/
 !/elisp/src/org-texmacs-*.el
@@ -42,7 +46,11 @@
 
 !/tests/
 !/tests/**/
+!/tests/**/*.el
 !/tests/**/*.nix
+!/tests/**/*.patch
+!/tests/**/*.py
+!/tests/**/*.scm
 
 *#
 **/tmp/

@@ -8,6 +8,7 @@
   testFiles,
   helpers,
   tools ? [ ],
+  pure ? false,
   nativeBuildInputs ? [ ],
   environment ? { },
   emacsArgs ? [ ],
@@ -22,6 +23,7 @@ runCommand name
       ORG_TEXMACS_TEST_HELPERS = builtins.toJSON helpers;
       ORG_TEXMACS_TEST_FILES = builtins.toJSON testFiles;
       ORG_TEXMACS_TEST_TOOLS = builtins.toJSON tools;
+      ORG_TEXMACS_TEST_PURE = if pure then "1" else "0";
       ORG_TEXMACS_TEST_STRICT_TOOLS = "1";
     }
   )

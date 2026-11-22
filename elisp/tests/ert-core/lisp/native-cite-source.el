@@ -1,7 +1,8 @@
-;;; native-cite-source.el --- Native source snapshot regressions -*- lexical-binding: t; -*-
+;;; native-cite-source.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
 (defconst org-texmacs-test--native-source-text
   "@book{one,title={One},author={Alpha, Ada},year={2026}}\n")
+
 (defconst org-texmacs-test--native-source-tree
   '(document
     (bib-entry
@@ -287,3 +288,5 @@
         (should-error
          (org-texmacs--prepared-cite-check input)
          :type 'org-texmacs-document-error)))))
+
+;;; native-cite-source.el ends here

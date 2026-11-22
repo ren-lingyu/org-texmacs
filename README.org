@@ -1447,7 +1447,7 @@ consume extra footnote numbers.  GUI/PDF visibility, numbering, directory entrie
 and page placement are not guaranteed.  The exporter preserves the native AST;
 it does not split notes into separate references/anchors or predict float layout.
 The test-only Org patch and isolated check live together in
-=elisp/tests/caption-inline-footnotes/=.  They exercise independent parsing, native lowering and standard source rejection;
+=tests/regression/org-caption-inline-footnotes/=.  They exercise independent parsing, native lowering and standard source rejection;
 the default package, default ERT and normal installation still use stock Org and
 neither include nor activate the patch.
 
@@ -1766,13 +1766,13 @@ required.  Org owns recursive INCLUDE and its file/selection policies.
 
 ** Real Org extension integration
 The standard Cite acceptance suite runs as the
-=emacsPackages-org-texmacs-standard-cite-integration= flake check.
+=integration-org-roam-organize= flake check.
 It pins =org-roam-organize= revision
 =56fdaac6adab06deafc23357aec63ae2a497e09b= and uses project-locked Org-roam and
 =citeproc=. To run this check on its own:
 
 #+begin_src sh
-  nix build --no-link --no-write-lock-file .#checks.x86_64-linux.emacsPackages-org-texmacs-standard-cite-integration
+  nix build --no-link --no-write-lock-file .#checks.x86_64-linux.integration-org-roam-organize
 #+end_src
 
 This check runs real mode setup, SQLite queries, UUID-to-key AST
@@ -1781,9 +1781,9 @@ It checks single preparation/processor calls and identical live INFO, excludes
 unused managed bibliographies, renders PDF directly from the completed native
 document, and checks standard text/HTML export and source/global restoration.
 It has no production extension-specific adapter or business-logic mock. The
-=ert-cite= suite uses local fixtures to cover standard CSL processing, citation
-positions and affixes, text filters, finalizer compatibility, and native PDF.
-Its Emacs wrapper includes =citeproc=.
+=ert-csl= package suite covers structured CSL processing, citation positions
+and affixes, and finalizer compatibility. The Native and PDF integration suites
+cover native CSL output. These checks include =citeproc= where required.
 
 The locked native semantic audit also exercises static code line/blank-line
 geometry, multiparagraph and nested lists, two table caption counters and
@@ -2504,33 +2504,25 @@ Run from the repository root:
   nix build --no-link --no-write-lock-file .#org-texmacs
   # Build Emacs with the package and its Lisp dependencies.
   nix build --no-link --no-write-lock-file .#emacs
-  # Run one ERT group, or select emacsPackages-org-texmacs-ert
-  # for core, native, Cite, and PDF.
+  # Run the core package contract check.
   nix build --no-link --no-write-lock-file .#checks.x86_64-linux.emacsPackages-org-texmacs-ert-core
   # Test the native GoToR renderer independently of Org and font wrappers.
   nix build --no-link --no-write-lock-file .#checks.x86_64-linux.texmacs-with-gotor-support-gotor-regression
 #+end_src
 
-The package build runs package-lint in its check phase and byte-compiles the
-Lisp libraries. ERT checks cover real headless TeXmacs parsing, worker
-lifecycle, Org block cache integration, fragment source boundaries and
-captured syntax. Native checks include multi-row formula groups.
-A missing
-TeXmacs executable fails the integration tests instead of skipping them.
-Document tests cover structural lowering, source-dependent native encoding,
-session updates and failure recovery, with independent native readback
-expectations.  Fixed document/session fixtures run against the installed package;
-tests do not read or parse this README.  Loading checks require every module
-and the adjacent Scheme service file.  The =ert-core= check covers cases without
-native execution, =ert-native= covers worker/session/serialization behavior,
-=ert-cite= covers CSL and native PDF using test-only =citeproc=, and PDF cases run in two independent checks: =ert-pdf-render= for the PDF
-rendering suite and =ert-pdf-document= for document, frontend, preprocessing,
-serialization, special-block and worker PDF suites.  Both use the shared native
-PDF helpers and inspection tools.  =ert-pdf= aggregates their logs and test names,
-rejecting duplicate names across the two groups.  =ert= aggregates =ert-core=,
-=ert-native=, =ert-cite= and =ert-pdf= without running their cases again.  Each group can be
-built separately; complete flake checks include every group.  Nix may schedule
-independent groups concurrently, subject to its build limits.
+The package build runs package-lint and byte-compiles the Lisp libraries.
+The =ert-core= suite checks Model, STM, Org Export, lowering, and frontend
+contracts. =ert-csl= checks structured citation handling with =citeproc=.
+Their test environments omit TeXmacs from =PATH= and guard worker startup.
+The installed package retains the selected executable for export.
+
+Repository checks run against stock =org-texmacs=. The =integration-native=
+check exercises the real worker, sessions, STM codec comparison, and native
+readback. The PDF checks run as =integration-pdf-render= and
+=integration-pdf-document=. They inspect rendered text, layout, links, and
+reloads. =integration-org-roam-organize= tests the pinned external extension.
+Checks under =regression-*= preserve specific historical failure cases,
+parser compatibility, and the TeXmacs 2.1.5 caption footnote layout diagnostic.
 Nix checks the current system by default.  These commands may download
 dependencies and write Nix store/cache data; they do not update the lockfile,
 and the build command does not create a =result= link.
@@ -2541,15 +2533,10 @@ controls and relocation.  It also checks that the source guard accepts unrelated
 renderer changes and rejects changed link dispatch or repeated patching.  It
 uses neither org-texmacs nor a font wrapper and does not test GUI navigation.
 
-The =ert= aggregates include the shared direct-AST caption-footnote tests.
-The separate =emacsPackages-org-texmacs-caption-inline-footnotes=
-check builds the locked Org 9.8.10 with the adjacent test-only patch and
-checks the pure-model support and standard source-export rejection boundary.
-The check is available when the Emacs package set provides Org 9.8.10.
-It does not change =packages.org-texmacs=, =packages.emacs= or the ordinary
-development environment.
-The default flake checks include the standard Cite integration suite and
-fetch its pinned extension source.
+The =regression-org-caption-inline-footnotes= check builds the locked Org
+9.8.10 with its test-only parser patch. Its tests cover Model support,
+standard source-export rejection, and native readback. It applies to Org
+9.8.10.
 
 *** Org 10.0pre compatibility variant
 The experimental =org-10pre-texmacs= package uses a private build of
@@ -2557,46 +2544,39 @@ The experimental =org-10pre-texmacs= package uses a private build of
 Use the flake package or select =emacsPackages.org-10pre-texmacs= after
 applying =overlays.emacsPackages=. The package accepts =org= and =texmacs=
 through =.override=. The =org= argument selects Org for the variant's private
-scope, including =citeproc= and =org-roam= in the Cite test environments.
-The =texmacs= argument selects the default executable and the package used
-by tests that require TeXmacs. The compatibility patch also applies to Org
-overrides. Its tested scope is the pinned snapshot.
+scope, including =citeproc= in the CSL test environment.
+The =texmacs= argument selects the default executable embedded in the variant.
+The compatibility patch also applies to Org overrides. Its tested scope is the
+pinned snapshot. The package overlays set the internal =org10pre= flag
+explicitly. It selects the compatibility patch and the SETUPFILE test under
+=elisp/org10pre/= independently of the Org version string. The public =.override=
+arguments for this variant are =org= and =texmacs=.
 
-The default =nix flake check= includes the checks for both Org 9.8.10 and
-the pinned Org 10.0pre variant. The caption footnote patch check applies
-only to Org 9.8.10. The variant's checks use the selected Org through its
-private package scope. The separate =ert-setupfile= suite checks that Emacs
-loads the selected Org and the patched Org TeXmacs package. It also covers
-nested setup files, Model ownership and serialization. To run checks
-separately, use the package outputs below.
+The default =nix flake check= includes package tests for Org 9.8.10 and
+the pinned Org 10.0pre variant. The =ert-setupfile= check is registered
+for the explicit compatibility build. It verifies the loaded Org and patched
+Org TeXmacs package, nested setup files, Model ownership, and serialization.
 
 #+begin_src sh
   nix build --no-link --no-write-lock-file .#org-10pre-texmacs
   nix build --no-link --no-write-lock-file .#org-10pre-texmacs.tests.ert-core \
-    .#org-10pre-texmacs.tests.ert-native .#org-10pre-texmacs.tests.ert-cite \
-    .#org-10pre-texmacs.tests.ert-pdf \
-    .#org-10pre-texmacs.tests.standard-cite-integration \
-    .#org-10pre-texmacs.tests.ert-setupfile
+    .#org-10pre-texmacs.tests.ert-csl .#org-10pre-texmacs.tests.ert-setupfile
 #+end_src
 
 *** Test discovery
-The =elisp/default.nix= package description uses =tests.mkChecks= to discover
-its =elisp/tests/= suites and expose them through =passthru.tests=. The TeXmacs
-GoToR package owns its regression in the same way. =tests/default.nix= collects
-package tests from =legacyPackages= and discovers flake-level directories
-containing =test-overlay.nix=. Package checks appear under
-=checks.<system>.<package-path>-<test>=, with hyphens between the package path
-components.
-Test runtimes, sources and shared support enter through explicit Nix arguments;
-Lisp runners use supplied paths without searching parent directories.
+Package suites in =elisp/tests/= expose checks through =passthru.tests=.
+The repository collects those checks from =legacyPackages= and discovers
+leaf suites under =tests/integration/= and =tests/regression/= in the same
+=mkChecks= call. A =test-overlay.nix= exports a leaf under its directory
+name. The flake joins namespace components with hyphens.
 
-The shared =elisp/tests/support/mk-ert-check.nix= driver runs ERT in an isolated HOME,
-streams combined output to the Nix build log and saves =ert.log= and
-=test-names.txt= in each ERT result.  Pipeline failure remains a failed check.
-Required test tools must be present in the Nix check environment; missing inputs,
-empty suites and duplicate case registrations are errors.  Each executing ERT
-check has a 600-second outer timeout; package-lint has 120 seconds.  Existing
-per-operation failure and cleanup checks retain their own bounds.
+Package and repository tests each have their own support directory.
+Repository suites share the runner and common fixtures in =tests/support/=
+and keep scenario-specific fixtures beside their tests.
+Each ERT check runs with an isolated HOME and saves =ert.log= and
+=test-names.txt=. Missing test inputs or tools, empty suites, duplicate
+registrations, and failing tests fail the check. The ERT timeout is
+600 seconds. Package-lint has a 120-second timeout.
 
 The flake provides =nix fmt= through treefmt to apply the configured formatters.
 =nix flake check= also includes the treefmt formatting check.  Org files,

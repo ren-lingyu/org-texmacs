@@ -1,113 +1,6 @@
-;;; native-cite.el --- Native processor ownership regressions -*- lexical-binding: t; -*-
+;;; native-cite.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
 (require 'org-texmacs-cite-native)
-
-(defvar org-texmacs-test--native-cite-fulfiller #'identity)
-
-(defun org-texmacs-test--native-cite-fill (input)
-  "Complete INPUT with fixed native data, without reading bibliography files."
-  (let* ((plan
-          (plist-get
-           (org-texmacs-input-info input)
-           :texmacs-cite-plan))
-         (sources
-          (mapcar
-           (lambda (file)
-             (cons
-              file
-              '(document
-                (bib-entry
-                 "book" "one" (document (bib-field "title" "One")))
-                (bib-entry
-                 "book" "two" (document (bib-field "title" "Two"))))))
-           (plist-get plan :files)))
-         (prepared (org-texmacs--input-cite-result input sources nil))
-         (view
-          (plist-get
-           (org-texmacs-input-info prepared)
-           :texmacs-cite-plan))
-         (prefix (plist-get view :prefix))
-         (keys (plist-get view :keys))
-         (body
-          (list
-           'bib-list (number-to-string (length keys))
-           (cons
-            'document
-            (cl-loop
-             for key in keys for n from 1 collect
-             (list
-              'concat (list 'bibitem* (number-to-string n))
-              (list
-               'label (concat prefix "-" key))
-              (concat "Mock " key)))))))
-    (org-texmacs--input-cite-result
-     prepared sources
-     (list prefix keys (plist-get view :entries) body))))
-
-(defun org-texmacs-test--native-cite-prepare (text &optional scope)
-  "Prepare TEXT in a genuine export, optionally using subtree or visible SCOPE."
-  (with-temp-buffer
-    (org-mode)
-    (insert
-     "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
-     "#+bibliography: /fixtures/references.bib\n"
-     "#+cite_export: texmacs-native plain\n"
-     text)
-    (when (eq scope 'subtree)
-      (goto-char (point-min))
-      (re-search-forward "^\\* Keep")
-      (beginning-of-line))
-    (when (eq scope 'visible)
-      (goto-char (point-min))
-      (re-search-forward "^\\* Hidden")
-      (beginning-of-line)
-      (org-fold-hide-subtree))
-    (let ((org-export-use-babel nil)
-          (source (buffer-string))
-          input
-          region)
-      (when (eq scope 'region)
-        (goto-char (point-min))
-        (search-forward "Keep region")
-        (beginning-of-line)
-        (let ((begin (point)))
-          (search-forward "Outside tail")
-          (beginning-of-line)
-          (setq region (cons begin (point)))))
-      (cl-letf (((symbol-function
-                  'org-texmacs--prepared-cite-snapshot)
-                 #'identity)
-                ((symbol-function 'org-texmacs--prepared-cite-fulfill)
-                 org-texmacs-test--native-cite-fulfiller)
-                ((symbol-function 'org-texmacs--worker-request)
-                 (lambda (&rest _)
-                   (ert-fail
-                    "Mock native preparation started worker"))))
-        (setq input
-              (if region
-                  (org-texmacs-prepare-buffer
-                   (current-buffer) nil nil region)
-                (org-texmacs--standard-consume
-                 'input (eq scope 'subtree) (eq scope 'visible)))))
-      (should (equal source (buffer-string)))
-      input)))
-
-(defun org-texmacs-test--native-cite-lower (input)
-  "Lower INPUT while forbidding native work and source citation collection."
-  (cl-letf (((symbol-function 'org-texmacs--worker-request)
-             (lambda (&rest _)
-               (ert-fail "Pure citation lowering started worker")))
-            ((symbol-function 'org-texmacs--worker-call)
-             (lambda (&rest _)
-               (ert-fail "Pure citation lowering called worker")))
-            ((symbol-function 'insert-file-contents)
-             (lambda (&rest _)
-               (ert-fail "Pure citation lowering read file")))
-            ((symbol-function 'org-texmacs--bibliography-collect)
-             (lambda (&rest _)
-               (ert-fail
-                "Prepared native citations were recollected"))))
-    (org-texmacs-document-body (org-texmacs-document input))))
 
 (ert-deftest org-texmacs-native-cite-requests-and-owned-result ()
   (let*
@@ -382,7 +275,6 @@
     (org-texmacs-test--native-cite-prepare
      "[cite:@one]\n#+print_bibliography:\n"))))
 
-
 (ert-deftest org-texmacs-native-cite-supported-inline-contexts ()
   (dolist
       (text
@@ -551,3 +443,5 @@
       (should (= processing 1))
       (should (= filters 1))
       (should (equal source (buffer-string))))))
+
+;;; native-cite.el ends here

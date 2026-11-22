@@ -1,5 +1,7 @@
-;;; native-cite-default.el --- Standard native default precedence -*- lexical-binding: t; -*-
+;;; native-cite-default.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
+
 (require 'ox-html)
+
 (require 'ox-latex)
 
 (cl-defun
@@ -418,3 +420,5 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
             (should (equal selected (nth 1 case)))
             (should (equal (plist-get plan :style) (nth 2 case)))
             (should (equal (plist-get plan :keys) '("key")))))))))
+
+;;; native-cite-default.el ends here

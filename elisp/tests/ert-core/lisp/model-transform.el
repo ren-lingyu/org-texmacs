@@ -1,12 +1,8 @@
-;;; model-transform.el --- Pure snapshot transformation regressions -*- lexical-binding: t; -*-
-
-;;; Commentary:
-
-;; Exercise native graph ownership without a parser or export consumer.
-
-;;; Code:
+;;; model-transform.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
 (require 'org-texmacs-model)
+
+(require 'org-texmacs-serialize)
 
 (defun org-texmacs-test--transform-model ()
   "Return a supplied model with secondary objects and forward references."
@@ -71,6 +67,20 @@
     (maphash
      (lambda (object _) (should-not (gethash object others)))
      objects)))
+
+(defun org-texmacs-test--transformed-round-trip (model)
+  "Assert supported MODEL's structure and normalization survive Org output."
+  (let* ((text (org-texmacs-model-serialize model))
+         (again
+          (with-temp-buffer
+            (org-mode)
+            (insert text)
+            (org-texmacs-parse-buffer (current-buffer)))))
+    (should
+     (equal
+      (org-texmacs-test--model-meaning model)
+      (org-texmacs-test--model-meaning again)))
+    (should (equal text (org-texmacs-model-serialize again)))))
 
 (ert-deftest org-texmacs-model-transform-is-pure-structure ()
   (let ((model (org-texmacs-test--transform-model)))
@@ -255,5 +265,95 @@
   (should-error
    (org-texmacs-model-island nil nil)
    :type 'org-texmacs-model-error))
+
+(ert-deftest org-texmacs-model-native-transformed-subtrees-round-trip
+    ()
+  (org-texmacs-test--with-environment
+   (let* ((model
+           (with-temp-buffer
+             (org-mode)
+             (insert
+              "# Keep\n* COMMENT Heading\n"
+              "Before $(math (frac \"1\" \"2\"))$.\n\n"
+              "#+CAPTION: Caption *kept*\n#+begin_texmacs\n"
+              "(math \"old\")\n#+end_texmacs\n")
+             (org-texmacs-parse-buffer (current-buffer))))
+          (before (org-texmacs-test--model-meaning model))
+          copy
+          changed)
+     (cl-letf (((symbol-function 'org-texmacs--worker-call)
+                (lambda (&rest _)
+                  (ert-fail "Transformation started worker")))
+               ((symbol-function 'org-texmacs-model-serialize)
+                (lambda (&rest _)
+                  (ert-fail "Transformation used text"))))
+       (setq
+        copy (org-texmacs-model-copy model)
+        changed
+        (org-texmacs-model-replace-stm
+         copy
+         (caar
+          (org-texmacs-model-islands copy))
+         '(0 1) '(sqrt "中\nx")))
+       (setq changed
+             (org-texmacs-model-replace-stm
+              changed
+              (car (nth 1 (org-texmacs-model-islands changed)))
+              nil
+              '(frac "3" "4"))))
+     (org-texmacs-test--transformed-round-trip copy)
+     (org-texmacs-test--transformed-round-trip changed)
+     (should
+      (equal
+       (mapcar #'cdr (org-texmacs-model-islands changed))
+       '((math (frac "1" (sqrt "中\nx"))) (frac "3" "4"))))
+     (should
+      (equal before (org-texmacs-test--model-meaning model))))))
+
+(ert-deftest
+    org-texmacs-model-native-root-change-outside-output-domain
+    ()
+  (org-texmacs-test--with-environment
+   (let* ((model
+           (with-temp-buffer
+             (org-mode)
+             (insert "Before $(math \"old\")$.\n")
+             (org-texmacs-parse-buffer (current-buffer))))
+          (changed
+           (org-texmacs-model-replace-stm
+            model
+            (caar (org-texmacs-model-islands model))
+            nil
+            '(bad\ tag "1" "2"))))
+     (should (org-texmacs-model-inspect changed))
+     (should (org-texmacs-model-copy changed))
+     (cl-letf (((symbol-function 'org-texmacs--worker-call)
+                (lambda (&rest _)
+                  (ert-fail "Inexpressible output reached worker"))))
+       (should-error
+        (org-texmacs-model-serialize changed)
+        :type 'org-texmacs-model-serialization-error))
+     (should
+      (equal
+       (cdar (org-texmacs-model-islands changed))
+       '(bad\ tag "1" "2")))
+     (should
+      (equal
+       (cdar (org-texmacs-model-islands model)) '(math "old"))))))
+
+(ert-deftest org-texmacs-model-native-root-change-without-tag-list ()
+  (org-texmacs-test--with-environment
+   (let* ((model
+           (with-temp-buffer
+             (org-mode)
+             (insert "Before $(math \"old\")$.\n")
+             (org-texmacs-parse-buffer (current-buffer))))
+          (changed
+           (org-texmacs-model-replace-stm
+            model
+            (caar (org-texmacs-model-islands model))
+            nil
+            '(frac "1" "2"))))
+     (org-texmacs-test--transformed-round-trip changed))))
 
 ;;; model-transform.el ends here

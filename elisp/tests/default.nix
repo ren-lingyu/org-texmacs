@@ -4,52 +4,45 @@
   emacsPackages,
   runCommand,
   coreutils,
-  gnutar,
-  patch,
-  texmacs,
-  poppler-utils,
-  python3,
+  setupfileTest,
 }:
 let
   testSupport = import ./support;
-  pdfSuites = import ./ert-pdf/suites.nix;
-
   emacs = emacsPackages.emacsWithPackages (_: [ emacsPackages.org-texmacs ]);
 
-  mkPdfCheck = import ./ert-pdf/mk-check.nix {
-    inherit
-      runCommand
-      coreutils
-      lib
-      emacs
-      testSupport
-      texmacs
-      poppler-utils
-      python3
-      ;
-    pdfInspector = pdfSuites.inspector;
-  };
 in
 mkChecks {
   root = ./.;
   overlayFile = "test-overlay.nix";
   separator = "-";
 
+  checks = lib.optionalAttrs (setupfileTest != null) {
+    ert-setupfile = testSupport.mkErtCheck {
+      inherit
+        runCommand
+        coreutils
+        lib
+        testSupport
+        emacs
+        ;
+      name = "org-texmacs-org-10pre-ert-setupfile";
+      testFiles = [ setupfileTest ];
+      helpers = [ ];
+      pure = true;
+      environment = {
+        ORG_TEXMACS_TEST_EXPECTED_ORG = emacsPackages.org;
+        ORG_TEXMACS_TEST_EXPECTED_PACKAGE = emacsPackages.org-texmacs;
+      };
+    };
+  };
   args = {
     inherit
       lib
       runCommand
       coreutils
-      gnutar
-      patch
-      texmacs
-      poppler-utils
-      python3
       emacsPackages
       emacs
       testSupport
-      pdfSuites
-      mkPdfCheck
       ;
   };
 }

@@ -67,7 +67,7 @@
                 };
 
                 checks = import ./tests {
-                  inherit lib llib;
+                  inherit lib llib pkgs;
                   packages = pkgs.legacyPackages;
                 };
 

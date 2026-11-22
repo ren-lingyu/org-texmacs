@@ -1,19 +1,14 @@
 {
   lib,
+  org10pre,
   mkChecks,
   melpaBuild,
   emacsWithPackages,
   citeproc,
   package-lint,
   org,
-  org-roam,
   runCommand,
   coreutils,
-  gnutar,
-  patch,
-  texmacs,
-  poppler-utils,
-  python3,
 }:
 melpaBuild (finalAttrs_: {
   src = lib.fileset.toSource {
@@ -24,6 +19,8 @@ melpaBuild (finalAttrs_: {
   pname = "org-texmacs";
   version = "0.8.0";
   melpaVersion = finalAttrs_.version;
+
+  patches = lib.optionals org10pre [ ./org10pre/patches/org-10pre-compat.patch ];
 
   files = ''(:defaults "org-texmacs-worker.scm")'';
   packageRequires = [ org ];
@@ -48,24 +45,15 @@ melpaBuild (finalAttrs_: {
   '';
 
   passthru.tests = import ./tests {
+    setupfileTest = if org10pre then ./org10pre/tests/setupfile.el else null;
     inherit
       lib
       mkChecks
       runCommand
       coreutils
-      gnutar
-      patch
-      texmacs
-      poppler-utils
-      python3
       ;
     emacsPackages = {
-      inherit
-        emacsWithPackages
-        citeproc
-        org
-        org-roam
-        ;
+      inherit emacsWithPackages citeproc org;
       org-texmacs = finalAttrs_.finalPackage;
     };
   };

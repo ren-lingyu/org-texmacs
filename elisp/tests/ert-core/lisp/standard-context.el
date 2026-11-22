@@ -1,6 +1,19 @@
-;;; standard-context.el --- Standard preparation and query regressions -*- lexical-binding: t; -*-
+;;; standard-context.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
 (require 'ox-texmacs)
+
+(defun org-texmacs-test--standard-body
+    (source &optional select subtree visible options)
+  "Lower SOURCE through standard export, applying SELECT before preparation."
+  (with-temp-buffer
+    (org-mode)
+    (insert source)
+    (when select
+      (funcall select))
+    (let ((org-export-use-babel nil))
+      (org-texmacs-document-body
+       (org-texmacs--standard-consume
+        'document subtree visible options)))))
 
 (ert-deftest
     org-texmacs-standard-context-options-filter-controls-native-output
@@ -61,19 +74,6 @@
           "#+OPTIONS: *:nil ^:nil\n*bold* and x_{sub}.\n")))
     (should-not (memq 'strong (flatten-tree body)))
     (should (string-match-p "bold" (prin1-to-string body)))))
-
-(defun org-texmacs-test--standard-body
-    (source &optional select subtree visible options)
-  "Lower SOURCE through standard export, applying SELECT before preparation."
-  (with-temp-buffer
-    (org-mode)
-    (insert source)
-    (when select
-      (funcall select))
-    (let ((org-export-use-babel nil))
-      (org-texmacs-document-body
-       (org-texmacs--standard-consume
-        'document subtree visible options)))))
 
 (ert-deftest
     org-texmacs-standard-context-full-subtree-region-narrowing
@@ -277,3 +277,55 @@
           (prin1-to-string
            (org-texmacs-document-body
             (org-texmacs-document input)))))))))
+
+(ert-deftest
+    org-texmacs-standard-context-native-setup-include-and-resource-base
+    ()
+  (org-texmacs-test--with-environment
+   (let* ((subdir (expand-file-name "sub" test-directory))
+          (leaf (expand-file-name "leaf.org" subdir))
+          (middle (expand-file-name "middle.org" test-directory))
+          (setup (expand-file-name "settings.org" test-directory)))
+     (make-directory subdir)
+     (with-temp-file setup
+       (insert
+        "#+TITLE: Setup title\n#+OPTIONS: toc:nil num:nil author:nil date:nil\n"))
+     (with-temp-file leaf
+       (insert
+        "omittedtoken\n* Included\n[[file:asset.pdf][asset]] $(math (sqrt \"x\"))$.\n"))
+     (with-temp-file middle
+       (insert
+        "#+INCLUDE: \"sub/leaf.org\" :lines \"2-\" :minlevel 2\n"))
+     (with-temp-buffer
+       (org-mode)
+       (setq buffer-file-name
+             (expand-file-name "main.org" test-directory))
+       (insert
+        "#+SETUPFILE: \"settings.org\"\n* Parent\n#+INCLUDE: \"middle.org\"\n")
+       (let* ((org-export-use-babel nil)
+              (input (org-texmacs--standard-consume 'input))
+              (info (org-texmacs-input-info input))
+              (query (plist-get info :texmacs-org-query))
+              (file
+               (cdar
+                (org-texmacs-resolution-files
+                 (org-texmacs-input-resolution input))))
+              (body
+               (org-texmacs-document-body
+                (org-texmacs-document input))))
+         (should-not (plist-get info :with-toc))
+         (should-not (plist-get info :section-numbers))
+         (should
+          (equal '(1 2) (mapcar #'cadr (plist-get query :headlines))))
+         (should
+          (equal
+           (expand-file-name file
+                             (org-texmacs-input-resource-base input))
+           (expand-file-name "asset.pdf" subdir)))
+         (should (= (length (org-texmacs-input-islands input)) 1))
+         (should-not
+          (string-match-p "omittedtoken" (prin1-to-string body)))
+         (should
+          (string-match-p "Setup title" (prin1-to-string body))))))))
+
+;;; standard-context.el ends here

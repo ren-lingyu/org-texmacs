@@ -1,10 +1,4 @@
-;;; model.el --- Independent mathematical-document ownership regressions -*- lexical-binding: t; -*-
-
-;;; Commentary:
-
-;; Native Org AST and supplied STM trees, without native worker execution.
-
-;;; Code:
+;;; model.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
 (require 'org-texmacs-model)
 

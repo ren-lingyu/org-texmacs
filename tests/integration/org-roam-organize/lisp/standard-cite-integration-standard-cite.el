@@ -1,0 +1,367 @@
+;;; standard-cite-integration-standard-cite.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
+
+(require 'org-roam)
+
+(require 'org-roam-organize)
+
+(require 'ox-html)
+
+(require 'ucs-normalize)
+
+(ert-deftest org-texmacs-integration-standard-organize-csl-info-once
+    ()
+  (org-texmacs-integration--with-standard-organize
+   (with-temp-buffer
+     (org-mode)
+     (setq
+      default-directory notes
+      buffer-file-name (expand-file-name "root.org" notes))
+     (insert
+      (format
+       "#+cite_export: csl fixture.csl\n[cite:@%s]\n#+print_bibliography:\n"
+       uuid))
+     (let ((org-export-use-babel nil)
+           (before (buffer-string))
+           (globals (copy-tree org-cite-global-bibliography))
+           (prepared 0)
+           (citations 0)
+           (bibliographies 0)
+           live
+           (cite (symbol-function 'org-cite-csl-render-citation))
+           (bibliography
+            (symbol-function 'org-cite-csl-render-bibliography)))
+       (let ((org-export-before-processing-functions
+              (list (lambda (_) (cl-incf prepared)))))
+         (cl-letf (((symbol-function 'org-cite-csl-render-citation)
+                    (lambda (citation style backend info)
+                      (cl-incf citations)
+                      (setq live info)
+                      (should
+                       (org-export-derived-backend-p
+                        backend 'texmacs))
+                      (should
+                       org-roam-organize--cite-export-in-progress)
+                      (should
+                       (equal
+                        '("real-key")
+                        (org-cite-get-references citation t)))
+                      (should
+                       (equal
+                        (list bib) (plist-get info :bibliography)))
+                      (should
+                       (equal
+                        (list bib)
+                        (org-cite-list-bibliography-files)))
+                      (funcall cite citation style backend info)))
+                   ((symbol-function
+                     'org-cite-csl-render-bibliography)
+                    (lambda (keys files style props backend info)
+                      (cl-incf bibliographies)
+                      (should (eq live info))
+                      (should (equal '("real-key") keys))
+                      (should (equal (list bib) files))
+                      (funcall bibliography
+                               keys
+                               files
+                               style
+                               props
+                               backend
+                               info))))
+           (let* ((input (org-texmacs--standard-consume 'input))
+                  (document (org-texmacs-document input))
+                  (printed
+                   (prin1-to-string
+                    (org-texmacs-document-body document))))
+             (should
+              (string-match-p "Actual fixture reference" printed))
+             (should (string-match-p "hlink" printed))
+             (should-not (string-match-p uuid printed))
+             (should-not
+              (string-match-p "Unused reference" printed)))))
+       (should (= 1 prepared))
+       (should (= 1 citations))
+       (should (= 1 bibliographies))
+       (should-not org-roam-organize--cite-export-in-progress)
+       (should (equal before (buffer-string)))
+       (should (equal globals org-cite-global-bibliography))))))
+
+(ert-deftest
+    org-texmacs-integration-standard-organize-csl-native-pdf-and-html
+    ()
+  (org-texmacs-integration--with-standard-organize
+   (with-temp-buffer
+     (org-mode)
+     (setq
+      default-directory notes
+      buffer-file-name (expand-file-name "root.org" notes))
+     (insert
+      (format
+       "#+cite_export: csl fixture.csl\n[cite:@%s] \\((math \"x\")\\)\n#+print_bibliography:\n"
+       uuid))
+     (let ((org-export-use-babel nil)
+           (before (buffer-string)))
+       (cl-letf (((symbol-function 'org-texmacs-document-serialize)
+                  (lambda (&rest _)
+                    (ert-fail "Unexpected PDF text serialization"))))
+         (let ((bytes (org-texmacs--standard-consume 'pdf))
+               (file (expand-file-name "actual.pdf" notes)))
+           (should (string-prefix-p "%PDF-" bytes))
+           (let ((coding-system-for-write 'no-conversion))
+             (write-region bytes nil file nil 'silent))
+           (let ((text
+                  (ucs-normalize-NFKC-string
+                   (org-texmacs-test--pdf-text file))))
+             (should (string-match-p "Actual fixture reference" text))
+             (should-not (string-search "<#200B>" text)))))
+       (should
+        (string-match-p
+         "Actual fixture reference" (org-export-as 'html)))
+       (should (string-match-p "TeXmacs" (org-export-as 'texmacs)))
+       (should (equal before (buffer-string)))
+       (should-not org-roam-organize--cite-export-in-progress)))))
+
+(ert-deftest
+    org-texmacs-integration-standard-organize-interactive-commands
+    ()
+  (org-texmacs-integration--with-standard-organize
+   (with-temp-buffer
+     (org-mode)
+     (setq
+      default-directory notes
+      buffer-file-name (expand-file-name "root.org" notes))
+     (insert
+      (format
+       "#+cite_export: csl fixture.csl
+[cite:@%s]
+#+print_bibliography:
+"
+       uuid))
+     (let ((org-export-use-babel nil)
+           (org-export-show-temporary-export-buffer nil)
+           (cite (symbol-function 'org-cite-csl-render-citation)))
+       (dolist (command
+                '(org-texmacs-export-as-texmacs
+                  org-texmacs-export-to-texmacs
+                  org-texmacs-export-to-pdf))
+         (let ((prepared 0)
+               (citations 0))
+           (let ((org-export-before-processing-functions
+                  (list (lambda (_) (cl-incf prepared)))))
+             (cl-letf (((symbol-function
+                         'org-cite-csl-render-citation)
+                        (lambda (citation style backend info)
+                          (cl-incf citations)
+                          (should
+                           org-roam-organize--cite-export-in-progress)
+                          (should
+                           (equal
+                            '("real-key")
+                            (org-cite-get-references citation t)))
+                          (should
+                           (equal
+                            (list bib)
+                            (plist-get info :bibliography)))
+                          (funcall cite
+                                   citation
+                                   style
+                                   backend
+                                   info))))
+               (let ((result (funcall command)))
+                 (cond
+                  ((bufferp result)
+                   (unwind-protect
+                       (should
+                        (string-search
+                         "Actual fixture reference"
+                         (with-current-buffer result
+                           (buffer-string))))
+                     (kill-buffer result)))
+                  ((eq command 'org-texmacs-export-to-pdf)
+                   (should
+                    (string-search
+                     "Actual fixture reference"
+                     (ucs-normalize-NFKC-string
+                      (org-texmacs-test--pdf-text result)))))
+                  (t
+                   (with-temp-buffer
+                     (insert-file-contents-literally result)
+                     (should
+                      (string-search
+                       "Actual fixture reference"
+                       (buffer-string)))))))))
+           (should (= prepared 1))
+           (should (= citations 1))))))))
+
+(ert-deftest
+    org-texmacs-integration-standard-organize-source-consumers
+    ()
+  (org-texmacs-integration--with-standard-organize
+   (with-temp-buffer
+     (org-mode)
+     (setq
+      default-directory notes
+      buffer-file-name (expand-file-name "source-api.org" notes))
+     (insert
+      (format
+       "#+cite_export: csl fixture.csl\n[cite:@%s]\n#+print_bibliography:\n"
+       uuid))
+     (let ((source (current-buffer))
+           (cite (symbol-function 'org-cite-csl-render-citation)))
+       (dolist (kind
+                '(tm pdf-file buffer input document current-document))
+         (let ((prepared 0)
+               (citations 0)
+               (file (expand-file-name "source-api.pdf" notes)))
+           (let ((org-export-before-processing-functions
+                  (list (lambda (_) (cl-incf prepared)))))
+             (cl-letf (((symbol-function
+                         'org-cite-csl-render-citation)
+                        (lambda (citation style backend info)
+                          (cl-incf citations)
+                          (should
+                           org-roam-organize--cite-export-in-progress)
+                          (should
+                           (equal
+                            '("real-key")
+                            (org-cite-get-references citation t)))
+                          (should
+                           (equal
+                            (list bib)
+                            (plist-get info :bibliography)))
+                          (funcall cite
+                                   citation
+                                   style
+                                   backend
+                                   info))))
+               (let
+                   ((result
+                     (with-temp-buffer
+                       (pcase kind
+                         ('tm
+                          (org-texmacs-export-texmacs-from-buffer
+                           source))
+                         ('pdf-file
+                          (org-texmacs-export-to-pdf-file
+                           source file))
+                         ('buffer
+                          (org-texmacs-export-to-buffer source))
+                         ('input
+                          (let ((input
+                                 (org-texmacs-prepare-buffer source)))
+                            (should (org-texmacs-input-p input))
+                            (org-texmacs-document-serialize
+                             (org-texmacs-document input))))
+                         ('document
+                          (org-texmacs-document-serialize
+                           (org-texmacs-document-from-buffer source)))
+                         ('current-document
+                          (org-texmacs-document-serialize
+                           (with-current-buffer source
+                             (org-texmacs-document-current-buffer))))))))
+                 (pcase kind
+                   ('buffer
+                    (unwind-protect
+                        (with-current-buffer result
+                          (should
+                           (string-search
+                            "Actual fixture reference"
+                            (buffer-string))))
+                      (kill-buffer result)))
+                   ('pdf-file
+                    (should
+                     (string-search
+                      "Actual fixture reference"
+                      (ucs-normalize-NFKC-string
+                       (org-texmacs-test--pdf-text result)))))
+                   (_
+                    (should
+                     (string-search
+                      "Actual fixture reference" result)))))))
+           (should (= prepared 1))
+           (should (= citations 1))))))))
+
+(ert-deftest org-texmacs-integration-standard-organize-native-default
+    ()
+  (org-texmacs-integration--with-standard-organize
+   (with-temp-buffer
+     (org-mode)
+     (setq
+      default-directory notes
+      buffer-file-name (expand-file-name "root.org" notes))
+     (insert (format "[cite:@%s]\n#+print_bibliography:\n" uuid))
+     (let ((org-cite-export-processors '((t basic)))
+           (org-export-use-babel nil)
+           (before (buffer-string))
+           (prepared 0)
+           (citations 0)
+           (prints 0)
+           (globals (copy-tree org-cite-global-bibliography))
+           live
+           (cite (symbol-function 'org-texmacs--cite-export-citation))
+           (print
+            (symbol-function 'org-texmacs--cite-export-bibliography)))
+       (let ((org-export-before-processing-functions
+              (list (lambda (_) (cl-incf prepared)))))
+         (cl-letf (((symbol-function
+                     'org-texmacs--cite-export-citation)
+                    (lambda (citation style backend info)
+                      (cl-incf citations)
+                      (setq live info)
+                      (should
+                       org-roam-organize--cite-export-in-progress)
+                      (should
+                       (eq (org-cite-processor info) 'texmacs-native))
+                      (should
+                       (equal
+                        '("real-key")
+                        (org-cite-get-references citation t)))
+                      (should
+                       (equal
+                        (list bib) (plist-get info :bibliography)))
+                      (funcall cite citation style backend info)))
+                   ((symbol-function
+                     'org-texmacs--cite-export-bibliography)
+                    (lambda (keys files style properties backend info)
+                      (cl-incf prints)
+                      (should (eq live info))
+                      (should (equal keys '("real-key")))
+                      (should (equal files (list bib)))
+                      (funcall print
+                               keys
+                               files
+                               style
+                               properties
+                               backend
+                               info))))
+           (let* ((input (org-texmacs--standard-consume 'input))
+                  (document (org-texmacs-document input))
+                  (body (org-texmacs-document-body document))
+                  (pdf
+                   (expand-file-name "native-organize.pdf"
+                                     test-directory)))
+             (should (memq 'with-bib (flatten-tree body)))
+             (should (memq 'cite (flatten-tree body)))
+             (should-not (string-search uuid (prin1-to-string body)))
+             (should-not
+              (string-search
+               "Unused reference" (prin1-to-string body)))
+             (org-texmacs-document-save
+              document
+              (expand-file-name "native-organize.tm" test-directory))
+             (org-texmacs-document-save-pdf document pdf)
+             (should
+              (string-search
+               "Actual fixture reference"
+               (ucs-normalize-NFKC-string
+                (org-texmacs-test--pdf-text pdf)))))))
+       (should (= prepared 1))
+       (should (= citations 1))
+       (should (= prints 1))
+       (should (equal before (buffer-string)))
+       (should (equal globals org-cite-global-bibliography))
+       (should-not org-roam-organize--cite-export-in-progress)
+       (let ((html (org-export-as 'html nil nil t)))
+         (should (string-search "Actual fixture reference" html)))
+       (should (equal org-cite-export-processors '((t basic))))))))
+
+;;; standard-cite-integration-standard-cite.el ends here

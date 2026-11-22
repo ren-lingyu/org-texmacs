@@ -1,8 +1,10 @@
-;;; fragment-object.el --- Scoped object regression tests -*- lexical-binding: t; -*-
+;;; fragment-object.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
 (require 'ert)
-(require 'ox-ascii)
+
 (require 'org-texmacs-fragment-object)
+
+(require 'ox-ascii)
 
 (defun org-texmacs-object-test--parse (source)
   (with-temp-buffer
@@ -360,7 +362,6 @@
      (org-texmacs--ast-parse-buffer (current-buffer))
      :type 'org-texmacs-model-error)))
 
-
 (ert-deftest org-texmacs-object-owned-syntax-snapshot ()
   (let (ast
         captured)
@@ -521,7 +522,6 @@
          :type 'org-texmacs-parse-error))
       (should limits)
       (should-not fragments))))
-
 
 (ert-deftest org-texmacs-object-snapshot-copy-boundary ()
   (let (ast

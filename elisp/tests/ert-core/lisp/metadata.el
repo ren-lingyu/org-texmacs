@@ -1,6 +1,4 @@
-;;; metadata.el --- Document information regressions -*- lexical-binding: t; -*-
-
-;;; Code:
+;;; metadata.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
 (defun org-texmacs-test--metadata-input
     (source &optional external subtree region)

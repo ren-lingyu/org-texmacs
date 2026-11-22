@@ -1,10 +1,4 @@
-;;; bibliography.el --- core bibliography regressions -*- lexical-binding: t; -*-
-
-;;; Commentary:
-
-;; Migrated regression cases; preserve assertion and isolation semantics.
-
-;;; Code:
+;;; bibliography.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
 (ert-deftest org-texmacs-bibliography-input-ownership ()
   (let* ((path (copy-sequence "/source/references.bib"))

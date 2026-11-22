@@ -3,7 +3,5 @@
   bootstrap = ./bootstrap.el;
   common = ./common.el;
   csl = ./csl.el;
-  native = ./native.el;
-  pdf = ./pdf.el;
   runner = ./run.el;
 }

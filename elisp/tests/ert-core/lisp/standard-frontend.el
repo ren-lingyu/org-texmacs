@@ -1,4 +1,6 @@
-;;; standard-frontend.el --- Standard frontend ownership -*- lexical-binding: t; -*-
+;;; standard-frontend.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
+
+(require 'ox-texmacs)
 
 (ert-deftest
     org-texmacs-standard-frontend-scalar-info-is-literal-owned-metadata
@@ -158,3 +160,19 @@
                  (current-buffer))))))
           (should (= calls 1))
           (should (featurep 'ox-texmacs)))))))
+
+(ert-deftest
+    org-texmacs-standard-frontend-obsolete-flag-before-preparation
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (let ((org-texmacs-export-discover-bibliography t)
+          (org-export-before-processing-functions
+           (list
+            (lambda (_)
+              (ert-fail "Obsolete option ran preparation")))))
+      (should-error
+       (org-texmacs-export-as-texmacs)
+       :type 'user-error))))
+
+;;; standard-frontend.el ends here

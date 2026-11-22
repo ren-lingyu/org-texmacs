@@ -1,10 +1,4 @@
-;;; worker.el --- core worker regressions -*- lexical-binding: t; -*-
-
-;;; Commentary:
-
-;; Migrated regression cases; preserve assertion and isolation semantics.
-
-;;; Code:
+;;; worker.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
 (ert-deftest org-texmacs-encoding-rejects-invalid-input-before-worker
     ()
@@ -363,9 +357,14 @@
           (section (concat (strong "TODO") " " "T" " " ":tag:"))))))))
 
 (ert-deftest org-texmacs-test-setup-check-passes ()
-  (let ((result (org-texmacs-check-setup)))
-    (should (car result))
-    (should (stringp (cdr result)))))
+  (let ((org-texmacs-program "texmacs"))
+    (cl-letf (((symbol-function 'executable-find)
+               (lambda (name &optional _remote)
+                 (when (equal name "texmacs")
+                   "/test/bin/texmacs"))))
+      (let ((result (org-texmacs-check-setup)))
+        (should (car result))
+        (should (stringp (cdr result)))))))
 
 (ert-deftest org-texmacs-test-capability-types ()
   (cl-letf (((symbol-function 'executable-find)
@@ -491,5 +490,95 @@
    (equal
     (org-texmacs--worker-decode "(ok 1 (math \"x\"))" 1)
     '(math "x"))))
+
+(ert-deftest org-texmacs-test-prepare-buffer-independent-result ()
+  (let (input
+        expected)
+    (with-temp-buffer
+      (org-mode)
+      (insert "* Heading\nText $(math \"x\")$\n")
+      (setq
+       input (org-texmacs-prepare-buffer (current-buffer))
+       expected (org-texmacs-document-from-buffer (current-buffer))))
+    (cl-letf (((symbol-function 'org-texmacs--stm-read)
+               (lambda (&rest _)
+                 (ert-fail "Prepared input must not parse again"))))
+      (should (equal (org-texmacs-document input) expected)))))
+
+(ert-deftest org-texmacs-test-setup-checks-configured-program ()
+  (let ((org-texmacs-program "/org-texmacs-test/nonexistent"))
+    (should-not (car (org-texmacs-check-setup)))))
+
+(ert-deftest org-texmacs-test-package-loads ()
+  (should-not org-texmacs-test--worker-loaded-document)
+  (should
+   (equal
+    (file-name-base
+     (symbol-file 'org-texmacs--native-document-wire 'defun))
+    "org-texmacs-session"))
+  (let ((directory
+         (file-name-directory (locate-library "org-texmacs"))))
+    (dolist (feature
+             '(org-texmacs
+               org-texmacs-core
+               org-texmacs-ast
+               org-texmacs-source
+               org-texmacs-fragment-object
+               org-texmacs-font-lock
+               org-texmacs-edit
+               org-texmacs-document
+               org-texmacs-input
+               org-texmacs-context
+               org-texmacs-worker
+               org-texmacs-session))
+      (should (featurep feature))
+      (let ((library (locate-library (symbol-name feature))))
+        (should library)
+        (should (equal directory (file-name-directory library)))))
+    (should
+     (equal
+      org-texmacs--worker-scheme-file
+      (expand-file-name "org-texmacs-worker.scm" directory)))
+    (should (file-readable-p org-texmacs--worker-scheme-file)))
+  (dolist (function
+           '(org-texmacs-document
+             org-texmacs-document-current-buffer
+             org-texmacs-document-from-buffer
+             org-texmacs-prepare-buffer
+             org-texmacs-input-create
+             org-texmacs-input-p
+             org-texmacs-input-ast
+             org-texmacs-input-info
+             org-texmacs-input-islands
+             org-texmacs-input-post-blanks
+             org-texmacs-input-style
+             org-texmacs-input-initial
+             org-texmacs-input-source-file
+             org-texmacs-input-resource-base
+             org-texmacs-input-bibliography
+             org-texmacs-document-body
+             org-texmacs-document-style
+             org-texmacs-document-initial
+             org-texmacs-document-stm-paths
+             org-texmacs-document-source-file
+             org-texmacs-document-resource-base
+             org-texmacs-document-file-paths
+             org-texmacs-document-serialize
+             org-texmacs-document-save
+             org-texmacs-export-texmacs-from-buffer
+             org-texmacs-export-to-texmacs-file
+             org-texmacs-export-to-buffer
+             org-texmacs-document-pdf
+             org-texmacs-document-save-pdf
+             org-texmacs-export-pdf-from-buffer
+             org-texmacs-export-to-pdf-file
+             org-texmacs-session-open
+             org-texmacs-session-set-document
+             org-texmacs-session-close))
+    (should (fboundp function))
+    (should
+     (equal
+      (file-name-directory (symbol-file function 'defun))
+      (file-name-directory (locate-library "org-texmacs"))))))
 
 ;;; worker.el ends here

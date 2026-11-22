@@ -1,10 +1,4 @@
-;;; model-inspect.el --- Independent model inspection regressions -*- lexical-binding: t; -*-
-
-;;; Commentary:
-
-;; Exercise readable projections and display without native or source operations.
-
-;;; Code:
+;;; model-inspect.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
 (require 'org-texmacs-inspect)
 

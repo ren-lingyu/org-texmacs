@@ -1,5 +1,6 @@
 {
   packages,
+  pkgs,
   lib,
   llib,
 }:
@@ -12,5 +13,8 @@ llib.tests.mkChecks {
     path_: value_: value_.tests or { }
   ) packages;
 
-  args = { };
+  args = {
+    inherit pkgs;
+    testSupport = import ./support;
+  };
 }
