@@ -752,14 +752,12 @@
       (org-mode)
       (setq-local org-export-with-author nil)
       (insert source "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 #'org-texmacs-test--parse-fixture-stm))
-        (let* ((document
-                (org-texmacs-document-from-buffer (current-buffer)))
-               (body (org-texmacs-document-body document)))
-          (should (org-texmacs-document-p document))
-          (should-not (memq 'hlink (flatten-tree body)))
-          (should-not (org-texmacs-document-file-paths document)))))))
+      (let* ((document
+              (org-texmacs-document-from-buffer (current-buffer)))
+             (body (org-texmacs-document-body document)))
+        (should (org-texmacs-document-p document))
+        (should-not (memq 'hlink (flatten-tree body)))
+        (should-not (org-texmacs-document-file-paths document))))))
 
 (ert-deftest
     org-texmacs-file-links-native-readback-and-preflight-preservation

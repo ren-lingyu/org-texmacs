@@ -29,30 +29,33 @@
       (insert "\nBody[fn::BodyNote].\n")
       (let ((source (buffer-string))
             requests)
-        (cl-letf (((symbol-function 'org-texmacs--stm-read)
-                   (lambda (raw &rest _)
-                     (push raw requests)
-                     (read raw))))
-          (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
-                 (document (org-texmacs-document input))
-                 (body (org-texmacs-document-body document)))
-            (should
-             (= 1
-                (length
-                 (org-texmacs-test--caption-inline-footnote-nodes
-                  body 'footnote))))
-            (should
-             (string-match-p
-              "\\[fn::LongNote\\]" (prin1-to-string body)))
-            (should
-             (string-match-p
-              "\\[fn::ShortNote\\]" (prin1-to-string body)))
-            (should
-             (= (length requests)
-                (if (string-prefix-p "figure" kind)
-                    1
-                  0)))
-            (should (equal document (org-texmacs-document input)))))
+        (let ((reader (symbol-function 'org-texmacs--stm-read)))
+          (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                     (lambda (raw &rest _)
+                       (push raw requests)
+                       (funcall reader raw))))
+            (let* ((input
+                    (org-texmacs-prepare-buffer (current-buffer)))
+                   (document (org-texmacs-document input))
+                   (body (org-texmacs-document-body document)))
+              (should
+               (= 1
+                  (length
+                   (org-texmacs-test--caption-inline-footnote-nodes
+                    body 'footnote))))
+              (should
+               (string-match-p
+                "\\[fn::LongNote\\]" (prin1-to-string body)))
+              (should
+               (string-match-p
+                "\\[fn::ShortNote\\]" (prin1-to-string body)))
+              (should
+               (= (length requests)
+                  (if (string-prefix-p "figure" kind)
+                      1
+                    0)))
+              (should
+               (equal document (org-texmacs-document input))))))
         (should (equal source (buffer-string)))))))
 
 (ert-deftest org-texmacs-document-settings-buffer-snapshot ()
@@ -62,15 +65,18 @@
     (insert "$(math \"x\")$\n")
     (let ((org-export-default-language "en")
           (org-texmacs-document-style '("article"))
-          (org-texmacs-document-initial '(("par-first" . "2fn"))))
+          (org-texmacs-document-initial '(("par-first" . "2fn")))
+          (reader (symbol-function 'org-texmacs--stm-read))
+          (calls 0))
       (cl-letf
-          (((symbol-function 'org-texmacs--worker-request)
-            (lambda (_source)
+          (((symbol-function 'org-texmacs--stm-read)
+            (lambda (source)
+              (cl-incf calls)
               (setq-local
                org-export-default-language "fr"
                org-texmacs-document-style '("generic")
                org-texmacs-document-initial '(("par-first" tuple "中" "<alpha>")))
-              '(math "x"))))
+              (funcall reader source))))
         (let ((first
                (org-texmacs-document-from-buffer (current-buffer))))
           (should
@@ -79,21 +85,20 @@
            (equal
             (org-texmacs-document-initial first)
             '(("language" . "english") ("par-first" . "2fn"))))))
+      (should (= calls 1))
       (setq
        org-export-default-language "fr"
        org-texmacs-document-style '("generic")
        org-texmacs-document-initial '(("par-first" tuple "中" "<alpha>")))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (_source) '(math "x"))))
-        (let ((second
-               (org-texmacs-document-from-buffer (current-buffer))))
-          (should
-           (equal (org-texmacs-document-style second) '("generic")))
-          (should
-           (equal
-            (org-texmacs-document-initial second)
-            '(("language" . "french")
-              ("par-first" tuple "中" "<alpha>")))))))))
+      (let ((second
+             (org-texmacs-document-from-buffer (current-buffer))))
+        (should
+         (equal (org-texmacs-document-style second) '("generic")))
+        (should
+         (equal
+          (org-texmacs-document-initial second)
+          '(("language" . "french")
+            ("par-first" tuple "中" "<alpha>"))))))))
 
 (ert-deftest org-texmacs-document-metadata-native-encoding ()
   (org-texmacs-test--with-worker
@@ -824,14 +829,12 @@
     (insert
      "[[missing-target][missing]]\n"
      "#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               #'org-texmacs-test--parse-fixture-stm))
-      (let* ((document
-              (org-texmacs-document-from-buffer (current-buffer)))
-             (body (org-texmacs-document-body document)))
-        (should (member "missing" (flatten-tree body)))
-        (should-not (memq 'hlink (flatten-tree body)))
-        (should (org-texmacs-document-stm-paths document))))))
+    (let* ((document
+            (org-texmacs-document-from-buffer (current-buffer)))
+           (body (org-texmacs-document-body document)))
+      (should (member "missing" (flatten-tree body)))
+      (should-not (memq 'hlink (flatten-tree body)))
+      (should (org-texmacs-document-stm-paths document)))))
 
 (ert-deftest
     org-texmacs-document-reference-low-headline-and-target-priority
@@ -886,7 +889,7 @@
                         (when (eq (car args) 'all)
                           (ert-fail "Global cache reset"))
                         (apply reset args)))
-                     ((symbol-function 'org-texmacs--worker-request)
+                     ((symbol-function 'org-texmacs--stm-read)
                       (lambda (&rest _)
                         (ert-fail
                          "Link description scanned as STM"))))
@@ -926,13 +929,20 @@
       '(document
         (concat (hlink "Page" "https://example.org/page") " "))))
     (insert "$(math \"x\")$\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (&rest _)
-                 (setq-local org-link-abbrev-alist nil)
-                 '(math "x"))))
-      (should
-       (org-texmacs-document-p
-        (org-texmacs-document-from-buffer (current-buffer)))))))
+    (let ((reader (symbol-function 'org-texmacs--stm-read))
+          (calls 0))
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                 (lambda (source)
+                   (cl-incf calls)
+                   (setq-local org-link-abbrev-alist nil)
+                   (funcall reader source))))
+        (should
+         (member
+          "https://example.org/page"
+          (flatten-tree
+           (org-texmacs-document-body
+            (org-texmacs-document-from-buffer (current-buffer)))))))
+      (should (= calls 1)))))
 
 (ert-deftest org-texmacs-document-uri-native-islands ()
   (org-texmacs-test--with-worker
@@ -1135,13 +1145,20 @@
          ". "))))
     (erase-buffer)
     (insert "A[fn:n].\n\n[fn:n] $(math \"x\")$\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (&rest _)
-                 (setq-local org-footnote-section "Changed")
-                 '(math "x"))))
-      (should
-       (org-texmacs-document-p
-        (org-texmacs-document-from-buffer (current-buffer)))))))
+    (let ((reader (symbol-function 'org-texmacs--stm-read))
+          (calls 0))
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                 (lambda (source)
+                   (cl-incf calls)
+                   (setq-local org-footnote-section "Changed")
+                   (funcall reader source))))
+        (should
+         (memq
+          'footnote
+          (flatten-tree
+           (org-texmacs-document-body
+            (org-texmacs-document-from-buffer (current-buffer)))))))
+      (should (= calls 1)))))
 
 (ert-deftest org-texmacs-document-named-footnote-unused-and-invalid ()
   (with-temp-buffer
@@ -1149,9 +1166,10 @@
     (setq-local org-export-with-author nil)
     (insert
      "Visible.\n\n[fn:unused] $(math \"unused\")$ [[unknown:bad]]\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+    (cl-letf (((symbol-function 'org-texmacs--stm-read)
                (lambda (&rest _)
-                 (ert-fail "Unused definition started worker"))))
+                 (ert-fail
+                  "Unused definition reached the STM reader"))))
       (should
        (equal
         (org-texmacs-document-body
@@ -1167,13 +1185,11 @@
       (org-mode)
       (setq-local org-export-with-author nil)
       (insert source)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 #'org-texmacs-test--parse-fixture-stm))
-        (should-error
-         (org-texmacs-document
-          (org-texmacs-test--input-from-model
-           (org-texmacs-parse-buffer (current-buffer))))
-         :type 'org-texmacs-document-error)))))
+      (should-error
+       (org-texmacs-document
+        (org-texmacs-test--input-from-model
+         (org-texmacs-parse-buffer (current-buffer))))
+       :type 'org-texmacs-document-error))))
 
 (ert-deftest
     org-texmacs-document-named-footnote-owned-body-and-provenance
@@ -1315,31 +1331,32 @@
                (symbol-function 'org-export-get-footnote-definition)))
           (when (eq scope 'narrowed)
             (narrow-to-region begin end))
-          (cl-letf (((symbol-function 'org-texmacs--stm-read)
-                     (lambda (raw)
-                       (push raw requests)
-                       (read raw)))
-                    ((symbol-function
-                      'org-export-get-footnote-definition)
-                     (lambda (reference info)
-                       (let ((body
-                              (funcall definition reference info)))
-                         (push body raw-definitions)
-                         body))))
-            (let ((before
-                   (org-texmacs-test--document-buffer-state
-                    (current-buffer))))
-              (setq input
-                    (org-texmacs-prepare-buffer
-                     (current-buffer)
-                     nil
-                     (and (eq scope 'subtree) begin)
-                     (and (eq scope 'region) (cons begin end))))
-              (should
-               (equal
-                before
-                (org-texmacs-test--document-buffer-state
-                 (current-buffer))))))))
+          (let ((reader (symbol-function 'org-texmacs--stm-read)))
+            (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                       (lambda (raw)
+                         (push raw requests)
+                         (funcall reader raw)))
+                      ((symbol-function
+                        'org-export-get-footnote-definition)
+                       (lambda (reference info)
+                         (let ((body
+                                (funcall definition reference info)))
+                           (push body raw-definitions)
+                           body))))
+              (let ((before
+                     (org-texmacs-test--document-buffer-state
+                      (current-buffer))))
+                (setq input
+                      (org-texmacs-prepare-buffer
+                       (current-buffer)
+                       nil
+                       (and (eq scope 'subtree) begin)
+                       (and (eq scope 'region) (cons begin end))))
+                (should
+                 (equal
+                  before
+                  (org-texmacs-test--document-buffer-state
+                   (current-buffer)))))))))
       (let ((count
              (pcase scope
                ('full 3)
@@ -1697,9 +1714,10 @@
       (org-mode)
       (setq-local org-export-with-author nil)
       (insert (car case))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (&rest _)
-                   (ert-fail "Description term reached worker"))))
+                   (ert-fail
+                    "Description term reached the STM reader"))))
         (should
          (equal
           (org-texmacs-document-body
@@ -1711,26 +1729,30 @@
     (org-mode)
     (setq-local org-export-with-author nil)
     (insert "- Outer\n  1. Inner $(math \"x\")$\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (source)
-                 (should (equal source "(math \"x\")"))
-                 '(math "x"))))
-      (let ((document
-             (org-texmacs-document-from-buffer (current-buffer))))
-        (should
-         (equal
-          (org-texmacs-document-body document)
-          '(document
-            (itemize
-             (document
-              (concat (item) "Outer ")
-              (enumerate
+    (let ((reader (symbol-function 'org-texmacs--stm-read))
+          sources)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                 (lambda (source)
+                   (push source sources)
+                   (should (equal source "(math \"x\")"))
+                   (funcall reader source))))
+        (let ((document
+               (org-texmacs-document-from-buffer (current-buffer))))
+          (should
+           (equal
+            (org-texmacs-document-body document)
+            '(document
+              (itemize
                (document
-                (concat (item) "Inner " (math "x") " "))))))))
-        (should
-         (equal
-          (org-texmacs-document-stm-paths document)
-          '((0 0 1 0 0 2))))))))
+                (concat (item) "Outer ")
+                (enumerate
+                 (document
+                  (concat (item) "Inner " (math "x") " "))))))))
+          (should
+           (equal
+            (org-texmacs-document-stm-paths document)
+            '((0 0 1 0 0 2))))))
+      (should (= (length sources) 1)))))
 
 (ert-deftest org-texmacs-document-quote-and-center-containers ()
   (with-temp-buffer
@@ -1739,26 +1761,31 @@
     (insert
      "#+begin_quote\nFirst $(math \"q\")$.\n\nSecond.\n#+end_quote\n"
      "#+begin_center\n- Centered item\n#+end_center\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (source)
-                 (should (equal source "(math \"q\")"))
-                 '(math "q"))))
-      (let ((document
-             (org-texmacs-document-from-buffer (current-buffer))))
-        (should
-         (equal
-          (org-texmacs-document-body document)
-          '(document
-            (quotation
-             (document
-              (concat "First " (math "q") ". ") (concat "Second. ")))
-            (center
-             (document
-              (itemize
-               (document (concat (item) "Centered item "))))))))
-        (should
-         (equal
-          (org-texmacs-document-stm-paths document) '((0 0 0 1))))))))
+    (let ((reader (symbol-function 'org-texmacs--stm-read))
+          sources)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                 (lambda (source)
+                   (push source sources)
+                   (should (equal source "(math \"q\")"))
+                   (funcall reader source))))
+        (let ((document
+               (org-texmacs-document-from-buffer (current-buffer))))
+          (should
+           (equal
+            (org-texmacs-document-body document)
+            '(document
+              (quotation
+               (document
+                (concat "First " (math "q") ". ")
+                (concat "Second. ")))
+              (center
+               (document
+                (itemize
+                 (document (concat (item) "Centered item "))))))))
+          (should
+           (equal
+            (org-texmacs-document-stm-paths document) '((0 0 0 1))))))
+      (should (= (length sources) 1)))))
 
 (ert-deftest org-texmacs-document-quote-uniform-quotation ()
   :tags
@@ -1853,9 +1880,10 @@
      "  中文\t<alpha> (math \"hidden\")\n"
      "#+end_src\n\n"
      "#+begin_example\n#+end_example\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+    (cl-letf (((symbol-function 'org-texmacs--stm-read)
                (lambda (&rest _)
-                 (ert-fail "Preformatted text reached worker")))
+                 (ert-fail
+                  "Preformatted text reached the STM reader")))
               ((symbol-function 'org-export-unravel-code)
                (lambda (&rest _)
                  (ert-fail
@@ -1971,9 +1999,9 @@
      "| Name | Value |\n"
      "| 中 <alpha> (math \"literal\") | *bold* [[https://example.org][site]] |\n"
      "| empty | |\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+    (cl-letf (((symbol-function 'org-texmacs--stm-read)
                (lambda (&rest _)
-                 (ert-fail "Table text reached worker"))))
+                 (ert-fail "Table text reached the STM reader"))))
       (let ((document
              (org-texmacs-document
               (org-texmacs-test--input-from-model
@@ -2300,7 +2328,8 @@
          (org-texmacs-parse-buffer (current-buffer)))))
       '(document (tabular (tformat (table (row (cell "x"))))))))))
 
-(ert-deftest org-texmacs-document-named-table-rejects-before-worker ()
+(ert-deftest org-texmacs-document-named-table-rejects-invalid-source
+    ()
   (dolist (source
            '("#+name: t\n#+attr_html: :class hidden\n| x |\n"
              "#+caption: C\n#+attr_texmacs: float\n| x |\n"
@@ -2312,13 +2341,11 @@
       (insert
        source "\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n")
       (let ((before (buffer-string)))
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   #'org-texmacs-test--parse-fixture-stm))
-          (ert-info
-           ((format "Named-table source: %s" source))
-           (should-error
-            (org-texmacs-document-from-buffer (current-buffer))
-            :type 'org-texmacs-document-error)))
+        (ert-info
+         ((format "Named-table source: %s" source))
+         (should-error
+          (org-texmacs-document-from-buffer (current-buffer))
+          :type 'org-texmacs-document-error))
         (should (equal before (buffer-string)))))))
 
 (ert-deftest org-texmacs-document-unavailable-table-reference-fallback
@@ -2840,13 +2867,11 @@
     (org-mode)
     (setq-local org-export-with-author nil)
     (insert "$(custom-tag \"x\")$\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (source) (read source))))
-      (should
-       (equal
-        (org-texmacs-document-body
-         (org-texmacs-document-from-buffer (current-buffer)))
-        '(document (custom-tag "x")))))))
+    (should
+     (equal
+      (org-texmacs-document-body
+       (org-texmacs-document-from-buffer (current-buffer)))
+      '(document (custom-tag "x"))))))
 
 (ert-deftest org-texmacs-document-source-bare-expressions-are-text ()
   (with-temp-buffer

@@ -35,9 +35,7 @@
        (org-texmacs-test--stage4-block kind "Object--A"))
       (let ((source (buffer-string))
             input)
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   (lambda (raw &rest _) (read raw))))
-          (setq input (org-texmacs-prepare-buffer (current-buffer))))
+        (setq input (org-texmacs-prepare-buffer (current-buffer)))
         (should (equal source (buffer-string)))
         (let* ((resolution (org-texmacs-input-resolution input))
                (id (cdar (org-texmacs-resolution-labels resolution)))
@@ -270,49 +268,41 @@
           (save-restriction
             (when (eq scope 'narrow)
               (narrow-to-region 1 end))
-            (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                       (lambda (raw &rest _) (read raw))))
-              (should
-               (org-texmacs-document-from-buffer
-                (current-buffer)
-                nil
-                (and (eq scope 'subtree) 1)
-                (and (eq scope 'region) (cons 1 end)))))))))
+            (should
+             (org-texmacs-document-from-buffer
+              (current-buffer)
+              nil
+              (and (eq scope 'subtree) 1)
+              (and (eq scope 'region) (cons 1 end))))))))
     (dolist (prefix '("#+ATTR_TEXMACS: unsupported\n"))
       (with-temp-buffer
         (org-mode)
         (setq-local org-export-with-author nil)
         (insert prefix (org-texmacs-test--stage4-block kind "Second"))
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   #'org-texmacs-test--parse-fixture-stm))
-          (should-error
-           (org-texmacs-document-from-buffer (current-buffer))
-           :type 'org-texmacs-document-error))))
+        (should-error
+         (org-texmacs-document-from-buffer (current-buffer))
+         :type 'org-texmacs-document-error)))
     (with-temp-buffer
       (org-mode)
       (setq-local org-export-with-author nil)
       (insert (org-texmacs-test--stage4-block kind "Cut"))
       (goto-char (point-min))
       (forward-line 1)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 #'org-texmacs-test--parse-fixture-stm))
-        (should
-         (org-texmacs-document-p
-          (org-texmacs-document-from-buffer
-           (current-buffer) nil nil (cons (point) (point-max))))))))
+      (should
+       (org-texmacs-document-p
+        (org-texmacs-document-from-buffer
+         (current-buffer) nil nil (cons (point) (point-max)))))))
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
     (insert
      "#+NAME: Raw\n#+begin_texmacs\n(document \"<<Fake>>\")\n#+end_texmacs\n[[Fake]]\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (raw &rest _) (read raw))))
-      (let* ((document
-              (org-texmacs-document-from-buffer (current-buffer)))
-             (body (org-texmacs-document-body document)))
-        (should (member "Fake" (flatten-tree body)))
-        (should-not (memq 'reference (flatten-tree body)))
-        (should-not (memq 'hlink (flatten-tree body))))))
+    (let* ((document
+            (org-texmacs-document-from-buffer (current-buffer)))
+           (body (org-texmacs-document-body document)))
+      (should (member "Fake" (flatten-tree body)))
+      (should-not (memq 'reference (flatten-tree body)))
+      (should-not (memq 'hlink (flatten-tree body)))))
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
@@ -366,20 +356,18 @@
      "#+NAME: Outer\n#+begin_theorem\nSee [[Inner]].\n\n"
      "#+NAME: Inner\n#+begin_lemma\n[[file:note.pdf][File]] $(math \"x\")$\n"
      "#+end_lemma\n#+end_theorem\n[[Outer][Back]]\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (raw &rest _) (read raw))))
-      (let* ((document
-              (org-texmacs-document-from-buffer (current-buffer)))
-             (root (org-texmacs-document-body document)))
-        (should
-         (= 2 (length (org-texmacs--document-output-labels root))))
-        (should
-         (= 1 (length (org-texmacs-document-file-paths document))))
-        (dolist (path (org-texmacs-document-stm-paths document))
-          (let ((node root))
-            (dolist (index path)
-              (setq node (nth (1+ index) node)))
-            (should (equal node '(math "x")))))))))
+    (let* ((document
+            (org-texmacs-document-from-buffer (current-buffer)))
+           (root (org-texmacs-document-body document)))
+      (should
+       (= 2 (length (org-texmacs--document-output-labels root))))
+      (should
+       (= 1 (length (org-texmacs-document-file-paths document))))
+      (dolist (path (org-texmacs-document-stm-paths document))
+        (let ((node root))
+          (dolist (index path)
+            (setq node (nth (1+ index) node)))
+          (should (equal node '(math "x"))))))))
 
 (ert-deftest
     org-texmacs-issue13-stage4-excluded-truncated-native-owner
@@ -393,10 +381,10 @@
        (org-texmacs-test--stage4-block kind "Duplicate"))
       (goto-char (point-min))
       (search-forward "frac")
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (&rest _)
                    (ert-fail
-                    "Excluded native owner requested body"))))
+                    "Excluded native owner requested body parsing"))))
         (let ((document
                (org-texmacs-document-from-buffer
                 (current-buffer) nil nil (cons 1 (point)))))
@@ -420,15 +408,17 @@
              parsed
              (calls 0)
              input)
-        (cl-letf (((symbol-function 'org-texmacs--stm-read)
-                   (lambda (raw &rest _)
-                     (setq parsed t)
-                     (read raw)))
-                  ((symbol-function 'org-export-get-reference)
-                   (lambda (&rest args)
-                     (cl-incf calls)
-                     (apply allocate args))))
-          (setq input (org-texmacs-prepare-buffer (current-buffer))))
+        (let ((reader (symbol-function 'org-texmacs--stm-read)))
+          (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                     (lambda (raw &rest _)
+                       (setq parsed t)
+                       (funcall reader raw)))
+                    ((symbol-function 'org-export-get-reference)
+                     (lambda (&rest args)
+                       (cl-incf calls)
+                       (apply allocate args))))
+            (setq input
+                  (org-texmacs-prepare-buffer (current-buffer)))))
         (should parsed)
         (should (= 1 calls))
         (should
@@ -496,11 +486,9 @@
              (lambda
                (&rest _)
                (ert-fail "Named custom handler ran"))))))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 #'org-texmacs-test--parse-fixture-stm))
-        (should-error
-         (org-texmacs-document-from-buffer (current-buffer))
-         :type 'org-texmacs-document-error)))))
+      (should-error
+       (org-texmacs-document-from-buffer (current-buffer))
+       :type 'org-texmacs-document-error))))
 
 (ert-deftest org-texmacs-issue13-handler-provenance-and-ownership ()
   (let* ((input
@@ -550,7 +538,7 @@
        :type 'org-texmacs-document-error))))
 
 (ert-deftest
-    org-texmacs-issue13-source-handler-snapshot-through-filter-and-wait
+    org-texmacs-issue13-source-handler-snapshot-through-filter-and-stm-parsing
     ()
   (dolist (filtered '(nil t))
     (with-temp-buffer
@@ -558,24 +546,28 @@
       (setq-local org-export-with-author nil)
       (insert "#+begin_custom\n$(math \"x\")$\n#+end_custom\n")
       (let* ((org-export-filter-parse-tree-functions
-              (and filtered (list (lambda (&rest _) nil))))
+              (and filtered (list (lambda (tree &rest _) tree))))
              (registry
               (list
                (cons "custom" (lambda (_b c _i) (list 'initial c)))))
-             (org-texmacs--document-special-block-handlers registry))
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   (lambda (&rest _)
-                     (setcdr
-                      (car registry)
-                      (lambda (_b c _i) (list 'next c)))
-                     '(math "x"))))
+             (org-texmacs--document-special-block-handlers registry)
+             (reader (symbol-function 'org-texmacs--stm-read))
+             (next (lambda (_b c _i) (list 'next c)))
+             (calls 0))
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                   (lambda (source)
+                     (cl-incf calls)
+                     (setcdr (car registry) next)
+                     (funcall reader source))))
           (should
            (eq
             (car
              (cadr
               (org-texmacs-document-body
                (org-texmacs-document-from-buffer (current-buffer)))))
-            'initial)))))))
+            'initial)))
+        (should (= calls 1))
+        (should (eq (cdar registry) next))))))
 
 (ert-deftest org-texmacs-issue13-prepared-input-without-stm ()
   (with-temp-buffer
@@ -664,26 +656,27 @@
               requests)
           (when (eq scope 'narrow)
             (narrow-to-region start end))
-          (cl-letf (((symbol-function 'org-texmacs--stm-read)
-                     (lambda (source &rest _)
-                       (push source requests)
-                       (read source))))
-            (let ((document
-                   (org-texmacs-document-from-buffer
-                    (current-buffer)
-                    nil
-                    (and (eq scope 'subtree) start)
-                    (and (eq scope 'region) (cons start end)))))
-              (should document)
-              (should
-               (= (length (org-texmacs-document-stm-paths document))
-                  3))
-              (should (= (length requests) 3))
-              (should-not
-               (cl-some
-                (lambda (request)
-                  (string-match-p "omitted" request))
-                requests)))))))))
+          (let ((reader (symbol-function 'org-texmacs--stm-read)))
+            (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                       (lambda (source &rest _)
+                         (push source requests)
+                         (funcall reader source))))
+              (let ((document
+                     (org-texmacs-document-from-buffer
+                      (current-buffer)
+                      nil
+                      (and (eq scope 'subtree) start)
+                      (and (eq scope 'region) (cons start end)))))
+                (should document)
+                (should
+                 (= (length (org-texmacs-document-stm-paths document))
+                    3))
+                (should (= (length requests) 3))
+                (should-not
+                 (cl-some
+                  (lambda (request)
+                    (string-match-p "omitted" request))
+                  requests))))))))))
 
 (ert-deftest org-texmacs-issue13-source-change-during-stm-parsing ()
   (with-temp-buffer
@@ -766,8 +759,7 @@
             (should
              (equal document (org-texmacs-document input)))))))))
 
-(ert-deftest
-    org-texmacs-statement-caption-source-rejections-before-worker
+(ert-deftest org-texmacs-statement-caption-rejects-unsupported-source
     ()
   (dolist (metadata
            '("#+CAPTION[Short]: Long\n"
@@ -781,19 +773,17 @@
       (insert
        metadata
        "#+begin_theorem\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n#+end_theorem\n")
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 #'org-texmacs-test--parse-fixture-stm))
-        (let ((err
-               (ert-info
-                ((format "Caption metadata: %S" metadata))
-                (should-error
-                 (org-texmacs-document-from-buffer (current-buffer))
-                 :type 'org-texmacs-document-error))))
-          (when (and (eq (car err) 'org-texmacs-document-error)
-                     (string-match-p "CAPTION\\[" metadata))
-            (should
-             (string-match-p
-              "short caption" (error-message-string err)))))))))
+      (let ((err
+             (ert-info
+              ((format "Caption metadata: %S" metadata))
+              (should-error
+               (org-texmacs-document-from-buffer (current-buffer))
+               :type 'org-texmacs-document-error))))
+        (when (and (eq (car err) 'org-texmacs-document-error)
+                   (string-match-p "CAPTION\\[" metadata))
+          (should
+           (string-match-p
+            "short caption" (error-message-string err))))))))
 
 (ert-deftest org-texmacs-statement-caption-shapes-and-provenance ()
   (dolist
@@ -809,9 +799,7 @@
        native
        "\n#+end_texmacs\n\nSecond paragraph.\n#+end_theorem\n")
       (let (input)
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   (lambda (raw &rest _) (read raw))))
-          (setq input (org-texmacs-prepare-buffer (current-buffer))))
+        (setq input (org-texmacs-prepare-buffer (current-buffer)))
         (let* ((before
                 (let ((print-circle t))
                   (prin1-to-string input)))
@@ -1030,7 +1018,7 @@
            (org-texmacs-document-from-buffer (current-buffer)))))
         'example)))))
 
-(ert-deftest org-texmacs-issue13-source-errors-before-body-worker ()
+(ert-deftest org-texmacs-issue13-rejects-invalid-source-blocks ()
   (dolist (syntax
            '("statement"
              "statement unknown"
@@ -1048,11 +1036,9 @@
        "\n(math \"x\")\n#+end_"
        (car (split-string syntax))
        "\n")
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 #'org-texmacs-test--parse-fixture-stm))
-        (should-error
-         (org-texmacs-document-from-buffer (current-buffer))
-         :type 'org-texmacs-document-error))))
+      (should-error
+       (org-texmacs-document-from-buffer (current-buffer))
+       :type 'org-texmacs-document-error)))
   (dolist (metadata
            '("#+CAPTION[short]: caption\n" "#+ATTR_TEXMACS: x\n"))
     (with-temp-buffer
@@ -1173,27 +1159,35 @@
         (org-mode)
         (setq-local org-export-with-author nil)
         (insert (format fixture type type))
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                   #'org-texmacs-test--parse-fixture-stm))
-          (should-error
-           (org-texmacs-document-from-buffer (current-buffer))
-           :type 'org-texmacs-error)))))
-  (with-temp-buffer
-    (org-mode)
-    (setq-local org-export-with-author nil)
-    (insert
-     "#+BIBLIOGRAPHY: refs.bib\n#+NAME: first\n#+NAME: named\n#+begin_equation\n\"x\"\n#+end_equation\n")
-    (let (requests)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (_raw &optional operation)
-                   (push operation requests)
-                   (should (eq operation 'bibliography))
-                   '(document))))
         (should-error
-         (org-texmacs-document-from-buffer
-          (current-buffer) '(("refs.bib" . "")))
-         :type 'org-texmacs-error)
-        (should-not requests)))))
+         (org-texmacs-document-from-buffer (current-buffer))
+         :type 'org-texmacs-error))))
+  (org-texmacs-test--with-worker
+   (with-temp-file "refs.bib"
+     (insert
+      "@book{one,title={One},author={Ada Alpha},year={2026}}\n"))
+   (with-temp-buffer
+     (org-mode)
+     (setq-local org-export-with-author nil)
+     (insert
+      "#+cite_export: texmacs-native plain\n#+BIBLIOGRAPHY: refs.bib\n"
+      "Text [cite:@one].\n#+print_bibliography:\n"
+      "#+NAME: first\n#+NAME: named\n#+begin_equation bad\n\"x\"\n#+end_equation\n")
+     (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                (lambda (&rest _)
+                  (ert-fail
+                   "Invalid equation requested native work")))
+               ((symbol-function 'org-texmacs--stm-read)
+                (lambda (_source)
+                  (ert-fail "Invalid equation reached STM parsing"))))
+       (let ((failure
+              (should-error
+               (org-texmacs-document-from-buffer (current-buffer))
+               :type 'org-texmacs-document-error)))
+         (should
+          (string-match-p
+           "Equation parameters are unsupported"
+           (error-message-string failure))))))))
 
 (ert-deftest org-texmacs-issue13-stage2-scoped-selection-and-clipping
     ()
@@ -1403,24 +1397,27 @@
        kind
        "\n")
       (let (requests)
-        (cl-letf (((symbol-function 'org-texmacs--stm-read)
-                   (lambda (source &rest _)
-                     (push source requests)
-                     (read source))))
-          (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
-                 (before (org-texmacs-document input))
-                 (body (org-texmacs-document-body before)))
-            (should
-             (eq (car (cadr body)) (intern (concat "big-" kind))))
-            (should (= (length requests) 1))
-            (should
-             (equal
-              (org-texmacs-document-stm-paths before)
-              (if (string-prefix-p "table" kind)
-                  '((0 0 0 0))
-                '((0 0)))))
-            (should (org-texmacs-document-file-paths before))
-            (should (equal before (org-texmacs-document input)))))))))
+        (let ((reader (symbol-function 'org-texmacs--stm-read)))
+          (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                     (lambda (source &rest _)
+                       (push source requests)
+                       (funcall reader source))))
+            (let* ((input
+                    (org-texmacs-prepare-buffer (current-buffer)))
+                   (before (org-texmacs-document input))
+                   (body (org-texmacs-document-body before)))
+              (should
+               (eq (car (cadr body)) (intern (concat "big-" kind))))
+              (should (= (length requests) 1))
+              (should
+               (equal
+                (org-texmacs-document-stm-paths before)
+                (if (string-prefix-p "table" kind)
+                    '((0 0 0 0))
+                  '((0 0)))))
+              (should (org-texmacs-document-file-paths before))
+              (should
+               (equal before (org-texmacs-document input))))))))))
 
 (ert-deftest org-texmacs-issue13-stage3-excluded-partial-wrapper ()
   (with-temp-buffer
@@ -1455,9 +1452,9 @@
          section "[fn:n]\n#+begin_table\n| A |\n#+end_table\n")
         (goto-char (point-min))
         (search-forward "| A |")
-        (cl-letf (((symbol-function 'org-texmacs--worker-request)
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
                    (lambda (&rest _)
-                     (ert-fail "Org prose reached native parser"))))
+                     (ert-fail "Org prose reached the STM reader"))))
           (let* ((input
                   (org-texmacs-prepare-buffer
                    (current-buffer)
@@ -1528,24 +1525,23 @@
      :type 'org-texmacs-document-error)))
 
 (ert-deftest
-    org-texmacs-issue13-stage3-preflight-bibliography-and-native-recovery
+    org-texmacs-issue13-stage3-invalid-figure-and-table-recovery
     ()
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
     (insert
      "#+BIBLIOGRAPHY: refs.bib\n#+begin_figure\nIllegal\n#+end_figure\n")
-    (let (operations)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (_source &optional operation)
-                   (push operation operations)
-                   (should (eq operation 'bibliography))
-                   '(document))))
-        (should-error
-         (org-texmacs-document-from-buffer
-          (current-buffer) '(("refs.bib" . "")))
-         :type 'org-texmacs-document-error)
-        (should-not operations))))
+    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+               (lambda (&rest _)
+                 (ert-fail "Invalid figure requested native work"))))
+      (let ((failure
+             (should-error
+              (org-texmacs-document-from-buffer (current-buffer))
+              :type 'org-texmacs-document-error)))
+        (should
+         (string-match-p
+          "figure/table body" (error-message-string failure))))))
   (org-texmacs-test--with-worker
    (with-temp-buffer
      (org-mode)

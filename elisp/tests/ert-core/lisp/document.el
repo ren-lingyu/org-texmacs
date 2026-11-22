@@ -1036,7 +1036,7 @@
   (cl-letf (((symbol-function 'org-texmacs--worker-start)
              (lambda (&rest _)
                (ert-fail "Pure lowering started a worker")))
-            ((symbol-function 'org-texmacs--worker-request)
+            ((symbol-function 'org-texmacs--stm-read)
              (lambda (&rest _)
                (ert-fail "Pure lowering requested parsing"))))
     (with-temp-buffer

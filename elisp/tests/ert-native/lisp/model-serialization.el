@@ -77,6 +77,10 @@
                   (ert-fail "Org serialization opened a session")))
                ((symbol-function 'org-texmacs--worker-request)
                 (lambda (&rest _)
+                  (ert-fail
+                   "Org serialization requested native work")))
+               ((symbol-function 'org-texmacs--stm-read)
+                (lambda (&rest _)
                   (ert-fail "Output guard reparsed known STM"))))
        (setq output (org-texmacs-model-serialize model)))
      (let ((again (org-texmacs-test--native-model output)))

@@ -74,11 +74,12 @@
       (let ((state
              (org-texmacs-test--document-buffer-state
               (current-buffer))))
-        (cl-letf (((symbol-function 'org-texmacs--stm-read)
-                   (lambda (raw &optional _syntax)
-                     (push raw calls)
-                     (read raw))))
-          (setq model (org-texmacs-parse-buffer (current-buffer))))
+        (let ((reader (symbol-function 'org-texmacs--stm-read)))
+          (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                     (lambda (raw &optional _syntax)
+                       (push raw calls)
+                       (funcall reader raw))))
+            (setq model (org-texmacs-parse-buffer (current-buffer)))))
         (should
          (equal
           state
@@ -164,18 +165,19 @@
      "#+begin_src scheme\n(math \"code\")\n#+end_src\n\n"
      "Plain $(math \"recognized\")$.\n")
     (let (calls)
-      (cl-letf (((symbol-function 'org-texmacs--stm-read)
-                 (lambda (raw &optional _syntax)
-                   (push raw calls)
-                   (read raw))))
-        (let ((model (org-texmacs-parse-buffer (current-buffer))))
-          (should (equal calls '("(math \"recognized\")")))
-          (dolist (type '(headline bold verbatim table src-block))
+      (let ((reader (symbol-function 'org-texmacs--stm-read)))
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                   (lambda (raw &optional _syntax)
+                     (push raw calls)
+                     (funcall reader raw))))
+          (let ((model (org-texmacs-parse-buffer (current-buffer))))
+            (should (equal calls '("(math \"recognized\")")))
+            (dolist (type '(headline bold verbatim table src-block))
+              (should
+               (org-element-map
+                (org-texmacs-model-ast model) type #'identity nil t)))
             (should
-             (org-element-map
-              (org-texmacs-model-ast model) type #'identity nil t)))
-          (should
-           (= (length (org-texmacs-model-islands model)) 1)))))))
+             (= (length (org-texmacs-model-islands model)) 1))))))))
 
 (ert-deftest org-texmacs-model-parse-effective-heading-and-link-syntax
     ()
@@ -198,73 +200,69 @@
      (dolist (declared '(nil t))
        (let (expected
              model)
-         (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                    (lambda (_raw &optional _syntax) '(math "x"))))
-           (with-temp-buffer
-             (when declared
-               (insert
-                "#+TODO: READY | FINISHED\n#+TODO: REVIEW | ACCEPTED\n"))
+         (with-temp-buffer
+           (when declared
              (insert
-              "#+LINK: local https://example.test/%s\n"
-              (if declared
-                  "* READY Parent\n*** FINISHED Child\n*** REVIEW Check\n*** ACCEPTED Last\n"
-                default-headings)
-              "[[local:item][Link]] $(math \"x\")$.\n")
-             (org-mode)
-             (setq-local org-odd-levels-only t)
-             (let ((regexes
-                    (list
-                     org-link-types-re
-                     org-link-plain-re
-                     org-element--object-regexp))
-                   (native (org-element-parse-buffer)))
-               (setq expected (headings native))
-               (if declared
-                   (should
-                    (equal
-                     expected
-                     '((1 "READY" todo)
-                       (2 "FINISHED" done)
-                       (2 "REVIEW" todo)
-                       (2 "ACCEPTED" done))))
+              "#+TODO: READY | FINISHED\n#+TODO: REVIEW | ACCEPTED\n"))
+           (insert
+            "#+LINK: local https://example.test/%s\n"
+            (if declared
+                "* READY Parent\n*** FINISHED Child\n*** REVIEW Check\n*** ACCEPTED Last\n"
+              default-headings)
+            "[[local:item][Link]] $(math \"x\")$.\n")
+           (org-mode)
+           (setq-local org-odd-levels-only t)
+           (let ((regexes
+                  (list
+                   org-link-types-re
+                   org-link-plain-re
+                   org-element--object-regexp))
+                 (native (org-element-parse-buffer)))
+             (setq expected (headings native))
+             (if declared
                  (should
-                  (equal (mapcar #'caddr expected) '(todo done))))
+                  (equal
+                   expected
+                   '((1 "READY" todo)
+                     (2 "FINISHED" done)
+                     (2 "REVIEW" todo)
+                     (2 "ACCEPTED" done))))
                (should
-                (equal
-                 (link-target native)
-                 '("https" "//example.test/item")))
-               (setq model
-                     (org-texmacs-parse-buffer (current-buffer)))
-               (should
-                (equal
-                 regexes
-                 (list
-                  org-link-types-re
-                  org-link-plain-re
-                  org-element--object-regexp)))))
-           (let* ((ast (org-texmacs-model-ast model))
-                  (context (org-texmacs-model-context model))
-                  (links (plist-get context :link-settings)))
-             (should (equal (headings ast) expected))
+                (equal (mapcar #'caddr expected) '(todo done))))
              (should
               (equal
-               (link-target ast) '("https" "//example.test/item")))
+               (link-target native) '("https" "//example.test/item")))
+             (setq model (org-texmacs-parse-buffer (current-buffer)))
              (should
               (equal
-               (plist-get links :local)
-               '(("local" . "https://example.test/%s"))))
-             (should (member "https" (plist-get links :types))))
-           (let ((output (org-texmacs-model-to-buffer model)))
-             (unwind-protect
-                 (let ((ast
-                        (org-texmacs-model-ast
-                         (org-texmacs-parse-buffer output))))
-                   (should (equal (headings ast) expected))
-                   (should
-                    (equal
-                     (link-target ast)
-                     '("https" "//example.test/item"))))
-               (kill-buffer output)))))))))
+               regexes
+               (list
+                org-link-types-re
+                org-link-plain-re
+                org-element--object-regexp)))))
+         (let* ((ast (org-texmacs-model-ast model))
+                (context (org-texmacs-model-context model))
+                (links (plist-get context :link-settings)))
+           (should (equal (headings ast) expected))
+           (should
+            (equal
+             (link-target ast) '("https" "//example.test/item")))
+           (should
+            (equal
+             (plist-get links :local)
+             '(("local" . "https://example.test/%s"))))
+           (should (member "https" (plist-get links :types))))
+         (let ((output (org-texmacs-model-to-buffer model)))
+           (unwind-protect
+               (let ((ast
+                      (org-texmacs-model-ast
+                       (org-texmacs-parse-buffer output))))
+                 (should (equal (headings ast) expected))
+                 (should
+                  (equal
+                   (link-target ast)
+                   '("https" "//example.test/item"))))
+             (kill-buffer output))))))))
 
 (ert-deftest
     org-texmacs-model-parse-guards-source-and-syntax-during-parsing
@@ -312,15 +310,18 @@
   (with-temp-buffer
     (org-mode)
     (insert "$(math \"x\")$\n")
-    (let ((source (current-buffer)))
+    (let ((source (current-buffer))
+          (original org-export-with-toc)
+          (reader (symbol-function 'org-texmacs--stm-read)))
       (cl-letf (((symbol-function 'org-texmacs--stm-read)
-                 (lambda (_raw &optional _syntax)
+                 (lambda (raw)
                    (with-current-buffer source
                      (setq-local org-export-with-toc
                                  (not org-export-with-toc)))
-                   '(math "x"))))
+                   (funcall reader raw))))
         (should
-         (org-texmacs-model-p (org-texmacs-parse-buffer source)))))))
+         (org-texmacs-model-p (org-texmacs-parse-buffer source))))
+      (should (eq org-export-with-toc (not original))))))
 
 (ert-deftest org-texmacs-model-parse-rejects-killed-source ()
   (let ((source (generate-new-buffer " *model-source-lifetime*")))
@@ -340,7 +341,7 @@
         (kill-buffer source)))))
 
 (ert-deftest
-    org-texmacs-model-parse-validates-source-and-native-results
+    org-texmacs-model-parse-validates-source-and-propagates-stm-errors
     ()
   (dolist (source
            (list nil "text" (generate-new-buffer " *model-non-org*")))
@@ -427,17 +428,14 @@
        " retained parameter\n\"atom\"\n#+end_"
        kind
        "\n")
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (raw &optional _syntax) (read raw))))
-        (let* ((model (org-texmacs-parse-buffer (current-buffer)))
-               (entry (car (org-texmacs-model-islands model))))
-          (should (equal (cdr entry) "atom"))
-          (should
-           (equal
-            (org-element-property
-             :parameters (car entry))
-            "retained parameter"))
-          (should-not (org-element-contents (car entry))))))))
+      (let* ((model (org-texmacs-parse-buffer (current-buffer)))
+             (entry (car (org-texmacs-model-islands model))))
+        (should (equal (cdr entry) "atom"))
+        (should
+         (equal
+          (org-element-property :parameters (car entry))
+          "retained parameter"))
+        (should-not (org-element-contents (car entry)))))))
 
 (ert-deftest org-texmacs-model-object-parser-acquires-structural-keys
     ()
@@ -450,38 +448,39 @@
      "#+caption: $(math \"caption\")$\n"
      "#+begin_texmacs\n(math \"block\")\n#+end_texmacs\n")
     (let (requests)
-      (cl-letf (((symbol-function 'org-texmacs--stm-read)
-                 (lambda (raw)
-                   (let ((parsed (read raw)))
-                     (push (cadr parsed) requests)
-                     parsed))))
-        (let* ((source (buffer-string))
-               (model (org-texmacs-parse-buffer (current-buffer)))
-               (islands (org-texmacs-model-islands model))
-               (body (car (rassoc '(math "body") islands)))
-               (caption (car (rassoc '(math "caption") islands)))
-               (block (car (rassoc '(math "block") islands))))
-          (should (equal source (buffer-string)))
-          (should
-           (equal
-            (sort requests #'string<)
-            '("block" "body" "caption" "title")))
-          (should (eq (org-element-type body) 'stm-fragment))
-          (should (equal (org-element-property :post-blank body) 2))
-          (should (eq (org-element-parent caption) block))
-          (should (eq (org-element-type block) 'special-block))
-          (should-not (org-element-property :stm-source body))
-          (should-not
-           (org-element-property
-            :org-texmacs-syntax (org-texmacs-model-ast model)))
-          (should
-           (plist-member
-            (org-texmacs-model-context model)
-            :link-settings))
-          (should-not
-           (plist-member
-            (org-texmacs-model-context model)
-            :fragment-tags)))))))
+      (let ((reader (symbol-function 'org-texmacs--stm-read)))
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                   (lambda (raw)
+                     (let ((parsed (funcall reader raw)))
+                       (push (cadr parsed) requests)
+                       parsed))))
+          (let* ((source (buffer-string))
+                 (model (org-texmacs-parse-buffer (current-buffer)))
+                 (islands (org-texmacs-model-islands model))
+                 (body (car (rassoc '(math "body") islands)))
+                 (caption (car (rassoc '(math "caption") islands)))
+                 (block (car (rassoc '(math "block") islands))))
+            (should (equal source (buffer-string)))
+            (should
+             (equal
+              (sort requests #'string<)
+              '("block" "body" "caption" "title")))
+            (should (eq (org-element-type body) 'stm-fragment))
+            (should (equal (org-element-property :post-blank body) 2))
+            (should (eq (org-element-parent caption) block))
+            (should (eq (org-element-type block) 'special-block))
+            (should-not (org-element-property :stm-source body))
+            (should-not
+             (org-element-property
+              :org-texmacs-syntax (org-texmacs-model-ast model)))
+            (should
+             (plist-member
+              (org-texmacs-model-context model)
+              :link-settings))
+            (should-not
+             (plist-member
+              (org-texmacs-model-context model)
+              :fragment-tags))))))))
 
 (ert-deftest
     org-texmacs-model-object-parser-guards-source-during-parsing

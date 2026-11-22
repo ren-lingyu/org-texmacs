@@ -226,13 +226,13 @@
       (should (string-search "[fn::LongNote]" (prin1-to-string body)))
       (should
        (string-search "[fn::ShortNote]" (prin1-to-string body)))))
-  ;; Positionless filter-created notes fail before native parsing or numbering.
+  ;; Positionless filter-created notes fail before STM parsing or numbering.
   ;; Deleted/ignored owners and unused definitions must not be resurrected.
   (dolist (part '(long short))
     (dolist (selection '(keep delete ignore unused-definition))
       (with-temp-buffer
         (org-mode)
-        (insert "| A |\n")
+        (insert "| $(math \"body\")$ |\n")
         (let ((org-export-use-babel nil)
               (org-export-filter-parse-tree-functions
                (list
@@ -269,6 +269,10 @@
                      (lambda (&rest _)
                        (ert-fail
                         "Caption validation started native parsing")))
+                    ((symbol-function 'org-texmacs--stm-read)
+                     (lambda (&rest _)
+                       (ert-fail
+                        "Caption validation reached the STM reader")))
                     ((symbol-function 'org-export-get-footnote-number)
                      (lambda (&rest _)
                        (ert-fail
@@ -312,7 +316,7 @@
          :type 'org-texmacs-document-error)))))
 
 (ert-deftest
-    org-texmacs-standard-export-freezes-context-before-native-wait
+    org-texmacs-standard-export-freezes-context-before-stm-parsing
     ()
   (with-temp-buffer
     (org-mode)
@@ -320,28 +324,32 @@
     (let* ((formatter (make-symbol "standard-test-headline"))
            (original (lambda (&rest _arguments) "owned-heading"))
            (org-texmacs-format-headline-function formatter)
-           (org-export-use-babel nil))
+           (org-export-use-babel nil)
+           (reader (symbol-function 'org-texmacs--stm-read))
+           (changed (lambda (&rest _arguments) "changed-heading"))
+           (calls 0))
       (fset formatter original)
       (unwind-protect
-          (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                     (lambda (_text)
-                       (fset formatter
-                             (lambda (&rest _arguments)
-                               "changed-heading"))
-                       '(math "x"))))
-            (let ((input (org-texmacs--standard-consume 'input)))
+          (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                     (lambda (source)
+                       (cl-incf calls)
+                       (fset formatter changed)
+                       (funcall reader source))))
+            (let* ((input (org-texmacs--standard-consume 'input))
+                   (body
+                    (prin1-to-string
+                     (org-texmacs-document-body
+                      (org-texmacs-document input)))))
+              (should (= calls 1))
+              (should (eq (symbol-function formatter) changed))
               (should
                (eq
                 (plist-get
                  (org-texmacs-input-info input)
                  :texmacs-format-headline-function)
                 original))
-              (should
-               (string-match-p
-                "owned-heading"
-                (prin1-to-string
-                 (org-texmacs-document-body
-                  (org-texmacs-document input)))))))
+              (should (string-match-p "owned-heading" body))
+              (should-not (string-match-p "changed-heading" body))))
         (fmakunbound formatter)))))
 
 (ert-deftest
@@ -359,7 +367,7 @@
                (org-element-create
                 'paragraph nil "(ma" "th \"joined\")"))
               tree))))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
                  (lambda (source)
                    (ert-fail
                     (list
@@ -384,16 +392,19 @@
                   node
                   :stm-source "(math \"~filtered~\")")))
               tree))))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (source)
-                   (should (equal source "(math \"~filtered~\")"))
-                   '(math "~filtered~"))))
-        (should
-         (equal
-          (cdar
-           (org-texmacs-input-islands
-            (org-texmacs--standard-consume 'input)))
-          '(math "~filtered~")))))))
+      (let ((reader (symbol-function 'org-texmacs--stm-read))
+            sources)
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                   (lambda (source)
+                     (push source sources)
+                     (funcall reader source))))
+          (should
+           (equal
+            (cdar
+             (org-texmacs-input-islands
+              (org-texmacs--standard-consume 'input)))
+            '(math "~filtered~")))
+          (should (equal sources (list "(math \"~filtered~\")"))))))))
 
 (ert-deftest
     org-texmacs-standard-export-positionless-unsupported-affiliation-fails
@@ -578,19 +589,31 @@
                 (org-element-extract-element old)
                 (org-element-adopt (cadr headings) block))
               tree))))
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (text)
-                   (should (equal text "(sqrt \"new\")"))
-                   '(sqrt "new"))))
-        (let* ((input (org-texmacs--standard-consume 'input))
-               (island (car (org-texmacs-input-islands input))))
-          (should (equal (cdr island) '(sqrt "new")))
-          (should
-           (equal
-            (org-element-property
-             :raw-value (org-element-property :parent (car island)))
-            "Two"))
-          (should-not (org-element-property :begin (car island))))))))
+      (let ((reader (symbol-function 'org-texmacs--stm-read))
+            sources)
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                   (lambda (source)
+                     (push source sources)
+                     (funcall reader source))))
+          (let* ((input (org-texmacs--standard-consume 'input))
+                 (island (car (org-texmacs-input-islands input))))
+            (should (equal (cdr island) '(sqrt "new")))
+            (should
+             (eq
+              (car island)
+              (org-element-map
+               (org-texmacs-input-ast input)
+               'special-block
+               #'identity
+               nil
+               t)))
+            (should
+             (equal
+              (org-element-property
+               :raw-value (org-element-property :parent (car island)))
+              "Two"))
+            (should-not (org-element-property :begin (car island))))
+          (should (equal sources (list "(sqrt \"new\")"))))))))
 
 (ert-deftest
     org-texmacs-standard-export-boundary-errors-before-native-effects
@@ -642,31 +665,28 @@
      "[[https://example.org][Link $(math \"link\")$]]\n\n"
      "#+CAPTION: Caption $(math \"caption\")$\n"
      "| $(math \"cell\")$ |\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (source) (read source))))
-      (let* ((document (org-texmacs--standard-consume 'document))
-             (body (org-texmacs-document-body document))
-             (trees
-              (mapcar
-               (lambda (path)
-                 (let ((node body))
-                   (dolist (index path)
-                     (setq node (nth (1+ index) node)))
-                   node))
-               (org-texmacs-document-stm-paths document))))
-        (should
-         (equal
-          trees
-          '((math "heading")
-            (math "body")
-            (math "link")
-            (math "cell")
-            (math "caption"))))
-        (should
-         (member
-          '(concat
-            "Before " (math "body") " " "after. ")
-          (cdr body)))))))
+    (let* ((document (org-texmacs--standard-consume 'document))
+           (body (org-texmacs-document-body document))
+           (trees
+            (mapcar
+             (lambda (path)
+               (let ((node body))
+                 (dolist (index path)
+                   (setq node (nth (1+ index) node)))
+                 node))
+             (org-texmacs-document-stm-paths document))))
+      (should
+       (equal
+        trees
+        '((math "heading")
+          (math "body")
+          (math "link")
+          (math "cell")
+          (math "caption"))))
+      (should
+       (member
+        '(concat "Before " (math "body") " " "after. ")
+        (cdr body))))))
 
 (ert-deftest
     org-texmacs-standard-export-keeps-native-body-carriers-literal
@@ -678,20 +698,18 @@
      "#+begin_texmacs\n"
      "(math \"Literal $(sqrt x)$ and incomplete $(\")\n"
      "#+end_texmacs\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (source) (read source))))
-      (let* ((input (org-texmacs--standard-consume 'input))
-             (mapping (org-texmacs-input-islands input)))
-        (should
-         (equal
-          (mapcar #'cdr mapping)
-          '((math "Literal $(sqrt x)$ and incomplete $(")
-            (math "caption"))))
-        (should
-         (equal
-          (mapcar
-           (lambda (entry) (org-element-type (car entry))) mapping)
-          '(special-block stm-fragment)))))))
+    (let* ((input (org-texmacs--standard-consume 'input))
+           (mapping (org-texmacs-input-islands input)))
+      (should
+       (equal
+        (mapcar #'cdr mapping)
+        '((math "Literal $(sqrt x)$ and incomplete $(")
+          (math "caption"))))
+      (should
+       (equal
+        (mapcar
+         (lambda (entry) (org-element-type (car entry))) mapping)
+        '(special-block stm-fragment))))))
 
 (ert-deftest
     org-texmacs-standard-export-fragment-scope-across-backends
@@ -708,38 +726,41 @@
           (ordinary-cache org-element-use-cache)
           (worker-calls nil)
           nested-output)
-      (cl-letf (((symbol-function 'org-texmacs--stm-read)
-                 (lambda (source)
-                   (push source worker-calls)
-                   (read source))))
-        (let ((org-export-filter-parse-tree-functions
-               (list
-                (lambda (tree backend _info)
-                  (pcase backend
-                    ('texmacs
-                     (should
-                      (memq 'stm-fragment org-element-all-objects))
-                     (with-temp-buffer
-                       (org-mode)
-                       (insert "$(math \"other backend\")$\n")
-                       (setq nested-output (org-export-as 'ascii))))
-                    ('ascii
-                     (should
-                      (eq ordinary-registry org-element-all-objects))
-                     (should
-                      (eq
-                       ordinary-restrictions
-                       org-element-object-restrictions))
-                     (should
-                      (eq ordinary-cache org-element-use-cache))
-                     (should-not org-texmacs--fragment-object-active)
-                     (should-not
-                      (org-element-map
-                       tree 'stm-fragment #'identity nil t))))
-                  tree))))
-          (should
-           (org-texmacs-document-p
-            (org-texmacs--standard-consume 'document)))))
+      (let ((reader (symbol-function 'org-texmacs--stm-read)))
+        (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                   (lambda (source)
+                     (push source worker-calls)
+                     (funcall reader source))))
+          (let ((org-export-filter-parse-tree-functions
+                 (list
+                  (lambda (tree backend _info)
+                    (pcase backend
+                      ('texmacs
+                       (should
+                        (memq 'stm-fragment org-element-all-objects))
+                       (with-temp-buffer
+                         (org-mode)
+                         (insert "$(math \"other backend\")$\n")
+                         (setq nested-output (org-export-as 'ascii))))
+                      ('ascii
+                       (should
+                        (eq
+                         ordinary-registry org-element-all-objects))
+                       (should
+                        (eq
+                         ordinary-restrictions
+                         org-element-object-restrictions))
+                       (should
+                        (eq ordinary-cache org-element-use-cache))
+                       (should-not
+                        org-texmacs--fragment-object-active)
+                       (should-not
+                        (org-element-map
+                         tree 'stm-fragment #'identity nil t))))
+                    tree))))
+            (should
+             (org-texmacs-document-p
+              (org-texmacs--standard-consume 'document))))))
       (should (string-match-p "other backend" nested-output))
       (should (equal worker-calls '("(math \"outer\")")))
       (should (eq ordinary-registry org-element-all-objects))

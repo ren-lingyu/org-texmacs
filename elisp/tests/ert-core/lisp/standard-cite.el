@@ -360,11 +360,14 @@
                            :caption (list (cons (list raw) nil))))))
                       ('metadata (plist-put info :title (list raw)))))
                   tree))))
-          (cl-letf
-              (((symbol-function 'org-texmacs--worker-request)
-                (lambda (&rest _)
-                  (ert-fail
-                   "Target raw was found after native parsing"))))
+          (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                     (lambda (&rest _)
+                       (ert-fail
+                        "Target raw was found after STM parsing")))
+                    ((symbol-function 'org-texmacs--worker-request)
+                     (lambda (&rest _)
+                       (ert-fail
+                        "Target raw requested native work"))))
             (should-error
              (org-texmacs--standard-consume 'input)
              :type 'org-texmacs-document-error)))))))

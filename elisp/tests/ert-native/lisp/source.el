@@ -142,23 +142,27 @@
      "#+DATE: 2026\n"
      "#+OPTIONS: author:nil\n"
      "Body $(math \"x\")$\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (source)
-                 (should (equal source "(math \"x\")"))
-                 '(math "x"))))
-      (let ((document
-             (org-texmacs-document-from-buffer (current-buffer))))
-        (should
-         (equal
-          (org-texmacs-document-body document)
-          '(document
-            (doc-data
-             (doc-title "中 <alpha> (math \"hidden\")")
-             (doc-date "2026"))
-            (concat "Body " (math "x") " "))))
-        (should
-         (equal
-          (org-texmacs-document-stm-paths document) '((1 1))))))))
+    (let ((reader (symbol-function 'org-texmacs--stm-read))
+          sources)
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                 (lambda (source)
+                   (push source sources)
+                   (should (equal source "(math \"x\")"))
+                   (funcall reader source))))
+        (let ((document
+               (org-texmacs-document-from-buffer (current-buffer))))
+          (should
+           (equal
+            (org-texmacs-document-body document)
+            '(document
+              (doc-data
+               (doc-title "中 <alpha> (math \"hidden\")")
+               (doc-date "2026"))
+              (concat "Body " (math "x") " "))))
+          (should
+           (equal
+            (org-texmacs-document-stm-paths document) '((1 1))))))
+      (should (= (length sources) 1)))))
 
 (ert-deftest org-texmacs-context-filters-tasks-before-worker ()
   (with-temp-buffer
@@ -270,17 +274,21 @@
     (setq-local org-export-with-author nil)
     (insert
      "#+OPTIONS: todo:nil tags:nil toc:nil\n* TODO Title :tag:\n$(math \"x\")$\n")
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (_source)
-                 (setq-local
-                  org-export-with-todo-keywords t
-                  org-export-with-tags t)
-                 '(math "x"))))
-      (should
-       (equal
-        (org-texmacs-document-body
-         (org-texmacs-document-from-buffer (current-buffer)))
-        '(document (section "Title") (math "x")))))))
+    (let ((reader (symbol-function 'org-texmacs--stm-read))
+          (calls 0))
+      (cl-letf (((symbol-function 'org-texmacs--stm-read)
+                 (lambda (source)
+                   (cl-incf calls)
+                   (setq-local
+                    org-export-with-todo-keywords t
+                    org-export-with-tags t)
+                   (funcall reader source))))
+        (should
+         (equal
+          (org-texmacs-document-body
+           (org-texmacs-document-from-buffer (current-buffer)))
+          '(document (section "Title") (math "x")))))
+      (should (= calls 1)))))
 
 (ert-deftest org-texmacs-source-location-explicit-buffer-snapshot ()
   (dolist (file '(nil "/source/notes.org"))

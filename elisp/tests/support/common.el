@@ -70,13 +70,6 @@ Options are not interpreted; no selection, hooks, Cite or source preparation."
     (org-element--set-regexps)
     (funcall thunk)))
 
-(defun org-texmacs-test--parse-fixture-stm (raw &rest _)
-  "Return the parsed tree for a small known fixture RAW."
-  (condition-case nil
-      (read raw)
-    (end-of-file
-     (signal 'org-texmacs-parse-error '("Incomplete fixture STM")))))
-
 (defun org-texmacs-test--reference-map (body)
   "Map BODY's random labels to structural fixture names, preserving static IDs."
   (let* ((labels (org-texmacs--document-output-labels body))

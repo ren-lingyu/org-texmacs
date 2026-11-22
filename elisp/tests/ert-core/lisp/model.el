@@ -157,7 +157,7 @@
           (cl-letf (((symbol-function 'org-texmacs--parse-prepare)
                      (lambda (&rest _)
                        (ert-fail "Rescanned supplied AST")))
-                    ((symbol-function 'org-texmacs--worker-request)
+                    ((symbol-function 'org-texmacs--stm-read)
                      (lambda (&rest _)
                        (ert-fail "Reparsed supplied tree")))
                     ((symbol-function 'org-texmacs--document-lower)

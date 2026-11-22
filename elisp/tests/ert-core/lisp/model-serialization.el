@@ -57,15 +57,12 @@
 (ert-deftest
     org-texmacs-model-serialize-authoritative-block-and-inline
     ()
-  (let (parsed)
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
-               (lambda (raw &optional _syntax) (read raw))))
-      (setq parsed
-            (org-texmacs-test--parse-model-text
-             (concat
-              "Before $(math \"inline\")$.\n\n"
-              "#+CAPTION: Caption\n#+begin_texmacs\n"
-              "(math \"old\")\n#+end_texmacs\n"))))
+  (let ((parsed
+         (org-texmacs-test--parse-model-text
+          (concat
+           "Before $(math \"inline\")$.\n\n"
+           "#+CAPTION: Caption\n#+begin_texmacs\n"
+           "(math \"old\")\n#+end_texmacs\n"))))
     (let* ((replacement
             (mapcar
              (lambda (entry)
@@ -82,6 +79,10 @@
              :context
              (org-texmacs-model-context parsed))))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _)
+                   (ert-fail
+                    "Serialization requested native parsing")))
+                ((symbol-function 'org-texmacs--stm-read)
                  (lambda (&rest _)
                    (ert-fail "Output guard reparsed STM")))
                 ((symbol-function 'org-texmacs--worker-serialize-stm)
@@ -222,6 +223,10 @@
               'paragraph nil "$(math \"unmapped\")$\n"))
             :context context)))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
+                 (lambda (&rest _)
+                   (ert-fail
+                    "Serialization requested native parsing")))
+                ((symbol-function 'org-texmacs--stm-read)
                  (lambda (&rest _)
                    (ert-fail "Output guard started STM parser"))))
         (should-error

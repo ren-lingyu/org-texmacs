@@ -124,11 +124,9 @@
     (with-temp-buffer
       (org-mode)
       (insert "* Heading\nText $(math \"x\")$\n")
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (_source) '(math "x"))))
-        (setq
-         input (org-texmacs-prepare-buffer (current-buffer))
-         expected (org-texmacs-document-from-buffer (current-buffer)))))
+      (setq
+       input (org-texmacs-prepare-buffer (current-buffer))
+       expected (org-texmacs-document-from-buffer (current-buffer))))
     (cl-letf (((symbol-function 'org-texmacs--stm-read)
                (lambda (&rest _)
                  (ert-fail "Prepared input must not parse again"))))

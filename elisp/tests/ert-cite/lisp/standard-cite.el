@@ -121,6 +121,10 @@
                    ((symbol-function 'org-texmacs--worker-request)
                     (lambda (&rest _)
                       (ert-fail
+                       "Structured CSL requested native work")))
+                   ((symbol-function 'org-texmacs--stm-read)
+                    (lambda (&rest _)
+                      (ert-fail
                        "Structured CSL needs no STM parser"))))
            (let* ((input (org-texmacs--standard-consume 'input))
                   (ast (org-texmacs-input-ast input))

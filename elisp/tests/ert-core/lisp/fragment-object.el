@@ -247,7 +247,9 @@
 
 (ert-deftest org-texmacs-object-worker-free-and-cache-isolated ()
   (let ((org-element-use-cache t))
-    (cl-letf (((symbol-function 'org-texmacs--worker-request)
+    (cl-letf (((symbol-function 'org-texmacs--stm-read)
+               (lambda (&rest _) (ert-fail "Recognition parsed STM")))
+              ((symbol-function 'org-texmacs--worker-request)
                (lambda (&rest _) (error "Unexpected worker"))))
       (with-temp-buffer
         (delay-mode-hooks
@@ -606,7 +608,9 @@
               'org-element-stm-fragment-interpreter)))))))
 
 (ert-deftest org-texmacs-object-no-external-preparation ()
-  (cl-letf (((symbol-function 'org-export-as)
+  (cl-letf (((symbol-function 'org-texmacs--stm-read)
+             (lambda (&rest _) (ert-fail "Recognition parsed STM")))
+            ((symbol-function 'org-export-as)
              (lambda (&rest _) (ert-fail "Export invoked")))
             ((symbol-function 'insert-file-contents)
              (lambda (&rest _) (ert-fail "File read")))
