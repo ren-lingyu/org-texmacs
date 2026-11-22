@@ -118,35 +118,25 @@ directly affected cases. No suite ownership, package closure or
 production change was included. The user's final flake check succeeded
 with all requested outputs already available.
 
-## Node B test architecture
+## Node B delivered
 
-The user selected a test-only reorganization after Node A. Keep runnable
-package contracts free of real TeXmacs execution and of TeXmacs as a
-test tool. Keep the package's selected TeXmacs store-path injection and
-override behavior. Repository checks own native sessions, rendering,
-interoperability, external integrations and parser/runtime compatibility
-cases. Shared infrastructure moves to `lib/tests/` and is explicitly
-injected by top-level composition. Subprojects only reference their own
-files directly.
+The maintainer replaced the earlier shared-library candidate with a
+test-only reorganization. Package contracts run Core and CSL for both Org
+versions, plus SETUPFILE for the Org 10 variant. Repository integration
+and regression checks run against stock `org-texmacs`, with the patched
+Org caption regression using its own fixture. Keep package test support
+independent of repository test support. Share repository runners and
+common fixtures within `tests/support/`, and leave scenario-specific
+fixtures beside their suites. See `project.md` for the check discovery
+and Org 10 wiring.
 
-The B0 inventory found 748 distinct ERT names. The locked Node A runtime
-manifests agree with that inventory: 743 on Org 9.8.10 and 742 on the pinned
-Org 10.0-pre. The candidate separates Core and structured CSL package tests
-from repository native, PDF, parser-compatibility and extension checks.
-SETUPFILE remains in the Org 10 package. Both patched-caption checks share
-their Org 9.8.10 build, and the TeXmacs 2.1.5 caption layout diagnostic has
-its own repository check. Changes are limited to tests, Nix test composition
-and documentation. The pure guard caught the real encoder call at the end of
-the table-alignment fixture. That fixture remains in the native suite with
-its structural assertions.
-
-The final x86_64-linux working-tree snapshot passed both package builds,
-examples, and all 25 default flake checks. Both Core variants passed
-571 cases under the no-TeXmacs guard. The per-scope runtime name sets
-match the Node A baseline exactly and have no duplicate leaf registrations.
-The per-case migration table is in the ordinary worktree's ignored
-`tmp/stm-node-b-migration.tsv`. The ordinary diff is ready for maintainer
-review. The figure/bibliography ordering investigation remains separate.
+The delivered layout passed the 18 default checks on x86_64-linux.
+Runtime registration retained the 748 distinct ERT names, with 743
+cases on stock and 579 on Org 10. The subsequent PDF helper naming
+cleanup is committed and also passed the default gate. See
+`evidence.md` for the distinction between executed and reused checks.
+Node B has no pending handoff tasks. Figure rejection versus native
+bibliography request ordering remains a separate investigation.
 
 ## Source and check migration delivered
 

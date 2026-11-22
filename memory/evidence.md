@@ -45,7 +45,27 @@ without requesting a bibliography and exercise unsupported equation
 parameters with active citations and independent STM reader and worker
 guards. No production order changed in Node A.
 
-## Node B test architecture verification
+## Delivered Node B test architecture verification
+
+The filtered x86_64-linux worktree snapshot for the delivered layout
+passed all 18 default checks (including GoToR and treefmt) and built both
+package variants and the Emacs wrapper. Per-leaf runtime manifests
+retained all 748 distinct ERT cases, with 743 on stock and 579 on Org
+10.0-pre. Each variant had 569 Core and five CSL cases. Org 10 added
+five SETUPFILE cases and did not run the repository suites.
+
+The naming follow-up passed normal Git-flake
+`nix flake check -L --no-write-lock-file` in the x86_64-linux worktree.
+PDF render (23), PDF document (26), and Issue #11 (3) and #13 (10)
+reran successfully. Native integration reused the unchanged derivation's
+92-case passing result. Static comparison retained all 748 ERT names.
+The maintainer subsequently committed the follow-up. Commit inspection
+is distinct from the earlier worktree test run.
+
+## Superseded Node B candidate verification
+
+The following results describe the earlier shared-library candidate.
+Its dual-version repository matrix was replaced before delivery.
 
 The x86_64-linux baseline at `1ca7639cd1ff` and the final working-tree
 candidate used the locked inputs. Each ERT leaf recorded its registered

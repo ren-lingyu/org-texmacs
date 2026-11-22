@@ -35,20 +35,34 @@ Package `passthru.tests` exposes the pure Core and structured CSL suites,
 plus the scoped SETUPFILE suite for the Org 10 variant. Their PATH omits
 TeXmacs, and the runner guards actual worker startup and TeXmacs
 execution. The package still retains the selected TeXmacs store path
-for production exports. The flake injects shared ERT runners and
-fixtures from `lib/tests/` through `testSupport`. Ordinary temporary
-environments are independent of native worker lifecycle fixtures.
+for production exports. Package and repository tests resolve their own
+ERT runners and fixtures from `elisp/tests/support/` and `tests/support/`,
+respectively. Ordinary temporary environments are independent of native
+worker lifecycle fixtures.
 
-`tests/default.nix` collects package tests from `legacyPackages` and
-discovers repository suites with a distinct overlay filename. It
-publishes both sets with flattened package-path-prefixed flake check
-names. Each repository suite receives the selected package's finite
-test scope, including Org, Citeproc, Org-roam, the Emacs wrapper and
-TeXmacs. Native, PDF, stock parser compatibility and external project
-integration run at repository level. The pinned Org-roam-organize
-check shares the CSL fixtures with package tests. The repository PDF
-aggregate links the normal PDF leaves and combines their logs/name
-lists. The TeXmacs 2.1.5 caption layout diagnostic runs separately.
+`tests/default.nix` gives `mkChecks` explicit package tests from
+`legacyPackages` and discovers repository suites under
+`tests/integration/` and `tests/regression/` in the same call.
+Both use `test-overlay.nix`. Repository suites obtain real package
+dependencies from `pkgs`, share the runner and common fixtures within
+`tests/support/`, and keep scenario-specific fixtures with their tests.
+Repository suites run against stock `org-texmacs`. Org 10 contributes
+only its `passthru.tests` to default checks. The package test tree
+registers the SETUPFILE fixture for the explicit internal `org10pre`
+build. The flag also selects the compatibility patch. Both resources
+live in `elisp/org10pre/` and follow the chosen variant through its Org
+override.
+Native, PDF, stock parser compatibility and external project integration
+run at repository level. PDF render and document are separate leaves.
+The TeXmacs 2.1.5 caption layout diagnostic runs separately.
+
+Shared PDF helpers live in `tests/support/pdf.el`. Use
+`org-texmacs-test--pdf-render-from-saved-tm` for a fresh native render
+from a saved TeXmacs document and `org-texmacs-test--pdf-compare-text-and-geometry`
+for text and per-word geometry comparisons. The comparison uses
+`org-texmacs-test--pdf-words-tolerant`, which handles Poppler word records
+containing XML-invalid math controls. The existing `org-texmacs-test--pdf-words`
+reader remains a separate implementation.
 
 `mkChecks` discovers child overlays and selects suite attributes by
 directory name. An overlay at the scan root is ignored. The GoToR suite
