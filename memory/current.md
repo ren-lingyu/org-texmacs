@@ -103,17 +103,20 @@ bibliography request before rejecting the figure in document lowering.
 The guard against any native request failed in both Org variants on the
 audit candidate. Early equation parameter rejection, by contrast, has
 an active bibliography fixture with independent reader and worker guards.
-Record the figure ordering for separate review. This node changes no
-production behavior.
+The user will investigate the figure ordering separately and does not
+consider it a Node A blocker. This node changes no production behavior.
 
-Node A is complete in the ordinary worktree. Formatting and default
+The user committed Node A on main as "test(stm): align regression checks
+with the Elisp reader". The worktree and index were clean at delivery.
+Formatting and default
 `nix flake check -L --no-write-lock-file` passed on x86_64-linux for both
 Org configurations. Both core suites passed 360 cases and both native
 suites passed 281, including native STM parity. Cite and PDF checks
 passed across the validation passes with unaffected results reused.
 The changed files retain all 422 ERT definitions and rename seven
 directly affected cases. No suite ownership, package closure or
-production change was included. The candidate is unstaged.
+production change was included. The user's final flake check succeeded
+with all requested outputs already available.
 
 ## Source and check migration delivered
 
