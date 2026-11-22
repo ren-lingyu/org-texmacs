@@ -86,6 +86,35 @@ flake check. A read-only Git whitespace check passed on the recorded
 commit. The earlier Nix result applies to the candidate before that
 diagnostic-only change.
 
+## Node A STM test contracts
+
+The user selected a test-only audit from the delivered Phase 1 commit.
+Leave suite ownership and Nix closure work to later nodes. Tests now
+observe actual STM parsing for filtered carrier text, formatter and
+handler snapshot timing, and parsing order. Remove fixture-only native
+parsing stubs. Retain independent worker guards, native protocol tests,
+and the native differential. Model serialization guards the reader
+directly while retaining the no-worker checks.
+
+One old figure test reached only legacy bibliography argument rejection.
+With a supported Org Cite configuration, an active printed bibliography,
+and a figure containing only prose, the real source API reached the native
+bibliography request before rejecting the figure in document lowering.
+The guard against any native request failed in both Org variants on the
+audit candidate. Early equation parameter rejection, by contrast, has
+an active bibliography fixture with independent reader and worker guards.
+Record the figure ordering for separate review. This node changes no
+production behavior.
+
+Node A is complete in the ordinary worktree. Formatting and default
+`nix flake check -L --no-write-lock-file` passed on x86_64-linux for both
+Org configurations. Both core suites passed 360 cases and both native
+suites passed 281, including native STM parity. Cite and PDF checks
+passed across the validation passes with unaffected results reused.
+The changed files retain all 422 ERT definitions and rename seven
+directly affected cases. No suite ownership, package closure or
+production change was included. The candidate is unstaged.
+
 ## Source and check migration delivered
 
 The user committed the package-owned source and test layout and the

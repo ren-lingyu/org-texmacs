@@ -27,6 +27,24 @@ results of the preceding invocation, which included 360 core and 80 PDF
 cases per Org configuration. The example output evaluated during the
 check and was not separately built for this follow-up.
 
+## Node A test boundary verification
+
+Both Org variants passed 360 core and 281 native ERT cases in the formatted
+Node A worktree on x86_64-linux. Default flake checks also passed for Cite,
+PDF and the scoped Org 10 SETUPFILE tests. Unaffected derivations reused
+results. All 422 ERT definitions across edited files remain, with seven
+names updated for the affected contracts.
+
+The rejected legacy explicit bibliography argument previously masked the
+figure validation path. With standard native Cite, a real readable .bib
+file, an active citation and print request, a prose-only figure reached
+the native bibliography worker guard. The audit reproducer failed on
+both variants. Structural figure rejection occurs during lowering after
+native citation fulfillment. The maintained tests exercise that rejection
+without requesting a bibliography and exercise unsupported equation
+parameters with active citations and independent STM reader and worker
+guards. No production order changed in Node A.
+
 ## Earlier feasibility and release evidence
 
 E7 actually loads fixed Org 9.8 sources and passes representative E3/E6 probes;
