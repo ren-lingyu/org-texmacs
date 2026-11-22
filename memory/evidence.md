@@ -45,6 +45,34 @@ without requesting a bibliography and exercise unsupported equation
 parameters with active citations and independent STM reader and worker
 guards. No production order changed in Node A.
 
+## Node B test architecture verification
+
+The x86_64-linux baseline at `1ca7639cd1ff` and the final working-tree
+candidate used the locked inputs. Each ERT leaf recorded its registered
+names. The runtime comparison checked suite membership before migration
+and exact case-name sets and leaf uniqueness after migration for each
+Org scope. The 748 distinct names were retained, with 743 cases on Org
+9.8.10 and 742 on the pinned Org 10.0-pre. The migration kept every name.
+
+194 former Native cases and 19 former PDF cases run in Core. Eight former
+PDF cases exercise real native protocols or text consumers in Native.
+Three parser-specific cases moved to the repository Org parser check.
+Each variant runs 571 Core, 5 structured CSL, 94 Native, 6 native CSL,
+27 PDF render and 25 PDF document cases. The pinned caption layout
+diagnostic, 3 stock parser cases and 5 external Org-roam extension cases
+run for each variant. Org 9.8.10 runs 5 pure patched-caption cases and one
+native patched-caption case. Org 10 runs 5 SETUPFILE cases in its selected
+package environment.
+
+The filtered worktree snapshot included new untracked test paths. Both
+package builds, the example output and all 25 default flake checks passed,
+including the two PDF aggregates, GoToR and treefmt. Nix evaluation checked
+that overridden Org reaches the scoped SETUPFILE check and that overridden
+TeXmacs remains the executable selected in the package patch. The direct
+Git-flake formatter could not see untracked `lib/tests/`. The treefmt
+diagnostic supplied the formatting diff applied to the candidate, and
+the final snapshot passed treefmt. Other systems were outside this run.
+
 ## Earlier feasibility and release evidence
 
 E7 actually loads fixed Org 9.8 sources and passes representative E3/E6 probes;

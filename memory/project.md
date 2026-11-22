@@ -31,26 +31,34 @@ overlay passes named inputs through `callPackage`, enforces the minimum
 Org version, and patches in the selected TeXmacs executable. The examples
 select their renderer through the existing package override.
 
-Package tests are exposed through `passthru.tests`. The Emacs package
-owns `elisp/tests/`, passes a finite `emacsPackages` set with its final
-derivation, and provides shared ERT helpers through `testSupport`.
-The default `standard-cite-integration` suite uses pinned real
-Org-roam-organize plus Org-roam and Citeproc, shares `testSupport.csl`
-with `ert-cite`, and uses an explicit STM carrier in its PDF/HTML fixture.
-The obsolete top-level multi-extension suite is removed.
+Package `passthru.tests` exposes the pure Core and structured CSL suites,
+plus the scoped SETUPFILE suite for the Org 10 variant. Their PATH omits
+TeXmacs, and the runner guards actual worker startup and TeXmacs
+execution. The package still retains the selected TeXmacs store path
+for production exports. The flake injects shared ERT runners and
+fixtures from `lib/tests/` through `testSupport`. Ordinary temporary
+environments are independent of native worker lifecycle fixtures.
 
-`tests/default.nix` collects package tests from the exported
-`legacyPackages` tree and publishes flattened package-path-prefixed flake
-check names. The `ert` aggregate still depends on core, native, Cite and
-PDF. `mkChecks` discovers child overlays and selects suite attributes by
+`tests/default.nix` collects package tests from `legacyPackages` and
+discovers repository suites with a distinct overlay filename. It
+publishes both sets with flattened package-path-prefixed flake check
+names. Each repository suite receives the selected package's finite
+test scope, including Org, Citeproc, Org-roam, the Emacs wrapper and
+TeXmacs. Native, PDF, stock parser compatibility and external project
+integration run at repository level. The pinned Org-roam-organize
+check shares the CSL fixtures with package tests. The repository PDF
+aggregate links the normal PDF leaves and combines their logs/name
+lists. The TeXmacs 2.1.5 caption layout diagnostic runs separately.
+
+`mkChecks` discovers child overlays and selects suite attributes by
 directory name. An overlay at the scan root is ignored. The GoToR suite
 therefore lives at `pkgs/texmacs-with-gotor-support/tests/gotor-regression/`
 and exports `gotor-regression` from that child. Its renderer patch remains
 bound to reviewed TeXmacs 2.1.5.
 
-The caption patch suite targets the Org 9.8.10 ELPA source and is exposed
-only when the scoped Org package has that version. Its discovered namespace
-is empty for other versions. Generic ERT checks exercise Org's behavior
+The pure and native caption patch checks share the same patched Org
+9.8.10 ELPA build. They are exposed only for the targeted Org version.
+Generic ERT checks exercise Org's behavior
 without an exact release assertion, including the core fuzzy-link and
 reference allocation test. The package minimum remains Org 9.8.10.
 
