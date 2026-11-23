@@ -5,6 +5,43 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
+## Production cleanup baseline probes
+
+The user requested isolated, revision-pinned flake experiments before
+production cleanup. The two probe derivations ran offline on x86_64-linux
+with Emacs 31.1, Org 9.8.10 and pinned Org 10.0-pre, and real TeXmacs 2.1.5.
+See [the archived inputs and reports](../archive/2026-11-23T19-29-58Z--9dfb18e/MANIFEST.md).
+This was focused baseline characterization; no production changes or full
+acceptance checks were run.
+
+In both Org variants a visible theorem's `CAPTION[]: Long` and ordinary
+`CAPTION: Long` have equivalent caption data in the raw Org AST, parse-tree
+filter input, and owned prepared AST. Both lower to a statement with
+`dueto`. A nonempty short caption and an empty long caption are distinct
+and rejected. The README's explicit empty-short rejection claim differs
+from this active behavior. For A1, retaining the observed behavior and
+correcting the README avoids adding a source grammar check. The probe does
+not adopt a new public contract.
+
+The standard explicit prepare and document paths both snapshot the fixture
+bibliography, enter fulfillment, and make a real bibliography parse request
+for a valid figure, a prose-only invalid figure, a filter-repaired figure,
+and a filter-produced invalid dedicated target. Preparation returns an
+owned bibliography in every fixture; the invalid target also retains a
+frozen resolution failure. Document conversion accepts the valid and
+filter-repaired figures with citation and bibliography structure, and rejects
+the invalid figure and target only after the worker request. An independent
+Input with the same invalid target retains its resolution failure without
+running native fulfillment and raises it when lowered. The standard probes
+check source text, modification tick and point. They do not cover every
+source invariant or native PDF output.
+
+For B/C, preserve the independent Input failure state. Decide explicitly how
+the standard prepared-Input consumer and Document consumers handle a known
+blocking error before fulfillment. Preserve final filtered AST authority and
+bibliography transaction safeguards. The file-change experiment is conditional
+on a later design moving the snapshot or changing the surrounding guards.
+
 ## STM reader isolation evidence
 
 The STM reader isolation experiments used the released `v0.8.0` flake
