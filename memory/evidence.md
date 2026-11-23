@@ -64,6 +64,18 @@ only. Package derivations, Org selection and repository tool inputs
 match the baseline. The run was on the filtered uncommitted worktree,
 with no new cross-platform validation.
 
+The explicit fixture-input follow-up passed the filtered x86_64-linux
+flake check. Only the treefmt derivation changed. All 16 ERT outputs,
+including their recorded names and artifacts, matched the accepted run.
+
+The final fixture audit passed the filtered x86_64-linux flake check.
+Comparison with the staged candidate confirmed identical Lisp tokens
+for the 24 moved fixture definitions and the assertions of all 748
+ERT definitions. The seven Nix leaf edits only remove obsolete local
+support loads. All 16 output logs again match the baseline per-check
+test sets and the Native/PDF artifact inventory. Ten modified ERT
+derivations ran again and six reused their previous outputs.
+
 ## Delivered Node B test architecture verification
 
 The filtered x86_64-linux worktree snapshot for the delivered layout

@@ -5,6 +5,12 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
+## Repository resource dependencies
+
+Pass shared and external resources as explicit inputs from their owning
+composition layer. Do not access resources outside a consumer's directory
+through `../` paths. Keep suite-local fixtures beside their tests.
+
 ## Adopted STM fragment evolution
 
 Continue the v0.6.0 logical single-tree mathematics Model with physically

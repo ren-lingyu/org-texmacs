@@ -37,8 +37,9 @@ environments do not add TeXmacs to PATH. The package still retains the
 selected TeXmacs store path for production exports. Each check selects
 its Emacs environment and uses batch Emacs to load fixture and test
 files, then invokes `ert-run-tests-batch-and-exit`. Elisp files declare
-their own features. Package fixtures live with Core and CSL. The
-worker-first-load case uses a fresh Emacs initialized with the selected
+their own features. Core retains suite-wide support. Single-file fixtures
+live with their tests, including CSL. The worker-first-load case uses
+a fresh Emacs initialized with the selected
 Org and package load paths. Checks keep isolated HOME directories,
 bounded execution, and `ert.log`.
 
@@ -46,9 +47,12 @@ bounded execution, and `ert.log`.
 `legacyPackages` and discovers repository suites under
 `tests/integration/` and `tests/regression/` in the same call.
 Both use `test-overlay.nix`. Repository suites obtain real package
-dependencies from `pkgs`, share common fixtures within `tests/support/`,
-and keep scenario-specific fixtures with their tests. Native artifacts
-write to the Nix output directory.
+dependencies from `pkgs`. `tests/default.nix` supplies shared fixture
+paths from `tests/support/` through `mkChecks.args.testSupport`. Each
+suite loads the entries it needs and keeps scenario-specific fixtures
+locally. Resource access outside a suite directory uses explicit inputs
+without parent-directory traversal. Native artifacts write to the Nix
+output directory.
 Repository suites run against stock `org-texmacs`. Org 10 contributes
 only its `passthru.tests` to default checks. The package test tree
 registers the SETUPFILE fixture for the explicit internal `org10pre`

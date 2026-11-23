@@ -122,11 +122,18 @@ with all requested outputs already available.
 
 The working tree on project baseline `1e9e8d0` replaces both ERT
 runners and bootstraps with direct Nix-to-Emacs invocations. Keep
-fixtures local to Core and CSL and share repository fixtures with
-existing consumers. Files declare their Elisp dependencies. The
-worker-only loading check runs in an independent batch process using
+fixtures local to Core and CSL. The maintainer requires explicit inputs
+for shared resources. `tests/default.nix` supplies the repository fixture
+paths as `mkChecks.args.testSupport`. Files declare their Elisp dependencies.
+The worker-only loading check runs in an independent batch process using
 the selected Org and package load paths. Native and PDF artifacts
 write to the Nix output directory.
+
+The fixture audit moved 24 single-file definitions beside their consumers and
+removed seven empty support files and their load entries. Core retains its
+suite-wide fixtures. The four repository fixtures still have multiple suite
+consumers. Package and repository copies of small helpers stay local to each
+subsystem to preserve the explicit dependency boundary.
 
 All 18 x86_64-linux checks passed in the filtered candidate. Every ERT
 leaf matched its baseline case names, including both Org versions.
