@@ -118,6 +118,22 @@ directly affected cases. No suite ownership, package closure or
 production change was included. The user's final flake check succeeded
 with all requested outputs already available.
 
+## Direct ERT execution refactor
+
+The working tree on project baseline `1e9e8d0` replaces both ERT
+runners and bootstraps with direct Nix-to-Emacs invocations. Keep
+fixtures local to Core and CSL and share repository fixtures with
+existing consumers. Files declare their Elisp dependencies. The
+worker-only loading check runs in an independent batch process using
+the selected Org and package load paths. Native and PDF artifacts
+write to the Nix output directory.
+
+All 18 x86_64-linux checks passed in the filtered candidate. Every ERT
+leaf matched its baseline case names, including both Org versions.
+See `evidence.md` for counts and artifact verification. Implementation
+and validation are complete. The candidate is pending maintainer
+review and an ordinary project commit.
+
 ## Node B delivered
 
 The maintainer replaced the earlier shared-library candidate with a

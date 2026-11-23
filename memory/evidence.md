@@ -45,6 +45,25 @@ without requesting a bibliography and exercise unsupported equation
 parameters with active citations and independent STM reader and worker
 guards. No production order changed in Node A.
 
+## Direct ERT execution acceptance
+
+Against the delivered Node B baseline, compare each old runtime
+name manifest with the cases in the new `ert.log`. The x86_64-linux
+candidate passed all 18 default checks. Its 16 ERT leaves ran 1,322
+cases with 748 distinct names. All per-check name sets matched:
+Core (569) and CSL (5) on each Org version, five Org 10 SETUPFILE
+cases, and the unchanged stock-only repository suites. Repository
+counts include Native (92), PDF render (23), PDF document (26), and
+Org-roam integration (5). The fresh worker-only loading test passed
+on both Org versions.
+
+The two Native artifacts and eight PDF document artifacts matched the
+old output filenames and were nonempty. All 16 ERT checks retained
+their logs. The runner manifests were used for this migration comparison
+only. Package derivations, Org selection and repository tool inputs
+match the baseline. The run was on the filtered uncommitted worktree,
+with no new cross-platform validation.
+
 ## Delivered Node B test architecture verification
 
 The filtered x86_64-linux worktree snapshot for the delivered layout

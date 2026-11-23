@@ -32,20 +32,23 @@ Org version, and patches in the selected TeXmacs executable. The examples
 select their renderer through the existing package override.
 
 Package `passthru.tests` exposes the pure Core and structured CSL suites,
-plus the scoped SETUPFILE suite for the Org 10 variant. Their PATH omits
-TeXmacs, and the runner guards actual worker startup and TeXmacs
-execution. The package still retains the selected TeXmacs store path
-for production exports. Package and repository tests resolve their own
-ERT runners and fixtures from `elisp/tests/support/` and `tests/support/`,
-respectively. Ordinary temporary environments are independent of native
-worker lifecycle fixtures.
+plus the scoped SETUPFILE suite for the Org 10 variant. Their test
+environments do not add TeXmacs to PATH. The package still retains the
+selected TeXmacs store path for production exports. Each check selects
+its Emacs environment and uses batch Emacs to load fixture and test
+files, then invokes `ert-run-tests-batch-and-exit`. Elisp files declare
+their own features. Package fixtures live with Core and CSL. The
+worker-first-load case uses a fresh Emacs initialized with the selected
+Org and package load paths. Checks keep isolated HOME directories,
+bounded execution, and `ert.log`.
 
 `tests/default.nix` gives `mkChecks` explicit package tests from
 `legacyPackages` and discovers repository suites under
 `tests/integration/` and `tests/regression/` in the same call.
 Both use `test-overlay.nix`. Repository suites obtain real package
-dependencies from `pkgs`, share the runner and common fixtures within
-`tests/support/`, and keep scenario-specific fixtures with their tests.
+dependencies from `pkgs`, share common fixtures within `tests/support/`,
+and keep scenario-specific fixtures with their tests. Native artifacts
+write to the Nix output directory.
 Repository suites run against stock `org-texmacs`. Org 10 contributes
 only its `passthru.tests` to default checks. The package test tree
 registers the SETUPFILE fixture for the explicit internal `org10pre`
