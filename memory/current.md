@@ -25,6 +25,17 @@ earlier differently formatted candidate. Native covers macro/INCLUDE STM
 generation through the retained standard source entry points. The full
 flake gate and example builds belong to node E.
 
+A pre-commit follow-up qualified the README and unreleased CHANGELOG
+caption wording to the tested Org 9.8.10 and pinned Org 10.0-pre. Both
+installed-package Core logs show 570/570, including the empty-short
+equivalence, unsupported-caption rejection, and retired library lookup
+tests. Both CSL logs show 5/5. The full offline x86_64-linux flake check
+passed on the follow-up worktree, with a fresh treefmt build and existing
+Core, native, and PDF document results. A separate fresh examples build
+produced all four English/Chinese TeXmacs/PDF pairs. Artifact presence was
+verified. The source and tests still match the maintainer's staged A1
+candidate. Only the two wording edits are outside the ordinary index.
+
 The project changes await maintainer delivery. A2/B/C still need a shared
 validation-stage design for effective AST and owned Input checks,
 consumer-specific resolution failure behavior, and the point before Native
