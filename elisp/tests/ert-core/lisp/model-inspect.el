@@ -1,5 +1,12 @@
 ;;; model-inspect.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs-parse)
+(require 'ox-texmacs)
+
 (require 'org-texmacs-inspect)
 
 (defun org-texmacs-test--inspection-model ()

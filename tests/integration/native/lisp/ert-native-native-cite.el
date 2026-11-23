@@ -1,6 +1,36 @@
 ;;; ert-native-native-cite.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'oc)
+(require 'org)
+(require 'ox)
+(require 'subr-x)
+
 (require 'ox-texmacs)
+
+(defconst org-texmacs-test--cite-bib
+  (concat
+   "@book{one,author={Alpha, Adelaide},title={Properties of $\\alpha_i$},year={2026},publisher={Press}}\n"
+   "@book{two,author={Zulu, Zachary},title={Ratio $\\frac{a}{b}$},year={2025},publisher={Press}}\n"))
+
+(defun org-texmacs-test--cite-source (file style &optional keys)
+  "Prepare FILE using explicit native STYLE and citation KEYS."
+  (with-temp-buffer
+    (org-mode)
+    (insert
+     "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+     "#+bibliography: "
+     file
+     "\n#+cite_export: texmacs-native "
+     style
+     "\n"
+     "First [cite:"
+     (or keys "@two; @one")
+     "]. Again [cite:@one].\n"
+     "#+print_bibliography:\n")
+    (let ((org-export-use-babel nil))
+      (org-texmacs-prepare-buffer (current-buffer)))))
 
 (ert-deftest org-texmacs-native-cite-real-styles-switch-and-own ()
   (org-texmacs-test--with-worker
@@ -15,7 +45,8 @@
        (let* ((input (org-texmacs-test--cite-source file style))
               (detailed
                (org-texmacs-test--cite-source
-                file style "@one, chapter 1"))
+                file style
+                "@one, chapter 1"))
               (body
                (org-texmacs-document-body
                 (org-texmacs-document input)))
@@ -150,9 +181,7 @@
 
 (ert-deftest org-texmacs-native-cite-loader-preflight ()
   (org-texmacs-test--with-worker
-   (let* ((out
-           (file-name-directory
-            (getenv "ORG_TEXMACS_TEST_NAMES_FILE")))
+   (let* ((out (getenv "out"))
           (result (expand-file-name "loader.sexp" out))
           (script (expand-file-name "run.scm" default-directory)))
      (with-temp-file script

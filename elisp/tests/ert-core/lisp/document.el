@@ -1,5 +1,15 @@
 ;;; document.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-id)
+(require 'org-texmacs)
+(require 'org-texmacs-parse)
+(require 'ox)
+(require 'subr-x)
+
 (defun org-texmacs-test--with-registered-ftps (thunk)
   "Call THUNK with an Org-registered FTPS scheme and isolated parser regexps."
   (let ((org-link-parameters (cons '("ftps") org-link-parameters))

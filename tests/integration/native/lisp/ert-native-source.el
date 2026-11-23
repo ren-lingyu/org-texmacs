@@ -1,5 +1,11 @@
 ;;; ert-native-source.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs)
+(require 'ox)
+
 (ert-deftest org-texmacs-block-case-native-conversion ()
   (org-texmacs-test--with-worker
    (let (expected-body

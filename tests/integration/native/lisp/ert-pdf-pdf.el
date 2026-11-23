@@ -1,5 +1,9 @@
 ;;; ert-pdf-pdf.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'org)
+(require 'org-texmacs)
+
 (ert-deftest org-texmacs-pdf-footnote-macro-matching ()
   (org-texmacs-test--with-worker
    (let ((script

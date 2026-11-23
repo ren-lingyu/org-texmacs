@@ -1,5 +1,9 @@
 ;;; standard-source.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'org)
+(require 'ox)
+
 (require 'ox-texmacs)
 
 (ert-deftest

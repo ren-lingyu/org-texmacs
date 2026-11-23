@@ -1,5 +1,13 @@
 ;;; native-cite.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'oc)
+(require 'org)
+(require 'org-element)
+(require 'ox)
+(require 'ox-texmacs)
+
 (require 'org-texmacs-cite-native)
 
 (ert-deftest org-texmacs-native-cite-requests-and-owned-result ()

@@ -1,5 +1,12 @@
 ;;; native-cite-default.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'oc)
+(require 'org)
+(require 'ox)
+(require 'ox-texmacs)
+
 (require 'ox-html)
 
 (require 'ox-latex)

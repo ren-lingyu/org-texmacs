@@ -1,5 +1,12 @@
 ;;; ert-pdf-preprocess.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-texmacs-bibliography)
+(require 'org-texmacs-preprocess)
+(require 'ox)
+
 (ert-deftest
     org-texmacs-standard-structured-legacy-wrappers-use-standard-only
     ()

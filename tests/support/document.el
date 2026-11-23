@@ -1,5 +1,13 @@
 ;;; document.el --- Repository ERT document fixtures -*- lexical-binding: t; -*-
 
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-id)
+(require 'org-texmacs)
+(require 'org-texmacs-export)
+(require 'ox)
+
 (defun org-texmacs-test--caption-inline-footnote-nodes (tree tag)
   "Collect native TAG nodes from TREE."
   (when (consp tree)

@@ -1,5 +1,14 @@
 ;;; frontend.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs-bibliography)
+(require 'org-texmacs-preprocess)
+(require 'ox)
+(require 'ox-texmacs)
+
 (defmacro org-texmacs-test--with-bibliography-files (&rest body)
   "Run BODY in a private directory with a real UTF-8 bibliography."
   (declare (indent 0) (debug t))

@@ -1,5 +1,10 @@
 ;;; bibliography.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org-element)
+(require 'org-texmacs)
+
 (ert-deftest org-texmacs-bibliography-input-ownership ()
   (let* ((path (copy-sequence "/source/references.bib"))
          (title (copy-sequence "Book"))

@@ -1,5 +1,11 @@
 ;;; ert-native-special-blocks.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-texmacs)
+(require 'ox)
+
 (ert-deftest
     org-texmacs-issue13-native-final-handler-error-and-recovery
     ()

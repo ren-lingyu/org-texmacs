@@ -1,5 +1,13 @@
 ;;; special-blocks.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs)
+(require 'org-texmacs-parse)
+(require 'ox)
+
 (defun org-texmacs-test--issue13-input (handler &optional tree)
   "Build an owned custom-block input using HANDLER and optional STM TREE."
   (let* ((fragment

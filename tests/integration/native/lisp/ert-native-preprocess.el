@@ -1,5 +1,11 @@
 ;;; ert-native-preprocess.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-texmacs-preprocess)
+(require 'ox)
+
 (ert-deftest org-texmacs-standard-legacy-preprocessed-generated-stm ()
   (org-texmacs-test--with-worker
    (with-temp-buffer

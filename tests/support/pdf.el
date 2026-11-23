@@ -1,5 +1,12 @@
 ;;; pdf.el --- Repository ERT pdf fixtures -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'dom)
+(require 'json)
+(require 'org-texmacs-core)
+(require 'xml)
+
 (defun org-texmacs-test--pdf-compare-text-and-geometry
     (actual expected)
   "Check that ACTUAL and EXPECTED match in text and per-word geometry."
@@ -99,10 +106,7 @@ Use DIRECTORY for the script and temporary TeXmacs configuration."
   (require 'dom)
   (require 'xml)
   (let ((program (executable-find "pdftohtml")))
-    (when (getenv "ORG_TEXMACS_TEST_STRICT_TOOLS")
-      (should program))
-    (unless program
-      (ert-skip "PDF link inspection requires Poppler pdftohtml"))
+    (should program)
     (with-temp-buffer
       (let ((coding-system-for-read 'utf-8-unix))
         (should
@@ -201,11 +205,7 @@ Use DIRECTORY for the script and temporary TeXmacs configuration."
   "Inspect actual link targets and text rectangles in FILE.
 LINKS-ONLY skips Poppler text XML and returns native PDF annotations only."
   (let ((python (executable-find "python3")))
-    (when (getenv "ORG_TEXMACS_TEST_STRICT_TOOLS")
-      (should python))
-    (unless python
-      (ert-skip
-       "Footnote destination inspection requires Python/pypdf"))
+    (should python)
     (unless (and org-texmacs-test--pdf-inspector
                  (file-name-absolute-p
                   org-texmacs-test--pdf-inspector)
@@ -250,10 +250,7 @@ LINKS-ONLY skips Poppler text XML and returns native PDF annotations only."
 (defun org-texmacs-test--pdf-text (file)
   "Extract FILE's PDF text and normalize whitespace, without layout assertions."
   (let ((program (executable-find "pdftotext")))
-    (when (getenv "ORG_TEXMACS_TEST_STRICT_TOOLS")
-      (should program))
-    (unless program
-      (ert-skip "PDF semantic inspection requires Poppler pdftotext"))
+    (should program)
     (with-temp-buffer
       (let ((coding-system-for-read 'utf-8-unix))
         (should
@@ -274,10 +271,7 @@ LINKS-ONLY skips Poppler text XML and returns native PDF annotations only."
   (require 'dom)
   (require 'xml)
   (let ((program (executable-find "pdftotext")))
-    (when (getenv "ORG_TEXMACS_TEST_STRICT_TOOLS")
-      (should program))
-    (unless program
-      (ert-skip "PDF layout inspection requires Poppler"))
+    (should program)
     (with-temp-buffer
       (let ((coding-system-for-read 'utf-8-unix))
         (should

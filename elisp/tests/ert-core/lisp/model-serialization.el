@@ -1,5 +1,13 @@
 ;;; model-serialization.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-id)
+(require 'org-texmacs)
+(require 'org-texmacs-inspect)
+
 (require 'org-texmacs-serialize)
 
 (defun org-texmacs-test--parse-model-text (text)

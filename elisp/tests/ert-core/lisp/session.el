@@ -1,5 +1,9 @@
 ;;; session.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org-texmacs)
+
 (ert-deftest org-texmacs-session-invalid-and-stale-handles ()
   (let ((org-texmacs--worker-process nil)
         (stale (org-texmacs--session-create :key "1" :process 'old)))

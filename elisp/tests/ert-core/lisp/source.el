@@ -1,5 +1,12 @@
 ;;; source.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs)
+(require 'ox)
+
 (defun org-texmacs-test--first-block ()
   "Return a fresh Org element at the first TeXmacs block opening."
   (save-excursion

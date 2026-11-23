@@ -1,5 +1,12 @@
 ;;; model.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs-parse)
+(require 'ox-texmacs)
+
 (require 'org-texmacs-model)
 
 (ert-deftest org-texmacs-model-loads-without-export-or-worker ()

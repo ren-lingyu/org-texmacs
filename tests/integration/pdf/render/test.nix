@@ -23,29 +23,33 @@ runCommand "org-texmacs-integration-pdf-render"
       poppler-utils
       (python3.withPackages (ps: [ ps.pypdf ]))
     ];
-    ORG_TEXMACS_TEST_BOOTSTRAP = testSupport.bootstrap;
-    ORG_TEXMACS_TEST_HELPERS = builtins.toJSON [
-      testSupport.document
-      testSupport.native
-      testSupport.pdf
-      ./support.el
-    ];
-    ORG_TEXMACS_TEST_FILES = builtins.toJSON [ ./lisp/ert-pdf-pdf.el ];
-    ORG_TEXMACS_TEST_TOOLS = builtins.toJSON [
-      "texmacs"
-      "pdftotext"
-      "pdfinfo"
-      "pdftohtml"
-      "python3"
-    ];
-    ORG_TEXMACS_TEST_STRICT_TOOLS = "1";
     ORG_TEXMACS_TEST_PROGRAM = lib.getExe' texmacs "texmacs";
     ORG_TEXMACS_TEST_PDF_LINKS = pdfInspector;
   }
   ''
     export HOME="$TMPDIR/home"
     mkdir -p "$HOME" "$out"
-    export ORG_TEXMACS_TEST_NAMES_FILE="$out/test-names.txt"
     set -o pipefail
-    timeout --kill-after=10s 600s ${lib.getExe' emacs "emacs"} -Q --batch --load ${testSupport.runner} 2>&1 | tee "$out/ert.log"
+    type texmacs >/dev/null
+    type pdftotext >/dev/null
+    type pdfinfo >/dev/null
+    type pdftohtml >/dev/null
+    type python3 >/dev/null
+    timeout --kill-after=10s 600s ${lib.getExe' emacs "emacs"} -Q --batch \
+      ${
+        lib.escapeShellArgs (
+          lib.concatMap
+            (file: [
+              "--load"
+              "${file}"
+            ])
+            [
+              testSupport.document
+              testSupport.native
+              testSupport.pdf
+              ./lisp/ert-pdf-pdf.el
+            ]
+        )
+      } \
+      --funcall ert-run-tests-batch-and-exit 2>&1 | tee "$out/ert.log"
   ''

@@ -1,5 +1,26 @@
 ;;; ert-native-session.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-texmacs)
+(require 'ox)
+
+(defun org-texmacs-test--example-session ()
+  "Exercise the fixed session fixture."
+  (let ((document
+         (with-temp-buffer
+           (org-mode)
+           (setq-local org-export-with-author nil)
+           (insert "Text $(math \"α\")$\n")
+           (org-texmacs-document-from-buffer (current-buffer)))))
+    (let ((session (org-texmacs-session-open)))
+      (unwind-protect
+          (progn
+            (org-texmacs-session-set-document session document)
+            t)
+        (org-texmacs-session-close session)))))
+
 (ert-deftest org-texmacs-session-real-lifecycle ()
   (org-texmacs-test--with-worker
    (let ((session (org-texmacs-session-open)))

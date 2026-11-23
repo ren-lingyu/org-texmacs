@@ -1,5 +1,13 @@
 ;;; caption-inline-footnotes-captions.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs)
+(require 'org-texmacs-parse)
+(require 'ox)
+
 (ert-deftest org-texmacs-caption-patched-loaded-libraries ()
   (should (equal (org-version) "9.8.10"))
   (let ((org (getenv "ORG_TEXMACS_TEST_PATCHED_ORG"))

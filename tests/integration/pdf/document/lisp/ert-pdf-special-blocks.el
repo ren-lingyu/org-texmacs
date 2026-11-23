@@ -1,5 +1,10 @@
 ;;; ert-pdf-special-blocks.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-texmacs)
+
 (ert-deftest org-texmacs-statement-caption-native-export-and-reload ()
   (org-texmacs-test--with-worker
    (dolist (style '("generic" "article"))

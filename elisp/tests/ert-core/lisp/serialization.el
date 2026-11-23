@@ -1,5 +1,10 @@
 ;;; serialization.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-texmacs)
+
 (defun org-texmacs-test--ascii-hex (text)
   "Represent expected ASCII native TEXT as lowercase hexadecimal bytes."
   (mapconcat (lambda (character) (format "%02x" character)) text ""))

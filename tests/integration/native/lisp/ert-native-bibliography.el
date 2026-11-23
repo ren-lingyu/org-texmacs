@@ -1,5 +1,11 @@
 ;;; ert-native-bibliography.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs)
+(require 'org-texmacs-parse)
+
 (ert-deftest org-texmacs-native-bibliography-parser-and-owned-input ()
   (org-texmacs-test--with-worker
    (let*

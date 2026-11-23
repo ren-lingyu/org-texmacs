@@ -1,5 +1,77 @@
 ;;; ert-pdf-frontend.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'ox)
+(require 'ox-texmacs)
+
+(defun org-texmacs-test--observe-standard-cleanup
+    (thunk &optional failure)
+  "Call THUNK and check disposal of Org's working export buffers.
+FAILURE injects an error in root, prepared or ast phase, after switching to a
+separate user-owned buffer.  Return the observed phase names."
+  (let ((source (current-buffer))
+        (other (generate-new-buffer " *standard-user-owned*"))
+        records)
+    (unwind-protect
+        (cl-labels
+         ((observe
+           (stage)
+           (should-not (eq source (current-buffer)))
+           (push (cons stage (current-buffer)) records)
+           (when (eq stage failure)
+             (goto-char (point-max))
+             (insert "Injected copy change")
+             (set-buffer other)
+             (signal 'org-texmacs-document-error
+                     '("Cleanup sentinel")))))
+         (let ((org-export-before-processing-functions
+                (append
+                 org-export-before-processing-functions
+                 (list (lambda (_) (observe 'root)))))
+               (org-export-before-parsing-functions
+                (append
+                 org-export-before-parsing-functions
+                 (list (lambda (_) (observe 'prepared)))))
+               (org-export-filter-parse-tree-functions
+                (append
+                 org-export-filter-parse-tree-functions
+                 (list
+                  (lambda (tree _backend _info)
+                    (observe 'ast)
+                    tree)))))
+           (funcall thunk))
+         (should (buffer-live-p source))
+         (should (buffer-live-p other))
+         (dolist (record records)
+           (should-not (buffer-live-p (cdr record))))
+         (mapcar #'car (nreverse records)))
+      (when (buffer-live-p other)
+        (let ((kill-buffer-query-functions nil))
+          (kill-buffer other))))))
+
+(defmacro org-texmacs-test--with-cleanup-source (&rest body)
+  "Run BODY in a real visiting Org buffer and a test-owned directory."
+  (declare (indent 0) (debug t))
+  `(org-texmacs-test--with-bibliography-files
+    (write-region "Included cleanup sentinel\n" nil "part.org"
+                  nil
+                  'silent)
+    (write-region "#+INCLUDE: \"part.org\"\n" nil "source.org"
+                  nil
+                  'silent)
+    (let ((source
+           (find-file-noselect (expand-file-name "source.org"))))
+      (unwind-protect
+          (with-current-buffer source
+            (org-mode)
+            ,@body)
+        (when (buffer-live-p source)
+          (with-current-buffer source
+            (set-buffer-modified-p nil))
+          (kill-buffer source))))))
+
 (ert-deftest
     org-texmacs-standard-context-native-pdf-selected-footnote-binding
     ()
@@ -32,40 +104,40 @@
 (ert-deftest org-texmacs-cleanup-full-standard-file-exports ()
   (org-texmacs-test--with-worker
    (org-texmacs-test--with-cleanup-source
-    (setq-local org-export-with-toc nil)
-    (dolist (modified '(nil t))
-      (set-buffer-modified-p modified)
-      (goto-char 3)
-      (set-mark 2)
-      (let ((before
+     (setq-local org-export-with-toc nil)
+     (dolist (modified '(nil t))
+       (set-buffer-modified-p modified)
+       (goto-char 3)
+       (set-mark 2)
+       (let ((before
+              (org-texmacs-test--document-buffer-state
+               (current-buffer)))
+             (org-export-use-babel nil))
+         (dolist (command
+                  '(org-texmacs-export-to-texmacs
+                    org-texmacs-export-to-pdf))
+           (let ((phases
+                  (org-texmacs-test--observe-standard-cleanup
+                   (lambda ()
+                     (let ((file (funcall command)))
+                       (should (file-regular-p file))
+                       (if (eq command 'org-texmacs-export-to-pdf)
+                           (should
+                            (string-search
+                             "Included cleanup sentinel"
+                             (org-texmacs-test--pdf-text file)))
+                         (with-temp-buffer
+                           (insert-file-contents-literally file)
+                           (should
+                            (string-search
+                             "Included cleanup sentinel"
+                             (buffer-string))))))))))
+             (should (equal phases '(root prepared ast))))
+           (should
+            (equal
+             before
              (org-texmacs-test--document-buffer-state
-              (current-buffer)))
-            (org-export-use-babel nil))
-        (dolist (command
-                 '(org-texmacs-export-to-texmacs
-                   org-texmacs-export-to-pdf))
-          (let ((phases
-                 (org-texmacs-test--observe-standard-cleanup
-                  (lambda ()
-                    (let ((file (funcall command)))
-                      (should (file-regular-p file))
-                      (if (eq command 'org-texmacs-export-to-pdf)
-                          (should
-                           (string-search
-                            "Included cleanup sentinel"
-                            (org-texmacs-test--pdf-text file)))
-                        (with-temp-buffer
-                          (insert-file-contents-literally file)
-                          (should
-                           (string-search
-                            "Included cleanup sentinel"
-                            (buffer-string))))))))))
-            (should (equal phases '(root prepared ast))))
-          (should
-           (equal
-            before
-            (org-texmacs-test--document-buffer-state
-             (current-buffer))))))))))
+              (current-buffer))))))))))
 
 (ert-deftest org-texmacs-export-backend-dispatch-and-native-consumers
     ()

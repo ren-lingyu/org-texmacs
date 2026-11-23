@@ -1,8 +1,55 @@
 ;;; standard-cite.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'oc)
+(require 'org)
+(require 'org-element)
+(require 'ox)
+(require 'ox-texmacs)
+
 (defvar org-texmacs-test--cite-info nil)
 
 (defvar org-texmacs-test--cite-finalized 0)
+
+(defun org-texmacs-test--cite-citation (citation _style backend info)
+  (should (org-export-derived-backend-p backend 'texmacs))
+  (should (equal '("key") (org-cite-get-references citation t)))
+  (push 'citation org-texmacs-test--cite-calls)
+  (setq org-texmacs-test--cite-info info)
+  (pcase org-texmacs-test--cite-result
+    ('scripts
+     (list
+      "x"
+      (org-element-create 'subscript nil "i")
+      (org-element-create 'superscript nil "2")
+      " y"
+      (org-element-create
+       'superscript
+       '(:use-brackets-p t)
+       "a"
+       (org-element-create 'subscript nil "b"))))
+    ('entity
+     (org-element-create
+      'entity '(:name "alpha" :utf-8 "α" :latex-math-p t)))
+    ('element (org-element-create 'bold nil "Structured"))
+    ('secondary
+     (list "Prefix " (org-element-create 'italic nil "Structured")))
+    ('reentrant
+     (org-export-data (org-element-create 'bold nil "Nested") info))
+    (_ "Target output")))
+
+(defun org-texmacs-test--cite-bibliography
+    (keys files _style _props _backend info)
+  (should (eq info org-texmacs-test--cite-info))
+  (should (equal keys '("key")))
+  (should (equal files (plist-get info :bibliography)))
+  (push 'bibliography org-texmacs-test--cite-calls)
+  (org-element-create 'paragraph nil "Bibliography"))
+
+(defun org-texmacs-test--cite-finalizer (text &rest _)
+  (cl-incf org-texmacs-test--cite-finalized)
+  (concat text " finalized"))
 
 (org-cite-register-processor
  'org-texmacs-test-structured

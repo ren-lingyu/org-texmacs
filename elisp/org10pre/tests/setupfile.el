@@ -1,5 +1,10 @@
 ;;; setupfile.el --- Org 10 external parser syntax regressions -*- lexical-binding: t; -*-
 
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs-serialize)
+
 (require 'ert)
 (require 'org-texmacs)
 

@@ -1,5 +1,11 @@
 ;;; ert-pdf-document.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs)
+
 (ert-deftest
     org-texmacs-document-issue11-file-provenance-and-source-errors
     ()

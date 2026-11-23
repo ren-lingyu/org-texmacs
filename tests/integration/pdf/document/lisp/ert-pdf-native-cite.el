@@ -1,13 +1,15 @@
 ;;; ert-pdf-native-cite.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'org)
+(require 'ox)
+
 (require 'ox-texmacs)
 
 (ert-deftest org-texmacs-native-cite-math-tm-pdf-and-reload ()
   (org-texmacs-test--with-worker
    (let ((file (expand-file-name "references.bib" test-directory))
-         (out
-          (file-name-directory
-           (getenv "ORG_TEXMACS_TEST_NAMES_FILE"))))
+         (out (getenv "out")))
      (with-temp-file file
        (insert
         "@book{one,author={Alpha, Ada},title={Properties of $\\alpha_i$},year={2026},publisher={Press}}\n"

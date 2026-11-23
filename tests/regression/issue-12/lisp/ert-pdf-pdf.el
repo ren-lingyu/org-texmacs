@@ -1,5 +1,10 @@
 ;;; ert-pdf-pdf.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'org)
+(require 'org-texmacs-parse)
+(require 'org-texmacs-session)
+
 (ert-deftest org-texmacs-pdf-issue12-native-bibliography-and-reload ()
   :tags
   '(issue12)

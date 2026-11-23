@@ -1,5 +1,10 @@
 ;;; pdf.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-texmacs)
+
 (ert-deftest org-texmacs-pdf-preflight-protocol-and-source-wait ()
   (cl-letf (((symbol-function 'org-texmacs--worker-call)
              (lambda (&rest _)

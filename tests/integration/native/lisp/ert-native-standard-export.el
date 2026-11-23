@@ -1,5 +1,11 @@
 ;;; ert-native-standard-export.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'ox)
+(require 'ox-texmacs)
+
 (ert-deftest org-texmacs-standard-export-native-script-tree-and-island
     ()
   (org-texmacs-test--with-worker

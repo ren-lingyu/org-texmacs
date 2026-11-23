@@ -2,25 +2,30 @@
   lib,
   runCommand,
   coreutils,
-  testSupport,
   emacsPackages,
 }:
-testSupport.mkErtCheck {
-  inherit
-    lib
-    runCommand
-    coreutils
-    testSupport
-    ;
+let
   emacs = emacsPackages.emacsWithPackages (_: [
     emacsPackages.org-texmacs
     emacsPackages.citeproc
   ]);
-  name = "org-texmacs-ert-csl";
-  testFiles = [ ./lisp/standard-cite.el ];
-  helpers = [
-    testSupport.common
-    testSupport.csl
-  ];
-  pure = true;
-}
+in
+runCommand "org-texmacs-ert-csl" { nativeBuildInputs = [ coreutils ]; } ''
+  export HOME="$TMPDIR/home"
+  mkdir -p "$HOME" "$out"
+  set -o pipefail
+  timeout --kill-after=10s 600s ${lib.getExe' emacs "emacs"} -Q --batch \
+    ${
+      lib.escapeShellArgs (
+        lib.concatMap
+          (file: [
+            "--load"
+            "${file}"
+          ])
+          [
+            ./lisp/standard-cite.el
+          ]
+      )
+    } \
+    --funcall ert-run-tests-batch-and-exit 2>&1 | tee "$out/ert.log"
+''

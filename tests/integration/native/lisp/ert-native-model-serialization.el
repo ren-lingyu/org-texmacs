@@ -1,5 +1,8 @@
 ;;; ert-native-model-serialization.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'org-texmacs)
+
 (require 'org-texmacs-serialize)
 
 (ert-deftest org-texmacs-model-native-stm-source-round-trips ()

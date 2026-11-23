@@ -1,5 +1,12 @@
 ;;; ert-cite-standard-cite.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'oc)
+(require 'org)
+(require 'ox)
+(require 'ox-texmacs)
+
 (require 'oc-csl)
 
 (ert-deftest

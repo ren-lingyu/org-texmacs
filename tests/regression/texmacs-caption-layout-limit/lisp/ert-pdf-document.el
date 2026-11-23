@@ -1,5 +1,9 @@
 ;;; ert-pdf-document.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org-texmacs-session)
+
 (ert-deftest org-texmacs-caption-inline-footnote-native-layout-limit
     ()
   (let (missing)

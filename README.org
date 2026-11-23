@@ -2513,7 +2513,7 @@ Run from the repository root:
 The package build runs package-lint and byte-compiles the Lisp libraries.
 The =ert-core= suite checks Model, STM, Org Export, lowering, and frontend
 contracts. =ert-csl= checks structured citation handling with =citeproc=.
-Their test environments omit TeXmacs from =PATH= and guard worker startup.
+Their test environments do not add TeXmacs to =PATH=.
 The installed package retains the selected executable for export.
 
 Repository checks run against stock =org-texmacs=. The =integration-native=
@@ -2570,13 +2570,14 @@ leaf suites under =tests/integration/= and =tests/regression/= in the same
 =mkChecks= call. A =test-overlay.nix= exports a leaf under its directory
 name. The flake joins namespace components with hyphens.
 
-Package and repository tests each have their own support directory.
-Repository suites share the runner and common fixtures in =tests/support/=
-and keep scenario-specific fixtures beside their tests.
-Each ERT check runs with an isolated HOME and saves =ert.log= and
-=test-names.txt=. Missing test inputs or tools, empty suites, duplicate
-registrations, and failing tests fail the check. The ERT timeout is
-600 seconds. Package-lint has a 120-second timeout.
+Each =test.nix= starts Emacs in batch mode with an isolated HOME, loads
+the selected fixtures and test files, and invokes ERT directly. Test files
+declare their Elisp dependencies with =require=. Suite-specific fixtures
+live beside their tests. =tests/default.nix= passes the shared fixture paths
+from =tests/support/= to repository suites as =testSupport=.
+Each ERT check saves =ert.log=. Missing required tools and failures from
+ERT or the 600-second timeout fail the Nix check. Package-lint has a
+120-second timeout.
 
 The flake provides =nix fmt= through treefmt to apply the configured formatters.
 =nix flake check= also includes the treefmt formatting check.  Org files,

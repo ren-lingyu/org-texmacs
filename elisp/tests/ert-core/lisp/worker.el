@@ -1,5 +1,12 @@
 ;;; worker.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs)
+(require 'ox)
+
 (ert-deftest org-texmacs-encoding-rejects-invalid-input-before-worker
     ()
   (cl-letf (((symbol-function 'org-texmacs--worker-start)
@@ -510,7 +517,32 @@
     (should-not (car (org-texmacs-check-setup)))))
 
 (ert-deftest org-texmacs-test-package-loads ()
-  (should-not org-texmacs-test--worker-loaded-document)
+  (with-temp-buffer
+    (let
+        ((status
+          (call-process
+           (expand-file-name invocation-name invocation-directory)
+           nil
+           t
+           nil
+           "-Q"
+           "--batch"
+           "-L"
+           (file-name-directory (locate-library "org"))
+           "-L"
+           (file-name-directory (locate-library "org-texmacs"))
+           "--eval"
+           (prin1-to-string
+            '(progn
+               (require 'org-texmacs-worker)
+               (when (featurep 'org-texmacs-document)
+                 (error
+                  "Loading the worker also loaded the document layer")))))))
+      (ert-info
+       ((format "Fresh worker process: %s\n%s"
+                status
+                (buffer-string)))
+       (should (equal status 0)))))
   (should
    (equal
     (file-name-base

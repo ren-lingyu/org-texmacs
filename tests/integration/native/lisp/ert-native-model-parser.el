@@ -1,5 +1,9 @@
 ;;; ert-native-model-parser.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'org)
+(require 'org-texmacs-worker)
+
 (require 'org-texmacs-parse)
 
 (ert-deftest org-texmacs-model-parse-native-errors-preserve-worker ()

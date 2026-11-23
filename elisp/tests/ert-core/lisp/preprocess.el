@@ -1,5 +1,14 @@
 ;;; preprocess.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs-bibliography)
+(require 'org-texmacs-preprocess)
+(require 'ox)
+(require 'ox-texmacs)
+
 (ert-deftest org-texmacs-standard-prepare-public-filters-and-ownership
     ()
   (with-temp-buffer

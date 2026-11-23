@@ -1,5 +1,11 @@
 ;;; standard-context.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'ox)
+
 (require 'ox-texmacs)
 
 (defun org-texmacs-test--standard-body

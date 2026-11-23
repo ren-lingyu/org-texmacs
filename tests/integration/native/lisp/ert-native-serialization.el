@@ -1,5 +1,12 @@
 ;;; ert-native-serialization.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-texmacs-parse)
+(require 'ox)
+(require 'ox-texmacs)
+
 (ert-deftest
     org-texmacs-serialization-native-roundtrip-and-session-independence
     ()

@@ -1,5 +1,11 @@
 ;;; fragment-object.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs)
+(require 'ox)
+
 (require 'ert)
 
 (require 'org-texmacs-fragment-object)

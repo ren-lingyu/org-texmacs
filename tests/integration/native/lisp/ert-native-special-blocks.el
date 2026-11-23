@@ -1,5 +1,9 @@
 ;;; ert-native-special-blocks.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'org)
+(require 'org-texmacs)
+
 (ert-deftest org-texmacs-document-typed-reference-named-blocks ()
   (org-texmacs-test--with-worker
    (dolist (case

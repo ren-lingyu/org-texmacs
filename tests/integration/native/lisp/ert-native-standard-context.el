@@ -1,5 +1,13 @@
 ;;; ert-native-standard-context.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs)
+(require 'org-texmacs-export)
+(require 'ox)
+
 (ert-deftest
     org-texmacs-standard-context-native-selected-note-and-references
     ()

@@ -1,5 +1,10 @@
 ;;; ert-core-special-blocks.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs-source)
+
 (ert-deftest org-texmacs-issue13-stage3-real-parser-contract ()
   (dolist (type '("figure" "figure*" "TABLE" "TABLE*"))
     (with-temp-buffer

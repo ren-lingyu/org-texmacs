@@ -1,5 +1,81 @@
 ;;; ert-native-document.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs)
+(require 'org-texmacs-parse)
+(require 'ox)
+(require 'subr-x)
+
+(defun org-texmacs-test--example-document ()
+  "Exercise the fixed document fixture."
+  (with-temp-buffer
+    (org-mode)
+    (setq-local org-export-with-author nil)
+    (insert
+     "#+OPTIONS: toc:nil\n"
+     "* 中\n"
+     "Text *bold* <alpha> $(math \"α <alpha>\")$ end.\n\n"
+     "#+begin_texmacs\n"
+     "(with \"mode\" \"math\" (frac \"中\" \"2\"))\n"
+     "#+end_texmacs\n")
+    (org-texmacs-document-from-buffer (current-buffer))))
+
+(defun org-texmacs-test--reference-map (body)
+  "Map BODY's random labels to structural fixture names, preserving static IDs."
+  (let* ((labels (org-texmacs--document-output-labels body))
+         (reserved
+          (cl-remove-if-not
+           (lambda (id)
+             (string-match-p "\\`org-texmacs-ref-[0-9]+\\'" id))
+           labels))
+         (next 0)
+         result)
+    (dolist (id labels)
+      (when (string-match-p "\\`org-texmacs-.*org[0-9a-f]+\\'" id)
+        (let (canonical)
+          (while (progn
+                   (setq canonical
+                         (format "org-texmacs-ref-%d" (cl-incf next)))
+                   (member canonical reserved)))
+          (push (cons id canonical) result))))
+    (nreverse result)))
+
+(defun org-texmacs-test--rewrite-references (tree mapping)
+  "Copy TREE, replacing complete label/reference strings using MAPPING."
+  (cond
+   ((stringp tree)
+    (or (cdr (assoc tree mapping))
+        (and (string-prefix-p "#" tree)
+             (when-let* ((id
+                          (cdr (assoc (substring tree 1) mapping))))
+               (concat "#" id)))
+        tree))
+   ((consp tree)
+    (mapcar
+     (lambda (child)
+       (org-texmacs-test--rewrite-references child mapping))
+     tree))
+   (t
+    tree)))
+
+(defun org-texmacs-test--stable-reference-body (document)
+  "Return DOCUMENT body with random references renamed for structural comparison."
+  (let ((body (org-texmacs-document-body document)))
+    (org-texmacs-test--rewrite-references
+     body (org-texmacs-test--reference-map body))))
+
+(defun org-texmacs-test--expand-references (tree document)
+  "Expand TREE's fixture labels to DOCUMENT's actual IDs before native encoding."
+  (org-texmacs-test--rewrite-references
+   tree
+   (mapcar
+    (lambda (entry) (cons (cdr entry) (car entry)))
+    (org-texmacs-test--reference-map
+     (org-texmacs-document-body document)))))
+
 (ert-deftest org-texmacs-document-metadata-native-encoding ()
   (org-texmacs-test--with-worker
    (with-temp-buffer

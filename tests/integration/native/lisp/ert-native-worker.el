@@ -1,5 +1,10 @@
 ;;; ert-native-worker.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org-texmacs)
+(require 'subr-x)
+
 (ert-deftest org-texmacs-test-texmacs-headless-parse ()
   "Check the actual TeXmacs executable supplied by the test environment."
   (let ((executable (executable-find "texmacs")))

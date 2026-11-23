@@ -40,14 +40,6 @@ else
         coreutils
         texmacs
       ];
-      ORG_TEXMACS_TEST_BOOTSTRAP = testSupport.bootstrap;
-      ORG_TEXMACS_TEST_HELPERS = builtins.toJSON [
-        testSupport.document
-        testSupport.native
-      ];
-      ORG_TEXMACS_TEST_FILES = builtins.toJSON [ ./lisp/caption-inline-footnotes-captions.el ];
-      ORG_TEXMACS_TEST_TOOLS = builtins.toJSON [ "texmacs" ];
-      ORG_TEXMACS_TEST_STRICT_TOOLS = "1";
       ORG_TEXMACS_TEST_PROGRAM = lib.getExe' texmacs "texmacs";
       ORG_TEXMACS_TEST_PATCHED_ORG = patchedOrg;
       ORG_TEXMACS_TEST_PATCHED_PACKAGE = testPackage;
@@ -55,7 +47,22 @@ else
     ''
       export HOME="$TMPDIR/home"
       mkdir -p "$HOME" "$out"
-      export ORG_TEXMACS_TEST_NAMES_FILE="$out/test-names.txt"
       set -o pipefail
-      timeout --kill-after=10s 600s ${lib.getExe' emacs "emacs"} -Q --batch --load ${testSupport.runner} 2>&1 | tee "$out/ert.log"
+      type texmacs >/dev/null
+      timeout --kill-after=10s 600s ${lib.getExe' emacs "emacs"} -Q --batch \
+        ${
+          lib.escapeShellArgs (
+            lib.concatMap
+              (file: [
+                "--load"
+                "${file}"
+              ])
+              [
+                testSupport.document
+                testSupport.native
+                ./lisp/caption-inline-footnotes-captions.el
+              ]
+          )
+        } \
+        --funcall ert-run-tests-batch-and-exit 2>&1 | tee "$out/ert.log"
     ''

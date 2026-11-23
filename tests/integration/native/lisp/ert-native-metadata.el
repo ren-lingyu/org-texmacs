@@ -1,5 +1,9 @@
 ;;; ert-native-metadata.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'org)
+(require 'org-texmacs)
+
 (ert-deftest
     org-texmacs-metadata-native-information-and-literal-initial
     ()

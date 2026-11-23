@@ -1,5 +1,13 @@
 ;;; model-parser.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs)
+(require 'org-texmacs-serialize)
+(require 'ox)
+
 (require 'org-texmacs-parse)
 
 (ert-deftest org-texmacs-model-parse-complete-source-without-export ()

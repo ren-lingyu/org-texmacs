@@ -1,5 +1,11 @@
 ;;; editing.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-texmacs)
+(require 'ox)
+
 (defmacro org-texmacs-test--with-native-edit-source (text &rest body)
   "Exercise TEXT and BODY with KIND bound to each native STM block name."
   (declare (indent 1))

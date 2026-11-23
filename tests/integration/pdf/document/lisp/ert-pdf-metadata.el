@@ -1,5 +1,17 @@
 ;;; ert-pdf-metadata.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'org)
+(require 'org-texmacs)
+
+(defun org-texmacs-test--metadata-pdf-info (file)
+  "Return UTF-8 pdfinfo output for FILE."
+  (with-temp-buffer
+    (let ((coding-system-for-read 'utf-8-unix))
+      (should
+       (= 0 (call-process "pdfinfo" nil t nil "-enc" "UTF-8" file))))
+    (buffer-string)))
+
 (ert-deftest org-texmacs-metadata-pdf-visible-hidden-and-reloaded ()
   (org-texmacs-test--with-worker
    (dolist (style '("generic" "article"))

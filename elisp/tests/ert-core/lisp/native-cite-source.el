@@ -1,5 +1,11 @@
 ;;; native-cite-source.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'ox)
+(require 'ox-texmacs)
+
 (defconst org-texmacs-test--native-source-text
   "@book{one,title={One},author={Alpha, Ada},year={2026}}\n")
 

@@ -1,5 +1,14 @@
 ;;; standard-export.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'oc)
+(require 'org)
+(require 'org-element)
+(require 'org-id)
+(require 'ox)
+(require 'ox-texmacs)
+
 (defun org-texmacs-test--body-hlinks (node)
   "Return (TARGET DESCRIPTION) for every hlink node in structural NODE."
   (cond

@@ -1,5 +1,12 @@
 ;;; ert-native-frontend.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'oc)
+(require 'org)
+(require 'ox)
+(require 'ox-texmacs)
+
 (ert-deftest org-texmacs-export-backend-keyword-naming-and-reexport ()
   (org-texmacs-test--with-worker
    (with-temp-buffer

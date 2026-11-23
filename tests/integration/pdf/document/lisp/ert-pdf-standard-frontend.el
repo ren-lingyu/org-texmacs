@@ -1,5 +1,11 @@
 ;;; ert-pdf-standard-frontend.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'ox)
+
 (require 'ox-texmacs)
 
 (ert-deftest org-texmacs-standard-frontend-three-command-transaction

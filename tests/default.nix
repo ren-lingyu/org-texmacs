@@ -15,6 +15,11 @@ llib.tests.mkChecks {
 
   args = {
     inherit pkgs;
-    testSupport = import ./support;
+    testSupport = {
+      csl = ./support/csl.el;
+      document = ./support/document.el;
+      native = ./support/native.el;
+      pdf = ./support/pdf.el;
+    };
   };
 }

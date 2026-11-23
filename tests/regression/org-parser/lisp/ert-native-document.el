@@ -1,5 +1,12 @@
 ;;; ert-native-document.el --- Org TeXmacs ERT cases -*- lexical-binding: t; -*-
 
+(require 'ert)
+(require 'cl-lib)
+(require 'org)
+(require 'org-element)
+(require 'org-texmacs)
+(require 'ox)
+
 (ert-deftest org-texmacs-caption-inline-footnote-stock-parser ()
   (should-not
    (memq
