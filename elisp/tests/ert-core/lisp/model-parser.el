@@ -478,11 +478,7 @@
             (should
              (plist-member
               (org-texmacs-model-context model)
-              :link-settings))
-            (should-not
-             (plist-member
-              (org-texmacs-model-context model)
-              :fragment-tags))))))))
+              :link-settings))))))))
 
 (ert-deftest
     org-texmacs-model-object-parser-guards-source-during-parsing

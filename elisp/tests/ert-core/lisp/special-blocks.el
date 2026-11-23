@@ -1054,6 +1054,26 @@
             (should
              (equal document (org-texmacs-document input)))))))))
 
+(ert-deftest org-texmacs-statement-caption-empty-short-is-long-only ()
+  (let (bodies)
+    (dolist (declaration '("#+CAPTION: Long" "#+CAPTION[]: Long"))
+      (with-temp-buffer
+        (org-mode)
+        (insert
+         "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+         declaration
+         "\n#+begin_theorem\nBody.\n#+end_theorem\n")
+        (let ((body
+               (org-texmacs-document-body
+                (org-texmacs-document-from-buffer (current-buffer)))))
+          (should
+           (equal
+            (org-texmacs-test--caption-inline-footnote-nodes
+             body 'dueto)
+            '((dueto "Long"))))
+          (push body bodies))))
+    (should (equal (car bodies) (cadr bodies)))))
+
 (ert-deftest org-texmacs-statement-caption-rejects-unsupported-source
     ()
   (dolist (metadata
@@ -1819,9 +1839,7 @@
      (org-texmacs--document-copy-handlers (list (cons key #'ignore)))
      :type 'org-texmacs-document-error)))
 
-(ert-deftest
-    org-texmacs-issue13-stage3-owned-proof-pure-and-excluded-wrapper
-    ()
+(ert-deftest org-texmacs-figure-table-lowers-owned-visible-wrapper ()
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
@@ -1830,18 +1848,14 @@
      "#+CAPTION: (math \"text\") [[https://example.org][Link]]\n"
      "#+begin_table\n| A |\n#+end_table\n"
      "* Hidden :noexport:\n#+begin_figure\nWrong\n#+end_figure\n")
-    (let* ((input (org-texmacs-prepare-buffer (current-buffer)))
-           (wrapper
-            (org-element-map
-             (org-texmacs-input-ast input)
-             'special-block
-             #'identity
-             nil
-             t))
-           (proof
-            (copy-tree
-             (org-element-property
-              :texmacs-figure-table-source wrapper))))
+    (let ((input (org-texmacs-prepare-buffer (current-buffer))))
+      (should
+       (equal
+        (org-element-map
+         (org-texmacs-input-ast input)
+         'special-block
+         (lambda (node) (org-element-property :type node)))
+        '("table")))
       (cl-letf (((symbol-function 'org-texmacs--worker-request)
                  (lambda (&rest _)
                    (ert-fail "Pure lower started worker")))
@@ -1850,11 +1864,17 @@
                    (ert-fail "Pure lower read source"))))
         (let ((first (org-texmacs-document input)))
           (should (equal first (org-texmacs-document input)))
-          (should-not (org-texmacs-document-stm-paths first))))
-      (should
-       (equal
-        proof
-        (org-element-property
-         :texmacs-figure-table-source wrapper))))))
+          (should-not (org-texmacs-document-stm-paths first))
+          (let ((body (org-texmacs-document-body first)))
+            (should
+             (= (length
+                 (org-texmacs-test--caption-inline-footnote-nodes
+                  body 'big-table))
+                1))
+            (should
+             (member
+              '(hlink "Link" "https://example.org")
+              (org-texmacs-test--caption-inline-footnote-nodes
+               body 'hlink)))))))))
 
 ;;; special-blocks.el ends here

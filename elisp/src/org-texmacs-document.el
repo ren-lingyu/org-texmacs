@@ -504,50 +504,20 @@ No source buffer is consulted."
            (org-texmacs--document-statement-tag node))))
 
 (defun org-texmacs--document-statement-caption (node)
-  "Validate NODE's statement caption before scanning any secondary links.
-Consume owned source evidence when present; never consult the source buffer.
-Return the long-only caption pairs."
-  (let* ((lines (org-texmacs--document-caption-lines node))
-         (proof (org-element-property :texmacs-name-source node))
-         (rows (and (proper-list-p proof) (nth 3 proof))))
-    (when proof
-      (unless (and (proper-list-p proof)
-                   (= (length proof) 4)
-                   (equal
-                    (car proof)
-                    (list
-                     (org-element-property :type node)
-                     (org-element-property :begin node)
-                     (org-element-property :post-affiliated node)
-                     (org-element-property :texmacs-source-end node)))
-                   (proper-list-p rows)
-                   (cl-every
-                    (lambda (row)
-                      (and (proper-list-p row)
-                           (= (length row) 2)
-                           (memq (car row) '(nil t))
-                           (stringp (cadr row))))
-                    rows))
-        (org-texmacs--document-fail
-         node "Original statement caption evidence differs")))
-    ;; Syntax evidence catches CAPTION[] even when Org erases its empty short AST.
-    ;; Reject it before traversing either long or short links.
-    (when (or (cl-some #'car rows) (cl-some #'cdr lines))
+  "Validate NODE's parsed statement caption before scanning secondary links.
+Return the nonempty long-only caption pairs."
+  (let ((lines (org-texmacs--document-caption-lines node)))
+    (when (cl-some #'cdr lines)
       (org-texmacs--document-fail
        node "Statement short captions are unsupported"))
-    (when (or (cl-some
-               (lambda (row) (string-blank-p (cadr row))) rows)
-              (cl-some
-               (lambda (line)
-                 (cl-every
-                  (lambda (part)
-                    (and (stringp part) (string-blank-p part)))
-                  (car line)))
-               lines))
+    (when (cl-some
+           (lambda (line)
+             (cl-every
+              (lambda (part)
+                (and (stringp part) (string-blank-p part)))
+              (car line)))
+           lines)
       (org-texmacs--document-fail node "Empty statement caption"))
-    (when (and proof (/= (length rows) (length lines)))
-      (org-texmacs--document-fail
-       node "Original statement caption evidence differs"))
     lines))
 
 (defun org-texmacs--reference-slug (name)
@@ -2928,20 +2898,6 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                     (not (and (or table named) keys)))
            (org-texmacs--document-fail
             node "Unsupported affiliated metadata"))
-         (when-let* ((proof
-                      (org-element-property
-                       :texmacs-name-source node)))
-           (unless (equal
-                    proof
-                    (list
-                     (list
-                      (org-element-property :type node) begin post
-                      (org-element-property :texmacs-source-end node))
-                     (org-element-property :name node)
-                     keys
-                     (nth 3 proof)))
-             (org-texmacs--document-fail
-              node "Original NAME evidence differs")))
          (when (org-element-property :name node)
            (unless (and (stringp (org-element-property :name node))
                         (not
@@ -3037,9 +2993,6 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                (cl-remove-if
                 #'org-texmacs--figure-table-blank-p
                 (org-element-contents node)))
-              (proof
-               (org-element-property
-                :texmacs-figure-table-source node))
               (child (car children)))
          (unless (and (or (null
                            (org-element-property :parameters node))
@@ -3057,24 +3010,6 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                                (eq (org-element-type child) 'table))))
            (org-texmacs--document-fail
             node "Expected exactly one direct figure/table body"))
-         (when proof
-           (unless (and (proper-list-p proof)
-                        (= (length proof) 2)
-                        (equal
-                         (car proof)
-                         (list
-                          kind
-                          (org-element-property :begin node)
-                          (org-element-property :post-affiliated node)
-                          (org-element-property
-                           :texmacs-source-end node)))
-                        (equal
-                         (cadr proof)
-                         (mapcar
-                          #'org-texmacs--figure-table-node-shape
-                          children)))
-             (org-texmacs--document-fail
-              node "Original figure/table structure differs")))
          (check-affiliated child t)
          (when (and (org-texmacs--block-p child)
                     (let ((parameters

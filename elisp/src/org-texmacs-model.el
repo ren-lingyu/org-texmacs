@@ -36,11 +36,7 @@ prevent mutation of nested strings, conses or vectors."
  (context nil :read-only t))
 
 (defconst org-texmacs--model-context-keys
-  '(:fragment-tags
-    :heading-settings
-    :link-settings
-    :source-file
-    :resource-base)
+  '(:heading-settings :link-settings :source-file :resource-base)
   "Explicit syntax/source context keys, excluding export configuration.
 The buffer adapter will capture effective syntax settings.  This module only
 owns supplied resolved data; it does not infer settings or interpret options.")
@@ -343,18 +339,7 @@ Inspect contents, captions and secondary properties without reading source."
           owner
           (org-element-property-raw :org-texmacs-syntax ast)
           '(:heading-settings :link-settings)))
-        result)
-    (cl-loop
-     for
-     (key value)
-     on
-     context
-     by
-     #'cddr
-     unless
-     (eq key :fragment-tags)
-     do
-     (setq result (plist-put result key value)))
+        (result context))
     (cl-loop
      for (key value) on syntax by #'cddr do
      (if (plist-member result key)
@@ -397,9 +382,7 @@ Org nodes retain the structural wrapper and affiliation.  Nested island
 contents cannot overlap.  Secondary strings and captions belong to the AST.
 
 CONTEXT is a unique-keyword plist of resolved syntax/source data with keys
-:fragment-tags, :heading-settings, :link-settings, :source-file or
-:resource-base.
-Validate and discard legacy :fragment-tags input.
+:heading-settings, :link-settings, :source-file or :resource-base.
 Do not supply export INFO, style, initial, formatted bibliography or output
 references.  No context is inferred from the current buffer.
 Copy strings, lists and vectors, rebuild parents and

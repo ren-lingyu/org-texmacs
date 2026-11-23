@@ -43,37 +43,26 @@
                         (org-element-set-contents
                          node "MacroSentinel FilterSentinel")))
                      tree))))
-             (cl-letf (((symbol-function 'org-texmacs--prepare-buffer)
-                        (lambda (&rest _)
-                          (ert-fail "Legacy preparation")))
-                       ((symbol-function
-                         'org-texmacs--preprocess-convert)
-                        (lambda (&rest _)
-                          (ert-fail "Legacy preprocessing")))
-                       ((symbol-function
-                         'org-texmacs--bibliography-convert)
-                        (lambda (&rest _)
-                          (ert-fail "Legacy bibliography"))))
-               (let ((result (funcall command)))
-                 (cond
-                  ((bufferp result)
+             (let ((result (funcall command)))
+               (cond
+                ((bufferp result)
+                 (should
+                  (string-search
+                   "FilterSentinel"
+                   (with-current-buffer result
+                     (buffer-string))))
+                 (kill-buffer result))
+                ((eq command 'org-texmacs-export-to-pdf)
+                 (should
+                  (string-search
+                   "FilterSentinel"
+                   (org-texmacs-test--pdf-text result))))
+                (t
+                 (with-temp-buffer
+                   (insert-file-contents-literally result)
                    (should
                     (string-search
-                     "FilterSentinel"
-                     (with-current-buffer result
-                       (buffer-string))))
-                   (kill-buffer result))
-                  ((eq command 'org-texmacs-export-to-pdf)
-                   (should
-                    (string-search
-                     "FilterSentinel"
-                     (org-texmacs-test--pdf-text result))))
-                  (t
-                   (with-temp-buffer
-                     (insert-file-contents-literally result)
-                     (should
-                      (string-search
-                       "FilterSentinel" (buffer-string)))))))))
+                     "FilterSentinel" (buffer-string))))))))
            (should (= processing 1))
            (should (= filtered 1))
            (should

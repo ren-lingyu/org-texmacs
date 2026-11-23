@@ -90,22 +90,6 @@
 
 (autoload 'org-texmacs--standard-source-consume "org-texmacs-export")
 
-(autoload
-  'org-texmacs-document-from-buffer-discover-bibliography
-  "org-texmacs-bibliography")
-(autoload
-  'org-texmacs-export-from-buffer-discover-bibliography
-  "org-texmacs-bibliography")
-
-(autoload
-  'org-texmacs-prepare-buffer-preprocessed "org-texmacs-preprocess")
-(autoload
-  'org-texmacs-document-from-buffer-preprocessed
-  "org-texmacs-preprocess")
-(autoload
-  'org-texmacs-export-from-buffer-preprocessed
-  "org-texmacs-preprocess")
-
 (defconst org-texmacs--cache-miss
   (make-symbol "org-texmacs-cache-miss")
   "Sentinel distinguishing an absent cached tree from a stored value.")

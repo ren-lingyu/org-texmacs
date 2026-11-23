@@ -219,10 +219,7 @@
                         (equal target (plist-get info :output-file)))
                        (aset (plist-get info :output-file) 0 ?X))
                      tree))))
-             (cl-letf (((symbol-function 'org-texmacs--prepare-buffer)
-                        (lambda (&rest _)
-                          (ert-fail "Legacy preparation")))
-                       ((symbol-function
+             (cl-letf (((symbol-function
                          'org-texmacs-document-serialize)
                         (if (memq kind '(pdf pdf-file))
                             (lambda (&rest _)

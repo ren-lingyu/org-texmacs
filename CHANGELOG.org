@@ -27,6 +27,25 @@ release notes.
   tags starting with a digit or colon, now report a parse error. See
   [[file:README.org::*STM text syntax][the supported syntax]] for tag and string limits.
 
+** Removed
+- *Breaking:* Remove the =org-texmacs-preprocess= and
+  =org-texmacs-bibliography= libraries.
+- *Breaking:* Remove =org-texmacs-prepare-buffer-preprocessed=. Use
+  =org-texmacs-prepare-buffer=.
+- *Breaking:* Remove =org-texmacs-document-from-buffer-preprocessed= and
+  =org-texmacs-document-from-buffer-discover-bibliography=. Use
+  =org-texmacs-document-from-buffer= with standard Org Cite configuration.
+- *Breaking:* Remove =org-texmacs-export-from-buffer-preprocessed= and
+  =org-texmacs-export-from-buffer-discover-bibliography=. Use
+  =org-texmacs-export-texmacs-from-buffer= with standard Org Cite configuration.
+- *Breaking:* The Model constructor rejects the retired =:fragment-tags=
+  context key.
+
+** Fixed
+- Correct the statement caption documentation to match existing behavior:
+  =#+CAPTION[]: Long= and =#+CAPTION: Long= are equivalent with the tested
+  Org 9.8.10 and Org 10.0-pre versions.
+
 * DONE v0.8.0
 CLOSED: [2026-11-19 Thu 12:09]
 :PROPERTIES:

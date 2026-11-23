@@ -4,8 +4,6 @@
 (require 'cl-lib)
 (require 'org)
 (require 'org-element)
-(require 'org-texmacs-bibliography)
-(require 'org-texmacs-preprocess)
 (require 'ox)
 (require 'ox-texmacs)
 
@@ -379,7 +377,7 @@ separate user-owned buffer.  Return the observed phase names."
      (org-texmacs--native-document-wire document)
      :type 'org-texmacs-encoding-error)))
 
-(ert-deftest org-texmacs-cleanup-legacy-discovery-standard-preparation
+(ert-deftest org-texmacs-cleanup-explicit-subtree-standard-preparation
     ()
   (org-texmacs-test--with-cleanup-source
     (erase-buffer)
@@ -393,8 +391,7 @@ separate user-owned buffer.  Return the observed phase names."
          (lambda ()
            (should
             (org-texmacs-document-p
-             (funcall
-              'org-texmacs-document-from-buffer-discover-bibliography
+             (org-texmacs-document-from-buffer
               (current-buffer) nil 1)))))
         '(root prepared ast)))
       (should
@@ -1789,10 +1786,16 @@ separate user-owned buffer.  Return the observed phase names."
                  org-texmacs-export-to-texmacs-pdf))
         (should-not (fboundp retired)))
       (dolist
-          (special
-           '(org-texmacs-export-from-buffer-preprocessed
+          (retired
+           '(org-texmacs-prepare-buffer-preprocessed
+             org-texmacs-document-from-buffer-preprocessed
+             org-texmacs-export-from-buffer-preprocessed
+             org-texmacs-document-from-buffer-discover-bibliography
              org-texmacs-export-from-buffer-discover-bibliography))
-        (should (fboundp special))))))
+        (should-not (fboundp retired)))
+      (dolist (library
+               '("org-texmacs-preprocess" "org-texmacs-bibliography"))
+        (should-not (locate-library library))))))
 
 (ert-deftest org-texmacs-export-api-frontend-fresh-load ()
   (org-texmacs-test--menu-fresh-process

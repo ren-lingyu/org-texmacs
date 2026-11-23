@@ -155,10 +155,7 @@
             (cl-letf (((symbol-function
                         'org-texmacs-document-serialize)
                        (lambda (_document)
-                         (encode-coding-string "Native" 'us-ascii)))
-                      ((symbol-function 'org-texmacs--prepare-buffer)
-                       (lambda (&rest _)
-                         (ert-fail "Legacy preparation"))))
+                         (encode-coding-string "Native" 'us-ascii))))
               (should
                (equal
                 "Native"

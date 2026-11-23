@@ -116,8 +116,8 @@
            (list :level 1 :title (list title)) block))
          (ast (org-element-create 'org-data nil heading))
          (tree (list 'frac (copy-sequence "1") (copy-sequence "2")))
-         (tags (list (copy-sequence "math")))
-         (context (list :fragment-tags tags))
+         (source-file (copy-sequence "/source.org"))
+         (context (list :source-file source-file))
          (model
           (org-texmacs-model-create
            ast
@@ -135,14 +135,18 @@
     (should (eq (org-element-parent new-caption) new-block))
     (should-not (eq tree (cdar (org-texmacs-model-islands model))))
     (aset (cadr tree) 0 ?9)
-    (aset (car tags) 0 ?X)
+    (aset source-file 1 ?X)
     (aset leaf 0 ?X)
     (org-element-set-contents title '("Changed"))
     (org-element-set-contents caption '("Changed"))
     (should
      (equal (cdar (org-texmacs-model-islands model)) '(frac "1" "2")))
-    (should-not
-     (plist-member (org-texmacs-model-context model) :fragment-tags))
+    (should
+     (equal
+      (plist-get
+       (org-texmacs-model-context model)
+       :source-file)
+      "/source.org"))
     (should (equal (org-element-contents new-title) '("Title")))
     (should (equal (org-element-contents new-caption) '("Caption")))))
 
@@ -168,7 +172,7 @@
              ast
              :islands
              (list (cons leaf '(not-a-fragment-root "new")))
-             :context '(:fragment-tags ("math"))))))
+             :context '(:heading-settings nil)))))
     (should
      (equal
       (cdar (org-texmacs-model-islands model))
@@ -247,8 +251,8 @@
     (dolist (context
              (list
               '(:style ("generic"))
-              '(:fragment-tags)
-              '(:fragment-tags nil :fragment-tags nil)
+              '(:fragment-tags ("math"))
+              '(:heading-settings nil :heading-settings nil)
               (list :source-file (current-buffer))))
       (should-error
        (org-texmacs-model-create ast :context context)
@@ -416,28 +420,18 @@
          (model
           (org-texmacs-model-create
            ast
-           :context '(:heading-settings nil :fragment-tags ("math"))))
+           :context '(:heading-settings nil)))
          (context (org-texmacs-model-context model)))
     (should-not
      (org-element-property
       :org-texmacs-syntax (org-texmacs-model-ast model)))
-    (should-not (plist-member context :fragment-tags))
     (should (plist-member context :heading-settings))
     (should (equal (plist-get context :link-settings) links))
-    (let* ((legacy (append context '(:fragment-tags ("math"))))
-           (old
-            (org-texmacs--model-create
-             :ast
-             (org-texmacs-model-ast model)
-             :context legacy))
-           (copy (org-texmacs-model-copy old)))
-      (should (equal (org-texmacs-model-context copy) context))
-      (should
-       (equal
-        (plist-get
-         (org-texmacs-model-context old)
-         :fragment-tags)
-        '("math"))))
+    (should
+     (equal
+      (org-texmacs-model-context
+       (org-texmacs-model-copy model))
+      context))
     (should
      (org-texmacs-model-p
       (org-texmacs-model-create

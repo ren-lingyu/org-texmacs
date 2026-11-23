@@ -46,7 +46,6 @@ runCommand "org-texmacs-integration-native"
               ./lisp/ert-native-model-parser.el
               ./lisp/ert-native-model-serialization.el
               ./lisp/ert-native-native-cite.el
-              ./lisp/ert-native-preprocess.el
               ./lisp/ert-native-serialization.el
               ./lisp/ert-native-session.el
               ./lisp/ert-native-source.el
@@ -56,7 +55,6 @@ runCommand "org-texmacs-integration-native"
               ./lisp/ert-native-standard-source.el
               ./lisp/ert-native-worker.el
               ./lisp/ert-pdf-pdf.el
-              ./lisp/ert-pdf-preprocess.el
               ./lisp/ert-pdf-standard-frontend.el
             ]
         )

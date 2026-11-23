@@ -33,7 +33,6 @@ runCommand "org-texmacs-ert-core" { nativeBuildInputs = [ coreutils ]; } ''
             ./lisp/native-cite-source.el
             ./lisp/native-cite.el
             ./lisp/pdf.el
-            ./lisp/preprocess.el
             ./lisp/serialization.el
             ./lisp/session.el
             ./lisp/source.el

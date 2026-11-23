@@ -503,9 +503,8 @@ references: callers must not modify any nested strings, lists or vectors.
 Read-only structure slots do not enforce deep immutability.
 
 CONTEXT is an explicit plist of resolved syntax/source data.  Its accepted keys
-are =:fragment-tags=, =:heading-settings=, =:link-settings=, =:source-file= and
-=:resource-base=. The constructor validates and discards legacy
-=:fragment-tags= inputs. Values are owned without reading ambient settings or files.
+are =:heading-settings=, =:link-settings=, =:source-file= and =:resource-base=.
+Values are owned without reading ambient settings or files.
 The model does not capture export INFO, style, initial environment, bibliography
 output or reference allocation.
 
@@ -750,8 +749,7 @@ supports structured output from the optional CSL processor. Public source
 preparation and document APIs use the same path.
 Unsupported prepared structures fail explicitly.
 The three dispatcher commands and five main-module source byte/buffer/new-file
-exports, structured preparation/document APIs and deprecated preprocessed/discovery
-wrappers share this standard path.  No parallel source preparation is used.
+exports and structured preparation/document APIs share this standard path.
 
 The adapter resolves deferred properties while the export buffer is live,
 copies the final tree, and parses complete STM with the shared Elisp reader.  Its model
@@ -1016,8 +1014,7 @@ Existing narrowing bounds the accessible source.
 
 The interactive frontend and standard entry use Org preparation and support
 =visible-only= within the stated adapter limits.  =body-only= fragments and
-async export are rejected before preparation.  Deprecated preprocessed/discovery
-variants are thin standard wrappers with the migration contracts below.
+async export are rejected before preparation.
 Publishing integration and async export are not claimed.
 Native PDF regression checks structure/text/reference semantics; it does not
 establish GUI layout or general pagination convergence.  Detailed supported and
@@ -1107,10 +1104,9 @@ Each call captures native style/initial values and native output
 settings.  Org owns parser settings, source options and preparation dependencies;
 the prepared input owns their consumed results.  Source text, mode, restriction,
 identity, native style/initial changes reject publication without retry.
-Consumed Org settings and preparation dependencies are not re-read by a parallel
-receipt system. Native Cite separately checks active bibliography sources until
-this source export completes. Mutable closure state and arbitrary callback effects
-are not frozen.
+Export uses the captured Org settings and preparation results. Native Cite
+checks active bibliography sources until this source export completes.
+Mutable closure state and arbitrary callback effects are not frozen.
 
 Preparation uses private copies, without changing source text properties,
 point, mark, modified state or narrowing, or resetting the source's Org cache.
@@ -1210,8 +1206,10 @@ styles are not guaranteed to define these environments.  Statements accept one
 =NAME= under the reference rules below and a long =CAPTION=, rendered through
 native =dueto= after the statement title and before its body.  Repeated caption
 lines are joined with spaces and use the existing caption inline subset
-(including markup and links).  Explicit empty captions and every explicit short
-caption, including =#+CAPTION[]:=, are rejected; =ATTR_*= remains unsupported.
+(including markup and links).  Empty long captions and nonempty short captions
+are rejected.  With the tested Org 9.8.10 and Org 10.0-pre versions,
+=#+CAPTION[]: Long= and =#+CAPTION: Long= produce equivalent caption AST data
+and are handled identically.  =ATTR_*= remains unsupported.
 These rules apply to all sixteen statement tags, including formal =example=.
 Custom special-block handlers do not gain caption support.
 
@@ -1733,28 +1731,10 @@ Pure callers may provide already parsed native bibliography trees through
 native formatting context, including =:texmacs-bibliography-declarations= and
 =:texmacs-bibliography-output=.  Lowering validates native entries, labels and
 references without file reads or formatting.  This constructor protocol is
-separate from standard source Org Cite.  No source wrapper acquires or formats
-bibliographies through the retired native preparation provider.
+separate from standard source Org Cite.
 
-** Deprecated source preparation names
-All source APIs use standard preparation.  The following names remain deprecated
-thin wrappers; they do not provide independent INCLUDE, discovery, source receipts,
-STM shielding or restricted AST-filter semantics:
-
-| Deprecated name                                          | Replacement                              |
-|----------------------------------------------------------+------------------------------------------|
-| =org-texmacs-prepare-buffer-preprocessed=                | =org-texmacs-prepare-buffer=             |
-| =org-texmacs-document-from-buffer-preprocessed=          | =org-texmacs-document-from-buffer=       |
-| =org-texmacs-export-from-buffer-preprocessed=            | =org-texmacs-export-texmacs-from-buffer= |
-| =org-texmacs-document-from-buffer-discover-bibliography= | =org-texmacs-document-from-buffer=       |
-| =org-texmacs-export-from-buffer-discover-bibliography=   | =org-texmacs-export-texmacs-from-buffer= |
-
-The preprocessed names retain arguments =SOURCE-BUFFER=, optional
-=BIBLIOGRAPHY-SOURCES=, =EXT-PLIST= and =DISCOVER-BIBLIOGRAPHY=.
-=BIBLIOGRAPHY-SOURCES= and =DISCOVER-BIBLIOGRAPHY= must both be nil; non-nil values
-fail before preparation with migration advice.  Discovery names retain the main
-source API argument positions and likewise require nil =BIBLIOGRAPHY-SOURCES=.
-Use Org Cite settings and standard hooks instead of the retired acquisition API.
+** Standard source preparation examples
+Use Org Cite settings and standard hooks for bibliography acquisition.
 Preprocessing may legally generate STM; original source-byte fidelity is not
 required.  Org owns recursive INCLUDE and its file/selection policies.
 
@@ -2097,8 +2077,8 @@ Final text filters run once before reversible Latin-1-to-native-byte conversion;
 nonrepresentable output fails explicitly.  No serialized STM is reparsed.
 
 Source text/mode/restriction/identity and native-setting changes during native
-waits reject the export.  Already consumed parser, filter and dependency data
-are owned; later changes do not replay preparation or the old provider's receipts.
+waits reject the export.  The prepared input owns the parser, filter and
+dependency data already consumed by Org.
 Active native bibliography sources still undergo consistency checks until the
 source export completes. Completed independent consumers use the owned data.
 File export validates/copies the destination first and passes it in INFO without
@@ -2304,12 +2284,9 @@ does not delete the result, and no dedicated cleanup command is provided.
 
 Each action performs one real =org-export-as= transaction.  Org runs hooks,
 INCLUDE/SETUPFILE, macros/Babel, options, selection, AST filters and Cite for all
-scopes.  There is no separate full-document/local preparation route, project
-INCLUDE recursion, old protection framework or legacy INCLUDE size/depth budget.
-Org defines preparation warnings/errors and owns INCLUDE acquisition. The backend
-does not re-expand INCLUDE, replay legacy dependency receipts or run a second
-preparation. During an active native Cite source export, bibliography sources
-are still checked for changes after native waits and text/PDF processing;
+scopes.  Org also defines preparation warnings and errors and handles recursive
+INCLUDE acquisition. During an active native Cite source export, bibliography
+sources are still checked for changes after native waits and text/PDF processing;
 changed or unavailable files reject the result. Completed independent input/
 document consumers use owned bibliography data without rereading those files.
 This is not a filesystem-atomic snapshot; source/native-setting checks also apply

@@ -42,7 +42,6 @@
       (cons block '(math (frac "1" (sqrt "x")) "tail")))
      :context
      (list
-      :fragment-tags (list (copy-sequence "math"))
       :heading-settings
       (list (cons 'test-setting (vector "value")))
       :link-settings (list :node block)))))
@@ -142,8 +141,6 @@
     (should (eq (org-element-parent caption) block))
     ;; Deliberate test-only mutation proves independence, not supported usage.
     (aset (cadr (cdar (org-texmacs-model-islands copy))) 0 ?X)
-    (should-not
-     (plist-member (org-texmacs-model-context copy) :fragment-tags))
     (should
      (equal
       (cdar (org-texmacs-model-islands model)) '(math "inline")))))
