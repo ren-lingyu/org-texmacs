@@ -5,6 +5,33 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
+## Production cleanup A1 candidate
+
+A1 is implemented and verified in the ordinary worktree, with the project
+index untouched. It removes the old source-proof generation and consumption,
+the legacy Model `:fragment-tags` key, and five deprecated source wrappers
+and their modules. The source-proof fields once preserved private source
+and reparse evidence. Standard Export instead consumes the final effective
+Org AST with projected affiliation. The user chose to retain the observed
+long-caption meaning of `CAPTION[]` and document it. Existing NAME, CAPTION,
+wrapper body and affiliation rules remain in force. README, public docstrings,
+and the unreleased CHANGELOG describe the resulting API.
+
+An offline x86_64-linux Nix build on the final uncommitted candidate passed
+both Org 9.8.10 and pinned Org 10.0-pre packages with compilation and
+package-lint, both Core suites, repository native (91 tests), PDF document
+(26 tests), and treefmt. The final derivations ran rather than reusing the
+earlier differently formatted candidate. Native covers macro/INCLUDE STM
+generation through the retained standard source entry points. The full
+flake gate and example builds belong to node E.
+
+The project changes await maintainer delivery. A2/B/C still need a shared
+validation-stage design for effective AST and owned Input checks,
+consumer-specific resolution failure behavior, and the point before Native
+Cite fulfillment. The old special-block preflight and bibliography
+transaction timing remain unchanged in A1. The separate snapshot mutation
+probe is conditional on a later design changing that boundary.
+
 ## Production cleanup baseline probes
 
 The user requested isolated, revision-pinned flake experiments before
