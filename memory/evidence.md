@@ -76,6 +76,11 @@ support loads. All 16 output logs again match the baseline per-check
 test sets and the Native/PDF artifact inventory. Ten modified ERT
 derivations ran again and six reused their previous outputs.
 
+The committed project tree contains the same 190 file paths, blob contents,
+and executable modes as the accepted snapshot. The successful check and
+output comparison apply by exact file identity. This delivery verification
+used the previous run's logs and did not execute a new test run.
+
 ## Delivered Node B test architecture verification
 
 The filtered x86_64-linux worktree snapshot for the delivered layout

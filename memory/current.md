@@ -120,8 +120,8 @@ with all requested outputs already available.
 
 ## Direct ERT execution refactor
 
-The working tree on project baseline `1e9e8d0` replaces both ERT
-runners and bootstraps with direct Nix-to-Emacs invocations. Keep
+The delivered refactor replaces both ERT runners and bootstraps with
+direct Nix-to-Emacs invocations. Keep
 fixtures local to Core and CSL. The maintainer requires explicit inputs
 for shared resources. `tests/default.nix` supplies the repository fixture
 paths as `mkChecks.args.testSupport`. Files declare their Elisp dependencies.
@@ -137,9 +137,10 @@ subsystem to preserve the explicit dependency boundary.
 
 All 18 x86_64-linux checks passed in the filtered candidate. Every ERT
 leaf matched its baseline case names, including both Org versions.
-See `evidence.md` for counts and artifact verification. Implementation
-and validation are complete. The candidate is pending maintainer
-review and an ordinary project commit.
+The maintainer committed the refactor on main. All 190 project files in
+the commit match the accepted snapshot in content and executable mode.
+See `evidence.md` for counts and artifact verification. This refactor
+has no pending delivery work.
 
 ## Node B delivered
 
