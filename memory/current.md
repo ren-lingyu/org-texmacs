@@ -5,10 +5,12 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
-## Production cleanup A1 candidate
+## Production cleanup A1 delivered
 
-A1 is implemented and verified in the ordinary worktree, with the project
-index untouched. It removes the old source-proof generation and consumption,
+The maintainer committed A1 on main as `chore!: remove legacy source APIs
+and Model context key`. The commit directly follows the audited project
+baseline. The commit message matches the reviewed draft and the project
+worktree and index are clean. A1 removes the old source-proof generation and consumption,
 the legacy Model `:fragment-tags` key, and five deprecated source wrappers
 and their modules. The source-proof fields once preserved private source
 and reparse evidence. Standard Export instead consumes the final effective
@@ -22,8 +24,7 @@ both Org 9.8.10 and pinned Org 10.0-pre packages with compilation and
 package-lint, both Core suites, repository native (91 tests), PDF document
 (26 tests), and treefmt. The final derivations ran rather than reusing the
 earlier differently formatted candidate. Native covers macro/INCLUDE STM
-generation through the retained standard source entry points. The full
-flake gate and example builds belong to node E.
+generation through the retained standard source entry points.
 
 A pre-commit follow-up qualified the README and unreleased CHANGELOG
 caption wording to the tested Org 9.8.10 and pinned Org 10.0-pre. Both
@@ -33,10 +34,12 @@ tests. Both CSL logs show 5/5. The full offline x86_64-linux flake check
 passed on the follow-up worktree, with a fresh treefmt build and existing
 Core, native, and PDF document results. A separate fresh examples build
 produced all four English/Chinese TeXmacs/PDF pairs. Artifact presence was
-verified. The source and tests still match the maintainer's staged A1
-candidate. Only the two wording edits are outside the ordinary index.
+verified. The final delivered commit also includes the subsequent README
+receipt wording cleanup and the two old library names in the unreleased
+CHANGELOG. The committed diff passed the read-only Git whitespace check.
+The earlier flake and example results precede those final prose edits.
 
-The project changes await maintainer delivery. A2/B/C still need a shared
+A2/B/C still need a shared
 validation-stage design for effective AST and owned Input checks,
 consumer-specific resolution failure behavior, and the point before Native
 Cite fulfillment. The old special-block preflight and bibliography
