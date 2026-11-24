@@ -5,6 +5,18 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
+## Node D2 audit complete
+
+The maintainer adopted five headline formatter arguments without a legacy
+arity adapter and retained the native diagnostic operations. The
+[D2 audit](d2-production-architecture-audit.md) records the implementation
+handoff, evidence-backed cleanup candidates and boundaries to retain.
+The stock provenance probe confirms the default formatter retains STM
+paths, plain custom output does not, and headline file links fall back
+to text before both paths. The example actually contains a six-argument
+formatter and must migrate. The audit preserved the D1 graph-sharing and
+C guard contracts. D2 implementation and its full matrix are pending.
+
 ## Node D1 delivered
 
 The maintainer committed `refactor(cite): reuse finalized input for native
@@ -50,8 +62,7 @@ The maintainer also reported passing tests and example builds. The delivered
 commit matches the six tested candidate blobs and the reviewed message byte
 for byte. Its diff passes the Git whitespace check and the project worktree
 and index are clean. The candidate's recorded runs apply to the delivered
-content. D2 is next and remains a separate audit of the other
-Model/Input/Document boundaries, INFO fields and module dependencies.
+content. The D2 audit and implementation handoff are linked above.
 
 ## Node D audit complete
 
