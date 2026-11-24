@@ -27,7 +27,8 @@
                 (bib-entry
                  "book" "two" (document (bib-field "title" "Two"))))))
            (plist-get plan :files)))
-         (prepared (org-texmacs--input-cite-result input sources nil))
+         (prepared
+          (org-texmacs--input-with-cite-sources input sources))
          (view
           (plist-get
            (org-texmacs-input-info prepared)
@@ -46,9 +47,12 @@
               (list
                'label (concat prefix "-" key))
               (concat "Mock " key)))))))
-    (org-texmacs--input-cite-result
-     prepared sources
-     (list prefix keys (plist-get view :entries) body))))
+    (org-texmacs--input-with-info
+     prepared
+     (plist-put
+      (copy-sequence (org-texmacs-input-info prepared))
+      :texmacs-bibliography-output
+      (list prefix keys (plist-get view :entries) body)))))
 
 (defun org-texmacs-test--native-cite-prepare (text &optional scope)
   "Prepare TEXT in a genuine export, optionally using subtree or visible SCOPE."

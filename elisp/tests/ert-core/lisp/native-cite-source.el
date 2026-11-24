@@ -173,6 +173,98 @@
     (should (= parse-calls 0))
     (should (= format-calls 0))))
 
+(ert-deftest org-texmacs-native-source-completion-keeps-owned-graph ()
+  (org-texmacs-test--with-native-source
+    (let ((fulfill
+           (symbol-function 'org-texmacs--prepared-cite-fulfill))
+          (format-bibliography
+           (symbol-function 'org-texmacs--bibliography-format))
+          initial
+          format-plan)
+      (cl-letf (((symbol-function 'org-texmacs--prepared-cite-fulfill)
+                 (lambda (input)
+                   (setq initial input)
+                   (cl-letf (((symbol-function
+                               'org-texmacs--input-own)
+                              (lambda (&rest _)
+                                (ert-fail "Reowned Input")))
+                             ((symbol-function
+                               'org-texmacs--input-finalize)
+                              (lambda (&rest _)
+                                (ert-fail "Refinalized Input")))
+                             ((symbol-function
+                               'org-texmacs--input-cite-plan)
+                              (lambda (&rest _)
+                                (ert-fail "Replanned Input"))))
+                     (funcall fulfill input))))
+                ((symbol-function 'org-texmacs--bibliography-format)
+                 (lambda (plan)
+                   (setq format-plan plan)
+                   (funcall format-bibliography plan))))
+        (let*
+            ((body
+              (concat
+               "See [[fig-probe]]. Note [fn:probe] again [fn:probe]. [cite:@one].\n\n"
+               "#+NAME: fig-probe\n#+begin_figure\n#+begin_texmacs\n(math \"x\")\n"
+               "#+end_texmacs\n#+end_figure\n\n"
+               "#+begin_texmacs\n(label \"org-texmacs-bib-1-one\")\n#+end_texmacs\n\n"
+               "#+print_bibliography:\n\n[fn:probe] Note body.\n"))
+             (ready
+              (org-texmacs-test--native-source-input bib-file body))
+             (resolution (org-texmacs-input-resolution ready))
+             (info (org-texmacs-input-info ready))
+             (initial-info (org-texmacs-input-info initial))
+             (plan (plist-get info :texmacs-cite-plan))
+             (initial-plan
+              (plist-get initial-info :texmacs-cite-plan))
+             (notes (org-texmacs-resolution-footnotes resolution))
+             (lowered (org-texmacs-test--native-cite-lower ready)))
+          (dolist (reader
+                   '(org-texmacs-input-model
+                     org-texmacs-input-ast
+                     org-texmacs-input-islands
+                     org-texmacs-input-resolution))
+            (should
+             (eq (funcall reader initial) (funcall reader ready))))
+          (dolist (key
+                   '(:texmacs-org-query
+                     :texmacs-cite-requests
+                     :texmacs-format-headline-function))
+            (should
+             (eq (plist-get initial-info key) (plist-get info key))))
+          (should (org-texmacs-resolution-links resolution))
+          (should (= (length notes) 2))
+          (should (eq (cdar notes) (cdadr notes)))
+          (should (eq plan format-plan))
+          (should
+           (equal (plist-get plan :prefix) "org-texmacs-bib-2"))
+          (should
+           (eq
+            (plist-get plan :prefix)
+            (plist-get initial-plan :prefix)))
+          (should
+           (eq
+            (plist-get plan :entries)
+            (nth 2 (plist-get info :texmacs-bibliography-output))))
+          (should
+           (equal (plist-get initial-plan :entries) '(document)))
+          (should-not
+           (plist-get initial-info :texmacs-bibliography-output))
+          (should
+           (equal
+            lowered (org-texmacs-test--native-cite-lower ready)))
+          (let ((other
+                 (org-texmacs-test--native-source-input bib-file
+                                                        body)))
+            (should-not
+             (eq
+              (org-texmacs-input-ast other)
+              (org-texmacs-input-ast ready)))
+            (should-not
+             (eq
+              (org-texmacs-input-islands other)
+              (org-texmacs-input-islands ready)))))))))
+
 (ert-deftest org-texmacs-native-prepared-consumers-keep-fulfillment ()
   (org-texmacs-test--with-native-source
     (dolist (fault '(wrapper resolution))
@@ -192,7 +284,19 @@
                       (lambda (node)
                         (org-element-put-property node :value "")))
                      tree))))
-               (input (org-texmacs-prepare-buffer (current-buffer))))
+               (fulfill
+                (symbol-function 'org-texmacs--prepared-cite-fulfill))
+               frozen
+               (input
+                (cl-letf (((symbol-function
+                            'org-texmacs--prepared-cite-fulfill)
+                           (lambda (prepared)
+                             (setq frozen
+                                   (org-texmacs-input-resolution
+                                    prepared))
+                             (funcall fulfill prepared))))
+                  (org-texmacs-prepare-buffer (current-buffer)))))
+          (should (eq frozen (org-texmacs-input-resolution input)))
           (should (org-texmacs-input-bibliography input))
           (should
            (plist-get
@@ -443,6 +547,53 @@
      (org-texmacs-input-p
       (org-texmacs-test--native-source-input bib-file)))))
 
+(ert-deftest org-texmacs-native-source-format-failure-preserves-plan
+    ()
+  (let ((formatter
+         (symbol-function 'org-texmacs--bibliography-format)))
+    (org-texmacs-test--with-native-source
+      (let ((attach
+             (symbol-function 'org-texmacs--input-with-cite-sources))
+            ready
+            info
+            plan
+            entries)
+        (cl-letf (((symbol-function
+                    'org-texmacs--input-with-cite-sources)
+                   (lambda (input sources)
+                     (setq
+                      ready (funcall attach input sources)
+                      info (org-texmacs-input-info ready)
+                      plan (plist-get info :texmacs-cite-plan)
+                      entries (plist-get plan :entries))
+                     ready))
+                  ((symbol-function 'org-texmacs--bibliography-format)
+                   formatter)
+                  ((symbol-function 'org-texmacs--worker-stop)
+                   #'ignore))
+          (dolist
+              (response
+               '((ok
+                  1
+                  (bib-list "1" (document (label "wrong"))))
+                 (error
+                  1
+                  "Unknown or unavailable native bibliography style")))
+            (cl-letf (((symbol-function 'org-texmacs--worker-call)
+                       (lambda (_) response)))
+              (should-error
+               (org-texmacs-test--native-source-input bib-file)
+               :type
+               (if (eq (car response) 'ok)
+                   'org-texmacs-worker-error
+                 'org-texmacs-document-error)))
+            (should (eq info (org-texmacs-input-info ready)))
+            (should (eq plan (plist-get info :texmacs-cite-plan)))
+            (should (eq entries (plist-get plan :entries)))
+            (should (equal (nth 2 (cadr entries)) "one"))
+            (should-not
+             (plist-member info :texmacs-bibliography-output))))))))
+
 (ert-deftest org-texmacs-native-format-style-wire-and-clean-rejection
     ()
   (let* ((plan
@@ -451,10 +602,13 @@
             :keys ("one")
             :entries (document)
             :style "alpha"))
+         (label (copy-sequence "p-one"))
          (body
-          '(bib-list
-            "1"
-            (document (concat (bibitem* "A26") (label "p-one"))))))
+          (list
+           'bib-list "1"
+           (list
+            'document
+            (list 'concat '(bibitem* "A26") (list 'label label))))))
     (cl-letf
         (((symbol-function 'org-texmacs--worker-call)
           (lambda (make-request)
@@ -463,8 +617,12 @@
               (funcall make-request 7)
               "(format-bibliography 7 \"p\" (\"document\") \"alpha\")\n"))
             (list 'ok 7 body))))
-      (should
-       (equal (nth 3 (org-texmacs--bibliography-format plan)) body))))
+      (let ((owned (nth 3 (org-texmacs--bibliography-format plan))))
+        (should (equal owned body))
+        (aset label 0 ?X)
+        (should
+         (equal
+          (org-texmacs--bibliography-labels owned) '("p-one"))))))
   (cl-letf
       (((symbol-function 'org-texmacs--worker-call)
         (lambda (_)

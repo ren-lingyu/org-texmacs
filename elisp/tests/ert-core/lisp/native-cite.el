@@ -47,10 +47,18 @@
         t
         nil
         t))
-      (should-not (assq (car pair) requests)))
-    (aset (car (plist-get (cdar requests) :keys)) 0 ?X)
+      (should (eq pair (assq (car pair) requests))))
     (should
-     (equal body (org-texmacs-test--native-cite-lower ready)))))
+     (eq
+      requests
+      (plist-get
+       (org-texmacs-input-info ready)
+       :texmacs-cite-requests)))
+    (should-not (org-texmacs-input-bibliography input))
+    (should-not
+     (plist-get
+      (org-texmacs-input-info input)
+      :texmacs-bibliography-output))))
 
 (ert-deftest
     org-texmacs-native-cite-real-transaction-and-positionless-carriers
@@ -201,30 +209,34 @@
          (info (org-texmacs-input-info ready))
          (output (plist-get info :texmacs-bibliography-output))
          (sources (org-texmacs-input-bibliography ready))
-         (before (org-texmacs-test--native-cite-lower ready)))
-    (let ((malformed (copy-tree output)))
-      (setcar malformed "wrong-prefix")
+         (ast (org-texmacs-input-ast ready))
+         (before (org-texmacs-test--native-cite-lower ready))
+         (external-output (copy-tree output))
+         (owned
+          (org-texmacs-input-create
+           ast
+           (plist-put
+            (copy-sequence info)
+            :texmacs-bibliography-output external-output)
+           :bibliography sources)))
+    (setcar external-output "wrong-prefix")
+    (setcar (nth 3 external-output) 'document)
+    (should
+     (equal before (org-texmacs-test--native-cite-lower owned)))
+    (let ((stale
+           (org-texmacs-input-create
+            ast
+            (plist-put
+             (copy-sequence info)
+             :texmacs-bibliography-output external-output)
+            :bibliography sources)))
       (should-error
-       (org-texmacs-test--native-cite-lower
-        (org-texmacs--input-cite-result ready sources malformed))
-       :type 'org-texmacs-document-error))
-    (let ((duplicates (copy-tree sources)))
-      (setcdr
-       (cdar duplicates)
-       (append
-        (cdr (cdar duplicates)) (list (cadr (cdar duplicates)))))
-      (should-error
-       (org-texmacs--input-cite-result ready duplicates output)
+       (org-texmacs-test--native-cite-lower stale)
        :type 'org-texmacs-document-error))
     (should-error
      (org-texmacs--bibliography-native-plan
       info (list (concat (car output) "-one")))
-     :type 'org-texmacs-document-error)
-    (let ((copy
-           (org-texmacs--input-cite-result ready sources output)))
-      (setcdr (cdar sources) nil)
-      (should
-       (equal before (org-texmacs-test--native-cite-lower copy))))))
+     :type 'org-texmacs-document-error)))
 
 (ert-deftest org-texmacs-native-cite-empty-and-default-isolation ()
   (let* ((input
@@ -361,21 +373,47 @@
       (should (string-search "Mock two" (prin1-to-string body)))
       (should-not (string-search "missing" (prin1-to-string body))))))
 
-(ert-deftest org-texmacs-native-cite-result-needs-owned-sources ()
+(ert-deftest org-texmacs-native-cite-sources-own-and-select-entries ()
   (let* ((input
           (org-texmacs-test--native-cite-prepare
            "[cite:@one]\n#+print_bibliography:\n"))
-         (ready (org-texmacs-test--native-cite-fill input))
-         (output
+         (info (org-texmacs-input-info input))
+         (plan (plist-get info :texmacs-cite-plan))
+         (file (car (plist-get plan :files)))
+         (title (copy-sequence "One"))
+         (used
+          (list
+           'bib-entry "book" "one"
+           (list 'document (list 'bib-field "title" title))))
+         (unused '(bib-entry "book" "unused" (document)))
+         (sources (list (list file 'document used unused unused)))
+         (ready (org-texmacs--input-with-cite-sources input sources))
+         (owned (org-texmacs-input-bibliography ready))
+         (selected
           (plist-get
-           (org-texmacs-input-info ready)
-           :texmacs-bibliography-output)))
-    (should-error
-     (org-texmacs--input-cite-result input nil output)
-     :type 'org-texmacs-document-error)
-    (should-error
-     (org-texmacs--input-cite-result input nil '(invalid))
-     :type 'org-texmacs-document-error)))
+           (plist-get
+            (org-texmacs-input-info ready)
+            :texmacs-cite-plan)
+           :entries)))
+    (should (eq (cadr selected) (nth 2 (car owned))))
+    (aset title 0 ?X)
+    (should
+     (equal
+      (cadr selected)
+      '(bib-entry "book" "one" (document (bib-field "title" "One")))))
+    (dolist (bad
+             (list
+              nil
+              (list (list file 'concat "Invalid"))
+              (list (list file 'document unused))
+              (list (list file 'document used used))))
+      (should-error
+       (org-texmacs--input-with-cite-sources input bad)
+       :type 'org-texmacs-document-error)
+      (should (eq info (org-texmacs-input-info input)))
+      (should (eq plan (plist-get info :texmacs-cite-plan)))
+      (should (equal (plist-get plan :entries) '(document)))
+      (should-not (org-texmacs-input-bibliography input)))))
 
 (ert-deftest org-texmacs-native-cite-static-labels-and-opaque-text ()
   (let* ((input

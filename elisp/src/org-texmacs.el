@@ -163,7 +163,8 @@ preparation and conversion together, use `org-texmacs-document-from-buffer'."
 (defun org-texmacs--bibliography-format (plan)
   "Format explicit native bibliography PLAN at the worker boundary.
 Use PLAN's style, defaulting to plain for independent constructor inputs.
-Native standard preparation also uses this data-only formatting operation."
+Return (PREFIX KEYS ENTRIES BODY), sharing the read-only plan data and
+owning the validated worker BODY."
   (let* ((prefix (plist-get plan :prefix))
          (keys (plist-get plan :keys))
          (entries (plist-get plan :entries))

@@ -6,7 +6,7 @@
 ;;; Commentary:
 
 ;; Adapt the final Org export tree without source coordinates or preparation.
-;; Native parsing happens once during the private input ownership transaction.
+;; Read STM islands with the Elisp codec after owning the projected tree.
 
 ;;; Code:
 
@@ -276,15 +276,18 @@ Independent input/document consumers never call this file-reading guard."
                   (org-texmacs--prepared-cite-check input)))
               snapshots)))
         (setq input
-              (org-texmacs--input-cite-result input sources nil))
+              (org-texmacs--input-with-cite-sources input sources))
         (let* ((output
                 (org-texmacs--bibliography-format
                  (plist-get
                   (org-texmacs-input-info input)
                   :texmacs-cite-plan)))
                (result
-                (org-texmacs--input-cite-result
-                 input sources output)))
+                (org-texmacs--input-with-info
+                 input
+                 (plist-put
+                  (copy-sequence (org-texmacs-input-info input))
+                  :texmacs-bibliography-output output))))
           (org-texmacs--prepared-cite-check result)
           ;; Keep only fingerprints after native interpretation; source text
           ;; is not needed by independent pure consumers or later copies.
@@ -380,7 +383,7 @@ affiliations still reach the lowerer's explicit validation."
   tree)
 
 (defun org-texmacs--prepared-discover (tree &optional defer-notes)
-  "Collect native requests from final TREE, optionally deferring notes.
+  "Collect STM reader requests from final TREE, optionally deferring notes.
 Use fragment source and block bodies from the final nodes."
   (let (requests)
     (cl-labels
@@ -448,7 +451,9 @@ Preserve the order and owned Org keys of the requests."
            (org-texmacs-input-ast input)
            :islands islands)))
     (org-texmacs--input-with-info
-     input (org-texmacs-input-info input) nil model)))
+     input
+     (org-texmacs-input-info input)
+     :model model)))
 
 (provide 'org-texmacs-prepared)
 ;;; org-texmacs-prepared.el ends here
