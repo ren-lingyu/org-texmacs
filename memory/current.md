@@ -5,10 +5,10 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
-## Node D1 implementation candidate
+## Node D1 delivered
 
-The maintainer adopted the private Native Cite completion direction. On top
-of main `8f1dd58`, the worktree candidate replaces both uses of
+The maintainer committed `refactor(cite): reuse finalized input for native
+bibliography completion` directly after `8f1dd58`. D1 replaces both uses of
 `input-cite-result` and removes the helper. Source attachment uses the
 existing bibliography copier, selects required entries once from owned
 sources and updates a fresh INFO and Cite plan plist. Final attachment
@@ -46,14 +46,12 @@ A separate `nix build -L --offline --no-write-lock-file --no-link
 and the final invocation reused that output. Confirmed all four
 English/Chinese index/article TeXmacs and PDF pairs are nonempty.
 
-The project diff passes the Git whitespace check and remains unstaged.
-Path-sorted candidate blob abbreviations under `elisp/` are
-`003899a` input, `e750153` prepared, `b88d66c` main library,
-`a1f2377` Core native-cite-source, `393570f` Core native-cite, and
-`509fa61` Core support. These observations apply to the worktree
-candidate. D1 awaits maintainer review and delivery. D2 remains a separate
-audit of the other Model/Input/Document boundaries, INFO fields and
-module dependencies.
+The maintainer also reported passing tests and example builds. The delivered
+commit matches the six tested candidate blobs and the reviewed message byte
+for byte. Its diff passes the Git whitespace check and the project worktree
+and index are clean. The candidate's recorded runs apply to the delivered
+content. D2 is next and remains a separate audit of the other
+Model/Input/Document boundaries, INFO fields and module dependencies.
 
 ## Node D audit complete
 
@@ -63,7 +61,7 @@ confirmed equivalent observed structural data with new graph identities,
 recomputed frozen failure, and one real bibliography parse and format.
 The recommended candidate is private completion against the same owned
 graph, with distinct ownership and validation of newly obtained bibliography
-data. This audit predates adoption for D1. See the candidate entry above. Preserve
+data. This audit predates D1. See the delivery entry above. Preserve
 public construction, independent bibliography, C's consumer boundary and
 all transaction guards. The [Node D audit](d-native-cite-data-flow-audit.md)
 contains the history, runtime evidence and implementation conditions. Avoid
