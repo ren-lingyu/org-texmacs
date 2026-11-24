@@ -5,6 +5,56 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
+## Node D1 implementation candidate
+
+The maintainer adopted the private Native Cite completion direction. On top
+of main `8f1dd58`, the worktree candidate replaces both uses of
+`input-cite-result` and removes the helper. Source attachment uses the
+existing bibliography copier, selects required entries once from owned
+sources and updates a fresh INFO and Cite plan plist. Final attachment
+shares those sources, planned prefix, keys and entries, and uses the owned
+body from the existing native formatter. The initial Model, AST, islands,
+query, carrier and resolution identities, including saved resolution
+failures, are retained through completion. The public constructor continues
+to own caller data. Independent lowering still validates bibliography
+association and emitted output.
+
+Initial finalization shares its static labels with initial Cite planning.
+Snapshot and initial planning each still validate Cite usage to keep
+snapshot and STM completion state local. The snapshot and fingerprint
+guard windows and C's consumer ordering remain as delivered. The D audit
+and archived probe retain their baseline meaning.
+
+Core adds forwarding checks for stable same-transaction identities, a
+prefix collision, repeat and cross-transaction behavior, and format
+failure isolation. The older private copy tests now cover stable carrier
+identities, external sources and output ownership, and source selection
+failures. The prepared consumer test checks the original frozen resolution.
+The real native tests and prior guard regressions stay in the matrix.
+
+The final x86_64-linux candidate passed
+`nix flake check -L --offline --no-write-lock-file`. The last pass rebuilt
+both Core checks (578/578 each) and treefmt. It reused results produced
+earlier in this session for the same production source, including both
+package builds with compilation and lint, both CSL (5/5 each), Org
+10.0-pre SETUPFILE (5/5), real Native (92/92), PDF document (26/26),
+PDF render (23/23), Organize (5/5), issue-10/11/12/13 (1/3/1/10),
+caption inline footnotes (6/6), Org parser (1/1) and caption layout
+(1/1). The independent GoToR check reused its existing output.
+A separate `nix build -L --offline --no-write-lock-file --no-link
+--print-out-paths .#org-texmacs-examples` freshly built the four examples
+and the final invocation reused that output. Confirmed all four
+English/Chinese index/article TeXmacs and PDF pairs are nonempty.
+
+The project diff passes the Git whitespace check and remains unstaged.
+Path-sorted candidate blob abbreviations under `elisp/` are
+`003899a` input, `e750153` prepared, `b88d66c` main library,
+`a1f2377` Core native-cite-source, `393570f` Core native-cite, and
+`509fa61` Core support. These observations apply to the worktree
+candidate. D1 awaits maintainer review and delivery. D2 remains a separate
+audit of the other Model/Input/Document boundaries, INFO fields and
+module dependencies.
+
 ## Node D audit complete
 
 The targeted audit on C's delivered revision confirms two complete Input
@@ -13,7 +63,7 @@ confirmed equivalent observed structural data with new graph identities,
 recomputed frozen failure, and one real bibliography parse and format.
 The recommended candidate is private completion against the same owned
 graph, with distinct ownership and validation of newly obtained bibliography
-data. This is evidence and a candidate, pending maintainer adoption. Preserve
+data. This audit predates adoption for D1. See the candidate entry above. Preserve
 public construction, independent bibliography, C's consumer boundary and
 all transaction guards. The [Node D audit](d-native-cite-data-flow-audit.md)
 contains the history, runtime evidence and implementation conditions. Avoid
