@@ -5,7 +5,7 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
-## Node D2 audit complete
+## Node D2 implementation candidate
 
 The maintainer adopted five headline formatter arguments without a legacy
 arity adapter and retained the native diagnostic operations. The
@@ -13,9 +13,33 @@ arity adapter and retained the native diagnostic operations. The
 handoff, evidence-backed cleanup candidates and boundaries to retain.
 The stock provenance probe confirms the default formatter retains STM
 paths, plain custom output does not, and headline file links fall back
-to text before both paths. The example actually contains a six-argument
-formatter and must migrate. The audit preserved the D1 graph-sharing and
-C guard contracts. D2 implementation and its full matrix are pending.
+to text before both paths. The candidate drops the legacy INFO parameter
+from headline formatters and migrates the real example, tests, README and
+unreleased CHANGELOG. The default identity path still preserves provenance.
+The candidate trims serialization's second Model copy, separates guard state
+from presentation capture, and removes the stale INFO projection and override
+branches. It moves syntax helpers and test-only adapters, revises the
+capability registry and refreshes the Org 10.0-pre patch. The D1 graph-sharing
+and C guard contracts, the full frozen query and native diagnostic operations
+remain in place.
+
+On x86_64-linux, the final candidate passed
+`nix flake check -L --offline --no-write-lock-file`. Fresh results include
+both packages with compilation and package-lint, both Core suites (581/581
+each), both CSL suites (5/5 each), Org 10.0-pre SETUPFILE (5/5), Native
+(92/92), PDF document (26/26), PDF render (23/23), Organize (5/5), issues
+10/11/12/13 (1/3/1/10), caption inline footnotes (6/6), Org parser (1/1),
+caption layout (1/1), and treefmt. The independent GoToR result was reused.
+The separate offline `nix build -L --offline --no-write-lock-file --no-link
+--print-out-paths .#org-texmacs-examples` freshly built all four pairs.
+Their .tm and PDF files were nonempty and both article .tm files contain
+the migrated formatter's test prefix. The compatibility patch also passes
+dry-run application. No additional Org native probe was required.
+
+The 20-file diff on `0aabcd6` passes `git diff --check` and is unstaged.
+The SHA-256 of `git --no-pager diff --binary --full-index HEAD` is
+`51f85b5d9c9769ceb12d9828e3f645b02cd998f6d364fcab9794f638141c1a3b`. The evidence above is for this uncommitted candidate.
+D2 awaits maintainer review and delivery. E remains next after D2 delivery.
 
 ## Node D1 delivered
 
