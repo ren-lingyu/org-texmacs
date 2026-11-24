@@ -24,7 +24,7 @@ release notes.
   implementation now take five arguments. Remove the final =info= argument
   from custom formatters. The five arguments retain the current metadata
   filtering and lowered title parts, and the default output is unchanged.
-  See [[file:README.org::*Headline metadata and presentation][headline formatting]].
+  See [[file:README.org::*Headline formatter][headline formatting]].
 - Parse and serialize a shared subset of native TeXmacs STM syntax in Emacs
   Lisp. Model parsing, editing and normalized Org output work without the
   TeXmacs executable. Standard Export preparation and =org-texmacs-tree=

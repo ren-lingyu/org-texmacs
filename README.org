@@ -242,9 +242,11 @@ wait for a response to an individual request.
 strings.  =org-texmacs-document-initial= is an alist from unique nonempty
 environment identifier strings to STM/source-semantic text strees.  The
 default style is =("generic")= and the default initial environment is empty.
-These values are copied into each prepared input and document result; changing
-them affects only later buffer conversions.  A native session applies the
-captured style and initial environment together with that result's body.
+These values are copied into each prepared input and document result. Changes
+do not alter existing results, but changing either value during a standard
+source export can cause that export to fail its consistency checks. A native
+session applies the captured style and initial environment together with
+that result's body.
 
 =org-texmacs-typed-references= defaults to nil.  Opt in to native typed
 references by setting it to t and selecting a style that defines the relevant
@@ -1112,13 +1114,16 @@ and marks their target leaves in =file-paths=.  The native bridge uses the
 captured resource base to translate these leaves in a separate body copy;
 source file identity never chooses or overrides that base.
 
-The source transaction captures and checks style and initial.
-It captures other presentation options separately at its start.  Org owns parser settings, source options and preparation dependencies;
-the prepared input owns their consumed results.  Source text, mode, restriction,
-identity, native style/initial changes reject publication without retry.
-Export uses the captured Org settings and preparation results. Native Cite
-checks active bibliography sources until this source export completes.
-Mutable closure state and arbitrary callback effects are not frozen.
+The source transaction checks buffer identity and liveness, character
+modification tick, major mode, accessible bounds (accounting for Org's
+selection), source file, resource directory, style and initial. Changes
+covered by these guards reject publication without retry. Other presentation
+options are captured separately at transaction start; changes to those
+settings alone do not invalidate the transaction. Org owns parser settings,
+source options and preparation dependencies; the prepared input owns their
+consumed results. Native Cite checks active bibliography sources until this
+source export completes. Mutable closure state and arbitrary callback effects
+are not frozen.
 
 Preparation uses private copies, without changing source text properties,
 point, mark, modified state or narrowing, or resetting the source's Org cache.
@@ -1791,6 +1796,31 @@ comments are always removed. Filtering happens before STM parsing, so
 discarded subtrees cannot trigger STM parse errors.  Supported configuration
 keywords are consumed instead of becoming body nodes.
 
+Headline levels are relative to the shallowest retained headline, following
+Org export structure rather than raw star count.  The first five visible
+levels map to =section= through =subparagraph=.  =num= selects the deepest
+numbered level, with starred section tags beyond it; =UNNUMBERED= also selects
+a starred tag.  Headlines below =H= become nested =itemize= bodies, preserving
+their own contents and descendants.  Headline property drawers may contain
+=UNNUMBERED=, =ALT_TITLE=, =CUSTOM_ID= and =ID=; other keys remain unsupported.
+
+A non-nil =toc= option emits a leading static
+=(table-of-contents "org-texmacs-toc" (document ...))= when at least one
+filtered headline is eligible.  Its entries use =toc-1= through =toc-5= with
+an internal =hlink= title and =pageref=.  =toc:N= limits the depth and cannot
+exceed =H=.  Numbered headings receive dot-separated numbers computed from the
+same filtered tree and =num= policy; other entries remain unnumbered.
+=UNNUMBERED: notoc= excludes an entry without removing its body heading, while
+other unnumbered headings remain in the TOC.  Parsed =ALT_TITLE= rich objects
+replace the TOC title only.  The [[*Headline formatter][headline formatter]] is also used for TOC
+titles, with tags omitted under =tags:not-in-toc=.
+
+Each entry targets a deterministic =org-texmacs-toc-N= label placed directly
+after its body heading.  Allocation skips statically named =label= nodes in
+visible STM islands.  TOC and resolved source links use distinct private label
+namespaces.  =pageref= values remain structural references;
+the body constructor does not paginate the document or precompute page numbers.
+
 =#+TITLE=, =#+AUTHOR= and =#+DATE= remain parsed rich Org objects in the
 prepared input and lower into a leading =doc-data=.  Titles use =doc-title=;
 authors use =doc-author=, =author-data= and =author-name= without heuristic
@@ -1936,34 +1966,15 @@ more than once. Calls run outside the private link parser bindings.
 When migrating a custom six-argument formatter, remove its final =info=
 parameter and use the five supplied values for title presentation.
 
-Output options and the selected formatter are fixed for one conversion;
-changes affect the next conversion.  Source text and effective parser
-settings still undergo the consistency checks described above.
+Standard Export captures the formatter selection at transaction start and
+its function definition during Input ownership. Subsequent configuration
+changes do not alter an already prepared input. The source transaction
+checks the source state described under
+[[*Preparing a document result][Preparing a document result]], not all effective Org parser settings. The independent Model parser has its
+own syntax consistency checks.
 
-Headline levels are relative to the shallowest retained headline, following
-Org export structure rather than raw star count.  The first five visible
-levels map to =section= through =subparagraph=.  =num= selects the deepest
-numbered level, with starred section tags beyond it; =UNNUMBERED= also selects
-a starred tag.  Headlines below =H= become nested =itemize= bodies, preserving
-their own contents and descendants.  Headline property drawers may contain
-=UNNUMBERED=, =ALT_TITLE=, =CUSTOM_ID= and =ID=; other keys remain unsupported.
-
-A non-nil =toc= option emits a leading static
-=(table-of-contents "org-texmacs-toc" (document ...))= when at least one
-filtered headline is eligible.  Its entries use =toc-1= through =toc-5= with
-an internal =hlink= title and =pageref=.  =toc:N= limits the depth and cannot
-exceed =H=.  Numbered headings receive dot-separated numbers computed from the
-same filtered tree and =num= policy; other entries remain unnumbered.
-=UNNUMBERED: notoc= excludes an entry without removing its body heading, while
-other unnumbered headings remain in the TOC.  Parsed =ALT_TITLE= rich objects
-replace the TOC title only.  The headline formatter is also used for TOC
-titles, with tags omitted under =tags:not-in-toc=.
-
-Each entry targets a deterministic =org-texmacs-toc-N= label placed directly
-after its body heading.  Allocation skips statically named =label= nodes in
-visible STM islands.  TOC and resolved source links use distinct private label
-namespaces.  =pageref= values remain structural references;
-the body constructor does not paginate the document or precompute page numbers.
+See [[*Headline metadata and presentation][Headline metadata and presentation]]
+for sectioning, numbering and TOC rules.
 
 * Native output and sessions
 ** Complete native document serialization
@@ -2063,9 +2074,10 @@ options/AST filters and Cite; it defines their normal reads, warnings and errors
 Final text filters run once before reversible Latin-1-to-native-byte conversion;
 nonrepresentable output fails explicitly.  No serialized STM is reparsed.
 
-Source text/mode/restriction/identity and native-setting changes during native
-waits reject the export.  The prepared input owns the parser, filter and
-dependency data already consumed by Org.
+The source consistency checks described under
+[[*Preparing a document result][Preparing a document result]] also apply during native waits. They include style and initial, but not the
+other captured presentation options. The prepared input owns the parser,
+filter and dependency data already consumed by Org.
 Active native bibliography sources still undergo consistency checks until the
 source export completes. Completed independent consumers use the owned data.
 File export validates/copies the destination first and passes it in INFO without
@@ -2276,8 +2288,9 @@ INCLUDE acquisition. During an active native Cite source export, bibliography
 sources are still checked for changes after native waits and text/PDF processing;
 changed or unavailable files reject the result. Completed independent input/
 document consumers use owned bibliography data without rereading those files.
-This is not a filesystem-atomic snapshot; source/native-setting checks also apply
-during source export.
+This is not a filesystem-atomic snapshot; the source consistency checks
+(including style and initial) described under
+[[*Preparing a document result][Preparing a document result]] also apply during source export.
 
 The =.tm= consumers run final standard text filters and convert the reversible
 ISO-Latin-1 transport to native bytes.  A filter result outside that transport
