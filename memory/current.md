@@ -39,12 +39,14 @@ receipt wording cleanup and the two old library names in the unreleased
 CHANGELOG. The committed diff passed the read-only Git whitespace check.
 The earlier flake and example results precede those final prose edits.
 
-A2/B/C still need a shared
-validation-stage design for effective AST and owned Input checks,
-consumer-specific resolution failure behavior, and the point before Native
-Cite fulfillment. The old special-block preflight and bibliography
-transaction timing remain unchanged in A1. The separate snapshot mutation
-probe is conditional on a later design changing that boundary.
+The B/C design is complete in [bc-export-validation-design.md](bc-export-validation-design.md).
+A2/B should remove the obsolete special-block preflight and share the wrapper
+body and frozen failure rules. C should apply those rules before Native Cite
+fulfillment for Document consumers using the existing frozen resolution node
+sequence. The standard Input and internal Model consumers retain their current
+preparation and fulfillment behavior. The bibliography snapshot and guard
+windows stay in place, so the conditional mutation probe is not needed for
+this design. Production implementation and regression execution are next.
 
 ## B/C footnote figure reachability probe
 
