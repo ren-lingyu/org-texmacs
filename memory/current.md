@@ -5,7 +5,7 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
-## Node D2 implementation candidate
+## Node D2 delivered
 
 The maintainer adopted five headline formatter arguments without a legacy
 arity adapter and retained the native diagnostic operations. The
@@ -13,10 +13,10 @@ arity adapter and retained the native diagnostic operations. The
 handoff, evidence-backed cleanup candidates and boundaries to retain.
 The stock provenance probe confirms the default formatter retains STM
 paths, plain custom output does not, and headline file links fall back
-to text before both paths. The candidate drops the legacy INFO parameter
+to text before both paths. The delivered change drops the legacy INFO parameter
 from headline formatters and migrates the real example, tests, README and
 unreleased CHANGELOG. The default identity path still preserves provenance.
-The candidate trims serialization's second Model copy, separates guard state
+D2 trims serialization's second Model copy, separates guard state
 from presentation capture, and removes the stale INFO projection and override
 branches. It moves syntax helpers and test-only adapters, revises the
 capability registry and refreshes the Org 10.0-pre patch. The D1 graph-sharing
@@ -36,10 +36,14 @@ Their .tm and PDF files were nonempty and both article .tm files contain
 the migrated formatter's test prefix. The compatibility patch also passes
 dry-run application. No additional Org native probe was required.
 
-The 20-file diff on `0aabcd6` passes `git diff --check` and is unstaged.
-The SHA-256 of `git --no-pager diff --binary --full-index HEAD` is
-`51f85b5d9c9769ceb12d9828e3f645b02cd998f6d364fcab9794f638141c1a3b`. The evidence above is for this uncommitted candidate.
-D2 awaits maintainer review and delivery. E remains next after D2 delivery.
+The maintainer committed `refactor!: drop headline formatter INFO and
+redundant snapshots` directly after `0aabcd6`. The committed 20-file diff
+matches the verified candidate's full-index binary diff SHA-256, and the
+commit message matches the draft byte for byte. The committed diff passes
+the Git whitespace check and both the project worktree and index are clean.
+The recorded candidate runs apply to the delivered content. Node D is
+complete. E is next for final contract, documentation, release and test
+consistency audit.
 
 ## Node D1 delivered
 
