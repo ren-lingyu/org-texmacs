@@ -1,0 +1,72 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1794495034,
+        "narHash": "sha256-E0hYoioqUtM2XmPPvYYpJgdADF5AW9oOoPSEiM9dTHQ=",
+        "ref": "refs/heads/nixpkgs-unstable",
+        "rev": "2074cc672349f14240fb7ea90d509e0b643e9dd4",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/NixOS/nixpkgs.git"
+      },
+      "original": {
+        "ref": "refs/heads/nixpkgs-unstable",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/NixOS/nixpkgs.git"
+      }
+    },
+    "personal-nixpkgs": {
+      "inputs": {
+        "nixpkgs": [
+          "project",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794600327,
+        "narHash": "sha256-rqyITRkPda/bsnCURoT9i+r5YeiA38UXRpkTuwnjNPw=",
+        "ref": "refs/heads/main",
+        "rev": "6ab46798ab901e550e0c2840ae489918a3d06df9",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/ren-lingyu/nixpkgs.git"
+      },
+      "original": {
+        "ref": "refs/heads/main",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/ren-lingyu/nixpkgs.git"
+      }
+    },
+    "project": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "personal-nixpkgs": "personal-nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1795464395,
+        "narHash": "sha256-THJ6pQg4TpPA9hVA7QBGMBa+1fXelfqdDh9ICGjIgIk=",
+        "ref": "main",
+        "rev": "5b396dcf7f7a5c9763829ab70fc0f3d535f3e266",
+        "revCount": 220,
+        "type": "git",
+        "url": "file:///home/lingyu/Projects/org-texmacs"
+      },
+      "original": {
+        "ref": "main",
+        "rev": "5b396dcf7f7a5c9763829ab70fc0f3d535f3e266",
+        "type": "git",
+        "url": "file:///home/lingyu/Projects/org-texmacs"
+      }
+    },
+    "root": {
+      "inputs": {
+        "project": "project"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
