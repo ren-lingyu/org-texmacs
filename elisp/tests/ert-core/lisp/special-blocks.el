@@ -916,10 +916,6 @@
                     "Prose-only block requested STM parsing"))))
         (let ((input (org-texmacs-prepare-buffer (current-buffer))))
           (should (= calls 0))
-          (should-not
-           (plist-member
-            (org-texmacs-input-info input)
-            :texmacs-special-block-preflight))
           (should
            (equal
             (org-texmacs-document-body (org-texmacs-document input))
@@ -1364,65 +1360,60 @@
        (org-texmacs-document-from-buffer (current-buffer))
        :type 'org-texmacs-document-error))))
 
-(ert-deftest org-texmacs-issue13-preflight-bibliography-boundary ()
+(ert-deftest org-texmacs-unknown-special-block-reports-document-error
+    ()
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
-    (insert
-     "#+BIBLIOGRAPHY: refs.bib\n#+begin_unknown\n$(math \"body\")$\n#+end_unknown\n")
-    (let (requests)
-      (cl-letf (((symbol-function 'org-texmacs--worker-request)
-                 (lambda (_source &optional operation)
-                   (push operation requests)
-                   '(document))))
-        (cl-letf
-            (((symbol-function 'org-texmacs--stm-read)
-              (lambda (_source)
-                (ert-fail
-                 "Preflight unexpectedly reached the STM reader"))))
-          (should-error
-           (org-texmacs-document-from-buffer
-            (current-buffer) '(("refs.bib" . "")))
-           :type 'org-texmacs-document-error))
-        (should-not requests)
-        ;; Exercise the special-block rejection through the supported API too.
-        (let ((failure
-               (should-error
-                (org-texmacs-document-from-buffer (current-buffer))
-                :type 'org-texmacs-document-error)))
-          (should
-           (string-match-p
-            "Unsupported special-block type"
-            (error-message-string failure))))
-        (should-not requests)))))
+    (insert "#+begin_unknown\n$(math \"body\")$\n#+end_unknown\n")
+    (let ((failure
+           (should-error
+            (org-texmacs-document-from-buffer (current-buffer))
+            :type 'org-texmacs-document-error)))
+      (should
+       (equal (cadr failure) "Unsupported special-block type")))))
 
-(ert-deftest
-    org-texmacs-issue13-preflight-skips-handler-and-final-errors
-    ()
+(ert-deftest org-texmacs-handler-receives-parsed-stm-once ()
   (with-temp-buffer
     (org-mode)
     (setq-local org-export-with-author nil)
     (insert
      "#+begin_custom\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n#+end_custom\n")
     (let ((calls 0)
-          (parsed nil)
           (org-texmacs--document-special-block-handlers nil))
       (setq org-texmacs--document-special-block-handlers
             (list
              (cons
               "custom"
-              (lambda (_b c info)
-                (should parsed)
-                (should-not
-                 (plist-get info :texmacs-special-block-preflight))
-                (setq calls (1+ calls))
-                (list 'custom c)))))
-      (cl-letf (((symbol-function 'org-texmacs--stm-read)
-                 (lambda (&rest _)
-                   (setq parsed t)
-                   '(math "x"))))
-        (should (org-texmacs-document-from-buffer (current-buffer)))
+              (lambda (_block body _info)
+                (should (equal body '(document (math "x"))))
+                (cl-incf calls)
+                (list 'custom body)))))
+      (let ((input (org-texmacs-prepare-buffer (current-buffer))))
+        (should (= calls 0))
+        (should
+         (equal
+          (org-texmacs-document-body
+           (org-texmacs-document input))
+          '(document (custom (document (math "x"))))))
         (should (= calls 1))))))
+
+(ert-deftest org-texmacs-wrapper-rejects-invalid-direct-body ()
+  (dolist (kind '("figure" "table"))
+    (dolist (body
+             '("" "Wrong body.\n" "First body.\n\nSecond body.\n"))
+      (with-temp-buffer
+        (org-mode)
+        (insert "#+begin_" kind "\n" body "#+end_" kind "\n")
+        (let ((failure
+               (should-error
+                (org-texmacs-document-from-buffer (current-buffer))
+                :type 'org-texmacs-document-error)))
+          (should
+           (equal
+            (cadr failure)
+            "Expected exactly one direct figure/table body"))
+          (should (eq (nth 2 failure) 'special-block)))))))
 
 (ert-deftest org-texmacs-issue13-stage2-source-capture-and-nesting ()
   (dolist (type '("equation" "EQUATION*"))
@@ -1463,7 +1454,7 @@
             requests '("(concat \"α=\" (frac \"1\" \"2\"))  \n")))
           (should (equal source (buffer-string))))))))
 
-(ert-deftest org-texmacs-issue13-stage2-preflight-source-errors ()
+(ert-deftest org-texmacs-issue13-stage2-equation-source-errors ()
   (dolist (type '("equation" "equation*"))
     (dolist (fixture
              '("#+begin_%s bad\n\"x\"\n#+end_%s\n"

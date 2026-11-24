@@ -1556,6 +1556,25 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                   "Ambient."))))))
       (delete-directory directory t))))
 
+(ert-deftest org-texmacs-document-signals-owned-resolution-failure ()
+  (let* ((target (org-element-create 'target '(:value "" :begin 8)))
+         (paragraph (org-element-create 'paragraph nil target))
+         (ast (org-element-create 'org-data nil paragraph))
+         (input (org-texmacs-input-create ast nil))
+         (failure
+          (org-texmacs-resolution-failure
+           (org-texmacs-input-resolution input))))
+    (should (equal failure '("Invalid dedicated target" target 8)))
+    (cl-letf (((symbol-function 'org-texmacs--document-resolve)
+               (lambda (&rest _)
+                 (ert-fail "Lowering resolved references again"))))
+      (should
+       (equal
+        (should-error
+         (org-texmacs-document input)
+         :type 'org-texmacs-document-error)
+        (cons 'org-texmacs-document-error failure))))))
+
 (ert-deftest org-texmacs-document-validates-frozen-external-id-mapping
     ()
   (let* ((id

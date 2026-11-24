@@ -568,8 +568,9 @@ Invalid or unsupported STM signals =org-texmacs-parse-error=.
 Existing export inputs reuse this model's ownership machinery.  Their
 =org-texmacs-input-model= accessor holds the same owned AST and islands exposed
 by the existing input accessors.  Export INFO, exact post-blank mappings and
-target settings remain separate.  Source filtering, bibliography, reference
-planning, preflight and native parsing retain their existing export route.
+target settings remain separate.  Standard Export handles source filtering,
+and export preparation provides parsed STM, bibliography data and frozen
+reference resolution.
 
 * Mathematical-document inspection
 =org-texmacs-model-inspect MODEL= returns a detached readable S-expression view.
@@ -1163,7 +1164,7 @@ The supported Org subset is deliberately small:
 | Formal statement special block                                      | Native statement environment with recursive body =document=    |
 | =equation= / =equation*= special block                              | One raw STM datum in a numbered / unnumbered native formula    |
 | Explicit =figure= / =table= special block (including starred forms) | Native =big-figure= / =big-table=, with outer caption and name |
-| COMMENT / comment block                                             | Removed before structural preflight                            |
+| COMMENT / comment block                                             | Excluded by Org export selection                               |
 | Task, archive and select/exclude filtering                          | Org policy applied before STM parsing                          |
 
 Heading text may contain supported emphasis, literal inline code and bare
@@ -1312,11 +1313,8 @@ body exactly once and must not mutate or reuse its descendants elsewhere, or
 duplicate source-semantic content by rebuilding it.  The latter obligation is
 a callback contract, not a complete runtime sandbox.  Handler functions are
 captured per conversion; mutable closure state is not frozen.  Unknown blocks
-and invalid handler outputs fail explicitly.  Structural preflight never calls
-custom handlers with placeholder STM.  Detectable source-level block errors
-are rejected before body STM parse requests; bibliography native requests may
-already have occurred.  Content-dependent handler errors are detected during
-final lowering.
+and invalid handler outputs fail explicitly.  Lowering calls handlers with
+the actual converted body and checks the returned structure and provenance.
 
 Ordinary spaces, tabs and soft newlines collapse to one space across Org
 inline text boundaries.  Leading whitespace at paragraph/title starts and
@@ -1916,8 +1914,8 @@ and other forms remain unchanged:
 #+end_src
 
 This is a private interface, not a stable formatter option or external export
-configuration key.  Keep advice side-effect-free; it may run during preflight
-and lowering.  Inputs and returned strings are copied.  A string result,
+configuration key.  Keep advice side-effect-free.  The function runs during
+lowering.  Inputs and returned strings are copied.  A string result,
 including an empty string, is required.  Each prepared input captures the
 function definition; later advice changes affect newly prepared inputs, not the
 existing conversion.  Mutable state captured by advice is not frozen.

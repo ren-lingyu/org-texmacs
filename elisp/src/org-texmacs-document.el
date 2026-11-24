@@ -205,9 +205,8 @@ disabled by INFO is nil; TITLE-PARTS is a list of text strees, not Org nodes.
 Return one text stree for the fixed sectioning node's sole title child.
 All output leaves have Org literal semantics, not STM source semantics.
 INFO is a conversion-local options plist.  Treat inputs as read-only and
-prefer a side-effect-free formatter.  Calls may occur during preflight and
-final lowering; no invocation count is guaranteed.  Custom function side
-effects are the caller's responsibility."
+prefer a side-effect-free formatter.  Lowering may call it more than once.
+Custom function side effects are the caller's responsibility."
   :type 'function
   :group 'org-texmacs)
 
@@ -287,8 +286,7 @@ tag string.  Preserve TITLE-PARTS without merging adjacent text."
 (defun org-texmacs--document-date-timestamp-text (raw)
   "Return RAW date metadata timestamp text unchanged.
 This private function may be advised to customize display.  It receives an
-owned string, including Org delimiters, and must return a string.  Calls may
-occur during preflight and lowering; no invocation count is guaranteed.
+owned string, including Org delimiters, and must return a string.
 Keep advice side-effect-free.  The conversion captures this function's
 definition, not mutable state captured by advice."
   raw)
@@ -409,6 +407,27 @@ value exists; explicit nil/empty removes its corresponding default."
            (unless (stringp node)
              (org-element-property :begin node)))))
 
+(defun org-texmacs--document-figure-table-body (node kind)
+  "Return NODE's single valid direct body for figure/table KIND."
+  (let* ((parameters (org-element-property :parameters node))
+         (children
+          (cl-remove-if
+           #'org-texmacs--figure-table-blank-p
+           (org-element-contents node)))
+         (child (car children)))
+    (unless (and (or (null parameters)
+                     (and (stringp parameters)
+                          (string-match-p
+                           "\\`[ \t\r\n]*\\'" parameters)))
+                 (= (length children) 1)
+                 (eq (org-element-parent child) node)
+                 (or (org-texmacs--block-p child)
+                     (and (memq kind '(table table*))
+                          (eq (org-element-type child) 'table))))
+      (org-texmacs--document-fail
+       node "Expected exactly one direct figure/table body"))
+    child))
+
 (defun org-texmacs--document-copy-stree (node &optional ancestors)
   "Validate and copy text stree NODE without sharing strings or conses.
 ANCESTORS detects cycles; repeated, non-cyclic subtrees are copied separately.
@@ -465,6 +484,11 @@ strees and reject cycles instead of guessing through dynamic label bodies."
  (targets nil :read-only t)
  (nodes nil :read-only t)
  (failure nil :read-only t))
+
+(defun org-texmacs--document-check-resolution-failure (resolution)
+  "Signal the document error saved in frozen RESOLUTION, if present."
+  (when-let* ((failure (org-texmacs-resolution-failure resolution)))
+    (signal 'org-texmacs-document-error failure)))
 
 (defun org-texmacs--document-local-file-path-p (path)
   "Return non-nil for a plain local file PATH with explicit source semantics.
@@ -1707,9 +1731,8 @@ Ordinary special blocks recursively lower into a body document and an explicit
 statement environment or captured private handler.  Built-in dispatch also
 handles raw equations and explicit figure/table wrappers.  Object-specific
 NAME/CAPTION rules retain original STM subtrees.  INFO's custom handler registry
-defaults to empty, never the dynamic registry.  Custom handlers are skipped
-when private preflight INFO is set; that temporary result is not a document
-for consumers.  Final handlers must preserve contents identity and provenance."
+defaults to empty, never the dynamic registry.  Handlers run during lowering
+and must preserve contents identity and provenance."
   (unless (and (consp ast) (eq (org-element-type ast) 'org-data))
     (signal 'org-texmacs-document-error
             '("Expected an Org document AST")))
@@ -1763,9 +1786,6 @@ for consumers.  Final handlers must preserve contents identity and provenance."
         (org-texmacs--document-file-link-options info))
        (resolution
         (or frozen-resolution
-            (and (plist-get info :texmacs-special-block-preflight)
-                 (org-texmacs--document-resolve
-                  ast islands static-labels resource-base))
             (signal 'org-texmacs-document-error
                     '("Missing frozen resolution"))))
        (keyword-positions
@@ -1782,9 +1802,7 @@ for consumers.  Final handlers must preserve contents identity and provenance."
       (setq
        initial (car merged)
        initial-literal-keys (cadr merged)))
-    (when (org-texmacs-resolution-failure resolution)
-      (signal 'org-texmacs-document-error
-              (org-texmacs-resolution-failure resolution)))
+    (org-texmacs--document-check-resolution-failure resolution)
     (setq citation-plan
           (if (plist-member info :texmacs-cite-requests)
               (org-texmacs--bibliography-native-plan
@@ -2989,27 +3007,8 @@ for consumers.  Final handlers must preserve contents identity and provenance."
       (figure-table
        (node ancestors)
        (let* ((kind (org-texmacs--figure-table-kind node))
-              (children
-               (cl-remove-if
-                #'org-texmacs--figure-table-blank-p
-                (org-element-contents node)))
-              (child (car children)))
-         (unless (and (or (null
-                           (org-element-property :parameters node))
-                          (and (stringp
-                                (org-element-property
-                                 :parameters node))
-                               (string-match-p
-                                "\\`[ \t\r\n]*\\'"
-                                (org-element-property
-                                 :parameters node))))
-                      (= (length children) 1)
-                      (eq (org-element-parent child) node)
-                      (or (org-texmacs--block-p child)
-                          (and (memq kind '(table table*))
-                               (eq (org-element-type child) 'table))))
-           (org-texmacs--document-fail
-            node "Expected exactly one direct figure/table body"))
+              (child
+               (org-texmacs--document-figure-table-body node kind)))
          (check-affiliated child t)
          (when (and (org-texmacs--block-p child)
                     (let ((parameters
@@ -3031,11 +3030,7 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                    (table-block child (cons child ancestors))))
                 (body
                  (if (and (memq kind '(table table*))
-                          (org-texmacs--block-p child)
-                          (not
-                           (plist-get
-                            info
-                            :texmacs-special-block-preflight)))
+                          (org-texmacs--block-p child))
                      (org-texmacs--document-normalize-table body)
                    body)))
            (org-texmacs--document-pack
@@ -3443,8 +3438,6 @@ for consumers.  Final handlers must preserve contents identity and provenance."
                            contents
                            (org-texmacs--document-pack 'concat parts))
                         contents)))))
-                 ((plist-get info :texmacs-special-block-preflight)
-                  contents)
                  (t
                   (org-texmacs--document-handle-special
                    handler node contents info)))))))
@@ -3616,15 +3609,13 @@ for consumers.  Final handlers must preserve contents identity and provenance."
               (length (plist-get citation-plan :prints)))))
          (org-texmacs--cite-fail
           "Unused native citation request associations"))
-       (when frozen-resolution
-         (let ((labels
-                (org-texmacs--document-output-labels
-                 (org-texmacs-document-body result))))
-           (dolist (entry
-                    (org-texmacs-resolution-labels frozen-resolution))
-             (unless (= 1 (cl-count (cdr entry) labels :test #'equal))
-               (org-texmacs--document-fail
-                (car entry) "Missing or conflicting frozen label")))))
+       (let ((labels
+              (org-texmacs--document-output-labels
+               (org-texmacs-document-body result))))
+         (dolist (entry (org-texmacs-resolution-labels resolution))
+           (unless (= 1 (cl-count (cdr entry) labels :test #'equal))
+             (org-texmacs--document-fail
+              (car entry) "Missing or conflicting frozen label"))))
        (org-texmacs--document-create
         :body
         (org-texmacs-document-body result)
