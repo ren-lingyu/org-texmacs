@@ -5,6 +5,21 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
+## Node D audit complete
+
+The targeted audit on C's delivered revision confirms two complete Input
+rebuilds during Native Cite fulfillment. The fresh offline stock probe
+confirmed equivalent observed structural data with new graph identities,
+recomputed frozen failure, and one real bibliography parse and format.
+The recommended candidate is private completion against the same owned
+graph, with distinct ownership and validation of newly obtained bibliography
+data. This is evidence and a candidate, pending maintainer adoption. Preserve
+public construction, independent bibliography, C's consumer boundary and
+all transaction guards. The [Node D audit](d-native-cite-data-flow-audit.md)
+contains the history, runtime evidence and implementation conditions. Avoid
+repeating the baseline probes unless the source or candidate changes the
+relevant boundary.
+
 ## Production cleanup A1 delivered
 
 The maintainer committed A1 on main as `chore!: remove legacy source APIs
@@ -114,9 +129,8 @@ functions. The native fixture verifies valid output, a real unknown-style
 error and recovery with the same worker. README and the unreleased CHANGELOG
 describe the changed timing.
 
-Node D can now audit data flow and ownership using the delivered A1 through
-C source as its baseline. Any optimization needs evidence that it preserves identity,
-failure isolation and transaction windows.
+Node D audited data flow and ownership using the delivered A1 through C
+source as its baseline. See the current Node D entry above.
 
 ## B/C footnote figure reachability probe
 
