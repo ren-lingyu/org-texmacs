@@ -46,7 +46,35 @@ fulfillment for Document consumers using the existing frozen resolution node
 sequence. The standard Input and internal Model consumers retain their current
 preparation and fulfillment behavior. The bibliography snapshot and guard
 windows stay in place, so the conditional mutation probe is not needed for
-this design. Production implementation and regression execution are next.
+this design. The A2/B candidate below awaits maintainer delivery.
+
+## A2/B lowering cleanup candidate
+
+The ordinary project worktree contains the verified A2/B candidate against
+the delivered A1 baseline. The project index is untouched. All three old
+special-block preflight branches are removed. Normal lowering requires
+frozen resolution, always normalizes raw native table wrappers, invokes the
+selected handler with the real lowered body, and checks emitted labels.
+The existing wrapper grammar and saved resolution condition payload now use
+two reusable pure functions in `org-texmacs-document.el`:
+`org-texmacs--document-figure-table-body` and
+`org-texmacs--document-check-resolution-failure`. The latter runs at the
+existing lowering diagnosis point. The inner wrapper rules and final
+Document checks retain their previous responsibilities. README and
+formatter docstrings describe the active path.
+
+The final offline x86_64-linux Nix build freshly passed both Org 9.8.10
+and Org 10.0-pre packages with package-lint, both Core suites (572/572
+each), the Issue 13 regression (10/10), and treefmt. New tests cover
+the wrapper diagnostic, the original saved error payload without reference
+recomputation, and zero handler calls in preparation followed by one call
+with the parsed body in lowering. No legacy flag remains in active source
+or ERT. Full flake checks and examples are deferred to C acceptance.
+
+For C, use the two functions at the consumer boundary described in
+`bc-export-validation-design.md`. Standard Export preparation, Native Cite
+fulfillment, runtime error timing and Input construction are still at the
+A1 baseline. Final delivery has not yet been verified as a project commit.
 
 ## B/C footnote figure reachability probe
 
