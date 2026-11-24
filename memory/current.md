@@ -46,7 +46,7 @@ fulfillment for Document consumers using the existing frozen resolution node
 sequence. The standard Input and internal Model consumers retain their current
 preparation and fulfillment behavior. The bibliography snapshot and guard
 windows stay in place, so the conditional mutation probe is not needed for
-this design. A2/B is delivered and C is the next implementation node.
+this design. A2/B is delivered and the verified C candidate is below.
 
 ## A2/B lowering cleanup delivered
 
@@ -75,11 +75,44 @@ with the parsed body in lowering. No legacy flag remains in active source
 or ERT. The maintainer also reported passing tests and example builds.
 The separate example outputs were not inspected for this delivery check.
 
-For C, use the two functions at the consumer boundary described in
-`bc-export-validation-design.md`. Standard Export preparation, Native Cite
-fulfillment, runtime error timing and Input construction are still at the
-A1 baseline. The C regression matrix remains to be run on C's eventual
-implementation.
+A2/B preserved Standard Export preparation, Native Cite fulfillment,
+runtime error timing and Input construction at delivery. C uses the two
+functions at the consumer boundary described in
+`bc-export-validation-design.md`.
+
+## C Native Cite ordering candidate
+
+The uncommitted C candidate moves Native Cite fulfillment from
+`org-texmacs--standard-input` into `org-texmacs--standard-inner`. The private
+bridge still prepares owned structure and initial request data, preserving
+the bibliography snapshot before STM completion. For Document, text and PDF
+consumers with an active Native Cite print, C signals any frozen resolution
+failure and then checks direct figure/table body grammar over the existing
+resolution node sequence. Both blockers stop bibliography parsing and
+formatting. Valid input fulfills native requests, then lowers once. The
+prepared Input and internal Model return paths still fulfill as before.
+The independent conversion and its diagnostics retain their normal lowering.
+Source and bibliography guards and result ownership were not moved. The
+conditional snapshot experiment was not needed.
+
+On the final x86_64-linux candidate, the complete offline flake check passed.
+Both Core suites rebuilt and passed 576/576, both CSL suites rebuilt and
+passed 5/5, Org 10.0-pre SETUPFILE rebuilt and passed 5/5, and the stock Native
+(92/92), PDF document (26/26), and PDF render (23/23) suites rebuilt and
+passed. Package builds, compilation, package-lint and treefmt passed. The
+independent GoToR result was reused. The separate fresh examples build
+produced four verified nonempty English/Chinese .tm and PDF pairs. The
+Core regressions cover all three public Document-producing routes, diagnostic
+precedence, filter repair and mutation, selected or excluded footnotes,
+prepared consumer contracts and zero early calls to native and presentation
+functions. The native fixture verifies valid output, a real unknown-style
+error and recovery with the same worker. README and the unreleased CHANGELOG
+describe the changed timing.
+
+The ordinary index is untouched. After maintainer delivery, node D can
+audit data flow and ownership with the stabilization from A1 through C as
+its baseline. Any optimization needs evidence that it preserves identity,
+failure isolation and transaction windows.
 
 ## B/C footnote figure reachability probe
 
