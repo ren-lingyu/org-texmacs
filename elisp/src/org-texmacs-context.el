@@ -17,20 +17,6 @@
   '(:title :subtitle :author :date)
   "Fields owned as parsed Org secondary strings.")
 
-(defconst org-texmacs--context-plain-metadata
-  '(:email :language :keywords :description :creator)
-  "Fields owned as literal text, without STM or inline discovery.")
-
-(defun org-texmacs--context-metadata-keys ()
-  "Return all supported metadata keys."
-  (append
-   org-texmacs--context-rich-metadata
-   org-texmacs--context-plain-metadata))
-
-(defun org-texmacs--context-metadata-name (key)
-  "Return the source keyword for metadata KEY."
-  (upcase (substring (symbol-name key) 1)))
-
 (defconst org-texmacs--context-export-options
   '(:title
     :subtitle
@@ -41,11 +27,8 @@
     :creator
     :date
     :author
-    :select-tags
-    :exclude-tags
     :headline-levels
     :section-numbers
-    :with-archived-trees
     :with-author
     :with-date
     :with-email
@@ -55,7 +38,6 @@
     :with-priority
     :with-toc
     :with-tags
-    :with-tasks
     :with-title
     :with-todo-keywords)
   "Supported fields projected from final Org Export INFO, without merging.")

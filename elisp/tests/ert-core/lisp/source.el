@@ -15,6 +15,22 @@
     (beginning-of-line)
     (org-element-at-point)))
 
+(defun org-texmacs-test--org-to-stree (node)
+  "Convert Org-compatible pseudo tree NODE to a TeXmacs stree.
+
+Ignore Org's properties storage and remove text properties from copied string
+nodes."
+  (cond
+   ((stringp node)
+    (substring-no-properties node))
+   ((and (consp node) (symbolp (car node)))
+    (cons
+     (car node)
+     (mapcar
+      #'org-texmacs-test--org-to-stree (org-element-contents node))))
+   (t
+    node)))
+
 (ert-deftest org-texmacs-test-stree-org-round-trip ()
   (let* ((mode (copy-sequence "mode"))
          (math (copy-sequence "math"))
@@ -26,7 +42,7 @@
            'with mode math
            (list 'concat sum (list 'frac numerator denominator))))
          (tree (org-texmacs--stree-to-org stree))
-         (round-trip (org-texmacs--org-to-stree tree)))
+         (round-trip (org-texmacs-test--org-to-stree tree)))
     (should (equal round-trip stree))
     (dolist (string (list mode math sum numerator denominator))
       (should-not (text-properties-at 0 string)))
@@ -269,7 +285,7 @@
         (let ((block (org-texmacs-test--first-block)))
           (should
            (equal
-            (org-texmacs--org-to-stree
+            (org-texmacs-test--org-to-stree
              (org-texmacs-tree block))
             '(sqrt "x")))
           ;; Correctness does not depend on retaining the entry across a shift.
@@ -690,7 +706,7 @@
          (should (= request-id 0))
          (should
           (equal
-           (org-texmacs--org-to-stree tree)
+           (org-texmacs-test--org-to-stree tree)
            '(with "mode" "math" (concat "x+" (frac "1" "2")))))
          (should (eq (org-element-property :parent concat-node) tree))
          (should
@@ -737,7 +753,7 @@
              org-texmacs--cache-miss))
            (should
             (equal
-             (org-texmacs--org-to-stree
+             (org-texmacs-test--org-to-stree
               (org-texmacs-tree block))
              '(frac "1" "3")))
            (should-not (org-texmacs--worker-live-p)))
@@ -760,7 +776,7 @@
          (insert ")")
          (should
           (equal
-           (org-texmacs--org-to-stree
+           (org-texmacs-test--org-to-stree
             (org-texmacs-tree (org-texmacs-test--first-block)))
            '(frac "1" "3")))
          (should-not (org-texmacs--worker-live-p))
@@ -781,7 +797,7 @@
          (search-backward "#+begin_texmacs")
          (should
           (equal
-           (org-texmacs--org-to-stree
+           (org-texmacs-test--org-to-stree
             (org-texmacs-tree (org-element-at-point)))
            '(sqrt "x")))
          (should

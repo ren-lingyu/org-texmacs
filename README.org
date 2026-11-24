@@ -1936,24 +1936,23 @@ get one =concat= wrapper without merging adjacent strings. TODO and DONE use
 the same presentation. Default formatting preserves authored STM provenance in
 the title. Metadata added by the formatter uses Org literal encoding.
 
-Custom formatters receive six arguments:
+Custom formatters receive five arguments:
 
 #+begin_src emacs-lisp
-  (todo todo-type priority title-parts tags info)
+  (todo todo-type priority title-parts tags)
 #+end_src
 
 Disabled metadata arrives as nil, including =todo-type= when TODO is disabled.
 =title-parts= contains lowered text strees, not an Org AST or serialized text.
-=info= is the owned projected Org context, including the headline presentation
-keys and =:texmacs-format-headline-function=.  Return one text stree;
-it is validated and copied into the sectioning node's sole title child.
+Return one text stree. Its leaves have Org literal semantics, and conversion
+validates and copies the result into the sectioning node's sole title child.
 The formatter cannot choose the enclosing sectioning level through its return
 value.  Treat inputs as read-only and prefer a side-effect-free function.
 The package's default formatter is side-effect-free; custom function side
-effects are the caller's responsibility.  Preflight and final lowering may
-both invoke it, with no guaranteed invocation count.
-Both calls run outside the private link parser bindings, so normal Org parsing
-in a formatter does not inherit the conversion's temporary link syntax.
+effects are the caller's responsibility. Lowering can call the formatter
+more than once. Calls run outside the private link parser bindings.
+When migrating a custom six-argument formatter, remove its final =info=
+parameter and use the five supplied values for title presentation.
 
 Output options and the selected formatter are fixed for one conversion;
 changes affect the next conversion.  Source text and effective parser

@@ -1344,7 +1344,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
              :raw-value
              :tags))))))
      (let ((expected (properties))
-           (settings (org-texmacs--document-heading-settings))
+           (settings (org-texmacs--syntax-heading-settings))
            (source (buffer-string)))
        (should
         (equal
@@ -1353,7 +1353,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
            (2 "FINISHED" done nil "Done" nil))))
        (with-temp-buffer
          (org-mode)
-         (org-texmacs--document-use-heading-settings settings)
+         (org-texmacs--syntax-use-heading-settings settings)
          (insert source)
          (should (equal (properties) expected)))))))
 
@@ -1381,7 +1381,8 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
           (should (equal (plist-get links :local) expected))
           (should
            (equal
-            (cdr (org-texmacs--document-link-settings))
+            (cdr
+             (org-texmacs-test--document-link-settings))
             (list org-link-abbrev-alist expected))))))))
 
 (ert-deftest org-texmacs-document-heading-settings-copy-isolation ()
@@ -1391,15 +1392,15 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
     (setq-local org-done-keywords (list (copy-sequence "FINISHED")))
     (setq-local org-priority-regexp
                 (copy-sequence org-priority-regexp))
-    (let* ((settings (org-texmacs--document-heading-settings))
-           (expected (org-texmacs--document-heading-settings)))
+    (let* ((settings (org-texmacs--syntax-heading-settings))
+           (expected (org-texmacs--syntax-heading-settings)))
       (aset org-todo-regexp 0 ?x)
       (aset (car org-done-keywords) 0 ?x)
       (aset org-priority-regexp 0 ?x)
       (should (equal settings expected))
       (with-temp-buffer
         (org-mode)
-        (org-texmacs--document-use-heading-settings settings)
+        (org-texmacs--syntax-use-heading-settings settings)
         (aset org-todo-regexp 0 ?y)
         (aset (car org-done-keywords) 0 ?y)
         (aset org-priority-regexp 0 ?y)
@@ -1413,7 +1414,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
          (tags (list (copy-sequence "one")))
          (result
           (org-texmacs-format-headline-default-function
-           todo 'todo 12 parts tags nil)))
+           todo 'todo 12 parts tags)))
     (should
      (equal
       result
@@ -1432,7 +1433,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
      (equal
       result
       (org-texmacs-format-headline-default-function
-       todo 'done 12 parts tags nil)))
+       todo 'done 12 parts tags)))
     (should (equal parts '("Title" (strong "bold") "\t " "end")))
     (aset todo 0 ?X)
     (aset plain 0 ?X)
@@ -1442,7 +1443,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
   (let* ((text (copy-sequence "Title"))
          (result
           (org-texmacs-format-headline-default-function
-           nil nil nil (list text) nil nil)))
+           nil nil nil (list text) nil)))
     (should (equal result text))
     (should-not (eq result text))))
 
@@ -2525,7 +2526,7 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
                 (before
                  (mapcar
                   (lambda (var)
-                    (org-texmacs--document-copy-link-setting
+                    (org-texmacs-test--copy-link-setting
                      (symbol-value var)))
                   variables))
                 (source (buffer-string))
@@ -4323,14 +4324,13 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
            (org-export-with-priority nil)
            (org-export-with-tags nil)
            (org-texmacs-format-headline-function
-            (lambda (todo type priority parts tags info)
+            (lambda (todo type priority parts tags)
               (cl-incf calls)
               (should-not todo)
               (should-not type)
               (should-not priority)
               (should-not tags)
               (should (equal parts '("Title")))
-              (should-not (plist-get info :with-tags))
               output))
            (result
             (org-texmacs-document-from-buffer (current-buffer))))
@@ -4344,6 +4344,41 @@ These fixtures test AST preservation, not numbering or rendering semantics.")
        (equal
         (org-texmacs-document-body result)
         '(document (section (strong "custom"))))))))
+
+(ert-deftest
+    org-texmacs-headline-formatter-paths-follow-source-semantics
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (setq-local org-export-with-author nil)
+    (insert
+     "#+OPTIONS: toc:nil\n* Math $(math \"<alpha>\")$ [[file:asset.pdf][Attachment]]\n")
+    (let* ((org-export-use-babel nil)
+           (org-texmacs-format-headline-function
+            #'org-texmacs-format-headline-default-function)
+           (default
+            (org-texmacs-document-from-buffer (current-buffer)))
+           (org-texmacs-format-headline-function
+            (lambda (todo type priority parts tags)
+              (org-texmacs-format-headline-default-function
+               todo type priority parts tags)))
+           (custom
+            (org-texmacs-document-from-buffer (current-buffer))))
+      (should
+       (equal
+        (org-texmacs-document-body default)
+        '(document
+          (section
+           (concat "Math " (math "<alpha>") " " "Attachment")))))
+      (should
+       (equal
+        (org-texmacs-document-body default)
+        (org-texmacs-document-body custom)))
+      (should
+       (equal (org-texmacs-document-stm-paths default) '((0 0 1))))
+      (should-not (org-texmacs-document-stm-paths custom))
+      (should-not (org-texmacs-document-file-paths default))
+      (should-not (org-texmacs-document-file-paths custom)))))
 
 (ert-deftest org-texmacs-headline-invalid-formatter-result ()
   (with-temp-buffer

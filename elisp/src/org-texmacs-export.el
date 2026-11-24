@@ -169,7 +169,7 @@ A memoized graph copy also preserves parent links in parsed Org metadata."
      (copy value))))
 
 (defun org-texmacs--standard-source-state ()
-  "Capture source identity and native presentation settings without preparation."
+  "Capture the source and native settings compared by transaction guards."
   (list
    (current-buffer)
    (buffer-chars-modified-tick)
@@ -180,15 +180,18 @@ A memoized graph copy also preserves parent links in parsed Org metadata."
      (substring-no-properties file))
    (substring-no-properties default-directory)
    (org-texmacs--document-copy-style org-texmacs-document-style)
-   (org-texmacs--document-copy-initial org-texmacs-document-initial)
-   (org-texmacs--standard-copy-options
-    (list
-     :texmacs-tab-width tab-width
-     :texmacs-format-headline-function org-texmacs-format-headline-function
-     :texmacs-special-block-handlers org-texmacs--document-special-block-handlers
-     :texmacs-pdf-file-links-as-absolute org-texmacs-pdf-file-links-as-absolute
-     :texmacs-link-org-files-as-pdf org-texmacs-link-org-files-as-pdf
-     :texmacs-typed-references org-texmacs-typed-references))))
+   (org-texmacs--document-copy-initial org-texmacs-document-initial)))
+
+(defun org-texmacs--standard-presentation-options ()
+  "Capture native presentation options for the initial export transaction."
+  (org-texmacs--standard-copy-options
+   (list
+    :texmacs-tab-width tab-width
+    :texmacs-format-headline-function org-texmacs-format-headline-function
+    :texmacs-special-block-handlers org-texmacs--document-special-block-handlers
+    :texmacs-pdf-file-links-as-absolute org-texmacs-pdf-file-links-as-absolute
+    :texmacs-link-org-files-as-pdf org-texmacs-link-org-files-as-pdf
+    :texmacs-typed-references org-texmacs-typed-references)))
 
 (defun org-texmacs--standard-check-source (state &optional selecting)
   "Reject source changes across native waits using captured STATE.
@@ -204,9 +207,7 @@ Do not roll back changes made by arbitrary callbacks."
                (setf
                 (nth 3 current) (nth 3 state)
                 (nth 4 current) (nth 4 state)))
-             ;; Presentation data in the last field has already been consumed.
-             ;; Keep source and presentation guards without receipt replay.
-             (equal (cl-subseq state 0 9) (cl-subseq current 0 9)))))
+             (equal state current))))
       (signal
        'org-texmacs-document-error
        '("Standard export source or native settings changed")))))
@@ -233,37 +234,39 @@ not an early exit across normal export advice or a second preparation pass."
     (when body-only
       (user-error
        "TeXmacs body-only output has no supported fragment contract"))
-    (let* ((request
-            (and org-texmacs--standard-request
-                 (not
-                  (plist-get org-texmacs--standard-request :claimed))
-                 (eq
-                  (plist-get ext-plist :texmacs--result-token)
-                  (plist-get org-texmacs--standard-request :token))
-                 org-texmacs--standard-request))
-           (ext-plist
-            (cl-loop
-             for
-             (key value)
-             on
-             ext-plist
-             by
-             #'cddr
-             unless
-             (eq key :texmacs--result-token)
-             append
-             (list key value)))
-           (org-texmacs--standard-request nil)
-           (org-entry-property-inherited-from (make-marker))
-           (state (org-texmacs--standard-source-state))
-           (org-texmacs--standard-transaction
-            (list
-             :consumer
-             (or (plist-get request :consumer) 'text)
-             :source state
-             :request request
-             :id-resolution-tree nil
-             :id-resolution-base nil)))
+    (let*
+        ((request
+          (and org-texmacs--standard-request
+               (not
+                (plist-get org-texmacs--standard-request :claimed))
+               (eq
+                (plist-get ext-plist :texmacs--result-token)
+                (plist-get org-texmacs--standard-request :token))
+               org-texmacs--standard-request))
+         (ext-plist
+          (cl-loop
+           for
+           (key value)
+           on
+           ext-plist
+           by
+           #'cddr
+           unless
+           (eq key :texmacs--result-token)
+           append
+           (list key value)))
+         (org-texmacs--standard-request nil)
+         (org-entry-property-inherited-from (make-marker))
+         (state (org-texmacs--standard-source-state))
+         (org-texmacs--standard-transaction
+          (list
+           :consumer
+           (or (plist-get request :consumer) 'text)
+           :source state
+           :presentation (org-texmacs--standard-presentation-options)
+           :request request
+           :id-resolution-tree nil
+           :id-resolution-base nil)))
       (when request
         (setf (plist-get request :claimed) t))
       (prog1 (org-texmacs--call-with-ast-context
@@ -346,7 +349,10 @@ Return the finalized structural input before native bibliography fulfillment."
     (setq projected
           (append
            projected
-           (org-texmacs--standard-copy-options (nth 9 state))))
+           (org-texmacs--standard-copy-options
+            (plist-get
+             org-texmacs--standard-transaction
+             :presentation))))
     (let*
         ((source-file
           (org-texmacs--source-capture-path (nth 5 state)))

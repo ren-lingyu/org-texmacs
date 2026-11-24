@@ -9,6 +9,26 @@
 (require 'ox-texmacs)
 
 (ert-deftest
+    org-texmacs-standard-source-guards-skip-presentation-capture
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert "* Heading\n")
+    (let ((state (org-texmacs--standard-source-state)))
+      (cl-letf (((symbol-function
+                  'org-texmacs--standard-presentation-options)
+                 (lambda ()
+                   (ert-fail "Source guard captured presentation"))))
+        (org-texmacs--standard-check-source state)
+        (save-restriction
+          (narrow-to-region 2 (point-max))
+          (org-texmacs--standard-check-source state t))
+        (let ((org-texmacs-document-style '("article")))
+          (should-error
+           (org-texmacs--standard-check-source state)
+           :type 'org-texmacs-document-error))))))
+
+(ert-deftest
     org-texmacs-standard-source-invalid-arguments-before-effects
     ()
   (with-temp-buffer

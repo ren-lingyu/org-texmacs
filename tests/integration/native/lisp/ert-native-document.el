@@ -786,7 +786,7 @@
      (setq-local org-odd-levels-only t)
      (insert
       "#+TODO: WAIT | FINISHED\n#+OPTIONS: toc:nil\n*** TODO Task\n$(math \"α\")$\n")
-     (let* ((settings (org-texmacs--document-heading-settings))
+     (let* ((settings (org-texmacs--syntax-heading-settings))
             (source (buffer-string))
             (document
              (org-texmacs-document-from-buffer (current-buffer)))
@@ -809,7 +809,7 @@
              (should (equal source (buffer-string)))
              (should
               (equal
-               settings (org-texmacs--document-heading-settings))))
+               settings (org-texmacs--syntax-heading-settings))))
          (org-texmacs-session-close session))))))
 
 (ert-deftest org-texmacs-document-native-example ()

@@ -6,7 +6,7 @@
 
 ;;; Commentary:
 
-;; Convert between TeXmacs strees and Org-compatible pseudo trees.
+;; Convert TeXmacs strees to Org-compatible pseudo trees.
 
 ;;; Code:
 
@@ -25,22 +25,6 @@ text properties, including parent links, out of the source stree."
            (car node)
            nil
            (mapcar #'org-texmacs--stree-to-org (cdr node))))
-   (t
-    node)))
-
-(defun org-texmacs--org-to-stree (node)
-  "Convert Org-compatible pseudo tree NODE to a TeXmacs stree.
-
-Ignore Org's properties storage and remove text properties from copied string
-nodes."
-  (cond
-   ((stringp node)
-    (substring-no-properties node))
-   ((and (consp node) (symbolp (car node)))
-    (cons
-     (car node)
-     (mapcar
-      #'org-texmacs--org-to-stree (org-element-contents node))))
    (t
     node)))
 

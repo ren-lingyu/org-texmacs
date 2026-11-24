@@ -16,10 +16,6 @@
 (require 'org-texmacs-source)
 (require 'org-texmacs-fragment-object)
 
-(defun org-texmacs--parse-copy (value)
-  "Own resolved syntax VALUE without callbacks or buffer access."
-  (org-texmacs--syntax-copy value))
-
 (defun org-texmacs--parse-location (path)
   "Capture source PATH, retaining a model-domain error for invalid context."
   (condition-case err
@@ -33,11 +29,11 @@ Call only after initializing an empty Org buffer, before inserting source."
   (dolist (setting settings)
     (set
      (make-local-variable (car setting))
-     (org-texmacs--parse-copy (cdr setting))))
+     (org-texmacs--syntax-copy (cdr setting))))
   (setq-local org-link-abbrev-alist-local
-              (org-texmacs--parse-copy (plist-get links :local)))
+              (org-texmacs--syntax-copy (plist-get links :local)))
   (setq-local org-link-abbrev-alist
-              (org-texmacs--parse-copy (plist-get links :global)))
+              (org-texmacs--syntax-copy (plist-get links :global)))
   (setq-local org-link-parameters
               (mapcar
                (lambda (name) (list (copy-sequence name)))
@@ -121,7 +117,7 @@ Preparation skips Org Export processing and calls no STM worker."
             (list (copy-sequence name)))
           (plist-get links :types)))
         (org-link-abbrev-alist
-         (org-texmacs--parse-copy (plist-get links :global)))
+         (org-texmacs--syntax-copy (plist-get links :global)))
         (org-link-types-re org-link-types-re)
         (org-link-angle-re org-link-angle-re)
         (org-link-plain-re org-link-plain-re)

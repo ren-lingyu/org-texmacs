@@ -12,6 +12,7 @@
 ;;; Code:
 
 (require 'org-texmacs-parse)
+(require 'org-texmacs-syntax)
 (require 'subr-x)
 
 (defconst org-texmacs--serialize-types
@@ -106,7 +107,8 @@ Require explicit syntax captured by the buffer adapter, never ambient options."
     (signal 'org-texmacs-model-error
             '("Expected a mathematical-document model")))
   (let* ((context
-          (org-texmacs--parse-copy (org-texmacs-model-context model)))
+          (org-texmacs--syntax-copy
+           (org-texmacs-model-context model)))
          (settings (plist-get context :heading-settings))
          (links (plist-get context :link-settings))
          seen)
@@ -438,10 +440,13 @@ Check the placement and text of recognized SOURCES before reusing trees."
            (car prepared) (cadr prepared) sources))
          (model
           (org-texmacs--model-own (car prepared) islands context))
-         (snapshot (org-texmacs--model-snapshot model)))
+         (ast (org-texmacs-model-ast model)))
     (unless (equal
              expected
-             (apply #'org-texmacs--serialize-signature snapshot))
+             (org-texmacs--serialize-signature
+              ast
+              (org-texmacs-model-islands model)
+              (org-texmacs--model-node-paths ast)))
       (org-texmacs--serialize-fail
        "Org output would change model structure"
        nil 'org-container))))

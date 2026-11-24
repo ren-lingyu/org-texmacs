@@ -200,13 +200,13 @@ Explicit Org language and description override their corresponding defaults."
 (defcustom org-texmacs-format-headline-function
   #'org-texmacs-format-headline-default-function
   "Function presenting headline metadata and lowered title parts.
-Called with TODO, TODO-TYPE, PRIORITY, TITLE-PARTS, TAGS and INFO.  Metadata
-disabled by INFO is nil; TITLE-PARTS is a list of text strees, not Org nodes.
+Called with TODO, TODO-TYPE, PRIORITY, TITLE-PARTS and TAGS.  Disabled
+metadata is nil; TITLE-PARTS is a list of text strees, not Org nodes.
 Return one text stree for the fixed sectioning node's sole title child.
 All output leaves have Org literal semantics, not STM source semantics.
-INFO is a conversion-local options plist.  Treat inputs as read-only and
-prefer a side-effect-free formatter.  Lowering may call it more than once.
-Custom function side effects are the caller's responsibility."
+Treat inputs as read-only and prefer a side-effect-free formatter.
+Lowering may call it more than once.  Custom function side effects are the
+caller's responsibility."
   :type 'function
   :group 'org-texmacs)
 
@@ -267,7 +267,7 @@ Omitted keys select fixed defaults, never current dynamic settings."
       (funcall wrap " ") (funcall wrap (org-make-tag-string tags))))))
 
 (defun org-texmacs-format-headline-default-function
-    (todo _todo-type priority title-parts tags _info)
+    (todo _todo-type priority title-parts tags)
   "Return a fresh text title stree without side effects.
 TODO becomes strong text, PRIORITY a literal cookie, and TAGS an explicit
 tag string.  Preserve TITLE-PARTS without merging adjacent text."
@@ -351,14 +351,6 @@ or nested list/string.  No source buffer is retained."
     ("uk" . "ukrainian"))
   "Explicit Org language codes to TeXmacs 2.1.5 language identifiers.")
 
-(defun org-texmacs--document-metadata-present-p (info key)
-  "Return whether INFO explicitly supplies metadata KEY."
-  (if (plist-member info :texmacs-metadata-present)
-      (member
-       (org-texmacs--context-metadata-name key)
-       (plist-get info :texmacs-metadata-present))
-    (plist-member info key)))
-
 (defun org-texmacs--document-initial-metadata (initial info)
   "Merge owned INITIAL defaults with effective Org INFO.
 Return (INITIAL LITERAL-KEYS).  Preserve native defaults when no explicit Org
@@ -369,8 +361,7 @@ value exists; explicit nil/empty removes its corresponding default."
                (:description . "global-subject")))
       (let* ((key (car field))
              (native (cdr field))
-             (explicit
-              (org-texmacs--document-metadata-present-p info key))
+             (explicit (plist-member info key))
              (value (plist-get info key)))
         (when (or explicit (and value (not (assoc native initial))))
           (unless (or (null value) (stringp value))
@@ -1789,13 +1780,11 @@ and must preserve contents identity and provenance."
             (signal 'org-texmacs-document-error
                     '("Missing frozen resolution"))))
        (keyword-positions
-        (if (plist-member info :texmacs-keywords-positional)
-            (plist-get info :texmacs-keywords-positional)
-          (org-element-map
-           ast 'keyword
-           (lambda (node)
-             (equal (org-element-property :key node) "KEYWORDS"))
-           nil t)))
+        (org-element-map
+         ast 'keyword
+         (lambda (node)
+           (equal (org-element-property :key node) "KEYWORDS"))
+         nil t))
        (citation-plan nil))
     (let ((merged
            (org-texmacs--document-initial-metadata initial info)))
@@ -2579,8 +2568,7 @@ and must preserve contents identity and provenance."
        (ancestors)
        (let ((present
               (cl-some
-               (lambda (key)
-                 (org-texmacs--document-metadata-present-p info key))
+               (lambda (key) (plist-member info key))
                org-texmacs--context-rich-metadata))
              parts
              author)
@@ -2779,8 +2767,7 @@ and must preserve contents identity and provenance."
               (and todo (org-element-property :todo-type node))
               priority
               (mapcar #'org-texmacs-document-body parts)
-              tags
-              info))))))
+              tags))))))
       (toc-entry
        (mapping ancestors)
        (let* ((node (car mapping))
@@ -3630,65 +3617,6 @@ and must preserve contents identity and provenance."
         :resource-base resource-base
         :pdf-file-links-as-absolute (car file-link-options)
         :link-org-files-as-pdf (cdr file-link-options))))))
-
-(defun org-texmacs--document-heading-settings ()
-  "Copy effective Org heading parser settings for transfer and comparison.
-Keep TODO regexp, DONE keywords, odd-level policy and priority regexp.
-Copy strings as well as lists so in-place edits invalidate the snapshot.
-Capture `org-footnote-section' so special footnote headings use source policy.
-Do not rebuild effective values from TODO declarations or file keywords."
-  (unless (and (or (null org-todo-regexp) (stringp org-todo-regexp))
-               (proper-list-p org-done-keywords)
-               (cl-every #'stringp org-done-keywords)
-               (stringp org-priority-regexp)
-               (or (null org-footnote-section)
-                   (stringp org-footnote-section)))
-    (signal 'org-texmacs-document-error
-            '("Invalid Org heading settings")))
-  (list
-   (and org-todo-regexp (substring-no-properties org-todo-regexp))
-   (mapcar #'substring-no-properties org-done-keywords)
-   (and org-odd-levels-only t)
-   (substring-no-properties org-priority-regexp)
-   (and org-footnote-section
-        (substring-no-properties org-footnote-section))))
-
-(defun org-texmacs--document-use-heading-settings (settings)
-  "Install copied heading SETTINGS in the private Org parser buffer.
-Call after `org-mode' initialization and before parsing any source.  Keep
-buffer-local copies separate from the caller's snapshot and source buffer."
-  (setq-local org-todo-regexp
-              (and (nth 0 settings)
-                   (substring-no-properties (nth 0 settings))))
-  (setq-local org-done-keywords
-              (mapcar #'substring-no-properties (nth 1 settings)))
-  (setq-local org-odd-levels-only (nth 2 settings))
-  (setq-local org-priority-regexp
-              (substring-no-properties (nth 3 settings)))
-  (setq-local org-footnote-section
-              (and (nth 4 settings)
-                   (substring-no-properties (nth 4 settings)))))
-
-(defun org-texmacs--document-copy-link-setting (value)
-  "Copy parser setting VALUE, including mutable strings."
-  (cond
-   ((stringp value)
-    (substring-no-properties value))
-   ((consp value)
-    (cons
-     (org-texmacs--document-copy-link-setting (car value))
-     (org-texmacs--document-copy-link-setting (cdr value))))
-   (t
-    value)))
-
-(defun org-texmacs--document-link-settings ()
-  "Snapshot effective link registration and abbreviation settings."
-  (mapcar
-   #'org-texmacs--document-copy-link-setting
-   (list
-    org-link-parameters
-    org-link-abbrev-alist
-    org-link-abbrev-alist-local)))
 
 (defun org-texmacs--document-normalize-table (document)
   "Validate and wrap raw table DOCUMENT, retaining its original STM root."

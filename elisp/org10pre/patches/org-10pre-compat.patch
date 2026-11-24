@@ -75,12 +75,12 @@
 @@ -35,10 +35,9 @@
      (set
       (make-local-variable (car setting))
-      (org-texmacs--parse-copy (cdr setting))))
+      (org-texmacs--syntax-copy (cdr setting))))
 -  (setq-local org-link-abbrev-alist-local
--              (org-texmacs--parse-copy (plist-get links :local)))
+-              (org-texmacs--syntax-copy (plist-get links :local)))
 +  ;; Org 10 resolves file-local abbreviations from the source's #+LINK.
    (setq-local org-link-abbrev-alist
-               (org-texmacs--parse-copy (plist-get links :global)))
+               (org-texmacs--syntax-copy (plist-get links :global)))
    (setq-local org-link-parameters
                (mapcar
                 (lambda (name) (list (copy-sequence name)))
@@ -149,14 +149,3 @@
           (islands
            (org-texmacs--serialize-match-objects
             (car prepared) (cadr prepared) sources))
---- a/org-texmacs-document.el
-+++ b/org-texmacs-document.el
-@@ -3763,7 +3763,7 @@
-    (list
-     org-link-parameters
-     org-link-abbrev-alist
--    org-link-abbrev-alist-local)))
-+    (org-element-property :link-abbrevs (org-element-org-data)))))
- 
- (defun org-texmacs--document-normalize-table (document)
-   "Validate and wrap raw table DOCUMENT, retaining its original STM root."

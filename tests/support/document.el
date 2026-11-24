@@ -30,8 +30,16 @@
      (point-min)
      (point-max)
      major-mode
-     (org-texmacs--document-heading-settings)
-     (org-texmacs--document-link-settings)
+     (org-texmacs--syntax-heading-settings)
+     (plist-get
+      (org-texmacs--standard-copy-options
+       (list
+        :links
+        (list
+         org-link-parameters
+         org-link-abbrev-alist
+         org-link-abbrev-alist-local)))
+      :links)
      (org-texmacs-test--document-settings))))
 
 (defun org-texmacs-test--document-settings ()

@@ -80,6 +80,7 @@
 (require 'org-texmacs-ast)
 (require 'org-texmacs-fragment-object)
 (require 'org-texmacs-source)
+(require 'org-texmacs-syntax)
 (require 'org-texmacs-font-lock)
 (require 'org-texmacs-edit)
 (require 'org-texmacs-worker)
@@ -343,7 +344,7 @@ during Org parsing or prompts.  Do not run mode hooks or export preprocessing."
        text (org-texmacs--source-buffer-text)
        file (buffer-file-name (buffer-base-buffer))
        directory default-directory
-       headings (org-texmacs--document-heading-settings)
+       headings (org-texmacs--syntax-heading-settings)
        settings (org-texmacs--context-subtree-settings)))
     (with-temp-buffer
       (let ((org-element-use-cache nil)
@@ -355,7 +356,7 @@ during Org parsing or prompts.  Do not run mode hooks or export preprocessing."
             (org-entry-property-inherited-from (make-marker)))
         (delay-mode-hooks
           (org-mode))
-        (org-texmacs--document-use-heading-settings headings)
+        (org-texmacs--syntax-use-heading-settings headings)
         (setq-local default-directory directory)
         (insert text)
         ;; Provide filename metadata only during lookup, without making the

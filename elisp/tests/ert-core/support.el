@@ -237,6 +237,28 @@ Options are not interpreted; no selection, hooks, Cite or source preparation."
        org-tag-groups-alist-for-agenda
        org-texmacs-format-headline-function)))))
 
+(defun org-texmacs-test--copy-link-setting (value)
+  "Copy parser setting VALUE, including mutable strings."
+  (cond
+   ((stringp value)
+    (substring-no-properties value))
+   ((consp value)
+    (cons
+     (org-texmacs-test--copy-link-setting (car value))
+     (org-texmacs-test--copy-link-setting (cdr value))))
+   (t
+    value)))
+
+(defun org-texmacs-test--document-link-settings ()
+  "Snapshot effective link registration and abbreviation settings."
+  (mapcar
+   #'org-texmacs-test--copy-link-setting
+   (list
+    org-link-parameters org-link-abbrev-alist
+    (plist-get
+     (plist-get (org-texmacs--syntax-capture) :link-settings)
+     :local))))
+
 (defun org-texmacs-test--document-buffer-state (buffer)
   "Capture observable BUFFER state without moving point or touching caches."
   (with-current-buffer buffer
@@ -249,8 +271,8 @@ Options are not interpreted; no selection, hooks, Cite or source preparation."
      (point-min)
      (point-max)
      major-mode
-     (org-texmacs--document-heading-settings)
-     (org-texmacs--document-link-settings)
+     (org-texmacs--syntax-heading-settings)
+     (org-texmacs-test--document-link-settings)
      (org-texmacs-test--document-settings))))
 
 (defun org-texmacs-test--menu-fresh-process (form)

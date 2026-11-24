@@ -59,7 +59,7 @@ configuration files are loaded; interactive snippets elsewhere are never run.
         org-texmacs-typed-references t)
 
   (defun org-texmacs-examples-headline
-      (_todo _todo-type _priority title-parts _tags _info)
+      (_todo _todo-type _priority title-parts _tags)
     "Present TITLE-PARTS with a test prefix and without task metadata."
     (cons 'concat (cons "(Test prefix) " (copy-tree title-parts))))
 

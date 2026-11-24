@@ -150,6 +150,38 @@
     (should-not
      (string-match-p "hiddentoken" (prin1-to-string body)))))
 
+(ert-deftest
+    org-texmacs-standard-context-selection-options-stay-in-org
+    ()
+  (with-temp-buffer
+    (org-mode)
+    (insert
+     "#+OPTIONS: arch:nil tasks:done toc:nil todo:nil\n"
+     "#+SELECT_TAGS: chosen\n#+EXCLUDE_TAGS: skip\n"
+     "* DONE Kept :chosen:\nkepttoken.\n"
+     "* TODO Pending :chosen:\npendingtoken.\n"
+     "* DONE Archived :chosen:ARCHIVE:\narchivedtoken.\n"
+     "* DONE Skipped :chosen:skip:\nskippedtoken.\n"
+     "* DONE Other\nothertoken.\n")
+    (let* ((org-export-use-babel nil)
+           (input (org-texmacs-prepare-buffer (current-buffer)))
+           (info (org-texmacs-input-info input))
+           (body
+            (prin1-to-string
+             (org-texmacs-document-body
+              (org-texmacs-document input)))))
+      (should (string-match-p "kepttoken" body))
+      (should-not
+       (string-match-p
+        "pendingtoken\\|archivedtoken\\|skippedtoken\\|othertoken"
+        body))
+      (dolist (key
+               '(:select-tags
+                 :exclude-tags
+                 :with-archived-trees
+                 :with-tasks))
+        (should-not (plist-member info key))))))
+
 (ert-deftest org-texmacs-standard-context-duplicate-target-follows-org
     ()
   (with-temp-buffer
