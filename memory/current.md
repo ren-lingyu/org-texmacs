@@ -46,6 +46,30 @@ Cite fulfillment. The old special-block preflight and bibliography
 transaction timing remain unchanged in A1. The separate snapshot mutation
 probe is conditional on a later design changing that boundary.
 
+## B/C footnote figure reachability probe
+
+Both fresh offline x86_64-linux runs used Emacs 31.1 with Org 9.8.10 and
+pinned Org 10.0-pre against the delivered A1 project input. The two
+reports match after their version lines. See [the experimental inputs and
+reports](../archive/2026-11-24T05-25-23Z--5b396dc/MANIFEST.md).
+
+With explicit subtree selection, Org restored a named note from an excluded
+heading for two visible references. The parse-tree filter saw two supplemental
+figure copies. The query stage retained one owned definition and both query
+records pointed to it, with a first-reference flag on just one. A valid figure
+produced one footnote and one figure. With a prose-only figure in the same
+definition, prepare-buffer returned an Input and document-from-buffer
+reported the direct-body grammar error. The unused-note and excluded-body
+figures were absent already at the parse-tree filter in these fixtures and
+neither blocked Document output. Source text, character tick, and point were
+preserved. These fixtures use no bibliography or native worker calls.
+
+Use the post-query effective tree and the selected footnote identities when
+designing early wrapper validation. A raw filter walk can see duplicate
+supplemental copies; a walk that skips all note bodies can miss an active
+invalid figure. The snapshot mutation experiment was not triggered, as no
+candidate workflow has changed the successful snapshot/check window.
+
 ## Production cleanup baseline probes
 
 The user requested isolated, revision-pinned flake experiments before
