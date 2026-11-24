@@ -61,18 +61,242 @@
              ,@body))
        (delete-directory directory t))))
 
+(defun org-texmacs-test--native-source-header (file)
+  "Insert source settings for the native bibliography FILE."
+  (insert
+   "#+OPTIONS: toc:nil title:nil author:nil date:nil tags:nil\n"
+   "#+cite_export: texmacs-native plain\n#+bibliography: "
+   file
+   "\n"))
+
 (defun org-texmacs-test--native-source-input (file &optional body)
   "Prepare a real source declaring FILE, with default or explicit BODY."
   (with-temp-buffer
     (org-mode)
-    (insert
-     "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
-     "#+cite_export: texmacs-native plain\n#+bibliography: "
-     file
-     "\n"
-     (or body "Text [cite:@one].\n#+print_bibliography:\n"))
+    (org-texmacs-test--native-source-header file)
+    (insert (or body "Text [cite:@one].\n#+print_bibliography:\n"))
     (let ((org-export-use-babel nil))
       (org-texmacs-prepare-buffer (current-buffer)))))
+
+(ert-deftest org-texmacs-native-document-rejects-before-bibliography
+    ()
+  (org-texmacs-test--with-native-source
+    (dolist (entry
+             '(org-texmacs-document-from-buffer
+               org-texmacs-export-texmacs-from-buffer
+               org-texmacs-export-pdf-from-buffer))
+      (dolist (fault '(wrapper filtered-wrapper resolution both))
+        (with-temp-buffer
+          (org-mode)
+          (org-texmacs-test--native-source-header bib-file)
+          (insert
+           "* Kept\nText [cite:@one] <<marker>>.\n\n"
+           "#+begin_custom\nBody.\n#+end_custom\n"
+           "#+begin_figure\n"
+           (if (memq fault '(wrapper both))
+               "Invalid body.\n"
+             "#+begin_texmacs\n(math \"valid\")\n#+end_texmacs\n")
+           "#+end_figure\n#+print_bibliography:\n")
+          (let* ((source (current-buffer))
+                 (org-export-use-babel nil)
+                 (org-texmacs-format-headline-function
+                  (lambda (&rest _)
+                    (ert-fail "Early failure ran a formatter")))
+                 (org-texmacs--document-special-block-handlers
+                  (list
+                   (cons
+                    "custom"
+                    (lambda
+                      (&rest _)
+                      (ert-fail "Early failure ran a handler")))))
+                 (org-export-filter-parse-tree-functions
+                  (list
+                   (lambda (tree _backend _info)
+                     (when (memq fault '(resolution both))
+                       (org-element-map
+                        tree 'target
+                        (lambda (node)
+                          (org-element-put-property node :value ""))))
+                     (when (eq fault 'filtered-wrapper)
+                       (org-element-map
+                        tree 'special-block
+                        (lambda (node)
+                          (when (equal
+                                 (org-element-property
+                                  :type node)
+                                 "figure")
+                            (org-element-set-contents
+                             node
+                             (org-element-create
+                              'paragraph nil "Invalid body."))))))
+                     tree)))
+                 (before
+                  (org-texmacs-test--document-buffer-state source))
+                 (failure
+                  (should-error
+                   (funcall entry source)
+                   :type 'org-texmacs-document-error)))
+            (should
+             (equal
+              (cadr failure)
+              (if (memq fault '(resolution both))
+                  "Invalid dedicated target"
+                "Expected exactly one direct figure/table body")))
+            (should
+             (equal
+              before
+              (org-texmacs-test--document-buffer-state source)))))))
+    (should (= parse-calls 0))
+    (should (= format-calls 0))))
+
+(ert-deftest org-texmacs-native-document-reports-snapshot-error-first
+    ()
+  (org-texmacs-test--with-native-source
+    (with-temp-buffer
+      (org-mode)
+      (org-texmacs-test--native-source-header bib-file)
+      (insert
+       "Text [cite:@one].\n#+print_bibliography:\n"
+       "#+begin_figure\nInvalid body.\n#+end_figure\n")
+      (cl-letf (((symbol-function
+                  'org-texmacs--prepared-bibliography-bytes)
+                 (lambda (file)
+                   (should (equal file bib-file))
+                   (signal 'file-error
+                           '("Injected snapshot failure")))))
+        (let ((error
+               (should-error
+                (org-texmacs-document-from-buffer (current-buffer))
+                :type 'org-texmacs-document-error)))
+          (should
+           (equal (cadr error) "Cannot snapshot bibliography")))))
+    (should (= parse-calls 0))
+    (should (= format-calls 0))))
+
+(ert-deftest org-texmacs-native-prepared-consumers-keep-fulfillment ()
+  (org-texmacs-test--with-native-source
+    (dolist (fault '(wrapper resolution))
+      (with-temp-buffer
+        (org-mode)
+        (org-texmacs-test--native-source-header bib-file)
+        (insert
+         "Text [cite:@one] <<marker>>.\n#+print_bibliography:\n")
+        (when (eq fault 'wrapper)
+          (insert "#+begin_figure\nInvalid body.\n#+end_figure\n"))
+        (let* ((org-export-filter-parse-tree-functions
+                (when (eq fault 'resolution)
+                  (list
+                   (lambda (tree _backend _info)
+                     (org-element-map
+                      tree 'target
+                      (lambda (node)
+                        (org-element-put-property node :value "")))
+                     tree))))
+               (input (org-texmacs-prepare-buffer (current-buffer))))
+          (should (org-texmacs-input-bibliography input))
+          (should
+           (plist-get
+            (org-texmacs-input-info input)
+            :texmacs-bibliography-output))
+          (should
+           (eq
+            (not
+             (null
+              (org-texmacs-resolution-failure
+               (org-texmacs-input-resolution input))))
+            (eq fault 'resolution)))
+          (should
+           (org-texmacs-model-p
+            (org-texmacs--standard-consume 'model)))
+          (let ((error
+                 (should-error
+                  (org-texmacs-document input)
+                  :type 'org-texmacs-document-error)))
+            (should
+             (equal
+              (cadr error)
+              (if (eq fault 'resolution)
+                  "Invalid dedicated target"
+                "Expected exactly one direct figure/table body")))))))
+    (should (= parse-calls 4))
+    (should (= format-calls 4))))
+
+(ert-deftest org-texmacs-native-document-uses-effective-figure-bodies
+    ()
+  (org-texmacs-test--with-native-source
+    (let
+        ((valid
+          "#+begin_figure\n#+begin_texmacs\n(math \"Kept\")\n#+end_texmacs\n#+end_figure\n")
+         (invalid "#+begin_figure\nInvalid body.\n#+end_figure\n"))
+      (dolist (case '(repair active-note invalid-note unused-note))
+        (with-temp-buffer
+          (org-mode)
+          (org-texmacs-test--native-source-header bib-file)
+          (let ((subtree (point)))
+            (insert
+             "* Kept\nText [cite:@one]"
+             (if (memq case '(active-note invalid-note))
+                 " [fn:n] again[fn:n].\n"
+               ".\n")
+             "#+print_bibliography:\n\n"
+             (if (eq case 'repair)
+                 (replace-regexp-in-string
+                  (regexp-quote "#+begin_texmacs")
+                  "Remove me.\n\n#+begin_texmacs"
+                  valid
+                  t
+                  t)
+               "")
+             "* Outside :noexport:\n" invalid "[fn:n]\n"
+             (if (memq case '(invalid-note unused-note))
+                 invalid
+               valid))
+            (let* ((org-export-filter-parse-tree-functions
+                    (when (eq case 'repair)
+                      (list
+                       (lambda (tree _backend _info)
+                         (org-element-map
+                          tree 'special-block
+                          (lambda (node)
+                            (when (equal
+                                   (org-element-property
+                                    :type node)
+                                   "figure")
+                              (org-element-extract-element
+                               (car (org-element-contents node))))))
+                         tree))))
+                   (before (list parse-calls format-calls)))
+              (if (eq case 'invalid-note)
+                  (let ((error
+                         (should-error
+                          (org-texmacs-document-from-buffer
+                           (current-buffer) nil subtree)
+                          :type 'org-texmacs-document-error)))
+                    (should
+                     (equal
+                      (cadr error)
+                      "Expected exactly one direct figure/table body"))
+                    (should
+                     (equal before (list parse-calls format-calls))))
+                (let* ((document
+                        (org-texmacs-document-from-buffer
+                         (current-buffer) nil subtree))
+                       (body
+                        (flatten-tree
+                         (org-texmacs-document-body document))))
+                  (should
+                   (= (cl-count 'big-figure body)
+                      (if (eq case 'unused-note)
+                          0
+                        1)))
+                  (should
+                   (= (cl-count 'footnote body)
+                      (if (eq case 'active-note)
+                          1
+                        0)))
+                  (should (memq 'bib-list body)))))))))
+    (should (= parse-calls 3))
+    (should (= format-calls 3))))
 
 (ert-deftest org-texmacs-native-source-snapshot-and-pure-repeat ()
   (org-texmacs-test--with-native-source

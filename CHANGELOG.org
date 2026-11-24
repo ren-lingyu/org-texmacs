@@ -42,6 +42,9 @@ release notes.
   context key.
 
 ** Fixed
+- Report frozen reference resolution errors and invalid direct figure/table
+  bodies before starting native bibliography parsing or formatting for
+  standard Document, text and PDF export.
 - Correct the statement caption documentation to match existing behavior:
   =#+CAPTION[]: Long= and =#+CAPTION: Long= are equivalent with the tested
   Org 9.8.10 and Org 10.0-pre versions.

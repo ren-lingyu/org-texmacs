@@ -917,6 +917,13 @@ rendering reject the source export before its result is returned. Missing or
 ambiguous used keys fail explicitly. A completed owned input remains usable by
 pure document consumers after the source files become unavailable.
 
+For standard Document, text and PDF export with a Native Cite print request,
+a frozen reference resolution error or an invalid direct figure/table body
+stops the export before native bibliography parsing and formatting. The
+bibliography snapshot is acquired during preparation. =org-texmacs-prepare-buffer=
+still completes the requested bibliography and can return an input that
+reports these errors when lowered to a Document.
+
 Valid native BibTeX titles containing =$\alpha_i$= and =$\frac{a}{b}$= have
 structured native output. This does not promise full BibLaTeX/Biber compatibility,
 all extended fields, Unicode font coverage, or strict rejection of malformed

@@ -301,8 +301,8 @@ The prepared AST remains authoritative; this is not STM text construction."
       (list 'stm-fragment))))))
 
 (defun org-texmacs--standard-input (info state)
-  "Own the prepared tree from standard INFO and source STATE.
-Project supported options without repeating preparation or retaining full INFO."
+  "Own the prepared tree and dependencies from standard INFO and STATE.
+Return the finalized structural input before native bibliography fulfillment."
   (let ((tree (plist-get info :parse-tree))
         (identities (make-hash-table :test #'eq))
         ignored
@@ -389,11 +389,8 @@ Project supported options without repeating preparation or retaining full INFO."
            :resource-base resource-base)))
       (when native
         (setq input (org-texmacs--prepared-cite-snapshot input)))
-      (setq input (org-texmacs--prepared-complete input))
-      (setq input (org-texmacs--input-finalize input))
-      (if native
-          (org-texmacs--prepared-cite-fulfill input)
-        input))))
+      (org-texmacs--input-finalize
+       (org-texmacs--prepared-complete input)))))
 
 (defun org-texmacs--standard-compatible-finalizer-p (finalizer info)
   "Whether FINALIZER is a known identity operation in native INFO.
@@ -436,6 +433,14 @@ Arbitrary functions are not replayed or predicted to be no-ops."
            'org-texmacs-document-error
            '("Unsupported Cite finalizer for native structured output")))))))
 
+(defun org-texmacs--standard-check-document-input (input)
+  "Reject the known Document blockers in INPUT before native fulfillment."
+  (let ((resolution (org-texmacs-input-resolution input)))
+    (org-texmacs--document-check-resolution-failure resolution)
+    (dolist (node (org-texmacs-resolution-nodes resolution))
+      (when-let* ((kind (org-texmacs--figure-table-kind node)))
+        (org-texmacs--document-figure-table-body node kind)))))
+
 (defun org-texmacs--standard-inner (_provisional info)
   "Build the native document from final standard INFO in its live transaction."
   (unless org-texmacs--standard-transaction
@@ -451,9 +456,24 @@ Arbitrary functions are not replayed or predicted to be no-ops."
     (let* ((prepared-state
             (with-current-buffer (car state)
               (org-texmacs--standard-source-state)))
-           (input (org-texmacs--standard-input info state))
+           (prepared (org-texmacs--standard-input info state))
+           (prepared-info (org-texmacs-input-info prepared))
+           (document-p (memq consumer '(document text pdf)))
+           (input
+            (if (plist-member prepared-info :texmacs-cite-requests)
+                (progn
+                  (when (and document-p
+                             (plist-get
+                              (plist-get
+                               prepared-info
+                               :texmacs-cite-plan)
+                              :prints))
+                    (org-texmacs--standard-check-document-input
+                     prepared))
+                  (org-texmacs--prepared-cite-fulfill prepared))
+              prepared))
            (document
-            (unless (memq consumer '(input model))
+            (when document-p
               (org-texmacs-document input)))
            (request (plist-get transaction :request)))
       (plist-put transaction :input input)

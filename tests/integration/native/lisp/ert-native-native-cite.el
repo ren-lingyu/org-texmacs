@@ -32,6 +32,52 @@
     (let ((org-export-use-babel nil))
       (org-texmacs-prepare-buffer (current-buffer)))))
 
+(ert-deftest org-texmacs-native-cite-document-figure-and-format-error
+    ()
+  (org-texmacs-test--with-worker
+   (let ((file (expand-file-name "references.bib" test-directory))
+         (org-export-use-babel nil)
+         process)
+     (with-temp-file file
+       (insert org-texmacs-test--cite-bib))
+     (dolist (style '("plain" "unknown-style" "plain"))
+       (with-temp-buffer
+         (org-mode)
+         (insert
+          "#+OPTIONS: toc:nil title:nil author:nil date:nil\n"
+          "#+bibliography: "
+          file
+          "\n#+cite_export: texmacs-native "
+          style
+          "\n"
+          "Text [cite:@one].\n#+print_bibliography:\n\n"
+          "#+begin_figure\n#+begin_texmacs\n(math \"x\")\n#+end_texmacs\n#+end_figure\n")
+         (if (equal style "plain")
+             (let* ((result
+                     (org-texmacs-document-from-buffer
+                      (current-buffer)))
+                    (body (org-texmacs-document-body result))
+                    (tags (flatten-tree body)))
+               (should (memq 'big-figure tags))
+               (should (memq 'cite tags))
+               (should (memq 'bib-list tags))
+               (should
+                (= (length (org-texmacs--bibliography-labels body))
+                   1))
+               (should
+                (string-search "Properties" (prin1-to-string body))))
+           (let ((error
+                  (should-error
+                   (org-texmacs-document-from-buffer (current-buffer))
+                   :type 'org-texmacs-document-error)))
+             (should
+              (equal
+               (cadr error)
+               "Unknown or unavailable native bibliography style"))))
+         (if process
+             (should (eq process org-texmacs--worker-process))
+           (setq process org-texmacs--worker-process)))))))
+
 (ert-deftest org-texmacs-native-cite-real-styles-switch-and-own ()
   (org-texmacs-test--with-worker
    (let ((file (expand-file-name "references.bib" test-directory))
