@@ -46,13 +46,16 @@ fulfillment for Document consumers using the existing frozen resolution node
 sequence. The standard Input and internal Model consumers retain their current
 preparation and fulfillment behavior. The bibliography snapshot and guard
 windows stay in place, so the conditional mutation probe is not needed for
-this design. The A2/B candidate below awaits maintainer delivery.
+this design. A2/B is delivered and C is the next implementation node.
 
-## A2/B lowering cleanup candidate
+## A2/B lowering cleanup delivered
 
-The ordinary project worktree contains the verified A2/B candidate against
-the delivered A1 baseline. The project index is untouched. All three old
-special-block preflight branches are removed. Normal lowering requires
+The maintainer committed `refactor(document): remove legacy lowering
+preflight` directly on the A1 baseline. The four changed paths, reviewed
+blob abbreviations, and exact message match the staged candidate. The
+committed diff passes the Git whitespace check and the project worktree
+and index are clean. All three old special-block preflight branches are
+removed. Normal lowering requires
 frozen resolution, always normalizes raw native table wrappers, invokes the
 selected handler with the real lowered body, and checks emitted labels.
 The existing wrapper grammar and saved resolution condition payload now use
@@ -69,12 +72,14 @@ each), the Issue 13 regression (10/10), and treefmt. New tests cover
 the wrapper diagnostic, the original saved error payload without reference
 recomputation, and zero handler calls in preparation followed by one call
 with the parsed body in lowering. No legacy flag remains in active source
-or ERT. Full flake checks and examples are deferred to C acceptance.
+or ERT. The maintainer also reported passing tests and example builds.
+The separate example outputs were not inspected for this delivery check.
 
 For C, use the two functions at the consumer boundary described in
 `bc-export-validation-design.md`. Standard Export preparation, Native Cite
 fulfillment, runtime error timing and Input construction are still at the
-A1 baseline. Final delivery has not yet been verified as a project commit.
+A1 baseline. The C regression matrix remains to be run on C's eventual
+implementation.
 
 ## B/C footnote figure reachability probe
 
