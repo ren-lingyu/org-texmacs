@@ -34,13 +34,12 @@
 ;;
 ;; Package-Requires declares minimum versions.  Recorded regressions used
 ;; Emacs 31.1 and Org 9.8.10; Nix selects dependencies from flake.lock.
-;; Org 9.8.10 is the minimum supported Org version for v0.8.0.
-;; This maintenance scope decision does not imply that Org 9.8 is incompatible.
+;; The experimental Org 10.0-pre package uses a pinned, patched snapshot.
 ;; Org-roam and its extensions are optional integration-test dependencies.
 ;; Source exports use standard Org Export preparation and Org Cite.  The
 ;; TeXmacs backend defaults to native bibliography processing; CSL citations
 ;; use the optional citeproc package.  Pure model/lowering APIs stay independent.
-;; Native output uses TeXmacs, whose availability the setup command checks.
+;; Native bibliography and output use headless TeXmacs over a Unix socket.
 ;;
 ;; Use `org-texmacs-tree' to derive an Org-compatible TeXmacs tree from a
 ;; native TeXmacs special block, with lazy parsing and Org-managed caching.
@@ -53,7 +52,7 @@
 ;; STM islands independently of document lowering.  The model module can be
 ;; loaded alone without export preparation or a native worker.
 ;; Use `org-texmacs-parse-buffer' for complete-source model construction with
-;; native STM parsing, without export filtering or document lowering.
+;; the Elisp STM reader, independently of standard Org Export preparation.
 ;; Use `org-texmacs-model-inspect' for a readable structural projection, or
 ;; `org-texmacs-model-display' to show it in a new read-only buffer.
 ;; Use `org-texmacs-model-serialize' for normalized Org text, or
@@ -228,8 +227,14 @@ owning the validated worker BODY."
 (defun org-texmacs-prepare-buffer
     (source-buffer
      &optional bibliography-sources subtree-position region ext-plist)
-  "Return standard input from explicit SOURCE-BUFFER once.
-BIBLIOGRAPHY-SOURCES must be nil.  Other arguments use standard source rules."
+  "Prepare owned export input from live Org SOURCE-BUFFER.
+BIBLIOGRAPHY-SOURCES must be nil.  SUBTREE-POSITION, REGION and EXT-PLIST
+follow `org-texmacs-export-texmacs-from-buffer' selection and options rules.
+Standard Org Export prepares the selected source.  Active Native Cite may
+read, parse and format its bibliography before this function returns.
+This entry does not lower a Document.  The returned read-only input owns
+its data and outlives the source buffer.  Unsupported lowering may fail
+later.  Use `org-texmacs-parse-buffer' for independent Model parsing."
   (org-texmacs--standard-source-consume
    'input
    source-buffer
@@ -242,8 +247,14 @@ BIBLIOGRAPHY-SOURCES must be nil.  Other arguments use standard source rules."
 (defun org-texmacs-document-from-buffer
     (source-buffer
      &optional bibliography-sources subtree-position region ext-plist)
-  "Return standard document from explicit SOURCE-BUFFER once.
-BIBLIOGRAPHY-SOURCES must be nil.  Other arguments use standard source rules."
+  "Prepare and lower live Org SOURCE-BUFFER into a structural Document.
+BIBLIOGRAPHY-SOURCES must be nil.  SUBTREE-POSITION, REGION and EXT-PLIST
+follow `org-texmacs-export-texmacs-from-buffer' selection and options rules.
+Standard preparation may fulfill Native Cite requests.  For active Native
+Cite print, frozen reference errors and invalid direct figure/table bodies
+fail before native bibliography parsing or formatting.
+Return a fresh read-only result independent of the source buffer, before
+native encoding.  Use `org-texmacs-document' to lower a prepared input."
   (org-texmacs--standard-source-consume
    'document
    source-buffer

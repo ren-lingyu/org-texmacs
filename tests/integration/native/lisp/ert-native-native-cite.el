@@ -337,7 +337,10 @@
      (with-temp-file file
        (insert org-texmacs-test--cite-bib))
      (dolist (case
-              '(((texmacs-native) (texmacs-native nil nil) "plain")
+              '(((texmacs-native "plain" nil)
+                 (texmacs-native "plain" nil)
+                 "plain")
+                ((texmacs-native) (texmacs-native nil nil) "plain")
                 ((texmacs-native "alpha")
                  (texmacs-native "alpha" nil)
                  "alpha")

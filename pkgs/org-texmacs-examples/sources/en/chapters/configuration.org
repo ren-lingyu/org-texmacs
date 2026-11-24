@@ -16,7 +16,13 @@ override matching global initial defaults.
 #+include: "profile.el" src emacs-lisp
 
 The index retains the default generic style. The companion article uses article,
-a test-prefix headline formatter and typed internal references.
+a custom headline formatter and typed internal references. The formatter adds
+a test prefix, ignores task metadata and returns a literal text stree. Authored
+STM in headline titles retains its source semantics with the default formatter.
+
+This build uses TeXmacs for native output. Independent Model parsing, inspection,
+STM subtree replacement and normalized Org serialization use Emacs Lisp and
+Org without the TeXmacs executable.
 Explicit equation and TeXmacs blocks still work.
 The index retains plain references; the article explicitly enables typed
 references and includes the bundled smart-ref style package. A bare link to

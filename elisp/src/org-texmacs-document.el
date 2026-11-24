@@ -203,7 +203,8 @@ Explicit Org language and description override their corresponding defaults."
 Called with TODO, TODO-TYPE, PRIORITY, TITLE-PARTS and TAGS.  Disabled
 metadata is nil; TITLE-PARTS is a list of text strees, not Org nodes.
 Return one text stree for the fixed sectioning node's sole title child.
-All output leaves have Org literal semantics, not STM source semantics.
+Custom output leaves have Org literal semantics.  The default formatting
+path retains authored STM provenance.
 Treat inputs as read-only and prefer a side-effect-free formatter.
 Lowering may call it more than once.  Custom function side effects are the
 caller's responsibility."

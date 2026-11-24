@@ -30,7 +30,21 @@ release notes.
   TeXmacs executable. Standard Export preparation and =org-texmacs-tree=
   use the same reader. Some previously accepted STM spellings, including
   tags starting with a digit or colon, now report a parse error. See
-  [[file:README.org::*STM text syntax][the supported syntax]] for tag and string limits.
+  [[file:README.org::*STM text syntax][the supported syntax]] for reader and writer limits.
+  Structurally valid STM can still be unrepresentable as STM text or in its
+  Org carrier. Normalized Org serialization reports either case.
+- *Breaking for source installs:* Lisp libraries and the Scheme service moved
+  from =lisp/= to =elisp/src/=. Update =load-path=, straight.el recipes and
+  package filesets to use the new directory. The shared Nix package definition
+  is now =elisp/default.nix=.
+- Nix exposes per-package =ert-core= and =ert-csl= suites for both Org variants,
+  the pinned variant’s =ert-setupfile= suite, and separate =integration-*=
+  and =regression-*= checks. The GoToR check is
+  =texmacs-with-gotor-support-gotor-regression=. See
+  [[file:README.org::*Development checks][current build and test commands]].
+- The Cite processor default now spells out =(texmacs-native "plain" nil)=.
+  The effective bibliography and citation styles are unchanged. Explicit
+  shorthand declarations such as =(texmacs-native)= still work.
 
 ** Removed
 - *Breaking:* Remove the =org-texmacs-preprocess= and

@@ -13,8 +13,10 @@ siblings so their relative links continue to work when the directory is moved.
 Org inputs and derived .el/.bib files are retained under
 sources/<language>/<entry>/, preserving the relative paths used by INCLUDE.
 Generated files are build products, not Git inputs. The .tm files retain native
-source-based absolute file targets; the relocatable links described above apply
-to the direct PDF outputs.
+absolute file targets based on the temporary build source directory. Those paths
+may be unavailable after the build, so the installed .tm files do not form a
+relocatable set. PDF rendered later from a .tm file can have different link
+targets from the direct PDF outputs.
 
 Both entries compose files in chapters/ with ordinary Org INCLUDE. Mathematics
 and figure/table chapters are included by article.org, not compiled separately.

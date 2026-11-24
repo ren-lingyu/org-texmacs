@@ -223,16 +223,22 @@
     (setcar (nth 3 external-output) 'document)
     (should
      (equal before (org-texmacs-test--native-cite-lower owned)))
-    (let ((stale
-           (org-texmacs-input-create
-            ast
-            (plist-put
-             (copy-sequence info)
-             :texmacs-bibliography-output external-output)
-            :bibliography sources)))
-      (should-error
-       (org-texmacs-test--native-cite-lower stale)
-       :type 'org-texmacs-document-error))
+    (let* ((prefix-mismatch (copy-tree output))
+           (_ (setcar prefix-mismatch "wrong-prefix"))
+           (stale
+            (org-texmacs-input-create
+             ast
+             (plist-put
+              (copy-sequence info)
+              :texmacs-bibliography-output prefix-mismatch)
+             :bibliography sources))
+           (err
+            (should-error
+             (org-texmacs-test--native-cite-lower stale)
+             :type 'org-texmacs-document-error)))
+      (should
+       (equal
+        (cadr err) "Missing or stale prepared bibliography output")))
     (should-error
      (org-texmacs--bibliography-native-plan
       info (list (concat (car output) "-one")))

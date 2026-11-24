@@ -14,11 +14,13 @@
 (require 'ox)
 (require 'org-texmacs-cite)
 
-(defcustom org-texmacs-cite-export-processor '(texmacs-native)
+(defcustom org-texmacs-cite-export-processor
+  '(texmacs-native "plain" nil)
   "Preferred Org Cite export processor declaration for TeXmacs.
 When nil, delegate to `org-cite-export-processors'.
 A non-nil value is (PROCESSOR BIBLIOGRAPHY-STYLE CITATION-STYLE), without
 its backend name.  Both style positions are optional and may be nil.
+The default uses plain bibliography and the default native citation style.
 Explicit TeXmacs backend entries take precedence over this declaration.
 Only export is affected; activate, follow and insert processors are unchanged."
   :type

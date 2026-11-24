@@ -14,7 +14,11 @@
 (cl-defun
  org-texmacs-test--default-cite
  (configuration
-  &optional declaration options (preferred '(texmacs-native)) empty)
+  &optional
+  declaration
+  options
+  (preferred (default-value 'org-texmacs-cite-export-processor))
+  empty)
  "Export CONFIGURATION/DECLARATION/OPTIONS using PREFERRED; return full triplet.
 When EMPTY, test standard options/selection without invoking Cite finalizers."
  (let ((org-texmacs-cite-export-processor preferred)
@@ -67,16 +71,21 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
 (ert-deftest org-texmacs-native-default-standard-selection ()
   (should
    (equal
-    (org-texmacs-test--default-cite '((t basic)))
-    '(texmacs-native nil nil)))
+    (default-value 'org-texmacs-cite-export-processor)
+    '(texmacs-native "plain" nil)))
   (should
    (equal
-    (org-texmacs-test--default-cite nil) '(texmacs-native nil nil)))
+    (org-texmacs-test--default-cite '((t basic)))
+    '(texmacs-native "plain" nil)))
+  (should
+   (equal
+    (org-texmacs-test--default-cite nil)
+    '(texmacs-native "plain" nil)))
   (should-not (org-texmacs-test--default-cite nil nil nil nil))
   (should
    (equal
     (org-texmacs-test--default-cite '((html basic)))
-    '(texmacs-native nil nil)))
+    '(texmacs-native "plain" nil)))
   (should-not
    (org-texmacs-test--default-cite '((html basic)) nil nil nil))
   (dolist (config
@@ -385,7 +394,10 @@ When EMPTY, test standard options/selection without invoking Cite finalizers."
     org-texmacs-cite-preference-native-bibliography-style-handoff
     ()
   (dolist (case
-           '(((texmacs-native) (texmacs-native nil nil) "plain")
+           '(((texmacs-native "plain" nil)
+              (texmacs-native "plain" nil)
+              "plain")
+             ((texmacs-native) (texmacs-native nil nil) "plain")
              ((texmacs-native "alpha")
               (texmacs-native "alpha" nil)
               "alpha")

@@ -7,67 +7,55 @@ represent mathematical expressions; identity-based islands connect them.
 This is one logical structure, without a third canonical AST.  Org buffers
 remain the canonical authoring input, with no external =.tm= file required.
 
-The independent core constructs owned models, exposes readable structure,
-copies snapshots, replaces STM subtrees and generates normalized Org text or
-editable buffers. Complete models expose parsed STM trees at native block
-and explicit inline fragment positions. Structural validity,
-syntax expressibility and serialization support are separate contracts.
-The native expression trees are structural representations, not a formal
-mathematical semantics system.
+Choose an entry point based on the result you need:
 
-=ox-texmacs= is a standard Org Export backend.  Org prepares the final AST and
-INFO; the adapter owns Org structure and native STM islands, then uses pure
-structural lowering and native consumers for TeXmacs/PDF.
-Shared ownership does not make a bare =org-texmacs-model= a supported argument
-to the existing =org-texmacs-document= prepared-input API.  Use the established
-export preparation entries for that consumer.
-Block caching, Scheme fontification and source editing work independently of
-whole-document model construction.
+| Result                                                            | Entry point                                                      |
+|-------------------------------------------------------------------+------------------------------------------------------------------|
+| Parsed structure for inspection, transformation or normalized Org | =org-texmacs-parse-buffer= and the Model API                     |
+| Export from a live Org buffer                                     | Standard Org Export via =ox-texmacs= or the explicit source APIs |
+| A TeXmacs document from already prepared data                     | =org-texmacs-document= applied to an Input                       |
+| Native =.tm= bytes, PDF or a session                              | A native consumer of a completed Document                        |
 
-Document conversion supports basic inline markup, Unicode-backed Org entities,
-recursive subscripts/superscripts,
-self-contained URI links,
-plain local file links with captured resource context,
-cross-file Org ID links with document-level navigation,
-same-document headline/ID and dedicated-target links with optional typed references,
-anonymous and named footnotes, standard Org Cite with native TeXmacs bibliography,
-single-key citation details or optional CSL,
-list/container structures, rich metadata,
-relative headline sectioning, a static filtered TOC, static preformatted
-blocks, named/captioned basic rectangular tables and TeXmacs islands, as specified below.
-Formal statements, raw STM equations and explicit figure/table wrappers support
-bounded caption and same-document reference semantics.  Embedded STM has Scheme
-fontification and source editing through Org's existing edit workflow.
-Independent consumers provide native =.tm= serialization, new-file saving and
-PDF rendering.  The optional =ox-texmacs= frontend connects these consumers to
-Org's export dispatcher, with local output naming/reexports, subtree/region/
-narrowing scopes and standard Org export configuration.  GUI preview, precise cross-document
-reference navigation and live incremental Org/TeXmacs synchronization are outside the current
-support boundary.
-Source exports use Org's working copy. User callbacks can still modify the
-original source; covered changes fail source validation and are not undone.
+For a first export, install the package and headless TeXmacs, insert
+the block below in an Org buffer, load =ox-texmacs=, and run
+=M-x org-texmacs-export-to-texmacs=.
 
-* Version history
-This README documents =v0.8.0=. See [[file:CHANGELOG.org][the changelog]] for
-version history and [[file:CHANGELOGS/v0.8.0.org][the v0.8.0 release notes]]
-for changes and upgrade instructions since [[file:CHANGELOGS/v0.7.1.org][v0.7.1]].
+#+begin_example
+  ,#+begin_texmacs
+  (math (frac "1" "2"))
+  ,#+end_texmacs
+#+end_example
 
-* Requirements
-- Emacs 31.1 or later and Org 9.8.10 or later, as declared by the package.
-- TeXmacs with headless mode (=-H=) and its embedded Scheme runtime.
-- Unix-domain socket support in both Emacs and TeXmacs.
+For authoring and inspecting a model, follow [[*The mathematical-document Model][the Model workflow]].
+These operations work without a TeXmacs executable. Native tree readback
+and serialization establish structural interoperability. GUI preview, live
+incremental synchronization, and precise cross-document reference
+navigation are outside the supported workflow.
 
-Recorded regressions on =x86_64-linux= used Emacs 31.1, Org 9.8.10 and
-TeXmacs 2.1.5. The default Nix =org-texmacs= package uses Org 9.8.10 from
-the locked Nixpkgs input.
+This README describes the current development HEAD. See the
+[[file:CHANGELOG.org][unreleased changes and version history]] and the
+[[file:CHANGELOGS/v0.8.0.org][v0.8.0 release notes]] for the latest formal release.
 
-=citeproc= is optional for CSL citations. The standard Cite integration check
-uses Org-roam and a pinned revision of Org-roam-organize.
+* Runtime requirements and installation
+** Runtime boundaries
+| Workflow                                                                 | Requirements                                                                                       |
+|--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------|
+| Pure Elisp                                                               | Emacs 31.1 or later and Org 9.8.10 or later                                                        |
+| Native bibliography, .tm, PDF, sessions and native diagnostic operations | Headless TeXmacs (=-H=), its embedded Scheme runtime, and Unix-domain sockets in Emacs and TeXmacs |
+| Explicit CSL or the Org-roam-organize workflows                          | Optional Citeproc or the relevant Org extension, respectively                                      |
 
-The Scheme service runs inside TeXmacs; a separate =guile= executable is
-not required to use the package.  Nix test drivers invoke Emacs directly.
+The pure paths include block-tree inspection, Model parsing, creation, copy,
+inspection, replacement, normalized Org and editable buffer output, plus
+explicit Input construction and prepared Document lowering. Under the pinned
+Org 10.0-pre variant, Org can read =#+SETUPFILE= during independent parsing
+and serialization validation. A separate Guile executable is unnecessary.
 
-* Loading the package
+The Nix package includes its selected TeXmacs runtime closure and injects an
+absolute program path. A different TeXmacs earlier on PATH does not replace
+that default. Source installations resolve =texmacs= through Emacs's
+=exec-path=. The maintained x86_64-linux checks use Emacs 31.1, stock Org
+9.8.10 and TeXmacs 2.1.5, with separate checks for the pinned Org variant.
+
 ** From a source checkout
 Keep all =org-texmacs*.el= files, =ox-texmacs.el= and
 =org-texmacs-worker.scm= together in the checkout's =elisp/src/= directory.
@@ -150,42 +138,7 @@ from a private Emacs package scope with its own =org= dependency.
 The Emacs wrapper, font wrappers and examples are available through the
 named flake package outputs above.
 
-*** Compiled examples
-On Linux, build the English and Chinese examples with:
-
-#+begin_src sh
-  nix build .#org-texmacs-examples
-#+end_src
-
-The =result/= link groups PDFs under =pdf/en/= and =pdf/zh/=, with native
-documents under =texmacs/en/= and =texmacs/zh/=.  File names match the Org
-entries: =index.org= uses the generic profile, and =article.org= uses the
-article profile for mathematics, statements, figures and tables. Derivative
-notation uses native =rprime= nodes. Their PDFs
-link to each other through relative targets in the same language directory.
-The =.tm= files retain native source-based absolute file targets.  Org inputs
-and derived configuration/bibliography remain under
-=sources/<language>/<entry>/=.  Progress and PDF inspection information go to
-the Nix build log; log files are not installed.  Every document builds with
-fresh Emacs, TeXmacs and HOME state inside its Nix derivation; use a
-sandbox-enabled builder.  The example build uses its own Emacs package
-set with org-texmacs's =texmacs= dependency overridden to
-=texmacs-fandol-with-gotor-support=, which supplies explicit Fandol Chinese fonts
-through =TEXMACS_FONT_PATH= and native GoToR actions for local PDF file links.
-Examples use the native Org Cite default for generic documents and explicit
-=texmacs-native alpha= for article documents, with valid mathematical BibTeX
-titles. Neither examples nor the base package requires =citeproc=. A local CSL
-fixture remains available for explicit CSL users. One standard document
-preparation supplies both native output formats. Babel evaluation is disabled
-for these illustrative sources; tangling/loading configuration is explicit.
-Reader support can depend on the backend: the user confirmed navigation works
-with Zathura's pdf-poppler backend after failure with pdf-mupdf.
-
-Configuration and bibliography derive from canonical Org sources.  Read
-[[file:pkgs/org-texmacs-examples/sources/en/index.org][the English entry]]
-or [[file:pkgs/org-texmacs-examples/sources/zh/index.org][the Chinese entry]]
-for the configuration examples and build details.
-
+* Configuration
 ** With use-package
 Configure the required Org version before loading Org TeXmacs. The example
 assumes =use-package= is already available and the package is on =load-path=.
@@ -234,7 +187,7 @@ native processor supports only the default citation style. Setting the whole
 preference to nil delegates to standard Org Cite. Configure bibliography files
 with =#+bibliography:= and include =#+print_bibliography:= when citing.
 Document-level =#+cite_export:= retains standard precedence. See
-[[*Standard Org Export integration status][Standard Org Export integration status]] for CSL and citation limitations.
+[[*Standard Org Export][Standard Org Export]] for CSL and citation limitations.
 
 *** Installation choices
 For a package already on =load-path=, including a configured Nix installation,
@@ -279,8 +232,7 @@ generation and sessions can start the shared worker.
 
 The example covers the core options and the backend's Cite/menu settings.
 See [[*Org export dispatcher][Org export dispatcher]] for the export commands and menu
-configuration. The obsolete =org-texmacs-export-discover-bibliography= flag must
-remain nil; configure standard Org Cite instead.
+configuration.
 
 Both timeouts are positive numbers in seconds: =org-texmacs-worker-start-timeout=
 limits the startup wait, and =org-texmacs-worker-request-timeout= limits the
@@ -306,7 +258,29 @@ reported there and checked again before a worker is started.  A passing
 setup check confirms basic capabilities, not successful headless startup
 or socket communication; a native operation checks those paths.
 
-* Block formulas
+
+** Default values and when they take effect
+| Custom option                            | Default                                        | Applied when                                                       |
+|------------------------------------------+------------------------------------------------+--------------------------------------------------------------------|
+| =org-texmacs-program=                    | =texmacs= from source, absolute path under Nix | A worker starts                                                    |
+| =org-texmacs-worker-start-timeout=       | =60=                                           | The worker starts                                                  |
+| =org-texmacs-worker-request-timeout=     | =10=                                           | A native request waits for its response                            |
+| =org-texmacs-export-menu-keys=           | =nil=                                          | =ox-texmacs= first loads                                           |
+| =org-texmacs-cite-export-processor=      | =(texmacs-native "plain" nil)=                 | Org selects an export processor                                    |
+| =org-texmacs-document-style=             | =("generic")=                                  | Source capture and consistency checks                              |
+| =org-texmacs-document-initial=           | =nil=                                          | Source capture and consistency checks                              |
+| =org-texmacs-format-headline-function=   | =org-texmacs-format-headline-default-function= | Presentation capture, then function capture during Input ownership |
+| =org-texmacs-typed-references=           | =nil=                                          | Initial presentation capture                                       |
+| =org-texmacs-pdf-file-links-as-absolute= | =nil=                                          | Initial presentation capture                                       |
+| =org-texmacs-link-org-files-as-pdf=      | =t=                                            | Initial presentation capture                                       |
+
+Tab width and the private handler registry are captured with presentation options.
+Input ownership captures actual function definitions. Mutable closure state can
+still change. Menu keys in the complete example are an explicit opt-in.
+The old bibliography-discovery setting is covered under [[*Upgrade notes][Upgrade notes]].
+
+* Writing and editing STM
+** Block formulas
 Write official STM/Scheme data in an Org special block:
 
 #+begin_src org
@@ -347,7 +321,7 @@ This self-contained example demonstrates traversal and a cache hit:
   ;; => ((with concat frac) t)
 #+end_src
 
-* Block source and cache contract
+** Block source and cache contract
 =org-texmacs-tree= expects a current TeXmacs special-block element from the
 current buffer.  Its body must be accessible under the current narrowing.
 The Org wrapper name is case-insensitive: =#+begin_texmacs=,
@@ -367,7 +341,7 @@ Body edits invalidate the derived value.  Unrelated edits, including changes
 before a block, may also invalidate it; the cache is best-effort and does not
 provide a persistent block identity.  No real-time Org edit hooks are used.
 
-* STM text syntax
+** STM text syntax
 Model parsing, standard Org Export preparation and =org-texmacs-tree= use
 the same pure Emacs Lisp reader. Model serialization uses the corresponding
 writer. The codec implements a subset of native TeXmacs STM text syntax.
@@ -382,25 +356,14 @@ comments, quoted or escaped tags, and other control characters are outside
 the supported subset.
 Org carriers impose their own placement and delimiter rules.
 
-* Fragment formulas
-** Explicit carriers
+** Fragment formulas
+*** Explicit carriers
 Wrap one compound STM tree in =$(...)$= or =\((...)\)= for model parsing and
 standard Export. For example, write =\((math (frac "1" "2"))\)= in prose or
 a link description. Org container boundaries and opaque regions still apply. A recognized
 incomplete carrier signals =org-texmacs-parse-error= during formal conversion.
 
-** Migrating bare fragments
-For example, change bare =(math (frac "1" "2"))= to
-=\((math (frac "1" "2"))\)=. The
-=org-texmacs-fragment-tags= option, span accessors, and
-=org-texmacs-fragment-at-point=, =org-texmacs-fragment-map= and
-=org-texmacs-fragment-tree= APIs have been removed. To consume parsed
-fragments, use =org-texmacs-parse-buffer= and inspect the resulting
-=org-texmacs-model-islands=. Query an individual owned key with
-=org-texmacs-model-island=. Use =org-texmacs-tree= for on-demand parsing
-of native =texmacs= blocks.
-
-* Embedded STM editing
+*** Embedded STM editing
 Loading =org-texmacs= enables Scheme fontification in existing and new Org
 buffers for explicit STM payloads in paragraphs and for the bodies of native
 =texmacs=, =equation= and =equation*= blocks. Block delimiters and affiliated
@@ -462,13 +425,15 @@ fontification follows Org Src's handling of that mode. Existing edit buffers
 retain their mode until closed. New edit buffers resolve the current mapping.
 The mapping has no effect on STM parsing, the Model or Export.
 
-* Mathematical-document model construction
+* The mathematical-document Model
+** Mathematical-document model construction
 Load =(require 'org-texmacs-model)= to construct an independent snapshot from
 an already parsed native Org AST and STM trees.  This module does not load the
 document lowering layer, export frontend or worker.  Its autoloaded
 =org-texmacs-parse-buffer= adapter can construct a complete model from an explicit
 Org source buffer, without TeXmacs or document lowering.
 
+#+name: example-model-construction
 #+begin_src emacs-lisp
   (require 'org-texmacs-model)
   (let* ((fragment (org-element-create 'stm-fragment nil))
@@ -572,7 +537,7 @@ target settings remain separate.  Standard Export handles source filtering,
 and export preparation provides parsed STM, bibliography data and frozen
 reference resolution.
 
-* Mathematical-document inspection
+** Mathematical-document inspection
 =org-texmacs-model-inspect MODEL= returns a detached readable S-expression view.
 =org-texmacs-model-display MODEL= pretty-prints that view in a new read-only
 buffer and returns the buffer.  Both entries are autoloaded by
@@ -612,7 +577,7 @@ projection, not a persistence format or a structural-equivalence definition.
 Display uses a unique buffer even when an existing buffer has the requested
 optional name, and removes its new buffer if printing or display fails.
 
-* Structural model operations
+** Structural model operations
 =org-texmacs-model-copy MODEL= returns an independent, structurally equivalent
 snapshot.  =org-texmacs-model-island MODEL NODE= returns the read-only STM tree
 for an island key belonging to that snapshot.  Obtain keys from
@@ -655,10 +620,11 @@ the authoritative island tree, native node identities and structural paths.
 This initial API changes STM content and keeps the Org hierarchy.  Arbitrary
 Org node insertion, removal or movement is outside this transformation profile.
 
-* Complete model workflow
+** Complete model workflow
 This self-contained example parses an Org buffer, replaces the denominator of
 an inline fraction, inspects the new model and opens normalized Org output:
 
+#+name: example-model-workflow
 #+begin_src emacs-lisp
   (require 'org-texmacs-model)
   (let* ((model
@@ -679,7 +645,7 @@ Path =(0 1)= selects the first =math= child, then the second =frac= child.
 Parsing, copying, inspecting, replacing STM subtrees and writing normalized Org
 all work without a TeXmacs executable.
 
-* Normalized Org serialization
+** Normalized Org serialization
 =org-texmacs-model-serialize MODEL= returns normalized Org text.
 =org-texmacs-model-to-buffer MODEL= creates a new editable Org buffer and returns
 it, using a unique optional name (default =*org-texmacs-org*=).  Neither entry
@@ -737,7 +703,7 @@ the reason, AST path and STM tag. Serialization returns no partial
 text on failure, and buffer construction starts only after successful output.
 An initialization failure removes the newly allocated buffer.
 
-* Standard Org Export integration status
+* Standard Org Export
 The standard backend runs through =(org-export-as 'texmacs)= and consumes its
 prepared AST in the live export context. It consumes explicit STM fragments
 and native =texmacs=/=equation=/=equation*= bodies from the final AST,
@@ -772,40 +738,16 @@ Unclosed block markers, including markers cut by document selection, may be
 ordinary Org prose with script objects.  They follow that final interpretation;
 the exporter does not reconstruct an original native wrapper around them.
 
-Preprocessing may expand, rewrite, delete or generate STM.  Valid final STM is
+Standard Org preparation may expand, rewrite, delete or generate STM.  Valid final STM is
 accepted; deleted or transformed original candidates are not restored.  Text such
 as INCLUDE, macros, links or citations inside an STM string receives normal Org
-processing.  If Org fails, its error propagates; if it produces invalid STM, native
-or structural validation fails.  No generic early STM parser or INCLUDE shielding
+processing.  Org preparation errors propagate. If preparation produces invalid STM, the
+STM reader or structural checks reject it.  No generic early STM parser or INCLUDE shielding
 is installed.  Arbitrary original STM text cannot always be expressed unchanged
 in an Org paragraph.  Independent =org-texmacs-parse-buffer=, model operations and
 pure document lowering keep their separate existing contracts.
 
-Org =entity= objects use their captured Unicode representation: mathematical
-entities such as =\alpha=, =\cdot= and =\rightarrow= become local native math,
-while text entities such as =\copy= remain text.  Literal =<alpha>= stays literal;
-an entity does not switch the whole paragraph into math mode.  Effective =e:nil=
-preserves entity source syntax, including for objects created later by AST filters
-or Cite processors.  Pure structured inputs enable entities by default; an explicit
-=:with-entities nil= preserves their spelling without consulting dynamic settings.
-Missing or invalid representations fail explicitly.  The distinct =latex-fragment=
-input =$\cdot$= is not converted by entity support and remains unsupported.
-Finite LaTeX conversion is deferred from v0.7.0.  Native snippet experiments
-converted intact examples correctly, but also accepted repaired, empty or
-placeholder results for malformed and unknown input without a reliable failure
-contract.  A serializable native tree alone is insufficient to enable conversion.
-
-Org =subscript= and =superscript= objects lower to native =rsub= and =rsup=,
-including consecutive =x_i^2= and nested =x^{a_b}=.  Effective =^:t= enables them,
-=^:{}= interprets bracketed scripts only, and =^:nil= retains their markers and
-braces while recursively handling child Org markup.  These policies also apply
-to nodes generated later by AST filters or Cite processors; completed Org option
-rewrites are not repeated.  Pure structured inputs default to enabled scripts;
-explicit =:with-sub-superscript nil= and ={}= select the other policies.
-Script contents have local whitespace state, inherit title/metadata restrictions
-and do not switch surrounding prose to math mode.  Adjacent STM islands stay
-opaque; scripts attach outside their existing subtree.
-
+** Citations and bibliography
 Org Cite owns bibliography acquisition, processor selection and citation/
 bibliography processing in this same transaction, after AST filters. The default
 native processor uses the =plain= bibliography style without =citeproc=:
@@ -842,19 +784,19 @@ normal package wrapper.  The dedicated Cite check supplies it explicitly.
 
 The =texmacs-native= processor supports TeXmacs-native bibliography output
 through the same standard Org Cite transaction, without requiring =citeproc=.
-TeXmacs defaults to the declaration =(texmacs-native)=. Configure its export-only
+TeXmacs defaults to the declaration =(texmacs-native "plain" nil)=. Configure its export-only
 preference with =org-texmacs-cite-export-processor=. Choose one declaration:
 
 #+begin_src emacs-lisp
   ;; Native processor with its default plain bibliography style:
-  (setq org-texmacs-cite-export-processor '(texmacs-native))
+  (setq org-texmacs-cite-export-processor '(texmacs-native "plain" nil))
 
   ;; Alternative native bibliography styles:
   (setq org-texmacs-cite-export-processor '(texmacs-native "alpha"))
   (setq org-texmacs-cite-export-processor '(texmacs-native "abbrv"))
 
-  ;; The complete triplet is also accepted:
-  (setq org-texmacs-cite-export-processor '(texmacs-native "alpha" nil))
+  ;; Shorthand with the same effective default styles:
+  (setq org-texmacs-cite-export-processor '(texmacs-native))
 
   ;; Alternatively, delegate entirely to standard Org Cite:
   (setq org-texmacs-cite-export-processor nil)
@@ -943,11 +885,12 @@ and fixtures; they do not certify other Citeproc versions or styles.
 The =basic= processor is currently unsupported: its citations and
 bibliography return target-specific strings that Org wraps as =raw=.  A =raw=
 object is target code, not ordinary text or an STM tree.  It is rejected before
-native parsing; it is never silently flattened or reparsed as TeXmacs.  Custom
+STM parsing; it is never silently flattened or reparsed as TeXmacs.  Custom
 processors may return supported Org elements or secondary strings.  Returning
 an arbitrary target string, including a string built through reentrant
 =org-export-data=, does not make it structured output.
 
+** Filters and owned reference queries
 Reference targets, relative headline levels, numbering and footnote definitions
 are queried in the original standard export transaction, then remapped into the
 owned input.  Mutable INFO and identity-sensitive caches are not copied into
@@ -999,35 +942,90 @@ requests lower once; pure lowering can explicitly reject otherwise valid models.
 
 Standard preparation, AST filters, mutable export INFO and Org Cite processing
 must retain their export context; an AST-to-buffer round trip does not preserve
-it. The standard Cite integration check below uses a pinned revision of
+it. The =integration-org-roam-organize= check uses a pinned revision of
 =org-roam-organize= with a real SQLite database and its normal mode/hooks/advice.
 It verifies UUID citation-key changes, dynamic per-export bibliography and INFO
 propagation through the native default and explicit CSL, native PDF and HTML
 without an extension adapter.
 
-* Document conversion and native sessions
-The document API separates source preparation, pure structural lowering and
-native consumers.  A completed document can update an explicit native session,
-serialize to =.tm= or render PDF.  The native block API remains available
-as independent parsing interfaces.
+** Source configuration and selection
+=org-texmacs-prepare-buffer=, =org-texmacs-document-from-buffer= and source byte/
+buffer APIs take =SOURCE-BUFFER= followed by optional =BIBLIOGRAPHY-SOURCES=,
+=SUBTREE-POSITION=, =REGION= and =EXT-PLIST=.  Bibliography sources must be nil.
+=EXT-PLIST= follows standard Org option merging; it is no longer a restricted
+whitelist or a private rich-string parser.  Org parses source metadata.  Scalar
+rich metadata supplied directly in INFO remains literal; callers can supply
+parsed secondary strings for structured metadata.
 
-Load =(require 'ox-texmacs)= to register the backend and export commands.
-The dispatcher menu requires explicit key configuration before loading; the
-core package alone does not register this frontend.  The frontend uses Org
-output names and can overwrite writable regular outputs.  Explicit new-file
-saving APIs remain exclusive.  Source byte/buffer/file adapters use standard Org
-preparation and optional explicit subtree/region selections and Org configuration.
-All source adapters require nil =BIBLIOGRAPHY-SOURCES= and use standard Org Cite.
-Existing narrowing bounds the accessible source.
+Mutable option data is copied before conversion; functions and opaque objects
+retain identity.  Style/initial values and native output policies use their
+TeXmacs settings.  The pure input constructor consumes explicit INFO and fixed
+defaults without reading ambient source settings.
 
-The interactive frontend and standard entry use Org preparation and support
-=visible-only= within the stated adapter limits.  =body-only= fragments and
-async export are rejected before preparation.
-Publishing integration and async export are not claimed.
-Native PDF regression checks structure/text/reference semantics; it does not
-establish GUI layout or general pagination convergence.  Detailed supported and
-rejected cases remain part of the API contracts below.
+** Narrowed source buffers
+Existing narrowing is the outer accessible source boundary.  Org owns selection
+and preparation.  Source text, point, mark, narrowing and modified state are
+preserved on success and error.  Changes made by callbacks to the original source
+are detected where covered by source guards and are not undone.
+Interactive commands support =visible-only=; explicit source APIs have no visibility
+argument.  Independent model parsing remains separate from these export semantics.
 
+** Region export
+Standard Org export and interactive commands use an active region as the body.
+Explicit source APIs use their =REGION= argument: a nonempty =(BEGIN . END)=
+integer pair within the accessible range.  Nil ignores an ambient active region.
+When both subtree and region are requested, the accessible heading at BEGIN must
+match the requested subtree heading.  Unsupported truncated STM fails explicitly.
+
+#+begin_src emacs-lisp
+  (org-texmacs-prepare-buffer source-buffer nil nil (cons begin end))
+  (org-texmacs-export-texmacs-from-buffer source-buffer nil nil (cons begin end))
+#+end_src
+
+** Subtree export, configuration and dependencies
+Toggle subtree scope in the dispatcher or supply a non-nil =subtreep= to a
+frontend command.  Explicit source APIs accept =SUBTREE-POSITION=, an integer in
+the accessible range.  Org selects the subtree, applies =EXPORT_*= properties,
+prepares footnotes and answers target/numbering queries.  TeXmacs lowering still
+creates native labels, references, footnotes and numbering bindings.
+
+#+begin_src emacs-lisp
+  (org-texmacs-export-to-texmacs nil t)
+  (org-texmacs-export-to-pdf nil t)
+  (org-texmacs-document-from-buffer source-buffer nil position)
+#+end_src
+
+Selection is captured before native waits.  Prepared inputs own the selected Org
+structures and STM trees; native consumers do not reconstruct source context,
+repeat Org preparation or Cite processing or reparse serialized =.tm=.  Org target ambiguity and
+footnote selection follow its standard rules, replacing the old private full-source
+restoration and ambiguity policies.  Unsupported target structures fail at document
+lowering; preparation alone is not a target-support validation command.
+
+** Standard source preparation examples
+Use Org Cite settings and standard hooks for bibliography acquisition.
+Org preparation may legally generate STM; original source-byte fidelity is not
+required.  Org owns recursive INCLUDE and its file/selection policies.
+
+After loading =org-texmacs=, prepare a source buffer with no active bibliography:
+
+#+name: example-prepare-source
+#+begin_src emacs-lisp
+  (with-temp-buffer
+    (org-mode)
+    (insert "Text $(math \"x\")$.\n")
+    (org-texmacs-prepare-buffer (current-buffer)))
+#+end_src
+
+For an existing live Org buffer:
+
+#+begin_src emacs-lisp
+  (org-texmacs-prepare-buffer source-buffer)
+  (org-texmacs-document-from-buffer source-buffer nil nil nil '(:with-toc nil))
+  (org-texmacs-export-texmacs-from-buffer source-buffer)
+#+end_src
+
+* Prepared Input and Document
 ** Preparing a document result
 The document API separates prepared input from buffer preparation.
 =org-texmacs-document INPUT= lowers an =org-texmacs-input= without reading
@@ -1035,8 +1033,10 @@ buffers, collecting configuration, parsing STM or starting a worker.
 Construct one with =org-texmacs-input-create AST INFO :islands ... :post-blanks ...
 :style ... :initial ... :source-file ... :resource-base ...=,
 or use =org-texmacs-prepare-buffer SOURCE-BUFFER= for standard Org preparation.
-Preparation returns owned input without invoking document lowering or formatting;
-valid Org structure may still be unsupported by the document consumer.
+The constructor performs no native bibliography acquisition or formatting.
+Standard preparation may parse and format an active Native Cite bibliography
+before returning an Input. It does not run Document lowering. An owned Input
+can outlive its source and still report an error when lowered.
 The constructor requires an already parsed =org-data= snapshot. Island mappings
 pair =stm-fragment= objects or native STM block nodes from that AST with parsed
 STM trees. Every =stm-fragment= object requires a mapping.
@@ -1048,8 +1048,10 @@ select =("generic")= and nil without reading ambient Custom values.  Nil INFO se
 not current buffer settings.  Treat the input and all nested data as read-only.
 The constructor does not perform lowering or call a formatter.
 
-For example, this structural conversion requires no source buffer or worker:
+After loading =org-texmacs=, this structural conversion requires no source
+buffer or worker:
 
+#+name: example-structured-input
 #+begin_src emacs-lisp
   (org-texmacs-document
    (org-texmacs-input-create
@@ -1066,16 +1068,18 @@ selection and preparation are managed by Org in a standard export transaction.
 The adapter parses the final STM islands with the Elisp reader, owns input and
 lowers it once into a document result:
 
-| Accessor                                    | Result                                                          |
-|---------------------------------------------+-----------------------------------------------------------------|
-| =org-texmacs-document-body=                 | Text stree rooted at =document=, before native encoding         |
-| =org-texmacs-document-style=                | Copied list of TeXmacs style identifiers                        |
-| =org-texmacs-document-initial=              | Copied initial trees; literal provenance distinguishes Org text |
-| =org-texmacs-document-stm-paths=            | Paths to source-semantic roots (STM and prepared bibliography)  |
-| =org-texmacs-document-initial-literal-keys= | Keys of Org-derived literal initial entries                     |
-| =org-texmacs-document-source-file=          | Optional copied absolute source file name                       |
-| =org-texmacs-document-resource-base=        | Optional copied base for source-relative resources              |
-| =org-texmacs-document-file-paths=           | Paths to Org file-link target leaves in the body                |
+| Accessor                                          | Result                                                          |
+|---------------------------------------------------+-----------------------------------------------------------------|
+| =org-texmacs-document-body=                       | Text stree rooted at =document=, before native encoding         |
+| =org-texmacs-document-style=                      | Copied list of TeXmacs style identifiers                        |
+| =org-texmacs-document-initial=                    | Copied initial trees; literal provenance distinguishes Org text |
+| =org-texmacs-document-stm-paths=                  | Paths to source-semantic roots (STM and prepared bibliography)  |
+| =org-texmacs-document-initial-literal-keys=       | Keys of Org-derived literal initial entries                     |
+| =org-texmacs-document-source-file=                | Optional copied absolute source file name                       |
+| =org-texmacs-document-resource-base=              | Optional copied base for source-relative resources              |
+| =org-texmacs-document-pdf-file-links-as-absolute= | Captured PDF absolute-path policy                               |
+| =org-texmacs-document-link-org-files-as-pdf=      | Captured =.org= to =.pdf= suffix policy                         |
+| =org-texmacs-document-file-paths=                 | Paths to Org file-link target leaves in the body                |
 
 Paths use zero-based child indices, excluding the tag.  Keep all fields
 together and treat the result and all nested data as read-only.  It is not
@@ -1108,8 +1112,8 @@ and marks their target leaves in =file-paths=.  The native bridge uses the
 captured resource base to translate these leaves in a separate body copy;
 source file identity never chooses or overrides that base.
 
-Each call captures native style/initial values and native output
-settings.  Org owns parser settings, source options and preparation dependencies;
+The source transaction captures and checks style and initial.
+It captures other presentation options separately at its start.  Org owns parser settings, source options and preparation dependencies;
 the prepared input owns their consumed results.  Source text, mode, restriction,
 identity, native style/initial changes reject publication without retry.
 Export uses the captured Org settings and preparation results. Native Cite
@@ -1120,10 +1124,10 @@ Preparation uses private copies, without changing source text properties,
 point, mark, modified state or narrowing, or resetting the source's Org cache.
 It does not undo edits made by the user while waiting.  The returned document
 does not retain its source buffer and remains usable after that buffer dies.
-Native bibliography processing may start the shared worker during
-construction.
+Standard Native Cite fulfillment may start the shared worker.
 
-This example returns a structural document result using the Elisp STM reader.
+After loading =org-texmacs=, this example returns a structural document
+using the Elisp STM reader.
 
 #+name: example-document
 #+begin_src emacs-lisp
@@ -1138,6 +1142,15 @@ This example returns a structural document result using the Elisp STM reader.
     (org-texmacs-document-from-buffer (current-buffer)))
 #+end_src
 
+** Explicit native bibliography inputs
+Pure callers may provide already parsed native bibliography trees through
+=:bibliography= to =org-texmacs-input-create=.  They also supply complete owned
+native formatting context, including =:texmacs-bibliography-declarations= and
+=:texmacs-bibliography-output=.  Lowering validates native entries, labels and
+references without file reads or formatting.  This constructor protocol is
+separate from standard source Org Cite.
+
+* Supported Org structures
 The supported Org subset is deliberately small:
 
 | Org input                                                           | TeXmacs body structure                                         |
@@ -1174,7 +1187,7 @@ The supported Org subset is deliberately small:
 | COMMENT / comment block                                             | Excluded by Org export selection                               |
 | Task, archive and select/exclude filtering                          | Org policy applied before STM parsing                          |
 
-Heading text may contain supported emphasis, literal inline code and bare
+Heading text may contain supported emphasis, literal inline code, explicit STM and bare
 default citations, but not explicit line breaks.  This is not a general Org
 exporter: unsupported footnotes, advanced table semantics, other
 blocks, unrecognized keywords, drawers and affiliated metadata outside the
@@ -1184,6 +1197,7 @@ Headings below =H= use the list mapping above.
 The Model can represent
 contexts that this whole-document conversion does not support.
 
+** Formal statements
 Formal statements use Org special blocks with recursively converted Org bodies:
 
 #+begin_example
@@ -1229,6 +1243,7 @@ Org references.  Caption text resembling STM is ordinary text.  Standard Org
 does not parse caption inline footnotes; supported anonymous inline footnote AST
 objects use the existing native conversion and its documented layout limits.
 
+** Native equations
 Raw STM equations use =begin_equation= (numbered) or =begin_equation*= (unnumbered):
 
 #+begin_example
@@ -1241,10 +1256,10 @@ Raw STM equations use =begin_equation= (numbered) or =begin_equation*= (unnumber
   ,#+end_equation*
 #+end_example
 
-Each body is exactly one complete STM datum, parsed by TeXmacs and wrapped as
-=(equation BODY)= or =(equation* BODY)=.  Strings (including the STM datum =""=)
-and any valid stree are accepted; there is no additional mathematical type check
-or automatic =math= wrapper.  Native styles own display layout and numbering;
+The Elisp STM reader parses one complete datum per body. Lowering wraps it
+as =(equation BODY)= or =(equation* BODY)=. The reader accepts its supported
+strings (including =""=) and compound trees. Lowering adds no mathematical type
+check or automatic =math= wrapper.  Native styles own display layout and numbering;
 maintained equation PDF checks cover =generic= and =article=.  Formula blocks may
 appear in supported recursive containers, including statements.
 
@@ -1255,10 +1270,11 @@ After recognition, the native tree is opaque to document lowering.  Independent
 parsing retains its own source contract.  Block names are case-insensitive;
 effective =NAME= is supported.  Parameters, =CAPTION= and =ATTR_*= are unsupported.
 Empty or whitespace-only source is rejected before body parsing.  Multiple datums
-and malformed STM are rejected by the native reader.  Region or narrowing exports
+and malformed STM are rejected by the Elisp reader.  Region or narrowing exports
 must contain the complete selected formula block.  These wrappers do not change
 the existing =texmacs= block, inline fragment or editing syntax.
 
+** Figure and table wrappers
 Explicit =figure= / =table= wrappers produce native =big-figure= / =big-table=
 environments.  Experimental =figure*= / =table*= wrappers select their native
 unnumbered variants; they do not mean LaTeX double-column floats.
@@ -1290,7 +1306,7 @@ Caption belongs to the outer wrapper.  It supports the existing long/short,
 markup and link subset, including file-link provenance.  Caption text resembling
 STM remains ordinary Org text and does not create native parse requests.
 Anonymous inline footnote ASTs use the caption compatibility rules below;
-default citations use the bibliography rules below.  Targets remain
+default citations follow [[*Citations and bibliography][the bibliography rules]].  Targets remain
 unsupported.  Omitted caption
 passes =""= to the native environment; numbered variants still show their native
 Figure/Table number.  One outer =NAME= is accepted.  Explicit empty =#+CAPTION:=, =ATTR_*=,
@@ -1323,6 +1339,7 @@ captured per conversion; mutable closure state is not frozen.  Unknown blocks
 and invalid handler outputs fail explicitly.  Lowering calls handlers with
 the actual converted body and checks the returned structure and provenance.
 
+** Paragraphs and static blocks
 Ordinary spaces, tabs and soft newlines collapse to one space across Org
 inline text boundaries.  Leading whitespace at paragraph/title starts and
 after explicit line breaks is suppressed; a final whitespace run remains
@@ -1377,6 +1394,7 @@ executed, and noweb, coderef/line-number switches, header parameters and other
 dynamic code semantics are rejected instead of being ignored.  Org has already
 removed source-protection commas from the parsed =:value= before lowering.
 
+** Ordinary Org tables
 Basic Org pipe tables lower structurally to
 =(tabular (tformat FORMATTING... (table (row (cell BODY) ...)...)))=.
 Cells use the same inline subset as other text contexts, including markup,
@@ -1439,7 +1457,7 @@ references, named inline definitions and nested notes remain unsupported there.
 Explicit fragments in supported caption and note contexts use the same carrier syntax.
 Standard source export does not support caption footnote nodes, including nodes
 created by a parser extension or AST filter. They are explicitly rejected after
-effective exclusions, before native parsing. This withdraws the earlier extended
+effective exclusions, before STM parsing. This withdraws the earlier extended
 source-adapter compatibility; independent model and pure lowering support remains.
 No caption parser extension or native layout repair is provided by this backend.
 
@@ -1469,6 +1487,7 @@ These rules apply while lowering Org nodes, not as a rewrite of the final
 TeXmacs tree.  STM islands remain opaque and unchanged, including their
 whitespace.  The source buffer and raw STM extraction are unchanged.
 
+** Lists, quotes and centered text
 Org's parsed =unordered=, =ordered= and =descriptive= list types map to
 =itemize=, =enumerate= and =description=.  Each TeXmacs list contains one
 body =document=; =item= or =item*= starts the first paragraph of each item,
@@ -1480,6 +1499,7 @@ Checkboxes and explicit =[@N]= counters are rejected.
 =quote= and =center= each contain a body =document=, preserving multiple
 paragraphs, nested supported lists and TeXmacs islands as structural children.
 
+** Links and references
 URI links support =http=, =https=, =mailto=, =ftp= and =ftps=, including
 bracket, angle and plain Org links.  Admission uses Org's parsed link type
 case-insensitively, preserving its spelling in the target.  Descriptions
@@ -1574,7 +1594,15 @@ guarantee.  No counter, float-layout or caption-footnote workaround is inserted.
 Internal links in document metadata and =ALT_TITLE= without allocated targets
 fall back to visible content.
 
-*** Optional typed references
+Standard source export uses Org's link registration and abbreviation semantics.
+Register optional schemes such as =ftps= through normal Org configuration. An
+unregistered scheme may be interpreted as a fuzzy link. When there is no
+available navigation target, lowering keeps its description or raw link text.
+Invalid structures and Org preparation errors can still fail. Standard
+Export recognizes explicit STM carriers in supported link descriptions and
+preserves their provenance through lowering.
+
+** Optional typed references
 Set both options explicitly to use native typed reference presentation:
 
 #+begin_src emacs-lisp
@@ -1638,6 +1666,7 @@ Independent =org-texmacs-input-create= uses the fixed nil policy unless
 =:texmacs-reference-tag-function= INFO key can supply a selector; omitted
 selectors capture the effective definition of the same internal function.
 
+** File links and provenance
 Plain local file links, including implicit =[[./notes.org]]= and absolute
 file links, are supported in body text.  A description becomes the =hlink=
 display body; otherwise the raw path is displayed.  The document body retains
@@ -1675,6 +1704,7 @@ navigation also rejects targets containing =#=, =?=, =*=, =$=, =|=, backslash,
 or square brackets, because these may be interpreted as navigation or URL
 syntax.  Such paths can remain in a structural result but fail native preflight.
 
+** Footnotes
 Anonymous inline footnotes such as =[fn::A note]= are supported as
 direct paragraph children and in the caption AST subset described above.
 Their bodies support ordinary inline markup,
@@ -1703,85 +1733,34 @@ Adjacent footnotes remain adjacent nodes without added separators or
 package-assigned footnote numbers.  Native body round trips do not establish
 rendering or numbering correctness.
 
-Standard source export uses Org's link registration and abbreviation semantics.
-Register optional schemes such as =ftps= through normal Org configuration. An
-unregistered scheme can be parsed as a fuzzy link and produce an Org resolution
-error. Consumed link settings are owned without private receipt replay or global
-protocol registration. Independent parsing and pure lowering retain their own
-contracts; link descriptions gain no STM discovery.
+** Entities and scripts
+Org =entity= objects use their captured Unicode representation: mathematical
+entities such as =\alpha=, =\cdot= and =\rightarrow= become local native math,
+while text entities such as =\copy= remain text.  Literal =<alpha>= stays literal;
+an entity does not switch the whole paragraph into math mode.  Effective =e:nil=
+preserves entity source syntax, including for objects created later by AST filters
+or Cite processors.  Pure structured inputs enable entities by default; an explicit
+=:with-entities nil= preserves their spelling without consulting dynamic settings.
+Missing or invalid representations fail explicitly.  The distinct =latex-fragment=
+input =$\cdot$= is not converted by entity support and remains unsupported.
+Finite LaTeX conversion is deferred from v0.7.0.  Native snippet experiments
+converted intact examples correctly, but also accepted repaired, empty or
+placeholder results for malformed and unknown input without a reliable failure
+contract.  A serializable native tree alone is insufficient to enable conversion.
 
-Source preparation uses Org's standard working buffer and parser settings.
-File and subtree configuration, selection, macros, INCLUDE, SETUPFILE, Babel and
-export hooks follow Org.  Final structures must fit the supported TeXmacs subset.
-The independent =org-texmacs-parse-buffer= entry performs model construction
-without standard export preparation.
-
-** AST filters and Org Cite
-Options and parse-tree filters run in the real =texmacs= export transaction with
-normal Org INFO.  Legal insertion, deletion, movement and replacement are allowed,
-including positionless synthetic nodes.  There is no citation-key-only filter
-restriction.  The final AST is authoritative; STM needs complete input obtainable
-from its effective structure or an explicit native-source property.
-
-Configure standard bibliography for the native default, or use =CITE_EXPORT= to
-select native styles or CSL with optional =citeproc= installed.  Acquisition, processor selection, citation
-filters and processing belong to Org.  See [[*Standard Org Export integration status][Standard Org Export integration status]]
-for processor, raw-output and text-filter boundaries.  Do not supply BibTeX text
-snapshots to source APIs.  Pure document construction and lowering invoke no
-export callbacks or bibliography acquisition.
-
-** Explicit native bibliography inputs
-Pure callers may provide already parsed native bibliography trees through
-=:bibliography= to =org-texmacs-input-create=.  They also supply complete owned
-native formatting context, including =:texmacs-bibliography-declarations= and
-=:texmacs-bibliography-output=.  Lowering validates native entries, labels and
-references without file reads or formatting.  This constructor protocol is
-separate from standard source Org Cite.
-
-** Standard source preparation examples
-Use Org Cite settings and standard hooks for bibliography acquisition.
-Preprocessing may legally generate STM; original source-byte fidelity is not
-required.  Org owns recursive INCLUDE and its file/selection policies.
-
-#+begin_src emacs-lisp
-  (org-texmacs-prepare-buffer source-buffer)
-  (org-texmacs-document-from-buffer source-buffer nil nil nil '(:with-toc nil))
-  (org-texmacs-export-texmacs-from-buffer source-buffer)
-#+end_src
-
-** Real Org extension integration
-The standard Cite acceptance suite runs as the
-=integration-org-roam-organize= flake check.
-It pins =org-roam-organize= revision
-=56fdaac6adab06deafc23357aec63ae2a497e09b= and uses project-locked Org-roam and
-=citeproc=. To run this check on its own:
-
-#+begin_src sh
-  nix build --no-link --no-write-lock-file .#checks.x86_64-linux.integration-org-roam-organize
-#+end_src
-
-This check runs real mode setup, SQLite queries, UUID-to-key AST
-filters and dynamic bibliography discovery in standard =org-export-as= scope.
-It checks single preparation/processor calls and identical live INFO, excludes
-unused managed bibliographies, renders PDF directly from the completed native
-document, and checks standard text/HTML export and source/global restoration.
-It has no production extension-specific adapter or business-logic mock. The
-=ert-csl= package suite covers structured CSL processing, citation positions
-and affixes, and finalizer compatibility. The Native and PDF integration suites
-cover native CSL output. These checks include =citeproc= where required.
-
-The locked native semantic audit also exercises static code line/blank-line
-geometry, multiparagraph and nested lists, two table caption counters and
-references, and five-level heading/TOC/reference agreement.  Native decoration
-and metadata definitions are checked alongside rendered content; successful
-serialization or readback alone is not treated as layout verification.
-These checks are bounded to the test fixtures and pinned TeXmacs environment,
-not arbitrary styles, fonts or pagination.
+Org =subscript= and =superscript= objects lower to native =rsub= and =rsup=,
+including consecutive =x_i^2= and nested =x^{a_b}=.  Effective =^:t= enables them,
+=^:{}= interprets bracketed scripts only, and =^:nil= retains their markers and
+braces while recursively handling child Org markup.  These policies also apply
+to nodes generated later by AST filters or Cite processors; completed Org option
+rewrites are not repeated.  Pure structured inputs default to enabled scripts;
+explicit =:with-sub-superscript nil= and ={}= select the other policies.
+Script contents have local whitespace state, inherit title/metadata restrictions
+and do not switch surrounding prose to math mode.  Adjacent STM islands stay
+opaque; scripts attach outside their existing subtree.
 
 ** Headline metadata and presentation
-Document conversion snapshots these standard Org options from the source
-buffer and accepts their listed =#+OPTIONS= keys.  It does not introduce
-parallel TeXmacs display switches:
+Standard Export follows these effective Org options and their =#+OPTIONS= keys:
 
 | Org option                          | Source key          | Current effect                                   |
 |-------------------------------------+---------------------+--------------------------------------------------|
@@ -1928,6 +1907,8 @@ function definition; later advice changes affect newly prepared inputs, not the
 existing conversion.  Mutable state captured by advice is not frozen.
 The rest of a rich date field retains its ordinary inline handling.
 
+* Extension interfaces
+** Headline formatter
 The default =org-texmacs-format-headline-function= is
 =org-texmacs-format-headline-default-function=.  It joins a strong TODO/DONE
 keyword, literal priority cookie, lowered title parts and a literal tag
@@ -1938,14 +1919,15 @@ the title. Metadata added by the formatter uses Org literal encoding.
 
 Custom formatters receive five arguments:
 
-#+begin_src emacs-lisp
+#+begin_example
   (todo todo-type priority title-parts tags)
-#+end_src
+#+end_example
 
 Disabled metadata arrives as nil, including =todo-type= when TODO is disabled.
 =title-parts= contains lowered text strees, not an Org AST or serialized text.
-Return one text stree. Its leaves have Org literal semantics, and conversion
-validates and copies the result into the sectioning node's sole title child.
+Return one text stree. Custom results use Org literal semantics, even when
+the function delegates to the default. Conversion validates and copies the
+result into the sectioning node's sole title child.
 The formatter cannot choose the enclosing sectioning level through its return
 value.  Treat inputs as read-only and prefer a side-effect-free function.
 The package's default formatter is side-effect-free; custom function side
@@ -1983,6 +1965,7 @@ visible STM islands.  TOC and resolved source links use distinct private label
 namespaces.  =pageref= values remain structural references;
 the body constructor does not paginate the document or precompute page numbers.
 
+* Native output and sessions
 ** Complete native document serialization
 =org-texmacs-document-serialize DOCUMENT= consumes a completed document result
 and returns a complete =.tm= document as an unibyte string of native output
@@ -2303,75 +2286,11 @@ Unicode document content.  Native PDF consumes the completed document directly,
 with the effective text-filter/finalizer compatibility contract described above.
 Unsupported node-string filters are rejected before execution.
 
-The old buffer-local =org-texmacs-export-discover-bibliography= flag no longer
-controls these commands.  Leave it nil: any non-nil value produces migration
-advice before preparation/output prompts.  Configure normal Org Cite bibliography,
-processor and style instead; the =basic= raw-output restriction still applies.
-
-#+begin_src emacs-lisp
-  (setq-local org-texmacs-export-discover-bibliography nil)
-  (org-texmacs-export-to-texmacs)
-#+end_src
-
 All structured preparation/document and source byte/buffer/file exports use standard
 preparation and require nil =BIBLIOGRAPHY-SOURCES=.  Loading =org-texmacs= alone
 does not register the backend; invoking a source export loads it.  No viewer opens.
 
-*** Source configuration and selection
-=org-texmacs-prepare-buffer=, =org-texmacs-document-from-buffer= and source byte/
-buffer APIs take =SOURCE-BUFFER= followed by optional =BIBLIOGRAPHY-SOURCES=,
-=SUBTREE-POSITION=, =REGION= and =EXT-PLIST=.  Bibliography sources must be nil.
-=EXT-PLIST= follows standard Org option merging; it is no longer a restricted
-whitelist or a private rich-string parser.  Org parses source metadata.  Scalar
-rich metadata supplied directly in INFO remains literal; callers can supply
-parsed secondary strings for structured metadata.
-
-Mutable option data is copied before conversion; functions and opaque objects
-retain identity.  Style/initial values and native output policies use their
-TeXmacs settings.  The pure input constructor consumes explicit INFO and fixed
-defaults without reading ambient source settings.
-
-*** Narrowed source buffers
-Existing narrowing is the outer accessible source boundary.  Org owns selection
-and preparation.  Source text, point, mark, narrowing and modified state are
-preserved on success and error.  Changes made by callbacks to the original source
-are detected where covered by source guards and are not undone.
-Interactive commands support =visible-only=; explicit source APIs have no visibility
-argument.  Independent model parsing remains separate from these export semantics.
-
-*** Region export
-Standard Org export and interactive commands use an active region as the body.
-Explicit source APIs use their =REGION= argument: a nonempty =(BEGIN . END)=
-integer pair within the accessible range.  Nil ignores an ambient active region.
-When both subtree and region are requested, the accessible heading at BEGIN must
-match the requested subtree heading.  Unsupported truncated STM fails explicitly.
-
-#+begin_src emacs-lisp
-  (org-texmacs-prepare-buffer source-buffer nil nil (cons begin end))
-  (org-texmacs-export-texmacs-from-buffer source-buffer nil nil (cons begin end))
-#+end_src
-
-*** Subtree export, configuration and dependencies
-Toggle subtree scope in the dispatcher or supply a non-nil =subtreep= to a
-frontend command.  Explicit source APIs accept =SUBTREE-POSITION=, an integer in
-the accessible range.  Org selects the subtree, applies =EXPORT_*= properties,
-prepares footnotes and answers target/numbering queries.  TeXmacs lowering still
-creates native labels, references, footnotes and numbering bindings.
-
-#+begin_src emacs-lisp
-  (org-texmacs-export-to-texmacs nil t)
-  (org-texmacs-export-to-pdf nil t)
-  (org-texmacs-document-from-buffer source-buffer nil position)
-#+end_src
-
-Selection is captured before native waits.  Prepared inputs own the selected Org
-structures and STM trees; native consumers do not reconstruct source context,
-repeat preprocessing/Cite or reparse serialized =.tm=.  Org target ambiguity and
-footnote selection follow its standard rules, replacing the old private full-source
-restoration and ambiguity policies.  Unsupported target structures fail at document
-lowering; preparation alone is not a target-support validation command.
-
-** Native encoding and lifetime
+** Session lifetime and readback
 =org-texmacs-session-open= creates an empty native document buffer and returns
 an opaque handle.  Only one session may be active in the shared worker.
 =org-texmacs-session-set-document= takes that handle and a document result,
@@ -2449,33 +2368,70 @@ first start may perform TeXmacs initialization.  Only the socket directory is
 temporary.  Tests use separate temporary user and TeXmacs configuration
 directories.
 
-| Option                               |   Default | Purpose                        |
-|--------------------------------------+-----------+--------------------------------|
-| =org-texmacs-program=                | =texmacs= | Executable; absolute under Nix |
-| =org-texmacs-worker-start-timeout=   |        60 | Startup wait in seconds        |
-| =org-texmacs-worker-request-timeout= |        10 | Response wait in seconds       |
+Timeouts must be positive. For diagnostics, =org-texmacs-check-setup= checks
+API and executable availability without starting the worker. Pure Elisp
+operations can remain available when the executable is missing.
 
-Timeout values must be positive.  Changing =org-texmacs-program= takes effect
-after the current worker stops.  Worker exit and Emacs shutdown clean up its
-socket directory.  For development, =(org-texmacs--worker-stop)= stops it
-explicitly; this is an internal function, not a stable public command.
+| Condition                               | Meaning                                                                 |
+|-----------------------------------------+-------------------------------------------------------------------------|
+| =org-texmacs-error=                     | Base error; invalid input/configuration, changed or inaccessible source |
+| =org-texmacs-model-error=               | Invalid Model, snapshot or structural operation                         |
+| =org-texmacs-model-serialization-error= | Model cannot be represented in normalized Org                           |
+| =org-texmacs-parse-error=               | Invalid STM source or malformed explicit carrier                        |
+| =org-texmacs-worker-error=              | Startup, communication or response failure                              |
+| =org-texmacs-document-error=            | Unsupported document input or changed source/configuration              |
+| =org-texmacs-encoding-error=            | Invalid native encoding input                                           |
+| =org-texmacs-session-error=             | Invalid/stale session or native body operation failure                  |
+| =org-texmacs-serialization-error=       | Native document serialization failure                                   |
+| =org-texmacs-rendering-error=           | Native PDF rendering failure                                            |
 
-| Condition                         | Meaning                                                                 |
-|-----------------------------------+-------------------------------------------------------------------------|
-| =org-texmacs-error=               | Base error; invalid input/configuration, changed or inaccessible source |
-| =org-texmacs-parse-error=         | Invalid STM source or malformed explicit carrier                        |
-| =org-texmacs-worker-error=        | Startup, communication or response failure                              |
-| =org-texmacs-document-error=      | Unsupported document input or changed source/configuration              |
-| =org-texmacs-encoding-error=      | Invalid native encoding input                                           |
-| =org-texmacs-session-error=       | Invalid/stale session or native body operation failure                  |
-| =org-texmacs-serialization-error= | Native document serialization failure                                   |
-| =org-texmacs-rendering-error=     | Native PDF rendering failure                                            |
+The specific conditions derive from =org-texmacs-error=. Pure Elisp STM
+parse errors involve no worker. A valid native parse error reply can leave a
+healthy worker available. Invalid responses, transport failures or cancellation
+can stop it. A later native request can start a new worker, but old session
+handles remain invalid. Failed block parses are never cached. Native requests
+are synchronous, and reentrant requests are rejected. Emacs shuts down the
+shared worker on exit. Org preparation, Org Cite, external callbacks and
+filesystem errors can also propagate.
 
-All these conditions inherit from =org-texmacs-error=.  Parse errors leave
-the worker available for the next request.  Transport failures and request
-cancellation stop it; a later native operation starts a new worker.
-Old session handles stay invalid.  Failed parses are
-never cached.  Reentrant requests are rejected; there is no asynchronous queue.
+* Compiled examples
+On Linux, build the English and Chinese examples with:
+
+#+begin_src sh
+  nix build .#org-texmacs-examples
+#+end_src
+
+The =result/= link groups PDFs under =pdf/en/= and =pdf/zh/=, with native
+documents under =texmacs/en/= and =texmacs/zh/=.  File names match the Org
+entries: =index.org= uses the generic profile, and =article.org= uses the
+article profile for mathematics, statements, figures and tables. Derivative
+notation uses native =rprime= nodes. Their PDFs
+link to each other through relative targets in the same language directory.
+The =.tm= files use absolute targets based on the temporary build source.
+These targets may be inaccessible after the build. The installed =.tm= files
+do not form a relocatable set, and PDFs rendered again from them can have
+different targets from the direct PDF output.  Org inputs
+and derived configuration/bibliography remain under
+=sources/<language>/<entry>/=.  Progress and PDF inspection information go to
+the Nix build log; log files are not installed.  Every document builds with
+fresh Emacs, TeXmacs and HOME state inside its Nix derivation; use a
+sandbox-enabled builder.  The example build uses its own Emacs package
+set with org-texmacs's =texmacs= dependency overridden to
+=texmacs-fandol-with-gotor-support=, which supplies explicit Fandol Chinese fonts
+through =TEXMACS_FONT_PATH= and native GoToR actions for local PDF file links.
+Examples use the native Org Cite default for generic documents and explicit
+=texmacs-native alpha= for article documents, with valid mathematical BibTeX
+titles. Neither examples nor the base package requires =citeproc=. A local CSL
+fixture remains available for explicit CSL users. One standard document
+preparation supplies both native output formats. Babel evaluation is disabled
+for these illustrative sources; tangling/loading configuration is explicit.
+Reader support can depend on the backend: the user confirmed navigation works
+with Zathura's pdf-poppler backend after failure with pdf-mupdf.
+
+Configuration and bibliography derive from canonical Org sources.  Read
+[[file:pkgs/org-texmacs-examples/sources/en/index.org][the English entry]]
+or [[file:pkgs/org-texmacs-examples/sources/zh/index.org][the Chinese entry]]
+for the configuration examples and build details.
 
 * Development checks
 Run from the repository root:
@@ -2519,7 +2475,7 @@ The =regression-org-caption-inline-footnotes= check builds the locked Org
 standard source-export rejection, and native readback. It applies to Org
 9.8.10.
 
-*** Org 10.0pre compatibility variant
+** Org 10.0pre compatibility variant
 The experimental =org-10pre-texmacs= package uses a private build of
 =bzg/org-mode= pinned to =fd6546e1a9dddedd913a4adaf2ea76eea65c7f67=.
 Use the flake package or select =emacsPackages.org-10pre-texmacs= after
@@ -2544,7 +2500,7 @@ Org TeXmacs package, nested setup files, Model ownership, and serialization.
     .#org-10pre-texmacs.tests.ert-csl .#org-10pre-texmacs.tests.ert-setupfile
 #+end_src
 
-*** Test discovery
+** Test discovery
 Package suites in =elisp/tests/= expose checks through =passthru.tests=.
 The repository collects those checks from =legacyPackages= and discovers
 leaf suites under =tests/integration/= and =tests/regression/= in the same
@@ -2568,3 +2524,25 @@ participate in formatting.  Patch files, =LICENSE= and =flake.lock= are excluded
 Git flake inputs omit untracked files.  When checking new files before staging,
 use an explicit =path:.= flake input, such as
 =nix flake check --no-write-lock-file path:.=.
+
+* Upgrade notes
+This development tree uses =elisp/src/= for Lisp and the Scheme service.
+Update load paths, Straight recipes and custom filesets that reference the
+former =lisp/= directory. See the [[file:CHANGELOG.org][unreleased changes]]
+for removed libraries and wrappers, and the new build and check entry points.
+
+The retired =:fragment-tags= Model context key must be removed. The obsolete
+=org-texmacs-export-discover-bibliography= setting now reports a migration
+error when non-nil. Configure bibliography through Org Cite and remove the old
+setting. Migrate six-argument formatters by removing the final =info= argument.
+
+** Migrating bare fragments
+For example, change bare =(math (frac "1" "2"))= to
+=\((math (frac "1" "2"))\)=. The
+=org-texmacs-fragment-tags= option, span accessors, and
+=org-texmacs-fragment-at-point=, =org-texmacs-fragment-map= and
+=org-texmacs-fragment-tree= APIs have been removed. To consume parsed
+fragments, use =org-texmacs-parse-buffer= and inspect the resulting
+=org-texmacs-model-islands=. Query an individual owned key with
+=org-texmacs-model-island=. Use =org-texmacs-tree= for on-demand parsing
+of native =texmacs= blocks.

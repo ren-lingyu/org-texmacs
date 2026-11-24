@@ -11,7 +11,9 @@ PDF 集中放在 pdf/en/ 和 pdf/zh/, 原生文档放在 texmacs/en/ 和 texmacs
 
 Org 输入和派生的 .el/.bib 放在 sources/<language>/<entry>/,
 保留 INCLUDE 使用的相对路径. 生成文件属于构建产物, 不提交到 Git.
-.tm 仍采用原生的源目录绝对链接目标; 上述可移动链接针对直接导出的 PDF.
+.tm 采用基于临时构建源目录的绝对链接目标, 这些路径在构建结束后可能无法访问.
+安装后的 .tm 文件不能作为一套可搬移的文档使用. 之后从 .tm 渲染的 PDF
+可能使用不同于直接导出 PDF 的链接目标.
 
 两个入口均通过普通 Org INCLUDE 组合 chapters/ 中的章节.
 数学与图表章节由 article.org 包含, 不再单独编译.

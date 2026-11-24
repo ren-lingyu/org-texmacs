@@ -320,6 +320,7 @@ Select requested entries if parsed dependencies or output were supplied."
 
 (defun org-texmacs--input-with-cite-sources (input sources)
   "Own parsed SOURCES and select entries for finalized private INPUT.
+INPUT must carry a Native Cite plan without formatted bibliography output.
 Share the existing document graph and leave INPUT and its plan intact."
   (let* ((info (org-texmacs-input-info input))
          (plan (plist-get info :texmacs-cite-plan))
@@ -415,9 +416,8 @@ link identities; these are copied and remapped like other identity-keyed
 structures and are never
 re-collected during lowering.  Native results bind the same prefix, keys and
 selected entries.
-Pending requests remain inspectable but cannot produce a document until their
-bibliography result is supplied.  Neither request ownership nor result
-attachment performs file access or native processing.
+An input with active print requests needs a matching bibliography output
+view to lower.  The constructor performs no file access or native processing.
 
 Copy strings, lists and vectors, rebuild parent links, and remap references
 to AST nodes in INFO and the mappings.  Copy parsed title, subtitle, author

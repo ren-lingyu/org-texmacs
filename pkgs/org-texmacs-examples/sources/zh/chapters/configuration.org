@@ -11,7 +11,12 @@
 ** 当前文档的配置
 #+include: "profile.el" src emacs-lisp
 
-入口保留默认 generic 样式. 配套文章使用 article, 标题带有测试前缀.
+入口保留默认 generic 样式. 配套文章使用 article 和自定义标题 formatter.
+它添加测试前缀, 忽略任务元数据, 并返回按字面语义处理的文本树.
+使用默认 formatter 时, 标题中的 STM 保留其原生源码语义.
+
+本构建使用 TeXmacs 生成原生输出. 独立 Model 的解析、检查、STM 子树替换
+和规范化 Org 序列化只需 Emacs Lisp 和 Org, 无需 TeXmacs 可执行文件.
 显式 equation 与 texmacs 块仍然可以使用.
 入口保留普通引用; 配套文章显式启用 typed references, 并加载原生 smart-ref 样式包.
 指向编号标题, 数学陈述, 公式, 插图或表格的无描述链接根据目标结构选择引用类型;

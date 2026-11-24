@@ -42,8 +42,7 @@
 (concat "A=" (matrix (tformat (table (row (cell "1") (cell "2")) (row (cell "3") (cell "4"))))))
 #+end_equation
 
-显式 texmacs 块可以承载多行公式. article 配置只限制普通段落的片段入口,
-不会阻止该块内部的原生结构被解析.
+显式 texmacs 块可以承载多行公式, 并保留块内的原生 TeXmacs 结构.
 
 #+begin_texmacs
 (eqnarray*

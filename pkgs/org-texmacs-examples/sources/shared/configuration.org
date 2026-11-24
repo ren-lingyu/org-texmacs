@@ -58,6 +58,7 @@ configuration files are loaded; interactive snippets elsewhere are never run.
   (setq org-texmacs-document-style '("article" "smart-ref")
         org-texmacs-typed-references t)
 
+  ;; Custom headline output is interpreted as a literal text tree.
   (defun org-texmacs-examples-headline
       (_todo _todo-type _priority title-parts _tags)
     "Present TITLE-PARTS with a test prefix and without task metadata."
