@@ -46,7 +46,7 @@ fulfillment for Document consumers using the existing frozen resolution node
 sequence. The standard Input and internal Model consumers retain their current
 preparation and fulfillment behavior. The bibliography snapshot and guard
 windows stay in place, so the conditional mutation probe is not needed for
-this design. A2/B is delivered and the verified C candidate is below.
+this design. A2/B and C are delivered. D is the next audit node.
 
 ## A2/B lowering cleanup delivered
 
@@ -80,9 +80,14 @@ runtime error timing and Input construction at delivery. C uses the two
 functions at the consumer boundary described in
 `bc-export-validation-design.md`.
 
-## C Native Cite ordering candidate
+## C Native Cite ordering delivered
 
-The uncommitted C candidate moves Native Cite fulfillment from
+The maintainer committed C directly on the delivered A2/B baseline. The
+five changed paths and their reviewed blob abbreviations match the validated
+candidate. The commit message matches the draft byte for byte. The project
+worktree and index are clean and the committed diff passes the Git whitespace
+check. The maintainer also confirmed tests and example builds. The change
+moves Native Cite fulfillment from
 `org-texmacs--standard-input` into `org-texmacs--standard-inner`. The private
 bridge still prepares owned structure and initial request data, preserving
 the bibliography snapshot before STM completion. For Document, text and PDF
@@ -109,9 +114,8 @@ functions. The native fixture verifies valid output, a real unknown-style
 error and recovery with the same worker. README and the unreleased CHANGELOG
 describe the changed timing.
 
-The ordinary index is untouched. After maintainer delivery, node D can
-audit data flow and ownership with the stabilization from A1 through C as
-its baseline. Any optimization needs evidence that it preserves identity,
+Node D can now audit data flow and ownership using the delivered A1 through
+C source as its baseline. Any optimization needs evidence that it preserves identity,
 failure isolation and transaction windows.
 
 ## B/C footnote figure reachability probe
