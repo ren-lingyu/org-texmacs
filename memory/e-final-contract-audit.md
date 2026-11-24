@@ -11,7 +11,7 @@ with full-index binary diff SHA-256
 `8b17ebbe1cf482e453e99c055b23fb765d6406fee46f62cf4c1f61a53fd73ba5`.
 Production HEAD, package version declarations, flake.lock and published
 release notes were unchanged. The checks below apply to this working-tree
-candidate. No clean project commit with this content exists yet.
+candidate as it stood before the final example review. See Delivery below.
 
 The maintainer authorized reorganizing the single README, choosing complete
 default declarations with equivalent effective behavior and retaining legal
@@ -96,10 +96,26 @@ Executed on x86_64-linux using the locked inputs and no network shell commands.
   evidence. No extra two-version native run or compatibility extension was
   needed for the default declaration normalization.
 
-## Handoff
+## Delivery
 
-No release blocker surfaced in the verified candidate. Maintainer review and
-ordinary project delivery are pending. After delivery, compare the committed
-diff to the recorded candidate digest, record its exact commit, and plan the
-release with the maintainer. The release still needs a chosen version, final
-version-specific notes and the normal version/tag and publication steps.
+The maintainer committed `chore: align user documentation and make the Cite
+default explicit` directly after the audit baseline. The commit message matches
+the reviewed draft byte for byte. Substituting the tested candidate's shared
+example configuration blob into the committed diff reproduces the recorded
+candidate SHA-256. The delivered full-index binary diff SHA-256 is
+`97d35f91fba5de434cb18df92dc140887097a731d875c94328ac9177aabea13d`.
+
+The only file-level difference after the full run is
+`pkgs/org-texmacs-examples/sources/shared/configuration.org`. The compiled
+candidate exposed a tangle indentation issue: a two-space docstring continuation
+set the indentation of an otherwise four-space block. The delivered change
+uses the baseline article block indentation and docstring, adding one comment
+about literal headline output. The executable forms match the baseline
+by source inspection. The committed diff passed `git diff HEAD^ HEAD --check`.
+The worktree and index were clean. The prior test matrix, example build and
+visual checks describe the candidate. The final example source edit received
+static review and no post-edit example or treefmt run was performed.
+
+The E changes are delivered. The next version, version-specific notes,
+final release checks and publication remain maintainer decisions. Include a
+fresh examples build in that release verification to observe the final tangle.

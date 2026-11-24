@@ -5,28 +5,24 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
-## Node E candidate verified
+## Node E delivered
 
-The [E audit and acceptance record](e-final-contract-audit.md) describes the
-15-file working-tree candidate on D2's delivered baseline. The README now
-organizes the current development contract by user workflow. The normalized
-default Cite declaration is `(texmacs-native "plain" nil)` with the same
-effective styles and supported shorthand. API docs, examples, targeted
-regressions and the unreleased CHANGELOG agree. Prior Model, export,
-ownership and native boundaries still apply.
+The maintainer committed `chore: align user documentation and make the Cite
+default explicit`. The [E audit and acceptance record](e-final-contract-audit.md)
+covers the current README, API docs, normalized Cite declaration with the same
+effective styles, examples, targeted regressions and unreleased CHANGELOG.
 
-The x86_64-linux offline flake matrix passed, with 16 ERT suites reporting
-zero unexpected results. The independent GoToR check reused its prior
-result. On final README content, treefmt reran and the other current
-candidate derivations were reused. All four example TeXmacs/PDF pairs
-were freshly built and the final build reused them. Artifact checks and
-four rendered page spot checks passed, as did eight named README smoke
-checks, including real serialization and native session readback.
+The reviewed candidate passed the x86_64-linux offline flake matrix, all four
+compiled examples and eight README smoke checks. The delivered commit matches
+that candidate apart from the shared article configuration. Its final review
+restored the existing two-space source-block indentation and placed the
+formatter semantics note in a comment. The committed diff passed the Git
+whitespace check. The last example edit received static review, and the built
+example artifacts are from the earlier candidate.
 
-The ordinary project index is empty and maintainer review and delivery
-are pending. No tested release blocker surfaced. The next version and
-release remain maintainer decisions. Verify the delivered commit matches
-the candidate evidence before recording delivery.
+The ordinary project worktree and index were clean at delivery. The next
+version and release remain maintainer decisions. Rebuild the example package
+on the release candidate to verify the final tangle layout.
 
 ## Node D2 delivered
 
