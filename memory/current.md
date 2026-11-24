@@ -5,6 +5,29 @@ maintenance boundary, not because Org 9.8 was proved incompatible. Prior E7
 9.8 successes remain historical evidence; separate 9.8 regression is no longer
 a gate. Keep existing functional/scope tests, with 9.8.10 as the minimum baseline.
 
+## Node E candidate verified
+
+The [E audit and acceptance record](e-final-contract-audit.md) describes the
+15-file working-tree candidate on D2's delivered baseline. The README now
+organizes the current development contract by user workflow. The normalized
+default Cite declaration is `(texmacs-native "plain" nil)` with the same
+effective styles and supported shorthand. API docs, examples, targeted
+regressions and the unreleased CHANGELOG agree. Prior Model, export,
+ownership and native boundaries still apply.
+
+The x86_64-linux offline flake matrix passed, with 16 ERT suites reporting
+zero unexpected results. The independent GoToR check reused its prior
+result. On final README content, treefmt reran and the other current
+candidate derivations were reused. All four example TeXmacs/PDF pairs
+were freshly built and the final build reused them. Artifact checks and
+four rendered page spot checks passed, as did eight named README smoke
+checks, including real serialization and native session readback.
+
+The ordinary project index is empty and maintainer review and delivery
+are pending. No tested release blocker surfaced. The next version and
+release remain maintainer decisions. Verify the delivered commit matches
+the candidate evidence before recording delivery.
+
 ## Node D2 delivered
 
 The maintainer adopted five headline formatter arguments without a legacy
